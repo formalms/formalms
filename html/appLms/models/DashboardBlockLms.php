@@ -47,7 +47,7 @@ abstract class DashboardBlockLms extends Model
     /**
      * @var string
      */
-    private $type;
+    private $type = '';
 
     /**
      * @var int
@@ -67,10 +67,10 @@ abstract class DashboardBlockLms extends Model
     /** @var string */
     protected $viewFile;
 
-    protected $data;
+    protected $data = [];
 
     /** @var bool */
-    protected $firstInsert;
+    protected $firstInsert = '';
 
     public function __construct($jsonConfig)
     {
@@ -206,11 +206,13 @@ abstract class DashboardBlockLms extends Model
 
     protected function parseBaseConfig($jsonConfig)
     {
-        $this->enabled = $jsonConfig['enabled'] ? $jsonConfig['enabled'] : false;
-        $this->type = $jsonConfig['type'] ? $jsonConfig['type'] : '';
-        $this->enabledActions = $jsonConfig['enabledActions'] ? $jsonConfig['enabledActions'] : [];
-        $this->data = $jsonConfig['data'] ? $jsonConfig['data'] : [];
-        $this->firstInsert = $jsonConfig['firstInsert'] ? $jsonConfig['firstInsert'] : false;
+        if (is_array($jsonConfig)) {
+            $this->enabled = array_key_exists('enabled', $jsonConfig) ? $jsonConfig['enabled'] : false;
+            $this->type = array_key_exists('type', $jsonConfig) ? $jsonConfig['type'] : '';
+            $this->enabledActions = array_key_exists('enabledActions', $jsonConfig) ? $jsonConfig['enabledActions'] : [];
+            $this->data = array_key_exists('data', $jsonConfig) ? $jsonConfig['data'] : [];
+            $this->firstInsert = array_key_exists('firstInsert', $jsonConfig) ? $jsonConfig['firstInsert'] : false;
+        }
     }
 
     /**
@@ -264,14 +266,14 @@ abstract class DashboardBlockLms extends Model
         ];
 
         $dateBegin = trim(str_replace('00:00:00', '', $course['course_date_begin']));
-        if ($dateBegin === '0000-00-00') {
+        if (!$dateBegin) {
             $dateBegin = '';
         } else {
             $startDate = new DateTime($dateBegin);
         }
 
         $dateEnd = trim(str_replace('00:00:00', '', $course['course_date_end']));
-        if ($dateEnd === '0000-00-00') {
+        if (!$dateEnd) {
             $dateEnd = '';
         } else {
             $endDate = new DateTime($dateEnd);
@@ -323,12 +325,12 @@ abstract class DashboardBlockLms extends Model
     protected function getDataFromReservation($reservation)
     {
         $dateBegin = $reservation['date_begin'];
-        if ($dateBegin === '0000-00-00') {
+        if (!$dateBegin) {
             $dateBegin = '';
         }
 
         $dateEnd = $reservation['date_end'];
-        if ($dateEnd === '0000-00-00') {
+        if (!$dateEnd) {
             $dateEnd = '';
         }
 
@@ -359,7 +361,7 @@ abstract class DashboardBlockLms extends Model
             'hours' => $hourBeginString . ' ' . $hourEndString,
         ];
 
-        $reservationData['course'] = $this->getCalendarDataFromCourse($reservation);
+        $reservationData['course'] = $this->getDataFromCourse($reservation);
 
         return $reservationData;
     }

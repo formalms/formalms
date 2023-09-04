@@ -97,8 +97,8 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
     {
         $courses = [];
 
-        $limit = $this->data['max_courses_number'];
-        $conditions = ['ID_USER' => 'cu.iduser =' . (int) Docebo::user()->getId()];
+        $limit = array_key_exists('max_courses_number', $this->data) ? $this->data['max_courses_number'] : 0;
+        $conditions = ['ID_USER' => 'cu.iduser =' . (int)Docebo::user()->getId()];
         $conditions['COURSE_STATUS'] = '(c.status in  (1,2))'; // only available, confirmed
         $conditions['USER_ENROLLMENT_STATUS'] = '(cu.status in (0,1))'; // only enrolled and in progress
 
@@ -223,7 +223,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
         // exclude course belonging to pathcourse in which the user is enrolled as a student
         $exclude_pathcourse = '';
         if (FormaLms\lib\Get::sett('on_path_in_mycourses') == 'off') {
-            $id_user = (int) Docebo::user()->getId();
+            $id_user = (int)Docebo::user()->getId();
             $learning_path_enroll = $this->getUserCoursePathCourses($id_user);
             if (count($learning_path_enroll) >= 1) {
                 $exclude_path_course = 'select idCourse from learning_courseuser where idUser=' . $id_user . ' and level <= 3 '
@@ -259,8 +259,8 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
             . ' FROM %lms_course_date AS cd '
             . ' WHERE cd.id_course = ' . $course['course_id']
             . ' AND cd.status <>3 '
-            . ' AND cd.sub_end_date <> \'0000-00-00 00:00:00\' '
-            . ' AND cd.sub_start_date <> \'0000-00-00 00:00:00\' '
+            . ' AND cd.sub_end_date IS NOT NULL '
+            . ' AND cd.sub_start_date IS NOT NULL '
             . ' ORDER BY cd.id_date';
 
         $rs = $this->db->query($query);
@@ -279,14 +279,14 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
                 'showEndDate' => false,
             ];
 
-            if ($date['date_start_date'] !== '0000-00-00 00:00:00') {
+            if ($date['date_start_date']) {
                 $startDate = new DateTime($date['date_start_date']);
                 $startDateString = $startDate->format('d/m/Y');
             } else {
                 $startDateString = '';
             }
 
-            if ($date['date_end_date'] !== '0000-00-00 00:00:00') {
+            if ($date['date_end_date']) {
                 $endDate = new DateTime($date['date_end_date']);
                 $endDateString = $endDate->format('d/m/Y');
             } else {
@@ -329,6 +329,9 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
         }
         if ($endDate >= $now) {
             $courseData['showEndDate'] = true;
+        }
+        if ($startDate = $endDate) {
+            $courseData['showEndDate'] = false;
         }
 
         $hours = '';
