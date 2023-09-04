@@ -1497,7 +1497,7 @@ class SubscriptionAlmsController extends AlmsController
 
                 $user_selection = (isset($_POST['user_selection']) ? $_POST['user_selection'] : $model->getUserData());
 
-                $this->render('multiple_subscription_2', ['model' => $model, 'id_cat' => $id_cat, 'course_selector' => $course_selector, 'user_selection' => $user_selection]);
+                $this->render('multiple_subscription_2', ['model' => $model, 'id_cat' => $id_cat, 'course_selector' => $course_selector, 'user_selection' => $user_selection, 'link' => $this->link, 'link_course' => $this->link_course]);
                 break;
 
             case '3':

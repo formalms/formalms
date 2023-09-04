@@ -472,14 +472,15 @@ class CourseLms extends Model
             if ((int) $course['auto_unsubscribe'] === 2) {
                 $editionKey = array_key_first($course['editions']);
 
-                if (($course['editions'][$editionKey]['unsubscribe_date_limit'])) {
+                if (array_key_exists('unsubscribe_date_limit', $course['editions'][$editionKey])) {
                     $unsub_date_limit = $course['editions'][$editionKey]['unsubscribe_date_limit'];
                     $unsub_date_limit = DateTime::createFromFormat('Y-m-d H:i:s', $unsub_date_limit);
                 } else {
                     $unsub_date_limit = $defaultTrueDate;
                 }
                 $edition_not_started = true;
-                foreach ($course['editions'][$editionKey]['days'] as $k => $day) {
+                $days = array_key_exists('days', $course['editions'][$editionKey]) ? $course['editions'][$editionKey]['days']: [];
+                foreach ($days  as $k => $day) {
                     $next_day = $day['full_date'];
                     $next_day = DateTime::createFromFormat('Y-m-d H:i:s', $next_day);
                     $edition_not_started = $edition_not_started && ($now < $next_day);

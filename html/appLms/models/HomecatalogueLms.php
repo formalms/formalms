@@ -43,7 +43,7 @@ class HomecatalogueLms extends CatalogLms
                                 CST_CONCLUDED => '_CST_CONCLUDED',
                                 CST_CANCELLED => '_CST_CANCELLED', ];
 
-        $this->acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();
         parent::__construct();
     }
 
