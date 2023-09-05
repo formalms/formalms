@@ -2,10 +2,18 @@ FORMA LMS
 RELEASE CHANGELOG
 
 ---------------------------------------------------------------------------------------
+forma.lms 3.3.12
+---------------------------------------------------------------------------------------
+Release date: 2023 september
+
+- #      - Fix dashboard next courses block
+
+---------------------------------------------------------------------------------------
 forma.lms 3.3.11
 ---------------------------------------------------------------------------------------
 Release date: 2023 july
 
+- #      - fix 3.3.8 add index query to solve if index exists
 - #      - add fallback to ',' '|' and space separator fo CC and CCN in mailer
 - #      - fix session in select node usermanagement
 
