@@ -125,7 +125,7 @@ class CatalogLms extends Model
                 }
                 break;
             case 'new':
-                $filter = " AND create_date >= '" . date('Y-m-d', mktime(0, 0, 0, date('m'), ((int) date('d') - 7), date('Y'))) . "'";
+                $filter = " AND create_date >= '" . date('Y-m-d', mktime(0, 0, 0, date('m'), ((int)date('d') - 7), date('Y'))) . "'";
                 $base_link = 'index.php?r=catalog/newCourse&amp;page=' . $page;
                 if (count($user_catalogue) > 0) {
                     $courses = [];
@@ -197,7 +197,9 @@ class CatalogLms extends Model
             foreach ($result as $item) {
                 $cat_array[] = $item['idEntry'];
             }
-            $categoryListFilter = ' and idCourse in (' . implode(',', $cat_array) . ')';
+            if (is_array($cat_array) && count($cat_array) > 0) {
+                $categoryListFilter = ' and idCourse in (' . implode(',', $cat_array) . ')';
+            }
         }
         $courses = [];
         $filter = '';
@@ -207,7 +209,7 @@ class CatalogLms extends Model
                 $filter = " AND course_type = '" . $type . "'";
                 break;
             case 'new':
-                $filter = " AND create_date >= '" . date('Y-m-d', mktime(0, 0, 0, date('m'), ((int) date('d') - 7), date('Y'))) . "'";
+                $filter = " AND create_date >= '" . date('Y-m-d', mktime(0, 0, 0, date('m'), ((int)date('d') - 7), date('Y'))) . "'";
                 break;
             case 'catalogue':
                 $idCatalogue = FormaLms\lib\Get::req('id_cata', DOTY_INT, '0');
@@ -224,7 +226,7 @@ class CatalogLms extends Model
             }
         }
 
-        if (count($courses) > 0) {
+        if (is_array($courses) && count($courses) > 0) {
             $filter .= ' AND idCourse IN (' . implode(',', $courses) . ')';
         }
 
@@ -316,7 +318,7 @@ class CatalogLms extends Model
                 }
                 break;
             case 'new':
-                $filter = " AND create_date >= '" . date('Y-m-d', mktime(0, 0, 0, date('m'), ((int) date('d') - 7), date('Y'))) . "'";
+                $filter = " AND create_date >= '" . date('Y-m-d', mktime(0, 0, 0, date('m'), ((int)date('d') - 7), date('Y'))) . "'";
                 if (count($user_catalogue) > 0) {
                     $courses = [];
 
@@ -367,7 +369,7 @@ class CatalogLms extends Model
             . " OR date_begin > '" . date('Y-m-d') . "'"
             . ' )'
             . $filter
-            . ($id_cat > 0 ? ' AND idCategory = ' . (int) $id_cat : '')
+            . ($id_cat > 0 ? ' AND idCategory = ' . (int)$id_cat : '')
             . ' ORDER BY name';
 
         list($res) = sql_fetch_row(sql_query($query));
@@ -526,7 +528,7 @@ class CatalogLms extends Model
     {
         $query = 'SELECT name, selling, prize'
             . ' FROM %lms_course'
-            . ' WHERE idCourse = ' . (int) $id_course;
+            . ' WHERE idCourse = ' . (int)$id_course;
 
         list($course_name, $selling, $price) = sql_fetch_row(sql_query($query));
         $classrooms = $this->classroom_man->getCourseDate($id_course, false);
@@ -552,7 +554,7 @@ class CatalogLms extends Model
     {
         $query = 'SELECT *'
             . ' FROM %lms_course'
-            . ' WHERE idCourse = ' . (int) $id_course;
+            . ' WHERE idCourse = ' . (int)$id_course;
 
         $result = sql_query($query);
 
@@ -667,7 +669,7 @@ class CatalogLms extends Model
     {
         if (($iright - $ileft > 1) && $this->CategoryHasChildrenCourses($idCat, $ileft, $iright, $showRulesValues)) {
             $q = 'SELECT idCategory, path, idParent, lev, iLeft, iRight  FROM %lms_category  
-                        WHERE iLeft > ' . (int) $ileft . ' AND iRight < ' . $iright . ' AND lev=' . $lev;
+                        WHERE iLeft > ' . (int)$ileft . ' AND iRight < ' . $iright . ' AND lev=' . $lev;
             $res = [];
             $records = sql_query($q);
             foreach ($records as $row) {
@@ -721,7 +723,7 @@ class CatalogLms extends Model
                               (can_subscribe=2 AND (sub_end_date IS NULL OR sub_end_date >= '" . date('Y-m-d') . "') AND (sub_start_date IS NULL OR '" . date('Y-m-d') . "' >= sub_start_date)) OR
                               (can_subscribe=1)
                           )
-                       AND idCatalogue = " . (int) $this->currentCatalogue .
+                       AND idCatalogue = " . (int)$this->currentCatalogue .
                     ' AND %lms_catalogue_entry.idEntry=%lms_course.idCourse';
             }
 
