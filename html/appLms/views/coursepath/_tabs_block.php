@@ -7,37 +7,24 @@
                 ]);
 
                 $_model = new CoursepathLms();
-                $count = 0;
                 $statusFilters = $_model->getFilterStatusLearningPath(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst());
 
                 $html = '<ul class="nav nav-pills">';
+                $html .= '<li class="selected js-label-menu-filter" data-value="' . $key . '">';
 
                 foreach ($statusFilters as $key => $value) {
-                    $html_code .= '    <option value="' . $key . '"'
-                        . ((string) $key == (string) $selected ? ' selected="selected"' : '')
-                        . '>' . $value . '</option>' . "\n";
-
-                    if ($count === 0) {
-                        $html .= '<li class="selected js-label-menu-filter" data-value="' . $key . '">';
-                    } else {
-                        $html .= '<li class="js-label-menu-filter" data-value="' . $key . '">';
-                    }
-
+                    $html .= '<li class="js-label-menu-filter" data-value="' . $key . '">';
                     $html .= '<a class="icon--filter-' . $key . '" href="#" >' . $value . '</a>';
                     $html .= '</li>';
-                    ++$count;
                 }
 
                 $html .= '</ul>';
 
                 $inline_filters = $html;
 
-                $_auxiliary = Form::getInputDropdown('', 'coursepath_search_filter_year', 'filter_year', $_model->getFilterYears(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst()), 0, '');
-                $_auxiliary = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width=""  data-actions-box="true"', $_auxiliary);
 
                 $this->widget('tablefilter', [
                     'id' => 'coursepath_search',
-                    'auxiliary_filter' => $_auxiliary,
                     'filter_text' => '',
                     'js_callback_set' => 'coursepath_search_callback_set',
                     'js_callback_reset' => 'coursepath_search_callback_reset',

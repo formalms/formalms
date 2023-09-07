@@ -16,12 +16,13 @@
     <div class="row createFolderForm hidden">
         <div class="col-lg-12 inputBtnContainer">
             <div class="createFolder__link ft-is-folder">
-                <input type="text" class="createFolder__input resizeInput" placeholder="{{ Lang_translate('_ORGFOLDERNAME', 'storage') }}"/>
+                <input type="text" id="{{ tab.title }}" class="createFolder__input resizeInput" placeholder="{{ Lang_translate('_ORGFOLDERNAME', 'storage') }}"/>
+                <label class="screenreader" for="{{ tab.title }}">{{ Lang_translate('_ORGFOLDERNAME', 'storage') }}</label>
                 <input type="hidden" name="authentic_request" value="{{ Util_getSignature() }}" />
             </div>
             <div class="btnContainer">
-                <button class="btn cancelCreateFolder__btn noBorder" type="reset"></button>
-                <button class="btn createFolder__btn noBorder" type="button"></button>
+                <button class="btn cancelCreateFolder__btn noBorder" type="reset"><span class="screenreader">{{ Lang_translate('_CANCEL') }}</span></button>
+                <button class="btn createFolder__btn noBorder" type="button"><span class="screenreader">{{ Lang_translate('_CREATE_FOLDER', 'screen_reader') }}</span></button>
             </div>
             <div class="createFolder__input_err hidden"></div>
         </div>
