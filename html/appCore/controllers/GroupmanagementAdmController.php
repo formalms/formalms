@@ -315,7 +315,7 @@ class GroupmanagementAdmController extends AdmController
     {
         require_once _base_ . '/lib/lib.form.php';
         $group_types = $this->model->getGroupTypes(true);
-        $acl = \FormaLms\lib\Forma::getAcl();
+        $acl = \FormaLms\lib\Forma::getAclManager();
         if ($idst > 0) {
             $group_info = $this->model->getGroupInfo($idst);
             $action = 'ajax.adm_server.php?r=adm/groupmanagement/moddata&id=' . $idst;
