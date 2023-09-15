@@ -1,43 +1,35 @@
-{% set menuIndex = 10 %}
-{% set submeunIndex = 1 %}
-
-
 {% for item in menu %}
-    {% set tabIndex = menuIndex %}
      {# {{ dump(item) }} #}
     {% if Util_checkRole(item.role) %} {# TODO: se sottomenù hanno permesso, visualizza comunque #}
         {% if item.submenu|length > 0 %}
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                   aria-expanded="false" tabindex="{{ tabIndex }}">{{ Lang_translate(item.name, 'menu_over') }}<span class="caret"></span></a>
+                   aria-expanded="false" >{{ Lang_translate(item.name, 'menu_over') }}<span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     {% for subitem in item.submenu %}
-                        {% set tabIndex = tabIndex + submeunIndex %}
                         <li{% if subitem.active %} class="active"{% endif %}>
-                            <a href="{{ item.url }}" title="{{ Lang_translate(item.name, 'menu_over') }}" tabindex="{{ tabIndex }}">
+                            <a href="{{ item.url }}" title="{{ Lang_translate(item.name, 'menu_over') }}" ">
                                 {% if item.image %}{{ item.image|raw }}{% else %}{{ Lang_translate(item.name, 'menu_over') }}{% endif %}
                             </a>
                         </li>
-                        {% set submeunIndex = submeunIndex + 1 %}
                     {% endfor %}
                 </ul>
             </li>
         {% else %}
             <li{% if ((currentPage.isMVC == true and item.mvc_path == currentPage.MVC) or (currentPage.isMVC == false and item.module_name == currentPage.modname and item.default_op == currentPage.op)) %} class="active"{% endif %} >
-                <a href="{{ item.url }}" title="{{ Lang_translate(item.name, 'menu_over') }}" id="{{ item.name }}" name="{{ item.name }}" tabindex="{{ tabIndex }}"
+                <a href="{{ item.url }}" title="{{ Lang_translate(item.name, 'menu_over') }}" id="{{ item.name }}" name="{{ item.name }}"
                         {% if item.image %}role="button" aria-label="{{ Lang_translate('_HELPDESK', 'menu_over')}}" {% endif %}>
                         {% if item.image %}{{ item.image|raw }}{% else %}{{ Lang_translate(item.name, 'menu_over') }}{% endif %}
                 </a>
             </li>
         {% endif %}
-        {% set menuIndex = menuIndex + 10 %}
     {% endif %}
 {% endfor %}
 
 {% if perm_certificate == true and notGeneratedCertificates > 0 %}
     <li class="green_menu">
         <span class="badge badge-danger">{{ notGeneratedCertificates }}</span>
-        <a href="index.php?r=lms/mycertificate/show&sop=unregistercourse" class="no-border-right no-before" tabindex="60">
+        <a href="index.php?r=lms/mycertificate/show&sop=unregistercourse" class="no-border-right no-before">
             <div class="has-forma-tooltip">
                 <div class="forma-tooltip down">{{ Lang_translate('_CERTIFICATE_DOWNLOAD', 'menu_over') }}</div>
                 <span class="glyphicon glyphicon-bell top-menu__label">{{ Lang_translate('_MY_CERTIFICATE', 'menu_over') }}</span>
@@ -46,10 +38,9 @@
     </li>
 {% endif %}
 
-{% set tabIndex = tabIndex + 10 %}
 {% if user.getUserLevelId() in adminRoles %}
     <li class="green_menu">
-        <a href="{{ Get_relPath('adm') }}" class="no-border-right no-before" tabindex="70"
+        <a href="{{ Get_relPath('adm') }}" class="no-border-right no-before"
            title="{{ Lang_translate('_GO_TO_FRAMEWORK', 'menu_over') }}">
             <span class="glyphicon glyphicon-cog top-menu__label">{{ Lang_translate('_GO_TO_FRAMEWORK', 'menu_over') }}</span>
         </a>

@@ -18,20 +18,13 @@ let slider;
 let slider_button;
 let profile_button
 window.addEventListener('DOMContentLoaded', function() {
-  manageTabNavigation('#lms_menu_container',1);
-  manageTabNavigation('#middlearea',2);
   manageTabNavigation('#c-menu--slide-right',-1);
-  manageTabNavigation('#corse_menu_button',3)
   slider = document.getElementById('c-menu--slide-right');
-  slider_button = document.getElementById('c-button--slide-right');
   profile_button = document.getElementById('open_profile');
+  slider_button = document.getElementById('c-button--slide-right');
 
   if  (slider_button) {
     slider_button.addEventListener("click", function() {
-      manageTabNavigation('#lms_menu_container',-1);
-      manageTabNavigation('#middlearea',-1);
-      manageTabNavigation('#div_course',-1);
-      manageTabNavigation('#footer', -1);
       manageTabNavigation('#c-menu--slide-right', 1);
       profile_button.setAttribute('aria-hidden', 'false');
     });
@@ -39,10 +32,6 @@ window.addEventListener('DOMContentLoaded', function() {
 
   if (profile_button) {
     profile_button.addEventListener("click", function(event) {
-      manageTabNavigation('#lms_menu_container',1);
-      manageTabNavigation('#middlearea',2);
-      manageTabNavigation('#div_course',3);
-      manageTabNavigation('#footer', 4);
       manageTabNavigation('#c-menu--slide-right', -1);
       profile_button.setAttribute('aria-hidden', 'true');
     });
