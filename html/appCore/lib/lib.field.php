@@ -24,17 +24,17 @@ define('TYPEFIELDTABLE', '_field_type');
 define('GROUPFIELDSTABLE', '_group_fields');
 define('FIELDUSERENTRYTABLE', '_field_userentry');
 
-if(!defined('FIELD_INFO_ID')) define('FIELD_INFO_ID', 0);
-if(!defined('FIELD_INFO_TYPE')) define('FIELD_INFO_TYPE', 1);
-if(!defined('FIELD_INFO_TRANSLATION')) define('FIELD_INFO_TRANSLATION', 2);
-if(!defined('FIELD_INFO_GROUPIDST')) define('FIELD_INFO_GROUPIDST', 3);
-if(!defined('FIELD_INFO_GROUPID')) define('FIELD_INFO_GROUPID', 4);
-if(!defined('FIELD_INFO_MANDATORY')) define('FIELD_INFO_MANDATORY', 5);
-if(!defined('FIELD_INFO_USERACCESS')) define('FIELD_INFO_USERACCESS', 6);
-if(!defined('FIELD_INFO_USERINHERIT')) define('FIELD_INFO_USERINHERIT', 7);
+if (!defined('FIELD_INFO_ID')) define('FIELD_INFO_ID', 0);
+if (!defined('FIELD_INFO_TYPE')) define('FIELD_INFO_TYPE', 1);
+if (!defined('FIELD_INFO_TRANSLATION')) define('FIELD_INFO_TRANSLATION', 2);
+if (!defined('FIELD_INFO_GROUPIDST')) define('FIELD_INFO_GROUPIDST', 3);
+if (!defined('FIELD_INFO_GROUPID')) define('FIELD_INFO_GROUPID', 4);
+if (!defined('FIELD_INFO_MANDATORY')) define('FIELD_INFO_MANDATORY', 5);
+if (!defined('FIELD_INFO_USERACCESS')) define('FIELD_INFO_USERACCESS', 6);
+if (!defined('FIELD_INFO_USERINHERIT')) define('FIELD_INFO_USERINHERIT', 7);
 
-if(!defined('FIELD_BASEINFO_FILE')) define('FIELD_BASEINFO_FILE', 0);
-if(!defined('FIELD_BASEINFO_CLASS')) define('FIELD_BASEINFO_CLASS', 1);
+if (!defined('FIELD_BASEINFO_FILE')) define('FIELD_BASEINFO_FILE', 0);
+if (!defined('FIELD_BASEINFO_CLASS')) define('FIELD_BASEINFO_CLASS', 1);
 
 class FieldList
 {
@@ -548,7 +548,7 @@ class FieldList
                 $yesno_fields[] = $row['id_common'];
             }
 
-            
+
             $countryFields = [];
 
 
@@ -563,8 +563,9 @@ class FieldList
             }
         }
 
-        $query = 'SELECT id_user, id_common, user_entry '
-            . ' FROM %adm_field_userentry'
+        $query = 'SELECT id_user, cfu.id_common, user_entry, type_field '
+            . ' FROM %adm_field_userentry as cfu'
+            . ' JOIN %adm_field as cf on cf.idField = cfu.id_common'
             . ' WHERE id_user IN (' . implode(',', $users) . ') ';
         if (!empty($fields)) {
             $query .= ' AND id_common IN ( ' . implode(',', $fields) . ' ) ';
@@ -573,30 +574,38 @@ class FieldList
         $rs = sql_query($query);
 
         $result = [];
-        foreach ($rs as $row){
+        foreach ($rs as $row) {
             $id_user = $row['id_user'];
             $id_field = $row['id_common'];
             $value = $row['user_entry'];
+            $fieldType = $row['type_field'];
             if ($translate) {
-                if (array_key_exists((int)$id_field, $sons_arr)) {
-                    $result[$id_user][$id_field] = $sons_arr[(int)$id_field][(int)$value] ?? '';
-                } elseif (is_numeric($value) && array_key_exists((int) $id_field, $countryFields)) {
-                    $result[$id_user][$id_field] = $countryFields[(int) $value] ?? '';
-                } elseif (in_array($id_field, $yesno_fields)) {
-                    $yntrans = Lang::t('_NOT_ASSIGNED', 'field');
-                    switch ($value) {
-                        case 1:
-                            $yntrans = Lang::t('_YES', 'standard');
-                            break;
-                        case 2:
-                            $yntrans = Lang::t('_NO', 'standard');
-                            break;
-                        default:
-                            break;
-                    }
-                    $result[$id_user][$id_field] = $yntrans;
-                } else {
-                    $result[$id_user][$id_field] = $value;
+                switch ($fieldType) {
+                    case 'yesno':
+                        if (in_array($id_field, $yesno_fields)) {
+                            $yntrans = Lang::t('_NOT_ASSIGNED', 'field');
+                            switch ($value) {
+                                case 1:
+                                    $yntrans = Lang::t('_YES', 'standard');
+                                    break;
+                                case 2:
+                                    $yntrans = Lang::t('_NO', 'standard');
+                                    break;
+                                default:
+                                    break;
+                            }
+                            $result[$id_user][$id_field] = $yntrans;
+                        }
+                        break;
+                    case 'country':
+                        $result[$id_user][$id_field] = $countryFields[(int)$value] ?? '';
+                    default:
+                        if (array_key_exists((int)$id_field, $sons_arr)) {
+                            $result[$id_user][$id_field] = $sons_arr[(int)$id_field][(int)$value] ?? '';
+                        } else {
+                            $result[$id_user][$id_field] = $value;
+                        }
+                        break;
                 }
             } else {
                 $result[$id_user][$id_field] = $value;
@@ -1274,13 +1283,13 @@ class FieldList
         }
 
         foreach ($arr_idst as $index => $value) {
-            if (empty($value)){
+            if (empty($value)) {
                 unset($arr_idst[$index]);
             }
         }
 
         $acl_man = $acl->getAclManager();
-        if (empty($arr_idst)){
+        if (empty($arr_idst)) {
             $group = $acl_man->getGroup(false, '/oc_0');
             $arr_idst[] = $group[0];
         }
@@ -2059,7 +2068,7 @@ class FieldList
     //----------------------------------------------------------------------------
     public function checkUserMandatoryFields($id_user = false, $only_accessible = false)
     {
-        $id_user = $id_user ? (int) $id_user : \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
+        $id_user = $id_user ? (int)$id_user : \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
         $acl = new FormaACL();
         $user_groups = $acl->getUserGroupsST($id_user);
         $output = true;
