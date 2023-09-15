@@ -257,7 +257,7 @@ class Layout
                 //			$href .= '?' . $server_query_string !== '' ? str_replace('&', '&amp;', $server_query_string).'&amp;' : '';
                 $href .= '?s&special=changelang&amp;new_lang=' . rawurlencode($lang->lang_code);
 
-                $options[] = '<a class="dropdown-item" href="' . $href . '" title="' . $lang->lang_description . '">' . $lang->lang_description . '</a>';
+                $options[] = '<a class="dropdown-item" href="' . $href .'">' . $lang->lang_description . '</a>';
             } else {
                 $html .= '<a id="change_language" class="dropdown-toggle" href="#" data-toggle="dropdown">' . $lang->lang_description . '<i class="fa fa-chevron-down"></i></a>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="change_language">';

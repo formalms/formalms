@@ -2253,18 +2253,14 @@ class UserProfileViewer
             $html .= '<a href="' . FormaLms\lib\Get::sett('profile_modify_url') . '" target="_blank" title="' . Lang::t('_PROFILE', 'profile') . '">
                           <span class="glyphicon glyphicon-pencil">' . Lang::t('_PROFILE', 'profile') . '</span>
                       </a>
-                      <a href="' . FormaLms\lib\Get::sett('profile_modify_url') . '" target="_blank">'
-                . $this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME])
-                . '</a>
+                      <br><span><b>'.$this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME]).'</b></span>
                       <a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>
                    ';
         } elseif (FormaLms\lib\Get::sett('profile_modify') != 'disallow') {
             $html .= '<a href="index.php?r=lms/profile/show" title="' . Lang::t('_PROFILE', 'profile') . '">
                           <span class="glyphicon glyphicon-pencil">' . Lang::t('_PROFILE', 'profile') . '</span>
                       </a>
-                      <a href="index.php?r=lms/profile/show">'
-                . $this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME])
-                . '</a>
+                      <br><span><b>'.$this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME]).'</b></span>
                       <a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>
                    ';
         } else {
