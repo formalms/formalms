@@ -353,7 +353,7 @@ class Certificate
             $score_final = $org_man->getFinalObjectScore([$idUser], [$idCourse]);
 
             if (isset($score_final[$idCourse][$idUser]) && $score_final[$idCourse][$idUser]['max_score']) {
-                $course_score_final = $score_final[$idCourse][$idUser()]['score'];
+                $course_score_final = $score_final[$idCourse][$idUser]['score'];
             }
         } else {
             $score_course = $rep_man->getUserFinalScore([$idUser], [$idCourse]);
