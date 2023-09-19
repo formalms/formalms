@@ -334,7 +334,7 @@ $course-box-border: 2px;
       outline: none !important;
     }
 
-    &:hover {
+    &:hover, &:focus {
       background: var(--color-primary) !important;
       color: var(--color-white) !important;
 
@@ -343,14 +343,7 @@ $course-box-border: 2px;
         animation-name: formaButtonLabelAfter;
         animation-iteration-count: infinite;
         animation-direction: alternate;
-      }
-
-      &:focus {
-        background: var(--color-primary) !important;
-        color: var(--color-white) !important;
-        border: none !important;
-        outline: none !important;
-      }
+      } 
     }
 
 
