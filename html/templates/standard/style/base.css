@@ -1858,10 +1858,10 @@ ul.tabs li.current{
     background: #a94442 !important;
 }
 
-input:focus-visible {
+/* input:focus-visible {
     outline: 1px solid rgba(232, 63, 29, 0.5)!important;
     background-color: #FFFFFF!important;
-}   
+}    */
 
 .input_label {
     margin: 0;
@@ -1899,7 +1899,7 @@ input:focus-visible {
 
 .dropdown-toggle:focus {
     border: 1px solid black!important;
-}
+} 
 
 .dropdown-toggle:hover {
     border: none!important;
@@ -1942,21 +1942,16 @@ a:focus, a:hover {
     border: none!important;
 }
 
-.forma-button--primary:focus {
-    color: white!important;
-}
-
 .course-box__cta:focus {
     color: white!important;
     border: none!important;
     outline: none!important;
 }
 
-.header__profile__button:focus, .c-menu__close:focus {
-    outline: 2px solid black!important;
-    border-radius: 2px;
+:focus {
+    outline: 1px solid black!important;
 }
 
-.custom-w75 {
-    width: 75%!important;
+.foma-button > .forma-button__label:focus {
+    color: white!important;
 }
