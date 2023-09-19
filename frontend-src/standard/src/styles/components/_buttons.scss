@@ -50,15 +50,11 @@
     font-size: 11px;
   }
 
-  &:hover {
+  &:hover, &:focus {
     color: var(--color-primary)!important;
     background: var(--color-primary-text);
     border: 2px solid var(--color-primary);
     text-decoration: underline;
-  }
-
-  &:focus {
-    color: var(--color-primary);
   }
 
   .user-panel & {
@@ -426,7 +422,7 @@ a.btn.btn-default {
     border: 0;
     border-radius: 5px;
 
-    &:hover {
+    &:hover, &:focus {
       background-color: var(--color-primary-text);
       color: var(--color-primary);
       text-decoration: underline;

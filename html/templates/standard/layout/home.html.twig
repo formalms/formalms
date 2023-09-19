@@ -81,12 +81,12 @@
                     <img class="left_logo" src="{{ Layout_getPath() }}images/company_logo.png" alt="{{ Lang_translate('_COMPANY_LOGO', 'standard') }}"/>
                 </a>
             </div>
-            <div class="pull-right pull-right-size no_margin_padding">
-                <div class="hidden-xs">
+            <div class="pull-right pull-right-size">
+                <div class="hidden-xs" style="margin: 0 1.5rem;">
                     {{ Layout_getCatalogue() }}
                 </div>
                 {% if lang_number > 1 %}
-                    <div class="select-language">
+                    <div class="select-language" style="padding: 0 0.5rem">
                         <span class="hidden-xs">{{ Lang_translate('_CHANGELANG', 'register') }}: </span>{{ Layout_getChangeLang() }}
                     </div>
                 {% endif %}

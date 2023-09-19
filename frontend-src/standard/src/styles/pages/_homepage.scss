@@ -30,6 +30,7 @@
 
   a {
     color: var(--color-grey-04);
+    padding: 0.5rem;
   }
 }
 
@@ -257,6 +258,7 @@ p {
     font-size: 12px;
     text-decoration: none;
     color: #000;
+    padding: 0.2rem;
 
     &:hover {
       text-decoration: underline;
@@ -281,6 +283,7 @@ p {
 
     .homepage__row--login & {
       font-size: 14px;
+      padding: 0.5rem;
     }
 
     .homepage__row--footer & {
@@ -304,9 +307,11 @@ p {
 .left_logo {
   .homepage & {
     height: 30px;
+    margin: 0.5rem;
 
     @include breakpoint($tablet) {
       height: 54px;
+      margin: 0.5rem;
     } 
   }
 }
