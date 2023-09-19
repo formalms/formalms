@@ -357,7 +357,7 @@ class Lang
             // we if (!FormaLms\lib\Get::cfg('demo_mode', false) && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {don't know which language we need
             if (!FormaLms\lib\Get::cfg('demo_mode', false) && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 // load the language from the user setting
-                $currentLang = \FormaLms\lib\FormaUser::getCurrentUser()->getPreference()->getLanguage();
+				$currentLang = \FormaLms\lib\FormaUser::getCurrentUser()->getPreference('ui.language');
             } else {
                 // find the user language looking into the browser info
                 $langadm = new LangAdm();
