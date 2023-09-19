@@ -94,7 +94,7 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0e387d', endC
 
 
 .container.container_helpdesk {
-    width: 750px !important;
+    width: 100% !important;
 }
 
 .inline_no_helpdesk {

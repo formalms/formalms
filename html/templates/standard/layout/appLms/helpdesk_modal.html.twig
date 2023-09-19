@@ -18,77 +18,77 @@
                                 <input type="hidden" id="username_2" name="username" class="txt" value="{{ user.getIdst() }}">
                                 <input type="hidden" id="help_req_resolution" name="help_req_resolution">
                                 <div class="container container_helpdesk">
-                                    <div class="row mb-3">
-                                        <div class="col-md-3" >
-                                            <label for="username">{{ Lang_translate('_USER', 'standard') }}</label>
+                                    <div class="row ">
+                                        <div class="col-md-4">
+                                            <label class for="username">{{ Lang_translate('_USER', 'standard') }}</label>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-8">
                                             <div class="input-group">
                                                 <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
                                                 <input class="form-control txt" type="text" title="{{ Lang_translate('_USER', 'standard') }}" id="username" name="username" value="{{ user.getUserid() }}" readonly>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-3">
+                                    <div class="row ">
+                                        <div class="col-md-4">
                                             <label for="oggetto">{{ Lang_translate('_HELPDESK_SUBJ', 'configuration') }} *</label>
                                             <div id="div_err_obj"></div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-8">
                                             <div class="input-group">
                                                 <span class="input-group-addon"><span class="glyphicon glyphicon-file"></span></span>
                                                 <input class="form-control txt" type="oggetto" id="oggetto" name="oggetto" placeholder="{{ Lang_translate('_CUSTOMER_HELP_SUBJ_PLACEHOLDER', 'configuration') }}" title="{{ Lang_translate('_HELPDESK_SUBJ', 'configuration') }}" autofocus>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-3">
+                                    <div class="row ">
+                                        <div class="col-md-4">
                                             <label for="email">{{ Lang_translate('_EMAIL', 'menu') }}</label>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-8">
                                             <div class="input-group">
                                                 <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
                                                 <input class="form-control" type="email" id="email" name="email"  value="{{ user.getEmail() }}" placeholder="" title="{{ Lang_translate('_EMAIL', 'menu') }}">
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-3">
+                                    <div class="row ">
+                                        <div class="col-md-4">
                                             <label for="telefono">{{ Lang_translate('_PHONE', 'classroom') }}</label>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-8">
                                             <div class="input-group">
                                                 <span class="input-group-addon"><span class="glyphicon glyphicon-phone-alt"></span></span>
                                                 <input class="form-control" type="text" id="telefono" name="telefono"  placeholder="" title="{{ Lang_translate('_PHONE', 'classroom') }}">
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-3">
+                                    <div class="row ">
+                                        <div class="col-md-4">
                                             <label for="msg">{{ Lang_translate('_TEXTOF', 'menu') }} *</label>
                                             <div id="div_err_msg"></div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-8">
                                             <div class="input-group">
                                                 <textarea class="form-control" id="msg" title="{{ Lang_translate('_TEXTOF', 'menu') }}" name="msg"  cols='74' rows='5' placeholder="{{ Lang_translate('_WRITE_ASK_A_FRIEND', 'profile') }}"></textarea>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="row mb-3">
-                                        <div class="col-md-3">
+                                    <div class="row my-3">
+                                        <div class="col-md-4">
                                             <label for="send_cc">{{ Lang_translate('_SEND_CC', 'standard') }}</label>
                                         </div>
                                         <div class="col-md-1">
-                                            <input class="form-control" id="send_cc" name="send_cc" checked data-toggle="toggle" data-on="{{ Lang_translate('_GROUP_FIELD_NORMAL', 'admin_directory') }}"
-                                            data-size="small" data-off="{{ Lang_translate('_NO', 'standard') }}" data-onstyle="success"
-                                            data-offstyle="danger" type="checkbox">
-
+                                                <input class="form-control" id="send_cc" name="send_cc" checked data-toggle="toggle" data-on="{{ Lang_translate('_GROUP_FIELD_NORMAL', 'admin_directory') }}"
+                                                data-size="small" data-off="{{ Lang_translate('_NO', 'standard') }}" data-onstyle="success"
+                                                data-offstyle="danger" type="checkbox">
                                         </div>
+                                        <div class="col-md-7"></div>
                                     </div>
 
-                                    <div class="row mb-3">
-                                        <div class="col-md-3">
+                                    <div class="row ">
+                                        <div class="col-md-4">
                                             <label for="priorita">{{ Lang_translate('_PRIORITY', 'message') }}</label>
                                         </div>
                                         <div class="col-md-1">
@@ -96,15 +96,16 @@
                                             data-off="{{ Lang_translate('_HIGH', 'message') }}" data-onstyle="success" data-offstyle="danger"
                                             type="checkbox">
                                         </div>
+                                        <div class="col-md-7"></div>
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-3">
+                                    <div class="row ">
+                                        <div class="col-md-4">
                                             <label for="disclaimer">{{ Lang_translate('_CUSTOMER_HELP_DISCLAIMER_TITLE', 'customer_help') }}</label>
                                         </div>
                                         <div class="col-md-1">
                                             <input class="form-control" id="disclaimer" name="disclaimer"   type="checkbox" title="{{ Lang_translate('_CUSTOMER_HELP_DISCLAIMER_TITLE', 'customer_help') }}">
                                         </div>
-                                        <div class="col-md-5">
+                                        <div class="col-md-7">
                                             <p>{{ Lang_translate('_CUSTOMER_HELP_DISCLAIMER', 'customer_help') }}</p>
                                         </div>
                                     </div>
@@ -115,7 +116,7 @@
                         {% endif %}
                     </div>
                     <div class="modal-footer">
-                        <div class="row mb-3 row_helpdesk">
+                        <div class="row  row_helpdesk">
                             <div class="col-md-5">
                                 <button class="form-control" id="close_request" data-dismiss="modal">
                                     {{ Lang_translate('_CANCEL') }}

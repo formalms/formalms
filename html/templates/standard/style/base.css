@@ -1859,7 +1859,7 @@ ul.tabs li.current{
 }
 
 input:focus-visible {
-    outline: 3px solid rgba(232, 63, 29, 0.5)!important;
+    outline: 1px solid rgba(232, 63, 29, 0.5)!important;
     background-color: #FFFFFF!important;
 }   
 
@@ -1898,7 +1898,7 @@ input:focus-visible {
 }
 
 .dropdown-toggle:focus {
-    border: 3px solid rgba(232, 63, 29, 0.5)!important;
+    border: 1px solid black!important;
 }
 
 .dropdown-toggle:hover {
@@ -1955,4 +1955,8 @@ a:focus, a:hover {
 .header__profile__button:focus, .c-menu__close:focus {
     outline: 2px solid black!important;
     border-radius: 2px;
+}
+
+.custom-w75 {
+    width: 75%!important;
 }
