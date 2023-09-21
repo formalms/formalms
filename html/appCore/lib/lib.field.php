@@ -563,8 +563,9 @@ class FieldList
             }
         }
 
-        $query = 'SELECT id_user, id_common, user_entry '
-            . ' FROM %adm_field_userentry'
+        $query = 'SELECT id_user, cfu.id_common, user_entry, type_field '
+            . ' FROM %adm_field_userentry as cfu'
+            . ' JOIN %adm_field as cf on cf.idField = cfu.id_common'
             . ' WHERE id_user IN (' . implode(',', $users) . ') ';
         if (!empty($fields)) {
             $query .= ' AND id_common IN ( ' . implode(',', $fields) . ' ) ';
@@ -577,28 +578,34 @@ class FieldList
             $id_user = $row['id_user'];
             $id_field = $row['id_common'];
             $value = $row['user_entry'];
+            $fieldType = $row['type_field'];
             if ($translate) {
-                if (array_key_exists((int) $id_field, $sons_arr)) {
-                    $result[$id_user][$id_field] = $sons_arr[(int) $id_field][(int) $value] ?? '';
-                }
-                elseif (is_numeric($value) && array_key_exists((int) $id_field, $countryFields)) {
-                    $result[$id_user][$id_field] = $countryFields[(int) $value] ?? '';
-                }
-                elseif (in_array($id_field, $yesno_fields)) {
-                    $yntrans = Lang::t('_NOT_ASSIGNED', 'field');
-                    switch ($value) {
-                        case 1:
-                            $yntrans = Lang::t('_YES', 'standard');
-                            break;
-                        case 2:
-                            $yntrans = Lang::t('_NO', 'standard');
-                            break;
-                        default:
-                            break;
-                    }
-                    $result[$id_user][$id_field] = $yntrans;
-                } else {
-                    $result[$id_user][$id_field] = $value;
+                switch ($fieldType) {
+                    case 'yesno':
+                        if (in_array($id_field, $yesno_fields)) {
+                            $yntrans = Lang::t('_NOT_ASSIGNED', 'field');
+                            switch ($value) {
+                                case 1:
+                                    $yntrans = Lang::t('_YES', 'standard');
+                                    break;
+                                case 2:
+                                    $yntrans = Lang::t('_NO', 'standard');
+                                    break;
+                                default:
+                                    break;
+                            }
+                            $result[$id_user][$id_field] = $yntrans;
+                        }
+                        break;
+                    case 'country':
+                        $result[$id_user][$id_field] = $countryFields[(int)$value] ?? '';
+                    default:
+                        if (array_key_exists((int)$id_field, $sons_arr)) {
+                            $result[$id_user][$id_field] = $sons_arr[(int)$id_field][(int)$value] ?? '';
+                        } else {
+                            $result[$id_user][$id_field] = $value;
+                        }
+                        break;
                 }
             } else {
                 $result[$id_user][$id_field] = $value;

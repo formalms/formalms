@@ -748,13 +748,13 @@ class DoceboImport
                 $map = isset($this->import_map[$count]['map']) ? $this->import_map[$count]['map'] : '';
             }
             $table_src_labels[] = $col[DOCEBOIMPORT_COLNAME] .
-                $form->getInputCheckbox('import_map_' . $count . '_pk',
+                Form::getInputCheckbox('import_map_' . $count . '_pk',
                     'import_map[' . $count . '][pk]',
                     '1',
                     ($pk == '1'),
                     '');
             $table_src_labels_type[] = '';
-            $table_dst_labels[] = $form->getInputDropdown('dropdown_nowh',
+            $table_dst_labels[] = Form::getInputDropdown('dropdown_nowh',
                 'import_map_' . $count . '_map',
                 'import_map[' . $count . '][map]',
                 $combo_elements,

@@ -392,8 +392,7 @@ class PluginmanagerAdm extends Model
      */
     public function callPluginMethod($plugin_id, $method)
     {
-        $res = sql_query('select name, version from ' . $this->table . "
-					where name = '" . $plugin_id . "'");
+        $res = sql_query('select name, version from ' . $this->table . " where name = '" . $plugin_id . "'");
         $plugin_name = $plugin_id;
         $plugin_version = null;
         if (sql_num_rows($res) > 0) {

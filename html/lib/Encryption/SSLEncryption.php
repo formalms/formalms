@@ -16,7 +16,7 @@ namespace FormaLms\lib\Encryption;
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2022 (Forma)
+ * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -36,19 +36,19 @@ class SSLEncryption
 
     protected static $encryption_key = 'forma-lms';
 
-    public static function encrpytString($string)
+    public static function encryptString($string)
     {
-        return openssl_encrypt($string, self::$ciphering, self::$encryption_key, self::$options, self::$encryption_iv);
+        return openssl_encrypt($string, static::$ciphering, static::$encryption_key, static::$options, static::$encryption_iv);
     }
 
     public static function decryptString($string)
     {
-        return openssl_decrypt($string, self::$ciphering, self::$encryption_key, self::$options, self::$encryption_iv);
+        return openssl_decrypt($string, static::$ciphering, static::$encryption_key, static::$options, static::$encryption_iv);
     }
 
     public static function encrpytDownloadUrl($string)
     {
-        $computedString = self::encrpytString($string);
+        $computedString = static::encryptString($string);
 
         //return rtrim(strtr($computedString, '+/', '-_'), '=');
         return str_replace('=', '@', base64_encode($computedString));
@@ -59,6 +59,6 @@ class SSLEncryption
         $computedString = base64_decode(str_replace('@', '=', $string));
 
         //return rtrim(strtr($computedString, '+/', '-_'), '=');
-        return self::decryptString($computedString);
+        return static::decryptString($computedString);
     }
 }

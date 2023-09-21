@@ -140,6 +140,8 @@ class Report
 
     public function show_results($cat = false, $report_data = null)
     {
+        ini_set('memory_limit',-1);
+        ini_set('max_execution_time',0);
         $reportTempData = $this->session->get(self::_REPORT_SESSION);
 
         if (!$cat) {

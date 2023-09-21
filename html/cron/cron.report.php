@@ -17,7 +17,8 @@ const CORE = true;
 const IN_FORMA = true;
 const _deeppath_ = '../';
 require dirname(__DIR__) . '/base.php';
-
+ini_set('memory_limit',-1);
+ini_set('max_execution_time',0);
 // start buffer
 use FormaLms\appCore\Template\Services\ClientService;
 
