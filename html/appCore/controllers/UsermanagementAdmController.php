@@ -69,14 +69,14 @@ class UsermanagementAdmController extends AdmController
 
     protected function _setSessionValue($index, $value)
     {
-        $this->session->set($this->sessionPrefix . '_' . $index, (int) $value);
+        $this->session->set($this->sessionPrefix . '_' . $index, $value);
         $this->session->save();
     }
 
     protected function _getSessionValue($index, $default = false)
     {
         if (!$this->session->has($this->sessionPrefix . '_' . $index)) {
-            $this->session->set($this->sessionPrefix . '_' . $index, (int) $default);
+            $this->session->set($this->sessionPrefix . '_' . $index, $default);
             $this->session->save();
         }
 
