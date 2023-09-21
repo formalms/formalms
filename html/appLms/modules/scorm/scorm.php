@@ -446,7 +446,7 @@ function _scorm_copyitem($idscorm_package, $idscorm_organization)
     // save flat organization with resources
     //$cpm->RenderOrganization( '-resource-', $rdb );
 
-    $so = new Scorm_Organization(addslashes($org_identifier), $new_idscorm_package, $GLOBALS['dbConn']);
+    $so = new Scorm_Organization($org_identifier, $new_idscorm_package, $GLOBALS['dbConn']);
     if ($so->err_code > 0) {
         \FormaLms\lib\Forma::addError('Error: ' . $so->getErrorText() . ' [' . $so->getErrorCode() . ']');
 
