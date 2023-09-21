@@ -17,29 +17,28 @@ window.TabNav = (function ($) {
 let slider;
 let slider_button;
 let profile_button
-window.addEventListener('DOMContentLoaded', function() {
-  manageTabNavigation('#c-menu--slide-right',-1);
+window.addEventListener('DOMContentLoaded', function () {
+  manageTabNavigation('#c-menu--slide-right', -1);
   slider = document.getElementById('c-menu--slide-right');
   profile_button = document.getElementById('open_profile');
   slider_button = document.getElementById('c-button--slide-right');
 
-  if  (slider_button) {
-    slider_button.addEventListener("click", function() {
+  if (slider_button) {
+    slider_button.addEventListener("click", function () {
       manageTabNavigation('#c-menu--slide-right', 1);
       profile_button.setAttribute('aria-hidden', 'false');
     });
   }
 
   if (profile_button) {
-    profile_button.addEventListener("click", function(event) {
+    profile_button.addEventListener("click", function (event) {
       manageTabNavigation('#c-menu--slide-right', -1);
       profile_button.setAttribute('aria-hidden', 'true');
     });
   }
 
-
   if (slider) {
-    slider.addEventListener('keydown', function(event) {
+    slider.addEventListener('keydown', function (event) {
       if (event.key === 'Tab') {
         const focusableElements = slider.querySelectorAll('a, button, input');
         const firstElement = focusableElements[0];
@@ -54,12 +53,22 @@ window.addEventListener('DOMContentLoaded', function() {
         }
       }
     });
+
+    const focusableElements = document.querySelectorAll('a, button, input, textarea, select, [tabindex]');
+    focusableElements.forEach(element => {
+      element.addEventListener('keydown', () => {
+        element.classList.add('keyboard-navigation');
+      });
+      element.addEventListener('blur', () => {
+        element.classList.remove('keyboard-navigation');
+      });
+    });
   }
 
 
 });
 
-function manageTabNavigation(selector, start_tab){
+function manageTabNavigation(selector, start_tab) {
   if (selector.startsWith('.')) {
     divElement = document.querySelector(selector);
   } else if (selector.startsWith('#')) {
@@ -69,7 +78,7 @@ function manageTabNavigation(selector, start_tab){
   if (divElement) {
     const elements = divElement.querySelectorAll('a, button, input');
     let tabIndex = start_tab;
-    elements.forEach(function(element) {
+    elements.forEach(function (element) {
       element.setAttribute('tabindex', tabIndex);
     });
   }

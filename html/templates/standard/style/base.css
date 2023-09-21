@@ -1948,10 +1948,14 @@ a:focus, a:hover {
     outline: none!important;
 }
 
-:focus {
-    outline: 1px solid black!important;
-}
-
 .foma-button > .forma-button__label:focus {
     color: white!important;
+}
+
+*:focus{
+    outline: none;
+}
+
+.keyboard-navigation:focus {
+    outline: 1px solid var(--color-primary)!important;
 }
