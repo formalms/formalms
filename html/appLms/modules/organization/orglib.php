@@ -1900,7 +1900,7 @@ class Org_TreeView extends RepoTreeView
 
             $orgFieldPublishTo = $folder->otherValues[ORGFIELD_PUBLISHTO] ?? null;
 
-            if (($orgFieldPublishTo != '' && $orgFieldPublishTo) && ($levelCourse <= 3)) {
+            if (($orgFieldPublishTo != '' && $orgFieldPublishTo != '0000-00-00 00:00:00' && $orgFieldPublishTo ) && ($levelCourse <= 3)) {
                 if ($orgFieldPublishTo < date('Y-m-d H:i:s')) {
                     continue;
                 }
