@@ -568,7 +568,7 @@ class FieldList
             . ' JOIN %adm_field as cf on cf.idField = cfu.id_common'
             . ' WHERE id_user IN (' . implode(',', $users) . ') ';
         if (!empty($fields)) {
-            $query .= ' AND id_common IN ( ' . implode(',', $fields) . ' ) ';
+            $query .= ' AND cfu.id_common IN ( ' . implode(',', $fields) . ' ) ';
         }
 
         $rs = sql_query($query);
