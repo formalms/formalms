@@ -50,6 +50,7 @@ class Format
      */
     public static function date($date, $type = false, $seconds = false)
     {
+        $date = $date ?? '0000-00-00';
         if (!self::$_regset) {
             self::instance();
         }
