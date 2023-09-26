@@ -32,7 +32,6 @@ h1.inline{margin:12px 0 10px;}
 h2.inline{margin:10px 0 8px;}
 h3.inline{margin:8px 0 6px;}
 a{color:#333333; text-decoration:none;}
-a:hover{text-decoration:none;}
 a.nounder{text-decoration:none;}
 a.nounder:hover{text-decoration:underline;}
 a img{vertical-align:middle; max-width: inherit;}
@@ -1858,11 +1857,6 @@ ul.tabs li.current{
     background: #a94442 !important;
 }
 
-/* input:focus-visible {
-    outline: 1px solid rgba(232, 63, 29, 0.5)!important;
-    background-color: #FFFFFF!important;
-}    */
-
 .input_label {
     margin: 0;
 }
@@ -1896,10 +1890,6 @@ ul.tabs li.current{
 .course-icon-position {
     top: -20px!important;
 }
-
-.dropdown-toggle:focus {
-    border: 1px solid black!important;
-} 
 
 .dropdown-toggle:hover {
     border: none!important;
@@ -1942,20 +1932,14 @@ a:focus, a:hover {
     border: none!important;
 }
 
-.course-box__cta:focus {
-    color: white!important;
-    border: none!important;
-    outline: none!important;
-}
-
-.foma-button > .forma-button__label:focus {
-    color: white!important;
-}
-
-*:focus{
-    outline: none;
-}
-
-.keyboard-navigation:focus {
-    outline: 1px solid var(--color-primary)!important;
-}
+/* Ripristina l'outline su tutti gli elementi quando hanno il focus */
+*:focus-visible {
+    outline: 1px solid rgb(178, 206, 79)!important;
+    box-shadow: 0px 0px 0px 5px rgba(178, 206, 79,0.26);
+    border: inherit;
+  }
+  
+  /* Assicura che l'outline sia ancora nascosto per gli elementi che non hanno il focus */
+  *:focus:not(:focus-visible) {
+    outline: 0!important;
+  }

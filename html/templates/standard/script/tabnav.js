@@ -53,16 +53,6 @@ window.addEventListener('DOMContentLoaded', function () {
         }
       }
     });
-
-    const focusableElements = document.querySelectorAll('a, button, input, textarea, select, [tabindex]');
-    focusableElements.forEach(element => {
-      element.addEventListener('keydown', () => {
-        element.classList.add('keyboard-navigation');
-      });
-      element.addEventListener('blur', () => {
-        element.classList.remove('keyboard-navigation');
-      });
-    });
   }
 
 
