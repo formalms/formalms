@@ -102,18 +102,7 @@
         border: 1px solid var(--color-grey);
       }
 
-      &:active,
-      &:focus {
-        background-color: var(--color-white);
-        border: 1px solid var(--color-grey);
-        box-shadow: none;
-      }
-
-      &:focus {
-        outline: none !important;
-      }
-
-      &:active:hover {
+      &:active, &:active:hover {
         background-color: var(--color-white);
         border: 1px solid var(--color-grey);
       }
@@ -184,8 +173,7 @@
           font-size: 12px;
           white-space: normal;
 
-          &:active,
-          &:focus {
+          &:active {
             background-image: none;
             background-color: var(--color-white);
           }
@@ -323,10 +311,10 @@
       border: 2px solid var(--color-primary);
       font-family: $font;
 
-      &:focus {
-        border: 2px solid var(--color-primary);
-        box-shadow: none;
-      }
+      // &:focus {
+      //   border: 2px solid var(--color-primary);
+      //   box-shadow: none;
+      // }
 
       &::-webkit-input-placeholder {
         font-style: italic;
@@ -442,9 +430,6 @@
       left: none;
       bottom: none;
       right: 1px solid var(--color-grey);
-    }
-    &:focus {
-      color: var(--color-grey-04);
     }
   }
 

@@ -51,10 +51,9 @@
   }
 
   &:hover, &:focus {
-    color: var(--color-primary)!important;
+    color: var(--color-primary);
     background: var(--color-primary-text);
     border: 2px solid var(--color-primary);
-    text-decoration: underline;
   }
 
   .user-panel & {
@@ -106,13 +105,16 @@
   color: var(--color-primary-text);
   background: var(--color-primary);
   border: 2px solid var(--color-transparent);
-  &:hover, &:focus {
+  &:hover {
     color: var(--color-primary);
     border: 2px solid var(--color-primary);
     background: var(--color-primary-text);
     // border-color: var(--color-primary);
     .forma-button__label {
       color: var(--color-primary) !important;
+      &:hover, &:focus {
+        color: #fff!important;
+      }
     }
     .forma-button__label:after {
       animation-duration: 500ms;
@@ -269,10 +271,6 @@
   &:hover {
     color: var(--color-primary);
   }
-
-  &:focus {
-    color: var(--color-primary);
-  }
 }
 
 // Bordered Button
@@ -311,11 +309,6 @@
   &:hover {
     background-color: var(--color-primary);
     color: var(--color-white);
-
-    &:focus {
-      color: var(--color-primary);
-      background-color: var(--color-white);
-    }
   }
 }
 
@@ -418,7 +411,7 @@ a.btn.btn-default {
     border: 0;
     border-radius: 5px;
 
-    &:hover, &:focus {
+    &:hover {
       background-color: var(--color-primary-text);
       color: var(--color-primary);
       text-decoration: underline;
