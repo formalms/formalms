@@ -620,6 +620,7 @@ class ImportUser extends FormaImport_Destination
                 if(isset($row[$field_id]) && $row[$field_id] !== false)
                     $arr_fields_toset[$field_id] = addslashes($this->_convert_char($row[$field_id]));
             */
+            $arr_fields_toset = [];
             foreach ($row as $field_id => $field_value) {
                 if (isset($this->arr_fields[$field_id])) {
                     $arr_fields_toset[$field_id] = addslashes($this->_convert_char($field_value));

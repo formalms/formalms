@@ -411,6 +411,9 @@ function mimetype($ext)
             return 'text/xml';
         case 'xsl' :
             return 'text/xsl';
+        case 'csv':
+            return 'text/csv';
+
 
         // VIDEO
         case 'mpe' : 	case 'mpeg' : 	case 'mpg' :
