@@ -34,7 +34,7 @@ switch ($op) {
         $lang = &DoceboLanguage::createInstance('standard', 'framework');
         $lang->setGlobal();
 
-        require_once _base_ . '/lib/lib.user_profile.php';
+       require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
 
         $id_user = importVar('id_user', true, 0);
 

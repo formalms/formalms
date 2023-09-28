@@ -1879,7 +1879,7 @@ function message()
 
     require_once _base_ . '/lib/lib.table.php';
     require_once _base_ . '/lib/lib.form.php';
-    require_once _base_ . '/lib/lib.user_profile.php';
+   require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
     require_once _adm_ . '/lib/lib.tags.php';
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $tags = new Tags('lms_forum');

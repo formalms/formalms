@@ -187,12 +187,12 @@ class FieldList
 
     public function getUseMultiLang()
     {
-        return (bool) $this->use_multi_lang;
+        return (bool)$this->use_multi_lang;
     }
 
     public function setUseMultiLang($val)
     {
-        $this->use_multi_lang = (bool) $val;
+        $this->use_multi_lang = (bool)$val;
     }
 
     /**
@@ -336,7 +336,7 @@ class FieldList
     /**
      * return the info and the value of the field assigned to a user.
      *
-     * @param int   $id_user         the idst of the user
+     * @param int $id_user the idst of the user
      * @param array $manual_id_field if != false the function filter the field with this and not for the field associated to the user
      * @param array $filter_category filter for type_category
      */
@@ -407,8 +407,8 @@ class FieldList
     }
 
     /**
-     * @param array $arr_idst  idst to search
-     * @param int   $value_key the required information that has to be filled in the array
+     * @param array $arr_idst idst to search
+     * @param int $value_key the required information that has to be filled in the array
      *                         For example FIELD_INFO_ID or FIELD_INFO_TRANSLATION
      *
      * @return array [field id] => [value required]
@@ -437,7 +437,7 @@ class FieldList
         $query = '
 		SELECT id_user, user_entry
 		FROM ' . $this->getFieldEntryTable() . '
-		WHERE id_common = ' . (int) $id_field . '';
+		WHERE id_common = ' . (int)$id_field . '';
         $rs = sql_query($query);
 
         $result = [];
@@ -460,7 +460,7 @@ class FieldList
         $query = '
 		SELECT COUNT(*)
 		FROM ' . $this->getFieldEntryTable() . '
-		WHERE id_common = ' . (int) $id_field . '';
+		WHERE id_common = ' . (int)$id_field . '';
         if ($exclude_blank === true) {
             $query .= " AND user_entry <> '' ";
         }
@@ -476,7 +476,7 @@ class FieldList
     /**
      * find the value for the fields correlated with the user.
      *
-     * @param int   $id_user   the idst f the user
+     * @param int $id_user the idst f the user
      * @param array $arr_field the id of the fields
      *
      * @return array with the value saved for the user
@@ -486,7 +486,7 @@ class FieldList
         $query = '
 		SELECT id_common, user_entry
 		FROM ' . $this->getFieldEntryTable() . "
-		WHERE id_user = '" . (int) $id_user . "' ";
+		WHERE id_user = '" . (int)$id_user . "' ";
         if ($arr_field) {
             $query .= ' AND id_common IN ( ' . implode(',', $arr_field) . ' ) ';
         }
@@ -503,8 +503,8 @@ class FieldList
     /**
      * find the value for the fields correlated with a list of user.
      *
-     * @param int|array $users     the idst of the user(s)
-     * @param array     $arr_field the id of the fields
+     * @param int|array $users the idst of the user(s)
+     * @param array $arr_field the id of the fields
      *
      * @return array with the value saved for the user
      **/
@@ -618,7 +618,7 @@ class FieldList
     /**
      * find the id of the entity that have the given value for the given field.
      *
-     * @param int   $id_field       the id of the field
+     * @param int $id_field the id of the field
      * @param mixed $value_to_check the value to check
      *
      * @return array with the id of the entity
@@ -641,7 +641,7 @@ class FieldList
     /**
      * find the id of the entity that have the given value for the given field.
      *
-     * @param int   $id_field       the id of the field
+     * @param int $id_field the id of the field
      * @param mixed $value_to_check the value to check
      *
      * @return array with the id of the entity
@@ -680,9 +680,9 @@ class FieldList
     }
 
     /**
-     * @param int  $id_st    idst to be associated to the user
-     * @param int  $id_field id of the field to get
-     * @param bool $freeze   TRUE to get static text, false to get input control
+     * @param int $id_st idst to be associated to the user
+     * @param int $id_field id of the field to get
+     * @param bool $freeze TRUE to get static text, false to get input control
      *
      * @return html with the form code for play a set of fields
      **/
@@ -716,7 +716,7 @@ class FieldList
     }
 
     /**
-     * @param int   $idst_user idst to be associated to the user
+     * @param int $idst_user idst to be associated to the user
      * @param array $arr_field optional you can filter the field to show
      *
      * @return html with the info about yhe field for the user passed
@@ -822,7 +822,7 @@ class FieldList
 
     /**
      * @param array $idst_user_arr idst to be associated to the user
-     * @param int   $id_field_arr  id of the field to get
+     * @param int $id_field_arr id of the field to get
      *
      * @return array with values for the specified fields for each user
      *               array[user_idst][field_idcommon]=field_value
@@ -878,7 +878,7 @@ class FieldList
 
     /**
      * @param array $idst_user_arr idst to be associated to the user
-     * @param int   $id_field_arr  id of the field to get
+     * @param int $id_field_arr id of the field to get
      *
      * @return array with values for the specified fields for each user
      *               array[user_idst][field_idcommon]=field_value
@@ -927,9 +927,9 @@ class FieldList
     }
 
     /**
-     * @param int  $id_st     idst to be associated to the user
-     * @param int  $id_field  id of the field to get
-     * @param bool $freeze    TRUE to get static text, false to get input control
+     * @param int $id_st idst to be associated to the user
+     * @param int $id_field id of the field to get
+     * @param bool $freeze TRUE to get static text, false to get input control
      * @param bool $mandatory specified if the field is a mandatory one or not
      *
      * @return html with the form code for play a set of fields
@@ -964,7 +964,7 @@ class FieldList
     }
 
     /**
-     * @param int   $id_st    idst to be associated to the user
+     * @param int $id_st idst to be associated to the user
      * @param array $arr_idst (optional) array of idst of groups
      *                        if this parameter is skipped the groups will be taken
      *                        from $idst_user
@@ -983,9 +983,9 @@ class FieldList
         if ($add_root) {
             $acl_man = &$acl->getAclManager();
             $tmp = $acl_man->getGroup(false, '/oc_0');
-            $arr_idst[] = (int) $tmp[0];
+            $arr_idst[] = (int)$tmp[0];
             $tmp = $acl_man->getGroup(false, '/ocd_0');
-            $arr_idst[] = (int) $tmp[0];
+            $arr_idst[] = (int)$tmp[0];
             $index += 2;
         }
 
@@ -1076,7 +1076,7 @@ class FieldList
 
     /**
      * @param array $idst_user_arr idst to be associated to the user
-     * @param int   $id_field_arr  id of the field to get
+     * @param int $id_field_arr id of the field to get
      *
      * @return array with values for the specified fields for each user
      *               array[user_idst][field_idcommon]=field_value
@@ -1161,7 +1161,7 @@ class FieldList
     }
 
     /**
-     * @param int   $id_st    idst to be associated to the user
+     * @param int $id_st idst to be associated to the user
      * @param array $arr_idst (optional) array of idst of groups
      *                        if this parameter is skipped the groups will be taken
      *                        from $idst_user
@@ -1266,7 +1266,7 @@ class FieldList
     }
 
     /**
-     * @param int   $id_st    idst to be associated to the user
+     * @param int $id_st idst to be associated to the user
      * @param array $arr_idst (optional) array of idst of groups
      *                        if this parameter is skipped the groups will be taken
      *                        from $idst_user
@@ -1365,7 +1365,7 @@ class FieldList
     }
 
     /**
-     * @param int   $id_st    idst to be associated to the user
+     * @param int $id_st idst to be associated to the user
      * @param array $arr_idst (optional) array of idst of groups
      *                        if this parameter is skipped the groups will be taken
      *                        from $idst_user
@@ -1690,8 +1690,8 @@ class FieldList
 
     /**
      * @param array $arr_field
-     * @param array $grab_form    (optional)
-     * @param bool  $dropdown_val (optional). If true will get the value of a dropdown item instead of its id.
+     * @param array $grab_form (optional)
+     * @param bool $dropdown_val (optional). If true will get the value of a dropdown item instead of its id.
      *
      * @return array with the filled value of the specified fields
      **/
@@ -1741,7 +1741,7 @@ class FieldList
     }
 
     /**
-     * @param int   $id_field
+     * @param int $id_field
      * @param array $associate_owner if true the owner of the data is associated
      *
      * @return array with the stored value of the specific field
@@ -1768,7 +1768,7 @@ class FieldList
 
     /**
      * @param int $id_field id of the field to be associated to $id_st
-     * @param int $id_st    idst to be associated to field
+     * @param int $id_st idst to be associated to field
      *
      * @return true if success, FALSE otherwise
      **/
@@ -1779,17 +1779,17 @@ class FieldList
         $rs = sql_query($query);
         if (sql_num_rows($rs) > 0) {
             $query = 'UPDATE ' . $this->getGroupFieldsTable()
-                . " SET idst = '" . (int) $idst . "',"
-                . "     id_field = '" . (int) $id_field . "',"
+                . " SET idst = '" . (int)$idst . "',"
+                . "     id_field = '" . (int)$id_field . "',"
                 . "     mandatory = '" . $mandatory . "',"
                 . "     useraccess = '" . $useraccess . "', "
-                . "     user_inherit = '" . ((int) $user_inherit > 0 ? '1' : '0') . "' "
+                . "     user_inherit = '" . ((int)$user_inherit > 0 ? '1' : '0') . "' "
                 . " WHERE idst = '" . $idst . "' AND id_field = '" . $id_field . "'";
         } else {
             $query = 'INSERT INTO ' . $this->getGroupFieldsTable()
                 . ' (idst, id_field, mandatory, useraccess, user_inherit) '
-                . " VALUES ('" . (int) $idst . "','" . (int) $id_field . "',"
-                . "'" . $mandatory . "','" . $useraccess . "', '" . ((int) $user_inherit > 0 ? '1' : '0') . "')";
+                . " VALUES ('" . (int)$idst . "','" . (int)$id_field . "',"
+                . "'" . $mandatory . "','" . $useraccess . "', '" . ((int)$user_inherit > 0 ? '1' : '0') . "')";
         }
 
         return sql_query($query);
@@ -1797,15 +1797,15 @@ class FieldList
 
     /**
      * @param int $id_field id of the field to be removed from $id_st
-     * @param int $id_st    idst to be removed to field
+     * @param int $id_st idst to be removed to field
      *
      * @return true if success, FALSE otherwise
      **/
     public function removeFieldFromGroup($id_field, $idst)
     {
         $query = 'DELETE FROM ' . $this->getGroupFieldsTable()
-            . " WHERE idst = '" . (int) $idst . "'"
-            . "   AND id_field = '" . (int) $id_field . "'";
+            . " WHERE idst = '" . (int)$idst . "'"
+            . "   AND id_field = '" . (int)$id_field . "'";
 
         return sql_query($query);
     }
@@ -1813,14 +1813,14 @@ class FieldList
     public function quickRemoveUserEntry($idst_user)
     {
         $query_del = "DELETE FROM %adm_field_userentry 
-			WHERE id_user = '" . (int) $idst_user . "'";
+			WHERE id_user = '" . (int)$idst_user . "'";
 
         return sql_query($query_del);
     }
 
     /**
-     * @param int   $idst_user  the user
-     * @param int   $id_group   cast the delete action only to the field of this group
+     * @param int $idst_user the user
+     * @param int $id_group cast the delete action only to the field of this group
      * @param array $arr_fields cast the delete action only to the field specified
      *
      * @return true if success, FALSE otherwise
@@ -1907,11 +1907,11 @@ class FieldList
     /**
      * Find wich users entries matches with search information.
      *
-     * @param array  $fields     list of id_common values
-     * @param string $method     "OR" or "AND"
-     * @param array  $like       array($id_common => [off, both, start, end])
-     * @param array  $search     array($id_common => $what_to_search)
-     * @param bool   $return_raw if TRUE then will return the raw array
+     * @param array $fields list of id_common values
+     * @param string $method "OR" or "AND"
+     * @param array $like array($id_common => [off, both, start, end])
+     * @param array $search array($id_common => $what_to_search)
+     * @param bool $return_raw if TRUE then will return the raw array
      *
      * @return array list of user idst found (if $return_raw is FALSE)
      *
@@ -2068,7 +2068,7 @@ class FieldList
     //----------------------------------------------------------------------------
     public function checkUserMandatoryFields($id_user = false, $only_accessible = false)
     {
-        $id_user = $id_user ? (int) $id_user : Docebo::user()->getIdSt();
+        $id_user = $id_user ? (int)$id_user : Docebo::user()->getIdSt();
         $acl = new DoceboACL();
         $user_groups = $acl->getUserGroupsST($id_user);
         $output = true;
@@ -2079,12 +2079,12 @@ class FieldList
                 unset($user_groups[1]);
             }
             //extract mandatory fields and checks if there are any fields with null value (not compiled)
-            $query = 'SELECT ft.id_common, gft.useraccess, fet.user_entry '
+            $query = 'SELECT ft.id_common, gft.useraccess, fet.user_entry,	ft.type_field '
                 . ' FROM (' . $this->getFieldTable() . ' AS ft '
                 . ' JOIN ' . $this->getGroupFieldsTable() . ' AS gft '
                 . " ON (ft.id_common = gft.id_field AND ft.lang_code = '" . getLanguage() . "')) "
                 . ' LEFT JOIN ' . $this->getFieldEntryTable() . ' AS fet '
-                . ' ON (fet.id_common = ft.id_common AND fet.id_user = ' . (int) $id_user . ') '
+                . ' ON (fet.id_common = ft.id_common AND fet.id_user = ' . (int)$id_user . ') '
                 . ' WHERE gft.mandatory = 1 '
                 . ($only_accessible ? " AND gft.useraccess = 'readwrite'" : '')
                 . " AND gft.idst IN ('" . implode("','", $user_groups) . "')";
@@ -2095,9 +2095,20 @@ class FieldList
                     return true;
                 }
                 foreach ($res as $row) {
-                    if (!$row['user_entry']) {
-                        $output = false;
-                        break;
+                    switch ($row['type_field']) {
+                        case 'textfield':
+                        case 'textlabel':
+                            if (empty($row['user_entry']) && $row['user_entry'] != '0') {
+                                $output = false;
+                                break 2;
+                            }
+                            break;
+                        default:
+                            if (!$row['user_entry']) {
+                                $output = false;
+                                break 2;
+                            }
+                            break;
                     }
                 }
             }
@@ -2125,7 +2136,7 @@ class FieldList
                 . ' JOIN ' . $this->getTypeFieldTable() . ' AS ftt '
                 . " ON (ft.id_common = gft.id_field AND ft.lang_code = '" . getLanguage() . "' AND ft.type_field = ftt.type_field)) "
                 . ' LEFT JOIN ' . $this->getFieldEntryTable() . ' AS fet '
-                . ' ON (fet.id_common = ft.id_common AND fet.id_user = ' . (int) $id_user . ') '
+                . ' ON (fet.id_common = ft.id_common AND fet.id_user = ' . (int)$id_user . ') '
                 . " WHERE gft.idst IN ('" . implode("','", $user_groups) . "') "
                 . ' AND gft.mandatory = 1 '
                 . ' ORDER BY ft.sequence';
@@ -2172,10 +2183,10 @@ class FieldList
         //retrieve admin's groups and read groups associated fields
         $groups = [];
         $query = 'SELECT gm.idst FROM %adm_group_members AS gm JOIN %adm_group AS g ON (gm.idst = g.idst) '
-            . " WHERE (g.groupid LIKE '/oc\_%' OR g.groupid LIKE '/ocd\_%' ) AND gm.idstMember = " . (int) $id_admin;
+            . " WHERE (g.groupid LIKE '/oc\_%' OR g.groupid LIKE '/ocd\_%' ) AND gm.idstMember = " . (int)$id_admin;
         $res = sql_query($query);
         foreach ($res as $row) {
-            $groups[] = (int) $row['idst'];
+            $groups[] = (int)$row['idst'];
         }
 
         if (!empty($groups)) {

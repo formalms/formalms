@@ -39,7 +39,7 @@ function myfriends(&$url)
 
     $users_info = $my_fr->getFriendsList(false, false, false);
 
-    require_once _base_ . '/lib/lib.user_profile.php';
+   require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
     $GLOBALS['page']->add(
         getTitleArea($lang->def('_MY_FRIENDS'), 'myfriends')
         . '<div class="std_block">'
@@ -111,7 +111,7 @@ function approveuser(&$url)
 
     $users_info = $my_fr->getPendentRequest();
 
-    require_once _base_ . '/lib/lib.user_profile.php';
+   require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
     $GLOBALS['page']->add(
         getTitleArea($lang->def('_MY_FRIENDS'), 'myfriends')
         . '<div class="std_block">', 'content');
@@ -210,7 +210,7 @@ function searchUser(&$url)
         if ($finded_user === false) {
             $GLOBALS['page']->add($lang->def('_NO_USER_FINDED'), 'content');
         } else {
-            require_once _base_ . '/lib/lib.user_profile.php';
+           require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
 
             if (getLogUserId() != $finded_user[ACL_INFO_IDST]) {
                 $GLOBALS['page']->add('<p class="confirm_friend">'

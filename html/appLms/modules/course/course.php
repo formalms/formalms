@@ -23,7 +23,7 @@ require_once _lms_ . '/lib/lib.course.php';
 function mycourses(&$url)
 {
     checkPerm('view');
-    require_once _base_ . '/lib/lib.user_profile.php';
+   require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
     $lang = &DoceboLanguage::createInstance('catalogue');
 
     require_once _lms_ . '/lib/lib.middlearea.php';
@@ -1399,7 +1399,7 @@ function dashmycourse(&$url, $lang, &$subscription, $cinfo, $index)
 function dashAcourse($id_course, $h_number)
 {
     require_once _base_ . '/lib/lib.form.php';
-    require_once _base_ . '/lib/lib.user_profile.php';
+   require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
     require_once _base_ . '/lib/lib.navbar.php';
     require_once _lms_ . '/lib/lib.preassessment.php';
     require_once _lms_ . '/lib/lib.catalogue.php';

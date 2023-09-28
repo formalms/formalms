@@ -503,7 +503,7 @@ class Module_Directory extends Module
     public function org_manageuser()
     {
         checkPerm('view_org_chart', false, 'directory', 'framework');
-        require_once _base_ . '/lib/lib.user_profile.php';
+        require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
 
         $lang = &DoceboLanguage::createInstance('profile', 'framework');
 

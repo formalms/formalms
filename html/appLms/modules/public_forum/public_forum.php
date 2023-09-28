@@ -2090,7 +2090,7 @@ function message()
 {
     require_once _base_ . '/lib/lib.table.php';
     require_once _base_ . '/lib/lib.form.php';
-    require_once _base_ . '/lib/lib.user_profile.php';
+   require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
 
     $lang = &DoceboLanguage::createInstance('forum', 'lms');
     $id_thread = importVar('idThread', true, 0);

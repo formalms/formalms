@@ -97,7 +97,7 @@ if (Docebo::user()->isAnonymous()) {
          break;
         case 'getdashcourse':
             require_once _base_ . '/lib/lib.form.php';
-            require_once _base_ . '/lib/lib.user_profile.php';
+           require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
             require_once _base_ . '/lib/lib.navbar.php';
             require_once _lms_ . '/lib/lib.preassessment.php';
             require_once _lms_ . '/lib/lib.catalogue.php';

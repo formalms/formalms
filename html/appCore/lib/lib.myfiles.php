@@ -268,7 +268,7 @@ class MyFile
     public function insertFile($id_file, $area, $title, $description, $file_descriptor, $file_policy)
     {
         require_once _base_ . '/lib/lib.user.php';
-        require_once _base_ . '/lib/lib.user_profile.php';
+       require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
         $user_data = new DoceboUser(getLogUserId());
         $user_profile_data = new UserProfileData();
 

@@ -958,7 +958,7 @@ class PeopleListView extends ListView
 
     public function userExtraData($id_user)
     {
-        require_once _base_ . '/lib/lib.user_profile.php';
+       require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
 
         $lang = &DoceboLanguage::createInstance('profile', 'framework');
 
@@ -981,7 +981,7 @@ class PeopleListView extends ListView
         //addJs($GLOBALS['where_framework_relative'].'/modules/directory/', 'ajax.directory.js');
         Util::get_js(FormaLms\lib\Get::rel_path('adm') . '/modules/directory/ajax.directory.js', true, true);
 
-        require_once _base_ . '/lib/lib.user_profile.php';
+       require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
 
         $profile = new UserProfile(getLogUserId());
         $profile->init('profile', 'framework', 'modname=directory&op=org_chart', 'ap');

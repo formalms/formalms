@@ -21,7 +21,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 function displayCourseList(&$url, $order_type)
 {
     require_once _base_ . '/lib/lib.form.php';
-    require_once _base_ . '/lib/lib.user_profile.php';
+   require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
     require_once _base_ . '/lib/lib.navbar.php';
     require_once _lms_ . '/lib/lib.preassessment.php';
     require_once _lms_ . '/lib/lib.catalogue.php';
@@ -345,7 +345,7 @@ function displayCourseList(&$url, $order_type)
 function displayCoursePathList(&$url, $selected_tab)
 {
     require_once _base_ . '/lib/lib.form.php';
-    require_once _base_ . '/lib/lib.user_profile.php';
+   require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
     require_once _base_ . '/lib/lib.navbar.php';
     require_once _lms_ . '/lib/lib.preassessment.php';
     require_once _lms_ . '/lib/lib.catalogue.php';

@@ -340,7 +340,7 @@ class AjaxCommentRender
 
     public function setCommentToDisplay($data)
     {
-        require_once _base_ . '/lib/lib.user_profile.php';
+       require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
 
         $users = [];
         $this->_data = $data;

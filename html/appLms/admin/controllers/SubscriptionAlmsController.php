@@ -3526,7 +3526,7 @@ class SubscriptionAlmsController extends AlmsController
         require_once _adm_ . '/lib/lib.field.php';
         require_once _base_ . '/lib/lib.form.php';
         require_once _base_ . '/lib/lib.table.php';
-        require_once _base_ . '/lib/lib.user_profile.php';
+       require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
 
         $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
         $man_course = new Man_Course();
