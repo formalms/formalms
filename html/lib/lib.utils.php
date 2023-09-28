@@ -407,7 +407,7 @@ class Util
      *
      * @return string the converted string
      */
-    public function unhtmlentities($string)
+    public static function unhtmlentities($string)
     {
         // replace numeric entities
         $string = preg_replace('~&#x([0-9a-f]+);~ei', 'chr(hexdec("\\1"))', $string);
