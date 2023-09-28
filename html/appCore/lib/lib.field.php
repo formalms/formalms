@@ -2097,7 +2097,7 @@ class FieldList
                 foreach ($res as $row) {
                     switch ($row['type_field']) {
                         case 'textfield':
-                        case 'textlabel':
+                        case 'freetext':
                             if (empty($row['user_entry']) && $row['user_entry'] != '0') {
                                 $output = false;
                                 break 2;
