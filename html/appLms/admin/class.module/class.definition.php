@@ -42,10 +42,8 @@ class LmsAdminModule
 
         $this->version = '1.0';
 
-        $this->authors = ['Fabio Pirovano <fabio@docebo.it)',
-                                'Emanuele Sandri <esandri@tiscali.it>', ];
-        $this->mantainers = ['Fabio Pirovano <fabio@docebo.it)',
-                                    'Emanuele Sandri <esandri@tiscali.it>', ];
+        $this->authors = ['Forma LMS Association ', 'https://www.formalms.org'];
+        $this->mantainers = ['Forma LMS Association','https://www.formalms.org' ];
 
         $this->descr_short = 'General module : ' . $this->module_name;
         $this->descr_long = 'General module : ' . $this->module_name;
