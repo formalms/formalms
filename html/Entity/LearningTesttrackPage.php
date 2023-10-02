@@ -45,14 +45,14 @@ class LearningTesttrackPage
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="display_from", type="datetime", nullable=true)
+     * @ORM\Column(name="display_from", type="datetime", nullable=true, options={"default"="NULL"})
      */
     private $displayFrom;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="display_to", type="datetime", nullable=true)
+     * @ORM\Column(name="display_to", type="datetime", nullable=true, options={"default"="NULL"})
      */
     private $displayTo;
 

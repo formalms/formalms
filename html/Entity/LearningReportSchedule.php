@@ -75,7 +75,7 @@ class LearningReportSchedule
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="last_execution", type="datetime", nullable=true)
+     * @ORM\Column(name="last_execution", type="datetime", nullable=true, options={"default"="NULL"})
      */
     private $lastExecution;
 

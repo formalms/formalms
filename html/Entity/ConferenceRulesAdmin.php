@@ -16,6 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ConferenceRulesAdmin
 {
+    use Timestamps;
     /**
      * @var int
      *

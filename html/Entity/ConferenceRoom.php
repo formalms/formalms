@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ConferenceRoom
 {
+    use Timestamps;
     /**
      * @var int
      *

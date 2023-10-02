@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="learning_organization", indexes={
  *      @ORM\Index(name="path", columns={"path"}), 
  *      @ORM\Index(name="idParent", columns={"idParent"}),
- *      @ORM\Index(name="objectType_idRTesourse_idx", columns={"objectType","idResource"})
+ *      @ORM\Index(name="objectType_idResourse_idx", columns={"objectType","idResource"})
  * })
  * @ORM\Entity
  */
@@ -198,14 +198,14 @@ class LearningOrganization
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="publish_from", type="datetime", nullable=true)
+     * @ORM\Column(name="publish_from", type="datetime", nullable=true, options={"default"="NULL"})
      */
     private $publishFrom;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="publish_to", type="datetime", nullable=true)
+     * @ORM\Column(name="publish_to", type="datetime", nullable=true, options={"default"="NULL"})
      */
     private $publishTo;
 

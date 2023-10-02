@@ -62,21 +62,21 @@ class LearningCourseuser
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="date_inscr", type="datetime", nullable=true)
+     * @ORM\Column(name="date_inscr", type="datetime", nullable=true, options={"default"="NULL"})
      */
     private $dateInscr;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="date_first_access", type="datetime", nullable=true)
+     * @ORM\Column(name="date_first_access", type="datetime", nullable=true, options={"default"="NULL"})
      */
     private $dateFirstAccess;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="date_complete", type="datetime", nullable=true)
+     * @ORM\Column(name="date_complete", type="datetime", nullable=true, options={"default"="NULL"})
      */
     private $dateComplete;
 
@@ -146,14 +146,14 @@ class LearningCourseuser
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="date_begin_validity", type="datetime", nullable=true)
+     * @ORM\Column(name="date_begin_validity", type="datetime", nullable=true, options={"default"="NULL"})
      */
     private $dateBeginValidity;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="date_expire_validity", type="datetime", nullable=true)
+     * @ORM\Column(name="date_expire_validity", type="datetime", nullable=true, options={"default"="NULL"})
      */
     private $dateExpireValidity;
 
@@ -167,7 +167,7 @@ class LearningCourseuser
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="requesting_unsubscribe_date", type="datetime", nullable=true)
+     * @ORM\Column(name="requesting_unsubscribe_date", type="datetime", nullable=true, options={"default"="NULL"})
      */
     private $requestingUnsubscribeDate;
 

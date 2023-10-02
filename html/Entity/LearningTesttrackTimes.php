@@ -82,14 +82,14 @@ class LearningTesttrackTimes
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_begin", type="datetime", nullable=false)
+     * @ORM\Column(name="date_begin", type="datetime", nullable=true, options={"default"="NULL"})
      */
     private $dateBegin;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_end", type="datetime", nullable=false)
+     * @ORM\Column(name="date_end", type="datetime", nullable=true, options={"default"="NULL"})
      */
     private $dateEnd;
 

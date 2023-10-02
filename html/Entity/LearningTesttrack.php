@@ -54,7 +54,7 @@ class LearningTesttrack
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="date_attempt_mod", type="datetime", nullable=true)
+     * @ORM\Column(name="date_attempt_mod", type="datetime", nullable=true, options={"default"="NULL"})
      */
     private $dateAttemptMod;
 
@@ -131,7 +131,7 @@ class LearningTesttrack
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="suspended_until", type="datetime", nullable=true)
+     * @ORM\Column(name="suspended_until", type="datetime", nullable=true, options={"default"="NULL"})
      */
     private $suspendedUntil;
 

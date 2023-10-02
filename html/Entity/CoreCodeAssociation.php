@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreCodeAssociation
 {
+    use Timestamps;
     /**
      * @var int
      *

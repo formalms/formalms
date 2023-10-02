@@ -166,14 +166,14 @@ class LearningScormTracking
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="first_access", type="datetime", nullable=true)
+     * @ORM\Column(name="first_access", type="datetime", nullable=true, options={"default"="NULL"})
      */
     private $firstAccess;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="last_access", type="datetime", nullable=true)
+     * @ORM\Column(name="last_access", type="datetime", nullable=true, options={"default"="NULL"})
      */
     private $lastAccess;
 

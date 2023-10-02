@@ -18,6 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreAdminCourse
 {
+    use Timestamps;
     /**
      * @var int
      *

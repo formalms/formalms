@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ConferenceMenuUnder
 {
+    use Timestamps;
     /**
      * @var int
      *

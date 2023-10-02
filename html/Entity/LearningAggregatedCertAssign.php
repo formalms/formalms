@@ -53,7 +53,7 @@ class LearningAggregatedCertAssign
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="on_date", type="datetime", nullable=true)
+     * @ORM\Column(name="on_date", type="datetime", nullable=true, options={"default"="NULL"})
      */
     private $onDate;
 

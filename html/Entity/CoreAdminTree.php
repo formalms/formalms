@@ -17,6 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreAdminTree
 {
+    use Timestamps;
     /**
      * @var int
      *

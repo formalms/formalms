@@ -72,7 +72,7 @@ class LearningCourseEditionsUser
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="requesting_unsubscribe_date", type="datetime", nullable=true)
+     * @ORM\Column(name="requesting_unsubscribe_date", type="datetime", nullable=true, options={"default"="NULL"})
      */
     private $requestingUnsubscribeDate;
 

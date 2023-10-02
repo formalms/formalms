@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreCalendar
 {
+    use Timestamps;
     /**
      * @var int
      *
@@ -33,21 +34,21 @@ class CoreCalendar
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="create_date", type="datetime", nullable=true)
+     * @ORM\Column(name="create_date", type="datetime", nullable=true, options={"default"="NULL"})
      */
     private $createDate;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="start_date", type="datetime", nullable=true)
+     * @ORM\Column(name="start_date", type="datetime", nullable=true, options={"default"="NULL"})
      */
     private $startDate;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="end_date", type="datetime", nullable=true)
+     * @ORM\Column(name="end_date", type="datetime", nullable=true, options={"default"="NULL"})
      */
     private $endDate;
 

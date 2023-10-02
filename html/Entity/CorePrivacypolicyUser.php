@@ -40,7 +40,7 @@ class CorePrivacypolicyUser
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="accept_date", type="datetime", nullable=false)
+     * @ORM\Column(name="accept_date", type="datetime", nullable=true, options={"default"="NULL"})
      */
     private $acceptDate;
 

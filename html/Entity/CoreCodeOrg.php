@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreCodeOrg
 {
+    use Timestamps;
     /**
      * @var int
      *
@@ -27,8 +28,6 @@ class CoreCodeOrg
      * @var int
      *
      * @ORM\Column(name="idCodeGroup", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idcodegroup = '0';
 
@@ -36,8 +35,6 @@ class CoreCodeOrg
      * @var int
      *
      * @ORM\Column(name="idOrg", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idorg = '0';
 

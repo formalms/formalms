@@ -214,8 +214,8 @@ class Boot
 
         self::log(($cfg['do_debug'] ? 'Enable (set: E_ALL) ' : 'Disable (set: E_COMPILE_ERROR|E_ERROR|E_CORE_ERROR)') . ' error reporting.');
         if ($cfg['do_debug']) {
-            if (!in_array('debug_level', $cfg)) {
-                $cfg['debug_level'] = 'all';
+            if (!array_key_exists('debug_level', $cfg)) {
+                $cfg['debug_level'] = 'error';
             }
 
             switch ($cfg['debug_level']) {

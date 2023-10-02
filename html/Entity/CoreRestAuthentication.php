@@ -57,7 +57,7 @@ class CoreRestAuthentication
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="last_enter_date", type="datetime", nullable=true)
+     * @ORM\Column(name="last_enter_date", type="datetime", nullable=true, options={"default"="NULL"})
      */
     private $lastEnterDate;
 

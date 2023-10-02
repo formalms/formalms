@@ -362,14 +362,14 @@ class LearningCourse
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="sub_start_date", type="datetime", nullable=true)
+     * @ORM\Column(name="sub_start_date", type="datetime", nullable=true, options={"default"="NULL"})
      */
     private $subStartDate;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="sub_end_date", type="datetime", nullable=true)
+     * @ORM\Column(name="sub_end_date", type="datetime", nullable=true, options={"default"="NULL"})
      */
     private $subEndDate;
 
@@ -425,7 +425,7 @@ class LearningCourse
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="unsubscribe_date_limit", type="datetime", nullable=true)
+     * @ORM\Column(name="unsubscribe_date_limit", type="datetime", nullable=true, options={"default"="NULL"})
      */
     private $unsubscribeDateLimit;
 

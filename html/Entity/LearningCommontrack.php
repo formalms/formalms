@@ -68,14 +68,14 @@ class LearningCommontrack
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="first_complete", type="datetime", nullable=true)
+     * @ORM\Column(name="first_complete", type="datetime", nullable=true, options={"default"="NULL"})
      */
     private $firstComplete;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="last_complete", type="datetime", nullable=true)
+     * @ORM\Column(name="last_complete", type="datetime", nullable=true, options={"default"="NULL"})
      */
     private $lastComplete;
 

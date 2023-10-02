@@ -82,7 +82,7 @@ class CoreUser
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="lastenter", type="datetime", nullable=true)
+     * @ORM\Column(name="lastenter", type="datetime", nullable=true, options={"default"="NULL"})
      */
     private $lastenter;
 
