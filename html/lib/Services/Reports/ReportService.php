@@ -13,15 +13,17 @@ class ReportService implements Accessible
     protected $session;
 
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     }
 
-    public function getAccessList( $resourceId) : array{
+    public function getAccessList($resourceId): array
+    {
 
-        if($this->session->has(self::_REPORT_SESSION) && array_key_exists('rows_filter', $this->session->get(self::_REPORT_SESSION)) ) {
+        if ($this->session->has(self::_REPORT_SESSION) && array_key_exists('rows_filter', $this->session->get(self::_REPORT_SESSION))) {
 
-            if(array_key_exists('users', $this->session->get(self::_REPORT_SESSION)['rows_filter'])) {
+            if (array_key_exists('users', $this->session->get(self::_REPORT_SESSION)['rows_filter'])) {
                 return $this->session->get(self::_REPORT_SESSION)['rows_filter']['users'];
             }
 
@@ -30,23 +32,24 @@ class ReportService implements Accessible
 
     }
 
-    public function setAccessList( $resourceId, array $selection) : bool{
+    public function setAccessList($resourceId, array $selection): bool
+    {
 
         $reportTempData = $this->session->has(self::_REPORT_SESSION) ? $this->session->get(self::_REPORT_SESSION) : [];
 
         $keyUsers = 'users';
         $keyAll = 'all_users';
-        switch((int) $resourceId) {
+        switch ((int)$resourceId) {
             case 5:
                 $keyUsers = 'selection';
                 $keyAll = 'select_all';
             case 2:
                 $filter = 'rows_filter';
-            break;
-            
+                break;
+
             case 4:
                 $filter = 'columns_filter';
-            break;
+                break;
         }
         $reportTempData[$filter][$keyUsers] = $selection;
         $reportTempData[$filter][$keyAll] = (\FormaLms\lib\Get::req('all_users', DOTY_INT, 0) > 0 ? true : false);
@@ -60,7 +63,6 @@ class ReportService implements Accessible
 
         return true;
     }
-
 
 
 }
