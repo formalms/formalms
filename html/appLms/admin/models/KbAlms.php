@@ -678,7 +678,7 @@ class KbAlms extends Model
      */
     public function deleteFolder($node_id, $onlyLeaf = false)
     {
-        $acl = &\FormaLms\lib\Forma::getAclManager();;
+        $acl = \FormaLms\lib\Forma::getAclManager();;
         $folder = $this->getFolderById($node_id);
 
         if (!$folder) {

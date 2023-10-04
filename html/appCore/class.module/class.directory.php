@@ -424,7 +424,7 @@ class Module_Directory extends Module
         $lang = &FormaLanguage::createInstance('profile', 'framework');
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
-        $acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $max_row = 10;
         $tb = new Table($max_row);

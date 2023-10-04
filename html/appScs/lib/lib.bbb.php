@@ -178,7 +178,7 @@ class Bbb_Manager
 
         $conference = $conf->roomInfo($idConference);
 
-        $acl_manager = &\FormaLms\lib\Forma::getAclManager();
+        $acl_manager = \FormaLms\lib\Forma::getAclManager();
         $username = \FormaLms\lib\FormaUser::getCurrentUser()->getUserName();
         $u_info = $acl_manager->getUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), false);
         $user_email = $u_info[ACL_INFO_EMAIL];

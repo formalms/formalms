@@ -665,7 +665,7 @@ class UserProfile
                     $this->_up_data_man->addView($this->_id_user, $this->_id_viewer);
                 }
             } else {
-                $acl_man = &\FormaLms\lib\Forma::getAclManager();
+                $acl_man = \FormaLms\lib\Forma::getAclManager();
                 $id_anonymous = $acl_man->getAnonymousId();
                 if ($this->_id_viewer !== $id_anonymous) {
                     $this->_up_data_man->addView($this->_id_user, $this->_id_viewer);
@@ -1447,7 +1447,7 @@ class UserProfileViewer
             // show user level
             $lv_lang = &FormaLanguage::createInstance('admin_directory', 'framework');
 
-            $acl_man = &\FormaLms\lib\Forma::getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             switch ($acl_man->getUserLevelId($this->_user_profile->getIdUser())) {
                 case ADMIN_GROUP_GODADMIN: $user_level_string = $lv_lang->def('_DIRECTORY_' . ADMIN_GROUP_GODADMIN); break;
                 case ADMIN_GROUP_ADMIN: $user_level_string = $lv_lang->def('_DIRECTORY_' . ADMIN_GROUP_ADMIN); break;
@@ -1922,7 +1922,7 @@ class UserProfileViewer
     public function homePhotoProfile($picture = false, $viewer = false, $intest = false)
     {
         $this->loadUserData($this->getViewer());
-        $acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         list($class_picture, $this->max_dim_avatar) = $this->getPhotoLimit($picture);
 
         $html = '';
@@ -1939,7 +1939,7 @@ class UserProfileViewer
     public function homeUserProfile($picture = false, $viewer = false, $intest = false)
     { //crea la parte del profilo riguardante la foto e i certificati/messaggi
         $this->loadUserData($this->getViewer());
-        $acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         list($class_picture, $this->max_dim_avatar) = $this->getPhotoLimit($picture);
 
         //$html = ' <div class="container-fluid"> <div class="row">';
@@ -2110,7 +2110,7 @@ class UserProfileViewer
     public function userIdMailProfile($picture = false, $viewer = false, $intest = true)
     {
         $this->loadUserData($this->getViewer());
-        $acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $html = '<div class="user_presentation">' . "\n"
 
@@ -2180,7 +2180,7 @@ class UserProfileViewer
         $html .= $preference->getModifyMask('ui.');
 
         if ($this->_user_profile->godMode()) {
-            $acl_man = &\FormaLms\lib\Forma::getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
 
             $html .= Form::getPassword(Lang::t('_NEW_PASSWORD', 'register'),
                                     'up_new_pwd',
@@ -2339,7 +2339,7 @@ class UserProfileViewer
      */
     public function checkUserPwd()
     {
-        $acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $this->loadUserData(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         if (!$this->_user_profile->godMode()) {
@@ -2612,7 +2612,7 @@ class UserProfileViewer
         $last_view = $this->_up_data_man->getUserProfileViewList($this->_user_profile->getIdUser(), 15);
         $user_stat = $this->_up_data_man->getUserStats($this->_user_profile->getIdUser());
 
-        $acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $html = '<h2 class="up_type1">' . $this->_lang->def('_COMMUNITY') . '</h2>';
 
@@ -3900,7 +3900,7 @@ class UserProfileData
             return false;
         }
         if (isset($data['level'])) {
-            $acl_man = &\FormaLms\lib\Forma::getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $current_level = $acl_man->getUserLevelId($id_user);
             if ($data['level'] != $current_level) {
                 $arr_levels = $acl_man->getAdminLevels();

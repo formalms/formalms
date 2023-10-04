@@ -687,7 +687,7 @@ class ImportGroupUser extends FormaImport_Destination
     public function __construct($params)
     {
         $this->dbconn = $params['dbconn'];
-        $this->acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();
     }
 
     public function connect()

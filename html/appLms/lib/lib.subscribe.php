@@ -934,7 +934,7 @@ class CourseSubscribe_Manager
 
             $teachers = Man_Course::getIdUserOfLevel($idCourse, '6');
             $cd = new FormaCourse($idCourse);
-            $acl_man = &\FormaLms\lib\Forma::getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
 
             $array_subst = [
                 '[user]' => $acl_man->getUserName($idUser),
@@ -1324,7 +1324,7 @@ class CourseSubscribe_Management
         }
 
         $re = true;
-        $acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $group_levels = &$this->course_man->getCourseIdstGroupLevel($id_course);
         $user_level = $this->course_man->getLevelsOfUsers($id_course, $arr_users);
 
@@ -1533,7 +1533,7 @@ class CourseSubscribe_Management
         require_once _lms_ . '/lib/lib.course.php';
 
         $date_man = new DateManager();
-        $acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $query = 'SELECT idCourse'
             . ' FROM %lms_courseuser'

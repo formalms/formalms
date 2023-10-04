@@ -520,7 +520,7 @@ class UserManager
             }
         }
 
-        $acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $user_info = $acl_man->getUser($exist_code['idst_user'], false);
         if (isset($_POST['send'])) {
             if ($_POST['new_password'] === $_POST['retype_new_password']) {
@@ -609,7 +609,7 @@ class UserManager
                 exit("This isn't a good email address !");
             }
 
-            $acl_man = &\FormaLms\lib\Forma::getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $user_info = $acl_man->getUserByEmail($mail);
 
             if ($user_info !== false) {
@@ -668,7 +668,7 @@ class UserManager
         if ($this->_render->haveToLostpwdAction()) {
             $userid = $this->_render->getLostPwdParam();
 
-            $acl_man = &\FormaLms\lib\Forma::getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $user_info = $acl_man->getUser(false, $acl_man->absoluteId($userid));
 
             if ($user_info !== false) {
@@ -2220,7 +2220,7 @@ class UserManagerRenderer
 
             $out .= $extraFiledsOut;
         } elseif ($options['use_advanced_form'] == 'on') {
-            $acl_man = &\FormaLms\lib\Forma::getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $groups = &$acl_man->getAllGroupsId(['free', 'moderate']);
 
             if (!empty($groups)) {
@@ -2533,7 +2533,7 @@ class UserManagerRenderer
         }
 
         // control mail is correct
-        $acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $source['register']['email'] = strtolower($source['register']['email']);
 
         if ($source['register']['email'] === '') {
@@ -2846,7 +2846,7 @@ class UserManagerRenderer
         $html = '';
 
         $idst = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
-        $acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $user_info = $acl_man->getUser($idst, false);
 
         $password = new Password($_POST['oldpwd']);

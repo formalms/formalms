@@ -94,7 +94,7 @@ function conference_list(&$url)
         $tb->setColsStyle($type_h);
         $tb->addHead($cont_h);
 
-        $acl_manager = &\FormaLms\lib\Forma::getAclManager();
+        $acl_manager = \FormaLms\lib\Forma::getAclManager();
         $display_name = \FormaLms\lib\FormaUser::getCurrentUser()->getUserName();
         $u_info = $acl_manager->getUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), false);
         $user_email = $u_info[ACL_INFO_EMAIL];
@@ -527,7 +527,7 @@ function modBooking()
 
     $booking = new RoomBooking();
 
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     $user_booked = $booking->getRoomSubscriptions($room_id);
 
@@ -751,7 +751,7 @@ function showLog()
 
     $room_info = $conference->roomInfo($id);
 
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     cout(getTitleArea('')
             . '<div class="std_block">', 'content');

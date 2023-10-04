@@ -33,7 +33,7 @@ function myfriends(&$url)
     require_once _base_ . '/lib/lib.table.php';
 
     $lang = &FormaLanguage::createInstance('myfriends', 'lms');
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     $my_fr = new MyFriends(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
@@ -94,7 +94,7 @@ function approveuser(&$url)
     require_once _base_ . '/lib/lib.table.php';
 
     $lang = &FormaLanguage::createInstance('myfriends', 'lms');
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     $my_fr = new MyFriends(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
@@ -155,7 +155,7 @@ function searchUser(&$url)
 
     $lang = &FormaLanguage::createInstance('myfriends', 'lms');
     $my_fr = new MyFriends(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     $GLOBALS['page']->add(
         getTitleArea([$url->getUrl() => $lang->def('_MY_FRIENDS'), $lang->def('_SEARCH_USER')], 'myfriends')
@@ -250,7 +250,7 @@ function delfriend(&$url)
     if ($ui == false) {
         $GLOBALS['page']->add(getErrorUi($lang->def('_INVALID_FRIEND')));
     } else {
-        $acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $ui = current($ui);
         $GLOBALS['page']->add(
             getDeleteUi($lang->def('_AREYOUSURE'),

@@ -26,7 +26,7 @@ class LabelAlmsController extends AlmsController
         parent::init();
         require_once _base_ . '/lib/lib.json.php';
         $this->json = new Services_JSON();
-        $this->acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();
         $this->model = new LabelAlms();
         $this->permissions = [
             'view' => checkPerm('view', true, 'label', 'lms'),

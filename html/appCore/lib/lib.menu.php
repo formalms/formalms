@@ -22,7 +22,7 @@ class MenuManager
     public function __construct()
     {
         $this->acl = \FormaLms\lib\Forma::getAclManager();
-        $this->acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();
     }
 
     public function addPerm($groupid, $roleid)

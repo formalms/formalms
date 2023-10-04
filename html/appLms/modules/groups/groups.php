@@ -108,7 +108,7 @@ function editgroup()
 
     require_once _base_ . '/lib/lib.form.php';
 
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     $lang = &FormaLanguage::createInstance('groups', 'lms');
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     if (isset($_GET['id_group'])) {
@@ -149,7 +149,7 @@ function savegroup()
 {
     checkPerm('mod');
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     $acl_man->setContext('/lms/course/' . $idCourse . '/group');
     if (isset($_POST['id_group'])) {
         $groupoid = $_POST['group']['groupid'];
@@ -175,7 +175,7 @@ function delgroup()
     require_once _base_ . '/lib/lib.form.php';
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $lang = &FormaLanguage::createInstance('groups', 'lms');
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     $acl_man->setContext('/lms/course/' . $idCourse . '/group');
     $id_group = importVar('id_group', true, 0);
 

@@ -152,7 +152,7 @@ function duplicateCourse()
     {
         $map = [];
         $levels = CourseLevel::getTranslatedLevels();
-        $acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         // find all the group created for this menu custom for permission management
         foreach ($levels as $lv => $name_level) {
@@ -178,7 +178,7 @@ function duplicateCourse()
     foreach ($levels as $lv => $name_level) {
         foreach ($perm_form[$lv] as $idrole => $v) {
             if ($group_idst[$lv] != 0 && $idrole != 0) {
-                $acl_man = &\FormaLms\lib\Forma::getAclManager();
+                $acl_man = \FormaLms\lib\Forma::getAclManager();
                 $acl_man->addToRole($idrole, $group_idst[$lv]);
             }
         }
@@ -394,7 +394,7 @@ switch ($op) {
             if ($userlevelid != ADMIN_GROUP_GODADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $acl_man = &\FormaLms\lib\Forma::getAclManager();
+                $acl_man = \FormaLms\lib\Forma::getAclManager();
                 $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
                 $query_filter .= ' AND idCourse IN (' . implode(',', $admin_courses['course']) . ') ';
             }

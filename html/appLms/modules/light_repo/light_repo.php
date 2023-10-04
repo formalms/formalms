@@ -196,7 +196,7 @@ function repoMyDetails(&$url, $passed_repo = 0)
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $lang = &FormaLanguage::createInstance('light_repo');
     $file_man = new LightRepoManager(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $idCourse);
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     $id_repo = importVar('id_repo', true, $passed_repo);
     // recovering file repository information
@@ -468,7 +468,7 @@ function repoUserDetails(&$url, $passed_repo = 0)
     $lang = &FormaLanguage::createInstance('light_repo');
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $file_man = new LightRepoManager(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $idCourse);
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     $id_repo = importVar('id_repo', true, $passed_repo);
     $of_user = importVar('id_user', true, 0);

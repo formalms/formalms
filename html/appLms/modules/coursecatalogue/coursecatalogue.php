@@ -394,7 +394,7 @@ function subscribeToCourse($id_user, $id_course, $id_date = 0)
 
     $subscribe_man = new CourseSubscribe_Management();
     $date_man = new DateManager();
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     $query = 'SELECT idCourse'
                 . ' FROM %adm_courseuser WHERE idUser = ' . $id_user;

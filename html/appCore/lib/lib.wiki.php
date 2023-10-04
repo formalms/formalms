@@ -1993,7 +1993,7 @@ class CoreWikiManager
     {
         $res = [];
         $pl = $this->getWikiPermList();
-        $acl_manager = &\FormaLms\lib\Forma::getAclManager();;
+        $acl_manager = \FormaLms\lib\Forma::getAclManager();;
 
         foreach ($pl as $key => $val) {
             $role_id = '/framework/wiki/' . $wiki_id . '/' . $val;
@@ -2013,7 +2013,7 @@ class CoreWikiManager
     public function saveWikiPerm($wiki_id, $selected_items, $database_items)
     {
         $pl = $this->getWikiPermList();
-        $acl_manager = &\FormaLms\lib\Forma::getAclManager();;
+        $acl_manager = \FormaLms\lib\Forma::getAclManager();;
         foreach ($pl as $key => $val) {
             if ((isset($selected_items[$val])) && (is_array($selected_items[$val]))) {
                 $role_id = '/framework/wiki/' . $wiki_id . '/' . $val;

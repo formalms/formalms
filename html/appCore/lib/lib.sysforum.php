@@ -293,7 +293,7 @@ class sys_forum
 
         $ini = importVar('ini', true, 0);
 
-        $acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $path = _files_ . '/appCore/' . FormaLms\lib\Get::sett('pathphoto');
 

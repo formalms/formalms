@@ -917,7 +917,7 @@ function thread()
     $id_forum = importVar('idForum', true, 0);
     $ord = importVar('ord');
     $jump_url = 'index.php?modname=forum&amp;op=thread&amp;idForum=' . $id_forum;
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     $all_read = importVar('allread', true, 0);
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
@@ -1560,7 +1560,7 @@ function modthread()
 
     $moderate = checkPerm('moderate', true);
     $mod_perm = checkPerm('mod', true);
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     // retrive info about message
     $mess_query = '
@@ -1895,7 +1895,7 @@ function message()
     $moderate = checkPerm('moderate', true);
     $mod_perm = checkPerm('mod', true);
     $write_perm = checkPerm('write', true);
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     $profile_man = new UserProfile(0);
     $profile_man->init('profile', 'framework', 'index.php?modname=forum&op=forum');
@@ -2343,7 +2343,7 @@ function showMessageForAdd($id_thread, $how_much)
     require_once _base_ . '/lib/lib.table.php';
     $lang = &FormaLanguage::createInstance('forum', 'lms');
 
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
     $tb = new Table(FormaLms\lib\Get::sett('visuItem'), $lang->def('_CAPTION_FORUM_MESSAGE_ADD'), $lang->def('_CAPTION_FORUM_MESSAGE_ADD'));
@@ -2467,7 +2467,7 @@ function addmessage()
 
     $moderate = checkPerm('moderate', true);
     $mod_perm = checkPerm('mod', true);
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     // Some info about forum and thread
     $thread_query = '
@@ -2697,7 +2697,7 @@ function modmessage()
 
     $moderate = checkPerm('moderate', true);
     $mod_perm = checkPerm('mod', true);
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     // retrive info about message
     $mess_query = '
@@ -3039,7 +3039,7 @@ function forumsearch()
 
     $lang = &FormaLanguage::createInstance('forum');
 
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
 
@@ -3270,7 +3270,7 @@ function forumsearchmessage()
     $sema_perm = checkPerm('sema', true);
     $moderate = checkPerm('moderate', true);
     $mod_perm = checkPerm('mod', true);
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     $tb = new Table(FormaLms\lib\Get::sett('visuItem'), $lang->def('_CAPTION_FORUM_MESSAGE'), $lang->def('_CAPTION_FORUM_MESSAGE'));
     $tb->initNavBar('ini', 'link');
@@ -3848,7 +3848,7 @@ function addUnreadNotice($id_forum)
         }
 
         $interested_user = [];
-        $aclman = &\FormaLms\lib\Forma::getAclManager();
+        $aclman = \FormaLms\lib\Forma::getAclManager();
         $interested_user = $aclman->getGroupListMembers($members);
         $interested_user = array_merge($interested_user, $members);
 
@@ -3869,7 +3869,7 @@ function export()
     require_once _base_ . '/lib/lib.download.php';
     require_once _adm_ . '/lib/lib.tags.php';
 
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     $tags = new Tags('lms_forum');
     $id_forum = FormaLms\lib\Get::req('idForum', DOTY_INT, 0);
     $csv_string = '';
