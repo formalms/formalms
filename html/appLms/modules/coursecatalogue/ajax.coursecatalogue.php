@@ -55,7 +55,7 @@ if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             $lang = &FormaLanguage::createInstance('cart', 'ecom');
 
             $idst = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
-            $acl_man = &\FormaLms\lib\Forma::getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $userid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserId();
             $user_info = $acl_man->getUser($idst, false);
 

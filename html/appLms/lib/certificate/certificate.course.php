@@ -50,7 +50,7 @@ class CertificateSubs_Course extends CertificateSubstitution
 
     public function getUserNameInv($idst_user = false, $user_id = false)
     {
-        $acl_manager = &\FormaLms\lib\Forma::getAclManager();
+        $acl_manager = \FormaLms\lib\Forma::getAclManager();
         $user_info = $acl_manager->getUser($idst_user, $user_id);
 
         return $user_info[ACL_INFO_LASTNAME] . $user_info[ACL_INFO_FIRSTNAME]
@@ -68,7 +68,7 @@ class CertificateSubs_Course extends CertificateSubstitution
         if ($this->id_meta == 0) {
             require_once _lms_ . '/lib/lib.course.php';
 
-            $acl_manager = &\FormaLms\lib\Forma::getAclManager();
+            $acl_manager = \FormaLms\lib\Forma::getAclManager();
             $man_course = new FormaCourse($this->id_course);
 
             $query = 'SELECT idUser'

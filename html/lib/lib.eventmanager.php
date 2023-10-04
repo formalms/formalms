@@ -238,20 +238,20 @@ class EventMessageComposer
      *                            ), ...
      *                            )
      */
-    public function __construct($module = false, $platform = false, $arr_subject = false, $arr_body = false, $attachments = [])
+    public function __construct($module = false, $platform = false, $arr_subject = [], $arr_body = false, $attachments = [])
     {
         $this->module = 'email';
         $this->platform = false;
         $this->arr_subject = $arr_subject;
         $this->arr_body = $arr_body;
-        $this->subject_composed = false;
-        $this->body_composed = false;
+        $this->subject_composed = [];
+        $this->body_composed = [];
         $this->attachments = [];
     }
 
     public function setSubject($array_info, $media = false)
     {
-        $this->subject_composed = false;
+        $this->subject_composed = [];
         if ($media === false) {
             $this->arr_subject = $array_info;
         } else {
@@ -261,7 +261,7 @@ class EventMessageComposer
 
     public function setBody($array_info, $media = false)
     {
-        $this->body_composed = false;
+        $this->body_composed = [];
         if ($media === false) {
             $this->arr_body = $array_info;
         } else {
@@ -271,7 +271,7 @@ class EventMessageComposer
 
     public function setSubjectLangText($media, $lang_text, $arr_substitution, $simple_text = false)
     {
-        $this->subject_composed = false;
+        $this->subject_composed = [];
         $this->arr_subject[$media][] = [
             'lang_text' => $lang_text,
             'lang_substtution' => $arr_substitution,
@@ -280,7 +280,7 @@ class EventMessageComposer
 
     public function setBodyLangText($media, $lang_text, $arr_substitution, $simple_text = false)
     {
-        $this->body_composed = false;
+        $this->body_composed = [];
         $this->arr_body[$media][] = [
             'lang_text' => $lang_text,
             'lang_substtution' => $arr_substitution,

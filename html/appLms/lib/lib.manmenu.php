@@ -22,7 +22,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  */
 function createCourseMenuFromCustom($id_custom, $id_course, $group_idst)
 {
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     $menucustom_course_upquery = 'UPDATE %lms_course SET id_menucustom=' . $id_custom . ' WHERE idCourse=' . $id_course;
     sql_query($menucustom_course_upquery);
@@ -232,7 +232,7 @@ function createPermForCourse($group_idst, $id_course)
     $basePerm = '/lms/course/private/';
     $map = [];
     $levels = CourseLevel::getTranslatedLevels();
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     $cut_at = strlen($basePerm);
 
     // find the idst of all the role of the selected module
@@ -266,7 +266,7 @@ function createPermForCourse($group_idst, $id_course)
 function createModuleRoleForCourse($id_course, $module_name, $tokens)
 {
     $basePerm = '/lms/course/private/';
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     $role_and_id = [];
     if (!is_array($tokens)) {

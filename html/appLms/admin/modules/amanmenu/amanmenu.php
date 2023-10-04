@@ -937,7 +937,7 @@ function upmodule()
     $id_module = importVar('id_module', true, 0);
 
     $lang = &FormaLanguage::createInstance('manmenu');
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     $id_custom = getIdCustomFromMain($id_main);
 
@@ -1040,7 +1040,7 @@ function upmodule()
 
 function removeModule($id_module, $id_main, $id_custom)
 {
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     // Load module info
     $query_module = '
 	SELECT module_name, default_name, file_name, class_name 

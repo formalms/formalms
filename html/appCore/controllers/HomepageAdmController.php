@@ -510,7 +510,7 @@ class HomepageAdmController extends AdmController
             self::redirect($redirection);
         }
 
-        $user_manager = &\FormaLms\lib\Forma::getAclManager();
+        $user_manager = \FormaLms\lib\Forma::getAclManager();
 
         if (!$login_idst) {
             $username = '/' . $login_user;

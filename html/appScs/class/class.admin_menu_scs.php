@@ -161,7 +161,7 @@ class Admin_Managment_Scs extends Admin_Managment
     public function savePreferences(&$source_array, $base_path, $adminidst, $all_admin_permission)
     {
         require_once _adm_ . '/lib/lib.adminmanager.php';
-        $aclManager = &\FormaLms\lib\Forma::getAclManager();
+        $aclManager = \FormaLms\lib\Forma::getAclManager();
         $admin_manager = new AdminManager();
 
         // Retriving main menu
@@ -217,7 +217,7 @@ class Admin_Managment_Scs extends Admin_Managment
         $lang = &FormaLanguage::createInstance('menu', 'lms');
         $out = &$GLOBALS['page'];
 
-        $aclManager = &\FormaLms\lib\Forma::getAclManager();
+        $aclManager = \FormaLms\lib\Forma::getAclManager();
         $admin_manager = new AdminManager();
 
         // Retriving main menu

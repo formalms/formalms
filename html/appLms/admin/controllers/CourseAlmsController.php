@@ -1261,7 +1261,7 @@ class CourseAlmsController extends AlmsController
             require_once _lms_ . '/lib/lib.manmenu.php';
             require_once _lms_ . '/lib/lib.course.php';
 
-            $acl_man = &\FormaLms\lib\Forma::getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $course_man = new Man_Course();
 
             $levels = &$course_man->getCourseIdstGroupLevel($id_course);

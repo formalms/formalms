@@ -2133,7 +2133,7 @@ class UsermanagementAdm extends Model implements Accessible
             //if node has been correctly inserted then ...
             if ($id) {
                 //create group and descendants
-                $acl = &\FormaLms\lib\Forma::getAclManager();;
+                $acl = \FormaLms\lib\Forma::getAclManager();;
                 $idst_oc = $acl->registerGroup('/oc_' . (int)$id, '', true);
                 $idst_ocd = $acl->registerGroup('/ocd_' . (int)$id, '', true);
                 $acl->addToGroup($acl->getGroupST('ocd_' . (int)$id_parent), $idst_ocd); //register the idst of the new branch's descendants into the parent node /ocd_
@@ -2177,7 +2177,7 @@ class UsermanagementAdm extends Model implements Accessible
      */
     public function deleteFolder($idOrg, $onlyLeaf = false)
     {
-        $acl = &\FormaLms\lib\Forma::getAclManager();;
+        $acl = \FormaLms\lib\Forma::getAclManager();;
         $folder = $this->getFolderById($idOrg);
 
         if (!$folder) {

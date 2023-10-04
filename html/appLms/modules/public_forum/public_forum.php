@@ -94,7 +94,7 @@ function forum()
     $moderate = checkPerm('moderate', true);
     $add_perm = checkPerm('add', true);
     $base_link = 'index.php?modname=public_forum&amp;op=forum';
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     // Find and set unreaded message
     loadUnreaded();
@@ -1049,7 +1049,7 @@ function modforumaccess_old()
 function saveForumPerm($idForum, $selected_items, $database_items)
 {
     $pl = getForumPermList();
-    $acl_manager = &\FormaLms\lib\Forma::getAclManager();;
+    $acl_manager = \FormaLms\lib\Forma::getAclManager();;
     foreach ($pl as $key => $val) {
         if ((isset($selected_items[$val])) && (is_array($selected_items[$val]))) {
             $role_id = '/lms/course/public/public_forum/' . $idForum . '/' . $val;
@@ -1093,7 +1093,7 @@ function loadForumSavedPerm($idForum)
 {
     $res = [];
     $pl = getForumPermList();
-    $acl_manager = &\FormaLms\lib\Forma::getAclManager();;
+    $acl_manager = \FormaLms\lib\Forma::getAclManager();;
 
     foreach ($pl as $key => $val) {
         $role_id = '/lms/course/public/public_forum/' . $idForum . '/' . $val;
@@ -1165,7 +1165,7 @@ function thread()
 
     $ord = importVar('ord');
     $jump_url = 'index.php?modname=public_forum&amp;op=thread&amp;idForum=' . $id_forum;
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     $all_read = importVar('allread', true, 0);
 
     if ($all_read) {
@@ -1767,7 +1767,7 @@ function modthread()
     $ini = importVar('ini');
 
     $mod_perm = checkPerm('mod', true);
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     // retrive info about message
     $mess_query = '
@@ -2110,7 +2110,7 @@ function message()
     $moderate = checkPublicForumPerm('moderate', $id_forum);
     $mod_perm = checkPerm('mod', true);
     $write_perm = checkPublicForumPerm('view', $id_forum);
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     $profile_man = new UserProfile(0);
     $profile_man->init('profile', 'framework', 'index.php?modname=public_forum&op=forum');
@@ -2559,7 +2559,7 @@ function showMessageForAdd($id_thread, $how_much)
     require_once _base_ . '/lib/lib.table.php';
     $lang = &FormaLanguage::createInstance('forum', 'lms');
 
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     $tb = new Table(FormaLms\lib\Get::sett('visuItem'), $lang->def('_CAPTION_FORUM_MESSAGE_ADD'), $lang->def('_CAPTION_FORUM_MESSAGE_ADD'));
 
@@ -2687,7 +2687,7 @@ function addmessage()
         $moderate = checkPublicForumPerm('moderate', $id_forum);
     }
     $mod_perm = checkPerm('mod', true);
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     // Some info about forum and thread
     $thread_query = '
@@ -2911,7 +2911,7 @@ function modmessage()
     $id_message = importVar('idMessage', true, 0);
     $ini = importVar('ini');
 
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     // retrive info about message
     $mess_query = '
@@ -3283,7 +3283,7 @@ function forumsearch()
 
     $lang = &FormaLanguage::createInstance('forum');
 
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     if ($mod_perm) {
         $query_view_forum = '
@@ -3523,7 +3523,7 @@ function forumsearchmessage()
 
     $moderate = checkPublicForumPerm('moderate', $id_forum);
     $mod_perm = checkPerm('mod', true);
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     $tb = new Table(FormaLms\lib\Get::sett('visuItem'), $lang->def('_CAPTION_FORUM_MESSAGE'), $lang->def('_CAPTION_FORUM_MESSAGE'));
     $tb->initNavBar('ini', 'link');

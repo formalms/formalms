@@ -235,7 +235,7 @@ class Man_Transaction
 
         $subscribe_man = new CourseSubscribe_Management();
         $date_man = new DateManager();
-        $acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $query = 'SELECT idCourse'
                     . ' FROM ' . $this->table_courseuser

@@ -73,7 +73,7 @@ class Conference extends \PluginConference
 
     public function insertRoom($idConference, $name, $start_date, $end_date, $maxparticipants)
     {
-        $acl_manager = &\FormaLms\lib\Forma::getAclManager();
+        $acl_manager = \FormaLms\lib\Forma::getAclManager();
         $display_name = \FormaLms\lib\FormaUser::getCurrentUser()->getUserName();
         $u_info = $acl_manager->getUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), false);
         $user_email = $u_info[ACL_INFO_EMAIL];
@@ -173,7 +173,7 @@ class Conference extends \PluginConference
 
         $conference = $conf->roomInfo($idConference);
 
-        $acl_manager = &\FormaLms\lib\Forma::getAclManager();
+        $acl_manager = \FormaLms\lib\Forma::getAclManager();
         $username = \FormaLms\lib\FormaUser::getCurrentUser()->getUserName();
         $u_info = $acl_manager->getUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), false);
         $user_email = $u_info[ACL_INFO_EMAIL];

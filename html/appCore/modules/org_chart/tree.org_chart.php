@@ -210,7 +210,7 @@ class TreeDb_OrgDb extends TreeDb
     {
         $this->withOtherFields = false;
         $id = parent::addFolderById($idParent, addslashes($folderName));
-        $aclManager = &\FormaLms\lib\Forma::getAclManager();;
+        $aclManager = \FormaLms\lib\Forma::getAclManager();;
         $idST = $aclManager->registerGroup($this->getGroupId($id), '', true);
         $idST = $aclManager->registerGroup($this->getGroupDescendantsId($id), '', true);
         $aclManager->addToGroup($this->getGroupDescendantsST($idParent), $idST);
@@ -346,7 +346,7 @@ class TreeDb_OrgDb extends TreeDb
             $this->_executeQuery($query);
         }
 
-        $aclManager = &\FormaLms\lib\Forma::getAclManager();;
+        $aclManager = \FormaLms\lib\Forma::getAclManager();;
         $idST = $this->getGroupDescendantsST($folder->id);
         // detach this descendant group from parent descendant group
         $aclManager->removeFromGroup($this->getGroupDescendantsST($folder->idParent), $idST);
@@ -360,7 +360,7 @@ class TreeDb_OrgDb extends TreeDb
 
     public function moveFolder(&$folder, &$parentFolder, $newfoldername = false)
     {
-        $aclManager = &\FormaLms\lib\Forma::getAclManager();;
+        $aclManager = \FormaLms\lib\Forma::getAclManager();;
         $idST = $this->getGroupDescendantsST($folder->id);
         $aclManager->removeFromGroup($this->getGroupDescendantsST($folder->idParent), $idST);
         $this->withOtherFields = false;
@@ -372,7 +372,7 @@ class TreeDb_OrgDb extends TreeDb
 
     public function getDescendantsSTFromST($arr_idst)
     {
-        $aclManager = &\FormaLms\lib\Forma::getAclManager();;
+        $aclManager = \FormaLms\lib\Forma::getAclManager();;
         $arr_groupid = $aclManager->getGroupsId($arr_idst);
         foreach ($arr_groupid as $key => $val) {
             $arr_groupid[$key] = substr_replace($val, '/ocd', 0, 3);
@@ -389,7 +389,7 @@ class TreeDb_OrgDb extends TreeDb
 
     public function getFoldersIdFromIdst($arr_idst)
     {
-        $aclManager = &\FormaLms\lib\Forma::getAclManager();;
+        $aclManager = \FormaLms\lib\Forma::getAclManager();;
         $arr_groupid = $aclManager->getGroupsId($arr_idst);
         foreach ($arr_groupid as $key => $val) {
             $arr_groupid[$key] = substr($val, 4);
@@ -455,7 +455,7 @@ class TreeDb_OrgDb extends TreeDb
      **/
     public function removeDescentants($arr_idst)
     {
-        $aclManager = &\FormaLms\lib\Forma::getAclManager();;
+        $aclManager = \FormaLms\lib\Forma::getAclManager();;
 
         // get array of groupid
         $arr_id = $aclManager->getGroupsId($arr_idst);

@@ -343,7 +343,7 @@ class PeopleListView extends ListView
         $this->mod_perm = checkPerm('edituser_org_chart', true, 'directory', 'framework');
         $this->del_perm = checkPerm('deluser_org_chart', true, 'directory', 'framework');
 
-        $acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $this->anonymous_idst = $acl_man->getAnonymousId();
 
         $this->_loadAdminIdst();
@@ -659,7 +659,7 @@ class PeopleListView extends ListView
                     : '');
 
                 if ($fvalue != false) {
-                    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+                    $acl_man = \FormaLms\lib\Forma::getAclManager();
                     $members = $acl_man->getGroupAllUser($fvalue);
                     if ($members && !empty($members)) {
                         $this->data->addCustomFilter('', 'idst IN (' . implode(',', $members) . ') ');
@@ -750,7 +750,7 @@ class PeopleListView extends ListView
                 : '');
 
             if ($fvalue != false) {
-                $acl_man = &\FormaLms\lib\Forma::getAclManager();
+                $acl_man = \FormaLms\lib\Forma::getAclManager();
                 $members = $acl_man->getGroupAllUser($fvalue);
                 if ($members && !empty($members)) {
                     $this->data->addCustomFilter('', 'idst IN (' . implode(',', $members) . ') ');
@@ -826,7 +826,7 @@ class PeopleListView extends ListView
     {
         $this->admins_user = [];
 
-        $aclManager = &\FormaLms\lib\Forma::getAclManager();
+        $aclManager = \FormaLms\lib\Forma::getAclManager();
         $arr_levels_id = $aclManager->getAdminLevels();
 
         $arr_groups_godadmin = $aclManager->getGroupUMembers($arr_levels_id[ADMIN_GROUP_GODADMIN]);
@@ -1994,7 +1994,7 @@ class GroupMembersListView extends ListView
 
     public function printOut()
     {
-        $acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $out = $this->rend->OpenTable($this->_getTitle());
 

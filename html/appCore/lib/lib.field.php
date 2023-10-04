@@ -531,6 +531,7 @@ class FieldList
             if (!empty($fields)) {
                 $sons_query .= ' AND idField IN (' . implode(',', $fields) . ')';
             }
+            $sons_query .= ' GROUP BY id_common_son,cf.lang_code';
             $sons_rs = sql_query($sons_query);
 
             foreach ($sons_rs as $row) {
@@ -568,7 +569,7 @@ class FieldList
             . ' JOIN %adm_field as cf on cf.idField = cfu.id_common'
             . ' WHERE id_user IN (' . implode(',', $users) . ') ';
         if (!empty($fields)) {
-            $query .= ' AND id_common IN ( ' . implode(',', $fields) . ' ) ';
+            $query .= ' AND cfu.id_common IN ( ' . implode(',', $fields) . ' ) ';
         }
 
         $rs = sql_query($query);
@@ -2079,7 +2080,7 @@ class FieldList
                 unset($user_groups[1]);
             }
             //extract mandatory fields and checks if there are any fields with null value (not compiled)
-            $query = 'SELECT ft.id_common, gft.useraccess, fet.user_entry '
+            $query = 'SELECT ft.id_common, gft.useraccess, fet.user_entry,	ft.type_field '
                 . ' FROM (' . $this->getFieldTable() . ' AS ft '
                 . ' JOIN ' . $this->getGroupFieldsTable() . ' AS gft '
                 . " ON (ft.id_common = gft.id_field AND ft.lang_code = '" . Lang::get() . "')) "
@@ -2095,9 +2096,20 @@ class FieldList
                     return true;
                 }
                 foreach ($res as $row) {
-                    if (!$row['user_entry']) {
-                        $output = false;
-                        break;
+                    switch ($row['type_field']) {
+                        case 'textfield':
+                        case 'freetext':
+                            if (empty($row['user_entry']) && $row['user_entry'] != '0') {
+                                $output = false;
+                                break 2;
+                            }
+                            break;
+                        default:
+                            if (!$row['user_entry']) {
+                                $output = false;
+                                break 2;
+                            }
+                            break;
                     }
                 }
             }

@@ -615,7 +615,7 @@ function upmodule()
     $id_module = FormaLms\lib\Get::req('id_module', DOTY_INT, 0);
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $lang = FormaLanguage::createInstance('manmenu', 'framework');
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     if (isset($_POST['undo'])) {
         Util::jump_to('index.php?modname=manmenu&op=manmodule&id_main=' . $id_main);
@@ -715,7 +715,7 @@ function upmodule()
 
 function removeModule($id_module, $id_main, $id_course)
 {
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     // Load module info
     $query_module = '

@@ -959,8 +959,9 @@ class CoursePath_Manager
         // path_courses containing course
         $q = ' SELECT id_path FROM %lms_coursepath_courses WHERE id_item = ' . (int) $id_course;
         $rs = sql_query($q);
+        $path_courses =  [];
         while ($r = sql_fetch_row($rs)) {
-            $path_courses[] = $r[0];
+            $path_courses = $r[0];
         }
 
         $path_courses_str = implode(',', $path_courses);

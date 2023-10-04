@@ -27,7 +27,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 
         $out = &$GLOBALS['page'];
         $lang = &FormaLanguage::createInstance('coursepath', 'lms');
-        $acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $subscribe_perm = checkPerm('subscribe', true);
         $mod_perm = checkPerm('mod', true);
@@ -873,7 +873,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 
         $id_path = importVar('id_path', true, 0);
         $lang = &FormaLanguage::createInstance('coursepath', 'lms');
-        $acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         if (isset($_POST['accept'])) {
             $cpath_man = new CoursePath_Manager();
@@ -994,7 +994,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         $id_path = importVar('id_path', true, 0);
         $lang = &FormaLanguage::createInstance('coursepath', 'lms');
         $out = &$GLOBALS['page'];
-        $acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         if (isset($_POST['cancelselector'])) {
             Util::jump_to('index.php?modname=coursepath&amp;op=pathlist');

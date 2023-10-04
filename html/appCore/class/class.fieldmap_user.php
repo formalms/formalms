@@ -83,7 +83,7 @@ class FieldMapUser extends FieldMap
         // does not update the user if it already exists
 
         $acl = \FormaLms\lib\Forma::getAcl();
-        $acl_manager = &\FormaLms\lib\Forma::getAclManager();
+        $acl_manager = \FormaLms\lib\Forma::getAclManager();
 
         $data = [];
 

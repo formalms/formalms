@@ -442,7 +442,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             $re = false;
         }
 
-        $acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         // send alert
         require_once _base_ . '/lib/lib.eventmanager.php';
 

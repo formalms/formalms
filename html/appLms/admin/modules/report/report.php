@@ -683,12 +683,7 @@ function report_columns_filter()
     $obj_report->back_url = 'index.php?modname=report&op=report_sel_columns';
     $obj_report->jump_url = 'index.php?modname=report&op=report_columns_filter';
     $obj_report->next_url = 'index.php?modname=report&op=report_save';
-    $obj_report->get_columns_filter($reportTempData['columns_filter_category']);
 
-    if((int) $obj_report->id_report === 4 && $reportTempData['columns_filter_category'] == 'users') {
-        ob_end_clean();
-        return Util::jump_to('index.php?r=adm/userselector/show&showSelectAll=true&instance=reportuser&id='.$obj_report->id_report);
-    }
 
     //page title
     $page_title = getTitleArea([
@@ -709,7 +704,12 @@ function report_columns_filter()
         $obj_report->page_title = $page_title;
     }
 
+    $obj_report->get_columns_filter($reportTempData['columns_filter_category']);
 
+    if((int) $obj_report->id_report === 4 && $reportTempData['columns_filter_category'] == 'users') {
+        ob_end_clean();
+        return Util::jump_to('index.php?r=adm/userselector/show&showSelectAll=true&instance=reportuser&id='.$obj_report->id_report);
+    }
 
     if ($obj_report->useStandardTitle_Columns()) {
         cout(
