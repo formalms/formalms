@@ -114,17 +114,20 @@
             var message = $(this).next();
             message.removeClass('alert-success').removeClass('alert-danger').empty();
              $.ajax({
-
                     'url' : href + '&recipient=' + recipient,
                     'type' : 'GET',
-                    'success' : function(data) {              
-                      var response = JSON.parse(data);
-                      if(response.result === true) {
-                            message.addClass('alert-success').html("{{Lang_translate('_TESTMAIL_OK', 'mailconfig')}}");
-                      } else {
-                            message.addClass('alert-danger').html("{{Lang_translate('_TESTMAIL_KO', 'mailconfig')}}");
-                      }
-                      
+                    'success' : function(data) {
+                        try {
+                            var response = JSON.parse(data);
+                            if (response.result === true) {
+                                message.addClass('alert-success').html("Invio TEST avvenuto con successo");
+                            } else {
+                                message.addClass('alert-danger').html("Invio TEST fallito");
+                            }
+                        } catch (e) {
+                            alert('Check console log for debug messages.')
+                            console.log(data);
+                        }                        
                     },
                     'error' : function(request,error)
                     {

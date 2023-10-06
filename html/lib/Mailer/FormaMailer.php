@@ -337,7 +337,7 @@ class FormaMailer extends PHPMailer
         }
 
         // MAIL_RECIPIENTSCC
-        if (isset($params[MAIL_RECIPIENTSCC])) {
+        if (isset($params[MAIL_RECIPIENTSCC]) && $params[MAIL_RECIPIENTSCC] != '') {
             $arr_mail_recipientscc = explode(' ', $params[MAIL_RECIPIENTSCC]);
             foreach ($arr_mail_recipientscc as $user_mail_recipientscc) {
                 try {
@@ -348,7 +348,7 @@ class FormaMailer extends PHPMailer
         }
 
         // MAIL_RECIPIENTSBCC
-        if (isset($params[MAIL_RECIPIENTSBCC])) {
+        if (isset($params[MAIL_RECIPIENTSBCC]) && $params[MAIL_RECIPIENTSBCC] != '') {
             $arr_mail_recipientsbcc = explode(' ', $params[MAIL_RECIPIENTSBCC]);
             foreach ($arr_mail_recipientsbcc as $user_mail_recipientsbcc) {
                 try {
