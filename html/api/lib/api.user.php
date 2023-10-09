@@ -297,7 +297,7 @@ class User_API extends API
     public function updateUser($id_user, $userdata) {
 
         $acl_man = new DoceboACLManager();
-        $output = array();
+        $output = [];
 
         $user_data = $this->aclManager->getUser($id_user, false);
 
