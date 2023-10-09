@@ -297,47 +297,85 @@ class User_API extends API
         return $id_user;
     }
 
-    public function updateUser($id_user, $userdata)
-    {
+    public function updateUser($id_user, $userdata) {
+
         $acl_man = new FormaACLManager();
-        $output = [];
+        $output = array();
 
         $user_data = $this->aclManager->getUser($id_user, false);
 
         if (!$user_data) {
             return -1;
+
         }
 
-        if (isset($userdata['valid']) && $userdata['valid'] == '1') {
+        if (isset($userdata['valid']) && $userdata['valid'] == '1'){
             $res = $this->aclManager->recoverUser($id_user);
-        } elseif (isset($userdata['valid']) && $userdata['valid'] == '0') {
+        } elseif (isset($userdata['valid']) && $userdata['valid'] == '0'){
             $res = $this->aclManager->suspendUser($id_user);
         }
 
         $res = $this->aclManager->updateUser(
             $id_user,
-            (isset($userdata['userid']) ? $userdata['userid'] : false),
-            (isset($userdata['firstname']) ? $userdata['firstname'] : false),
-            (isset($userdata['lastname']) ? $userdata['lastname'] : false),
-            (isset($userdata['password']) ? $userdata['password'] : false),
-            (isset($userdata['email']) ? $userdata['email'] : false),
+            (isset($userdata['userid']) ? $userdata['userid'] :  false),
+            (isset($userdata['firstname']) ? $userdata['firstname'] :  false),
+            (isset($userdata['lastname']) ? $userdata['lastname'] :  false),
+            (isset($userdata['password']) ? $userdata['password'] :  false),
+            (isset($userdata['email']) ? $userdata['email'] :  false),
             false,
-            (isset($userdata['signature']) ? $userdata['signature'] : false),
-            (isset($userdata['lastenter']) ? $userdata['lastenter'] : false),
+            (isset($userdata['signature']) ? $userdata['signature'] :  false),
+            (isset($userdata['lastenter']) ? $userdata['lastenter'] :  false),
             false
         );
+
+        if (!empty($userdata['orgchart'])) {
+            $branches = explode(";", $userdata['orgchart']);
+            if (is_array($branches)) {
+                $this->aclManager->removeUserFromNonBaseGroups($id_user);
+                foreach ($branches as $branch) {
+                    $idOrg = $this->_getBranch($branch);
+
+                    if ($idOrg !== false) {
+                        $oc = $this->aclManager->getGroupST('/oc_'.$idOrg);
+                        $ocd = $this->aclManager->getGroupST('/ocd_'.$idOrg);
+                        $this->aclManager->addToGroup($oc, $id_user);
+                        $this->aclManager->addToGroup($ocd, $id_user);
+                        $entities[$oc] = $oc;
+                        $entities[$ocd] = $ocd;
+                    }
+                }
+            }
+        }
+
+        if (!empty($userdata['orgchart_code'])) {
+            $branches = explode(";", $userdata['orgchart_code']);
+            if (is_array($branches)) {
+                $this->aclManager->removeUserFromNonBaseGroups($id_user);
+                foreach ($branches as $branch) {
+                    $idOrg = $this->_getBranchByCode($branch);
+
+                    if ($idOrg !== false) {
+                        $oc = $this->aclManager->getGroupST('/oc_'.$idOrg);
+                        $ocd = $this->aclManager->getGroupST('/ocd_'.$idOrg);
+                        $this->aclManager->addToGroup($oc, $id_user);
+                        $this->aclManager->addToGroup($ocd, $id_user);
+                        $entities[$oc] = $oc;
+                        $entities[$ocd] = $ocd;
+                    }
+                }
+            }
+        }
 
         //additional fields
         $okcustom = true;
         if (isset($userdata['_customfields']) && $res) {
             require_once _adm_ . '/lib/lib.field.php';
-            $fields = &$userdata['_customfields'];
-            if (count($fields) > 0) {
+            $fields =& $userdata['_customfields'];
+            if(count($fields) > 0) {
                 $fl = new FieldList();
                 $okcustom = $fl->storeDirectFieldsForUser($id_user, $fields);
             }
         }
-
         return $id_user;
     }
 

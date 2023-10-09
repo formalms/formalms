@@ -331,7 +331,7 @@ class Lms_BlockWidget_menu extends Widget
 
     public function user_details_full($link)
     {
-        require_once _lib_ . '/lib.user_profile.php';
+        require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
         $profile = new UserProfile(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         $profile->init('profile', 'framework', 'index.php?r=' . $link, 'ap');
         echo $profile->homeUserProfile('normal', false, false);
@@ -339,7 +339,7 @@ class Lms_BlockWidget_menu extends Widget
 
     public function user_details_short($link)
     {
-        require_once _lib_ . '/lib.user_profile.php';
+        require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
         $profile = new UserProfile(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         $profile->init('profile', 'framework', 'index.php?r=' . $link, 'ap');
         echo $profile->userIdMailProfile('normal', false, false);

@@ -321,7 +321,7 @@ class FormaACLManager
     {
         $query = 'SELECT userid '
             . ' FROM ' . $this->_getTableUser()
-            . " WHERE idst = '" . (int) $idst . "'";
+            . " WHERE idst = '" . (int)$idst . "'";
 
         $rs = $this->_executeQuery($query);
         if (sql_num_rows($rs) > 0) {
@@ -455,7 +455,7 @@ class FormaACLManager
      * get security token froma basepath of group.
      *
      * @param string $base_path the base path of the group
-     * @param bool   $flip      if true the returned array is (idst => groupid)
+     * @param bool $flip if true the returned array is (idst => groupid)
      *
      * @return array security tokens associated to groups or FALSE (groupid => idst)
      **/
@@ -495,22 +495,22 @@ class FormaACLManager
     /**
      * register a new user.
      *
-     * @param string $userid           the userid, complete or relative to actual context
-     * @param string $firstname        the first name
-     * @param string $lastname         the lastname
-     * @param string $pass             the password in clear text
-     * @param string $email            the email address
-     * @param string $avatar           the path of the avatar image
-     * @param string $signature        the signature
-     * @param bool   $alredy_encripted if the password is alredy encrypted
-     * @param int    $idst             the idst for the new user
+     * @param string $userid the userid, complete or relative to actual context
+     * @param string $firstname the first name
+     * @param string $lastname the lastname
+     * @param string $pass the password in clear text
+     * @param string $email the email address
+     * @param string $avatar the path of the avatar image
+     * @param string $signature the signature
+     * @param bool $alredy_encripted if the password is alredy encrypted
+     * @param int $idst the idst for the new user
      *
      * @return int the security token
      */
     public function registerUser($userid, $firstname, $lastname,
-                          $pass, $email, $avatar,
-                          $signature, $alredy_encripted = false, $idst = false, $pwd_expire_at = '', $force_change = '',
-                          $facebook_id = false, $twitter_id = false, $linkedin_id = false, $google_id = false)
+                                 $pass, $email, $avatar,
+                                 $signature, $alredy_encripted = false, $idst = false, $pwd_expire_at = '', $force_change = '',
+                                 $facebook_id = false, $twitter_id = false, $linkedin_id = false, $google_id = false)
     {
         if ($idst === false) {
             $idst = $this->_createST();
@@ -570,7 +570,7 @@ class FormaACLManager
             . ' VALUES ( "' . $idst . '", "' . $userid . '", "' . $firstname . '", "' . $lastname . '", '
             . ' "' . ($alredy_encripted === true ? $pass : $this->encrypt($pass)) . '", '
             . ' "' . $email . '", "' . $avatar . '", "' . $signature . '", "' . $pwd_expire_at . '", "' . date('Y-m-d H:i:s') . '", '
-            . ($force_change !== '' ? ' "' . ((int) $force_change > 0 ? '1' : '0') . '", ' : '')
+            . ($force_change !== '' ? ' "' . ((int)$force_change > 0 ? '1' : '0') . '", ' : '')
             . (!empty($facebook_id) ? ' "' . $facebook_id . ' "' : 'NULL') . ', '
             . (!empty($twitter_id) ? ' "' . $twitter_id . ' "' : 'NULL') . ', '
             . (!empty($linkedin_id) ? ' "' . $linkedin_id . ' "' : 'NULL') . ', '
@@ -599,18 +599,18 @@ class FormaACLManager
     /**
      * register a new temporary user, user in self registration.
      *
-     * @param string $userid      the userid, complete or relative to actual context
-     * @param string $firstname   the first name
-     * @param string $lastname    the lastname
-     * @param string $pass        the password in clear text
-     * @param string $email       the email address
+     * @param string $userid the userid, complete or relative to actual context
+     * @param string $firstname the first name
+     * @param string $lastname the lastname
+     * @param string $pass the password in clear text
+     * @param string $email the email address
      * @param string $random_code the random code
      * @param string $random_code the id of the admin that have create this user
      *
      * @return int the security token
      */
     public function registerTempUser($userid, $firstname, $lastname, $pass, $email, $random_code, $create_by_admin = 0,
-                              $facebook_id = '', $twitter_id = '', $linkedin_id = '', $google_id = '', $avatar = '')
+                                     $facebook_id = '', $twitter_id = '', $linkedin_id = '', $google_id = '', $avatar = '')
     {
         $idst = $this->_createST();
         $userid = $this->absoluteId($userid);
@@ -687,8 +687,8 @@ class FormaACLManager
     /**
      * return the temp users info.
      *
-     * @param array $array_idst     the security token of the users to get if flase assume all user
-     * @param bool  $only_confirmed if true only user that have confirmed is displayed
+     * @param array $array_idst the security token of the users to get if flase assume all user
+     * @param bool $only_confirmed if true only user that have confirmed is displayed
      *
      * @return mixed array with user informations with numeric keys:
      *               - idst, userid, firstname, lastname, pass, email, avatar, signature
@@ -775,10 +775,10 @@ class FormaACLManager
     /**
      * register a new group.
      *
-     * @param string $groupid          the groupid, complete or relative to actual context
+     * @param string $groupid the groupid, complete or relative to actual context
      * @param string $description
-     * @param bool   $hidden           optional
-     * @param string $type             the type of the field optional
+     * @param bool $hidden optional
+     * @param string $type the type of the field optional
      * @param string $show_on_platform in which platform this group is available optional
      *
      * @return int the security token
@@ -808,9 +808,9 @@ class FormaACLManager
     /**
      * register a new role.
      *
-     * @param string $roleid      the roleid, complete or relative to actual context
+     * @param string $roleid the roleid, complete or relative to actual context
      * @param string $description
-     * @param int    $idPlugin
+     * @param int $idPlugin
      *
      * @return int the security token
      */
@@ -839,22 +839,22 @@ class FormaACLManager
     /**
      * update a user.
      *
-     * @param int    $idst      security token of user to update
-     * @param string $userid    the userid, complete or relative to actual context
+     * @param int $idst security token of user to update
+     * @param string $userid the userid, complete or relative to actual context
      * @param string $firstname the first name
-     * @param string $lastname  the lastname
-     * @param string $pass      the password in clear text
-     * @param string $email     the email address
-     * @param string $avatar    the path of the avatar image
+     * @param string $lastname the lastname
+     * @param string $pass the password in clear text
+     * @param string $email the email address
+     * @param string $avatar the path of the avatar image
      * @param string $signature the signature
      * @param string $lastenter the date of the user last login
      *
      * @return true if success, FALSE otherwise
      */
     public function updateUser($idst, $userid = false, $firstname = false, $lastname = false,
-                        $pass = false, $email = false, $avatar = false,
-                        $signature = false, $lastenter = false, $resume = false, $force_change = '',
-                        $facebook_id = false, $twitter_id = false, $linkedin_id = false, $google_id = false)
+                               $pass = false, $email = false, $avatar = false,
+                               $signature = false, $lastenter = false, $resume = false, $force_change = '',
+                               $facebook_id = false, $twitter_id = false, $linkedin_id = false, $google_id = false)
     {
         $old_userdata = $this->getUser($idst, null);
 
@@ -890,7 +890,7 @@ class FormaACLManager
             $new_userdata[ACL_INFO_VALID] = true;
         }
         if ($force_change !== '') {
-            $new_userdata[ACL_INFO_FORCE_CHANGE] = (int) $force_change > 0;
+            $new_userdata[ACL_INFO_FORCE_CHANGE] = (int)$force_change > 0;
         }
         if ($facebook_id != false) {
             $new_userdata[ACL_INFO_FACEBOOK_ID] = $facebook_id;
@@ -966,7 +966,7 @@ class FormaACLManager
             $query .= $colon . $fieldName . "='" . $fieldValue . "'";
             $colon = ', ';
         }
-        $query .= " WHERE idst = '" . (int) $idst . "'";
+        $query .= " WHERE idst = '" . (int)$idst . "'";
         $result = $this->_executeQuery($query);
         if ($result && $pass !== false) {
             $query_h = 'INSERT INTO ' . $GLOBALS['prefix_fw'] . '_password_history ( idst_user, pwd_date, passw, changed_by ) '
@@ -989,11 +989,11 @@ class FormaACLManager
     /**
      * update a group.
      *
-     * @param int    $idst             security token of group to update
-     * @param string $groupid          the groupid, complete or relative to actual context
+     * @param int $idst security token of group to update
+     * @param string $groupid the groupid, complete or relative to actual context
      * @param string $description
-     * @param bool   $hidden           optional
-     * @param string $type             the type of the field optional
+     * @param bool $hidden optional
+     * @param string $type the type of the field optional
      * @param string $show_on_platform in which platform this group is available optional
      *
      * @return true if success, FALSE otherwise
@@ -1022,7 +1022,7 @@ class FormaACLManager
             $query .= $colon . $fieldName . "='" . $fieldValue . "'";
             $colon = ', ';
         }
-        $query .= " WHERE idst = '" . (int) $idst . "'";
+        $query .= " WHERE idst = '" . (int)$idst . "'";
 
         return $this->_executeQuery($query);
     }
@@ -1030,8 +1030,8 @@ class FormaACLManager
     /**
      * update a role.
      *
-     * @param int    $idst        security token of role to update
-     * @param string $roleid      the roleid, complete or relative to actual context
+     * @param int $idst security token of role to update
+     * @param string $roleid the roleid, complete or relative to actual context
      * @param string $description
      *
      * @return true if success, FALSE otherwise
@@ -1051,7 +1051,7 @@ class FormaACLManager
             $query .= $colon . $fieldName . "='" . $fieldValue . "'";
             $colon = ', ';
         }
-        $query .= " WHERE idst = '" . (int) $idst . "'";
+        $query .= " WHERE idst = '" . (int)$idst . "'";
 
         return $this->_executeQuery($query);
     }
@@ -1087,7 +1087,7 @@ class FormaACLManager
             $this->_removeAllFromRole($idst);
 
             $query = 'DELETE FROM ' . $this->_getTableUser()
-                . " WHERE idst = '" . (int) $idst . "'";
+                . " WHERE idst = '" . (int)$idst . "'";
 
             $result = $this->_executeQuery($query);
 
@@ -1139,10 +1139,10 @@ class FormaACLManager
     /**
      * delete a temp user.
      *
-     * @param int    $idst_single the idst of the temporary user
+     * @param int $idst_single the idst of the temporary user
      * @param string $random_code the random_code of the temporary user
-     * @param time   $time        delete request oldest than
-     * @param time   $del_field   if is true delete also the field related to the user
+     * @param time $time delete request oldest than
+     * @param time $del_field if is true delete also the field related to the user
      *
      * @return true if success, FALSE otherwise
      */
@@ -1234,7 +1234,7 @@ class FormaACLManager
         }
         $this->_removeAllFromRole($idst);
         $query = 'DELETE FROM ' . $this->prefix . '_rules_entity'
-        . " WHERE id_entity = '" . $idst . "'";
+            . " WHERE id_entity = '" . $idst . "'";
         $this->_executeQuery($query);
         $query = 'DELETE FROM ' . $this->_getTableGroupMembers()
             . " WHERE idst = '" . $idst . "'"
@@ -1294,7 +1294,7 @@ class FormaACLManager
     /**
      * return the user info.
      *
-     * @param mixed  $idst   the security token of the user to get, FALSE if
+     * @param mixed $idst the security token of the user to get, FALSE if
      *                       $userid is assigned
      * @param string $userid the userid of the user to get, FALSE if
      *                       $idst is assigned
@@ -1401,7 +1401,7 @@ class FormaACLManager
      * (unique index required).
      *
      * @param string $field_name name of the field - ex: google_id
-     * @param string $field_val  value of the field - ex: mymail@gmail.com
+     * @param string $field_val value of the field - ex: mymail@gmail.com
      * @param string $req_unique specify whether to return false if the result is
      *                           not unique
      *
@@ -1438,7 +1438,7 @@ class FormaACLManager
         $arr_levels_idst = array_flip($arr_levels);
 
         $query = 'SELECT idst FROM ' . $this->_getTableGroupMembers()
-            . " WHERE idstMember = '" . (int) $idst_user . "'"
+            . " WHERE idstMember = '" . (int)$idst_user . "'"
             . "   AND idst IN ( '" . implode("','", $arr_levels) . "' )";
         $rs = $this->_executeQuery($query);
 
@@ -1539,7 +1539,7 @@ class FormaACLManager
 
         if (sql_num_rows($rs) > 0) {
             while ($info = sql_fetch_row($rs)) {
-                $arr_idst[] = (int) $info[0];
+                $arr_idst[] = (int)$info[0];
             }
 
             return $arr_idst;
@@ -1552,8 +1552,8 @@ class FormaACLManager
 
     /**
      * @param string $sett_name name of the parameter to search
-     * @param array  $arr_idst  the security token of the users to search, (if false return all users)
-     * @param bool   $get_null  if true will return also the null entries
+     * @param array $arr_idst the security token of the users to search, (if false return all users)
+     * @param bool $get_null if true will return also the null entries
      *
      *    used as an additional filter
      *
@@ -1597,8 +1597,8 @@ class FormaACLManager
 
     /**
      * @param string $sett_name name of the parameter to search
-     * @param array  $arr_idst  the security token of the users to search, (if false return all users)
-     * @param bool   $get_null  if true will return also the null entries
+     * @param array $arr_idst the security token of the users to search, (if false return all users)
+     * @param bool $get_null if true will return also the null entries
      *
      *    used as an additional filter
      *
@@ -1641,10 +1641,10 @@ class FormaACLManager
     }
 
     /**
-     * @param string $pname    name of the parameter to search
-     * @param string $pval     value of the parameter to search
-     * @param bool   $get_null if true will return also the null entries
-     * @param bool   $arr_idst the  optional security token of the users to be
+     * @param string $pname name of the parameter to search
+     * @param string $pval value of the parameter to search
+     * @param bool $get_null if true will return also the null entries
+     * @param bool $arr_idst the  optional security token of the users to be
      *                         used as an additional filter
      *
      * @return array with user idst of the found entries
@@ -1694,8 +1694,8 @@ class FormaACLManager
     }
 
     /**
-     * @param string $language   the language to use as filter
-     * @param array  $array_idst the  optional security token of the users to be
+     * @param string $language the language to use as filter
+     * @param array $array_idst the  optional security token of the users to be
      *                           used as an additional filter
      *
      * @return array with user idst of the found entries
@@ -1721,8 +1721,8 @@ class FormaACLManager
     /**
      * return the user info.
      *
-     * @param string $language   the language to use as filter
-     * @param array  $array_idst the  optional security token of the users to be
+     * @param string $language the language to use as filter
+     * @param array $array_idst the  optional security token of the users to be
      *                           used as an additional filter
      *
      * @return mixed array with user informations with numeric keys:
@@ -1737,7 +1737,7 @@ class FormaACLManager
     /**
      * return the group info.
      *
-     * @param mixed  $idst    the security token of the group to get, FALSE if
+     * @param mixed $idst the security token of the group to get, FALSE if
      *                        $groupid is assigned
      * @param string $groupid the groupid of the group to get, FALSE if
      *                        $idst is assigned
@@ -1818,7 +1818,7 @@ class FormaACLManager
         if (is_numeric($idst)) {
             $query = ' SELECT groupid'
                 . ' FROM ' . $this->_getTableGroup()
-                . ' WHERE idst = ' . (int) $idst;
+                . ' WHERE idst = ' . (int)$idst;
             $rs = $this->_executeQuery($query);
             list($groupid) = sql_fetch_row($rs);
 
@@ -1862,9 +1862,9 @@ class FormaACLManager
     /**
      * return the groupid (possibile restrictions on test type).
      *
-     * @param array  $arr_type   the type of group that you want
-     * @param string $find_text  the result must contain, in groupid or description, the text
-     * @param bool   $also_image include in the array the code for the type icon
+     * @param array $arr_type the type of group that you want
+     * @param string $find_text the result must contain, in groupid or description, the text
+     * @param bool $also_image include in the array the code for the type icon
      *
      * @return array with groupid
      */
@@ -1907,8 +1907,8 @@ class FormaACLManager
     /**
      * return the groupid of the groups of a corrispondent base path.
      *
-     * @param string $base_path  the array of security tokens
-     * @param array  $group_type a filter for type
+     * @param string $base_path the array of security tokens
+     * @param array $group_type a filter for type
      *
      * @return array with idst of gourps
      */
@@ -1970,7 +1970,7 @@ class FormaACLManager
     {
         $query = 'SELECT idst_user
 		FROM ' . $this->_getTableUserOfGroupWaiting() . "
-		WHERE idst_group = '" . (int) $idst . "'";
+		WHERE idst_group = '" . (int)$idst . "'";
         $rs = $this->_executeQuery($query);
         $idst_user = [];
         while (list($id) = sql_fetch_row($rs)) {
@@ -1992,7 +1992,7 @@ class FormaACLManager
     {
         $query = 'SELECT idst_group
 		FROM ' . $this->_getTableUserOfGroupWaiting() . "
-		WHERE idst_user = '" . (int) $idst . "'";
+		WHERE idst_user = '" . (int)$idst . "'";
         $rs = $this->_executeQuery($query);
         $idst_user = [];
         while (list($id) = sql_fetch_row($rs)) {
@@ -2005,7 +2005,7 @@ class FormaACLManager
     /**
      * return the role info.
      *
-     * @param mixed  $idst   the security token of the role to get, FALSE if
+     * @param mixed $idst the security token of the role to get, FALSE if
      *                       $roleid is assigned
      * @param string $roleid the roleid of the role to get, FALSE if
      *                       $idst is assigned
@@ -2019,7 +2019,7 @@ class FormaACLManager
         $query = 'SELECT idst, roleid, description'
             . ' FROM ' . $this->_getTableRole();
         if ($idst !== false) {
-            $query .= " WHERE idst = '" . (int) $idst . "'";
+            $query .= " WHERE idst = '" . (int)$idst . "'";
         } elseif ($roleid !== false) {
             $query .= " WHERE roleid = '" . $this->absoluteId($roleid) . "'";
         } else {
@@ -2085,9 +2085,9 @@ class FormaACLManager
     /**
      * add an idst or a list of idsts to a group.
      *
-     * @param int    $idst       the security token of the group destination
-     * @param int    $idstMember the idst (or a list of idst) of the user(s)/group(s) to insert in
-     * @param string $filter     (Optional). The filter to applay to assiciation
+     * @param int $idst the security token of the group destination
+     * @param int $idstMember the idst (or a list of idst) of the user(s)/group(s) to insert in
+     * @param string $filter (Optional). The filter to applay to assiciation
      */
     public function addToGroup($idst, $idstMember, $filter = '')
     {
@@ -2103,7 +2103,7 @@ class FormaACLManager
         $add_list = array_values($add_list);
         $values = [];
         for ($i = 0; $i < count($add_list); ++$i) {
-            $member = (int) $add_list[$i];
+            $member = (int)$add_list[$i];
             if ($member > 0) {
                 $values[] = "('" . $idst . "','" . $member . "','" . $filter . "')";
             }
@@ -2145,7 +2145,7 @@ class FormaACLManager
     /**
      * add an idst to a role.
      *
-     * @param int $idst       the security token of the role destination
+     * @param int $idst the security token of the role destination
      * @param int $idstMember the idst of the user/group to insert in
      */
     public function addToRole($idst, $idstMember)
@@ -2163,9 +2163,9 @@ class FormaACLManager
     /**
      * remove an idst or a group of idsts from a group.
      *
-     * @param int    $idst       the security token of the group destination
-     * @param int    $idstMember the idst of the user/group to remove from
-     * @param string $filter     (Optional). The filter to applay to assiciation
+     * @param int $idst the security token of the group destination
+     * @param int $idstMember the idst of the user/group to remove from
+     * @param string $filter (Optional). The filter to applay to assiciation
      */
     public function removeFromGroup($idst, $idstMember, $filter = '')
     {
@@ -2179,7 +2179,7 @@ class FormaACLManager
         }
         if (count($del_list) > 0) {
             $query = 'DELETE FROM ' . $this->_getTableGroupMembers()
-                . " WHERE idst = '" . (int) $idst . "'"
+                . " WHERE idst = '" . (int)$idst . "'"
                 . '   AND idstMember IN (' . implode(',', $del_list) . ')'
                 . "   AND filter = '" . $filter . "'";
 
@@ -2194,8 +2194,8 @@ class FormaACLManager
     /**
      * remove an idst from all the groups.
      *
-     * @param int    $idstMember the idst of the user/group to remove from
-     * @param string $filter     (Optional). The filter to applay to assiciation
+     * @param int $idstMember the idst of the user/group to remove from
+     * @param string $filter (Optional). The filter to applay to assiciation
      */
     public function removeFromAllGroup($idstMember, $filter = '')
     {
@@ -2204,7 +2204,7 @@ class FormaACLManager
         }
 
         $query = 'DELETE FROM ' . $this->_getTableGroupMembers()
-            . " WHERE idstMember = '" . (int) $idstMember . "'"
+            . " WHERE idstMember = '" . (int)$idstMember . "'"
             . "   AND filter = '" . $filter . "'";
 
         return $this->_executeQuery($query);
@@ -2214,7 +2214,7 @@ class FormaACLManager
      * remove a waiting user of a group.
      *
      * @param int $idst_group the security token of the group destination
-     * @param int $idst_user  the idst of the user to remove from
+     * @param int $idst_user the idst of the user to remove from
      */
     public function removeFromUserWaitingOfGroup($idst_group, $idst_user)
     {
@@ -2226,15 +2226,15 @@ class FormaACLManager
         }
 
         $query = 'DELETE FROM ' . $this->_getTableUserOfGroupWaiting()
-            . " WHERE idst_group = '" . (int) $idst_group . "'"
-            . "   AND idst_user = '" . (int) $idst_user . "'";
+            . " WHERE idst_group = '" . (int)$idst_group . "'"
+            . "   AND idst_user = '" . (int)$idst_user . "'";
         $this->_executeQuery($query);
     }
 
     /**
      * remove an idst from a role.
      *
-     * @param int $idst       the security token of the group destination
+     * @param int $idst the security token of the group destination
      * @param int $idstMember the idst of the user/group to remove from
      */
     public function removeFromRole($idst, $idstMember)
@@ -2248,7 +2248,7 @@ class FormaACLManager
 
         $query = 'DELETE FROM ' . $this->_getTableRoleMembers()
             . " WHERE idst = '" . $idst . "'"
-            . "   AND idstMember = '" . (int) $idstMember . "'";
+            . "   AND idstMember = '" . (int)$idstMember . "'";
         $this->_executeQuery($query);
     }
 
@@ -2264,7 +2264,7 @@ class FormaACLManager
         }
 
         $query = 'DELETE FROM ' . $this->_getTableGroupMembers()
-            . " WHERE idstMember = '" . (int) $idstMember . "'";
+            . " WHERE idstMember = '" . (int)$idstMember . "'";
         $this->_executeQuery($query);
     }
 
@@ -2280,15 +2280,15 @@ class FormaACLManager
         }
 
         $query = 'DELETE FROM ' . $this->_getTableRoleMembers()
-            . " WHERE idstMember = '" . (int) $idstMember . "'";
+            . " WHERE idstMember = '" . (int)$idstMember . "'";
         $this->_executeQuery($query);
     }
 
     /**
      * search groups containing a security token.
      *
-     * @param int    $idstMember the security token of the searched member
-     * @param string $filter     (Optional). Filter to applay.
+     * @param int $idstMember the security token of the searched member
+     * @param string $filter (Optional). Filter to applay.
      *
      * @return array array of security token of groups that contains $idstMember
      */
@@ -2299,7 +2299,7 @@ class FormaACLManager
         }
 
         $query = 'SELECT idst FROM ' . $this->_getTableGroupMembers()
-            . " WHERE idstMember = '" . (int) $idstMember . "'"
+            . " WHERE idstMember = '" . (int)$idstMember . "'"
             . "   AND filter = '" . $filter . "'";
         $rs = $this->_executeQuery($query);
 
@@ -2314,8 +2314,8 @@ class FormaACLManager
     /**
      * search groups containing a security token.
      *
-     * @param int    $idstMember the security token of the searched member
-     * @param string $filter     (Optional). Filter to applay.
+     * @param int $idstMember the security token of the searched member
+     * @param string $filter (Optional). Filter to applay.
      *
      * @return array array of security token of groups that contains $idstMember
      */
@@ -2345,8 +2345,8 @@ class FormaACLManager
     /**
      * search roles containing a security token.
      *
-     * @param int  $idstMember the security token of the searched member
-     * @param bool $flip       if true the key of the array returned are the idst
+     * @param int $idstMember the security token of the searched member
+     * @param bool $flip if true the key of the array returned are the idst
      *
      * @return array array of security token of roles that contains $idstMember
      */
@@ -2375,8 +2375,8 @@ class FormaACLManager
     /**
      * search roles containing a security token.
      *
-     * @param int  $idstMember the security token of the searched member
-     * @param bool $flip       if true the key of the array returned are the idst
+     * @param int $idstMember the security token of the searched member
+     * @param bool $flip if true the key of the array returned are the idst
      *
      * @return array array of security token of roles that contains $idstMember
      */
@@ -2407,7 +2407,7 @@ class FormaACLManager
     /**
      * search members of a group.
      *
-     * @param int    $idst   scurity token of the group
+     * @param int $idst scurity token of the group
      * @param string $filter (Optional). Filter to applay.
      *
      * @return array array of security token of members contained in group
@@ -2442,13 +2442,13 @@ class FormaACLManager
 
         list($numer) = sql_fetch_row($rs);
 
-        return (int) $numer;
+        return (int)$numer;
     }
 
     /**
      * search users member of a group (or an array of groups).
      *
-     * @param int    $idst   scurity token of the group
+     * @param int $idst scurity token of the group
      * @param string $filter (Optional). Filter to applay.
      *
      * @return array array of security token of users contained in group
@@ -2462,7 +2462,7 @@ class FormaACLManager
                 }
             }
         } elseif (!is_array($idst)) {
-            $idst = [(int) $idst];
+            $idst = [(int)$idst];
         }
 
         $inString = (implode(',', $idst) == '' ? 'NULL' : implode(',', $idst));
@@ -2484,7 +2484,7 @@ class FormaACLManager
         $rs = $this->_executeQuery($query);
         $arrUsers = [];
         while (list($idst) = sql_fetch_row($rs)) {
-            $arrUsers[] = (int) $idst;
+            $arrUsers[] = (int)$idst;
         }
 
         return $arrUsers;
@@ -2493,7 +2493,7 @@ class FormaACLManager
     /**
      * search groups member of a group.
      *
-     * @param int    $idst   scurity token of the group
+     * @param int $idst scurity token of the group
      * @param string $filter (Optional). Filter to applay.
      *
      * @return array array of security token of groups contained in group
@@ -2507,7 +2507,7 @@ class FormaACLManager
                 }
             }
         } elseif (!is_array($idst)) {
-            $idst = [(int) $idst];
+            $idst = [(int)$idst];
         }
 
         $inString = (implode(',', $idst) == '' ? 'NULL' : implode(',', $idst));
@@ -2522,7 +2522,7 @@ class FormaACLManager
         $rs = $this->_executeQuery($query);
         $arrGroups = [];
         while (list($idst) = sql_fetch_row($rs)) {
-            $arrGroups[] = (int) $idst;
+            $arrGroups[] = (int)$idst;
         }
 
         return $arrGroups;
@@ -2531,7 +2531,7 @@ class FormaACLManager
     /**
      * get all groups of a group.
      *
-     * @param int    $idst   idst of the group
+     * @param int $idst idst of the group
      * @param string $filter (Optional). Filter to applay.
      *
      * @return mixed array of groups of the group or FALSE
@@ -2608,7 +2608,7 @@ class FormaACLManager
             if (isset($array_ocd[$id_group])) {
                 $query = 'SELECT iLeft, iRight'
                     . ' FROM %adm_org_chart_tree'
-                    . ' WHERE idst_ocd = ' . (int) $id_group;
+                    . ' WHERE idst_ocd = ' . (int)$id_group;
 
                 list($i_left, $i_right) = sql_fetch_row(sql_query($query));
 
@@ -2627,7 +2627,7 @@ class FormaACLManager
 
                 $query = 'SELECT idstMember'
                     . ' FROM %adm_group_members'
-                    . ' WHERE idst = ' . (int) $id_group
+                    . ' WHERE idst = ' . (int)$id_group
                     . ' AND idstMember IN'
                     . ' ('
                     . ' SELECT idst'
@@ -2650,7 +2650,7 @@ class FormaACLManager
     /**
      * get all users of a group (search in subgroups).
      *
-     * @param int    $idst   idst of the group
+     * @param int $idst idst of the group
      * @param string $filter (Optional). Filter to applay.
      *
      * @return mixed array of users of the group or FALSE
@@ -2668,8 +2668,8 @@ class FormaACLManager
     /**
      * get all users members of a list of groups.
      *
-     * @param array  $group_arr list of idst of the groups
-     * @param string $filter    (Optional). Filter to apply.
+     * @param array $group_arr list of idst of the groups
+     * @param string $filter (Optional). Filter to apply.
      */
     public function getGroupListMembers($group_arr, $filter = '')
     {
@@ -2693,7 +2693,7 @@ class FormaACLManager
         $rs = $this->_executeQuery($query);
         $arrUsers = [];
         while (list($idst) = sql_fetch_row($rs)) {
-            $arrUsers[] = (int) $idst;
+            $arrUsers[] = (int)$idst;
         }
 
         return $arrUsers;
@@ -2702,7 +2702,7 @@ class FormaACLManager
     /**
      * get all descendant users of a group.
      *
-     * @param int    $idst   idst of the group
+     * @param int $idst idst of the group
      * @param string $filter (Optional). Filter to applay.
      *
      * @return mixed array of users of the group or FALSE
@@ -2769,7 +2769,7 @@ class FormaACLManager
         $arrGroups = [];
         $i = 0;
         while (list($idstMember) = sql_fetch_row($rs)) {
-            $arrGroups[] = (int) $idstMember;
+            $arrGroups[] = (int)$idstMember;
         }
 
         return $arrGroups;
@@ -2792,7 +2792,7 @@ class FormaACLManager
         $res = [];
         $i = 0;
         while (list($idstMember) = sql_fetch_row($rs)) {
-            $res[] = (int) $idstMember;
+            $res[] = (int)$idstMember;
         }
 
         return $res;
@@ -2810,7 +2810,7 @@ class FormaACLManager
         $res = [];
         $i = 0;
         while (list($idstMember) = sql_fetch_row($rs)) {
-            $res[] = (int) $idstMember;
+            $res[] = (int)$idstMember;
         }
         $guser = $this->getGroupAllUser($res);
         $res = array_merge($res, $guser);
@@ -2821,8 +2821,8 @@ class FormaACLManager
     /**
      * this function encrypt the given string.
      *
-     * @param string $text          text to encrypt
-     * @param int    $password_hash
+     * @param string $text text to encrypt
+     * @param int $password_hash
      *
      * @return string encrypted text
      *
@@ -2949,7 +2949,7 @@ class FormaACLManager
             return $arr_user;
         }
         while (list($idst) = sql_fetch_row($rs)) {
-            $arr_user[] = (int) $idst;
+            $arr_user[] = (int)$idst;
         }
 
         return $arr_user;
@@ -2981,7 +2981,7 @@ class FormaACLManager
             return $arr_groups;
         }
         while (list($idst) = sql_fetch_row($rs)) {
-            $arr_groups[] = (int) $idst;
+            $arr_groups[] = (int)$idst;
         }
 
         return $arr_groups;
@@ -3003,9 +3003,9 @@ class FormaACLManager
      * This function returns a list of roles with extra information
      * starting from a given user idst and roleid path.
      *
-     * @param string $user_idst  idst of the user that is member of the role/s
+     * @param string $user_idst idst of the user that is member of the role/s
      * @param string $path_start the pattern with roleid shall start with
-     * @param string $path_end   the pattern with roleid shall end with (optional)
+     * @param string $path_end the pattern with roleid shall end with (optional)
      *
      * @return mixed FALSE if nothing found; else array with that looks like:
      *               Array(
@@ -3131,7 +3131,7 @@ class FormaACLManager
         $res = 'SELECT * FROM ' . $this->_getSearchUsersBaseQuery($internal_fields, $extra_fields, $idst_filter);
 
         if (($ini !== false) && ($vis_item !== false)) {
-            $res .= ' LIMIT ' . (int) $ini . ',' . (int) $vis_item . '';
+            $res .= ' LIMIT ' . (int)$ini . ',' . (int)$vis_item . '';
         }
 
         return $res;
@@ -3265,7 +3265,7 @@ class FormaACLManager
     public function getAllUsersFromSelection($arr_idst)
     {
         if (is_numeric($arr_idst)) {
-            $arr_idst = [(int) $arr_idst];
+            $arr_idst = [(int)$arr_idst];
         }
         if (!is_array($arr_idst)) {
             return [];
@@ -3302,6 +3302,13 @@ class FormaACLManager
         }
 
         return $pass;
+    }
+
+    function removeUserFromNonBaseGroups($idstMember)
+    {
+        $query = "DELETE FROM %adm_group_members WHERE idstMember = {$idstMember} AND idst IN (SELECT idst from %adm_group WHERE %adm_group.groupid NOT IN ('/oc_0','/ocd_0') AND %adm_group.groupid like '/oc%')";
+
+        return $this->_executeQuery($query);
     }
 } //END ACLManagaer class
 
@@ -3707,4 +3714,5 @@ class GroupMembersDataRetriever extends DataRetriever
 
         return $count;
     }
+
 }
