@@ -117,7 +117,6 @@ class DomainconfigAdm extends Model {
 
     public function delete($id) {
        
-        //controllo che non abbia sottonodi
         $query = 'DELETE FROM %adm_domain_configs WHERE id = "' . $id . '"';
         $queryResult = $this->db->query($query);
         
@@ -126,9 +125,9 @@ class DomainconfigAdm extends Model {
 
     public function checkChildren($id) {
        
-        //controllo che non abbia sottonodi
         $query = 'SELECT * FROM %adm_domain_configs WHERE parentId = "' . $id . '"';
         $queryResult = $this->db->query($query) ?? [];
+        $output = [];
         foreach($queryResult as $result) {
             $output[] = $result;
         }

@@ -234,7 +234,7 @@ class MailconfigAdm extends Model
 
         $queryResult = $this->deleteFieldsByMailConfigId($id);
         if ($queryResult) {
-            $query = 'DELETE FROM %adm_mail_configs WHERE id = "' . $mailConfigId . '"';
+            $query = 'DELETE FROM %adm_mail_configs WHERE id = "' . $id . '"';
             $queryResult = $this->db->query($query);
         }
         return $queryResult;
