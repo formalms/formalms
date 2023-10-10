@@ -2164,7 +2164,7 @@ class DoceboACLManager
      * remove an idst or a group of idsts from a group.
      *
      * @param int $idst the security token of the group destination
-     * @param int $idstMember the idst of the user/group to remove from
+     * @param int|array $idstMember the idst of the user/group to remove from
      * @param string $filter (Optional). The filter to applay to assiciation
      */
     public function removeFromGroup($idst, $idstMember, $filter = '')
