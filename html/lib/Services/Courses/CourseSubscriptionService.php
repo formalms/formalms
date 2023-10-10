@@ -285,6 +285,7 @@ class CourseSubscriptionService implements Accessible
         if($params['viewParams']) {
             //find if the event manager is configured to send an alert or not in case of new subscription
 
+           
             $courseInfo = $this->baseModel->getCourseInfoForSubscription();
             $courseName = ($courseInfo['code'] !== '' ? '[' . $courseInfo['code'] . '] ' : '') . $courseInfo['name'];
 
@@ -292,13 +293,13 @@ class CourseSubscriptionService implements Accessible
 
                 case "date" : 
                     $idDate = $courseId;
-                    $courseId = 0;
+                    $courseId = (int) $params['courseId'];
                     $idEdition = 0;
                     break;
 
                 case "edition" : 
                     $idEdition = $courseId;
-                    $courseId = 0;
+                    $courseId = (int) $params['courseId'];
                     $idDate = 0;
                     break;
     

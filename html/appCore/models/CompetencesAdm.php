@@ -2019,7 +2019,7 @@ class CompetencesAdm extends Model implements Accessible
 
     public function getAccessList($resourceId) : array {
 
-        return $this->accessModel->getCompetenceUsers($resourceId);
+        return $this->getCompetenceUsers($resourceId);
         
     }
 

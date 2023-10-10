@@ -40,7 +40,7 @@ echo getTitleArea([
 
     $array_content = [];
 
-    echo Form::openForm('choose_level', 'index.php?r=' . ($post_url ?? $link) . '/ins&amp;id_course=' . $model->getIdCourse() . '&amp;id_edition=' . $model->getIdEdition() . '&amp;id_date=' . $model->getIdDate());
+    echo Form::openForm('choose_level', 'index.php?r=' . ($post_url ?? $link) . '/ins&amp;id_course=' . $id_course . '&amp;id_edition=' . $id_edition . '&amp;id_date=' . $id_date);
 
     if($send_alert) {
         echo Form::getHidden('send_alert', 'send_alert', $send_alert);

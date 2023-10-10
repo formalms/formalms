@@ -95,6 +95,16 @@ if (!$id_date && !$id_edition) {
     <?php
 
     $add_newurl = 'index.php?r=adm/userselector/show&amp;instance=coursesubscription&amp;id=' . $id_course ;
+
+    if($id_edition) {
+
+        $add_newurl .= '_edition@'.$id_edition;
+    }
+
+    if($id_date) {
+
+        $add_newurl .= '_date@'.$id_date;
+    }
     $mod_url = 'ajax.adm_server.php?r=' . $this->link . '/multimod_dialog&amp;id_course=' . $id_course . '&amp;id_edition=' . $id_edition . '&amp;id_date=' . $id_date . '';
     $del_url = 'ajax.adm_server.php?r=' . $this->link . '/multidel&amp;id_course=' . $id_course . '&amp;id_edition=' . $id_edition . '&amp;id_date=' . $id_date . '';
     $imp_csv = 'index.php?r=' . $this->link . '/import_csv&amp;id_course=' . $id_course . '&amp;id_edition=' . $id_edition . '&amp;id_date=' . $id_date . '';
