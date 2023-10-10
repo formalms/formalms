@@ -17,9 +17,9 @@ require_once dirname(__FILE__) . '/lib.connector.php';
 
 // Constant definition for language
 
-define(LANG_NOT_SET_IN_CSV, '');
-define(NOT_VALID_LANG, null);
-define(USER_HAS_NO_LANG, null);
+define('LANG_NOT_SET_IN_CSV', '');
+define('NOT_VALID_LANG', null);
+define('USER_HAS_NO_LANG', null);
 
 /**
  * class for define docebo users connection to data source.
@@ -116,6 +116,12 @@ class FormaConnectorFormaUsers extends FormaConnector
 
     public $pwd_force_change_policy = 'do_nothing';
 
+    public $reset_field_if_not_set = false;
+
+    public $use_default_password = false;
+
+    public $default_password = '';
+
     public $inserted_user_org_chart = [];
     /**
      * @var true
@@ -160,6 +166,9 @@ class FormaConnectorFormaUsers extends FormaConnector
             'preg_match_folder' => $this->preg_match_folder,
             'org_chart_destination' => $this->org_chart_destination,
             'pwd_force_change_policy' => $this->pwd_force_change_policy,
+            'reset_field_if_not_set' => filter_var($this->reset_field_if_not_set, FILTER_VALIDATE_BOOLEAN),
+            'use_default_password' => filter_var($this->use_default_password, FILTER_VALIDATE_BOOLEAN),
+            'default_password' => $this->default_password
         ];
     }
 
@@ -192,6 +201,15 @@ class FormaConnectorFormaUsers extends FormaConnector
         }
         if (isset($params['pwd_force_change_policy'])) {
             $this->pwd_force_change_policy = $params['pwd_force_change_policy'];
+        }
+        if (isset($params['reset_field_if_not_set'])) {
+            $this->reset_field_if_not_set = filter_var($params['reset_field_if_not_set'], FILTER_VALIDATE_BOOLEAN);
+        }
+        if (isset($params['use_default_password'])) {
+            $this->use_default_password = filter_var($params['use_default_password'], FILTER_VALIDATE_BOOLEAN);
+        }
+        if (isset($params['default_password'])) {
+            $this->default_password = $params['default_password'];
         }
     }
 
@@ -574,12 +592,12 @@ class FormaConnectorFormaUsers extends FormaConnector
     public function add_row($row, $pk)
     {
         foreach ($pk as $key => $val) {        // Creating array of pk
-            if ($val !== false) {
+            if (!empty($val)) {
                 $pk[$key] = addslashes(trim($val));
             }
         }
         foreach ($row as $key => $val) {       // Creating array of fields in row
-            if ($val !== false) {
+            if ($this->reset_field_if_not_set || !empty($val)) {
                 $row[$key] = addslashes(trim($val));
             }
         }
@@ -594,6 +612,12 @@ class FormaConnectorFormaUsers extends FormaConnector
         $email = $row['email'];
         $tree_code = $row['tree_code'];
         $language = $row['language'];
+
+        if (empty($pass)) {
+            if ($this->use_default_password) {
+                $pass = $this->default_password;
+            }
+        }
 
         $force_change = '';
         switch ($this->pwd_force_change_policy) {
@@ -1238,6 +1262,30 @@ class FormaConnectorFormaUsersUI extends FormaConnectorUI
                 Lang::t('_DO_NOTHING', 'preassessment') => 'do_nothing',
             ],
             $this->post_params['pwd_force_change_policy']);
+
+        $out .= $this->form->getRadioSet(Lang::t('_RESET_FIELD_IF_NOT_SET', 'admin_directory'),
+            $this->_get_base_name() . '_reset_field_if_not_set',
+            $this->_get_base_name() . '[reset_field_if_not_set]',
+            [
+                Lang::t('_NO', 'standard') => false,
+                Lang::t('_YES', 'standard') => true,
+            ],
+            $this->post_params['reset_field_if_not_set']);
+
+        $out .= $this->form->getRadioSet(Lang::t('_USE_DEFAULT_PASSWORD', 'admin_directory'),
+            $this->_get_base_name() . '_use_default_password',
+            $this->_get_base_name() . '[use_default_password]',
+            [
+                Lang::t('_NO', 'standard') => false,
+                Lang::t('_YES', 'standard') => true,
+            ],
+            $this->post_params['use_default_password']);
+
+        $out .= $this->form->getTextfield($this->lang->def('_DEFAULT_PASSWORD'),
+            $this->_get_base_name() . '_default_password',
+            $this->_get_base_name() . '[default_password]',
+            255,
+            $this->post_params['default_password']);
 
         return $out;
     }
