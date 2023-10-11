@@ -3572,6 +3572,10 @@ ALTER TABLE `learning_courseuser` ADD INDEX `courseuser_course_idx` (`idCourse`)
 
 UPDATE `core_reg_setting` SET `value` = '-' WHERE `val_name` = 'date_sep';
 
+UPDATE core_menu_under SET module_name = 'dashboard' WHERE default_name = '_DASHBOARD' and associated_token = 'view' and of_platform = 'lms';
+INSERT INTO core_role ( idst, roleId )
+SELECT max(idst)+1, '/lms/course/public/dashboard/view' FROM core_st LIMIT 1;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
