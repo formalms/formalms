@@ -24,8 +24,6 @@
     {{ Layout_getRtl() }}
     <!-- specific stylesheet -->
     {{ Yui_load('base') }}
-    <!-- printer stylesheet-->
-    {{ Layout_getAccessibility() }}
     <!-- Page Head area -->
     {{ Layout_getZone('page_head') }}
 
@@ -62,7 +60,7 @@
 
     <!-- Restyling -->
     <link rel="stylesheet" type="text/css"
-          href="{{ Layout_getPath() }}static/main.min.css?v={{ Template_getVersion() }}">
+          href="{{ Layout_getPath() }}static/main.min.{{ Layout_getHighContrastCss() }}css?v={{ Template_getVersion() }}">
     <!--
     To use or edit the not minified css uncomment this portion of code
     <link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}static/main.css">
@@ -74,6 +72,7 @@
 {% block homeContent %}
     <!-- content -->
     <main class="homepage__content content-margin">
+        {{ Layout_getHighContrast() }}
         <div class="homepage__row homepage__row--header">
             <div class="pull-left">
                 <h1 class="no_margin_padding"><span class="screenreader">{{ Lang_translate('_LOGIN_LEGEND', 'login') }}</span></h1>

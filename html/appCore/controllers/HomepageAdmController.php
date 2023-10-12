@@ -613,4 +613,20 @@ class HomepageAdmController extends AdmController
 
         Util::jump_to('index.php' . $query);
     }
+
+    public function enableHighContrast(){
+        $enabled = FormaLms\lib\Get::req('enabled', DOTY_INT, 0);
+        $cookieName = "high_contrast";
+        $path = "/";
+        $domain = NULL;
+        if ($enabled) {
+            $expiryDate = 0;
+            $cookieValue = $enabled;
+        } else {
+            $cookieValue = '';
+            $expiryDate = time() - 3600;
+        }
+        setcookie($cookieName, $cookieValue, $expiryDate, $path, $domain);
+        self::redirect();
+    }
 }

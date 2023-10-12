@@ -445,7 +445,7 @@
         <key id="configuration&amp;MAIN_SET_9" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[LDAP]]></key>
         <key id="configuration&amp;PASSWORD_BCRYPT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[BYCRYPT Password]]></key>
         <key id="configuration&amp;PASSWORD_MD5" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[MD5 Password]]></key>
-        <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Activate accessibility features]]></key>
+        <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Use high contrast colors]]></key>
         <key id="configuration&amp;_ALLOW_URL_FOPEN" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Configuration of "allow_url_fopen"]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Configuration of "allow_url_include"]]></key>
         <key id="configuration&amp;_ALREADY_ASSIGNED" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[already assigned]]></key>
@@ -697,6 +697,8 @@
         <key id="configuration&amp;_PURCHASE_USER" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Purchase User (Username or idst)]]></key>
       </module>
       <module id="course">
+        <key id="course&amp;_YEAR_SELECTION" attributes="" save_date="2023-10-12 15:32:39"><![CDATA[Year selection]]></key>
+        <key id="course&amp;_COURSE_TYPE_SELECTION" attributes="" save_date="2023-10-12 15:32:39"><![CDATA[Course type selection]]></key>
         <key id="course&amp;_ADDFILE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Add file]]></key>
         <key id="course&amp;_ADDFILES" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Add new file]]></key>
         <key id="course&amp;_ADD_SUBSCRIBE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Enroll users in this course]]></key>
@@ -992,6 +994,9 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="course_selector&amp;_SEL_COURSE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Courses]]></key>
       </module>
       <module id="customer_help">
+        <key id="customer_help&amp;_OBJ_MISSING" attributes="" save_date="2023-10-12 10:29:58"><![CDATA[Please add the email object]]></key>
+        <key id="customer_help&amp;_MSG_MISSING" attributes="" save_date="2023-10-12 10:29:58"><![CDATA[Please add the email content]]></key>
+        <key id="customer_help&amp;_NO_HELP_DESK" attributes="" save_date="2023-10-12 10:29:58"><![CDATA[No email configuration configured]]></key>
         <key id="customer_help&amp; &#9; _CUSTOMER_HELP_DISCLAIMER_TITLE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Disclaimer - assistenza utenti]]></key>
         <key id="customer_help&amp;_CUSTOMER_HELP" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Help Desk]]></key>
         <key id="customer_help&amp;_CUSTOMER_HELP_DISCLAIMER" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Autorizzo l'invio di informazioni tecniche all'assistenza utili per risolvere la mia richiesta]]></key>
@@ -1715,6 +1720,8 @@ In handling this information, accuracy and precision shall be met to ensure the 
         <key id="menu&amp;_WEBPAGES" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Web pages]]></key>
       </module>
       <module id="menu_course">
+        <key id="menu_course&amp;_COURSE_SEARCH_BAR" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Course search bar]]></key>
+        <key id="menu_course&amp;_SEARCH_COURSE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Look for a course]]></key>
         <key id="menu_course&amp;Area social" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Social area]]></key>
         <key id="menu_course&amp;Area studenti" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Student area]]></key>
         <key id="menu_course&amp;Collaborative Area" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Collaborative Area]]></key>
@@ -3328,6 +3335,16 @@ you have been unsubscribed from the course ([course_code]) - [course]]]></key>
         <key id="domainconfig&amp;_ORG" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Organization node]]></key>
         <key id="domainconfig&amp;_MAIL_CONFIG" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mail setting]]></key>
         <key id="domainconfig&amp;_SUBS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Sublevels]]></key>
+     </module>
+     <module id="screen_reader">
+        <key id="screen_reader&amp;_INPUT_FORGOT_USERNAME" attributes="" save_date="2023-10-12 10:29:58"><![CDATA[Input field for username recovering]]></key>
+        <key id="screen_reader&amp;_INPUT_FORGOT_PASSWORD" attributes="" save_date="2023-10-12 10:29:58"><![CDATA[Input field for password recovering]]></key>
+        <key id="screen_reader&amp;_PROFILE" attributes="" save_date="2023-10-12 10:29:58"><![CDATA[Close profile slider]]></key>
+        <key id="screen_reader&amp;_CREATE_FOLDER" attributes="" save_date="2023-10-12 10:29:58"><![CDATA[Create a folder]]></key>
+        <key id="screen_reader&amp;_RENAME_FOLDER_LABEL" attributes="" save_date="2023-10-12 10:29:58"><![CDATA[Rename folder]]></key>
+        <key id="screen_reader&amp;_RENAME_FOLDER_BUTTON" attributes="" save_date="2023-10-12 10:29:58"><![CDATA[Rename folder]]></key>
+        <key id="screen_reader&amp;_DISABLE_HIGH_CONTRAST" attributes="" save_date="2023-10-12 10:29:58"><![CDATA[Disable high contrast colors]]></key>
+        <key id="screen_reader&amp;_ENABLE_HIGH_CONTRAST" attributes="" save_date="2023-10-12 10:29:58"><![CDATA[Enable high contrast colors]]></key>
      </module>
     </platform>
   </LANG>

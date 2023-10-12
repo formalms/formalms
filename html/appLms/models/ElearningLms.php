@@ -207,7 +207,7 @@ class ElearningLms extends Model
                 $status_course = $row['status_course'];
                 switch ($status_course) {
                     case 0:
-                        $output[$status_course] = Lang::t('_TAB_NEW_COURSES', 'standard');
+                        $output[$status_course] = Lang::t('_NEW', 'standard');
                         break;
                     case 1:
                         $output[$status_course] = Lang::t('_USER_STATUS_BEGIN', 'standard');

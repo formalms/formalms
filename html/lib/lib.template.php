@@ -615,11 +615,11 @@ function getLegenda()
     return $text;
 }
 
-function setAccessibilityStatus($new_status)
+function setAccessibilityStatus()
 {
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     if (FormaLms\lib\Get::sett('accessibility', 'off') !== 'off') {
-        $session->set('high_accessibility', $new_status);
+        $session->set('high_accessibility', true);
     } else {
         $session->set('high_accessibility', false);
     }

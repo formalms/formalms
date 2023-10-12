@@ -133,12 +133,30 @@ class Layout
         }
     }
 
-    public static function accessibility()
+    public static function highContrast()
     {
-        if (getAccessibilityStatus() === false) {
-            return '<style type="text/css">' . "\n"
-                . '.access-only {display: none;}' . "\n"
-                . '</style>' . "\n";
+        $html = '';
+        if (getAccessibilityStatus() == true) {
+            $cookieName = "high_contrast";
+            if (isset($_COOKIE[$cookieName])) {
+                $cookieValue = 0;
+                $label = Lang::t('_DISABLE_HIGH_CONTRAST', 'screen_reader');
+            } else {
+                $cookieValue = 1;
+                $label = Lang::t('_ENABLE_HIGH_CONTRAST', 'screen_reader');
+            }
+            $html .= "<div class='pull-right'>
+                        <a href='index.php?r=adm/homepage/enableHighContrast&enabled=$cookieValue'>$label</a>
+                     </div>";
+        }
+        return $html;
+    }
+
+    public static function highContrastCss(){
+        if (getAccessibilityStatus() && isset($_COOKIE["high_contrast"]) ) {
+            return 'highcontrast.';
+        } else {
+            return '';
         }
     }
 
@@ -630,4 +648,6 @@ class Layout
             return FormaLms\lib\Get::sett('google_stat_code');
         }
     }
+
 }
+

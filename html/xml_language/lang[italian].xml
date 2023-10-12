@@ -447,7 +447,7 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;MAIN_SET_9" attributes="" save_date="2019-10-02 11:39:53"><![CDATA[LDAP]]></key>
         <key id="configuration&amp;PASSWORD_BCRYPT" attributes="" save_date="2020-05-31 16:28:19"><![CDATA[Bycrypt password]]></key>
         <key id="configuration&amp;PASSWORD_MD5" attributes="" save_date="2020-05-31 16:28:27"><![CDATA[MD5 Password]]></key>
-        <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Attiva tutte le feature per l'accessibilità]]></key>
+        <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Usa colori con alto contrasto]]></key>
         <key id="configuration&amp;_ALLOW_URL_FOPEN" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Configurazione di "allow_url_fopen"]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Configurazione di "allow_url_include"]]></key>
         <key id="configuration&amp;_ALREADY_ASSIGNED" attributes="" save_date="2017-03-15 16:37:18"><![CDATA[già assegnato]]></key>
@@ -700,6 +700,8 @@ http://server/path/index.php?modname=login) \]]></key>
         <key id="configuration&amp;_PURCHASE_USER" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Utente notifiche acquisti (Username o idst)]]></key>
       </module>
       <module id="course">
+        <key id="course&amp;_YEAR_SELECTION" attributes="" save_date="2023-10-12 15:32:39"><![CDATA[Seleziona Anno]]></key>
+        <key id="course&amp;_COURSE_TYPE_SELECTION" attributes="" save_date="2023-10-12 15:32:39"><![CDATA[Seleziona tipo corso]]></key>
         <key id="course&amp;_ADDFILE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Aggiungi un file]]></key>
         <key id="course&amp;_ADDFILES" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Aggiungi un nuovo file]]></key>
         <key id="course&amp;_ADD_SUBSCRIBE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Iscrivi utenti a questo corso]]></key>
@@ -993,6 +995,9 @@ Per poterlo fare devi loggarti nella piattaforma se sei un utente registarto, al
         <key id="course_selector&amp;_SEL_COURSE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Corsi]]></key>
       </module>
       <module id="customer_help">
+        <key id="customer_help&amp;_OBJ_MISSING" attributes="" save_date="2023-10-12 10:29:58"><![CDATA[Inserire un oggetto]]></key>
+        <key id="customer_help&amp;_MSG_MISSING" attributes="" save_date="2023-10-12 10:29:58"><![CDATA[Inserire il contenuto dell'email]]></key>
+        <key id="customer_help&amp;_NO_HELP_DESK" attributes="" save_date="2023-10-12 10:29:58"><![CDATA[Email per l'help desk non configurata]]></key>
         <key id="customer_help&amp; &#9; _CUSTOMER_HELP_DISCLAIMER_TITLE" attributes="" save_date="2018-07-20 10:31:26"><![CDATA[Disclaimer - assistenza utenti]]></key>
         <key id="customer_help&amp;_CUSTOMER_HELP" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Help Desk]]></key>
         <key id="customer_help&amp;_CUSTOMER_HELP_DISCLAIMER" attributes="" save_date="2018-07-20 10:29:58"><![CDATA[Autorizzo l'invio di informazioni tecniche all'assistenza utili per risolvere la mia richiesta]]></key>
@@ -1711,6 +1716,8 @@ Nella conservazione dei dati verranno osservate accuratezza e precisione per gar
         <key id="menu&amp;_WEBPAGES" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Pagine esterne]]></key>
       </module>
       <module id="menu_course">
+        <key id="menu_course&amp;_COURSE_SEARCH_BAR" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Barra di ricerca]]></key>
+        <key id="menu_course&amp;_SEARCH_COURSE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Cerca un corso]]></key>
         <key id="menu_course&amp;Area social" attributes="" save_date="2017-03-17 17:48:06"><![CDATA[Area social]]></key>
         <key id="menu_course&amp;Area studenti" attributes="" save_date="2017-03-17 17:45:44"><![CDATA[Area studenti]]></key>
         <key id="menu_course&amp;Collaborative Area" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Area Collaborativa]]></key>
@@ -3325,6 +3332,16 @@ La descrizione verrà mostrata agli studenti prima della somministrazione del te
         <key id="domainconfig&amp;_ORG" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Nodo organigramma]]></key>
         <key id="domainconfig&amp;_MAIL_CONFIG" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Profilo Mail]]></key>
         <key id="domainconfig&amp;_SUBS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Sottolivelli]]></key>
+      </module>
+      <module id="screen_reader">
+        <key id="screen_reader&amp;_INPUT_FORGOT_USERNAME" attributes="" save_date="2023-10-12 10:29:58"><![CDATA[Campo di input per recuperare la username]]></key>
+        <key id="screen_reader&amp;_INPUT_FORGOT_PASSWORD" attributes="" save_date="2023-10-12 10:29:58"><![CDATA[Campo di input per recuperare a password]]></key>
+        <key id="screen_reader&amp;_PROFILE" attributes="" save_date="2023-10-12 10:29:58"><![CDATA[Chiudi slider del profilo]]></key>
+        <key id="screen_reader&amp;_CREATE_FOLDER" attributes="" save_date="2023-10-12 10:29:58"><![CDATA[Crea una cartella]]></key>
+        <key id="screen_reader&amp;_RENAME_FOLDER_LABEL" attributes="" save_date="2023-10-12 10:29:58"><![CDATA[Rinomina una cartella]]></key>
+        <key id="screen_reader&amp;_RENAME_FOLDER_BUTTON" attributes="" save_date="2023-10-12 10:29:58"><![CDATA[Rinomina una cartella]]></key>
+        <key id="screen_reader&amp;_DISABLE_HIGH_CONTRAST" attributes="" save_date="2023-10-12 10:29:58"><![CDATA[Disabilita colori ad alto contrasto]]></key>
+        <key id="screen_reader&amp;_ENABLE_HIGH_CONTRAST" attributes="" save_date="2023-10-12 10:29:58"><![CDATA[Abilita colori ad alto contrasto]]></key>
       </module>
     </platform>
   </LANG>

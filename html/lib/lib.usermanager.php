@@ -1091,7 +1091,7 @@ class UserManagerRenderer
 
     public function setAccessibility()
     {
-        setAccessibilityStatus(isset($_POST['login_button_access']));
+        setAccessibilityStatus();
     }
 
     /**
