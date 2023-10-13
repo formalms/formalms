@@ -206,7 +206,7 @@ class QuestBankMan
             list($type_file, $type_class) = sql_fetch_row($re_quest);
         }
 
-        require_once _lms_ . '/modules/question/' . $type_file;
+        require_once Forma::inc(_lms_ . '/modules/question/' . $type_file);
         $quest_obj = new $type_class($id_quest);
 
         return $quest_obj;
@@ -225,7 +225,7 @@ class QuestBankMan
         }
         list($type_file, $type_class) = sql_fetch_row($re_quest);
 
-        require_once _lms_ . '/modules/question/' . $type_file;
+        require_once Forma::inc(_lms_ . '/modules/question/' . $type_file);
         $quest_obj = new $type_class($id_quest);
 
         return $quest_obj;
@@ -256,7 +256,7 @@ class QuestBankMan
         $result = [];
         switch ($file_format) {
             case 0: 	// gift format -------------------
-                require_once _lms_ . '/modules/question/format.gift.php';
+                require_once Forma::inc(_lms_ . '/modules/question/format.gift.php');
 
                 $qgift = new qformat_gift();
                 $formatted = $qgift->readquestions($file_lines, $autocreate_categories);
@@ -296,7 +296,7 @@ class QuestBankMan
         $quest_export = '';
         switch ($file_format) {
             case 0: 	// gift format -------------------
-                require_once _lms_ . '/modules/question/format.gift.php';
+                require_once Forma::inc(_lms_ . '/modules/question/format.gift.php');
                 $qgift = new qformat_gift();
 
         foreach ($quest_list as $id_quest => $type_quest) {

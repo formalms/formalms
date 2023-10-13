@@ -101,7 +101,7 @@ function addquest(&$url)
 
     $type_quest = FormaLms\lib\Get::pReq('add_test_quest', DOTY_STRING, 'choice');
 
-    require_once _lms_ . '/modules/question/question.php';
+    require_once \Forma::inc(_lms_ . '/modules/question/question.php');
 
     quest_create($type_quest, 0, $url->getUrl());
 }
@@ -117,7 +117,7 @@ function modquest(&$url)
 	FROM ' . $GLOBALS['prefix_lms'] . "_testquest
 	WHERE idQuest = '" . $id_quest . "' AND idTest = 0"));
 
-    require_once _lms_ . '/modules/question/question.php';
+    require_once \Forma::inc(_lms_ . '/modules/question/question.php');
 
     quest_edit($type_quest, $id_quest, $url->getUrl());
 }
@@ -421,7 +421,7 @@ function deletequest(&$url)
                 WHERE q.idQuest IN (' . implode(',', $quest_selection) . ') AND q.type_quest = t.type_quest');
 
         while (list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest)) {
-            require_once _lms_ . '/modules/question/' . $type_file;
+            require_once \Forma::inc(_lms_ . '/modules/question/' . $type_file);
             $quest_obj = new $type_class($idQuest);
             $new_id = $quest_obj->del();
         }

@@ -710,7 +710,7 @@ function addquest()
         $type_quest = $var_loaded['type_quest'];
     }
 
-    require_once _lms_ . '/modules/question/question.php';
+    require_once \Forma::inc(_lms_ . '/modules/question/question.php');
 
     quest_create($type_quest, $idTest, 'index.php?modname=test&op=modtestgui&test_saved=' . $var_save);
 }
@@ -754,7 +754,7 @@ function modquest()
         $type_quest = $var_loaded['type_quest'];
     }
 
-    require_once _lms_ . '/modules/question/question.php';
+    require_once \Forma::inc(_lms_ . '/modules/question/question.php');
 
     quest_edit($type_quest, $idQuest, 'index.php?modname=test&op=modtestgui&test_saved=' . $var_save);
 }
