@@ -69,6 +69,7 @@ class DbConn
         $user = \FormaLms\lib\Get::cfg('db_user') ?: ($cfg['db_user'] ?? false);
         $pass = \FormaLms\lib\Get::cfg('db_pass') ?: ($cfg['db_pass'] ?? false);
         $name = \FormaLms\lib\Get::cfg('db_name') ?: ($cfg['db_name'] ?? false);
+    
         if (isset($connection_parameters['db_type']) && isset($connection_parameters['db_host']) && isset($connection_parameters['db_user']) && isset($connection_parameters['db_pass'])) {
             $db_type = $connection_parameters['db_type'];
             $host = $connection_parameters['db_host'];
@@ -76,6 +77,8 @@ class DbConn
             $pass = $connection_parameters['db_pass'];
             $name = $connection_parameters['db_name'];
         }
+
+   
         if ($link) {
             return $link;
         }

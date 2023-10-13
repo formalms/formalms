@@ -5,21 +5,31 @@
 namespace Formalms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use FormaLms\Entity\Timestamps;
 
 /**
  * LearningGamesTrack
  *
- * @ORM\Table(name="learning_games_track", indexes={@ORM\Index(name="idReference", columns={"idReference"}), @ORM\Index(name="idUser", columns={"idUser"})})
+ * @ORM\Table(name="learning_games_track", 
+ *      indexes={
+ *              @ORM\Index(name="idReference", columns={"idReference"}), 
+ *              @ORM\Index(name="idUser", columns={"idUser"}),
+ *              @ORM\Index(name="object_type_idx", columns={"objectType"}),
+ *              @ORM\Index(name="id_track_idx", columns={"idTrack"})
+ * })
  * @ORM\Entity
  */
 class LearningGamesTrack
 {
+
+    use Timestamps;
+    
     /**
      * @var int
      *
      * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -41,8 +51,6 @@ class LearningGamesTrack
      * @var int
      *
      * @ORM\Column(name="idTrack", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idtrack = '0';
 
@@ -50,15 +58,14 @@ class LearningGamesTrack
      * @var string
      *
      * @ORM\Column(name="objectType", type="string", length=20, nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+
      */
     private $objecttype = '';
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="dateAttempt", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="dateAttempt", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $dateattempt = null;
 
@@ -72,7 +79,7 @@ class LearningGamesTrack
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="firstAttempt", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="firstAttempt", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $firstattempt = null;
 

@@ -16,12 +16,15 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningTeacherProfile
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
      * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -36,14 +39,14 @@ class LearningTeacherProfile
     /**
      * @var string
      *
-     * @ORM\Column(name="curriculum", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="curriculum", type="string", length=65536, nullable=false)
      */
     private $curriculum;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="publications", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="publications", type="string", length=65536, nullable=false)
      */
     private $publications;
 

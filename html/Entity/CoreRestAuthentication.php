@@ -16,12 +16,14 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreRestAuthentication
 {
+
+    use Timestamps;
     /**
      * @var int
      *
      * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -50,21 +52,21 @@ class CoreRestAuthentication
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="generation_date", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="generation_date", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $generationDate = null;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="last_enter_date", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="last_enter_date", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $lastEnterDate;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="expiry_date", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="expiry_date", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $expiryDate = null;
 

@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningTest
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
@@ -40,7 +43,7 @@ class LearningTest
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="description", type="string", length=65536, nullable=false)
      */
     private $description;
 
@@ -201,14 +204,14 @@ class LearningTest
     /**
      * @var string
      *
-     * @ORM\Column(name="order_info", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="order_info", type="string", length=65536, nullable=false)
      */
     private $orderInfo;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="cf_info", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="cf_info", type="string", length=65536, nullable=false)
      */
     private $cfInfo;
 
@@ -243,7 +246,7 @@ class LearningTest
     /**
      * @var string
      *
-     * @ORM\Column(name="chart_options", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="chart_options", type="string", length=65536, nullable=false)
      */
     private $chartOptions;
 

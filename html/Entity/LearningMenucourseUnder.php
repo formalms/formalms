@@ -5,6 +5,7 @@
 namespace Formalms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use FormaLms\Entity\Timestamps;
 
 /**
  * LearningMenucourseUnder
@@ -17,12 +18,16 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningMenucourseUnder
 {
+
+    use Timestamps;
+
+
     /**
      * @var int
      *
      * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -30,7 +35,6 @@ class LearningMenucourseUnder
      * @var int
      *
      * @ORM\Column(name="idCourse", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idcourse = '0';
 
@@ -38,7 +42,6 @@ class LearningMenucourseUnder
      * @var int
      *
      * @ORM\Column(name="idModule", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idmodule = '0';
 

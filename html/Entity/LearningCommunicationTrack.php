@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningCommunicationTrack
 {
+
+    use Timestamps;
     /**
      * @var int
      *
@@ -54,7 +56,7 @@ class LearningCommunicationTrack
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="dateAttempt", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="dateAttempt", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $dateattempt = null;
 
@@ -68,7 +70,7 @@ class LearningCommunicationTrack
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="firstAttempt", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="firstAttempt", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $firstattempt = null;
 

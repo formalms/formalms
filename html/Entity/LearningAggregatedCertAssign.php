@@ -5,21 +5,29 @@
 namespace Formalms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use FormaLms\Entity\Timestamps;
 
 /**
  * LearningAggregatedCertAssign
  *
- * @ORM\Table(name="learning_aggregated_cert_assign")
+ * @ORM\Table(name="learning_aggregated_cert_assign", indexes={
+ *     @ORM\Index(name="id_certificate_idx", columns={"idCertificate"}),
+ *     @ORM\Index(name="id_user_idx", columns={"idUser"}),
+ *     @ORM\Index(name="id_association_idx", columns={"idAssociation"})
+ * })
  * @ORM\Entity
  */
 class LearningAggregatedCertAssign
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
      * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -27,8 +35,6 @@ class LearningAggregatedCertAssign
      * @var int
      *
      * @ORM\Column(name="idUser", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $iduser = '0';
 
@@ -36,8 +42,6 @@ class LearningAggregatedCertAssign
      * @var int
      *
      * @ORM\Column(name="idCertificate", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idcertificate = '0';
 
@@ -45,15 +49,14 @@ class LearningAggregatedCertAssign
      * @var int
      *
      * @ORM\Column(name="idAssociation", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+
      */
     private $idassociation;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="on_date", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="on_date", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $onDate;
 

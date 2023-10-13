@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreNewsletter
 {
+
+    use Timestamps;
     /**
      * @var int
      *
@@ -40,7 +42,7 @@ class CoreNewsletter
     /**
      * @var string
      *
-     * @ORM\Column(name="msg", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="msg", type="string", length=65536, nullable=false)
      */
     private $msg;
 
@@ -75,14 +77,14 @@ class CoreNewsletter
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="stime", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="stime", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $stime = null;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="file", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="file", type="string", length=65536, nullable=false)
      */
     private $file;
 

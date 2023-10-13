@@ -5,24 +5,31 @@
 namespace Formalms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use FormaLms\Entity\Timestamps;
 
 /**
  * LearningCommontrack
  *
  * @ORM\Table(name="learning_commontrack", indexes={
  *      @ORM\Index(name="idUser", columns={"idUser"}), 
- *      @ORM\Index(name="idReference", columns={"idReference"})
+ *      @ORM\Index(name="idReference", columns={"idReference"}),
+ *      @ORM\Index(name="object_type_idx", columns={"objectType"}),
+ *      @ORM\Index(name="id_track_idx", columns={"idTrack"})
+ * 
  * })
  * @ORM\Entity
  */
 class LearningCommontrack
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
      * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -44,8 +51,7 @@ class LearningCommontrack
      * @var int
      *
      * @ORM\Column(name="idTrack", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+
      */
     private $idtrack = '0';
 
@@ -53,36 +59,35 @@ class LearningCommontrack
      * @var string
      *
      * @ORM\Column(name="objectType", type="string", length=20, nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+
      */
     private $objecttype = '';
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="firstAttempt", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="firstAttempt", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $firstattempt = null;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="first_complete", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="first_complete", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $firstComplete;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="last_complete", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="last_complete", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $lastComplete;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="dateAttempt", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="dateAttempt", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $dateattempt = null;
 

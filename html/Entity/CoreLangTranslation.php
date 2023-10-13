@@ -17,6 +17,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreLangTranslation
 {
+
+    use Timestamps;
     /**
      * @var int
      *
@@ -45,14 +47,14 @@ class CoreLangTranslation
     /**
      * @var string|null
      *
-     * @ORM\Column(name="translation_text", type="text", length=65535, nullable=true)
+     * @ORM\Column(name="translation_text", type="string", length=65536, nullable=true)
      */
     private $translationText;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="save_date", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="save_date", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $saveDate = null;
 

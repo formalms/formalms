@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningReportSchedule
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
@@ -61,7 +64,7 @@ class LearningReportSchedule
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="creation_date", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="creation_date", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $creationDate = null;
 
@@ -75,7 +78,7 @@ class LearningReportSchedule
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="last_execution", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="last_execution", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $lastExecution;
 

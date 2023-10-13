@@ -17,12 +17,15 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningCoursereportScore
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
      * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -45,7 +48,7 @@ class LearningCoursereportScore
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_attempt", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="date_attempt", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $dateAttempt = null;
 
@@ -66,7 +69,7 @@ class LearningCoursereportScore
     /**
      * @var string
      *
-     * @ORM\Column(name="comment", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="comment", type="string", length=65536, nullable=false)
      */
     private $comment;
 

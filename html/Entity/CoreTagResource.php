@@ -17,6 +17,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreTagResource
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
@@ -52,14 +55,14 @@ class CoreTagResource
     /**
      * @var string
      *
-     * @ORM\Column(name="sample_text", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="sample_text", type="string", length=65536, nullable=false)
      */
     private $sampleText;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="permalink", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="permalink", type="string", length=65536, nullable=false)
      */
     private $permalink;
 

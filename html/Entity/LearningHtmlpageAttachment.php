@@ -14,6 +14,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningHtmlpageAttachment
 {
+
+    use Timestamps;
+
+    
     /**
      * @var int
      *

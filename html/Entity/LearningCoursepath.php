@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningCoursepath
 {
+
+    use Timestamps;
     /**
      * @var int
      *
@@ -40,7 +42,7 @@ class LearningCoursepath
     /**
      * @var string
      *
-     * @ORM\Column(name="path_descr", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="path_descr", type="string", length=65536, nullable=false)
      */
     private $pathDescr;
 

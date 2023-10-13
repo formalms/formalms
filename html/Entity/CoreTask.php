@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreTask
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
@@ -75,14 +78,14 @@ class CoreTask
     /**
      * @var string
      *
-     * @ORM\Column(name="map", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="map", type="string", length=65536, nullable=false)
      */
     private $map;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="last_execution", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="last_execution", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $lastExecution;
 

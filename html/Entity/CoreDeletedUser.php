@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreDeletedUser
 {
+
+    use Timestamps;
     /**
      * @var int
      *
@@ -82,7 +84,7 @@ class CoreDeletedUser
     /**
      * @var string
      *
-     * @ORM\Column(name="signature", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="signature", type="string", length=65536, nullable=false)
      */
     private $signature;
 
@@ -96,7 +98,7 @@ class CoreDeletedUser
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="lastenter", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="lastenter", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $lastenter = null;
 
@@ -110,21 +112,21 @@ class CoreDeletedUser
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="pwd_expire_at", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="pwd_expire_at", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $pwdExpireAt = null;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="register_date", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="register_date", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $registerDate = null;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="deletion_date", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="deletion_date", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $deletionDate = null;
 

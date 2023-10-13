@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningClassroom
 {
+
+    use Timestamps;
     /**
      * @var int
      *
@@ -33,7 +35,7 @@ class LearningClassroom
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="description", type="string", length=65536, nullable=false)
      */
     private $description;
 
@@ -103,28 +105,28 @@ class LearningClassroom
     /**
      * @var string
      *
-     * @ORM\Column(name="disposition", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="disposition", type="string", length=65536, nullable=false)
      */
     private $disposition;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="instrument", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="instrument", type="string", length=65536, nullable=false)
      */
     private $instrument;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="available_instrument", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="available_instrument", type="string", length=65536, nullable=false)
      */
     private $availableInstrument;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="note", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="note", type="string", length=65536, nullable=false)
      */
     private $note;
 

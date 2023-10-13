@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningLightRepo
 {
+
+    use Timestamps;
+    
     /**
      * @var int
      *
@@ -40,9 +43,15 @@ class LearningLightRepo
     /**
      * @var string
      *
-     * @ORM\Column(name="repo_descr", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="repo_descr", type="string", length=65536, nullable=false)
      */
     private $repoDescr;
 
+        /**
+     * @var string
+     *
+     * @ORM\Column(name="repo_teacher_alert", type="boolean", nullable=true, options={"default"=0})
+     */
+    private $repoTeacherAlert;
 
 }

@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningTrackingeneral
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
@@ -68,7 +71,7 @@ class LearningTrackingeneral
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="timeof", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="timeof", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $timeof = null;
 

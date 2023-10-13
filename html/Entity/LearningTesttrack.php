@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningTesttrack
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
@@ -47,21 +50,21 @@ class LearningTesttrack
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_attempt", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="date_attempt", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $dateAttempt = null;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="date_attempt_mod", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="date_attempt_mod", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $dateAttemptMod;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_end_attempt", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="date_end_attempt", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $dateEndAttempt = null;
 
@@ -117,7 +120,7 @@ class LearningTesttrack
     /**
      * @var string
      *
-     * @ORM\Column(name="comment", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="comment", type="string", length=65536, nullable=false)
      */
     private $comment;
 
@@ -131,7 +134,7 @@ class LearningTesttrack
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="suspended_until", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="suspended_until", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $suspendedUntil;
 

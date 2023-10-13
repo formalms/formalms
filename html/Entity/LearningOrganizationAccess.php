@@ -18,10 +18,13 @@ use Doctrine\ORM\Mapping as ORM;
 class LearningOrganizationAccess
 {
 
+    use Timestamps;
+
+
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -30,10 +33,9 @@ class LearningOrganizationAccess
     /**
      * @var array
      *
-     * @ORM\Column(name="kind", type="string", columnDefinition="ENUM('user', 'group')"), length=0, nullable=false)
-     
+     * @ORM\Column(name="kind", type="string", columnDefinition="ENUM('user', 'group')"), nullable=false)
      */
-    private $kind = '';
+    private $kind;
 
     /**
      * @var int

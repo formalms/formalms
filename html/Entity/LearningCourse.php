@@ -9,11 +9,15 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * LearningCourse
  *
- * @ORM\Table(name="learning_course")
+ * @ORM\Table(name="learning_course", indexes={
+ *     @ORM\Index(name="fk_menucustom", columns={"id_menucustom"})
+ * })
  * @ORM\Entity
  */
 class LearningCourse
 {
+
+    use Timestamps;
     /**
      * @var int
      *
@@ -47,14 +51,14 @@ class LearningCourse
     /**
      * @var string
      *
-     * @ORM\Column(name="box_description", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="box_description", type="string", length=65536, nullable=false)
      */
     private $boxDescription;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="description", type="string", length=65536, nullable=false)
      */
     private $description;
 
@@ -194,14 +198,14 @@ class LearningCourse
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_begin", type="date", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="date_begin", type="date", nullable=true, options={"default"=NULL})
      */
     private $dateBegin = null;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_end", type="date", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="date_end", type="date", nullable=true, options={"default"=NULL})
      */
     private $dateEnd = null;
 
@@ -306,7 +310,7 @@ class LearningCourse
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="create_date", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="create_date", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $createDate = null;
 
@@ -362,14 +366,14 @@ class LearningCourse
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="sub_start_date", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="sub_start_date", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $subStartDate;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="sub_end_date", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="sub_end_date", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $subEndDate;
 
@@ -425,7 +429,7 @@ class LearningCourse
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="unsubscribe_date_limit", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="unsubscribe_date_limit", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $unsubscribeDateLimit;
 

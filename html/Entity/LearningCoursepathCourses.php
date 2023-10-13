@@ -18,12 +18,15 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningCoursepathCourses
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
      * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -54,7 +57,7 @@ class LearningCoursepathCourses
     /**
      * @var string
      *
-     * @ORM\Column(name="prerequisites", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="prerequisites", type="string", length=65536, nullable=false)
      */
     private $prerequisites;
 

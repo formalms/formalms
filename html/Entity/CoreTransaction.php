@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreTransaction
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
@@ -40,14 +43,14 @@ class CoreTransaction
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_creation", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="date_creation", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $dateCreation = null;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_activated", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="date_activated", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $dateActivated = null;
 

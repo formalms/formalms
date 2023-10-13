@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningTracksession
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
@@ -47,7 +50,7 @@ class LearningTracksession
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="enterTime", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="enterTime", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $entertime = null;
 
@@ -75,7 +78,7 @@ class LearningTracksession
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="lastTime", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="lastTime", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $lasttime = null;
 

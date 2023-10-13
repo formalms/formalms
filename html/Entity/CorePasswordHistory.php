@@ -5,21 +5,28 @@
 namespace Formalms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use FormaLms\Entity\Timestamps;
 
 /**
  * CorePasswordHistory
  *
- * @ORM\Table(name="core_password_history", indexes={@ORM\Index(name="pwd_date", columns={"pwd_date"})})
+ * @ORM\Table(name="core_password_history", 
+ *              indexes={@ORM\Index(name="pwd_date", columns={"pwd_date"}),
+ *              @ORM\Index(name="idst_user_idx", columns={"idst_user"})
+ * })
  * @ORM\Entity
  */
 class CorePasswordHistory
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
      * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -27,17 +34,15 @@ class CorePasswordHistory
      * @var int
      *
      * @ORM\Column(name="idst_user", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+
      */
     private $idstUser = '0';
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="pwd_date", type="datetime", nullable=true, options={"default"="NULL"})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\Column(name="pwd_date", type="datetime", nullable=true, options={"default"=NULL})
+
      */
     private $pwdDate = null;
 

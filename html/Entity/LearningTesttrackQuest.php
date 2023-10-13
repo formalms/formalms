@@ -5,6 +5,7 @@
 namespace Formalms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use FormaLms\Entity\Timestamps;
 
 /**
  * LearningTesttrackQuest
@@ -17,12 +18,15 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningTesttrackQuest
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
      * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -30,7 +34,6 @@ class LearningTesttrackQuest
      * @var int
      *
      * @ORM\Column(name="idTrack", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idtrack = '0';
 
@@ -38,8 +41,6 @@ class LearningTesttrackQuest
      * @var int
      *
      * @ORM\Column(name="idQuest", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idquest = '0';
 

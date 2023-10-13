@@ -9,17 +9,22 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CorePrivacypolicyLang
  *
- * @ORM\Table(name="core_privacypolicy_lang")
+ * @ORM\Table(name="core_privacypolicy_lang", indexes={
+ *     @ORM\Index(name="lang_code_idx", columns={"lang_code"}),
+ *     @ORM\Index(name="id_policy_idx", columns={"id_policy"})
+ * })
  * @ORM\Entity
  */
 class CorePrivacypolicyLang
 {
+
+    use Timestamps;
     /**
      * @var int
      *
      * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -27,8 +32,7 @@ class CorePrivacypolicyLang
      * @var int
      *
      * @ORM\Column(name="id_policy", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+
      */
     private $idPolicy = '0';
 
@@ -36,15 +40,14 @@ class CorePrivacypolicyLang
      * @var string
      *
      * @ORM\Column(name="lang_code", type="string", length=255, nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+ 
      */
     private $langCode = '';
 
     /**
      * @var string
      *
-     * @ORM\Column(name="translation", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="translation", type="string", length=65536, nullable=false)
      */
     private $translation;
 

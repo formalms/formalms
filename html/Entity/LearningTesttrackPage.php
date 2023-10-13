@@ -17,12 +17,15 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningTesttrackPage
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
      * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -45,14 +48,14 @@ class LearningTesttrackPage
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="display_from", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="display_from", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $displayFrom;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="display_to", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="display_to", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $displayTo;
 

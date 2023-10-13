@@ -14,14 +14,17 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreUser
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
-     * @ORM\Column(name="idst", type="integer", nullable=false)
+     * @ORM\Column(name="idst", type="integer", nullable=false, options={"default"=0})
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="NONE")
      */
-    private $idst = '0';
+    private $idst;
 
     /**
      * @var string
@@ -68,7 +71,7 @@ class CoreUser
     /**
      * @var string
      *
-     * @ORM\Column(name="signature", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="signature", type="string", length=65536, nullable=false)
      */
     private $signature;
 
@@ -82,7 +85,7 @@ class CoreUser
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="lastenter", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="lastenter", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $lastenter;
 
@@ -96,7 +99,7 @@ class CoreUser
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="pwd_expire_at", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="pwd_expire_at", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $pwdExpireAt = null;
 
@@ -117,7 +120,7 @@ class CoreUser
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="register_date", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="register_date", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $registerDate = null;
 

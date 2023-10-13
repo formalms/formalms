@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningPolltrack
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
@@ -47,7 +50,7 @@ class LearningPolltrack
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_attempt", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="date_attempt", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $dateAttempt = null;
 

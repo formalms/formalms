@@ -17,12 +17,15 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningTestquestExtra
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
      * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -45,7 +48,7 @@ class LearningTestquestExtra
     /**
      * @var string
      *
-     * @ORM\Column(name="extra_info", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="extra_info", type="string", length=65536, nullable=false)
      */
     private $extraInfo;
 

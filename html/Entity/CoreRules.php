@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreRules
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
@@ -47,7 +50,7 @@ class CoreRules
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="creation_date", type="date", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="creation_date", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $creationDate = null;
 
@@ -61,7 +64,7 @@ class CoreRules
     /**
      * @var string
      *
-     * @ORM\Column(name="course_list", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="course_list", type="string", length=65536, nullable=false)
      */
     private $courseList;
 

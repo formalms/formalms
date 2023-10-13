@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningTimePeriod
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
@@ -40,14 +43,14 @@ class LearningTimePeriod
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="start_date", type="date", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="start_date", type="date", nullable=true, options={"default"=NULL})
      */
     private $startDate = null;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="end_date", type="date", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="end_date", type="date", nullable=true, options={"default"=NULL})
      */
     private $endDate = null;
 

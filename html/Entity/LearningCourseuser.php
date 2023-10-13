@@ -10,7 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
  * LearningCourseuser
  *
  * @ORM\Table(name="learning_courseuser", indexes={
- *      @ORM\Index(name="courseuser_course_idx", columns={"idCourse"}),
  *      @ORM\Index(name="edition_id_idx", columns={"edition_id"}),
  *      @ORM\Index(name="id_user_idx", columns={"idUser"}),
  *      @ORM\Index(name="id_course_idx", columns={"idCourse"})
@@ -19,12 +18,15 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningCourseuser
 {
+
+    use Timestamps;
+    
     /**
      * @var int
      *
      * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -62,21 +64,21 @@ class LearningCourseuser
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="date_inscr", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="date_inscr", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $dateInscr;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="date_first_access", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="date_first_access", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $dateFirstAccess;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="date_complete", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="date_complete", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $dateComplete;
 
@@ -146,14 +148,14 @@ class LearningCourseuser
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="date_begin_validity", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="date_begin_validity", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $dateBeginValidity;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="date_expire_validity", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="date_expire_validity", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $dateExpireValidity;
 
@@ -167,7 +169,7 @@ class LearningCourseuser
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="requesting_unsubscribe_date", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="requesting_unsubscribe_date", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $requestingUnsubscribeDate;
 

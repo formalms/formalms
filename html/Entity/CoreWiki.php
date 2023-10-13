@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreWiki
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
@@ -47,7 +50,7 @@ class CoreWiki
     /**
      * @var string
      *
-     * @ORM\Column(name="other_lang", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="other_lang", type="string", length=65536, nullable=false)
      */
     private $otherLang;
 
@@ -61,14 +64,14 @@ class CoreWiki
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="description", type="string", length=65536, nullable=false)
      */
     private $description;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="creation_date", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="creation_date", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $creationDate = null;
 

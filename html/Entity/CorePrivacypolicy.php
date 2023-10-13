@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CorePrivacypolicy
 {
+
+    use Timestamps;
     /**
      * @var int
      *
@@ -40,14 +42,14 @@ class CorePrivacypolicy
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="lastedit_date", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="lastedit_date", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $lasteditDate;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="validity_date", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="validity_date", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $validityDate;
 

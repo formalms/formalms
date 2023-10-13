@@ -17,12 +17,15 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreWikiPageInfo
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
      * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -59,7 +62,7 @@ class CoreWikiPageInfo
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="last_update", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="last_update", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $lastUpdate = null;
 

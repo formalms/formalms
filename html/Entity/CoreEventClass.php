@@ -16,6 +16,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreEventClass
 {
+
+    use Timestamps;
+    
     /**
      * @var int
      *

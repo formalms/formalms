@@ -33,7 +33,7 @@ class CoreMailConfigs
     /**
      * @var bool
      *
-     * @ORM\Column(name="system", type="boolean", nullable=false)
+     * @ORM\Column(name="system", type="boolean", nullable=false, options={"default"=0})
      */
     private $system = '0';
 

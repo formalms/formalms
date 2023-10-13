@@ -18,12 +18,16 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningTesttrackTimes
 {
+
+    use Timestamps;
+
+
     /**
      * @var int
      *
      * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -61,7 +65,7 @@ class LearningTesttrackTimes
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_attempt", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="date_attempt", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $dateAttempt = null;
 
@@ -82,14 +86,14 @@ class LearningTesttrackTimes
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_begin", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="date_begin", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $dateBegin;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_end", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="date_end", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $dateEnd;
 

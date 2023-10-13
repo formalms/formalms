@@ -83,7 +83,7 @@ class ConferenceRulesUser
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="banned_until", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="banned_until", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $bannedUntil;
 

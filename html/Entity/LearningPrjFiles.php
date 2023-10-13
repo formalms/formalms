@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningPrjFiles
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
@@ -54,7 +57,7 @@ class LearningPrjFiles
     /**
      * @var string
      *
-     * @ORM\Column(name="fdesc", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="fdesc", type="string", length=65536, nullable=false)
      */
     private $fdesc;
 

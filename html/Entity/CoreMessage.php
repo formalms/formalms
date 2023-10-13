@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreMessage
 {
+
+    use Timestamps;
     /**
      * @var int
      *
@@ -40,7 +42,7 @@ class CoreMessage
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="posted", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="posted", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $posted = null;
 
@@ -54,7 +56,7 @@ class CoreMessage
     /**
      * @var string
      *
-     * @ORM\Column(name="textof", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="textof", type="string", length=65536, nullable=false)
      */
     private $textof;
 

@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreCustomfieldEntry
 {
+
+    use Timestamps;
     /**
      * @var int
      *
@@ -40,7 +42,7 @@ class CoreCustomfieldEntry
     /**
      * @var string
      *
-     * @ORM\Column(name="obj_entry", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="obj_entry", type="string", length=65536, nullable=false)
      */
     private $objEntry;
 

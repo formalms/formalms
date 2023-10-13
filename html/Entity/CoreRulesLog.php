@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreRulesLog
 {
+
+    use Timestamps;
     /**
      * @var int
      *
@@ -33,14 +35,14 @@ class CoreRulesLog
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="log_time", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="log_time", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $logTime = null;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="applied", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="applied", type="string", length=65536, nullable=false)
      */
     private $applied;
 

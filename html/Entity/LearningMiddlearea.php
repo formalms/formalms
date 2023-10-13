@@ -16,12 +16,15 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningMiddlearea
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
      * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -43,7 +46,7 @@ class LearningMiddlearea
     /**
      * @var string
      *
-     * @ORM\Column(name="idst_list", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="idst_list", type="string", length=65536, nullable=false)
      */
     private $idstList;
 

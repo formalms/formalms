@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningHomerepo
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
@@ -103,7 +106,7 @@ class LearningHomerepo
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="description", type="string", length=65536, nullable=false)
      */
     private $description;
 
@@ -124,14 +127,14 @@ class LearningHomerepo
     /**
      * @var string
      *
-     * @ORM\Column(name="objective", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="objective", type="string", length=65536, nullable=false)
      */
     private $objective;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="dateInsert", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="dateInsert", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $dateinsert = null;
 

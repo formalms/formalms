@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningPrjTasks
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
@@ -47,7 +50,7 @@ class LearningPrjTasks
     /**
      * @var string
      *
-     * @ORM\Column(name="tdesc", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="tdesc", type="string", length=65536, nullable=false)
      */
     private $tdesc;
 

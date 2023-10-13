@@ -18,12 +18,16 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningForumNotifier
 {
+
+    use Timestamps;
+
+    
     /**
      * @var int
      *
      * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 

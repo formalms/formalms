@@ -111,5 +111,28 @@ class HelperTool
                 EXISTS `'. $procedure .'`;';
     }
 
+    public static function createColumnIfNotExistsQueryBuilder(string $column, string $table, string $definition) : string{
+
+
+        return 'SET @dbname = DATABASE();
+        SET @column = "' . $column . '";
+        SET @table = "' . $table . '";
+        
+        SET @preparedStatement = (SELECT IF(
+          (
+            SELECT count(*) FROM information_schema.COLUMNS 
+          WHERE table_schema = @dbname AND table_name = @table
+            AND column_name = @column
+          ) <= 0,
+          "ALTER TABLE `' . $table . '`
+                ADD `' . $column . '` '. $definition . '",
+          "SELECT 1"
+            )
+        );
+        PREPARE createColumnIfNotExists FROM @preparedStatement;
+        EXECUTE createColumnIfNotExists;
+        DEALLOCATE PREPARE createColumnIfNotExists;';
+    }
+
 
 }

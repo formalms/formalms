@@ -18,12 +18,14 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreOrgChartFieldentry
 {
+
+    use Timestamps;
     /**
      * @var int
      *
      * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -54,7 +56,7 @@ class CoreOrgChartFieldentry
     /**
      * @var string
      *
-     * @ORM\Column(name="user_entry", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="user_entry", type="string", length=65536, nullable=false)
      */
     private $userEntry;
 

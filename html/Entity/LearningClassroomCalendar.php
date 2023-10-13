@@ -14,6 +14,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningClassroomCalendar
 {
+
+    use Timestamps;
+
+
     /**
      * @var int
      *
@@ -40,7 +44,7 @@ class LearningClassroomCalendar
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="description", type="string", length=65536, nullable=false)
      */
     private $description;
 
@@ -54,14 +58,14 @@ class LearningClassroomCalendar
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="start_date", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="start_date", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $startDate = null;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="end_date", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="end_date", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $endDate = null;
 

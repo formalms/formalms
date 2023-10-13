@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningSysforum
 {
+    use Timestamps;
+
     /**
      * @var int
      *
@@ -54,14 +56,14 @@ class LearningSysforum
     /**
      * @var string
      *
-     * @ORM\Column(name="textof", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="textof", type="string", length=65536, nullable=false)
      */
     private $textof;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="posted", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="posted", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $posted = null;
 

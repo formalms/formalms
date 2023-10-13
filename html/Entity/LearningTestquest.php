@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningTestquest
 {
+
+    use Timestamps;
+    
     /**
      * @var int
      *
@@ -47,7 +50,7 @@ class LearningTestquest
     /**
      * @var string
      *
-     * @ORM\Column(name="title_quest", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="title_quest", type="string", length=65536, nullable=false)
      */
     private $titleQuest;
 

@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreUserFile
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
@@ -68,7 +71,7 @@ class CoreUserFile
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="uldate", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="uldate", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $uldate = null;
 

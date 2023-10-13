@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreUserLogAttempt
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
@@ -33,7 +36,7 @@ class CoreUserLogAttempt
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="attempt_at", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="attempt_at", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $attemptAt = null;
 

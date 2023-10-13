@@ -17,12 +17,15 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningScormTrackingHistory
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
      * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -37,7 +40,7 @@ class LearningScormTrackingHistory
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_action", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="date_action", type="datetime", nullable=true, options={"default"=NULL})
      
      */
     private $dateAction = null;

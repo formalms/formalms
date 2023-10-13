@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningTransaction
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
@@ -33,14 +36,14 @@ class LearningTransaction
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="date", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $date = null;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_confirm", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="date_confirm", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $dateConfirm = null;
 
@@ -75,14 +78,14 @@ class LearningTransaction
     /**
      * @var string
      *
-     * @ORM\Column(name="payment_note", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="payment_note", type="string", length=65536, nullable=false)
      */
     private $paymentNote;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="course_note", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="course_note", type="string", length=65536, nullable=false)
      */
     private $courseNote;
 

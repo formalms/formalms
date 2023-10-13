@@ -14,6 +14,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningLoParam
 {
+
+    use Timestamps;
+
+    
     /**
      * @var int
      *

@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningNewsInternal
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
@@ -26,7 +29,7 @@ class LearningNewsInternal
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="publish_date", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="publish_date", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $publishDate = null;
 
@@ -40,14 +43,14 @@ class LearningNewsInternal
     /**
      * @var string
      *
-     * @ORM\Column(name="short_desc", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="short_desc", type="string", length=65536, nullable=false)
      */
     private $shortDesc;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="long_desc", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="long_desc", type="string", length=65536, nullable=false)
      */
     private $longDesc;
 

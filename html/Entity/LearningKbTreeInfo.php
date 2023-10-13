@@ -14,6 +14,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningKbTreeInfo
 {
+
+    use Timestamps;
+
+
     /**
      * @var int
      *
@@ -47,7 +51,7 @@ class LearningKbTreeInfo
     /**
      * @var string|null
      *
-     * @ORM\Column(name="node_desc", type="text", length=65535, nullable=true)
+     * @ORM\Column(name="node_desc", type="string", length=65536, nullable=true)
      */
     private $nodeDesc;
 

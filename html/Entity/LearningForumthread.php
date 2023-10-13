@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningForumthread
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
@@ -40,7 +43,7 @@ class LearningForumthread
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="posted", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="posted", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $posted = null;
 

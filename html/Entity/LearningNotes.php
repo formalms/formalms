@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningNotes
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
@@ -40,7 +43,7 @@ class LearningNotes
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="data", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="data", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $data = null;
 
@@ -54,7 +57,7 @@ class LearningNotes
     /**
      * @var string
      *
-     * @ORM\Column(name="textof", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="textof", type="string", length=65536, nullable=false)
      */
     private $textof;
 

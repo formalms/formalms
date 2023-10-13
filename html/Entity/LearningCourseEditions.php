@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningCourseEditions
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
@@ -47,7 +50,7 @@ class LearningCourseEditions
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="description", type="string", length=65536, nullable=false)
      */
     private $description;
 
@@ -61,14 +64,14 @@ class LearningCourseEditions
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_begin", type="date", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="date_begin", type="date", nullable=true, options={"default"=NULL})
      */
     private $dateBegin = null;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_end", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="date_end", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $dateEnd = null;
 
@@ -110,14 +113,14 @@ class LearningCourseEditions
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="sub_date_begin", type="date", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="sub_date_begin", type="date", nullable=true, options={"default"=NULL})
      */
     private $subDateBegin = null;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="sub_date_end", type="date", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="sub_date_end", type="date", nullable=true, options={"default"=NULL})
      */
     private $subDateEnd = null;
 

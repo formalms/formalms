@@ -9,11 +9,15 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * LearningAggregatedCertCourse
  *
- * @ORM\Table(name="learning_aggregated_cert_course", indexes={@ORM\Index(name="idAssociation", columns={"idAssociation"})})
+ * @ORM\Table(name="learning_aggregated_cert_course", 
+ *  indexes={@ORM\Index(name="idAssociation", columns={"idAssociation"})})
  * @ORM\Entity
  */
 class LearningAggregatedCertCourse
 {
+
+    use Timestamps;
+    
     /**
      * @var int
      *

@@ -34,21 +34,21 @@ class CoreCalendar
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="create_date", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="create_date", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $createDate;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="start_date", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="start_date", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $startDate;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="end_date", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="end_date", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $endDate;
 
@@ -62,7 +62,7 @@ class CoreCalendar
     /**
      * @var string|null
      *
-     * @ORM\Column(name="description", type="text", length=65535, nullable=true)
+     * @ORM\Column(name="description", type="text", length=65536, nullable=true, options={"default"=NULL})
      */
     private $description;
 
@@ -90,7 +90,7 @@ class CoreCalendar
     /**
      * @var string|null
      *
-     * @ORM\Column(name="visibility_rules", type="text", length=255, nullable=true)
+     * @ORM\Column(name="visibility_rules", type="text", length=65535, nullable=true, options={"default"=NULL})
      */
     private $visibilityRules;
 

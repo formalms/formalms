@@ -17,12 +17,14 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreEventProperty
 {
+
+    use Timestamps;
     /**
      * @var int
      *
      * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -45,14 +47,14 @@ class CoreEventProperty
     /**
      * @var string
      *
-     * @ORM\Column(name="property_value", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="property_value", type="string", length=65536, nullable=false)
      */
     private $propertyValue;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="property_date", type="date", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="property_date", type="date", nullable=true, options={"default"=NULL})
      */
     private $propertyDate = null;
 

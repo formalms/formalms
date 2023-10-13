@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningForummessage
 {
+
+    use Timestamps;
     /**
      * @var int
      *
@@ -40,7 +42,7 @@ class LearningForummessage
     /**
      * @var string
      *
-     * @ORM\Column(name="answer_tree", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="answer_tree", type="string", length=65536, nullable=false)
      */
     private $answerTree;
 
@@ -54,14 +56,14 @@ class LearningForummessage
     /**
      * @var string
      *
-     * @ORM\Column(name="textof", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="textof", type="string", length=65536, nullable=false)
      */
     private $textof;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="posted", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="posted", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $posted = null;
 
@@ -103,7 +105,7 @@ class LearningForummessage
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="modified_by_on", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="modified_by_on", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $modifiedByOn = null;
 

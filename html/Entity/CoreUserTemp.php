@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreUserTemp
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
@@ -68,7 +71,7 @@ class CoreUserTemp
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="request_on", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="request_on", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $requestOn = null;
 

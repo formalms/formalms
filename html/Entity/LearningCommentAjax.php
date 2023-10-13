@@ -14,6 +14,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningCommentAjax
 {
+
+    use Timestamps;
+
+
     /**
      * @var int
      *
@@ -47,14 +51,14 @@ class LearningCommentAjax
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="posted_on", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="posted_on", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $postedOn = null;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="textof", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="textof", type="string", length=65536, nullable=false)
      */
     private $textof;
 

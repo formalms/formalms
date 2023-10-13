@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningCourseDate
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
@@ -47,7 +50,7 @@ class LearningCourseDate
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="description", type="string", length=65536, nullable=false)
      */
     private $description;
 
@@ -96,21 +99,21 @@ class LearningCourseDate
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="sub_start_date", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="sub_start_date", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $subStartDate = null;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="sub_end_date", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="sub_end_date", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $subEndDate = null;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="unsubscribe_date_limit", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="unsubscribe_date_limit", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $unsubscribeDateLimit = null;
 

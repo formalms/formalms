@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreGroup
 {
+
+    use Timestamps;
     /**
      * @var int
      *
@@ -40,7 +42,7 @@ class CoreGroup
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="description", type="string", length=65536, nullable=false)
      */
     private $description;
 
@@ -61,7 +63,7 @@ class CoreGroup
     /**
      * @var string
      *
-     * @ORM\Column(name="show_on_platform", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="show_on_platform", type="string", length=65536, nullable=false)
      */
     private $showOnPlatform;
 

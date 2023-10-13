@@ -17,12 +17,15 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreSettingUser
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
      * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -45,7 +48,7 @@ class CoreSettingUser
     /**
      * @var string
      *
-     * @ORM\Column(name="value", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="value", type="string", length=65536, nullable=false)
      */
     private $value;
 

@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningCompetenceCategory
 {
+
+    use Timestamps;
+    
     /**
      * @var int
      *

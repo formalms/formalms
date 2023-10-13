@@ -14,6 +14,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningFaq
 {
+
+    use Timestamps;
+
+
     /**
      * @var int
      *
@@ -47,14 +51,14 @@ class LearningFaq
     /**
      * @var string
      *
-     * @ORM\Column(name="keyword", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="keyword", type="string", length=65536, nullable=false)
      */
     private $keyword;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="answer", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="answer", type="string", length=65536, nullable=false)
      */
     private $answer;
 

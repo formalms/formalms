@@ -19,12 +19,15 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreWikiRevision
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
      * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -70,7 +73,7 @@ class CoreWikiRevision
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="rev_date", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="rev_date", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $revDate = null;
 

@@ -14,6 +14,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningInstmsg
 {
+
+    use Timestamps;
+
+
     /**
      * @var int
      *
@@ -40,7 +44,7 @@ class LearningInstmsg
     /**
      * @var string|null
      *
-     * @ORM\Column(name="msg", type="text", length=65535, nullable=true)
+     * @ORM\Column(name="msg", type="string", length=65536, nullable=true)
      */
     private $msg;
 
@@ -54,7 +58,7 @@ class LearningInstmsg
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="data", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="data", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $data = null;
 

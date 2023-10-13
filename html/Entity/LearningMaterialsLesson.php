@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningMaterialsLesson
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
@@ -40,7 +43,7 @@ class LearningMaterialsLesson
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="description", type="string", length=65536, nullable=false)
      */
     private $description;
 

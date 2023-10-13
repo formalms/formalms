@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningReportFilter
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
@@ -40,7 +43,7 @@ class LearningReportFilter
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="creation_date", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="creation_date", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $creationDate = null;
 
@@ -54,7 +57,7 @@ class LearningReportFilter
     /**
      * @var string
      *
-     * @ORM\Column(name="filter_data", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="filter_data", type="text", nullable=false)
      */
     private $filterData;
 

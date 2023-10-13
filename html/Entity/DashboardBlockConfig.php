@@ -14,6 +14,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class DashboardBlockConfig
 {
+
+    use Timestamps;
+
+
     /**
      * @var int
      *
@@ -33,7 +37,7 @@ class DashboardBlockConfig
     /**
      * @var string
      *
-     * @ORM\Column(name="block_config", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="block_config", type="string", length=65536, nullable=false)
      */
     private $blockConfig;
 
@@ -46,14 +50,11 @@ class DashboardBlockConfig
 
 
     /**
-     * @var \DashboardLayouts
+     * @var int
      *
-     * @ORM\ManyToOne(targetEntity="DashboardLayouts")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="dashboard_id", referencedColumnName="id")
-     * })
+     * @ORM\Column(name="dashboard_id", type="bigint", nullable=true, options={"default"=NULL})
      */
-    private $dashboard;
+    private $dashboardId;
 
 
 }

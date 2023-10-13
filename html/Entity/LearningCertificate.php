@@ -14,6 +14,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningCertificate
 {
+
+    use Timestamps;
+
+    
     /**
      * @var int
      *
@@ -40,7 +44,7 @@ class LearningCertificate
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="description", type="string", length=65536, nullable=false)
      */
     private $description;
 
@@ -54,7 +58,7 @@ class LearningCertificate
     /**
      * @var string
      *
-     * @ORM\Column(name="cert_structure", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="cert_structure", type="string", length=65536, nullable=false)
      */
     private $certStructure;
 

@@ -9,17 +9,22 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CoreRulesEntity
  *
- * @ORM\Table(name="core_rules_entity")
+ * @ORM\Table(name="core_rules_entity", indexes={
+ *     @ORM\Index(name="id_entity_idx", columns={"id_entity"}),
+ *     @ORM\Index(name="id_rule_idx", columns={"id_rule"})
+ * })
  * @ORM\Entity
  */
 class CoreRulesEntity
 {
+
+    use Timestamps;
     /**
      * @var int
      *
      * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -27,8 +32,7 @@ class CoreRulesEntity
      * @var int
      *
      * @ORM\Column(name="id_rule", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+
      */
     private $idRule = '0';
 
@@ -36,15 +40,14 @@ class CoreRulesEntity
      * @var string
      *
      * @ORM\Column(name="id_entity", type="string", length=50, nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+
      */
     private $idEntity = '';
 
     /**
      * @var string
      *
-     * @ORM\Column(name="course_list", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="course_list", type="string", length=65536, nullable=false)
      */
     private $courseList;
 

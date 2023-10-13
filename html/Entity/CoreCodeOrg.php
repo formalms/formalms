@@ -9,7 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CoreCodeOrg
  *
- * @ORM\Table(name="core_code_org")
+ * @ORM\Table(name="core_code_org", indexes={
+ *     @ORM\Index(name="id_codegroup_idx", columns={"idCodeGroup"}),
+ *     @ORM\Index(name="id_org_idx", columns={"idOrg"})
+ * })
  * @ORM\Entity
  */
 class CoreCodeOrg
@@ -20,7 +23,7 @@ class CoreCodeOrg
      *
      * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 

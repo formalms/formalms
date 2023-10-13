@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningReservationEvents
 {
+
+    use Timestamps;
     /**
      * @var int
      *
@@ -61,7 +63,7 @@ class LearningReservationEvents
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date", type="date", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="date", type="date", nullable=true, options={"default"=NULL})
      */
     private $date = null;
 
@@ -75,7 +77,7 @@ class LearningReservationEvents
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="deadLine", type="date", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="deadLine", type="date", nullable=true, options={"default"=NULL})
      */
     private $deadline = null;
 

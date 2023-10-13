@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningCompetenceTrack
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
@@ -61,7 +64,7 @@ class LearningCompetenceTrack
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_assignment", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="date_assignment", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $dateAssignment = null;
 

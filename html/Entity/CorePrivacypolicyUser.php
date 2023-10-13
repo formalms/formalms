@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CorePrivacypolicyUser
 {
+
+    use Timestamps;
     /**
      * @var int
      *
@@ -40,7 +42,7 @@ class CorePrivacypolicyUser
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="accept_date", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="accept_date", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $acceptDate;
 

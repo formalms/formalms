@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreOrgChartTree
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
@@ -33,7 +36,7 @@ class CoreOrgChartTree
     /**
      * @var string
      *
-     * @ORM\Column(name="path", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="path", type="string", length=65536, nullable=false)
      */
     private $path;
 

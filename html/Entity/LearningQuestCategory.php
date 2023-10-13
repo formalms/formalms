@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningQuestCategory
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
@@ -33,7 +36,7 @@ class LearningQuestCategory
     /**
      * @var string
      *
-     * @ORM\Column(name="textof", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="textof", type="string", length=65536, nullable=false)
      */
     private $textof;
 

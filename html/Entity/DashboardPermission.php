@@ -14,6 +14,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class DashboardPermission
 {
+
+    use Timestamps;
+
+
     /**
      * @var int
      *
@@ -33,7 +37,7 @@ class DashboardPermission
     /**
      * @var string
      *
-     * @ORM\Column(name="idst_list", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="idst_list", type="string", length=65536, nullable=false)
      */
     private $idstList;
 

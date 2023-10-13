@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningPrjTodo
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
@@ -40,7 +43,7 @@ class LearningPrjTodo
     /**
      * @var string
      *
-     * @ORM\Column(name="ttxt", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="ttxt", type="string", length=65536, nullable=false)
      */
     private $ttxt;
 

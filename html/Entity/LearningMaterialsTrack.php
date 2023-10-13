@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningMaterialsTrack
 {
+
+    use Timestamps;
+    
     /**
      * @var int
      *

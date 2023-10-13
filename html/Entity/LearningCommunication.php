@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningCommunication
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
@@ -33,14 +36,14 @@ class LearningCommunication
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="description", type="string", length=65536, nullable=false)
      */
     private $description;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="publish_date", type="date", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="publish_date", type="date", nullable=true, options={"default"=NULL})
      */
     private $publishDate = null;
 

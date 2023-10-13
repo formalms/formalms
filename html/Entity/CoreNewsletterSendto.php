@@ -17,12 +17,15 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreNewsletterSendto
 {
+
+    use Timestamps;
+    
     /**
      * @var int
      *
      * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -45,7 +48,7 @@ class CoreNewsletterSendto
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="stime", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="stime", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $stime = null;
 

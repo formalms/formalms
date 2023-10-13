@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningCourseDateDay
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
@@ -47,28 +50,28 @@ class LearningCourseDateDay
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_begin", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="date_begin", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $dateBegin = null;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_end", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="date_end", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $dateEnd = null;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="pause_begin", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="pause_begin", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $pauseBegin = null;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="pause_end", type="datetime", nullable=true, options={"default"="NULL"})
+     * @ORM\Column(name="pause_end", type="datetime", nullable=true, options={"default"=NULL})
      */
     private $pauseEnd = null;
 

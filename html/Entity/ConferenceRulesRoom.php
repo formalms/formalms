@@ -146,21 +146,21 @@ class ConferenceRulesRoom
     /**
      * @var string|null
      *
-     * @ORM\Column(name="advice_one", type="text", length=65535, nullable=true)
+     * @ORM\Column(name="advice_one", type="string", length=65536, nullable=true, options={"default"=NULL})
      */
     private $adviceOne;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="advice_two", type="text", length=65535, nullable=true)
+     * @ORM\Column(name="advice_two", type="string", length=65536, nullable=true, options={"default"=NULL})
      */
     private $adviceTwo;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="advice_three", type="text", length=65535, nullable=true)
+     * @ORM\Column(name="advice_three", type="string", length=65536, nullable=true, options={"default"=NULL})
      */
     private $adviceThree;
 

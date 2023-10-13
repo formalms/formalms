@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningAssessmentRule
 {
+
+    use Timestamps;
+
     /**
      * @var int
      *
@@ -54,21 +57,21 @@ class LearningAssessmentRule
     /**
      * @var string|null
      *
-     * @ORM\Column(name="competences_list", type="text", length=65535, nullable=true)
+     * @ORM\Column(name="competences_list", type="string", length=65536, nullable=true)
      */
     private $competencesList;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="courses_list", type="text", length=65535, nullable=true)
+     * @ORM\Column(name="courses_list", type="string", length=65536, nullable=true)
      */
     private $coursesList;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="feedback_txt", type="text", length=65535, nullable=true)
+     * @ORM\Column(name="feedback_txt", type="string", length=65536, nullable=true)
      */
     private $feedbackTxt;
 
