@@ -134,7 +134,7 @@ class qformat_gift
 
     public function defaultquestion()
     {
-        require_once _lms_ . '/modules/question/class.question.php';
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/class.question.php');
         $question = new QuestionRaw();
 
         return $question;
@@ -670,7 +670,7 @@ class qformat_gift
             $question->text = "[$question->text]";
         }*/
 
-       
+
         $qtext_format = '[' . $question->qtype . ']';
         // output depends on question type
         switch (strtolower($question->qtype)) {
