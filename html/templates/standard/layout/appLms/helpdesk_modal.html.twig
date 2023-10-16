@@ -1,4 +1,4 @@
-<div class="modal" tabindex="-1" role="dialog" id="modal_helpdesk">
+<div class="modal fade" tabindex="-1" role="dialog" id="modal_helpdesk">
     <div class="modal-dialog" role="document">
         <form id="contact" name="contact" action="#" method="post" tabindex="0">
             <fieldset>
@@ -13,7 +13,7 @@
                     <div class="modal-body">
                         {% if email %}
                             <div class="container container_helpdesk ">
-                                <input type="hidden" id="sendto" name="sendto" class="txt" value="{{ Get_getSetting('customer_help_email') }}" readonly>
+                                <input type="hidden" id="sendto" name="sendto" class="txt" value="{{ email }}" readonly>
                                 <input type="hidden" id="authentic_request_helpdesk" name="authentic_request" value="{{ Util_getSignature() }}" />
                                 <input type="hidden" id="username_2" name="username" class="txt" value="{{ user.getIdst() }}">
                                 <input type="hidden" id="help_req_resolution" name="help_req_resolution">

@@ -19,13 +19,14 @@ $(document).ready(function() {
     $("#contact").submit(function() { return false; });
 
     $("#send_request").on("click", function(){
+        $('#modal_helpdesk').modal('hide');
+
         var emailval  = $("#email").val();
         var msgval    = $("#msg").val();
         var msglen    = msgval.length;
         var oggettoval    = $("#oggetto").val();
         var oggettolen    = oggettoval.length;
         var mailvalid = validateEmail(emailval);
-        var msg_ok    = $("#msg_ok").val();
 
         var sendtoval  = $("#sendto").val();
         var sendtovalid = validateEmail(sendtoval);
@@ -42,8 +43,6 @@ $(document).ready(function() {
 
 
         if(mailvalid == true && msglen >= 4 && oggettolen >= 1 && sendtovalid == true) {
-            $("#send").fadeOut();
-            $("#send-loading").fadeIn();
 
             screen_size = getScreenSize();
 
@@ -65,23 +64,14 @@ $(document).ready(function() {
                 data: formData,
                 cache: false,
                 contentType: false,
-                processData: false   ,
-
+                processData: false ,
                 success: function(data) {
-                    if(data == "true") {
-                        $("#contact").fadeOut("fast", function(){
-                            $(this).before("<p id=\"success-hd-message\"><strong>" + msg_ok + "</strong></p>");
-                            setTimeout(function() {
-                                $.fancybox.close();
-                                $("#contact").fadeIn();
-                                $("#success-hd-message").remove();
-                                $("#send-loading").fadeOut();
-                                $("#send").fadeIn();
-                            }, 3000);
-                        });
-                    }
+                },
+                error: function(error) {
                 }
             });
+
+
         }
     });
 });

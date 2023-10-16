@@ -35,7 +35,6 @@ class HelpdeskLmsController extends LmsController
         $priorita = $_POST['priorita'];
 
         $help_req_resolution = $_POST['help_req_resolution'];
-        $help_req_flash_installed = $_POST['help_req_flash_installed'];
 
         $subject = $prefix_subj ? '[' . $prefix_subj . '] ' . $oggetto : $oggetto;
 
@@ -74,14 +73,9 @@ class HelpdeskLmsController extends LmsController
         }
 
         $msg .= $br_char . '---------- CLIENT INFO -----------' . $br_char;
-        // $msg .= "IP: " . $_SERVER['REMOTE_ADDR'] . $br_char;
         $msg .= 'USER AGENT: ' . $_SERVER['HTTP_USER_AGENT'] . $br_char;
-
-        // $msg .= "OS: " . $result['platform'] . $br_char;
-        // $msg .= "BROWSER: " .  $result['browser'] . " " . $result['version'] . $br_char;
-
         $msg .= 'RESOLUTION: ' . $help_req_resolution . $br_char;
-        $msg .= 'FLASH: ' . $help_req_flash_installed . $br_char;
+
 
         $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
         $mailer->addReplyTo(strip_tags($usermail));
