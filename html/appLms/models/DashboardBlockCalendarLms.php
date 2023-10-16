@@ -163,7 +163,7 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
         }
 
         if ($showCourseWithoutDates) {
-            $query .= ' OR c.date_begin = 0000-00-00 OR c.date_end = 0000-00-00';
+            $query .= ' OR c.date_begin IS NULL OR c.date_end IS NULL';
         } else {
             switch ($courseType) {
                 case self::COURSE_TYPE_CLASSROOM:
@@ -171,7 +171,7 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
                     break;
                 case self::COURSE_TYPE_ELEARNING:
                 default:
-                    $query .= ' AND c.date_begin != 0000-00-00 AND  c.date_end != 0000-00-00';
+                    $query .= ' AND c.date_begin IS NOT NULL AND  c.date_end IS NOT NULL';
                     break;
             }
         }
@@ -230,9 +230,9 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
             . ' AND ( c.date_begin BETWEEN CAST("' . $startDate . '" AS DATE) AND CAST("' . $endDate . '" AS DATE)';
 
         if ($showCourseWithoutDates) {
-            $query .= ' OR c.date_begin = 0000-00-00 OR c.date_end = 0000-00-00';
+            $query .= ' OR c.date_begin IS NULL OR c.date_end IS NULL';
         } else {
-            $query .= ' AND c.date_begin != 0000-00-00 AND c.date_end != 0000-00-00';
+            $query .= ' AND c.date_begin IS NOT NULL AND c.date_end IS NOT NULL';
         }
 
         $query .= ')';

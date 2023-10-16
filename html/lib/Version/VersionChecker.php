@@ -351,6 +351,7 @@ class VersionChecker
         $lastMigration = trim(\FormaLms\lib\Database\FormaMigrator::getInstance()->executeCommand('current'));
         $arrayLastMigration = explode('\\', $lastMigration);
 
+     
         $result['subVersion'] = '';
         $result['maturity'] = static::getMaturity();
  

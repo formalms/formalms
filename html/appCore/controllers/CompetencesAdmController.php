@@ -1160,6 +1160,14 @@ class CompetencesAdmController extends AdmController
         }
         $assign = FormaLms\lib\Get::req('assign_score', DOTY_MIXED, []);
         $remove = FormaLms\lib\Get::req('del_selection', DOTY_STRING, '');
+        $allValue = FormaLms\lib\Get::req('_score_', DOTY_INT, 0);
+
+        if($allValue) {
+            foreach($assign as $userId => $assigned_user) {
+                $assign[$userId] = $allValue;
+            }
+        }
+
         $del_selection = ($remove != '' ? explode(',', $remove) : []);
 
         $res1 = $this->model->assignCompetenceUsers($id_competence, $assign, true);
