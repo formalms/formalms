@@ -89,10 +89,11 @@ class DashboardsettingsAdm extends Model implements Accessible
 
     public function getLayout($id)
     {
+
         return array_filter(
             $this->layouts,
             function ($e) use (&$id) {
-                return $e->id === $id;
+                return $e->getId() == $id;
             }
         );
     }

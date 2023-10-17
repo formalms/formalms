@@ -173,13 +173,19 @@ class DashboardsettingsAdmController extends AdmController
     public function clone()
     {
         $dashboardId = FormaLms\lib\Get::req('dashboard', DOTY_INT, false);
-        $dashboard = $this->model->getLayout($dashboardId);
+        $dashboard = array_shift($this->model->getLayout($dashboardId));
+
 
         $data = [
             'ajaxUrl' => [
                 'cloneLayout' => 'ajax.adm_server.php?r=adm/dashboardsettings/cloneLayout',
             ],
-            'dashboard' => $dashboard,
+            'dashboard' => [
+                'id' => $dashboard->getId(),
+                'name' => $dashboard->getName(),
+                'caption' => $dashboard->getCaption(),
+
+            ],
             'dashboardId' => $dashboardId,
         ];
 
@@ -308,6 +314,7 @@ class DashboardsettingsAdmController extends AdmController
             SELECT block_class, block_config, position, '$dashboard_new_id'
             FROM dashboard_block_config
             WHERE dashboard_id = $id";
+
             $response = sql_query($sql);
         }
 
