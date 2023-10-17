@@ -17,6 +17,8 @@ $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
 
 $session = $request->getSession();
 
+$eventData = Events::trigger('lms.index.preoperation');
+
 // access granted only if user is logged in
 if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) { // !isset($_GET['no_redirect']) && !isset($_POST['no_redirect']) XXX: redirection???
     // save requested page in session to call it after login
@@ -57,7 +59,11 @@ if ($session->has('must_renew_pwd') && $session->get('must_renew_pwd') == 1) {
     $GLOBALS['modname'] = '';
     $GLOBALS['op'] = '';
     $GLOBALS['req'] = 'lms/precompile/show';
-} elseif ($GLOBALS['modname'] == '' && $GLOBALS['op'] == '' && $GLOBALS['req'] == '') {
+}
+
+$eventData = Events::trigger('lms.index.beforenavigation');
+
+if ($GLOBALS['modname'] == '' && $GLOBALS['op'] == '' && $GLOBALS['req'] == '') {
     // setting default action
 
     // if course is in session, enter the course

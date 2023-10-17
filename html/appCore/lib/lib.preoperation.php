@@ -14,6 +14,9 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+
+$eventData = Events::trigger('core.index.preoperation');
+
 // access granted only if user is logged in
 if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     // save requested page in session to call it after login
@@ -52,3 +55,5 @@ if (!empty(FormaLms\lib\Get::req('close_over', DOTY_MIXED, ''))) {
     $session->set('menu_over', ['p_sel' => '', 'main_sel' => 0]);
     $session->save();
 }
+
+$eventData = Events::trigger('core.index.beforenavigation');
