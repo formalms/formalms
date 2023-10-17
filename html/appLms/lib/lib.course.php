@@ -2497,7 +2497,7 @@ function getSubscribedInfo($idCourse, $subdived_for_level = false, $id_level = f
             $query_courseuser .= ' AND c.idUser IN (-1)';
         }
     }
-    if (!$user_filter && $user_filter !== '') {
+    if ($user_filter && $user_filter !== '') {
         $query_courseuser .= " AND (u.firstname LIKE '%" . $user_filter . "%' OR u.lastname LIKE '%" . $user_filter . "%' OR u.userid LIKE '%" . $user_filter . "%')";
     }
     if ($sort) {
