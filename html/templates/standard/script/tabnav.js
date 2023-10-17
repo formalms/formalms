@@ -55,6 +55,42 @@ window.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  $('div.menu-area a').bind('click', function (event) {
+    event.preventDefault();
+    id = $(this).attr('rel');
+    $('ul.float-left').hide();
+    $('ul#' + id).show();
+    $('div.menu-area').removeClass('menu-selected');
+    $(this).parent().addClass('menu-selected');
+  });
+
+  $("#accordion").accordion({
+    collapsible: true,
+    active: false,
+    icons: false
+  });
+
+  // feedback
+  $('#container-feedback').click(function () {
+    event.preventDefault();
+    $(this).fadeOut(500);
+  });
+
+  // setting correct navigation with keyboard tab
+  $('#c-menu--slide-right a, #c-menu--slide-right input, #c-menu--slide-right select, #c-menu--slide-right button, #c-menu--slide-right textarea').attr('tabindex',-1);
+  $('#c-menu--slide-right a, #c-menu--slide-right input, #c-menu--slide-right select, #c-menu--slide-right button, #c-menu--slide-right textarea').attr('aria-hidden',true);
+  $('#course_search_simple_filter_options .selectpicker').attr('tabindex',0);
+  $('#course_search_simple_filter_options .selectpicker').attr('aria-label','Select');
+
+  $("#c-button--slide-right").click(function(){
+    $('#c-menu--slide-right a, #c-menu--slide-right input, #c-menu--slide-right select, #c-menu--slide-right button, #c-menu--slide-right textarea').attr('tabindex',0);
+    $('#c-menu--slide-right a, #c-menu--slide-right input, #c-menu--slide-right select, #c-menu--slide-right button, #c-menu--slide-right textarea').attr('aria-hidden',false);
+  });
+  $(".c-menu__close").click(function(){
+    $('#c-menu--slide-right a, #c-menu--slide-right input, #c-menu--slide-right select, #c-menu--slide-right button, #c-menu--slide-right textarea').attr('tabindex',-1);
+    $('#c-menu--slide-right a, #c-menu--slide-right input, #c-menu--slide-right select, #c-menu--slide-right button, #c-menu--slide-right textarea').attr('aria-hidden',true);
+  });
+
 
 });
 
