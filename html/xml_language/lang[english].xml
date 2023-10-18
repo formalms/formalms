@@ -1356,6 +1356,7 @@ you have been unsubscribed from the course ([course_code]) - [course]]]></key>
         <key id="field&amp;_USE_MULTI_LANG_WHEN_AVAILABLE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Use multi-language field if available]]></key>
         <key id="field&amp;_YAHOO" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Yahoo account]]></key>
         <key id="field&amp;_YESNO" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Field yes/no]]></key>
+        <key id="field&amp;_NOT_TRANSLATED_FIELD" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Not Translated Field]]></key>
       </module>
       <module id="fncroles">
         <key id="fncroles&amp;_GAP_ANALYSIS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Gap analysis]]></key>

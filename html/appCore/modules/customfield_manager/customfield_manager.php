@@ -89,12 +89,12 @@ function field_list()
     //display inserted field--------------------------------------------
     $tb_field = new Table(FormaLms\lib\Get::sett('visuItem'));
 
-    $query_field_display = '
-	SELECT c.id_field, c.type_field, cl.translation, ca.area_name, c.code
-	FROM ' . $GLOBALS['prefix_fw'] . '_customfield AS c, ' . $GLOBALS['prefix_fw'] . '_customfield_lang AS cl,' . $GLOBALS['prefix_fw'] . "_customfield_area AS ca
-	WHERE c.area_code = ca.area_code
-        AND c.id_field = cl.id_field
-        AND cl.lang_code = '" . Lang::get() . "'
+    $query_field_display = "
+	SELECT c.id_field, c.type_field, COALESCE(cl.translation, CONCAT('".Lang::t('_NOT_TRANSLATED_FIELD','field')."',' ',c.id_field)) as translation, ca.area_name, c.code
+	FROM
+	%adm_customfield AS c
+	LEFT JOIN %adm_customfield_lang cl on cl.id_field = c.id_field AND cl.lang_code = '" . Lang::get() . "' 
+	LEFT JOIN %adm_customfield_area ca on ca.area_code = c.area_code
 		" . (isset($_POST['filter_type_field']) && $_POST['filter_type_field'] != 'all_field' ?
             " AND c.type_field = '" . $field_av[$_POST['filter_type_field']] . "' " :
             '') . '
@@ -103,7 +103,6 @@ function field_list()
             '') . '
 	ORDER BY c.sequence';
 
- 
     $re_field_display = sql_query($query_field_display);
     $all_fields = sql_num_rows($re_field_display);
 
@@ -111,6 +110,7 @@ function field_list()
     $img_down = '<img class="valing-middle" src="' . getPathImage() . 'standard/down.png" alt="' . $std_lang->def('_MOVE_DOWN') . '" />';
 
     $content_h = [
+        '<a href="index.php?modname=customfield_manager&amp;op=field_list">' . $lang->def('_ID') . '</a>',
         '<a href="index.php?modname=customfield_manager&amp;op=field_list">' . $lang->def('_CODE') . '</a>',
         '<a href="index.php?modname=customfield_manager&amp;op=field_list">' . $lang->def('_FIELD_NAME') . '</a>',
         '<a href="index.php?modname=customfield_manager&amp;op=field_list">' . $lang->def('_FIELD_TYPE') . '</a>',
@@ -137,7 +137,7 @@ function field_list()
     $lat_type = 'textfield';
     $i = 1;
     while (list($id_field, $type_field, $translation, $area_name, $code) = sql_fetch_row($re_field_display)) {
-        $cont = [$code, $translation, $lang->def('_' . strtoupper($type_field)), $area_name];
+        $cont = [$id_field, $code, $translation, $lang->def('_' . strtoupper($type_field)), $area_name];
         if ($mod_perm) {
             if ($i != $all_fields) {
                 $cont[] = '<a href="index.php?modname=customfield_manager&amp;op=movedown&amp;type_field='
