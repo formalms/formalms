@@ -106,13 +106,13 @@ function addeditClassEvent($id = 0)
     $url = 'index.php?modname=classevent';
 
     if ($id == 0) {
-        $form_code = $form->openForm('main_form', $url . '&amp;op=save');
+        $form_code = Form::openForm('main_form', $url . '&amp;op=save');
         $submit_lbl = $lang->def('_INSERT');
         $page_title = $lang->def('_ADD_ITEM');
 
         $location = '';
     } elseif ($id > 0) {
-        $form_code = $form->openForm('main_form', $url . '&amp;op=save');
+        $form_code = Form::openForm('main_form', $url . '&amp;op=save');
 
         require_once _lms_ . '/admin/modules/classevent/lib.classevent.php';
 
@@ -133,18 +133,18 @@ function addeditClassEvent($id = 0)
     $res .= "<div class=\"std_block\">\n";
     $res .= getBackUi($back_ui_url, $lang->def('_BACK'));
 
-    $res .= $form_code . $form->openElementSpace();
+    $res .= $form_code . Form::openElementSpace();
 
-    $res .= $form->getTextfield($lang->def('_LOCATION'), 'location', 'location', 255, $location);
+    $res .= Form::getTextfield($lang->def('_LOCATION'), 'location', 'location', 255, $location);
 
-    $res .= $form->getHidden('id', 'id', $id);
+    $res .= Form::getHidden('id', 'id', $id);
 
-    $res .= $form->closeElementSpace();
-    $res .= $form->openButtonSpace();
-    $res .= $form->getButton('save', 'save', $submit_lbl);
-    $res .= $form->getButton('undo', 'undo', $lang->def('_UNDO'));
-    $res .= $form->closeButtonSpace();
-    $res .= $form->closeForm();
+    $res .= Form::closeElementSpace();
+    $res .= Form::openButtonSpace();
+    $res .= Form::getButton('save', 'save', $submit_lbl);
+    $res .= Form::getButton('undo', 'undo', $lang->def('_UNDO'));
+    $res .= Form::closeButtonSpace();
+    $res .= Form::closeForm();
 
     $res .= getBackUi($back_ui_url, $lang->def('_BACK'));
     $res .= "</div>\n";
@@ -199,9 +199,9 @@ function deleteClassEvent()
 
         $url = 'index.php?modname=classevent&amp;op=del';
 
-        $res .= $form->openForm('main_form', $url);
+        $res .= Form::openForm('main_form', $url);
 
-        $res .= $form->getHidden('id', 'id', $id);
+        $res .= Form::getHidden('id', 'id', $id);
 
         $res .= getDeleteUi(
         $lang->def('_AREYOUSURE'),
@@ -210,7 +210,7 @@ function deleteClassEvent()
             'conf_del',
             'undo');
 
-        $res .= $form->closeForm();
+        $res .= Form::closeForm();
         $res .= "</div>\n";
         $out->add($res);
     }

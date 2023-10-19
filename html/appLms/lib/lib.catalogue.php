@@ -123,13 +123,13 @@ class Selector_Catalogue
         if ($this->show_filter === true) {
             $form = new Form();
             /*$GLOBALS['page']->add(
-                $form->getOpenFieldset($lang->def('_SEARCH'))
+                Form::getOpenFieldset($lang->def('_SEARCH'))
                 .Form::getTextfield($lang->def('_NAME'), 'cat_filter_name', 'cat_filter_name', '255',
                     ( isset($_POST['cat_filter_name']) ? $_POST['cat_filter_name'] : '' ))
-                .$form->openButtonSpace()
-                .$form->getButton('catalogue_filter', 'catalogue_filter', $lang->def('_SEARCH'))
-                .$form->closeButtonSpace()
-                .$form->getCloseFieldset()
+                .Form::openButtonSpace()
+                .Form::getButton('catalogue_filter', 'catalogue_filter', $lang->def('_SEARCH'))
+                .Form::closeButtonSpace()
+                .Form::getCloseFieldset()
             , 'content');
             */
             cout('<div class="quick_search_form">'

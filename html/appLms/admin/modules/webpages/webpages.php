@@ -287,15 +287,15 @@ function delpages()
         $GLOBALS['page']->add(
             getTitleArea($page_title, 'admin_webpages')
             . '<div class="std_block">'
-            . $form->openForm('del_pages', 'index.php?modname=webpages&amp;op=delpages')
-            . $form->getHidden('of_platform', 'of_platform', 'lms')
-            . $form->getHidden('id_page', 'id_page', $id_page)
+            . Form::openForm('del_pages', 'index.php?modname=webpages&amp;op=delpages')
+            . Form::getHidden('of_platform', 'of_platform', 'lms')
+            . Form::getHidden('id_page', 'id_page', $id_page)
             . getDeleteUi($lang->def('_AREYOUSURE'),
                             '<span>' . $lang->def('_TITLE') . ' : </span>' . $title,
                             false,
                             'confirm',
                             'undo')
-            . $form->closeForm()
+            . Form::closeForm()
             . '</div>', 'content');
     }
 }

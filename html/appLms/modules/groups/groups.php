@@ -197,14 +197,14 @@ function delgroup()
         $GLOBALS['page']->add(
             getTitleArea($page_title, 'groups')
             . '<div class="std_block">'
-            . $form->openForm('del_advice', 'index.php?modname=groups&amp;op=delgroup')
-            . $form->getHidden('id_group', 'id_group', $id_group)
+            . Form::openForm('del_advice', 'index.php?modname=groups&amp;op=delgroup')
+            . Form::getHidden('id_group', 'id_group', $id_group)
             . getDeleteUi($lang->def('_AREYOUSURE'),
                             '<span>' . $lang->def('_NAME') . ' : </span>' . $acl_man->relativeId($group[ACL_INFO_GROUPID]),
                             false,
                             'confirm',
                             'undo')
-            . $form->closeForm()
+            . Form::closeForm()
             . '</div>', 'content');
     }
 }

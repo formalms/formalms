@@ -1839,39 +1839,39 @@ if (!Docebo::user()->isAnonymous()) {
                 . '<div class="std_block">'
                 . getBackUi('index.php?modname=reservation&amp;op=classroom', $lang->def('_BACK'))
 
-                . $form->openForm('adviceform', 'index.php?modname=reservation&amp;op=saveclassroom')
+                . Form::openForm('adviceform', 'index.php?modname=reservation&amp;op=saveclassroom')
         );
         if ($load) {
-            $out->add($form->getHidden('idClassroom', 'idClassroom', $idClassroom)
-                    . $form->getHidden('load', 'load', 1));
+            $out->add(Form::getHidden('idClassroom', 'idClassroom', $idClassroom)
+                    . Form::getHidden('load', 'load', 1));
         }
 
         $clm = new ClassLocationManager();
         $location_arr = $clm->getClassLocationArray();
 
-        $out->add($form->openElementSpace()
-                . $form->getTextfield($lang->def('_NAME'), 'name', 'name', 255, $name)
-                . $form->getTextarea($lang->def('_DESCRIPTION'), 'descr', 'descr', $descr)
-                . $form->getHidden('location_id', 'location_id', 0)
-                . $form->getTextfield($lang->def('_BUILDING_ROOM'), 'room', 'room', 255, $room)
-                . $form->getTextfield($lang->def('_CAPACITY'), 'capacity', 'capacity', 255, $capacity)
-                . $form->getTextfield($lang->def('_RESPONSABLE'), 'responsable', 'responsable', 255, $responsable)
-                . $form->getTextfield($lang->def('_STREET'), 'street', 'street', 255, $street)
-                . $form->getTextfield($lang->def('_CITY'), 'city', 'city', 255, $city)
-                . $form->getTextfield($lang->def('_STATE'), 'state', 'state', 255, $state)
-                . $form->getTextfield($lang->def('_ZIP_CODE'), 'zip_code', 'zip_code', 255, $zip_code)
-                . $form->getTextfield($lang->def('_PHONE'), 'phone', 'phone', 255, $phone)
-                . $form->getTextfield($lang->def('_FAX'), 'fax', 'fax', 255, $fax)
-                . $form->getTextarea($lang->def('_DISPOSITION'), 'disposition', 'disposition', $disposition)
-                . $form->getTextarea($lang->def('_INSTRUMENT'), 'instrument', 'instrument', $instrument)
-                . $form->getTextarea($lang->def('_AVAILABLE_INSTRUMENT'), 'available_instrument', 'available_instrument', $available_instrument)
-                . $form->getTextarea($lang->def('_NOTES'), 'note', 'note', $note)
-                . $form->closeElementSpace()
-                . $form->openButtonSpace()
-                . $form->getButton('classroom', 'classroom', ($load ? $lang->def('_SAVE') : $lang->def('_INSERT')))
-                . $form->getButton('undo', 'undo', $lang->def('_UNDO'))
-                . $form->closeButtonSpace()
-                . $form->closeForm()
+        $out->add(Form::openElementSpace()
+                . Form::getTextfield($lang->def('_NAME'), 'name', 'name', 255, $name)
+                . Form::getTextarea($lang->def('_DESCRIPTION'), 'descr', 'descr', $descr)
+                . Form::getHidden('location_id', 'location_id', 0)
+                . Form::getTextfield($lang->def('_BUILDING_ROOM'), 'room', 'room', 255, $room)
+                . Form::getTextfield($lang->def('_CAPACITY'), 'capacity', 'capacity', 255, $capacity)
+                . Form::getTextfield($lang->def('_RESPONSABLE'), 'responsable', 'responsable', 255, $responsable)
+                . Form::getTextfield($lang->def('_STREET'), 'street', 'street', 255, $street)
+                . Form::getTextfield($lang->def('_CITY'), 'city', 'city', 255, $city)
+                . Form::getTextfield($lang->def('_STATE'), 'state', 'state', 255, $state)
+                . Form::getTextfield($lang->def('_ZIP_CODE'), 'zip_code', 'zip_code', 255, $zip_code)
+                . Form::getTextfield($lang->def('_PHONE'), 'phone', 'phone', 255, $phone)
+                . Form::getTextfield($lang->def('_FAX'), 'fax', 'fax', 255, $fax)
+                . Form::getTextarea($lang->def('_DISPOSITION'), 'disposition', 'disposition', $disposition)
+                . Form::getTextarea($lang->def('_INSTRUMENT'), 'instrument', 'instrument', $instrument)
+                . Form::getTextarea($lang->def('_AVAILABLE_INSTRUMENT'), 'available_instrument', 'available_instrument', $available_instrument)
+                . Form::getTextarea($lang->def('_NOTES'), 'note', 'note', $note)
+                . Form::closeElementSpace()
+                . Form::openButtonSpace()
+                . Form::getButton('classroom', 'classroom', ($load ? $lang->def('_SAVE') : $lang->def('_INSERT')))
+                . Form::getButton('undo', 'undo', $lang->def('_UNDO'))
+                . Form::closeButtonSpace()
+                . Form::closeForm()
                 . '</div>');
     }
 
@@ -1975,15 +1975,15 @@ if (!Docebo::user()->isAnonymous()) {
             $GLOBALS['page']->add(
                 getTitleArea($page_title, 'classroom')
                 . '<div class="std_block">'
-                . $form->openForm('del_classroom', 'index.php?modname=reservation&amp;op=delclassroom')
-                . $form->getHidden('idClassroom', 'idClassroom', $idClassroom)
+                . Form::openForm('del_classroom', 'index.php?modname=reservation&amp;op=delclassroom')
+                . Form::getHidden('idClassroom', 'idClassroom', $idClassroom)
                 . getDeleteUi($lang->def('_AREYOUSURE'),
                                 '<span>' . $lang->def('_NAME') . ' : </span>' . $name . '<br />'
                                     . '<span>' . $lang->def('_DESCRIPTION') . ' : </span>' . $descr,
                                 false,
                                 'confirm',
                                 'undo')
-                . $form->closeForm()
+                . Form::closeForm()
                 . '</div>', 'content');
         }
     }

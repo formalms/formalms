@@ -47,28 +47,28 @@ function additem($object_item)
     $GLOBALS['page']->add(Form::getFormHeader($lang->def('_SCORM_ADD_FORM')));
 
     $GLOBALS['page']->add(
-        $form->openForm('scormform',
+        Form::openForm('scormform',
             'index.php?modname=scorm&amp;op=insitem',
             false,
             false,
             'multipart/form-data')
     );
-    $GLOBALS['page']->add($form->openElementSpace());
+    $GLOBALS['page']->add(Form::openElementSpace());
 
-    $GLOBALS['page']->add($form->getHidden('back_url', 'back_url', htmlentities(urlencode($object_item->back_url))));
-    $GLOBALS['page']->add($form->getFilefield($lang->getLangText('_CONTENTPACKAGE'), 'attach', 'attach'));
+    $GLOBALS['page']->add(Form::getHidden('back_url', 'back_url', htmlentities(urlencode($object_item->back_url))));
+    $GLOBALS['page']->add(Form::getFilefield($lang->getLangText('_CONTENTPACKAGE'), 'attach', 'attach'));
 
-    $GLOBALS['page']->add($form->getCheckbox($lang->getLangText('_SCORMIMPORTRESOURCES'),
+    $GLOBALS['page']->add(Form::getCheckbox($lang->getLangText('_SCORMIMPORTRESOURCES'),
         'lesson_resources',
         'lesson_resources',
         'import'));
-    $GLOBALS['page']->add($form->closeElementSpace());
-    $GLOBALS['page']->add($form->openButtonSpace());
-    $GLOBALS['page']->add($form->getButton('scorm_add_submit',
+    $GLOBALS['page']->add(Form::closeElementSpace());
+    $GLOBALS['page']->add(Form::openButtonSpace());
+    $GLOBALS['page']->add(Form::getButton('scorm_add_submit',
         'scorm_add_submit',
         $lang->getLangText('_SCORMLOAD')));
-    $GLOBALS['page']->add($form->closeButtonSpace());
-    $GLOBALS['page']->add($form->closeForm() . '</div>');
+    $GLOBALS['page']->add(Form::closeButtonSpace());
+    $GLOBALS['page']->add(Form::closeForm() . '</div>');
 }
 
 function insitem()

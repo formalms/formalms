@@ -77,7 +77,7 @@ class Learning_ScormOrg extends Learning_Object
             $autoplay = '1';
         }
 
-        $out .= $form->getRadioSet($lang->def('_AUTOPLAY'),
+        $out .= Form::getRadioSet($lang->def('_AUTOPLAY'),
                                     'autoplay',
                                     'autoplay',
                                     [$lang->def('_NO') => '0',
@@ -99,7 +99,7 @@ class Learning_ScormOrg extends Learning_Object
             closedir($templ->handle);
         }
         $template = isset($arrParams['playertemplate']) ? $arrParams['playertemplate'] : 'default';
-        $out .= $form->getDropdown(Lang::t('_PLAYERTEMPLATE', 'scorm', 'lms'),//$lang->def( '_PLAYERTEMPLATE'),
+        $out .= Form::getDropdown(Lang::t('_PLAYERTEMPLATE', 'scorm', 'lms'),//$lang->def( '_PLAYERTEMPLATE'),
                                     'playertemplate',
                                     'playertemplate',
                                     $arr_templates,

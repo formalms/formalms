@@ -135,7 +135,7 @@ function certificate()
 
     $out->add(getTitleArea($lang->def('_TITLE_CERTIFICATE'), 'certificate')
         . '<div class="std_block">'
-        . $form->openForm('certificate_filter', 'index.php?modname=certificate&amp;op=certificate&of_platform=' . $currentPlatform)
+        . Form::openForm('certificate_filter', 'index.php?modname=certificate&amp;op=certificate&of_platform=' . $currentPlatform)
         . '<div class="quick_search_form" style="float: none;">
             <div>
                 <div class="simple_search_box">'
@@ -145,7 +145,7 @@ function certificate()
         . '</div>
             </div>
         </div>'
-        . $form->closeForm());
+        . Form::closeForm());
     if (isset($_GET['result'])) {
         switch ($_GET['result']) {
             case 'ok':
@@ -214,26 +214,26 @@ function list_element_certificate()
 
     // $out->add( getInfoUi($lang->def('_CERTIFICATE_WARNING')) );
 
-    $out->add($form->openForm('structure_certificate', 'index.php?modname=certificate&amp;op=savecertificate', false, false, 'multipart/form-data'));
-    $out->add($form->getHidden('of_platform', 'of_platform', 'lms'));
-    $out->add($form->openElementSpace()
-        . $form->getTextarea($lang->def('_STRUCTURE_CERTIFICATE'), 'structure', 'structure', $structure)
+    $out->add(Form::openForm('structure_certificate', 'index.php?modname=certificate&amp;op=savecertificate', false, false, 'multipart/form-data'));
+    $out->add(Form::getHidden('of_platform', 'of_platform', 'lms'));
+    $out->add(Form::openElementSpace()
+        . Form::getTextarea($lang->def('_STRUCTURE_CERTIFICATE'), 'structure', 'structure', $structure)
         . '<p><b>' . $lang->def('_ORIENTATION') . '</b></p>'
-        . $form->getRadio($lang->def('_PORTRAIT'), 'portrait', 'orientation', 'P', ($orientation == 'P'))
-        . $form->getRadio($lang->def('_LANDSCAPE'), 'landscape', 'orientation', 'L', ($orientation == 'L'))
+        . Form::getRadio($lang->def('_PORTRAIT'), 'portrait', 'orientation', 'P', ($orientation == 'P'))
+        . Form::getRadio($lang->def('_LANDSCAPE'), 'landscape', 'orientation', 'L', ($orientation == 'L'))
 
-        . $form->getExtendedFilefield($lang->def('_BACK_IMAGE'),
+        . Form::getExtendedFilefield($lang->def('_BACK_IMAGE'),
             'bgimage',
             'bgimage',
             $bgimage)
 
-        . $form->closeElementSpace()
-        . $form->openButtonSpace()
-        . $form->getHidden('id_certificate', 'id_certificate', $id_certificate)
-        . $form->getButton('save_structure', 'save_structure', ($lang->def('_SAVE')))
-        . $form->getButton('undo', 'undo', $lang->def('_UNDO'))
-        . $form->closeButtonSpace()
-        . $form->closeForm());
+        . Form::closeElementSpace()
+        . Form::openButtonSpace()
+        . Form::getHidden('id_certificate', 'id_certificate', $id_certificate)
+        . Form::getButton('save_structure', 'save_structure', ($lang->def('_SAVE')))
+        . Form::getButton('undo', 'undo', $lang->def('_UNDO'))
+        . Form::closeButtonSpace()
+        . Form::closeForm());
 
     $tb = new Table(0, $lang->def('_TAG_LIST_CAPTION'), $lang->def('_TAG_LIST_SUMMARY'));
 
@@ -329,17 +329,17 @@ function editcertificate($load = false)
         . '<div class="std_block">'
         . getBackUi('index.php?modname=certificate&amp;op=certificate', $lang->def('_BACK'))
 
-        . $form->openForm('adviceform', 'index.php?modname=certificate&amp;op=savecertificate')
-        . $form->getHidden('of_platform', 'of_platform', 'lms')
+        . Form::openForm('adviceform', 'index.php?modname=certificate&amp;op=savecertificate')
+        . Form::getHidden('of_platform', 'of_platform', 'lms')
     );
     if ($load) {
-        $out->add($form->getHidden('id_certificate', 'id_certificate', $id_certificate)
-            . $form->getHidden('load', 'load', 1));
+        $out->add(Form::getHidden('id_certificate', 'id_certificate', $id_certificate)
+            . Form::getHidden('load', 'load', 1));
     }
     $out->add(
-        $form->openElementSpace()
-        . $form->getTextfield($lang->def('_CODE'), 'code', 'code', 255, $code)
-        . $form->getTextfield($lang->def('_NAME'), 'name', 'name', 255, $name)
+        Form::openElementSpace()
+        . Form::getTextfield($lang->def('_CODE'), 'code', 'code', 255, $code)
+        . Form::getTextfield($lang->def('_NAME'), 'name', 'name', 255, $name)
 
         . Form::getDropdown($lang->def('_BASE_LANGUAGE'),
             'base_language',
@@ -347,15 +347,15 @@ function editcertificate($load = false)
             $languages,
             $base_language)
 
-        . $form->getCheckbox($lang->def('_USER_RELEASE'), 'user_release', 'user_release', '1', $user_release)
+        . Form::getCheckbox($lang->def('_USER_RELEASE'), 'user_release', 'user_release', '1', $user_release)
 
-        . $form->getTextarea($lang->def('_DESCRIPTION'), 'descr', 'descr', $descr)
-        . $form->closeElementSpace()
-        . $form->openButtonSpace()
-        . $form->getButton('certificate', 'certificate', ($load ? $lang->def('_SAVE') : $lang->def('_INSERT')))
-        . $form->getButton('undo', 'undo', $lang->def('_UNDO'))
-        . $form->closeButtonSpace()
-        . $form->closeForm()
+        . Form::getTextarea($lang->def('_DESCRIPTION'), 'descr', 'descr', $descr)
+        . Form::closeElementSpace()
+        . Form::openButtonSpace()
+        . Form::getButton('certificate', 'certificate', ($load ? $lang->def('_SAVE') : $lang->def('_INSERT')))
+        . Form::getButton('undo', 'undo', $lang->def('_UNDO'))
+        . Form::closeButtonSpace()
+        . Form::closeForm()
         . '</div>'
     );
 }
@@ -476,16 +476,16 @@ function delcertificate()
         $GLOBALS['page']->add(
             getTitleArea($page_title, 'certificate')
             . '<div class="std_block">'
-            . $form->openForm('del_certificate', 'index.php?modname=certificate&amp;op=delcertificate')
-            . $form->getHidden('of_platform', 'of_platform', 'lms')
-            . $form->getHidden('id_certificate', 'id_certificate', $id_certificate)
+            . Form::openForm('del_certificate', 'index.php?modname=certificate&amp;op=delcertificate')
+            . Form::getHidden('of_platform', 'of_platform', 'lms')
+            . Form::getHidden('id_certificate', 'id_certificate', $id_certificate)
             . getDeleteUi($lang->def('_AREYOUSURE'),
                 '<span>' . $lang->def('_NAME') . ' : </span>' . $name . '<br />'
                 . '<span>' . $lang->def('_DESCRIPTION') . ' : </span>' . $descr,
                 false,
                 'confirm',
                 'undo')
-            . $form->closeForm()
+            . Form::closeForm()
             . '</div>', 'content');
     }
 }
@@ -563,17 +563,17 @@ function report_certificate()
         }
 
         $out->add(
-            $form->openForm('certificate_filter', 'index.php?modname=certificate&amp;op=report_certificate')
-            . $form->getHidden('of_platform', 'of_platform', 'lms')
-            . $form->openElementSpace()
-            . $form->getTextfield($lang->def('_NAME'), 'name_filter', 'name_filter', '255', (isset($_POST['name_filter']) && $_POST['name_filter'] !== '' ? $_POST['name_filter'] : ''))
-            . $form->getTextfield($lang->def('_CODE'), 'code_filter', 'code_filter', '255', (isset($_POST['code_filter']) && $_POST['code_filter'] !== '' ? $_POST['code_filter'] : ''))
-            . $form->closeElementSpace()
-            . $form->openButtonSpace()
-            . $form->getButton('filter', 'filter', $lang->def('_FILTER'))
-            . $form->getButton('toggle_filter', 'toggle_filter', $lang->def('_TOGGLE_FILTER'))
-            . $form->closeButtonSpace()
-            . $form->closeForm());
+            Form::openForm('certificate_filter', 'index.php?modname=certificate&amp;op=report_certificate')
+            . Form::getHidden('of_platform', 'of_platform', 'lms')
+            . Form::openElementSpace()
+            . Form::getTextfield($lang->def('_NAME'), 'name_filter', 'name_filter', '255', (isset($_POST['name_filter']) && $_POST['name_filter'] !== '' ? $_POST['name_filter'] : ''))
+            . Form::getTextfield($lang->def('_CODE'), 'code_filter', 'code_filter', '255', (isset($_POST['code_filter']) && $_POST['code_filter'] !== '' ? $_POST['code_filter'] : ''))
+            . Form::closeElementSpace()
+            . Form::openButtonSpace()
+            . Form::getButton('filter', 'filter', $lang->def('_FILTER'))
+            . Form::getButton('toggle_filter', 'toggle_filter', $lang->def('_TOGGLE_FILTER'))
+            . Form::closeButtonSpace()
+            . Form::closeForm());
 
         if (isset($_POST['filter'])) {
             if ($_POST['name_filter'] !== '' && $_POST['code_filter'] !== '') {

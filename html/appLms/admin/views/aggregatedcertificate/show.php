@@ -16,7 +16,7 @@ cout(getTitleArea(Lang::t('_TITLE_META_CERTIFICATE', 'certificate') . '<div clas
 $form = new Form();
 
 cout(
-        $form->openForm('certificate_filter', 'index.php?r=alms/' . $controller_name . '/show')
+        Form::openForm('certificate_filter', 'index.php?r=alms/' . $controller_name . '/show')
         . '<div class="quick_search_form">
                 <div>
                     <div class="simple_search_box">'
@@ -26,7 +26,7 @@ cout(
                     . '</div>
                 </div>
         </div>'
-        . $form->closeForm()
+        . Form::closeForm()
     );
 
 if (isset($_GET['result'])) {

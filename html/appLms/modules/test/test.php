@@ -1966,22 +1966,22 @@ function importquest()
         getTitleArea($title, 'quest_bank')
             . '<div class="std_block">'
 
-            . $form->openForm('import_form', 'index.php?modname=test&op=doimportquest', false, false, 'multipart/form-data')
+            . Form::openForm('import_form', 'index.php?modname=test&op=doimportquest', false, false, 'multipart/form-data')
 
-            . $form->openElementSpace()
+            . Form::openElementSpace()
             . '<input type="hidden" name="idTest" value="' . $idTest . '" />'
             . '<input type="hidden" name="back_url" value="' . $back_coded . '" />'
-            . $form->getFilefield($lang->def('_FILE'), 'import_file', 'import_file')
-            . $form->getRadioSet($lang->def('_TYPE'), 'file_format', 'file_format', array_flip($supported_format), 0)
-            . $form->getCheckboxSet(null, 'autocreate_categories', 'autocreate_categories', [$lang->def('_AUTOCREATE_CATEGORIES')], false)
-            . $form->getTextfield(Lang::t('_LANG_CHARSET', 'admin_lang'), 'file_encode', 'file_encode', 255, 'utf-8')
-            . $form->closeElementSpace()
+            . Form::getFilefield($lang->def('_FILE'), 'import_file', 'import_file')
+            . Form::getRadioSet($lang->def('_TYPE'), 'file_format', 'file_format', array_flip($supported_format), 0)
+            . Form::getCheckboxSet(null, 'autocreate_categories', 'autocreate_categories', [$lang->def('_AUTOCREATE_CATEGORIES')], false)
+            . Form::getTextfield(Lang::t('_LANG_CHARSET', 'admin_lang'), 'file_encode', 'file_encode', 255, 'utf-8')
+            . Form::closeElementSpace()
 
-            . $form->openButtonSpace()
-            . $form->getButton('save', 'save', $lang->def('_IMPORT'))
-            . $form->getButton('undo', 'undo', $lang->def('_UNDO'))
-            . $form->closeButtonSpace()
-            . $form->closeForm()
+            . Form::openButtonSpace()
+            . Form::getButton('save', 'save', $lang->def('_IMPORT'))
+            . Form::getButton('undo', 'undo', $lang->def('_UNDO'))
+            . Form::closeButtonSpace()
+            . Form::closeForm()
 
             . '</div>',
         'content'
@@ -2101,20 +2101,20 @@ function exportquestqb()
         getTitleArea($title, 'quest_bank')
             . '<div class="std_block">'
 
-            . $form->openForm('import_form', 'index.php?modname=test&op=doexportquestqb', false, false, 'multipart/form-data')
+            . Form::openForm('import_form', 'index.php?modname=test&op=doexportquestqb', false, false, 'multipart/form-data')
 
-            . $form->openElementSpace()
+            . Form::openElementSpace()
             . '<input type="hidden" name="idTest" value="' . $idTest . '" />'
             . '<input type="hidden" name="back_url" value="' . $back_coded . '" />'
             . $lang->def('_EXPORT_TO_QUESTION_BANK')
-            //.$form->getDropdown($lang->def('_QUEST_CATEGORY'), 'quest_category', 'quest_category', $quest_categories)
-            . $form->closeElementSpace()
+            //.Form::getDropdown($lang->def('_QUEST_CATEGORY'), 'quest_category', 'quest_category', $quest_categories)
+            . Form::closeElementSpace()
 
-            . $form->openButtonSpace()
-            . $form->getButton('save', 'save', $lang->def('_EXPORT'))
-            . $form->getButton('undo', 'undo', $lang->def('_UNDO'))
-            . $form->closeButtonSpace()
-            . $form->closeForm()
+            . Form::openButtonSpace()
+            . Form::getButton('save', 'save', $lang->def('_EXPORT'))
+            . Form::getButton('undo', 'undo', $lang->def('_UNDO'))
+            . Form::closeButtonSpace()
+            . Form::closeForm()
 
             . '</div>',
         'content'

@@ -217,27 +217,27 @@ function addprj()
     $group_arr = getGroupsForProject($lang);
 
     $url = 'index.php?modname=project&amp;op=addprj_now';
-    $out->add($form->openForm('project_form', $url));
-    $out->add($form->openElementSpace());
+    $out->add(Form::openForm('project_form', $url));
+    $out->add(Form::openElementSpace());
 
-    $out->add($form->getTextfield($lang->def('_PTITLE'), 'ptitle', 'ptitle', 255, ''));
+    $out->add(Form::getTextfield($lang->def('_PTITLE'), 'ptitle', 'ptitle', 255, ''));
 
-    $out->add($form->getDropdown($lang->def('_PGROUP'), 'pgroup', 'pgroup', $group_arr));
+    $out->add(Form::getDropdown($lang->def('_PGROUP'), 'pgroup', 'pgroup', $group_arr));
 
-    $out->add($form->getCheckbox($lang->def('_PSFILES'), 'psfiles', 'psfiles', 1));
-    $out->add($form->getCheckbox($lang->def('_PSTASKS'), 'pstasks', 'pstasks', 1));
-    $out->add($form->getCheckbox($lang->def('_PSNEWS'), 'psnews', 'psnews', 1));
-    $out->add($form->getCheckbox($lang->def('_PSTODO'), 'pstodo', 'pstodo', 1));
-    $out->add($form->getCheckbox($lang->def('_PSMSG'), 'psmsg', 'psmsg', 1));
+    $out->add(Form::getCheckbox($lang->def('_PSFILES'), 'psfiles', 'psfiles', 1));
+    $out->add(Form::getCheckbox($lang->def('_PSTASKS'), 'pstasks', 'pstasks', 1));
+    $out->add(Form::getCheckbox($lang->def('_PSNEWS'), 'psnews', 'psnews', 1));
+    $out->add(Form::getCheckbox($lang->def('_PSTODO'), 'pstodo', 'pstodo', 1));
+    $out->add(Form::getCheckbox($lang->def('_PSMSG'), 'psmsg', 'psmsg', 1));
 
-    $out->add($form->getHidden('applychanges', 'applychanges', 1));
+    $out->add(Form::getHidden('applychanges', 'applychanges', 1));
 
-    $out->add($form->closeElementSpace());
-    $out->add($form->openButtonSpace());
-    $out->add($form->getButton('save', 'save', $lang->def('_NEW_PROJECT')));
-    $out->add($form->getButton('undo', 'undo', $lang->def('_UNDO')));
-    $out->add($form->closeButtonSpace());
-    $out->add($form->closeForm());
+    $out->add(Form::closeElementSpace());
+    $out->add(Form::openButtonSpace());
+    $out->add(Form::getButton('save', 'save', $lang->def('_NEW_PROJECT')));
+    $out->add(Form::getButton('undo', 'undo', $lang->def('_UNDO')));
+    $out->add(Form::closeButtonSpace());
+    $out->add(Form::closeForm());
 
     $out->add('</div>');
 }
@@ -820,23 +820,23 @@ function edit_news($mode = 'edit')
         $ntxt = (isset($row['ntxt']) ? $row['ntxt'] : '');
 
         $url = "index.php?modname=project&amp;op=$goto&amp;type=news&amp;id=$id&amp;itemid=" . $itemid;
-        $out->add($form->openForm('form_name', $url));
-        $out->add($form->openElementSpace());
+        $out->add(Form::openForm('form_name', $url));
+        $out->add(Form::openElementSpace());
 
-        $out->add($form->getDatefield($lang->def('_DATE'), 'ndate', 'ndate', $ndate));
+        $out->add(Form::getDatefield($lang->def('_DATE'), 'ndate', 'ndate', $ndate));
 
-        $out->add($form->getTextfield($lang->def('_TITLE'), 'ntitle', 'ntitle', 255, $ntitle));
+        $out->add(Form::getTextfield($lang->def('_TITLE'), 'ntitle', 'ntitle', 255, $ntitle));
 
-        $out->add($form->getTextarea($lang->def('_TEXTOF'), 'ntxt', 'ntxt', $ntxt));
+        $out->add(Form::getTextarea($lang->def('_TEXTOF'), 'ntxt', 'ntxt', $ntxt));
 
-        $out->add($form->getHidden('applychanges', 'applychanges', 1));
+        $out->add(Form::getHidden('applychanges', 'applychanges', 1));
 
-        $out->add($form->closeElementSpace());
-        $out->add($form->openButtonSpace());
-        $out->add($form->getButton('save', 'save', $label));
-        $out->add($form->getButton('undo', 'undo', $lang->def('_UNDO')));
-        $out->add($form->closeButtonSpace());
-        $out->add($form->closeForm());
+        $out->add(Form::closeElementSpace());
+        $out->add(Form::openButtonSpace());
+        $out->add(Form::getButton('save', 'save', $label));
+        $out->add(Form::getButton('undo', 'undo', $lang->def('_UNDO')));
+        $out->add(Form::closeButtonSpace());
+        $out->add(Form::closeForm());
 
         $out->add('</div>');
 
@@ -954,21 +954,21 @@ function edit_todo($mode = 'edit')
         $ttxt = (isset($row['ttxt']) ? $row['ttxt'] : '');
 
         $url = "index.php?modname=project&amp;op=$goto&amp;type=todo&amp;id=$id&amp;itemid=" . $itemid;
-        $out->add($form->openForm('form_name', $url));
-        $out->add($form->openElementSpace());
+        $out->add(Form::openForm('form_name', $url));
+        $out->add(Form::openElementSpace());
 
-        $out->add($form->getTextfield($lang->def('_TITLE'), 'ttitle', 'ttitle', 255, $ttitle));
+        $out->add(Form::getTextfield($lang->def('_TITLE'), 'ttitle', 'ttitle', 255, $ttitle));
 
-        $out->add($form->getSimpleTextarea($lang->def('_DESCRIPTION'), 'ttxt', 'ttxt', $ttxt));
+        $out->add(Form::getSimpleTextarea($lang->def('_DESCRIPTION'), 'ttxt', 'ttxt', $ttxt));
 
-        $out->add($form->getHidden('applychanges', 'applychanges', 1));
+        $out->add(Form::getHidden('applychanges', 'applychanges', 1));
 
-        $out->add($form->closeElementSpace());
-        $out->add($form->openButtonSpace());
-        $out->add($form->getButton('save', 'save', $label));
-        $out->add($form->getButton('undo', 'undo', $lang->def('_UNDO')));
-        $out->add($form->closeButtonSpace());
-        $out->add($form->closeForm());
+        $out->add(Form::closeElementSpace());
+        $out->add(Form::openButtonSpace());
+        $out->add(Form::getButton('save', 'save', $label));
+        $out->add(Form::getButton('undo', 'undo', $lang->def('_UNDO')));
+        $out->add(Form::closeButtonSpace());
+        $out->add(Form::closeForm());
 
         $out->add('</div>');
 
@@ -1077,22 +1077,22 @@ function edit_tasks($mode = 'edit')
         $tdesc = (isset($row['tdesc']) ? $row['tdesc'] : '');
 
         $url = "index.php?modname=project&amp;op=$goto&amp;type=task&amp;id=$id&amp;itemid=" . $itemid;
-        $out->add($form->openForm('form_name', $url));
-        $out->add($form->openElementSpace());
+        $out->add(Form::openForm('form_name', $url));
+        $out->add(Form::openElementSpace());
 
-        $out->add($form->getTextfield($lang->def('_TASKNAME'), 'tname', 'tname', 255, $tname));
-        $out->add($form->getTextfield($lang->def('_TASKPROGRESS'), 'tprog', 'tprog', 3, $tprog));
+        $out->add(Form::getTextfield($lang->def('_TASKNAME'), 'tname', 'tname', 255, $tname));
+        $out->add(Form::getTextfield($lang->def('_TASKPROGRESS'), 'tprog', 'tprog', 3, $tprog));
 
-        $out->add($form->getSimpleTextarea($lang->def('_TASKDESC'), 'tdesc', 'tdesc', $tdesc));
+        $out->add(Form::getSimpleTextarea($lang->def('_TASKDESC'), 'tdesc', 'tdesc', $tdesc));
 
-        $out->add($form->getHidden('applychanges', 'applychanges', 1));
+        $out->add(Form::getHidden('applychanges', 'applychanges', 1));
 
-        $out->add($form->closeElementSpace());
-        $out->add($form->openButtonSpace());
-        $out->add($form->getButton('save', 'save', $label));
-        $out->add($form->getButton('undo', 'undo', $lang->def('_UNDO')));
-        $out->add($form->closeButtonSpace());
-        $out->add($form->closeForm());
+        $out->add(Form::closeElementSpace());
+        $out->add(Form::openButtonSpace());
+        $out->add(Form::getButton('save', 'save', $label));
+        $out->add(Form::getButton('undo', 'undo', $lang->def('_UNDO')));
+        $out->add(Form::closeButtonSpace());
+        $out->add(Form::closeForm());
 
         $out->add('</div>');
 
@@ -1234,26 +1234,26 @@ function edit_files($mode = 'edit')
         $fdesc = (isset($row['fdesc']) ? $row['fdesc'] : '');
 
         $url = "index.php?modname=project&amp;op=$goto&amp;type=file&amp;id=$id&amp;itemid=" . $itemid;
-        $out->add($form->openForm('form_name', $url, '', '', 'multipart/form-data'));
-        $out->add($form->openElementSpace());
+        $out->add(Form::openForm('form_name', $url, '', '', 'multipart/form-data'));
+        $out->add(Form::openElementSpace());
 
         if ($mode == 'new') {
-            $out->add($form->getFilefield($lang->def('_FILE'), 'attach', 'attach'));
+            $out->add(Form::getFilefield($lang->def('_FILE'), 'attach', 'attach'));
         }
 
-        $out->add($form->getTextfield($lang->def('_TITLE'), 'ftitle', 'ftitle', 255, $ftitle));
-        $out->add($form->getTextfield($lang->def('_VERSION'), 'fver', 'fver', 255, $fver));
+        $out->add(Form::getTextfield($lang->def('_TITLE'), 'ftitle', 'ftitle', 255, $ftitle));
+        $out->add(Form::getTextfield($lang->def('_VERSION'), 'fver', 'fver', 255, $fver));
 
-        $out->add($form->getSimpleTextarea($lang->def('_DESCRIPTION'), 'fdesc', 'fdesc', $fdesc));
+        $out->add(Form::getSimpleTextarea($lang->def('_DESCRIPTION'), 'fdesc', 'fdesc', $fdesc));
 
-        $out->add($form->getHidden('applychanges', 'applychanges', 1));
+        $out->add(Form::getHidden('applychanges', 'applychanges', 1));
 
-        $out->add($form->closeElementSpace());
-        $out->add($form->openButtonSpace());
-        $out->add($form->getButton('save', 'save', $label));
-        $out->add($form->getButton('undo', 'undo', $lang->def('_UNDO')));
-        $out->add($form->closeButtonSpace());
-        $out->add($form->closeForm());
+        $out->add(Form::closeElementSpace());
+        $out->add(Form::openButtonSpace());
+        $out->add(Form::getButton('save', 'save', $label));
+        $out->add(Form::getButton('undo', 'undo', $lang->def('_UNDO')));
+        $out->add(Form::closeButtonSpace());
+        $out->add(Form::closeForm());
 
         $out->add('<br /></div>');
 
@@ -1405,29 +1405,29 @@ function mod_prj()
         $out->add(getBackUi($url, $lang->def('_BACK')));
 
         $url = 'index.php?modname=project&amp;op=modprj&amp;id=' . $id;
-        $out->add($form->openForm('project_form', $url));
-        $out->add($form->openElementSpace());
+        $out->add(Form::openForm('project_form', $url));
+        $out->add(Form::openElementSpace());
 
-        $out->add($form->getTextfield($lang->def('_PTITLE'), 'ptitle', 'ptitle', 255, $row['ptitle']));
+        $out->add(Form::getTextfield($lang->def('_PTITLE'), 'ptitle', 'ptitle', 255, $row['ptitle']));
 
-        $out->add($form->getDropdown($lang->def('_PGROUP'), 'pgroup', 'pgroup', $group_arr, $row['pgroup']));
-        $out->add($form->getHidden('old_pgroup', 'old_pgroup', $row['pgroup']));
+        $out->add(Form::getDropdown($lang->def('_PGROUP'), 'pgroup', 'pgroup', $group_arr, $row['pgroup']));
+        $out->add(Form::getHidden('old_pgroup', 'old_pgroup', $row['pgroup']));
 
         // TODO: add a fieldset labeled _POPTIONS
-        $out->add($form->getCheckbox($lang->def('_PSFILES'), 'psfiles', 'psfiles', 1, $row['psfiles']));
-        $out->add($form->getCheckbox($lang->def('_PSTASKS'), 'pstasks', 'pstasks', 1, $row['pstasks']));
-        $out->add($form->getCheckbox($lang->def('_PSNEWS'), 'psnews', 'psnews', 1, $row['psnews']));
-        $out->add($form->getCheckbox($lang->def('_PSTODO'), 'pstodo', 'pstodo', 1, $row['pstodo']));
-        $out->add($form->getCheckbox($lang->def('_PSMSG'), 'psmsg', 'psmsg', 1, $row['psmsg']));
+        $out->add(Form::getCheckbox($lang->def('_PSFILES'), 'psfiles', 'psfiles', 1, $row['psfiles']));
+        $out->add(Form::getCheckbox($lang->def('_PSTASKS'), 'pstasks', 'pstasks', 1, $row['pstasks']));
+        $out->add(Form::getCheckbox($lang->def('_PSNEWS'), 'psnews', 'psnews', 1, $row['psnews']));
+        $out->add(Form::getCheckbox($lang->def('_PSTODO'), 'pstodo', 'pstodo', 1, $row['pstodo']));
+        $out->add(Form::getCheckbox($lang->def('_PSMSG'), 'psmsg', 'psmsg', 1, $row['psmsg']));
 
-        $out->add($form->getHidden('applychanges', 'applychanges', 1));
+        $out->add(Form::getHidden('applychanges', 'applychanges', 1));
 
-        $out->add($form->closeElementSpace());
-        $out->add($form->openButtonSpace());
-        $out->add($form->getButton('save', 'save', $lang->def('_SAVE')));
-        $out->add($form->getButton('undo', 'undo', $lang->def('_UNDO')));
-        $out->add($form->closeButtonSpace());
-        $out->add($form->closeForm());
+        $out->add(Form::closeElementSpace());
+        $out->add(Form::openButtonSpace());
+        $out->add(Form::getButton('save', 'save', $lang->def('_SAVE')));
+        $out->add(Form::getButton('undo', 'undo', $lang->def('_UNDO')));
+        $out->add(Form::closeButtonSpace());
+        $out->add(Form::closeForm());
 
         return 0; // OLD FORM:
 
@@ -1524,7 +1524,7 @@ function del_prj()
 
             $url = 'index.php?modname=project&amp;op=delprj&amp;id=' . $id;
 
-            $out->add($form->openForm('project_form', $url));
+            $out->add(Form::openForm('project_form', $url));
 
             $out->add(getDeleteUi(
             $lang->def('_AREYOUSURE'),
@@ -1533,7 +1533,7 @@ function del_prj()
                 'conf_del',
                 'undo'));
 
-            $out->add($form->closeForm());
+            $out->add(Form::closeForm());
             $out->add("</div>\n");
         }
     } else {
@@ -1654,7 +1654,7 @@ function del_item()
 
             $url = 'index.php?modname=project&amp;op=prjdelitem&amp;type=' . $type . '&amp;id=' . $id . '&amp;itemid=' . $itemid;
 
-            $out->add($form->openForm('project_form', $url));
+            $out->add(Form::openForm('project_form', $url));
 
             $out->add(getDeleteUi(
             $lang->def('_AREYOUSURE'),
@@ -1663,7 +1663,7 @@ function del_item()
                 'conf_del',
                 'undo'));
 
-            $out->add($form->closeForm());
+            $out->add(Form::closeForm());
             $out->add("</div>\n");
         }
     } else {

@@ -185,26 +185,26 @@ function editnews($load = false)
         . '<div class="std_block">'
         . getBackUi('index.php?modname=internal_news&amp;op=news', $lang->def('_BACK'))
 
-        . $form->openForm('adviceform', 'index.php?modname=internal_news&amp;op=savenews')
-        . $form->getHidden('of_platform', 'of_platform', 'lms')
+        . Form::openForm('adviceform', 'index.php?modname=internal_news&amp;op=savenews')
+        . Form::getHidden('of_platform', 'of_platform', 'lms')
     );
     if ($load) {
-        $out->add($form->getHidden('id_news', 'id_news', $id_news)
-            . $form->getHidden('load', 'load', 1));
+        $out->add(Form::getHidden('id_news', 'id_news', $id_news)
+            . Form::getHidden('load', 'load', 1));
     }
-    $out->add($form->openElementSpace()
-        . $form->getTextfield($lang->def('_TITLE'), 'title', 'title', 255, $title)
-        . $form->getCheckbox($lang->def('_MARK_AS_IMPORTANT'), 'impo', 'impo', 1, $impo)
-        . $form->getDropdown($lang->def('_LANGUAGE'), 'language', 'language', $all_languages, ($lang_sel === 'all' ? -1 : array_search($lang_sel, $all_languages)))
+    $out->add(Form::openElementSpace()
+        . Form::getTextfield($lang->def('_TITLE'), 'title', 'title', 255, $title)
+        . Form::getCheckbox($lang->def('_MARK_AS_IMPORTANT'), 'impo', 'impo', 1, $impo)
+        . Form::getDropdown($lang->def('_LANGUAGE'), 'language', 'language', $all_languages, ($lang_sel === 'all' ? -1 : array_search($lang_sel, $all_languages)))
 
-        . $form->getTextarea($lang->def('_SHORTDESC'), 'short_desc', 'short_desc', $short_desc)
+        . Form::getTextarea($lang->def('_SHORTDESC'), 'short_desc', 'short_desc', $short_desc)
 
-        . $form->closeElementSpace()
-        . $form->openButtonSpace()
-        . $form->getButton('news', 'news', ($load ? $lang->def('_SAVE') : $lang->def('_INSERT')))
-        . $form->getButton('undo', 'undo', $lang->def('_UNDO'))
-        . $form->closeButtonSpace()
-        . $form->closeForm()
+        . Form::closeElementSpace()
+        . Form::openButtonSpace()
+        . Form::getButton('news', 'news', ($load ? $lang->def('_SAVE') : $lang->def('_INSERT')))
+        . Form::getButton('undo', 'undo', $lang->def('_UNDO'))
+        . Form::closeButtonSpace()
+        . Form::closeForm()
         . '</div>');
 }
 
@@ -267,7 +267,7 @@ function editviewer()
     cout(getTitleArea($page_title, 'news')
         . '<div class="std_block">');
     $user_select->addFormInfo(
-        $form->getHidden('id_news', 'id_news', $id_news)
+        Form::getHidden('id_news', 'id_news', $id_news)
     );
     $user_select->loadSelector('index.php?modname=internal_news&amp;op=editviewer',
         false,
@@ -351,16 +351,16 @@ function delnews()
         $GLOBALS['page']->add(
             getTitleArea($page_title, 'admin_news')
             . '<div class="std_block">'
-            . $form->openForm('del_news', 'index.php?modname=internal_news&amp;op=delnews')
-            . $form->getHidden('of_platform', 'of_platform', 'lms')
-            . $form->getHidden('id_news', 'id_news', $id_news)
+            . Form::openForm('del_news', 'index.php?modname=internal_news&amp;op=delnews')
+            . Form::getHidden('of_platform', 'of_platform', 'lms')
+            . Form::getHidden('id_news', 'id_news', $id_news)
             . getDeleteUi($lang->def('_AREYOUSURE'),
                 '<span>' . $lang->def('_TITLE') . ' : </span>' . $title . '<br />'
                 . '<span>' . $lang->def('_SHORTDESC') . ' : </span>' . $short_desc,
                 false,
                 'confirm',
                 'undo')
-            . $form->closeForm()
+            . Form::closeForm()
             . '</div>', 'content');
     }
 }

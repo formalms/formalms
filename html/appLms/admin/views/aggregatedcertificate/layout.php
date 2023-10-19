@@ -26,23 +26,23 @@
     // cout( getInfoUi(Lang::t('_CERTIFICATE_WARNING')) );
 
     cout(
-    $form->openForm('structure_certificate_form', 'index.php?r=alms/' . $controller_name . '/saveLayout', false, false, 'multipart/form-data')
-    . $form->openElementSpace()
-    . $form->getTextarea(Lang::t('_STRUCTURE_CERTIFICATE', 'certificate'), 'structure', 'structure', isset($template['cert_structure']) ? $template['cert_structure'] : '')
+    Form::openForm('structure_certificate_form', 'index.php?r=alms/' . $controller_name . '/saveLayout', false, false, 'multipart/form-data')
+    . Form::openElementSpace()
+    . Form::getTextarea(Lang::t('_STRUCTURE_CERTIFICATE', 'certificate'), 'structure', 'structure', isset($template['cert_structure']) ? $template['cert_structure'] : '')
     . '<p><b>' . Lang::t('_ORIENTATION', 'certificate') . '</b></p>'
-    . $form->getRadio(Lang::t('_PORTRAIT', 'certificate'), 'portrait', 'orientation', 'P', isset($template['orientation']) ? $template['orientation'] == 'P' : 1)
-    . $form->getRadio(Lang::t('_LANDSCAPE', 'certificate'), 'landscape', 'orientation', 'L', ($template['orientation'] == 'L'))
-    . $form->getExtendedFilefield(Lang::t('_BACK_IMAGE', 'certificate'),
+    . Form::getRadio(Lang::t('_PORTRAIT', 'certificate'), 'portrait', 'orientation', 'P', isset($template['orientation']) ? $template['orientation'] == 'P' : 1)
+    . Form::getRadio(Lang::t('_LANDSCAPE', 'certificate'), 'landscape', 'orientation', 'L', ($template['orientation'] == 'L'))
+    . Form::getExtendedFilefield(Lang::t('_BACK_IMAGE', 'certificate'),
                                                 'bgimage',
                                                 'bgimage',
                                                 $template['bgimage'])
-    . $form->closeElementSpace()
-    . $form->openButtonSpace()
-    . $form->getHidden('id_certificate', 'id_certificate', $id_certificate)
-    . $form->getButton('structure_certificate', 'structure_certificate', (Lang::t('_SAVE')))
-    . $form->getButton('undo', 'undo', Lang::t('_UNDO'))
-    . $form->closeButtonSpace()
-    . $form->closeForm());
+    . Form::closeElementSpace()
+    . Form::openButtonSpace()
+    . Form::getHidden('id_certificate', 'id_certificate', $id_certificate)
+    . Form::getButton('structure_certificate', 'structure_certificate', (Lang::t('_SAVE')))
+    . Form::getButton('undo', 'undo', Lang::t('_UNDO'))
+    . Form::closeButtonSpace()
+    . Form::closeForm());
 
         // Table for tags creation.
     $tb = new Table(0, Lang::t('_TAG_LIST_CAPTION', 'certificate'), Lang::t('_TAG_LIST_SUMMARY', 'certificate'));

@@ -532,14 +532,15 @@ class Track_Object
     }
 
     /**
-     * @return idTrack if found else false
+     * @return int|bool
      **/
-    public function getIdTrackFromCommon($idReference, $idUser, $environment = false)
+    public static function getIdTrackFromCommon($idReference, $idUser, $environment = false)
     {
         $query = 'SELECT idTrack '
             . ' FROM ' . self::getEnvironmentTable($environment) . ''
             . ' WHERE (idReference = ' . (int) $idReference . ')'
             . "   AND (idUser = '" . (int) $idUser . "')";
+        $query.=' ORDER BY idTrack DESC';
         $rs = sql_query($query)
         or exit("Error in query=[ $query ] " . sql_error());
 

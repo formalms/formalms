@@ -215,7 +215,7 @@ function archiveList()
     }
 
     $form = new Form();
-    $out->add($form->getHidden('archive_status', 'archive_status', '1')
+    $out->add(Form::getHidden('archive_status', 'archive_status', '1')
         . $nav_bar->getNavBar($ini));
 }
 
@@ -297,19 +297,19 @@ function addadvice()
     $GLOBALS['page']->add(getTitleArea($title, 'advice')
         . '<div class="std_block">'
         . getBackUi('index.php?modname=advice&amp;op=advice', $lang->def('_BACK'))
-        . $form->openForm('adviceform', 'index.php?modname=advice&amp;op=insadvice')
-        . $form->openElementSpace()
-        . $form->getTextfield($lang->def('_TITLE'), 'title', 'title', 255, $lang->def('_NOTITLE'))
-        . $form->getCheckbox($lang->def('_MARK_AS_IMPORTANT'), 'impo', 'impo', 1)
-        . $form->getTextarea($lang->def('_DESCRIPTION'), 'description', 'description', $lang->def('_DESCRIPTION'))
+        . Form::openForm('adviceform', 'index.php?modname=advice&amp;op=insadvice')
+        . Form::openElementSpace()
+        . Form::getTextfield($lang->def('_TITLE'), 'title', 'title', 255, $lang->def('_NOTITLE'))
+        . Form::getCheckbox($lang->def('_MARK_AS_IMPORTANT'), 'impo', 'impo', 1)
+        . Form::getTextarea($lang->def('_DESCRIPTION'), 'description', 'description', $lang->def('_DESCRIPTION'))
 
-        . $form->getDropDown($lang->def('_RECIPIENTS'), 'group', 'idGroup', $groups, $sel)
-        . $form->closeElementSpace()
-        . $form->openButtonSpace()
-        . $form->getButton('addadvice', 'addadvice', $lang->def('_INSERT'), false, 'onclick="showMsg(\'' . $lang->def('_WAITING') . '\');"')
-        . $form->getButton('undo', 'undo', $lang->def('_UNDO'))
-        . $form->closeButtonSpace()
-        . $form->closeForm()
+        . Form::getDropDown($lang->def('_RECIPIENTS'), 'group', 'idGroup', $groups, $sel)
+        . Form::closeElementSpace()
+        . Form::openButtonSpace()
+        . Form::getButton('addadvice', 'addadvice', $lang->def('_INSERT'), false, 'onclick="showMsg(\'' . $lang->def('_WAITING') . '\');"')
+        . Form::getButton('undo', 'undo', $lang->def('_UNDO'))
+        . Form::closeButtonSpace()
+        . Form::closeForm()
         . '</div>', 'content');
 }
 
@@ -435,18 +435,18 @@ function modadvice()
         getTitleArea($page_title, 'advice')
             . '<div class="std_block">'
             . getBackUi('index.php?modname=advice&amp;op=advice', $lang->def('_BACK'))
-            . $form->openForm('adviceform', 'index.php?modname=advice&amp;op=upadvice')
-            . $form->openElementSpace()
-            . $form->getHidden('idAdvice', 'idAdvice', $_GET['idAdvice'])
-            . $form->getTextfield($lang->def('_TITLE'), 'title', 'title', 60, $title)
-            . $form->getCheckbox($lang->def('_MARK_AS_IMPORTANT'), 'impo', 'impo', 1, $impo)
-            . $form->getTextarea($lang->def('_DESCRIPTION'), 'description', 'description', $description)
-            . $form->closeElementSpace()
-            . $form->openButtonSpace()
-            . $form->getButton('addadvice', 'addadvice', $lang->def('_SAVE'))
-            . $form->getButton('undo', 'undo', $lang->def('_UNDO'))
-            . $form->closeButtonSpace()
-            . $form->closeForm()
+            . Form::openForm('adviceform', 'index.php?modname=advice&amp;op=upadvice')
+            . Form::openElementSpace()
+            . Form::getHidden('idAdvice', 'idAdvice', $_GET['idAdvice'])
+            . Form::getTextfield($lang->def('_TITLE'), 'title', 'title', 60, $title)
+            . Form::getCheckbox($lang->def('_MARK_AS_IMPORTANT'), 'impo', 'impo', 1, $impo)
+            . Form::getTextarea($lang->def('_DESCRIPTION'), 'description', 'description', $description)
+            . Form::closeElementSpace()
+            . Form::openButtonSpace()
+            . Form::getButton('addadvice', 'addadvice', $lang->def('_SAVE'))
+            . Form::getButton('undo', 'undo', $lang->def('_UNDO'))
+            . Form::closeButtonSpace()
+            . Form::closeForm()
             . '</div>',
         'content'
     );
@@ -678,8 +678,8 @@ function deladvice()
         $GLOBALS['page']->add(
             getTitleArea($page_title, 'advice')
                 . '<div class="std_block">'
-                . $form->openForm('del_advice', 'index.php?modname=advice&amp;op=deladvice')
-                . $form->getHidden('idAdvice', 'idAdvice', $id_advice)
+                . Form::openForm('del_advice', 'index.php?modname=advice&amp;op=deladvice')
+                . Form::getHidden('idAdvice', 'idAdvice', $id_advice)
                 . getDeleteUi(
                     $lang->def('_AREYOUSURE'),
                     '<span>' . $lang->def('_TITLE') . ' : </span>' . $advice . '<br />'
@@ -688,7 +688,7 @@ function deladvice()
                     'confirm',
                     'undo'
                 )
-                . $form->closeForm()
+                . Form::closeForm()
                 . '</div>',
             'content'
         );

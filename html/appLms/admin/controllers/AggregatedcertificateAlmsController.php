@@ -786,7 +786,7 @@ class AggregatedcertificateAlmsController extends AlmsController
             $check_assoc = $this->aggCertLib->getAssociationLink($this->id_association, $type_assoc, (int) $id_user);
             foreach ($idsCP_array as $id_coursepath) {
                 $checked = in_array($id_coursepath, $check_assoc);
-                $cont[] = $form->getCheckbox('', '_' . $id_user . '_' . $id_coursepath . '_', '_' . $id_user . '_' . $id_coursepath . '_', 1, $checked);
+                $cont[] = Form::getCheckbox('', '_' . $id_user . '_' . $id_coursepath . '_', '_' . $id_user . '_' . $id_coursepath . '_', 1, $checked);
             }
             $cont[] = '<a href="javascript:;" onclick="checkall_fromback_meta(\'' . $form_name . '\', \'' . $id_user . '\', true); return false;">'
                 . Lang::t('_SELECT_ALL')
@@ -893,7 +893,7 @@ class AggregatedcertificateAlmsController extends AlmsController
             $check_assoc = $this->aggCertLib->getAssociationLink($this->id_association, $type_assoc, (int) $id_user);
             foreach ($selected_course as $id_course) {
                 $checked = in_array($id_course, $check_assoc);
-                $cont[] = $form->getCheckbox('', '_' . $id_user . '_' . $id_course . '_', '_' . $id_user . '_' . $id_course . '_', 1, $checked);
+                $cont[] = Form::getCheckbox('', '_' . $id_user . '_' . $id_course . '_', '_' . $id_user . '_' . $id_course . '_', 1, $checked);
             }
             $cont[] = '<a href="javascript:;" onclick="checkall_fromback_meta(\'' . $form_name . '\', \'' . $id_user . '\', true); return false;">'
                 . Lang::t('_SELECT_ALL')

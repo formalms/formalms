@@ -287,7 +287,7 @@ function statuserfilter()
     /*
      * Print form for group and status selection
      */
-    $out->add($form->openForm('statuserfilter', 'index.php?modname=stats&amp;op=statuser'));
+    $out->add(Form::openForm('statuserfilter', 'index.php?modname=stats&amp;op=statuser'));
 
     // ------- Filter on group
     $arr_idst = $aclManager->getBasePathGroupST('/lms/course/' . (int) $idCourse . '/group');
@@ -306,7 +306,7 @@ function statuserfilter()
 
     $out->add(Form::getTextField(Lang::t('_FULLNAME', 'standard'), 'user_filter', 'user_filter', 255, $user_filter));
 
-    $out->add($form->getDropdown(
+    $out->add(Form::getDropdown(
         $lang->def('_GROUPS'),
         'group_filter',
         'group_filter',
@@ -317,7 +317,7 @@ function statuserfilter()
     // ------ Filter on status
     $arr_status = [STATFILTER_ALL_STATUS => $lang->def('_FILTERSTATUSSELECTONEOPTION')];
     $arr_status = $arr_status + $cs->getUserStatus();
-    $out->add($form->getDropdown(
+    $out->add(Form::getDropdown(
         $lang->def('_ORDER_BY'),
         'status_filter',
         'status_filter',
@@ -355,7 +355,7 @@ function statuserfilter()
         }
 
         //draw editions dropdown
-        $out->add($form->getDropdown($lang->def('_FILTEREDITIONSELECTTITLE'),
+        $out->add(Form::getDropdown($lang->def('_FILTEREDITIONSELECTTITLE'),
                                         'editions_filter',
                                         'editions_filter',
                                         $arr_editions,
@@ -396,7 +396,7 @@ function statuserfilter()
         }
 
         //draw editions dropdown
-        $out->add($form->getDropdown($lang->def('_FILTEREDITIONSELECTTITLE'),
+        $out->add(Form::getDropdown($lang->def('_FILTEREDITIONSELECTTITLE'),
                                         'date_filter',
                                         'date_filter',
                                         $arr_date,
@@ -406,14 +406,14 @@ function statuserfilter()
     //------------------------------------------------------------------------------
 
     if (isset($_POST['start_filter']) && $_POST['start_filter'] = 1) {
-        $out->add($form->getCheckBox($lang->def('_FILTEROBJECTFINISHED'), 'start_filter', 'start_filter', '1', true));
+        $out->add(Form::getCheckBox($lang->def('_FILTEROBJECTFINISHED'), 'start_filter', 'start_filter', '1', true));
     } else {
-        $out->add($form->getCheckBox($lang->def('_FILTEROBJECTFINISHED'), 'start_filter', 'start_filter', '1'));
+        $out->add(Form::getCheckBox($lang->def('_FILTEROBJECTFINISHED'), 'start_filter', 'start_filter', '1'));
     }
 
     $out->add('<br/>');
 
-    $out->add($form->getButton('gofilter', 'gofilter', $lang->def('_SEARCH')));
+    $out->add(Form::getButton('gofilter', 'gofilter', $lang->def('_SEARCH')));
 
     /*
      * Get all students of course that is contained in selected group
@@ -549,7 +549,7 @@ function statuserfilter()
     }
     $out->add($tabStat->getTable());
     $out->add($tabStat->getNavBar($limit, $total_user));
-    $out->add($form->closeForm());
+    $out->add(Form::closeForm());
     $out->add('</div>');
 }
 
@@ -652,7 +652,7 @@ function statcourse()
     $out->setWorkingZone('content');
     $out->add(getTitleArea(lang::t('_STATCOURSE', 'menu_course')));
     $out->add('<div class="std_block">');
-    $out->add($form->openForm('orgshow', 'index.php?modname=stats&amp;op=statcourse'));
+    $out->add(Form::openForm('orgshow', 'index.php?modname=stats&amp;op=statcourse'));
 
     /*
      * Print form for group selection
@@ -673,17 +673,17 @@ function statcourse()
     }
     $aclManager->setContext($std_content);
 
-    $out->add($form->getDropdown($lang->def('_GROUPS'),
+    $out->add(Form::getDropdown($lang->def('_GROUPS'),
                                     'group_filter',
                                     'group_filter',
                                     $arr_groups,
                                     $group_filter));
 
-    $out->add($form->getButton('gofilter', 'gofilter', $lang->def('_SEARCH')));
+    $out->add(Form::getButton('gofilter', 'gofilter', $lang->def('_SEARCH')));
 
     $out->add($treeView->load());
 
-    $out->add($form->closeForm());
+    $out->add(Form::closeForm());
     // print form for import action
 
     $out->add('</div>');
@@ -816,7 +816,7 @@ function statitem()
     $out->add(getTitleArea($lang->def('_STATSITEM') . $titleLO, 'stats'));
     $out->add('<div class="std_block">'
             . getBackUi('index.php?modname=stats&amp;op=statcourse', $lang->def('_BACK')));
-    $out->add($form->openForm('orgshow', 'index.php?modname=stats&amp;op=statitem&amp;idItem=' . $idItem));
+    $out->add(Form::openForm('orgshow', 'index.php?modname=stats&amp;op=statitem&amp;idItem=' . $idItem));
     if (isset($_POST['view_open_quest'])) {
         $query_resource = 'SELECT idResource' .
                             ' FROM %lms_organization' .
@@ -856,9 +856,9 @@ function statitem()
         }
 
         $out->add(
-            $form->openButtonSpace()
-            . $form->getButton('back', 'back', $lang->def('_BACK'))
-            . $form->closeButtonSpace());
+            Form::openButtonSpace()
+            . Form::getButton('back', 'back', $lang->def('_BACK'))
+            . Form::closeButtonSpace());
     } else {
         $arr_idst = $aclManager->getBasePathGroupST('/lms/course/' . (int) $idCourse . '/group');
         $arr_result_groups = $aclManager->getGroups($arr_idst);
@@ -877,7 +877,7 @@ function statitem()
 
         $out->add(Form::getTextField(Lang::t('_FULLNAME', 'standard'), 'user_filter', 'user_filter', 255, $user_filter));
 
-        $out->add($form->getDropdown($lang->def('_GROUPS'),
+        $out->add(Form::getDropdown($lang->def('_GROUPS'),
                                     'group_filter',
                                     'group_filter',
                                     $arr_groups,
@@ -889,13 +889,13 @@ function statitem()
                                 _CUS_BEGIN => $lang->def('_USER_STATUS_BEGIN'),
                                 _CUS_END => $lang->def('_END'),
                                 _CUS_SUSPEND => $lang->def('_SUSPENDED'), ];
-        $out->add($form->getDropdown($lang->def('_STATUS'),
+        $out->add(Form::getDropdown($lang->def('_STATUS'),
                                         'status_filter',
                                         'status_filter',
                                         $arr_status,
                                         $status_filter));
 
-        $out->add($form->getButton('gofilter', 'gofilter', $lang->def('_SEARCH')));
+        $out->add(Form::getButton('gofilter', 'gofilter', $lang->def('_SEARCH')));
 
         //-----------------------------------------
         $content_h = [
@@ -950,14 +950,14 @@ function statitem()
 
         if (sql_num_rows($result) && $objectType == 'poll') {
             $out->add(
-                $form->openButtonSpace()
+                Form::openButtonSpace()
                 . '<br/>'
-                . $form->getButton('view_open_quest', 'view_open_quest', $lang->def('_VIEW_OPEN_QUEST'))
-                . $form->closeButtonSpace());
+                . Form::getButton('view_open_quest', 'view_open_quest', $lang->def('_VIEW_OPEN_QUEST'))
+                . Form::closeButtonSpace());
         }
     }
 
-    $out->add($form->closeForm());
+    $out->add(Form::closeForm());
     $out->add('</div>' . "\n");
 }
 
@@ -1010,7 +1010,7 @@ function statoneuseroneitem()
     $out->add(getTitleArea($lang->def('_STATSUSERITEM'), 'stats'));
     $out->add('<div class="std_block">'
             . getBackUi('index.php?modname=stats&amp;op=statitem&amp;idItem=' . $idItem, $lang->def('_BACK')));
-    //$out->add( $form->openForm( 'orgshow', 'index.php?modname=stats&amp;op=statitem&amp;idItem='.$idItem ) );
+    //$out->add( Form::openForm( 'orgshow', 'index.php?modname=stats&amp;op=statitem&amp;idItem='.$idItem ) );
 
     list($titleLO, $objectType) = sql_fetch_row(sql_query('SELECT title, objectType FROM '
                                                                 . $GLOBALS['prefix_lms'] . '_organization'
@@ -1062,7 +1062,7 @@ function statoneuseroneitemdetails()
     $out->add(getTitleArea($lang->def('_STATSUSERITEM'), 'stats'));
     $out->add('<div class="std_block">'
             . getBackUi('index.php?modname=stats&amp;op=' . $backto . '&amp;idUser=' . $idst_user . '&amp;idItem=' . $idItem, $lang->def('_BACK')));
-    //$out->add( $form->openForm( 'orgshow', 'index.php?modname=stats&amp;op=statitem&amp;idItem='.$idItem ) );
+    //$out->add( Form::openForm( 'orgshow', 'index.php?modname=stats&amp;op=statitem&amp;idItem='.$idItem ) );
 
     list($titleLO, $objectType) = sql_fetch_row(sql_query('SELECT title, objectType FROM '
                                                                 . $GLOBALS['prefix_lms'] . '_organization'
@@ -1113,7 +1113,7 @@ function statoneuseroneitemhistory()
     $out->add(getTitleArea($lang->def('_STATSUSERITEM'), 'stats'));
     $out->add('<div class="std_block">'
             . getBackUi('index.php?modname=stats&amp;op=' . $backto . '&amp;idUser=' . $idst_user . '&amp;idItem=' . $idItem, $lang->def('_BACK')));
-    //$out->add( $form->openForm( 'orgshow', 'index.php?modname=stats&amp;op=statitem&amp;idItem='.$idItem ) );
+    //$out->add( Form::openForm( 'orgshow', 'index.php?modname=stats&amp;op=statitem&amp;idItem='.$idItem ) );
 
     list($titleLO, $objectType) = sql_fetch_row(sql_query('SELECT title, objectType FROM '
                                                                 . $GLOBALS['prefix_lms'] . '_organization'
@@ -1166,20 +1166,20 @@ function modstatus()
 		AND idCourse = '" . (int) $idCourse . "'";
     list($status) = sql_fetch_row(sql_query($query));
 
-    $out->add($form->openForm('modstatus', 'index.php?modname=stats&amp;op=upstatus'));
+    $out->add(Form::openForm('modstatus', 'index.php?modname=stats&amp;op=upstatus'));
 
-    $out->add($form->getHidden('idUser', 'idUser', $idUser));
+    $out->add(Form::getHidden('idUser', 'idUser', $idUser));
 
     $cs = new CourseSubscribe_Manager();
     $arr_status = $cs->getUserStatus();
-    $out->add($form->getDropdown($lang->def('_STATUS'),
+    $out->add(Form::getDropdown($lang->def('_STATUS'),
                                     'status',
                                     'status',
                                     $arr_status,
                                     $status));
 
-    $out->add($form->getButton('gofilter', 'gofilter', $lang->def('_SAVE')));
-    $out->add($form->closeForm());
+    $out->add(Form::getButton('gofilter', 'gofilter', $lang->def('_SAVE')));
+    $out->add(Form::closeForm());
     $out->add('</div>');
 }
 

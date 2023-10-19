@@ -128,13 +128,13 @@ class Selector_CoursePath
         if ($this->show_filter === true) {
             /*
                 $form = new Form();
-                $output .= $form->getOpenFieldset($lang->def('_COURSEPATH_FILTER'))
+                $output .= Form::getOpenFieldset($lang->def('_COURSEPATH_FILTER'))
                     .Form::getTextfield($lang->def('_NAME'), 'coursepath_filter_name', 'coursepath_filter_name', '255',
                         ( isset($_POST['coursepath_filter_name']) ? $_POST['coursepath_filter_name'] : '' ))
-                    .$form->openButtonSpace()
-                    .$form->getButton('coursepath_filter', 'coursepath_filter', $lang->def('_SEARCH'))
-                    .$form->closeButtonSpace()
-                    .$form->getCloseFieldset();*/
+                    .Form::openButtonSpace()
+                    .Form::getButton('coursepath_filter', 'coursepath_filter', $lang->def('_SEARCH'))
+                    .Form::closeButtonSpace()
+                    .Form::getCloseFieldset();*/
 
             $output .= '<div class="quick_search_form">'
                 . '<div>'

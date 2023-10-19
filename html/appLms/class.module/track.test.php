@@ -145,7 +145,7 @@ class Track_Test extends Track_Object
      *
      * @return int true if the row exists otherwise false
      **/
-    public function isTrack($idUser, $idTest, $idReference)
+    public static function isTrack($idUser, $idTest, $idReference)
     {
         $query = '
 		SELECT COUNT(*) 
@@ -178,7 +178,7 @@ class Track_Test extends Track_Object
      *               )
      *
      **/
-    public function getTrackInfo($idUser, $idTest, $idReference)
+    public static function getTrackInfo($idUser, $idTest, $idReference)
     {
         $query = "
 			SELECT idTrack, date_attempt, date_end_attempt, last_page_seen, last_page_saved, number_of_save, number_of_attempt, attempts_for_suspension, suspended_until
@@ -186,6 +186,7 @@ class Track_Test extends Track_Object
 			WHERE idUser = '" . (int) $idUser . "' AND
 				idTest = '" . (int) $idTest . "' AND
 				idReference = '" . (int) $idReference . "'";
+        $query.=' ORDER BY idTrack DESC';
         $re_track = sql_query($query);
 
         if (!sql_num_rows($re_track)) {

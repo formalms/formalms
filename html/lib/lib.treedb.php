@@ -475,7 +475,7 @@ class TreeDb
     /**
      * Get folder by id.
      *
-     * @param $id id of the folder to retrieve
+     * @param $id int of the folder to retrieve
      *
      * @return Folder object or NULL if not found
      **/

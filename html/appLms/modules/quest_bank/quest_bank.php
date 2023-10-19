@@ -45,7 +45,7 @@ function questbank(&$url)
 
     $export_f = $qb_man->supported_format();
 
-    cout($form->openForm('search_form', $url->getUrl(), false, 'POST')
+    cout(Form::openForm('search_form', $url->getUrl(), false, 'POST')
         . '<input type="hidden" id="selected_quest" name="selected_quest" value="">'
 
         . '<div class="align_right">
@@ -64,7 +64,7 @@ function questbank(&$url)
 
     cout($qb_select->get_filter(), 'content');
 
-    cout($form->closeForm(), 'content');
+    cout(Form::closeForm(), 'content');
 
     // -------------------------------------------------------------------
 
@@ -78,7 +78,7 @@ function questbank(&$url)
 
     cout('
 	<div class="align_left">'
-        . $form->openForm('add_quest_form', $url->getUrl('op=addquest'), 'GET') . '
+        . Form::openForm('add_quest_form', $url->getUrl('op=addquest'), 'GET') . '
 		<input type="submit" id="add_quest" name="add_quest" value="' . $lang->def('_ADD') . '">
 		<select id="add_test_quest" name="add_test_quest">', 'content');
     while (list($type_quest) = sql_fetch_row($re_type)) {
@@ -87,7 +87,7 @@ function questbank(&$url)
             . '</option>', 'content');
     }
     cout('</select>'
-        . $form->closeForm() . '
+        . Form::closeForm() . '
 	</div>', 'content');
 
     cout('</div>', 'content');
@@ -149,20 +149,20 @@ function importquest(&$url)
         getTitleArea($title, 'quest_bank')
         . '<div class="std_block">'
 
-        . $form->openForm('import_form', $url->getUrl('op=doimportquest'), false, false, 'multipart/form-data')
+        . Form::openForm('import_form', $url->getUrl('op=doimportquest'), false, false, 'multipart/form-data')
 
-        . $form->openElementSpace()
-        . $form->getFilefield($lang->def('_FILE'), 'import_file', 'import_file')
-        . $form->getRadioSet($lang->def('_FILE_FORMAT'), 'file_format', 'file_format', $supported_format, 0)
-        . $form->getTextfield($lang->def('_FILE_ENCODE'), 'file_encode', 'file_encode', 255, 'utf-8')
-        . $form->getDropdown($lang->def('_QUEST_CATEGORY'), 'quest_category', 'quest_category', $quest_categories)
-        . $form->closeElementSpace()
+        . Form::openElementSpace()
+        . Form::getFilefield($lang->def('_FILE'), 'import_file', 'import_file')
+        . Form::getRadioSet($lang->def('_FILE_FORMAT'), 'file_format', 'file_format', $supported_format, 0)
+        . Form::getTextfield($lang->def('_FILE_ENCODE'), 'file_encode', 'file_encode', 255, 'utf-8')
+        . Form::getDropdown($lang->def('_QUEST_CATEGORY'), 'quest_category', 'quest_category', $quest_categories)
+        . Form::closeElementSpace()
 
-        . $form->openButtonSpace()
-        . $form->getButton('undo', 'undo', $lang->def('_UNDO'))
-        . $form->getButton('quest_search', 'quest_search', $lang->def('_IMPORT'))
-        . $form->closeButtonSpace()
-        . $form->closeForm()
+        . Form::openButtonSpace()
+        . Form::getButton('undo', 'undo', $lang->def('_UNDO'))
+        . Form::getButton('quest_search', 'quest_search', $lang->def('_IMPORT'))
+        . Form::closeButtonSpace()
+        . Form::closeForm()
         . '</div>', 'content');
 }
 
@@ -279,27 +279,27 @@ function exportquest(&$url)
 
                 cout('<label>' . $lang->def('_SELECTTEST', 'storage') . '</label></br></br>', 'content');
 
-                cout($form->openForm('search_form', $url->getUrl(), false, 'POST')
-                    . $form->getHidden('new_test_step', 'new_test_step', '2')
-                    . $form->getHidden('export_quest', 'export_quest', $lang->def('_EXPORT'))
-                    . $form->getHidden('export_quest_select', 'export_quest_select', $file_format)
-                    . $form->getHidden('quest_category', 'quest_category', $quest_category)
-                    . $form->getHidden('quest_difficult', 'quest_difficult', $quest_difficult)
-                    . $form->getHidden('quest_type', 'quest_type', $quest_type)
-                    . $form->getHidden('selected_quest', 'selected_quest', $_POST['selected_quest']), 'content');
+                cout(Form::openForm('search_form', $url->getUrl(), false, 'POST')
+                    . Form::getHidden('new_test_step', 'new_test_step', '2')
+                    . Form::getHidden('export_quest', 'export_quest', $lang->def('_EXPORT'))
+                    . Form::getHidden('export_quest_select', 'export_quest_select', $file_format)
+                    . Form::getHidden('quest_category', 'quest_category', $quest_category)
+                    . Form::getHidden('quest_difficult', 'quest_difficult', $quest_difficult)
+                    . Form::getHidden('quest_type', 'quest_type', $quest_type)
+                    . Form::getHidden('selected_quest', 'selected_quest', $_POST['selected_quest']), 'content');
 
                 foreach ($test as $t) {
-                    cout($form->openElementSpace()
-                                        . $form->getInputRadio('test_sel_' . $t['id_resource'], 'test_sel', $t['id_resource'], false, '')
+                    cout(Form::openElementSpace()
+                                        . Form::getInputRadio('test_sel_' . $t['id_resource'], 'test_sel', $t['id_resource'], false, '')
                                         . '<label for="test_sel_' . $t['id_resource'] . '">' . $t['title'] . '</label>'
-                                        . $form->closeElementSpace(), 'content');
+                                        . Form::closeElementSpace(), 'content');
                 }
 
-                cout($form->openButtonSpace()
-                    . $form->getButton('button_ins', 'button_ins', $lang->def('_SAVE'))
-                    . $form->getButton('button_undo', 'button_undo', $lang->def('_UNDO'))
-                    . $form->closeButtonSpace()
-                    . $form->closeForm(), 'content');
+                cout(Form::openButtonSpace()
+                    . Form::getButton('button_ins', 'button_ins', $lang->def('_SAVE'))
+                    . Form::getButton('button_undo', 'button_undo', $lang->def('_UNDO'))
+                    . Form::closeButtonSpace()
+                    . Form::closeForm(), 'content');
 
                 cout('</div>', 'content');
             } else {
@@ -371,23 +371,23 @@ function exportquest(&$url)
 
                 $form = new Form();
 
-                cout($form->openForm('search_form', $url->getUrl(), false, 'POST')
-                    . $form->getHidden('new_test_step', 'new_test_step', '2')
-                    . $form->getHidden('export_quest', 'export_quest', $lang->def('_EXPORT'))
-                    . $form->getHidden('export_quest_select', 'export_quest_select', $file_format)
-                    . $form->getHidden('quest_category', 'quest_category', $quest_category)
-                    . $form->getHidden('quest_difficult', 'quest_difficult', $quest_difficult)
-                    . $form->getHidden('quest_type', 'quest_type', $quest_type)
-                    . $form->getHidden('selected_quest', 'selected_quest', $_POST['selected_quest'])
-                    . $form->openElementSpace()
-                    . $form->getTextfield($lang->def('_TITLE'), 'title', 'title', '255')
-                    . $form->getTextarea($lang->def('_DESCRIPTION'), 'textof', 'textof')
-                    . $form->closeElementSpace()
-                    . $form->openButtonSpace()
-                    . $form->getButton('button_ins', 'button_ins', $lang->def('_TEST_INSERT'))
-                    . $form->getButton('button_undo', 'button_undo', $lang->def('_UNDO'))
-                    . $form->closeButtonSpace()
-                    . $form->closeForm(), 'content');
+                cout(Form::openForm('search_form', $url->getUrl(), false, 'POST')
+                    . Form::getHidden('new_test_step', 'new_test_step', '2')
+                    . Form::getHidden('export_quest', 'export_quest', $lang->def('_EXPORT'))
+                    . Form::getHidden('export_quest_select', 'export_quest_select', $file_format)
+                    . Form::getHidden('quest_category', 'quest_category', $quest_category)
+                    . Form::getHidden('quest_difficult', 'quest_difficult', $quest_difficult)
+                    . Form::getHidden('quest_type', 'quest_type', $quest_type)
+                    . Form::getHidden('selected_quest', 'selected_quest', $_POST['selected_quest'])
+                    . Form::openElementSpace()
+                    . Form::getTextfield($lang->def('_TITLE'), 'title', 'title', '255')
+                    . Form::getTextarea($lang->def('_DESCRIPTION'), 'textof', 'textof')
+                    . Form::closeElementSpace()
+                    . Form::openButtonSpace()
+                    . Form::getButton('button_ins', 'button_ins', $lang->def('_TEST_INSERT'))
+                    . Form::getButton('button_undo', 'button_undo', $lang->def('_UNDO'))
+                    . Form::closeButtonSpace()
+                    . Form::closeForm(), 'content');
 
                 cout('</div>', 'content');
             } else {
