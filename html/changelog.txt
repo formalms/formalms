@@ -2,6 +2,29 @@ FORMA LMS
 RELEASE CHANGELOG
 
 ---------------------------------------------------------------------------------------
+forma.lms 3.3.15
+---------------------------------------------------------------------------------------
+Release date: 2023 october
+
+- #      - Fix user stats
+- #      - fix form replace
+- #      - fix upgrade communication and category menu
+- #      - fix require question type files with forma::inc
+- #      - fix dashboard middle area user
+- #      - add reset_field_if_not_set,use_default_password,default_password in iotask docebouser connector config
+- #      - add orgchart management in update user api
+- #      - add orgchart management in update user api
+- #      - fix custom field check when user insert 0 as value
+- #      - fix all require once for lib_profile.php
+- #      - fix custom field check when user insert 0 as value
+- #      - fix query for field show when textentry is numeric when fields filter is active
+- #      - fix 0 in session
+- #      - fix ssl encryption
+- #      - fix field show when textentry is numeric
+- #      - Fix dashboard next courses block
+- #      - fix 3.3.8 add index query to solve if index exists
+
+---------------------------------------------------------------------------------------
 forma.lms 3.3.13
 ---------------------------------------------------------------------------------------
 Release date: 2023 september
