@@ -1508,6 +1508,7 @@ class UsermanagementAdmController extends AdmController
         $output = [];
         $code = FormaLms\lib\Get::req('org_code', DOTY_STRING, '');
         $langs = FormaLms\lib\Get::req('langs', DOTY_MIXED, false);
+        $template_id = FormaLms\lib\Get::req('associated_template', DOTY_INT, 0);
         if ($langs == false) {
             $output['success'] = false;
             $output['message'] = Lang::t('_INVALID_INPUT');
@@ -1522,7 +1523,7 @@ class UsermanagementAdmController extends AdmController
                 'count_content' => 0,
             ]]);
 
-            $id = $this->model->addFolder($id_parent, $langs, $code);
+            $id = $this->model->addFolder($id_parent, $langs, $code, $template_id);
             if ($id > 0) {
                 $output['success'] = true;
                 $nodedata = [
