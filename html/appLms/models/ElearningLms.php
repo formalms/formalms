@@ -123,6 +123,10 @@ class ElearningLms extends Model
             . ' ORDER BY ' . $this->_resolveOrder(['cu', 'c']);
 
         $rs = $db->query($query);
+        require_once _adm_ . '/lib/lib.customfield.php';
+        $cf = new CustomFieldList();
+        $cf->setFieldArea('COURSE');
+        $has_custom = ($cf->getNumberFieldbyArea() > 0);
 
         $result = [];
         $courses = [];
@@ -130,9 +134,10 @@ class ElearningLms extends Model
             $data['enrolled'] = 0;
             $data['numof_waiting'] = 0;
             $data['first_lo_type'] = false;
-
-            //** name category
-            $data['nameCategory'] = $this->getCategory($data['idCategory']); //$this->getCategory($data['idCategory']);
+            $data['nameCategory'] = $this->getCategory($data['idCategory']);
+            if ($has_custom) {
+                $data['custom_fields'] = $cf->playFieldsFlat($data['idCourse']);
+            }
 
             $courses[] = $data['idCourse'];
             $result[$data['idCourse']] = $data;
