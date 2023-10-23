@@ -111,7 +111,7 @@ copy and rename `/test/behat/behat_config.yml.dist` and change `base_url` to you
 
 
 # DOCTRINE MIGRATIONS
-### Command is available from the project root folder
+### Command is available from the project root folder `html`
 
 #### `php bin/doctrine-migrations`
 
