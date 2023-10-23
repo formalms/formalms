@@ -12,16 +12,16 @@
 {% for setting, type in settings %}
 
     {% set translation =  '_' ~ setting|upper  %}
-    {% set choices =  { '0': Lang_translate('_NO', 'standard'), '1': Lang_translate('_YES', 'standard')}  %}
-   
-
+    {% set choices =  type is iterable ? type : { '0': Lang_translate('_NO', 'standard'), '1': Lang_translate('_YES', 'standard')}  %}
+    {% set label =  Lang_translate(translation,'mailconfig') ~ (setting in required_fields|keys ? '*':'')  %}
+    {% set required = setting in required_fields|keys ? 'required':''  %}
     {% if type == 'string' %}
 
-        {{ Form_getTextfield(Lang_translate(translation,'mailconfig'), setting, setting, 255, item[setting]) }}
+        {{ Form_getLineTextfield('form_line_l', 'floating', label , 'textfield', setting, setting,  item[setting], '', 255, required, '', '') }}
 
     {% else %}
 
-        {{ Form_getDropdown(Lang_translate(translation, 'mailconfig'), setting, setting, choices, item[setting]) }}
+        {{ Form_getDropdown(label, setting, setting, choices, item[setting]) }}
    
     {% endif %}
 

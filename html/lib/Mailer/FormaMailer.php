@@ -71,9 +71,6 @@ class FormaMailer extends PHPMailer
 
         $this->config = [
             MAIL_MULTIMODE => MAIL_SINGLE,
-            MAIL_SENDER_ACLNAME => \FormaLms\lib\Get::sett('use_sender_aclname', false),
-            MAIL_RECIPIENTSCC => \FormaLms\lib\Get::sett('send_cc_for_system_emails', ''),
-            MAIL_RECIPIENTSBCC => \FormaLms\lib\Get::sett('send_ccn_for_system_emails', ''),
             MAIL_RECIPIENT_ACLNAME => false,
             MAIL_REPLYTO_ACLNAME => false,
             MAIL_HTML => true,

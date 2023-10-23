@@ -1013,6 +1013,7 @@ class Report_User extends Report
                 $body = $_REQUEST['mail_body'] ?? '';
                 $acl_man = new FormaACLManager();
                 $sender = DomainHandler::getInstance()->getMailerField('sender_mail_system');
+                $params = [MAIL_SENDER_ACLNAME => DomainHandler::getInstance()->getMailerField('sender_name_system')];
                 $mail_recipients = Util::unserialize(urldecode(FormaLms\lib\Get::req('mail_recipients', DOTY_STRING, '')));
 
                 // send mail
@@ -1024,7 +1025,7 @@ class Report_User extends Report
                 }
                 $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
                 $mailer->addReplyTo(DomainHandler::getInstance()->getMailerField('replyto_mail'));
-                $mailer->SendMail($arr_recipients, $subject, $body, $sender);
+                $mailer->SendMail($arr_recipients, $subject, $body, $sender, [], $params);
 
                 $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
 
@@ -2264,7 +2265,7 @@ class Report_User extends Report
                 }
                 $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
                 $mailer->addReplyTo(DomainHandler::getInstance()->getMailerField('replyto_mail') . $GLOBALS['mail_br']);
-                $mailer->SendMail($arr_recipients, $subject, $body, $sender);
+                $mailer->SendMail($arr_recipients, $subject, $body, $sender, [], [MAIL_SENDER_ACLNAME => DomainHandler::getInstance()->getMailerField('sender_name_system')]);
 
                 $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
 
@@ -2767,7 +2768,7 @@ class Report_User extends Report
                 }
                 $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
                 $mailer->addReplyTo(DomainHandler::getInstance()->getMailerField('replyto_mail') . $GLOBALS['mail_br']);
-                $mailer->SendMail($arr_recipients, $subject, $body, $sender);
+                $mailer->SendMail($arr_recipients, $subject, $body, $sender, [], [MAIL_SENDER_ACLNAME => DomainHandler::getInstance()->getMailerField('sender_name_system')]);
 
                 $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
 
@@ -3461,7 +3462,7 @@ class Report_User extends Report
                 }
                 $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
                 $mailer->addReplyTo(DomainHandler::getInstance()->getMailerField('replyto_mail') . $GLOBALS['mail_br']);
-                $mailer->SendMail($arr_recipients, $subject, $body, $sender);
+                $mailer->SendMail($arr_recipients, $subject, $body, $sender, [], [MAIL_SENDER_ACLNAME => DomainHandler::getInstance()->getMailerField('sender_name_system')]);
 
                 $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
 
@@ -4722,7 +4723,7 @@ class Report_User extends Report
                 }
                 $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
                 $mailer->addReplyTo(DomainHandler::getInstance()->getMailerField('replyto_mail') . $GLOBALS['mail_br']);
-                $mailer->SendMail($arr_recipients, $subject, $body, $sender);
+                $mailer->SendMail($arr_recipients, $subject, $body, $sender, [], [MAIL_SENDER_ACLNAME => DomainHandler::getInstance()->getMailerField('sender_name_system')]);
 
                 $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
 

@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Domain\DomainHandler;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -626,8 +628,8 @@ class UserManager
                 }
 
                 //compose e-mail --------------------------------------------
-                $mail_sender = $this->_option->getOption('mail_sender');
-                $mail_sender_name_from = $this->_option->getOption('mail_sender_name_from');
+                $mail_sender = DomainHandler::getInstance()->getMailerField('sender_mail_system');
+                $mail_sender_name_from = DomainHandler::getInstance()->getMailerField('sender_name_system');
 
                 /*$from = "From: ".$mail_sender.$GLOBALS['mail_br'];
             $intestazione  = "MIME-Version: 1.0".$GLOBALS['mail_br'];
@@ -651,7 +653,8 @@ class UserManager
                     $mail_sender,
                     [],
                     [
-                        MAIL_SENDER_ACLNAME => $mail_sender_name_from,
+                        MAIL_REPLYTO => DomainHandler::getInstance()->getMailerField('replyto_mail'),
+                        MAIL_SENDER_ACLNAME => DomainHandler::getInstance()->getMailerField('sender_name_system'),
                     ]
                 );
 
@@ -673,8 +676,8 @@ class UserManager
 
             if ($user_info !== false) {
                 //compose e-mail --------------------------------------------
-                $mail_sender = $this->_option->getOption('mail_sender');
-                $mail_sender_name_from = $this->_option->getOption('mail_sender_name_from');
+                $mail_sender = DomainHandler::getInstance()->getMailerField('sender_mail_system');
+                $mail_sender_name_from = DomainHandler::getInstance()->getMailerField('sender_name_system');
 
                 /*$from = "From: ".$mail_sender.$GLOBALS['mail_br'];
             $intestazione  = "MIME-Version: 1.0".$GLOBALS['mail_br'];
@@ -717,6 +720,8 @@ class UserManager
                 $mail_text = str_replace(['[link]', '[dynamic_link]'], [$link, $dynamicLink], $lang->def('_LOST_PWD_MAILTEXT'));
 
                 $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
+
+
                 $success = $mailer->SendMail(
                     [$user_info[ACL_INFO_EMAIL]],
                     $lang->def('_LOST_PWD_TITLE'),
@@ -1758,8 +1763,8 @@ class UserManagerRenderer
         $precompileLms->setAcceptingPolicy($iduser, $policy_id, true);
 
         // Send mail
-        $admin_mail = $options['mail_sender'];
-        $sender_name = $options['mail_sender_name_from'];
+        $admin_mail = DomainHandler::getInstance()->getMailerField('sender_mail_system');
+        $sender_name = DomainHandler::getInstance()->getMailerField('sender_name_system');
 
         // FIX BUG 399
         $dynamicUrl = getCurrentDomain($reg_code) ?: FormaLms\lib\Get::site_url();

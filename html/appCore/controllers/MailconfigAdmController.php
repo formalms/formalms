@@ -62,6 +62,8 @@ class MailconfigAdmController extends AdmController
         $params['title'] = Lang::t('_INSERT', 'standard');
 
         $params['settings'] = $this->model->getSettings();
+
+        $params['required_fields'] = $this->model->getRequiredSettings();
         
         $this->render('view', $params);
     }

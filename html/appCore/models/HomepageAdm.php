@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Domain\DomainHandler;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -141,8 +143,7 @@ class HomepageAdm extends Model
             }
         }
 
-        $sender = $this->options->getOption('mail_sender');
-        $sender_name = $this->options->getOption('mail_sender_name_from');
+        $sender = DomainHandler::getInstance()->getMailerField('sender_mail_system');
         $recipients = $user_info[ACL_INFO_EMAIL];
         $subject = Lang::t('_LOST_USERID_TITLE', 'register', [], $acl_man->getSettingValueOfUsers('ui.language', [$user_info[ACL_INFO_IDST]])[$user_info[ACL_INFO_IDST]]);
         $body = Lang::t('_LOST_USERID_MAILTEXT', 'register', [
@@ -151,7 +152,7 @@ class HomepageAdm extends Model
             '[dynamic_link]' => getCurrentDomain($reg_code) ?: FormaLms\lib\Get::site_url(),
             '[userid]' => $acl_man->relativeId($user_info[ACL_INFO_USERID]),
         ], $acl_man->getSettingValueOfUsers('ui.language', [$user_info[ACL_INFO_IDST]])[$user_info[ACL_INFO_IDST]]);
-        $params = [MAIL_SENDER_ACLNAME => $sender_name];
+        $params = [MAIL_SENDER_ACLNAME => DomainHandler::getInstance()->getMailerField('sender_name_system')];
         $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
         if ($mailer->SendMail([$recipients], $subject, $body, $sender, [], $params)) {
             return SUCCESS_SEND_LOST_PWD;
@@ -197,8 +198,8 @@ class HomepageAdm extends Model
 
         $url = getCurrentDomain($reg_code) ?: FormaLms\lib\Get::site_url();
 
-        $sender = $this->options->getOption('mail_sender');
-        $sender_name = $this->options->getOption('mail_sender_name_from');
+        $sender = DomainHandler::getInstance()->getMailerField('sender_mail_system');
+        $sender_name = DomainHandler::getInstance()->getMailerField('sender_name_system');
         $recipients = $user_info[ACL_INFO_EMAIL];
         $subject = Lang::t('_LOST_PWD_TITLE', 'register', [], $acl_man->getSettingValueOfUsers('ui.language', [$user_info[ACL_INFO_IDST]])[$user_info[ACL_INFO_IDST]]);
         $body = Lang::t('_LOST_PWD_MAILTEXT', 'register', [

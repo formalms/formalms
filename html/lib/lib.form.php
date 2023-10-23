@@ -267,8 +267,7 @@ class Form
      */
     public static function getLineTextfield($css_line, $css_label, $label_name, $css_text, $id, $name, $value, $alt_name, $maxlenght, $other_param, $other_after, $other_before)
     {
-        
-        return '<div class="' . $css_line . '">'
+       return '<div class="' . $css_line . '">'
         . $other_before
         . ($label_name ? '<p><label class="' . $css_label . '" for="' . $id . '">' . $label_name . '</label></p>' : '')
         . Form::getInputTextfield($css_text, $id, $name, $value, $alt_name, $maxlenght, $other_param)

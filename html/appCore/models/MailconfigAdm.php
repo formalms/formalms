@@ -28,7 +28,7 @@ class MailconfigAdm extends Model
         'user' => 'string',
         'password' => 'string',
         'debug' => 'boolean',
-        'secure' => 'string',
+        'secure' => ['ssl', 'tls'],
         'sender_mail_notification' => 'string',
         'sender_name_notification' => 'string',
         'sender_mail_system' => 'string',
@@ -53,15 +53,18 @@ class MailconfigAdm extends Model
         'debug' => 'boolean',
         'secure' => 'string',
         'sender_mail_notification' => 'string',
-        'sender_name_notification' => 'string',
         'sender_mail_system' => 'string',
+        'active' => 'boolean'
+    ];
+
+    const OPTIONAL_FIELDS = [
+        'sender_name_notification' => 'string',
         'sender_name_system' => 'string',
         'helper_desk_mail' => 'string',
         'helper_desk_subject' => 'string',
         'helper_desk_name' => 'string',
         'replyto_name' => 'string',
         'replyto_mail' => 'string',
-        'active' => 'boolean'
     ];
 
     public function __construct()
@@ -134,6 +137,7 @@ class MailconfigAdm extends Model
     {
         return self::MINIMUM_SETTINGS;
     }
+
 
     public function getSettings()
     {

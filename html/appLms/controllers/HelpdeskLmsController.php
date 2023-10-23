@@ -21,9 +21,9 @@ class HelpdeskLmsController extends LmsController
 {
     public function show()
     {
-        $sender = DomainHandler::getInstance()->getMailerField('sender_mail_system');
-        $sender_name = FormaLms\lib\Get::sett('customer_help_name_from', false);
-        $prefix_subj = FormaLms\lib\Get::sett('customer_help_subj_pfx');
+        $sender = DomainHandler::getInstance()->getMailerField('helper_desk_mail') ?? DomainHandler::getInstance()->getMailerField('sender_mail_system');
+        $sender_name = DomainHandler::getInstance()->getMailerField('helper_desk_name') ?? DomainHandler::getInstance()->getMailerField('sender_name_system');
+        $prefix_subj = DomainHandler::getInstance()->getMailerField('helper_desk_subject');
         $ccn = FormaLms\lib\Get::sett('send_ccn_for_system_emails');
         $sendto = $_POST['sendto'];
         $usermail = $_POST['email'];

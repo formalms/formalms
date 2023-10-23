@@ -1,5 +1,8 @@
 <?php
 
+use FormaLms\lib\Mailer\FormaMailer;
+use FormaLms\lib\Domain\DomainHandler;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -69,9 +72,10 @@ switch ($op) {
         break;
 
     case 'send':
-            $help_email = FormaLms\lib\Get::sett('customer_help_email', '');
-            $help_pfx = FormaLms\lib\Get::sett('customer_help_subj_pfx', '');
-            $help_name_from = FormaLms\lib\Get::sett('customer_help_name_from', false);
+
+            $help_email = DomainHandler::getInstance()->getMailerField('helper_desk_mail') ?? DomainHandler::getInstance()->getMailerField('sender_mail_system');
+            $help_name_from = DomainHandler::getInstance()->getMailerField('helper_desk_name') ?? DomainHandler::getInstance()->getMailerField('sender_name_system');
+            $help_pfx = DomainHandler::getInstance()->getMailerField('helper_desk_subject');
 
             $subject = (!empty($help_pfx) ? '[' . $help_pfx . '] ' : '');
             $subject .= chelpCheckField($_POST['help_req_subject']);

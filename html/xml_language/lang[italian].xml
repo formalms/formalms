@@ -3307,7 +3307,7 @@ La descrizione verrà mostrata agli studenti prima della somministrazione del te
         <key id="mailconfig&amp;_HOST" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Host]]></key>
         <key id="mailconfig&amp;_PORT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Porta]]></key>
         <key id="mailconfig&amp;_DEBUG" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Debug]]></key>
-        <key id="mailconfig&amp;_SECURE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[SSL]]></key>
+        <key id="mailconfig&amp;_SECURE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Protocollo di connessione]]></key>
         <key id="mailconfig&amp;_SENDER_MAIL_NOTIFICATION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mail mittente notifica]]></key>
         <key id="mailconfig&amp;_SENDER_NAME_NOTIFICATION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Nome mittente notifica]]></key>
         <key id="mailconfig&amp;_SENDER_MAIL_SYSTEM" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mail mittente di sistema]]></key>

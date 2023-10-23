@@ -387,7 +387,12 @@ if ($lock_stream) {
                         $response = $mailer->SendMail([$recipient['email']], //sender
                             $subject, //recipients
                             $body, //subject
-                            DomainHandler::getInstance()->getMailerField('sender_mail_system') //body
+                            DomainHandler::getInstance()->getMailerField('sender_mail_system'), //body,
+                            [],
+                            [
+                                MAIL_REPLYTO => DomainHandler::getInstance()->getMailerField('replyto_mail'),
+                                MAIL_SENDER_ACLNAME => DomainHandler::getInstance()->getMailerField('sender_name_system'),
+                            ]
                         );
 
                         if (!$response[$recipient['email']]) {
@@ -412,7 +417,10 @@ if ($lock_stream) {
                             $body, //subject
                             DomainHandler::getInstance()->getMailerField('sender_mail_system'), //body
                             [$path . $tmpfile, $row['filter_name'] . '.xls'],
-                            []    //params
+                            [
+                                MAIL_REPLYTO => DomainHandler::getInstance()->getMailerField('replyto_mail'),
+                                MAIL_SENDER_ACLNAME => DomainHandler::getInstance()->getMailerField('sender_name_system'),
+                            ]
                         );
 
                         if (!$response[$recipient['email']]) {
