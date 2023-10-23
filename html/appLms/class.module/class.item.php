@@ -27,23 +27,4 @@ class Module_Item extends LmsModule
         return false;
     }
 
-    public function loadHeader()
-    {
-        //EFFECTS: write in standard output extra header information
-        global $op;
-
-        switch ($op) {
-            case 'additem':
-            case 'insitem':
-            case 'moditem':
-            case 'upitem':
-                loadHeaderHTMLEditor();
-             break;
-            case 'category':
-                echo '<link href="' . getPathTemplate() . 'style/base-old-treeview.css" rel="stylesheet" type="text/css" />' . "\n";
-             break;
-        }
-
-        return;
-    }
 }

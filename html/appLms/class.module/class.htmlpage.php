@@ -27,20 +27,4 @@ class Module_Htmlpage extends LmsModule
         return false;
     }
 
-    public function loadHeader()
-    {
-        //EFFECTS: write in standard output extra header information
-        global $op;
-
-        switch ($op) {
-            case 'addpage':
-            case 'inspage':
-            case 'modpage':
-            case 'uppage':
-                loadHeaderHTMLEditor();
-             break;
-        }
-
-        return;
-    }
 }
