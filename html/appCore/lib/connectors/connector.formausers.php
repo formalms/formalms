@@ -273,18 +273,18 @@ class FormaConnectorFormaUsers extends FormaConnector
                 $mandatory = in_array($field_info['Field'], $this->mandatory_cols);
                 if (isset($this->default_cols[$field_info['Field']])) {
                     $this->cols_descriptor[] =
-                        [DOCEBOIMPORT_COLNAME => $lang_dir->def('_DIRECTORY_FILTER_' . $field_info['Field']),
-                            DOCEBOIMPORT_COLID => $field_info['Field'],
-                            DOCEBOIMPORT_COLMANDATORY => $mandatory,
-                            DOCEBOIMPORT_DATATYPE => $field_info['Type'],
-                            DOCEBOIMPORT_DEFAULT => $this->default_cols[$field_info['Field']],
+                        [FORMAIMPORT_COLNAME => $lang_dir->def('_DIRECTORY_FILTER_' . $field_info['Field']),
+                            FORMAIMPORT_COLID => $field_info['Field'],
+                            FORMAIMPORT_COLMANDATORY => $mandatory,
+                            FORMAIMPORT_DATATYPE => $field_info['Type'],
+                            FORMAIMPORT_DEFAULT => $this->default_cols[$field_info['Field']],
                         ];
                 } else {
                     $this->cols_descriptor[] =
-                        [DOCEBOIMPORT_COLNAME => $lang_dir->def('_DIRECTORY_FILTER_' . $field_info['Field']),
-                            DOCEBOIMPORT_COLID => $field_info['Field'],
-                            DOCEBOIMPORT_COLMANDATORY => $mandatory,
-                            DOCEBOIMPORT_DATATYPE => $field_info['Type'],
+                        [FORMAIMPORT_COLNAME => $lang_dir->def('_DIRECTORY_FILTER_' . $field_info['Field']),
+                            FORMAIMPORT_COLID => $field_info['Field'],
+                            FORMAIMPORT_COLMANDATORY => $mandatory,
+                            FORMAIMPORT_DATATYPE => $field_info['Type'],
                         ];
                 }
             }
@@ -295,28 +295,28 @@ class FormaConnectorFormaUsers extends FormaConnector
         foreach ($arr_fields as $field_id => $field_info) {
             if (in_array($field_info[FIELD_INFO_TYPE], $this->valid_filed_type)) {
                 $this->cols_descriptor[] =
-                    [DOCEBOIMPORT_COLNAME => $field_info[FIELD_INFO_TRANSLATION],
-                        DOCEBOIMPORT_COLID => $field_id,
-                        DOCEBOIMPORT_COLMANDATORY => false,
-                        DOCEBOIMPORT_DATATYPE => 'text',
-                        DOCEBOIMPORT_DEFAULT => false,
+                    [FORMAIMPORT_COLNAME => $field_info[FIELD_INFO_TRANSLATION],
+                        FORMAIMPORT_COLID => $field_id,
+                        FORMAIMPORT_COLMANDATORY => false,
+                        FORMAIMPORT_DATATYPE => 'text',
+                        FORMAIMPORT_DEFAULT => false,
                     ];
             }
         }
 
         //Added tree_code field
         $this->cols_descriptor[] =
-            [DOCEBOIMPORT_COLNAME => 'tree_code',
-                DOCEBOIMPORT_COLID => 'tree_code',
-                DOCEBOIMPORT_COLMANDATORY => false,
-                DOCEBOIMPORT_DATATYPE => 'text',];
+            [FORMAIMPORT_COLNAME => 'tree_code',
+                FORMAIMPORT_COLID => 'tree_code',
+                FORMAIMPORT_COLMANDATORY => false,
+                FORMAIMPORT_DATATYPE => 'text',];
 
         //Added language field
         $this->cols_descriptor[] =
-            [DOCEBOIMPORT_COLNAME => Lang::t('_LANGUAGE'),
-                DOCEBOIMPORT_COLID => 'language',
-                DOCEBOIMPORT_COLMANDATORY => false,
-                DOCEBOIMPORT_DATATYPE => 'text',
+            [FORMAIMPORT_COLNAME => Lang::t('_LANGUAGE'),
+                FORMAIMPORT_COLID => 'language',
+                FORMAIMPORT_COLMANDATORY => false,
+                FORMAIMPORT_DATATYPE => 'text',
             ];
 
         $this->arr_fields = $arr_fields;
@@ -424,12 +424,12 @@ class FormaConnectorFormaUsers extends FormaConnector
 
     public function get_type_name()
     {
-        return 'docebo-users';
+        return 'forma-users';
     }
 
     public function get_type_description()
     {
-        return 'connector to docebo users';
+        return 'connector to forma users';
     }
 
     public function get_name()
@@ -467,8 +467,8 @@ class FormaConnectorFormaUsers extends FormaConnector
         $this->simplecols = [];
         $export = [];
         foreach ($this->cols_descriptor as $field_id => $field_info) {
-            $this->simplecols[$field_info[DOCEBOIMPORT_COLID]] = $field_info[DOCEBOIMPORT_COLNAME];
-            $export[] = $field_info[DOCEBOIMPORT_COLNAME];
+            $this->simplecols[$field_info[FORMAIMPORT_COLID]] = $field_info[FORMAIMPORT_COLNAME];
+            $export[] = $field_info[FORMAIMPORT_COLNAME];
         }
 
         return $export;
@@ -546,7 +546,7 @@ class FormaConnectorFormaUsers extends FormaConnector
     {
         $result = [];
         foreach ($this->cols_descriptor as $col) {
-            if ($col[DOCEBOIMPORT_COLMANDATORY]) {
+            if ($col[FORMAIMPORT_COLMANDATORY]) {
                 $result[] = $col;
             }
         }
@@ -1077,7 +1077,7 @@ class FormaConnectorFormaUsersUI extends FormaConnectorUI
 
     public function _get_base_name()
     {
-        return 'docebousersuiconfig';
+        return 'formausersuiconfig';
     }
 
     public function get_old_name()
@@ -1333,7 +1333,7 @@ class FormaConnectorFormaUsersUI extends FormaConnectorUI
     }
 }
 
-function docebousers_factory()
+function formausers_factory()
 {
     return new FormaConnectorFormaUsers([]);
 }

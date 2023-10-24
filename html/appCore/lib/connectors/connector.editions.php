@@ -230,13 +230,13 @@ class ConnectorEditions extends FormaConnector
 
     /**
      * @return array the array of columns descriptor
-     *               - DOCEBOIMPORT_COLNAME => string the name of the column
-     *               - DOCEBOIMPORT_COLID => string the id of the column (optional,
+     *               - FORMAIMPORT_COLNAME => string the name of the column
+     *               - FORMAIMPORT_COLID => string the id of the column (optional,
      *               same as COLNAME if not given)
-     *               - DOCEBOIMPORT_COLMANDATORY => bool TRUE if col is mandatory
-     *               - DOCEBOIMPORT_DATATYPE => the data type of the column
-     *               - DOCEBOIMPORT_DEFAULT => the default value for the column (Optional)
-     *               For readonly connectos only 	DOCEBOIMPORT_COLNAME and DOCEBOIMPORT_DATATYPE
+     *               - FORMAIMPORT_COLMANDATORY => bool TRUE if col is mandatory
+     *               - FORMAIMPORT_DATATYPE => the data type of the column
+     *               - FORMAIMPORT_DEFAULT => the default value for the column (Optional)
+     *               For readonly connectos only 	FORMAIMPORT_COLNAME and FORMAIMPORT_DATATYPE
      *               are required
      **/
     public function get_cols_descripor()
@@ -246,13 +246,13 @@ class ConnectorEditions extends FormaConnector
         $col_descriptor = [];
         foreach ($this->all_cols as $k => $col) {
             $col_descriptor[] = [
-                DOCEBOIMPORT_COLNAME => $lang->def('_' . strtoupper($col[0])),
-                DOCEBOIMPORT_COLID => $col[0],
-                DOCEBOIMPORT_COLMANDATORY => (array_search($col[0], $this->mandatory_cols) === false
+                FORMAIMPORT_COLNAME => $lang->def('_' . strtoupper($col[0])),
+                FORMAIMPORT_COLID => $col[0],
+                FORMAIMPORT_COLMANDATORY => (array_search($col[0], $this->mandatory_cols) === false
                                                     ? false
                                                     : true),
-                DOCEBOIMPORT_DATATYPE => $col[1],
-                DOCEBOIMPORT_DEFAULT => ($in = array_search($col[0], $this->default_cols) === false
+                FORMAIMPORT_DATATYPE => $col[1],
+                FORMAIMPORT_DEFAULT => ($in = array_search($col[0], $this->default_cols) === false
                                                     ? ''
                                                     : $this->default_cols[$in]),
             ];

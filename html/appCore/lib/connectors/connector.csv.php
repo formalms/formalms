@@ -106,14 +106,14 @@ class FormaConnectorCsv extends FormaConnector
 
         /* search for file with pattern */
         $pat = str_replace(['*', '?'], ['.*', '.{1}'], $this->filename);
-        $arr_files = preg_ls(DOCEBOIMPORT_BASEDIR . $this->subpattern, false, '/' . $pat . '/');
+        $arr_files = preg_ls(FORMAIMPORT_BASEDIR . $this->subpattern, false, '/' . $pat . '/');
         if (count($arr_files) == 0 && !$this->is_writeonly()) {
-            //$this->last_error = 'file not found: '.DOCEBOIMPORT_BASEDIR.$this->filename;
-            return DOCEBO_IMPORT_NOTHINGTOPROCESS;
+            //$this->last_error = 'file not found: '.FORMAIMPORT_BASEDIR.$this->filename;
+            return FORMA_IMPORT_NOTHINGTOPROCESS;
         } elseif (!$this->is_writeonly()) {
             $this->curr_file = $arr_files[0];
         } else {
-            $this->curr_file = DOCEBOIMPORT_BASEDIR . $this->subpattern . $pat;
+            $this->curr_file = FORMAIMPORT_BASEDIR . $this->subpattern . $pat;
         }
         /* open file */
         if ($this->is_readonly()) {
@@ -161,15 +161,15 @@ class FormaConnectorCsv extends FormaConnector
                 return false;
             }
             if ($this->is_writeonly()) {
-                rename($this->curr_file, DOCEBOIMPORT_BASEDIR . basename($this->curr_file));
+                rename($this->curr_file, FORMAIMPORT_BASEDIR . basename($this->curr_file));
             } else {
                 $currentDate = new DateTime();
-                if (file_exists(DOCEBOIMPORT_BASEDIR . 'processed_' . $currentDate->format('Y-m-d_H:i:s') . '_' . basename($this->curr_file))) {
+                if (file_exists(FORMAIMPORT_BASEDIR . 'processed_' . $currentDate->format('Y-m-d_H:i:s') . '_' . basename($this->curr_file))) {
                     require_once _base_ . '/lib/lib.upload.php';
-                    sl_unlink(DOCEBOIMPORT_BASEDIR . 'processed' . $currentDate->format('Y-m-d_H:i:s') . '_' . basename($this->curr_file));
-                    rename($this->curr_file, DOCEBOIMPORT_BASEDIR . 'processed' . $currentDate->format('Y-m-d_H:i:s') . '_' . basename($this->curr_file));
+                    sl_unlink(FORMAIMPORT_BASEDIR . 'processed' . $currentDate->format('Y-m-d_H:i:s') . '_' . basename($this->curr_file));
+                    rename($this->curr_file, FORMAIMPORT_BASEDIR . 'processed' . $currentDate->format('Y-m-d_H:i:s') . '_' . basename($this->curr_file));
                 } else {
-                    rename($this->curr_file, DOCEBOIMPORT_BASEDIR . 'processed_' . $currentDate->format('Y-m-d_H:i:s') . '_' . basename($this->curr_file));
+                    rename($this->curr_file, FORMAIMPORT_BASEDIR . 'processed_' . $currentDate->format('Y-m-d_H:i:s') . '_' . basename($this->curr_file));
                 }
             }
         }
@@ -226,10 +226,10 @@ class FormaConnectorCsv extends FormaConnector
     public function get_cols_descripor()
     {
         foreach ($this->cols_descriptor as $colname) {
-            $arr_cols[] = [DOCEBOIMPORT_COLNAME => $colname,
-                DOCEBOIMPORT_COLMANDATORY => false,
-                DOCEBOIMPORT_DATATYPE => 'text',
-                DOCEBOIMPORT_DEFAULT => '',
+            $arr_cols[] = [FORMAIMPORT_COLNAME => $colname,
+                FORMAIMPORT_COLMANDATORY => false,
+                FORMAIMPORT_DATATYPE => 'text',
+                FORMAIMPORT_DEFAULT => '',
             ];
         }
 

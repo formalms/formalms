@@ -7,7 +7,7 @@
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
- * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * from FORMA 4.0.5 CE 2008-2012 (c) FORMA
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
@@ -16,11 +16,11 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 require_once dirname(__FILE__) . '/lib.connector.php';
 
 /**
- * Class for define docebo users connection to data source.
+ * Class for define FORMA users connection to data source.
  *
  * @version 	1.1
  *
- * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
+ * @author		Emanuele Sandri <emanuele (@) FORMA (.) com>
  **/
 class FormaConnectorFormaAdmin extends FormaConnector
 {
@@ -67,46 +67,46 @@ class FormaConnectorFormaAdmin extends FormaConnector
         $this->aclm = \FormaLms\lib\Forma::getAclManager();
         $this->cols_descriptor = [
             [
-                DOCEBOIMPORT_COLNAME => Lang::t('_TYPE'),
-                DOCEBOIMPORT_COLID => 'admin_type',
-                DOCEBOIMPORT_COLMANDATORY => true,
-                DOCEBOIMPORT_DATATYPE => 'text',
-                DOCEBOIMPORT_DEFAULT => '',
+                FORMAIMPORT_COLNAME => Lang::t('_TYPE'),
+                FORMAIMPORT_COLID => 'admin_type',
+                FORMAIMPORT_COLMANDATORY => true,
+                FORMAIMPORT_DATATYPE => 'text',
+                FORMAIMPORT_DEFAULT => '',
             ],
             [
-                DOCEBOIMPORT_COLNAME => Lang::t('_PROFILE'),
-                DOCEBOIMPORT_COLID => 'profile',
-                DOCEBOIMPORT_COLMANDATORY => true,
-                DOCEBOIMPORT_DATATYPE => 'text',
-                DOCEBOIMPORT_DEFAULT => '',
+                FORMAIMPORT_COLNAME => Lang::t('_PROFILE'),
+                FORMAIMPORT_COLID => 'profile',
+                FORMAIMPORT_COLMANDATORY => true,
+                FORMAIMPORT_DATATYPE => 'text',
+                FORMAIMPORT_DEFAULT => '',
             ],
             [
-                DOCEBOIMPORT_COLNAME => Lang::t('_USERNAME'),
-                DOCEBOIMPORT_COLID => 'username',
-                DOCEBOIMPORT_COLMANDATORY => true,
-                DOCEBOIMPORT_DATATYPE => 'text',
-                DOCEBOIMPORT_DEFAULT => '',
+                FORMAIMPORT_COLNAME => Lang::t('_USERNAME'),
+                FORMAIMPORT_COLID => 'username',
+                FORMAIMPORT_COLMANDATORY => true,
+                FORMAIMPORT_DATATYPE => 'text',
+                FORMAIMPORT_DEFAULT => '',
             ],
             [
-                DOCEBOIMPORT_COLNAME => Lang::t('_FOLDER_NAME'),
-                DOCEBOIMPORT_COLID => 'folder_name',
-                DOCEBOIMPORT_COLMANDATORY => false,
-                DOCEBOIMPORT_DATATYPE => 'text',
-                DOCEBOIMPORT_DEFAULT => 'root',
+                FORMAIMPORT_COLNAME => Lang::t('_FOLDER_NAME'),
+                FORMAIMPORT_COLID => 'folder_name',
+                FORMAIMPORT_COLMANDATORY => false,
+                FORMAIMPORT_DATATYPE => 'text',
+                FORMAIMPORT_DEFAULT => 'root',
             ],
             [
-                DOCEBOIMPORT_COLNAME => Lang::t('_COURSEPATH'),
-                DOCEBOIMPORT_COLID => 'course_path',
-                DOCEBOIMPORT_COLMANDATORY => false,
-                DOCEBOIMPORT_DATATYPE => 'text',
-                DOCEBOIMPORT_DEFAULT => 'root',
+                FORMAIMPORT_COLNAME => Lang::t('_COURSEPATH'),
+                FORMAIMPORT_COLID => 'course_path',
+                FORMAIMPORT_COLMANDATORY => false,
+                FORMAIMPORT_DATATYPE => 'text',
+                FORMAIMPORT_DEFAULT => 'root',
             ],
             [
-                DOCEBOIMPORT_COLNAME => Lang::t('_CATALOGUE'),
-                DOCEBOIMPORT_COLID => 'course_cat',
-                DOCEBOIMPORT_COLMANDATORY => false,
-                DOCEBOIMPORT_DATATYPE => 'text',
-                DOCEBOIMPORT_DEFAULT => 'root',
+                FORMAIMPORT_COLNAME => Lang::t('_CATALOGUE'),
+                FORMAIMPORT_COLID => 'course_cat',
+                FORMAIMPORT_COLMANDATORY => false,
+                FORMAIMPORT_DATATYPE => 'text',
+                FORMAIMPORT_DEFAULT => 'root',
             ],
         ];
     }
@@ -179,12 +179,12 @@ class FormaConnectorFormaAdmin extends FormaConnector
 
     public function get_type_name()
     {
-        return 'docebo-admin';
+        return 'forma-admin';
     }
 
     public function get_type_description()
     {
-        return 'Connector to docebo admin';
+        return 'Connector to forma admin';
     }
 
     public function get_name()
@@ -244,7 +244,7 @@ class FormaConnectorFormaAdmin extends FormaConnector
     {
         $result = [];
         foreach ($this->cols_descriptor as $col) {
-            if ($col[DOCEBOIMPORT_COLMANDATORY]) {
+            if ($col[FORMAIMPORT_COLMANDATORY]) {
                 $result[] = $col;
             }
         }
@@ -359,11 +359,11 @@ class FormaConnectorFormaAdmin extends FormaConnector
 }
 
 /**
- * The configurator for doceboadmin connectors.
+ * The configurator for FORMAadmin connectors.
  *
  * @version 	1.1
  *
- * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
+ * @author		Emanuele Sandri <emanuele (@) FORMA (.) com>
  **/
 class FormaConnectorFormaAdminUI extends FormaConnectorUI
 {
@@ -382,7 +382,7 @@ class FormaConnectorFormaAdminUI extends FormaConnectorUI
 
     public function _get_base_name()
     {
-        return 'doceboadminuiconfig';
+        return 'FORMAadminuiconfig';
     }
 
     public function get_old_name()
@@ -507,7 +507,7 @@ class FormaConnectorFormaAdminUI extends FormaConnectorUI
     }
 }
 
-function doceboadmin_factory()
+function formaadmin_factory()
 {
     return new FormaConnectorFormaAdmin([]);
 }

@@ -260,13 +260,13 @@ class ConnectorEditionUser extends FormaConnector
         $col_descriptor = [];
         foreach ($this->all_cols as $k => $col) {
             $col_descriptor[] = [
-                DOCEBOIMPORT_COLNAME => $lang->def('_' . strtoupper($col[0])),
-                DOCEBOIMPORT_COLID => $col[0],
-                DOCEBOIMPORT_COLMANDATORY => (array_search($col[0], $this->mandatory_cols) === false
+                FORMAIMPORT_COLNAME => $lang->def('_' . strtoupper($col[0])),
+                FORMAIMPORT_COLID => $col[0],
+                FORMAIMPORT_COLMANDATORY => (array_search($col[0], $this->mandatory_cols) === false
                                                     ? false
                                                     : true),
-                DOCEBOIMPORT_DATATYPE => $col[1],
-                DOCEBOIMPORT_DEFAULT => ($in = array_search($col[0], $this->default_cols) === false
+                FORMAIMPORT_DATATYPE => $col[1],
+                FORMAIMPORT_DEFAULT => ($in = array_search($col[0], $this->default_cols) === false
                                                     ? ''
                                                     : $this->default_cols[$in]),
             ];

@@ -128,35 +128,35 @@ class ImportUser extends FormaImport_Destination
                 if (isset($this->default_cols[$field_info['Field']])) {
                     $this->cols_descriptor[] =
                         [
-                            DOCEBOIMPORT_COLNAME => $lang_dir->def('_DIRECTORY_FILTER_' . $field_info['Field']),
-                            DOCEBOIMPORT_COLID => $field_info['Field'],
-                            DOCEBOIMPORT_COLMANDATORY => $mandatory,
-                            DOCEBOIMPORT_DATATYPE => $field_info['Type'],
-                            DOCEBOIMPORT_DEFAULT => $this->default_cols[$field_info['Field']],
+                            FORMAIMPORT_COLNAME => $lang_dir->def('_DIRECTORY_FILTER_' . $field_info['Field']),
+                            FORMAIMPORT_COLID => $field_info['Field'],
+                            FORMAIMPORT_COLMANDATORY => $mandatory,
+                            FORMAIMPORT_DATATYPE => $field_info['Type'],
+                            FORMAIMPORT_DEFAULT => $this->default_cols[$field_info['Field']],
                         ];
                 } else {
                     $this->cols_descriptor[] =
                         [
-                            DOCEBOIMPORT_COLNAME => $lang_dir->def('_DIRECTORY_FILTER_' . $field_info['Field']),
-                            DOCEBOIMPORT_COLID => $field_info['Field'],
-                            DOCEBOIMPORT_COLMANDATORY => $mandatory,
-                            DOCEBOIMPORT_DATATYPE => $field_info['Type'],
+                            FORMAIMPORT_COLNAME => $lang_dir->def('_DIRECTORY_FILTER_' . $field_info['Field']),
+                            FORMAIMPORT_COLID => $field_info['Field'],
+                            FORMAIMPORT_COLMANDATORY => $mandatory,
+                            FORMAIMPORT_DATATYPE => $field_info['Type'],
                         ];
                 }
             }
         }
         $this->cols_descriptor[] = [
-            DOCEBOIMPORT_COLNAME => Lang::t('_FOLDER_NAME', 'standard'),
-            DOCEBOIMPORT_COLID => 'tree_name',
-            DOCEBOIMPORT_COLMANDATORY => false,
-            DOCEBOIMPORT_DATATYPE => 'text',
+            FORMAIMPORT_COLNAME => Lang::t('_FOLDER_NAME', 'standard'),
+            FORMAIMPORT_COLID => 'tree_name',
+            FORMAIMPORT_COLMANDATORY => false,
+            FORMAIMPORT_DATATYPE => 'text',
         ];
 
         $this->cols_descriptor[] = [
-            DOCEBOIMPORT_COLNAME => Lang::t('_LANGUAGE', 'standard'),
-            DOCEBOIMPORT_COLID => 'language',
-            DOCEBOIMPORT_COLMANDATORY => false,
-            DOCEBOIMPORT_DATATYPE => 'text',
+            FORMAIMPORT_COLNAME => Lang::t('_LANGUAGE', 'standard'),
+            FORMAIMPORT_COLID => 'language',
+            FORMAIMPORT_COLMANDATORY => false,
+            FORMAIMPORT_DATATYPE => 'text',
         ];
 
         sql_free_result($rs);
@@ -165,11 +165,11 @@ class ImportUser extends FormaImport_Destination
             if (in_array($field_info[FIELD_INFO_TYPE], $this->valid_filed_type)) {
                 $this->cols_descriptor[] =
                     [
-                        DOCEBOIMPORT_COLNAME => $field_info[FIELD_INFO_TRANSLATION],
-                        DOCEBOIMPORT_COLID => $field_id,
-                        DOCEBOIMPORT_COLMANDATORY => false,
-                        DOCEBOIMPORT_DATATYPE => 'text',
-                        DOCEBOIMPORT_DEFAULT => false,
+                        FORMAIMPORT_COLNAME => $field_info[FIELD_INFO_TRANSLATION],
+                        FORMAIMPORT_COLID => $field_id,
+                        FORMAIMPORT_COLMANDATORY => false,
+                        FORMAIMPORT_DATATYPE => 'text',
+                        FORMAIMPORT_DEFAULT => false,
                     ];
             }
         }
@@ -209,7 +209,7 @@ class ImportUser extends FormaImport_Destination
     {
         $result = [];
         foreach ($this->cols_descriptor as $col) {
-            if ($col[DOCEBOIMPORT_COLMANDATORY]) {
+            if ($col[FORMAIMPORT_COLMANDATORY]) {
                 $result[] = $col;
             }
         }
@@ -698,18 +698,18 @@ class ImportGroupUser extends FormaImport_Destination
 
             if (in_array($field_id, $this->cols_default)) {
                 $this->cols_descriptor[] = [
-                    DOCEBOIMPORT_COLNAME => Lang::t('_GROUPUSER_' . $field_id, 'organization_chart', 'framework'),
-                    DOCEBOIMPORT_COLID => $field_id,
-                    DOCEBOIMPORT_COLMANDATORY => in_array($field_id, $this->cols_mandatory),
-                    DOCEBOIMPORT_DATATYPE => $this->cols_type[$field_id],
-                    DOCEBOIMPORT_DEFAULT => $this->default_cols[$field_id],
+                    FORMAIMPORT_COLNAME => Lang::t('_GROUPUSER_' . $field_id, 'organization_chart', 'framework'),
+                    FORMAIMPORT_COLID => $field_id,
+                    FORMAIMPORT_COLMANDATORY => in_array($field_id, $this->cols_mandatory),
+                    FORMAIMPORT_DATATYPE => $this->cols_type[$field_id],
+                    FORMAIMPORT_DEFAULT => $this->default_cols[$field_id],
                 ];
             } else {
                 $this->cols_descriptor[] = [
-                    DOCEBOIMPORT_COLNAME => Lang::t('_GROUPUSER_' . $field_id, 'organization_chart', 'framework'),
-                    DOCEBOIMPORT_COLID => $field_id,
-                    DOCEBOIMPORT_COLMANDATORY => in_array($field_id, $this->cols_mandatory),
-                    DOCEBOIMPORT_DATATYPE => $this->cols_type[$field_id],
+                    FORMAIMPORT_COLNAME => Lang::t('_GROUPUSER_' . $field_id, 'organization_chart', 'framework'),
+                    FORMAIMPORT_COLID => $field_id,
+                    FORMAIMPORT_COLMANDATORY => in_array($field_id, $this->cols_mandatory),
+                    FORMAIMPORT_DATATYPE => $this->cols_type[$field_id],
                 ];
             }
         }

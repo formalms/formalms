@@ -683,7 +683,7 @@ class FormaImport
         $result = $source->connect();
         if ($result === false) {
             return $source->get_error();
-        } elseif ($result === DOCEBO_IMPORT_NOTHINGTOPROCESS) {
+        } elseif ($result === FORMA_IMPORT_NOTHINGTOPROCESS) {
             $connMgr->set_execution_time($name);
 
             return $lang->def('_IMPORT_NOTHINGTOPROCESS');
@@ -727,14 +727,14 @@ class FormaImport
 
         $combo_elements = [];
         foreach ($dst_cols as $col) {
-            if (isset($col[DOCEBOIMPORT_COLID])) {
-                $combo_elements[$col[DOCEBOIMPORT_COLID]] = $col[DOCEBOIMPORT_COLNAME];
+            if (isset($col[FORMAIMPORT_COLID])) {
+                $combo_elements[$col[FORMAIMPORT_COLID]] = $col[FORMAIMPORT_COLNAME];
             } else {
-                $combo_elements[$col[DOCEBOIMPORT_COLNAME]] = $col[DOCEBOIMPORT_COLNAME];
+                $combo_elements[$col[FORMAIMPORT_COLNAME]] = $col[FORMAIMPORT_COLNAME];
             }
         }
 
-        $combo_elements[DOCEBOIMPORT_IGNORE] = $lang->def('_IMPORT_IGNORE');
+        $combo_elements[FORMAIMPORT_IGNORE] = $lang->def('_IMPORT_IGNORE');
 
         $table_dst_labels = [];
         $table_src_labels = [];
@@ -747,7 +747,7 @@ class FormaImport
                 $pk = isset($this->import_map[$count]['pk']) ? $this->import_map[$count]['pk'] : '0';
                 $map = isset($this->import_map[$count]['map']) ? $this->import_map[$count]['map'] : '';
             }
-            $table_src_labels[] = $col[DOCEBOIMPORT_COLNAME] .
+            $table_src_labels[] = $col[FORMAIMPORT_COLNAME] .
                 $form->getInputCheckbox('import_map_' . $count . '_pk',
                     'import_map[' . $count . '][pk]',
                     '1',
@@ -827,7 +827,7 @@ class FormaImport
                 // array( dst_colnameX => pk1, dst_colnameY => pk2 )
 
                 for ($index = 0; $index < count($this->import_map); ++$index) {
-                    if ($this->import_map[$index]['map'] != DOCEBOIMPORT_IGNORE) {
+                    if ($this->import_map[$index]['map'] != FORMAIMPORT_IGNORE) {
                         $insrow[$this->import_map[$index]['map']] = $row[$index];
                         if (isset($this->import_map[$index]['pk'])) {
                             if ($this->import_map[$index]['pk'] == '1') {
@@ -840,7 +840,7 @@ class FormaImport
                     $arr_pk[] = $pk;
                 }
                 foreach ($dst_cols as $col) {
-                    $col_name = isset($col[DOCEBOIMPORT_COLID]) ? $col[DOCEBOIMPORT_COLID] : $col[DOCEBOIMPORT_COLNAME];
+                    $col_name = isset($col[FORMAIMPORT_COLID]) ? $col[FORMAIMPORT_COLID] : $col[FORMAIMPORT_COLNAME];
                     if (!isset($insrow[$col_name])) {
                         $insrow[$col_name] = null;
                     }

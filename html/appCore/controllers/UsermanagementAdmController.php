@@ -2490,7 +2490,7 @@ class UsermanagementAdmController extends AdmController
                 }
 
                 foreach ($importer->import_map as $im) {
-                    if ($im != DOCEBOIMPORT_IGNORE && count(array_keys($importer->import_map, $im)) > 1) {
+                    if ($im != FORMAIMPORT_IGNORE && count(array_keys($importer->import_map, $im)) > 1) {
                         Util::jump_to($base_url . '&res=field_repeated');
                     }
                 }

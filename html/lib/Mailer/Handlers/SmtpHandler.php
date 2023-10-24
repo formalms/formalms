@@ -156,7 +156,7 @@ class SmtpHandler
      */
     public function getSenderNameNotification()
     {
-        return $this->senderNameNotification;
+        return $this->senderNameNotification ?? $this->senderMailNotification;
     }
 
     /**
@@ -172,7 +172,7 @@ class SmtpHandler
      */
     public function getSenderNameSystem()
     {
-        return $this->senderNameSystem;
+        return $this->senderNameSystem ?? $this->senderMailSystem;
     }
 
     /**
@@ -180,7 +180,7 @@ class SmtpHandler
      */
     public function getHelperDeskMail()
     {
-        return $this->helperDeskMail;
+        return $this->helperDeskMail ?? $this->senderMailNotification;
     }
 
     /**
@@ -188,7 +188,7 @@ class SmtpHandler
      */
     public function getHelperDeskName()
     {
-        return $this->helperDeskMail;
+        return $this->helperDeskMail ?? $this->getSenderNameNotification();
     }
 
     /**

@@ -78,10 +78,10 @@ class FormaConnectorXmlOrgChart extends FormaConnector
         $this->close();
         /* search for file with pattern */
         $pat = str_replace(['*', '?'], ['.*', '.{1}'], $this->filename);
-        $arr_files = $this->_preg_ls(DOCEBOIMPORT_BASEDIR, false, '/^' . $pat . '/');
+        $arr_files = $this->_preg_ls(FORMAIMPORT_BASEDIR, false, '/^' . $pat . '/');
         if (count($arr_files) == 0) {
-            //$this->last_error = 'file not found: '.DOCEBOIMPORT_BASEDIR.$this->filename;
-            return DOCEBO_IMPORT_NOTHINGTOPROCESS;
+            //$this->last_error = 'file not found: '.FORMAIMPORT_BASEDIR.$this->filename;
+            return FORMA_IMPORT_NOTHINGTOPROCESS;
         }
         $this->curr_file = $arr_files[0];
         require_once _base_ . '/lib/lib.domxml.php';
@@ -92,7 +92,7 @@ class FormaConnectorXmlOrgChart extends FormaConnector
         //$this->dom_doc = domxml_open_file($this->curr_file,DOMXML_LOAD_VALIDATING ,$error);
 
         if ($this->dom_doc === null) {
-            $this->last_error = 'Error parsing xml org chart file: ' . DOCEBOIMPORT_BASEDIR . $this->curr_file;
+            $this->last_error = 'Error parsing xml org chart file: ' . FORMAIMPORT_BASEDIR . $this->curr_file;
 
             return false;
         }
@@ -109,7 +109,7 @@ class FormaConnectorXmlOrgChart extends FormaConnector
     {
         if ($this->dom_doc !== null) {
             $this->dom_doc = null;
-            rename($this->curr_file, DOCEBOIMPORT_BASEDIR . 'processed' . basename($this->curr_file));
+            rename($this->curr_file, FORMAIMPORT_BASEDIR . 'processed' . basename($this->curr_file));
         }
         $this->row_index = 0;
 

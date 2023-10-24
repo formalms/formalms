@@ -144,18 +144,18 @@ class FormaConnectorFormaOrgChart extends FormaConnector
                 $mandatory = in_array($field_info['Field'], $this->mandatory_cols);
                 if (isset($this->default_cols[$field_info['Field']])) {
                     $this->cols_descriptor[] =
-                                [DOCEBOIMPORT_COLNAME => $lang_dir->def('_DIRECTORY_FILTER_' . $field_info['Field']),
-                                        DOCEBOIMPORT_COLID => $field_info['Field'],
-                                        DOCEBOIMPORT_COLMANDATORY => $mandatory,
-                                        DOCEBOIMPORT_DATATYPE => $field_info['Type'],
-                                        DOCEBOIMPORT_DEFAULT => $this->default_cols[$field_info['Field']],
+                                [FORMAIMPORT_COLNAME => $lang_dir->def('_DIRECTORY_FILTER_' . $field_info['Field']),
+                                        FORMAIMPORT_COLID => $field_info['Field'],
+                                        FORMAIMPORT_COLMANDATORY => $mandatory,
+                                        FORMAIMPORT_DATATYPE => $field_info['Type'],
+                                        FORMAIMPORT_DEFAULT => $this->default_cols[$field_info['Field']],
                                 ];
                 } else {
                     $this->cols_descriptor[] =
-                                [DOCEBOIMPORT_COLNAME => $lang_dir->def('_DIRECTORY_FILTER_' . $field_info['Field']),
-                                        DOCEBOIMPORT_COLID => $field_info['Field'],
-                                        DOCEBOIMPORT_COLMANDATORY => $mandatory,
-                                        DOCEBOIMPORT_DATATYPE => $field_info['Type'],
+                                [FORMAIMPORT_COLNAME => $lang_dir->def('_DIRECTORY_FILTER_' . $field_info['Field']),
+                                        FORMAIMPORT_COLID => $field_info['Field'],
+                                        FORMAIMPORT_COLMANDATORY => $mandatory,
+                                        FORMAIMPORT_DATATYPE => $field_info['Type'],
                                 ];
                 }
             }
@@ -164,10 +164,10 @@ class FormaConnectorFormaOrgChart extends FormaConnector
         foreach ($arr_fields as $field_id => $field_info) {
             if (in_array($field_info[FIELD_INFO_TYPE], $this->valid_filed_type)) {
                 $this->cols_descriptor[] =
-                            [DOCEBOIMPORT_COLNAME => $field_info[FIELD_INFO_TRANSLATION],
-                                    DOCEBOIMPORT_COLID => $field_id,
-                                    DOCEBOIMPORT_COLMANDATORY => false,
-                                    DOCEBOIMPORT_DATATYPE => 'text',
+                            [FORMAIMPORT_COLNAME => $field_info[FIELD_INFO_TRANSLATION],
+                                    FORMAIMPORT_COLID => $field_id,
+                                    FORMAIMPORT_COLMANDATORY => false,
+                                    FORMAIMPORT_DATATYPE => 'text',
                             ];
             }
         }
@@ -203,12 +203,12 @@ class FormaConnectorFormaOrgChart extends FormaConnector
 
     public function get_type_name()
     {
-        return 'docebo-orgchart';
+        return 'forma-orgchart';
     }
 
     public function get_type_description()
     {
-        return 'connector to docebo organization chart';
+        return 'connector to forma organization chart';
     }
 
     public function get_name()
@@ -268,7 +268,7 @@ class FormaConnectorFormaOrgChart extends FormaConnector
     {
         $result = [];
         foreach ($this->cols_descriptor as $col) {
-            if ($col[DOCEBOIMPORT_COLMANDATORY]) {
+            if ($col[FORMAIMPORT_COLMANDATORY]) {
                 $result[] = $col;
             }
         }
@@ -458,7 +458,7 @@ class FormaConnectorFormaOrgChartUI extends FormaConnectorUI
 
     public function _get_base_name()
     {
-        return 'doceboorgchartuiconfig';
+        return 'formaorgchartuiconfig';
     }
 
     public function get_old_name()
@@ -685,7 +685,7 @@ class FormaConnectorFormaOrgChartUI extends FormaConnectorUI
     }
 }
 
-function doceboorgchart_factory()
+function formaorgchart_factory()
 {
     return new FormaConnectorFormaOrgChart([]);
 }

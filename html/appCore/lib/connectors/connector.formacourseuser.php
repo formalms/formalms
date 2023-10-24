@@ -24,7 +24,7 @@ require_once _base_ . '/lib/lib.eventmanager.php';
  *
  * @author        Fabio Pirovano <fabio (@) docebo (.) com>
  **/
-class FormaConnector_FormaCourseUser extends FormaConnector
+class FormaConnectorFormaCourseUser extends FormaConnector
 {
     public $last_error = '';
 
@@ -232,12 +232,12 @@ class FormaConnector_FormaCourseUser extends FormaConnector
 
     public function get_type_name()
     {
-        return 'docebo-courseuser';
+        return 'forma-courseuser';
     }
 
     public function get_type_description()
     {
-        return 'connector to docebo user course subscription';
+        return 'connector to forma user course subscription';
     }
 
     public function get_name()
@@ -465,11 +465,11 @@ class FormaConnector_FormaCourseUser extends FormaConnector
             $isMandatory = in_array($col[0], $this->mandatory_cols);
 
             $col_descriptor[] = [
-                DOCEBOIMPORT_COLNAME => $lang->def('_' . strtoupper($col[0])),
-                DOCEBOIMPORT_COLID => $col[0],
-                DOCEBOIMPORT_COLMANDATORY => $isMandatory,
-                DOCEBOIMPORT_DATATYPE => $col[1],
-                DOCEBOIMPORT_DEFAULT => ($in = array_search($col[0], $this->default_cols) === false
+                FORMAIMPORT_COLNAME => $lang->def('_' . strtoupper($col[0])),
+                FORMAIMPORT_COLID => $col[0],
+                FORMAIMPORT_COLMANDATORY => $isMandatory,
+                FORMAIMPORT_DATATYPE => $col[1],
+                FORMAIMPORT_DEFAULT => ($in = array_search($col[0], $this->default_cols) === false
                     ? ''
                     : $this->default_cols[$in]),
             ];
@@ -759,7 +759,7 @@ class FormaConnectorUI_FormaCourseUserUI extends FormaConnectorUI
 
     public function _get_base_name()
     {
-        return 'docebocourseuseruiconfig';
+        return 'formacourseuseruiconfig';
     }
 
     public function get_old_name()
@@ -906,7 +906,7 @@ class FormaConnectorUI_FormaCourseUserUI extends FormaConnectorUI
     }
 }
 
-function docebocourseuser_factory()
+function formacourseuser_factory()
 {
-    return new FormaConnector_FormaCourseUser([]);
+    return new FormaConnectorFormaCourseUser([]);
 }
