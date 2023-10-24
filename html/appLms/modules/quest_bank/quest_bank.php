@@ -101,7 +101,7 @@ function addquest(&$url)
 
     $type_quest = FormaLms\lib\Get::pReq('add_test_quest', DOTY_STRING, 'choice');
 
-    require_once \Forma::inc(_lms_ . '/modules/question/question.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/question.php');
 
     quest_create($type_quest, 0, $url->getUrl());
 }
