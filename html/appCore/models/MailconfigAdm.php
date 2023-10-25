@@ -28,7 +28,7 @@ class MailconfigAdm extends Model
         'user' => 'string',
         'password' => 'string',
         'debug' => 'boolean',
-        'secure' => ['ssl', 'tls'],
+        'secure' => ['ssl' => 'ssl', 'tls' => 'tls'],
         'sender_mail_notification' => 'string',
         'sender_name_notification' => 'string',
         'sender_mail_system' => 'string',

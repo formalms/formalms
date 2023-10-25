@@ -14,7 +14,7 @@ final class Version20231023000009 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Deleting entry for managing YUI editor ';
+        return 'Change connectors references';
     }
 
     public function up(Schema $schema): void

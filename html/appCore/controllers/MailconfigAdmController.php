@@ -79,6 +79,8 @@ class MailconfigAdmController extends AdmController
 
         $params['item'] = $this->model->getConfigItem($this->queryString['id']);
 
+        $params['required_fields'] = $this->model->getRequiredSettings();
+
         $params['id'] = $this->queryString['id'];
         $this->render('view', $params);
     }
