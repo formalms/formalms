@@ -46,11 +46,16 @@ class MailconfigAdmController extends AdmController
             UIFeedback::error(\FormaLms\lib\Forma::getFormattedErrors(true));
         }
 
-        $params['title'] = $this->title;
+        if($this->checkConfigDatabase())
+        {
+            $params['title'] = $this->title;
 
-        $params['settings'] = $this->model->get();
+            $params['settings'] = $this->model->get();
+    
+            $this->render('show', $params);
 
-        $this->render('show', $params);
+        }
+   
     }
 
 
@@ -59,79 +64,106 @@ class MailconfigAdmController extends AdmController
             UIFeedback::error(\FormaLms\lib\Forma::getFormattedErrors(true));
         }
 
-        $params['title'] = Lang::t('_INSERT', 'standard');
+        if($this->checkConfigDatabase()) {
+            $params['title'] = Lang::t('_INSERT', 'standard');
 
-        $params['settings'] = $this->model->getSettings();
-
-        $params['required_fields'] = $this->model->getRequiredSettings();
+            $params['settings'] = $this->model->getSettings();
+    
+            $params['required_fields'] = $this->model->getRequiredSettings();
+            
+            $this->render('view', $params);
+        }
         
-        $this->render('view', $params);
     }
 
     public function edit() {
         if (\FormaLms\lib\Forma::errorsExists()) {
             UIFeedback::error(\FormaLms\lib\Forma::getFormattedErrors(true));
         }
+        
+        if($this->checkConfigDatabase()) {
+            $params['title'] = Lang::t('_MOD', 'standard');
 
-        $params['title'] = Lang::t('_MOD', 'standard');
-
-        $params['settings'] = $this->model->getSettings();
-
-        $params['item'] = $this->model->getConfigItem($this->queryString['id']);
-
-        $params['required_fields'] = $this->model->getRequiredSettings();
-
-        $params['id'] = $this->queryString['id'];
-        $this->render('view', $params);
+            $params['settings'] = $this->model->getSettings();
+    
+            $params['item'] = $this->model->getConfigItem($this->queryString['id']);
+    
+            $params['required_fields'] = $this->model->getRequiredSettings();
+    
+            $params['id'] = $this->queryString['id'];
+            $this->render('view', $params);
+        }
+        
     }
 
     public function upsert() {
 
-        $validatedParams = $this->model->upsert($this->requestObj);
+        if($this->checkConfigDatabase()) {
+            $validatedParams = $this->model->upsert($this->requestObj);
         
-        if($validatedParams['error']) {
-            $view = $validatedParams['view'];
-           
-           
-        } else {
-            $view = 'show';
+            if($validatedParams['error']) {
+                $view = $validatedParams['view'];
+               
+               
+            } else {
+                $view = 'show';
+            }
+            return Util::jump_to('index.php?r=adm/mailconfig/'.$view);
+
         }
-        return Util::jump_to('index.php?r=adm/mailconfig/'.$view);
+        
         
     }
 
     public function delete() {
-
-        $validatedParams = $this->model->delete($this->queryString['id']);
+        if($this->checkConfigDatabase()) {
+            $validatedParams = $this->model->delete($this->queryString['id']);
         
-        return Util::jump_to('index.php?r=adm/mailconfig/show');
+            return Util::jump_to('index.php?r=adm/mailconfig/show');
+        }
+       
         
     }
 
     public function setSystem() {
+        
+        if($this->checkConfigDatabase()) {
+            $this->model->toggleSystem($this->queryString['id']);
 
-        $this->model->toggleSystem($this->queryString['id']);
-
-        echo json_encode(["result" => "ok"]);
+            echo json_encode(["result" => "ok"]);
+        }
 
     }
 
     public function setActive() {
+        
+        if($this->checkConfigDatabase()) {
+            $this->model->toggleActive($this->queryString['id']);
 
-        $this->model->toggleActive($this->queryString['id']);
+            echo json_encode(["result" => "ok"]);
 
-        echo json_encode(["result" => "ok"]);
+        }
+
 
     }
 
     public function testMail() {
-
-
+  
         $recipients = explode(";", $this->queryString['recipient']);
         $result = $this->mailer->testMail($recipients);
 
         echo json_encode(["result" => $result[$recipients[0]]]);
 
+    }
+
+    private function checkConfigDatabase()  {
+
+        if($this->mailer && method_exists($this->mailer->getHandler(), 'isEnabledDatabase') && !$this->mailer->getHandler()::isEnabledDatabase()) {
+            $this->render('disabled_config', []);
+            return false;
+        }
+
+        return true;
     }
 
 
