@@ -685,6 +685,7 @@ function report_columns_filter()
     $obj_report->next_url = 'index.php?modname=report&op=report_save';
 
 
+
     //page title
     $page_title = getTitleArea([
             'index.php?modname=report&amp;op=reportlist' => $lang->def('_REPORT'),
@@ -1061,6 +1062,12 @@ function report_modify_rows()
     $obj_report->jump_url = 'index.php?modname=report&op=modify_rows&modid=' . $idrep;
     $obj_report->next_url = 'index.php?modname=report&op=modify_cols&modid=' . $idrep;
 
+    if($obj_report->id_report == 2 && FormaLms\lib\Get::req('substep', DOTY_STRING, '') != 'columns_selection') {
+        ob_end_clean();
+        return Util::jump_to('index.php?r=adm/userselector/show&showSelectAll=true&instance=reportuser&id='.$obj_report->id_report.'_'.$idrep);
+    
+    }
+    
     $page_title = getTitleArea([
             'index.php?modname=report&amp;op=reportlist' => $lang->def('_REPORT'),
             'index.php?modname=report&op=modify_name&modid=' . $idrep => $lang->def('_MOD'),
@@ -1113,6 +1120,14 @@ function report_modify_columns()
     $obj_report->jump_url = 'index.php?modname=report&op=modify_cols&modid=' . $idrep;
     $obj_report->next_url = 'index.php?modname=report&op=report_save&modid=' . $idrep;
 
+ 
+  
+    if($obj_report->id_report == 4 && FormaLms\lib\Get::req('substep', DOTY_STRING, '') != 'columns_selection') {
+        ob_end_clean();
+        return Util::jump_to('index.php?r=adm/userselector/show&showSelectAll=true&instance=reportuser&id='.$obj_report->id_report.'_'.$idrep);
+    
+    }
+    
     //page title
     $page_title = getTitleArea([
             'index.php?modname=report&amp;op=reportlist' => $lang->def('_REPORT'),

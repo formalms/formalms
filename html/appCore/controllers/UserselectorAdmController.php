@@ -87,7 +87,7 @@ class UserselectorAdmController extends AdmController
         $showSelectAll = array_key_exists('showSelectAll', $this->requestArray) ? $this->requestArray['showSelectAll'] : false;
         $showUserAlert = array_key_exists('showUserAlert', $this->requestArray) ? $this->requestArray['showUserAlert'] : false;
         $clearSelection = array_key_exists('clearSelection', $this->requestArray) ? $this->requestArray['clearSelection'] : false;
-        $selectAllValue = 0;
+        $selectAllValue = 1;
 
         if ($instanceValue) {
             if ($clearSelection) {

@@ -7,9 +7,9 @@
   
     {% if showSelectAll %}
         <div style="display: block; margin-top: 5%;"/>
-        {{ Form_getOpenCombo( Lang_translate('_SHOW_LMS_MENU')) }}
-        {{ Form_getRadio(Lang_translate('_SHOW_LMS_MENU_ALL'), 'lms_menu_everyone', 'all_idst','1', (selectAllValue == 1)) }}
-        {{ Form_getRadio(Lang_translate('_SHOW_LMS_MENU_ONLY'), 'lms_menu_not_everyone', 'all_idst','0', (selectAllValue == 0)) }}
+        {{ Form_getOpenCombo( Lang_translate('_SHOW_INSTANCE')) }}
+        {{ Form_getRadio(Lang_translate('_SHOW_INSTANCE_ALL'), 'everyone', 'all_idst','1', (selectAllValue == 1)) }}
+        {{ Form_getRadio(Lang_translate('_SHOW_INSTANCE_ONLY'), 'not_everyone', 'all_idst','0', (selectAllValue == 0)) }}
         {{ Form_getCloseCombo() }}
         </div>
     {% endif %}

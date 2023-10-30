@@ -25,18 +25,23 @@ class ReportuserAccessProcessor extends AccessProcessor
 
     public function setAccessList($resourceId, array $selection) : self {
 
-        $this->accessModel->setAccessList($resourceId, $selection);
+        $flag = $this->accessModel->setAccessList($resourceId, $selection);
 
         switch((int) $resourceId) {
             case 5:
             case 2:
-                $this->setRedirect('index.php?modname=report&op=report_sel_columns');
+                $link = 'index.php?modname=report&op=report_sel_columns';
                 break;
 
             case 4:
-                $this->setRedirect('index.php?modname=report&op=report_save');
+
+                $link = 'index.php?modname=report&op=report_save';
                 break;
         }
+
+        
+        $link = !$flag ? $this->accessModel->getLink() : $link;
+        $this->setRedirect($link);
      
 
         return $this;
