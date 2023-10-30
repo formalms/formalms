@@ -90,7 +90,6 @@ class YuiLib
             'datasource/datasource-min.js',
             'paginator/paginator-min.js',
             'datatable/datatable-min.js',
-            'editor/editor-min.js',
         ],
         'colorpicker' => [
             'slider/slider-min.js',
