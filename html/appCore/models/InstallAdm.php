@@ -1515,21 +1515,24 @@ class InstallAdm extends Model
      *
      * @return boolean
      */
-    private
+    public
     function storeSettings()
     {
 
-        $values = $this->session->get('setValues');
-        \FormaLms\db\DbConn::getInstance(
-            false,
-            [
-                'db_type' => 'mysqli',
-                'db_host' => $values['dbHost'],
-                'db_user' => $values['dbUser'],
-                'db_pass' => $values['dbPass'],
-                'db_name' => $values['dbName'],
-            ]
-        );
+        $values = $this->session->get('setValues') ?? [];
+        if(count($values)) {
+            \FormaLms\db\DbConn::getInstance(
+                false,
+                [
+                    'db_type' => 'mysqli',
+                    'db_host' => $values['dbHost'],
+                    'db_user' => $values['dbUser'],
+                    'db_pass' => $values['dbPass'],
+                    'db_name' => $values['dbName'],
+                ]
+            );
+        }
+        
 
         $qtxt = "UPDATE core_setting SET param_value='" . Lang::getSelLang() . "' ";
         $qtxt .= "WHERE param_name='default_language'";
@@ -1575,7 +1578,8 @@ class InstallAdm extends Model
      *
      * @return array
      */
-    private
+
+    public
     function importLangs($langs = []): array
     {
         $langAdm = new LangAdm();
@@ -1590,7 +1594,8 @@ class InstallAdm extends Model
 
             if (file_exists($fn)) {
                 $installedLanguages[] = $lang;
-                $langAdm->importTranslation($fn, true, false);
+                //second false set to not overwrite existing translations
+                $langAdm->importTranslation($fn, false, false);
             }
         }
 
@@ -1618,38 +1623,62 @@ class InstallAdm extends Model
      *
      * @return boolean
      */
-    private
-    function saveSmtpToDatabase()
+    public
+    function saveSmtpToDatabase($smtpSettings = [], $update = false)
     {
         $result = true;
 
-        $values = $this->session->get('setValues');
+        $values = count($smtpSettings) ? $smtpSettings : $this->session->get('setValues');
         if ($values['useSmtpDatabase'] == 'on') {
-            \FormaLms\db\DbConn::getInstance(
-                false,
-                [
-                    'db_type' => 'mysqli',
-                    'db_host' => $values['dbHost'],
-                    'db_user' => $values['dbUser'],
-                    'db_pass' => $values['dbPass'],
-                    'db_name' => $values['dbName'],
-                ]
-            );
+
+            if(!count($smtpSettings)) {
+                \FormaLms\db\DbConn::getInstance(
+                    false,
+                    [
+                        'db_type' => 'mysqli',
+                        'db_host' => $values['dbHost'],
+                        'db_user' => $values['dbUser'],
+                        'db_pass' => $values['dbPass'],
+                        'db_name' => $values['dbName'],
+                    ]
+                );
+
+            }
+           
 
             $mailConfigs = $this->getSmtpConfig();
 
-            $queryInsert = 'INSERT INTO'
+            if(!$update) {
+                $queryInsert = 'INSERT INTO'
                 . ' %adm_mail_configs (title, system) VALUES ("DEFAULT", "1")';
 
-            $result = sql_query($queryInsert);
+                $result = sql_query($queryInsert);
 
-            $mailConfigId = sql_insert_id();
+                $mailConfigId = sql_insert_id();
+            } else {
+                $queryInsert = 'SELECT id FROM'
+                . ' %adm_mail_configs WHERE `system` = 1 LIMIT 1';
+              
+                $result = sql_query($queryInsert);
+
+                $mailConfigId = (sql_fetch_object($result))->id;
+
+              
+            }
+            
 
             foreach ($mailConfigs['smtp'] as $type => $value) {
                 $realValue = $values[$type] ?? $value;
-                $queryInsert = 'INSERT INTO'
+                if(!$update) {
+                    $queryInsert = 'INSERT INTO'
                     . ' %adm_mail_configs_fields (mailConfigId, type, value) VALUES ("' . $mailConfigId . '", "' . $type . '", "' . $realValue . '")';
-                $result = sql_query($queryInsert);
+                    $result = sql_query($queryInsert);
+                } else {
+                    $queryInsert = 'UPDATE'
+                    . ' %adm_mail_configs_fields SET value = "' . $realValue .'" WHERE mailConfigId = "' . $mailConfigId . '" AND type = "' . $type . '"';
+                    $result = sql_query($queryInsert);
+                }
+               
             }
         }
 
@@ -1719,7 +1748,7 @@ class InstallAdm extends Model
      *
      * @return boolean
      */
-    private
+    public
     function saveUpgradeVersion()
     {
         $qtxt = "UPDATE core_setting SET param_value='" . \FormaLms\lib\Version\VersionChecker::getFileVersion() . "' WHERE param_name='core_version'";

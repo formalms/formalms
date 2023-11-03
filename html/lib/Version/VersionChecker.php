@@ -447,8 +447,8 @@ class VersionChecker
     {
 
         $response = trim(\FormaLms\lib\Database\FormaMigrator::getInstance()->executeCommand('uptodate'));
-
-        if (preg_match('/[OK]/', $response)) {
+  
+        if (preg_match("/^\[OK\]/", $response)) {
             return false;
         } else {
             return true;
