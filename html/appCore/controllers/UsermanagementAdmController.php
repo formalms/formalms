@@ -1596,7 +1596,7 @@ class UsermanagementAdmController extends AdmController
         $id = FormaLms\lib\Get::req('node_id', DOTY_INT, -1);
         $code = FormaLms\lib\Get::req('org_code', DOTY_STRING, '');
         $template_id = FormaLms\lib\Get::req('associated_template', DOTY_INT, '');
-
+        $template_arr = getTemplateList();
         $langs = FormaLms\lib\Get::req('modfolder', DOTY_MIXED, false);
         $old_node = $this->model->getFolderById($id);
 
