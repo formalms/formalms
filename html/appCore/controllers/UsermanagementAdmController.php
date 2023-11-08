@@ -1252,12 +1252,11 @@ class UsermanagementAdmController extends AdmController
                         $languages = \FormaLms\lib\Forma::langManager()->getAllLanguages(true); //getAllLangCode();
                         $std_lang = Lang::get();
 
-                        $template = (!empty($folder_info->associated_template) ? $folder_info->associated_template : getDefaultTemplate());
-                        $template_arr = getTemplateList();
-                        $template_tmp_arr = array_flip($template_arr);
-                        $template_id = $template_tmp_arr[$template];
-                        unset($template_tmp_arr);
-
+                        $template = (!empty($folder_info->associated_template) ? $folder_info->associated_template : 0);
+                        $template_arr = getTemplateList(true, true);
+                     
+                        $template_id = $template_arr[$template];
+                     
                         $form_content = Form::getHidden('modfolder_id', 'node_id', $id);
                         $form_content .= Form::getTextfield(Lang::t('_CODE', 'organization_chart'), 'org_code', 'org_code', 50, $folder_info->code);
                         $form_content .= Form::getDropdown(Lang::t('_DEFAULTTEMPLATE', 'configuration'), 'associated_template', 'associated_template', $template_arr, $template_id);
@@ -1474,7 +1473,7 @@ class UsermanagementAdmController extends AdmController
         }
 
         $template = getDefaultTemplate();
-        $template_array = getTemplateList();
+        $template_array = getTemplateList(true,true);
         $template_id = array_search($template,$template_array);
 
 
@@ -1501,7 +1500,7 @@ class UsermanagementAdmController extends AdmController
         $output = [];
         $code = FormaLms\lib\Get::req('org_code', DOTY_STRING, '');
         $langs = FormaLms\lib\Get::req('langs', DOTY_MIXED, false);
-        $template_id = FormaLms\lib\Get::req('associated_template', DOTY_INT, 0);
+        $template_id = FormaLms\lib\Get::req('associated_template', DOTY_STRING, 0);
         if ($langs == false) {
             $output['success'] = false;
             $output['message'] = Lang::t('_INVALID_INPUT');
@@ -1595,8 +1594,8 @@ class UsermanagementAdmController extends AdmController
         $output = [];
         $id = FormaLms\lib\Get::req('node_id', DOTY_INT, -1);
         $code = FormaLms\lib\Get::req('org_code', DOTY_STRING, '');
-        $template_id = FormaLms\lib\Get::req('associated_template', DOTY_INT, '');
-        $template_arr = getTemplateList();
+        $template_id = FormaLms\lib\Get::req('associated_template', DOTY_STRING, '0');
+        $template_arr = getTemplateList(true);
         $langs = FormaLms\lib\Get::req('modfolder', DOTY_MIXED, false);
         $old_node = $this->model->getFolderById($id);
 
@@ -1609,7 +1608,7 @@ class UsermanagementAdmController extends AdmController
 
         Events::trigger('core.orgchart.editing', ['node' => $new_node, 'old_node' => $old_node]);
 
-        $res = $this->model->modFolderCodeAndTemplate($id, $code, $template_arr[$template_id]);
+        $res = $this->model->modFolderCodeAndTemplate($id, $code, array_key_exists($template_id,$template_arr) ? $template_arr[$template_id] : '');
         $res = $this->model->renameFolder($id, $langs);
         // update custom field for org LRZ
         // cicle for each custom for ORG_CHARRT

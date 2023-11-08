@@ -41,9 +41,8 @@
         <div class="tab-content">
             <div class="tab-pane active" id="tab_g_0">
                 <h2>{{ Lang_translate('_DOMAIN_CONFIG', 'menu') }}</h2>
-
-                {{ Form_getTextfield( Lang_translate('_TITLE', 'domainconfig') , 'title', 'title', 255, item.title) }}
-                {{ Form_getTextfield( Lang_translate('_DOMAIN', 'domainconfig') , 'domain', 'domain', 255, item.domain) }}  
+                {{ Form_getLineTextfield('form_line_l', 'floating', Lang_translate('_TITLE', 'domainconfig') , 'textfield', 'title', 'title',  item.title, '', 255, 'required', '', '') }}
+                {{ Form_getLineTextfield('form_line_l', 'floating', Lang_translate('_DOMAIN', 'domainconfig') , 'textfield', 'domain', 'domain',  item.domain, '', 255, 'required', '', '') }}
                 {{ Form_getDropdown(Lang_translate('_TEMPLATE', 'domainconfig'), 'template', 'template', templates, item.template) }}</td>
                 {{ Form_getDropdown(Lang_translate('_ORG', 'domainconfig'), 'orgId', 'orgId', orgs, item.orgId) }}</td>
                 {{ Form_getDropdown(Lang_translate('_MAIL_CONFIG', 'domainconfig'), 'mailConfigId', 'mailConfigId', mailConfigs, item.mailConfigId) }}</td>

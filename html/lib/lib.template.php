@@ -215,12 +215,15 @@ function getTemplateVersion($template_name)
  *
  * @return array an array with the existent templates
  */
-function getTemplateList($set_keys = false, $platform = false)
+function getTemplateList($set_keys = false, $addUndefined = false)
 {
     $templArray = [];
     $templ = dir(_templates_ . '/');
     while ($elem = $templ->read()) {
         if ((is_dir(_templates_ . '/' . $elem)) && ($elem != '.') && ($elem != '..') && ($elem != '.svn') && $elem[0] != '_' && checkTemplateVersion($elem)) {
+            if($addUndefined) {
+                $templArray[0] = Lang::t('_NOT_ASSIGNED');
+            }
             if (!$set_keys) {
                 $templArray[] = $elem;
             } else {
