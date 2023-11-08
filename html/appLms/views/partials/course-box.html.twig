@@ -84,7 +84,7 @@
                                     <div class="show-all-dates-popup" data-overlay="course-{{ course.idCourse }}">
                                         <div id="pop_up_container" class="yui-module yui-overlay yui-panel">
                                             <a class="container-close" href="javascript:;"
-                                               onclick="closeAllDatesPopup({{ course.idCourse }})"></a>
+                                               title="{{ Lang_translate('_CLOSE', 'standard') }}" onclick="closeAllDatesPopup({{ course.idCourse }})"></a>
                                             <div class="hd" id="pop_up_container_h">{{ course.name }}</div>
                                             <div class="bd">
                                                 <div class="edition_container">

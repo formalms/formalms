@@ -8,7 +8,7 @@
 }
 
 .d-popup__item {
-  width: 130px;
+  width: 180px;
   height: auto;
   padding: 7px;
   background-color: var(--color-grey);
@@ -68,7 +68,7 @@
   font-weight: $bold;
   line-height: 14px;
   overflow: hidden;
-  color: var(--color-grey-02);
+  color: var(--color-black);
 }
 
 .d-popup__category {
@@ -85,7 +85,7 @@
   font-size: 12px;
   font-weight: $regular;
   line-height: 17px; 
-  color: var(--color-grey-02);
+  color: var(--color-black);
 }
 
 .d-popup__title {
@@ -98,7 +98,7 @@
   font-weight: $bold;
   line-height: 14px;
   overflow: hidden;
-  color: var(--color-grey-03);
+  color: var(--color-black);
   position: relative;
   
   &:before {
