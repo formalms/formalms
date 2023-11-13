@@ -352,7 +352,7 @@ class GroupTestManagement
         $query = '
 		SELECT idTrack 
 		FROM ' . $GLOBALS['prefix_lms'] . "_testtrack 
-		WHERE idTest='" . $id_test . "' AND idUser='" . $id_user . "'";
+		WHERE idTest='" . $id_test . "' AND idUser='" . $id_user . "' ORDER BY date_attempt DESC";
         $rs = sql_query($query);
         [$id_track] = sql_fetch_row($rs);
 

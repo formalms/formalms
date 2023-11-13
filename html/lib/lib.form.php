@@ -902,7 +902,7 @@ class Form
      * @param string $label_name   text contained into the label
      * @param string $id           the id of the element
      * @param string $name         the name of the element
-     * @param string $all_value    all the possible value of the select element
+     * @param array $all_value    all the possible value of the select element
      * @param string $selected     the element selected
      * @param string $other_after  html code added after the select element
      * @param string $other_before html code added before the label element
