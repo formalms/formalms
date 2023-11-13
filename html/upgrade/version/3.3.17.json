@@ -1,0 +1,20 @@
+{
+    "version": {
+      "name": "3.3.17",
+      "number": "303017",
+      "description": "questa è la 3.3.17",
+      "pretty_desc": "3 3 17",
+      "pre": "303017_pre.php",
+      "post": "303017_post.php",
+      "config": "303017_conf.php",
+      "file_sytem": "303017_fs.php",
+      "role": "303017_role.php",
+      "mysql": "303017_db.sql",
+      "date": "2023-05-15 00:00",
+      "status": "stable",
+      "php": {
+        "min": "7.4",
+        "max": "7.4"
+      }
+    }
+  }
