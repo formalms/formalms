@@ -327,10 +327,7 @@ class Certificate
         $res = sql_query($query);
         if($res) {
             foreach ($res as $row) {
-                if (
-                    $this->certificateAvailableForUser($row['id_certificate'], $row['id_course'], $row['id_user'])
-                    && $this->canRelExceptional($row['perm_close_lo'], $row['id_user'], $row['id_course'], $row['point_required'])
-                ) {
+                if ($this->certificateAvailableForUser($row['id_certificate'], $row['id_course'], $row['id_user'])) {
                     $assignable[] = $row;
                 }
             }
@@ -339,36 +336,7 @@ class Certificate
         return $assignable;
     }
 
-    //fix: Php7.1+ compatibility
-    public function canRelExceptional($perm_close_lo, $idUser, $idCourse, $pointsRequired)
-    {
-        require_once _lms_ . '/lib/lib.coursereport.php';
-        require_once _lms_ . '/lib/lib.orgchart.php';
 
-        $course_score_final = false;
-        $org_man = new OrganizationManagement(false);
-        $rep_man = new CourseReportManager();
-
-        if ($perm_close_lo == 0) {
-            $score_final = $org_man->getFinalObjectScore([$idUser], [$idCourse]);
-
-            if (isset($score_final[$idCourse][$idUser]) && $score_final[$idCourse][$idUser]['max_score']) {
-                $course_score_final = $score_final[$idCourse][$idUser]['score'];
-            }
-        } else {
-            $score_course = $rep_man->getUserFinalScore([$idUser], [$idCourse]);
-
-            if (!empty($score_course)) {
-                $course_score_final = (isset($score_course[$idUser][$idCourse]) ? $score_course[$idUser][$idCourse]['score'] : false);
-            }
-        }
-
-        if ((float)$course_score_final >= (float)$pointsRequired) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     public function getCertificateList($name_filter = false, $code_filter = false)
     {
