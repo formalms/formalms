@@ -2,6 +2,70 @@ FORMA LMS
 RELEASE CHANGELOG
 
 ---------------------------------------------------------------------------------------
+forma.lms 4.0.4
+---------------------------------------------------------------------------------------
+Release date: 2023 november
+
+- #      - fixes and implementations for accessibility
+- #      - fix userselector on report updates
+- #      - # deleting unused files
+- #      - fix smtp disabled in config file
+- #      - fix connectors
+- #      - fix mail config
+- #      - #20172 Removing Yui editor
+- #      - fix on assigning template in creating new folder
+- #      - #20171 Added "custom fields" info related to course when getting course info for rendering on "my courses"
+- #      - fix on untranslated custom field
+- #      - Fix dashboard clone
+- #      - new events "core.index.preoperation" and "core.index.beforenavigation" in appCore and appLms
+- #      - fix dates, competences and release 4.0.3
+- #      - #20157: fixed issues related to help desk and other minor fixes
+- #      - add reset_field_if_not_set,use_default_password,default_password in iotask docebouser connector config
+- #      - add orgchart management in update user api
+- #      - various fix userselector
+- #      - Bug #20168: fixed id parameter for deleting record; added console output in case of debug = YES setting.
+- #      - fix report create
+- #      - fix query for field show when textentry is numeric when fields filter is active
+- #      - #20167: names removed
+- #      - fix custom field check when user insert 0 as value
+- #      - #20165; added static keyword
+- #      - #20162: user import issues: added mime type + declared array
+- #      - Added pseudo-class :focus-visibility
+- #      - #20161: added managing of default null value
+- #      - #20160: orgFieldPublishTo date format not managed with default DB value.
+- #      - fix version compare
+- #      - Remove double addslashes() in Scorm_Organization
+- #      - Fix getPreference language in (external) login
+- #      - fix typo in lib.certificate.php
+- #      - fix field show when textentry is numeric
+- #      - fix group update
+- #      - Fix course catalog implode exception when catalog filter does not return array
+- #      - fix missing variables and referrals
+- #      - fix tree data
+- #      - event fors profile and user area lms
+- #      - last fixes after accessiblity
+- #      - Fixed chechbox tabindex
+- #      - # managing tab navigation inside course
+- #      - cols and buttons for recovery psw and email
+- #      - Modified and fixed the button colors on the tabulation
+- #      - Fix icons course page
+- #      - # implemented useri interaction through tab key on my courses page
+- #      - # managing focus style
+- #      - # added and improved tabs view
+- #      - # Added TITLE in the SELECT in MyCourses -> Tab for filtering courses
+- #      - # management of page for <title> html tag
+- #      - make inheritance of sslencryption
+- #      - drop index if exists for mysql5.7 implementation
+- #      - fix on zero date after tests
+- #      - substition zero date with nullable dates
+- #      - fix session in select node usermanagement
+- #      - add fallback to ',' '|' and space separator fo CC and CCN in mailer
+- #      - Enabled scorm player for xAPI learning objects.
+- #      - substitution image default for courses
+- #      - removed font file with wrong camel case in name
+- #      - fix installer
+
+---------------------------------------------------------------------------------------
 forma.lms 4.0.1
 ---------------------------------------------------------------------------------------
 Release date: 2023 august
