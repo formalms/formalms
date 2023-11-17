@@ -196,8 +196,8 @@ class OrgDirDb extends RepoDirDb implements Accessible
 
             . (int) $this->org_width . ', '
             . (int) $this->org_height . ', '
-            . ($this->org_publish_from == '' ? "''" : "'" . $this->org_publish_from . "'") . ', '
-            . ($this->org_publish_to == '' ? "''" : "'" . $this->org_publish_to . "'") . ', '
+            . (empty($this->org_publish_from) ? "NULL" : "'" . $this->org_publish_from . "'") . ', '
+            . (empty($this->org_publish_to) ? "NULL" : "'" . $this->org_publish_to . "'") . ', '
             . ($this->org_access == '' ? "''" : "'" . $this->org_access . "'") . ', '
             . ($this->org_publish_for == '' ? "''" : "'" . $this->org_publish_for . "'") . ', '
             . (int) $this->org_ignoreScore . ' ';
