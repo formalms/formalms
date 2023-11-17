@@ -215,11 +215,11 @@ class DateManager
         $result = true;
         foreach ($arrayDays as $dayInfo) {
             if (empty($dayInfo['calendarId'])) {
-                $query = "UPDATE %lms_course_date_day SET `calendarId` = '" . CalendarManager::generateUniqueCalendarId() . "' WHERE `id_date` = " . $idDate . ' AND `id` =' . $dayInfo['day_id'];
+                $query = "UPDATE %lms_course_date_day SET `calendarId` = '" . CalendarManager::generateUniqueCalendarId() . "' WHERE `id_date` = " . $idDate . ' AND `id` =' . $dayInfo['id'];
                 \FormaLms\db\DbConn::getInstance()->query($query);
             }
 
-            $query = 'UPDATE %lms_course_date_day SET `deleted` = 1 WHERE `id_date` = ' . $idDate . ' AND `id` =' . $dayInfo['day_id'];
+            $query = 'UPDATE %lms_course_date_day SET `deleted` = 1 WHERE `id_date` = ' . $idDate . ' AND `id` =' . $dayInfo['id'];
             $res = \FormaLms\db\DbConn::getInstance()->query($query);
 
             if ($res === false) {
