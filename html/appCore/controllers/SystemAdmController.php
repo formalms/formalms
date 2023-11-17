@@ -133,6 +133,7 @@ class SystemAdmController extends AdmController
     {
 
         $params['checks'] = $this->systemModel->getChecks();
+        $params['descriptions'] = $this->systemModel->getDescriptions();
         $errorStatus = $this->request->get('errorStatus');
 
         if($errorStatus) {

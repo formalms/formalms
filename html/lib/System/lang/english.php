@@ -90,6 +90,9 @@ define('_OFF', 'OFF ');
 define('_YES', 'YES');
 define('_NO', 'NO');
 
+
+define('_STATUSCHECK_TITLE', 'Ooops...Something Went wrong!');
+define('_STATUSCHECK_DESCRIPTION', 'Some system requirements are missing:');
 // -----------------------------------------
 define('_TITLE_STEP3', 'Admin and Language Settings');
 define('_AGREE_LICENSE', 'I agree with the term of the license');

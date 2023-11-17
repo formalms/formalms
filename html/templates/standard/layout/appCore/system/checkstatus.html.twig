@@ -1,13 +1,17 @@
 <section class="vh-100 section-check">
   <div class="container py-5 h-100 container-center">
     <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-lg-8 col-xl-6 col-centered">
+      <div class="col-lg-8 col-xl-6 col-centered" style="float:none;">
         <div class="card rounded-3">
           <div class="card-body p-4">
 
-            <p class="mb-2"><span class="h2 me-2">FORMALMS</span> <span
-                class="badge bg-danger">STATUS</span></p>
-            <p class="text-muted pb-2">{{ "now"|date("d/m/Y H:i:s") }}</p>
+            <p class="mb-2"><span class="h2 me-2">FORMALMS</span> 
+              
+            <span class="badge bg-danger">STATUS</span></p> 
+             <p class="text-muted pb-2">{{ "now"|date("d/m/Y H:i:s") }}</p>
+             <br /><br />
+              <p class="mb-2"><span class="h4 me-2"><b>{{ descriptions["title"]}}</b></span> </p>   <br />
+              <p class="mb-2"><span class="h5 me-2">{{ descriptions["description"]}}</span> </p>
 
             <ul class="list-group rounded-0">
               

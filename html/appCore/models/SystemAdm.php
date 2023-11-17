@@ -39,6 +39,13 @@ class SystemAdm extends Model
 
     ];
 
+
+    private array $descriptions = [
+        'title' => _STATUSCHECK_TITLE,
+        'description' => _STATUSCHECK_DESCRIPTION,
+
+    ];
+
     private array $wholeLangs = [
         'it' => 'italian',
         'en' => 'english',
@@ -47,6 +54,10 @@ class SystemAdm extends Model
 
     public function getChecks() {
         return $this->systemChecks;
+    }
+
+    public function getDescriptions() {
+        return $this->descriptions;
     }
 
     public function decodeErrorStatus(string $status) : array{
