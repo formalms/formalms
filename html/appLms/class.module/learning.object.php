@@ -177,7 +177,7 @@ class Learning_Object
      * function getParamInfo()
      * return array of require params for play.
      *
-     * @return an example of associative array returned is:
+     * @return array|null example of associative array returned is:
      *            [0] => (
      *            ['label'] => _DEFINITION,
      *            ['param_name'] => parameter name;
@@ -217,7 +217,7 @@ class Learning_Object
      * @param int    $id_param contains the id needed for params retriving
      * @param string $back_url contain the back url
      *
-     * @return nothing return
+     * @return null return
      */
     public function play($id, $id_param, $back_url)
     {
@@ -263,7 +263,7 @@ class Learning_Object
     /**
      * function canBeMilestone().
      *
-     * @return true if this object can be a milestone
+     * @return bool if this object can be a milestone
      *              FALSE otherwise
      */
     public function canBeMilestone()

@@ -42,6 +42,11 @@ require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/scorm_items_track.
 class SOAPLMS
 {
     public $__dispatch_map = [];
+    public $idReference;
+    public $idUser;
+    public $objectType;
+    public $idTrack;
+    public $environment;
 
     // Required function by SOAP_Server
     public function __dispatch($methodname)

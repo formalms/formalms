@@ -78,7 +78,7 @@ class Man_Advice
         if (!empty($arr_id_advice)) {
             $query = 'DELETE FROM %lms_adviceuser WHERE idAdvice IN (' . implode(',', $arr_id_advice) . ')';
             $res = $db->query($query);
-            if (!res) {
+            if (!$res) {
                 $db->rollback();
 
                 return false;

@@ -177,11 +177,11 @@ class CourseLms extends Model
         }
 
         $parsedData['level_icon'] = array_key_exists('level', $parsedData) ? $parsedData['level'] : false;
-        if($parsedData['level_icon']) {
+        if ($parsedData['level_icon']) {
             $parsedData['level_text'] = array_key_exists($parsedData['level'], $parsedData) ? $levels[$parsedData['level']] : '';
 
         }
-        
+
         //LRZ:  if validity day is setting
         //$date_first_access = fromDatetimeToTimestamp(self::getDateFirstAccess($course['idCourse'], \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()));
         //if ($parsedData['valid_time'] > 0 && $date_first_access > 0) {
@@ -190,12 +190,13 @@ class CourseLms extends Model
         //    $parsedData['dateClosing_month'] = Lang::t('_MONTH_' . substr('0' . date('m', $time_expired), -2), 'standard');
         //    $parsedData['dateClosing_day'] = date('d', $time_expired);
         //}
-
-        $date_closing = getdate(strtotime(Format::date($parsedData['date_end'], 'date')));
-        if ($date_closing['year'] > 0) {
-            $parsedData['dateClosing_year'] = $date_closing['year'];
-            $parsedData['dateClosing_month'] = Lang::t('_MONTH_' . substr('0' . $date_closing['mon'], -2), 'standard');
-            $parsedData['dateClosing_day'] = $date_closing['mday'];
+        if ($parsedData['date_end'] !== null) {
+            $date_closing = getdate(strtotime(Format::date($parsedData['date_end'], 'date')));
+            if ($date_closing['year'] > 0) {
+                $parsedData['dateClosing_year'] = $date_closing['year'];
+                $parsedData['dateClosing_month'] = Lang::t('_MONTH_' . substr('0' . $date_closing['mon'], -2), 'standard');
+                $parsedData['dateClosing_day'] = $date_closing['mday'];
+            }
         }
 
         $parsedData['is_enrolled'] = !empty($infoEnroll);
@@ -286,8 +287,8 @@ class CourseLms extends Model
                     $courseBoxEnabled = false;
                 }
             } else {
-                if ((int) $course['selling'] === 0) {
-                    switch ((int) $course['subscribe_method']) {
+                if ((int)$course['selling'] === 0) {
+                    switch ((int)$course['subscribe_method']) {
                         case 1:
                         case 2:
                             $courseBoxEnabled = true;
@@ -312,8 +313,8 @@ class CourseLms extends Model
             if ($course['is_enrolled']) {
                 $courseBoxEnabled = true;
             } else {
-                if ((int) $course['selling'] === 0) {
-                    switch ((int) $course['subscribe_method']) {
+                if ((int)$course['selling'] === 0) {
+                    switch ((int)$course['subscribe_method']) {
                         case 1:
                         case 2:
                             $courseBoxEnabled = true;
@@ -355,7 +356,7 @@ class CourseLms extends Model
         $next_lesson_array = [];
         $currentDate = new DateTime();
 
-        if(array_key_exists($id_course, $course_editions)) {
+        if (array_key_exists($id_course, $course_editions)) {
             // user can be enrolled in more than one edition (as a teacher or crazy student....)
             foreach ($course_editions[$id_course] as $id_date => $obj_data) {
                 // skip if course if over or not available
@@ -364,7 +365,7 @@ class CourseLms extends Model
                 } catch (Exception $e) {
                     $end_course = clone $currentDate;
                 }
-                if (((int) $obj_data->status === 0) && ($end_course > $currentDate)) {
+                if (((int)$obj_data->status === 0) && ($end_course > $currentDate)) {
                     $out[$id_date]['code'] = $obj_data->code;
                     $out[$id_date]['name'] = $obj_data->name;
                     $out[$id_date]['date_begin'] = $obj_data->date_min;
@@ -389,7 +390,7 @@ class CourseLms extends Model
                 }
             }
         }
-        
+
 
         // calculating what's next lession will be; safe mode in case of more editions with different days
         if (count($next_lesson_array) > 0) {
@@ -410,7 +411,7 @@ class CourseLms extends Model
     {
         $query = 'SELECT name, selling, prize'
             . ' FROM %lms_course'
-            . ' WHERE idCourse = ' . (int) $id_course;
+            . ' WHERE idCourse = ' . (int)$id_course;
 
         list($course_name, $selling, $price) = sql_fetch_row(sql_query($query));
         $classrooms = $this->classroom_man->getCourseDate($id_course, false);
@@ -469,7 +470,7 @@ class CourseLms extends Model
         $defaultTrueDate = new DateTime('2999-01-01');
 
         if ($course['course_type'] == 'classroom') {
-            if ((int) $course['auto_unsubscribe'] === 2) {
+            if ((int)$course['auto_unsubscribe'] === 2) {
                 $editionKey = array_key_first($course['editions']);
 
                 if (array_key_exists('unsubscribe_date_limit', $course['editions'][$editionKey])) {
@@ -479,8 +480,8 @@ class CourseLms extends Model
                     $unsub_date_limit = $defaultTrueDate;
                 }
                 $edition_not_started = true;
-                $days = array_key_exists('days', $course['editions'][$editionKey]) ? $course['editions'][$editionKey]['days']: [];
-                foreach ($days  as $k => $day) {
+                $days = array_key_exists('days', $course['editions'][$editionKey]) ? $course['editions'][$editionKey]['days'] : [];
+                foreach ($days as $k => $day) {
                     $next_day = $day['full_date'];
                     $next_day = DateTime::createFromFormat('Y-m-d H:i:s', $next_day);
                     $edition_not_started = $edition_not_started && ($now < $next_day);
@@ -501,7 +502,7 @@ class CourseLms extends Model
             }
 
             $courseUnsubscribeDateLimit = (null !== $course['unsubscribe_date_limit'] ? DateTime::createFromFormat('Y-m-d H:i:s', $course['unsubscribe_date_limit']) : $defaultTrueDate);
-            if (((int) $course['auto_unsubscribe'] === 2 || (int) $course['auto_unsubscribe'] === 1) && ($now < $courseUnsubscribeDateLimit)) {
+            if (((int)$course['auto_unsubscribe'] === 2 || (int)$course['auto_unsubscribe'] === 1) && ($now < $courseUnsubscribeDateLimit)) {
                 return true;
             }
 
@@ -520,7 +521,7 @@ class CourseLms extends Model
         $qres = sql_query($sql_exist);
         list($exist) = sql_fetch_row($qres);
 
-        if ((int) $exist === 1) {
+        if ((int)$exist === 1) {
             return true;
         }
 
@@ -538,7 +539,7 @@ class CourseLms extends Model
         $result = \FormaLms\lib\Forma::db()->query($query);
 
         foreach (\FormaLms\lib\Forma::db()->fetch_assoc($result) as $item) {
-            return (string) $item['textof'];
+            return (string)$item['textof'];
         }
 
         return '';

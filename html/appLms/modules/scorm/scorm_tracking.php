@@ -69,9 +69,9 @@ class Scorm_Tracking
     /**
      * Constructor of the Scorm_Tracking.
      *
-     * @param $idUser
-     * @param $idReference
-     * @param $id if $idUser is null => $idscorm_tracking,
+     * @param $idUser int|string
+     * @param $idReference int|string
+     * @param $id int|string if $idUser is null => $idscorm_tracking,
      * 			  if $id_isitemid is true => $idscorm_item, and $idRefrence is needed
      * 			  else idsco from manifest
      * @param $idscorm_package

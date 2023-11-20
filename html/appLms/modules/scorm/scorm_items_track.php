@@ -115,14 +115,14 @@ class Scorm_ItemsTrack
      *  Return a recordset with the item_track record
      *	The entry is identified by idUser, idReference, (idscorm_item|idscorm_organization).
      *
-     *	@param $idUser user id of the record
-     *	@param $idReference id of the related item in lesson area
-     *	@param $idscorm_item id of the item of the record to retrieve
+     *	@param $idUser int|string id of the record
+     *	@param $idReference int|string of the related item in lesson area
+     *	@param $idscorm_item int|string of the item of the record to retrieve
      *						if is null we can search the entry of the
      *						scorm organization
-     *	@param $idscorm_organization id of the organization to get
+     *	@param $idscorm_organization int|string of the organization to get
      *
-     *	@return record set resource or FALSE
+     *	@return mixed set resource or FALSE
      **/
     public function getItemTrack($idUser, $idReference, $idscorm_item, $idscorm_organization = null)
     {
