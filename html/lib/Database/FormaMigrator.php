@@ -91,7 +91,7 @@ class FormaMigrator
             );
         } catch (PDOException $pdoException) {
 
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
 
         }
 

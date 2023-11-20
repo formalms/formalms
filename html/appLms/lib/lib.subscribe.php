@@ -589,11 +589,12 @@ class CourseSubscribe_Manager
             $id_user = [$id_user];
         }
 
-        $result = $this->db->query($query);
+        $result = $this->db->query($query_lvl);
         $old_level = [];
 
-        while (list($id_user_t, $level) = $this->db->fetch_row($result)) {
-            $old_level[$id_user_t] = $level;
+        foreach ($result as $row){
+
+            $old_level[$row['idUser']] = $row['level'];
         }
 
         $res = $this->db->query($query);
@@ -609,7 +610,8 @@ class CourseSubscribe_Manager
             }
 
             foreach ($id_user as $id_user_t) {
-                $this->acl_man->removeFromGroup($level_idst[$old_level[$id_user]], $id_user_t);
+
+                $this->acl_man->removeFromGroup($level_idst[$old_level[$id_user_t]], $id_user_t);
                 $this->acl_man->addToGroup($level_idst[$new_level], $id_user_t);
             }
 
