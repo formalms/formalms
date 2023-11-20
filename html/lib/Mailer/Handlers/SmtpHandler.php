@@ -352,7 +352,7 @@ class SmtpHandler
             $this->secure = \FormaLms\lib\Get::cfg('smtp_secure');
             $this->autoTls = \FormaLms\lib\Get::cfg('smtp_auto_tls');
             $this->user = \FormaLms\lib\Get::cfg('smtp_user');
-            $this->pwd = \FormaLms\lib\Get::cfg('smtp_pwd');
+            $this->password = \FormaLms\lib\Get::cfg('smtp_pwd');
             $this->debug = \FormaLms\lib\Get::cfg('smtp_debug', 0);
         }
 
