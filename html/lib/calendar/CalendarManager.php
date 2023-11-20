@@ -11,6 +11,7 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
+use Eluceo\iCal\Domain\Enum\EventStatus;
 use FormaLms\lib\Domain\DomainHandler;
 use Symfony\Component\Uid\Uuid;
 
@@ -79,13 +80,12 @@ class CalendarManager
             $event->setDescription(strip_tags($date['description']));
 
             if ($row['deleted']) {
-                $event->setStatus(\Eluceo\iCal\Domain\Enum\Status::CANCELLED());
-                $event->setMethod(\Eluceo\iCal\Domain\Enum\Method::CANCELLED());
+                $event->setStatus(EventStatus::CANCELLED());
             }
 
             $event->setOrganizer(new \Eluceo\iCal\Domain\ValueObject\Organizer(
-                new \Eluceo\iCal\Domain\ValueObject\EmailAddress(DomainHandler::getInstance()->getMailerField('sender_mail_system')),
-                DomainHandler::getInstance()->getMailerField('sender_name_system')
+                new \Eluceo\iCal\Domain\ValueObject\EmailAddress(DomainHandler::getMailerField('sender_mail_system')),
+                DomainHandler::getMailerField('sender_name_system')
             ));
 
             if (array_key_exists((int) $row['classroom'], $classrooms)) {

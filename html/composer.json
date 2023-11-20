@@ -11,7 +11,7 @@
         "ext-json": "*",
         "ext-simplexml": "*",
         "doctrine/dbal": "^3.3",
-        "eluceo/ical": "dev-feature/calendar-id-name-description",
+        "eluceo/ical": "^2.0",
         "ezyang/htmlpurifier": "^v4.13",
         "ircmaxell/password-compat": "^1.0",
         "lusitanian/oauth": "^v0.8",
@@ -59,12 +59,6 @@
             "FormaLms\\": ""
         }
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/giuseppenucifora/iCal"
-        }
-    ],
     "minimum-stability": "stable",
     "prefer-stable": true
 }
