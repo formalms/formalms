@@ -26,6 +26,10 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         $idCategory = $object_faq->getId();
         $mode = importVar('mode', false, 'faq');
         $back_coded = htmlentities(urlencode($object_faq->back_url));
+
+        // Fix Vulnerability CVE-2022-41679
+        $back_filtered = FormaLms\lib\Get::filter($object_faq->back_url, DOTY_URL);
+
         $search = importVar('search');
         if (isset($_POST['empty'])) {
             $search = '';
@@ -73,7 +77,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 			<div class="yui-content">', 'content');
 
         $GLOBALS['page']->add(
-        getBackUi(Util::str_replace_once('&', '&amp;', $object_faq->back_url), $lang->def('_BACK')));
+        getBackUi(Util::str_replace_once('&', '&amp;', $back_filtered), $lang->def('_BACK')));
 
         $GLOBALS['page']->add(
         '<b>' . $lang->def('_TITLE') . ' : ' . $title . '</b><br />'
@@ -240,7 +244,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             . '<img src="' . getPathImage() . 'standard/up_arrow.png" title="' . $lang->def('_BACKTOTOP') . '" />'
             . $lang->def('_BACKTOTOP')
         . '</a>'
-        . getBackUi(Util::str_replace_once('&', '&amp;', $object_faq->back_url), $lang->def('_BACK')), 'content');
+        . getBackUi(Util::str_replace_once('&', '&amp;', $back_filtered), $lang->def('_BACK')), 'content');
 
         cout('<div class="nofloat"></div>
 		</div><!-- yui content -->
