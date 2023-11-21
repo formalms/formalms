@@ -1462,6 +1462,10 @@ function insthread()
             $_POST['title'] = $lang->def('_NOTITLE');
         }
     }
+
+    // Fix Vulnerability CVE-2023-46693
+    $_POST['title'] = FormaLms\lib\Get::filter($_POST['title'], DOTY_ALPHANUM);
+
     $now = date('Y-m-d H:i:s');
     $important = importVar('important', true, '0');
     $ins_query = '
