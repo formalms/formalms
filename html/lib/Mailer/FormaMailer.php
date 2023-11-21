@@ -238,7 +238,7 @@ class FormaMailer extends PHPMailer
         //configure sending address
         //----------------------------------------------------------------------------
         $this->From = $sender ?: $this->handler->getSenderMailSystem();
-        if ($params[MAIL_SENDER_ACLNAME]) {
+        if (array_key_exists(MAIL_SENDER_ACLNAME, $params)) {
             $temp = $this->aclManager->getUserByEmail($sender);
             $this->FromName = $params[MAIL_SENDER_ACLNAME] !== true ? $params[MAIL_SENDER_ACLNAME] : $temp[ACL_INFO_FIRSTNAME] . ' ' . $temp[ACL_INFO_LASTNAME];
         }

@@ -31,7 +31,7 @@ class HelpdeskLmsController extends LmsController
         $telefono = $_POST['telefono'];
         $username = $_POST['username'];
         $oggetto = $_POST['oggetto'];
-        $copia = $_POST['copia'];
+        $copia = $_POST['send_cc'];
         $priorita = $_POST['priorita'];
 
         $help_req_resolution = $_POST['help_req_resolution'];

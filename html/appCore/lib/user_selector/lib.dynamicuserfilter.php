@@ -110,10 +110,11 @@ class DynamicUserFilter
 
         $temp = [];
         foreach ($types as $key => $val) {
-            require_once \FormaLms\lib\Forma::inc(_adm_ . '/modules/field/' . $val['type_file']);
-            $quest_obj = eval('return new ' . $val['type_class'] . '( NULL );');
+            require_once \FormaLms\lib\Forma::include(_adm_ . '/modules/field/' , $val['type_file']);
+            $quest_obj = new $val['type_class'](null);
             $temp[] = $quest_obj->getClientClassObject();
         }
+
 
         return '[' . implode(',', $temp) . ']';
     }
@@ -164,6 +165,7 @@ class DynamicUserFilter
             $js_initsel = '[' . implode(',', $temp) . ']';
         }
 
+        //dd($this->getFieldsList(true), $this->getFieldTypesObjects());
         $js_function = 'YAHOO.namespace("dynFilter");'
             . 'YAHOO.dynFilter = new DynamicUserFilter("' . $this->id . '", {' . "\n"
             . '		id: "' . $this->id . '",' . "\n"
@@ -193,6 +195,8 @@ class DynamicUserFilter
                 . 'YAHOO.dynFilter.loadFieldTypes(YAHOO.otherFields.getFieldTypesList());';
         }
 
+        
+       
         if ($domready) {
             $js_temp = 'YAHOO.util.Event.onDOMReady(function(e) { ' . $js_function . ' });';
         } else {

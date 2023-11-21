@@ -148,7 +148,7 @@ class MailconfigAdm extends Model
     {
 
         $output['error'] = false;
-        $params = array_intersect_key($params, $this->getRequiredSettings());
+        $params = array_intersect_key($params, $this->getSettings());
 
         if (count($params) < count($this->getRequiredSettings())) {
             $missingKeys = array_keys(array_diff_key($this->getRequiredSettings(), $params));
@@ -168,8 +168,9 @@ class MailconfigAdm extends Model
                 if ($param == '') {
                     $blankKeys[] = $key;
                 }
-                $output['fields'][$key] = (string)$param;
+               
             }
+            $output['fields'][$key] = (string)$param;
         }
 
         if (count($blankKeys)) {

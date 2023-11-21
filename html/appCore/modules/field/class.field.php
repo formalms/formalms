@@ -618,17 +618,17 @@ class Field
         */
         return '
       {
-        type: "' . self::getFieldType() . '",
+        type: "' . static::getFieldType() . '",
       
         getValue: function(id_sel, id_filter) {
-          var o, id = "' . self::getFieldType() . '_"+id_filter+"_"+id_sel, $D = YAHOO.util.Dom;
+          var o, id = "' . static::getFieldType() . '_"+id_filter+"_"+id_sel, $D = YAHOO.util.Dom;
           return YAHOO.lang.JSON.stringify({cond: $D.get(id+"_sel").value, value: $D.get(id).value});
         },
         
         setValue: function(id_sel, id_filter, newValue) {
           if (!newValue) o = {cond: 0, value: ""};
           else o = YAHOO.lang.JSON.parse(newValue);
-          var i, s, id = "' . self::getFieldType() . '_"+id_filter+"_"+id_sel, $D = YAHOO.util.Dom;
+          var i, s, id = "' . static::getFieldType() . '_"+id_filter+"_"+id_sel, $D = YAHOO.util.Dom;
           $D.get(id).value = o.value;
           s = $D.get(id+"_sel");
           for (i=0; i<s.options.length; i++) {
@@ -644,8 +644,8 @@ class Field
           s.className = "condition_select";
           d.className = "textfield_container";
           
-          d.className = "' . self::getFieldType() . '_container";
-          t.type = "text"; t.id = "' . self::getFieldType() . '_"+id_filter+"_"+id_sel; s.id = t.id+"_sel";t.className = "filter_value";
+          d.className = "' . static::getFieldType() . '_container";
+          t.type = "text"; t.id = "' . static::getFieldType() . '_"+id_filter+"_"+id_sel; s.id = t.id+"_sel";t.className = "filter_value";
           
           s.options[0] = new Option("' . Lang::t('_CONTAINS', 'standard') . '",0);
 					s.options[1] = new Option("' . Lang::t('_NOT_CONTAINS', 'standard') . '",1);
