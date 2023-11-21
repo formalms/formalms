@@ -326,6 +326,9 @@ function insadvice()
         $impo = '0';
     }
 
+    // Fix Vulnerability CVE-2023-46693
+    $_REQUEST['title'] = FormaLms\lib\Get::filter($_REQUEST['title'], DOTY_ALPHANUM);
+
     $queryIns = '
 		INSERT INTO ' . $GLOBALS['prefix_lms'] . "_advice
 		( idCourse, author, title, description, posted, important ) VALUES
