@@ -106,7 +106,7 @@ class UserselectorWidgetController extends Controller
             'suspended' => (FormaLms\lib\Get::req('suspended', DOTY_INT, 1) > 0 ? true : false),
         ];
 
-        $dyn_filter = $this->_getDynamicFilter(FormaLms\lib\Get::req('dyn_filter', DOTY_STRING, ''));
+        $dyn_filter = $this->_getDynamicFilter(FormaLms\lib\Get::req('dyn_filter', DOTY_ALPHANUM, ''));
         if ($dyn_filter !== false) {
             $searchFilter['dyn_filter'] = $dyn_filter;
         }
