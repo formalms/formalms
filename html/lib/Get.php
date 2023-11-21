@@ -39,6 +39,7 @@ define('DOTY_ALPHANUM', 7);
 define('DOTY_NUMLIST', 8);
 define('DOTY_BOOL', 9);
 define('DOTY_MVC', 10);
+define('DOTY_URL', 11);
 
 class Get
 {
@@ -130,6 +131,12 @@ class Get
                     $value = '';
                 }
 
+                break;
+            case DOTY_URL:
+                $value = preg_replace('/[\x00-\x1F\x7F]/', '', $value);
+                $value = preg_replace('/[<>\'\"\(\)\[\]]/', '', $value);
+                $value = str_replace(['<', '>', '\'', '\"', ')', '('], '', $value);
+    
                 break;
             case DOTY_MIXED:
             default:
