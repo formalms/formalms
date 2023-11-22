@@ -26,6 +26,10 @@ class PluginmanagerAdmController extends AdmController
 
     public function showTask()
     {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            exit("You can't access");
+        }
+        
         $plugins = $this->model->getPlugins();
         $feedback = '';
         switch ($res = FormaLms\lib\Get::req('result', DOTY_ALPHANUM, '')) {
@@ -44,6 +48,10 @@ class PluginmanagerAdmController extends AdmController
     // nuova
     public function getTableData()
     {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            exit("You can't access");
+        }
+
         $plugins = $this->model->getPlugins();
 
         echo $this->json->encode([
@@ -56,6 +64,10 @@ class PluginmanagerAdmController extends AdmController
 
     public function install()
     {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            exit("You can't access");
+        }
+        
         $plugin = FormaLms\lib\Get::req('plugin');
         $res = $this->model->installPlugin($plugin, 0);
         if ($res) {
@@ -67,6 +79,10 @@ class PluginmanagerAdmController extends AdmController
 
     public function uninstall()
     {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            exit("You can't access");
+        }
+        
         $plugin = FormaLms\lib\Get::req('plugin');
         $res = $this->model->uninstallPlugin($plugin);
         if ($res) {
@@ -78,6 +94,10 @@ class PluginmanagerAdmController extends AdmController
 
     public function update()
     {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            exit("You can't access");
+        }
+        
         $plugin = FormaLms\lib\Get::req('plugin');
         $online = FormaLms\lib\Get::req('online', DOTY_BOOL, false);
         $res = $this->model->updatePlugin($plugin, $online);
@@ -90,6 +110,10 @@ class PluginmanagerAdmController extends AdmController
 
     public function activate()
     {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            exit("You can't access");
+        }
+        
         $plugin = FormaLms\lib\Get::req('plugin');
         $res = $this->model->setupPlugin($plugin, 1);
         if ($res) {
@@ -101,6 +125,10 @@ class PluginmanagerAdmController extends AdmController
 
     public function deactivate()
     {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            exit("You can't access");
+        }
+        
         $plugin = FormaLms\lib\Get::req('plugin');
         $res = $this->model->setupPlugin($plugin, 0);
         if ($res) {
@@ -112,6 +140,10 @@ class PluginmanagerAdmController extends AdmController
 
     public function set_priority()
     {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            exit("You can't access");
+        }
+        
         $plugin = FormaLms\lib\Get::req('plugin');
         $priority = FormaLms\lib\Get::req('priority', DOTY_INT, 0);
         $res = $this->model->setPriority($plugin, $priority);
@@ -124,6 +156,10 @@ class PluginmanagerAdmController extends AdmController
 
     public function showSettings()
     {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            exit("You can't access");
+        }
+        
         $plugin = FormaLms\lib\Get::req('plugin');
         $settingAdm = new SettingAdm();
         $pg_adm = new PluginmanagerAdm();
@@ -138,6 +174,10 @@ class PluginmanagerAdmController extends AdmController
 
     public function upload()
     {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            exit("You can't access");
+        }
+        
         $pg_adm = new PluginmanagerAdm();
         if ($pg_adm->uploadPlugin($_FILES['plugin_file_upload'])) {
             Util::jump_to('index.php?r=adm/pluginmanager/show&result=ok');
@@ -148,6 +188,10 @@ class PluginmanagerAdmController extends AdmController
 
     public function purge()
     {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            exit("You can't access");
+        }
+        
         $plugin = FormaLms\lib\Get::req('plugin');
         $pg_adm = new PluginmanagerAdm();
         if ($pg_adm->delete_files($plugin)) {
