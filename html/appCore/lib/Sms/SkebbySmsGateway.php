@@ -198,23 +198,23 @@ class SkebbySmsGateway implements SmsGatewayInterface
         }
 
         switch ($sms_type) {
-            case SMS_TYPE_CLASSIC:
+            case self::SMS_TYPE_CLASSIC:
             default:
                 $method = 'send_sms_classic';
                 break;
-            case SMS_TYPE_CLASSIC_PLUS:
+            case self::SMS_TYPE_CLASSIC_PLUS:
                 $method = 'send_sms_classic_report';
                 break;
-            case SMS_TYPE_BASIC:
+            case self::SMS_TYPE_BASIC:
                 $method = 'send_sms_basic';
                 break;
-            case SMS_TYPE_TEST_CLASSIC:
+            case self::SMS_TYPE_TEST_CLASSIC:
                 $method = 'test_send_sms_classic';
                 break;
-            case SMS_TYPE_TEST_CLASSIC_PLUS:
+            case self::SMS_TYPE_TEST_CLASSIC_PLUS:
                 $method = 'test_send_sms_classic_report';
                 break;
-            case SMS_TYPE_TEST_BASIC:
+            case self::SMS_TYPE_TEST_BASIC:
                 $method = 'test_send_sms_basic';
                 break;
         }

@@ -35,14 +35,14 @@ class ReportService implements Accessible
                 case 5:
                 case 2:
                     $filter = 'rows_filter';
-                    if (array_key_exists('users', $this->session->get(self::_REPORT_SESSION)['rows_filter'])) {
+                    if (array_key_exists('users', $this->session->get(self::_REPORT_SESSION)['rows_filter'] ?? []) ) {
                         return $this->session->get(self::_REPORT_SESSION)['rows_filter']['users'];
                     }
                     break;
 
                 case 4:
                     $filter = 'columns_filter';
-                    if ($this->session->has('report_update') && array_key_exists('users', $this->session->get(self::_REPORT_SESSION)[$filter])) {
+                    if ($this->session->has('report_update') && array_key_exists('users', $this->session->get(self::_REPORT_SESSION)[$filter] ?? []) ) {
                         return $this->session->get(self::_REPORT_SESSION)[$filter]['users'];
                     }
                     break;
