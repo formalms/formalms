@@ -127,7 +127,7 @@ function subscribe()
                         if ($control == 0) {
                             $subscribe->subscribeUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_course, '3');
 
-                            $course_info = $man_course->getCourseInfo($id_course);
+                            $course_info = Man_Course::getCourseInfo($id_course);
 
                             $array_course_name[$counter] = $course_info['name'];
 

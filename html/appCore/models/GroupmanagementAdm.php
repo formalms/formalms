@@ -357,7 +357,7 @@ class GroupmanagementAdm extends Model implements Accessible
         if ($idst > 0 && (is_array($info) || is_object($info))) {
             $output = true;
             $conditions = [];
-            $acl = \FormaLms\lib\Forma::getAcl();
+            $acl = \FormaLms\lib\Forma::getAclManager();
 
             if (is_array($info)) {
                 if (isset($info['groupid'])) {

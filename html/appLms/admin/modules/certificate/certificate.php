@@ -537,7 +537,7 @@ function report_certificate()
         $tb->setColsStyle($type_h);
         $tb->addHead($cont_h);
         foreach ($id_course as $course_id) {
-            $course_info = $man_course->getCourseInfo($course_id);
+            $course_info = Man_Course()::getCourseInfo($course_id);
             $cont = [
                 $course_info['code'],
                 '<a href="index.php?r=alms/course/list_certificate&amp;id_certificate=' . $id_certificate . '&amp;id_course=' . $course_id . '&amp;from=manage">'

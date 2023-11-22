@@ -317,7 +317,7 @@ function showdemo()
     $id_course = importVar('id_course', true, 0);
 
     $man_course = new Man_Course();
-    $course = $man_course->getCourseInfo($id_course);
+    $course = Man_Course::getCourseInfo($id_course);
 
     $back = importVar('back', false, '');
     if ($back == 'details') {
@@ -379,7 +379,7 @@ function showprofile()
     $id_user = importVar('id_user');
     $id_course = importVar('id_course');
     $man_course = new Man_Course();
-    $course = $man_course->getCourseInfo($id_course);
+    $course = Man_Course::getCourseInfo($id_course);
 
     $profile = new LmsUserProfile($id_user);
     $profile->init('profile', 'framework', 'modname=login&op=showprofile&id_course' . $id_course . '&id_user=' . $id_user, 'ap');
