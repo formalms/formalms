@@ -2,6 +2,22 @@ FORMA LMS
 RELEASE CHANGELOG
 
 ---------------------------------------------------------------------------------------
+forma.lms 3.3.17
+---------------------------------------------------------------------------------------
+Release date: 2023 november
+
+- #      - fix orphan commontrack
+- #      - #20181 - Student upload a Zip file through the plugin upload
+- #      - #20180 - Student upload a Zip file through the SCORM importer feature
+- #      - #20179 - SQL injection vulnerability in appLms/ajax.adm_server.php?r=widget/userselector/getusertabledata - CVE-2022-42924
+- #      - #20070 - Vulnerability - SQL Injection in adm/mediagallery/delete - CVE-2022-42923
+- #      - #20069 - Vulnerability - XSS in appLms/index.php?modname=faq&op=play - CVE-2022-41679
+- #      - #20178 - Vulnerability stored-XSS in management of educational objects, through the FAQ title - CVE-2023-46693
+- #      - #20177 - Vulnerability stored-XSS in the title of discussions in the course forums - CVE-2023-46693
+- #      - #20176 - Vulnerability stored-XSS in the title parameter of the course advice - CVE-2023-46693
+- #      - fix test
+
+---------------------------------------------------------------------------------------
 forma.lms 3.3.15
 ---------------------------------------------------------------------------------------
 Release date: 2023 october
