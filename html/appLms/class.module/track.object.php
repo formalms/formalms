@@ -242,7 +242,7 @@ class Track_Object
         $this->status = $new_status;
     }
 
-    public function update()
+    public function update($idReference = null, $idUser = null)
     {
         $class = get_class($this);
         $old_track = $this;
@@ -269,7 +269,9 @@ class Track_Object
 
         $query = 'UPDATE ' . self::$_table . ' SET '
             . " dateAttempt ='" . $data['dateAttempt'] . "',"
-            . " status ='" . $data['status'] . "'"
+            . " status ='" . $data['status'] . "', "
+            . " idUser  ='" . ((int) $this->idUser > 0 ? $this->idUser : $idUser) . "', "
+            . " idReference  ='" . ((int) $this->idReference > 0 ? $this->idReference :  $idReference) . "' "
             . " WHERE idTrack = '" . (int) $this->idTrack . "' AND objectType = '" . $this->objectType . "'";
         $resSql = sql_query($query);
 
@@ -285,8 +287,8 @@ class Track_Object
             $query = 'INSERT INTO ' . self::$_table . ' '
                 . '( `idReference`, `idUser`, `idTrack`, `objectType`, `firstAttempt`, `dateAttempt`, `status` )'
                 . ' VALUES ('
-                . " '" . (int) $this->idReference . "',"
-                . " '" . (int) $this->idUser . "',"
+                . " '" . ((int) $this->idReference > 0 ? $this->idReference :  $idReference) . "',"
+                . " '" . ((int) $this->idUser > 0 ? $this->idUser : $idUser) . "',"
                 . " '" . (int) $this->idTrack . "',"
                 . " '" . $this->objectType . "',"
                 . " '" . $data['dateAttempt'] . "', "
