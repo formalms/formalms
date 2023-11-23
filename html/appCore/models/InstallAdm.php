@@ -1017,6 +1017,13 @@ class InstallAdm extends Model
         $row = sql_query("SELECT COUNT(DISTINCT `table_name`) FROM `information_schema`.`columns` WHERE `table_schema` = '" . $dbName . "'");
         [$count] = sql_fetch_row($row);
 
+        if(1 === (int) $count) {
+            $checkExistingConnection = (bool) sql_query("SELECT * FROM `core_migration_versions`");
+            if($checkExistingConnection) {
+                $count = 0;
+            }
+        }
+
         return $count == 0 ? true : false;
     }
 
