@@ -59,7 +59,7 @@ function play($idResource, $idParams, $back_url)
             $ti = new Track_Item((int) $idTrack, Docebo::user()->getIdSt());
             $ti->setDate(date('Y-m-d H:i:s'));
             $ti->status = 'completed';
-            $ti->update();
+            $ti->update($idReference,getLogUserId());
         } else {
             $ti = new Track_Item(false, Docebo::user()->getIdSt());
             $ti->createTrack($idReference, $idTrack, getLogUserId(), date('Y-m-d H:i:s'), 'completed', 'item');
