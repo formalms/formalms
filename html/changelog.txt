@@ -16,6 +16,8 @@ Release date: 2023 november
 - #      - #20177 - Vulnerability stored-XSS in the title of discussions in the course forums - CVE-2023-46693
 - #      - #20176 - Vulnerability stored-XSS in the title parameter of the course advice - CVE-2023-46693
 - #      - fix test
+- #      - fix pattern for forma include
+- #      - fix on assigning template in creating new folder
 
 ---------------------------------------------------------------------------------------
 forma.lms 3.3.15
