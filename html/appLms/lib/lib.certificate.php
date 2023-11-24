@@ -845,6 +845,12 @@ class Certificate
             return;
         }
 
+        Events::trigger('lms.certificate_user.assign', [
+            'id_user' => $id_user,
+            'id_certificate' => $id_certificate,
+            'id_course' => $id_course
+        ], 0);
+        
         $query_certificate = '
 		SELECT name, cert_structure, base_language, orientation, bgimage
 		FROM %lms_certificate WHERE id_certificate = "' . $id_certificate . '"';

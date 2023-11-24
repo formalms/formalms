@@ -650,6 +650,14 @@ function del_report_certificate()
                 $id_certificate = 0;
             }
             if ($deletion_result) {
+                
+                Events::trigger('lms.certificate_user.deleted', [
+                    'id_certificate' => $certificate_info[CERT_ID], 
+                    'certificate_info' => $certificate_info, 
+                    'id_user' => $id_user, 
+                    'id_course' => $id_course
+                ]);
+
                 Util::jump_to('index.php?r=alms/course/list_certificate&id_certificate=' . $id_certificate . '&id_course=' . $id_course . '&from=' . $from . '&deletion=1');
             } else { // to improve
                 exit('ERROR ON CERTIFICATE DELETION');
