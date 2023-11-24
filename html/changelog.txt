@@ -6,6 +6,7 @@ forma.lms 3.3.17
 ---------------------------------------------------------------------------------------
 Release date: 2023 november
 
+- #      - update to readme
 - #      - fix orphan commontrack
 - #      - #20181 - Student upload a Zip file through the plugin upload
 - #      - #20180 - Student upload a Zip file through the SCORM importer feature
