@@ -1255,8 +1255,11 @@ class SubscriptionAlmsController extends AlmsController
                     $new_date_complete = Format::dateDb($new_date_complete, 'date');
                     $new_status = FormaLms\lib\Get::req('multimod_status', DOTY_INT, -999);
                     if (in_array($new_status, array_keys($this->model->getUserStatusList()))) {
-                        $res2 = $sman->updateUserStatusInCourse($users_list, $this->id_course, $new_status, $new_date_complete);
-                    }
+                        foreach($users_list as $idUser) {
+                            $res2 = $sman->updateUserStatusInCourse($idUser, $this->id_course, $new_status, $new_date_complete);
+                  
+                        }
+                   }
 
                     foreach ($users_list as $user) {
                         switch ((int) $new_status) {
