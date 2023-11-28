@@ -265,15 +265,19 @@ abstract class DashboardBlockLms extends Model
             4 => Lang::t('_CST_CANCELLED', 'course'),
         ];
 
+        $startDate = null;
         $dateBegin = trim(str_replace('00:00:00', '', $course['course_date_begin']));
-        if (!$dateBegin) {
+        $dateBegin = trim(str_replace('0000-00-00', '', $dateBegin));
+        if (!$dateBegin || empty($dateBegin)) {
             $dateBegin = '';
         } else {
             $startDate = new DateTime($dateBegin);
         }
 
+        $endDate = null;
         $dateEnd = trim(str_replace('00:00:00', '', $course['course_date_end']));
-        if (!$dateEnd) {
+        $dateEnd = trim(str_replace('0000-00-00', '', $dateEnd));
+        if (!$dateEnd || empty($dateEnd)) {
             $dateEnd = '';
         } else {
             $endDate = new DateTime($dateEnd);
@@ -311,8 +315,8 @@ abstract class DashboardBlockLms extends Model
             'type' => $course['course_type'],
             'nameCategory' => $this->getCategory($course['course_category_id']),
             'courseStatus' => $course['course_status'],
-            'courseStatusString' => $status_list[(int) $course['course_status']],
-            'userStatus' => (int) $course['user_status'],
+            'courseStatusString' => $status_list[(int)$course['course_status']],
+            'userStatus' => (int)$course['user_status'],
             'description' => $course['course_box_description'],
             'img' => (!empty($course['course_img_course']) ? FormaLms\lib\Get::site_url() . _folder_files_ . '/' . _folder_lms_ . '/' . FormaLms\lib\Get::sett('pathcourse') . $course['course_img_course'] : ''),
             'hours' => $hourBeginString . (!empty($hourEndString) ? ' - ' . $hourEndString : ''),
