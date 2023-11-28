@@ -893,7 +893,12 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
      */
     public function return_valid_language_from_csv_row($language)
     {
-        $q_lang = 'SELECT lang_code FROM ' . $GLOBALS['prefix_fw'] . "_lang_language WHERE lang_browsercode LIKE '%$language%' ";
+        if (empty($language)){
+            $defaultLangQuery = 'SELECT param_value FROM %adm_setting WHERE `param_name` = "default_language"';
+            $rs = sql_query($defaultLangQuery,$this->dbconn);
+            $language = (($language = sql_fetch_row($rs)) != null) ? $language[0] : null;
+        }
+        $q_lang = 'SELECT lang_code FROM ' . $GLOBALS['prefix_fw'] . "_lang_language WHERE lang_browsercode LIKE '%$language%' OR lang_code = '$language' ";
         $rs = sql_query($q_lang, $this->dbconn);
 
         return (($language = sql_fetch_row($rs)) != null) ? $language[0] : NOT_VALID_LANG;
