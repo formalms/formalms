@@ -2367,8 +2367,16 @@ class Course_API extends API
             $courseResponse['course_id'] = $courseNodeInfo['idCourse'];
             $courseResponse['code'] = str_replace('&', '&amp;', $courseNodeInfo['code']);
             $courseResponse['course_name'] = str_replace('&', '&amp;', $courseNodeInfo['name']);
-            $courseResponse['course_description'] = str_replace('&', '&amp;', $courseNodeInfo['description']);
-            $courseResponse['course_box_description'] = str_replace('&', '&amp;', $courseNodeInfo['box_description']);
+            //remove course description in xml response because corrupt XML
+            switch ($GLOBALS['REST_API_ACCEPT']) {
+                case _REST_OUTPUT_JSON:
+                    $courseResponse['course_description'] = str_replace('&', '&amp;', $courseNodeInfo['description']);
+                    $courseResponse['course_box_description'] = str_replace('&', '&amp;', $courseNodeInfo['box_description']);
+                    break;
+                case _REST_OUTPUT_XML:
+                default:
+                    break;
+            }
             $courseResponse['status'] = $courseNodeInfo['status'];
             $courseResponse['selling'] = $courseNodeInfo['selling'];
             $courseResponse['price'] = $courseNodeInfo['prize'];
