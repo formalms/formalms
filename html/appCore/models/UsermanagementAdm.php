@@ -3376,9 +3376,11 @@ class UsermanagementAdm extends Model implements Accessible
 
     public function checkUserid($userid)
     {
+
+        $wildcardReplacement = str_replace('_','\_', $userid); //use because _ in link it's a wildcard used for "any character"
         $query = 'SELECT COUNT(*)'
             . ' FROM %adm_user'
-            . " WHERE userid like '" . ($userid[0] === '/' ? '' : '/') . $userid . "'";
+            . " WHERE userid like '" . ($userid[0] === '/' ? '' : '/') . $wildcardReplacement . "'";
         [$control] = $this->db->fetch_row($this->db->query($query));
         if ($control > 0) {
             return false;
