@@ -70,6 +70,8 @@ class SessionManager
             }
 
             ini_set('session.gc_maxlifetime', $this->config->getLifetime());
+            ini_set('session.cookie_httponly', 1);
+            ini_set('session.cookie_secure', 1);
 
             switch ($this->config->getHandler()) {
                 case self::MEMCACHED:
