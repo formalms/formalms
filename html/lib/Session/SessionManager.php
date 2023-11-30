@@ -99,6 +99,7 @@ class SessionManager
 
             $sessionStorage = new NativeSessionStorage([], $this->sessionHandler);
             $this->session = new Session($sessionStorage);
+            $this->session->setName('__Secure-FORMALMS');
             if (!$this->session->isStarted()) {
                 $this->session->start();
             }
