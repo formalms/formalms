@@ -6,7 +6,7 @@
  */
 
 /*!
- * Chart.js v4.4.0
+ * Chart.js v4.4.1
  * https://www.chartjs.org
  * (c) 2023 Chart.js Contributors
  * Released under the MIT License
@@ -18,12 +18,12 @@
  */
 
 /*!
- * GSAP 3.12.2
- * https://greensock.com
+ * GSAP 3.12.3
+ * https://gsap.com
  *
  * @license Copyright 2008-2023, GreenSock. All rights reserved.
- * Subject to the terms at https://greensock.com/standard-license or for
- * Club GreenSock members, the agreement issued with that membership.
+ * Subject to the terms at https://gsap.com/standard-license or for
+ * Club GSAP members, the agreement issued with that membership.
  * @author: Jack Doyle, jack@greensock.com
 */
 
@@ -84,7 +84,7 @@
  */
 
 /**!
- * Sortable 1.15.0
+ * Sortable 1.15.1
  * @author	RubaXa   <trash@rubaxa.org>
  * @author	owenm    <owen23355@gmail.com>
  * @license MIT

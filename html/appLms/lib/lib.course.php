@@ -896,6 +896,8 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
     public static function canEnterCourse($course, $id_path = 0)
     {
         $now = time();
+        $a = \FormaLms\lib\FormaUser::getCurrentUser();
+        $b = $a->getUserCourses();
         $userLevel = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         $userCourses = \FormaLms\lib\FormaUser::getCurrentUser()->getUserCourses();
 
@@ -996,7 +998,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
 
             if ($response['can']) {
                 // control if the course is elapsed
-                if ($course['date_begin']) {
+                if ($course['date_begin']!== '0000-00-00') {
                     try {
                         $date = new DateTime($course['date_begin']);
                         $timeStart = $date->format('U');
@@ -1016,7 +1018,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
             }
 
             if ($response['can']) {
-                if ($course['date_end']) {
+                if ($course['date_end'] !== '0000-00-00') {
                     try {
                         $date = new DateTime($course['date_end']);
                         $timeEnd = $date->format('U');

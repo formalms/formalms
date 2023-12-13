@@ -177,13 +177,11 @@ class FormaUser
         $userCoursesQuery = 'SELECT idCourse,edition_id as idEdtition,level,date_inscr as subscriptionDate,date_first_access as firstAccess,status,date_complete as completedAt, date_begin_validity as dateBeginValidity, date_expire_validity as dateExpireValidity FROM %lms_courseuser where iduser=' . $this->idst;
 
         $result = sql_query($userCoursesQuery);
-
-        if (is_countable($result)) {
+        if (sql_num_rows($result) > 0 ) {
             foreach ($result as $userCourse) {
                 $userCourses[$userCourse['idCourse']] = $userCourse;
             }
         }
-
         return $userCourses;
     }
 

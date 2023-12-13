@@ -59,7 +59,7 @@ function play($idResource, $idParams, $back_url)
             $ti = new Track_Item((int) $idTrack, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
             $ti->setDate(date('Y-m-d H:i:s'));
             $ti->status = 'completed';
-            $ti->update($idReference,getLogUserId());
+            $ti->update($idReference,\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         } else {
             $ti = new Track_Item(false, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
             $ti->createTrack($idReference, $idTrack, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), date('Y-m-d H:i:s'), 'completed', 'item');

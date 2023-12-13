@@ -98,7 +98,7 @@ span.label_description{border-top:2px solid #446dd6;display:block;margin-top:5px
 div.coursepath_container{margin-bottom:15px;}
 span.expand_path_info{font-weight:bold;color:var(--color-primary);padding:5px;}
 span.coursepath_percentage{font-weight:bold;color:var(--color-primary);}
-td.course_type{padding-left:15px;padding-right:15px;text-align:right;width:80px;color:var(--color-primary);}
+td.course_type{padding-left:15px;padding-right:15px;text-align:right;width: auto;color:var(--color-primary);}
 div.coursepath_description{background-color:#efefef;font-size:90%;}
 div.coursepath_description  div.textof{padding:10px;}
 div.coursepath_action{float:left;margin-top:5px;margin-bottom:5px;}

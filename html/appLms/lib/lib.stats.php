@@ -96,28 +96,6 @@ function renderProgress($tot_complete, $tot_failed, $total, $show_title = false)
     return $html;
 }
 
-function renderCoursepathProgress($complete, $total)
-{
-    if ($complete == 0) {
-        $perc_complete = 0;
-    } else {
-        $perc_complete = round(($complete / $total) * 100, 2);
-    }
-
-    if ($perc_complete >= 100) {
-        $html = '<div class="box_progress_cp_complete" title="' . Lang::t('_COMPLETED', 'coursepath') . ' : ' . $perc_complete . ' %">'
-                    . '<div class="bar_cp_complete" style="width: ' . $perc_complete . '%;"></div>'
-                    . '<div class="nofloat">'
-                    . '</div></div>' . "\n";
-    } else {
-        $html = '<div class="box_progress_bar" title="' . Lang::t('_COMPLETED', 'coursepath') . ' : ' . $perc_complete . ' %">'
-                . ($perc_complete != 0 ? '<div class="bar_cp_complete" style="width: ' . $perc_complete . '%;"></div>' : '')
-                . '<div class="nofloat"></div>'
-                . '</div>';
-    }
-
-    return $html;
-}
 
 /**
  * Return total number of items in a course.

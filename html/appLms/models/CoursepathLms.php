@@ -93,7 +93,7 @@ class CoursepathLms extends Model
 
     public function getCoursepathCourseDetails($array_coursepath = [], $id_user = false)
     {
-        $query = 'SELECT c.idCourse, c.name, c.course_type, c.course_edition, cu.status, cpc.prerequisites, cpc.id_path, cpc.sequence'
+        $query = 'SELECT c.*, cu.status as user_status, cpc.prerequisites, cpc.id_path, cpc.sequence'
                     . ' FROM %lms_course AS c'
                     . ' JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse AND cu.idUser = ' . (!$id_user ? \FormaLms\lib\FormaUser::getCurrentUser()->getIdst() : (int) $id_user) . ')'
                     . ' JOIN %lms_coursepath_courses AS cpc ON c.idCourse = cpc.id_item'
@@ -102,13 +102,7 @@ class CoursepathLms extends Model
                     . ' ORDER BY cpc.id_path, cpc.sequence';
 
         $result = sql_query($query);
-        $res = [];
-
-        while ($row = sql_fetch_assoc($result)) {
-            $res[$row['id_path']][$row['idCourse']] = $row;
-        }
-
-        return $res;
+        return $result;
     }
 
     /**
@@ -147,4 +141,31 @@ class CoursepathLms extends Model
 
         return $output;
     }
+
+/*    private function getLockStatus($course) {
+        $course_unlocked = true;
+        if ($course['prerequisites'] !== '')
+        {
+            $query = 'SELECT COUNT(*)'
+                . ' FROM %lms_courseuser'
+                . ' WHERE idCourse IN (' . $course['prerequisites'] . ') AND idUser = ' . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdst() . ' '
+                . ' AND status = ' . _CUS_END;
+            list($prev_completed) = sql_fetch_row(sql_query($query));
+            $tot_prerequisites = count(explode(',', $course['prerequisites']));
+            if ($prev_completed < $tot_prerequisites) {
+                $course_locked = false;
+            }
+
+        }
+        return $course_unlocked;
+    }
+
+    private function isStartingCourse($unlocked, $course_info)
+    {
+        $can_enter = false;
+        if ($course_info['status'] != _CUS_END && $unlocked) {
+            $can_enter = Man_Course::canEnterCourse($course_info);
+        }
+
+    }*/
 }
