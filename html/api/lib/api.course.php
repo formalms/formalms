@@ -2095,6 +2095,7 @@ class Course_API extends API
 
     public function deleteLearningObjects($params)
     {
+        define('LMS', true);
         require_once _lms_ . '/class.module/class.definition.php';
         require_once _lms_ . '/lib/lib.module.php';
         require_once _lms_ . '/lib/lib.permission.php';
