@@ -28,10 +28,10 @@ Boot::init(BOOT_HOOKS);
 if (!function_exists('report_log')) {
     function report_log($string)
     {
-        ob_end_flush();
+        //ob_end_flush();
         $curtime = date('d-m-Y G:i:s');
         echo "[$curtime] $string" . PHP_EOL . "\r\n" . "\n";
-        ob_start();
+        //ob_start();
     }
 }
 
@@ -452,6 +452,6 @@ sl_close_fileoperations();
 Boot::finalize();
 
 //Removes lock file, if set
-if ($lock_stream) {
+if ($lock_stream && !is_bool($lock_stream)) {
     fclose($lock_stream);
 }
