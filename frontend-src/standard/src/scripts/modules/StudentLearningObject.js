@@ -15,7 +15,7 @@ class StudentLearningObject extends LearningObject {
 
         // Event on fv-is-scormorg
         this.folderViewInstance.filterDBClickEvents.push((el) => {
-            if (el.querySelector('.fv-is-scormorg') || el.querySelector('.fv-is-xAPI')) {
+            if (el.querySelector('.fv-is-scormorg') || el.querySelector('.fv-is-xAPI') || el.querySelector('.fv-is-lti-external-tool')) {
                 let src = el.querySelector('.fv-is-play').getAttribute('href');
                 this.scormLightbox(src, el.querySelector('.folderView__label').innerHTML, controller.selector);
                 return false;
@@ -26,7 +26,7 @@ class StudentLearningObject extends LearningObject {
 
         // Event on fv-is-play
         this.folderViewInstance.addEvent('fv-is-play', (e, el) => {
-            if (el.parentNode.parentNode.querySelector('.fv-is-scormorg') || el.parentNode.parentNode.querySelector('.fv-is-xAPI')) {
+            if (el.parentNode.parentNode.querySelector('.fv-is-scormorg') || el.parentNode.parentNode.querySelector('.fv-is-xAPI') || el.parentNode.parentNode.querySelector('.fv-is-lti-external-tool')) {
                 e.preventDefault();
                 let src = el.getAttribute('href');
                 this.scormLightbox(src, el.parentElement.parentElement.querySelector('.folderView__label').innerHTML, controller.selector);
