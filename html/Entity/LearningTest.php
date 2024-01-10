@@ -278,12 +278,7 @@ class LearningTest
      */
     private $retainAnswersHistory = '0';
 
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="gradimento", type="integer", nullable=true)
-     */
-    private $gradimento;
+  
 
 
 }
