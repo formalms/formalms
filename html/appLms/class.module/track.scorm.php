@@ -97,7 +97,7 @@ class Track_ScormOrg extends Track_Object
      **/
     public function deleteTrack($idTrack)
     {
-        $query = 'DELETE FROM ' . $this->_table . ' '
+        $query = 'DELETE FROM ' . self::$_table . ' '
                 . " WHERE idTrack='" . (int) $idTrack . "'"
                 . "   AND objectType='scormorg'";
         if (!sql_query($query)) {
@@ -113,7 +113,7 @@ class Track_ScormOrg extends Track_Object
     public function deleteTrackInfo($id_lo, $id_user)
     {
         //first of all: make sure the object is of the correct type 'scormorg'
-        $query = 'SELECT idUser, idReference, idTrack FROM ' . $this->_table . ' WHERE idUser=' . (int) $id_user . ' AND idReference=' . (int) $id_lo . " AND objectType='scormorg'";
+        $query = 'SELECT idUser, idReference, idTrack FROM ' . self::$_table . ' WHERE idUser=' . (int) $id_user . ' AND idReference=' . (int) $id_lo . " AND objectType='scormorg'";
         $res = sql_query($query);
         if ($res && sql_num_rows($res) > 0) {
             list($id_user, $id_lo, $idTrack) = sql_fetch_row($res);
