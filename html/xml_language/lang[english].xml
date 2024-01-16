@@ -695,6 +695,7 @@
         <key id="configuration&amp;_USE_TAG" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Enable tags feature inside forums]]></key>
         <key id="configuration&amp;_WARINNG_SOCIAL" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Attention without these settings the social login will not work]]></key>
         <key id="configuration&amp;_PURCHASE_USER" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Purchase User (Username or idst)]]></key>
+        <key id="configuration&amp;_FORCE_SCORM_FINISH" attributes="" save_date="2024-01-15 14:47:12"><![CDATA[Force SCORM finish]]></key>
       </module>
       <module id="course">
         <key id="course&amp;_YEAR_SELECTION" attributes="" save_date="2023-10-12 15:32:39"><![CDATA[Year selection]]></key>

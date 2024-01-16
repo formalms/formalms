@@ -698,6 +698,7 @@ http://server/path/index.php?modname=login) \]]></key>
         <key id="configuration&amp;_USE_TAG" attributes="" save_date="2017-04-10 16:17:08"><![CDATA[Attiva l'uso dei tag nei forum]]></key>
         <key id="configuration&amp;_WARINNG_SOCIAL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Attenzione senza questi settaggi la login social non funzioner&agrave;]]></key>
         <key id="configuration&amp;_PURCHASE_USER" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Utente notifiche acquisti (Username o idst)]]></key>
+        <key id="configuration&amp;_FORCE_SCORM_FINISH" attributes="" save_date="2024-01-15 14:47:12"><![CDATA[Forza il finish nei corsi SCORM]]></key>
       </module>
       <module id="course">
         <key id="course&amp;_YEAR_SELECTION" attributes="" save_date="2023-10-12 15:32:39"><![CDATA[Seleziona Anno]]></key>

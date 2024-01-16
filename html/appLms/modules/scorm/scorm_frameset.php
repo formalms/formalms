@@ -182,7 +182,7 @@ if ($cfg_keepalivetmo > 0) {
 
     echo " environment: '$environment',\n";
     echo " useWaitDialog: '" . FormaLms\lib\Get::sett('use_wait_dialog', 'off') . "',\n";
-
+    echo " forceScormFinish: '" . FormaLms\lib\Get::sett('force_scorm_finish', 'on') . "',\n";
     echo ' startFromChapter: ' . ($start_from_chapter ? "'" . $start_from_chapter . "'" : 'false') . "\n";
 
     echo "};\n";
