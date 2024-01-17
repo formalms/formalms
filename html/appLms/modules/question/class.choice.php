@@ -998,7 +998,7 @@ class Choice_Question extends Question
             return $new_id_quest;
         }
 
-        reset($raw_quest->answers);
+        //reset($raw_quest->answers);
         foreach ($raw_quest->answers as $raw_answer) {
             if ($raw_answer->score_correct > 0 && $raw_answer->score_correct < 1 && $raw_answer->is_correct) {
                 // a littel bit tricky but needed in order tu full support

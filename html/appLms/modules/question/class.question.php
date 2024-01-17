@@ -699,8 +699,8 @@ class Question
             return $new_id_quest;
         }
 
-        reset($raw_quest->answers);
-        foreach ($raw_quest as $raw_answer) {
+        //reset($raw_quest->answers);
+        foreach ($raw_quest->answers as $raw_answer) {
             //insert answer
             $ins_answer_query = '
 			INSERT INTO ' . $GLOBALS['prefix_lms'] . "_testquestanswer 
