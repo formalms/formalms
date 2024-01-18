@@ -108,32 +108,32 @@
 
 		var columns = [{
 				data: 'text_module',
-				title: "<?php echo Lang::t('_LANG_MODULE ', 'admin_lang '); ?>",
+				title: "<?php echo Lang::t('_LANG_MODULE', 'admin_lang'); ?>",
 				sortable: true
 			},
 			{
 				data: 'text_key',
-				title: "<?php echo Lang::t('_LANG_KEY ', 'admin_lang '); ?>",
+				title: "<?php echo Lang::t('_LANG_KEY', 'admin_lang'); ?>",
 				sortable: true
 			},
 			{
 				data: 'plugin_name',
-				title: "<?php echo Lang::t('_PLUGIN_NAME ', 'admin_lang '); ?>",
+				title: "<?php echo Lang::t('_PLUGIN_NAME', 'admin_lang'); ?>",
 				sortable: false
 			},
 			{
 				data: 'translation_text',
-				title: "<?php echo Lang::t('_LANG_TRANSLATION ', 'admin_lang '); ?>",
+				title: "<?php echo Lang::t('_LANG_TRANSLATION', 'admin_lang'); ?>",
 				sortable: true
 			},
 			{
 				data: 'translation_text_diff',
-				title: "<?php echo Lang::t('_LANG_COMPARE ', 'admin_lang '); ?>",
+				title: "<?php echo Lang::t('_LANG_COMPARE', 'admin_lang'); ?>",
 				sortable: true
 			},
 			{
 				data: 'save_date',
-				title: "<?php echo Lang::t('_DATE ', 'admin_lang '); ?>",
+				title: "<?php echo Lang::t('_DATE', 'admin_lang'); ?>",
 				sortable: true
 			},
 			{
