@@ -66,15 +66,18 @@ class TinyMce {
   getTinyMCELang(lang) {
     var returnlang = {
       'bg': 'bg_BG',
+      'bn': 'bn_BD',
       'cs': 'cs_CZ',
       'fr': 'fr_FR',
       'he': 'he_IL',
       'hu': 'hu_HU',
+      'is': 'is_IS',
       'it': 'it_IT',
       'ko': 'ko_KR',
       'nb': 'nb_NO',
       'nl': 'nl_BE',
       'pt': 'pt_PT',
+      'ro': 'ro_RO',
       'ru': 'ru_RU',
       'sl': 'sl_SL',
       'sv': 'sv_SE',
