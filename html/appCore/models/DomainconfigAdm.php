@@ -71,12 +71,14 @@ class DomainconfigAdm extends Model {
       
         $parentId = $params['parentId'] ?? 'NULL';
 
+        $orgId = $params['orgId'] ? (int) $params['orgId'] : 'NULL';
+
         if(array_key_exists('id', $params)) {
             $query = 'UPDATE %adm_domain_configs SET
                                 title = "'.$params['title'].'",
                                 domain = "'.$params['domain'].'",
                                 template = "'.$params['template'].'",
-                                orgId = "'.$params['orgId'].'",
+                                orgId = '.$orgId.',
                                 mailConfigId =  "'.$params['mailConfigId'].'"
                                 WHERE id = "'.$params['id'].'"';
         } else {
@@ -91,7 +93,7 @@ class DomainconfigAdm extends Model {
                                                          "'.$params['domain'].'",
                                                         '.$parentId.',
                                                         "'.$params['template'].'",
-                                                        "'.$params['orgId'].'",
+                                                        '.$orgId.',
                                                         "'.$params['mailConfigId'].'"
                                                         )';
         }

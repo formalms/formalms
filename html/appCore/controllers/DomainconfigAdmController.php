@@ -139,6 +139,7 @@ class DomainconfigAdmController extends AdmController
         }
         asort($nodes);
 
+        array_unshift($nodes,Lang::t('_DROPDOWN_NOVALUE','field'));
         $params['orgs'] = $nodes;
 
         return $params;
