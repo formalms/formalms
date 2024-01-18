@@ -323,7 +323,7 @@
                             <li><?php echo Lang::t('_TOTAL_USER', 'dashboard') . ': <b id="total_users_count">' . ($user_stats['all'] - 1) . '</b>;'; ?></li>
                             <li><?php echo Lang::t('_SUSPENDED', 'dashboard') . ': <b>' . $user_stats['suspended'] . '</b>;'; ?></li>
                             <?php echo $can_approve ? '<li>' . Lang::t('_WAITING_USERS', 'dashboard') . ': <b>' . $user_stats['waiting'] . '</b>;</li>' : ''; ?>
-                            <li><?php echo Lang::t('_REG_LASTSEVENDAYS', 'dashboard') . ':<b>' . $user_stats['register_7d'] . '</b>;'; ?></li>
+                            <li><?php echo Lang::t('_REG_LASTSEVENDAYS', 'dashboard') . ': <b>' . $user_stats['register_7d'] . '</b>;'; ?></li>
                             <?php if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) { ?>
                                 <li><?php echo Lang::t('_INACTIVE_USER', 'dashboard') . ': <b>' . $user_stats['inactive_30d'] . '</b>;'; ?></li>
                                 <li><?php echo Lang::t('_ONLINE_USER', 'dashboard') . ': <b>' . $user_stats['now_online'] . '</b>;'; ?></li>
