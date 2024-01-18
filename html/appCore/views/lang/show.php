@@ -167,22 +167,22 @@
 
 		var columns = [{
 				data: 'lang_code',
-				title: '<?php echo Lang::t('_LANGUAGE ', 'admin_lang '); ?>',
+				title: '<?php echo Lang::t('_LANGUAGE', 'admin_lang'); ?>',
 				sortable: true
 			},
 			{
 				data: 'lang_description',
-				title: '<?php echo Lang::t('_DESCRIPTION ', 'admin_lang '); ?>',
+				title: '<?php echo Lang::t('_DESCRIPTION', 'admin_lang'); ?>',
 				sortable: true
 			},
 			{
 				data: 'lang_direction',
-				title: '<?php echo Lang::t('_ORIENTATION ', 'admin_lang '); ?>',
+				title: '<?php echo Lang::t('_ORIENTATION', 'admin_lang'); ?>',
 				sortable: true
 			},
 			{
 				data: 'lang_stats',
-				title: '<?php echo Lang::t('_STATISTICS ', 'admin_lang '); ?>',
+				title: '<?php echo Lang::t('_STATISTICS', 'admin_lang'); ?>',
 				sortable: true
 			},
 			{
