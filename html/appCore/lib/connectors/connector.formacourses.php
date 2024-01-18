@@ -393,7 +393,9 @@ class FormaConnectorFormaCourses extends FormaConnector
                             'room_type' => 'course',
                             'id_source' => $id_course, ];
                 $admin_rules = getAdminRules();
-                $rules = array_merge($rules, $admin_rules);
+                if (is_array($admin_rules) > 0) {
+                    $rules = array_merge($rules, $admin_rules);
+                }
                 $re = insertRoom($rules);
             }
             $course_idst = FormaCourse:: createCourseLevel($id_course);
