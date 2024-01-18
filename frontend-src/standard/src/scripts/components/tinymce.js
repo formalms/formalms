@@ -4,7 +4,6 @@ import 'tinymce/icons/default';
 
 import 'tinymce/themes/silver/theme';
 import 'tinymce/skins/ui/oxide/skin.css';
-import 'tinymce/skins/ui/oxide/content.css';
 
 import 'tinymce/plugins/advlist';
 import 'tinymce/plugins/autolink';
@@ -31,12 +30,16 @@ import 'tinymce/plugins/table';
 import 'tinymce/plugins/contextmenu';
 import 'tinymce/plugins/directionality';
 import 'tinymce/plugins/emoticons';
+import 'tinymce/plugins/emoticons/js/emojis';
 import 'tinymce/plugins/template';
 import 'tinymce/plugins/paste';
 import 'tinymce/plugins/textcolor';
 import 'tinymce/plugins/colorpicker';
 import 'tinymce/plugins/textpattern';
 import 'tinymce/plugins/imagetools';
+
+import contentUiCss from 'tinymce/skins/ui/oxide/content.css';
+import contentCss from 'tinymce/skins/content/default/content.css';
 
 class TinyMce {
 
@@ -60,6 +63,29 @@ class TinyMce {
     return url;
   }
 
+  getTinyMCELang(lang) {
+    var returnlang = {
+      'bg': 'bg_BG',
+      'cs': 'cs_CZ',
+      'fr': 'fr_FR',
+      'he': 'he_IL',
+      'hu': 'hu_HU',
+      'it': 'it_IT',
+      'ko': 'ko_KR',
+      'nb': 'nb_NO',
+      'nl': 'nl_BE',
+      'pt': 'pt_PT',
+      'ru': 'ru_RU',
+      'sl': 'sl_SL',
+      'sv': 'sv_SE',
+      'th': 'th_TH',
+      'zh': 'zh_CN',
+      'default': 'en'
+    };
+
+    return returnlang[lang];
+  }
+
   init(authentic_request) {
     this.authentic_request = authentic_request;
 
@@ -72,7 +98,11 @@ class TinyMce {
 
     tinymce.init({
       mode: 'textareas',
+      base_url: '/addons/tiny_mce/',
+      language: obj.getTinyMCELang(document.documentElement.lang),
       skin: false,
+      content_css: false,
+      content_style: contentUiCss.toString() + '\n' + contentCss.toString(),
       branding: false,
       editor_selector,
       forced_root_block: false,
@@ -134,7 +164,11 @@ class TinyMce {
 
     tinymce.init({
       mode: 'textareas',
+      base_url: '/addons/tiny_mce/',
+      language: obj.getTinyMCELang(document.documentElement.lang),
       skin: false,
+      content_css: false,
+      content_style: contentUiCss.toString() + '\n' + contentCss.toString(),
       editor_selector,
       forced_root_block : false,
       force_p_newlines : false,
