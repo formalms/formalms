@@ -1,6 +1,6 @@
 <div class="homepage__row homepage__row--gray homepage__back">
     <a href="{{ back.link }}">
-        <span class="fa fa-chevron-left"></span> {{ back.title|raw }}
+        <span class="fa fa-chevron-left"></span> {{ back.title|replace({'<':''}) }}
     </a>
 </div>
 <div class="homepage__row homepage__row--gray">
