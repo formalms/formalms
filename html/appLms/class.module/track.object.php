@@ -606,7 +606,7 @@ class Track_Object
 
     public function updateObjectTitle($idResource, $objectType, $new_title)
     {
-        $new_title = str_replace('/', '', $new_title);
+        // $new_title = str_replace('/', '', $new_title);
 
         $re = true;
 
@@ -632,7 +632,7 @@ class Track_Object
 
         $query_lo = '
 		UPDATE ' . $GLOBALS['prefix_lms'] . "_organization
-		SET title = '" . $new_title . "' 
+		SET title = '" . sql_escape_string($new_title) . "' 
 		WHERE idResource = '" . (int) $idResource . "'  
 			AND objectType = '" . $objectType . "'";
         $re &= sql_query($query_lo);
