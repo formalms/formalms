@@ -1,4 +1,5 @@
 const path = require('path');
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   entry: {
@@ -70,5 +71,9 @@ module.exports = {
     }
   },
   plugins: [
+    new CopyWebpackPlugin([{
+      from: __dirname + '/node_modules/tinymce-i18n/langs5',
+      to: __dirname + '/../../html/addons/tiny_mce/langs',
+    }]),
   ]
 };
