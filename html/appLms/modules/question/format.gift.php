@@ -753,14 +753,15 @@ class qformat_gift
                 $expout .= '::' . $this->repchar($question->prompt) . '::' . $qtext_format . $this->repchar($question->quest_text) . "{\n";
 
                 foreach ($question->answers as $answer) {
-                    if ($answer->score_correct == 1) {
-                        $answertext = '=';
-                    } elseif ($answer->score_correct == 0) {
-                        $answertext = '~';
-                    } else {
+                    if ($answer->is_correct == 1) {
+                        $answer_sign= '=';
                         $export_weight = $answer->score_correct * 100;
-                        $answertext = "~%$export_weight%";
+                    } else {
+                        $answer_sign = '~';
+                        $export_weight = $answer->score_penalty * -100;
                     }
+
+                    $answertext = "$answer_sign%$export_weight%";
                     $expout .= "\t" . $answertext . $this->repchar($answer->text);
                     if ($answer->comment != '') {
                         $expout .= '#' . $this->repchar($answer->comment);
