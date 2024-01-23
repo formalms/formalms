@@ -136,7 +136,7 @@ function certificate()
     $out->add(getTitleArea($lang->def('_TITLE_CERTIFICATE'), 'certificate')
         . '<div class="std_block">'
         . Form::openForm('certificate_filter', 'index.php?modname=certificate&amp;op=certificate&of_platform=' . $currentPlatform)
-        . '<div class="quick_search_form" style="float: none;">
+        . '<div class="quick_search_form">
             <div>
                 <div class="simple_search_box">'
         . Form::getInputTextfield('search_t', 'filter_text', 'filter_text', FormaLms\lib\Get::req('filter_text', DOTY_MIXED, ''), '', 255, '')
