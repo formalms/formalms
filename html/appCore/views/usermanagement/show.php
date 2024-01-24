@@ -32,6 +32,7 @@ if ($permissions['view_org']) {
         '_LOADING' => Lang::t('_LOADING', 'standard'),
         '_NEW_FOLDER_NAME' => Lang::t('_ORGCHART_ADDNODE', 'organization_chart'),
         '_AREYOUSURE' => Lang::t('_AREYOUSURE', 'organization_chart'),
+        '_MOVE_ORGBRANCH' => Lang::t('_MOVE_ORGBRANCH', 'organization_chart'),
         '_NAME' => Lang::t('_NAME', 'standard'),
         '_MOD' => Lang::t('_MOD', 'standard'),
         '_DEL' => Lang::t('_DEL', 'standard'),
@@ -277,6 +278,7 @@ UserManagement.init({
 	},
 	langs: {
 		_AREYOUSURE: "<?php echo Lang::t('_AREYOUSURE', 'standard'); ?>",
+        _MOVE_ORGBRANCH: "<?php echo Lang::t('_MOVE_ORGBRANCH', 'organization_chart'); ?>",
 		_EXPORT_CSV: "<?php echo Lang::t('_EXPORT_CSV', 'admin_directory'); ?>",
 		_MOD: "<?php echo Lang::t('_MOD', 'standard'); ?>",
 		_DEL: "<?php echo Lang::t('_DEL', 'standard'); ?>",
