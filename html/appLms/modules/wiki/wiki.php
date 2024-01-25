@@ -279,7 +279,7 @@ function showWiki()
     $title = $cwp->lang->def('_WIKI');
     $res .= $cwp->titleArea($title);
 
-    $res .= getBackUi('index.php?modname=wiki&op=main', '<< ' . $lang->def('_BACK') . ''); //'<a href="index.php?modname=wiki&op=main">Indietro</a></p>';
+    $res .= getBackUi('index.php?modname=wiki&op=main', $lang->def('_BACK')); //'<a href="index.php?modname=wiki&op=main">Indietro</a></p>';
 
     $res .= $cwp->getHead($can_mod, true, true, true, true);
 
