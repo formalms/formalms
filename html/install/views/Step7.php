@@ -56,8 +56,8 @@ $localCfg = [
     $smtptoDB = $cfg['use_smtp_database'];
 
     $select = [
-        'on' => 'Si',
-        'off' => 'No',
+        'on' => Lang::t('_YES'),
+        'off' => Lang::t('_NO'),
     ];
 
     $secureSelect = ['ssl' => 'SSL', 'tls' => 'TLS'];
