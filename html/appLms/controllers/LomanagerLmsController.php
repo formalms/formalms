@@ -156,7 +156,7 @@ class LomanagerLmsController extends LmsController
     public function rename()
     {
         $id = FormaLms\lib\Get::req('id', DOTY_INT, false);
-        $newName = FormaLms\lib\Get::req('newName', DOTY_STRING, false);
+        $newName = urldecode(FormaLms\lib\Get::req('newName', DOTY_STRING, false));
         echo $this->json->encode($this->model->renameFolder($id, $newName));
         exit;
     }
