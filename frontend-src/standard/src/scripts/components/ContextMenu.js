@@ -137,11 +137,9 @@ class ContextMenu {
           });
           let deleteElements;
           if (objectsNames.length === 1) {
-            deleteElements = Lang.Translation('_DELETE_ELEMENT', 'learningObjectContextMenu');
-            deleteElements = deleteElements.replace('[objectName]', objectsNames.join(','));
+            deleteElements = Lang.Translation('_DELETE_ELEMENT', 'learningObjectContextMenu').replace('[objectName]', objectsNames.join(','));
           } else {
-            deleteElements = Lang.Translation('_DELETE_ELEMENTS', 'learningObjectContextMenu');
-            deleteElements = deleteElements.replace('[objectNames]', objectsNames.join(','));
+            deleteElements = Lang.Translation('_DELETE_ELEMENTS', 'learningObjectContextMenu').replace('[objectNames]', objectsNames.join(','));
           }
           if (confirm(deleteElements)) {
             const deleteData = _this.getApiUrl('delete', { ids: _this.currentElsIds });

@@ -268,7 +268,8 @@ class FolderView extends LearningView {
 
             if (el.classList.contains('fv-is-delete')) {
                 e.preventDefault();
-                if (Lang.Translation('_DELETE_FOLDER', 'learningObjectContextMenu')) {
+                const deleteElement = Lang.Translation('_DELETE_ELEMENT_FOLDERVIEW', 'learningObjectContextMenu');
+                if (confirm(deleteElement)) {
                     const deleteLoData = _this.getApiUrl('delete', {id: elId});
                     axios.get(deleteLoData).then(() => {
                         const elTree = _this.container.querySelector('.folderTree__li[data-id="' + elId + '"]');
