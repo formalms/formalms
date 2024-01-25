@@ -1968,7 +1968,7 @@ INSERT INTO `learning_menucustom_main` (`idMain`, `idCustom`, `sequence`, `name`
 (1, 1, 1, 'Student Area', ''),
 (2, 1, 2, 'Stat Area', ''),
 (3, 1, 3, 'Collaborative Area', ''),
-(4, 1, 4, 'Teacher area', '');
+(4, 1, 4, 'Teacher Area', '');
 
 -- --------------------------------------------------------
 
