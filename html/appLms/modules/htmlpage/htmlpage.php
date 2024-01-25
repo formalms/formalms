@@ -72,8 +72,8 @@ if (!Docebo::user()->isAnonymous()) {
 
         $insert_query = '
 	INSERT INTO ' . $GLOBALS['prefix_lms'] . "_htmlpage
-	SET title = '" . ((trim(addslashes($_REQUEST['title'])) == '') ? addslashes(Lang::t('_NOTITLE', 'htmlpage', 'lms')) : addslashes($_REQUEST['title'])) . "',
-		textof = '" . addslashes($_REQUEST['textof']) . "',
+	SET title = '" . ((trim(sql_escape_string($_REQUEST['title'])) == '') ? sql_escape_string(Lang::t('_NOTITLE', 'htmlpage', 'lms')) : sql_escape_string($_REQUEST['title'])) . "',
+		textof = '" . sql_escape_string($_REQUEST['textof']) . "',
 		author = '" . (int) getLogUserId() . "'";
         if (!sql_query($insert_query)) {
             Forma::addError(Lang::t('_OPERATION_FAILURE', 'htmlpage', 'lms'));
@@ -185,8 +185,8 @@ if (!Docebo::user()->isAnonymous()) {
 
         $insert_query = '
 	UPDATE ' . $GLOBALS['prefix_lms'] . "_htmlpage
-	SET title = '" . ((trim(addslashes($_REQUEST['title'])) == '') ? addslashes(Lang::t('_NOTITLE', 'htmlpage', 'lms')) : addslashes($_REQUEST['title'])) . "',
-		textof = '" . addslashes($_REQUEST['textof']) . "'
+	SET title = '" . ((trim(sql_escape_string($_REQUEST['title'])) == '') ? sql_escape_string(Lang::t('_NOTITLE', 'htmlpage', 'lms')) : sql_escape_string($_REQUEST['title'])) . "',
+		textof = '" . sql_escape_string($_REQUEST['textof']) . "'
 	WHERE idPage = '" . (int) $_REQUEST['idPage'] . "'";
         if (!sql_query($insert_query)) {
             Forma::addError(Lang::t('_OPERATION_FAILURE', 'htmlpage', 'lms'));
