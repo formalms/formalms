@@ -1985,7 +1985,7 @@ class UserManagerRenderer
 
         $out .= '<div class="homepage__row homepage__row--gray homepage__back">
 	                <a href="./index.php">
-		                <span class="fa fa-chevron-left"></span>' . $lang->def('_BACK', 'standard') . '
+		                <span class="fa fa-chevron-left"></span>' . str_replace('<', '', $lang->def('_BACK', 'standard')) . '
 	                </a>
                 </div>';
 
@@ -1998,7 +1998,7 @@ class UserManagerRenderer
         $langs = Docebo::langManager()->getAllLangCode();
         $full_langs = [];
         foreach ($langs as $v) {
-            $full_langs[$v] = $v;
+            $full_langs[$v] = ucfirst($v);
         }
 
         /* FIRST ROW */
