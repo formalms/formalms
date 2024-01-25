@@ -202,7 +202,7 @@ class ContextMenu {
     const value = input.value;
     const el = input.closest('.folderTree__li') ? input.closest('.folderTree__li') : input.closest('.folderView__li');
     const elId = el.getAttribute('data-id');
-    const renameData = _this.getApiUrl('rename', { id: elId, newName: value });
+    const renameData = _this.getApiUrl('rename', { id: elId, newName: encodeURIComponent(value) });
 
     axios.get(renameData).then((res) => {
       if (res) {
