@@ -53,7 +53,8 @@ $tabs_header = '<ul class="nav nav-tabs" role="tablist">
 <script>
 
 $("body").on("click", "#pdf_download", function () {
-    $(this).text("<?php echo Lang::t('_DOWNLOAD'); ?>")
+    $(this).attr("title", "<?php echo Lang::t('_DOWNLOAD'); ?>")
+    $(this).html("<span><?php echo Lang::t('_DOWNLOAD'); ?></span>")
 });
 
 
