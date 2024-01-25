@@ -241,7 +241,7 @@ if (!Docebo::user()->isAnonymous()) {
         }
         $GLOBALS['page']->add('<div class="align_center">'
         . '<a href="#top">'
-            . '<img src="' . getPathImage() . 'standard/upcheck.gif" title="' . $lang->def('_BACKTOTOP') . '" />'
+            . '<img src="' . getPathImage() . 'standard/up.png" title="' . $lang->def('_BACKTOTOP') . '" />'
             . $lang->def('_BACKTOTOP')
         . '</a>'
         . getBackUi(Util::str_replace_once('&', '&amp;', $back_filtered), $lang->def('_BACK')), 'content');
