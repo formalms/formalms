@@ -1,173 +1,185 @@
 {% include 'partials/catalog_header.html.twig' with { 'data': data } %}
 
 <div class="row">
-    <div class="col-sm-3 {% if data.total_category == 0 %}hidden{% endif %}">
-        <div id="treeview1" class="aside"></div>
-    </div>
-    <div class="{% if data.total_category > 0 %}col-sm-9{% else %}col-sm-12 {% endif %}" id="div_course"><br>
-        <p align="center"><img src='{{ Layout_getPath() }}images/standard/loadbar.gif'></p>
-    </div>
-    <div>
-        {% if not data.show_empty_catalogue_tab %}
+	<div class="col-sm-3 {% if data.total_category == 0 %}hidden{% endif %}">
+		<div id="treeview1" class="aside"></div>
+	</div>
+	<div class="{% if data.total_category > 0 %}col-sm-9{% else %}col-sm-12 {% endif %}" id="div_course"><br>
+		<p align="center"><img src='{{ Layout_getPath() }}images/standard/loadbar.gif'></p>
+	</div>
+	<div>
+		{% if not data.show_empty_catalogue_tab %}
 
-            <script type="text/javascript">
-                window.catalog = {};
+			<script type="text/javascript">
+				window.catalog = {};
                 var $treeview = $("#treeview1");
                 window.catalog.selectedCategory = null;
 
-                function callAjaxCatalog(id_category) {
+                function calculateBoxMaxHeight() {
+                    var maxHeight = 0;
 
-                    window.catalog.selectedCategory = id_category;
-                    str_loading = "{{ Layout_getPath() }}images/standard/loadbar.gif";
-                    $("#div_course").html("<br><p align='center'><img src='{{ Layout_getPath() }}images/standard/loadbar.gif'></p>");
-                    var type_course = getCurrentTypeCourse();
-                    var posting = $.get(
-                        window.frontend.config.url.appLms + '/ajax.server.php',
-                        {
-                            r: '{{ data.endpoint }}/allCourseForma',
-                            id_category: id_category,
-                            type_course: type_course,
-                            id_catalogue: {{ data.starting_catalogue }}
-                        }
-                    );
-                    posting.done(function (responseText) {
-                        $("#div_course").html(responseText);
+                    $('article.course-box').each(function () {
+                    var boxHeight = $(this).height();
+                        maxHeight = Math.max(boxHeight, maxHeight);
                     });
-                    posting.fail(function () {
-                        $("#div_course").html('course catalogue load failed')
-                    })
+
+                    console.log('Altezza massima:', maxHeight);
+                     console.log( $('article.course-box').length);
+
+                    // Puoi fare qualcos'altro con l'altezza massima, ad esempio impostare tutte le altezze degli elementi sulla stessa altezza
+                    $('.course-box').css('min-height', maxHeight + 10 + 'px');
                 }
 
-                function checkSticky() {
-                    var windowHeight = $(window).height();
-                    var treeviewHeight = $treeview.innerHeight();
-                    $treeview.css({maxHeight: windowHeight - 200, overflowY: 'auto'});
-                    $(".container-fluid").css("height", "auto");
+function callAjaxCatalog(id_category) {
 
-                    if (window.innerWidth >= 768 && $('#div_course').offset().top - $(window).scrollTop() <= 70) {
-                        $treeview.css({maxHeight: windowHeight - 190, overflowY: 'auto'});
-                        $treeview.css({width: $treeview.parent().width(), position: 'fixed', top: '70px'});
-                    } else {
-                        $treeview.css({position: 'static'});
-                    }
-                }
+window.catalog.selectedCategory = id_category;
+str_loading = "{{ Layout_getPath() }}images/standard/loadbar.gif";
+$("#div_course").html("<br><p align='center'><img src=' {{ Layout_getPath() }}images/standard/loadbar.gif'></p>");
+var type_course = getCurrentTypeCourse();
+var posting = $.get(window.frontend.config.url.appLms + '/ajax.server.php', {
+r: '{{ data.endpoint }}/allCourseForma',
+id_category: id_category,
+type_course: type_course,
+id_catalogue: {{ data.starting_catalogue }}
+});
+posting.done(function (responseText) {
+$("#div_course").html(responseText);
+calculateBoxMaxHeight();
+});
+posting.fail(function () {
+$("#div_course").html('course catalogue load failed')
+})
+}
 
-                document.onreadystatechange = function () {
-                    if (document.readyState === 'complete') {
+function checkSticky() {
+var windowHeight = $(window).height();
+var treeviewHeight = $treeview.innerHeight();
+$treeview.css({
+maxHeight: windowHeight - 200,
+overflowY: 'auto'
+});
+$(".container-fluid").css("height", "auto");
 
-                        callAjaxCatalog(0);
-                        a_node =  {{ data.catalogue|json_encode|raw }}
+if (window.innerWidth >= 768 && $('#div_course').offset().top - $(window).scrollTop() <= 70) {
+$treeview.css({
+maxHeight: windowHeight - 190,
+overflowY: 'auto'
+});
+$treeview.css({width: $treeview.parent().width(), position: 'fixed', top: '70px'});
+} else {
+$treeview.css({position: 'static'});
+}
+}
 
-                            // Alphabetical sort
-                            $.each(a_node, function (k, cat) {
-                                if (cat.nodes) {
-                                    var result = Object.keys(cat.nodes).map(function (key) {
-                                        return cat.nodes[key];
-                                    });
-                                    result = result.sort(function (a, b) {
-                                        return (a['text'] < b['text']) ? -1 : (a['text'] > b['text']) ? 1 : 0;
-                                    })
-                                    cat.nodes = result;
-                                }
-                            })
-                        var category_tree = [
-                            {
-                                text: "&nbsp;&nbsp;{{ Lang_translate('_ALL_COURSES') }}",
-                                href: "#Category",
-                                id_cat: 0,
-                                state: {
-                                    checked: true,
-                                    selected: true
-                                },
-                                showIcon: true,
-                                nodes: a_node
-                            }
-                        ];
-                        $treeview.treeview({
-                            data: category_tree,
-                            enableLinks: false,
-                            backColor: "#ffffff",
-                            color: "#000000",
-                            levels: 2,
-                            onhoverColor: '#F5F5F5',
-                            showTags: true,
-                            multiSelect: false,
-                            selectedBackColor: "#C84000",
+document.onreadystatechange = function () {
+      
+if (document.readyState === 'complete') {
 
-                            onNodeSelected: function (event, node) {
-                                var id_cat = node.id_cat ? node.id_cat : node.nodeId;
+  
 
-                                callAjaxCatalog(id_cat);
-                            },
-                            onNodeUnselected: function (event, node) {
-                            }
-                        });
+callAjaxCatalog(0);
+a_node = {{ data.catalogue|json_encode|raw }}
 
-                        // sticky feature
-                        checkSticky();
-                        window.addEventListener('scroll', checkSticky, true);
-                        window.addEventListener('resize', checkSticky, true);
-                    }
-                };
+// Alphabetical sort
+$.each(a_node, function (k, cat) {
+if (cat.nodes) {
+var result = Object.keys(cat.nodes).map(function (key) {
+return cat.nodes[key];
+});
+result = result.sort(function (a, b) {
+return(a['text'] < b['text']) ? -1 : (a['text'] > b['text']) ? 1 : 0;
+})
+cat.nodes = result;
+}
+})
+var category_tree = [{
+text: "&nbsp;&nbsp; {{ Lang_translate('_ALL_COURSES') }}",
+href: "#Category",
+id_cat: 0,
+state: {
+checked: true,
+selected: true
+},
+showIcon: true,
+nodes: a_node
+}];
+$treeview.treeview({
+data: category_tree,
+enableLinks: false,
+backColor: "#ffffff",
+color: "#000000",
+levels: 2,
+onhoverColor: '#F5F5F5',
+showTags: true,
+multiSelect: false,
+selectedBackColor: "#C84000",
+
+onNodeSelected: function (event, node) {
+var id_cat = node.id_cat ? node.id_cat : node.nodeId;
+
+callAjaxCatalog(id_cat);
+},
+onNodeUnselected: function (event, node) {}
+});
+
+// sticky feature
+checkSticky();
+window.addEventListener('scroll', checkSticky, true);
+window.addEventListener('resize', checkSticky, true);
+}
+};
 
 
-                function enrollClassroom(id_date, overbooking) {
-                    event.preventDefault();
-                    var posting = $.get(
-                        window.frontend.config.url.appLms + '/ajax.server.php',
-                        {
-                            r: '{{ data.endpoint }}/subscribeToCourse',
-                            id_course: '<?=$id_course?>',
-                            id_date: id_date,
-                            overbooking: overbooking,
-                            type_course: '<?=$type_course?>',
-                            id_catalogue: '<?=$id_catalogue ?>',
-                            id_category: window.selectedCategory
-                        }
-                    );
-                    posting.done(function (responseText) {
-                        /*if (op == 'catalog/addToCart') {
+function enrollClassroom(id_date, overbooking) {
+event.preventDefault();
+var posting = $.get(window.frontend.config.url.appLms + '/ajax.server.php', {
+r: '{{ data.endpoint }}/subscribeToCourse',
+id_course: '<?=$id_course?>',
+id_date: id_date,
+overbooking: overbooking,
+type_course: '<?=$type_course?>',
+id_catalogue: '<?=$id_catalogue ?>',
+id_category: window.selectedCategory
+});
+posting.done(function (responseText) { /*if (op == 'catalog/addToCart') {
                             $('#menu_over').load(document.URL +  '  #menu_over');
                         }; */
-                        $("#div_course").html(responseText);
-                    });
-                    posting.fail(function () {
-                        alert('unsubscribe failed')
-                    })
-                    $('#formaModal').modal('hide')
+$("#div_course").html(responseText);
+});
+posting.fail(function () {
+alert('unsubscribe failed')
+})
+$('#formaModal').modal('hide')
 
-                }
+}
 
-                function addToCart(id_date) {
-                    event.preventDefault();
-                    var posting = $.get(
-                        window.frontend.config.url.appLms + '/ajax.server.php',
-                        {
-                            r: '{{ data.endpoint }}/addToCart',
-                            id_course: '<?=$id_course?>',
-                            id_date: id_date,
-                            type_course: '<?=$type_course?>',
-                            id_catalogue: '<?=$id_catalogue ?>',
-                            id_category: '<?=$id_category?>'
-                        }
-                    );
-                    posting.done(function (responseText) {
-                        $('#menu_over').load(document.URL + '  #menu_over');
-                        $("#div_course").html(responseText);
-                        if($('#cart_element').parent('li').hasClass('hidden')) {
-                            $('#cart_element').parent('li').removeClass('hidden');
-                        }
-                    });
-                    posting.fail(function () {
-                        alert('unsubscribe failed')
-                    })
-                    $('#formaModal').modal('hide')
-                }
-            </script>
-        {% else %}
-            <script type="text/javascript">
-                $("#div_course").html("<br><p align='center'>{{ Lang_translate('_NO_CATEGORY_TODISPLAY','catalogue') }}</p>");
-            </script>
-        {% endif %}
-    </div>
+function addToCart(id_date) {
+event.preventDefault();
+var posting = $.get(window.frontend.config.url.appLms + '/ajax.server.php', {
+r: '{{ data.endpoint }}/addToCart',
+id_course: '<?=$id_course?>',
+id_date: id_date,
+type_course: '<?=$type_course?>',
+id_catalogue: '<?=$id_catalogue ?>',
+id_category: '<?=$id_category?>'
+});
+posting.done(function (responseText) {
+$('#menu_over').load(document.URL + '  #menu_over');
+$("#div_course").html(responseText);
+if ($('#cart_element').parent('li').hasClass('hidden')) {
+$('#cart_element').parent('li').removeClass('hidden');
+}
+});
+posting.fail(function () {
+alert('unsubscribe failed')
+})
+$('#formaModal').modal('hide')
+}
+			</script>
+		{% else %}
+			<script type="text/javascript">
+				$("#div_course").html("<br><p align='center'> {{ Lang_translate('_NO_CATEGORY_TODISPLAY','catalogue') }}</p>");
+			</script>
+		{% endif %}
+	</div>
 </div>
