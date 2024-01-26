@@ -345,7 +345,7 @@ class Track_Test extends Track_Object
 
     public function deleteTrackInfo($id_lo, $id_user)
     {
-        $query = 'SELECT idUser, idReference, idTrack FROM ' . $this->_table .
+        $query = 'SELECT idUser, idReference, idTrack FROM ' . self::$_table .
             ' WHERE idUser=' . (int) $id_user . ' AND idReference=' . (int) $id_lo .
             " AND objectType='test'";
         $res = sql_query($query);
