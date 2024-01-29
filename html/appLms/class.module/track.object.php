@@ -631,7 +631,7 @@ class Track_Object
 
             $query_lo = '
 			UPDATE ' . $GLOBALS['prefix_lms'] . "_homerepo
-			SET path = '" . $new_path . "', title = '" . $new_title . "' 
+			SET path = '" . $new_path . "', title = '" . sql_escape_string($new_title) . "' 
 			WHERE idResource = '" . (int) $idResource . "'  
 				AND objectType = '" . $objectType . "'";
             $re &= sql_query($query_lo);
@@ -658,7 +658,7 @@ class Track_Object
 
             $query_lo = '
 			UPDATE ' . $GLOBALS['prefix_lms'] . "_repo
-			SET path = '" . $new_path . "', title = '" . $new_title . "' 
+			SET path = '" . $new_path . "', title = '" . sql_escape_string($new_title) . "' 
 			WHERE idResource = '" . (int) $idResource . "'  
 				AND objectType = '" . $objectType . "'";
             $re &= sql_query($query_lo);
