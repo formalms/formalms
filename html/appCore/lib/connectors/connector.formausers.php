@@ -223,7 +223,8 @@ class FormaConnectorFormaUsers extends FormaConnector
         require_once _base_ . '/lib/lib.userselector.php';
         require_once _adm_ . '/lib/lib.field.php';
 
-        $aclManager = \FormaLms\lib\Forma::getAclManager();;
+        $aclManager = \FormaLms\lib\Forma::getAclManager();
+        ;
 
         $this->directory = new UserSelector();
         $this->groupFilter_idst = $aclManager->getGroupST($this->groupFilter);
@@ -444,12 +445,12 @@ class FormaConnectorFormaUsers extends FormaConnector
 
     public function is_readonly()
     {
-        return (bool)($this->readwrite & 1);
+        return (bool) ($this->readwrite & 1);
     }
 
     public function is_writeonly()
     {
-        return (bool)($this->readwrite & 2);
+        return (bool) ($this->readwrite & 2);
     }
 
     public function get_tot_cols()
@@ -492,7 +493,7 @@ class FormaConnectorFormaUsers extends FormaConnector
         //find user field value
         foreach ($this->simplecols as $field_id => $name) {
             if (is_numeric($field_id)) {
-                $p = $this->fl->fieldValue((int)$field_id, [$row[0]]);
+                $p = $this->fl->fieldValue((int) $field_id, [$row[0]]);
                 $export[] = reset($p);
             } else {
                 switch ($field_id) {
@@ -667,15 +668,11 @@ class FormaConnectorFormaUsers extends FormaConnector
                 false //google_id
             );
 
-            if ($language !== LANG_NOT_SET_IN_CSV) {
-                // Add language to the user
+            $language = $this->return_valid_language_from_csv_row($language);
 
-                $language = $this->return_valid_language_from_csv_row($language);
+            // It's a valid and recognized and in platform language.
+            $this->add_language_to_user_by_idst($idst, $language);
 
-                if ($language !== null && $language != Lang::get()) {  // It's a valid and recognized and in platform language.
-                    $this->add_language_to_user_by_idst($idst, $language);
-                }
-            }
         } else {    // Updating user that already exist
             $idst = $arr_user['idst'];
             if ($firstname === null || $firstname === '') {
@@ -713,26 +710,16 @@ class FormaConnectorFormaUsers extends FormaConnector
                 return false;
             }
 
-            if ($language !== LANG_NOT_SET_IN_CSV) { // language set in csv...
-                // Update language to the user only if it's different compared to
-                // the actual.
+            // check if language is valid, otherwise NULL
+            $language = $this->return_valid_language_from_csv_row($language);
 
-                // check if language is valid, otherwise NULL
-                $language = $this->return_valid_language_from_csv_row($language);
+            // If lang_in_db is null, the user has default language.
+            $lang_in_db = $this->get_lang_user_from_db($idst);
 
-                // If lang_in_db is null, the user has default language.
-                $lang_in_db = $this->get_lang_user_from_db($idst);
+            if (empty($lang_in_db)) {
 
-                if ($language != NOT_VALID_LANG) {
-                    if ($lang_in_db != USER_HAS_NO_LANG) {
-                        if ($language != $lang_in_db) {
-                            // It's been added a language since the user has never been one (it has the def.).
-                            $this->update_language_if_different($idst, $language);
-                        }
-                    } else {
-                        $this->add_language_to_user_by_idst($idst, $language);
-                    } // a language has never been set  to the user.
-                }
+                $this->add_language_to_user_by_idst($idst, $language);
+                // a language has never been set  to the user.
             }
 
             $updated = true;
@@ -740,7 +727,7 @@ class FormaConnectorFormaUsers extends FormaConnector
         if ($idst !== false) {
             //destination folder
             if ($this->org_chart_destination > 0) {
-                $res = \FormaLms\db\DbConn::getInstance()->query('SELECT idst_oc, idst_ocd FROM %adm_org_chart_tree WHERE idOrg = ' . (int)$this->org_chart_destination);
+                $res = \FormaLms\db\DbConn::getInstance()->query('SELECT idst_oc, idst_ocd FROM %adm_org_chart_tree WHERE idOrg = ' . (int) $this->org_chart_destination);
                 if ($res && \FormaLms\db\DbConn::getInstance()->num_rows($res) > 0) {
                     list($oc, $ocd) = \FormaLms\db\DbConn::getInstance()->fetch_row($res);
                     if ($oc && $ocd) {
@@ -903,9 +890,9 @@ class FormaConnectorFormaUsers extends FormaConnector
      */
     public function return_valid_language_from_csv_row($language)
     {
-        if (empty($language)){
+        if (empty($language)) {
             $defaultLangQuery = 'SELECT param_value FROM %adm_setting WHERE `param_name` = "default_language"';
-            $rs = sql_query($defaultLangQuery,$this->dbconn);
+            $rs = sql_query($defaultLangQuery, $this->dbconn);
             $language = (($language = sql_fetch_row($rs)) != null) ? $language[0] : null;
         }
         $q_lang = 'SELECT lang_code FROM ' . $GLOBALS['prefix_fw'] . "_lang_language WHERE lang_browsercode LIKE '%$language%' OR lang_code = '$language' ";
@@ -950,7 +937,7 @@ class FormaConnectorFormaUsers extends FormaConnector
         // TO add remove query from this table - why isn't working?
         $q_lang = 'INSERT INTO ' . $GLOBALS['prefix_fw'] . '_setting_user (path_name, id_user, value) '
             . "VALUES ('" . $path_name . "', "
-            . (int)$idst . ", '"
+            . (int) $idst . ", '"
             . $language
             . "' )";
 
@@ -969,7 +956,7 @@ class FormaConnectorFormaUsers extends FormaConnector
         $path_name = 'ui.language'; // ???
 
         $q_lang = 'UPDATE ' . $GLOBALS['prefix_fw'] . "_setting_user SET value = '" . $language . "' WHERE path_name = '" . $path_name
-            . "' AND id_user = " . (int)$idst;
+            . "' AND id_user = " . (int) $idst;
 
         $rs = sql_query($q_lang, $this->dbconn);
 
@@ -1124,7 +1111,7 @@ class FormaConnectorFormaUsersUI extends FormaConnectorUI
 
             $this->post_params['org_chart_destination'] =
                 isset($arr_new_params['org_chart_destination'])
-                    ? (int)$arr_new_params['org_chart_destination']
+                    ? (int) $arr_new_params['org_chart_destination']
                     : $this->post_params['org_chart_destination'];
         }
         $this->_load_step_info();
@@ -1207,9 +1194,11 @@ class FormaConnectorFormaUsersUI extends FormaConnectorUI
                 break;
         }
         // save parameters
-        $out .= $this->form->getHidden($this->_get_base_name() . '_memory',
+        $out .= $this->form->getHidden(
+            $this->_get_base_name() . '_memory',
             $this->_get_base_name() . '[memory]',
-            urlencode(Util::serialize($this->post_params)));
+            urlencode(Util::serialize($this->post_params))
+        );
 
         return $out;
     }
@@ -1217,47 +1206,60 @@ class FormaConnectorFormaUsersUI extends FormaConnectorUI
     public function _step0()
     {
         // ---- name -----
-        $out = $this->form->getTextfield($this->lang->def('_NAME'),
+        $out = $this->form->getTextfield(
+            $this->lang->def('_NAME'),
             $this->_get_base_name() . '_name',
             $this->_get_base_name() . '[name]',
             255,
-            $this->post_params['name']);
+            $this->post_params['name']
+        );
         // ---- description -----
         // ---- description -----
-        $out .= $this->form->getSimpleTextarea($this->lang->def('_DESCRIPTION'),
+        $out .= $this->form->getSimpleTextarea(
+            $this->lang->def('_DESCRIPTION'),
             $this->_get_base_name() . '_description',
             $this->_get_base_name() . '[description]',
-            $this->post_params['description']);
+            $this->post_params['description']
+        );
         // ---- access type read/write -----
-        $out .= $this->form->getRadioSet($this->lang->def('_ACCESSTYPE'),
+        $out .= $this->form->getRadioSet(
+            $this->lang->def('_ACCESSTYPE'),
             $this->_get_base_name() . '_readwrite',
             $this->_get_base_name() . '[readwrite]',
             [$this->lang->def('_READ') => '1',
                 $this->lang->def('_WRITE') => '2',
                 $this->lang->def('_READWRITE') => '3',],
-            $this->post_params['readwrite']);
+            $this->post_params['readwrite']
+        );
         // ---- access type read/write -----
-        $out .= $this->form->getRadioSet($this->lang->def('_SENDNOTIFY'),
+        $out .= $this->form->getRadioSet(
+            $this->lang->def('_SENDNOTIFY'),
             $this->_get_base_name() . '_sendnotify',
             $this->_get_base_name() . '[sendnotify]',
             [$this->lang->def('_SEND') => '1',
                 $this->lang->def('_DONTSEND') => '2',],
-            $this->post_params['sendnotify']);
+            $this->post_params['sendnotify']
+        );
         // ---- suspend users ----
-        $out .= $this->form->getRadioSet($this->lang->def('_CANCELED_USERS'),
+        $out .= $this->form->getRadioSet(
+            $this->lang->def('_CANCELED_USERS'),
             $this->_get_base_name() . '_canceled',
             $this->_get_base_name() . '[canceled]',
             [$this->lang->def('_SUSPENDED') => '1',
                 $this->lang->def('_DEL') => '2',],
-            $this->post_params['canceled']);
+            $this->post_params['canceled']
+        );
 
-        $out .= $this->form->getTextfield($this->lang->def('_PREG_MATCH_FOLDER'),
+        $out .= $this->form->getTextfield(
+            $this->lang->def('_PREG_MATCH_FOLDER'),
             $this->_get_base_name() . '_preg_match_folder',
             $this->_get_base_name() . '[preg_match_folder]',
             255,
-            $this->post_params['preg_match_folder']);
+            $this->post_params['preg_match_folder']
+        );
 
-        $out .= $this->form->getRadioSet(Lang::t('_FORCE_PASSWORD_CHANGE', 'admin_directory'),
+        $out .= $this->form->getRadioSet(
+            Lang::t('_FORCE_PASSWORD_CHANGE', 'admin_directory'),
             $this->_get_base_name() . '_pwd_force_change_policy',
             $this->_get_base_name() . '[pwd_force_change_policy]',
             [
@@ -1266,39 +1268,48 @@ class FormaConnectorFormaUsersUI extends FormaConnectorUI
                 Lang::t('_SERVERINFO', 'configuration') => 'by_setting',
                 Lang::t('_DO_NOTHING', 'preassessment') => 'do_nothing',
             ],
-            $this->post_params['pwd_force_change_policy']);
+            $this->post_params['pwd_force_change_policy']
+        );
 
-        $out .= $this->form->getRadioSet(Lang::t('_RESET_FIELD_IF_NOT_SET', 'admin_directory'),
+        $out .= $this->form->getRadioSet(
+            Lang::t('_RESET_FIELD_IF_NOT_SET', 'admin_directory'),
             $this->_get_base_name() . '_reset_field_if_not_set',
             $this->_get_base_name() . '[reset_field_if_not_set]',
             [
                 Lang::t('_NO', 'standard') => false,
                 Lang::t('_YES', 'standard') => true,
             ],
-            $this->post_params['reset_field_if_not_set']);
+            $this->post_params['reset_field_if_not_set']
+        );
 
-        $out .= $this->form->getRadioSet(Lang::t('_USE_DEFAULT_PASSWORD', 'admin_directory'),
+        $out .= $this->form->getRadioSet(
+            Lang::t('_USE_DEFAULT_PASSWORD', 'admin_directory'),
             $this->_get_base_name() . '_use_default_password',
             $this->_get_base_name() . '[use_default_password]',
             [
                 Lang::t('_NO', 'standard') => false,
                 Lang::t('_YES', 'standard') => true,
             ],
-            $this->post_params['use_default_password']);
+            $this->post_params['use_default_password']
+        );
 
-        $out .= $this->form->getTextfield($this->lang->def('_DEFAULT_PASSWORD'),
+        $out .= $this->form->getTextfield(
+            $this->lang->def('_DEFAULT_PASSWORD'),
             $this->_get_base_name() . '_default_password',
             $this->_get_base_name() . '[default_password]',
             255,
-            $this->post_params['default_password']);
+            $this->post_params['default_password']
+        );
 
         return $out;
     }
 
     public function _step1()
     {
-        $GLOBALS['page']->add($this->form->getLineBox($this->lang->def('_NAME'),
-            $this->post_params['name']));
+        $GLOBALS['page']->add($this->form->getLineBox(
+            $this->lang->def('_NAME'),
+            $this->post_params['name']
+        ));
 
         // ---- the tree selector -----
         /* $GLOBALS['page']->add($this->lang->def('_TREE_INSERT'));
@@ -1325,14 +1336,18 @@ class FormaConnectorFormaUsersUI extends FormaConnectorUI
 
     public function _step2()
     {
-        $out = $this->form->getLineBox($this->lang->def('_NAME'),
-            $this->post_params['name']);
+        $out = $this->form->getLineBox(
+            $this->lang->def('_NAME'),
+            $this->post_params['name']
+        );
 
-        $out .= $this->form->getTextfield($this->lang->def('_GROUP_FILTER'),
+        $out .= $this->form->getTextfield(
+            $this->lang->def('_GROUP_FILTER'),
             $this->_get_base_name() . '_group',
             $this->_get_base_name() . '[group]',
             255,
-            $this->post_params['group']);
+            $this->post_params['group']
+        );
 
         return $out;
     }
