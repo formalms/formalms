@@ -198,6 +198,14 @@ namespace FormaLms\lib\Processors\Access;
         return $this->response();
     }
 
+    public function postProcess(...$params) {
+
+    }
+
+    public function getInstanceParams(int $instanceId) {
+        return [];
+    }
+
     abstract public function getAccessList($resourceId) : array;
 
     abstract public function setAccessList($resourceId, array $selection) : self;

@@ -84,7 +84,7 @@ class UserselectorAdmController extends AdmController
         $disableAjax = array_key_exists('disable_ajax', $this->requestArray) ? true : false;
         $instanceValue = $this->requestArray['instance']; 
         $instanceId = array_key_exists('id', $this->requestArray) ?  $this->requestArray['id'] : 0;
-        $showSelectAll = array_key_exists('showSelectAll', $this->requestArray) ? $this->requestArray['showSelectAll'] : false;
+        $showSelectAll = (bool) array_key_exists('showSelectAll', $this->requestArray) ? $this->requestArray['showSelectAll'] : false;
         $showUserAlert = array_key_exists('showUserAlert', $this->requestArray) ? $this->requestArray['showUserAlert'] : false;
         $clearSelection = array_key_exists('clearSelection', $this->requestArray) ? $this->requestArray['clearSelection'] : false;
         $selectAllValue = 1;
@@ -133,9 +133,8 @@ class UserselectorAdmController extends AdmController
             $learningFilter = \Util::config('multiuserselector.use_filter.' . $instanceValue);
             $idOrg =  $instanceId;
         }
-      
 
-        $this->render('show', ['tabs' => $this->tabs,
+        $renderParams = ['tabs' => $this->tabs,
                             'selection'=> $this->selection,
                             'columns' => $columns,
                             'ajax' => $disableAjax,
@@ -149,7 +148,12 @@ class UserselectorAdmController extends AdmController
                             'learningFilter' => $learningFilter,
                             'idOrg' => $idOrg,
                             'debug' => array_key_exists('debug', $this->requestArray) ? $this->requestArray['debug'] : false
-                        ]);
+        ];
+      
+
+        $renderParams = array_replace($renderParams, $this->multiUserSelector->getInstanceParams((int) $instanceId));
+
+        $this->render('show', $renderParams);
     }
 
 
@@ -206,6 +210,7 @@ class UserselectorAdmController extends AdmController
         }
 
         $result = $this->multiUserSelector->associate($instanceId, $selection);
+        $this->multiUserSelector->postProcess(compact('allIdst', 'instanceId', 'selection'));
 
         $responseMethod = 'response' . ucfirst($result['type']);
         if(method_exists($this, $responseMethod)) {

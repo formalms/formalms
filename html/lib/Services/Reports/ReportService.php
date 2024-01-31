@@ -23,6 +23,10 @@ class ReportService implements Accessible
         $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     }
 
+    public function getEntity(int $id) {
+        return sql_fetch_object(sql_query("SELECT * FROM %lms_report WHERE id_report = $id"));
+    }
+
     public function getAccessList($resourceId): array
     {
 
@@ -113,6 +117,11 @@ class ReportService implements Accessible
     public function getLink() : string{
 
         return $this->link;
+    }
+
+
+    public function toggleUseUserSelection(int $id, bool $value) {
+        sql_query("UPDATE %lms_report SET use_user_selection = $value WHERE id_report=$id");
     }
 
 

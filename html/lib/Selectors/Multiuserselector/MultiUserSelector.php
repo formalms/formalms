@@ -190,5 +190,15 @@ class MultiUserSelector
         return $selection;
     }
 
+    public function postProcess($params)
+    {
+        return $this->accessProcessor->postProcess(...$params);
+    }
+
+    public function getInstanceParams(int $instanceId)
+    {
+        return $this->accessProcessor->getInstanceParams($instanceId);
+    }
+
 
 }
