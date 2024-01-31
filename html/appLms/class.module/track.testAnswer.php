@@ -49,7 +49,7 @@ class Track_TestAnswer
     /**
      * @return mixed
      */
-    public static function getTrackId()
+    public function getTrackId()
     {
         return $this->trackId;
     }
