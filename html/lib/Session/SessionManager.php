@@ -38,6 +38,8 @@ class SessionManager
     private ?Session $session = null;
 
     private $sessionHandler;
+    private const IPV4_LOCALHOST = '127.0.0.1';
+    private const IPV6_LOCALHOST = '::1';
 
     /**
      * @return SessionManager
@@ -99,7 +101,11 @@ class SessionManager
 
             $sessionStorage = new NativeSessionStorage([], $this->sessionHandler);
             $this->session = new Session($sessionStorage);
-            $this->session->setName('__Secure-FORMALMS');
+            if ($_SERVER['SERVER_ADDR'] !== $this::IPV4_LOCALHOST && $_SERVER['SERVER_ADDR'] !== $this::IPV6_LOCALHOST) {
+                $this->session->setName('__Secure-FORMALMS');
+            } else {
+                $this->session->setName('FORMALMS');
+            }
             if (!$this->session->isStarted()) {
                 $this->session->start();
             }
