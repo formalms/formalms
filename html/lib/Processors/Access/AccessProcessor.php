@@ -199,7 +199,7 @@ namespace FormaLms\lib\Processors\Access;
     }
 
     public function postProcess(...$params) {
-
+        //funzione che può servire se serve fare qualcos'altro dopo l'associazione può essere declinata nei vari accessor
     }
 
     public function getInstanceParams(int $instanceId) {

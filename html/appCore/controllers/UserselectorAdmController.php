@@ -134,6 +134,9 @@ class UserselectorAdmController extends AdmController
             $idOrg =  $instanceId;
         }
 
+        //it needs to select radiobox all or selected customers
+        $selectAllValue = (count($accessSelection['org']) == 1 && (int) reset($accessSelection['org']) == 1) ? 1 : 0;
+        
         $renderParams = ['tabs' => $this->tabs,
                             'selection'=> $this->selection,
                             'columns' => $columns,
@@ -150,7 +153,7 @@ class UserselectorAdmController extends AdmController
                             'debug' => array_key_exists('debug', $this->requestArray) ? $this->requestArray['debug'] : false
         ];
       
-
+        //fallback if i had to substitute some parmas with saved value
         $renderParams = array_replace($renderParams, $this->multiUserSelector->getInstanceParams((int) $instanceId));
 
         $this->render('show', $renderParams);
@@ -160,7 +163,7 @@ class UserselectorAdmController extends AdmController
     public function getDataTask()
     {
       
-        $dataType = $this->requestArray['dataType'];
+        $dataType = $this->requestArray['dataType'] ?? 'org';
         $params = array_merge($this->requestArray, ['json_format' => true]);
 
         switch($dataType) {
@@ -193,9 +196,15 @@ class UserselectorAdmController extends AdmController
 
         //if allidst is checked empty all selections
 
+       
         if ($allIdst) {
             $allSelections = $selection = $exclusion = [];
             $selection[] = $allIdst;
+        } else {
+            //check if 1 - all idst was in selection and extract it
+            if(array_key_exists('all_idst', $this->requestArray) && in_array(1, $selection)) {
+                $selection = array_diff($selection, [1]);
+            }
         }
         if (count($allSelections)) {
             foreach ($allSelections as $allSelection) {

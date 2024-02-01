@@ -2481,6 +2481,7 @@ class FormaACLManager
             }
         }
 
+
         $rs = $this->_executeQuery($query);
         $arrUsers = [];
         while (list($idst) = sql_fetch_row($rs)) {

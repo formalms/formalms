@@ -3846,7 +3846,12 @@ class UserProfileData
         }
         if (is_array($this->_field_access_list)) {
             // add default value to list if needed
+
+            if(!$this->_field_access_list[$id_user]) {
+                $this->_field_access_list[$id_user]= [];
+            }
             if (!isset($this->_field_access_list[$id_user]['email'])) {
+                
                 $this->_field_access_list[$id_user]['email'] = PFL_POLICY_NOONE;
             }
             if (!isset($this->_field_access_list[$id_user]['online_satus'])) {

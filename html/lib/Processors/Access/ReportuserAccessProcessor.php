@@ -50,14 +50,11 @@ class ReportuserAccessProcessor extends AccessProcessor
 
     public function postProcess(...$params) {
 
-        if(array_key_exists('allIdst', $params)) {
-            $this->accessModel->toggleUseUserSelection($params['instanceId'], !$params['allIdst']);
-        }
-        
     }
 
     public function getInstanceParams(int $instanceId) {
-        return ['selectAllValue' => (bool) !$this->accessModel->getEntity($instanceId)->use_user_selection];
+
+        return [];
     }
 }
 

@@ -496,8 +496,8 @@ class CourseLms extends Model
             }
         } else {
             // if course date end, cannot unenroll
-            $courseDateEnd = DateTime::createFromFormat('Y-m-d', $course['date_end']);
-            if ($course['date_end'] && $now > $courseDateEnd) {
+       
+            if ($course['date_end'] && $now > DateTime::createFromFormat('Y-m-d', $course['date_end'])) {
                 return false;
             }
 
