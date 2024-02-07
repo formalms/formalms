@@ -18,6 +18,7 @@ use FormaLms\lib\Session\SessionManager;
 
 class CoursestatsLmsController extends LmsController
 {
+    /** @var CoursestatsLms */
     protected $model;
     protected $json;
     protected $permissions;
@@ -388,7 +389,6 @@ class CoursestatsLmsController extends LmsController
         $records = [];
         $acl_man = Docebo::user()->getAclManager();
         if (is_array($list)) {
-            $lo_list = $this->model->getCourseLOs($this->idCourse);
             foreach ($list as $record) {
                 $path = str_replace('/root/', '', $record->path);
                 $pathArray = explode('/', $path);
@@ -397,13 +397,6 @@ class CoursestatsLmsController extends LmsController
                 }
                 $path = implode('/', $pathArray);
 
-                if ($last_access = $this->model->getUserScormHistoryTrackInfo($id_user, $record->idOrg)) {
-                    $seconds_diff = strtotime('1970-01-01 ' . end($last_access)[3] . ' UTC');
-                    $last_access = date('Y-m-d H:i:s', strtotime(end($last_access)[0]) - $seconds_diff);
-                } else {
-                    $last_access = $record->last_access;
-                }
-
                 $row = [
                     'id' => $record->idOrg,
                     'path' => $path,
@@ -411,7 +404,7 @@ class CoursestatsLmsController extends LmsController
                     'LO_type' => $record->objectType ?: 'folder',
                     'LO_status' => $record->status,
                     'first_access' => $record->first_access,
-                    'last_access' => $last_access,
+                    'last_access' => $record->last_access,
                     'history' => $record->history,
                     'totaltime' => $this->model->roundTime($record->totaltime),
                     'score' => $record->score,

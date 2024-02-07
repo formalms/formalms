@@ -49,10 +49,10 @@ class CoursestatsLms extends Model
     public function getTrackId($id_lo, $id_user)
     {
         $query = 'SELECT idTrack FROM ' . $this->tables['commontrack'] . ' '
-            . ' WHERE idReference=' . (int) $id_lo . ' AND idUser=' . (int) $id_user;
+            . ' WHERE idReference=' . (int)$id_lo . ' AND idUser=' . (int)$id_user;
         $res = $this->db->query($query);
         if ($res && $this->db->num_rows($res) > 0) {
-            list($id_track) = $this->db->fetch_row($res);
+            [$id_track] = $this->db->fetch_row($res);
 
             return $id_track;
         }
@@ -68,7 +68,7 @@ class CoursestatsLms extends Model
 
         $output = [];
         $query = 'SELECT * FROM ' . $this->tables['organization'] . ' '
-            . ' WHERE idCourse=' . (int) $id_course . ' ORDER BY path ASC';
+            . ' WHERE idCourse=' . (int)$id_course . ' ORDER BY path ASC';
         $res = $this->db->query($query);
         if ($res) {
             while ($obj = $this->db->fetch_obj($res)) {
@@ -88,8 +88,8 @@ class CoursestatsLms extends Model
     public function getCourseStatsList($pagination, $id_course)
     {
         if (is_array($pagination)) {
-            $startIndex = (isset($pagination['startIndex']) ? $pagination['startIndex'] : 0);
-            $results = (isset($pagination['rowsPerPage']) ? $pagination['rowsPerPage'] : FormaLms\lib\Get::sett('visuItem', 25));
+            $startIndex = ($pagination['startIndex'] ?? 0);
+            $results = ($pagination['rowsPerPage'] ?? FormaLms\lib\Get::sett('visuItem', 25));
 
             // Default order
             $sort = 'u.userid';
@@ -132,7 +132,7 @@ class CoursestatsLms extends Model
         $query = 'SELECT u.idst, u.userid, u.firstname, u.lastname, cu.status, cu.level, cu.date_inscr, cu.date_first_access, cu.date_complete '
             . ' FROM ' . $this->tables['courseuser'] . ' as cu '
             . ' JOIN ' . $this->tables['user'] . ' as u '
-            . ' ON (cu.idUser = u.idst AND cu.idCourse=' . (int) $id_course . ') '
+            . ' ON (cu.idUser = u.idst AND cu.idCourse=' . (int)$id_course . ') '
             . ' WHERE 1=1' . $where;
 
         if (is_array($pagination)) {
@@ -173,7 +173,7 @@ class CoursestatsLms extends Model
         $query = 'SELECT COUNT(*) '
             . ' FROM ' . $this->tables['courseuser'] . ' as cu '
             . ' JOIN ' . $this->tables['user'] . ' as u '
-            . ' ON (cu.idUser = u.idst AND cu.idCourse=' . (int) $id_course . ') ';
+            . ' ON (cu.idUser = u.idst AND cu.idCourse=' . (int)$id_course . ') ';
 
         if ($filtered) {
             $where = 'WHERE 1=1';
@@ -185,7 +185,7 @@ class CoursestatsLms extends Model
 
         $res = $this->db->query($query);
         if ($res) {
-            list($count) = $this->db->fetch_row($res);
+            [$count] = $this->db->fetch_row($res);
         } else {
             $count = false;
         }
@@ -198,8 +198,8 @@ class CoursestatsLms extends Model
         $query = 'SELECT COUNT(o.idOrg) AS count'
             . ' FROM ' . $this->tables['organization'] . ' as o '
             . ' LEFT JOIN ' . $this->tables['commontrack'] . ' as c '
-            . ' ON (c.idReference = o.idOrg AND c.idUser=' . (int) $id_user . ') '
-            . ' WHERE o.idCourse=' . (int) $id_course . ' ';
+            . ' ON (c.idReference = o.idOrg AND c.idUser=' . (int)$id_user . ') '
+            . ' WHERE o.idCourse=' . (int)$id_course . ' ';
 
         if ($search && $filtered) {
             $query .= " AND title LIKE '%" . $search . "%'";
@@ -218,8 +218,8 @@ class CoursestatsLms extends Model
         $dir = 'ASC';
 
         if (is_array($pagination)) {
-            $startIndex = (isset($pagination['startIndex']) ? $pagination['startIndex'] : 0);
-            $rowsPerPage = (isset($pagination['rowsPerPage']) ? $pagination['rowsPerPage'] : FormaLms\lib\Get::sett('visuItem', 10));
+            $startIndex = ($pagination['startIndex'] ?? 0);
+            $rowsPerPage = ($pagination['rowsPerPage'] ?? FormaLms\lib\Get::sett('visuItem', 10));
 
             if (isset($pagination['order_column'])) {
                 switch ($pagination['order_column']) {
@@ -266,8 +266,8 @@ class CoursestatsLms extends Model
             . ' c.dateAttempt as last_access, c.firstAttempt as first_access, c.first_complete, c.last_complete '
             . ' FROM ' . $this->tables['organization'] . ' as o '
             . ' LEFT JOIN ' . $this->tables['commontrack'] . ' as c '
-            . ' ON (c.idReference = o.idOrg AND c.idUser=' . (int) $id_user . ') '
-            . ' WHERE o.idCourse=' . (int) $id_course . $where;
+            . ' ON (c.idReference = o.idOrg AND c.idUser=' . (int)$id_user . ') '
+            . ' WHERE o.idCourse=' . (int)$id_course . $where;
 
         $query .= ' GROUP BY o.idOrg ORDER BY ' . $sort . ' ' . $dir . ' ';
         if (is_array($pagination)) {
@@ -283,7 +283,7 @@ class CoursestatsLms extends Model
             require_once Forma::inc(_lms_ . '/class.module/track.object.php');
 
             foreach ($res as $obj) {
-                if (((bool) $obj['visible'] === false) && $export) {
+                if (((bool)$obj['visible'] === false) && $export) {
                     //it's a hidden obj, skip it only for export data
                     continue;
                 }
@@ -315,11 +315,17 @@ class CoursestatsLms extends Model
 						</tr>';
                 }
                 $history_table_html .= '</table>';
-                $obj['score'] = isset($scores[$obj['idOrg']]) ? $scores[$obj['idOrg']] : '';
-                $obj['history'] = isset($history) ? $history_table_html : ''; // by marco array sessioni
+                $obj['score'] = $scores[$obj['idOrg']] ?? '';
+                $obj['history'] = !empty($history) ? $history_table_html : ''; // by marco array sessioni
                 $obj['totaltime'] = $this->getUserScormHistoryTrackTotaltime($id_user, $obj['idOrg']);
 
-                $output[] = (object) $obj;
+                if (!empty($history)) {
+                    $seconds_diff = strtotime('1970-01-01 ' . end($history)[3] . ' UTC');
+                    $last_access = date('Y-m-d H:i:s', strtotime(end($history)[0]) - $seconds_diff);
+                    $obj['last_access'] = $last_access;
+                }
+
+                $output[] = (object)$obj;
             }
         } else {
             return false;
@@ -332,8 +338,8 @@ class CoursestatsLms extends Model
     public function getCourseUserStatsList2csv($pagination, $id_course, $id_user)
     {
         if (is_array($pagination)) {
-            $startIndex = (isset($pagination['startIndex']) ? $pagination['startIndex'] : 0);
-            $results = (isset($pagination['results']) ? $pagination['results'] : FormaLms\lib\Get::sett('visuItem', 10));
+            $startIndex = ($pagination['startIndex'] ?? 0);
+            $results = ($pagination['results'] ?? FormaLms\lib\Get::sett('visuItem', 10));
 
             $dir = 'ASC';
             if (isset($pagination['dir'])) {
@@ -375,8 +381,8 @@ class CoursestatsLms extends Model
             . ' c.dateAttempt as last_access, c.firstAttempt as first_access, c.first_complete, c.last_complete '
             . ' FROM ' . $this->tables['organization'] . ' as o '
             . ' LEFT JOIN ' . $this->tables['commontrack'] . ' as c '
-            . ' ON (c.idReference = o.idOrg AND c.idUser=' . (int) $id_user . ') '
-            . ' WHERE o.idCourse=' . (int) $id_course . ' ';
+            . ' ON (c.idReference = o.idOrg AND c.idUser=' . (int)$id_user . ') '
+            . ' WHERE o.idCourse=' . (int)$id_course . ' ';
 
         if (is_array($pagination)) {
             $query .= ' ORDER BY ' . $sort . ' ' . $dir . ' ';
@@ -395,7 +401,7 @@ class CoursestatsLms extends Model
                 if (is_array($history)) {
                     $obj->history = $history;
                 }
-                $obj->score = isset($scores[$obj->idOrg]) ? $scores[$obj->idOrg] : '';
+                $obj->score = $scores[$obj->idOrg] ?? '';
                 $obj->totaltime = $this->getUserScormHistoryTrackTotaltime($id_user, $obj->idOrg);
                 $output[] = $obj;
             }
@@ -411,11 +417,11 @@ class CoursestatsLms extends Model
         $query = 'SELECT COUNT(*) '
             . ' FROM ' . $this->tables['organization'] . ' as o '
             . ' LEFT JOIN ' . $this->tables['commontrack'] . ' as c '
-            . ' ON (c.idReference = o.idOrg AND c.idUser=' . (int) $id_user . ') '
-            . ' WHERE o.idCourse=' . (int) $id_course . ' ';
+            . ' ON (c.idReference = o.idOrg AND c.idUser=' . (int)$id_user . ') '
+            . ' WHERE o.idCourse=' . (int)$id_course . ' ';
         $res = $this->db->query($query);
         if ($res) {
-            list($total) = $this->db->fetch_row($res);
+            [$total] = $this->db->fetch_row($res);
 
             return $total;
         }
@@ -425,10 +431,10 @@ class CoursestatsLms extends Model
 
     public function getLOInfo($id_lo)
     {
-        if ((int) $id_lo <= 0) {
+        if ((int)$id_lo <= 0) {
             return false;
         }
-        $query = 'SELECT * FROM ' . $this->tables['organization'] . ' WHERE idOrg=' . (int) $id_lo;
+        $query = 'SELECT * FROM ' . $this->tables['organization'] . ' WHERE idOrg=' . (int)$id_lo;
         $res = $this->db->query($query);
         $output = $this->db->fetch_obj($res);
 
@@ -456,7 +462,7 @@ class CoursestatsLms extends Model
         }
         $output = false;
         $query = 'SELECT status, date_first_access, date_complete FROM ' . $this->tables['courseuser'] . ' '
-            . 'WHERE idUser=' . (int) $id_user . ' AND idCourse=' . (int) $id_course;
+            . 'WHERE idUser=' . (int)$id_user . ' AND idCourse=' . (int)$id_course;
         $res = $this->db->query($query);
         if ($res) {
             if ($this->db->num_rows($res) > 0) {
@@ -476,7 +482,7 @@ class CoursestatsLms extends Model
         $query = 'SELECT idTrack, objectType, status, firstAttempt as first_access, '
             . ' dateAttempt as last_access, first_complete, last_complete '
             . ' FROM ' . $this->tables['commontrack']
-            . ' WHERE idUser=' . (int) $id_user . ' AND idReference=' . (int) $id_lo;
+            . ' WHERE idUser=' . (int)$id_user . ' AND idReference=' . (int)$id_lo;
         $res = $this->db->query($query);
         if ($res) {
             if ($this->db->num_rows($res) > 0) {
@@ -501,9 +507,8 @@ class CoursestatsLms extends Model
         if ($res) {
             if ($this->db->num_rows($res) > 0) {
                 while ($row = $this->db->fetch_row($res)) {
-                    if ($row[3] == '00:00:00' || $row[3] == '00:00:00.000000') {
-                        $row[3] = $this->parsePTTime($row[5]);
-                    }
+                    $row[3] = $this->parseScormTime($row[5]);
+
                     $row[3] = $this->zeroToTime($this->roundTime($row[3]));
                     $output[] = $row;
                 }
@@ -513,25 +518,35 @@ class CoursestatsLms extends Model
         return $output;
     }
 
-    private function parsePTTime($pt_time)
+    private function parseScormTime($pt_time)
     {
-        $time = str_replace('PT', '', $pt_time);
-        $time = str_replace('H', ':', $time);
-        $time = str_replace('M', ':', $time);
-        $time = str_replace('S', '', $time);
+        try {
+            $interval = new DateInterval($pt_time);
 
-        if ($pt_time == $time) {
-            return $pt_time; // It's not PT ISO time
-        }
+            return sprintf('%u:%u:%u', $interval->h, $interval->i, $interval->s);
+        } catch (Exception $exception) {
 
-        if (strpos($pt_time, 'H') === false) {
-            $time = '00:' . $time;
-        }
-        if (strpos($pt_time, 'M') === false) {
-            $time = '00:' . $time;
-        }
+            $formatRegex = ['/\d{4}:\d{2}:\d{2}\/','/\d{4}:\d{2}:\d{2}\.\d{2}/'];
 
-        return $time;
+            foreach ($formatRegex as $regex){
+                if(preg_match($regex, $pt_time)) {
+                    $pt_time =  substr($pt_time, 2);
+                    break;
+                }
+            }
+
+            $timeFormats = ['H:i:s.u','HH:MM:SS','HH:MM:SS.ms'];
+
+            foreach ($timeFormats as $timeFormat){
+                $dateTime = DateTime::createFromFormat($timeFormat, $pt_time);
+                if ($dateTime) {
+                    return sprintf('%u:%u:%u', $dateTime->format('H'), $dateTime->format('i'), $dateTime->format('s'));
+                }
+            }
+
+
+        }
+        return $pt_time;
     }
 
     private function zeroToTime($time)
@@ -573,21 +588,22 @@ class CoursestatsLms extends Model
         $res = $this->db->query($query);
 
         if ($res) {
-            if ($this->db->num_rows($res) > 0) {
-                while ($row = $this->db->fetch_row($res)) {
-                    $output += $this->timeToSec($this->parsePTTime($row[0])); // Sum in seconds
-                }
+
+            foreach ($res as $row) {
+
+                $output += $this->timeToSec($this->parseScormTime($row['session_time'])); // Sum in seconds
             }
         }
 
         return $this->zeroToTime($this->decimal_to_time($output));
     }
 
-    private function timeToSec($time)
+    private
+    function timeToSec($time)
     {
         $seconds = 0;
-        list($time) = explode('.', $time); // Remove decimals
-        list($hour, $minute, $second) = explode(':', $time);
+        [$time] = explode('.', $time); // Remove decimals
+        [$hour, $minute, $second] = explode(':', $time);
         $seconds += $hour * 3600;
         $seconds += $minute * 60;
         $seconds += $second;
@@ -629,12 +645,12 @@ class CoursestatsLms extends Model
         $output = false;
         $types = $this->getLOTypes();
         if (!$type) {
-            $query = 'SELECT objectType FROM ' . $this->tables['organization'] . ' WHERE idOrg=' . (int) $id_lo;
+            $query = 'SELECT objectType FROM ' . $this->tables['organization'] . ' WHERE idOrg=' . (int)$id_lo;
             $res = $this->db->query($query);
             if (!$res || $this->db->num_rows($res) <= 0) {
                 return false;
             }
-            list($type) = $this->db->fetch_row($res);
+            [$type] = $this->db->fetch_row($res);
         }
         if (is_array($types) && isset($types[$type])) {
             require_once Forma::inc(_lms_ . '/class.module/' . $types[$type]->fileName);
@@ -656,13 +672,13 @@ class CoursestatsLms extends Model
         $output = false;
         $types = $this->getLOTypes();
         if (!$type) {
-            $query = 'SELECT objectType FROM ' . $this->tables['commontrack'] . ' WHERE idTrack=' . (int) $id_track;
+            $query = 'SELECT objectType FROM ' . $this->tables['commontrack'] . ' WHERE idTrack=' . (int)$id_track;
             $query .= ($id_lo > 0 ? ' AND idReference = ' . $id_lo : '');
             $res = $this->db->query($query);
             if (!$res || $this->db->num_rows($res) <= 0) {
                 return false;
             }
-            list($type) = $this->db->fetch_row($res);
+            [$type] = $this->db->fetch_row($res);
         }
         if (is_array($types) && isset($types[$type])) {
             require_once Forma::inc(_lms_ . '/class.module/' . $types[$type]->fileNameTrack);
@@ -683,10 +699,10 @@ class CoursestatsLms extends Model
         }
 
         $output = false;
-        $query = 'SELECT * FROM ' . $this->tables['organization'] . ' WHERE idOrg=' . (int) $id_lo;
+        $query = 'SELECT * FROM ' . $this->tables['organization'] . ' WHERE idOrg=' . (int)$id_lo;
         $res = $this->db->query($query);
         if ($res && $this->db->num_rows($res) > 0) {
-            $query = 'SELECT * FROM ' . $this->tables['commontrack'] . ' WHERE idReference=' . (int) $id_lo . ' AND idUser=' . (int) $id_user;
+            $query = 'SELECT * FROM ' . $this->tables['commontrack'] . ' WHERE idReference=' . (int)$id_lo . ' AND idUser=' . (int)$id_user;
             $res = $this->db->query($query);
             if ($res) {
                 $obj = $this->db->fetch_obj($res);
@@ -727,7 +743,7 @@ class CoursestatsLms extends Model
 
         $output = false;
         $query = 'UPDATE ' . $this->tables['commontrack'] . " SET firstAttempt='" . $data['firstAttempt'] . "' "
-            . ' WHERE idReference=' . (int) $id_lo . ' AND idUser=' . (int) $id_user;
+            . ' WHERE idReference=' . (int)$id_lo . ' AND idUser=' . (int)$id_user;
         $res = $this->db->query($query);
 
         Events::trigger('lms.lo_user.updated', [
@@ -761,7 +777,7 @@ class CoursestatsLms extends Model
 
         $output = false;
         $query = 'UPDATE ' . $this->tables['commontrack'] . " SET dateAttempt='" . $data['dateAttempt'] . "' "
-            . ' WHERE idReference=' . (int) $id_lo . ' AND idUser=' . (int) $id_user;
+            . ' WHERE idReference=' . (int)$id_lo . ' AND idUser=' . (int)$id_user;
         $res = $this->db->query($query);
 
         Events::trigger('lms.lo_user.updated', [
@@ -795,7 +811,7 @@ class CoursestatsLms extends Model
 
         $output = false;
         $query = 'UPDATE ' . $this->tables['commontrack'] . " SET first_complete='" . $data['firstComplete'] . "' "
-            . ' WHERE idReference=' . (int) $id_lo . ' AND idUser=' . (int) $id_user;
+            . ' WHERE idReference=' . (int)$id_lo . ' AND idUser=' . (int)$id_user;
         $res = $this->db->query($query);
 
         Events::trigger('lms.lo_user.updated', [
@@ -829,7 +845,7 @@ class CoursestatsLms extends Model
 
         $output = false;
         $query = 'UPDATE ' . $this->tables['commontrack'] . " SET last_complete='" . $data['lastComplete'] . "' "
-            . ' WHERE idReference=' . (int) $id_lo . ' AND idUser=' . (int) $id_user;
+            . ' WHERE idReference=' . (int)$id_lo . ' AND idUser=' . (int)$id_user;
         $res = $this->db->query($query);
 
         Events::trigger('lms.lo_user.updated', [
@@ -865,7 +881,7 @@ class CoursestatsLms extends Model
                     $output[$id_lo] = 0;
                 }
                 while (list($id_lo, $count) = $this->db->fetch_row($res)) {
-                    $output[$id_lo] = (int) $count;
+                    $output[$id_lo] = (int)$count;
                 }
             }
         }
