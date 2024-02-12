@@ -29,14 +29,16 @@ class UserselectorAdmController extends AdmController
     protected $selection = 'user';
 
 
-    public $tabs = ['user' => false,
-                        'group' => false,
-                        'org' => false,
-                        'role' => false];
+    public $tabs = [
+        'user' => false,
+        'group' => false,
+        'org' => false,
+        'role' => false
+    ];
 
     public function init()
     {
-       
+
         $this->_mvc_name = 'multiuserselector';
         $this->requestObj = $this->request->getMethod() == 'POST' ? $this->request->request : $this->request->query;
         $this->requestArray = array_merge($this->request->request->all(), $this->request->query->all());
@@ -47,7 +49,7 @@ class UserselectorAdmController extends AdmController
 
             $this->multiUserSelector->setAccessProcessor($instanceType);
 
-            if(\Util::config('multiuserselector.use_filter.' . $instanceType)) {
+            if (\Util::config('multiuserselector.use_filter.' . $instanceType)) {
                 $this->tabs = array_diff_key($this->tabs, array_flip(['org', 'role']));
             }
         }
@@ -55,7 +57,7 @@ class UserselectorAdmController extends AdmController
         $tabs = array_key_exists('tab_filters', $this->requestArray) ? $this->requestArray['tab_filters'] : array_keys($this->tabs);
 
 
-        if(count($tabs)) {
+        if (count($tabs)) {
             foreach ($tabs as $tabFilter) {
                 if (!in_array($tabFilter, array_keys($this->tabs))) {
                     //non è un filtro accettato lo skippo
@@ -63,8 +65,8 @@ class UserselectorAdmController extends AdmController
                 }
                 $this->tabs[$tabFilter] = true;
                 $dataSelectorName = ucfirst($tabFilter) . 'DataSelector';
-    
-    
+
+
                 $this->multiUserSelector->setDataSelectors($dataSelectorName, $tabFilter);
             }
 
@@ -82,7 +84,7 @@ class UserselectorAdmController extends AdmController
         $learningFilter = 'none';
         $idOrg = 0;
         $disableAjax = array_key_exists('disable_ajax', $this->requestArray) ? true : false;
-        $instanceValue = $this->requestArray['instance']; 
+        $instanceValue = $this->requestArray['instance'];
         $instanceId = array_key_exists('id', $this->requestArray) ?  $this->requestArray['id'] : 0;
         $showSelectAll = (bool) array_key_exists('showSelectAll', $this->requestArray) ? $this->requestArray['showSelectAll'] : false;
         $showUserAlert = array_key_exists('showUserAlert', $this->requestArray) ? $this->requestArray['showUserAlert'] : false;
@@ -106,7 +108,7 @@ class UserselectorAdmController extends AdmController
 
         foreach ($this->tabs as $tabKey => $tab) {
 
-            if(!$tab) {
+            if (!$tab) {
                 continue;
             }
             $multiUserSelectorTab = $this->multiUserSelector->retrieveDataSelector($tabKey);
@@ -129,30 +131,31 @@ class UserselectorAdmController extends AdmController
             }
         }
 
-        if(\Util::config('multiuserselector.use_filter.' . $instanceValue)) {
+        if (\Util::config('multiuserselector.use_filter.' . $instanceValue)) {
             $learningFilter = \Util::config('multiuserselector.use_filter.' . $instanceValue);
             $idOrg =  $instanceId;
         }
 
         //it needs to select radiobox all or selected customers
-        $selectAllValue = (count($accessSelection['org']) == 1 && (int) reset($accessSelection['org']) == 1) ? 1 : 0;
-        
-        $renderParams = ['tabs' => $this->tabs,
-                            'selection'=> $this->selection,
-                            'columns' => $columns,
-                            'ajax' => $disableAjax,
-                            'selectedData' => $selectedData,
-                            'instanceValue' => $instanceValue,
-                            'instanceId' => $instanceId,
-                            'accessSelection' => $accessSelection,
-                            'showSelectAll' => $showSelectAll,
-                            'showUserAlert' => $showUserAlert,
-                            'selectAllValue' => $selectAllValue,
-                            'learningFilter' => $learningFilter,
-                            'idOrg' => $idOrg,
-                            'debug' => array_key_exists('debug', $this->requestArray) ? $this->requestArray['debug'] : false
+        $selectAllValue = (count($accessSelection['org'] ?? []) == 1 && (int) reset($accessSelection['org'] ?? []) == 1) ? 1 : 0;
+
+        $renderParams = [
+            'tabs' => $this->tabs,
+            'selection' => $this->selection,
+            'columns' => $columns,
+            'ajax' => $disableAjax,
+            'selectedData' => $selectedData,
+            'instanceValue' => $instanceValue,
+            'instanceId' => $instanceId,
+            'accessSelection' => $accessSelection,
+            'showSelectAll' => $showSelectAll,
+            'showUserAlert' => $showUserAlert,
+            'selectAllValue' => $selectAllValue,
+            'learningFilter' => $learningFilter,
+            'idOrg' => $idOrg,
+            'debug' => array_key_exists('debug', $this->requestArray) ? $this->requestArray['debug'] : false
         ];
-      
+
         //fallback if i had to substitute some parmas with saved value
         $renderParams = array_replace($renderParams, $this->multiUserSelector->getInstanceParams((int) $instanceId));
 
@@ -162,11 +165,11 @@ class UserselectorAdmController extends AdmController
 
     public function getDataTask()
     {
-      
+
         $dataType = $this->requestArray['dataType'] ?? 'org';
         $params = array_merge($this->requestArray, ['json_format' => true]);
 
-        switch($dataType) {
+        switch ($dataType) {
             case 'user':
             case 'group':
             case 'role':
@@ -174,7 +177,7 @@ class UserselectorAdmController extends AdmController
 
                 break;
             default:
-              
+
 
                 $response = $this->multiUserSelector->retrieveDataselector('org')->getData($this->requestArray);
                 break;
@@ -186,7 +189,7 @@ class UserselectorAdmController extends AdmController
 
     public function associate()
     {
-      
+
         $instanceId = $this->requestArray['id'];
 
         $selection =  explode(',', $this->requestArray['selected']);
@@ -196,13 +199,13 @@ class UserselectorAdmController extends AdmController
 
         //if allidst is checked empty all selections
 
-       
+
         if ($allIdst) {
             $allSelections = $selection = $exclusion = [];
             $selection[] = $allIdst;
         } else {
             //check if 1 - all idst was in selection and extract it
-            if(array_key_exists('all_idst', $this->requestArray) && in_array(1, $selection)) {
+            if (array_key_exists('all_idst', $this->requestArray) && in_array(1, $selection)) {
                 $selection = array_diff($selection, [1]);
             }
         }
@@ -222,19 +225,18 @@ class UserselectorAdmController extends AdmController
         $this->multiUserSelector->postProcess(compact('allIdst', 'instanceId', 'selection'));
 
         $responseMethod = 'response' . ucfirst($result['type']);
-        if(method_exists($this, $responseMethod)) {
+        if (method_exists($this, $responseMethod)) {
             $this->$responseMethod($result);
         } else {
             throw new Exception('$responseMethod not implemented');
         }
-        
     }
 
 
     public function getOrgChartData()
     {
         $accessSelection = [];
-       
+
         $instanceValue = $this->requestArray['instance'];
         $instanceId = $this->requestArray['id'];
 
@@ -249,7 +251,7 @@ class UserselectorAdmController extends AdmController
 
     public function responseRedirect(array $params)
     {
-        return Util::jump_to($params['redirect'],'', $params['folder']);
+        return Util::jump_to($params['redirect'], '', $params['folder']);
     }
 
     public function responseRender(array $params)
