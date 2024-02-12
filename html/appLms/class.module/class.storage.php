@@ -79,7 +79,7 @@ class Module_Storage extends LmsModule
         $lang = FormaLanguage::createInstance('manmenu');
         $lang_perm = FormaLanguage::createInstance('permission');
 
-        $tokens = $this->getAllToken();
+        $tokens = self::getAllToken();
         $levels = CourseLevel::getTranslatedLevels();
         $tb = new Table(0, $lang->def('_VIEW_PERMISSION'), $lang->def('_EDIT_SETTINGS'));
 
