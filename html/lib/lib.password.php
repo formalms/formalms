@@ -39,9 +39,8 @@ class Password
      */
     public function __construct($password)
     {
-        $this->policies = PasswordPolicies::check($password);
         $this->password = $password;
-        $this->algorithm_default = (int) FormaLms\lib\Get::sett('pass_algorithm', PASSWORD_BCRYPT);
+        $this->algorithm_default = ((int)FormaLms\lib\Get::sett('pass_algorithm', PASSWORD_BCRYPT) ===1 ? '2y': FormaLms\lib\Get::sett('pass_algorithm', PASSWORD_BCRYPT));
         $this->algorithm_options = [
             PASSWORD_BCRYPT => [
                 'cost' => 10,
@@ -67,7 +66,7 @@ class Password
             'options' => null,
         ];
         $info = password_get_info($password);
-        if ($info['algo'] == 0) {
+        if (is_null($info['algo'])) {
             if (preg_match('/^[a-f0-9]{32}$/', $password)) {
                 $result['algorithm'] = PASSWORD_MD5;
             } else {
@@ -188,11 +187,16 @@ class PasswordPolicies
         $policies = [
             'pass_min_char' => FormaLms\lib\Get::sett('pass_min_char'),
             'pass_alfanumeric' => FormaLms\lib\Get::sett('pass_alfanumeric'),
-            'pass_min_digits' => FormaLms\lib\Get::sett('pass_min_digits'),
-            'pass_min_lower' => FormaLms\lib\Get::sett('pass_min_lower'),
-            'pass_min_upper' => FormaLms\lib\Get::sett('pass_min_upper'),
-            'pass_min_nonalphanum' => FormaLms\lib\Get::sett('pass_min_nonalphanum'),
+            'pass_min_digit' => FormaLms\lib\Get::sett('pass_min_digit'),
+            'pass_min_lowercase' => FormaLms\lib\Get::sett('pass_min_lowercase'),
+            'pass_min_uppercase' => FormaLms\lib\Get::sett('pass_min_uppercase'),
+            'pass_special_char' => FormaLms\lib\Get::sett('pass_special_char'),
+            'pass_history' => FormaLms\lib\Get::sett('user_pwd_history_length'),
+            'pass_different_from_user' => 1
         ];
+
+
+
         $result = true;
         $messages = [];
         foreach ($policies as $policy => $value) {
@@ -219,7 +223,7 @@ class PasswordPolicies
     private static function pass_min_char($password, $policy)
     {
         if (strlen($password) < $policy) {
-            return Lang::t('_PASSWORD_TOO_SHORT', 'configuration');
+            return Lang::t('_REG_PASS_MIN_CHAR','register',['[min_char]'=>$policy]);
         } else {
             return false;
         }
@@ -229,46 +233,101 @@ class PasswordPolicies
     {
         if ($policy == 'on') {
             if (!preg_match('/[a-z]/i', $password) || !preg_match('/[0-9]/', $password)) {
-                return Lang::t('_ERR_PASSWORD_MUSTBE_ALPHA', 'configuration');
+                return Lang::t('_REG_PASS_MUST_BE_ALPNUM', 'register');
             }
         }
 
         return false;
     }
 
-    private static function pass_min_digits($password, $policy)
+    private static function pass_min_digit($password, $policy)
     {
-        if (!preg_match('/[[:digit:]]/u', $password) < $policy) {
-            return Lang::t('_ERR_PASSWORD_MIN_DIGITS', 'configuration');
+        preg_match_all('/\d/', $password, $matches);
+        $total_digit = count($matches[0]);
+        if ( $policy > 0 && $total_digit < $policy) {
+            if ( $policy === 1 )
+                return Lang::t('_REG_PASS_MIN_DIGITS_1','register',['[min_char]'=>$policy]);
+            else {
+                return Lang::t('_REG_PASS_MIN_DIGITS','register',['[min_char]'=>$policy]);
+            }
         } else {
             return false;
         }
     }
 
-    private static function pass_min_lower($password, $policy)
+    private static function pass_min_lowercase($password, $policy)
     {
-        if (!preg_match('/[[:lower:]]/u', $password) < $policy) {
-            return Lang::t('_ERR_PASSWORD_MIN_LOWER', 'configuration');
+        preg_match_all('/[[:lower:]]/', $password, $matches);
+        $total_lower = count($matches[0]);
+        if ($policy > 0 && $total_lower < $policy) {
+            if ( $policy === 1 )
+                return Lang::t('_REG_PASS_MIN_LOWER_1','register',['[min_char]'=>$policy]);
+            else {
+                return Lang::t('_REG_PASS_MIN_LOWER','register',['[min_char]'=>$policy]);
+            }
         } else {
             return false;
         }
     }
 
-    private static function pass_min_upper($password, $policy)
+    private static function pass_min_uppercase($password, $policy)
     {
-        if (!preg_match('/[[:upper:]]/u', $password) < $policy) {
-            return Lang::t('_ERR_PASSWORD_MIN_UPPER', 'configuration');
+        preg_match_all('/[[:upper:]]/', $password, $matches);
+        $total_upper = count($matches[0]);
+        if ($policy > 0 && $total_upper < $policy) {
+            if ( $policy === 1 )
+                return Lang::t('_REG_PASS_MIN_UPPER_1','register',['[min_char]'=>$policy]);
+            else {
+                return Lang::t('_REG_PASS_MIN_UPPER','register',['[min_char]'=>$policy]);
+            }
         } else {
             return false;
         }
     }
 
-    private static function pass_min_nonalphanum($password, $policy)
+    private static function pass_special_char($password, $policy)
     {
-        if (!preg_match('/[^[:upper:][:lower:][:digit:]]/u', $password) < $policy) {
-            return Lang::t('_ERR_PASSWORD_MIN_NONALPHANUM', 'configuration');
+
+        preg_match_all('/[^[:upper:][:lower:][:digit:]]/u', $password, $matches);
+        $total_special = count($matches[0]);
+        if ($policy > 0 && $total_special < $policy) {
+            if ( $policy === 1 )
+                return Lang::t('_REG_PASS_MIN_NONALPHANUM_1','register',['[min_char]'=>$policy]);
+            else {
+                return Lang::t('_REG_PASS_MIN_NONALPHANUM','register',['[min_char]'=>$policy]);
+            }
         } else {
             return false;
         }
     }
+
+    private static function pass_different_from_user($password, $policy) {
+        $a = \FormaLms\lib\FormaUser::getCurrentUser()->getUserId();
+        if ($policy == 1 && $password === \FormaLms\lib\FormaUser::getCurrentUser()->getUserId()) {
+            return Lang::t('_PASS_DIFFERENT_USERNAME', 'register');
+        } else {
+            return false;
+        }
+    }
+
+    private static function pass_history($password, $policy) {
+        if ($policy != 0) {
+            $idst = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
+            $user_info = $acl_man->getUser($idst, false);
+
+            $q = "SELECT passw from core_password_history where idst_user=$idst order by PWD_DATE DESC limit $policy";
+            $p = new Password($password);
+            $result = sql_query($q);
+            while ($row = sql_fetch_assoc($result)) {
+                $used = $p->verify($row['passw']);
+                if ($used) {
+                    return Lang::t('_REG_PASS_MUST_DIFF', 'register', ['[min_char]' => $policy]);
+                }
+            }
+            return false;
+        }
+        return false;
+    }
+
 }

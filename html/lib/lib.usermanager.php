@@ -397,14 +397,19 @@ class UserManager
         );
     }
 
-    public function getElapsedPassword($jump_link)
+    public function getElapsedPassword($jump_link, $error_array = false)
     {
         $option['pass_max_time_valid'] = $this->_option->getOption('pass_max_time_valid');
         $option['pass_min_char'] = $this->_option->getOption('pass_min_char');
         $option['pass_alfanumeric'] = $this->_option->getOption('pass_alfanumeric');
         $option['user_pwd_history_length'] = $this->_option->getOption('user_pwd_history_length');
+        $option['pass_min_uppercase'] = $this->_option->getOption('pass_min_uppercase');
+        $option['pass_min_lowercase'] = $this->_option->getOption('pass_min_lowercase');
+        $option['pass_min_digit'] = $this->_option->getOption('pass_min_digit');
+        $option['pass_special_char'] = $this->_option->getOption('pass_special_char');
 
-        return $this->_render->getElapsedPasswordMask($this->_platform, $option, $jump_link);
+
+        return $this->_render->getElapsedPasswordMask($this->_platform, $option, $jump_link, $error_array);
     }
 
     public function clickSaveElapsed()
@@ -414,11 +419,6 @@ class UserManager
 
     public function saveElapsedPassword()
     {
-        $option['pass_max_time_valid'] = $this->_option->getOption('pass_max_time_valid');
-        $option['pass_min_char'] = $this->_option->getOption('pass_min_char');
-        $option['pass_alfanumeric'] = $this->_option->getOption('pass_alfanumeric');
-        $option['user_pwd_history_length'] = $this->_option->getOption('user_pwd_history_length');
-
         return $this->_render->saveElapsedPassword($this->_platform, $option);
     }
 
@@ -2795,44 +2795,160 @@ class UserManagerRenderer
         return $txt;
     }
 
-    public function getElapsedPasswordMask($platform, $options, $jump_link)
+    public function getElapsedPasswordMask($platform, $options, $jump_link, $error_array)
     {
         require_once _base_ . '/lib/lib.form.php';
-
-        $lang = &FormaLanguage::createInstance('register', $platform);
-
         $res = \FormaLms\lib\FormaUser::getCurrentUser()->isPasswordElapsed();
-
-        $html = '<ul class="instruction_list">';
-
         if ($res == 2) {
-            $html .= '<li>' . $lang->def('_FORCE_CHANGE') . '</li>';
+            $html = '<b>' . Lang::t('_FORCE_CHANGE', 'register') . '</b>';
+        } else if ($res == 1)  {
+            $html = '<b>' . Lang::t('_WHYCHANGEPWD', 'register') . '</b>';
         } else {
-            $html .= '<li>' . $lang->def('_WHYCHANGEPWD', 'register') . '</li>';
+            $html = '<b>' . Lang::t('_CHANGEPASSWORD', 'profile') . '</b>';
         }
+
+
+        $html .= '<br><br><ul class="instruction_list">';
 
         if ($options['pass_max_time_valid']) {
-            $html .= '<li>' . str_replace('[valid_for_day]', $options['pass_max_time_valid'], $lang->def('_NEWPWDVALID')) . '</li>';
-        }
-        if ($options['pass_min_char']) {
-            $html .= '<li>' . str_replace('[min_char]', $options['pass_min_char'], $lang->def('_REG_PASS_MIN_CHAR')) . '</li>';
+            $html .= '<li>' . Lang::t('_NEWPWDVALID', 'register', ['[pass_max_time_valid]' => $options['pass_max_time_valid'] ] ). '</li>';
         }
         if ($options['pass_alfanumeric'] == 'on') {
-            $html .= '<li>' . $lang->def('_REG_PASS_MUST_BE_ALPNUM') . '</li>';
+            $s = Lang::t('_REG_PASS_MUST_BE_ALPNUM', 'register');
+            if (is_array($error_array) && in_array($s,$error_array )) {
+                $html .= "<li style='font-weight: bold; color: red;'>$s</li>";
+            } else {
+                $html .= '<li>' . $s. '</li>';
+            }
         }
-        if ($options['user_pwd_history_length'] > 0) {
-            $html .= '<li>' . Lang::t('_REG_PASS_MUST_DIFF', 'register', ['[diff_pwd]' => $options['user_pwd_history_length']]) . '</li>';
+        if ($options['user_pwd_history_length'] > 1) {
+            $s = Lang::t('_REG_PASS_MUST_DIFF', 'register', ['[min_char]' => $options['user_pwd_history_length']]);
+            if (is_array($error_array) && in_array($s,$error_array )) {
+                $html .= "<li style='font-weight: bold; color: red;'>$s</li>";
+            } else {
+                $html .= '<li>' . $s. '</li>';
+            }
         }
+        if ($options['user_pwd_history_length'] == 1) {
+            $s = Lang::t('_REG_PASS_MUST_DIFF_1', 'register');
+            if (is_array($error_array) && in_array($s,$error_array )) {
+                $html .= "<li style='font-weight: bold; color: red;'>$s</li>";
+            } else {
+                $html .= '<li>' . $s. '</li>';
+            }
+        }
+        if ($options['pass_min_char'] > 1) {
+            $s = Lang::t('_REG_PASS_MIN_CHAR','register',['[min_char]'=>$options['pass_min_char']]);
+            if (is_array($error_array) && in_array($s,$error_array )) {
+                $html .= "<li style='font-weight: bold; color: red;'>$s</li>";
+            } else {
+                $html .= '<li>' . $s. '</li>';
+            }
+        }
+        if ($options['pass_min_digit'] > 1) {
+            $s = Lang::t('_REG_PASS_MIN_DIGITS','register',['[min_char]'=>$options['pass_min_digit']]).'</li>';
+            if (is_array($error_array) && in_array($s,$error_array )) {
+                $html .= "<li style='font-weight: bold; color: red;'>$s</li>";
+            } else {
+                $html .= '<li>' . $s. '</li>';
+            }
+        }
+        if ($options['pass_min_lowercase'] > 1) {
+            $s = Lang::t('_REG_PASS_MIN_LOWER','register',['[min_char]'=>$options['pass_min_lowercase']]);
+            if (is_array($error_array) && in_array($s,$error_array )) {
+                $html .= "<li style='font-weight: bold; color: red;'>$s</li>";
+            } else {
+                $html .= '<li>' . $s. '</li>';
+            }
+        }
+        if ($options['pass_min_uppercase'] > 1) {
+            $s = Lang::t('_REG_PASS_MIN_UPPER','register',['[min_char]'=>$options['pass_min_uppercase']]);
+            if (is_array($error_array) && in_array($s,$error_array )) {
+                $html .= "<li style='font-weight: bold; color: red;'>$s</li>";
+            } else {
+                $html .= '<li>' . $s. '</li>';
+            }
+        }
+        if ($options['pass_special_char'] > 1) {
+            $s = Lang::t('_REG_PASS_MIN_NONALPHANUM','register',['[min_char]'=>$options['pass_special_char']]);
+            if (is_array($error_array) && in_array($s,$error_array )) {
+                $html .= "<li style='font-weight: bold; color: red;'>$s</li>";
+            } else {
+                $html .= '<li>' . $s. '</li>';
+            }
+        }
+
+        if ($options['pass_min_char'] == 1) {
+            $s = Lang::t('_REG_PASS_MIN_CHAR_1','register',['[min_char]'=>$options['pass_min_char']]);
+            if (is_array($error_array) && in_array($s,$error_array )) {
+                $html .= "<li style='font-weight: bold; color: red;'>$s</li>";
+            } else {
+                $html .= '<li>' . $s. '</li>';
+            }
+        }
+        if ($options['pass_min_digit'] == 1) {
+            $s = Lang::t('_REG_PASS_MIN_DIGITS_1','register',['[min_char]'=>$options['pass_min_digit']]);
+            if (is_array($error_array) && in_array($s,$error_array )) {
+                $html .= "<li style='font-weight: bold; color: red;'>$s</li>";
+            } else {
+                $html .= '<li>' . $s. '</li>';
+            }
+        }
+        if ($options['pass_min_lowercase'] == 1) {
+            $s = Lang::t('_REG_PASS_MIN_LOWER_1','register',['[min_char]'=>$options['pass_min_lowercase']]);
+            if (is_array($error_array) && in_array($s,$error_array )) {
+                $html .= "<li style='font-weight: bold; color: red;'>$s</li>";
+            } else {
+                $html .= '<li>' . $s. '</li>';
+            }
+        }
+        if ($options['pass_min_uppercase'] == 1) {
+            $s = Lang::t('_REG_PASS_MIN_UPPER_1','register',['[min_char]'=>$options['pass_min_uppercase']]);
+            if (is_array($error_array) && in_array($s,$error_array )) {
+                $html .= "<li style='font-weight: bold; color: red;'>$s</li>";
+            } else {
+                $html .= '<li>' . $s. '</li>';
+            }
+        }
+        if ($options['pass_special_char'] == 1) {
+            $s = Lang::t('_REG_PASS_MIN_NONALPHANUM_1','register',['[min_char]'=>$options['pass_special_char']]);
+            if (is_array($error_array) && in_array($s,$error_array )) {
+                $html .= "<li style='font-weight: bold; color: red;'>$s</li>";
+            } else {
+                $html .= '<li>' . $s. '</li>';
+            }
+        }
+        $s = Lang::t('_PASS_DIFFERENT_USERNAME', 'register');
+        if (is_array($error_array) && in_array($s,$error_array )) {
+            $html .= "<li style='font-weight: bold; color: red;'>$s</li>";
+        } else {
+            $html .= '<li>' . $s. '</li>';
+        }
+
+        $s = Lang::t('_ERR_PWD_OLD', 'register');
+        if (is_array($error_array) && in_array($s,$error_array )) {
+            $html .= "<li style='font-weight: bold; color: red;'>$s</li>";
+        }
+
+        $s = Lang::t('_ERR_PASSWORD_NO_MATCH', 'register');
+        if (is_array($error_array) && in_array($s,$error_array )) {
+            $html .= "<li style='font-weight: bold; color: red;'>$s</li>";
+        }
+
+
+
+
 
         $html .= '</ul>' . "\n"
             . Form::openForm('update_password', $jump_link)
             . Form::openElementSpace()
-            . Form::getPassword($lang->def('_OLD_PWD'), 'oldpwd', 'oldpwd', '30')
-            . Form::getPassword($lang->def('_NEW_PASSWORD'), 'newpwd', 'newpwd', '30')
-            . Form::getPassword($lang->def('_RETYPE_PASSWORD'), 'repwd', 'repwd', '30')
+            . Form::getPassword(Lang::t('_OLD_PWD','register'), 'oldpwd', 'oldpwd', '30')
+            . Form::getPassword(Lang::t('_NEW_PASSWORD', 'register'), 'newpwd', 'newpwd', '30')
+            . Form::getPassword(Lang::t('_RETYPE_PASSWORD', 'register'), 'repwd', 'repwd', '30')
             . Form::closeElementSpace()
             . Form::openButtonSpace()
-            . Form::getButton('save_pwd', 'save_pwd', $lang->def('_SAVE'))
+            . Form::getButton('save_pwd', 'save_pwd', Lang::t('_SAVE'))
+            . Form::getButton('undo', 'undo', Lang::t('_UNDO'))
             . Form::closeButtonSpace()
             . Form::closeForm();
 
@@ -2846,74 +2962,39 @@ class UserManagerRenderer
 
     public function saveElapsedPassword($platform, $options)
     {
-        $lang = &FormaLanguage::createInstance('register', $platform);
-
         $html = '';
 
         $idst = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
         $acl_man = \FormaLms\lib\Forma::getAclManager();
         $user_info = $acl_man->getUser($idst, false);
 
-        $password = new Password($_POST['oldpwd']);
+        $old_passwd = FormaLms\lib\Get::req('oldpwd', DOTY_MIXED, '');
+        $new_passwd = FormaLms\lib\Get::req('newpwd', DOTY_MIXED, '');
+        $retype_passwd = FormaLms\lib\Get::req('repwd', DOTY_MIXED, '');
+
+        $password = new Password($old_passwd);
         if (!$password->verify($user_info[ACL_INFO_PASS])) {
             return [
                 'error' => true,
-                'msg' => getErrorUi($lang->def('_ERR_PWD_OLD')),
+                'msg' => [Lang::t('_ERR_PWD_OLD', 'register')],
             ];
         }
-        // control password
-        if (strlen($_POST['newpwd']) < $options['pass_min_char']) {
-            return [
-                'error' => true,
-                'msg' => getErrorUi($lang->def('_PASSWORD_TOO_SHORT')),
-            ];
-        }
-        if ($_POST['newpwd'] != $_POST['repwd']) {
-            return [
-                'error' => true,
-                'msg' => getErrorUi($lang->def('_ERR_PASSWORD_NO_MATCH')),
-            ];
-        }
-        if ($_POST['oldpwd'] == $_POST['newpwd']) {
-            return [
-                'error' => true,
-                'msg' => getErrorUi($lang->def('_ERR_PWD_SAME_OLD')),
-            ];
-        }
-        if ($options['pass_alfanumeric'] == 'on') {
-            if (!preg_match('/[a-z]/i', $_POST['newpwd']) || !preg_match('/[0-9]/', $_POST['newpwd'])) {
-                return [
-                    'error' => true,
-                    'msg' => getErrorUi($lang->def('_ERR_PASSWORD_MUSTBE_ALPHA')),
-                ];
-            }
-        }
-        //check password history
 
-        if (FormaLms\lib\Get::sett('user_pwd_history_length') != 0) {
-            $new_pwd = $acl_man->encrypt($_POST['newpwd']);
-            if ($user_info[ACL_INFO_PASS] == $new_pwd) {
-                return [
-                    'error' => true,
-                    'msg' => getErrorUi(str_replace('[diff_pwd]', FormaLms\lib\Get::sett('user_pwd_history_length'), $lang->def('_REG_PASS_MUST_DIFF'))),
-                ];
-            }
-            $re_pwd = sql_query('SELECT passw '
-                . ' FROM ' . $GLOBALS['prefix_fw'] . '_password_history'
-                . ' WHERE idst_user = ' . (int) $idst . ''
-                . ' ORDER BY pwd_date DESC');
-
-            list($pwd_history) = sql_fetch_row($re_pwd);
-            for ($i = 0; $pwd_history && $i < FormaLms\lib\Get::sett('user_pwd_history_length'); ++$i) {
-                if ($pwd_history == $new_pwd) {
-                    return [
-                        'error' => true,
-                        'msg' => getErrorUi(str_replace('[diff_pwd]', FormaLms\lib\Get::sett('user_pwd_history_length'), $lang->def('_REG_PASS_MUST_DIFF'))),
-                    ];
-                }
-                list($pwd_history) = sql_fetch_row($re_pwd);
-            }
+        if ($new_passwd != $retype_passwd) {
+            return [
+                'error' => true,
+                'msg' => [Lang::t('_ERR_PASSWORD_NO_MATCH', 'register')],
+            ];
         }
+
+        $chk_pswd = PasswordPolicies::check($new_passwd);
+        if (!$chk_pswd->valid()) {
+            return [
+                'error' => true,
+                'msg' => $chk_pswd->messages()
+            ];
+        }
+
 
         // save the password
         $re = $acl_man->updateUser(
@@ -2921,7 +3002,7 @@ class UserManagerRenderer
             false,
             false,
             false,
-            $_POST['newpwd'],
+            $new_passwd,
             false,
             false,
             false,

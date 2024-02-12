@@ -375,6 +375,11 @@ class UserProfile
         return $this->_up_viewer->getFooter();
     }
 
+    public function getPrivacy()
+    {
+        return $this->_up_viewer->getPrivacy();
+    }
+
     /**
      * print the back command in the page.
      *
@@ -415,8 +420,9 @@ class UserProfile
         }
         $ap = FormaLms\lib\Get::req($this->_varname_action, DOTY_MIXED, $start_action);
         if (isset($_POST['undo'])) {
-            $ap = 'profileview';
+            $ap = $start_action;
         }
+
 
         switch ($ap) {
             case 'goprofile':
@@ -546,43 +552,18 @@ class UserProfile
                 break;
             // save password -----------------------------------------
             case 'savepwd':
-                $re = $this->_up_viewer->checkUserPwd();
-                if ($re !== true) {
-                    // some error in data filling --------------------
-                    return getErrorUi($re)
-                        . $this->_up_viewer->getUserPwdModUi();
-                }
-                if ($this->saveUserPwd()) {
-                    // all ok ----------------------------------------
-                    $this->_up_viewer->unloadUserData();
-
-                    // SET EDIT CHANGE PASSWORD EVENT
-                    //TODO: EVT_OBJECT (§)
-                    //$event = new \appCore\Events\Core\User\UsersManagementChangePasswordEvent();
-                    //$model = new UsermanagementAdm();
-                    //$event->setUser($model->getProfileData($this->_id_user));
-                    //$event->setFilledPwd($this->_up_viewer->getFilledPwd());
-                    //TODO: EVT_LAUNCH (&)
-                    //\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementChangePasswordEvent::EVENT_NAME, $event);
-
-                    if ($this->_end_url !== false) {
-                        Util::jump_to($this->_end_url);
-                    }
-
+                $user_manager = new UserManager();
+                $error = $user_manager->saveElapsedPassword();
+                if ($error['error'] == true) {
+                    return $this->_up_viewer->getUserPwdModUi($error['msg']);
+                } else {
                     $out = getResultUi($this->_lang->def('_OPERATION_SUCCESSFULPWD'));
-
-                    if (FormaLms\lib\Get::sett('profile_modify') == 'limit') {
-                        // maybe is better if we display only the confirmation message if all is ok, but if you
-                        // want something else add the code here
-                    } elseif (FormaLms\lib\Get::sett('profile_modify') == 'allow') {
+                    if ($start_action == 'mod_password') {
+                        $out = $this->_up_viewer->getUserPwdModUi();
+                    } else {
                         $out .= $this->getProfile();
                     }
-
                     return $out;
-                } else {
-                    // some error saving ----------------------------
-                    return getErrorUi($this->_lang->def('_OPERATION_FAILURE'))
-                        . $this->_up_viewer->getUserPwdModUi();
                 }
                 break;
 
@@ -832,18 +813,6 @@ class UserProfile
         $filled = $this->_up_viewer->getFilledData();
 
         return $this->_up_data_man->saveUserData($this->_id_user, $filled, true, true);
-    }
-
-    /**
-     * save the user password displaied by  the mod gui.
-     *
-     * @return bool true if all data was saved correctly, false in case of trouble
-     */
-    public function saveUserPwd()
-    {
-        $filled = $this->_up_viewer->getFilledPwd();
-
-        return $this->_up_data_man->saveUserPwd($this->_id_user, $filled);
     }
 
     public function getUserPhotoOrAvatar($dimension = 'medium')
@@ -2581,105 +2550,12 @@ class UserProfileViewer
     /**
      * gui for user info password.
      */
-    public function getUserPwdModUi()
+    public function getUserPwdModUi($error_array = false)
     {
-        require_once _base_ . '/lib/lib.form.php';
-
-        $html = '<div class="up_user_info">'
-            . '<div class="up_name">' . $this->resolveUsername(false, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()) . '</div>';
-        // user standard info -----------------------------------------------------------------
-        $html .= Form::openForm('mod_pwd', $this->_url_man->getUrl($this->_varname_action . '=savepwd'));
-
-        if (!$this->_user_profile->godMode()) {
-            $html .= Form::getPassword($this->_lang->def('_OLD_PWD'),
-                'up_old_pwd',
-                'up_old_pwd',
-                '255');
-        }
-        $html .= Form::getPassword(Lang::t('_NEW_PASSWORD', 'register'),
-                'up_new_pwd',
-                'up_new_pwd',
-                '255')
-            . Form::getPassword(Lang::t('_RETYPE_PASSWORD', 'register'),
-                'up_repeat_pwd',
-                'up_repeat_pwd',
-                '255');
-
-        $html .= Form::openButtonSpace()
-            . Form::getButton('save', 'save', $this->_lang->def('_SAVE'));
-        if (FormaLms\lib\Get::sett('profile_modify') == 'allow') {
-            $html .= Form::getButton('undo', 'undo', $this->_lang->def('_UNDO'));
-        }
-        $html .= Form::closeButtonSpace();
-
-        $html .= Form::closeForm()
-            . '</div>';
-
+        $user_manager = new UserManager();
+        $q_string = $this->_varname_action . '=savepwd';
+        $html = $user_manager->getElapsedPassword($this->_url_man->getUrl($q_string), $error_array);
         return $html;
-    }
-
-    /**
-     * check the user password filled in the mod pwd gui.
-     *
-     * @return mixed boolean true if all is ok , else a text that describe the error
-     */
-    public function checkUserPwd()
-    {
-        $acl_man = \FormaLms\lib\Forma::getAclManager();
-
-        $this->loadUserData(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
-        if (!$this->_user_profile->godMode()) {
-            if (!$acl_man->password_verify_update($_POST['up_old_pwd'], $this->user_info[ACL_INFO_PASS], \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
-                return $this->_lang->def('_OLDPASSWRONG');
-            }
-            // control password
-            require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.usermanager.php');
-            $options = new UserManagerOption();
-            $l_pass_min_char = $options->getOption('pass_min_char');
-            if (strlen($_POST['up_new_pwd']) < $l_pass_min_char) {
-                return $this->_lang->def('_PASSWORD_TOO_SHORT', 'register');
-            }
-            if (FormaLms\lib\Get::sett('pass_alfanumeric') == 'on') {
-                if (!preg_match('/[a-z]/i', $_POST['up_new_pwd']) || !preg_match('/[0-9]/', $_POST['up_new_pwd'])) {
-                    return $this->_lang->def('_ERR_PASSWORD_MUSTBE_ALPHA', 'register');
-                }
-            }
-            //check password history
-
-            if (FormaLms\lib\Get::sett('user_pwd_history_length', '0') != 0) {
-                $new_pwd = $acl_man->encrypt($_POST['up_new_pwd']);
-                if ($user_info[ACL_INFO_PASS] == $new_pwd) {
-                    return str_replace('[diff_pwd]', FormaLms\lib\Get::sett('user_pwd_history_length'), Lang::t('_REG_PASS_MUST_DIFF', 'profile'));
-                }
-                $re_pwd = sql_query('SELECT passw '
-                    . ' FROM ' . $GLOBALS['prefix_fw'] . '_password_history'
-                    . ' WHERE idst_user = ' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . ''
-                    . ' ORDER BY pwd_date DESC');
-
-                [$pwd_history] = sql_fetch_row($re_pwd);
-                for ($i = 0; $pwd_history && $i < FormaLms\lib\Get::sett('user_pwd_history_length'); ++$i) {
-                    if ($pwd_history == $new_pwd) {
-                        return str_replace('[diff_pwd]', FormaLms\lib\Get::sett('user_pwd_history_length'), Lang::t('_REG_PASS_MUST_DIFF', 'profile'));
-                    }
-                    [$pwd_history] = sql_fetch_row($re_pwd);
-                }
-            }
-        }
-        if ($_POST['up_new_pwd'] != $_POST['up_repeat_pwd']) {
-            return Lang::t('_ERR_PASSWORD_NO_MATCH', 'register');
-        }
-
-        return true;
-    }
-
-    /**
-     * return the password filled by the user in the mod gui.
-     *
-     * @return string the pwd filed by the user
-     */
-    public function getFilledPwd()
-    {
-        return FormaLms\lib\Get::req('up_new_pwd', DOTY_MIXED, '');
     }
 
     public function modAvatarGui()
@@ -2964,143 +2840,6 @@ class UserProfileViewer
         return $html;
     }
 
-    /**
-     * the complete list of file of the user (audio, video, images, other).
-     */
-    public function getFileInfo()
-    {
-        return;
-        /*
-        require_once($GLOBALS['where_framework'].'/lib/lib.myfiles.php');
-
-        $user_file = new MyFilesPolicy(	$this->_user_profile->getIdUser(),
-                                        $this->getViewer(),
-                                        $this->_up_data_man->isFriend($this->_user_profile->getIdUser(), $this->getViewer()),
-                                        $this->_up_data_man->isTeacher($this->getViewer())
-                                    );
-
-        $re_images 	= $user_file->getFileList('image', false, UP_FILE_LIMIT);
-        $num_images = $user_file->getFileCount('image');
-
-        $re_video 	= $user_file->getFileList('video', false, UP_FILE_LIMIT);
-        $num_video 	= $user_file->getFileCount('video');
-
-        $re_audio 	= $user_file->getFileList('audio', false, UP_FILE_LIMIT);
-        $num_audio 	= $user_file->getFileCount('audio');
-
-        $re_other 	= $user_file->getFileList('other', false, UP_FILE_LIMIT);
-        $num_other 	= $user_file->getFileCount('other');
-
-        $html = '<h2 class="up_type1">'.$this->_lang->def('_SHARED_FILE').'</h2>';
-        // file of area image -----------------------------------------------------
-        $html .= '<div class="up_box_files">'
-                .'<h3 id="up_image">'.$this->_lang->def('_IMAGES').'</h3>';
-
-        if($re_images && $num_images > 0) {
-
-            $html .= '<ul>';
-            while($image = $user_file->fetch_row($re_images)) {
-
-                $html .= '<li>'
-                        .'<a href="'.$this->_url_man->getUrl($this->_varname_action.'=view_photo').'">'
-                        .'<img class="image_limit" src="'.$user_file->getFileAddress($image[MYFILE_FILE_NAME]).'" '
-                            .'title="'.strip_tags($image[MYFILE_DESCRIPTION]).'" alt="'.strip_tags($image[MYFILE_TITLE]).'" />'
-                        .'</a>'
-                        .'</li>';
-            }
-            $html .= '</ul>';
-            if($num_images > UP_FILE_LIMIT) {
-
-                $html .= '<a id="up_otherimg" href="'.$this->_url_man->getUrl($this->_varname_action.'=showallfile&area=image').'">'
-                        .$this->_lang->def('_OTHER_IMAGES').'</a>';
-            }
-        } else {
-
-            $html .= '<p>'.$this->_lang->def('_NO_IMAGE_FOUND').'</p>';
-        }
-        $html .= '</div>';
-        // end --------------------------------------------------------------------
-
-        // file of area video -----------------------------------------------------
-        $html .= '<div class="up_box_files">'
-                .'<h3 id="up_video">'.$this->_lang->def('_USER_VIDEO').'</h3>';
-
-        if($re_video && $num_video > 0) {
-
-            $html .= '<ul>';
-            while($video = $user_file->fetch_row($re_video)) {
-
-                $html .= '<li>'
-                        .$video[MYFILE_TITLE]
-                        .'</li>';
-            }
-            $html .= '</ul>';
-            if($num_images > UP_FILE_LIMIT) {
-
-                $html .= '<a id="up_othervideo" href="'.$this->_url_man->getUrl($this->_varname_action.'=showallfile&area=video').'">'
-                        .$this->_lang->def('_OTHER_VIDEO').'</a>';
-            }
-        } else {
-
-            $html .= '<p>'.$this->_lang->def('_NO_VIDEO_FOUND').'</p>';
-        }
-        $html .= '</div>';
-        // end --------------------------------------------------------------------
-
-        // file of area audio -----------------------------------------------------
-        $html .= '<div class="up_box_files_left">'
-                .'<h3 id="up_audio">'.$this->_lang->def('_USER_AUDIO').'</h3>';
-        if($re_audio && $num_audio > 0) {
-
-            $html .= '<ul>';
-            while($audio = $user_file->fetch_row($re_audio)) {
-
-                $html .= '<li>'
-                        .$audio[MYFILE_TITLE]
-                        .'</li>';
-            }
-            $html .= '</ul>';
-            if($num_audio > UP_FILE_LIMIT) {
-
-                $html .= '<a id="up_otheraudio" href="'.$this->_url_man->getUrl($this->_varname_action.'=showallfile&area=audio').'">'
-                        .$this->_lang->def('_OTHER_AUDIO').'</a>';
-            }
-        } else {
-
-            $html .= '<p>'.$this->_lang->def('_NO_AUDIO_FOUND').'</p>';
-        }
-        $html .= '</div>';
-        // end --------------------------------------------------------------------
-
-        // file of area other -----------------------------------------------------
-        $html .= '<div class="up_box_files_right">'
-                .'<h3 id="up_file">'.$this->_lang->def('_USER_OTHER').'</h3>';
-        if($re_other && $num_other > 0) {
-
-            $html .= '<ul>';
-            while($other = $user_file->fetch_row($re_other)) {
-
-                $html .= '<li>'
-                        .$other[MYFILE_TITLE]
-                        .'</li>';
-            }
-            $html .= '</ul>';
-            if($num_other > UP_FILE_LIMIT) {
-
-                $html .= '<a id="up_otherfile" href="'.$this->_url_man->getUrl($this->_varname_action.'=showallfile&area=other').'">'
-                        .$this->_lang->def('_OTHER_OTHER').'</a>';
-            }
-        } else {
-
-            $html .= '<p>'.$this->_lang->def('_NO_OTHER_FOUND').'</p>';
-        }
-        $html .= '</div>'
-                .'<div class="nofloat"></div>';
-        // end --------------------------------------------------------------------
-
-        return $html;
-        */
-    }
 
     //--------------------------------------------------------------------------------------//
     //- user statistics --------------------------------------------------------------------//
@@ -3538,6 +3277,15 @@ class UserProfileViewer
 
         return $output;
     }
+
+    public function getPrivacy() {
+
+        $q= "SELECT accept_date FROM %adm_privacypolicy_user WHERE idst= ".\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();;
+        list($accept_data) = sql_fetch_row(sql_query($q));
+        return "<br><div class='up_main'><b>".Lang::t('_PRIVACY_ACCEPTED', 'privacypolocies')." ".$accept_data."</b></div>";
+
+    }
+
 }
 
 // ========================================================================================================== //
@@ -4212,24 +3960,6 @@ class UserProfileData
         return true;
     }
 
-    /**
-     * save the user new password.
-     */
-    public function saveUserPwd($id_user, $new_pwd)
-    {
-        if (!$this->acl_man->updateUser($id_user,
-            false,
-            false,
-            false,
-            $new_pwd,
-            false,
-            false,
-            false)) {
-            return false;
-        }
-
-        return true;
-    }
 
     /**
      * save a new avatar for the user.
@@ -4684,4 +4414,5 @@ class UserProfileData
             'groups' => $umodel->getUserGroups($id_user),
         ];
     }
+
 }

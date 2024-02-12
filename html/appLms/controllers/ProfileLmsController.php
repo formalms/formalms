@@ -98,19 +98,18 @@ class ProfileLmsController extends LmsController
         //\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\UserProfileShowEvent::EVENT_NAME, $event);
 
         //view part
+
+       /* managing privecy view according to user operation*/
+        echo $profile->getTitleArea();
+        echo $profile->getHead();
         if (FormaLms\lib\Get::sett('profile_modify') == 'limit') {
-            echo $profile->getTitleArea();
-            echo $profile->getHead();
             echo $profile->performAction(false, 'mod_password');
-            echo $this->_profileBackUrl();
-            echo $profile->getFooter();
         } elseif (FormaLms\lib\Get::sett('profile_modify') == 'allow') {
-            echo $profile->getTitleArea();
-            echo $profile->getHead();
             echo $profile->performAction();
-            echo $this->_profileBackUrl();
-            echo $profile->getFooter();
-        }
+       }
+        echo $this->_profileBackUrl();
+        echo $profile->getFooter();
+        //echo $profile->getPrivacy();
     }
 
     public function renewalpwd()
@@ -119,7 +118,6 @@ class ProfileLmsController extends LmsController
         $user_manager = new UserManager();
 
         $_title = '';
-        $_error_message = '';
         $_content = '';
 
         $url = 'index.php?r=lms/profile/renewalpwd'; //'index.php?modname=profile&amp;op=renewalpwd'
@@ -135,8 +133,7 @@ class ProfileLmsController extends LmsController
                     $_title = getTitleArea(Lang::t('_TITLE_CHANGE', 'profile'));
                 }
 
-                $_error_message = $error['msg'];
-                $_content = $user_manager->getElapsedPassword($url);
+                $_content = $user_manager->getElapsedPassword($url, $error['msg']);
             } else {
                 $this->session->remove('must_renew_pwd');
                 $this->session->save();
@@ -167,7 +164,7 @@ class ProfileLmsController extends LmsController
         }
 
         //view part
-        echo $_title . '<div class="std_block">' . $_error_message . $_content . '</div>';
+        echo $_title . '<div class="std_block">' . $_content . '</div>';
     }
 
     public function credits()

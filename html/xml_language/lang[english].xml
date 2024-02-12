@@ -696,6 +696,12 @@
         <key id="configuration&amp;_WARINNG_SOCIAL" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Attention without these settings the social login will not work]]></key>
         <key id="configuration&amp;_PURCHASE_USER" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Purchase User (Username or idst)]]></key>
         <key id="configuration&amp;_FORCE_SCORM_FINISH" attributes="" save_date="2024-01-15 14:47:12"><![CDATA[Force SCORM finish]]></key>
+        <key id="configuration&amp;_PASS_SPECIAL_CHAR" attributes="" save_date="2024-01-15 14:47:12"><![CDATA[Minimum number of special characters<br>( 0 = special characters not mandatory )]]></key>
+        <key id="configuration&amp;_PASS_MIN_UPPERCASE" attributes="" save_date="2024-01-15 14:47:12"><![CDATA[Minimum number of uppercase characters<br>( 0 = uppercase characters not mandatory)]]></key>
+        <key id="configuration&amp;_PASS_MIN_LOWERCASE" attributes="" save_date="2024-01-15 14:47:12"><![CDATA[Minimum number of lowercase characters<br>( 0 = lowercase characters not mandatory )]]></key>
+        <key id="configuration&amp;_PASS_MIN_DIGIT" attributes="" save_date="2024-01-15 14:47:12"><![CDATA[Minimum number of digit characters<br>( 0 = digit characters not mandatory )]]></key>
+        <key id="configuration&amp;_PASS_SEND_REMIND" attributes="" save_date="2024-01-15 14:47:12"><![CDATA[<br>Send an email one day before password expiration<br>(enable cron job)]]></key>
+        <key id="configuration&amp;_PASS_ADMIN_RULE" attributes="" save_date="2024-01-15 14:47:12"><![CDATA[<br>Apply password control policies to admins]]></key>
       </module>
       <module id="course">
         <key id="course&amp;_YEAR_SELECTION" attributes="" save_date="2023-10-12 15:32:39"><![CDATA[Year selection]]></key>
@@ -2139,14 +2145,21 @@ Username: [userid]<br/>]]></key>
         <key id="register&amp;_REG_NOT_ACTIVE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Registration is not active]]></key>
         <key id="register&amp;_REG_PASS_ALFANUMERIC" attributes="" save_date="2021-01-28 12:02:31"><![CDATA[<b>characters</b> and <b>numbers</b>]]></key>
         <key id="register&amp;_REG_PASS_MIN_CHAR" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[The password must contain at least <b>[min_char] chars</b>]]></key>
-        <key id="register&amp;_REG_PASS_MIN_DIGITS" attributes="" save_date="2021-01-28 12:03:17"><![CDATA[<b>[min_char]</b> numbers]]></key>
-        <key id="register&amp;_REG_PASS_MIN_LOWER" attributes="" save_date="2021-01-28 12:04:08"><![CDATA[<b>[min_char]</b> lowercase letters]]></key>
-        <key id="register&amp;_REG_PASS_MIN_NONALPHANUM" attributes="" save_date="2021-01-28 12:03:44"><![CDATA[<b>[min_char]</b> special characters]]></key>
-        <key id="register&amp;_REG_PASS_MIN_UPPER" attributes="" save_date="2021-01-28 12:04:16"><![CDATA[<b>[min_char]</b> uppercase letters]]></key>
+        <key id="register&amp;_REG_PASS_MIN_DIGITS" attributes="" save_date="2021-01-28 12:03:17"><![CDATA[<b>The password must contain at least [min_char]</b> numbers]]></key>
+        <key id="register&amp;_REG_PASS_MIN_LOWER" attributes="" save_date="2021-01-28 12:04:08"><![CDATA[The password must contain at least <b>[min_char]</b> lowercase characters]]></key>
+        <key id="register&amp;_REG_PASS_MIN_NONALPHANUM" attributes="" save_date="2021-01-28 12:03:44"><![CDATA[The password must contain at least <b>[min_char]</b> special characters]]></key>
+        <key id="register&amp;_REG_PASS_MIN_UPPER" attributes="" save_date="2021-01-28 12:04:16"><![CDATA[<b>The password must contain at least [min_char]</b> uppercase letters]]></key>
         <key id="register&amp;_REG_PASS_MUST_BE_ALPNUM" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[The password must contain <b>characters</b> and <b>numbers</b>]]></key>
         <key id="register&amp;_REG_PASS_MUST_DIFF" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[The new password must be different]]></key>
+        <key id="register&amp;_PASS_DIFFERENT_USERNAME" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[The new password must be different from own username]]></key>
         <key id="register&amp;_REG_PRESONAL_CODE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Activation code]]></key>
         <key id="register&amp;_REG_PRIVACY_ACCEPT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[I accept the terms of the privacy policy]]></key>
+        <key id="register&amp;_REG_PASS_MUST_DIFF_1" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[The new password must be different from the last one you ued]]></key>
+        <key id="register&amp;_REG_PASS_MIN_CHAR_1" attributes="" save_date="2020-09-28 10:39:36"><![CDATA[The password must contain at least <b>[min_char]</b> character]]></key>
+        <key id="register&amp;_REG_PASS_MIN_DIGITS_1" attributes="" save_date="2020-09-28 10:31:10"><![CDATA[The password must contain at least  <b>[min_char]</b> number]]></key>
+        <key id="register&amp;_REG_PASS_MIN_LOWER_1" attributes="" save_date="2020-09-28 10:30:53"><![CDATA[The password must contain at least <b>[min_char]</b> lowercase character]]></key>
+        <key id="register&amp;_REG_PASS_MIN_NONALPHANUM_1" attributes="" save_date="2020-09-28 10:38:01"><![CDATA[The password must contain at least <b>[min_char]</b> special character]]></key>
+        <key id="register&amp;_REG_PASS_MIN_UPPER_1" attributes="" save_date="2020-09-28 10:37:24"><![CDATA[The password must contain at least <b>[min_char]</b> uppercase character]]></key>
         <key id="register&amp;_REG_PRIVACY_POLICY" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Any information collected by us, relating to an identifiable person, shall be used only in accordance with the procedures and for the purposes that are here acknowledged to the data subject and where the latter, as required by law, has expressely consented. <br><br>
 
 - User login and private area<br>

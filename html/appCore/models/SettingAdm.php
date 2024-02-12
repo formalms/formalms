@@ -22,6 +22,7 @@ class SettingAdm extends Model
         11 => 'Sms',
         12 => 'Social',
         13 => 'Twig',
+        14 => 'Security'
     ];
 
     public function __construct()
