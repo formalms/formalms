@@ -521,23 +521,31 @@ class CoursestatsLms extends Model
     private function parseScormTime($pt_time)
     {
         try {
+            preg_match('/^PT((\d*H)?(\d*M)?)?(\d+(\.\d+)?S)$/', $pt_time, $matches);
+
+            if (count($matches) > 4) {
+                $seconds = floor($matches[4]);
+
+                $pt_time = 'PT' . $seconds . 'S';  // Construct a valid interval spec without fractional part
+            }
+
             $interval = new DateInterval($pt_time);
 
             return sprintf('%u:%u:%u', $interval->h, $interval->i, $interval->s);
         } catch (Exception $exception) {
 
-            $formatRegex = ['/\d{4}:\d{2}:\d{2}\/','/\d{4}:\d{2}:\d{2}\.\d{2}/'];
+            $formatRegex = ['/\d{4}:\d{2}:\d{2}\/', '/\d{4}:\d{2}:\d{2}\.\d{2}/'];
 
-            foreach ($formatRegex as $regex){
-                if(preg_match($regex, $pt_time)) {
-                    $pt_time =  substr($pt_time, 2);
+            foreach ($formatRegex as $regex) {
+                if (preg_match($regex, $pt_time)) {
+                    $pt_time = substr($pt_time, 2);
                     break;
                 }
             }
 
-            $timeFormats = ['H:i:s.u','HH:MM:SS','HH:MM:SS.ms'];
+            $timeFormats = ['H:i:s.u', 'HH:MM:SS', 'HH:MM:SS.ms'];
 
-            foreach ($timeFormats as $timeFormat){
+            foreach ($timeFormats as $timeFormat) {
                 $dateTime = DateTime::createFromFormat($timeFormat, $pt_time);
                 if ($dateTime) {
                     return sprintf('%u:%u:%u', $dateTime->format('H'), $dateTime->format('i'), $dateTime->format('s'));
