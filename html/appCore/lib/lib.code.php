@@ -315,7 +315,7 @@ class CodeManager
 		 	AND ((lc.can_subscribe = 2
 			AND (lc.sub_end_date IS NULL
 				OR lc.sub_end_date >= '2015-02-06')
-			AND (lc.sub_start_date = IS NULL
+			AND (lc.sub_start_date IS NULL
 				OR '2015-02-06' >= lc.sub_start_date))
 		OR (lc.can_subscribe = 1))";
 

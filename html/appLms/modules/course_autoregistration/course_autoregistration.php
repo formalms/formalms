@@ -122,7 +122,7 @@ function subscribe()
                                             . ' WHERE idCourse = ' . $id_course
                                             . ' AND idUser = ' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
-                        list($control) = sql_fetch_row(sql_query($query_control));
+                        [$control] = sql_fetch_row(sql_query($query_control));
 
                         if ($control == 0) {
                             $subscribe->subscribeUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_course, '3');
@@ -148,7 +148,7 @@ function subscribe()
 
                         $out->add('<br/><a href="' . FormaLms\lib\Get::home_page_abs_path() . '">' . Lang::t('_BACK_TO_COURSE', 'course_autoregistration') . '</a>');
                     } else {
-                        if (sizeof($array_course) == 0) {
+                        if (count($array_course) == 0) {
                             $out->add(getErrorUi(Lang::t('_SUBSCRIPTION_NOT_ALLOWED_YET', 'course_autoregistration')));
                         } else {
                             $out->add(getErrorUi(Lang::t('_ALREADY_SUBSCRIBED', 'course_autoregistration')));
