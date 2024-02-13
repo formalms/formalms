@@ -31,7 +31,7 @@
         {{ Form_getHidden('id_date','id_date',idDate) }}
         {{ Form_getTextfield( Lang_translate('_CODE', 'course') , 'code', 'code', 255, postData.code ) }}
         {{ Form_getTextfield(Lang_translate('_NAME', 'course') , 'name', 'name', 255, postData.name ) }}
-        {{ Form_getTextarea(Lang_translate('_DESCRIPTION', 'course'), 'description', 'description', postData.description) }}
+        {{ Form_getTextarea(Lang_translate('_DESCRIPTION', 'course'), 'description', 'description', postData.description|raw) }}
         {{ Form_getTextfield( Lang_translate('_MEDIUM_TIME', 'course'), 'mediumTime', 'mediumTime', 255, postData.mediumTime) }}
         {{ Form_getTextfield( Lang_translate('_MAX_NUM_SUBSCRIBE', 'course') , 'maxNumSubscribes', 'max_par', 255, postData.maxNumSubscribes) }}
         {{ Form_getTextfield( Lang_translate('_COURSE_PRIZE', 'course'), 'price', 'price', 255, postData.price) }}

@@ -372,6 +372,7 @@ class ClassroomAlmsController extends AlmsController
             }
         }
 
+
         $this->render('classroom', [
             'action' => sprintf('index.php?r=%s/addclassroom&id_course=%s', $this->baseLinkClassroom, $this->idCourse),
             'edit' => false,
@@ -383,7 +384,7 @@ class ClassroomAlmsController extends AlmsController
             'postData' => [
                 'name' => FormaLms\lib\Get::req('name', DOTY_STRING, $course_info['name']),
                 'code' => FormaLms\lib\Get::req('code', DOTY_STRING, $course_info['code']),
-                'description' => FormaLms\lib\Get::req('description', DOTY_STRING, $course_info['description']),
+                'description' => FormaLms\lib\Get::req('description', DOTY_MIXED, $course_info['description']),
                 'mediumTime' => FormaLms\lib\Get::req('mediumTime', DOTY_STRING, $course_info['mediumTime']),
                 'maxNumSubscribes' => FormaLms\lib\Get::req('maxNumSubscribes', DOTY_STRING, ''),
                 'price' => FormaLms\lib\Get::req('price', DOTY_STRING, ''),
@@ -443,7 +444,7 @@ class ClassroomAlmsController extends AlmsController
                 'postData' => [
                     'name' => FormaLms\lib\Get::req('name', DOTY_STRING, $dateInfo['name']),
                     'code' => FormaLms\lib\Get::req('code', DOTY_STRING, $dateInfo['code']),
-                    'description' => FormaLms\lib\Get::req('description', DOTY_STRING, $dateInfo['description']),
+                    'description' => FormaLms\lib\Get::req('description', DOTY_MIXED, $dateInfo['description']),
                     'mediumTime' => FormaLms\lib\Get::req('mediumTime', DOTY_STRING, $dateInfo['medium_time']),
                     'maxNumSubscribes' => FormaLms\lib\Get::req('maxNumSubscribes', DOTY_STRING, $dateInfo['max_par']),
                     'price' => FormaLms\lib\Get::req('price', DOTY_STRING, $dateInfo['price']),
