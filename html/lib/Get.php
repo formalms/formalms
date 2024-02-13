@@ -14,6 +14,7 @@
 namespace FormaLms\lib;
 
 use FormaLms\appCore\Template\Services\ClientService;
+use FormaLms\lib\Serializer\FormaSerializer;
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
@@ -54,15 +55,15 @@ class Get
     /**
      * Import var from GET and POST, if the var exists in POST and GET, the post value will be preferred.
      *
-     * @author Pirovano Fabio
-     *
-     * @param string $name      the var to import
-     * @param int    $typeof    the type of the variable (used for casting)
-     * @param mixed  $default   the default value
-     * @param mixed  $only_from false if can take from both post and get; else get or post
+     * @param string $name the var to import
+     * @param int $typeof the type of the variable (used for casting)
+     * @param mixed $default the default value
+     * @param mixed $only_from false if can take from both post and get; else get or post
      *                          to force the reading from one method
      *
      * @return mixed return the var founded in post/get or the default value if the var doesn't exixst
+     * @author Pirovano Fabio
+     *
      */
     public static function req($var_name, $typeof = DOTY_MIXED, $default_value = '', $only_from = false)
     {
@@ -87,22 +88,25 @@ class Get
     }
 
     /**
-     * Data filtering.
+     * Filter the input value based on the specified type.
      *
-     * @param mixed $value  the value to clean
-     * @param int   $typeof the type of the variable
-     *
-     * @return mixede the cleaned value
+     * @param mixed $value The value to be filtered.
+     * @param int $typeof The type of filtering to be performed.
+     *                    Possible values: DOTY_INT, DOTY_DOUBLE, DOTY_FLOAT,
+     *                    DOTY_STRING, DOTY_ALPHANUM, DOTY_NUMLIST,
+     *                    DOTY_JSONDECODE, DOTY_JSONENCODE, DOTY_BOOL, DOTY_MVC,
+     *                    DOTY_URL, DOTY_MIXED.
+     * @return mixed The filtered value based on the specified type.
      */
     public static function filter($value, $typeof)
     {
         switch ($typeof) {
             case DOTY_INT:
-                $value = (int) $value;
+                $value = (int)$value;
                 break;
             case DOTY_DOUBLE:
             case DOTY_FLOAT:
-                $value = (float) $value;
+                $value = (float)$value;
                 break;
             case DOTY_STRING:
                 $value = strip_tags($value ?? '');
@@ -115,36 +119,27 @@ class Get
                 break;
 
             case DOTY_JSONDECODE:
-                    if (!isset($GLOBALS['obj']['json_service'])) {
-                        require_once _base_ . '/lib/lib.json.php';
-                        $GLOBALS['obj']['json_service'] = new Services_JSON();
-                    }
-                    $value = $GLOBALS['obj']['json_service']->decode($value);
-
+                $value = FormaSerializer::getInstance()->decode($value, 'json');
                 break;
             case DOTY_JSONENCODE:
-                    if (!isset($GLOBALS['obj']['json_service'])) {
-                        require_once _base_ . '/lib/lib.json.php';
-                        $GLOBALS['obj']['json_service'] = new Services_JSON();
-                    }
-                    $value = $GLOBALS['obj']['json_service']->encode($value);
+                $value = FormaSerializer::getInstance()->encode($value, 'json');
 
                 break;
             case DOTY_BOOL:
                 $value = ($value ? true : false);
                 break;
             case DOTY_MVC:
-                    $value = preg_replace('/[^a-zA-Z0-9\-\_\/]+/', '', $value);
-                    if ($value[0] === '/') {
-                        $value = '';
-                    }
+                $value = preg_replace('/[^a-zA-Z0-9\-\_\/]+/', '', $value);
+                if ($value[0] === '/') {
+                    $value = '';
+                }
 
                 break;
             case DOTY_URL:
                 $value = preg_replace('/[\x00-\x1F\x7F]/', '', $value);
                 $value = preg_replace('/[<>\'\"\(\)\[\]]/', '', $value);
                 $value = str_replace(['<', '>', '\'', '\"', ')', '('], '', $value);
-    
+
                 break;
             case DOTY_MIXED:
             default:
@@ -154,13 +149,12 @@ class Get
     }
 
     /**
-     * calls the req method and forces the type to 'get'.
+     * Retrieves a value from the $_GET superglobal array.
      *
-     * @param <type> $var_name
-     * @param <type> $typeof
-     * @param <type> $default_value
-     *
-     * @return <type>
+     * @param string $var_name The name of the variable to retrieve from the $_GET array.
+     * @param int $typeof [optional] The type of the variable being retrieved. Defaults to DOTY_MIXED.
+     * @param mixed $default_value [optional] The default value to return if the variable is not found in the $_GET array. Defaults to an empty string.
+     * @return mixed The value of the variable specified by $var_name in the $_GET array, or $default_value if the variable is not found.
      */
     public static function gReq($var_name, $typeof = DOTY_MIXED, $default_value = '')
     {
@@ -168,13 +162,10 @@ class Get
     }
 
     /**
-     * calls the req method and forces the type to 'post'.
-     *
-     * @param <type> $var_name
-     * @param <type> $typeof
-     * @param <type> $default_value
-     *
-     * @return <type>
+     * @param string $var_name the name of the variable to retrieve from POST request
+     * @param int $typeof the data type of the variable (optional, default: DOTY_MIXED)
+     * @param mixed $default_value the default value to return if the variable is not found (optional, default: '')
+     * @return mixed the value of the variable if found, otherwise the default value
      */
     public static function pReq($var_name, $typeof = DOTY_MIXED, $default_value = '')
     {
@@ -185,17 +176,13 @@ class Get
      * Return the value of a configuration.
      *
      * @param string $cfg_name The configuration name
-     * @param mixed  $default  The default value return if the configuration is not found or not set
+     * @param mixed $default The default value return if the configuration is not found or not set
      *
      * @return mixed The value of the configuration param
      */
     public static function cfg($cfg_name, $default = false)
     {
-        if (!isset($GLOBALS['cfg'][$cfg_name])) {
-            $value = $default;
-        } else {
-            $value = $GLOBALS['cfg'][$cfg_name];
-        }
+        $value = $GLOBALS['cfg'][$cfg_name] ?? $default;
 
         return $value;
     }
@@ -204,8 +191,8 @@ class Get
      * Return the value of a plugin configuration.
      *
      * @param string $plugin_name The plugin name
-     * @param string $cfg_name    The configuration name
-     * @param mixed  $default     The default value return if the configuration is not found or not set
+     * @param string $cfg_name The configuration name
+     * @param mixed $default The default value return if the configuration is not found or not set
      *
      * @return mixed The value of the configuration param
      */
@@ -233,46 +220,47 @@ class Get
 
         $platform = 'framework';
 
-        if (array_key_exists($sett_name, $GLOBALS[$platform] ?? []) ) {
+        if (array_key_exists($sett_name, $GLOBALS[$platform] ?? [])) {
             $result = $GLOBALS[$platform][$sett_name];
         } else {
             $notLoadedParams = static::_loadOption($GLOBALS[$platform] ?? []);
-            $result = array_key_exists($sett_name , (array) $notLoadedParams) ? $notLoadedParams[$sett_name] : $fallback;
+            $result = array_key_exists($sett_name, (array)$notLoadedParams) ? $notLoadedParams[$sett_name] : $fallback;
         }
 
         $eventData = \Events::trigger('core.settings.read', ['key' => $sett_name]);
 
-        if(array_key_exists('value', $eventData)) {
+        if (array_key_exists('value', $eventData)) {
             $result = $eventData['value'];
         }
-   
-        return  $result;
+
+        return $result;
     }
 
-       /**
-     * load option form database.
+    /**
+     * Loads the option values from the 'core_setting' table.
      *
-     * @return nothing
+     * @param array $exclusions An array of parameter names to exclude from the result
+     * @return array An associative array containing the loaded options
      */
-    public static function _loadOption($exclusions = []) : array
+    public static function _loadOption($exclusions = []): array
     {
         $result = [];
         $basequery = '
 		SELECT param_name, param_value, value_type, max_size
 		FROM `core_setting` WHERE 1 ';
 
-        if(count($exclusions)) {
-            $basequery .= ' AND param_name NOT IN ('.sprintf("'%s'", implode("','", array_keys($exclusions))).') ';
+        if (count($exclusions)) {
+            $basequery .= ' AND param_name NOT IN (' . sprintf("'%s'", implode("','", array_keys($exclusions))) . ') ';
         }
 
         $basequery .= 'ORDER BY sequence';
         $reSetting = sql_query($basequery);
-	
+
         while (list($var_name, $var_value, $value_type) = sql_fetch_row($reSetting)) {
             switch ($value_type) {
                 //if is int cast it
                 case 'int':
-                    $result[$var_name] = (int) $var_value;
+                    $result[$var_name] = (int)$var_value;
 
                     break;
                 //if is enum switch value to on or off
@@ -286,7 +274,7 @@ class Get
                     break;
                 //else simple assignament
                 default:
-                $result[$var_name] = $var_value;
+                    $result[$var_name] = $var_value;
             }
         }
 
@@ -313,7 +301,8 @@ class Get
     }
 
 
-    public static function getBaseUrl($onlyBasePath = false){
+    public static function getBaseUrl($onlyBasePath = false)
+    {
 
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
 
@@ -324,10 +313,9 @@ class Get
         try {
             $basePath = $request->getSchemeAndHttpHost();
             $requestUri = $request->getBaseUrl();
-        } catch(\Error $e) {
+        } catch (\Error $e) {
             // non deve mai andare qui, ma ci passa se vengono chiamate shell exec come le migrate
         }
-
 
 
         if (!$onlyBasePath) {
@@ -367,11 +355,12 @@ class Get
                 }
             }
 
-            $path = $basePath.$path;
+            $path = $basePath . $path;
         }
 
         return $path != '' ? $path : $basePath;
     }
+
     /**
      * Return the calculated relative path form the current zone (platform) to the requested one.
      *
@@ -473,8 +462,8 @@ class Get
         }
 
         return '<img src="' . $src . '" '
-            . 'alt="' . ($alt ? $alt : substr($src, 0, -4)) . '" '
-            . 'title="' . ($alt ? $alt : substr($src, 0, -4)) . '" '
+            . 'alt="' . ($alt ?: substr($src, 0, -4)) . '" '
+            . 'title="' . ($alt ?: substr($src, 0, -4)) . '" '
             . ($class_name != false ? 'class="' . $class_name . '" ' : '')
             . ($extra != false ? $extra . ' ' : '')
             . '/>';
@@ -517,22 +506,25 @@ class Get
      *
      * @return string html code (sample: <a ...><img ...></a> )
      */
-    public static function link_img($url, $title, $src, $alt, $extra = false)
+    public static function link_img($url, $title, $src, $alt, $extra = [])
     {
-        // where are we ?
-        $src = $GLOBALS['where_templates_relative'] . '/standard/images/' . $src;
+        // Define base path in a variable for clarity
+        $templateBasePath = $GLOBALS['where_templates_relative'] . '/standard/images/';
+        $src = $templateBasePath . $src;
 
-        return '<a href="' . $url . '" title="' . $title . '"' .
-            (!empty($extra['link']) != false ? ' ' . $extra['link'] : '') .
-            '>' .
-            '<img src="' . $src . '" ' .
-            'alt="' . ($alt ? $alt : substr($src, 0, -4)) . '" ' .
-            'title="' . $title . '" ' .
-            (!empty($extra['img']) != false ? $extra . ' ' : '') .
-            '/>' .
-            '</a>' .
-            "\n";
+        // Simplify ternary operations
+        $linkExtra = $extra['link'] ?? '';
+        $imgExtra = $extra['img'] ?? '';
+
+        // Set default alt text if not provided
+        $altText = $alt ?? substr($src, 0, -4);
+
+        // Use string interpolation for better readability and performance
+        return "<a href=\"{$url}\" title=\"{$title}\" {$linkExtra}>
+              <img src=\"{$src}\" alt=\"{$altText}\" title=\"{$title}\" {$imgExtra}/>
+            </a>\n";
     }
+
 
     /**
      * This function try to evaluate the current site address.
@@ -666,7 +658,7 @@ class Get
      *
      * @param array $text_array the title of the page or an array with  the breadcrmbs elements (key => value)
      *                          if the key is a string it will be userd as a link
-     * @param bool  $echo       if true the output will be automaticaly echoed
+     * @param bool $echo if true the output will be automaticaly echoed
      *
      * @return string
      */
@@ -729,14 +721,7 @@ class Get
      */
     public static function user_ip()
     {
-        if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            return $_SERVER['HTTP_X_FORWARDED_FOR'];
-        }
-        if (isset($_SERVER['HTTP_CLIENT_IP'])) {
-            return $_SERVER['HTTP_CLIENT_IP'];
-        }
-
-        return $_SERVER['REMOTE_ADDR'];
+        return $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['HTTP_CLIENT_IP'] ?? $_SERVER['REMOTE_ADDR'];
     }
 
     /**
@@ -749,7 +734,7 @@ class Get
         $agent = strtolower($_SERVER['HTTP_USER_AGENT']);
         $known_os_arr = explode(' ', 'linux macos sunos bsd qnx solaris irix aix unix amiga os/2 beos windows');
         foreach ($known_os_arr as $os) {
-            if (strpos($agent, strval($os)) !== false) {
+            if (strpos($agent, (string)$os) !== false) {
                 return $os;
             }
         }
@@ -805,16 +790,15 @@ class Get
     }
 
     /**
-     * Parse the HTTP_ACCEPT_LANGUAGE in order to have a more usable language selction.
+     * Retrieves the accepted languages from the HTTP_ACCEPT_LANGUAGE header.
      *
-     * @param bool $main_only true if you want only the main language from the browser, false if you wnat the entire list
-     *
-     * @return <mixed> string if $main_only = true (ie. en-EN), array if $main_only = false
+     * @param bool $main_only Determines whether to return only the main language or all accepted languages.
+     * @return array|string The array of accepted languages or the main language if $main_only is set to true.
      */
     public static function user_acceptlang($main_only = true)
     {
         $lang_list = [];
-        $main_langs = explode(',', array_key_exists('HTTP_ACCEPT_LANGUAGE',$_SERVER) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : '');
+        $main_langs = explode(',', array_key_exists('HTTP_ACCEPT_LANGUAGE', $_SERVER) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : '');
         foreach ($main_langs as $lang_set) {
             $single_lang = explode(';', $lang_set);
             foreach ($single_lang as $i => $lang_code) {
@@ -832,27 +816,27 @@ class Get
     }
 
     /**
-     * Check if the user is a bot.
+     * Determines if the user is a bot based on the user agent string.
      *
-     * @return <int> 1 if the user is a bot, 0 otherwise
+     * @return int Returns 1 if the user is a bot, and 0 otherwise.
      */
     public static function user_is_bot()
     {
         $to_test = [
-            'googlebot',		// Google
-            'scooter',			// Altavista
-            'altavista',		// Altavista UK
-            'webcrawler',		// AllTheWeb
-            'architextspider',	// Excite
-            'slurp',			// Inktomi
-            'iltrovatore',		// Il Trovatore
-            'ultraseek',		// Infoseek
-            'lookbot',			// look.com
-            'mantraagent',		// looksmart.com
-            'lycos_spider',		// Lycos
-            'msnbot',			// Msn Search (the hated)
-            'shinyseek',		// ShinySeek
-            'robozilla',			// dmoz.org
+            'googlebot',        // Google
+            'scooter',            // Altavista
+            'altavista',        // Altavista UK
+            'webcrawler',        // AllTheWeb
+            'architextspider',    // Excite
+            'slurp',            // Inktomi
+            'iltrovatore',        // Il Trovatore
+            'ultraseek',        // Infoseek
+            'lookbot',            // look.com
+            'mantraagent',        // looksmart.com
+            'lycos_spider',        // Lycos
+            'msnbot',            // Msn Search (the hated)
+            'shinyseek',        // ShinySeek
+            'robozilla',            // dmoz.org
         ];
         $agent = strtolower($_SERVER['HTTP_USER_AGENT']);
         foreach ($to_test as $botname) {
@@ -870,11 +854,10 @@ class Get
     }
 
     /**
-     * Return the size in bytes of the specified file.
+     * Get the size of a file
      *
-     * @param string $file_path The target file
-     *
-     * @return <int> The size of the file in bytes
+     * @param string $file_path The path to the file
+     * @return int|false The size of the file in bytes, or false if an error occurred
      */
     public static function file_size($file_path)
     {
@@ -882,11 +865,10 @@ class Get
     }
 
     /**
-     * Return the size in bytes of the specified directory.
+     * Calculate the size of a directory recursively.
      *
-     * @param string $path The target dir
-     *
-     * @return <int> The size of the dir in bytes
+     * @param string $path The path to the directory.
+     * @return int The size of the directory in bytes.
      */
     public static function dir_size($path)
     {
@@ -918,23 +900,23 @@ class Get
         $class_name = 'notice_display';
         switch ($message_type) {
             case 'notice':
-                    $class_name .= ' notice_display_notice';
+                $class_name .= ' notice_display_notice';
 
                 break;
             case 'success':
-                    $class_name .= ' notice_display_success';
+                $class_name .= ' notice_display_success';
 
                 break;
             case 'failure':
-                    $class_name .= ' notice_display_failure';
+                $class_name .= ' notice_display_failure';
 
                 break;
             case 'error':
-                    $class_name .= ' notice_display_error';
+                $class_name .= ' notice_display_error';
 
                 break;
             default:
-                    $class_name .= ' notice_display_default';
+                $class_name .= ' notice_display_default';
 
                 break;
         }
@@ -957,12 +939,12 @@ class Get
 
         switch ($type) {
             case 'filterCourse':
-                    $pattern = '/filter_+[^=;]+/';
+                $pattern = '/filter_+[^=;]+/';
                 break;
 
             default:
                 return $results;
-            break;
+                break;
         }
 
         preg_match($pattern, http_build_query($_REQUEST), $results);

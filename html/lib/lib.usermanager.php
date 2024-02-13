@@ -2640,7 +2640,7 @@ class UserManagerRenderer
         }
 
         if ($control_extra_field) {
-            $selectedGroups = \FormaLms\lib\Get::pReq('group_sel_implode', DOTY_STRING, '');
+            $selectedGroups = \FormaLms\lib\Get::pReq('group_sel_implode', DOTY_STRING, []);
             if (empty($selectedGroups)) {
                 $selectedGroups = explode(',', $selectedGroups);
             }
