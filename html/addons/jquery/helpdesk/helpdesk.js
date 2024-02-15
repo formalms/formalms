@@ -19,8 +19,7 @@ $(document).ready(function() {
     $("#contact").submit(function() { return false; });
 
     $("#send_request").on("click", function(){
-        $('#modal_helpdesk').modal('hide');
-
+   
         var emailval  = $("#email").val();
         var msgval    = $("#msg").val();
         var msglen    = msgval.length;
@@ -66,6 +65,8 @@ $(document).ready(function() {
                 contentType: false,
                 processData: false ,
                 success: function(data) {
+                   
+                    $('#modal_helpdesk').modal('hide');
                 },
                 error: function(error) {
                 }
