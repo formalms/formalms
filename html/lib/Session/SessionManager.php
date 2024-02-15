@@ -101,11 +101,8 @@ class SessionManager
 
             $sessionStorage = new NativeSessionStorage([], $this->sessionHandler);
             $this->session = new Session($sessionStorage);
-            if ($_SERVER['SERVER_ADDR'] !== $this::IPV4_LOCALHOST && $_SERVER['SERVER_ADDR'] !== $this::IPV6_LOCALHOST) {
-                $this->session->setName('__Secure-FORMALMS');
-            } else {
-                $this->session->setName('FORMALMS');
-            }
+            $this->session->setName($this->config->getCookieName());
+
             if (!$this->session->isStarted()) {
                 $this->session->start();
             }

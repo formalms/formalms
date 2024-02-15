@@ -1,7 +1,6 @@
 <?php
 
 
-
 namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -9,7 +8,11 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * LearningTracksession
  *
- * @ORM\Table(name="learning_tracksession")
+ * @ORM\Table(name="learning_tracksession",
+ *  indexes={
+ *     @ORM\Index(name="idUser_active_idx", columns={"idUser","active"})
+ *  }
+ * )
  * @ORM\Entity
  */
 class LearningTracksession

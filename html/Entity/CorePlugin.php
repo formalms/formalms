@@ -1,7 +1,6 @@
 <?php
 
 
-
 namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -9,7 +8,15 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CorePlugin
  *
- * @ORM\Table(name="core_plugin", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"})})
+ * @ORM\Table(name="core_plugin",
+ *      uniqueConstraints={
+ *          @ORM\UniqueConstraint(name="name", columns={"name"})
+ *      },
+ *      indexes={
+ *          @ORM\Index(name="active_idx", columns={"active"})
+ *      }
+ *   )
+ * )
  * @ORM\Entity
  */
 class CorePlugin

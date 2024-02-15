@@ -9,7 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CoreRequests
  *
- * @ORM\Table(name="core_requests")
+ * @ORM\Table(name="core_requests",
+ *   indexes={
+ *      @ORM\Index(name="app_name_idx", columns={"app","name"})
+ *  }
+ *  )
  * @ORM\Entity
  */
 class CoreRequests
