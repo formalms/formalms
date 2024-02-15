@@ -1864,6 +1864,8 @@ class Report_User extends Report
                                 $temp = $this->_check($score_course[$id_user][$id_course]['score'], $value['value'], $value['sign'], _FILTER_INTEGER);
                             }
                             break;
+                        default:
+                            break;
                     }
 
                     if ($exclusive) {
@@ -1925,7 +1927,7 @@ class Report_User extends Report
 
                     if (count($folders) > 1) {
                         foreach ($customcols_org as $val) {
-                            $v = '';
+                            $v = [];
                             if ($val['selected']) {
                                 foreach ($folders as $folder_name) {
                                     $v[] = $fman->getValueCustomOrg($val['label'], $folder_name);

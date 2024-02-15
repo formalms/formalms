@@ -137,7 +137,8 @@ class UserselectorAdmController extends AdmController
         }
 
         //it needs to select radiobox all or selected customers
-        $selectAllValue = (count($accessSelection['org'] ?? []) == 1 && (int) reset($accessSelection['org'] ?? []) == 1) ? 1 : 0;
+        $selectAllValue = ((count($accessSelection['org'] ?? []) == 1)
+                         && ((int) reset($accessSelection['org']) == 1)) ? 1 : 0;
 
         $renderParams = [
             'tabs' => $this->tabs,

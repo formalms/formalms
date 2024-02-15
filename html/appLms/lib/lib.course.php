@@ -1047,7 +1047,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                 }
             }
             if ($response['can']) {
-                if (($course['user_status'] >= 0) && ($course['userStatusOp'] & (1 << $course['user_status']))) {
+                if ($userCourse['user_status'] >= 0 && ($course['userStatusOp'] & (1 << $userCourse['user_status']))) {
                     $response['can'] = false;
                     $response['reason'] = 'user_status';
                 }

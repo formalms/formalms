@@ -30,7 +30,7 @@ if (!function_exists('report_log')) {
     {
         //ob_end_flush();
         $curtime = date('d-m-Y G:i:s');
-        echo "[$curtime] $string" . PHP_EOL . "\r\n" . "\n";
+        echo "[$curtime] $string" . PHP_EOL . "\r\n" . "\n". "<br>";
         //ob_start();
     }
 }
