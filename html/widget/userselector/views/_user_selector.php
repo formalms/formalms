@@ -122,14 +122,14 @@ $id_org = isset($data_for_view['id_org']) ? $data_for_view['id_org'] : 0;
 $fields = ['id', 'userid', 'firstname', 'lastname', '_dyn_field_0', '_dyn_field_1', '_dyn_field_2', 'valid'];
 
 $event = compact('id_org', '_varname', 'columns_arr', 'fields');
-Events::trigger('widget.user_selector.before_render', $event);
+$event = Events::trigger('widget.user_selector.before_render', $event);
 
-if (array_key_exists('columns', $event) && is_array($event['columns'])) {
+if (count($event['columns'])) {
     $columns_arr = array_merge($event['columns'], $columns_arr);
 }
 
-if (count($event['fields'])) {
-    $fields = array_merge($event['fields'], $fields);
+if (count($event['fields_arr'])) {
+    $fields = array_merge($event['fields_arr'], $fields);
 }
 
 $this->widget('table', [
