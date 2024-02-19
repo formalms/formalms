@@ -19,9 +19,10 @@
                 if (res.data.errors) {
                     this.Errors = res.data.errors;
                 } else {
-                    // todo traduci
-                    this.SuccessMessage = obj.info.length <= 1 ? `E' stato creato un nuovo materiale didattico. Redirect fra 2 secondi...` : `Sono stati creati ${obj.info.length} nuovi materiali didattici.  Redirect fra 2 secondi...`;
+                    {#//this.SuccessMessage = obj.info.length <= 1 ? `E' stato creato un nuovo materiale didattico. Redirect fra 2 secondi...` : `Sono stati creati ${obj.info.length} nuovi materiali didattici.  Redirect fra 2 secondi...`;#}
                     {#//this.SuccessMessage = obj.info.length <= 1 ? {{ 'dropzone._SUCCESSFUL_ONE_ITEM' | translate }} : {{ 'dropzone._SUCCESSFUL_MULTIPLE_ITEMS' | translate({nObjects:2}) }};#}
+                    var SuccessMessageText = obj.info.length <= 1 ? '{{ dropzone._SUCCESSFUL_ONE_ITEM }}' : '{{ dropzone._SUCCESSFUL_MULTIPLE_ITEMS }}';
+                    this.SuccessMessage = SuccessMessageText.replace('[nObjects]', `${obj.info.length}`);
                     setTimeout(function () {
                         window.location = res.data.back_url
                     }, 2000);

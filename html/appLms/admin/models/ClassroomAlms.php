@@ -461,9 +461,9 @@ class ClassroomAlms extends Model
 
         foreach ($day as $id_day => $day_info) {
             $cont_h[] = Format::date($day_info['date_begin'], 'date') . '<br />'
-                . '<a href="javascript:;" onClick="checkAllDay(' . $id_day . ')">' . FormaLms\lib\Get::img('standard/checkall.png', Lang::t('_CHECK_ALL_DAY', 'presence') . '</a>')
+                . '<a href="javascript:;" onClick="checkAllDay(' . $id_day . ')">' . FormaLms\lib\Get::img('standard/checkall.png', Lang::t('_CHECK_ALL_DAY', 'presence')) . '</a>'
                 . ' '
-                . '<a href="javascript:;" onClick="unCheckAllDay(' . $id_day . ')">' . FormaLms\lib\Get::img('standard/uncheckall.png', Lang::t('_UNCHECK_ALL_DAY', 'presence') . '</a>');
+                . '<a href="javascript:;" onClick="unCheckAllDay(' . $id_day . ')">' . FormaLms\lib\Get::img('standard/uncheckall.png', Lang::t('_UNCHECK_ALL_DAY', 'presence')) . '</a>';
             $type_h[] = 'img-cell';
         }
 
@@ -505,9 +505,9 @@ class ClassroomAlms extends Model
                 $cont[] = Form::getInputCheckbox('date_' . $id_day . '_' . $id_user, 'date_' . $id_day . '_' . $id_user, 1, $presence, false);
             }
 
-            $cont[] = '<a href="javascript:;" onClick="checkAllUser(' . $id_user . ')">' . FormaLms\lib\Get::img('standard/checkall.png', Lang::t('_CHECK_ALL_USER', 'presence') . '</a>')
+            $cont[] = '<a href="javascript:;" onClick="checkAllUser(' . $id_user . ')">' . FormaLms\lib\Get::img('standard/checkall.png', Lang::t('_CHECK_ALL_USER', 'presence')) . '</a>'
                 . '<br />'
-                . '<a href="javascript:;" onClick="unCheckAllUser(' . $id_user . ')">' . FormaLms\lib\Get::img('standard/uncheckall.png', Lang::t('_UNCHECK_ALL_USER', 'presence') . '</a>');
+                . '<a href="javascript:;" onClick="unCheckAllUser(' . $id_user . ')">' . FormaLms\lib\Get::img('standard/uncheckall.png', Lang::t('_UNCHECK_ALL_USER', 'presence')) . '</a>';
 
             if ($test_type == _DATE_TEST_TYPE_PAPER) {
                 if (isset($user_presence[$id_user]['1970-01-01']) && $user_presence[$id_user]['1970-01-01']['presence'] == 1) {

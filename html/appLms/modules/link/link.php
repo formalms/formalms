@@ -50,7 +50,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         . '</div><br />', 'content');
         $tableCat = new Table(0, '', $lang->def('_SUMMARY_LINK'));
 
-        $contentH = [$lang->def('_QUESTION'), $lang->def('_URL'),
+        $contentH = [$lang->def('_LINK'), $lang->def('_URL'),
         '<img src="' . getPathImage() . 'standard/down.png" alt="' . $lang->def('_DOWN') . '" title="' . $lang->def('_MOVE_DOWN') . '" />',
         '<img src="' . getPathImage() . 'standard/up.png" alt="' . $lang->def('_UP') . '" title="' . $lang->def('_MOVE_UP') . '" />',
         '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . '" title="' . $lang->def('_MOD') . '" />',

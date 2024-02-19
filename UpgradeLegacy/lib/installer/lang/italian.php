@@ -14,6 +14,8 @@
 define('_INSTALLER_TITLE', 'forma.lms - Installazione');
 define('_INSTALL', 'Installazione');
 define('_JUMP_TO_CONTENT', 'Salta al contenuto');
+define('_YES', 'Si');
+define('_NO', 'No');
 
 // choose begin
 

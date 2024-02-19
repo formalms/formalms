@@ -135,7 +135,13 @@ class ContextMenu {
               objectsNames.push(element.querySelector('.folderView__el span').outerText);
             }
           });
-          if (confirm(`Sei sicuro di voler eliminare ${objectsNames.length === 1 ? 'l\'elemento' : 'gli elementi'} "${objectsNames.join(',')}"?`)) {
+          let deleteElements;
+          if (objectsNames.length === 1) {
+            deleteElements = Lang.Translation('_DELETE_ELEMENT', 'learningObjectContextMenu').replace('[objectName]', objectsNames.join(','));
+          } else {
+            deleteElements = Lang.Translation('_DELETE_ELEMENTS', 'learningObjectContextMenu').replace('[objectNames]', objectsNames.join(','));
+          }
+          if (confirm(deleteElements)) {
             const deleteData = _this.getApiUrl('delete', { ids: _this.currentElsIds });
 
             axios.get(deleteData).then(() => {
@@ -196,7 +202,7 @@ class ContextMenu {
     const value = input.value;
     const el = input.closest('.folderTree__li') ? input.closest('.folderTree__li') : input.closest('.folderView__li');
     const elId = el.getAttribute('data-id');
-    const renameData = _this.getApiUrl('rename', { id: elId, newName: value });
+    const renameData = _this.getApiUrl('rename', { id: elId, newName: encodeURIComponent(value) });
 
     axios.get(renameData).then((res) => {
       if (res) {

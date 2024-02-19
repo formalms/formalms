@@ -32,7 +32,7 @@ class CertificateSubs_UserStat extends CertificateSubstitution
             $subs['[date_enroll]'] = Lang::t('_DATE_ENROLL', 'certificate');
             $subs['[date_first_access]'] = Lang::t('_DATE_FIRST_ACCESS', 'certificate');
             $subs['[date_complete]'] = Lang::t('_DATE_COMPLETE', 'certificate');
-            $subs['[date_complete_year]'] = Lang::t('_DATE_COMPLETE', 'certificate');
+            $subs['[date_complete_year]'] = Lang::t('_DATE_COMPLETE_YEAR', 'certificate');
             $subs['[total_time]'] = Lang::t('_TOTAL_TIME', 'certificate');
             $subs['[total_time_hour]'] = Lang::t('_TOTAL_TIME_HOUR', 'certificate');
             $subs['[total_time_minute]'] = Lang::t('_TOTAL_TIME_MINUTE', 'certificate');

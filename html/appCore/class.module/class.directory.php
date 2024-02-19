@@ -449,7 +449,7 @@ class Module_Directory extends Module
         $result = sql_query($query);
 
         $out->add(getTitleArea($lang->def('_DELETED_USER_LIST')) . '<div class="std_block">');
-        $out->add(getBackUi('index.php?modname=directory&amp;op=org_chart', '&lt;&lt;' . $lang->def('_BACK')));
+        $out->add(getBackUi('index.php?modname=directory&amp;op=org_chart', $lang->def('_BACK')));
 
         if ($num_rows) {
             $cont_h =

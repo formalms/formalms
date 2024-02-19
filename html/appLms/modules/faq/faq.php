@@ -136,12 +136,9 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 
         $back_url = urldecode($_REQUEST['back_url']);
 
-        // Fix Vulnerability CVE-2023-46693
-        $_REQUEST['title'] = FormaLms\lib\Get::filter($_REQUEST['title'], DOTY_ALPHANUM);
-
         $query_ins = '
 	INSERT INTO ' . $GLOBALS['prefix_lms'] . "_faq_cat
-	SET title = '" . (addslashes(trim($_REQUEST['title'])) == '' ? addslashes(Lang::t('_NOTITLE', 'faq', 'lms')) : addslashes($_REQUEST['title'])) . "',
+	SET title = '" . (addslashes(trim($_REQUEST['title'])) == '' ? addslashes(Lang::t('_NOTITLE', 'faq', 'lms')) : sql_escape_string($_REQUEST['title'])) . "',
 		description = '" . addslashes($_REQUEST['description']) . "',
 		author = '" . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'";
         if (!sql_query($query_ins)) {

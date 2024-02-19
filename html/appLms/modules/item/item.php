@@ -42,7 +42,11 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             .'</div>', 'content');
     */
 
-        $GLOBALS['page']->add(FormaLms\appCore\Template\TwigManager::getInstance()->render('upload-file.html.twig', ['back_url' => $object_item->back_url, 'op' => 'insitem', 'id_comm' => $object_item->id], _lms_ . '/views/lo'), 'content');
+        $params['dropzone'] = [
+            '_SUCCESSFUL_ONE_ITEM' => Lang::t('_SUCCESSFUL_ONE_ITEM', 'dropzone'),
+            '_SUCCESSFUL_MULTIPLE_ITEMS' => Lang::t('_SUCCESSFUL_MULTIPLE_ITEMS', 'dropzone'),
+        ];
+        $GLOBALS['page']->add(FormaLms\appCore\Template\TwigManager::getInstance()->render('upload-file.html.twig', ['back_url' => $object_item->back_url, 'op' => 'insitem', 'id_comm' => $object_item->id, 'dropzone' => $params['dropzone']], _lms_ . '/views/lo'), 'content');
     }
 
     function insitem()

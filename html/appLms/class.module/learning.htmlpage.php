@@ -238,7 +238,7 @@ class Learning_Htmlpage extends Learning_Object
 
         $GLOBALS['page']->add('<br /><br />'
             /*.'<a href="#top" title="'. Lang::t('_BACKTOTOP', 'htmlpage', 'lms').'">'
-                .'<img src="'.getPathImage().'standard/upcheck.gif" alt="'. Lang::t('_BACKTOTOP', 'htmlpage', 'lms').'" />'
+                .'<img src="'.getPathImage().'standard/up.png" alt="'. Lang::t('_BACKTOTOP', 'htmlpage', 'lms').'" />'
                 . Lang::t('_BACKTOTOP', 'htmlpage', 'lms').'</a>'*/
             . getBackUi(str_replace('&', '&amp;', $this->back_url), Lang::t('_BACK'))
             . '</div>', 'content');

@@ -56,7 +56,7 @@ class JQueryLib
 
         $lang = FormaLangManager::getInstance()->getLanguageBrowsercode(Lang::get());
         $jquery_core_lang = '/addons/' . self::_path . "/core/ui/js/i18n/datepicker-$lang.js";
-        $local_link .= Util::get_js($jquery_core_lang);
+        $local_link .= ($lang !== 'en') ? Util::get_js($jquery_core_lang) : '';
 
         // load css
         $jquery_ui_css = '/addons/' . self::_path . '/core/ui/css/jquery-ui-' . self::_jquery_ui_version . $which_version . '.css';

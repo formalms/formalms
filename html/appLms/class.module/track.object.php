@@ -613,7 +613,7 @@ class Track_Object
 
     public static function updateObjectTitle($idResource, $objectType, $new_title)
     {
-        $new_title = str_replace('/', '', $new_title);
+        $new_title_no_slash = str_replace('/', '', $new_title);
 
         $re = true;
 
@@ -627,11 +627,11 @@ class Track_Object
         while (list($path) = sql_fetch_row($re_search)) {
             $path_piece = explode('/', $path);
             unset($path_piece[count($path_piece) - 1]);
-            $new_path = implode('/', $path_piece) . '/' . $new_title;
+            $new_path = implode('/', $path_piece) . '/' . $new_title_no_slash;
 
             $query_lo = '
 			UPDATE ' . $GLOBALS['prefix_lms'] . "_homerepo
-			SET path = '" . $new_path . "', title = '" . sql_escape_string($new_title) . "' 
+			SET path = '" . $new_path . "', title = '" . sql_escape_string($new_title_no_slash) . "' 
 			WHERE idResource = '" . (int) $idResource . "'  
 				AND objectType = '" . $objectType . "'";
             $re &= sql_query($query_lo);
@@ -639,7 +639,7 @@ class Track_Object
 
         $query_lo = '
 		UPDATE ' . $GLOBALS['prefix_lms'] . "_organization
-		SET title = '" . $new_title . "' 
+		SET title = '" . sql_escape_string($new_title) . "' 
 		WHERE idResource = '" . (int) $idResource . "'  
 			AND objectType = '" . $objectType . "'";
         $re &= sql_query($query_lo);
@@ -654,11 +654,11 @@ class Track_Object
         while (list($path) = sql_fetch_row($re_search)) {
             $path_piece = explode('/', $path);
             unset($path_piece[count($path_piece) - 1]);
-            $new_path = implode('/', $path_piece) . '/' . $new_title;
+            $new_path = implode('/', $path_piece) . '/' . $new_title_no_slash;
 
             $query_lo = '
 			UPDATE ' . $GLOBALS['prefix_lms'] . "_repo
-			SET path = '" . $new_path . "', title = '" . sql_escape_string($new_title) . "' 
+			SET path = '" . $new_path . "', title = '" . sql_escape_string($new_title_no_slash) . "' 
 			WHERE idResource = '" . (int) $idResource . "'  
 				AND objectType = '" . $objectType . "'";
             $re &= sql_query($query_lo);

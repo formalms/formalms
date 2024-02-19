@@ -1497,7 +1497,7 @@ class UserProfileViewer
             $level_current_user == ADMIN_GROUP_GODADMIN ||
             $level_current_user == ADMIN_GROUP_ADMIN
         ) {
-            $html .= '<tr><th scope="col" colspan="2" id="up_type2">Gestito da:</th></tr>';
+            $html .= '<tr><th scope="col" colspan="2" id="up_type2">'.$lv_lang->def('_MANAGED_BY').'</th></tr>';
             $str_manage_org_by = $this->getManagerOrgBy($this->_user_profile->getIdUser());
             $str_manage_group_by = $this->getManagerGroupBy($this->_user_profile->getIdUser());
             $str_manage_role_by = $this->getMaganerRoleBy($this->_user_profile->getIdUser());
@@ -1517,12 +1517,12 @@ class UserProfileViewer
                 $no_admin = false;
             }
             if ($str_manage_user['cont'] > 0) {
-                $html .= $this->getUIRowCode('Direttamente da', substr($str_manage_user['content'], 0, -3));
+                $html .= $this->getUIRowCode($lv_lang->def('_DIRECTLY_FROM'), substr($str_manage_user['content'], 0, -3));
                 $no_admin = false;
             }
 
             if ($no_admin == true) {
-                $html .= '<tr><td colspan=2 align=center>- Nessun amministratore -</td></tr>';
+                $html .= '<tr><td colspan=2 align=center>'.$lv_lang->def('_NO_ADMIN').'</td></tr>';
             }
 
             $html .= '<tr><td ></td></tr>' . $stato_admin;

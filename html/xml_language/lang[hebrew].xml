@@ -5,7 +5,7 @@
     <lang_code>hebrew</lang_code>
     <lang_description>&#x5E2;&#x5D1;&#x5E8;&#x5D9;&#x5EA;</lang_description>
     <lang_charset>utf-8</lang_charset>
-    <lang_browsercode>he; Hebrew</lang_browsercode>
+    <lang_browsercode>he</lang_browsercode>
     <lang_direction>rtl</lang_direction>
     <platform id="all">
       <module id="">

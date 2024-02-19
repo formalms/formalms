@@ -86,7 +86,11 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [
         { from: 'src/images/', to: __dirname + '/../../html/templates/standard/static/images' },
-        { from: 'src/fonts/', to: __dirname + '/../../html/templates/standard/static/fonts' }
+        { from: 'src/fonts/', to: __dirname + '/../../html/templates/standard/static/fonts' },
+        {
+          from: __dirname + '/node_modules/tinymce-i18n/langs5',
+          to: __dirname + '/../../html/templates/standard/static/tiny_mce/langs'
+        }
       ]
     })
   ]
