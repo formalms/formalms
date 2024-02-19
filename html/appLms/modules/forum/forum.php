@@ -112,13 +112,13 @@ function forum()
         $query_view_forum = '
 		SELECT f.idForum, f.title, f.description, f.num_thread, f.num_post, f.locked, f.emoticons
 		FROM ' . $GLOBALS['prefix_lms'] . "_forum AS f
-		WHERE f.idCourse = '" . (int) $idCourse . "'
+		WHERE f.idCourse = '" . (int)$idCourse . "'
 		ORDER BY f.sequence
 		LIMIT $ini, " . FormaLms\lib\Get::sett('visuItem');
 
         $query_num_view = '
 		SELECT COUNT(*) FROM ' . $GLOBALS['prefix_lms'] . "_forum AS f
-		WHERE f.idCourse = '" . (int) $idCourse . "'";
+		WHERE f.idCourse = '" . (int)$idCourse . "'";
     } else {
         $acl = &Docebo::user()->getAcl();
         $all_user_idst = $acl->getSTGroupsST(getLogUserId());
@@ -128,7 +128,7 @@ function forum()
 		SELECT DISTINCT f.idForum, f.title, f.description, f.num_thread, f.num_post, f.locked, f.emoticons
 		FROM %lms_forum AS f
 			LEFT JOIN ' . $GLOBALS['prefix_lms'] . "_forum_access AS fa ON ( f.idForum = fa.idForum )
-		WHERE f.idCourse = '" . (int) $idCourse . "' AND
+		WHERE f.idCourse = '" . (int)$idCourse . "' AND
 			( fa.idMember IS NULL OR fa.idMember IN (" . implode(',', $all_user_idst) . ' )  )
 		ORDER BY f.sequence ';
 
@@ -136,7 +136,7 @@ function forum()
 		SELECT COUNT( DISTINCT f.idForum )
 		FROM %lms_forum AS f
 			LEFT JOIN ' . $GLOBALS['prefix_lms'] . "_forum_access AS fa ON ( f.idForum = fa.idForum )
-		WHERE f.idCourse = '" . (int) $idCourse . "' AND
+		WHERE f.idCourse = '" . (int)$idCourse . "' AND
 			( fa.idMember IS NULL OR fa.idMember IN (" . implode(',', $all_user_idst) . ' )  ) ';
     }
 
@@ -147,7 +147,7 @@ function forum()
 	SELECT f.idForum, m.idThread, m.posted, m.title, m.author
 	FROM %lms_forum AS f LEFT JOIN
 		' . $GLOBALS['prefix_lms'] . "_forummessage AS m ON ( f.last_post = m.idMessage )
-	WHERE f.idCourse = '" . (int) $idCourse . "'");
+	WHERE f.idCourse = '" . (int)$idCourse . "'");
     while (list($idF_p, $idT_p, $posted, $title_p, $id_a) = sql_fetch_row($re_last_post)) {
         if ($posted !== null) {
             $last_post[$idF_p]['info'] = Format::date($posted) . '<br />' . substr(strip_tags($title_p), 0, 15) . ' ...';
@@ -236,7 +236,7 @@ function forum()
                 '<a' . $c_css . ' href="index.php?modname=forum&amp;op=thread&amp;idForum=' . $idF . '">' . $status . ' ' . $title . '</a>',
                 $descr,
                 $num_thread . ($thread_notread ? '<div class="forum_notread">' . $thread_notread . ' ' . $lang->def('_ADD') . '</div>' : ''),
-                $num_post . ($mess_notread ? '<div class="forum_notread">' . $mess_notread . ' ' . $lang->def('_ADD') . '</div>' : ''), ];
+                $num_post . ($mess_notread ? '<div class="forum_notread">' . $mess_notread . ' ' . $lang->def('_ADD') . '</div>' : ''),];
             if (isset($last_post[$idF])) {
                 $author = $last_post[$idF]['author'];
                 $content[] = $last_post[$idF]['info'] . ' ( ' . $lang->def('_BY') . ': <span class="mess_author">'
@@ -529,12 +529,12 @@ function insforum()
     list($seq) = sql_fetch_row(sql_query('
 	SELECT MAX(sequence) + 1
 	FROM ' . $GLOBALS['prefix_lms'] . "_forum
-	WHERE idCourse = '" . (int) $idCourse . "'"));
+	WHERE idCourse = '" . (int)$idCourse . "'"));
 
     $ins_query = '
 	INSERT INTO ' . $GLOBALS['prefix_lms'] . "_forum
 	( idCourse, title, description, sequence, emoticons, max_threads, threads_are_private ) VALUES
-	( '" . (int) $idCourse . "',
+	( '" . (int)$idCourse . "',
 		'" . $title . "',
 		'" . $description . "',
 		'$seq',
@@ -549,18 +549,17 @@ function insforum()
     if (!empty($recipients)) {
         require_once _base_ . '/lib/lib.eventmanager.php';
 
+        $arr_subt = ['[url]' => FormaLms\lib\Get::site_url(),
+            '[course]' => $GLOBALS['course_descriptor']->getValue('name'),
+            '[title]' => $_POST['title'],
+            '[text]' => $_POST['description']];
+
         $msg_composer = new EventMessageComposer();
 
         $msg_composer->setSubjectLangText('email', '_NEW_FORUM', false);
-        $msg_composer->setBodyLangText('email', '_NEW_FORUM_BODY', ['[url]' => FormaLms\lib\Get::site_url(),
-            '[course]' => $GLOBALS['course_descriptor']->getValue('name'),
-            '[title]' => $_POST['title'],
-            '[text]' => $_POST['description'], ]);
+        $msg_composer->setBodyLangText('email', '_NEW_FORUM_BODY', $arr_subt);
 
-        $msg_composer->setBodyLangText('sms', '_NEW_FORUM_BODY_SMS', ['[url]' => FormaLms\lib\Get::site_url(),
-            '[course]' => $GLOBALS['course_descriptor']->getValue('name'),
-            '[title]' => $_POST['title'],
-            '[text]' => $_POST['description'], ]);
+        $msg_composer->setBodyLangText('sms', '_NEW_FORUM_BODY_SMS', $arr_subt);
 
         createNewAlert('ForumNewCategory',
             'forum',
@@ -586,7 +585,7 @@ function modforum()
     list($title, $text, $emoticons, $maxThreads, $threadsArePrivate) = sql_fetch_row(sql_query('
 	SELECT title, description, emoticons, max_threads, threads_are_private
 	FROM ' . $GLOBALS['prefix_lms'] . "_forum
-	WHERE idForum = '" . (int) $_GET['idForum'] . "'"));
+	WHERE idForum = '" . (int)$_GET['idForum'] . "'"));
 
     $onchange = "onchange=\"if(document.images) document.images['forum_icon'].src='" . getPathImage() . 'emoticons/' . "'+this.options[this.selectedIndex].value;\"";
 
@@ -595,7 +594,7 @@ function modforum()
         . '<div class="std_block">'
         . Form::openForm('addforumform', 'index.php?modname=forum&amp;op=upforum')
         . Form::openElementSpace()
-        . Form::getHidden('idForum', 'idForum', (int) $_GET['idForum'])
+        . Form::getHidden('idForum', 'idForum', (int)$_GET['idForum'])
         . Form::getTextfield($lang->def('_TITLE'), 'title', 'title', 255, $title)
         . Form::getTextarea($lang->def('_DESCRIPTION'), 'description', 'description', $text)
         . Form::openFormLine()
@@ -671,7 +670,7 @@ function upforum()
 		emoticons = '" . $emoticons . "',
 		max_threads = " . $maxThreads . ',
 		threads_are_private = ' . $allThreadsPrivate . "
-	WHERE idForum = '" . (int) $_POST['idForum'] . "'AND idCourse = '" . (int) $idCourse . "'";
+	WHERE idForum = '" . (int)$_POST['idForum'] . "'AND idCourse = '" . (int)$idCourse . "'";
     if (!sql_query($ins_query)) {
         Util::jump_to('index.php?modname=forum&op=forum&result=err');
     }
@@ -686,29 +685,29 @@ function moveforum($idForum, $direction)
     list($seq) = sql_fetch_row(sql_query('
 	SELECT sequence
 	FROM ' . $GLOBALS['prefix_lms'] . "_forum
-	WHERE idForum = '" . (int) $idForum . "'"));
+	WHERE idForum = '" . (int)$idForum . "'"));
 
     if ($direction == 'up') {
         //move up
         sql_query('
 		UPDATE ' . $GLOBALS['prefix_lms'] . "_forum
 		SET sequence = '$seq'
-		WHERE idCourse = '" . (int) $idCourse . "' AND sequence = '" . ($seq - 1) . "'");
+		WHERE idCourse = '" . (int)$idCourse . "' AND sequence = '" . ($seq - 1) . "'");
         sql_query('
 		UPDATE ' . $GLOBALS['prefix_lms'] . "_forum
 		SET sequence = sequence - 1
-		WHERE idCourse = '" . $idCourse . "' AND idForum = '" . (int) $idForum . "'");
+		WHERE idCourse = '" . $idCourse . "' AND idForum = '" . (int)$idForum . "'");
     }
     if ($direction == 'down') {
         //move down
         sql_query('
 		UPDATE ' . $GLOBALS['prefix_lms'] . "_forum
 		SET sequence = '$seq'
-		WHERE idCourse = '" . (int) $idCourse . "' AND sequence = '" . ($seq + 1) . "'");
+		WHERE idCourse = '" . (int)$idCourse . "' AND sequence = '" . ($seq + 1) . "'");
         sql_query('
 		UPDATE ' . $GLOBALS['prefix_lms'] . "_forum
 		SET sequence = sequence + 1
-		WHERE idCourse = '" . $idCourse . "' AND idForum = '" . (int) $idForum . "'");
+		WHERE idCourse = '" . $idCourse . "' AND idForum = '" . (int)$idForum . "'");
     }
     Util::jump_to('index.php?modname=forum&op=forum');
 }
@@ -719,7 +718,7 @@ function changestatus()
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     list($lock) = sql_fetch_row(sql_query("
 	SELECT locked FROM %lms_forum
-	WHERE idForum = '" . (int) $_GET['idForum'] . "'"));
+	WHERE idForum = '" . (int)$_GET['idForum'] . "'"));
 
     if ($lock == 1) {
         $new_status = 0;
@@ -730,8 +729,8 @@ function changestatus()
     sql_query('
 	UPDATE ' . $GLOBALS['prefix_lms'] . "_forum
 	SET locked = '$new_status'
-	WHERE idCourse = '" . $idCourse . "' AND idForum = '" . (int) $_GET['idForum'] . "'");
-    Util::jump_to('index.php?modname=forum&op=thread&idForum=' . (int) $_GET['idForum']);
+	WHERE idCourse = '" . $idCourse . "' AND idForum = '" . (int)$_GET['idForum'] . "'");
+    Util::jump_to('index.php?modname=forum&op=thread&idForum=' . (int)$_GET['idForum']);
 }
 
 //---------------------------------------------------------------------------//
@@ -756,7 +755,7 @@ function delforum()
         $re_thread = sql_query('
 		SELECT idThread
 		FROM ' . $GLOBALS['prefix_lms'] . "_forumthread
-		WHERE idForum = '" . (int) $_GET['idForum'] . "'");
+		WHERE idForum = '" . (int)$_GET['idForum'] . "'");
         while (list($idT) = sql_fetch_row($re_thread)) {
             if (!sql_query('
 			DELETE FROM ' . $GLOBALS['prefix_lms'] . "_forummessage
@@ -880,11 +879,11 @@ function modforumaccess()
     }
     $query_forum_name = 'SELECT f.title
 	FROM %lms_forum AS f
-	WHERE f.idCourse = ' . (int) $idCourse . '
-		AND f.idForum = ' . (int) $id_forum . ' ';
+	WHERE f.idCourse = ' . (int)$idCourse . '
+		AND f.idForum = ' . (int)$id_forum . ' ';
     $row = sql_fetch_row(sql_query($query_forum_name));
     $forum_name = $row[0];
-    $arr_idstGroup = $aclManager->getGroupsIdstFromBasePath('/lms/course/' . (int) $idCourse . '/subscribed/');
+    $arr_idstGroup = $aclManager->getGroupsIdstFromBasePath('/lms/course/' . (int)$idCourse . '/subscribed/');
     $user_select->setUserFilter('group', $arr_idstGroup);
     $user_select->setGroupFilter('path', '/lms/course/' . $idCourse . '/group');
 
@@ -943,16 +942,16 @@ function thread()
 
         list($numThread) = sql_fetch_row(sql_query($query));
 
-        $remainingThreads = ((int) $maxThreads - (int) $numThread);
+        $remainingThreads = ((int)$maxThreads - (int)$numThread);
 
-        if ((int) $maxThreads > 0 && $remainingThreads - 1 > 0) {
+        if ((int)$maxThreads > 0 && $remainingThreads - 1 > 0) {
             //'Ricorda che hai a disposizione ancora [threads] bonus-domande.'
 
             $remainingThreadsString = str_replace('[threads]', $remainingThreads, Lang::t('_PUBLIC_FORUM_REMAINING_THREADS_MAYOR_ZERO', 'forum'));
         } elseif ($remainingThreads - 1 === 0) {
             //Dopo l'apertura di questa discussione, hai terminato i bonus-domanda.
             $remainingThreadsString = Lang::t('_PUBLIC_FORUM_REMAINING_THREADS_LAST', 'forum');
-        } elseif ((int) $maxThreads === 0) {
+        } elseif ((int)$maxThreads === 0) {
             $canInsert = true;
         } else {
             //Hai esasurito i tuoi bonus-domande. Per ulteriori informazioni consulta il documento "7 Passi"
@@ -964,7 +963,7 @@ function thread()
     list($title, $tot_thread, $locked_f) = sql_fetch_row(sql_query('
 	SELECT title, num_thread, locked
 	FROM ' . $GLOBALS['prefix_lms'] . "_forum
-	WHERE idCourse = '" . (int) $idCourse . "' AND idForum = '$id_forum'"));
+	WHERE idCourse = '" . (int)$idCourse . "' AND idForum = '$id_forum'"));
 
     $nav_bar = new NavBar('ini', FormaLms\lib\Get::sett('visuItem'), $tot_thread, 'link');
     $ini = $nav_bar->getSelectedElement();
@@ -1061,7 +1060,7 @@ function thread()
     ];
     $type_h = ['image', '', 'align_center', 'align_center', 'image',
         //'align_center',
-        'align_center', ];
+        'align_center',];
     if ($mod_perm) {
         $cont_h[] = '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . '" title="' . $lang->def('_MOD') . '" />';
         $type_h[] = 'image';
@@ -1086,7 +1085,7 @@ function thread()
 
         $lvl = current($level_st);
 
-        $query = 'SELECT idst FROM %adm_group_members WHERE idstMember=' . (int) $t_author . ' AND idst IN (' . implode(',', $arr_levels_idst) . ')';
+        $query = 'SELECT idst FROM %adm_group_members WHERE idstMember=' . (int)$t_author . ' AND idst IN (' . implode(',', $arr_levels_idst) . ')';
 
         $res = sql_query($query);
 
@@ -1102,7 +1101,7 @@ function thread()
 
         $authorIsAdmin = ($user_level === ADMIN_GROUP_GODADMIN || $user_level === ADMIN_GROUP_ADMIN);
 
-        if ((int) $isPrivate === 0 || ((int) $isPrivate === 1 && ($t_author === $currentUserId || $authorIsAdmin) || $moderate)) {
+        if ((int)$isPrivate === 0 || ((int)$isPrivate === 1 && ($t_author === $currentUserId || $authorIsAdmin) || $moderate)) {
             $msg_for_page = FormaLms\lib\Get::sett('visuItem');
             $unreadedForum = $session->get('unreaded_forum');
 
@@ -1296,7 +1295,7 @@ function addthread()
     list($title, $threadsArePrivate, $maxThreads) = sql_fetch_row(sql_query('
 	SELECT title, threads_are_private, max_threads
 	FROM ' . $GLOBALS['prefix_lms'] . "_forum
-	WHERE idCourse = '" . (int) $idCourse . "' AND idForum = '" . $id_forum . "'"));
+	WHERE idCourse = '" . (int)$idCourse . "' AND idForum = '" . $id_forum . "'"));
 
     $canInsert = true;
     if ($moderate === false) {
@@ -1305,7 +1304,7 @@ function addthread()
 
         list($numThread) = sql_fetch_row(sql_query($query));
 
-        $remainingThreads = ((int) $maxThreads - (int) $numThread);
+        $remainingThreads = ((int)$maxThreads - (int)$numThread);
 
         if ($remainingThreads - 1 > 0) {
             //'Ricorda che hai a disposizione ancora [threads] bonus-domande.'
@@ -1314,7 +1313,7 @@ function addthread()
         } elseif ($remainingThreads - 1 === 0) {
             //Dopo l'apertura di questa discussione, hai terminato i bonus-domanda.
             $remainingThreadsString = Lang::t('_PUBLIC_FORUM_REMAINING_THREADS_LAST', 'forum');
-        } elseif ((int) $maxThreads === 0) {
+        } elseif ((int)$maxThreads === 0) {
             $canInsert = true;
         } else {
             //Hai esasurito i tuoi bonus-domande. Per ulteriori informazioni consulta il documento "7 Passi
@@ -1332,7 +1331,7 @@ function addthread()
         getTitleArea($page_title, 'forum', $lang->def('_FORUM'))
         . '<div class="std_block">'
         . getBackUi('index.php?modname=forum&amp;op=thread&amp;idForum=' . $id_forum, $lang->def('_BACK'))
-        . ((false === $moderate && (int) $maxThreads > 0) ? '<div class="forum__remaining-thread"><span>' . strtoupper($remainingThreadsString) . '</span></div>' : ''), 'content');
+        . ((false === $moderate && (int)$maxThreads > 0) ? '<div class="forum__remaining-thread"><span>' . strtoupper($remainingThreadsString) . '</span></div>' : ''), 'content');
 
     if ($canInsert) {
         $GLOBALS['page']->add(Form::openForm('form_forum', 'index.php?modname=forum&amp;op=insthread', false, false, 'multipart/form-data')
@@ -1349,7 +1348,7 @@ function addthread()
             $GLOBALS['page']->add(Form::getCheckbox($lang->def('_IMPORTANT_THREAD'), 'important', 'important', $is_important), 'content');
         }
 
-        if ((int) $threadsArePrivate == 1) {
+        if ((int)$threadsArePrivate == 1) {
             $GLOBALS['page']->add(Form::getHidden('private', 'private', 1), 'content');
         } else {
             $GLOBALS['page']->add(Form::getCheckbox(Lang::t('_PRIVATE_THREAD'), 'private', 'private', 1), 'content');
@@ -1416,7 +1415,7 @@ function insthread()
     list($forum_title) = sql_fetch_row(sql_query('
 	SELECT title
 	FROM ' . $GLOBALS['prefix_lms'] . "_forum
-	WHERE idCourse = '" . (int) $idCourse . "' AND idForum = '" . $id_forum . "'"));
+	WHERE idCourse = '" . (int)$idCourse . "' AND idForum = '" . $id_forum . "'"));
 
     $locked = false;
     if (!checkPerm('moderate', true)) {
@@ -1425,7 +1424,7 @@ function insthread()
 		FROM %lms_forum AS f LEFT JOIN
 				' . $GLOBALS['prefix_lms'] . "_forum_access AS fa
 					ON ( f.idForum = fa.idForum )
-		WHERE f.idCourse = '" . (int) $idCourse . "' AND f.idForum = '" . $id_forum . "'";
+		WHERE f.idCourse = '" . (int)$idCourse . "' AND f.idForum = '" . $id_forum . "'";
         $re_forum = sql_query($query_view_forum);
         while (list($id_m, $lock_s) = sql_fetch_row($re_forum)) {
             $locked = $lock_s;
@@ -1496,7 +1495,7 @@ function insthread()
 	( idThread, idCourse, title, textof, author, posted, answer_tree, attach, generator )
 	VALUES (
 		'" . $id_thread . "',
-		'" . (int) $idCourse . "',
+		'" . (int)$idCourse . "',
 		'" . $_POST['title'] . "',
 		'" . $_POST['textof'] . "',
 		'" . getLogUserId() . "',
@@ -1533,18 +1532,17 @@ function insthread()
     // launch notify
     require_once _base_ . '/lib/lib.eventmanager.php';
 
+    $arr_subt = ['[url]' => FormaLms\lib\Get::site_url(),
+        '[course]' => $GLOBALS['course_descriptor']->getValue('name'),
+        '[forum_title]' => $forum_title,
+        '[thread_title]' => $_POST['title']];
+
     $msg_composer = new EventMessageComposer();
 
     $msg_composer->setSubjectLangText('email', '_SUBJECT_NOTIFY_THREAD', false);
-    $msg_composer->setBodyLangText('email', '_NEW_THREAD_INSERT_IN_FORUM', ['[url]' => FormaLms\lib\Get::site_url(),
-        '[course]' => $GLOBALS['course_descriptor']->getValue('name'),
-        '[forum_title]' => $forum_title,
-        '[thread_title]' => $_POST['title'], ]);
+    $msg_composer->setBodyLangText('email', '_NEW_THREAD_INSERT_IN_FORUM',$arr_subt);
 
-    $msg_composer->setBodyLangText('sms', '_NEW_THREAD_INSERT_IN_FORUM_SMS', ['[url]' => FormaLms\lib\Get::site_url(),
-        '[course]' => $GLOBALS['course_descriptor']->getValue('name'),
-        '[forum_title]' => $forum_title,
-        '[thread_title]' => $_POST['title'], ]);
+    $msg_composer->setBodyLangText('sms', '_NEW_THREAD_INSERT_IN_FORUM_SMS', $arr_subt);
 
     launchNotify('forum', $id_forum, $lang->def('_NEW_THREAD'), $msg_composer);
 
@@ -1855,20 +1853,20 @@ function loadDistance($date)
 
     $distance = time() - mktime($hour, $minute, $second, $month, $day, $year);
     //second -> minutes
-    $distance = (int) ($distance / 60);
+    $distance = (int)($distance / 60);
     //< 1 hour print minutes
     if (($distance >= 0) && ($distance < 60)) {
         return $distance . ' ' . Lang::t('_MINUTES');
     }
 
     //minutes -> hour
-    $distance = (int) ($distance / 60);
+    $distance = (int)($distance / 60);
     if (($distance >= 0) && ($distance < 60)) {
         return $distance . ' ' . Lang::t('_HOURS');
     }
 
     //hour -> day
-    $distance = (int) ($distance / 24);
+    $distance = (int)($distance / 24);
     if (($distance >= 0) && ($distance < 30)) {
         return $distance . ' ' . Lang::t('_DAYS');
     }
@@ -1883,7 +1881,7 @@ function message()
 
     require_once _base_ . '/lib/lib.table.php';
     require_once _base_ . '/lib/lib.form.php';
-   require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
+    require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
     require_once _adm_ . '/lib/lib.tags.php';
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $tags = new Tags('lms_forum');
@@ -2009,7 +2007,7 @@ function message()
         $re_num_post = sql_query('
 		SELECT u.idUser, u.level, COUNT(*)
 		FROM %lms_forummessage AS m, ' . $GLOBALS['prefix_lms'] . "_courseuser AS u
-		WHERE u.idCourse = '" . (int) $idCourse . "' AND m.author = u.idUser AND m.author IN ( " . implode(',', $authors) . ' )
+		WHERE u.idCourse = '" . (int)$idCourse . "' AND m.author = u.idUser AND m.author IN ( " . implode(',', $authors) . ' )
 		GROUP BY u.idUser, u.level');
         while (list($id_u, $level_u, $num_post_a) = sql_fetch_row($re_num_post)) {
             $authors_info[$id_u] = ['num_post' => $num_post_a, 'level' => $level_name[$level_u]];
@@ -2270,7 +2268,7 @@ function moderatemessage()
     list($id_thread, $lock) = sql_fetch_row(sql_query('
 	SELECT idThread, locked
 	FROM ' . $GLOBALS['prefix_lms'] . "_forummessage
-	WHERE idMessage = '" . (int) $_GET['idMessage'] . "'"));
+	WHERE idMessage = '" . (int)$_GET['idMessage'] . "'"));
 
     if ($lock == 1) {
         $new_status = 0;
@@ -2281,7 +2279,7 @@ function moderatemessage()
     sql_query('
 	UPDATE ' . $GLOBALS['prefix_lms'] . "_forummessage
 	SET locked = '$new_status'
-	WHERE idMessage = '" . (int) $_GET['idMessage'] . "'");
+	WHERE idMessage = '" . (int)$_GET['idMessage'] . "'");
 
     Util::jump_to('index.php?modname=forum&op=message&idThread=' . $id_thread . '&ini=' . $_GET['ini']);
 }
@@ -2377,7 +2375,7 @@ function showMessageForAdd($id_thread, $how_much)
     $re_num_post = sql_query('
 	SELECT u.idUser, u.level, COUNT(*)
 	FROM %lms_forummessage AS m, ' . $GLOBALS['prefix_lms'] . "_courseuser AS u
-	WHERE u.idCourse = '" . (int) $idCourse . "' AND m.author = u.idUser AND m.author IN ( " . implode(',', $authors) . ' )
+	WHERE u.idCourse = '" . (int)$idCourse . "' AND m.author = u.idUser AND m.author IN ( " . implode(',', $authors) . ' )
 	GROUP BY u.idUser, u.level');
     while (list($id_u, $level_u, $num_post_a) = sql_fetch_row($re_num_post)) {
         $authors_info[$id_u] = ['num_post' => $num_post_a, 'level' => $level_name[$level_u]];
@@ -2582,7 +2580,7 @@ function insmessage()
 		FROM %lms_forum AS f LEFT JOIN
 				' . $GLOBALS['prefix_lms'] . "_forum_access AS fa
 					ON ( f.idForum = fa.idForum )
-		WHERE f.idCourse = '" . (int) $idCourse . "' AND f.idForum = '" . $id_forum . "'";
+		WHERE f.idCourse = '" . (int)$idCourse . "' AND f.idForum = '" . $id_forum . "'";
         $re_forum = sql_query($query_view_forum);
         while (list($id_m, $lock_s, $erase_s) = sql_fetch_row($re_forum)) {
             $locked_f = $lock_s;
@@ -2640,7 +2638,7 @@ function insmessage()
 	INSERT INTO ' . $GLOBALS['prefix_lms'] . "_forummessage
 	( idThread, idCourse, title, textof, author, posted, answer_tree, attach ) VALUES
 	( 	'" . $id_thread . "',
-		'" . (int) $idCourse . "',
+		'" . (int)$idCourse . "',
 		'" . $_POST['title'] . "',
 		'" . $_POST['textof'] . "',
 		'" . getLogUserId() . "',
@@ -2670,18 +2668,17 @@ function insmessage()
     // launch notify
     require_once _base_ . '/lib/lib.eventmanager.php';
 
+    $arr_subt = ['[url]' => FormaLms\lib\Get::site_url(),
+        '[course]' => $GLOBALS['course_descriptor']->getValue('name'),
+        '[forum_title]' => $forum_title,
+        '[thread_title]' => $_POST['title']];
+
     $msg_composer = new EventMessageComposer();
 
     $msg_composer->setSubjectLangText('email', '_SUBJECT_NOTIFY_MESSAGE', false);
-    $msg_composer->setBodyLangText('email', '_NEW_MESSAGE_INSERT_IN_THREAD', ['[url]' => FormaLms\lib\Get::site_url(),
-        '[course]' => $GLOBALS['course_descriptor']->getValue('name'),
-        '[forum_title]' => $forum_title,
-        '[thread_title]' => $_POST['title'], ]);
+    $msg_composer->setBodyLangText('email', '_NEW_MESSAGE_INSERT_IN_THREAD', $arr_subt);
 
-    $msg_composer->setBodyLangText('sms', '_NEW_MESSAGE_INSERT_IN_THREAD_SMS', ['[url]' => FormaLms\lib\Get::site_url(),
-        '[course]' => $GLOBALS['course_descriptor']->getValue('name'),
-        '[forum_title]' => $forum_title,
-        '[thread_title]' => $_POST['title'], ]);
+    $msg_composer->setBodyLangText('sms', '_NEW_MESSAGE_INSERT_IN_THREAD_SMS', $arr_subt);
 
     launchNotify('thread', $id_thread, $lang->def('_NEW_MESSAGE'), $msg_composer);
 
@@ -3051,7 +3048,7 @@ function forumsearch()
         $query_view_forum = '
 		SELECT DISTINCT idForum
 		FROM ' . $GLOBALS['prefix_lms'] . "_forum
-		WHERE idCourse = '" . (int) $idCourse . "'";
+		WHERE idCourse = '" . (int)$idCourse . "'";
     } else {
         $acl = &Docebo::user()->getAcl();
         $all_user_idst = $acl->getSTGroupsST(getLogUserId());
@@ -3061,7 +3058,7 @@ function forumsearch()
 		SELECT DISTINCT f.idForum
 		FROM %lms_forum AS f
 			LEFT JOIN ' . $GLOBALS['prefix_lms'] . "_forum_access AS fa ON ( f.idForum = fa.idForum )
-		WHERE f.idCourse = '" . (int) $idCourse . "' AND
+		WHERE f.idCourse = '" . (int)$idCourse . "' AND
 			( fa.idMember IS NULL OR fa.idMember IN (" . implode(',', $all_user_idst) . ' )  ) ';
     }
     $forums = [];
@@ -3180,7 +3177,7 @@ function forumsearch()
     ];
     $type_h = ['image', '', 'align_center', 'align_center', 'image',
         //'align_center',
-        'align_center', ];
+        'align_center',];
     if ($mod_perm) {
         $cont_h[] = '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . '" title="' . $lang->def('_MOD') . '" />';
         $type_h[] = 'image';
@@ -3357,7 +3354,7 @@ function forumsearchmessage()
     $re_num_post = sql_query('
 	SELECT u.idUser, u.level, COUNT(*)
 	FROM %lms_forummessage AS m, ' . $GLOBALS['prefix_lms'] . "_courseuser AS u
-	WHERE u.idCourse = '" . (int) $idCourse . "' AND m.author = u.idUser AND m.author IN ( " . implode(',', $authors) . ' )
+	WHERE u.idCourse = '" . (int)$idCourse . "' AND m.author = u.idUser AND m.author IN ( " . implode(',', $authors) . ' )
 	GROUP BY u.idUser, u.level');
     while (list($id_u, $level_u, $num_post_a) = sql_fetch_row($re_num_post)) {
         $authors_info[$id_u] = ['num_post' => $num_post_a, 'level' => $level_name[$level_u]];
@@ -3552,8 +3549,8 @@ function forumsearchmessage()
  * Register a new notify.
  *
  * @param string $notify_is_a specifie if the notify is for a thread or for a forum
- * @param int    $id_notify   specifie the id of the resource
- * @param int    $id_user     the user
+ * @param int $id_notify specifie the id of the resource
+ * @param int $id_user the user
  *
  * @return bool true if success false otherwise
  */
@@ -3575,8 +3572,8 @@ function setNotify($notify_is_a, $id_notify, $id_user)
  * Erase a register notify.
  *
  * @param string $notify_is_a specifie if the notify is for a thread or for a forum
- * @param int    $id_notify   specifie the id of the resource
- * @param int    $id_user     the user
+ * @param int $id_notify specifie the id of the resource
+ * @param int $id_user the user
  *
  * @return bool true if success false otherwise
  */
@@ -3599,8 +3596,8 @@ function unsetNotify($notify_is_a, $id_notify, $id_user = false)
  * Return if a user as set a notify for a resource.
  *
  * @param string $notify_is_a specifie if the notify is for a thread or for a forum
- * @param int    $id_notify   specifie the id of the resource
- * @param int    $id_user     the user
+ * @param int $id_notify specifie the id of the resource
+ * @param int $id_user the user
  *
  * @return bool true if exists false otherwise
  */
@@ -3622,7 +3619,7 @@ function issetNotify($notify_is_a, $id_notify, $id_user)
 /**
  * Return all the users registered notify.
  *
- * @param int    $id_user     the user
+ * @param int $id_user the user
  * @param string $notify_is_a specifie if the notify is for a thread or for a forum
  *
  * @return array [thread]=>(  [id] => id, ...), [forum]=>(  [id] => id, ...)
@@ -3808,7 +3805,7 @@ function moveThread($id_thread, $id_forum)
             . '</div>', 'content'
         );
     } else {
-        $id_course = (int) \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+        $id_course = (int)\FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         $id_forum = importVar('id_forum', true, 0);
 
         $list_forum = [];
@@ -3840,7 +3837,7 @@ function moveThread($id_thread, $id_forum)
 
 function addUnreadNotice($id_forum)
 {
-    $idCourse = (int) \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $idCourse = (int)\FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $query_view_forum = 'SELECT idMember
 	FROM ' . $GLOBALS['prefix_lms'] . "_forum_access
 	WHERE idForum = '" . $id_forum . "'";
@@ -3858,12 +3855,12 @@ function addUnreadNotice($id_forum)
 
         $query = 'UPDATE ' . $GLOBALS['prefix_lms'] . "_courseuser
 		SET new_forum_post = new_forum_post + 1
-		WHERE idCourse = '" . (int) $id . "' AND idUser IN (" . implode(',', $interested_user) . ') ';
+		WHERE idCourse = '" . (int)$id . "' AND idUser IN (" . implode(',', $interested_user) . ') ';
         sql_query($query);
     } else {
         $query = 'UPDATE ' . $GLOBALS['prefix_lms'] . "_courseuser
 		SET new_forum_post = new_forum_post + 1
-		WHERE idCourse = '" . (int) $idCourse . "'";
+		WHERE idCourse = '" . (int)$idCourse . "'";
         sql_query($query);
     }
 }
@@ -3887,7 +3884,7 @@ function export()
 
         $result = sql_query($query);
 
-        if (sql_num_rows($result));
+        if (sql_num_rows($result)) ;
 
         $tmp = [];
         $id_list = [];
@@ -4187,7 +4184,7 @@ function forumDispatch($op)
             list($title, $attach) = sql_fetch_row(sql_query('
 			SELECT title, attach
 			FROM ' . $GLOBALS['prefix_lms'] . "_forummessage
-			WHERE idMessage='" . (int) $_GET['id'] . "'"));
+			WHERE idMessage='" . (int)$_GET['id'] . "'"));
             if (!$attach) {
                 $GLOBALS['page']->add(getErrorUi('Sorry, such file does not exist!'), 'content');
 

@@ -696,7 +696,7 @@ class Man_Course
         return $map;
     }
 
-    public function getIdUserOfLevel($idCourse, $levelNumber = false, $idEdition = false)
+    public static function getIdUserOfLevel($idCourse, $levelNumber = false, $idEdition = false)
     {
         $users = [];
         $query_courseuser = '

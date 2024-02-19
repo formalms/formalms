@@ -446,20 +446,19 @@ if (!Docebo::user()->isAnonymous()) {
         // send alert
         require_once _base_ . '/lib/lib.eventmanager.php';
 
+        $arr_subt = ['[url]' => FormaLms\lib\Get::site_url(),
+            '[course_code]' => $_POST['course_code'],
+            '[course]' => $_POST['course_name']];
+
         $msg_composer = new EventMessageComposer();
 
         $msg_composer->setSubjectLangText('email', '_ALERT_SUBJECT_MODCOURSE_INFO', false);
-        $msg_composer->setBodyLangText('email', '_ALERT_TEXT_MODCOURSE_INFO', ['[url]' => FormaLms\lib\Get::site_url(),
-            '[course_code]' => $_POST['course_code'],
-            '[course]' => $_POST['course_name'], ]);
+        $msg_composer->setBodyLangText('email', '_ALERT_TEXT_MODCOURSE_INFO', $arr_subt);
 
-        $msg_composer->setBodyLangText('sms', '_ALERT_TEXT_MODCOURSE_INFO_SMS', ['[url]' => FormaLms\lib\Get::site_url(),
-            '[course_code]' => $_POST['course_code'],
-            '[course]' => $_POST['course_name'], ]);
+        $msg_composer->setBodyLangText('sms', '_ALERT_TEXT_MODCOURSE_INFO_SMS', $arr_subt);
 
         require_once _lms_ . '/lib/lib.course.php';
-        $course_man = new Man_Course();
-        $recipients = $course_man->getIdUserOfLevel($session->get('idCourse'));
+        $recipients = Man_Course::getIdUserOfLevel($session->get('idCourse'));
 
         createNewAlert('CoursePorpModified',
             'course',

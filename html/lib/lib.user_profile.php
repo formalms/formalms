@@ -520,7 +520,7 @@ class UserProfile
                         // message to user that is odified
                         $msg_composer = new EventMessageComposer();
 
-                        $msg_composer->setSubjectLangText('email', '_EVENT_MOD_USER_SBJ', false);
+                        $msg_composer->setSubjectLangText('email', '_EVENT_MOD_USER_SBJ', $array_subst);
                         $msg_composer->setBodyLangText('email', '_EVENT_MOD_USER_TEXT', $array_subst);
 
                         $msg_composer->setBodyLangText('sms', '_EVENT_MOD_USER_TEXT_SMS', $array_subst);

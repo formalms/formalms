@@ -107,8 +107,7 @@ function outPageView($link)
     }
 
     $view_all_perm = checkPerm('view_all', true);
-    $course_man = new Man_Course();
-    $course_user = $course_man->getIdUserOfLevel($idCourse);
+    $course_user = Man_Course::getIdUserOfLevel($idCourse);
 
     //apply sub admin filters, if needed
     if (!$view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin') {
@@ -220,8 +219,7 @@ function statistic()
 
     $lang = &DoceboLanguage::createInstance('statistic', 'lms');
     $acl_man = Docebo::user()->getAclManager();
-    $course_man = new Man_Course();
-    $course_user = $course_man->getIdUserOfLevel($idCourse);
+    $course_user = Man_Course::getIdUserOfLevel($idCourse);
 
     //apply sub admin filters, if needed
     if (!$view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin') {

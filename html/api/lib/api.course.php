@@ -559,7 +559,7 @@ class Course_API extends API
                 '[course]' => $course_info['name'], ];
 
             $msg_composer = new EventMessageComposer();
-            $msg_composer->setSubjectLangText('email', '_APPROVED_SUBSCRIBED_SUBJECT', false);
+            $msg_composer->setSubjectLangText('email', '_APPROVED_SUBSCRIBED_SUBJECT', $array_subst);
             $msg_composer->setBodyLangText('email', '_APPROVED_SUBSCRIBED_TEXT', $array_subst);
 
             $recipients = [$user_id];

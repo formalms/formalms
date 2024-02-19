@@ -599,7 +599,7 @@ class UsermanagementAdmController extends AdmController
 
             $e_msg = new EventMessageComposer();
 
-            $e_msg->setSubjectLangText('email', '_REGISTERED_USER_SBJ', false);
+            $e_msg->setSubjectLangText('email', '_REGISTERED_USER_SBJ', $array_subst);
             $e_msg->setBodyLangText('email', '_REGISTERED_USER_TEXT', $array_subst);
 
             $e_msg->setBodyLangText('sms', '_REGISTERED_USER_TEXT_SMS', $array_subst);
@@ -756,7 +756,7 @@ class UsermanagementAdmController extends AdmController
         // message to user that is odified
         $msg_composer = new EventMessageComposer();
 
-        $msg_composer->setSubjectLangText('email', '_EVENT_MOD_USER_SBJ', false);
+        $msg_composer->setSubjectLangText('email', '_EVENT_MOD_USER_SBJ', $array_subst);
         $msg_composer->setBodyLangText('email', '_EVENT_MOD_USER_TEXT', $array_subst);
 
         $msg_composer->setBodyLangText('sms', '_EVENT_MOD_USER_TEXT_SMS', $array_subst);
@@ -966,7 +966,7 @@ class UsermanagementAdmController extends AdmController
                 // message to user that is odified
                 $msg_composer = new EventMessageComposer();
 
-                $msg_composer->setSubjectLangText('email', '_EVENT_SUSPENDED_USER_SBJ', false);
+                $msg_composer->setSubjectLangText('email', '_EVENT_SUSPENDED_USER_SBJ', $array_subst);
                 $msg_composer->setBodyLangText('email', '_EVENT_SUSPENDED_USER_TEXT', $array_subst);
 
                 $msg_composer->setBodyLangText('sms', '_EVENT_SUSPENDED_USER_TEXT_SMS', $array_subst);
@@ -1063,7 +1063,7 @@ class UsermanagementAdmController extends AdmController
                     // message to user that is odified
                     $msg_composer = new EventMessageComposer();
 
-                    $msg_composer->setSubjectLangText('email', '_EVENT_SUSPENDED_USER_SBJ', false);
+                    $msg_composer->setSubjectLangText('email', '_EVENT_SUSPENDED_USER_SBJ', $array_subst);
                     $msg_composer->setBodyLangText('email', '_EVENT_SUSPENDED_USER_TEXT', $array_subst);
 
                     $msg_composer->setBodyLangText('sms', '_EVENT_SUSPENDED_USER_TEXT_SMS', $array_subst);
@@ -1753,7 +1753,7 @@ class UsermanagementAdmController extends AdmController
                         // message to user that is odified
                         $msg_composer = new EventMessageComposer();
 
-                        $msg_composer->setSubjectLangText('email', '_EVENT_CHANGE_NODE_USER_SBJ', false);
+                        $msg_composer->setSubjectLangText('email', '_EVENT_CHANGE_NODE_USER_SBJ', $array_subst);
                         $msg_composer->setBodyLangText('email', '_EVENT_CHANGE_NODE_USER_TEXT', $array_subst);
 
                         $msg_composer->setBodyLangText('sms', '_EVENT_CHANGE_NODE_USER_SBJ_SMS', $array_subst);

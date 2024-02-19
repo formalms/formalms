@@ -57,7 +57,7 @@ class AlertService
 
             // message to user that is waiting
             $msg_composer = new \EventMessageComposer();
-            $msg_composer->setSubjectLangText('email', '_NEW_USER_SUBSCRIBED_SUBJECT', false);
+            $msg_composer->setSubjectLangText('email', '_NEW_USER_SUBSCRIBED_SUBJECT', $array_subst);
             $msg_composer->setBodyLangText('email', '_NEW_USER_SUBSCRIBED_TEXT', $array_subst);
             $msg_composer->setBodyLangText('sms', '_NEW_USER_SUBSCRIBED_TEXT_SMS', $array_subst);
 

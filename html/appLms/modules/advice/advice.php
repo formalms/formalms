@@ -388,20 +388,18 @@ function insadvice()
 
     $msg_composer = new EventMessageComposer();
     $_REQUEST['description'] = str_replace(['\r', '\n'], '', $_REQUEST['description']);
-    $msg_composer->setSubjectLangText('email', '_ALERT_SUBJECT', false);
-    $msg_composer->setBodyLangText('email', '_ALERT_TEXT', [
-        '[url]' => FormaLms\lib\Get::site_url(),
-        '[course]' => $GLOBALS['course_descriptor']->getValue('name'),
-        '[title]' => stripslashes($_REQUEST['title']),
-        '[text]' => stripslashes($_REQUEST['description']),
-    ]);
 
-    $msg_composer->setBodyLangText('sms', '_ALERT_TEXT_SMS', [
+    $arr_subst = [
         '[url]' => FormaLms\lib\Get::site_url(),
         '[course]' => $GLOBALS['course_descriptor']->getValue('name'),
         '[title]' => stripslashes($_REQUEST['title']),
         '[text]' => stripslashes($_REQUEST['description']),
-    ]);
+    ];
+
+    $msg_composer->setSubjectLangText('email', '_ALERT_SUBJECT', $arr_subst);
+    $msg_composer->setBodyLangText('email', '_ALERT_TEXT', $arr_subst);
+
+    $msg_composer->setBodyLangText('sms', '_ALERT_TEXT_SMS', $arr_subst);
 
     createNewAlert(
         'AdviceNew',
@@ -612,24 +610,21 @@ function updreader()
 			SELECT title, description, important
 			FROM ' . $GLOBALS['prefix_lms'] . "_advice
 			WHERE idAdvice='" . (int) $id_advice . "'";
-        list($title, $description, $impo) = sql_fetch_row(sql_query($query_advice));
+        [$title, $description, $impo] = sql_fetch_row(sql_query($query_advice));
+
+        $arr_subst = [
+            '[url]' => FormaLms\lib\Get::site_url(),
+            '[course]' => $GLOBALS['course_descriptor']->getValue('name'),
+            '[title]' => stripslashes($title),
+            '[text]' => stripslashes($description),
+        ];
 
         $msg_composer = new EventMessageComposer();
 
         $msg_composer->setSubjectLangText('email', '_ALERT_SUBJECT', false);
-        $msg_composer->setBodyLangText('email', '_ALERT_TEXT', [
-            '[url]' => FormaLms\lib\Get::site_url(),
-            '[course]' => $GLOBALS['course_descriptor']->getValue('name'),
-            '[title]' => stripslashes($title),
-            '[text]' => stripslashes($description),
-        ]);
+        $msg_composer->setBodyLangText('email', '_ALERT_TEXT',$arr_subst );
 
-        $msg_composer->setBodyLangText('sms', '_ALERT_TEXT_SMS', [
-            '[url]' => FormaLms\lib\Get::site_url(),
-            '[course]' => $GLOBALS['course_descriptor']->getValue('name'),
-            '[title]' => stripslashes($title),
-            '[text]' => stripslashes($description),
-        ]);
+        $msg_composer->setBodyLangText('sms', '_ALERT_TEXT_SMS', $arr_subst);
 
         createNewAlert(
             'AdviceNew',

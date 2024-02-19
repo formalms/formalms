@@ -246,8 +246,8 @@ class LightRepoManager
         $file_list = [];
         $acl_man = Docebo::user()->getAclManager();
         $view_all_perm = checkPerm('view_all', true);
-        $course_man = new Man_Course();
-        $course_user = $course_man->getIdUserOfLevel($this->_id_course, 3);
+
+        $course_user = Man_Course::getIdUserOfLevel($this->_id_course, 3);
 
         //apply sub admin filters, if needed
         if (!$view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin') {

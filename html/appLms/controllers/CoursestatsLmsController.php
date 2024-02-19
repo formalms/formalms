@@ -1495,8 +1495,8 @@ class CoursestatsLmsController extends LmsController
     public function exportUsageStatistics()
     {
         $acl_man = Docebo::user()->getAclManager();
-        $course_man = new Man_Course();
-        $course_user = $course_man->getIdUserOfLevel($this->idCourse);
+
+        $course_user = Man_Course::getIdUserOfLevel($this->idCourse);
 
         //apply sub admin filters, if needed
         if (!$view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin') {

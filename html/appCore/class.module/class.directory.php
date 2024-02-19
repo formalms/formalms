@@ -1973,7 +1973,7 @@ class Module_Directory extends Module
 
                 $msg_composer2 = new EventMessageComposer('admin_directory', 'framework');
 
-                $msg_composer2->setSubjectLangText('email', '_APPROVED_USER_SBJ', false);
+                $msg_composer2->setSubjectLangText('email', '_APPROVED_USER_SBJ', $array_subst);
                 $msg_composer2->setBodyLangText('email', '_APPROVED_USER_TEXT', $array_subst);
 
                 $msg_composer2->setBodyLangText('sms', '_APPROVED_USER_TEXT_SMS', $array_subst);
