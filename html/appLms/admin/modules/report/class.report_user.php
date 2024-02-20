@@ -4056,7 +4056,7 @@ class Report_User extends Report
         }
 
         //some other checkings and validations
-        if (!$sel_all && count($selection) <= 0) {
+        if (!$sel_all && count($selection ?? []) <= 0) {
             cout('<p>' . $_ERR_NOUSER . '</p>');
 
             return;
