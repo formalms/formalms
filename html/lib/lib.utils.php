@@ -538,6 +538,12 @@ class Util
             $configResult = (is_array($configResult) && array_key_exists($index, $configResult)) ? $configResult[$index] : null;
         }
 
+        $event = Events::trigger('core.util.config', array_merge(['result' => $configResult], compact('path','plugin')));
+
+        if(array_key_exists('result', $event)) {
+            $configResult = $event['result'];
+        }
+
         return $configResult;
     }
 }
