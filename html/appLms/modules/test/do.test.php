@@ -2012,7 +2012,7 @@ function editUserReport($id_user, $id_test, $id_track, $number_time = null, $edi
         $re_visu_quest = sql_query('SELECT idQuest
 		FROM ' . $GLOBALS['prefix_lms'] . "_testtrack_quest
 		WHERE idTrack = '" . (int)$id_track . "' ");
-
+        $quest_see = [];
         while (list($id_q) = sql_fetch_row($re_visu_quest)) {
             $quest_see[] = $id_q;
         }

@@ -1752,7 +1752,7 @@ class CoursereportLmsController extends LmsController
         // XXX: Save input if needed
         if (isset($_POST['view_answer'])) {
             $re = $this->saveTestUpdate($id_test, $test_man);
-            $id_user = reset($_POST['view_answer']);
+            $id_user = reset(array_keys($_POST['view_answer']));
         } else {
             $id_user = importVar('id_user', true, 0);
         }
