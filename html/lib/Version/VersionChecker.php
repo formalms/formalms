@@ -29,7 +29,6 @@ class VersionChecker
     protected $minMariadbVersion;
     protected $maxMariadbVersion;
     protected $minSupportedVersion;
-    protected $minTemplateVersion;
     protected $minUpgradeVersion;
 
      /**
@@ -330,8 +329,9 @@ class VersionChecker
      */
     public static function getMinimumTemplateVersion(): string
     {
-
-        return (new self)->minTemplateVersion;
+        $standardDir = _base_ . '/templates/standard';
+        $manifestStandard = simplexml_load_string(file_get_contents($standardDir . '/manifest.xml'));
+        return $manifestStandard->forma_version;
     }
 
 

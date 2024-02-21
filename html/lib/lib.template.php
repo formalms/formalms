@@ -215,7 +215,7 @@ function getTemplateVersion($template_name)
  *
  * @return array an array with the existent templates
  */
-function getTemplateList($set_keys = false, $addUndefined = false)
+function getTemplateList($set_keys = false, $addUndefined = false, $excludeNotCompliant = true)
 {
     $templArray = [];
     $templ = dir(_templates_ . '/');
@@ -224,6 +224,15 @@ function getTemplateList($set_keys = false, $addUndefined = false)
             if($addUndefined) {
                 $templArray[0] = Lang::t('_NOT_ASSIGNED');
             }
+
+            $xml = simplexml_load_string(file_get_contents(_templates_ . '/' . $elem. '/manifest.xml'));
+
+            $compliance = version_compare((string)$xml->forma_version, \FormaLms\lib\Version\VersionChecker::getMinimumTemplateVersion());
+
+            if($excludeNotCompliant && ($compliance < 0)) {
+                continue;
+            }
+
             if (!$set_keys) {
                 $templArray[] = $elem;
             } else {
