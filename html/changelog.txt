@@ -2,6 +2,27 @@ FORMA LMS
 RELEASE CHANGELOG
 
 ---------------------------------------------------------------------------------------
+forma.lms 3.3.21
+---------------------------------------------------------------------------------------
+Release date: 2024 february
+
+- #      - fix subject dynamic content in mail
+- #      - events on userselector columns
+- #      - fix scorm time parser
+- #      - fix scorm sessiontime count
+- #      - fix connector import user language logic
+- #      - other fix html page escape
+- #      - fix htmlpage update query
+- #      - fix deleteLearningObjects API 
+- #      - add version files
+- #      - fix advanced search in user widget
+- #      - sanitize wildcard in check username duplicates
+- #      - fix default lang in io task user import
+- #      - fix calendar 
+- #      - remove course description in getanswertest XML response
+- #      - fix multimod subscription in users array
+
+---------------------------------------------------------------------------------------
 forma.lms 3.3.17
 ---------------------------------------------------------------------------------------
 Release date: 2023 november
