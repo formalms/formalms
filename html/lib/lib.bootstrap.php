@@ -287,6 +287,7 @@ class Boot
         require_once _base_ . '/lib/lib.utils.php';
 
         // UTF8 Support
+        // should be substituted with symfony string library and handled in class since package is abandoned
         \Patchwork\Utf8\Bootup::initAll();
         \Patchwork\Utf8\Bootup::filterRequestInputs();
 
