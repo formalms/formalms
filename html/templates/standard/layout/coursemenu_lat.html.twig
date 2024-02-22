@@ -71,7 +71,7 @@
 					{% for dropdown_menu in dropdown %}
 						{% if dropdown_menu.selected  %}
 							{% for slider_menu in dropdown_menu.slider_menu %}
-								<li class="slider-menu__item{% if slider_menu.selected  %} is-selected{% endif %}"><a href="{{ slider_menu.link }}">{{ slider_menu.name }}</a></li>
+								<li class="slider-menu__item{% if slider_menu.selected  %} is-selected{% endif %}"><a class="slider-link" href="{{ slider_menu.link }}">{{ slider_menu.name }}</a></li>
 							{% endfor %}
 						{% endif %}
 					{% endfor %}
