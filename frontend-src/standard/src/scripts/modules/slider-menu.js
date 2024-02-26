@@ -11,9 +11,9 @@ var SliderMenu = (function() {
         variableWidth: true,
         draggable: false,
         prevArrow:
-            '<div class="slider-menu__arrow slick-prev slick-arrow"><span class="glyphicon glyphicon-menu-left"></span><span class="glyphicon glyphicon-menu-left"></span></div>',
+            '<div class="slider-menu__arrow slick-prev slick-arrow"><span class="glyphicon glyphicon-menu-left"></span></div>',
         nextArrow:
-            '<div class="slider-menu__arrow slick-next slick-arrow"><span class="glyphicon glyphicon-menu-right"></span><span class="glyphicon glyphicon-menu-right"></span></div>',
+            '<div class="slider-menu__arrow slick-next slick-arrow"><span class="glyphicon glyphicon-menu-right"></span></div>',
         responsive: [
           {
             breakpoint: 1220,
