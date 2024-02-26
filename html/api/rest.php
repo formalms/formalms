@@ -32,7 +32,8 @@ Boot::init(BOOT_HOOKS);
 $GLOBALS['output'] = '';
 function rest_cout($string)
 {
-    $GLOBALS['output'] .= $string;
+    echo $string;
+    ob_end_flush();
 }
 
 // -----------------------------------------------------------------------------
