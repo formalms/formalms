@@ -2112,7 +2112,7 @@ class Man_CourseUser
             " WHERE autoregistration_code = '" . $code . "'"
             . " AND autoregistration_code <> ''"
             . " AND (                       
-                            (can_subscribe=2 AND (sub_end_date IS NULL OR sub_end_date >= '" . date('Y-m-d') . "') AND (sub_start_date = IS NULL OR '" . date('Y-m-d') . "' >= sub_start_date)) OR
+                            (can_subscribe=2 AND (sub_end_date IS NULL OR sub_end_date >= '" . date('Y-m-d') . "') AND (sub_start_date IS NULL OR '" . date('Y-m-d') . "' >= sub_start_date)) OR
                             (can_subscribe=1)
                          ) ";
 
