@@ -214,7 +214,7 @@ class GroupTestManagement
         foreach ($users_scores as $idst_user => $score) {
             $query_scores = '
 			UPDATE ' . $GLOBALS['prefix_lms'] . "_testtrack
-			SET date_attempt_mod = '" . Format::dateDb($date_attempts[$idst_user]) . "', 
+			SET date_attempt_mod = '" . Format::dateDb($date_attempts[$idst_user],'date') . "', 
 				bonus_score = '" . ($score - $old_scores[$id_test][$idst_user]['score']) . "', 
 				score_status = 'valid',
 				comment = '" . $comments[$idst_user] . "'

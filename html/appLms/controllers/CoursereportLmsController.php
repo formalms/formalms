@@ -1100,7 +1100,7 @@ class CoursereportLmsController extends LmsController
 				';
                 $q = sql_query($sql);
 
-                list($score) = sql_fetch_array($q);
+                [$score] = sql_fetch_array($q);
 
                 if (FormaLms\lib\Get::req('round_report') || FormaLms\lib\Get::req('redo_final') || !$score) {
                     $c = new CourseReportManager();
@@ -1451,7 +1451,7 @@ class CoursereportLmsController extends LmsController
             . ' FROM %lms_test'
             . " WHERE idTest = '" . $id_test . "'";
 
-        list($question_random_number) = sql_fetch_row(sql_query($query));
+        [$question_random_number] = sql_fetch_row(sql_query($query));
         /* XXX: scores */
         $tb = new Table(0, $lang->def('_STUDENTS_VOTE'), $lang->def('_STUDENTS_VOTE'));
 
@@ -1676,7 +1676,7 @@ class CoursereportLmsController extends LmsController
             . ' FROM %lms_test'
             . " WHERE idTest = '" . $id_test . "'";
 
-        list($titolo_test) = sql_fetch_row(sql_query($query_test));
+        [$titolo_test] = sql_fetch_row(sql_query($query_test));
 
         $query_quest = 'SELECT idQuest, type_quest, title_quest'
             . ' FROM %lms_testquest'
@@ -2908,7 +2908,7 @@ class CoursereportLmsController extends LmsController
         // XXX: Instance management
         $report_man = new CourseReportManager();
 
-        list($seq) = sql_fetch_row(sql_query("
+        [$seq] = sql_fetch_row(sql_query("
 	SELECT sequence
 	FROM %lms_coursereport
 	WHERE id_course = '" . $this->idCourse . "' AND id_report = '" . $id_report . "'"));
@@ -2998,7 +2998,7 @@ class CoursereportLmsController extends LmsController
         }
 
         $query_tot_report = "SELECT COUNT(*) FROM %lms_coursereport WHERE id_course = '" . $this->idCourse . "'";
-        list($tot_report) = sql_fetch_row(sql_query($query_tot_report));
+        [$tot_report] = sql_fetch_row(sql_query($query_tot_report));
 
         $query_tests = "SELECT id_report, id_source FROM %lms_coursereport WHERE id_course = '" . $this->idCourse . "' AND source_of = '" . CoursereportLms::SOURCE_OF_TEST . "'";
 
@@ -3691,7 +3691,7 @@ class CoursereportLmsController extends LmsController
             . ' FROM %lms_test'
             . " WHERE idTest = '" . $id_test . "'";
 
-        list($titolo_test) = sql_fetch_row(sql_query($query_test));
+        [$titolo_test] = sql_fetch_row(sql_query($query_test));
 
         $query_quest = 'SELECT idQuest, type_quest, title_quest'
             . ' FROM %lms_testquest'
@@ -3764,7 +3764,7 @@ class CoursereportLmsController extends LmsController
             . " AND score_status = 'valid'"
             . ' AND idUser in (' . implode(',', $id_students) . ')';
 
-        list($total_play) = sql_fetch_row(sql_query($query_total_play));
+        [$total_play] = sql_fetch_row(sql_query($query_total_play));
 
         /*if ($total_play == 0) {
                     $query_total_play =     "SELECT COUNT(*)"
@@ -3933,7 +3933,7 @@ class CoursereportLmsController extends LmsController
         $lang = FormaLanguage::createInstance('coursereport', 'lms');
         $acl_man = \FormaLms\lib\Forma::getAclManager();
         $user_info = $acl_man->getUser($idUser, false);
-        list($title) = sql_fetch_row(sql_query('SELECT title FROM %lms_test WHERE idTest=' . (int) $idTest));
+        [$title] = sql_fetch_row(sql_query('SELECT title FROM %lms_test WHERE idTest=' . (int)$idTest));
         $backUrl = 'index.php?r=lms/coursereport/testvote&id_test=' . (int) $idTest;
         $backUi = getBackUi($backUrl, $lang->def('_BACK'));
 

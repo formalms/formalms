@@ -2175,7 +2175,7 @@ function saveManualUserReport($id_user, $id_test, $id_track)
 	FROM ' . $GLOBALS['prefix_lms'] . "_test
 	WHERE idTest = '" . (int)$id_test . "'"));
 
-    list($score, $bonus_score, $date_attempt, $date_attempt_mod, $score_status) = sql_fetch_row(sql_query('
+    [$score, $bonus_score, $date_attempt, $date_attempt_mod, $score_status] = sql_fetch_row(sql_query('
 	SELECT score, bonus_score, date_attempt, date_attempt_mod, score_status 
 	FROM ' . $GLOBALS['prefix_lms'] . "_testtrack
 	WHERE idTrack = '" . (int)$id_track . "'"));
@@ -2221,7 +2221,9 @@ function saveManualUserReport($id_user, $id_test, $id_track)
             } else {
                 $quest_point_do = $quest_obj->userScore($id_track);
             } // end else
-
+            if (!is_numeric($quest_point_do)){
+                $quest_point_do = 0;
+            }
             $point_do = round($point_do + $quest_point_do, 2);
             $max_score = round($max_score + $quest_max_score, 2);
         } // end if
