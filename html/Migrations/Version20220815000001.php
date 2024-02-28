@@ -1269,7 +1269,6 @@ final class Version20220815000001 extends AbstractMigration
             (8, '/framework/admin/adminmanager/view', NULL),
             (9, '/framework/admin/adminrules/view', NULL),
             (10, '/framework/admin/dashboard/view', NULL),
-            (11, '/framework/admin/dashboard/view', NULL),
             (12, '/framework/admin/directory/approve_waiting_user', NULL),
             (13, '/framework/admin/event_manager/view_event_manager', NULL),
             (14, '/framework/admin/field_manager/add', NULL),
@@ -1441,7 +1440,10 @@ final class Version20220815000001 extends AbstractMigration
             (11836, '/lms/admin/certificate/assign', NULL),
             (11837, '/lms/admin/certificate/release', NULL),
             (11838, '/lms/admin/report/schedule', NULL),
-            (11839, '/lms/course/public/dashboard/view', NULL)");
+            (11839, '/lms/course/public/dashboard/view', NULL),
+            (11840, '/framework/admin/privacypolicy/view', NULL),
+            (11841, '/framework/admin/privacypolicy/mod', NULL),
+            (11842, '/framework/admin/privacypolicy/del', NULL)");
 
 
 
@@ -1459,7 +1461,6 @@ final class Version20220815000001 extends AbstractMigration
             (8,3),
             (9,3),
             (10,3),
-            (11,3),
             (12,3),
             (13,3),
             (14,3),
@@ -1557,6 +1558,9 @@ final class Version20220815000001 extends AbstractMigration
             (120,3),
             (121,3),
             (122,3),
+            (11840,3),
+            (11841,3),
+            (11842,3),
             (186,10893),
             (186,10894),
             (186,10895),

@@ -1375,6 +1375,8 @@ function showResult($object_test, $id_param)
 
             if ($suspend_info['attempts_for_suspension'] >= $test_info['suspension_num_attempts']) {
                 if ($prerequisite = $test_man->getPrerequisite()) {
+
+                    $prerequisite = str_replace(["=incomplete","=NULL"], '', $prerequisite);
                     $sql = "DELETE FROM %lms_materials_track WHERE idReference IN ($prerequisite) AND idUser = " . \FormaLms\lib\FormaUser::getCurrentUser()->getIdst();
                     $q = sql_query($sql);
 
