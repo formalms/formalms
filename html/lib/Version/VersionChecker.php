@@ -309,7 +309,7 @@ class VersionChecker
     public static function checkTemplateversion($templateVersion): bool
     {
 
-        return (bool)(version_compare((new self)->minTemplateVersion, $templateVersion) <= 0);
+        return (bool)(version_compare((new self)->getMinimumTemplateVersion(), $templateVersion) <= 0);
 
     }
 
