@@ -2595,7 +2595,6 @@ class UsermanagementAdmController extends AdmController
         $head[] = $this->_formatCsvValue(Lang::t('_FIRSTNAME', 'standard'), $delimiter);
         $head[] = $this->_formatCsvValue(Lang::t('_LASTNAME', 'standard'), $delimiter);
         $head[] = $this->_formatCsvValue(Lang::t('_EMAIL', 'standard'), $delimiter);
-        $head[] = $this->_formatCsvValue(Lang::t('_SIGNATURE', 'standard'), $delimiter);
         $head[] = $this->_formatCsvValue(Lang::t('_REGISTER_DATE', 'standard'), $delimiter);
         $head[] = $this->_formatCsvValue(Lang::t('_LAST_ENTER', 'standard'), $delimiter);
         foreach ($field_list as $id_field => $field_translation) {
@@ -2621,7 +2620,6 @@ class UsermanagementAdmController extends AdmController
                     $row[] = $detail->firstname;
                     $row[] = $detail->lastname;
                     $row[] = $detail->email;
-                    $row[] = $detail->signature;
                     $row[] = $detail->register_date;
                     $row[] = $detail->lastenter;
 

@@ -2788,11 +2788,7 @@ class UserManagerRenderer
             $txt .= '<div class="text_italic">' . $lang->def('_NOAVATAR') . '</div>';
         }
         // NOTE: signature
-        $txt .= '</td></tr></table>'
-            . '<div class="title">' . $lang->def('_SIGNATURE') . '</div>'
-            . '<div class="profile_signature">' . $user_info[ACL_INFO_SIGNATURE] . '</div><br />' . "\n"
-            . '</div>';
-
+        $txt .= '</td></tr></table>';
         return $txt;
     }
 

@@ -351,14 +351,14 @@ class FieldList
             // Not only roots ocd_0 and oc_0
             unset($user_groups[1]);
         }
-
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $query = 'SELECT ft.id_common, ft.type_field, ftt.type_file, ftt.type_class, ft.translation, gft.mandatory, gft.useraccess '
             . 'FROM ' . $this->getFieldTable() . ' AS ft '
             . '	JOIN ' . $this->getGroupFieldsTable() . ' AS gft '
             . ' 	JOIN ' . $this->getTypeFieldTable() . ' AS ftt '
             . 'WHERE ft.id_common = gft.id_field '
             . ' 	AND ft.type_field = ftt.type_field '
-            . " 	AND ft.lang_code = '" . Lang::get() . "'"
+            . " 	AND ft.lang_code = '" . $session->get('current_lang') . "'"
             . ($show_invisible_to_user === false
                 ? " AND gft.useraccess <> 'readwrite' "
                 : '')

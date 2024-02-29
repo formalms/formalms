@@ -110,7 +110,6 @@ class User_API extends API
             (isset($userdata['password']) ? $userdata['password'] : ''),
             (isset($userdata['email']) ? $userdata['email'] : ''),
             '',
-            (isset($userdata['signature']) ? $userdata['signature'] : ''),
             false, // alredy_encripted
             $set_idst,
             (isset($userdata['pwd_expire_at']) ? $userdata['pwd_expire_at'] : ''),
@@ -323,7 +322,6 @@ class User_API extends API
             (isset($userdata['password']) ? $userdata['password'] :  false),
             (isset($userdata['email']) ? $userdata['email'] :  false),
             false,
-            (isset($userdata['signature']) ? $userdata['signature'] :  false),
             (isset($userdata['lastenter']) ? $userdata['lastenter'] :  false),
             false
         );
@@ -418,7 +416,6 @@ class User_API extends API
                 'firstname' => $user_data[ACL_INFO_FIRSTNAME],
                 'lastname' => $user_data[ACL_INFO_LASTNAME],
                 'email' => $user_data[ACL_INFO_EMAIL],
-                'signature' => $user_data[ACL_INFO_SIGNATURE],
                 'valid' => $user_data[ACL_INFO_VALID],
                 'pwd_expire_at' => $user_data[ACL_INFO_PWD_EXPIRE_AT],
                 'register_date' => $user_data[ACL_INFO_REGISTER_DATE],
@@ -755,7 +752,7 @@ class User_API extends API
     public function checkUsername($params)
     {
         $userid = $params['userid'];
-        $query = 'SELECT idst, userid, firstname, lastname, pass, email, avatar, signature,'
+        $query = 'SELECT idst, userid, firstname, lastname, pass, email, avatar,'
             . ' level, lastenter, valid, pwd_expire_at, register_date, lastenter, force_change,
 					 facebook_id, twitter_id, linkedin_id, google_id, privacy_policy '
             . ' FROM ' . $this->aclManager->_getTableUser();

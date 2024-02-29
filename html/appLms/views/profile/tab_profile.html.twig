@@ -1,0 +1,38 @@
+{#{% for key, value in tabs %}
+    {{ tabs[key]['translation'] }}
+ {{ key }}
+
+{% endfor %}#}
+
+<div class="std_block">
+    <div id="global_conf" class="tabs-wrapper">
+        <ul class="nav nav-tabs">
+            {% for tab, value in tabs %}
+                 {% if tabs[tab]['enabled'] == true %}
+                   <li {% if selected == tab %} class='active' {% endif %}>
+                       <a data-toggle="tab" href="#{{ tab }}">
+                           <em>{{ tabs[tab]['translation'] }}</em>
+                       </a>
+                   </li>
+                 {% endif %}
+            {% endfor %}
+        </ul>
+        <div class="tab-content">
+            {% for tab, value in tabs %}
+               {% if tabs[tab]['enabled'] == true %}
+                 <div class="tab-pane {% if selected == tab %} active {% endif %}"  id="{{ tab }}">
+                     {% if tab == '_PROFILE' %}
+                         {% include 'extended_profile.html.twig'  with {'userd_data':user_data } %}
+                     {% endif %}
+                     {% if tab == '_PASSWORD' %}
+                         {{ password_ui | raw }}
+                     {% endif %}
+
+                 </div>
+               {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+        <div class="nofloat">&nbsp;</div>
+    </div>
+</div>
