@@ -276,6 +276,12 @@ class Boot
      */
     private static function utility()
     {
+        //precheck per bloccare ogni cosa se sbagli la minima versione accettata
+        $configResult = include _base_."/config/version.php";
+        if (version_compare(PHP_VERSION, $configResult['php_min_version']) < 0) {
+            // La versione di PHP non è supportata
+            die("Your PHP Version is not suitable. Min version: ".$configResult['php_min_version']);
+        }
         self::log('Include autoload file.');
         require_once _base_ . '/lib/lib.autoload.php';
 
