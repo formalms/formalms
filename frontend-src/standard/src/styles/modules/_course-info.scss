@@ -188,8 +188,9 @@
   line-height: 22px;
   padding-left: 10px;
   padding-right: 10px;
-  background-color: var(--color-primary-450);
-  border-color: var(--color-primary-450);
+  background-color: var(--color-white);
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
 
   @include breakpoint($tablet) {
     font-size: 10px;
