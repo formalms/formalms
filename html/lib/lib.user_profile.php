@@ -406,6 +406,32 @@ class UserProfile
         }
     }
 
+    public function saveInfoProfile(){
+
+        if (!$this->checkUserInfo()) {
+            // some error in data filling ------------------
+            return getErrorUi($this->_last_error)
+                . $this->getModUser();
+        }
+        $model = new UsermanagementAdm();
+        if ($this->saveUserInfo()) {
+            // all ok --------------------------------------
+            $this->_up_viewer->unloadUserData();
+
+            if ($this->_end_url !== false) {
+                Util::jump_to($this->_end_url);
+            }
+            if (isset($_GET['modname']) && $_GET['modname'] == 'reservation') {
+                require_once _lms_ . '/lib/lib.reservation.php';
+                $id_event = FormaLms\lib\Get::req('id_event', DOTY_INT, 0);
+                $man_res = new Man_Reservation();
+                $result = $man_res->addSubscription(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_event);
+                Util::jump_to('index.php?modname=reservation&op=reservation');
+            }
+        }
+
+    }
+
     /**
      * this function manage the entire profile, identify the action to perform and do the right sequence of action.
      *
@@ -557,7 +583,7 @@ class UserProfile
                 if ($error['error'] == true) {
                     return $this->_up_viewer->getUserPwdModUi($error['msg']);
                 } else {
-                    $out = getResultUi($this->_lang->def('_OPERATION_SUCCESSFULPWD'));
+                    $out = getResultUi(Lang::t('_OPERATION_SUCCESSFULPWD'));
                     if ($start_action == 'mod_password') {
                         $out = $this->_up_viewer->getUserPwdModUi();
                     } else {
@@ -1583,11 +1609,6 @@ class UserProfileViewer
 
         // close the floating of the photo and avatar ----------------------------------------
         $html .= '<div class="nofloat"></div>';
-
-        //signature --------------------------------------------------------------------------
-        $html .= '<b id="up_signature_b">' . $this->_lang->def('_SIGNATURE') . ':</b>'
-            . '<div id="up_signature">' . $this->user_info[ACL_INFO_SIGNATURE] . '</div>';
-
         // link to modify
         if ($edit_mode) {
             $html .= '<ul class="up_profile_action">';
@@ -2471,13 +2492,6 @@ class UserProfileViewer
                 $acl_man->getUserLevelId($this->_user_profile->getIdUser()));
         }
 
-        //signature --------------------------------------------------------------------------
-
-        $html .= Form::getTextarea($this->_lang->def('_SIGNATURE'),
-            'up_signature',
-            'up_signature',
-            FormaLms\lib\Get::req('up_signature', DOTY_MIXED, $this->user_info[ACL_INFO_SIGNATURE], true));
-
         if (isset($_GET['modname']) && $_GET['modname'] == 'reservation') {
             $html .= Form::openButtonSpace()
                 . Form::getButton('save', 'save', $this->_lang->def('_SAVE'))
@@ -2522,7 +2536,7 @@ class UserProfileViewer
     /**
      * return the standard data filled by the user in the mod gui.
      *
-     * @return array the data filed by the user (lastname, firstname, email, password, signature)
+     * @return array the data filed by the user (lastname, firstname, email, password)
      */
     public function getFilledData()
     {
@@ -2530,7 +2544,6 @@ class UserProfileViewer
             'lastname' => FormaLms\lib\Get::req('up_lastname', DOTY_MIXED, ''),
             'firstname' => FormaLms\lib\Get::req('up_firstname', DOTY_MIXED, ''),
             'email' => FormaLms\lib\Get::req('up_email', DOTY_MIXED, ''),
-            'signature' => FormaLms\lib\Get::req('up_signature', DOTY_MIXED, ''),
             'facebook_id' => FormaLms\lib\Get::pReq('facebook_id', DOTY_MIXED, ''),
             'twitter_id' => FormaLms\lib\Get::pReq('twitter_id', DOTY_MIXED, ''),
             'linkedin_id' => FormaLms\lib\Get::pReq('linkedin_id', DOTY_MIXED, ''),
@@ -3766,12 +3779,11 @@ class UserProfileData
         */
         $forum_lms = new Man_Forum();
         $forum_post = $forum_lms->getUserForumPostLms($id_user);
-
-        $my_file = new MyFile($id_user);
+        $loaded_files = $forum_lms->getUploadedFilesCount($id_user);
         $stats = [
             'forum_post' => $forum_post,
             'blog_post' => 'unk',
-            'loaded_file' => 0,
+            'loaded_file' => $loaded_files,
         ];
 
         return $stats;
@@ -3926,7 +3938,7 @@ class UserProfileData
                 : false),
             $data['email'],
             false,
-            $data['signature'], false, false,
+            false, false,
             (isset($data['force_change']) ? $data['force_change'] : ''),
             $data['facebook_id'], $data['twitter_id'], $data['linkedin_id'],
             $data['google_id'])) {
