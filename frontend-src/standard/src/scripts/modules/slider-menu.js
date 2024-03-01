@@ -6,14 +6,14 @@ var SliderMenu = (function() {
     var _$menus = $('.slider-menu');
     if (_$menus.length) {
       _$menus.slick({
-		slidesToShow : 10,
+        accessibility: true,
         infinite: false,
         variableWidth: true,
         draggable: false,
         prevArrow:
-          '<div class="slider-menu__arrow slick-prev slick-arrow"><span class="glyphicon glyphicon-menu-left"></span><span class="glyphicon glyphicon-menu-left"></span></div>',
+            '<div class="slider-menu__arrow slick-prev slick-arrow"><span class="glyphicon glyphicon-menu-left"></span></div>',
         nextArrow:
-          '<div class="slider-menu__arrow slick-next slick-arrow"><span class="glyphicon glyphicon-menu-right"></span><span class="glyphicon glyphicon-menu-right"></span></div>',
+            '<div class="slider-menu__arrow slick-next slick-arrow"><span class="glyphicon glyphicon-menu-right"></span></div>',
         responsive: [
           {
             breakpoint: 1220,
@@ -21,8 +21,15 @@ var SliderMenu = (function() {
               draggable: true
             }
           }
-        ]
+        ],
+        // Aggiungi questo evento per impostare tabindex su 0 per tutti gli elementi della slide corrente
+        onAfterChange: function() {
+          _$menus.find('.slider-link').attr('tabindex', '0');
+        }
       });
+
+      // Imposta tabindex su 0 per gli elementi iniziali dello slider
+      _$menus.find('.slider-link').attr('tabindex', '0');
     }
 
     if (checkSliderLength(_$menus)) {
@@ -43,15 +50,15 @@ var SliderMenu = (function() {
   });
 
   function checkSliderLength(menu) {
-    var _itemsength = 0;
+    var _itemsLength = 0;
     var _menuLength = menu.width();
     var $items = menu.find('.slick-slide');
 
     $items.each(function() {
-      _itemsength += Math.round($(this).width());
+      _itemsLength += Math.round($(this).width());
     });
 
-    return _itemsength < _menuLength;
+    return _itemsLength < _menuLength;
   }
 })();
 
