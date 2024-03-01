@@ -38,8 +38,8 @@ import 'tinymce/plugins/colorpicker';
 import 'tinymce/plugins/textpattern';
 import 'tinymce/plugins/imagetools';
 
-import contentUiCss from 'tinymce/skins/ui/oxide/content.css';
-import contentCss from 'tinymce/skins/content/default/content.css';
+const contentUiCss = require('tinymce/skins/ui/oxide/content.css');
+const contentCss = require('tinymce/skins/content/default/content.css');
 
 class TinyMce {
 
@@ -101,7 +101,7 @@ class TinyMce {
 
     tinymce.init({
       mode: 'textareas',
-      base_url: '/addons/tiny_mce/',
+      base_url: `${window.frontend.config.url.template}/static/addons/tiny_mce/`,
       language: obj.getTinyMCELang(document.documentElement.lang),
       skin: false,
       content_css: false,
@@ -150,7 +150,7 @@ class TinyMce {
   initSimple(editor_selector) {
     const obj = this;
 
- 
+
     window.addEventListener('message', function (event) {
       var data = event.data;
     
@@ -167,7 +167,7 @@ class TinyMce {
 
     tinymce.init({
       mode: 'textareas',
-      base_url: '/addons/tiny_mce/',
+      base_url: `${window.frontend.config.url.template}/static/addons/tiny_mce/`,
       language: obj.getTinyMCELang(document.documentElement.lang),
       skin: false,
       content_css: false,

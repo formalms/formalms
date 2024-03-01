@@ -1,4 +1,4 @@
-export function drawRadialProgress(canvas) {
+export function DrawRadialProgress(canvas) {
     //console.log(canvas);
     const percentage = canvas.getAttribute('data-percentage_completed');
     //console.log("percentage"+percentage);
