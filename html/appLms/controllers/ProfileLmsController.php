@@ -17,9 +17,6 @@ if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit("You can't access!");
 }
 
-require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.user_profile.php');
-require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.urlmanager.php');
-
 class ProfileLmsController extends LmsController
 {
     protected $db;
@@ -67,151 +64,52 @@ class ProfileLmsController extends LmsController
         return false;
     }
 
-    public function showProfile($selected_tab = '_PROFILE', $error_array = false){
-        $profile_data = $this->getUserProfileData();
-        $profile_data['tabs'] =  [
-            '_PROFILE'=> ['translation'=>Lang::t('_PROFILE','profile'), 'enabled'=>true],
-            '_PASSWORD'=>['translation'=>Lang::t('PASSWORD','standard'), 'enabled'=>(FormaLms\lib\Get::sett('profile_modify') != 'disallow')],
-            '_PRIVACYPOLICIES'=> ['translation'=>Lang::t('_PRIVACYPOLICIES','privacypolicies'), 'enabled'=>(FormaLms\lib\Get::sett('privacy_policy') == 'on')]
-        ];
-        $profile_data['selected'] = $selected_tab;
-        $profile_data['modify_profile'] = (FormaLms\lib\Get::sett('profile_modify') == 'allow');
-        $url_man = UrlManager::getInstance();
-        $url_man->setStdQuery('r=lms/profile/show');
-        $profile_data['modify_url'] = $url_man->getUrl('ap=mod_profile');
-
-
-        if ($profile_data['tabs']['_PASSWORD']['enabled']) {
-            $profile_data['password_ui'] = $this->passwordMask($error_array);
-        }
-
-        $this->render('tab_profile', $profile_data);
-        return;
-    }
-
-    public function passwordMask($error_array = false){
-        $user_manager = new UserManager();
-        $url_man = UrlManager::getInstance();
-        $url = $url_man->getUrl('ap=savepwd');
-        return $user_manager->getElapsedPassword($url, $error_array);
-    }
-
     public function show()
     {
+        if (!defined('LMS')) {
+            checkRole('/lms/course/public/profile/view', false);
+        } else {
+            checkPerm('view', false, 'profile', 'lms');
+        }
 
-        $ap = FormaLms\lib\Get::req('ap', DOTY_STRING, $start_action);
-        require_once _lms_ . '/lib/lib.lms_user_profile.php';
+     
 
-        switch ($ap) {
-            case 'saveinfo':
-                $id_user = \FormaLms\lib\FormaUser::getCurrentUser()->getIdST();
-                $profile = new LmsUserProfile($id_user);
-                $profile->init('profile', 'framework', 'r=lms/profile/show', 'ap');
-                $profile->saveInfoProfile();
-                return $this->showProfile();
-                break;
-            case 'savepwd':
-                $discard = FormaLms\lib\Get::req('undo', DOTY_STRING) == Lang::t('_UNDO');
-                if ($discard) {
-                    $this->showProfile();
-                } else {
-                    $user_manager = new UserManager();
-                    $error = $user_manager->saveElapsedPassword();
-                    if ($error['error'] == true) {
-                        $this->showProfile('_PASSWORD', $error['msg']);
-                    } else {
-                        $this->showProfile();
-                    }
-                }
-                break;
-            default:
-                return $this->showProfile();
-                break;
-
-        };
-        return;
-/*
-                 require_once _lms_ . '/lib/lib.lms_user_profile.php';
-
-                $id_user = \FormaLms\lib\FormaUser::getCurrentUser()->getIdST();
-                $profile = new LmsUserProfile($id_user);
-                $profile->init('profile', 'framework', 'r=lms/profile/show', 'ap');
-
-                $_check = false;
-                if (!defined('LMS')) {
-                    $_check = checkRole('/lms/course/public/profile/mod', true);
-                } else {
-                    $_check = checkPerm('mod', true, 'profile', 'lms');
-                }
-                if ($_check) {
-                    $profile->enableEditMode();
-                }
-
-
-                echo $profile->getTitleArea();
-                echo $profile->getHead();
-                echo $profile->getHead();
-                if (FormaLms\lib\Get::sett('profile_modify') == 'limit') {
-                    echo $profile->performAction(false, 'mod_password');
-                } elseif (FormaLms\lib\Get::sett('profile_modify') == 'allow') {
-                    echo $profile->performAction();
-               }
-                echo $this->_profileBackUrl();
-                echo $profile->getFooter();
-
-                echo $profile->getPrivacy();*/
-    }
-
-    private function getUserProfileData(){
-        $user = \FormaLms\lib\FormaUser::getCurrentUser();
-        $idUser = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
-        $uploaded_file_size = \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->getUploadedFileSize();
-        $uploaded_file_size =  number_format(($uploaded_file_size / (1024 * 1024)), '2');
-        $max_quota = FormaLms\lib\Get::sett('user_quota');
-
-        $userProfileDataManager = new UserProfileData();
-        $last_view = $userProfileDataManager->getUserProfileViewList($idUser, 15);
-        $user_stat = $userProfileDataManager->getUserStats($idUser);
-        $user_custom_fields = $user->loadUserCustomFields();
-        $user_manager = $user->getManagerUser();
-        $course_as_teacher = $userProfileDataManager->getCourseAsTeacher($idUser);
-        $course_as_tutor = $userProfileDataManager->getCourseAsTutor($idUser);
-        $course_as_mentor =   $userProfileDataManager->getCourseAsMentor($idUser);
-
-
-        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.middlearea.php');
-        $ma = new Man_MiddleArea();
-        $can_access_messages = $ma->currentCanAccessObj('mo_message');
-        $user = $this->aclManager->getUser($idUser, false);
-        $data = [
-            'user' => $this->aclManager->getUserMappedData($user),
-            'user_custom_fields' => $user_custom_fields,
-            'lastViews' => $last_view,
-            'userStats' => $user_stat,
-            'uploaded_file_size' => $uploaded_file_size,
-            'max_quota' => $max_quota,
-            'course_as_teacher' => $course_as_teacher,
-            'course_as_tutor' => $course_as_tutor,
-            'course_as_mentor' => $course_as_mentor,
-            'templatePath' => getPathTemplate(),
-            'route' => [
-                'message' => ['url' => 'index.php?r=lms/message/directWrite'],
-                'profile' => ['url' => 'index.php?r=lms/course/viewprofile'],
-            ],
-            'can_access_messages' => $can_access_messages,
-            'user_manager' => $user_manager,
-        ];
-        return $data;
-    }
-
-    public function modProfile(){
         require_once _lms_ . '/lib/lib.lms_user_profile.php';
 
         $id_user = \FormaLms\lib\FormaUser::getCurrentUser()->getIdST();
         $profile = new LmsUserProfile($id_user);
-        $profile->init('profile', 'framework', 'r=lms/profile/show', 'ap');
+        $profile->init('profile', 'framework', 'r=lms/profile/show'/*&id_user'.(int)$id_user*/, 'ap'); //'modname=profile&op=profile&id_user='.$id_user
 
-        echo $profile->getModUser();
+        $_check = false;
+        if (!defined('LMS')) {
+            $_check = checkRole('/lms/course/public/profile/mod', true);
+        } else {
+            $_check = checkPerm('mod', true, 'profile', 'lms');
+        }
+        if ($_check) {
+            $profile->enableEditMode();
+        }
+
+        //evento mostra profilo
+        //TODO: EVT_OBJECT (§)
+        //$event = new \appLms\Events\Lms\UserProfileShowEvent();
+        //$event->setProfile($profile);
+        //TODO: EVT_LAUNCH (&)
+        //\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\UserProfileShowEvent::EVENT_NAME, $event);
+
+        //view part
+
+       /* managing privecy view according to user operation*/
+        echo $profile->getTitleArea();
+        echo $profile->getHead();
+        if (FormaLms\lib\Get::sett('profile_modify') == 'limit') {
+            echo $profile->performAction(false, 'mod_password');
+        } elseif (FormaLms\lib\Get::sett('profile_modify') == 'allow') {
+            echo $profile->performAction();
+       }
+        echo $this->_profileBackUrl();
+        echo $profile->getFooter();
+        //echo $profile->getPrivacy();
     }
 
     public function renewalpwd()

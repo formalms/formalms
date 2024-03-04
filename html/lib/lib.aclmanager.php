@@ -30,7 +30,8 @@ define('ACL_INFO_LASTNAME', 3);
 define('ACL_INFO_PASS', 4);
 define('ACL_INFO_EMAIL', 5);
 define('ACL_INFO_AVATAR', 6);
-define('ACL_INFO_VALID', 9);
+define('ACL_INFO_SIGNATURE', 7);
+define('ACL_INFO_VALID', 10);
 define('ACL_INFO_PWD_EXPIRE_AT', 11);
 define('ACL_INFO_REGISTER_DATE', 12);
 define('ACL_INFO_LASTENTER', 13);
@@ -500,13 +501,15 @@ class FormaACLManager
      * @param string $pass the password in clear text
      * @param string $email the email address
      * @param string $avatar the path of the avatar image
+     * @param string $signature the signature
      * @param bool $alredy_encripted if the password is alredy encrypted
      * @param int $idst the idst for the new user
      *
      * @return int the security token
      */
     public function registerUser($userid, $firstname, $lastname,
-                                 $pass, $email, $avatar, $alredy_encripted = false, $idst = false, $pwd_expire_at = '', $force_change = '',
+                                 $pass, $email, $avatar,
+                                 $signature, $alredy_encripted = false, $idst = false, $pwd_expire_at = '', $force_change = '',
                                  $facebook_id = false, $twitter_id = false, $linkedin_id = false, $google_id = false)
     {
         if ($idst === false) {
@@ -529,6 +532,7 @@ class FormaACLManager
             ACL_INFO_PASS => $pass,
             ACL_INFO_EMAIL => $email,
             ACL_INFO_AVATAR => $avatar,
+            ACL_INFO_SIGNATURE => $signature,
             ACL_INFO_PWD_EXPIRE_AT => $pwd_expire_at,
             ACL_INFO_FORCE_CHANGE => $force_change,
             ACL_INFO_FACEBOOK_ID => $facebook_id,
@@ -550,6 +554,7 @@ class FormaACLManager
         $pass = $userdata[ACL_INFO_PASS];
         $email = $userdata[ACL_INFO_EMAIL];
         $avatar = $userdata[ACL_INFO_AVATAR];
+        $signature = $userdata[ACL_INFO_SIGNATURE];
         $pwd_expire_at = $userdata[ACL_INFO_PWD_EXPIRE_AT];
         $force_change = $userdata[ACL_INFO_FORCE_CHANGE];
         $facebook_id = $userdata[ACL_INFO_FACEBOOK_ID];
@@ -558,13 +563,13 @@ class FormaACLManager
         $google_id = $userdata[ACL_INFO_GOOGLE_ID];
 
         $query = 'INSERT INTO ' . $this->_getTableUser()
-            . ' (idst, userid, firstname, lastname, pass, email, avatar, pwd_expire_at, '
+            . ' (idst, userid, firstname, lastname, pass, email, avatar, signature, pwd_expire_at, '
             . '  register_date, '
             . ($force_change !== '' ? 'force_change, ' : '')
             . 'facebook_id, twitter_id, linkedin_id, google_id) '
             . ' VALUES ( "' . $idst . '", "' . $userid . '", "' . $firstname . '", "' . $lastname . '", '
             . ' "' . ($alredy_encripted === true ? $pass : $this->encrypt($pass)) . '", '
-            . ' "' . $email . '", "' . $avatar . '", "' . $pwd_expire_at . '", "' . date('Y-m-d H:i:s') . '", '
+            . ' "' . $email . '", "' . $avatar . '", "' . $signature . '", "' . $pwd_expire_at . '", "' . date('Y-m-d H:i:s') . '", '
             . ($force_change !== '' ? ' "' . ((int)$force_change > 0 ? '1' : '0') . '", ' : '')
             . (!empty($facebook_id) ? ' "' . $facebook_id . ' "' : 'NULL') . ', '
             . (!empty($twitter_id) ? ' "' . $twitter_id . ' "' : 'NULL') . ', '
@@ -662,7 +667,7 @@ class FormaACLManager
      * @param string $email the email of the user
      *
      * @return mixed array with user informations with numeric keys:
-     *               - idst, userid, firstname, lastname, pass, email, avatar,
+     *               - idst, userid, firstname, lastname, pass, email, avatar, signature
      *               - FALSE if user is not found
      */
     public function getTempUserByEmail($email)
@@ -686,7 +691,7 @@ class FormaACLManager
      * @param bool $only_confirmed if true only user that have confirmed is displayed
      *
      * @return mixed array with user informations with numeric keys:
-     *               - idst, userid, firstname, lastname, pass, email, avatar,
+     *               - idst, userid, firstname, lastname, pass, email, avatar, signature
      *               - FALSE if user is not found
      */
     public function &getTempUsers($array_idst = false, $only_confirmed = false)
@@ -841,12 +846,14 @@ class FormaACLManager
      * @param string $pass the password in clear text
      * @param string $email the email address
      * @param string $avatar the path of the avatar image
+     * @param string $signature the signature
+     * @param string $lastenter the date of the user last login
      *
      * @return true if success, FALSE otherwise
      */
     public function updateUser($idst, $userid = false, $firstname = false, $lastname = false,
                                $pass = false, $email = false, $avatar = false,
-                               $lastenter = false, $resume = false, $force_change = '',
+                               $signature = false, $lastenter = false, $resume = false, $force_change = '',
                                $facebook_id = false, $twitter_id = false, $linkedin_id = false, $google_id = false)
     {
         $old_userdata = $this->getUser($idst, null);
@@ -872,6 +879,9 @@ class FormaACLManager
         }
         if ($avatar !== false) {
             $new_userdata[ACL_INFO_AVATAR] = $avatar;
+        }
+        if ($signature !== false) {
+            $new_userdata[ACL_INFO_SIGNATURE] = $signature;
         }
         if ($lastenter !== false) {
             $new_userdata[ACL_INFO_LASTENTER] = $lastenter;
@@ -924,6 +934,12 @@ class FormaACLManager
         }
         if (array_key_exists(ACL_INFO_AVATAR, $new_userdata)) {
             $arrSET['avatar'] = $new_userdata[ACL_INFO_AVATAR];
+        }
+        if (array_key_exists(ACL_INFO_SIGNATURE, $new_userdata)) {
+            $arrSET['signature'] = $new_userdata[ACL_INFO_SIGNATURE];
+        }
+        if (array_key_exists(ACL_INFO_LASTENTER, $new_userdata)) {
+            $arrSET['lastenter'] = $new_userdata[ACL_INFO_LASTENTER];
         }
         if (array_key_exists(ACL_INFO_VALID, $new_userdata)) {
             $arrSET['valid'] = $new_userdata[ACL_INFO_VALID] ? '1' : '0';
@@ -1109,11 +1125,11 @@ class FormaACLManager
             " WHERE idst = '" . $idst_user . "'";
 
         $result = sql_query($query);
-        list($idst, $userid, $firstname, $lastname, $pass, $email, $avatar, $level, $lastenter, $valid, $pwd_expire_at, $register_date) = sql_fetch_row($result);
+        list($idst, $userid, $firstname, $lastname, $pass, $email, $avatar, $signature, $level, $lastenter, $valid, $pwd_expire_at, $register_date) = sql_fetch_row($result);
 
         $insert_query = 'INSERT INTO ' . $this->_getTableUserDeleted() . ' ' .
-            ' (id_deletion, idst, userid, firstname, lastname, pass, email, avatar, level, lastenter, valid, pwd_expire_at, register_date, deletion_date, deleted_by)' .
-            " VALUES ('', '" . (int) $idst . "', '" . addslashes($userid) . "', '" . addslashes($firstname) . "', '" . addslashes($lastname) . "', '" . addslashes($pass) . "', '" . addslashes($email) . "', '" . addslashes($avatar) . "', '" . $level . "', '" . $lastenter . "', '" . $valid . "', '" . $pwd_expire_at . "', '" . $register_date . "', '" . date('Y-m-d H:i:s') . "','" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "')";
+            ' (id_deletion, idst, userid, firstname, lastname, pass, email, avatar, signature, level, lastenter, valid, pwd_expire_at, register_date, deletion_date, deleted_by)' .
+            " VALUES ('', '" . (int) $idst . "', '" . addslashes($userid) . "', '" . addslashes($firstname) . "', '" . addslashes($lastname) . "', '" . addslashes($pass) . "', '" . addslashes($email) . "', '" . addslashes($avatar) . "', '" . addslashes($signature) . "', '" . $level . "', '" . $lastenter . "', '" . $valid . "', '" . $pwd_expire_at . "', '" . $register_date . "', '" . date('Y-m-d H:i:s') . "','" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "')";
 
         $insert_result = sql_query($insert_query);
 
@@ -1284,7 +1300,7 @@ class FormaACLManager
      *                       $idst is assigned
      *
      * @return mixed array with user informations with numeric keys:
-     *               - idst, userid, firstname, lastname, pass, email, avatar, ,
+     *               - idst, userid, firstname, lastname, pass, email, avatar, signature,
      *               level, lastenter, valid, pwd_expire_at, register_date
      *               - FALSE if user is not found
      */
@@ -1292,12 +1308,12 @@ class FormaACLManager
     {
         // ha tanti parametri in più rispetto alla vecchia installazione... (3)
         /*** dupplicate ***
-         * $query = "SELECT idst, userid, firstname, lastname, pass, email, avatar, ,"
+         * $query = "SELECT idst, userid, firstname, lastname, pass, email, avatar, signature,"
          * ." level, lastenter, valid, pwd_expire_at, register_date, lastenter, force_change,
          * facebook_id, twitter_id, linkedin_id, google_id, privacy_policy "
          * ." FROM ".$this->_getTableUser();
          ***/
-        $query = 'SELECT idst, userid, firstname, lastname, pass, email, avatar, '
+        $query = 'SELECT idst, userid, firstname, lastname, pass, email, avatar, signature,'
             . ' level, lastenter, valid, pwd_expire_at, register_date, lastenter '
             . ', force_change, facebook_id, twitter_id, linkedin_id, google_id, privacy_policy '
             . ' FROM ' . $this->_getTableUser();
@@ -1360,12 +1376,12 @@ class FormaACLManager
      * @param string $email the email of the user
      *
      * @return mixed array with user informations with numeric keys:
-     *               - idst, userid, firstname, lastname, pass, email, avatar,
+     *               - idst, userid, firstname, lastname, pass, email, avatar, signature
      *               - FALSE if user is not found
      */
     public function getUserByEmail($email)
     {
-        $query = 'SELECT idst, userid, firstname, lastname, pass, email, avatar, '
+        $query = 'SELECT idst, userid, firstname, lastname, pass, email, avatar, signature,'
             . ' level, lastenter, valid, pwd_expire_at, register_date, lastenter'
             . ' FROM ' . $this->_getTableUser()
             . " WHERE email = '" . $email . "'";
@@ -1396,9 +1412,9 @@ class FormaACLManager
     {
         $res = false;
 
-        $fields = 'idst, userid, firstname, lastname, pass, email, avatar, level, 
-                   lastenter, valid, pwd_expire_at, register_date, lastenter, force_change,
-			       facebook_id, twitter_id, linkedin_id, google_id, privacy_policy ';
+        $fields = 'idst, userid, firstname, lastname, pass, email, avatar, signature,
+			level, lastenter, valid, pwd_expire_at, register_date, lastenter, force_change,
+			facebook_id, twitter_id, linkedin_id, google_id, privacy_policy ';
         $qtxt = 'SELECT ' . $fields . ' FROM ' . $this->_getTableUser() . ' ' .
             'WHERE ' . $field_name . " = '" . sql_escape_string($field_val) . "'";
 
@@ -1440,7 +1456,7 @@ class FormaACLManager
      * @param array $array_idst the security token of the users to get
      *
      * @return mixed array with user informations with numeric keys:
-     *               - idst, userid, firstname, lastname, pass, email, avatar,
+     *               - idst, userid, firstname, lastname, pass, email, avatar, signature
      *               - FALSE if user is not found
      */
     public function &getUsers($array_idst)
@@ -1458,7 +1474,7 @@ class FormaACLManager
         }
 
         $users_info = [];
-        $query = 'SELECT idst, userid, firstname, lastname, pass, email, avatar, '
+        $query = 'SELECT idst, userid, firstname, lastname, pass, email, avatar, signature,'
             . ' level, lastenter, valid, pwd_expire_at, register_date, lastenter'
             . ' FROM ' . $this->_getTableUser()
             . ' WHERE idst IN (' . implode(',', $array_idst) . ') '
@@ -1503,6 +1519,7 @@ class FormaACLManager
         $responseUser['lastname'] = $user[ACL_INFO_LASTNAME];
         $responseUser['email'] = $user[ACL_INFO_EMAIL];
         $responseUser['avatar'] = !empty($user[ACL_INFO_AVATAR]) ? $path . $user[ACL_INFO_AVATAR] : '';
+        $responseUser['biography'] = $user[ACL_INFO_SIGNATURE];
         $responseUser['profile'] = 'index.php?modname=course&amp;op=viewprofile&amp;id_user=' . $user[ACL_INFO_IDST];
         $responseUser['registerDate'] = $user[ACL_INFO_REGISTER_DATE];
 
@@ -1590,7 +1607,7 @@ class FormaACLManager
     public function getSettingValueAndInfoOfUsers($sett_name, $arr_idst = false, $get_null = false)
     {
         $query = '
-		SELECT u.idst, u.userid, u.firstname, u.lastname, u.pass, u.email, u.avatar, us.value
+		SELECT u.idst, u.userid, u.firstname, u.lastname, u.pass, u.email, u.avatar, u.signature , us.value
 		FROM ' . $this->_getTableUser() . ' AS u ';
         if ($get_null !== false) {
             $query .= ' LEFT JOIN ' . $this->_getTableSettingUser() . ' AS us '
@@ -1709,7 +1726,7 @@ class FormaACLManager
      *                           used as an additional filter
      *
      * @return mixed array with user informations with numeric keys:
-     *               - idst, userid, firstname, lastname, pass, email, avatar,
+     *               - idst, userid, firstname, lastname, pass, email, avatar, signature
      *               - FALSE if user is not found
      */
     public function getUsersByLanguage($language, $array_idst = false)
@@ -3064,6 +3081,7 @@ class FormaACLManager
         $res[ACL_INFO_PASS] = 'pass';
         $res[ACL_INFO_EMAIL] = 'email';
         $res[ACL_INFO_AVATAR] = 'avatar';
+        $res[ACL_INFO_SIGNATURE] = 'signature';
         $res[ACL_INFO_VALID] = 'valid';
         $res[ACL_INFO_PWD_EXPIRE_AT] = 'pwd_expire_at';
         $res[ACL_INFO_REGISTER_DATE] = 'register_date';
@@ -3397,7 +3415,7 @@ class PeopleDataRetriever extends DataRetriever
 
     public function getRows($startRow = false, $numRows = false)
     {
-        $query = 'SELECT idst, userid, firstname, lastname, email, valid  FROM %adm_user ';
+        $query = 'SELECT idst, userid, firstname, lastname, email, valid, signature FROM %adm_user ';
         foreach ($this->custom_join as $add_join) {
             $query .= $add_join;
         }

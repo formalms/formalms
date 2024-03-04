@@ -767,6 +767,8 @@ class ClassroomAlmsController extends AlmsController
                     <td align=center width="10%" colspan=1 ><b>N.</b></td>
                     <td align=center width="25%"><b>' . Lang::t('_NAME', 'standard') . '</b></td>
                     <td align=center width="25%"><b>' . Lang::t('_LASTNAME', 'standard') . '</b></td>
+                    <td align=center width="20%"><b>' . Lang::t('_SIGNATURE', 'standard') . '</b></td>
+                    <td align=center width="20%"><b>' . Lang::t('_SIGNATURE', 'standard') . '</b></td>
                 </tr>';
 
         //ONLY STUDENT
@@ -809,6 +811,7 @@ class ClassroomAlmsController extends AlmsController
                         <tr>
                              <td><b>' . Lang::t('_LEVEL_6', 'levels') . '</b></td>
                              <td><b>' . Lang::t('_DATE', 'course') . '</b></td>
+                             <td><b>' . Lang::t('_SIGNATURE', 'standard') . '</b></td>
                         </tr>';
 
         $query = 'SELECT  U.firstname, U.lastname, U.idst 

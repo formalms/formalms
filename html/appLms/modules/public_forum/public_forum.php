@@ -2318,6 +2318,13 @@ function message()
                     . Format::date($message_info['modified_by_on'])
                     . '</div>';
             }
+
+            if (isset($authors_names[$m_author]) && $authors_names[$m_author][ACL_INFO_SIGNATURE] != '') {
+                $msgtext .= '<div class="forum_post_sign_separator"></div>'
+                    . '<div class="forum_post_sign">'
+                    . $authors_names[$m_author][ACL_INFO_SIGNATURE]
+                    . '</div>';
+            }
         }
         $content = [$sender, $msgtext];
         $tb->addBody($content);
@@ -2648,6 +2655,12 @@ function showMessageForAdd($id_thread, $how_much)
                             $authors_names[$modify_by][ACL_INFO_LASTNAME] . ' ' . $authors_names[$modify_by][ACL_INFO_FIRSTNAME])
                         : $lang->def('_UNKNOWN_AUTHOR')
                     ) . '</div>';
+            }
+            if (isset($authors_names[$m_author]) && $authors_names[$m_author][ACL_INFO_SIGNATURE] != '') {
+                $msgtext .= '<div class="forum_post_sign_separator"></div>'
+                    . '<div class="forum_post_sign">'
+                    . $authors_names[$m_author][ACL_INFO_SIGNATURE]
+                    . '</div>';
             }
         }
         $content = [$sender, $msgtext];
@@ -3676,6 +3689,13 @@ function forumsearchmessage()
                     )
                     . ' ' . $lang->def('_ON') . ' : '
                     . Format::date($message_info['modified_by_on'])
+                    . '</div>';
+            }
+
+            if (isset($authors_names[$m_author]) && $authors_names[$m_author][ACL_INFO_SIGNATURE] != '') {
+                $msgtext .= '<div class="forum_post_sign_separator"></div>'
+                    . '<div class="forum_post_sign">'
+                    . $authors_names[$m_author][ACL_INFO_SIGNATURE]
                     . '</div>';
             }
         }

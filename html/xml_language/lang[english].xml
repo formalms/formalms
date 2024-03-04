@@ -2044,7 +2044,6 @@ Please don't upload offensive images.]]></key>
         <key id="profile&amp;_USER_VIDEOS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Video]]></key>
         <key id="profile&amp;_WELCOME" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Welcome!]]></key>
         <key id="profile&amp;_WRITE_ASK_A_FRIEND" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Write a message for your request]]></key>
-        <key id="profile&amp;_MANAGED_BY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Manager]]></key>
       </module>
       <module id="project">
         <key id="project&amp;_MODPROJECTADMIN" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Manage administrators]]></key>

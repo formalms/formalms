@@ -39,6 +39,7 @@ class FormaConnectorFormaUsers extends FormaConnector
         'pass',
         'email',
         'avatar',
+        'signature',
         'templatename',
         'language',
         'valid',
@@ -57,6 +58,7 @@ class FormaConnectorFormaUsers extends FormaConnector
         'pass' => '',
         'email' => '',
         'avatar' => '',
+        'signature' => '',
         'templatename' => '',
         'language' => '',
         'tree_code' => '',];
@@ -515,6 +517,10 @@ class FormaConnectorFormaUsers extends FormaConnector
                         $export[] = $row[4];
 
                         break;
+                    case 'signature':
+                        $export[] = $row[6];
+
+                        break;
                 }
             }
         }
@@ -651,6 +657,7 @@ class FormaConnectorFormaUsers extends FormaConnector
                 $pass,
                 $email,
                 '', //avatar
+                '', //signature
                 false, //already_encripted
                 false, //idst
                 '', //pwd_expire_at

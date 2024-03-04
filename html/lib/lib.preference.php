@@ -503,7 +503,6 @@ class UserPreferences
         // Load startup
         $this->_preferences = $this->_up_db->getFilteredUserValue($id_user, false, true, false);
         $this->_preferences['ui.lang_code'] = $this->getLanguageCode();
-        $this->_preferences['user_rules.user_quota_used'] = $this->getUploadedFileSize();
 
         $this->_admin_preference = new AdminPreference();
     }
@@ -587,12 +586,6 @@ class UserPreferences
         }
 
         return true;
-    }
-
-    public function getUploadedFileSize(){
-        $q = "SELECT SUM(size) as tot FROM %adm_user_file WHERE user_idst=".$this->id_user;
-        $ret = sql_fetch_row(sql_query($q));
-        return $ret[0];
     }
 
     /**

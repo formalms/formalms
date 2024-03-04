@@ -43,9 +43,11 @@ function getprofile($id_user)
         $txt .= '<div class="text_italic">' . Lang::t('_NOAVATAR', 'profile', 'framework') . '</div>';
     }
     // NOTE: signature
-    $txt .= '</td></tr></table>';
+    $txt .= '</td></tr></table>'
+        . '<div class="title">' . Lang::t('_SIGNATURE', 'profile', 'framework') . '</div>'
+        . '<div class="profile_signature">' . $user_info[ACL_INFO_SIGNATURE] . '</div><br />' . "\n";
 
-    $txt .= '<br /></div>';
+    $txt .= '</div>';
 
     return $txt;
 }

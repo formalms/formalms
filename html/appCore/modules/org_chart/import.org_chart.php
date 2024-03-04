@@ -28,10 +28,11 @@ class ImportUser extends FormaImport_Destination
     public $default_cols = [
         'firstname' => '', 'lastname' => '', 'pass' => '',
         'email' => '', 'avatar' => '',
+        'signature' => '',
     ];
     public $ignore_cols = [
         'idst', 'avatar', 'lastenter', 'valid', 'pwd_expire_at', 'level', 'register_date', 'force_change',
-        'facebook_id', 'twitter_id', 'linkedin_id', 'google_id', 'privacy_policy',
+        'facebook_id', 'twitter_id', 'linkedin_id', 'google_id', 'signature', 'privacy_policy',
     ];
     public $valid_filed_type = ['textfield', 'date', 'dropdown', 'yesno', 'freetext', 'country',	'gmail', 'icq', 'msn', 'skype', 'yahoo', 'codicefiscale', 'country'];
     public $cols_descriptor = null;
