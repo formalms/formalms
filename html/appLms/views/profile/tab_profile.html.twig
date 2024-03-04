@@ -27,6 +27,10 @@
                      {% if tab == '_PASSWORD' %}
                          {{ password_ui | raw }}
                      {% endif %}
+                     {% if tab == '_PRIVACYPOLICIES' %}
+                         {% include 'privacy.html.twig'  with {'userd_data':user_data } %}
+                         {% include 'privacy_viewer.html.twig' %}
+                     {% endif %}
 
                  </div>
                {% endif %}

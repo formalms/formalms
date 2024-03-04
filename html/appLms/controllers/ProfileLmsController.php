@@ -81,6 +81,7 @@ class ProfileLmsController extends LmsController
         $profile_data['modify_url'] = $url_man->getUrl('ap=mod_profile');
 
 
+
         if ($profile_data['tabs']['_PASSWORD']['enabled']) {
             $profile_data['password_ui'] = $this->passwordMask($error_array);
         }
@@ -94,6 +95,11 @@ class ProfileLmsController extends LmsController
         $url_man = UrlManager::getInstance();
         $url = $url_man->getUrl('ap=savepwd');
         return $user_manager->getElapsedPassword($url, $error_array);
+    }
+
+    public function getUserPrivacyPolicyText(){
+        $model = new PrecompileLms();
+        echo $model->getPrivacyPolicyText();
     }
 
     public function show()
@@ -177,6 +183,9 @@ class ProfileLmsController extends LmsController
         $course_as_teacher = $userProfileDataManager->getCourseAsTeacher($idUser);
         $course_as_tutor = $userProfileDataManager->getCourseAsTutor($idUser);
         $course_as_mentor =   $userProfileDataManager->getCourseAsMentor($idUser);
+        $user_privacy = $user->getUserPrivacy();
+
+
 
 
         require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.middlearea.php');
@@ -200,6 +209,7 @@ class ProfileLmsController extends LmsController
             ],
             'can_access_messages' => $can_access_messages,
             'user_manager' => $user_manager,
+            'user_privacy' => $user_privacy
         ];
         return $data;
     }

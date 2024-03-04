@@ -11,23 +11,23 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240226000014 extends AbstractMigration
+final class Version20240301000015 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Dropping signature field into core_user table';
+        return 'Dropping signature field into core_user table and fix permission on dashboard';
     }
 
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE core_user DROP COLUMN signature') ;
+        $this->addSql("UPDATE core_menu_under set module_name = 'dashboard' WHERE defult_name = '_DASHBOARD' and of_platform = 'lms'");
+
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('alter table core_user add signature mediumtext not null');
     }
 
 }
