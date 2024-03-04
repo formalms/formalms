@@ -460,6 +460,12 @@ class Boot
             $session->save();
             \Util::jump_to(FormaLms\lib\Get::rel_path('base') . '/index.php?msg=103');
         }
+
+        $sessionCheck = \FormaLms\lib\Session\SessionManager::getInstance()->getConfig()->getCookieName();
+        if(\FormaLms\lib\Request\RequestManager::getInstance()->getRequest()->isSecure() && !(preg_match('/__Secure/', $sessionCheck))) {
+            self::$checkStatusFlags[] = array_search(__FUNCTION__, self::$_boot_seq);
+        }
+
     }
 
     /**

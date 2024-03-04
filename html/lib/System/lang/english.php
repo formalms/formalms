@@ -246,6 +246,7 @@ define('_CLEARTWIG_CACHE_OK', 'Twig Cache Cleared');
 define('_DATABASE_OK', 'Database connected correctly');
 define('_CONFIG_OK', 'Configuration file found');
 define('_PHPVERSION_OK', 'Suitable PHP Version');
+define('_SESSION_OK', 'Session correctly set for http and https');
 
 define('_INSTALL_EXPLAIN', 'You are going to install Forma LMS in your system, clicking on the button above a colored bar will show you the progress of the installation, in case of failure you can check the files/logs to find a SQL file which contains all commands to launch after the failure, to debug your environment, or you can click on Generate Debug Query to execute the routine');
 define('_UPGRADE_EXPLAIN', 'You are going to upgrade Forma LMS in your system, please it\'s recommended to save a backup of your database before any operation, clicking on the button above a colored bar will show you the progress of the upgrade, in case of failure you can check the files/logs to find a SQL file which contains all commands to launch after the failure, to debug your environment, or you can click on Generate Debug Query to execute the routine');

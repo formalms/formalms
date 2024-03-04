@@ -293,3 +293,4 @@ define('_CANT_CONNECT_SMTP', 'impossibile connettersi al server SMTP selezionato
 define('_DATABASE_OK', 'Connessione al database effettuata correttamente');
 define('_CONFIG_OK', 'File di configurazione istanziato');
 define('_PHPVERSION_OK', 'Versione di PHP compatibile');
+define('_SESSION_OK', 'Impostazioni sessione congrua tra http e https');
