@@ -61,7 +61,7 @@ class SessionManager
         if (!$this->session) {
             try {
 
-                if (empty($sessionConfig) || !array_key_exists('cookieName', $sessionConfig['session'])) {
+                if (empty($sessionConfig) || !array_key_exists('cookieName', $sessionConfig)) {
                     // Se ho il config ma non ho le configurazioni della sessione
                     // imposto secure se sono in https altrimenti no
                     //get server request http|https
