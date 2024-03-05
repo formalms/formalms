@@ -102,6 +102,14 @@ class ProfileLmsController extends LmsController
         echo $model->getPrivacyPolicyText();
     }
 
+    public function revokePrivacy(){
+        $privacy_id = \FormaLms\lib\Get::req('privacy_id', DOTY_INT, 0);
+        $model = new PrecompileLms();
+        if ($model->revokePolicy($privacy_id)) {
+            echo FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _logout_;
+        }
+    }
+
     public function show()
     {
 

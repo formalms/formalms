@@ -181,6 +181,7 @@ class PrecompileLms extends Model
 				FROM core_privacypolicy_user AS ppu, core_privacypolicy AS pp
 				WHERE ppu.id_policy = pp.id_policy
 				AND ppu.accept_date > pp.validity_date
+                AND ppu.reject_date IS NULL				  
 				AND ppu.idst = ' . (int) $id_user . '
 				AND ppu.id_policy= ' . (int) $id_policy;
 
@@ -235,5 +236,13 @@ class PrecompileLms extends Model
         list($n) = sql_fetch_row(sql_query($q));
 
         return $n;
+    }
+
+    public function revokePolicy($id_policy){
+        $now = new DateTime();
+        $reject_date = $now->format('Y-m-d H:i:s');
+        $sql = "UPDATE core_privacypolicy_user SET reject_date = '$reject_date' WHERE id=$id_policy";
+        $ret = sql_query($sql);
+        return $ret;
     }
 }

@@ -1958,9 +1958,11 @@ Nella conservazione dei dati verranno osservate accuratezza e precisione per gar
       </module>
       <module id="privacypolicies">
         <key id="privacypolicies&amp;_PRIVACYPOLICIES" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Privacy Policies]]></key>
-        <key id="privacypolicies&amp;_PRIVACYPOLICIES_ACCEPT_DATA" attributes="" save_date="2024-03-01 15:32:39"><![CDATA[Privacy Policies accettata in data]]></key>
+        <key id="privacypolicies&amp;_PRIVACYPOLICIES_ACCEPT_DATA" attributes="" save_date="2024-03-01 15:32:39"><![CDATA[Consenso al trattamento dei dati accettato in data]]></key>
         <key id="privacypolicies&amp;_PRIVACYPOLICIES_REJECT_ALERT" attributes="" save_date="2024-03-01 15:32:39"><![CDATA[Cliccando sul buttone "Revoca" verrai disconnesso.<br>Per riaccedere alla piattaforma dovrai dare nuovamente il consenso alla gestione dei tuoi dati.]]></key>
         <key id="privacypolicies&amp;_PRIVACYPOLICIES_REVOKE_BUTTON" attributes="" save_date="2024-03-01 15:32:39"><![CDATA[Revoca il consenso]]></key>
+        <key id="privacypolicies&amp;_VIEW_PRIVACY" attributes="" save_date="2024-03-01 15:32:39"><![CDATA[Visualizza il testo dell'informativa]]></key>
+        <key id="privacypolicies&amp;_PRIVACYPOLICIES_REJECT_DATA" attributes="" save_date="2024-03-01 15:32:39"><![CDATA[Consenso al trattamento dei dati ritirato in data]]></key>
       </module>
       <module id="profile">
         <key id="profile&amp;_ACCESS_COUNT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Numeri di accessi]]></key>

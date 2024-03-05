@@ -47,4 +47,12 @@ class CorePrivacypolicyUser
     private $acceptDate;
 
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="reject_date", type="datetime", nullable=true, options={"default"=NULL})
+     */
+    private $rejectDate;
+
+
 }

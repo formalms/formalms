@@ -266,7 +266,7 @@ class FormaUser
         return $res;
     }
     public function getUserPrivacy(){
-        $sql = "select cp.name, cpu.id, cpu.accept_date from core_privacypolicy_user as cpu
+        $sql = "select cp.name, cpu.id, cpu.accept_date, cpu.reject_date from core_privacypolicy_user as cpu
                                         JOIN  core_privacypolicy as cp on cpu.id_policy = cp.id_policy 
                                         where idst=".$this->idst;
         $result = sql_query($sql);
