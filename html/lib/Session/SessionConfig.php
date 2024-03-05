@@ -31,6 +31,9 @@ class SessionConfig
     private array $options = [];
     private string $cookieName;
 
+    public const SECUREFORMA = '__Secure-FORMALMS';
+    public const UNSECUREFORMA = 'FORMALMS';
+
     public function __construct()
     {
         $this->url = session_save_path();

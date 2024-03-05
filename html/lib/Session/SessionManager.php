@@ -66,7 +66,7 @@ class SessionManager
                     // imposto secure se sono in https altrimenti no
                     //get server request http|https
                     
-                    $sessionConfig['cookieName'] = $secureSession ? '__Secure-FORMALMS' : 'FORMALMS';
+                    $sessionConfig['cookieName'] = $secureSession ? SessionConfig::SECUREFORMA : SessionConfig::UNSECUREFORMA;
                 }
 
                 $config = FormaSerializer::getInstance()->denormalize($sessionConfig, SessionConfig::class);

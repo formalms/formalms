@@ -103,7 +103,7 @@ class FormaMigrator
     {
         $this->setup();
         if (!in_array($command, self::ADMITTABLE_COMMANDS)) {
-            throw new Exception("Not Implement Command");
+            throw new \Exception("Not Implement Command");
         }
 
         if (PHP_VERSION_ID < 80000) {
@@ -114,7 +114,7 @@ class FormaMigrator
 
     private function migrate($debug = false, $test = false)
     {
-
+        set_time_limit(0);
         $response['success'] = true;
         $writeSqlFile = _base_ . "/files/logs/migration" . floor(microtime(true) * 1000) . ".sql";
         $arguments = [];

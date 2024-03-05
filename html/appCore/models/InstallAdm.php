@@ -89,11 +89,13 @@ class InstallAdm extends Model
     public function fillSteps(): self
     {
         if ($this->installFlag) {
-            $this->steps = [self::CHECK_REQUIREMENTS => _TITLE_STEP1,
+            $this->steps = [
+                self::CHECK_REQUIREMENTS => _TITLE_STEP1,
                 self::CHECK_UPGRADE => _TITLE_STEP5
             ];
         } else {
-            $this->steps = [self::CHECK_REQUIREMENTS => _TITLE_STEP1,
+            $this->steps = [
+                self::CHECK_REQUIREMENTS => _TITLE_STEP1,
                 self::CHECK_DATABASE => _TITLE_STEP2,
                 self::CHECK_ADMIN => _TITLE_STEP3,
                 self::CHECK_SMTP => _TITLE_STEP4,
@@ -355,7 +357,6 @@ class InstallAdm extends Model
 
                 if (\FormaLms\lib\Version\VersionChecker::compareSqlVersion($mysqlVersion)) {
                     $res['mandatory']['mysql'] = 'ok';
-
                 } else {
                     $res['mandatory']['mysql'] = 'err';
                 }
@@ -807,7 +808,8 @@ class InstallAdm extends Model
         $result = 'err_connect';
 
         \FormaLms\db\DbConn::getInstance(
-            null, [
+            null,
+            [
                 'db_type' => 'mysqli',
                 'db_host' => $db_host,
                 'db_user' => $db_user,
@@ -993,12 +995,12 @@ class InstallAdm extends Model
             }
         } else {
 
-            if ($connectionResult == 'err_connect') {
+            if ($connectionResult == 'err_connect' || (count($checkSqlVersion) <= 0)) {
                 $messages[] = $this->errorLabels['cant_connect_db'];
             } else {
+
                 $messages[] = $this->errorLabels['unsuitable_sql_version'];
             }
-
         }
 
         return $this->setResponse($success, $messages)->wrapResponse();
@@ -1017,9 +1019,9 @@ class InstallAdm extends Model
         $row = sql_query("SELECT COUNT(DISTINCT `table_name`) FROM `information_schema`.`columns` WHERE `table_schema` = '" . $dbName . "'");
         [$count] = sql_fetch_row($row);
 
-        if(1 === (int) $count) {
+        if (1 === (int) $count) {
             $checkExistingConnection = (bool) sql_query("SELECT * FROM `core_migration_versions`");
-            if($checkExistingConnection) {
+            if ($checkExistingConnection) {
                 $count = 0;
             }
         }
@@ -1037,6 +1039,8 @@ class InstallAdm extends Model
     function getSqlVersionByQuery(): ?string
     {
         $row = sql_query("SELECT version()");
+
+
         [$version] = sql_fetch_row($row);
         return $version;
     }
@@ -1094,14 +1098,13 @@ class InstallAdm extends Model
                     try {
                         $migrator = FormaLms\lib\Database\FormaMigrator::getInstance();
                         $responseMigration = $migrator->executeCommand('migrate', ['debug' => $params['debug']]);
-    
-                    } catch(PDOException $e) {
+                    } catch (PDOException $e) {
                         $messages[] = $e->getMessage();
                         $success = false;
                         $type = 'database';
                         return $this->setResponse($success, $messages, $type)->wrapResponse();
                     }
-                    
+
 
                     if (!$responseMigration['success']) {
                         $type = 'database';
@@ -1527,7 +1530,7 @@ class InstallAdm extends Model
     {
 
         $values = $this->session->get('setValues') ?? [];
-        if(count($values)) {
+        if (count($values)) {
             \FormaLms\db\DbConn::getInstance(
                 false,
                 [
@@ -1539,7 +1542,7 @@ class InstallAdm extends Model
                 ]
             );
         }
-        
+
 
         $qtxt = "UPDATE core_setting SET param_value='" . Lang::getSelLang() . "' ";
         $qtxt .= "WHERE param_name='default_language'";
@@ -1638,7 +1641,7 @@ class InstallAdm extends Model
         $values = count($smtpSettings) ? $smtpSettings : $this->session->get('setValues');
         if ($values['useSmtpDatabase'] == 'on') {
 
-            if(!count($smtpSettings)) {
+            if (!count($smtpSettings)) {
                 \FormaLms\db\DbConn::getInstance(
                     false,
                     [
@@ -1649,43 +1652,39 @@ class InstallAdm extends Model
                         'db_name' => $values['dbName'],
                     ]
                 );
-
             }
-           
+
 
             $mailConfigs = $this->getSmtpConfig();
 
-            if(!$update) {
+            if (!$update) {
                 $queryInsert = 'INSERT INTO'
-                . ' %adm_mail_configs (title, system) VALUES ("DEFAULT", "1")';
+                    . ' %adm_mail_configs (title, system) VALUES ("DEFAULT", "1")';
 
                 $result = sql_query($queryInsert);
 
                 $mailConfigId = sql_insert_id();
             } else {
                 $queryInsert = 'SELECT id FROM'
-                . ' %adm_mail_configs WHERE `system` = 1 LIMIT 1';
-              
+                    . ' %adm_mail_configs WHERE `system` = 1 LIMIT 1';
+
                 $result = sql_query($queryInsert);
 
                 $mailConfigId = (sql_fetch_object($result))->id;
-
-              
             }
-            
+
 
             foreach ($mailConfigs['smtp'] as $type => $value) {
                 $realValue = $values[$type] ?? $value;
-                if(!$update) {
+                if (!$update) {
                     $queryInsert = 'INSERT INTO'
-                    . ' %adm_mail_configs_fields (mailConfigId, type, value) VALUES ("' . $mailConfigId . '", "' . $type . '", "' . $realValue . '")';
+                        . ' %adm_mail_configs_fields (mailConfigId, type, value) VALUES ("' . $mailConfigId . '", "' . $type . '", "' . $realValue . '")';
                     $result = sql_query($queryInsert);
                 } else {
                     $queryInsert = 'UPDATE'
-                    . ' %adm_mail_configs_fields SET value = "' . $realValue .'" WHERE mailConfigId = "' . $mailConfigId . '" AND type = "' . $type . '"';
+                        . ' %adm_mail_configs_fields SET value = "' . $realValue . '" WHERE mailConfigId = "' . $mailConfigId . '" AND type = "' . $type . '"';
                     $result = sql_query($queryInsert);
                 }
-               
             }
         }
 
@@ -1912,5 +1911,4 @@ class InstallAdm extends Model
         $messages[] = 'CHECK: ' . $resultMigration['message'];
         return $this->setResponse(true, $messages)->wrapResponse();
     }
-
 }

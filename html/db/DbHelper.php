@@ -115,7 +115,7 @@ function sql_get_server_version($link = null)
     $db = \FormaLms\db\DbConn::getInstance($link);
     $re = $db->query('SELECT VERSION() as version');
 
-    $result = \FormaLms\db\sql_fetch_assoc($re);
+    $result = sql_fetch_assoc($re);
 
     return $result['version'];
 }

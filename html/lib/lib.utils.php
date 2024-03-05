@@ -280,6 +280,10 @@ class Util
 
         $db = \FormaLms\db\DbConn::getInstance();
 
+        if(!$db) {
+            return;
+        }
+
         $re_sett = $db->query('SELECT param_name, param_value, value_type ' .
         'FROM ' . $from_table . ' ' .
         "WHERE param_load = '1'");
@@ -303,6 +307,8 @@ class Util
                     $GLOBALS[$into_globals][$var_name] = $var_value;
             } // end switch
         } // end while
+
+        return true;
     }
 
     public static function draw_progress_bar($percent, $show_percent = true, $bar_class = false, $fill_class = false, $txt_class = false, $text = false)

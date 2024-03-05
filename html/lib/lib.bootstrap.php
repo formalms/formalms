@@ -35,7 +35,7 @@ class Boot
     private static $_boot_seq = [
         BOOT_UTILITY => 'utility',
         BOOT_PHP => 'checkPhpVersion',
-        BOOT_CONFIG => 'config',  
+        BOOT_CONFIG => 'config',
         BOOT_SETTING => 'loadSetting',
         BOOT_REQUEST => 'request',
         BOOT_PLATFORM => 'checkPlatform',
@@ -120,16 +120,16 @@ class Boot
     {
         $cfg = null;
 
-        if (!file_exists(dirname(__DIR__, 1).'/config.php')) {
+        if (!file_exists(dirname(__DIR__, 1) . '/config.php')) {
             self::$checkStatusFlags[] = array_search(__FUNCTION__, self::$_boot_seq);
         } else {
-            require dirname(__DIR__, 1).'/config.php';
+            require dirname(__DIR__, 1) . '/config.php';
         }
 
         if (!isset($cfg) || !is_array($cfg)) {
             self::$checkStatusFlags[] = array_search(__FUNCTION__, self::$_boot_seq);
         }
-       
+
         $checkRoute = self::$systemManager->checkSystemRoutes();
 
         if (!$checkRoute && !self::$systemManager->fileLockExistence()) {
@@ -166,11 +166,10 @@ class Boot
         self::log('Include configuration file.');
 
         $cfg = [];
-        if (file_exists(dirname(__DIR__, 1). '/config.php')) {
-            require dirname(__DIR__, 1). '/config.php';
+        if (file_exists(dirname(__DIR__, 1) . '/config.php')) {
+            require dirname(__DIR__, 1) . '/config.php';
             $configExists = true;
-        }
-        else {
+        } else {
             $configExists = false;
         }
 
@@ -277,10 +276,10 @@ class Boot
     private static function utility()
     {
         //precheck per bloccare ogni cosa se sbagli la minima versione accettata
-        $configResult = include _base_."/config/version.php";
+        $configResult = include _base_ . "/config/version.php";
         if (version_compare(PHP_VERSION, $configResult['php_min_version']) < 0) {
             // La versione di PHP non è supportata
-            die("Your PHP Version is not suitable. Min version: ".$configResult['php_min_version']);
+            die("Your PHP Version is not suitable. Min version: " . $configResult['php_min_version']);
         }
         self::log('Include autoload file.');
         require_once _base_ . '/lib/lib.autoload.php';
@@ -367,10 +366,10 @@ class Boot
 
         $cfg = null;
         $configExist = true;
-        if (!file_exists(dirname(__DIR__, 1).'/config.php')) {
+        if (!file_exists(dirname(__DIR__, 1) . '/config.php')) {
             $configExist = false;
         } else {
-            require dirname(__DIR__, 1) .'/config.php';
+            require dirname(__DIR__, 1) . '/config.php';
         }
 
         if (!isset($cfg) || !is_array($cfg)) {
@@ -391,7 +390,7 @@ class Boot
 
 
         self::log('Load database funtion management library.');
-        
+
 
         // utf8 support
         self::log('Connect to database.');
@@ -423,22 +422,29 @@ class Boot
      */
     private static function loadSetting()
     {
-      
+
+        if (
+            file_exists(dirname(__DIR__, 1) . '/config.php') &&
+            !\FormaLms\db\DbConn::getInstance()
+        ) {
+
+            die("Your Config File contains wrong informations about connection");
+            //posso aver caricato un file di config con dati di connessione errate faccio un test
+        }
         self::log(' Load settings from database.');
         Util::load_setting(FormaLms\lib\Get::cfg('prefix_fw') . '_setting', 'framework');
 
         if (FormaLms\lib\Get::sett('do_debug') === 'on') {
             @error_reporting(E_ALL);
         }
-
     }
 
     private static function request()
     {
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
         if (!$request->hasSession()) {
-            if (file_exists(dirname(__DIR__, 1). '/config.php')) {
-                require dirname(__DIR__, 1). '/config.php';
+            if (file_exists(dirname(__DIR__, 1) . '/config.php')) {
+                require dirname(__DIR__, 1) . '/config.php';
             }
             $config = [];
             if (!empty($cfg)) {
@@ -462,10 +468,9 @@ class Boot
         }
 
         $sessionCheck = \FormaLms\lib\Session\SessionManager::getInstance()->getConfig()->getCookieName();
-        if(\FormaLms\lib\Request\RequestManager::getInstance()->getRequest()->isSecure() && !(preg_match('/__Secure/', $sessionCheck))) {
+        if (\FormaLms\lib\Request\RequestManager::getInstance()->getRequest()->isSecure() && !(preg_match('/__Secure/', $sessionCheck))) {
             self::$checkStatusFlags[] = array_search(__FUNCTION__, self::$_boot_seq);
         }
-
     }
 
     /**
@@ -716,7 +721,7 @@ class Boot
     public static function customRedirect($route, $params = [])
     {
         $baseRoute = FormaLms\lib\Get::rel_path('base');
-        if(substr($baseRoute, -1) === '/') {
+        if (substr($baseRoute, -1) === '/') {
             $baseRoute = substr($baseRoute, 0, -1);
         }
         $sistemPrefix = '/index.php?r=adm/system/';

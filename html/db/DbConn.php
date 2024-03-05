@@ -47,9 +47,9 @@ class DbConn
      * @param $link
      * @param array $connection_parameters
      *
-     * @return DbConn
+     * @return ?DbConn
      */
-    public static function getInstance($link = false, $connection_parameters = []): DbConn
+    public static function getInstance($link = false, $connection_parameters = [])
     {
 
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
