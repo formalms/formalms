@@ -19,6 +19,7 @@ use FormaLms\lib\Session\Handlers\PdoHandler;
 use FormaLms\lib\Session\Handlers\RedisHandler;
 use FormaLms\lib\Session\Handlers\MemcachedHandler;
 use FormaLms\lib\Session\Handlers\FilesystemHandler;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 
@@ -57,7 +58,13 @@ class SessionManager
 
     public function initSession(array $sessionConfig)
     {
-        $secureSession =  RequestManager::getInstance()->getRequest()->isSecure();
+        try {
+            $secureSession =  RequestManager::getInstance()->getRequest()->isSecure();
+        }
+        catch (\Throwable $e) {
+            $secureSession = false;
+        }
+
         if (!$this->session) {
             try {
 
@@ -73,8 +80,7 @@ class SessionManager
             } catch (\Exception $exception) {
                 exit($exception->getMessage());
             }
-
-
+            
             $this->setConfig($config);
 
             $ttlSession = \FormaLms\lib\Get::sett('ttlSession', 0);
