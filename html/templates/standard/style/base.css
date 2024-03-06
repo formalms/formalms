@@ -378,7 +378,9 @@ ul.style_none li{list-style:none; }
 .search_b{background:url(../images/standard/find.png) 50% 50% no-repeat;border-width:0;height:21px;margin:0 0 0 -1px;vertical-align:top;width:21px;overflow:hidden;text-indent:30px;cursor:pointer;*padding-left:30px;}
 .reset_b{background:url(../images/standard/reset.png) 50% 50% no-repeat;border-width:0;height:21px;margin:0 2px 0 0;vertical-align:top;width:21px;overflow:hidden;text-indent:30px;cursor:pointer;*padding-left:30px;}
 .add_b{background:url(../images/standard/add.png) 50% 50% no-repeat;border-width:0;height:21px;margin:0 2px 0 -1px;vertical-align:top;width:21px;overflow:hidden;text-indent:30px;cursor:pointer;*padding-left:30px;}
-.plus_b{background:url(../images/ico_sprite.png) 0 -820px no-repeat;border-width:0;height:21px;margin:2px 2px 0 4px;vertical-align:top;width:21px;overflow:hidden;text-indent:30px;cursor:pointer;*padding-left:30px;}
+.plus_b{background:url(../images/ico_sprite.png) center -817px no-repeat;border-width:0;height:21px;margin:2px 2px 0 4px;vertical-align:top;width:21px;overflow:hidden;text-indent:30px;cursor:pointer;*padding-left:30px;}
+.plus_b:hover,.plus_b:focus{background-position:center -817px;}
+.plus_b:active{background-image:url(../images/ico_sprite.png);}
 .common_options{line-height:1.8em;}
 .common_options + div { display: inline-block; }
 .ma_selected_users{margin-left:2em;}

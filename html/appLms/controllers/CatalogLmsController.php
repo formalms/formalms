@@ -545,10 +545,10 @@ class CatalogLmsController extends LmsController
                 $subject_key = '_NEW_USER_OVERBOOKING_SUBSCRIBED_SUBJECT';
                 $body_key = '_NEW_USER_OVERBOOKING_SUBSCRIBED_TEXT';
 
-                $msg_composer->setSubjectLangText('email', $subject_key, false);
+                $msg_composer->setSubjectLangText('email', $subject_key, $array_subst);
                 $msg_composer->setBodyLangText('email', $body_key, $array_subst);
 
-                $msg_composer->setSubjectLangText('sms', $subject_key . '_SMS', false);
+                $msg_composer->setSubjectLangText('sms', $subject_key . '_SMS', $array_subst);
                 $msg_composer->setBodyLangText('sms', $body_key . '_SMS', $array_subst);
                 createNewAlert('UserCourseInsertOverbooking', 'subscribe', 'insert', '1', 'User overbooked subscribed with moderation', $recipients, $msg_composer);
             } else {
@@ -564,10 +564,10 @@ class CatalogLmsController extends LmsController
                     $myevent = 'UserCourseInserted';
                 }
 
-                $msg_composer->setSubjectLangText('email', $subject_key, false);
+                $msg_composer->setSubjectLangText('email', $subject_key, $array_subst);
                 $msg_composer->setBodyLangText('email', $body_key, $array_subst);
 
-                $msg_composer->setSubjectLangText('sms', '_TO_NEW_USER_TEXT_SMS', false);
+                $msg_composer->setSubjectLangText('sms', '_TO_NEW_USER_TEXT_SMS', $array_subst);
                 $msg_composer->setBodyLangText('sms', '_TO_NEW_USER_TEXT_SMS', $array_subst);
 
                 createNewAlert($myevent, 'subscribe', 'insert', '1', $description, $recipients, $msg_composer);

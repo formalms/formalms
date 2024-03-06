@@ -281,7 +281,7 @@ class User_API extends API
             ];
 
             $e_msg = new EventMessageComposer();
-            $e_msg->setSubjectLangText('email', '_REGISTERED_USER_SBJ', false);
+            $e_msg->setSubjectLangText('email', '_REGISTERED_USER_SBJ', $array_subst);
             $e_msg->setBodyLangText('email', '_REGISTERED_USER_TEXT', $array_subst);
 
             $recipients = [$id_user];

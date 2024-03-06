@@ -148,11 +148,11 @@ class Get
     /**
      * calls the req method and forces the type to 'get'.
      *
-     * @param <type> $var_name
-     * @param <type> $typeof
-     * @param <type> $default_value
+     * @param string $var_name
+     * @param string $typeof
+     * @param string $default_value
      *
-     * @return <type>
+     * @return string
      */
     public static function gReq($var_name, $typeof = DOTY_MIXED, $default_value = '')
     {
@@ -162,11 +162,11 @@ class Get
     /**
      * calls the req method and forces the type to 'post'.
      *
-     * @param <type> $var_name
-     * @param <type> $typeof
-     * @param <type> $default_value
+     * @param string $var_name
+     * @param string $typeof
+     * @param string $default_value
      *
-     * @return <type>
+     * @return string
      */
     public static function pReq($var_name, $typeof = DOTY_MIXED, $default_value = '')
     {

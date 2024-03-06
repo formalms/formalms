@@ -259,8 +259,8 @@ class CourseLmsController extends LmsController
             '[course]' => $this->request->get('course_name'), ]);
 
         require_once _lms_ . '/lib/lib.course.php';
-        $course_man = new Man_Course();
-        $recipients = $course_man->getIdUserOfLevel($session->get('idCourse'));
+
+        $recipients = Man_Course::getIdUserOfLevel($session->get('idCourse'));
 
         createNewAlert('CoursePorpModified',
             'course',

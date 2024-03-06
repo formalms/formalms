@@ -1,6 +1,7 @@
 import Content from '../twig/content.html.twig';
 import Sortable from 'sortablejs/modular/sortable.complete.esm.js';
 import LearningView from '../modules/Base/LearningView';
+import Lang from './../helpers/Lang';
 
 const axios = require('axios');
 
@@ -267,7 +268,8 @@ class FolderView extends LearningView {
 
             if (el.classList.contains('fv-is-delete')) {
                 e.preventDefault();
-                if (confirm('Sei sicuro di voler eliminare questo elemento?')) {
+                const deleteElement = Lang.Translation('_DELETE_ELEMENT_FOLDERVIEW', 'learningObjectContextMenu');
+                if (confirm(deleteElement)) {
                     const deleteLoData = _this.getApiUrl('delete', {id: elId});
                     axios.get(deleteLoData).then(() => {
                         const elTree = _this.container.querySelector('.folderTree__li[data-id="' + elId + '"]');

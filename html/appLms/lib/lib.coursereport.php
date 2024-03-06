@@ -56,8 +56,7 @@ class CourseReportManager
     {
         require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
-        $course_man = new Man_Course();
-        $course_user = $course_man->getIdUserOfLevel($this->idCourse, 3);
+        $course_user = Man_Course::getIdUserOfLevel($this->idCourse, 3);
 
         return $course_user;
     }

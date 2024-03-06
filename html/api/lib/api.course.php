@@ -559,7 +559,7 @@ class Course_API extends API
                 '[course]' => $course_info['name'], ];
 
             $msg_composer = new EventMessageComposer();
-            $msg_composer->setSubjectLangText('email', '_APPROVED_SUBSCRIBED_SUBJECT', false);
+            $msg_composer->setSubjectLangText('email', '_APPROVED_SUBSCRIBED_SUBJECT', $array_subst);
             $msg_composer->setBodyLangText('email', '_APPROVED_SUBSCRIBED_TEXT', $array_subst);
 
             $recipients = [$user_id];
@@ -2095,6 +2095,7 @@ class Course_API extends API
 
     public function deleteLearningObjects($params)
     {
+        define('LMS', true);
         require_once _lms_ . '/class.module/class.definition.php';
         require_once _lms_ . '/lib/lib.module.php';
         require_once _lms_ . '/lib/lib.permission.php';
@@ -2367,8 +2368,16 @@ class Course_API extends API
             $courseResponse['course_id'] = $courseNodeInfo['idCourse'];
             $courseResponse['code'] = str_replace('&', '&amp;', $courseNodeInfo['code']);
             $courseResponse['course_name'] = str_replace('&', '&amp;', $courseNodeInfo['name']);
-            $courseResponse['course_description'] = str_replace('&', '&amp;', $courseNodeInfo['description']);
-            $courseResponse['course_box_description'] = str_replace('&', '&amp;', $courseNodeInfo['box_description']);
+            //remove course description in xml response because corrupt XML
+            switch ($GLOBALS['REST_API_ACCEPT']) {
+                case _REST_OUTPUT_JSON:
+                    $courseResponse['course_description'] = str_replace('&', '&amp;', $courseNodeInfo['description']);
+                    $courseResponse['course_box_description'] = str_replace('&', '&amp;', $courseNodeInfo['box_description']);
+                    break;
+                case _REST_OUTPUT_XML:
+                default:
+                    break;
+            }
             $courseResponse['status'] = $courseNodeInfo['status'];
             $courseResponse['selling'] = $courseNodeInfo['selling'];
             $courseResponse['price'] = $courseNodeInfo['prize'];

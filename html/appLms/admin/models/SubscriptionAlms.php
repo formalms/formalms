@@ -343,7 +343,7 @@ class SubscriptionAlms extends Model
                             '[userid]' => $acl_man->relativeId($userinfo[ACL_INFO_USERID]),
                         ];
 
-                        $msg_composer->setSubjectLangText('email', $subject_key, false);
+                        $msg_composer->setSubjectLangText('email', $subject_key, $array_subst);
                         $msg_composer->setBodyLangText('email', $body_key, $array_subst);
                         // message to user that is waiting
 

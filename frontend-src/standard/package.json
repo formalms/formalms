@@ -12,6 +12,7 @@
     "babel-preset-react": "6.24.1",
     "babel-preset-stage-0": "6.24.1",
     "clean-css-cli": "4.1.10",
+    "copy-webpack-plugin": "^4.6.0",
     "copyfiles": "1.2.0",
     "css-loader": "0.28.10",
     "eslint": "^4.19.1",
@@ -59,7 +60,8 @@
     "select2": "^4.1.0-rc.0",
     "slick-carousel": "1.8.1",
     "sortablejs": "^1.15.0",
-    "tinymce": "^5.10.5",
+    "tinymce": "^5.10.9",
+    "tinymce-i18n": "^24.1.15",
     "twigjs": "0.0.4",
     "uglify-js": "^3.16.0"
   },

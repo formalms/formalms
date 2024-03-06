@@ -5,7 +5,7 @@
     <lang_code>latvian</lang_code>
     <lang_description>Latvie&#x161;u</lang_description>
     <lang_charset>utf-8</lang_charset>
-    <lang_browsercode>lv; lv-lv</lang_browsercode>
+    <lang_browsercode>lv</lang_browsercode>
     <lang_direction>ltr</lang_direction>
     <platform id="all">
       <module id="">

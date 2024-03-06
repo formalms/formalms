@@ -594,7 +594,7 @@ class SubscriptionAlmsController extends AlmsController
                     // message to user that is odified
                     $msg_composer = new EventMessageComposer();
 
-                    $msg_composer->setSubjectLangText('email', '_NEW_USER_SUBSCRIBED_SUBJECT_MODERATORS', false);
+                    $msg_composer->setSubjectLangText('email', '_NEW_USER_SUBSCRIBED_SUBJECT_MODERATORS', $array_subst);
                     $msg_composer->setBodyLangText('email', '_NEW_USER_SUBSCRIBED_TEXT_MODERATORS', $array_subst);
                     $msg_composer->setBodyLangText('sms', '_NEW_USER_SUBSCRIBED_TEXT_SMS_MODERATORS', $array_subst);
 
@@ -891,8 +891,7 @@ class SubscriptionAlmsController extends AlmsController
                                     $permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
                                     $permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
 
-                                    $course_man = new Man_Course();
-                                    $recipients = $course_man->getIdUserOfLevel($this->id_course, '6');
+                                    $recipients = Man_Course::getIdUserOfLevel($this->id_course, '6');
 
                                     $recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_godadmin));
                                     $recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_admin));
@@ -1087,7 +1086,7 @@ class SubscriptionAlmsController extends AlmsController
                 // message to user that is odified
                 $msg_composer = new EventMessageComposer();
 
-                $msg_composer->setSubjectLangText('email', '_NEW_USER_SUBSCRIBED_SUBJECT_MODERATORS', false);
+                $msg_composer->setSubjectLangText('email', '_NEW_USER_SUBSCRIBED_SUBJECT_MODERATORS', $array_subst);
                 $msg_composer->setBodyLangText('email', '_NEW_USER_SUBSCRIBED_TEXT_MODERATORS', $array_subst);
                 $msg_composer->setBodyLangText('sms', '_NEW_USER_SUBSCRIBED_TEXT_SMS_MODERATORS', $array_subst);
 
@@ -1255,8 +1254,11 @@ class SubscriptionAlmsController extends AlmsController
                     $new_date_complete = Format::dateDb($new_date_complete, 'date');
                     $new_status = FormaLms\lib\Get::req('multimod_status', DOTY_INT, -999);
                     if (in_array($new_status, array_keys($this->model->getUserStatusList()))) {
-                        $res2 = $sman->updateUserStatusInCourse($users_list, $this->id_course, $new_status, $new_date_complete);
-                    }
+                        foreach($users_list as $idUser) {
+                            $res2 = $sman->updateUserStatusInCourse($idUser, $this->id_course, $new_status, $new_date_complete);
+                  
+                        }
+                   }
 
                     foreach ($users_list as $user) {
                         switch ((int) $new_status) {
@@ -1291,8 +1293,8 @@ class SubscriptionAlmsController extends AlmsController
                                 $permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
                                 $permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
 
-                                $course_man = new Man_Course();
-                                $recipients = $course_man->getIdUserOfLevel($this->id_course, '6');
+
+                                $recipients = Man_Course::getIdUserOfLevel($this->id_course, '6');
 
                                 $recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_godadmin));
                                 $recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_admin));

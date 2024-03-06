@@ -935,7 +935,7 @@ function defmodality()
     $GLOBALS['page']->add(
         Form::openFormLine()
             . Form::getInputRadio('order_type_random_quest', 'order_type', 2, $order_type == 2, '')
-            . '<label for="order_type_random_quest">' . $lang->def('_ORDER_TYPE_RANDOM') . '</label> - '
+            . ' <label for="order_type_random_quest">' . $lang->def('_ORDER_TYPE_RANDOM') . '</label> - '
             . '<label for="question_random_number">'
             . str_replace('[tot_quest]', $tot_quest, $label)
             . '</label>'
@@ -960,7 +960,7 @@ function defmodality()
     $GLOBALS['page']->add(
         Form::openFormLine()
             . Form::getInputRadio('order_type_random_category', 'order_type', 3, $order_type == 3, $script)
-            . '<label for="order_type_random_category">' . $lang->def('_ORDER_TYPE_CATEGORY') . '</label>'
+            . ' <label for="order_type_random_category">' . $lang->def('_ORDER_TYPE_CATEGORY') . '</label>'
             . $category_selector
             . Form::closeFormLine()
             . '<br />',

@@ -1,6 +1,7 @@
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');		
 const path = require('path');
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   entry: {
@@ -76,5 +77,9 @@ module.exports = {
         comments: false
       }
     })*/
+    new CopyWebpackPlugin([{
+      from: __dirname + '/node_modules/tinymce-i18n/langs5',
+      to: __dirname + '/../../html/addons/tiny_mce/langs',
+    }]),
   ]
 };

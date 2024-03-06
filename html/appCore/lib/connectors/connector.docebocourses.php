@@ -461,8 +461,8 @@ class DoceboConnectorDoceboCourses extends DoceboConnector
                                                                                     '[course]' => $row['name'], ]);
 
                     require_once _lms_ . '/lib/lib.course.php';
-                    $course_man = new Man_Course();
-                    $recipients = $course_man->getIdUserOfLevel($id_course);
+
+                    $recipients = Man_Course::getIdUserOfLevel($id_course);
                     createNewAlert('CoursePropModified',
                                     'course',
                                     'add',

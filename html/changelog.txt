@@ -2,6 +2,79 @@ FORMA LMS
 RELEASE CHANGELOG
 
 ---------------------------------------------------------------------------------------
+forma.lms 3.3.22
+---------------------------------------------------------------------------------------
+Release date: 2024 february
+
+- #      - Fix various graphic and style improvements
+- #      - upgrade version
+- #      - Fix "Download" button position on "MyCertificates" user area
+- #      - Fix handling accents when right click renaming
+- #      - Fix FolderView delete file message not showing
+- #      - Fix Context Menu delete message not showing
+- #      - Fix Link header translation
+- #      - Change submit when editing a file to orange
+- #      - Remove double quote on edit dashboard settings and directory class
+- #      - Remove double '<<' on Wiki module
+- #      - Fix invalid lang codes for language files
+- #      - Fix "X" alignment on file dropzone and upgraded TinyMCE to 5.10.9
+- #      - Remove double '<' on User Registration
+- #      - Fix FAQ title rendering
+- #      - Fix PT-BR install translation and translates "Yes/No" fields
+- #      - Fix reference for missing image on FAQ
+- #      - Make Admin Area icons sprite transparent
+- #      - Translate Status column and Capitalize "by" column
+- #      - Fix _MOVE_ORGBRANCH translation
+- #      - Update kbcategorize.php
+- #      - Update _orgchart_selector.php
+- #      - Translate User Pontuation column tile on Grade book details
+- #      - Pass dropzone as Twig param
+- #      - Translate success upload learning object file message
+- #      - Fix translation label rendering on checkboxes at student attendance list
+- #      - Fix "modify time table" on student attendance dates list
+- #      - Fix searchbox float of certificates
+- #      - Update certificate.userstat.php
+- #      - FolderView translation handling
+- #      - Add translation for Context Menu and Folder View actions on courses
+- #      - Translate fields from User Profile (View)
+- #      - Update lostpwd.html.twig
+- #      - [User Register] Remove '<<' from _BACK str and Uppercase on language dropdown
+- #      - Add missing space on Users section of dashboard
+- #      - Fix subscribe user "plus" button on assign users to course page
+- #      - Do not use slashes on _homerepo and _repo DB
+- #      - Fix HTML page title rendering (and possible other learning objects too)
+- #      - Fix 404 error when loading jQuery Datepicker for EN users
+- #      - Update show.php
+- #      - Update list.php
+- #      - Fix translation not being applied on Language management
+- #      - Fix radio text alignment
+- #      - Fix "Menu Course" translation
+- #      - Fix translation not being applied on Teacher Area
+- #      - Added missing translation relations
+- #      - Multilanguage TinyMCE and bugfixes
+
+---------------------------------------------------------------------------------------
+forma.lms 3.3.21ss
+---------------------------------------------------------------------------------------
+Release date: 2024 february
+
+- #      - fix subject dynamic content in mail
+- #      - events on userselector columns
+- #      - fix scorm time parser
+- #      - fix scorm sessiontime count
+- #      - fix connector import user language logic
+- #      - other fix html page escape
+- #      - fix htmlpage update query
+- #      - fix deleteLearningObjects API 
+- #      - add version files
+- #      - fix advanced search in user widget
+- #      - sanitize wildcard in check username duplicates
+- #      - fix default lang in io task user import
+- #      - fix calendar 
+- #      - remove course description in getanswertest XML response
+- #      - fix multimod subscription in users array
+
+---------------------------------------------------------------------------------------
 forma.lms 3.3.17
 ---------------------------------------------------------------------------------------
 Release date: 2023 november
