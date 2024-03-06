@@ -21,9 +21,9 @@ class CourseReportManager
     public function __construct($idCourse = null)
     {
         if ($idCourse === null) {
-            $this->idCourse = (int) \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+            $this->idCourse = (int)\FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         } else {
-            $this->idCourse = (int) $idCourse;
+            $this->idCourse = (int)$idCourse;
         }
     }
 
@@ -56,8 +56,7 @@ class CourseReportManager
     {
         require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
-        $course_man = new Man_Course();
-        $course_user = $course_man->getIdUserOfLevel($this->idCourse, 3);
+        $course_user = Man_Course::getIdUserOfLevel($this->idCourse, 3);
 
         return $course_user;
     }
@@ -189,45 +188,41 @@ class CourseReportManager
 
     public function repairSequence()
     {
-        $query_select = "
-		SELECT id_report
-		FROM %lms_coursereport 
-		WHERE id_course = '" . $this->idCourse . "' AND source_of <> 'final_vote'
-		ORDER BY sequence";
+        $query_select = "SELECT id_report FROM %lms_coursereport WHERE id_course = '" . $this->idCourse . "' AND source_of <> 'final_vote' ORDER BY sequence";
         $re_select = sql_query($query_select);
         $i = 1;
-        while (list($id_report) = sql_fetch_row($re_select)) {
-            $query_seq = "
-			UPDATE %lms_coursereport 
-			SET sequence = '" . $i++ . "' 
-			WHERE id_course = '" . $this->idCourse . "' AND id_report = '$id_report'";
+        foreach ($re_select as $row) {
+            [$id_report] = array_values($row);
+
+            $query_seq = "UPDATE %lms_coursereport SET sequence = '" . $i++ . "' WHERE id_course = '" . $this->idCourse . "' AND id_report = '$id_report'";
             sql_query($query_seq);
         }
         $query_seq = "
-		UPDATE %lms_coursereport 
-		SET sequence = '" . $i . "' 
-		WHERE id_course = '" . $this->idCourse . "' AND source_of = 'final_vote'";
+		UPDATE %lms_coursereport  SET sequence = '" . $i . "' WHERE id_course = '" . $this->idCourse . "' AND source_of = 'final_vote'";
         sql_query($query_seq);
     }
 
-    /**
-     * @param int   $reports_id the id of the reports for which you need to recover the users scores
-     * @param array $id_user    if != false filter result to this users
-     *
-     * @return array an array with this structure ( id_report => ( id_user => (id_report, id_user, date_attempt, score, score_status, comment)), ...)
-     */
-    public function &getReportsScores($reports_id, $id_user = false)
+
+    public function getReportsScores($reports_id, $id_user = false)
     {
-        $data = [];
+        $data = $this->getReportsScoresAndDetails($reports_id, $id_user);
+
+        return $data['reportScores'];
+    }
+
+    public function getReportsScoresAndDetails($reports_id, $id_user = false)
+    {
+        $data = [
+            'reportScores' => [],
+            'reportDetails' => [],
+        ];
         if (empty($reports_id) || !is_array($reports_id)) {
             return $data;
         }
         if ($id_user !== false && !is_array($id_user)) {
             $id_user = [$id_user];
         }
-        if (!is_array($reports_id)) {
-            return $data;
-        }
+
         $query_scores = '
 			SELECT id_report, id_user, date_attempt, score, score_status, comment 
 			FROM %lms_coursereport_score 
@@ -236,11 +231,46 @@ class CourseReportManager
             $query_scores .= ' AND id_user IN ( ' . implode(',', $id_user) . ' )';
         }
         $re_scores = sql_query($query_scores);
-        while ($test_data = sql_fetch_assoc($re_scores)) {
+        foreach ($re_scores as $test_data) {
             if (!$test_data['date_attempt']) {
                 $test_data['date_attempt'] = '';
             }
-            $data[$test_data['id_report']][$test_data['id_user']] = $test_data;
+
+            $data['reportDetails'][$test_data['id_report']] = [];
+
+            if ($test_data['score_status'] == 'valid') {
+                // max
+                if (!isset($data['reportDetails'][$test_data['id_report']]['max_score'])) {
+                    $data['reportDetails'][$test_data['id_report']]['max_score'] = $test_data['score'];
+                } elseif ($test_data['score'] > $data['reportDetails'][$test_data['id_report']]['max_score']) {
+                    $data['reportDetails'][$test_data['id_report']]['max_score'] = $test_data['score'];
+                }
+
+                // min
+                if (!isset($data['reportDetails'][$test_data['id_report']]['min_score'])) {
+                    $data['reportDetails'][$test_data['id_report']]['min_score'] = $test_data['score'];
+                } elseif ($test_data['score'] < $data['reportDetails'][$test_data['id_report']]['min_score']) {
+                    $data['reportDetails'][$test_data['id_report']]['min_score'] = $test_data['score'];
+                }
+
+                //number of valid score
+                if (!isset($data['reportDetails'][$test_data['id_report']]['num_result'])) {
+                    $data['reportDetails'][$test_data['id_report']]['num_result'] = 1;
+                } else {
+                    ++$data['reportDetails'][$test_data['id_report']]['num_result'];
+                }
+
+                // average
+                if (!isset($data['reportDetails'][$test_data['id_report']]['maxScore'])) {
+                    $data['reportDetails'][$test_data['id_report']]['maxScore'] = $test_data['score'];
+                } else {
+                    $data['reportDetails'][$test_data['id_report']]['maxScore'] += $test_data['score'];
+                }
+
+                $data['reportDetails'][$test_data['id_report']]['average'] = $data['reportDetails'][$test_data['id_report']]['maxScore'] / $data['reportDetails'][$test_data['id_report']]['num_result'];
+            }
+
+            $data['reportScores'][$test_data['id_report']][$test_data['id_user']] = $test_data;
         }
 
         return $data;
@@ -248,7 +278,7 @@ class CourseReportManager
 
     public function saveReportScore($id_report, $users_scores, $date_attempts, $comments)
     {
-        $old_scores = &$this->getReportsScores([$id_report]);
+        $old_scores = $this->getReportsScores([$id_report]);
         $re = true;
         foreach ($users_scores as $idst_user => $score) {
             if (!isset($old_scores[$id_report][$idst_user])) {
@@ -273,15 +303,15 @@ class CourseReportManager
                         : '') . " 
 				WHERE id_report = '" . $id_report . "' AND id_user = '" . $idst_user . "'";
             }
-            $re &= sql_query($query_scores);
+            $re = sql_query($query_scores);
         }
 
         return $re;
     }
 
     /**
-     * @param int   $id_report the id of the report to manage
-     * @param array $id_user   filter for user
+     * @param int $id_report the id of the report to manage
+     * @param array $id_user filter for user
      *
      * @return bool true if success false otherwise
      */
@@ -296,12 +326,13 @@ class CourseReportManager
             $query_scores .= ' AND idUser IN ( ' . implode(',', $id_users) . ' ) ';
         }
         $re_scores = sql_query($query_scores);
-        while (list($user, $score, $score_status) = sql_fetch_row($re_scores)) {
+        foreach ($re_scores  as $row) {
+            [$user, $score, $score_status] = array_values($row);
             if ($score_status == 'valid') {
                 $query_scores = "
-				UPDATE %lms_coursereport_score
-				SET score = '" . round($score) . "'
-				WHERE id_report = '" . $id_report . "' AND id_user = '" . $user . "'";
+        UPDATE %lms_coursereport_score
+        SET score = '" . round($score) . "'
+        WHERE id_report = '" . $id_report . "' AND id_user = '" . $user . "'";
                 $re &= sql_query($query_scores);
             }
         }
@@ -334,7 +365,7 @@ class CourseReportManager
     {
         if ($source['required_score'] > $source['max_score']) {
             return ['error' => true,
-                'message' => Lang::t('_REQUIRED_MUST_BE_LESS_THEN_MAX', 'coursereport', 'lms'), ];
+                'message' => Lang::t('_REQUIRED_MUST_BE_LESS_THEN_MAX', 'coursereport', 'lms'),];
         }
 
         return ['error' => false, 'message' => ''];
@@ -439,7 +470,8 @@ class CourseReportManager
             return $re;
         }
         $re_scores = sql_query($query_scores);
-        while (list($user, $id_course, $score, $score_status) = sql_fetch_row($re_scores)) {
+        foreach ($re_scores as $row) {
+            [$user, $id_course, $score, $score_status] = array_values($row);
             if ($score_status == 'valid') {
                 $re[$id_course] = $score;
             }
@@ -466,7 +498,8 @@ class CourseReportManager
             return $re;
         }
         $re_scores = sql_query($query_scores);
-        while (list($user, $id_course, $score, $score_status, $max_score) = sql_fetch_row($re_scores)) {
+        foreach ($re_scores as $row) {
+            [$user, $id_course, $score, $score_status, $max_score] = array_values($row);
             if ($score_status == 'valid') {
                 $re[$user][$id_course]['score'] = $score;
                 $re[$user][$id_course]['max_score'] = $max_score;
@@ -484,7 +517,7 @@ class CourseReportManager
     public function deleteAllReports($id_course)
     {
         //validate input
-        if ((int) $id_course <= 0) {
+        if ((int)$id_course <= 0) {
             return false;
         }
 
@@ -494,9 +527,10 @@ class CourseReportManager
 
         //get all existing report for the course
         $arr_id_report = [];
-        $query = 'SELECT id_report FROM %lms_coursereport_score WHERE id_course = ' . (int) $id_course;
+        $query = 'SELECT id_report FROM %lms_coursereport_score WHERE id_course = ' . (int)$id_course;
         $res = $db->query($query);
-        while (list($id_report) = $db->fetch_row($res)) {
+        foreach ($res as $row) {
+            [$id_report] = array_values($row);
             $arr_id_report[] = $id_report;
         }
 
@@ -512,7 +546,7 @@ class CourseReportManager
         }
 
         //delete course reports
-        $query = "DELETE FROM %lms_coursereport WHERE id_course = '" . (int) $id_course . "'";
+        $query = "DELETE FROM %lms_coursereport WHERE id_course = '" . (int)$id_course . "'";
         $res = $db->query($query);
         if (!$res) {
             $db->rollback();

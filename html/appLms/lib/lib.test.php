@@ -30,7 +30,7 @@ class GroupTestManagement
 		FROM %lms_test 
 		WHERE idTest IN  ( ' . implode(',', $id_tests) . ' )';
         $re_test = sql_query($query_test);
-        while ($test = sql_fetch_assoc($re_test)) {
+        foreach ($re_test as $test) {
             $id_t = $test['idTest'];
             $tests[$id_t] = $test;
         }
@@ -68,7 +68,8 @@ class GroupTestManagement
 
         $max_score = 0;
         $question_number = 0;
-        while (list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($re_quest)) {
+        foreach ($re_quest as $row) {
+            [$idQuest, $type_quest, $type_file, $type_class] = array_values($row);
             require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/' . $type_file);
             $quest_obj = eval("return new $type_class( $idQuest );");
 
@@ -76,7 +77,7 @@ class GroupTestManagement
             ++$question_number;
         }
 
-        if ((int) $question_random_number !== 0) {
+        if ((int)$question_random_number !== 0) {
             $single_question_point = $max_score / $question_number;
             $max_score = $question_random_number * $single_question_point;
         }
@@ -105,15 +106,25 @@ class GroupTestManagement
     /**
      * returns the users score for a list of test.
      *
-     * @param array $id_tests    an array with the id of the test for which the function must retrive scores
+     * @param array $id_tests an array with the id of the test for which the function must retrive scores
      * @param array $id_students the students of the course
      *
      * @return array a matrix with the index [id_test] [id_user] and the values in
      *               ['idTest',' idUser', 'date_attempt', 'type_of_result', 'result', 'score_status', 'comment']
      */
-    public function &getTestsScores($id_tests, $id_students = false, $pure = false)
+    public function getTestsScores($id_tests, $id_students = false, $pure = false)
     {
-        $data = [];
+        $data = $this->getReportTestsScoresAndDetails($id_tests,$id_students,$pure);
+
+        return $data['testScores'];
+    }
+
+    public function getReportTestsScoresAndDetails($id_tests, $id_students = false, $pure = false): array
+    {
+        $data = [
+            'testScores' => [],
+            'testDetails' => [],
+            ];
         if (empty($id_tests)) {
             return $data;
         }
@@ -121,18 +132,15 @@ class GroupTestManagement
             $id_students = false;
         }
         $query_scores = '
-		SELECT idTest, idTrack, idUser, date_attempt, date_attempt_mod, score, score_status, comment, bonus_score
-		FROM %lms_testtrack
-		WHERE idTest IN ( ' . implode(',', $id_tests) . ' ) ';
+		SELECT lt.idTest, lt.idTrack, lt.idUser, lt.date_attempt, lt.date_attempt_mod, lt.score, lt.score_status, lt.comment, lt.bonus_score, count(ltt.idReference) as times
+		FROM %lms_testtrack as lt join %lms_testtrack_times as ltt on lt.idTrack=ltt.idTrack and lt.idTest=ltt.idTest
+		WHERE lt.idTest IN ( ' . implode(',', $id_tests) . ' ) ';
         if ($id_students !== false) {
-            $query_scores .= ' AND idUser IN ( ' . implode(',', $id_students) . ' )';
+            $query_scores .= ' AND lt.idUser IN ( ' . implode(',', $id_students) . ' )';
         }
+        $query_scores .= ' GROUP by idTest, idTrack,idUser';
         $re_scores = sql_query($query_scores);
-        while ($test_data = sql_fetch_assoc($re_scores)) {
-            $times_sql = 'SELECT idReference FROM %lms_testtrack_times
-                        WHERE idTrack = ' . $test_data['idTrack'] . ' AND idTest = ' . $test_data['idTest'];
-            $re_times = sql_query($times_sql);
-            $test_data['times'] = sql_num_rows($re_times);
+        foreach ($re_scores as $test_data) {
 
             if ($test_data['date_attempt_mod']) {
                 $test_data['date_attempt'] = $test_data['date_attempt_mod'];
@@ -140,21 +148,59 @@ class GroupTestManagement
             if (!$pure) {
                 $test_data['score'] = $test_data['score'] + $test_data['bonus_score'];
             }
-            $data[$test_data['idTest']][$test_data['idUser']] = $test_data;
-        }
 
+            $data['testDetails'][$test_data['idTest']] = [];
+
+            if ($test_data['score_status'] == 'valid') {
+                // max
+                if (!isset( $data['testDetails'][$test_data['idTest']]['max_score'])) {
+                     $data['testDetails'][$test_data['idTest']]['max_score'] = $test_data['score'];
+                } elseif ($test_data['score'] >  $data['testDetails'][$test_data['idTest']]['max_score']) {
+                     $data['testDetails'][$test_data['idTest']]['max_score'] = $test_data['score'];
+                }
+
+                // min
+                if (!isset( $data['testDetails'][$test_data['idTest']]['min_score'])) {
+                     $data['testDetails'][$test_data['idTest']]['min_score'] = $test_data['score'];
+                } elseif ($test_data['score'] <  $data['testDetails'][$test_data['idTest']]['min_score']) {
+                     $data['testDetails'][$test_data['idTest']]['min_score'] = $test_data['score'];
+                }
+
+                //number of valid score
+                if (!isset( $data['testDetails'][$test_data['idTest']]['num_result'])) {
+                     $data['testDetails'][$test_data['idTest']]['num_result'] = 1;
+                } else {
+                    ++$data['testDetails'][$test_data['idTest']]['num_result'];
+                }
+
+
+                if (!isset( $data['testDetails'][$test_data['idTest']]['maxScore'])) {
+                     $data['testDetails'][$test_data['idTest']]['maxScore'] = $test_data['score'];
+                } else {
+                     $data['testDetails'][$test_data['idTest']]['maxScore'] += $test_data['score'];
+                }
+                // average
+                if ( $data['testDetails'][$test_data['idTest']]['num_result']) {
+                     $data['testDetails'][$test_data['idTest']]['average'] =  $data['testDetails'][$test_data['idTest']]['maxScore'] /  $data['testDetails'][$test_data['idTest']]['num_result'];
+                }
+            }
+
+            $data['testScores'][$test_data['idTest']][$test_data['idUser']] = $test_data;
+
+        }
         return $data;
     }
+
 
     /**
      * returns the users score for a list of test.
      *
-     * @param array $id_tests    an array with the id of the test for which the function must retrive scores
+     * @param array $id_tests an array with the id of the test for which the function must retrive scores
      * @param array $id_students the students of the course
      *
      * @return array a matrix with the index [id_test] [id_user] and values array( score, max_score )
      */
-    public function &getSimpleTestsScores($id_tests, $id_students = false, $pure = false)
+    public function getSimpleTestsScores($id_tests, $id_students = false, $pure = false)
     {
         $data = [];
         if (empty($id_tests)) {
@@ -171,19 +217,16 @@ class GroupTestManagement
             $query_scores .= ' AND idUser IN ( ' . implode(',', $id_students) . ' )';
         }
         $re_scores = sql_query($query_scores);
-        while ($test_data = sql_fetch_assoc($re_scores)) {
+        foreach ($re_scores as $test_data) {
             if (!$pure) {
-                $data[$test_data['idTest']][$test_data['idUser']]['score'] = $test_data['score'] + $test_data['bonus_score'];
+                $score = $test_data['score'] + $test_data['bonus_score'];
             } else {
-                $data[$test_data['idTest']][$test_data['idUser']]['score'] = $test_data['score'];
+                $score = $test_data['score'];
             }
+            $data[$test_data['idTest']][$test_data['idUser']]['score'] = $score;
             $data[$test_data['idTest']][$test_data['idUser']]['max_score'] = $this->getMaxScore($test_data['idTest']);
             $required_score = $this->getRequiredScore($test_data['idTest']);
-            if ($data[$test_data['idTest']][$test_data['idUser']]['score'] >= $required_score) {
-                $data[$test_data['idTest']][$test_data['idUser']]['passed_score'] = true;
-            } else {
-                $data[$test_data['idTest']][$test_data['idUser']]['passed_score'] = false;
-            }
+            $data[$test_data['idTest']][$test_data['idUser']]['passed_score'] = ($score >= $required_score);
             $data[$test_data['idTest']][$test_data['idUser']]['number_of_attempt'] = $test_data['number_of_attempt'];
         }
 
@@ -193,10 +236,10 @@ class GroupTestManagement
     /**
      * save some score info related with id_test and is_user.
      *
-     * @param int   $id_test       the id of the test,
-     * @param array $users_scores  the score of the users associated with the proper idst_userid
+     * @param int $id_test the id of the test,
+     * @param array $users_scores the score of the users associated with the proper idst_userid
      * @param array $date_attempts the date of the attempt time
-     * @param array $comments      comments to the test
+     * @param array $comments comments to the test
      */
     public function saveTestUsersScores($id_test, $users_scores, $date_attempts, $comments)
     {
@@ -214,7 +257,7 @@ class GroupTestManagement
         foreach ($users_scores as $idst_user => $score) {
             $query_scores = '
 			UPDATE ' . $GLOBALS['prefix_lms'] . "_testtrack
-			SET date_attempt_mod = '" . Format::dateDb($date_attempts[$idst_user],'date') . "', 
+			SET date_attempt_mod = '" . Format::dateDb($date_attempts[$idst_user], 'date') . "', 
 				bonus_score = '" . ($score - $old_scores[$id_test][$idst_user]['score']) . "', 
 				score_status = 'valid',
 				comment = '" . $comments[$idst_user] . "'
@@ -267,7 +310,7 @@ class GroupTestManagement
     }
 
     /**
-     * @param int   $id_test the id of the test to manage
+     * @param int $id_test the id of the test to manage
      * @param array $id_user filter for user
      *
      * @return bool true if success false otherwise
@@ -292,7 +335,8 @@ class GroupTestManagement
             $query_scores .= ' AND idUser IN ( ' . implode(',', $id_users) . ' ) ';
         }
         $re_scores = sql_query($query_scores);
-        while (list($id_track, $user, $score, $score_status, $bonus_score) = sql_fetch_row($re_scores)) {
+        foreach ($re_scores as $row) {
+            [$id_track, $user, $score, $score_status, $bonus_score] = array_values($row);
             $new_score = round($score + $bonus_score);
             if ($score_status == 'valid') {
                 $query_scores = '
@@ -310,7 +354,7 @@ class GroupTestManagement
                 }
             }
             if (($score_status == 'passed' || $score_status == 'not_passed') && ($show_only_status == 1)
-                    && ($score < $point_required) && ($new_score >= $point_required)) {
+                && ($score < $point_required) && ($new_score >= $point_required)) {
                 $query_scores = '
 				UPDATE ' . $GLOBALS['prefix_lms'] . "_testtrack
 				SET bonus_store = '" . $new_score . "',
@@ -390,7 +434,8 @@ class GroupTestManagement
 		WHERE q.idTest = '" . $id_test . "' AND q.type_quest = t.type_quest 
 		ORDER BY q.sequence";
         $re_quest = sql_query($query_question);
-        while (list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($re_quest)) {
+        foreach ($re_quest as $row) {
+            [$idQuest, $type_quest, $type_file, $type_class] = array_values($row);
             require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/' . $type_file);
             $quest_obj = eval("return new $type_class( $idQuest );");
 
@@ -468,10 +513,10 @@ class TestManagement
             return $total;
         }
         $query = 'SELECT COUNT(*)'
-                    . ' FROM %lms_testquest'
-                    . " WHERE type_quest <> 'title'"
-                    . " AND type_quest <> 'break_page'"
-                    . " AND idTest = '" . $this->id_test . "'";
+            . ' FROM %lms_testquest'
+            . " WHERE type_quest <> 'title'"
+            . " AND type_quest <> 'break_page'"
+            . " AND idTest = '" . $this->id_test . "'";
 
         [$result] = sql_fetch_row(sql_query($query));
 
@@ -532,7 +577,7 @@ class TestManagement
                 $arr = $json->decode($this->test_info['order_info']);
                 $tot_page = 0;
                 foreach ($arr as $value) {
-                    $tot_page += (int) $value['selected'];
+                    $tot_page += (int)$value['selected'];
                 }
 
                 return $tot_page;
@@ -647,7 +692,8 @@ class TestManagement
         $re_quest = sql_query($query_question);
 
         $max_score = 0;
-        while (list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($re_quest)) {
+        foreach ($re_quest as $row) {
+            [$idQuest, $type_quest, $type_file, $type_class] = array_values($row);
             require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/' . $type_file);
             $quest_obj = eval("return new $type_class( $idQuest );");
 
@@ -727,8 +773,8 @@ class TestManagement
 					'" . ($is_correct == 'true' ? 1 : 0) . "', 
 					'" . addslashes($answer->textContent) . "', 
 					'', 
-					'" . (float) $score_if_correct . "', 
-					'" . (float) $score_if_error . "') ";
+					'" . (float)$score_if_correct . "', 
+					'" . (float)$score_if_error . "') ";
                 if (!sql_query($ins_answer_query)) {
                     $re = false;
                 }
@@ -743,9 +789,9 @@ class TestManagement
     public function getPrerequisite()
     {
         $query_prerequisite = 'SELECT prerequisites'
-                            . ' FROM %lms_organization'
-                            . " WHERE idResource = '" . $this->id_test . "'"
-                            . "	AND objectType = 'test'";
+            . ' FROM %lms_organization'
+            . " WHERE idResource = '" . $this->id_test . "'"
+            . "	AND objectType = 'test'";
 
         [$prerequisites] = sql_fetch_row(sql_query($query_prerequisite));
 
@@ -762,7 +808,7 @@ class PlayTestManagement
     public $id_user;
 
     /**
-     * @param	TestMnagement
+     * @param TestMnagement
      */
     public $test_man;
 
@@ -817,7 +863,8 @@ class PlayTestManagement
             return $time_accumulated;
         }
 
-        while (list($from_ts, $to, $to_ts, $accumulated) = sql_fetch_row($re_time)) {
+        foreach ($re_time as $row) {
+            [$from_ts, $to, $to_ts, $accumulated] = array_values($row);
             if ($to !== null) {
                 $time_accumulated += abs($to_ts - $from_ts);
             }
@@ -986,7 +1033,8 @@ class PlayTestManagement
 
         if (sql_num_rows($re_quest)) {
             // page alredy seen, retrive the question alredy displayed
-            while (list($id_quest) = sql_fetch_row($re_quest)) {
+            foreach ($re_quest as $row) {
+                [$id_quest] = array_values($row);
                 $quest_displayed[] = $id_quest;
             }
 
@@ -1011,21 +1059,21 @@ class PlayTestManagement
                     return $query_question
                         . " AND q.page = '" . $page_number . "' "
                         . ' ORDER BY q.sequence';
-                 break;
+                    break;
                 case '1':
                     // shuffle
                     return $query_question
                         . " AND q.page = '" . $page_number . "' "
                         . " AND q.type_quest <> 'title' "
                         . ' ORDER BY RAND() ';
-                 break;
+                    break;
                 case '2':
                     // Random X quest on a total of N quest
                     return $query_question
                         . " AND q.type_quest <> 'title'  AND q.type_quest <> 'break_page' "
                         . ' ORDER BY RAND() '
                         . ' LIMIT 0, ' . $question_random_number;
-                 break;
+                    break;
                 case '3':
                     // Random X quest on a set of selected categories, each of N(idCategory) quests
                     require_once _base_ . '/lib/lib.json.php';
@@ -1035,10 +1083,10 @@ class PlayTestManagement
                     $queries = [];
                     if (is_array($arr)) {
                         foreach ($arr as $value) {
-                            if ((int) $value['selected'] > 0) {
+                            if ((int)$value['selected'] > 0) {
                                 $queries[] = $query_question
                                     . " AND q.type_quest <> 'title'  AND q.type_quest <> 'break_page' "
-                                    . " AND q.idCategory = '" . (int) $value['id_category'] . "' ORDER BY RAND() "
+                                    . " AND q.idCategory = '" . (int)$value['id_category'] . "' ORDER BY RAND() "
                                     . ' LIMIT 0, ' . $value['selected'];
                             }
                         }
@@ -1049,7 +1097,7 @@ class PlayTestManagement
                     } else {
                         return '';
                     }
-                 break;
+                    break;
                 case '4':
                     // Random X quest on a set of selected categories, each of N(idCategory) quests
                     require_once _base_ . '/lib/lib.json.php';
@@ -1059,12 +1107,12 @@ class PlayTestManagement
                     $queries = [];
                     if (is_array($arr)) {
                         foreach ($arr as $value) {
-                            if ((int) $value['selected'] > 0) {
+                            if ((int)$value['selected'] > 0) {
                                 $queries[] = $query_question
                                     . " AND q.type_quest <> 'title'  AND q.type_quest <> 'break_page' "
                                     //." AND q.idCategory = '".(int)$value['id_cf_son']."' ORDER BY RAND() "
-                                                                        //q.idQuest   prefix_fw
-                                                                        . ' AND q.idQuest IN ( SELECT id_obj FROM ' . $GLOBALS['prefix_fw'] . "_customfield_entry WHERE obj_entry = '" . (int) $value['id_cf_son'] . "' ) ORDER BY RAND() "
+                                    //q.idQuest   prefix_fw
+                                    . ' AND q.idQuest IN ( SELECT id_obj FROM ' . $GLOBALS['prefix_fw'] . "_customfield_entry WHERE obj_entry = '" . (int)$value['id_cf_son'] . "' ) ORDER BY RAND() "
                                     . ' LIMIT 0, ' . $value['selected'];
                             }
                         }
@@ -1075,7 +1123,7 @@ class PlayTestManagement
                     } else {
                         return '';
                     }
-                 break;
+                    break;
             }
         } else {
             // One question per page
@@ -1087,7 +1135,8 @@ class PlayTestManagement
 			FROM ' . $GLOBALS['prefix_lms'] . "_testtrack_quest
 			WHERE idTrack = '" . $this->id_track . "'";
             $re_quest_seen = sql_query($query_quest_seen);
-            while (list($id_quest) = sql_fetch_row($re_quest_seen)) {
+            foreach ($re_quest_seen as $row) {
+                [$id_quest] = array_values($row);
                 $quest_seen[] = $id_quest;
             }
 
@@ -1100,31 +1149,32 @@ class PlayTestManagement
                     return $query_question
                         . ' ORDER BY q.sequence '
                         . ' LIMIT 0,1';
-                 break;
+                    break;
                 case '1':
                     // Shuffle
                     return $query_question
                         . " AND q.type_quest <> 'title' "
                         . ' ORDER BY RAND() '
                         . ' LIMIT 0,1';
-                 break;
+                    break;
                 case '2':
                     // Random X quest on a total of N quest
                     return $query_question
                         . " AND q.type_quest <> 'title' "
                         . ' ORDER BY RAND()'
                         . ' LIMIT 0, 1';
-                 break;
+                    break;
                 case '3':
-          $cat_seen = [];
-          $query_cat_seen = '
+                    $cat_seen = [];
+                    $query_cat_seen = '
 			     SELECT idCategory, COUNT(*)
 			     FROM %lms_testtrack_quest as ttq JOIN ' . $GLOBALS['prefix_lms'] . "_testquest as tq
 			     ON (ttq.idQuest = tq.idQuest) WHERE idTrack = '" . $this->id_track . "' GROUP BY idCategory";
-          $re_seen = sql_query($query_cat_seen);
-          while (list($id_cat, $num) = sql_fetch_row($re_seen)) {
-              $cat_seen[$id_cat] = $num;
-          }
+                    $re_seen = sql_query($query_cat_seen);
+                    foreach ($re_seen as $row) {
+                        [$id_cat, $num] = array_values($row);
+                        $cat_seen[$id_cat] = $num;
+                    }
 
                     // Random X quest on a set of selected categories, each of N(idCategory) quests
                     require_once _base_ . '/lib/lib.json.php';
@@ -1138,11 +1188,11 @@ class PlayTestManagement
                                 $cat_seen[$value['id_category']] = 0;
                             }
                             if ($cat_seen[$value['id_category']] < $value['selected']) {
-                                if ((int) $value['selected'] > 0) {
+                                if ((int)$value['selected'] > 0) {
                                     $queries[] = $query_question
-                                    . " AND q.type_quest <> 'title'  AND q.type_quest <> 'break_page' "
-                                    . " AND q.idcategory = '" . (int) $value['id_category'] . "' ORDER BY RAND() "
-                                    . ' LIMIT 0, ' . (int) ($value['selected'] - $cat_seen[$value['id_category']]);
+                                        . " AND q.type_quest <> 'title'  AND q.type_quest <> 'break_page' "
+                                        . " AND q.idcategory = '" . (int)$value['id_category'] . "' ORDER BY RAND() "
+                                        . ' LIMIT 0, ' . (int)($value['selected'] - $cat_seen[$value['id_category']]);
                                 }
                             }
                         }
@@ -1153,7 +1203,7 @@ class PlayTestManagement
                     } else {
                         return '';
                     }
-                 break;
+                    break;
             }
         }
     }
@@ -1162,7 +1212,12 @@ class PlayTestManagement
     {
         $query_question = $this->getQuestionsForPage($page_to_save);
         $re_question = sql_query($query_question);
-        while (list($id_quest, $type_quest, $type_file, $type_class) = sql_fetch_row($re_question)) {
+        foreach ($re_question as $question) {
+            $id_quest = $question['id_quest'];
+            $type_quest = $question['type_quest'];
+            $type_file = $question['type_file'];
+            $type_class = $question['type_class'];
+
             require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/' . $type_file);
             require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/track.test.php');
             $trackTest = new Track_Test($this->id_track);

@@ -308,10 +308,7 @@ class Track_Test extends Track_Object
         return $field;
     }
 
-    /**
-     * @return idTrack if exists or false
-     **/
-    public function deleteTrack($idTrack)
+    public static function deleteTrack($idTrack)
     {
         Events::trigger('lms.lo_user.deleting', [
             'id_track' => $idTrack,
@@ -372,7 +369,7 @@ class Track_Test extends Track_Object
                 return false;
             }
 
-            $re_update = $this->deleteTrack($id_track);
+            $re_update = self::deleteTrack($id_track);
             if ($re_update) {
                 $re_common = parent::deleteTrackInfo($id_lo, $id_user);
                 if ($re_common) {

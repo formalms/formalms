@@ -47,17 +47,17 @@ class Learning_Test extends Learning_Object
         if ($id !== null) {
             $res = $this->db->query("SELECT author, title, obj_type, retain_answers_history FROM %lms_test WHERE idTest = '" . (int) $id . "'");
             if ($res && $this->db->num_rows($res) > 0) {
-                list(
+                [
                     $this->idAuthor,
                     $this->title,
                     $this->obj_type,
                     $this->retain_answers_history
-                ) = $this->db->fetch_row($res);
+                ] = $this->db->fetch_row($res);
                 $this->isPhysicalObject = true;
             }
             $res = $this->db->query("SELECT idOrg, idCourse FROM %lms_organization WHERE objectType='" . $this->obj_type . "' AND idResource = '" . (int) $id . "'");
             if ($res && $this->db->num_rows($res) > 0) {
-                list($this->idOrg, $this->idCourse) = $this->db->fetch_row($res);
+                [$this->idOrg, $this->idCourse] = $this->db->fetch_row($res);
             }
         }
     }
@@ -70,7 +70,7 @@ class Learning_Test extends Learning_Object
         }
 
         $res = sql_query("SELECT fileName, className FROM %lms_lo_types WHERE objectType = '" . $testObj->getObjectType() . "'");
-        list($type_file, $type_class) = sql_fetch_row($res);
+        [$type_file, $type_class] = sql_fetch_row($res);
         require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/' . $type_file);
 
         return new $type_class($id);
@@ -305,7 +305,7 @@ class Learning_Test extends Learning_Object
         if (!sql_query($ins_query)) {
             return false;
         }
-        list($id_new_test) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
+        [$id_new_test] = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
         if (!$id_new_test) {
             return false;
         }

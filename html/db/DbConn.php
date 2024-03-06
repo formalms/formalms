@@ -279,11 +279,6 @@ class DbConn
         return $parsed_query;
     }
 
-
-    /**
-     * @param $resource
-     * @return void
-     */
     public function query($query)
     {
     }
@@ -293,51 +288,28 @@ class DbConn
     {
     }
 
-    /**
-     * @param $resource
-     * @return void
-     */
     public function insert_id()
     {
     }
 
-    /**
-     * @param $resource
-     * @return void
-     */
     public function fetch_row($resource)
     {
     }
 
-    /**
-     * @param $resource
-     * @return void
-     */
     public function fetch_assoc($resource)
     {
     }
 
-    /**
-     * @param $resource
-     * @return void
-     */
     public function fetch_array($resource)
     {
     }
 
-    /**
-     * @param $resource
-     * @param $class_name
-     * @param $params
-     * @return void
-     */
     public function fetch_obj($resource, $class_name = null, $params = null)
     {
     }
 
     /**
      * @param $resource
-     * @return void
      */
     public function num_rows($resource)
     {

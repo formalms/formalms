@@ -95,7 +95,7 @@ class Track_ScormOrg extends Track_Object
     /**
      * @return idTrack if exists or false
      **/
-    public function deleteTrack($idTrack)
+    public static function deleteTrack($idTrack)
     {
         $query = 'DELETE FROM ' . self::$_table . ' '
                 . " WHERE idTrack='" . (int) $idTrack . "'"
@@ -141,7 +141,7 @@ class Track_ScormOrg extends Track_Object
             }
 
             if ($res1 && $res2 && $res3) {
-                return $this->deleteTrack($idTrack);
+                return self::deleteTrack($idTrack);
             }
         }
 

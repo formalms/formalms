@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240228000015 extends AbstractMigration
+final class Version20240228000014 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -21,9 +21,9 @@ final class Version20240228000015 extends AbstractMigration
     {
 
 
-        $this->addRoleForGodAdminifNotExists('/framework/admin/privacypolicy/view');
-        $this->addRoleForGodAdminifNotExists('/framework/admin/privacypolicy/mod');
-        $this->addRoleForGodAdminifNotExists('/framework/admin/privacypolicy/del');
+        $this->addRoleForGodAdminIfNotExists('/framework/admin/privacypolicy/view');
+        $this->addRoleForGodAdminIfNotExists('/framework/admin/privacypolicy/mod');
+        $this->addRoleForGodAdminIfNotExists('/framework/admin/privacypolicy/del');
  
 
     }
@@ -34,7 +34,7 @@ final class Version20240228000015 extends AbstractMigration
     
     }
 
-    private function addRoleForGodAdminifNotExists($role) {
+    private function addRoleForGodAdminIfNotExists($role) {
 
         require_once _base_ . '/lib/lib.aclmanager.php';
 
