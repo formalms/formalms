@@ -410,6 +410,7 @@
     }
 
     function insertOrUpdateRow(id, date, dateFormatted, dateBegin, dateEnd, pauseBegin, pauseEnd, classroom) {
+    
         var tableBody = getTableBody();
 
         var newTableRow = document.getElementById('js-row-hidden').innerHTML;
@@ -535,7 +536,9 @@
                 data = JSON.parse(data);
 
                 if (data.success) {
-                    for (let day of data.days) {
+
+                    let daysArray = Object.values(data.days);
+                    for (let day of daysArray) {
                         date = day.date_begin.split(" ");
                         if (date.length > 1) {
                             day.date_begin = date[1].substring(0, 5);
@@ -616,8 +619,10 @@
         e.preventDefault()
         var row = e.target.parentNode.parentNode
         if (row.dataset.id > 0) {
+       
             removedDays.push(JSON.parse(JSON.stringify(row.dataset)));
             insertedDays.pop(row.dataset.date);
+        
         }
         row.remove();
         enableSaveButton();
