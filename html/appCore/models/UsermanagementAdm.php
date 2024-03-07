@@ -1178,7 +1178,6 @@ class UsermanagementAdm extends Model implements Accessible
                 (property_exists($userdata, 'password') ? $userdata->password : ''),
                 (property_exists($userdata, 'email') ? $userdata->email : ''),
                 (property_exists($userdata, 'avatarl') ? $userdata->avatar : false),
-                (property_exists($userdata, 'signature') ? $userdata->signature : ''),
                 false, // $alredy_encripted
                 false, // $idst
                 '', // $pwd_expire_at

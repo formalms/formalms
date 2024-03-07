@@ -792,7 +792,6 @@ class FormaUser
                 false,
                 false,
                 false,
-                false,
                 $lastenter
             );
         } else {

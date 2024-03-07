@@ -19,15 +19,16 @@ export const DashBoardCalendar = () => {
         plugins: [dayGridPlugin],
         locale: initialLocaleCode,
         height: 'auto',
-        eventClick: function(item) {
+/*        eventClick: function(item) {
           const id = item.event.id;          
           const url = `index.php?modname=course&op=aula&idCourse=${id}`;
 
           window.location = url;
-        },
+        }, */
         eventDidMount: function(item) {
           if (item.event.extendedProps.status) {
             item.el.classList.add('is-open');
+			
           } else {
             item.el.classList.add('is-closed');
           }

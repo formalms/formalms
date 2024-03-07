@@ -31,15 +31,15 @@ define('ACL_INFO_PASS', 4);
 define('ACL_INFO_EMAIL', 5);
 define('ACL_INFO_AVATAR', 6);
 define('ACL_INFO_VALID', 9);
-define('ACL_INFO_PWD_EXPIRE_AT', 11);
-define('ACL_INFO_REGISTER_DATE', 12);
-define('ACL_INFO_LASTENTER', 13);
-define('ACL_INFO_FORCE_CHANGE', 14);
-define('ACL_INFO_FACEBOOK_ID', 15);
-define('ACL_INFO_TWITTER_ID', 16);
-define('ACL_INFO_LINKEDIN_ID', 17);
-define('ACL_INFO_GOOGLE_ID', 18);
-define('ACL_INFO_PRIVACY_POLICY', 19);
+define('ACL_INFO_PWD_EXPIRE_AT', 10);
+define('ACL_INFO_REGISTER_DATE', 11);
+define('ACL_INFO_LASTENTER', 12);
+define('ACL_INFO_FORCE_CHANGE', 13);
+define('ACL_INFO_FACEBOOK_ID', 14);
+define('ACL_INFO_TWITTER_ID', 15);
+define('ACL_INFO_LINKEDIN_ID', 16);
+define('ACL_INFO_GOOGLE_ID', 17);
+define('ACL_INFO_PRIVACY_POLICY', 18);
 
 define('ACL_INFO_GROUPID', 1);
 define('ACL_INFO_GROUPDESCRIPTION', 2);
@@ -924,6 +924,9 @@ class FormaACLManager
         }
         if (array_key_exists(ACL_INFO_AVATAR, $new_userdata)) {
             $arrSET['avatar'] = $new_userdata[ACL_INFO_AVATAR];
+        }
+        if (array_key_exists(ACL_INFO_LASTENTER, $new_userdata)) {
+            $arrSET['lastenter'] = $new_userdata[ACL_INFO_LASTENTER];
         }
         if (array_key_exists(ACL_INFO_VALID, $new_userdata)) {
             $arrSET['valid'] = $new_userdata[ACL_INFO_VALID] ? '1' : '0';
