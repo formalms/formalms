@@ -29,9 +29,9 @@
                 </div>
             {% endfor %}
         </div>
-    {{ Form_getDatefield(Lang_translate('_DATE','communication'), 'publish_date', 'publish_date') }}
+    {{ Form_getDatefield(Lang_translate('_DATE','communication'), 'publish_date', publish_date', data['publish_date'] is not empty ? data['publish_date'] : date('Y-m-d')) }}
 
-   
+
     {{ Form_getDropdown(Lang_translate('_COURSE', 'course'), 'idCourse', 'idCourse', []) }}
     {{ Form_openButtonSpace() }}
     {{ Form_getButton('save', 'save', Lang_translate('_SAVE', 'admin_lang')) }}

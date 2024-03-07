@@ -101,8 +101,8 @@ class UsermanagementAdmController extends AdmController
                 break;
             case 'password mismatch':
                 $message = Lang::t('PASSWRONG', 'register');
-            //...
-            // no break
+                //...
+                // no break
             case '':
                 $message = '';
                 break;
@@ -263,9 +263,9 @@ class UsermanagementAdmController extends AdmController
             $sort = $var_fields[(int) $index];
         }
 
-        if(FormaLms\lib\Get::req('select_node', DOTY_INT, 0)) {
-            $this->_setSessionValue('selected_node', $idOrg); 
-         }
+        if (FormaLms\lib\Get::req('select_node', DOTY_INT, 0)) {
+            $this->_setSessionValue('selected_node', $idOrg);
+        }
 
         $filter_text = FormaLms\lib\Get::req('filter_text', DOTY_STRING, '');
 
@@ -982,7 +982,7 @@ class UsermanagementAdmController extends AdmController
                     $msg_composer
                 );
 
-            // SET SUSPAND USER EVENT
+                // SET SUSPAND USER EVENT
                 //TODO: EVT_OBJECT (§)
                 //$event = new \appCore\Events\Core\User\UsersManagementSuspendEvent();
                 //$event->setUser($user);
@@ -1254,9 +1254,9 @@ class UsermanagementAdmController extends AdmController
 
                         $template = (!empty($folder_info->associated_template) ? $folder_info->associated_template : 0);
                         $template_arr = getTemplateList(true, true);
-                     
+
                         $template_id = $template_arr[$template];
-                     
+
                         $form_content = Form::getHidden('modfolder_id', 'node_id', $id);
                         $form_content .= Form::getTextfield(Lang::t('_CODE', 'organization_chart'), 'org_code', 'org_code', 50, $folder_info->code);
                         $form_content .= Form::getDropdown(Lang::t('_DEFAULTTEMPLATE', 'configuration'), 'associated_template', 'associated_template', $template_arr, $template_id);
@@ -1473,8 +1473,8 @@ class UsermanagementAdmController extends AdmController
         }
 
         $template = getDefaultTemplate();
-        $template_array = getTemplateList(true,true);
-        $template_id = array_search($template,$template_array);
+        $template_array = getTemplateList(true, true);
+        $template_id = array_search($template, $template_array);
 
 
 
@@ -1510,12 +1510,15 @@ class UsermanagementAdmController extends AdmController
                 $id_parent = 0;
             }
 
-            Events::trigger('core.orgchart.creating', ['node' => ['label' => ($code != '' ? '[' . $code . '] ' : '') . $this->model->getFolderTranslation($id, Lang::get()),
+            $id = $this->model->addFolder($id_parent, $langs, $code, $template_id);
+
+            Events::trigger('core.orgchart.creating', ['node' => [
+                'label' => ($code != '' ? '[' . $code . '] ' : '') . $this->model->getFolderTranslation($id, Lang::get()),
                 'is_leaf' => true,
                 'count_content' => 0,
             ]]);
 
-            $id = $this->model->addFolder($id_parent, $langs, $code, $template_id);
+
             if ($id > 0) {
                 $output['success'] = true;
                 $nodedata = [
@@ -1608,7 +1611,7 @@ class UsermanagementAdmController extends AdmController
 
         Events::trigger('core.orgchart.editing', ['node' => $new_node, 'old_node' => $old_node]);
 
-        $res = $this->model->modFolderCodeAndTemplate($id, $code, array_key_exists($template_id,$template_arr) ? $template_arr[$template_id] : '');
+        $res = $this->model->modFolderCodeAndTemplate($id, $code, array_key_exists($template_id, $template_arr) ? $template_arr[$template_id] : '');
         $res = $this->model->renameFolder($id, $langs);
         // update custom field for org LRZ
         // cicle for each custom for ORG_CHARRT
@@ -1622,7 +1625,7 @@ class UsermanagementAdmController extends AdmController
         if ($res) {
             $output['success'] = true;
             //$output['new_name'] = ($code != "" ? '['.$code.'] ' : '').$langs [Lang::get()];
-            $output['new_name'] = $this->_formatFolderCode($id, $code) . $langs [Lang::get()];
+            $output['new_name'] = $this->_formatFolderCode($id, $code) . $langs[Lang::get()];
 
             Events::trigger('core.orgchart.edited', ['node' => $this->model->getFolderById($id), 'old_node' => $old_node]);
         } else {
@@ -1782,7 +1785,7 @@ class UsermanagementAdmController extends AdmController
                 }
                 $selector->addFormInfo(
                     Form::getHidden('is_updating', 'is_updating', 1) .
-                    Form::getHidden('id', 'id', $id)
+                        Form::getHidden('id', 'id', $id)
                 );
                 $selector->loadSelector(
                     Util::str_replace_once('&', '&amp;', $jump_url),
@@ -2001,7 +2004,7 @@ class UsermanagementAdmController extends AdmController
             $lang_code = ($lang_code ?: Lang::getDefault());
 
             $enrollrules = new EnrollrulesAlms();
-            $enrollrules->applyRules('_USER_ASSIGNED_TO_TREE',[$id_user], $lang_code, $id_org);
+            $enrollrules->applyRules('_USER_ASSIGNED_TO_TREE', [$id_user], $lang_code, $id_org);
             $enrollrules->applyRulesMultiLang('_USER_ASSIGNED_TO_TREE', [$id_user], $id_org);
         }
         $output = ['success' => $success];
@@ -3191,7 +3194,7 @@ class UsermanagementAdmController extends AdmController
             $adminRecipients = $acl_manager->getGroupAllUser($permission_godadmin);
             $adminRecipients = array_merge($adminRecipients, $acl_manager->getGroupAllUser($permission_admin));
 
-            foreach ($users as $user){
+            foreach ($users as $user) {
                 $reg_code = null;
                 if ($nodes = $uma->getUserFolders($user)) {
                     $idst_oc = array_keys($nodes)[0];
@@ -3220,8 +3223,15 @@ class UsermanagementAdmController extends AdmController
                     $msg_composer->setBodyLangText('sms', '_PASSWORD_CHANGED_SMS', ['[password]' => $info->password]);
                 }
 
-                createNewAlert('UserMod', 'directory', 'edit', '1', 'User ' . $user . ' was modified',
-                    [$user], $msg_composer);
+                createNewAlert(
+                    'UserMod',
+                    'directory',
+                    'edit',
+                    '1',
+                    'User ' . $user . ' was modified',
+                    [$user],
+                    $msg_composer
+                );
 
                 $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($user, false);
 
@@ -3241,8 +3251,15 @@ class UsermanagementAdmController extends AdmController
 
                 $msg_composer->setBodyLangText('sms', '_EVENT_MOD_USER_TEXT_SMS', $array_subst);
 
-                createNewAlert('UserModSuperAdmin', 'directory', 'edit', '1', 'User ' . $user . ' was modified',
-                    $adminRecipients, $msg_composer);
+                createNewAlert(
+                    'UserModSuperAdmin',
+                    'directory',
+                    'edit',
+                    '1',
+                    'User ' . $user . ' was modified',
+                    $adminRecipients,
+                    $msg_composer
+                );
             }
         }
 
@@ -3250,7 +3267,7 @@ class UsermanagementAdmController extends AdmController
         if (isset($sel_properties['link_reset_password'])) {
             require_once _base_ . '/appCore/models/HomepageAdm.php';
             $homepageAdmModel = new HomepageAdm();
-            foreach ($users as $user){
+            foreach ($users as $user) {
                 $res = $homepageAdmModel->sendLostPwd($acl_man->getUserid($user));
             }
         }

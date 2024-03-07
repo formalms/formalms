@@ -62,8 +62,9 @@ class CommunicationAlmsController extends AlmsController
     {
         $message = '';
         switch ($code) {
-            case 'no permission': $message = '';
-            break;
+            case 'no permission':
+                $message = '';
+                break;
         }
 
         return $message;
@@ -112,12 +113,12 @@ class CommunicationAlmsController extends AlmsController
         $categoryCount = $this->model->getCategoryTotal();
 
         $this->render('show', [
-                                'communicationList' => array_values($communicationList),
-                                'langs' => array_keys($langs),
-                                'langCode' => $langCode,
-                                'permissions' => $this->permissions,
-                                'categoryCount' => $categoryCount,
-                            ]);
+            'communicationList' => array_values($communicationList),
+            'langs' => array_keys($langs),
+            'langCode' => $langCode,
+            'permissions' => $this->permissions,
+            'categoryCount' => $categoryCount,
+        ]);
     }
 
     public function getlist()
@@ -317,19 +318,19 @@ class CommunicationAlmsController extends AlmsController
         $back_url = 'index.php?r=alms/communication/insert_obj&id_comm=' . $id_comm;
 
         switch ($data['type_of']) {
-            case 'file' :
+            case 'file':
                 require_once _lms_ . '/class.module/learning.item.php';
                 $l_obj = new Learning_Item();
                 $l_obj->create($back_url);
 
                 break;
-            case 'scorm' :
+            case 'scorm':
                 require_once _lms_ . '/class.module/learning.scorm.php';
                 $l_obj = new Learning_ScormOrg();
                 $l_obj->create($back_url);
 
                 break;
-            case 'none' :
+            case 'none':
             default:
                 Util::jump_to('index.php?r=alms/communication/show');
 
@@ -407,7 +408,7 @@ class CommunicationAlmsController extends AlmsController
             'title' => $value['title'],
             'description' => $value['description'],
         ]], $data['langs']);
- 
+
         $data['langs'] = array_merge(...$langsMapped);
         //controllo che ci siano almeno un tile e una descrizione di fallback
         if (!count($data['langs']) || !in_array($langCode, array_keys($data['langs']))) {
@@ -518,18 +519,18 @@ class CommunicationAlmsController extends AlmsController
             $back_url = 'index.php?r=alms/communication/update_obj&id_comm=' . $id_comm;
 
             switch ($data['type_of']) {
-                case 'file' :
+                case 'file':
                     require_once _lms_ . '/class.module/learning.item.php';
                     $l_obj = new Learning_Item();
                     $l_obj->edit($data['id_resource'], $back_url);
 
                     break;
-                case 'scorm' :
+                case 'scorm':
                     //cannot be modified
                     Util::jump_to('index.php?r=alms/communication/show');
 
                     break;
-                case 'none' :
+                case 'none':
                 default:
                     Util::jump_to('index.php?r=alms/communication/show');
 
@@ -581,19 +582,19 @@ class CommunicationAlmsController extends AlmsController
 
         if ($data['id_resource']) {
             switch ($data['type_of']) {
-                case 'file' :
+                case 'file':
                     require_once _lms_ . '/class.module/learning.item.php';
                     $l_obj = new Learning_Item();
                     $re = $l_obj->del($data['id_resource']);
 
                     break;
-                case 'scorm' :
+                case 'scorm':
                     require_once _lms_ . '/class.module/learning.scorm.php';
                     $l_obj = new Learning_ScormOrg();
                     $re = $l_obj->del($data['id_resource']);
 
                     break;
-                case 'none' :
+                case 'none':
                 default:
                     $re = true;
 
@@ -745,8 +746,7 @@ class CommunicationAlmsController extends AlmsController
                         $this->categorize_sco($id_comm, $data);
                     } /* else if ($data['type_of'] == 'scorm' && $r_data && $r_data['sub_categorize'] == -1) {
             $this->subcategorize_ask($id_comm, $data, $r_data);
-        } */
-                    else {
+        } */ else {
                         $data = $this->model->findByPk($id_comm);
                         $data['item_id'] = $id_comm;
 
@@ -1166,12 +1166,12 @@ class CommunicationAlmsController extends AlmsController
         $categoriesDropdownData = $this->model->getCategoryDropdown($langCode, true);
 
         $this->render('show_categories', [
-                                            'categoriesList' => array_values($categoriesList),
-                                            'langs' => array_keys($langs),
-                                            'langCode' => $langCode,
-                                            'categoriesDropdownData' => $categoriesDropdownData,
-                                            'permissions' => $this->permissions,
-                                        ]);
+            'categoriesList' => array_values($categoriesList),
+            'langs' => array_keys($langs),
+            'langCode' => $langCode,
+            'categoriesDropdownData' => $categoriesDropdownData,
+            'permissions' => $this->permissions,
+        ]);
     }
 
     public function deleteCategoryTask()
