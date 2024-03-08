@@ -206,7 +206,7 @@ class UsermanagementAdm extends Model implements Accessible
                 }
             } else {
                 switch ($pagination['sort']) {
-                        //%adm_user fields
+                    //%adm_user fields
                     case 'firstname':
                         $sort = 'u.firstname';
                         break;
@@ -226,7 +226,7 @@ class UsermanagementAdm extends Model implements Accessible
                         $sort = 'u.register_date';
                         break;
 
-                        //dynamic other fields
+                    //dynamic other fields
                     case 'level':
                         $query_type = 'level';
                         break;
@@ -373,7 +373,7 @@ class UsermanagementAdm extends Model implements Accessible
 
         $query = '';
         switch ($query_type) {
-                //query with sorting on standard %adm_user field
+            //query with sorting on standard %adm_user field
             case 'standard':
                 $query = 'SELECT DISTINCT u.idst, u.userid, u.lastname, u.firstname, u.email, u.register_date, u.lastenter, u.valid '
                     . ' FROM %adm_user as u ';
@@ -410,7 +410,7 @@ class UsermanagementAdm extends Model implements Accessible
 
                 break;
 
-                //query with sorting on a custom field (like texts)
+            //query with sorting on a custom field (like texts)
             case 'custom':
                 $query = 'SELECT DISTINCT u.idst, u.userid, u.lastname, u.firstname, u.email, u.register_date, u.lastenter, u.valid '
                     . ' FROM %adm_user as u LEFT JOIN %adm_field_userentry as f ON (u.idst=f.id_user AND f.id_common=' . (int)$sort . ') ';
@@ -445,7 +445,7 @@ class UsermanagementAdm extends Model implements Accessible
 
                 break;
 
-                //query with sorting on a custom field with sons (like dropdowns)
+            //query with sorting on a custom field with sons (like dropdowns)
             case 'custom_sons':
                 $query = 'SELECT DISTINCT u.idst, u.userid, u.lastname, u.firstname, u.email, u.register_date, u.lastenter, u.valid ';
 
@@ -485,7 +485,7 @@ class UsermanagementAdm extends Model implements Accessible
 
                 break;
 
-                //query with sorting on user level
+            //query with sorting on user level
             case 'level':
                 $query = 'SELECT DISTINCT u.idst, u.userid, u.lastname, u.firstname, u.email, u.register_date, u.lastenter, u.valid '
                     . ' FROM %adm_user as u JOIN %adm_group_members AS gm '
@@ -520,7 +520,7 @@ class UsermanagementAdm extends Model implements Accessible
 
                 break;
 
-                //query with sorting on user language
+            //query with sorting on user language
             case 'language':
                 $levels_idst = array_values($this->aclManager->getAdminLevels());
                 $query = 'SELECT DISTINCT u.idst, u.userid, u.lastname, u.firstname, u.email, u.register_date, u.lastenter, u.valid '
@@ -619,7 +619,7 @@ class UsermanagementAdm extends Model implements Accessible
                             }
 
                             break;
-                            //PURPLE fix class copy per visualizzazione corretta dei record nelle tabelle
+                        //PURPLE fix class copy per visualizzazione corretta dei record nelle tabelle
                         case 'copy':
                             if ($field_sons === false) {
                                 //retrieve translations for dropdowns fields
@@ -637,7 +637,7 @@ class UsermanagementAdm extends Model implements Accessible
                             }
 
                             break;
-                            //END PURPLE
+                        //END PURPLE
                         case 'country':
                             if ($countries === false) {
                                 //retrieve countries names
@@ -2090,8 +2090,6 @@ class UsermanagementAdm extends Model implements Accessible
             $res = $this->db->query($query);
             if ($this->db->num_rows($res) > 0) { //check if there are any subfolder
                 [$path] = $this->db->fetch_row($res);
-                // $folder_index = ((int)end + 1); //get next index
-
                 $tmp = explode('/', $path);
                 $folder_index = end($tmp) + 1;
             } else {
@@ -3407,7 +3405,7 @@ class UsermanagementAdm extends Model implements Accessible
                 where %adm_customfield_lang.id_field = %adm_customfield.id_field  and
                  %adm_customfield_lang.lang_code = \'' . Lang::get() . '\' and area_code="ORG_CHART"';
         $rs = sql_query($query) or
-            errorCommunication('getCustomFieldOrg');
+        errorCommunication('getCustomFieldOrg');
         $result = [];
         while (list($id_field, $translation, $type_field) = sql_fetch_row($rs)) {
             $arr = [
@@ -3427,7 +3425,7 @@ class UsermanagementAdm extends Model implements Accessible
             %adm_customfield_son_lang  , %adm_customfield_son
             where %adm_customfield_son_lang.id_field_son=%adm_customfield_son.id_field_son and id_field=' . $id_field . ' order by sequence ';
         $rs = sql_query($query) or
-            errorCommunication('getLO_Custom_Value_Array');
+        errorCommunication('getLO_Custom_Value_Array');
         $result = [];
         while (list($id_field_son, $translation) = sql_fetch_row($rs)) {
             $result[$id_field_son] = $translation;
@@ -3440,7 +3438,7 @@ class UsermanagementAdm extends Model implements Accessible
     {
         $query = 'select * from %adm_customfield_entry where id_obj=' . $idOrg . ' and id_field=' . $id_field;
         $rs = sql_query($query) or
-            errorCommunication('countCustomForItem');
+        errorCommunication('countCustomForItem');
         if (sql_num_rows($rs) > 0) {
             return true;
         } else {
@@ -3474,7 +3472,7 @@ class UsermanagementAdm extends Model implements Accessible
     {
         $query = "select id_field from %adm_customfield where area_code = 'ORG_CHART'";
         $rs = sql_query($query) or
-            errorCommunication('getCustomOrg');
+        errorCommunication('getCustomOrg');
         $result = [];
         while (list($id_field, $translation) = sql_fetch_row($rs)) {
             $result[$id_field] = $id_field;
@@ -3489,7 +3487,7 @@ class UsermanagementAdm extends Model implements Accessible
             . "WHERE id_field = '" . $idField . "'"
             . '  AND id_obj = ' . $idOrg;
         $rs = sql_query($query) or
-            errorCommunication('getValueCustom');
+        errorCommunication('getValueCustom');
         if (sql_num_rows($rs) == 1) {
             [$obj_entry] = sql_fetch_row($rs);
 
@@ -3542,7 +3540,7 @@ class UsermanagementAdm extends Model implements Accessible
     public function getAccessList($resourceId): array
     {
 
-        return  $this->getFolderUsers($resourceId);
+        return $this->getFolderUsers($resourceId);
     }
 
     public function setAccessList($resourceId, array $selection): bool
