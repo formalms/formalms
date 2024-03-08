@@ -101,7 +101,7 @@ class TinyMce {
 
     tinymce.init({
       mode: 'textareas',
-      base_url: `${window.frontend.config.url.template}/static/addons/tiny_mce/`,
+      base_url: `${window.frontend.config.url.template}/static/tiny_mce/`,
       language: obj.getTinyMCELang(document.documentElement.lang),
       skin: false,
       content_css: false,
@@ -167,7 +167,7 @@ class TinyMce {
 
     tinymce.init({
       mode: 'textareas',
-      base_url: `${window.frontend.config.url.template}/static/addons/tiny_mce/`,
+      base_url: `${window.frontend.config.url.template}/static/tiny_mce/`,
       language: obj.getTinyMCELang(document.documentElement.lang),
       skin: false,
       content_css: false,
