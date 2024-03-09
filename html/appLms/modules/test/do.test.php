@@ -1345,6 +1345,8 @@ function showResult($object_test, $id_param)
         $re_update = Track_Test::updateTrack($id_track, $new_info);
         if (!isset($_POST['show_review'])) {
             $testDateBegin = $session->get('test_date_begin');
+            $session->remove('test_date_begin');
+            $session->save();
             $time = fromDatetimeToTimestamp(date('Y-m-d H:i:s')) - fromDatetimeToTimestamp($testDateBegin);
 
             sql_query('

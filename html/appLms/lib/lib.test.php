@@ -69,7 +69,10 @@ class GroupTestManagement
         $max_score = 0;
         $question_number = 0;
         foreach ($re_quest as $row) {
-            [$idQuest, $type_quest, $type_file, $type_class] = array_values($row);
+            $idQuest = $row['idQuest'];
+            $type_quest = $row['type_quest'];
+            $type_file = $row['type_file'];
+            $type_class = $row['type_class'];
             require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/' . $type_file);
             $quest_obj = eval("return new $type_class( $idQuest );");
 
@@ -114,7 +117,7 @@ class GroupTestManagement
      */
     public function getTestsScores($id_tests, $id_students = false, $pure = false)
     {
-        $data = $this->getReportTestsScoresAndDetails($id_tests,$id_students,$pure);
+        $data = $this->getReportTestsScoresAndDetails($id_tests, $id_students, $pure);
 
         return $data['testScores'];
     }
@@ -124,7 +127,7 @@ class GroupTestManagement
         $data = [
             'testScores' => [],
             'testDetails' => [],
-            ];
+        ];
         if (empty($id_tests)) {
             return $data;
         }
@@ -153,35 +156,35 @@ class GroupTestManagement
 
             if ($test_data['score_status'] == 'valid') {
                 // max
-                if (!isset( $data['testDetails'][$test_data['idTest']]['max_score'])) {
-                     $data['testDetails'][$test_data['idTest']]['max_score'] = $test_data['score'];
-                } elseif ($test_data['score'] >  $data['testDetails'][$test_data['idTest']]['max_score']) {
-                     $data['testDetails'][$test_data['idTest']]['max_score'] = $test_data['score'];
+                if (!isset($data['testDetails'][$test_data['idTest']]['max_score'])) {
+                    $data['testDetails'][$test_data['idTest']]['max_score'] = $test_data['score'];
+                } elseif ($test_data['score'] > $data['testDetails'][$test_data['idTest']]['max_score']) {
+                    $data['testDetails'][$test_data['idTest']]['max_score'] = $test_data['score'];
                 }
 
                 // min
-                if (!isset( $data['testDetails'][$test_data['idTest']]['min_score'])) {
-                     $data['testDetails'][$test_data['idTest']]['min_score'] = $test_data['score'];
-                } elseif ($test_data['score'] <  $data['testDetails'][$test_data['idTest']]['min_score']) {
-                     $data['testDetails'][$test_data['idTest']]['min_score'] = $test_data['score'];
+                if (!isset($data['testDetails'][$test_data['idTest']]['min_score'])) {
+                    $data['testDetails'][$test_data['idTest']]['min_score'] = $test_data['score'];
+                } elseif ($test_data['score'] < $data['testDetails'][$test_data['idTest']]['min_score']) {
+                    $data['testDetails'][$test_data['idTest']]['min_score'] = $test_data['score'];
                 }
 
                 //number of valid score
-                if (!isset( $data['testDetails'][$test_data['idTest']]['num_result'])) {
-                     $data['testDetails'][$test_data['idTest']]['num_result'] = 1;
+                if (!isset($data['testDetails'][$test_data['idTest']]['num_result'])) {
+                    $data['testDetails'][$test_data['idTest']]['num_result'] = 1;
                 } else {
                     ++$data['testDetails'][$test_data['idTest']]['num_result'];
                 }
 
 
-                if (!isset( $data['testDetails'][$test_data['idTest']]['maxScore'])) {
-                     $data['testDetails'][$test_data['idTest']]['maxScore'] = $test_data['score'];
+                if (!isset($data['testDetails'][$test_data['idTest']]['maxScore'])) {
+                    $data['testDetails'][$test_data['idTest']]['maxScore'] = $test_data['score'];
                 } else {
-                     $data['testDetails'][$test_data['idTest']]['maxScore'] += $test_data['score'];
+                    $data['testDetails'][$test_data['idTest']]['maxScore'] += $test_data['score'];
                 }
                 // average
-                if ( $data['testDetails'][$test_data['idTest']]['num_result']) {
-                     $data['testDetails'][$test_data['idTest']]['average'] =  $data['testDetails'][$test_data['idTest']]['maxScore'] /  $data['testDetails'][$test_data['idTest']]['num_result'];
+                if ($data['testDetails'][$test_data['idTest']]['num_result']) {
+                    $data['testDetails'][$test_data['idTest']]['average'] = $data['testDetails'][$test_data['idTest']]['maxScore'] / $data['testDetails'][$test_data['idTest']]['num_result'];
                 }
             }
 
@@ -435,7 +438,10 @@ class GroupTestManagement
 		ORDER BY q.sequence";
         $re_quest = sql_query($query_question);
         foreach ($re_quest as $row) {
-            [$idQuest, $type_quest, $type_file, $type_class] = array_values($row);
+            $idQuest = $row['idQuest'];
+            $type_quest = $row['type_quest'];
+            $type_file = $row['type_file'];
+            $type_class = $row['type_class'];
             require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/' . $type_file);
             $quest_obj = eval("return new $type_class( $idQuest );");
 
@@ -693,7 +699,10 @@ class TestManagement
 
         $max_score = 0;
         foreach ($re_quest as $row) {
-            [$idQuest, $type_quest, $type_file, $type_class] = array_values($row);
+            $idQuest = $row['idQuest'];
+            $type_quest = $row['type_quest'];
+            $type_file = $row['type_file'];
+            $type_class = $row['type_class'];
             require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/' . $type_file);
             $quest_obj = eval("return new $type_class( $idQuest );");
 
@@ -855,7 +864,7 @@ class PlayTestManagement
     {
         $time_accumulated = 0;
         $query_time = '
-		SELECT UNIX_TIMESTAMP(display_from), display_to, UNIX_TIMESTAMP(display_to), accumulated 
+		SELECT UNIX_TIMESTAMP(display_from) as display_from_time, display_to, UNIX_TIMESTAMP(display_to) as display_to_time, accumulated 
 		FROM ' . $GLOBALS['prefix_lms'] . "_testtrack_page
 		WHERE idTrack = '" . $this->id_track . "'";
         $re_time = sql_query($query_time);
@@ -864,7 +873,11 @@ class PlayTestManagement
         }
 
         foreach ($re_time as $row) {
-            [$from_ts, $to, $to_ts, $accumulated] = array_values($row);
+
+            $from_ts = $row['display_from_time'];
+            $to = $row['display_to'];
+            $to_ts = $row['display_to_time'];
+            $accumulated = $row['accumulated'];
             if ($to !== null) {
                 $time_accumulated += abs($to_ts - $from_ts);
             }
@@ -1213,7 +1226,7 @@ class PlayTestManagement
         $query_question = $this->getQuestionsForPage($page_to_save);
         $re_question = sql_query($query_question);
         foreach ($re_question as $question) {
-            $id_quest = $question['id_quest'];
+            $id_quest = $question['idQuest'];
             $type_quest = $question['type_quest'];
             $type_file = $question['type_file'];
             $type_class = $question['type_class'];
