@@ -319,10 +319,13 @@ class HomepageAdmController extends AdmController
 
     public function newpwd()
     {
+
         $code = FormaLms\lib\Get::req('code', DOTY_STRING, '');
 
         $params = [];
         $params['msg'] = '';
+        $params['error'] = [];
+
 
         $redirection = ['req' => _homepage_];
 
@@ -336,34 +339,26 @@ class HomepageAdmController extends AdmController
         if (FormaLms\lib\Get::req('send', DOTY_BOOL, false)) {
             $newpwd = FormaLms\lib\Get::req('new_password', DOTY_STRING, null);
             $retype_newpwd = FormaLms\lib\Get::req('retype_new_password', DOTY_STRING, null);
-
-            switch ($this->model->checkNewPwdValidity($newpwd, $retype_newpwd)) {
-                case PASSWORD_MISMATCHING:
-                    $params['msg'] = Lang::t('_ERR_PASSWORD_NO_MATCH', 'register');
-                    break;
-                case PASSWORD_TOO_SHORT:
-                    $params['msg'] = Lang::t('_PASSWORD_TOO_SHORT', 'register');
-                    break;
-                case PASSWORD_MUST_BE_ALPHA:
-                    $params['msg'] = Lang::t('_ERR_PASSWORD_MUSTBE_ALPHA', 'register');
-                    break;
-                default:
-                    if ($this->model->setNewPwd($newpwd, $user_info[ACL_INFO_IDST], $code)) {
-                        $redirection['query'] = [
-                            'done' => NEW_PWD,
-                        ];
-                        self::redirect($redirection);
-                    } else {
-                        $params['msg'] = Lang::t('_OPERATION_FAILURE', 'register');
-                    }
-                    break;
+            $pswd_chk = $this->model->checkNewPwdValidity($newpwd, $retype_newpwd);
+            if ($pswd_chk['error']) {
+                $params['error'] = $pswd_chk['msg'];
+            } else {
+                if ($this->model->setNewPwd($newpwd, $user_info[ACL_INFO_IDST], $code)) {
+                    $redirection['query'] = [
+                        'done' => NEW_PWD,
+                    ];
+                    self::redirect($redirection);
+                } else {
+                    $params['msg'] = Lang::t('_OPERATION_FAILURE', 'register');
+                }
             }
         }
 
         $params['code'] = $code;
-        $params += $this->model->getNewPwdOptions();
-
+        $params['options'] = $this->model->getNewPwdOptions();
         $this->render('newpwd', $params);
+
+
     }
 
     public function signup()

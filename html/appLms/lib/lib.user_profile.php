@@ -3882,7 +3882,7 @@ class UserProfileData
                                                 : false),
                                             $data['email'],
                                             false,
-                                            $data['signature'], false, false,
+                                            false, false,
                                             (isset($data['force_change']) ? $data['force_change'] : ''),
                                             $data['facebook_id'], $data['twitter_id'], $data['linkedin_id'],
                                             $data['google_id'])) {
