@@ -1990,7 +1990,9 @@ function doimportquest()
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
     $back_coded = htmlentities(urlencode($back_url));
-
+    if (isset($_REQUEST['undo'])) {
+        Util::jump_to('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $back_coded);
+    }
     require_once _lms_ . '/lib/lib.quest_bank.php';
 
     $qb_man = new QuestBankMan();

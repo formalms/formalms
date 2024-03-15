@@ -286,7 +286,7 @@ class OrgDirDb extends RepoDirDb implements Accessible
             . ' WHERE (' . $this->fields['idParent'] . " = '" . (int) $idFolder . "')"
             . $this->_getFilter();
         $rs = sql_query($query)
-        or exit("Error [$query] " . sql_error());
+            or exit("Error [$query] " . sql_error());
         if (sql_num_rows($rs) == 1) {
             [$result] = sql_fetch_row($rs);
 
@@ -384,9 +384,9 @@ class OrgDirDb extends RepoDirDb implements Accessible
     }
 
     public function addItem($idParent, $title, $objectType, $idResource, $idCategory,
-                     $idUser, $idAuthor, $version, $difficult, $description,
-                     $language, $resource, $objective, $dateInsert,
-                     $otherData = null, $idCourse = false)
+        $idUser, $idAuthor, $version, $difficult, $description,
+        $language, $resource, $objective, $dateInsert,
+        $otherData = null, $idCourse = false)
     {
         require_once _lms_ . '/lib/lib.param.php';
         $this->org_title = $title;
@@ -1827,6 +1827,8 @@ class Org_TreeView extends RepoTreeView
         $res = [];
         foreach ($idLoList as $index => $idLo) {
             $node = [];
+            $node['play'] = false;
+            $node['canEdit'] = false;
 
             $folder = $this->tdb->getFolderById($idLo);
             $kbres = new KbRes();
@@ -1913,9 +1915,8 @@ class Org_TreeView extends RepoTreeView
             } elseif ($orgFieldPublishFor == PF_ATTENDANCE && !$this->presence()) {
                 $node['locked'] = true;
             } elseif ($isPrerequisitesSatisfied) { // && $event->getAccessible() ) {
-                if (!$node['is_folder']) {
-                    $node['play'] = true;
-                }
+
+                $node['play'] = !$node['is_folder'];
 
                 $node['locked'] = false;
             } else {
@@ -1935,7 +1936,7 @@ class Org_TreeView extends RepoTreeView
                 }
             }
 
-            $node['status'] = str_replace(' ','-',$status);
+            $node['status'] = str_replace(' ', '-', $status);
 
             switch ($status) {
                 case 'not attempted':
@@ -1991,7 +1992,6 @@ class Org_TreeView extends RepoTreeView
                 $node['childCount'] = (int) $this->countChildren($folder->id);
             }
             $res[$idLo] = $node;
-
         }
 
         return $res;
@@ -2124,8 +2124,4 @@ class Org_TreeView extends RepoTreeView
     {
         return $this->user_presence;
     }
-
-
-
- 
 }
