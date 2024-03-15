@@ -375,10 +375,6 @@ class UserProfile
         return $this->_up_viewer->getFooter();
     }
 
-    public function getPrivacy()
-    {
-        return $this->_up_viewer->getPrivacy();
-    }
 
     /**
      * print the back command in the page.
@@ -2239,25 +2235,19 @@ class UserProfileViewer
             . '</div>
                    <div class="col-xs-7">';
 
-        if (FormaLms\lib\Get::sett('profile_modify') == 'redirect' && FormaLms\lib\Get::sett('profile_modify_url')) {
+
+        if (FormaLms\lib\Get::sett('profile_modify') == 'redirect') {
             $html .= '<a href="' . FormaLms\lib\Get::sett('profile_modify_url') . '" target="_blank" title="' . Lang::t('_PROFILE', 'profile') . '">
                           <span class="glyphicon glyphicon-pencil">' . Lang::t('_PROFILE', 'profile') . '</span>
                       </a>
                       <br><span><b>'.$this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME]).'</b></span>
                       <a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>
                    ';
-        } elseif (FormaLms\lib\Get::sett('profile_modify') != 'disallow') {
+        } else {
             $html .= '<a href="index.php?r=lms/profile/show" title="' . Lang::t('_PROFILE', 'profile') . '">
                           <span class="glyphicon glyphicon-pencil">' . Lang::t('_PROFILE', 'profile') . '</span>
                       </a>
                       <br><span><b>'.$this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME]).'</b></span>
-                      <a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>
-                   ';
-        } else {
-            $html .= '<a style="display:none;"></a>
-   					<a href="index.php?r=lms/profile/show">'
-                . $this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME])
-                . '</a>
                       <a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>
                    ';
         }
@@ -3289,14 +3279,6 @@ class UserProfileViewer
         }
 
         return $output;
-    }
-
-    public function getPrivacy() {
-
-        $q= "SELECT accept_date FROM %adm_privacypolicy_user WHERE idst= ".\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();;
-        list($accept_data) = sql_fetch_row(sql_query($q));
-        return "<br><div class='up_main'><b>".Lang::t('_PRIVACY_ACCEPTED', 'privacypolocies')." ".$accept_data."</b></div>";
-
     }
 
 }

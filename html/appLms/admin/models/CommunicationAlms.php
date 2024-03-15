@@ -80,7 +80,7 @@ class CommunicationAlms extends Model implements Accessible
         $sortable = array_flip($sortable);
         $lang_code = ($language == false ? Lang::get() : $language);
         $records = [];
-        $qtxt = 'SELECT c.id_comm, coalesce(cl.title, c.title) as title, coalesce(cs.name,"--") as courseName, coalesce(cl.description, c.description) as description, publish_date, type_of, id_resource, COUNT(ca.id_comm) as access_entity, coalesce(ccl.translation,"") as categoryTitle  '
+        $qtxt = 'SELECT c.id_comm, coalesce(cl.title, c.title) as title, coalesce(cs.name,"--") as courseName, coalesce(cl.description, c.description) as description, publish_date, type_of, id_resource, COUNT(ca.id_comm) as access_entity, coalesce(ccl.translation,"") as categoryTitle, ct.dateAttempt  '
             . ' FROM ( %lms_communication AS c '
             . '	JOIN %lms_communication_access AS ca ON (c.id_comm = ca.id_comm) ) '
             . ' LEFT JOIN %lms_communication_category AS cc ON (c.id_category = cc.id_category)'
@@ -89,7 +89,7 @@ class CommunicationAlms extends Model implements Accessible
             . ' LEFT JOIN %lms_course AS cs ON (c.id_course = cs.idCourse)'
             . '	LEFT JOIN %lms_communication_track AS ct ON (c.id_comm = ct.idReference AND ct.idUser = ' . (int) $reader . '  )'
     
-            . (!($filter['only_to_read']) ? ' WHERE ( ct.status = "failed" OR  ct.status = "ab-initio" OR  ct.status = "attempted" OR ct.idReference IS NULL ) ' : ' WHERE 1')
+            . (($filter['only_to_read'] == true ) ? ' WHERE ( ct.status = "failed" OR  ct.status = "ab-initio" OR  ct.status = "attempted" OR ct.idReference IS NULL ) ' : ' WHERE 1')
             . (!empty($filter['text']) ? " AND ( title LIKE '%" . $filter['text'] . "%' OR description LIKE '%" . $filter['text'] . "%' ) " : '')
             . (!empty($filter['viewer']) ? ' AND ca.idst IN ( ' . implode(',', $filter['viewer']) . ' ) ' : '')
             . (!empty($filter['categories']) ? ' AND c.id_category IN (' . implode(',', $filter['categories']) . ') ' : '')

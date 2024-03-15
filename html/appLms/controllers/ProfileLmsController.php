@@ -144,36 +144,7 @@ class ProfileLmsController extends LmsController
 
         };
         return;
-/*
-                 require_once _lms_ . '/lib/lib.lms_user_profile.php';
 
-                $id_user = \FormaLms\lib\FormaUser::getCurrentUser()->getIdST();
-                $profile = new LmsUserProfile($id_user);
-                $profile->init('profile', 'framework', 'r=lms/profile/show', 'ap');
-
-                $_check = false;
-                if (!defined('LMS')) {
-                    $_check = checkRole('/lms/course/public/profile/mod', true);
-                } else {
-                    $_check = checkPerm('mod', true, 'profile', 'lms');
-                }
-                if ($_check) {
-                    $profile->enableEditMode();
-                }
-
-
-                echo $profile->getTitleArea();
-                echo $profile->getHead();
-                echo $profile->getHead();
-                if (FormaLms\lib\Get::sett('profile_modify') == 'limit') {
-                    echo $profile->performAction(false, 'mod_password');
-                } elseif (FormaLms\lib\Get::sett('profile_modify') == 'allow') {
-                    echo $profile->performAction();
-               }
-                echo $this->_profileBackUrl();
-                echo $profile->getFooter();
-
-                echo $profile->getPrivacy();*/
     }
 
     private function getUserProfileData(){

@@ -3320,6 +3320,7 @@ La descrizione verrà mostrata agli studenti prima della somministrazione del te
         <key id="communication&amp;_CATEGORY_MISSING" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Devi impostare almeno una categoria]]></key>
         <key id="communication&amp;_MARK_AS_READ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Segna come letto]]></key>
         <key id="communication&amp;_MARK_AS_UNREAD" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Segna come non letto]]></key>
+        <key id="communication&amp;_READ_ALL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Leggi tutto]]></key>
       </module>
       <module id="mailconfig">
         <key id="mailconfig&amp;_AUTO_TLS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Auto Tls]]></key>
