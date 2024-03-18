@@ -5,6 +5,18 @@ RELEASE CHANGELOG
 forma.lms 4.0.7
 ---------------------------------------------------------------------------------------
 
+- #      - upgrade manifest standard
+- #      - fix icon plus
+- #      - Fix test points
+- #      - Fix test session time
+- #      - fix editor
+- #      - review fix add folder warning
+- #      - fix typo in add communication view
+- #      - Fix default date in communìcations, fix warnings in add node
+- #      - fix exception when bootstrap was loaded from commandline
+- #      - improve course report loading
+- #      - fix error in deleting rows classdates
+- #      - update forma version
 - #      - fix installer
 - #      - fix array key session
 - #      - fix session conflict
