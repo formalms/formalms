@@ -353,7 +353,7 @@ function getPathRestylingImage($platform = false)
 }
 
 /**
- * @param string $text The title of the area
+ * @param array|string $text The title of the area
  * @param string $image the name of the gif in tampltes/xxx/images/area_title/
  * @param string $alt_image The alt for the image [deprecated, not used]
  * @param bool $ignore_glob ignore global value of the title

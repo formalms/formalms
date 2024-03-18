@@ -670,7 +670,7 @@ class Track_Object
     /**
      * @return bool if exists or false
      **/
-    public function deleteTrack($idTrack)
+    public static function deleteTrack($idTrack)
     {
         return true;
     }

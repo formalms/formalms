@@ -134,10 +134,18 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             }
 
             if ($mod_perm) {
+
+                $cont[] = '<a href="index.php?r=adm/userselector/show&instance=catalogue&amp;load=1&amp;id=' . $id . '" '
+                    . 'title="' . $lang->def('_ASSIGN_USERS') . ' : ' . strip_tags($name) . '">'
+            . '<img src="' . getPathImage('fw') . 'standard/moduser.png" alt="' . $lang->def('_ASSIGN_USERS') . ' : '
+            . strip_tags($name) . '" /></a>';
+                /*
                 $cont[] = '<a href="index.php?modname=catalogue&amp;op=modcatalogueassoc&amp;load=1&amp;id_catalogue=' . $id . '" '
                         . 'title="' . $lang->def('_ASSIGN_USERS') . ' : ' . strip_tags($name) . '">'
                 . '<img src="' . getPathImage('fw') . 'standard/moduser.png" alt="' . $lang->def('_ASSIGN_USERS') . ' : '
                 . strip_tags($name) . '" /></a>';
+
+                */
 
                 //--- new: subscription action -------------------------------------------
                 $cont[] = '<a class="ico-sprite subs_plus" href="index.php?r=alms/subscription/cataloguesubscribeusers&amp;id_catalogue=' . $id . '" '
@@ -664,78 +672,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         return $re;
     }
 
-    function modcatalogueassoc()
-    {
-        checkPerm('mod');
-
-        $lang = FormaLanguage::createInstance('catalogue', 'lms');
-        $acl_man = \FormaLms\lib\Forma::getAclManager();
-
-        require_once _lms_ . '/lib/lib.course.php';
-        require_once _base_ . '/lib/lib.form.php';
-        require_once _base_ . '/lib/lib.userselector.php';
-
-        $id_catalogue = importVar('id_catalogue', true, 0);
-        $out = &$GLOBALS['page'];
-
-        $user_select = new UserSelector();
-        $user_select->show_user_selector = true;
-        $user_select->show_group_selector = true;
-        $user_select->show_orgchart_selector = true;
-        $user_select->show_orgchart_simple_selector = false;
-        $user_select->multi_choice = true;
-
-        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-            require_once _base_ . '/lib/lib.preference.php';
-            $adminManager = new AdminPreference();
-            $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
-            $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
-
-            $user_select->setUserFilter('user', $admin_users);
-            $user_select->setUserFilter('group', $admin_tree);
-        }
-
-        if (isset($_POST['okselector'])) {
-            $old_members = [];
-            $re_members = sql_query('
-		SELECT idst_member
-		FROM ' . $GLOBALS['prefix_lms'] . "_catalogue_member
-		WHERE idCatalogue = '" . $id_catalogue . "'");
-            while (list($id_members) = sql_fetch_row($re_members)) {
-                $old_members[$id_members] = $id_members;
-            }
-            $new_members = $user_select->getSelection($_POST);
-            $to_add = array_diff($new_members, $old_members);
-            $to_del = array_diff($old_members, $new_members);
-
-            $re = true;
-            $re &= addToCatologue($to_add, $id_catalogue);
-            $re &= removeFromCatologue($to_del, $id_catalogue);
-
-            Util::jump_to('index.php?modname=catalogue&op=catlist&result=' . ($re ? 'ok' : 'err'));
-        }
-
-        if (isset($_GET['load'])) {
-            $members = [];
-            $re_members = sql_query('
-		SELECT idst_member
-		FROM ' . $GLOBALS['prefix_lms'] . "_catalogue_member
-		WHERE idCatalogue = '" . $id_catalogue . "'");
-
-            while (list($id_members) = sql_fetch_row($re_members)) {
-                $members[$id_members] = $id_members;
-            }
-            $user_select->resetSelection($members);
-        }
-        $title_area = getTitleArea(
-        ['index.php?modname=catalogue&amp;op=catlist' => $lang->def('_CATALOGUE'), getCatalogueName($id_catalogue)],
-        'catalogue');
-        $user_select->setPageTitle($title_area);
-        $user_select->loadSelector('index.php?modname=catalogue&amp;op=modcatalogueassoc&amp;id_catalogue=' . $id_catalogue,
-            $lang->def('_CATALOGUE'),
-            $lang->def('_ASSIGN_USERS'),
-            true);
-    }
+   
 
     function catalogueDispatch($op)
     {

@@ -29,7 +29,10 @@ class SessionConfig
     private ?string $user = null;
     private ?string $password = null;
     private array $options = [];
-    private string $cookieName = '__Secure-FORMALMS';
+    private string $cookieName;
+
+    public const SECUREFORMA = '__Secure-FORMALMS';
+    public const UNSECUREFORMA = 'FORMALMS';
 
     public function __construct()
     {

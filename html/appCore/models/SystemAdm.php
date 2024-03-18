@@ -36,7 +36,7 @@ class SystemAdm extends Model
         BOOT_CONFIG => _CONFIG_OK,
         BOOT_PLATFORM => _DATABASE_OK,
         BOOT_PHP => _PHPVERSION_OK,
-
+        BOOT_SESSION_CHECK => _SESSION_OK,
     ];
 
 

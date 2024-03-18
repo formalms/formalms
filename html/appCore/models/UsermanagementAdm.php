@@ -402,7 +402,6 @@ class UsermanagementAdm extends Model implements Accessible
                                 u.' . $columnName . ' LIKE "%' . $columnValue . '%" 
                             )';
                     }
-
                 }
 
 
@@ -439,7 +438,6 @@ class UsermanagementAdm extends Model implements Accessible
                                 u.' . $columnName . ' LIKE "%' . $columnValue . '%" 
                             )';
                     }
-
                 }
 
                 $query .= ' ORDER BY f.user_entry ' . $dir . ' ' .
@@ -480,7 +478,6 @@ class UsermanagementAdm extends Model implements Accessible
                                 u.' . $columnName . ' LIKE "%' . $columnValue . '%" 
                             )';
                     }
-
                 }
 
                 $query .= ' ORDER BY fs.translation ' . $dir . ' ' .
@@ -517,7 +514,6 @@ class UsermanagementAdm extends Model implements Accessible
                                 u.' . $columnName . ' LIKE "%' . $columnValue . '%" 
                             )';
                     }
-
                 }
                 $query .= ' ORDER BY gm.idst ' . (strtolower($dir) == 'asc' ? 'DESC' : 'ASC') . ', u.userid ' . $dir . ' ' . //we assume that idsts of level groups are pre-ordered
                     ' LIMIT ' . (int)$startIndex . ', ' . (int)$results;
@@ -554,7 +550,6 @@ class UsermanagementAdm extends Model implements Accessible
                                 u.' . $columnName . ' LIKE "%' . $columnValue . '%" 
                             )';
                     }
-
                 }
                 $query .= ' ORDER BY su.value ' . $dir . ', u.userid ' . $dir . ' ' . //we assume that idsts of level groups are pre-ordered
                     ' LIMIT ' . (int)$startIndex . ', ' . (int)$results;
@@ -565,7 +560,7 @@ class UsermanagementAdm extends Model implements Accessible
         $users_rows = [];
 
         $res = $this->db->query($query) ?: [];
-      
+
         foreach ($res as $row) {
             $users_rows[$row['idst']] = $row;
         } //end while
@@ -848,11 +843,10 @@ class UsermanagementAdm extends Model implements Accessible
                     u.' . $columnName . ' LIKE "%' . $columnValue . '%" 
                 )';
             }
-
         }
         $res = $this->db->query($filtered_query) ?? [];
         $row = $this->db->fetch_row($res);
-       
+
         $output = is_array($row) ? $row[0] : [];
 
         return $output;
@@ -983,7 +977,6 @@ class UsermanagementAdm extends Model implements Accessible
                     u.' . $columnName . ' LIKE "%' . $columnValue . '%" 
                 )';
             }
-
         }
 
         // Retrive all the user selected
@@ -1478,7 +1471,6 @@ class UsermanagementAdm extends Model implements Accessible
         $results = $this->db->query($searchQuery);
 
         return $results;
-
     }
 
 
@@ -1923,7 +1915,7 @@ class UsermanagementAdm extends Model implements Accessible
         $res = $this->db->query($search_query);
 
         $output = [];
-        foreach ($res as $row){
+        foreach ($res as $row) {
             $output[$row['idOrg']] = [$row['idst_oc'], $row['idst_ocd']];
         }
 
@@ -2003,7 +1995,7 @@ class UsermanagementAdm extends Model implements Accessible
         if (!$res = $this->db->query($query)) {
             return $tree_codes;
         }
-        foreach ($res as $row){
+        foreach ($res as $row) {
             $tree_codes[$row['idOrg']] = $row['translation'];
         }
 
@@ -2017,7 +2009,7 @@ class UsermanagementAdm extends Model implements Accessible
         if (!$res = $this->db->query($query)) {
             return $tree_codes;
         }
-        foreach ($res as $row){
+        foreach ($res as $row) {
             $tree_codes[$row['idOrg']] = $row['code'];
         }
 
@@ -2034,7 +2026,7 @@ class UsermanagementAdm extends Model implements Accessible
         if (!$res = $this->db->query($query)) {
             return $tree_folders;
         }
-        foreach ($res as $row){
+        foreach ($res as $row) {
             $tree_folders[$row['idOrg']] = $row['idOrg'];
         }
 
@@ -2096,7 +2088,8 @@ class UsermanagementAdm extends Model implements Accessible
             $res = $this->db->query($query);
             if ($this->db->num_rows($res) > 0) { //check if there are any subfolder
                 [$path] = $this->db->fetch_row($res);
-                $folder_index = ((int)end(explode('/', $path)) + 1); //get next index
+                $tmp = explode('/', $path);
+                $folder_index = end($tmp) + 1;
             } else {
                 $folder_index = 1; //start with first folder index
             }
@@ -2124,8 +2117,8 @@ class UsermanagementAdm extends Model implements Accessible
             $template_name = array_key_exists($id_template, $templates_name_array) ? $templates_name_array[$id_template] : null;
             //insert node in the table, with newly calculated iLeft and iRight
             $query = 'INSERT into %adm_org_chart_tree (idOrg, idParent, path, lev, iLeft, iRight, code, associated_template) VALUES '
-                . '(NULL, "' . (int)$id_parent . '", "' . $path . '", "' . (int)$level . '", "' . (int)$new_limits["iLeft"] . '", "' . ((int)$new_limits["iRight"] + 1) . '", "' . $code . '", ' . ($template_name ? "'. $template_name .'": 'NULL') .')';
-             
+                . '(NULL, "' . (int)$id_parent . '", "' . $path . '", "' . (int)$level . '", "' . (int)$new_limits["iLeft"] . '", "' . ((int)$new_limits["iRight"] + 1) . '", "' . $code . '", ' . ($template_name ? "'. $template_name .'" : 'NULL') . ')';
+
             $res = $this->db->query($query);
             $id = $this->db->insert_id();
 
@@ -2447,9 +2440,9 @@ class UsermanagementAdm extends Model implements Accessible
             return false;
         }
 
-    //    if ($template == getDefaultTemplate()) {
-    //        $template = ''; // set the value to NULL if no custom template selected
-    //    }
+        //    if ($template == getDefaultTemplate()) {
+        //        $template = ''; // set the value to NULL if no custom template selected
+        //    }
 
         $query = "UPDATE %adm_org_chart_tree SET
 			code = '" . trim($code) . "',
@@ -2595,8 +2588,15 @@ class UsermanagementAdm extends Model implements Accessible
                 $msg_composer->setBodyLangText('sms', '_PASSWORD_CHANGED_SMS', ['[password]' => $new_password]);
             }
 
-            createNewAlert('UserMod', 'directory', 'edit', '1', 'User ' . $userid . ' was modified',
-                [$userid], $msg_composer);
+            createNewAlert(
+                'UserMod',
+                'directory',
+                'edit',
+                '1',
+                'User ' . $userid . ' was modified',
+                [$userid],
+                $msg_composer
+            );
 
             $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($userid, false);
 
@@ -2616,8 +2616,15 @@ class UsermanagementAdm extends Model implements Accessible
 
             $msg_composer->setBodyLangText('sms', '_EVENT_MOD_USER_TEXT_SMS', $array_subst);
 
-            createNewAlert('UserModSuperAdmin', 'directory', 'edit', '1', 'User ' . $userid . ' was modified',
-                $adminRecipients, $msg_composer);
+            createNewAlert(
+                'UserModSuperAdmin',
+                'directory',
+                'edit',
+                '1',
+                'User ' . $userid . ' was modified',
+                $adminRecipients,
+                $msg_composer
+            );
 
             return true;
         }
@@ -3375,7 +3382,7 @@ class UsermanagementAdm extends Model implements Accessible
     public function checkUserid($userid)
     {
 
-        $wildcardReplacement = str_replace('_','\_', $userid); //use because _ in link it's a wildcard used for "any character"
+        $wildcardReplacement = str_replace('_', '\_', $userid); //use because _ in link it's a wildcard used for "any character"
         $query = 'SELECT COUNT(*)'
             . ' FROM %adm_user'
             . " WHERE userid like '" . ($userid[0] === '/' ? '' : '/') . $wildcardReplacement . "'";
@@ -3528,12 +3535,14 @@ class UsermanagementAdm extends Model implements Accessible
     }
 
 
-    public function getAccessList( $resourceId) : array{
+    public function getAccessList($resourceId): array
+    {
 
-        return  $this->getFolderUsers($resourceId);
+        return $this->getFolderUsers($resourceId);
     }
 
-    public function setAccessList( $resourceId, array $selection) : bool{
+    public function setAccessList($resourceId, array $selection): bool
+    {
 
         return $this->assignUsers($resourceId, $selection);
     }

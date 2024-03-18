@@ -148,6 +148,12 @@ return [
             'returnType' => 'redirect',
             'useNamespace' =>  true
             ],
+        'catalogue' => [
+            'includes' => 'FormaLms\lib\Services\Courses\\',
+            'className' => 'CatalogueService', 
+            'returnType' => 'redirect',
+            'useNamespace' =>  true
+            ],
     ],
     "use_filter" => [
         "organization" => "course",

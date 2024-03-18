@@ -1345,6 +1345,8 @@ function showResult($object_test, $id_param)
         $re_update = Track_Test::updateTrack($id_track, $new_info);
         if (!isset($_POST['show_review'])) {
             $testDateBegin = $session->get('test_date_begin');
+            $session->remove('test_date_begin');
+            $session->save();
             $time = fromDatetimeToTimestamp(date('Y-m-d H:i:s')) - fromDatetimeToTimestamp($testDateBegin);
 
             sql_query('
@@ -1816,7 +1818,7 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
         $query_question = "
 		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.idCategory 
 		FROM %lms_testquest AS q JOIN %lms_quest_type AS t
-		WHERE q.idTest = '" . $idTest . "' AND q.type_quest = t.type_quest AND  q.idQuest IN (" . implode($quest_see, ',') . ')
+		WHERE q.idTest = '" . $idTest . "' AND q.type_quest = t.type_quest AND  q.idQuest IN (" . implode(',', $quest_see) . ')
 		ORDER BY q.sequence';
     } else {
         $query_question = "

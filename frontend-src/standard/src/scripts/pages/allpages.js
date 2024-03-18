@@ -25,7 +25,7 @@ import { Chart as ChartJS, registerables  } from 'chart.js';
 ChartJS.register(...registerables);
 import FolderTree from '../components/FolderTree';
 import FolderTreeMultiUser from '../components/FolderTreeMultiUser';
-import { drawRadialProgress } from '../modules/drawRadialProgress';
+import { DrawRadialProgress } from '../modules/DrawRadialProgress';
 
 
 var Page = (function () {
@@ -45,7 +45,7 @@ var Page = (function () {
     window.frontend.modules.FormaTable = FormaTable;
     window.frontend.modules.Modal = ModalElement; 
     window.frontend.modules.Moment = Moment;
-    window.frontend.modules.DrawRadialProgress = drawRadialProgress;
+    window.frontend.modules.DrawRadialProgress = DrawRadialProgress;
     window.frontend.helpers.Lang = Lang;
 
    

@@ -1,4 +1,4 @@
-function drawRadialProgress(canvas) {
+function DrawRadialProgress(canvas) {
     percentage = canvas.getAttribute('data-percentage_completed');
     console.log("percentage"+percentage);
     const context = canvas.getContext('2d');
@@ -31,6 +31,6 @@ function drawRadialProgress(canvas) {
 
 const canvasElements = document.querySelectorAll('[id^="path_courses-progress-bar"]');
 canvasElements.forEach(canvas => {
-    drawRadialProgress(canvas);
+    DrawRadialProgress(canvas);
 });
 
