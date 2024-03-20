@@ -598,11 +598,12 @@ class CoursestatsLms extends Model
         if ($res) {
 
             foreach ($res as $row) {
-
-                if (!empty($row[0] )) {
+             
+                if (!empty($row )) {
                         $output += $this->timeToSec($this->parseScormTime($row['session_time'])); // Sum in seconds
 
                 }
+               
             }
         }
 
