@@ -35,7 +35,7 @@ class Learning_Htmlpage extends Learning_Object
         if ($id !== null) {
             $res = $this->db->query("SELECT author, title FROM %lms_htmlpage WHERE idPage = '" . $id . "'");
             if ($res && $this->db->num_rows($res) > 0) {
-                list($this->idAuthor, $this->title) = $this->db->fetch_row($res);
+                [$this->idAuthor, $this->title] = $this->db->fetch_row($res);
                 $this->isPhysicalObject = true;
             }
         }
@@ -83,7 +83,7 @@ class Learning_Htmlpage extends Learning_Object
     /**
      * function edit.
      *
-     * @param int    $id       contains the resource id
+     * @param int $id contains the resource id
      * @param string $back_url contains the back url
      *
      * @return nothing
@@ -103,7 +103,7 @@ class Learning_Htmlpage extends Learning_Object
     /**
      * function del.
      *
-     * @param int    $id       contains the resource id
+     * @param int $id contains the resource id
      * @param string $back_url contains the back url (not used yet)
      *
      * @return false if fail, else return the id lo
@@ -137,7 +137,7 @@ class Learning_Htmlpage extends Learning_Object
     /**
      * function copy( $id, $back_url ).
      *
-     * @param int    $id       contains the resource id
+     * @param int $id contains the resource id
      * @param string $back_url contain the back url (not used yet)
      *
      * @return int $id if success FALSE if fail
@@ -145,10 +145,10 @@ class Learning_Htmlpage extends Learning_Object
     public function copy($id, $back_url = null)
     {
         //find source info
-        list($title, $textof, $author) = sql_fetch_row(sql_query('
+        [$title, $textof, $author] = sql_fetch_row(sql_query('
 		SELECT title, textof, author 
 		FROM ' . $GLOBALS['prefix_lms'] . "_htmlpage 
-		WHERE idPage = '" . (int) $id . "'"));
+		WHERE idPage = '" . (int)$id . "'"));
 
         //insert new item
         $insertQuery = '
@@ -160,7 +160,7 @@ class Learning_Htmlpage extends Learning_Object
         if (!sql_query($insertQuery)) {
             return false;
         }
-        list($idPage) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
+        [$idPage] = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
 
         return $idPage;
     }
@@ -168,8 +168,8 @@ class Learning_Htmlpage extends Learning_Object
     /**
      * function play( $id, $id_param, $back_url ).
      *
-     * @param int    $id       contains the resource id
-     * @param int    $id_param contains the id needed for params retriving
+     * @param int $id contains the resource id
+     * @param int $id_param contains the id needed for params retriving
      * @param string $back_url contain the back url
      *
      * @return nothing return
@@ -183,10 +183,10 @@ class Learning_Htmlpage extends Learning_Object
 
         $this->checkObjPerm();
 
-        list($title, $textof) = sql_fetch_row(sql_query('
+        [$title, $textof] = sql_fetch_row(sql_query('
 		SELECT title, textof 
 		FROM ' . $GLOBALS['prefix_lms'] . "_htmlpage 
-		WHERE idPage = '" . (int) $id . "'"));
+		WHERE idPage = '" . (int)$id . "'"));
 
         // recuper gli allegati
         $path = '/appLms/htmlpages/';
@@ -194,7 +194,7 @@ class Learning_Htmlpage extends Learning_Object
         $res = sql_query($query);
         $attachments = [];
         if ($res) {
-            while ($row = sql_fetch_assoc($res)) {
+            foreach ($res as $row) {
                 $attachments[] = [
                     'id' => $row['id'],
                     'title' => $row['title'],
@@ -208,11 +208,13 @@ class Learning_Htmlpage extends Learning_Object
         // NOTE: Track only if $idReference is present
         if ($idReference !== false) {
             require_once _lms_ . '/class.module/track.htmlpage.php';
-            list($exist, $idTrack) = Track_Htmlpage::getIdTrack($idReference, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $this->id, true);
+            [$exist, $idTrack] = Track_Htmlpage::getIdTrack($idReference, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $this->id, true);
             if ($exist) {
                 $ti = new Track_Htmlpage($idTrack);
                 $ti->setDate(date('Y-m-d H:i:s'));
                 $ti->status = 'completed';
+                $ti->setIdUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
+                $ti->setIdReference($idReference);
                 $ti->update();
             } else {
                 $ti = new Track_Htmlpage(false);
@@ -259,8 +261,8 @@ class Learning_Htmlpage extends Learning_Object
     /**
      * function export( $id, $format, $back_url ) NOT IMPLEMENTED YET.
      *
-     * @param string $id       contain resource id
-     * @param string $format   contain output format
+     * @param string $id contain resource id
+     * @param string $format contain output format
      * @param string $back_url contain the back url
      *
      * @return bool TRUE if success FALSE if fail

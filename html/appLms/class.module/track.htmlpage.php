@@ -32,7 +32,7 @@ class Track_Htmlpage extends Track_Object
         $rs = sql_query($query)
             or errorCommunication('getIdTrack:: ' . $query);
         if (sql_num_rows($rs) > 0) {
-            list($idTrack) = sql_fetch_row($rs);
+            [$idTrack] = sql_fetch_row($rs);
 
             return [true, $idTrack];
         } elseif ($createOnFail) {

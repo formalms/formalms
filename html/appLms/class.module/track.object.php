@@ -32,6 +32,26 @@ class Track_Object
     protected $session;
 
     /**
+     * @param mixed $idReference
+     * @return Track_Object
+     */
+    public function setIdReference($idReference)
+    {
+        $this->idReference = $idReference;
+        return $this;
+    }
+
+    /**
+     * @param mixed $idUser
+     * @return Track_Object
+     */
+    public function setIdUser($idUser)
+    {
+        $this->idUser = $idUser;
+        return $this;
+    }
+
+    /**
      * object constructor
      * Table : learning_commontrack
      * idReference | idUser | idTrack | objectType | date_attempt  | status |.
@@ -49,8 +69,8 @@ class Track_Object
             $rs = sql_query($query) or
             errorCommunication('Track_Object.Track_Object');
             if (sql_num_rows($rs) == 1) {
-                list($this->idReference, $this->idUser, $this->idTrack,
-                    $this->objectType, $this->dateAttempt, $this->status) = sql_fetch_row($rs);
+                [$this->idReference, $this->idUser, $this->idTrack,
+                    $this->objectType, $this->dateAttempt, $this->status] = sql_fetch_row($rs);
 
                 $this->idTrack = (int) $this->idTrack;
             }
@@ -82,7 +102,7 @@ class Track_Object
             . "WHERE objectType = '" . $objectType . "' "
             . '	AND idReference = ' . (int) $id_reference . ' '
             . '	AND idUser = ' . (int) $id_user . ' ';
-        list($max_score, $current_score, $num_attempts) = sql_fetch_row(sql_query($query));
+        [$max_score, $current_score, $num_attempts] = sql_fetch_row(sql_query($query));
 
         $data = Events::trigger('lms.lo_user.updating', [
             'id_reference' => $id_reference,
@@ -344,7 +364,7 @@ class Track_Object
             $res = sql_query($query);
             if ($res && sql_num_rows($res) > 0) {
                 $now = date('Y-m-d H:i:s');
-                list($first_complete, $last_complete) = sql_fetch_row($res);
+                [$first_complete, $last_complete] = sql_fetch_row($res);
 
                 $old_data = ['last_complete' => $last_complete];
                 $new_data = ['last_complete' => $now];
@@ -390,7 +410,7 @@ class Track_Object
             $query = 'SELECT idCourse '
                 . 'FROM %lms_organization '
                 . "WHERE idOrg = '" . (int) $this->idReference . "' ";
-            list($idCourse) = sql_fetch_row(sql_query($query));
+            [$idCourse] = sql_fetch_row(sql_query($query));
             //}
             $useridst = $this->idUser;
             require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/organization/orglib.php');
@@ -533,7 +553,7 @@ class Track_Object
             return 'not attempted';
         } else {
             for ($i = 0; $i < sql_num_rows($rs); ++$i) {
-                list($status) = sql_fetch_row($rs);
+                [$status] = sql_fetch_row($rs);
                 if ($status == 'passed' || $status == 'completed') {
                     break;
                 }
@@ -558,7 +578,7 @@ class Track_Object
         if (sql_num_rows($rs) == 0) {
             return false;
         } else {
-            list($idTrack) = sql_fetch_row($rs);
+            [$idTrack] = sql_fetch_row($rs);
 
             return $idTrack;
         }
