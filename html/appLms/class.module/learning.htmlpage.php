@@ -208,11 +208,13 @@ class Learning_Htmlpage extends Learning_Object
         // NOTE: Track only if $idReference is present
         if ($idReference !== false) {
             require_once _lms_ . '/class.module/track.htmlpage.php';
-            list($exist, $idTrack) = Track_Htmlpage::getIdTrack($idReference, getLogUserId(), $this->id, true);
+            [$exist, $idTrack] = Track_Htmlpage::getIdTrack($idReference, getLogUserId(), $this->id, true);
             if ($exist) {
                 $ti = new Track_Htmlpage($idTrack);
                 $ti->setDate(date('Y-m-d H:i:s'));
                 $ti->status = 'completed';
+                $ti->setIdUser(getLogUserId());
+                $ti->setIdReference($idReference);
                 $ti->update();
             } else {
                 $ti = new Track_Htmlpage(false);
