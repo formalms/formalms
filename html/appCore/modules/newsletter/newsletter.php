@@ -399,7 +399,7 @@ function init_send()
     }
 
     //$url = 'index.php?modname=newsletter&amp;op=selsendto&amp;id_send=' . $last_id . '&load=1';
-    $url = 'index.php?r=adm/userselector/show&amp;instance='.  $instance . '&amp;id=' . $last_id . '&load=1';
+    $url = 'index.php?r=adm/userselector/show&amp;showSelectAll=true&amp;instance='.  $instance . '&amp;id=' . $last_id . '&load=1';
     Util::jump_to($url);
 }
 
