@@ -197,6 +197,14 @@ class CourseLmsController extends LmsController
             'verydifficult' => $lang->def('_DIFFICULT_VERYDIFFICULT'),
         ];
 
+        $data['status_lang'] = [
+            0 => $lang->def('_NOACTIVE'),
+            1 => $lang->def('_ACTIVE'),
+            2 => $lang->def('_CST_CONFIRMED'),
+            3 => $lang->def('_CST_CONCLUDED'),
+            4 => $lang->def('_CST_CANCELLED'),
+        ];
+
         $query_course = '
             SELECT code, name, description, lang_code, status, level_show_user, subscribe_method, 
                 linkSponsor, mediumTime, permCloseLO, userStatusOp, difficult, 
@@ -236,7 +244,7 @@ class CourseLmsController extends LmsController
 	                    UPDATE %lms_course 
 	                    SET code = "' . $this->request->get('course_code') . '", 
                         name = "' . $this->request->get('course_name') . '", 
-                        description = "' . $this->request->get('course_descr') . '", 
+                        description = "' . sql_escape_string($this->request->get('course_descr')) . '", 
                         lang_code = "' . $array_lang[$this->request->get('course_lang')] . '", 
                         status = "' . (int)$this->request->get('course_status') . '", 
                         level_show_user = "' . $show_level . '", 
