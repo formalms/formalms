@@ -2087,13 +2087,13 @@ class UsermanagementAdm extends Model implements Accessible
         if (is_array($langs)) {
             //get directory's number and attach new folder at the end of the list
             $query = 'SELECT MAX(path) FROM %adm_org_chart_tree WHERE idParent=' . (int)$id_parent;
-            $res = $this->db->query($query);
-            if ($this->db->num_rows($res) > 0) { //check if there are any subfolder
-                [$path] = $this->db->fetch_row($res);
-                $tmp = explode('/', $path);
-                $folder_index = end($tmp) + 1;
+            $res = sql_query($query);
+            if (sql_num_rows($res) > 0) { //check if there are any subfolder
+                [$path] = sql_fetch_row($res);
+                $tmp = explode('/', $path ?? '');
+                $folder_index = (int)end($tmp) + 1;
             } else {
-                $folder_index = 1; //start with first folder index
+                    $folder_index = 1; //start with first folder index
             }
 
             //calculate new folder parameters in org_chart_tree table
