@@ -35,11 +35,11 @@ class ReportuserAccessProcessor extends AccessProcessor
 
             case 4:
 
-                $link = 'index.php?modname=report&op=report_save';
+                $link = 'index.php?modname=report&op=modify_cols&substep=columns_selection';
                 break;
         }
 
-        
+        //$link = 'index.php?modname=report&op=report_sel_columns';
         $link = !$flag ? $this->accessModel->getLink() : $link;
         $this->setRedirect($link);
      
