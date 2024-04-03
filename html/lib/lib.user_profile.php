@@ -3705,7 +3705,11 @@ class UserProfileData
     public function isOnline($id_user)
     {
         $u_info = $this->getUserDataNoRestriction($id_user);
-        $fal = $this->getFieldAccessList($id_user);
+        if (is_array($this->getFieldAccessList($id_user))) {
+            $fal = $this->getFieldAccessList($id_user);
+        } else {
+            $fal = unserialize($this->getFieldAccessList($id_user));
+        }
 
         $viewer = $this->getViewer();
 
