@@ -60,7 +60,7 @@ class OrgDataSelector extends DataSelector{
             $isNodeVisible = true;
             $codeLabel = $result['code'] ? "[" . $result['code'] . "] " : "";
             if ($isSubadmin) {
-                $isForbidden = !\in_array($result['idOrg'], $orgTree, true);
+                $isForbidden = !in_array( (int) $result['idOrg'], $orgTree, true);
                 $countSubnodes = $this->builder->_checkSubnodesVisibility($result['idOrg'], $result['iLeft'], $result['iRight'], $orgTree);
                 $hasVisibleSubnodes = ($countSubnodes > 0);
                 if ($isForbidden && !$hasVisibleSubnodes) {
