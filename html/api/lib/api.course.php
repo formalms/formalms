@@ -1347,13 +1347,17 @@ class Course_API extends API
         $arrayDays = $model->classroom_man->getDateDay($idDate);
 
         $dayExists = array_search($idDay, array_column($arrayDays, 'id'));
+
+       
         if ($dayExists) {
             //unset($arrayDays[$idDay]);
             $result = $model->classroom_man->removeDateDay($idDate, [
                 [
-                    'day_id' => $idDay,
+                    'id' => $idDay,
                 ],
             ]);
+
+          
 
             /*sort($arrayDays);
 
