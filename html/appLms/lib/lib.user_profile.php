@@ -2415,18 +2415,6 @@ class UserProfileViewer
         return $html;
     }
 
-    public function getFilledAvatar()
-    {
-        if (isset($_POST['delete_current'])) {
-            return 'delete_current';
-        }
-        if (isset($_FILES['up_avatar'])) {
-            return $_FILES['up_avatar'];
-        }
-
-        return 'nop';
-    }
-
     public function getUIPolicyCode($field_name, $field_value, $dropdown)
     {
         if ($field_value === false) {

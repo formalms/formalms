@@ -28,16 +28,20 @@
             {%  endblock %}
           </div>
 
-          <div class="user-profile__imgcontainer">
-            <div class="user-profile__content">
-              <div class="course-info__label">{{ Lang_translate('_AVATAR', 'standard') }}</div>
-              {% if user.avatar != '' %}
-                <img class="user-profile__img" src="{{user.avatar}}" alt="{{user.name}}" />
-              {% else %}
-                <img class="user-profile__img" src="{{templatePath}}/static/images/icons/top-menu/icon--profile.svg" alt="{{user.name}}" />
-              {% endif %}
+
+            <div class="user-profile__imgcontainer">
+              <div class="user-profile__content">
+                <div class="course-info__label">{{ Lang_translate('_AVATAR', 'standard') }}</div>
+                {% block avatar %}
+                  {% if user.avatar != '' %}
+                    <img class="user-profile__img" src="{{user.avatar}}" alt="{{user.name}}" />
+                  {% else %}
+                    <img class="user-profile__img" src="{{templatePath}}/static/images/icons/top-menu/icon--profile.svg" alt="{{user.name}}" />
+                  {% endif %}
+                {% endblock %}
+              </div>
             </div>
-          </div>
+
         </div>
 
         <div class="course-info__label">{{ Lang_translate('_EMAIL', 'standard') }}</div>

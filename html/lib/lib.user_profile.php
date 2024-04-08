@@ -588,27 +588,6 @@ class UserProfile
                     return $out;
                 }
                 break;
-
-            case 'uploadavatar':
-                return $this->_up_viewer->modAvatarGui();
-                break;
-            case 'saveavatar':
-                if ($this->saveUserAvatar()) {
-                    // all ok --------------------------------------
-                    $this->_up_viewer->unloadUserData();
-
-                    if ($this->_end_url !== false) {
-                        Util::jump_to($this->_end_url);
-                    }
-
-                    return getResultUi($this->_lang->def('_OPERATION_SUCCESSFULAVATAR'))
-                        . $this->getProfile();
-                } else {
-                    // some error saving ---------------------------
-                    return getErrorUi($this->_lang->def('_OPERATION_FAILURE'))
-                        . $this->_up_viewer->modAvatarGui();
-                }
-                break;
             // teacher curriculum
             case 'del_teach_curric':
                 return $this->_up_viewer->delTeacherCurriculumGui();
@@ -840,23 +819,6 @@ class UserProfile
     public function getUserPhotoOrAvatar($dimension = 'medium')
     {
         return $this->_up_viewer->getAvailablePhotoAvatar($dimension);
-    }
-
-    /**
-     * save the user avatar displaied by the mod avatar gui.
-     *
-     * @return bool true if all data was saved correctly, false in case of trouble
-     */
-    public function saveUserAvatar()
-    {
-        $avatar = $this->_up_viewer->getFilledAvatar();
-        if ($avatar == 'delete_current') {
-            return $this->_up_data_man->deleteAvatarData($this->_id_user);
-        } elseif ($avatar == 'nop') {
-            return true;
-        }
-
-        return $this->_up_data_man->saveAvatarData($this->_id_user, $avatar, $this->_up_viewer->max_dim_avatar, $this->_up_viewer->max_dim_avatar);
     }
 
     /**
@@ -2558,39 +2520,6 @@ class UserProfileViewer
         $user_manager = new UserManager();
         $q_string = $this->_varname_action . '=savepwd';
         $html = $user_manager->getElapsedPassword($this->_url_man->getUrl($q_string), $error_array);
-        return $html;
-    }
-
-    public function modAvatarGui()
-    {
-        require_once _base_ . '/lib/lib.form.php';
-        require_once _base_ . '/lib/lib.preference.php';
-
-        $this->loadUserData(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
-
-        $html = '<div class="up_user_info">'
-            . '<div class="up_name">' . $this->resolveUsername(false, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()) . '</div>';
-
-        // user standard info -----------------------------------------------------------------
-        $html .= getInfoUi(str_replace('[max_px]', $this->max_dim_avatar, $this->_lang->def('_AVATAR_PHOTO_INSTRUCTION')));
-        $html .= Form::openForm('mod_avatar', $this->_url_man->getUrl($this->_varname_action . '=saveavatar'), false, false, 'multipart/form-data');
-
-        $html .= Form::getFilefield($this->_lang->def('_AVATAR'),
-            'up_avatar',
-            'up_avatar');
-
-        if ($this->user_info[ACL_INFO_AVATAR] != '') {
-            $html .= Form::getButton('delete_current', 'delete_current', $this->_lang->def('_DEL'), 'up_delete_current');
-        }
-
-        $html .= Form::openButtonSpace()
-            . Form::getButton('save', 'save', $this->_lang->def('_SAVE'))
-            . Form::getButton('undo', 'undo', $this->_lang->def('_UNDO'))
-            . Form::closeButtonSpace();
-
-        $html .= Form::closeForm()
-            . '</div>';
-
         return $html;
     }
 

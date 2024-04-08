@@ -138,6 +138,24 @@ class ProfileLmsController extends LmsController
                     }
                 }
                 break;
+            case 'uploadavatar':
+                return $this->modAvatarGui();
+                break;
+            case 'saveavatar':
+                $delete_operation = (FormaLms\lib\Get::req('delete_current', DOTY_STRING, '') == Lang::t('_DEL','standard'));
+                if ($delete_operation) {
+                    $userProfileDataManager = new UserProfileData();
+                    $userProfileDataManager->deleteAvatarData(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
+                    FormaLms\lib\FormaUser::getCurrentUser()->setAvatar(null);
+                }
+                $save_operation = (FormaLms\lib\Get::req('save', DOTY_STRING, '') == Lang::t('_SAVE','standard'));
+                if ($save_operation) {
+                    $id_user = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
+                    $userProfileDataManager = new UserProfileData();
+                    $userProfileDataManager->saveAvatarData($id_user, $_FILES['up_avatar'], $this->max_dim_avatar, $this->max_dim_avatar);
+                    $new_avatar = $userProfileDataManager->_user_data[$id_user][6];
+                    FormaLms\lib\FormaUser::getCurrentUser()->setAvatar($new_avatar);
+                }
             default:
                 return $this->showProfile();
                 break;
@@ -145,6 +163,14 @@ class ProfileLmsController extends LmsController
         };
         return;
 
+    }
+
+    private function modAvatarGui(){
+        $user = \FormaLms\lib\FormaUser::getCurrentUser();
+        $user_name = $user->getUserName();
+        $max_dim = $this->max_dim_avatar;
+        $current_avatar = $user->getAvatar();
+        $this->render('mod_avatar', compact('user_name', 'max_dim', 'current_avatar'));
     }
 
     private function getUserProfileData(){

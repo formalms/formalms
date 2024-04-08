@@ -850,13 +850,13 @@ function fromDatetimeToTimestamp($datetime)
 
 function createDateDistance($date, $m_name = false, $on_over_return_date = false)
 {
-    $year = substr($date, 0, 4);
-    $month = substr($date, 5, 2);
-    $day = substr($date, 8, 2);
+    $year = (int)substr($date, 0, 4);
+    $month = (int)substr($date, 5, 2);
+    $day = (int)substr($date, 8, 2);
 
-    $hour = substr($date, 11, 2);
-    $minute = substr($date, 14, 2);
-    $second = substr($date, 17, 2);
+    $hour = (int)substr($date, 11, 2);
+    $minute = (int)substr($date, 14, 2);
+    $second = (int)substr($date, 17, 2);
 
     $distance = time() - mktime($hour, $minute, $second, $month, $day, $year);
     //second -> minutes

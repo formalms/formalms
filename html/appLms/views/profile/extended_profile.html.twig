@@ -97,4 +97,10 @@
         <a href="index.php?r=lms/profile/modprofile" class="button btn btn-default">{{ Lang_translate('_MOD', 'standard') }}</a>
     {% endif %}
 {% endblock %}
+{% block avatar %}
+    {{ parent() }}
+    {% if modify_profile %}
+            <a href="index.php?r=lms/profile/show&ap=uploadavatar">{{ Lang_translate('_MOD', 'standard') }}</a>
+    {% endif %}
+{% endblock %}
 

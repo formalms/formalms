@@ -1673,7 +1673,6 @@ class SubscriptionAlmsController extends AlmsController
                                         }
                                     }
                                 } //End While
-                                reset($_POST['user_level_sel']);
                             }
                         } else {
                             $model_t = new SubscriptionAlms($id_course, $edition_selected[$id_course], false);
