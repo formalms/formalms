@@ -224,7 +224,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         $out->add(
         getTitleArea($title_area, 'coursepath')
         . '<div class="std_block">'
-        . Form::openForm('mancoursepath', 'index.php?modname=coursepath&amp;op=savecoursepath')
+        . Form::openForm('mancoursepath', 'index.php?modname=coursepath&amp;op=savecoursepath&of_platform=lms')
         . Form::openElementSpace()
         . ($load_id === false ? '' : Form::getHidden('id_path', 'id_path', $load_id))
         . Form::getTextfield($lang->def('_CODE'), 'path_code', 'path_code', 255,

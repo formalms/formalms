@@ -1958,6 +1958,11 @@ Nella conservazione dei dati verranno osservate accuratezza e precisione per gar
       </module>
       <module id="privacypolicies">
         <key id="privacypolicies&amp;_PRIVACYPOLICIES" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Privacy Policies]]></key>
+        <key id="privacypolicies&amp;_PRIVACYPOLICIES_ACCEPT_DATA" attributes="" save_date="2024-03-01 15:32:39"><![CDATA[Consenso al trattamento dei dati accettato in data]]></key>
+        <key id="privacypolicies&amp;_PRIVACYPOLICIES_REJECT_ALERT" attributes="" save_date="2024-03-01 15:32:39"><![CDATA[Cliccando sul buttone "Revoca" verrai disconnesso.<br>Per riaccedere alla piattaforma dovrai dare nuovamente il consenso alla gestione dei tuoi dati.]]></key>
+        <key id="privacypolicies&amp;_PRIVACYPOLICIES_REVOKE_BUTTON" attributes="" save_date="2024-03-01 15:32:39"><![CDATA[Revoca il consenso]]></key>
+        <key id="privacypolicies&amp;_VIEW_PRIVACY" attributes="" save_date="2024-03-01 15:32:39"><![CDATA[Visualizza il testo dell'informativa]]></key>
+        <key id="privacypolicies&amp;_PRIVACYPOLICIES_REJECT_DATA" attributes="" save_date="2024-03-01 15:32:39"><![CDATA[Consenso al trattamento dei dati ritirato in data]]></key>
       </module>
       <module id="profile">
         <key id="profile&amp;_ACCESS_COUNT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Numeri di accessi]]></key>
@@ -2040,6 +2045,7 @@ L'immagine non deve avere contenuti offensivi e/o che violano il regolamento.]]>
         <key id="profile&amp;_USER_VIDEOS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Video]]></key>
         <key id="profile&amp;_WELCOME" attributes="" save_date="2016-01-13 15:49:16"><![CDATA[Benvenuto]]></key>
         <key id="profile&amp;_WRITE_ASK_A_FRIEND" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Scrivi un messaggio per la tua richiesta]]></key>
+        <key id="profile&amp;_MANAGED_BY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Responsabile]]></key>
       </module>
       <module id="project">
         <key id="project&amp;_MODPROJECTADMIN" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Gestisci amministratori]]></key>
@@ -3314,6 +3320,7 @@ La descrizione verrà mostrata agli studenti prima della somministrazione del te
         <key id="communication&amp;_CATEGORY_MISSING" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Devi impostare almeno una categoria]]></key>
         <key id="communication&amp;_MARK_AS_READ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Segna come letto]]></key>
         <key id="communication&amp;_MARK_AS_UNREAD" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Segna come non letto]]></key>
+        <key id="communication&amp;_READ_ALL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Leggi tutto]]></key>
       </module>
       <module id="mailconfig">
         <key id="mailconfig&amp;_AUTO_TLS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Auto Tls]]></key>

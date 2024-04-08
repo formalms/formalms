@@ -286,8 +286,8 @@ class LocationAlmsController extends AlmsController
         $total = $this->model->getClassroomTotal($id_location, $filter);
         foreach ($classroom_list as $i => $classroom) {
             $classroom->classroom = $classroom->name;
-            $classroom->classroom_mod = 'ajax.adm_server.php?r=alms/location/mod&amp;idClassroom=' . $classroom->name;
-            $classroom->classroom_del = 'ajax.adm_server.php?r=alms/location/delClassroom&amp;idClassroom=' . $classroom->id_classroom;
+    
+            $classroom->classroom_del = 'ajax.adm_server.php?r=alms/location/delClassroom&idClassroom=' . $classroom->id_classroom;
         }
 
         $output = [

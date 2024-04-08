@@ -1512,10 +1512,6 @@ class UserProfileViewer
         // close the floating of the photo and avatar ----------------------------------------
         $html .= '<div class="nofloat"></div>';
 
-        //signature --------------------------------------------------------------------------
-        $html .= '<b id="up_signature_b">' . $this->_lang->def('_SIGNATURE') . ':</b>'
-                . '<div id="up_signature">' . $this->user_info[ACL_INFO_SIGNATURE] . '</div>';
-
         // link to modify
         if ($edit_mode) {
             $html .= '<ul class="up_profile_action">';
@@ -2216,12 +2212,6 @@ class UserProfileViewer
                                     $acl_man->getUserLevelId($this->_user_profile->getIdUser()));
         }
 
-        //signature --------------------------------------------------------------------------
-
-        $html .= Form::getTextarea($this->_lang->def('_SIGNATURE'),
-                                    'up_signature',
-                                    'up_signature',
-                                    FormaLms\lib\Get::req('up_signature', DOTY_MIXED, $this->user_info[ACL_INFO_SIGNATURE], true));
 
         if (isset($_GET['modname']) && $_GET['modname'] == 'reservation') {
             $html .= Form::openButtonSpace()
@@ -2275,7 +2265,6 @@ class UserProfileViewer
             'lastname' => FormaLms\lib\Get::req('up_lastname', DOTY_MIXED, ''),
             'firstname' => FormaLms\lib\Get::req('up_firstname', DOTY_MIXED, ''),
             'email' => FormaLms\lib\Get::req('up_email', DOTY_MIXED, ''),
-            'signature' => FormaLms\lib\Get::req('up_signature', DOTY_MIXED, ''),
             'facebook_id' => FormaLms\lib\Get::pReq('facebook_id', DOTY_MIXED, ''),
             'twitter_id' => FormaLms\lib\Get::pReq('twitter_id', DOTY_MIXED, ''),
             'linkedin_id' => FormaLms\lib\Get::pReq('linkedin_id', DOTY_MIXED, ''),
@@ -2424,18 +2413,6 @@ class UserProfileViewer
                 . '</div>';
 
         return $html;
-    }
-
-    public function getFilledAvatar()
-    {
-        if (isset($_POST['delete_current'])) {
-            return 'delete_current';
-        }
-        if (isset($_FILES['up_avatar'])) {
-            return $_FILES['up_avatar'];
-        }
-
-        return 'nop';
     }
 
     public function getUIPolicyCode($field_name, $field_value, $dropdown)
@@ -3893,7 +3870,7 @@ class UserProfileData
                                                 : false),
                                             $data['email'],
                                             false,
-                                            $data['signature'], false, false,
+                                            false, false,
                                             (isset($data['force_change']) ? $data['force_change'] : ''),
                                             $data['facebook_id'], $data['twitter_id'], $data['linkedin_id'],
                                             $data['google_id'])) {

@@ -1,0 +1,81 @@
+<script>
+    $(document).ready(function(){
+        $('#privacy_viewer').on('hidden.bs.modal', function () {
+            $('#privacy_disclaimer').style.display = 'none';
+        });
+
+    });
+
+    function openPrivacyDisclaimer() {
+
+        var posting = $.get(
+            window.frontend.config.url.appLms + '/ajax.server.php',
+            {
+                r: 'lms/profile/getUserPrivacyPolicyText',
+            }
+        )
+        posting.done(function (privacy_disclaimer) {
+            $('#privacy_disclaimer').html(privacy_disclaimer);
+            $('#privacy_viewer').modal('show');
+            $('#privacy_disclaimer').style.display = 'block';
+        });
+        posting.fail(function () {
+            $('#privacy_disclaimer').text('_NO_PRIVACY_FOUND');
+            $('#privacy_viewer').modal('show');
+        })
+    }
+
+    function rejectDisclaimer(privacy_id, privacy_name){
+        if (confirm("Confermi di cancellare la privacy"+privacy_name)) {
+            var posting = $.get(
+                window.frontend.config.url.appLms + '/ajax.server.php',
+                {
+                    r: 'lms/profile/revokePrivacy',
+                    privacy_id: privacy_id
+                }
+            )
+
+            posting.done( function(url) {
+                window.location.href = url
+            })
+        }
+    }
+
+
+
+</script>
+<div class="section-course user-profile">
+    <div class="row">
+        <div class="col-sm-12">
+            {% for privacy in user_privacy %}
+                <div class="box-title">
+                    <div class="course-info__label">{{ Lang_translate('_NAME', 'standard') }}</div>
+                    <div class="course-info__value text--gray">{{ privacy.name }}</div>
+                </div>
+                <div class="user-profile__content">
+                    <div class="course-info__label">{{ Lang_translate('_TEXTOF', 'standard') }}</div>
+                    <div class="course-info__value text--gray"><a href="#" id="openModal" onclick="openPrivacyDisclaimer()">{{ Lang_translate('_VIEW_PRIVACY','privacypoliciew') }}</a></div>
+                </div>
+                <div class="user-profile__content">
+                    <div class="course-info__label">{{ Lang_translate('_PRIVACYPOLICIES_ACCEPT_DATA', 'privacypolicies') }}</div>
+                    <div class="course-info__value text--gray">{{ privacy.accept_date }}</div>
+                </div>
+                {% if  privacy.reject_date is not null %}
+                    <div class="user-profile__content">
+                        <div class="course-info__label"><b>{{ Lang_translate('_PRIVACYPOLICIES_REJECT_DATA', 'privacypolicies') }}</b></div>
+                        <div class="course-info__value text--gray">{{ privacy.reject_date }}</div>
+                    </div>
+                {% else %}
+                    <div class="user-profile__content">
+                        <button type="button" onclick="rejectDisclaimer({{ privacy.id }}, '{{ privacy.name }}')"> {{ Lang_translate('_PRIVACYPOLICIES_REVOKE_BUTTON', 'privacypolicies') }}</button>
+                        <div class="course-info__value text--gray" style="color:red">
+                            <strong>
+                                Effettuando questa scelta, ci sarà un logout automatico dalla piattaforma.<br>Potrai rientrarci solo dopo aver dato nuovamente il tuo consenso al trattamento dei dati.
+                            </strong>
+                        </div>
+                    </div>
+                {%  endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>

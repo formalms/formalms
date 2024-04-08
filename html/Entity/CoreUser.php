@@ -69,13 +69,6 @@ class CoreUser
     private $avatar = '';
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="signature", type="string", length=65536, nullable=false)
-     */
-    private $signature;
-
-    /**
      * @var int
      *
      * @ORM\Column(name="level", type="integer", nullable=false)

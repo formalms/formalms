@@ -36,7 +36,7 @@
                 <picture class="header__profile__picture">
 
                     {% if user.hasAvatar() %}
-                        <img src="{{ user.getAvatar() }}" alt="{{ user.getUserName() }}">
+                        <img src="..{{ user.getAvatar() }}" alt="{{ user.getUserName() }}">
                     {% else %}
                         <img src="{{ Get_getTemplatePath() }}static/images/icons/top-menu/icon--profile.svg" alt="{{ user.getUserName() }}">
                     {% endif %}

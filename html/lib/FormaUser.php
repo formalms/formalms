@@ -32,6 +32,7 @@ require_once _base_ . '/lib/lib.acl.php';
 
 require_once _base_ . '/lib/lib.preference.php';
 
+
 define('REFRESH_LAST_ENTER', 600);    //refresh the user last action every specified seconds
 
 define('USER_QUOTA_INHERIT', -1);
@@ -131,7 +132,6 @@ class FormaUser
         $this->load_user_role();
 
         $this->userCourses = $this->loadUserCourses();
-
         $this->initRole($this->arrst, $this->idst);
     }
 
@@ -197,6 +197,84 @@ class FormaUser
             $temp = \FormaLms\lib\Forma::getAclManager()->getRoleFromArraySt($this->arrst);
             $GLOBALS['user_roles'] = array_flip($temp);
         }
+    }
+
+    public function loadUserCustomFields(){
+        if ($this->user_level == 6 ) { // Anonymous
+            return [];
+        } else {
+            $hide_hidden = ($this->user_level != '/framework/level/godadmin');
+            require_once _adm_ . '/lib/lib.field.php';
+            $custom_field_class = new \FieldList();
+            return $custom_field_class->getFieldsAndValueFromUser($this->idst, false, $hide_hidden);
+        }
+
+    }
+
+    public function getManagerUser()
+    {
+        require_once _adm_ . '/models/UsermanagementAdm.php';
+        $model_user = new \UsermanagementAdm();
+
+        $manager['_DIRECT'] = $this->getManagerDirect();
+        $manager['_ORG'] = $this->getManagerOrg($model_user);
+        $manager['_GROUP'] = $this->getManagerGroup($model_user);
+        return $manager;
+    }
+
+    private function getManagerOrg(&$model_user){
+        $vett_org = $model_user->getUserFolders($this->idst);
+        $vett_out = [];
+        foreach ($vett_org as $key => $value) {
+            $q = 'select idstAdmin , firstname, lastname
+                from %adm_admin_tree, %adm_org_chart_tree , %adm_user 
+                where idst_oc=' . $key . ' and idst_ocd=core_admin_tree.idst
+                and core_admin_tree.idstAdmin = core_user.idst';
+            $r = sql_query($q);
+            while (list($idstAdmin, $firstname, $lastname) = sql_fetch_row($r)) {
+                $vett_out[] = "$firstname, $lastname";
+            }
+        }
+        return $vett_out;
+    }
+
+    private function getManagerGroup(&$model_user){
+        $vett_gruop = $model_user->getUserGroups($this->idst);
+        $vett_out = [];
+        foreach ($vett_gruop as $key => $value) {
+            $sql = 'select idstAdmin, firstname, lastname 
+                from core_admin_tree, core_user
+                where core_admin_tree.idst=' . $key . ' and core_admin_tree.idstAdmin = core_user.idst';
+            $re = sql_query($sql);
+            while (list($idstAdmin, $firstname, $lastname) = sql_fetch_row($re)) {
+                $vett_out[] = "$firstname, $lastname ";
+            }
+        }
+        return $vett_out;
+
+    }
+    private function getManagerDirect(){
+        $sql = 'select idstAdmin, firstname, lastname 
+                    from core_admin_tree, core_user
+                    where core_admin_tree.idst=' . $this->idst . ' and core_admin_tree.idstAdmin = core_user.idst';
+
+        $result = sql_query($sql);
+        $res = [];
+        while ($row = sql_fetch_assoc($result)) {
+            $res[$row['idstAdmin']] = "$row[firstname], $row[lastname]";
+        }
+        return $res;
+    }
+    public function getUserPrivacy(){
+        $sql = "select cp.name, cpu.id, cpu.accept_date, cpu.reject_date from core_privacypolicy_user as cpu
+                                        JOIN  core_privacypolicy as cp on cpu.id_policy = cp.id_policy 
+                                        where idst=".$this->idst;
+        $result = sql_query($sql);
+        $res = [];
+        while ($row = sql_fetch_assoc($result)) {
+            $res[$row['id']] = $row;
+        }
+        return $res;
     }
 
     public function saveInSession()
@@ -283,7 +361,12 @@ class FormaUser
      */
     public function getAvatar()
     {
-        return Get::sett('url') . '/' . _folder_files_ . '/appCore/' . Get::sett('pathphoto') . $this->avatar;
+        if ($this->avatar != null) {
+            return Get::sett('url') . '/' . _folder_files_ . '/appCore/' . Get::sett('pathphoto') . $this->avatar;
+        } else {
+            return null;
+        }
+
     }
 
     /**
@@ -714,7 +797,6 @@ class FormaUser
                 false,
                 false,
                 false,
-                false,
                 $lastenter
             );
         } else {
@@ -910,7 +992,7 @@ class FormaUser
      */
     public function getMyFilesTable()
     {
-        return $GLOBALS['prefix_fw'] . '_user_myfiles';
+        return $GLOBALS['prefix_fw'] . '_user_file';
     }
 
     /**

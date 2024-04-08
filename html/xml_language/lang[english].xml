@@ -1962,6 +1962,11 @@ In handling this information, accuracy and precision shall be met to ensure the 
       </module>
       <module id="privacypolicies">
         <key id="privacypolicies&amp;_PRIVACYPOLICIES" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Privacy Policies]]></key>
+        <key id="privacypolicies&amp;_PRIVACYPOLICIES_ACCEPT_DATA" attributes="" save_date="2024-03-01 15:32:39"><![CDATA[Privacy accepted on date]]></key>
+        <key id="privacypolicies&amp;_PRIVACYPOLICIES_REJECT_ALERT" attributes="" save_date="2024-03-01 15:32:39"><![CDATA[Clicking on the "revoke" button you will be logged out.<br>For accessing once again on the platform you are requested to accept processing of your persona data.]]></key>
+        <key id="privacypolicies&amp;_PRIVACYPOLICIES_REVOKE_BUTTON" attributes="" save_date="2024-03-01 15:32:39"><![CDATA[Revoke]]></key>
+        <key id="privacypolicies&amp;_VIEW_PRIVACY" attributes="" save_date="2024-03-01 15:32:39"><![CDATA[View privacy disclaimer]]></key>
+        <key id="privacypolicies&amp;_PRIVACYPOLICIES_REJECT_DATA" attributes="" save_date="2024-03-01 15:32:39"><![CDATA[Privacy rejected on date]]></key>
       </module>
       <module id="profile">
         <key id="profile&amp;_ACCESS_COUNT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Number of log in]]></key>
@@ -2044,6 +2049,7 @@ Please don't upload offensive images.]]></key>
         <key id="profile&amp;_USER_VIDEOS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Video]]></key>
         <key id="profile&amp;_WELCOME" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Welcome!]]></key>
         <key id="profile&amp;_WRITE_ASK_A_FRIEND" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Write a message for your request]]></key>
+        <key id="profile&amp;_MANAGED_BY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Manager]]></key>
       </module>
       <module id="project">
         <key id="project&amp;_MODPROJECTADMIN" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Manage administrators]]></key>
@@ -3319,6 +3325,7 @@ you have been unsubscribed from the course ([course_code]) - [course]]]></key>
         <key id="communication&amp;_CATEGORY_MISSING" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[You must set at least one category]]></key>
         <key id="communication&amp;_MARK_AS_READ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mark as read]]></key>
         <key id="communication&amp;_MARK_AS_UNREAD" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mark as unread]]></key>
+        <key id="communication&amp;_READ_ALL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Read all]]></key>
       </module>
       <module id="mailconfig">
         <key id="mailconfig&amp;_AUTO_TLS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Auto Tls]]></key>

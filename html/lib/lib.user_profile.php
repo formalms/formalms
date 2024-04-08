@@ -375,10 +375,6 @@ class UserProfile
         return $this->_up_viewer->getFooter();
     }
 
-    public function getPrivacy()
-    {
-        return $this->_up_viewer->getPrivacy();
-    }
 
     /**
      * print the back command in the page.
@@ -404,6 +400,32 @@ class UserProfile
         } else {
             return 'profileview';
         }
+    }
+
+    public function saveInfoProfile(){
+
+        if (!$this->checkUserInfo()) {
+            // some error in data filling ------------------
+            return getErrorUi($this->_last_error)
+                . $this->getModUser();
+        }
+        $model = new UsermanagementAdm();
+        if ($this->saveUserInfo()) {
+            // all ok --------------------------------------
+            $this->_up_viewer->unloadUserData();
+
+            if ($this->_end_url !== false) {
+                Util::jump_to($this->_end_url);
+            }
+            if (isset($_GET['modname']) && $_GET['modname'] == 'reservation') {
+                require_once _lms_ . '/lib/lib.reservation.php';
+                $id_event = FormaLms\lib\Get::req('id_event', DOTY_INT, 0);
+                $man_res = new Man_Reservation();
+                $result = $man_res->addSubscription(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_event);
+                Util::jump_to('index.php?modname=reservation&op=reservation');
+            }
+        }
+
     }
 
     /**
@@ -557,34 +579,13 @@ class UserProfile
                 if ($error['error'] == true) {
                     return $this->_up_viewer->getUserPwdModUi($error['msg']);
                 } else {
-                    $out = getResultUi($this->_lang->def('_OPERATION_SUCCESSFULPWD'));
+                    $out = getResultUi(Lang::t('_OPERATION_SUCCESSFULPWD'));
                     if ($start_action == 'mod_password') {
                         $out = $this->_up_viewer->getUserPwdModUi();
                     } else {
                         $out .= $this->getProfile();
                     }
                     return $out;
-                }
-                break;
-
-            case 'uploadavatar':
-                return $this->_up_viewer->modAvatarGui();
-                break;
-            case 'saveavatar':
-                if ($this->saveUserAvatar()) {
-                    // all ok --------------------------------------
-                    $this->_up_viewer->unloadUserData();
-
-                    if ($this->_end_url !== false) {
-                        Util::jump_to($this->_end_url);
-                    }
-
-                    return getResultUi($this->_lang->def('_OPERATION_SUCCESSFULAVATAR'))
-                        . $this->getProfile();
-                } else {
-                    // some error saving ---------------------------
-                    return getErrorUi($this->_lang->def('_OPERATION_FAILURE'))
-                        . $this->_up_viewer->modAvatarGui();
                 }
                 break;
             // teacher curriculum
@@ -818,23 +819,6 @@ class UserProfile
     public function getUserPhotoOrAvatar($dimension = 'medium')
     {
         return $this->_up_viewer->getAvailablePhotoAvatar($dimension);
-    }
-
-    /**
-     * save the user avatar displaied by the mod avatar gui.
-     *
-     * @return bool true if all data was saved correctly, false in case of trouble
-     */
-    public function saveUserAvatar()
-    {
-        $avatar = $this->_up_viewer->getFilledAvatar();
-        if ($avatar == 'delete_current') {
-            return $this->_up_data_man->deleteAvatarData($this->_id_user);
-        } elseif ($avatar == 'nop') {
-            return true;
-        }
-
-        return $this->_up_data_man->saveAvatarData($this->_id_user, $avatar, $this->_up_viewer->max_dim_avatar, $this->_up_viewer->max_dim_avatar);
     }
 
     /**
@@ -1583,11 +1567,6 @@ class UserProfileViewer
 
         // close the floating of the photo and avatar ----------------------------------------
         $html .= '<div class="nofloat"></div>';
-
-        //signature --------------------------------------------------------------------------
-        $html .= '<b id="up_signature_b">' . $this->_lang->def('_SIGNATURE') . ':</b>'
-            . '<div id="up_signature">' . $this->user_info[ACL_INFO_SIGNATURE] . '</div>';
-
         // link to modify
         if ($edit_mode) {
             $html .= '<ul class="up_profile_action">';
@@ -2218,25 +2197,19 @@ class UserProfileViewer
             . '</div>
                    <div class="col-xs-7">';
 
-        if (FormaLms\lib\Get::sett('profile_modify') == 'redirect' && FormaLms\lib\Get::sett('profile_modify_url')) {
+
+        if (FormaLms\lib\Get::sett('profile_modify') == 'redirect') {
             $html .= '<a href="' . FormaLms\lib\Get::sett('profile_modify_url') . '" target="_blank" title="' . Lang::t('_PROFILE', 'profile') . '">
                           <span class="glyphicon glyphicon-pencil">' . Lang::t('_PROFILE', 'profile') . '</span>
                       </a>
                       <br><span><b>'.$this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME]).'</b></span>
                       <a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>
                    ';
-        } elseif (FormaLms\lib\Get::sett('profile_modify') != 'disallow') {
+        } else {
             $html .= '<a href="index.php?r=lms/profile/show" title="' . Lang::t('_PROFILE', 'profile') . '">
                           <span class="glyphicon glyphicon-pencil">' . Lang::t('_PROFILE', 'profile') . '</span>
                       </a>
                       <br><span><b>'.$this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME]).'</b></span>
-                      <a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>
-                   ';
-        } else {
-            $html .= '<a style="display:none;"></a>
-   					<a href="index.php?r=lms/profile/show">'
-                . $this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME])
-                . '</a>
                       <a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>
                    ';
         }
@@ -2471,13 +2444,6 @@ class UserProfileViewer
                 $acl_man->getUserLevelId($this->_user_profile->getIdUser()));
         }
 
-        //signature --------------------------------------------------------------------------
-
-        $html .= Form::getTextarea($this->_lang->def('_SIGNATURE'),
-            'up_signature',
-            'up_signature',
-            FormaLms\lib\Get::req('up_signature', DOTY_MIXED, $this->user_info[ACL_INFO_SIGNATURE], true));
-
         if (isset($_GET['modname']) && $_GET['modname'] == 'reservation') {
             $html .= Form::openButtonSpace()
                 . Form::getButton('save', 'save', $this->_lang->def('_SAVE'))
@@ -2522,7 +2488,7 @@ class UserProfileViewer
     /**
      * return the standard data filled by the user in the mod gui.
      *
-     * @return array the data filed by the user (lastname, firstname, email, password, signature)
+     * @return array the data filed by the user (lastname, firstname, email, password)
      */
     public function getFilledData()
     {
@@ -2530,7 +2496,6 @@ class UserProfileViewer
             'lastname' => FormaLms\lib\Get::req('up_lastname', DOTY_MIXED, ''),
             'firstname' => FormaLms\lib\Get::req('up_firstname', DOTY_MIXED, ''),
             'email' => FormaLms\lib\Get::req('up_email', DOTY_MIXED, ''),
-            'signature' => FormaLms\lib\Get::req('up_signature', DOTY_MIXED, ''),
             'facebook_id' => FormaLms\lib\Get::pReq('facebook_id', DOTY_MIXED, ''),
             'twitter_id' => FormaLms\lib\Get::pReq('twitter_id', DOTY_MIXED, ''),
             'linkedin_id' => FormaLms\lib\Get::pReq('linkedin_id', DOTY_MIXED, ''),
@@ -2555,39 +2520,6 @@ class UserProfileViewer
         $user_manager = new UserManager();
         $q_string = $this->_varname_action . '=savepwd';
         $html = $user_manager->getElapsedPassword($this->_url_man->getUrl($q_string), $error_array);
-        return $html;
-    }
-
-    public function modAvatarGui()
-    {
-        require_once _base_ . '/lib/lib.form.php';
-        require_once _base_ . '/lib/lib.preference.php';
-
-        $this->loadUserData(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
-
-        $html = '<div class="up_user_info">'
-            . '<div class="up_name">' . $this->resolveUsername(false, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()) . '</div>';
-
-        // user standard info -----------------------------------------------------------------
-        $html .= getInfoUi(str_replace('[max_px]', $this->max_dim_avatar, $this->_lang->def('_AVATAR_PHOTO_INSTRUCTION')));
-        $html .= Form::openForm('mod_avatar', $this->_url_man->getUrl($this->_varname_action . '=saveavatar'), false, false, 'multipart/form-data');
-
-        $html .= Form::getFilefield($this->_lang->def('_AVATAR'),
-            'up_avatar',
-            'up_avatar');
-
-        if ($this->user_info[ACL_INFO_AVATAR] != '') {
-            $html .= Form::getButton('delete_current', 'delete_current', $this->_lang->def('_DEL'), 'up_delete_current');
-        }
-
-        $html .= Form::openButtonSpace()
-            . Form::getButton('save', 'save', $this->_lang->def('_SAVE'))
-            . Form::getButton('undo', 'undo', $this->_lang->def('_UNDO'))
-            . Form::closeButtonSpace();
-
-        $html .= Form::closeForm()
-            . '</div>';
-
         return $html;
     }
 
@@ -3278,14 +3210,6 @@ class UserProfileViewer
         return $output;
     }
 
-    public function getPrivacy() {
-
-        $q= "SELECT accept_date FROM %adm_privacypolicy_user WHERE idst= ".\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();;
-        list($accept_data) = sql_fetch_row(sql_query($q));
-        return "<br><div class='up_main'><b>".Lang::t('_PRIVACY_ACCEPTED', 'privacypolocies')." ".$accept_data."</b></div>";
-
-    }
-
 }
 
 // ========================================================================================================== //
@@ -3710,7 +3634,11 @@ class UserProfileData
     public function isOnline($id_user)
     {
         $u_info = $this->getUserDataNoRestriction($id_user);
-        $fal = $this->getFieldAccessList($id_user);
+        if (is_array($this->getFieldAccessList($id_user))) {
+            $fal = $this->getFieldAccessList($id_user);
+        } else {
+            $fal = unserialize($this->getFieldAccessList($id_user));
+        }
 
         $viewer = $this->getViewer();
 
@@ -3766,12 +3694,11 @@ class UserProfileData
         */
         $forum_lms = new Man_Forum();
         $forum_post = $forum_lms->getUserForumPostLms($id_user);
-
-        $my_file = new MyFile($id_user);
+        $loaded_files = $forum_lms->getUploadedFilesCount($id_user);
         $stats = [
             'forum_post' => $forum_post,
             'blog_post' => 'unk',
-            'loaded_file' => 0,
+            'loaded_file' => $loaded_files,
         ];
 
         return $stats;
@@ -3926,7 +3853,7 @@ class UserProfileData
                 : false),
             $data['email'],
             false,
-            $data['signature'], false, false,
+            false, false,
             (isset($data['force_change']) ? $data['force_change'] : ''),
             $data['facebook_id'], $data['twitter_id'], $data['linkedin_id'],
             $data['google_id'])) {

@@ -232,24 +232,35 @@ class HomepageAdm extends Model
 
     public function getNewPwdOptions()
     {
-        return [
-            'pass_max_time_valid' => $this->options->getOption('pass_max_time_valid'),
-            'pass_min_char' => $this->options->getOption('pass_min_char'),
-            'pass_alfanumeric' => $this->options->getOption('pass_alfanumeric'),
-        ];
+        $options['pass_max_time_valid'] = $this->options->getOption('pass_max_time_valid');
+        $options['pass_min_char'] =  $this->options->getOption('pass_min_char');
+        $options['pass_alfanumeric'] = $this->options->getOption('pass_alfanumeric');
+        $options['user_pwd_history_length'] = $this->options->getOption('user_pwd_history_length');
+        $options['pass_min_uppercase'] = $this->options->getOption('pass_min_uppercase');
+        $options['pass_min_lowercase'] = $this->options->getOption('pass_min_lowercase');
+        $options['pass_min_digit'] = $this->options->getOption('pass_min_digit');
+        $options['pass_special_char'] = $this->options->getOption('pass_special_char');
+        return $options;
     }
 
     public function checkNewPwdValidity($pwd, $retype)
     {
         if ($pwd !== $retype) {
-            return PASSWORD_MISMATCHING;
-        }
-        if (strlen($pwd) < $this->options->getOption('pass_min_char')) {
-            return PASSWORD_TOO_SHORT;
-        }
-        if ($this->options->getOption('pass_alfanumeric') == 'on' &&
-                (!preg_match('/[a-z]/i', $pwd) || !preg_match('/[0-9]/', $pwd))) {
-            return PASSWORD_MUST_BE_ALPHA;
+            return [
+                'error' => true,
+                'msg' => [Lang::t('_ERR_PASSWORD_NO_MATCH','register')]
+            ];
+        } else {
+            require_once _lib_ .'/lib.password.php';
+            $chk_pswd = PasswordPolicies::check($pwd);
+            if (!$chk_pswd->valid()) {
+                return [
+                    'error' => true,
+                    'msg' => $chk_pswd->messages()
+                ];
+            } else {
+                return ['error' => false];
+            }
         }
     }
 
