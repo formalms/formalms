@@ -102,7 +102,7 @@ class GroupmanagementAdm extends Model implements Accessible
                     g.' .$columnName . ' LIKE "%' . $columnValue . '%" 
                 )';
             }
-            
+
         }
         $session = SessionManager::getInstance()->getSession();
 
@@ -138,7 +138,7 @@ class GroupmanagementAdm extends Model implements Accessible
         $query .= ' ORDER BY ' . $sort . ' ' . $dir . ' ';
         $query .= 'LIMIT ' . $startIndex . ', ' . $results;
 
-      
+
         $res = $this->db->query($query);
 
         if ($res) {
@@ -217,7 +217,7 @@ class GroupmanagementAdm extends Model implements Accessible
                     g.' .$columnName . ' LIKE "%' . $columnValue . '%" 
                 )';
             }
-            
+
         }
 
         $res = $this->db->query($query);
@@ -239,7 +239,7 @@ class GroupmanagementAdm extends Model implements Accessible
                     g.' .$columnName . ' LIKE "%' . $columnValue . '%" 
                 )';
             }
-            
+
         }
         $res = $this->db->query($query);
         $output = false;
@@ -257,7 +257,7 @@ class GroupmanagementAdm extends Model implements Accessible
     {
         $query = 'SELECT g.idst, g.groupid, g.description, COUNT(*) as usercount FROM %adm_group as g WHERE g.idst in (' . implode(',', $ids) . ')
         GROUP BY g.idst';
-       
+
         $res = $this->db->query($query);
         if ($res) {
             $output = [];
@@ -643,7 +643,7 @@ class GroupmanagementAdm extends Model implements Accessible
         if (empty($users)) {
             return $output;
         }
-
+        $users = array_unique($users);
         $count_total = 0;
         foreach ($users as $user) {
             $users_list[] = strtolower($this->acl_man->absoluteId($user));
@@ -653,13 +653,13 @@ class GroupmanagementAdm extends Model implements Accessible
         $output['total'] = $count_total;
         $output['not_inserted'] = $count_total;
 
-        $users_list = array_unique($users_list);
-
         $users_idst = [];
-        $query = "SELECT idst, LOWER(userid) FROM %adm_user WHERE userid IN ('" . implode("','", $users_list) . "') ";
+        $query = "SELECT idst, LOWER(userid) as userid FROM %adm_user WHERE userid IN ('" . implode("','", $users_list) . "') ";
         $res = $this->db->query($query);
-        while (list($idst, $userid) = $this->db->fetch_row($res)) {
-            $users_idst[$this->acl_man->relativeId($userid)] = (int) $idst;
+
+        foreach ($res as $row){
+            $users_idst[$this->acl_man->relativeId($row['userid'])] = (int) $row['idst'];
+
         }
 
         if (empty($users_idst)) {
@@ -671,8 +671,9 @@ class GroupmanagementAdm extends Model implements Accessible
         $query = 'SELECT idstMember from %adm_group_members where idst = ' . $id_group
             . " AND idstMember in ('" . implode("','", $users_idst) . "') ";
         $res = $this->db->query($query);
-        while (list($idstMember) = $this->db->fetch_row($res)) {
-            $dup[] = $idstMember;
+
+        foreach ($res as $row) {
+            $dup[] = $row['idstMember'];
         }
 
         $query = 'INSERT INTO %adm_group_members (idst,idstMember) VALUES ';
@@ -698,13 +699,16 @@ class GroupmanagementAdm extends Model implements Accessible
             return $output;
         }
 
-        $output['total'] = $count_total;
-        $output['inserted'] = $counter;
-        $output['not_inserted'] = $count_total - $counter;
-        $output['duplicated'] = $dup_counter;
+
 
         $query .= implode(',', $insert_values);
         $res = $this->db->query($query);
+        if ($res) {
+            $output['total'] = $count_total;
+            $output['inserted'] = $counter;
+            $output['not_inserted'] = $count_total - $counter;
+            $output['duplicated'] = $dup_counter;
+        }
 
         return $output;
     }
@@ -959,7 +963,7 @@ class GroupmanagementAdm extends Model implements Accessible
     public function getAccessList($resourceId) : array {
 
         return $this->getGroupMembers($resourceId);
-        
+
     }
 
     public function setAccessList($resourceId, array $selection) : bool {
