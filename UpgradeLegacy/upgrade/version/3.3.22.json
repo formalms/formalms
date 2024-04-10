@@ -1,0 +1,20 @@
+{
+    "version": {
+      "name": "3.3.22",
+      "number": "303022",
+      "description": "questa è la 3.3.22",
+      "pretty_desc": "3 3 22",
+      "pre": "303022_pre.php",
+      "post": "303022_post.php",
+      "config": "303022_conf.php",
+      "file_sytem": "303022_fs.php",
+      "role": "303022_role.php",
+      "mysql": "303022_db.sql",
+      "date": "2024-02-19 00:00",
+      "status": "stable",
+      "php": {
+        "min": "7.4",
+        "max": "7.4"
+      }
+    }
+  }
