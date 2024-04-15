@@ -20,6 +20,7 @@ final class Version20231013000007 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
+        $this->addSql(HelperTool::createColumnIfNotExistsQueryBuilder('description', 'learning_communication_category_lang', 'VARCHAR(255) NOT NULL'));
         // this up() migration is auto-generated, please modify it to your needs
        $this->addSql('ALTER TABLE core_privacypolicy CHANGE lastedit_date lastedit_date DATETIME DEFAULT NULL, CHANGE validity_date validity_date DATETIME DEFAULT NULL');
         $this->addSql('ALTER TABLE core_privacypolicy_user CHANGE accept_date accept_date DATETIME DEFAULT NULL');

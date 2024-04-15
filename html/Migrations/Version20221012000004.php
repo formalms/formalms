@@ -34,6 +34,14 @@ final class Version20221012000004 extends AbstractMigration
         $this->addSql('DROP TABLE IF EXISTS `conference_chatperm`');
         $this->addSql('DROP TABLE IF EXISTS `conference_dimdim`');
 
+        /*Some installtions misses this table */
+        $this->addSql("CREATE TABLE IF NOT EXISTS learning_communication_lang (
+            id_comm int,
+            lang_code varchar(255),
+            title varchar(255),
+            description text not null
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8");
+
         /** FOREIGN KEYS **/
         $this->addSql(HelperTool::dropForeignKeyIfExistsQueryBuilder('core_lang_translation_ibfk_1', 'core_lang_translation'));
         $this->addSql(HelperTool::dropForeignKeyIfExistsQueryBuilder('core_lang_translation_ibfk_2', 'core_lang_translation'));
@@ -469,6 +477,7 @@ final class Version20221012000004 extends AbstractMigration
         $this->addSql('ALTER TABLE learning_communication_category_lang ADD id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL, ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE id_category id_category INT UNSIGNED NOT NULL, CHANGE lang_code lang_code VARCHAR(255) NOT NULL, CHANGE translation translation VARCHAR(255) NOT NULL');
         $this->addSql('CREATE INDEX id_category_idx ON learning_communication_category_lang (id_category)');
         $this->addSql('CREATE INDEX lang_code_idx ON learning_communication_category_lang (lang_code)');
+
         $this->addSql('ALTER TABLE learning_communication_lang ADD id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL, ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE id_comm id_comm INT DEFAULT NULL, CHANGE lang_code lang_code VARCHAR(255) DEFAULT NULL, CHANGE title title VARCHAR(255) DEFAULT NULL, CHANGE description description TEXT DEFAULT NULL');
         $this->addSql('ALTER TABLE learning_communication_track ADD id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL, ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE idReference idReference INT NOT NULL, CHANGE idUser idUser INT NOT NULL, CHANGE idTrack idTrack INT NOT NULL, CHANGE objectType objectType VARCHAR(20) NOT NULL, CHANGE status status VARCHAR(20) NOT NULL');
         $this->addSql('CREATE INDEX idReference ON learning_communication_track (idReference)');
@@ -715,7 +724,7 @@ final class Version20221012000004 extends AbstractMigration
         $this->addSql('SET FOREIGN_KEY_CHECKS=1');
 
 
-        \Events::trigger('platform.upgrade', [_upgradeclass_ => formatUpgradeClass(__CLASS__)]);
+   
     }
 
     public function down(Schema $schema): void
