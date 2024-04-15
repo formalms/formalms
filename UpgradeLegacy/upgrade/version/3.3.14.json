@@ -1,0 +1,20 @@
+{
+    "version": {
+      "name": "3.3.14",
+      "number": "303014",
+      "description": "questa è la 3.3.14",
+      "pretty_desc": "3 3 14",
+      "pre": "303014_pre.php",
+      "post": "303014_post.php",
+      "config": "303014_conf.php",
+      "file_sytem": "303014_fs.php",
+      "role": "303014_role.php",
+      "mysql": "303014_db.sql",
+      "date": "2023-05-15 00:00",
+      "status": "stable",
+      "php": {
+        "min": "7.4",
+        "max": "7.4"
+      }
+    }
+  }

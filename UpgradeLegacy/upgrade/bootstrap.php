@@ -26,6 +26,7 @@ require_once _base_ . '/vendor/autoload.php';
 require _base_ . '/config.php';
 const _installer_ = _base_ . '/install';
 const _upgrader_ = _base_ . '/upgrade';
+const _legacy_adm_ = _adm_;
 
 $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
 if (!$request->hasSession()) {
