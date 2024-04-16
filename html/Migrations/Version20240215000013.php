@@ -19,9 +19,9 @@ final class Version20240215000013 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE core_requests CHANGE name name VARCHAR(100)');
-		$this->addSql('ALTER TABLE core_plugin CHANGE name name`VARCHAR(100)'); 
 		// this up() migration is auto-generated, please modify it to your needs
+        $this->addSql('ALTER TABLE core_requests CHANGE name name VARCHAR(100)');
+		$this->addSql('ALTER TABLE core_plugin CHANGE name name VARCHAR(100)'); 
         $this->addSql('CREATE INDEX active_idx ON core_plugin (active)');
         $this->addSql('CREATE INDEX app_name_idx ON core_requests (app, name)');
         $this->addSql('CREATE INDEX idTest_idUser_idx ON learning_testtrack (idTest, idUser)');
@@ -35,5 +35,7 @@ final class Version20240215000013 extends AbstractMigration
         $this->addSql('DROP INDEX app_name_idx ON core_requests');
         $this->addSql('DROP INDEX idUser_active_idx ON learning_tracksession');
         $this->addSql('DROP INDEX active_idx ON core_plugin');
+        $this->addSql('ALTER TABLE core_requests CHANGE name name VARCHAR(255)');
+		$this->addSql('ALTER TABLE core_plugin CHANGE name name VARCHAR(255)'); 
     }
 }
