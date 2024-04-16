@@ -31,6 +31,8 @@ final class Version20230518000005 extends AbstractMigration
         $this->addSql('UPDATE `core_event_consumer` SET `consumer_class`= "FormaUserNotifier" WHERE `idConsumer` = 1');
 
         $this->addSql('SET FOREIGN_KEY_CHECKS=1');
+
+        \Events::trigger('platform.upgrade', [_upgradeclass_ => formatUpgradeClass(__CLASS__)]);
     }
 
     public function down(Schema $schema): void
