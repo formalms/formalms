@@ -148,13 +148,13 @@ class SOAPLMS
     public function updateCommonTrack($trackobj)
     {
         $query = sql_query('SELECT idReference FROM %lms_scorm_tracking WHERE idscorm_tracking = ' . $trackobj->idtrack);
-        list($idReference) = sql_fetch_row($query);
+        [$idReference] = sql_fetch_row($query);
 
         $query = 'SELECT first_complete, last_complete FROM %lms_commontrack WHERE idReference=' . (int) $idReference;
         $res = sql_query($query);
         if ($res && sql_num_rows($res) > 0) {
             $now = date('Y-m-d H:i:s');
-            list($first_complete, $last_complete) = sql_fetch_row($res);
+            [$first_complete, $last_complete] = sql_fetch_row($res);
 
             $old_data = ['last_complete' => $last_complete];
             $new_data = ['last_complete' => $now];
@@ -234,7 +234,7 @@ class SOAPLMS
                 $query = 'SELECT idCourse '
                 . 'FROM %lms_organization '
                 . "WHERE idOrg = '" . (int) $idReference . "' ";
-                list($idCourse) = sql_fetch_row(sql_query($query));
+                [$idCourse] = sql_fetch_row(sql_query($query));
                 require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/organization/orglib.php');
                 $repoDb = new OrgDirDb($idCourse);
                 $item = $repoDb->getFolderById($idReference);
@@ -611,7 +611,7 @@ if ((isset($_GET['op']) && $_GET['op'] == 'Finish')) {
             . "   AND idscorm_resource = '" . $_GET['idscorm_resource'] . "'";
     $result = sql_query($query)
                 or exit('Error on load sco: ' . sql_error() . "[ $query ]");
-    list($path, $href, $scormtype, $scormVersion) = sql_fetch_array($result);
+    [$path, $href, $scormtype, $scormVersion] = sql_fetch_array($result);
 
     require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/scorm-' . $scormVersion . '.php');
 
@@ -657,7 +657,7 @@ if ((isset($_GET['op']) && $_GET['op'] == 'Finish')) {
     $parameters = '';
     $re = sql_query('SELECT parameters FROM ' . $GLOBALS['prefix_lms'] . "_scorm_items WHERE idscorm_item = '" . $_GET['idscorm_item'] . "'");
     if ($re) {
-        list($parameters) = sql_fetch_row($re);
+        [$parameters] = sql_fetch_row($re);
     }
 
     /*echo $scopath.$path."/".$href.$parameters;

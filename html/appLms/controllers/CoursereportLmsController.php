@@ -128,11 +128,8 @@ class CoursereportLmsController extends LmsController
         $tests = [];
 
         $testObjects = [];
-        foreach ($this->model->getCourseReports() as $infoReport) {
-            switch ($infoReport->getSourceOf()) {
-                case CoursereportLms::SOURCE_OF_TEST:
-                    $testObjects[$infoReport->getIdSource()] = Learning_Test::load($infoReport->getIdSource());
-            }
+        foreach ($includedTest as $idTest) {
+            $testObjects[$idTest] = Learning_Test::load($idTest);
         }
 
         if (!empty($students_info)) {
@@ -265,12 +262,10 @@ class CoursereportLmsController extends LmsController
 
                     switch ($infoReport->getSourceOf()) {
                         case CoursereportLms::SOURCE_OF_TEST:
-
-                            $type = $testObj->getObjectType();
                             $id = $infoReport->getIdSource();
-                            $name = $testObj->getTitle();
-
                             $testObj = $testObjects[$id];
+                            $type = $testObj->getObjectType();
+                            $name = $testObj->getTitle();
 
                             $resultsActivity[] = ['id' => $testObj->getObjectType() . '_' . $id, 'name' => $name];
 
@@ -286,20 +281,28 @@ class CoursereportLmsController extends LmsController
                                 $trashLinkVisible = false;
                             }
 
-                            if (isset($testDetails[$id]['passed']) || isset($testDetails[$id]['not_passed'])) {
-                                if (!isset($testDetails[$id]['passed'])) {
-                                    $testDetails[$id]['passed'] = 0;
+                            if (isset($testDetails[$id][CoursereportLms::TEST_STATUS_PASSED]) || isset($testDetails[$id][CoursereportLms::TEST_STATUS_NOT_PASSED])) {
+                                if (!isset($testDetails[$id][CoursereportLms::TEST_STATUS_PASSED])) {
+                                    $testDetails[$id][CoursereportLms::TEST_STATUS_PASSED] = 0;
                                 }
-                                if (!isset($testDetails[$id]['not_passed'])) {
-                                    $testDetails[$id]['not_passed'] = 0;
+                                if (!isset($testDetails[$id][CoursereportLms::TEST_STATUS_NOT_PASSED])) {
+                                    $testDetails[$id][CoursereportLms::TEST_STATUS_NOT_PASSED] = 0;
                                 }
 
-                                if (!isset($testDetails[$id]['varianza'])) {
-                                    $testDetails[$id]['varianza'] = 0;
+                                if (!isset($testDetails[$id][CoursereportLms::TEST_STATUS_VARIANZA])) {
+                                    $testDetails[$id][CoursereportLms::TEST_STATUS_VARIANZA] = 0;
                                 }
-                                if (array_key_exists('passed', $testDetails[$id]) && array_key_exists('not_passed', $testDetails[$id])) {
-                                    ($testDetails[$id]['passed'] + $testDetails[$id]['not_passed']) > 0 ? $testDetails[$id]['varianza'] /= ($testDetails[$id]['passed'] + $testDetails[$id]['not_passed']) : $testDetails[$id]['varianza'] = 0;
-                                    $testDetails[$id]['varianza'] = array_key_exists('varianza', $testDetails[$id]) ? sqrt($testDetails[$id]['varianza']) : 0;
+
+                                $totalTests = $testDetails[$id][CoursereportLms::TEST_STATUS_NOT_PASSED] + $testDetails[$id][CoursereportLms::TEST_STATUS_PASSED];
+                                if ($totalTests > 0) {
+
+                                }
+
+                                if (array_key_exists(CoursereportLms::TEST_STATUS_PASSED, $testDetails[$id]) && array_key_exists(CoursereportLms::TEST_STATUS_NOT_PASSED, $testDetails[$id])) {
+                                    ($testDetails[$id][CoursereportLms::TEST_STATUS_PASSED] + $testDetails[$id][CoursereportLms::TEST_STATUS_NOT_PASSED]) > 0 ? $testDetails[$id][CoursereportLms::TEST_STATUS_VARIANZA] /= ($testDetails[$id][CoursereportLms::TEST_STATUS_PASSED] + $testDetails[$id][CoursereportLms::TEST_STATUS_NOT_PASSED]) : $testDetails[$id][CoursereportLms::TEST_STATUS_VARIANZA] = 0;
+
+
+                                    $testDetails[$id][CoursereportLms::TEST_STATUS_VARIANZA] = array_key_exists(CoursereportLms::TEST_STATUS_VARIANZA, $testDetails[$id]) ? sqrt($testDetails[$id][CoursereportLms::TEST_STATUS_VARIANZA]) : 0;
 
                                 }
                             }
@@ -380,19 +383,19 @@ class CoursereportLmsController extends LmsController
                         'show' => $infoReport->isShowToUser(),
                         'final' => $infoReport->isUseForFinal(),
                         'showInDetail' => $infoReport->isShowInDetail(),
-                        'passed' => [
+                        CoursereportLms::TEST_STATUS_PASSED => [
                             'value' => $passed,
                             'link' => $passedLink,
                             'visible' => true,
                             'active' => $passedLinkActive,
                         ],
-                        'not_passed' => [
+                        CoursereportLms::TEST_STATUS_NOT_PASSED => [
                             'value' => $notPassed,
                             'link' => $notPassedLink,
                             'visible' => true,
                             'active' => $notPassedLinkActive,
                         ],
-                        'not_checked' => [
+                        CoursereportLms::TEST_STATUS_NOT_CHECKED => [
                             'value' => $notChecked,
                             'link' => $notCheckedLink,
                             'visible' => true,
@@ -401,7 +404,7 @@ class CoursereportLmsController extends LmsController
                         'average' => $average,
                         'max_score' => $maxScore,
                         'min_score' => $minScore,
-                        'varianza' => $varianza,
+                        CoursereportLms::TEST_STATUS_VARIANZA => $varianza,
                         'actions' => [
                             [
                                 'icon' => 'bar-chart',
@@ -1479,7 +1482,7 @@ class CoursereportLmsController extends LmsController
                     $cont[] = Form::getInputDropdown(	'dropdown',
                                                             'user_score',
                                                             'user_score',
-                                                            array('passed' => $lang->def('_PASSED'), 'not_passed' => $lang->def('_NOT_PASSED')),
+                                                            array(CoursereportLms::TEST_STATUS_PASSED => $lang->def('_PASSED'), CoursereportLms::TEST_STATUS_NOT_PASSED => $lang->def('_NOT_PASSED')),
                                                             $testsScore[$idTest][$idstUser]['score_status'],
                                                             '');
                                                             */
@@ -3185,28 +3188,28 @@ class CoursereportLmsController extends LmsController
                                     case CoursereportLms::TEST_STATUS_NOT_CHECKED:
                                         $csv .= ';"' . $lang->def('_NOT_CHECKED') . '"';
 
-                                        if (!isset($testDetails[$id]['not_checked'])) {
-                                            $testDetails[$id]['not_checked'] = 1;
+                                        if (!isset($testDetails[$id][CoursereportLms::TEST_STATUS_NOT_CHECKED])) {
+                                            $testDetails[$id][CoursereportLms::TEST_STATUS_NOT_CHECKED] = 1;
                                         } else {
-                                            ++$testDetails[$id]['not_checked'];
+                                            ++$testDetails[$id][CoursereportLms::TEST_STATUS_NOT_CHECKED];
                                         }
 
                                         break;
                                     case CoursereportLms::TEST_STATUS_PASSED:
                                         $csv .= ';"' . $lang->def('_PASSED') . '"';
-                                        if (!isset($testDetails[$id]['passed'])) {
-                                            $testDetails[$id]['passed'] = 1;
+                                        if (!isset($testDetails[$id][CoursereportLms::TEST_STATUS_PASSED])) {
+                                            $testDetails[$id][CoursereportLms::TEST_STATUS_PASSED] = 1;
                                         } else {
-                                            ++$testDetails[$id]['passed'];
+                                            ++$testDetails[$id][CoursereportLms::TEST_STATUS_PASSED];
                                         }
 
                                         break;
                                     case CoursereportLms::TEST_STATUS_NOT_PASSED:
                                         $csv .= ';"' . $lang->def('_NOT_PASSED') . '"';
-                                        if (!isset($testDetails[$id]['not_passed'])) {
-                                            $testDetails[$id]['not_passed'] = 1;
+                                        if (!isset($testDetails[$id][CoursereportLms::TEST_STATUS_NOT_PASSED])) {
+                                            $testDetails[$id][CoursereportLms::TEST_STATUS_NOT_PASSED] = 1;
                                         } else {
-                                            ++$testDetails[$id]['not_passed'];
+                                            ++$testDetails[$id][CoursereportLms::TEST_STATUS_NOT_PASSED];
                                         }
 
                                         break;
@@ -3220,10 +3223,10 @@ class CoursereportLmsController extends LmsController
                                                 $csv .= ';"' . $score . ' ' . $tt . '"';
                                             }
 
-                                            if (!isset($testDetails[$id]['passed'])) {
-                                                $testDetails[$id]['passed'] = 1;
+                                            if (!isset($testDetails[$id][CoursereportLms::TEST_STATUS_PASSED])) {
+                                                $testDetails[$id][CoursereportLms::TEST_STATUS_PASSED] = 1;
                                             } else {
-                                                ++$testDetails[$id]['passed'];
+                                                ++$testDetails[$id][CoursereportLms::TEST_STATUS_PASSED];
                                             }
                                         } else {
                                             if ($score == $testDetails[$id]['max_score']) {
@@ -3232,16 +3235,16 @@ class CoursereportLmsController extends LmsController
                                                 $csv .= ';"' . $score . ' ' . $tt . '"';
                                             }
 
-                                            if (!isset($testDetails[$id]['not_passed'])) {
-                                                $testDetails[$id]['not_passed'] = 1;
+                                            if (!isset($testDetails[$id][CoursereportLms::TEST_STATUS_NOT_PASSED])) {
+                                                $testDetails[$id][CoursereportLms::TEST_STATUS_NOT_PASSED] = 1;
                                             } else {
-                                                ++$testDetails[$id]['not_passed'];
+                                                ++$testDetails[$id][CoursereportLms::TEST_STATUS_NOT_PASSED];
                                             }
                                         }
-                                        if (isset($testDetails[$id]['varianza']) && isset($testDetails[$id]['average'])) {
-                                            $testDetails[$id]['varianza'] += pow(($testsScore[$id][$idstUser]['score'] - $testDetails[$id]['average']), 2);
+                                        if (isset($testDetails[$id][CoursereportLms::TEST_STATUS_VARIANZA]) && isset($testDetails[$id]['average'])) {
+                                            $testDetails[$id][CoursereportLms::TEST_STATUS_VARIANZA] += pow(($testsScore[$id][$idstUser]['score'] - $testDetails[$id]['average']), 2);
                                         } else {
-                                            $testDetails[$id]['varianza'] = pow(($testsScore[$id][$idstUser]['score'] - $testDetails[$id]['average']), 2);
+                                            $testDetails[$id][CoursereportLms::TEST_STATUS_VARIANZA] = pow(($testsScore[$id][$idstUser]['score'] - $testDetails[$id]['average']), 2);
                                         }
 
                                         break;
@@ -3290,25 +3293,25 @@ class CoursereportLmsController extends LmsController
                                             }
 
                                             // Count passed
-                                            if (!isset($reportDetails[$infoReport->getIdReport()]['passed'])) {
-                                                $reportDetails[$infoReport->getIdReport()]['passed'] = 1;
+                                            if (!isset($reportDetails[$infoReport->getIdReport()][CoursereportLms::TEST_STATUS_PASSED])) {
+                                                $reportDetails[$infoReport->getIdReport()][CoursereportLms::TEST_STATUS_PASSED] = 1;
                                             } else {
-                                                ++$reportDetails[$infoReport->getIdReport()]['passed'];
+                                                ++$reportDetails[$infoReport->getIdReport()][CoursereportLms::TEST_STATUS_PASSED];
                                             }
                                         } else {
                                             $csv .= ';"' . $reports_score[$infoReport->getIdReport()][$idstUser]['score'] . '"';
 
                                             // Count not passed
-                                            if (!isset($reportDetails[$infoReport->getIdReport()]['not_passed'])) {
-                                                $reportDetails[$infoReport->getIdReport()]['not_passed'] = 1;
+                                            if (!isset($reportDetails[$infoReport->getIdReport()][CoursereportLms::TEST_STATUS_NOT_PASSED])) {
+                                                $reportDetails[$infoReport->getIdReport()][CoursereportLms::TEST_STATUS_NOT_PASSED] = 1;
                                             } else {
-                                                ++$reportDetails[$infoReport->getIdReport()]['not_passed'];
+                                                ++$reportDetails[$infoReport->getIdReport()][CoursereportLms::TEST_STATUS_NOT_PASSED];
                                             }
                                         }
-                                        if (isset($reportDetails[$infoReport->getIdReport()]['varianza']) && isset($reportDetails[$infoReport->getIdReport()]['average'])) {
-                                            $reportDetails[$infoReport->getIdReport()]['varianza'] += round(pow(($reports_score[$infoReport->getIdReport()][$idstUser]['score'] - $reportDetails[$infoReport->getIdReport()]['average']), 2), 2);
+                                        if (isset($reportDetails[$infoReport->getIdReport()][CoursereportLms::TEST_STATUS_VARIANZA]) && isset($reportDetails[$infoReport->getIdReport()]['average'])) {
+                                            $reportDetails[$infoReport->getIdReport()][CoursereportLms::TEST_STATUS_VARIANZA] += round(pow(($reports_score[$infoReport->getIdReport()][$idstUser]['score'] - $reportDetails[$infoReport->getIdReport()]['average']), 2), 2);
                                         } else {
-                                            $reportDetails[$infoReport->getIdReport()]['varianza'] = round(pow(($reports_score[$infoReport->getIdReport()][$idstUser]['score'] - $reportDetails[$infoReport->getIdReport()]['average']), 2), 2);
+                                            $reportDetails[$infoReport->getIdReport()][CoursereportLms::TEST_STATUS_VARIANZA] = round(pow(($reports_score[$infoReport->getIdReport()][$idstUser]['score'] - $reportDetails[$infoReport->getIdReport()]['average']), 2), 2);
                                         }
 
                                         break;
@@ -3698,7 +3701,7 @@ class CoursereportLmsController extends LmsController
         /*if ($total_play == 0) {
                     $query_total_play =     "SELECT COUNT(*)"
                                                     ." FROM ".$GLOBALS['prefix_lms']."_testtrack"
-                                                    ." WHERE idTest = '".$idTest."' AND score_status = 'not_checked'";
+                                                    ." WHERE idTest = '".$idTest."' AND score_status = CoursereportLms::TEST_STATUS_NOT_CHECKED";
                     list($total_play2) = sql_fetch_row(sql_query($query_total_play));
     $total_play += $total_play2;
 

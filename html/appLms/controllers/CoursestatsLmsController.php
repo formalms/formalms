@@ -768,14 +768,14 @@ class CoursestatsLmsController extends LmsController
                 $query = "SELECT classNameTrack, fileNameTrack FROM %lms_lo_types WHERE objectType = '$object_type'";
                 $res = sql_query($query);
                 if ($row = sql_fetch_row($res)) {
-                    list($classNameTrack, $fileNameTrack) = $row;
+                    [$classNameTrack, $fileNameTrack] = $row;
                     require_once \FormaLms\lib\Forma::inc(_lms_ . "/class.module/$fileNameTrack");
                     $itemtrack = new $classNameTrack(null);
                 }
                 break;
         }
 
-        list($exist, $idTrack) = $itemtrack->getIdTrack($idReference, $id_user, $id_resource, true);
+        [$exist, $idTrack] = $itemtrack->getIdTrack($idReference, $id_user, $id_resource, true);
 
         if (!$exist) {
             require_once _lms_ . '/class.module/track.object.php';

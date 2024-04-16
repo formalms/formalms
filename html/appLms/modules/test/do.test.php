@@ -278,7 +278,7 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
             if ($prerequisite != '') {
                 //check all prerequisites conditions
                 $query = 'SELECT idOrg FROM ' . $GLOBALS['prefix_lms'] . "_organization WHERE objectType='test' AND idResource=" . (int)$test_info['idTest'];
-                list($idOrg) = sql_fetch_row(sql_query($query));
+                [$idOrg] = sql_fetch_row(sql_query($query));
 
                 $conditions = explode(',', $prerequisite);
                 $req_arr = [];
@@ -667,7 +667,7 @@ function play($object_test, $id_param)
         } elseif ($test_info['time_dependent'] == 2) {
             // time is for quest
             $re_question = sql_query($query_question);
-            list($idQuest, $type_quest, $type_file, $type_class, $start_time) = sql_fetch_row($re_question);
+            [$idQuest, $type_quest, $type_file, $type_class, $start_time] = sql_fetch_row($re_question);
 
             $time_in_quest = $play_man->userTimeInThePage($page_to_display);
             $start_time = $start_time - $time_in_quest;
@@ -1426,7 +1426,7 @@ function showResult($object_test, $id_param)
 
     //--- end suspensions check ----------------------------------------------------
 
-    list($bonus_score, $score_status) = sql_fetch_row(sql_query('
+    [$bonus_score, $score_status] = sql_fetch_row(sql_query('
 	SELECT bonus_score, score_status
 	FROM ' . $GLOBALS['prefix_lms'] . "_testtrack
 	WHERE idTrack = '" . (int)$id_track . "'"));
@@ -1478,7 +1478,7 @@ function showResult($object_test, $id_param)
         $re_category = sql_query($sql_test);
 
         $array_question_number = [];
-        list($random_question) = sql_fetch_row(sql_query('SELECT order_info FROM ' . $GLOBALS['prefix_lms'] . "_test WHERE idTest='" . $id_test . "'"));
+        [$random_question] = sql_fetch_row(sql_query('SELECT order_info FROM ' . $GLOBALS['prefix_lms'] . "_test WHERE idTest='" . $id_test . "'"));
         $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
         $json_random = $json->decode($random_question);
         if (is_array($json_random)) {
@@ -1752,15 +1752,15 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
         $idTrack = $id_track;
     }
     //test info---------------------------------------------------------
-    list($title, $mod_doanswer, $point_type, $point_required, $question_random_number,
-        $show_score, $show_score_cat, $show_doanswer, $order_type) = sql_fetch_row(sql_query("
+    [$title, $mod_doanswer, $point_type, $point_required, $question_random_number,
+        $show_score, $show_score_cat, $show_doanswer, $order_type] = sql_fetch_row(sql_query("
 	SELECT  title, mod_doanswer, point_type, point_required, question_random_number, 
 			show_score, show_score_cat, show_doanswer, 
 			 order_type
 	FROM %lms_test
 	WHERE idTest = '" . (int)$idTest . "'"));
 
-    list($score, $bonus_score, $date_attempt, $date_attempt_mod) = sql_fetch_row(sql_query("
+    [$score, $bonus_score, $date_attempt, $date_attempt_mod] = sql_fetch_row(sql_query("
 	SELECT score, bonus_score, date_attempt, date_attempt_mod 
 	FROM %lms_testtrack
 	WHERE idTrack = '" . (int)$idTrack . "'"));
@@ -1990,16 +1990,16 @@ function editUserReport($id_user, $id_test, $id_track, $number_time = null, $edi
     $lang = &FormaLanguage::createInstance('test');
 
     //test info---------------------------------------------------------
-    list($title, $mod_doanswer, $point_type, $point_required, $question_random_number,
+    [$title, $mod_doanswer, $point_type, $point_required, $question_random_number,
         $show_score, $show_score_cat, $show_doanswer,
-        $show_solution, $order_type) = sql_fetch_row(sql_query('
+        $show_solution, $order_type] = sql_fetch_row(sql_query('
 	SELECT  title, mod_doanswer, point_type, point_required, question_random_number, 
 			show_score, show_score_cat, show_doanswer, 
 			show_solution, order_type
 	FROM ' . $GLOBALS['prefix_lms'] . "_test
 	WHERE idTest = '" . (int)$id_test . "'"));
 
-    list($score, $bonus_score, $date_attempt, $date_attempt_mod, $date_end_attempt) = sql_fetch_row(sql_query('
+    [$score, $bonus_score, $date_attempt, $date_attempt_mod, $date_end_attempt] = sql_fetch_row(sql_query('
 	SELECT score, bonus_score, date_attempt, date_attempt_mod, date_end_attempt
 	FROM ' . $GLOBALS['prefix_lms'] . "_testtrack
 	WHERE idTrack = '" . (int)$id_track . "'"));
@@ -2130,12 +2130,12 @@ function deleteUserReport($id_user, $id_test, $id_track, $number_time = null)
 {
     require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.test.php');
 
-    list($idTrack, $idUser, $idReference, $idTest, $number_of_save) = $res = sql_fetch_row(sql_query('SELECT `idTrack`,`idUser`,`idReference`,`idTest`,`number_of_save` FROM %lms_testtrack
+    [$idTrack, $idUser, $idReference, $idTest, $number_of_save] = $res = sql_fetch_row(sql_query('SELECT `idTrack`,`idUser`,`idReference`,`idTest`,`number_of_save` FROM %lms_testtrack
     WHERE `idTrack`=' . $id_track . ' AND `idUser`=' . $id_user . ' AND `idTest`=' . $id_test));
 
     if ($res) {
         if ($number_time === null) {
-            list($number_of_attempt) = $attemptRes = sql_fetch_row(sql_query('SELECT MAX(number_time) FROM %lms_testtrack_times WHERE `idTrack`=' . $idTrack . ' AND `idReference`=' . $idReference . ' AND `idTest`=' . $idTest));
+            [$number_of_attempt] = $attemptRes = sql_fetch_row(sql_query('SELECT MAX(number_time) FROM %lms_testtrack_times WHERE `idTrack`=' . $idTrack . ' AND `idReference`=' . $idReference . ' AND `idTest`=' . $idTest));
 
             $number_time = $number_of_attempt;
         }
@@ -2170,9 +2170,9 @@ function saveManualUserReport($id_user, $id_test, $id_track)
 {
     require_once _lms_ . '/class.module/track.test.php';
 
-    list($title, $mod_doanswer, $point_type, $point_required, $question_random_number,
+    [$title, $mod_doanswer, $point_type, $point_required, $question_random_number,
         $show_score, $show_score_cat, $show_doanswer,
-        $show_solution, $show_only_status, $order_type) = sql_fetch_row(sql_query('
+        $show_solution, $show_only_status, $order_type] = sql_fetch_row(sql_query('
 	SELECT  title, mod_doanswer, point_type, point_required, question_random_number, 
 			show_score, show_score_cat, show_doanswer, 
 			show_solution, show_only_status, order_type

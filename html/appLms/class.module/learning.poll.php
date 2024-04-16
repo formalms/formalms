@@ -35,7 +35,7 @@ class Learning_Poll extends Learning_Object
         if ($id !== null) {
             $res = $this->db->query("SELECT author, title FROM %lms_poll WHERE id_poll = '" . (int) $id . "'");
             if ($res && $this->db->num_rows($res) > 0) {
-                list($this->idAuthor, $this->title) = $this->db->fetch_row($res);
+                [$this->idAuthor, $this->title] = $this->db->fetch_row($res);
                 $this->isPhysicalObject = true;
             }
         }
@@ -177,7 +177,7 @@ class Learning_Poll extends Learning_Object
         if (!sql_query($ins_query)) {
             return false;
         }
-        list($id_new_poll) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
+        [$id_new_poll] = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
         if (!$id_new_poll) {
             return false;
         }
