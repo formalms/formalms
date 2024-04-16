@@ -17,17 +17,23 @@ if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit('You can\'t access');
 }
 
-function retriveTrack($id_reference, $id_poll, $id_user)
+function retriveTrack($idReference, $idPoll, $idUser)
 {
     if (isset($_POST['id_track']) || isset($_GET['id_track'])) {
         return importVar('id_track', true, 0);
     }
 
-    if ($id_reference !== false) {
+    if ($idReference !== false) {
         require_once _lms_ . '/class.module/track.poll.php';
         $itemtrack = new Track_Poll(null);
 
-        list($exist, $idTrack) = $itemtrack->getIdTrack($id_reference, $id_user, $id_poll, true);
+        [$exist, $idTrack] = $itemtrack->getIdTrack($idReference, $idUser, $idPoll, true);
+
+        if ($exist){
+            $itemtrack->setIdUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
+            $itemtrack->setIdReference($idReference);
+            $itemtrack->update();
+        }
 
         return $idTrack;
     }

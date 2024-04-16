@@ -493,6 +493,25 @@ class CoursestatsLms extends Model
         return $output;
     }
 
+    public static function fixUserTrackInfo($idReference, $idUser, $idLo, $idTrack, $objectType)
+    {
+        $query = "SELECT id FROM %lms_commontrack WHERE idTrack='" . (int)$idTrack . "' AND objectType='" . $objectType . "' order by idTrack";
+        $rs = sql_query($query);
+        $id = false;
+        foreach ($rs as $row) {
+            if ($id) {
+                $query = 'DELETE from %lms_commontrack WHERE id="' . (int)$row['id'] . '"';
+                sql_query($query);
+            } else {
+                $id = $row['id'];
+            }
+        }
+        if ($id) {
+            $query = 'UPDATE `%lms_commontrack` SET `idReference` = ' . $idReference . ', `idUser` = ' . $idUser . ' WHERE `id` = ' . $id . ';';
+            sql_query($query);
+        }
+    }
+
     public function getUserScormHistoryTrackInfo($id_user, $id_lo)
     {
         $output = [];
@@ -598,12 +617,12 @@ class CoursestatsLms extends Model
         if ($res) {
 
             foreach ($res as $row) {
-             
-                if (!empty($row )) {
-                        $output += $this->timeToSec($this->parseScormTime($row['session_time'])); // Sum in seconds
+
+                if (!empty($row)) {
+                    $output += $this->timeToSec($this->parseScormTime($row['session_time'])); // Sum in seconds
 
                 }
-               
+
             }
         }
 

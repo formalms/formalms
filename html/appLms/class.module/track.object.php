@@ -156,7 +156,7 @@ class Track_Object
      **/
     public function createTrack($idReference, $idTrack, $idUser, $dateAttempt, $status, $objectType = false)
     {
-        if (!$idReference || !$idTrack || !$idUser) {
+        if (!$idReference || !$idTrack || !$idUser || $idReference === 0 || !$idTrack === 0 || !$idUser === 0) {
             return false;
         }
         if (isset($this)) {

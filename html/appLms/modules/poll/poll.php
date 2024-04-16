@@ -43,7 +43,7 @@ function addpoll($object_poll)
     checkPerm('view', false, 'storage');
 
     $lang = FormaLanguage::createInstance('poll');
-    if (!is_a($object_poll, 'Learning_Poll')) {
+    if (!$object_poll instanceof \Learning_Poll) {
         \FormaLms\lib\Forma::addError($lang->def('_POLL_INCORRECTOBJECT'));
         Util::jump_to('' . $object_poll->back_url . '&amp;create_result=0');
     }
@@ -94,7 +94,7 @@ function inspoll()
         Util::jump_to('' . urldecode($_POST['back_url']) . '&create_result=0');
     }
 
-    list($id_poll) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
+    [$id_poll] = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
     if ($id_poll > 0) {
         Util::jump_to('' . urldecode($_POST['back_url']) . '&id_lo=' . $id_poll . '&create_result=1');
     } else {
@@ -113,7 +113,7 @@ function modpoll()
     $back_url = urldecode(importVar('back_url'));
     $url_encode = htmlentities(urlencode($back_url));
 
-    list($poll_title, $textof) = sql_fetch_row(sql_query('
+    [$poll_title, $textof] = sql_fetch_row(sql_query('
 	SELECT title, description
 	FROM ' . $GLOBALS['prefix_lms'] . "_poll
 	WHERE id_poll = '" . $id_poll . "'"));
@@ -189,7 +189,7 @@ function modpollgui($object_poll)
     require_once _base_ . '/lib/lib.form.php';
     $url_encode = htmlentities(urlencode($object_poll->back_url));
 
-    list($poll_title) = sql_fetch_row(sql_query('
+    [$poll_title] = sql_fetch_row(sql_query('
 	SELECT title 
 	FROM ' . $GLOBALS['prefix_lms'] . "_poll 
 	WHERE id_poll = '" . $object_poll->getId() . "'"));
@@ -200,7 +200,7 @@ function modpollgui($object_poll)
 	ORDER BY sequence");
 
     $num_quest = sql_num_rows($re_quest);
-    list($num_page) = sql_fetch_row(sql_query('
+    [$num_page] = sql_fetch_row(sql_query('
 	SELECT MAX(page) 
 	FROM ' . $GLOBALS['prefix_lms'] . "_pollquest 
 	WHERE id_poll = '" . $object_poll->getId() . "'"));
@@ -351,7 +351,7 @@ function movequestion($direction)
     $back_url = urldecode(importVar('back_url'));
     $back_coded = htmlentities(urlencode($back_url));
 
-    list($seq, $id_poll) = sql_fetch_row(sql_query('
+    [$seq, $id_poll] = sql_fetch_row(sql_query('
 	SELECT sequence, id_poll 
 	FROM ' . $GLOBALS['prefix_lms'] . "_pollquest 
 	WHERE id_quest = '$id_quest'"));
@@ -392,7 +392,7 @@ function movequest()
     $source_seq = importVar('source_quest', true, 0);
     $dest_seq = importVar('dest_quest', true, 0);
 
-    list($id_quest) = sql_fetch_row(sql_query('
+    [$id_quest] = sql_fetch_row(sql_query('
 	SELECT id_quest 
 	FROM ' . $GLOBALS['prefix_lms'] . "_pollquest 
 	WHERE id_poll = '$id_poll' AND sequence = '$source_seq'"));
@@ -427,7 +427,7 @@ function fixPageSequence($id_poll)
     checkPerm('view', false, 'storage');
     $lang = FormaLanguage::createInstance('poll');
 
-    list($tot_quest) = sql_fetch_row(sql_query('
+    [$tot_quest] = sql_fetch_row(sql_query('
 	SELECT COUNT(*) 
 	FROM ' . $GLOBALS['prefix_lms'] . "_pollquest 
 	WHERE id_poll = '" . $id_poll . "'"));
@@ -494,7 +494,7 @@ function istanceQuest($type_of_quest, $id)
     if (!sql_num_rows($re_quest)) {
         return;
     }
-    list($type_file, $type_class) = sql_fetch_row($re_quest);
+    [$type_file, $type_class] = sql_fetch_row($re_quest);
 
     require_once _lms_ . '/modules/question_poll/' . $type_file;
     $quest_obj = eval("return new $type_class ( $id );");
@@ -542,7 +542,7 @@ function modquest()
 
     $id_quest = importVar('id_quest', true, 0);
 
-    list($id_poll, $type_quest) = sql_fetch_row(sql_query('
+    [$id_poll, $type_quest] = sql_fetch_row(sql_query('
 	SELECT id_poll, type_quest 
 	FROM ' . $GLOBALS['prefix_lms'] . "_pollquest 
 	WHERE id_quest = '" . $id_quest . "'"));
@@ -581,7 +581,7 @@ function delquest()
     $back_url = urldecode(importVar('back_url'));
     $url_coded = htmlentities(urlencode($back_url));
 
-    list($id_poll, $title_quest, $type_quest, $seq) = sql_fetch_row(sql_query('
+    [$id_poll, $title_quest, $type_quest, $seq] = sql_fetch_row(sql_query('
 	SELECT id_poll, title_quest, type_quest, sequence 
 	FROM ' . $GLOBALS['prefix_lms'] . "_pollquest 
 	WHERE id_quest = '" . $id_quest . "'"));
