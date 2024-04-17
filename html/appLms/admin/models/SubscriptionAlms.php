@@ -1576,10 +1576,16 @@ class SubscriptionAlms extends Model implements Accessible
         if (count($users) <= 0) {
             return true;
         }
-        $query = 'DELETE FROM %lms_coursepath_user WHERE id_path=' . (int) $id_path . ' '
-            . ' AND idUser IN (' . implode(',', $users) . ')';
-        $res = sql_query($query);
-
+        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once _lms_ . '/lib/lib.date.php';
+        $man_subs = new CourseSubscribe_Management();
+        // unsubscribe from all courses related to coursepath
+        $resUnsubFromAllCourses = $man_subs->unsubscribeUserFromAllCourses(implode(',', $users),(int) $id_path);
+        if($resUnsubFromAllCourses){
+            $query = 'DELETE FROM %lms_coursepath_user WHERE id_path=' . (int) $id_path . ' '
+                . ' AND idUser IN (' . implode(',', $users) . ')';
+            $res = sql_query($query);
+        }
         return $res ? true : false;
     }
 

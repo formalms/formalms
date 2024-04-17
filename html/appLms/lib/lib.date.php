@@ -928,7 +928,7 @@ class DateManager
         return $res;
     }
 
-    private function controlUserSubscriptions($id_user, $id_course)
+    public function controlUserSubscriptions($id_user, $id_course)
     {
         $query = 'SELECT COUNT(*)'
             . ' FROM %lms_course_date_user '
