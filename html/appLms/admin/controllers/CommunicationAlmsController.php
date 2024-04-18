@@ -409,7 +409,11 @@ class CommunicationAlmsController extends AlmsController
             'description' => $value['description'],
         ]], $data['langs']);
 
-        $data['langs'] = array_merge(...$langsMapped);
+        if (PHP_VERSION_ID < 80000) {
+            $data['langs'] = call_user_func_array('array_merge', $langsMapped);
+        } else {
+            $data['langs'] = array_merge(...$langsMapped);
+        }
         //controllo che ci siano almeno un tile e una descrizione di fallback
         if (!count($data['langs']) || !in_array($langCode, array_keys($data['langs']))) {
             $tmpLang['title'] = $data['title'];
