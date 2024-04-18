@@ -192,7 +192,11 @@ class MultiUserSelector
 
     public function postProcess($params)
     {
-        return $this->accessProcessor->postProcess(...$params);
+        if (PHP_VERSION_ID < 80000) {
+            return $this->accessProcessor->postProcess(extract($params));
+        } else {
+            return $this->accessProcessor->postProcess(...$params);
+        }
     }
 
     public function getInstanceParams(int $instanceId)
