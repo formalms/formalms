@@ -107,7 +107,7 @@ class FormaMigrator
         }
 
         if (PHP_VERSION_ID < 80000) {
-            return $this->$command(extract($args));
+            return call_user_func_array([$this, $command], $args);
         }
         return $this->$command(...$args);
     }
