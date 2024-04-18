@@ -97,7 +97,15 @@ function getReportRecipients($id_rep)
         $emails = getEmailForSchedule($schedule);
 
         if (count($emails) > 0) {
-            array_push($output, ...$emails);
+
+            if (PHP_VERSION_ID < 80000) {
+                foreach ($emails as $email) {
+                    array_push($output, $email);
+                }
+            } else {
+                array_push($output, ...$emails);
+            }
+            
             $selected_schedules[] = [
                 'id_report_schedule' => $schedule['id_report_schedule'],
                 'period' => 'day',
@@ -118,7 +126,13 @@ function getReportRecipients($id_rep)
     foreach ($res as $schedule) {
         $emails = getEmailForSchedule($schedule);
         if (count($emails) > 0) {
-            array_push($output, ...$emails);
+            if (PHP_VERSION_ID < 80000) {
+                foreach ($emails as $email) {
+                    array_push($output, $email);
+                }
+            } else {
+                array_push($output, ...$emails);
+            }
             $selected_schedules[] = [
                 'id_report_schedule' => $schedule['id_report_schedule'],
                 'period' => 'day',
@@ -142,7 +156,13 @@ function getReportRecipients($id_rep)
     foreach ($res as $schedule) {
         $emails = getEmailForSchedule($schedule);
         if (count($emails) > 0) {
-            array_push($output, ...$emails);
+            if (PHP_VERSION_ID < 80000) {
+                foreach ($emails as $email) {
+                    array_push($output, $email);
+                }
+            } else {
+                array_push($output, ...$emails);
+            }
             $selected_schedules[] = [
                 'id_report_schedule' => $schedule['id_report_schedule'],
                 'period' => 'day',
@@ -176,7 +196,13 @@ function getReportRecipients($id_rep)
     foreach ($res as $schedule) {
         $emails = getEmailForSchedule($schedule);
         if (count($emails) > 0) {
-            array_push($output, ...$emails);
+            if (PHP_VERSION_ID < 80000) {
+                foreach ($emails as $email) {
+                    array_push($output, $email);
+                }
+            } else {
+                array_push($output, ...$emails);
+            }
             $selected_schedules[] = [
                 'id_report_schedule' => $schedule['id_report_schedule'],
                 'period' => 'day',
