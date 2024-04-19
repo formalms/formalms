@@ -38,6 +38,16 @@ class SmtpHandler
      */
     protected $senderNameSystem;
 
+        /**
+     * @var string
+     */
+    protected $senderCcEmails;
+
+        /**
+     * @var string
+     */
+    protected $senderCcnEmails;
+
     /**
      * @var string
      */
@@ -174,6 +184,23 @@ class SmtpHandler
     {
         return $this->senderNameSystem ?? $this->senderMailSystem;
     }
+
+        /**
+     * @return string
+     */
+    public function getSenderCcEmails()
+    {
+        return $this->senderCcEmails;
+    }
+
+        /**
+     * @return string
+     */
+    public function getSenderCcnEmails()
+    {
+        return $this->senderCcnEmails;
+    }
+
 
     /**
      * @return string
