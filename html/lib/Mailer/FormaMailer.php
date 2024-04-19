@@ -334,8 +334,8 @@ class FormaMailer extends PHPMailer
         }
 
         // MAIL_RECIPIENTSCC
-        if (isset($params[MAIL_RECIPIENTSCC]) && $params[MAIL_RECIPIENTSCC] != '') {
-            $arr_mail_recipientscc = explode(' ', $params[MAIL_RECIPIENTSCC]);
+        if ($this->handler->getSenderCcEmails()) {
+            $arr_mail_recipientscc = explode(' ', $this->handler->getSenderCcEmails());
             foreach ($arr_mail_recipientscc as $user_mail_recipientscc) {
                 try {
                     $this->addCC($user_mail_recipientscc);
@@ -345,8 +345,8 @@ class FormaMailer extends PHPMailer
         }
 
         // MAIL_RECIPIENTSBCC
-        if (isset($params[MAIL_RECIPIENTSBCC]) && $params[MAIL_RECIPIENTSBCC] != '') {
-            $arr_mail_recipientsbcc = explode(' ', $params[MAIL_RECIPIENTSBCC]);
+        if ($this->handler->getSenderCcnEmails()) {
+            $arr_mail_recipientsbcc = explode(' ', $this->handler->getSenderCcnEmails());
             foreach ($arr_mail_recipientsbcc as $user_mail_recipientsbcc) {
                 try {
                     $this->addBCC($user_mail_recipientsbcc);
@@ -355,26 +355,7 @@ class FormaMailer extends PHPMailer
             }
         }
 
-        // if(FormaLms\lib\Get::sett('send_cc_for_system_emails', '') !== '' && filter_var(FormaLms\lib\Get::sett('send_cc_for_system_emails'), FILTER_VALIDATE_EMAIL) !== false){
-        if (\FormaLms\lib\Get::sett('send_cc_for_system_emails', '') !== '') {
-            $arr_cc_for_system_emails = $this->getEmailListFromString(\FormaLms\lib\Get::sett('send_cc_for_system_emails'));
-            foreach ($arr_cc_for_system_emails as $user_cc_for_system_emails) {
-                try {
-                    $this->addCC($user_cc_for_system_emails);
-                } catch (\PHPMailer\PHPMailer\Exception $e) {
-                }
-            }
-        }
 
-        if (\FormaLms\lib\Get::sett('send_ccn_for_system_emails', '') !== '') {
-            $arr_ccn_for_system_emails = $this->getEmailListFromString(\FormaLms\lib\Get::sett('send_ccn_for_system_emails'));
-            foreach ($arr_ccn_for_system_emails as $user_ccn_for_system_emails) {
-                try {
-                    $this->addBCC($user_ccn_for_system_emails);
-                } catch (\PHPMailer\PHPMailer\Exception $e) {
-                }
-            }
-        }
         //----------------------------------------------------------------------------
 
         foreach ($recipients as $recipient) {
