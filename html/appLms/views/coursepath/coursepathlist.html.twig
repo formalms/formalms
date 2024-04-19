@@ -7,6 +7,7 @@
 
 {% for id_path, path_info in user_coursepath %}
 <div id="coursepath-main-container">
+    {% block coursepath_description %}
     <div class="coursepath-main-description-and-percentage">
         <div class="coursepath-child-description">
             <div class="textof">
@@ -24,7 +25,10 @@
             </div>
         </div>
     </div>
+    {% endblock %}
+    {% block coursepath_container %}
     <div class="coursepath-collapse-container">
+
         <div id="courses_link_{{ type }}_{{ id_path }}" class="coursepath_action">
             <a class="no_decoration" href="#" onclick="expandCourses({{id_path}}, '{{ type }}');">
                 <span class="expand_path_info"><strong>{{ Lang_translate('_EXPAND', 'coursepath') }}</strong></span>
@@ -46,8 +50,8 @@
             {% endif %}
         </div>
     </div>
+    {% endblock %}
 </div>
 {% include 'coursepathsingle.html.twig' with { 'coursepath_courses': coursepath_courses[id_path], 'id_path': id_path} %}
 <hr class="separator" />
 {% endfor %}
-
