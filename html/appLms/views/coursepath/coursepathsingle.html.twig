@@ -1,3 +1,4 @@
+{%  block coursepath_details %}
 <div id="courses_{{ id_path }}" style="display:none;clear:both;" class="coursepath_details">
     <table>
         {% for id_course, course_info in coursepath_courses %}
@@ -22,3 +23,4 @@
     </table>
 </div>
 <div class="nofloat"></div>
+{%  endblock %}
