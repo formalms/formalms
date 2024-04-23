@@ -956,6 +956,7 @@ class CoursePath_Manager
 
     public function assignComplete($id_course, $id_user)
     {
+        $completed_paths = [];
         // path_courses containing course
         $q = ' SELECT id_path FROM %lms_coursepath_courses WHERE id_item = ' . (int) $id_course;
         $rs = sql_query($q);

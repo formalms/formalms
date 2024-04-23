@@ -12,7 +12,7 @@
         <div class="coursepath-child-description">
             <div class="textof">
                 <div id="path_course_title">{{ path_info['path_name'] }}</div>
-                <p id="path_course_description">{{ path_info['path_descr'] }}</p>
+                <p id="path_course_description">{{ path_info['path_descr']|raw }}</p>
             </div>
         </div>
         <div class="coursepath-child-percentage">
@@ -28,7 +28,6 @@
     {% endblock %}
     {% block coursepath_container %}
     <div class="coursepath-collapse-container">
-
         <div id="courses_link_{{ type }}_{{ id_path }}" class="coursepath_action">
             <a class="no_decoration" href="#" onclick="expandCourses({{id_path}}, '{{ type }}');">
                 <span class="expand_path_info"><strong>{{ Lang_translate('_EXPAND', 'coursepath') }}</strong></span>
