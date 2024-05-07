@@ -346,7 +346,7 @@ function duplicateCourse()
         if (!isset($array_organization[$list_selmenun['id_source']]) or $array_organization[$list_selmenun['id_source']] == '') {
             $array_organization[$list_selmenun['id_source']] = 0;
         }
-        $query_dupmen = 'INSERT INTO
+        $query_dupmen = 'INSERT IGNORE INTO
 		' . $GLOBALS['prefix_lms'] . "_coursereport
 		(id_course,title,max_score,required_score,weight,show_to_user,use_for_final,sequence,source_of,id_source)
 		VALUES

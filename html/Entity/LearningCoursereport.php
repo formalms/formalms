@@ -13,6 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
  *      @ORM\Index(name="id_course_id_report_source_of_idx", columns={"id_course", "id_report", "source_of"}), 
  *      @ORM\Index(name="id_course_id_report_source_of_id_source_idx", columns={"id_course", "id_report", "source_of", "id_source"}),
  *      @ORM\Index(name="id_course_id_report_idx", columns={"id_course","id_report"})
+ * }, uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="unique_coursereport", columns={"source_of", "id_course", "id_source"})
  * })
  * @ORM\Entity
  */

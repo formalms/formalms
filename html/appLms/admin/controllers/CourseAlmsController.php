@@ -1049,7 +1049,7 @@ class CourseAlmsController extends AlmsController
 
                 $result_dupman = true;
                 if (!empty($insertQueryList)) {
-                    $query = 'INSERT INTO %lms_coursereport
+                    $query = 'INSERT IGNORE INTO %lms_coursereport
 						(id_course,title,max_score,required_score,weight,show_to_user,use_for_final,sequence,source_of,id_source)
 						VALUES ' . implode(',', $insertQueryList);
                     $menuDuplicated = sql_query($query);

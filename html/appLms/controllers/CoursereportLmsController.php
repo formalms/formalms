@@ -2166,7 +2166,7 @@ class CoursereportLmsController extends LmsController
                 $re &= sql_query($query_scores);
             } else {
                 $query_scores = "
-                INSERT INTO  %lms_coursereport_score
+                INSERT IGNORE INTO  %lms_coursereport_score
                 ( id_report, id_user, score, date_attempt ) VALUES (
                     '" . $info_final['id_report'] . "',
                     '" . $user . "',
@@ -2248,7 +2248,7 @@ class CoursereportLmsController extends LmsController
                 if ($id_report == 0) {
                     $numero = $reportMan->getNextSequence();
                     $query_ins_report = "
-				INSERT INTO %lms_coursereport
+				INSERT IGNORE INTO %lms_coursereport
 				( id_course, title, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source, sequence ) VALUES (
 					'" . $this->idCourse . "',
 					'" . $_POST['title'] . "',
