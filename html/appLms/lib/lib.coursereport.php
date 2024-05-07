@@ -80,7 +80,7 @@ class CourseReportManager
 
     public function addFinalVoteToReport()
     {
-        $query_test = "INSERT INTO %lms_coursereport 
+        $query_test = "INSERT IGNORE INTO %lms_coursereport 
 		( id_course, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source, sequence ) VALUES (
 			'" . $this->idCourse . "',
 			'100', 
@@ -109,7 +109,7 @@ class CourseReportManager
         $test_info = $test_man->getTestInfo($id_tests);
         foreach ($id_tests as $id_test => $title) {
             $query_test = "
-			INSERT INTO %lms_coursereport 
+			INSERT IGNORE INTO %lms_coursereport 
 			( id_course, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source, sequence ) VALUES (
 				'" . $this->idCourse . "',
 				'" . $test_man->getMaxScore($id_test) . "', 
@@ -283,7 +283,7 @@ class CourseReportManager
         foreach ($users_scores as $idst_user => $score) {
             if (!isset($old_scores[$id_report][$idst_user])) {
                 $query_scores = "
-				INSERT INTO %lms_coursereport_score
+				INSERT IGNORE INTO %lms_coursereport_score
 				( id_report, id_user, date_attempt, score, score_status, comment ) VALUES ( 
 					'" . $id_report . "', 
 					'" . $idst_user . "', 
@@ -374,7 +374,7 @@ class CourseReportManager
     public function addActivity($id_course, &$source)
     {
         $query_ins_report = "
-		INSERT INTO %lms_coursereport 
+		INSERT IGNORE INTO %lms_coursereport 
 		( id_course, title, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source, sequence ) VALUES (
 			'" . $id_course . "', 
 			'" . $source['title'] . "', 
