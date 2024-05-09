@@ -97,6 +97,7 @@
         <key id="admin_lang&amp;_DO_NOT_ADD_MISS" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Não adicionar rótulos em falta]]></key>
         <key id="admin_lang&amp;_EXPORTG" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Exportar este idioma]]></key>
         <key id="admin_lang&amp;_EXPORT_DIFF" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Exportar só palavras que não foram ainda traduzidas (estas chaves só serão mostradas em inglês)]]></key>
+        <key id="admin_lang&amp;_IMPORT_TYPE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Tipo de importação]]></key>
         <key id="admin_lang&amp;_LANG_ACCESSIBILITY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Acessibilidade]]></key>
         <key id="admin_lang&amp;_LANG_ADDKEY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Adicionar chave]]></key>
         <key id="admin_lang&amp;_LANG_ALL" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Todos os idiomas]]></key>
@@ -1572,7 +1573,7 @@ Senha: [password]]]></key>
         <key id="iotask&amp;_GROUP_FILTER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Filtro de grupo]]></key>
         <key id="iotask&amp;_HOUR" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Hora]]></key>
         <key id="iotask&amp;_IMPORT_NOTHINGTOPROCESS" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Nenhuma entrada para processar]]></key>
-        <key id="iotask&amp;_IMPORT_TYPE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Tipo importação]]></key>
+        <key id="iotask&amp;_IMPORT_TYPE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Tipo de importação]]></key>
         <key id="iotask&amp;_IMPORT_TYPE_INSERTONLY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Apenas inserir]]></key>
         <key id="iotask&amp;_IMPORT_TYPE_INSERTREMOVE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Inserir e remover]]></key>
         <key id="iotask&amp;_LAST_EXECUTION" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Última execução]]></key>
@@ -2679,7 +2680,9 @@ Senha: [password]]]></key>
         <key id="standard&amp;_IMAGES" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Imagens]]></key>
         <key id="standard&amp;_IMPORT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Importar]]></key>
         <key id="standard&amp;_IMPORTANT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Importante]]></key>
-        <key id="standard&amp;_IMPORT_FROM_XML" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Importar XML]]></key>
+        <key id="standard&amp;_IMPORT_FROM_CORE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Importar do núcleo]]></key>
+        <key id="standard&amp;_IMPORT_FROM_FILE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Importar do ficheiro]]></key>
+        <key id="standard&amp;_IMPORT_FROM_XML" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Importar do XML]]></key>
         <key id="standard&amp;_INHERIT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Descendentes]]></key>
         <key id="standard&amp;_INSERT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Inserir]]></key>
         <key id="standard&amp;_INSTRUCTION" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Instrucções]]></key>
@@ -2854,6 +2857,7 @@ Senha: [password]]]></key>
         <key id="standard&amp;_SELECT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Seleccionar]]></key>
         <key id="standard&amp;_SELECTED" attributes="" save_date="2024-01-18 11:08:58"><![CDATA[Elemento(s) seleccionado(s)]]></key>
         <key id="standard&amp;_SELECT_ALL" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Seleccionar tudo]]></key>
+        <key id="standard&amp;_SELECT_LANGUAGE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Seleccionar o idioma]]></key>
         <key id="standard&amp;_SELECT_LIBRARY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Seleccionar uma biblioteca para visualizar]]></key>
         <key id="standard&amp;_SELECT_VIDEO_TYPE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Seleccionar a largura de banda]]></key>
         <key id="standard&amp;_SEND" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Enviar]]></key>

@@ -97,6 +97,7 @@
         <key id="admin_lang&amp;_DO_NOT_ADD_MISS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Do not add missing labels]]></key>
         <key id="admin_lang&amp;_EXPORTG" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Export this language]]></key>
         <key id="admin_lang&amp;_EXPORT_DIFF" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Only export words that have not been translated yet (these keys will be shown in English)]]></key>
+        <key id="admin_lang&amp;_IMPORT_TYPE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Import type]]></key>
         <key id="admin_lang&amp;_LANG_ACCESSIBILITY" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Accessibility]]></key>
         <key id="admin_lang&amp;_LANG_ADDKEY" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Add key]]></key>
         <key id="admin_lang&amp;_LANG_ALL" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[All languages]]></key>
@@ -2696,7 +2697,9 @@ you have been unsubscribed from the course ([course_code]) - [course]]]></key>
         <key id="standard&amp;_IMAGES" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Images]]></key>
         <key id="standard&amp;_IMPORT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Import]]></key>
         <key id="standard&amp;_IMPORTANT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Important]]></key>
-        <key id="standard&amp;_IMPORT_FROM_XML" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Import XML]]></key>
+        <key id="standard&amp;_IMPORT_FROM_CORE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Import from core]]></key>
+        <key id="standard&amp;_IMPORT_FROM_FILE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Import from file]]></key>
+        <key id="standard&amp;_IMPORT_FROM_XML" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Import from XML]]></key>
         <key id="standard&amp;_INHERIT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Descendants]]></key>
         <key id="standard&amp;_INSERT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Insert]]></key>
         <key id="standard&amp;_INSTRUCTION" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Instructions]]></key>
@@ -2871,6 +2874,7 @@ you have been unsubscribed from the course ([course_code]) - [course]]]></key>
         <key id="standard&amp;_SELECT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Select]]></key>
         <key id="standard&amp;_SELECTED" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Selected elements]]></key>
         <key id="standard&amp;_SELECT_ALL" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Select all]]></key>
+        <key id="standard&amp;_SELECT_LANGUAGE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Select the language]]></key>
         <key id="standard&amp;_SELECT_LIBRARY" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Select a library to view]]></key>
         <key id="standard&amp;_SELECT_VIDEO_TYPE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Select the bandwidth]]></key>
         <key id="standard&amp;_SEND" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Send]]></key>
