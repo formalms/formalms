@@ -159,7 +159,7 @@
 				searching: true,
 				columns,
 				dom: 'Bfrtip',
-				stateSave: true,
+				stateSave: false,
 				deferRender: true
 			});
 		});

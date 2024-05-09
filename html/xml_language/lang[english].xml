@@ -1144,6 +1144,7 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="dashboardsetting&amp;_DASHBOARDBLOCKWELCOMELMS_DESCRIPTION" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Description Welcome]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_DELETE_LAYOUT" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Dashboard]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Dashboard]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT_CAPTION" attributes="" save_date="2024-05-09 13:52:55"><![CDATA[Dashboard layout caption]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT_DEFAULT" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Default]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT_SAVE_MESSAGE_KO" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[The dashboard could not be created, please check the data entered]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT_SAVE_MESSAGE_OK" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Dashboard created successfully]]></key>
@@ -1168,7 +1169,7 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="dashboardsetting&amp;_DASHBOARD_SETTING_SELECT_BLOCK" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Select block]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_SETTING_SELECT_STATUS" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Select a status]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_STATUS_DRAFT" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Draft]]></key>
-        <key id="dashboardsetting&amp;_DASHBOARD_STATUS_PUBLISH" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Pubblished]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_STATUS_PUBLISH" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Published]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_WELCOME_MESSAGE" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Hi <strong>[firstname] [lastname]</strong>, welcome to the platform <strong>[platform]</strong>]]></key>
         <key id="dashboardsetting&amp;_ENABLED_ACTIONS" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Actions enabled]]></key>
         <key id="dashboardsetting&amp;_IMAGE_DASHBOARDBLOCKBANNERLMS_COVER" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Cover image]]></key>
@@ -2571,6 +2572,7 @@ Username: [userid]]]></key>
         <key id="standard&amp;_CONTEST" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Contests]]></key>
         <key id="standard&amp;_CONTINUE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Continue]]></key>
         <key id="standard&amp;_Copy element in" attributes="" save_date="2024-01-18 16:34:29"><![CDATA[Copy element in]]></key>
+        <key id="standard&amp;_CORE_TRANSLATION" attributes="" save_date="2024-05-09 13:51:00"><![CDATA[Core translation]]></key>
         <key id="standard&amp;_CORE_VERSION" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Core version]]></key>
         <key id="standard&amp;_COURSE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Course]]></key>
         <key id="standard&amp;_COURSECATEGORY" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Course categories]]></key>

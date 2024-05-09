@@ -332,7 +332,7 @@
         <key id="certificate&amp;_DATE_COMPLETE_YEAR" attributes="" save_date="2024-01-23 15:31:33"><![CDATA[Ano de conclusão do curso]]></key>
         <key id="certificate&amp;_DATE_ENROLL" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Data de inscrição no curso]]></key>
         <key id="certificate&amp;_DISPLAY_NAME" attributes="" save_date="2024-01-23 15:17:43"><![CDATA[Se não disponíveis primeiro e último nome, será mostrado o nome de utilizador]]></key>
-        <key id="certificate&amp;_DOWNLOAD_ALL_SELECTED" attributes="" save_date="2024-01-23 18:37:48"><![CDATA[Baixar todos os certificados seleccionados]]></key>
+        <key id="certificate&amp;_DOWNLOAD_ALL_SELECTED" attributes="" save_date="2024-05-09 13:50:15"><![CDATA[Transferir todos os certificados seleccionados]]></key>
         <key id="certificate&amp;_ED_CLASSROOM" attributes="" save_date="2024-01-23 14:57:10"><![CDATA[Edição do curso presencial]]></key>
         <key id="certificate&amp;_ED_DATES_SUBSCRIBED" attributes="" save_date="2024-01-23 14:56:47"><![CDATA[Data de inscrição na edição]]></key>
         <key id="certificate&amp;_ED_DATE_BEGIN" attributes="" save_date="2024-01-23 14:18:51"><![CDATA[Data de início da edição]]></key>
@@ -500,9 +500,9 @@
         <key id="configuration&amp;_BBB_PASSWORD_VIEWER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Senha para o participante (visualizador) de BigBlueButton]]></key>
         <key id="configuration&amp;_BBB_PORT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Porta BigBlueButton]]></key>
         <key id="configuration&amp;_BBB_SALT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Salt BigBlueButton]]></key>
-        <key id="configuration&amp;_BBB_SERVER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Endereço de servidor BigBlueButton]]></key>
+        <key id="configuration&amp;_BBB_SERVER" attributes="" save_date="2024-05-09 13:50:15"><![CDATA[Endereço do servidor BigBlueButton]]></key>
         <key id="configuration&amp;_BBB_USER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Nome de utilizador BigBlueButton]]></key>
-        <key id="configuration&amp;_CLEAR_TWIG_CACHE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Eliminar a "twig cache"]]></key>
+        <key id="configuration&amp;_CLEAR_TWIG_CACHE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Eliminar o "Twig cache"]]></key>
         <key id="configuration&amp;_CODE_TELESKILL" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Código de cliente]]></key>
         <key id="configuration&amp;_COMMON_ADMIN_SESSION" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Unificar sessão do administrador e sessões públicas]]></key>
         <key id="configuration&amp;_CONFERENCE_CREATION_LIMIT_PER_USER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Limitar o número de conferência que podem ser planeadas por um só utilizador]]></key>
@@ -525,7 +525,7 @@
         <key id="configuration&amp;_DIMDIM_MAX_ROOM" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Máximo de salas]]></key>
         <key id="configuration&amp;_DIMDIM_PASSWORD" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Senha]]></key>
         <key id="configuration&amp;_DIMDIM_PORT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Porta DimDim]]></key>
-        <key id="configuration&amp;_DIMDIM_SERVER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Endereço de servidor DimDim]]></key>
+        <key id="configuration&amp;_DIMDIM_SERVER" attributes="" save_date="2024-05-09 13:50:15"><![CDATA[Endereço do servidor DimDim]]></key>
         <key id="configuration&amp;_DIMDIM_USER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Nome de utilizador DimDim]]></key>
         <key id="configuration&amp;_DOMXML" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Estado do módulo DOM XML]]></key>
         <key id="configuration&amp;_DONT_SHOW" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Não mostrar]]></key>
@@ -538,7 +538,7 @@
         <key id="configuration&amp;_FORUM_AS_TABLE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Mostrar a lista dos fóruns numa tabela]]></key>
         <key id="configuration&amp;_FTPERR" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Erro no FTP]]></key>
         <key id="configuration&amp;_FTPOK" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[FTP OK]]></key>
-        <key id="configuration&amp;_GOOGLE_STAT_CODE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Código fornecido por Google]]></key>
+        <key id="configuration&amp;_GOOGLE_STAT_CODE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Código fornecido pelo Google]]></key>
         <key id="configuration&amp;_GOOGLE_STAT_IN_LMS" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Ativar Google Analytics]]></key>
         <key id="configuration&amp;_HELPDESK" attributes="" save_date="2024-01-18 00:28:13"><![CDATA[Configurações de help desk]]></key>
         <key id="configuration&amp;_HELPDESK_SUBJ" attributes="" save_date="2024-01-15 23:29:57"><![CDATA[Assunto da Central de Ajuda (Help Desk)]]></key>
@@ -559,7 +559,7 @@
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Primeiro Nome e Último Nome são necessários para registo]]></key>
         <key id="configuration&amp;_LDAP" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[LDAP]]></key>
         <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Porta LDAP (usualmente 389)]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Endereço de servidor LDAP]]></key>
+        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2024-05-09 13:50:15"><![CDATA[Endereço do servidor LDAP]]></key>
         <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Ativar autenticação LDAP]]></key>
         <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Nome de utilizador para utilizadores LDAP, usar $user para nome de utilizador.<br />Ex. $user@domain2.domain1 (para: W2k3)]]></key>
         <key id="configuration&amp;_LIST_DB_UPGRADES" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Log de roteiro DB SQL]]></key>
@@ -584,7 +584,7 @@
         <key id="configuration&amp;_NO_ANSWER_IN_POLL" attributes="" save_date="2024-01-23 17:49:34"><![CDATA[Usar a opção "Sem resposta" nos questionários/pesquisas]]></key>
         <key id="configuration&amp;_NO_ANSWER_IN_TEST" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Usar a opção "Sem resposta" em questões de testes]]></key>
         <key id="configuration&amp;_ON_CATALOGUE_EMPTY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Se nenhum catálogo de cursos for atribuído a um utilizador, mostrar todos os cursos e programas.]]></key>
-        <key id="configuration&amp;_ON_PATH_IN_MYCOURSES" attributes="" save_date="2024-01-15 23:46:09"><![CDATA[Mostrar endereço para "Meus cursos"]]></key>
+        <key id="configuration&amp;_ON_PATH_IN_MYCOURSES" attributes="" save_date="2024-05-09 13:50:15"><![CDATA[Mostrar endereço para "Meus cursos"]]></key>
         <key id="configuration&amp;_ON_USERCOURSE_EMPTY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Enviar utilizador para o catálogo se não estiver inscrito em qualquer curso]]></key>
         <key id="configuration&amp;_OPENSSL" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Extensão de PHP php_openssl]]></key>
         <key id="configuration&amp;_ORGCHART_SINGLENODE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Limitar o utilizador a apenas um nó (diretório ou pasta) do organograma]]></key>
@@ -610,9 +610,9 @@
         <key id="configuration&amp;_PATHTEST" attributes="" save_date="2024-01-18 00:06:50"><![CDATA[Nome da pasta para envio de ficheiro de questões]]></key>
         <key id="configuration&amp;_PAYPAL_CURRENCY" attributes="" save_date="2024-01-16 09:21:22"><![CDATA[Código de moeda PayPal]]></key>
         <key id="configuration&amp;_PAYPAL_MAIL" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Conta PayPal]]></key>
-        <key id="configuration&amp;_PAYPAL_SANDBOX" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Utilizar seguro PayPal em vez do ambiente real (esta é uma opção de depuração e testes)]]></key>
+        <key id="configuration&amp;_PAYPAL_SANDBOX" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Utilizar <i>sandbox</i> do PayPal em vez do ambiente real (esta é uma opção de depuração e testes)]]></key>
         <key id="configuration&amp;_PHPINFO" attributes="" save_date="2024-01-16 12:04:34"><![CDATA[Informação sobre o PHP]]></key>
-        <key id="configuration&amp;_PHPVERSION" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Versão PHP]]></key>
+        <key id="configuration&amp;_PHPVERSION" attributes="" save_date="2024-05-09 13:50:15"><![CDATA[Versão do PHP]]></key>
         <key id="configuration&amp;_PHP_TIMEZONE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Fuso horário do site]]></key>
         <key id="configuration&amp;_PLUGIN_ACTIVATE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Ativar]]></key>
         <key id="configuration&amp;_PLUGIN_AUTHOR" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Autor]]></key>
@@ -663,7 +663,7 @@
         <key id="configuration&amp;_REST_AUTH_LIFETIME" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Token gerado expirará após (minutos)]]></key>
         <key id="configuration&amp;_REST_AUTH_METHOD" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Modo de autenticação:]]></key>
         <key id="configuration&amp;_REST_AUTH_SECRET_KEY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Chave secreta de autorização]]></key>
-        <key id="configuration&amp;_REST_AUTH_TOKEN" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Geração de token a cada conecção]]></key>
+        <key id="configuration&amp;_REST_AUTH_TOKEN" attributes="" save_date="2024-05-09 13:50:15"><![CDATA[Geração de token a cada conexão]]></key>
         <key id="configuration&amp;_REST_AUTH_UPDATE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Atualizar tempo de vida do token a cada chamada API]]></key>
         <key id="configuration&amp;_SAFEMODE" attributes="" save_date="2024-01-15 23:49:18"><![CDATA[Configuração de "safe_mode"]]></key>
         <key id="configuration&amp;_SAVE_LA_AFTER_MAX" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Sim, apenas se o número máximo for atingido]]></key>
@@ -673,10 +673,10 @@
         <key id="configuration&amp;_SECURITY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Configuração de segurança]]></key>
         <key id="configuration&amp;_SELECT_NODE" attributes="" save_date="2024-01-18 00:34:42"><![CDATA[Seleccionar nó]]></key>
         <key id="configuration&amp;_SENDER_EVENT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Endereço de email do remetente para mensagens de alerta (notificações)]]></key>
-        <key id="configuration&amp;_SEND_CCN_FOR_SYSTEM_EMAILS" attributes="" save_date="2024-01-15 22:16:35"><![CDATA[Adicione o seguinte endereço como CCO para todos os e-mails enviados pela plataforma]]></key>
+        <key id="configuration&amp;_SEND_CCN_FOR_SYSTEM_EMAILS" attributes="" save_date="2024-05-09 13:50:15"><![CDATA[Adicione o seguinte endereço como CCO para todos os e-mails enviados pela plataforma]]></key>
         <key id="configuration&amp;_SEND_CC_FOR_SYSTEM_EMAILS" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Adicionar o endereço seguinte como CC para todos os emails enviados pela plataforma]]></key>
         <key id="configuration&amp;_SERVERINFO" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Configuração de servidor]]></key>
-        <key id="configuration&amp;_SERVER_ADDR" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Endereço de servidor]]></key>
+        <key id="configuration&amp;_SERVER_ADDR" attributes="" save_date="2024-05-09 13:50:15"><![CDATA[Endereço do servidor]]></key>
         <key id="configuration&amp;_SERVER_ADMIN" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Email do administrador do servidor]]></key>
         <key id="configuration&amp;_SERVER_MYSQL" attributes="" save_date="2024-01-16 12:05:31"><![CDATA[Informação do MySQL]]></key>
         <key id="configuration&amp;_SERVER_NAME" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Nome do servidor]]></key>
@@ -696,7 +696,7 @@
         <key id="configuration&amp;_SMS_GATEWAY_3" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Gateway 3]]></key>
         <key id="configuration&amp;_SMS_GATEWAY_4" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Gateway 4]]></key>
         <key id="configuration&amp;_SMS_GATEWAY_AUTO" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Automático]]></key>
-        <key id="configuration&amp;_SMS_GATEWAY_HOST" attributes="" save_date="2024-01-15 23:22:24"><![CDATA[Endereço de host do gateway]]></key>
+        <key id="configuration&amp;_SMS_GATEWAY_HOST" attributes="" save_date="2024-05-09 13:50:15"><![CDATA[Endereço de host do gateway]]></key>
         <key id="configuration&amp;_SMS_GATEWAY_ID" attributes="" save_date="2024-01-16 00:04:30"><![CDATA[Seleccionar gateway]]></key>
         <key id="configuration&amp;_SMS_GATEWAY_PASS" attributes="" save_date="2024-01-15 23:22:34"><![CDATA[Senha do gateway]]></key>
         <key id="configuration&amp;_SMS_GATEWAY_PORT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Número de porta]]></key>
@@ -725,9 +725,9 @@
         <key id="configuration&amp;_TEMPLATEDOMAIN" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Modelo de domínio]]></key>
         <key id="configuration&amp;_TEMPLATE_DOMAIN" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Atribuição de Modelo de Domínio]]></key>
         <key id="configuration&amp;_TRACKING" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Permitir localização de utilizador (recomendado: sim)]]></key>
-        <key id="configuration&amp;_TTLSESSION" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Duração de sessão]]></key>
+        <key id="configuration&amp;_TTLSESSION" attributes="" save_date="2024-05-09 13:50:15"><![CDATA[Duração da sessão]]></key>
         <key id="configuration&amp;_TWIG_CACHE" attributes="" save_date="2024-01-15 22:43:15"><![CDATA[Cache Twig]]></key>
-        <key id="configuration&amp;_UPLOADFTP" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Conecção FTP]]></key>
+        <key id="configuration&amp;_UPLOADFTP" attributes="" save_date="2024-05-09 13:50:15"><![CDATA[Conexão FTP]]></key>
         <key id="configuration&amp;_UPLOAD_MAX_FILESIZE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Configuração de "upload_max_filesize"]]></key>
         <key id="configuration&amp;_URL" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[URL do website (deve terminar com /)]]></key>
         <key id="configuration&amp;_URL_CHECKIN_TELESKILL" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[URL para check-in]]></key>
@@ -1144,6 +1144,7 @@ Se não estiver registado, você deve registar-se no nosso sistema, seguindo est
         <key id="dashboardsetting&amp;_DASHBOARDBLOCKWELCOMELMS_DESCRIPTION" attributes="" save_date="2024-01-15 22:29:05"><![CDATA[Descrição de Boas-vindas]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_DELETE_LAYOUT" attributes="" save_date="2024-01-16 16:18:02"><![CDATA[Dashboard]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT" attributes="" save_date="2024-01-16 16:17:43"><![CDATA[Dashboard]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT_CAPTION" attributes="" save_date="2024-05-09 13:52:55"><![CDATA[Legenda do layout]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT_DEFAULT" attributes="" save_date="2024-01-15 22:27:51"><![CDATA[Padrão]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT_SAVE_MESSAGE_KO" attributes="" save_date="2024-01-16 16:17:33"><![CDATA[O dashboard não pôde ser criado, verifique os dados inseridos]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT_SAVE_MESSAGE_OK" attributes="" save_date="2024-01-16 16:17:58"><![CDATA[Dashboard criado com sucesso]]></key>
@@ -2163,7 +2164,7 @@ Por favor não carregue imagens ofensivas.]]></key>
         <key id="register&amp;_CHOOSE_NEW_PASSWORD" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Escolher nova senha]]></key>
         <key id="register&amp;_ERR_DUPLICATE_MAIL" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Este email já está em uso por outro utilizador.]]></key>
         <key id="register&amp;_ERR_DUPLICATE_USER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[O nome de utilizador não está disponível, escolha outro]]></key>
-        <key id="register&amp;_ERR_INVALID_MAIL" attributes="" save_date="2024-01-15 23:30:34"><![CDATA[Deve inserir um endereço de e-mail válido]]></key>
+        <key id="register&amp;_ERR_INVALID_MAIL" attributes="" save_date="2024-05-09 13:50:15"><![CDATA[Deve inserir um endereço de e-mail válido]]></key>
         <key id="register&amp;_ERR_INVALID_USER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Nome de utilizador está vazio ou inválido]]></key>
         <key id="register&amp;_ERR_PASSWORD_MIN_LENGTH" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[A senha deve conter um número mínimo de caracteres]]></key>
         <key id="register&amp;_ERR_PASSWORD_MUSTBE_ALPHA" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Senha deve conter números e caracteres]]></key>
@@ -2183,7 +2184,7 @@ Por favor não carregue imagens ofensivas.]]></key>
         <key id="register&amp;_LOGIN" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Voltar a login]]></key>
         <key id="register&amp;_LOST_INSTRUCTION_PWD" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Se esqueceu a sua senha, insira o seu nome de utilizador no campo abaixo, você receberá um email com as instruções]]></key>
         <key id="register&amp;_LOST_INSTRUCTION_USER" attributes="" save_date="2024-01-18 10:45:44"><![CDATA[Se esqueceu o seu nome de utilizador, insira o seu e-mail de registo no campo abaixo, você receberá um e-mail com as instruções]]></key>
-        <key id="register&amp;_LOST_PWD_MAILTEXT" attributes="" save_date="2024-01-15 23:31:08"><![CDATA[Este é o processo para gerar uma nova senha para o utilizador associado para este endereço de e-mail. Clique no link abaixo para gerar uma nova senha.<br/>
+        <key id="register&amp;_LOST_PWD_MAILTEXT" attributes="" save_date="2024-05-09 13:50:15"><![CDATA[Este é o processo para gerar uma nova senha para o utilizador associado para este endereço de e-mail. Clique no link abaixo para gerar uma nova senha.<br/>
 <br/>
 <a href="[link]">[link]</a>]]></key>
         <key id="register&amp;_LOST_PWD_TITLE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Nova senha]]></key>
@@ -2564,6 +2565,7 @@ Senha: [password]]]></key>
         <key id="standard&amp;_CONTEST" attributes="" save_date="2024-01-15 23:15:31"><![CDATA[Concursos]]></key>
         <key id="standard&amp;_CONTINUE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Continuar]]></key>
         <key id="standard&amp;_Copy element in" attributes="" save_date="2024-01-18 16:35:11"><![CDATA[Copiar elemento para:]]></key>
+        <key id="standard&amp;_CORE_TRANSLATION" attributes="" save_date="2024-05-09 13:51:00"><![CDATA[Tradução do núcleo]]></key>
         <key id="standard&amp;_CORE_VERSION" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Versão core]]></key>
         <key id="standard&amp;_COURSE" attributes="" save_date="2024-01-15 23:56:49"><![CDATA[Cursos]]></key>
         <key id="standard&amp;_COURSECATEGORY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Categorias de cursos]]></key>
@@ -2903,7 +2905,7 @@ Senha: [password]]]></key>
         <key id="standard&amp;_TOTAL" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Total]]></key>
         <key id="standard&amp;_TOTAL_HOURS" attributes="" save_date="2024-01-15 22:43:19"><![CDATA[Horas totais]]></key>
         <key id="standard&amp;_TOTAL_TIME" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Tempo total]]></key>
-        <key id="standard&amp;_TRANSACTION" attributes="" save_date="2024-01-16 10:56:20"><![CDATA[Transacções]]></key>
+        <key id="standard&amp;_TRANSACTION" attributes="" save_date="2024-05-09 13:50:15"><![CDATA[Transações]]></key>
         <key id="standard&amp;_TWITTER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Twitter]]></key>
         <key id="standard&amp;_TYPE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Tipo]]></key>
         <key id="standard&amp;_TYPOLOGY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Tipologia]]></key>
