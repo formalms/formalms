@@ -135,6 +135,14 @@ if ($cfg_keepalivetmo > 0) {
     }
 }
 
+if (\FormaLms\lib\Get::cfg('scorm_player') == "ng") {
+
+    $scorm = $idscorm_organization;
+    include_once \FormaLms\lib\Forma::inc(_lms_ . '/views/playerscorm/show.php');
+
+}else{
+
+
     header('Content-Type: text/html; charset=utf-8');
 
     echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 Strict//EN"' . "\n";
@@ -256,6 +264,8 @@ if ($cfg_keepalivetmo > 0) {
 
     echo '</body>
 </html>';
+}
+
 
     ob_end_flush();
     exit;	// to avoid index.php to add additional and unuseful html
