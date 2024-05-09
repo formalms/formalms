@@ -642,7 +642,7 @@
         <key id="configuration&amp;_PRIORITY" attributes="" save_date="2024-01-18 00:47:17"><![CDATA[Prioridade]]></key>
         <key id="configuration&amp;_PRIVACY_POLICY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Politica de privacidade DEVE ser aceite]]></key>
         <key id="configuration&amp;_PROFILE_ONLY_PWD" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Limitar utilizador a modificar só a sua senha (desactivar o perfil prorrogado)]]></key>
-        <key id="configuration&amp;_PURCHASE_USER" attributes="" save_date="2024-01-15 23:14:49"><![CDATA[Utilizador de compra (nome de usuário ou idst)]]></key>
+        <key id="configuration&amp;_PURCHASE_USER" attributes="" save_date="2024-01-15 23:14:49"><![CDATA[Utilizador de compra (nome de utilizador ou idst)]]></key>
         <key id="configuration&amp;_REGISTER_DELETED_USER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Manter registo de todos os utilizadores apagados]]></key>
         <key id="configuration&amp;_REGISTER_GLOBAL" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Configuração de "register_global"]]></key>
         <key id="configuration&amp;_REGISTER_TYPE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Tipo de registo]]></key>
@@ -2032,9 +2032,9 @@ No tratamento desta informação, é garantida a integridade e a qualidade do
       </module>
       <module id="presence">
         <key id="presence&amp;_CHECK_ALL_DAY" attributes="" save_date="2024-01-24 11:17:15"><![CDATA[Marcar todos os dias]]></key>
-        <key id="presence&amp;_CHECK_ALL_USER" attributes="" save_date="2024-01-24 11:22:56"><![CDATA[Marcar todos os usuários]]></key>
+        <key id="presence&amp;_CHECK_ALL_USER" attributes="" save_date="2024-01-24 11:22:56"><![CDATA[Marcar todos os utilizadores]]></key>
         <key id="presence&amp;_UNCHECK_ALL_DAY" attributes="" save_date="2024-01-24 11:17:24"><![CDATA[Desmarcar todos os dias]]></key>
-        <key id="presence&amp;_UNCHECK_ALL_USER" attributes="" save_date="2024-01-24 11:23:07"><![CDATA[Desmarcar todos os usuários]]></key>
+        <key id="presence&amp;_UNCHECK_ALL_USER" attributes="" save_date="2024-01-24 11:23:07"><![CDATA[Desmarcar todos os utilizadores]]></key>
       </module>
       <module id="privacypolicies">
         <key id="privacypolicies&amp;_PRIVACYPOLICIES" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Políticas de privacidade]]></key>
@@ -3392,7 +3392,7 @@ Senha: [password]]]></key>
         <key id="wiki&amp;_WIKI" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Wiki]]></key>
         <key id="wiki&amp;_WIKI_HOME" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Índice]]></key>
         <key id="wiki&amp;_WIKI_INSTRUCTION" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[AVISO: Se continuar com a GUARDAR, esta página será a última versão]]></key>
-        <key id="wiki&amp;_WIKI_LANGUAGE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Idioma padrão]]></key>
+        <key id="wiki&amp;_WIKI_LANGUAGE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Idioma por defeito]]></key>
         <key id="wiki&amp;_WIKI_LEVEL_UP" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Nível acima]]></key>
         <key id="wiki&amp;_WIKI_OTHER_LANGUAGES" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[seleccionar outros idiomas para as páginas]]></key>
         <key id="wiki&amp;_WIKI_PREV" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Ant.]]></key>
