@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20240508</DATE>
+  <DATE>20240509</DATE>
   <LANG id="portuguese">
     <lang_code>portuguese</lang_code>
     <lang_description>Portuguese</lang_description>
@@ -938,8 +938,8 @@
         <key id="course&amp;_SUBSCRIPTION_IN_PERIOD" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[A inscrição está disponível durante o seguinte período]]></key>
         <key id="course&amp;_SUBSCRIPTION_OPEN" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[As inscrições estão abertas]]></key>
         <key id="course&amp;_THANKS_LOGIN_OR_REGISTER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Solicitou a aquisição do curso: <b>[name]</b><br />
-Para prosseguir, deve aceder à plataforma (se já estiver registado).<br />
-Se não estiver registado, deve registar-se no nosso sistema, seguindo este <i>link</i>: <br />
+Para prosseguir, você deve aceder à plataforma (se já estiver registado).<br />
+Se não estiver registado, você deve registar-se no nosso sistema, seguindo este <i>link</i>: <br />
 <br />
 <a href="[link_register]">Registar-me</a>]]></key>
         <key id="course&amp;_THEACER_LIST" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Professores:]]></key>
@@ -1226,8 +1226,7 @@ Pode ler em forma.lms no URL <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_EVENT_CLASS_UserCourseBuy" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Utilizador comprou um curso]]></key>
         <key id="email&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_SBJ" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[User suspended from course]]></key>
         <key id="email&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
-        <key id="email&amp;_EVENT_COURSE_EVENT_UNSUBSCRIBE_USER_SBJ" attributes="" save_date="2024-01-15 22:13:05"><![CDATA[Sua inscrição no curso foi cancelada
-]]></key>
+        <key id="email&amp;_EVENT_COURSE_EVENT_UNSUBSCRIBE_USER_SBJ" attributes="" save_date="2024-01-15 22:13:05"><![CDATA[Sua inscrição no curso foi cancelada]]></key>
         <key id="email&amp;_EVENT_COURSE_EVENT_UNSUBSCRIBE_USER_TEXT" attributes="" save_date="2024-01-15 22:26:51"><![CDATA[Caro(a) [firstname] [lastname], sua inscrição no curso ([course_code]) - [course] foi cancelada]]></key>
         <key id="email&amp;_EVENT_EDITION_COURSE_EVENT_UNSUBSCRIBE_USER_SBJ" attributes="" save_date="2024-01-15 22:34:29"><![CDATA[Sua inscrição no curso foi cancelada]]></key>
         <key id="email&amp;_EVENT_EDITION_COURSE_EVENT_UNSUBSCRIBE_USER_TEXT" attributes="" save_date="2024-01-15 22:27:45"><![CDATA[Caro(a) [firstname] [lastname], sua inscrição na edição ([edition_code]) - [edition] foi cancelada]]></key>
@@ -1281,7 +1280,7 @@ Método: [method]]]></key>
         <key id="email&amp;_REGISTERED_USER_TEXT" attributes="email" save_date="2020-09-15 14:47:20"><![CDATA[Você está agora registado no nosso sistema em <a href="[url]">[url]</a>
 com esta conta:
 
-Nome utilizador: [userid]
+Nome de utilizador: [userid]
 Senha: [password]]]></key>
         <key id="email&amp;_SUBJECT_NOTIFY_MESSAGE" attributes="email" save_date="2020-09-15 14:47:20"><![CDATA[Alerta! Nova mensagem numa linha de mensagens (tópico/thread)]]></key>
         <key id="email&amp;_SUBJECT_NOTIFY_THREAD" attributes="email" save_date="2020-09-15 14:47:20"><![CDATA[Alerta! Nova linha de mensagens (tópico/thread)]]></key>
@@ -2857,7 +2856,7 @@ Senha: [password]]]></key>
         <key id="standard&amp;_SELECT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Seleccionar]]></key>
         <key id="standard&amp;_SELECTED" attributes="" save_date="2024-01-18 11:08:58"><![CDATA[Elemento(s) seleccionado(s)]]></key>
         <key id="standard&amp;_SELECT_ALL" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Seleccionar tudo]]></key>
-        <key id="standard&amp;_SELECT_LANGUAGE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Seleccionar o idioma]]></key>
+        <key id="standard&amp;_SELECT_LANG" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Seleccionar o idioma]]></key>
         <key id="standard&amp;_SELECT_LIBRARY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Seleccionar uma biblioteca para visualizar]]></key>
         <key id="standard&amp;_SELECT_VIDEO_TYPE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Seleccionar a largura de banda]]></key>
         <key id="standard&amp;_SEND" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Enviar]]></key>
@@ -2995,7 +2994,6 @@ Senha: [password]]]></key>
         <key id="stats&amp;_VIEW_OPEN_QUEST" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Ver as respostas para perguntas abertas]]></key>
       </module>
       <module id="storage">
-        <key id="storage&amp;menu_course" attributes="" save_date="2024-01-16 15:17:51"><![CDATA[Menu do Curso]]></key>
         <key id="storage&amp;_EXPORT_QUESTIONS" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Exportar perguntas]]></key>
         <key id="storage&amp;_HELP" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Ajuda]]></key>
         <key id="storage&amp;_HOMEREPOROOTNAME" attributes="" save_date="2024-01-16 14:11:17"><![CDATA[Meus objetos]]></key>

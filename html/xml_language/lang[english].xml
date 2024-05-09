@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20240508</DATE>
+  <DATE>20240509</DATE>
   <LANG id="english">
     <lang_code>english</lang_code>
     <lang_description>English</lang_description>
@@ -620,7 +620,7 @@
         <key id="configuration&amp;_PLUGIN_DEACTIVATE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Deactivate]]></key>
         <key id="configuration&amp;_PLUGIN_DESCRIPTION" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Description]]></key>
         <key id="configuration&amp;_PLUGIN_ERROR_ACTIVATE_DEPENDENCE" attributes="" save_date="2024-01-18 00:51:24"><![CDATA[Error activating: Dependence]]></key>
-        <key id="configuration&amp;_PLUGIN_ERROR_ACTIVATE_UNSUITABLE_FORMA" attributes="" save_date="2024-01-18 00:50:47"><![CDATA[Error: ]]></key>
+        <key id="configuration&amp;_PLUGIN_ERROR_ACTIVATE_UNSUITABLE_FORMA" attributes="" save_date="2024-01-18 00:50:47"><![CDATA[Error:]]></key>
         <key id="configuration&amp;_PLUGIN_ERROR_CORE_DEACTIVATE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Plugin cannot be deactivated because it belongs to core]]></key>
         <key id="configuration&amp;_PLUGIN_ERROR_CORE_UNINSTALL" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Plugin cannot be uninstalled because it belongs to core]]></key>
         <key id="configuration&amp;_PLUGIN_ERROR_DEACTIVATE_DEPENDENCE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Plugin cannot be deactivated because of dependent plugins]]></key>
@@ -744,7 +744,6 @@
         <key id="configuration&amp;_USE_SENDER_ACLNAME" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Sender name from for alert messages]]></key>
         <key id="configuration&amp;_USE_TAG" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Enable tags feature inside forums]]></key>
         <key id="configuration&amp;_WARINNG_SOCIAL" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Attention without these settings the social login will not work]]></key>
-        <key id="configuration&amp;_PURCHASE_USER" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Purchase User (Username or idst)]]></key>
       </module>
       <module id="course">
         <key id="course&amp;Access" attributes="" save_date="2024-01-17 08:36:06"><![CDATA[Access]]></key>
@@ -947,7 +946,7 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="course&amp;_TITLE_CATEGORY_JUMP" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Go to the content of]]></key>
         <key id="course&amp;_TITLE_CERTIFICATE_TO_COURSE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Association of certificates to course]]></key>
         <key id="course&amp;_TOTAL_ACCESS_TIME" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Total access time]]></key>
-        <key id="course&amp;_TOTAL_CHARS" attributes="" save_date="2024-01-18 16:06:47"><![CDATA[Total chars: ]]></key>
+        <key id="course&amp;_TOTAL_CHARS" attributes="" save_date="2024-01-18 16:06:47"><![CDATA[Total chars:]]></key>
         <key id="course&amp;_T_USER_STATUS_BEGIN" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[You are attending this course]]></key>
         <key id="course&amp;_T_USER_STATUS_CONFIRMED" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Confirmed]]></key>
         <key id="course&amp;_T_USER_STATUS_END" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[You have completed this course]]></key>
@@ -1078,11 +1077,11 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="dashboard&amp;_DASHBOARDBLOCKCALENDARLMS" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Calendar]]></key>
         <key id="dashboard&amp;_DASHBOARDBLOCKCERTIFICATELMS" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Certificates]]></key>
         <key id="dashboard&amp;_DASHBOARDBLOCKCOMMUNICATIONLMS" attributes="" save_date="2022-03-22 11:20:20"><![CDATA[Communications]]></key>
+        <key id="dashboard&amp;_DASHBOARDBLOCKCOURSEATTENDANCEGRAPHLMS" attributes="" save_date="2022-03-10 11:47:19"><![CDATA[Courses Attendance Graph]]></key>
         <key id="dashboard&amp;_DASHBOARDBLOCKCOURSESLMS" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Courses]]></key>
         <key id="dashboard&amp;_DASHBOARDBLOCKMESSAGELMS" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Messages]]></key>
         <key id="dashboard&amp;_DASHBOARDBLOCKNEWSLMS" attributes="" save_date="2022-03-22 11:23:28"><![CDATA[News]]></key>
         <key id="dashboard&amp;_DASHBOARDBLOCKWELCOMELMS" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Welcome message]]></key>
-        <key id="dashboard&amp;_DASHBOARDBLOCKCOURSEATTENDANCEGRAPHLMS" attributes="" save_date="2022-03-10 11:47:19"><![CDATA[Courses Attendance Graph]]></key>
         <key id="dashboard&amp;_DASHBOARD_BLOCKCERTIFICATES_NO_RECORDS" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[There are no certificates]]></key>
         <key id="dashboard&amp;_DASHBOARD_BLOCKMESSAGES_NO_RECORDS" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[There are no messages]]></key>
         <key id="dashboard&amp;_DB_UPGRADES" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[SQL scripts log]]></key>
@@ -1133,6 +1132,8 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="dashboardsetting&amp;_DASHBOARDBLOCKCERTIFICATESLMS_DESCRIPTION" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Description Certificates]]></key>
         <key id="dashboardsetting&amp;_DASHBOARDBLOCKCOMMUNICATIONLMS" attributes="" save_date="2022-03-22 11:20:27"><![CDATA[Communications]]></key>
         <key id="dashboardsetting&amp;_DASHBOARDBLOCKCOMMUNICATIONLMS_DESCRIPTION" attributes="" save_date="2022-03-22 11:22:30"><![CDATA[Shows classroom courses that are going to start or e-learning courses that are near to closing date, or both]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKCOURSEATTENDANCEGRAPHLMS" attributes="" save_date="2022-03-10 11:47:19"><![CDATA[Courses Attendance Graph]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKCOURSEATTENDANCEGRAPHLMS_DESCRIPTION" attributes="" save_date="2022-03-10 11:47:19"><![CDATA[Courses Attendance Graph Description]]></key>
         <key id="dashboardsetting&amp;_DASHBOARDBLOCKCOURSESLMS" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Courses]]></key>
         <key id="dashboardsetting&amp;_DASHBOARDBLOCKCOURSESLMS_DESCRIPTION" attributes="" save_date="2022-03-22 11:13:57"><![CDATA[Shows classroom courses that are going to start or e-learning courses that are near to closing date, or both]]></key>
         <key id="dashboardsetting&amp;_DASHBOARDBLOCKMESSAGESLMS" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Messages]]></key>
@@ -1141,8 +1142,6 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="dashboardsetting&amp;_DASHBOARDBLOCKNEWSLMS_DESCRIPTION" attributes="" save_date="2022-03-22 11:23:54"><![CDATA[Shows published and news shared with the user]]></key>
         <key id="dashboardsetting&amp;_DASHBOARDBLOCKWELCOMELMS" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Welcome message]]></key>
         <key id="dashboardsetting&amp;_DASHBOARDBLOCKWELCOMELMS_DESCRIPTION" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Description Welcome]]></key>
-        <key id="dashboardsetting&amp;_DASHBOARDBLOCKCOURSEATTENDANCEGRAPHLMS" attributes="" save_date="2022-03-10 11:47:19"><![CDATA[Courses Attendance Graph]]></key>
-        <key id="dashboardsetting&amp;_DASHBOARDBLOCKCOURSEATTENDANCEGRAPHLMS_DESCRIPTION" attributes="" save_date="2022-03-10 11:47:19"><![CDATA[Courses Attendance Graph Description]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_DELETE_LAYOUT" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Dashboard]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Dashboard]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT_DEFAULT" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Default]]></key>
@@ -1269,6 +1268,16 @@ Username: [userid]]]></key>
 <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_NEW_USER_UNSUBS_WAITING_TEXT_SMS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[A user has asked to be unsubscribed from a course]]></key>
         <key id="email&amp;_PASSWORD_CHANGED" attributes="email" save_date="2020-09-15 14:47:12"><![CDATA[and your password has been changed to: [password]]]></key>
+        <key id="email&amp;_PURCHASE_COURSE_MAIL_SBJ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[A user purchased a course]]></key>
+        <key id="email&amp;_PURCHASE_COURSE_MAIL_TEXT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[The user [firstname] [lastname] ([username] - [email])<br>
+purchased the course [course] on platform [url]<br><br>
+
+[fields]
+
+ORDER #[id_transaction]<br>
+on: [date_transaction]<br>
+Total: [price] €<br>
+Method: [method]]]></key>
         <key id="email&amp;_REFUSED_USER_SBJ" attributes="email" save_date="2020-09-15 14:47:12"><![CDATA[User not approved]]></key>
         <key id="email&amp;_REFUSED_USER_TEXT" attributes="email" save_date="2020-09-15 14:47:12"><![CDATA[The administrator of [url] has not approved your subscription request]]></key>
         <key id="email&amp;_REGISTERED_USER_SBJ" attributes="email" save_date="2020-09-15 14:47:12"><![CDATA[You are now registered in our system]]></key>
@@ -1294,25 +1303,6 @@ Password: [password]]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_SUBJECT" attributes="email" save_date="2020-09-15 14:47:12"><![CDATA[You have received a new message]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_TEXT" attributes="email" save_date="2020-09-15 14:47:12"><![CDATA[You have received a new message in the e-learning system at <a href="[url]">[url]</a> in the course [course] from the user [from]]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_TEXT_COURSE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[You received a new message from the e-learning system at <a href="[url]">[url]</a> in the course<b> [course] </b>from the user [from]]]></key>
-        <key id="email&amp;_EVENT_CLASSROOM_COURSE_DATE_EVENT_UNSUBSCRIBE_USER_SBJ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[You have been unsubscribed from the course]]></key>
-        <key id="email&amp;_EVENT_CLASSROOM_COURSE_DATE_EVENT_UNSUBSCRIBE_USER_TEXT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Dear [firstname] [lastname],
-you have been unsubscribed from the classroom course ([classroom_code]) - [classroom_date]]]></key>
-        <key id="email&amp;_EVENT_EDITION_COURSE_EVENT_UNSUBSCRIBE_USER_SBJ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[You have been unsubscribed from the course]]></key>
-        <key id="email&amp;_EVENT_EDITION_COURSE_EVENT_UNSUBSCRIBE_USER_TEXT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Dear [firstname] [lastname],
-you have been unsubscribed from the edition ([edition_code]) - [edition]]]></key>
-        <key id="email&amp;_EVENT_COURSE_EVENT_UNSUBSCRIBE_USER_SBJ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[You have been unsubscribed from the course]]></key>
-        <key id="email&amp;_EVENT_COURSE_EVENT_UNSUBSCRIBE_USER_TEXT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Dear [firstname] [lastname],
-you have been unsubscribed from the course ([course_code]) - [course]]]></key>
-        <key id="email&amp;_PURCHASE_COURSE_MAIL_SBJ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[A user purchased a course]]></key>
-        <key id="email&amp;_PURCHASE_COURSE_MAIL_TEXT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[The user [firstname] [lastname] ([username] - [email])<br>
-purchased the course [course] on platform [url]<br><br>
-
-[fields]
-
-ORDER #[id_transaction]<br>
-on: [date_transaction]<br>
-Total: [price] €<br>
-Method: [method]]]></key>
       </module>
       <module id="enrollrules">
         <key id="enrollrules&amp;_APPLY_RULE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Apply rule]]></key>
@@ -1330,6 +1320,7 @@ Method: [method]]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_ForumNewResponse" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[New reply]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_ForumNewThread" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[New thread]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_MsgNewReceived" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[New message received]]></key>
+        <key id="event_manager&amp;_EVENT_CLASS_PurchaseCourse" attributes="" save_date="2021-08-02 13:19:09"><![CDATA[Purchase Course Notification]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserApproved" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[User approval]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserCourseBuy" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[User purchased a course]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserCourseEnded" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Student completed a course]]></key>
@@ -1338,7 +1329,6 @@ Method: [method]]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserCourseInsertedModerators" attributes="" save_date="2021-01-28 12:01:42"><![CDATA[User subscription - this is sent to the moderators]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserCourseInsertModerate" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[User waiting to be subscribed to a course]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserCourseInsertOverbooking" attributes="" save_date="2021-08-02 13:19:09"><![CDATA[Overbooking user who needs to be approved]]></key>
-        <key id="event_manager&amp;_EVENT_CLASS_PurchaseCourse" attributes="" save_date="2021-08-02 13:19:09"><![CDATA[Purchase Course Notification]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserCourseLevelChanged" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[User level has been changed in a course]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserCourseRemoved" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[User unsubscribed from a course]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserCourseRemovedModerate" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[User waiting to be unsubscribed from a course]]></key>
@@ -1763,10 +1753,9 @@ In handling this information, accuracy and precision shall be met to ensure the 
         <key id="menu&amp;_ASSOCIATE_USER" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Associate Users]]></key>
         <key id="menu&amp;_BLIND_MAIN_MENU" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Jump to the main menu]]></key>
         <key id="menu&amp;_BLIND_MENU_MODULES" attributes="accessibility" save_date="2020-09-15 14:47:12"><![CDATA[Jump to the modules list]]></key>
+        <key id="menu&amp;_CATEGORIES" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Categories]]></key>
         <key id="menu&amp;_CERTIFICATE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Certificates]]></key>
         <key id="menu&amp;_COMMUNICATION_MAN" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Communications]]></key>
-        <key id="menu&amp;_MANAGEMENT_COMMUNICATION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Manage Communications]]></key>
-        <key id="menu&amp;_CATEGORIES" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Categories]]></key>
         <key id="menu&amp;_CONFIGURATION" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Settings]]></key>
         <key id="menu&amp;_CONFIG_ELEARNING" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[E-learning configuration]]></key>
         <key id="menu&amp;_CONFIG_SYS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[System configuration]]></key>
@@ -1783,7 +1772,7 @@ In handling this information, accuracy and precision shall be met to ensure the 
         <key id="menu&amp;_JUMP_TO_PLATFORM" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Jump to:]]></key>
         <key id="menu&amp;_LANG" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Language management]]></key>
         <key id="menu&amp;_LISTUSER" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[User management]]></key>
-        <key id="menu&amp;_MANAGEMENT_COMMUNICATION" attributes="" save_date="2024-01-15 20:15:46"><![CDATA[Manage Communications]]></key>
+        <key id="menu&amp;_MANAGEMENT_COMMUNICATION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Manage Communications]]></key>
         <key id="menu&amp;_MANAGEMENT_COURSE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[E-learning]]></key>
         <key id="menu&amp;_MANAGEMENT_RESERVATION" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Reservation management]]></key>
         <key id="menu&amp;_MAN_CERTIFICATE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Certificates management]]></key>
@@ -2216,7 +2205,7 @@ Please don't upload offensive images.]]></key>
         <key id="register&amp;_NEW_PASSWORD" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[New password]]></key>
         <key id="register&amp;_NOTE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Blank space before and after username fields are not valid and will be erased]]></key>
         <key id="register&amp;_OLD_PWD" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Your old password]]></key>
-        <key id="register&amp;_PASSWORD_MUST_CONTAIN" attributes="" save_date="2021-01-28 12:01:55"><![CDATA[The password has to include: ]]></key>
+        <key id="register&amp;_PASSWORD_MUST_CONTAIN" attributes="" save_date="2021-01-28 12:01:55"><![CDATA[The password has to include:]]></key>
         <key id="register&amp;_PASSWORD_TOO_SHORT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Password too short]]></key>
         <key id="register&amp;_REG_CONFIRM_FAILED" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[The confirmation of your account is failed]]></key>
         <key id="register&amp;_REG_ELAPSEDREQUEST" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[The request is not valid because the validity period is elapsed]]></key>
@@ -2463,7 +2452,13 @@ You have to confirm your account before using it.]]></key>
         <key id="sms&amp;_APPROVED_USER_TEXT_SMS" attributes="sms" save_date="2020-09-15 14:47:12"><![CDATA[Your subscription request has been approved]]></key>
         <key id="sms&amp;_DELETED_USER_TEXT_SMS" attributes="sms" save_date="2020-09-15 14:47:12"><![CDATA[E-learning: Your account with the username [userid] has been deleted]]></key>
         <key id="sms&amp;_EVENT_CHANGE_NODE_USER_SBJ_SMS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
+        <key id="sms&amp;_EVENT_CLASSROOM_COURSE_DATE_EVENT_UNSUBSCRIBE_USER_TEXT_SMS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Dear [firstname] [lastname],
+you have been unsubscribed from the classroom course ([classroom_code]) - [classroom_date]]]></key>
         <key id="sms&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT_SMS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
+        <key id="sms&amp;_EVENT_COURSE_EVENT_UNSUBSCRIBE_USER_TEXT_SMS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Dear [firstname] [lastname],
+you have been unsubscribed from the course ([course_code]) - [course]]]></key>
+        <key id="sms&amp;_EVENT_EDITION_COURSE_EVENT_UNSUBSCRIBE_USER_TEXT_SMS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Dear [firstname] [lastname],
+you have been unsubscribed from the edition ([edition_code]) - [edition]]]></key>
         <key id="sms&amp;_EVENT_SUSPENDED_USER_TEXT_SMS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[[url] [firstname] [lastname] [username]]]></key>
         <key id="sms&amp;_MODIFIED_USER_TEXT_SMS" attributes="sms" save_date="2020-09-15 14:47:12"><![CDATA[Your account at the site <a href="[url]">[url]</a>   has been modified:
 
@@ -2484,12 +2479,6 @@ Username: [userid]]]></key>
         <key id="sms&amp;_WAITING_USER_TEXT_SMS" attributes="sms" save_date="2020-09-15 14:47:12"><![CDATA[There is a new user waiting for the approval]]></key>
         <key id="sms&amp;_YOU_RECIVE_MSG_TEXT_SMS" attributes="sms" save_date="2020-09-15 14:47:12"><![CDATA[You have received a new message in the e-learning system in the course [course] from the user [from]]]></key>
         <key id="sms&amp;_YOU_RECIVE_MSG_TEXT_SMS_COURSE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[You received a new message on the  e-learning platform in course [course] from the user [from]]]></key>
-        <key id="sms&amp;_EVENT_CLASSROOM_COURSE_DATE_EVENT_UNSUBSCRIBE_USER_TEXT_SMS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Dear [firstname] [lastname],
-you have been unsubscribed from the classroom course ([classroom_code]) - [classroom_date]]]></key>
-        <key id="sms&amp;_EVENT_EDITION_COURSE_EVENT_UNSUBSCRIBE_USER_TEXT_SMS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Dear [firstname] [lastname],
-you have been unsubscribed from the edition ([edition_code]) - [edition]]]></key>
-        <key id="sms&amp;_EVENT_COURSE_EVENT_UNSUBSCRIBE_USER_TEXT_SMS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Dear [firstname] [lastname],
-you have been unsubscribed from the course ([course_code]) - [course]]]></key>
       </module>
       <module id="social">
         <key id="social&amp;_CONNECTED_ACCOUNTS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Accounts connected:]]></key>
@@ -2874,7 +2863,7 @@ you have been unsubscribed from the course ([course_code]) - [course]]]></key>
         <key id="standard&amp;_SELECT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Select]]></key>
         <key id="standard&amp;_SELECTED" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Selected elements]]></key>
         <key id="standard&amp;_SELECT_ALL" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Select all]]></key>
-        <key id="standard&amp;_SELECT_LANGUAGE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Select the language]]></key>
+        <key id="standard&amp;_SELECT_LANG" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Select the language]]></key>
         <key id="standard&amp;_SELECT_LIBRARY" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Select a library to view]]></key>
         <key id="standard&amp;_SELECT_VIDEO_TYPE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Select the bandwidth]]></key>
         <key id="standard&amp;_SEND" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Send]]></key>
@@ -2934,12 +2923,14 @@ you have been unsubscribed from the course ([course_code]) - [course]]]></key>
         <key id="standard&amp;_USERNAME" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Username]]></key>
         <key id="standard&amp;_USERS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Users]]></key>
         <key id="standard&amp;_USER_ALREADY_EXISTS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[User already exists]]></key>
+        <key id="standard&amp;_USER_ID" attributes="" save_date="2024-05-09 11:41:00"><![CDATA[User ID]]></key>
         <key id="standard&amp;_USER_RELEASE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[User release]]></key>
         <key id="standard&amp;_USER_STATUS_BEGIN" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[In progress]]></key>
         <key id="standard&amp;_USER_STATUS_CANCELLED" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Deleted]]></key>
         <key id="standard&amp;_USER_STATUS_CONFIRMED" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Subscriptions to confirm]]></key>
         <key id="standard&amp;_USER_STATUS_END" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Completed]]></key>
         <key id="standard&amp;_USER_STATUS_ENTER" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Enter]]></key>
+        <key id="standard&amp;_USER_STATUS_OVERBOOKING" attributes="" save_date="2024-05-09 11:41:08"><![CDATA[Overbooking]]></key>
         <key id="standard&amp;_USER_STATUS_RESERVED" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Reserved]]></key>
         <key id="standard&amp;_USER_STATUS_SUBS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Subscribed]]></key>
         <key id="standard&amp;_USER_STATUS_SUSPEND" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Suspended]]></key>
@@ -3414,19 +3405,6 @@ you have been unsubscribed from the course ([course_code]) - [course]]]></key>
         <key id="wiki&amp;_WIKI_LEVEL_UP" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Level up]]></key>
         <key id="wiki&amp;_WIKI_OTHER_LANGUAGES" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[select other languages for pages]]></key>
         <key id="wiki&amp;_WIKI_PREV" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Prev.]]></key>
-      </module>
-      <module id="communication">
-        <key id="communication&amp;_LABEL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Name]]></key>
-        <key id="communication&amp;_PARENT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Upper Category]]></key>
-        <key id="communication&amp;_FILTER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Filter communications by category]]></key>
-        <key id="communication&amp;_COUNT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Count]]></key>
-        <key id="communication&amp;_NO_OPTION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[No Selection]]></key>
-        <key id="communication&amp;_CATEGORY_WITH_POSTS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Impossiible deleting categories with published posts]]></key>
-        <key id="communication&amp;_ERROR" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Generic Error]]></key>
-        <key id="communication&amp;_CATEGORY_FATHER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Impossible deleting a father category]]></key>
-        <key id="communication&amp;_CATEGORY_MISSING" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[You must set at least one category]]></key>
-        <key id="communication&amp;_MARK_AS_READ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mark as read]]></key>
-        <key id="communication&amp;_MARK_AS_UNREAD" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mark as unread]]></key>
       </module>
     </platform>
   </LANG>
