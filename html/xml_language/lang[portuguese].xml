@@ -2493,7 +2493,7 @@ Senha: [password]]]></key>
         <key id="standard&amp;_ACCESS_TOTAL_TIME" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Tempo total de acesso]]></key>
         <key id="standard&amp;_ACTIVATE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Activar]]></key>
         <key id="standard&amp;_ACTIVE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Activo]]></key>
-        <key id="standard&amp;_ACTIVE_TAB" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[(Área actual)]]></key>
+        <key id="standard&amp;_ACTIVE_TAB" attributes="" save_date="2024-05-09 13:29:27"><![CDATA[(Área atual)]]></key>
         <key id="standard&amp;_ACTIVITY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Actividade]]></key>
         <key id="standard&amp;_ADD" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Adicionar]]></key>
         <key id="standard&amp;_ADD_TAGS" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Adicionar tags]]></key>
@@ -2579,7 +2579,8 @@ Senha: [password]]]></key>
         <key id="standard&amp;_CREATE_NEW" attributes="" save_date="2024-01-15 22:22:17"><![CDATA[Criar novo]]></key>
         <key id="standard&amp;_CREATION_DATE" attributes="" save_date="2024-01-15 23:12:25"><![CDATA[Data de criação]]></key>
         <key id="standard&amp;_CREDITS" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Créditos]]></key>
-        <key id="standard&amp;_CURRENT_FILE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Ficheiro actual]]></key>
+        <key id="standard&amp;_CURRENT_FILE" attributes="" save_date="2024-05-09 13:29:31"><![CDATA[Ficheiro atual]]></key>
+        <key id="standard&amp;_CURRENT_TRANSLATION" attributes="" save_date="2024-05-09 13:18:42"><![CDATA[Tradução atual]]></key>
         <key id="standard&amp;_DASHBOARD" attributes="" save_date="2024-01-24 11:02:07"><![CDATA[Dashboard]]></key>
         <key id="standard&amp;_DATE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Data]]></key>
         <key id="standard&amp;_DATE_BEGIN" attributes="" save_date="2024-01-15 23:41:01"><![CDATA[Data de início]]></key>
@@ -2648,6 +2649,7 @@ Senha: [password]]]></key>
         <key id="standard&amp;_FILESIZE" attributes="" save_date="2024-01-15 23:23:47"><![CDATA[Tamanho do ficheiro]]></key>
         <key id="standard&amp;_FILE_MANAGER" attributes="" save_date="2024-01-17 09:48:03"><![CDATA[Gerenciador de ficheiros]]></key>
         <key id="standard&amp;_FILE_SURE_DEL" attributes="" save_date="2024-01-18 14:39:38"><![CDATA[Tem a certeza que gostaria de excluir esse ficheiro?]]></key>
+        <key id="standard&amp;_FILE_TRANSLATION" attributes="" save_date="2024-05-09 13:19:16"><![CDATA[Tradução do ficheiro]]></key>
         <key id="standard&amp;_FILTER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Filtrar por]]></key>
         <key id="standard&amp;_FILTER_ALL_CONDS" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Todas as condições devem ser satisfeitas]]></key>
         <key id="standard&amp;_FILTER_APPLY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Aplicar filtro]]></key>
@@ -2688,6 +2690,7 @@ Senha: [password]]]></key>
         <key id="standard&amp;_INVALID_EXTENSION" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Extensão inválida]]></key>
         <key id="standard&amp;_JUMP" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Ir para]]></key>
         <key id="standard&amp;_JUMP_TO" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Ir para módulo de conteúdo]]></key>
+        <key id="standard&amp;_KEY" attributes="" save_date="2024-05-09 13:16:59"><![CDATA[Chave]]></key>
         <key id="standard&amp;_LABEL" attributes="" save_date="2024-01-15 23:07:13"><![CDATA[Rótulos]]></key>
         <key id="standard&amp;_LABELS" attributes="" save_date="2024-01-15 23:07:05"><![CDATA[Rótulo]]></key>
         <key id="standard&amp;_LANGUAGE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Idioma]]></key>
@@ -2729,6 +2732,7 @@ Senha: [password]]]></key>
         <key id="standard&amp;_MIN_SCORE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Pontuação mínima]]></key>
         <key id="standard&amp;_MOD" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Editar]]></key>
         <key id="standard&amp;_MODERATE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Moderado]]></key>
+        <key id="standard&amp;_MODULE" attributes="" save_date="2024-05-09 13:17:26"><![CDATA[Module]]></key>
         <key id="standard&amp;_MOD_LIMIT_PROFILE" attributes="" save_date="2024-01-15 22:17:24"><![CDATA[Permitir somente alteração de senha]]></key>
         <key id="standard&amp;_MOD_SELECTED" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Editar seleccionado]]></key>
         <key id="standard&amp;_MOD_TITLE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Editar título]]></key>
@@ -2808,6 +2812,7 @@ Senha: [password]]]></key>
         <key id="standard&amp;_PLANNED" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Planeado]]></key>
         <key id="standard&amp;_PLAY" attributes="" save_date="2024-01-16 09:41:06"><![CDATA[Reproduzir]]></key>
         <key id="standard&amp;_PLAY_CHANCE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Número de visualizações]]></key>
+        <key id="standard&amp;_PLUGIN" attributes="" save_date="2024-05-09 13:17:47"><![CDATA[Plugin]]></key>
         <key id="standard&amp;_PRECOMPILE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Preencha os campos em falta]]></key>
         <key id="standard&amp;_PREREQUISITES" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Pré-requisitos]]></key>
         <key id="standard&amp;_PRESENCE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Presença]]></key>

@@ -2587,6 +2587,7 @@ Username: [userid]]]></key>
         <key id="standard&amp;_CREATION_DATE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Creation date]]></key>
         <key id="standard&amp;_CREDITS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Credits]]></key>
         <key id="standard&amp;_CURRENT_FILE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Current file]]></key>
+        <key id="standard&amp;_CURRENT_TRANSLATION" attributes="" save_date="2024-05-09 13:18:42"><![CDATA[Current translation]]></key>
         <key id="standard&amp;_DASHBOARD" attributes="" save_date="2024-01-24 11:02:07"><![CDATA[Dashboard]]></key>
         <key id="standard&amp;_DATE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Date]]></key>
         <key id="standard&amp;_DATE_BEGIN" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Date begin]]></key>
@@ -2655,6 +2656,7 @@ Username: [userid]]]></key>
         <key id="standard&amp;_FILESIZE" attributes="" save_date="2022-03-28 10:08:36"><![CDATA[File size]]></key>
         <key id="standard&amp;_FILE_MANAGER" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[File manager]]></key>
         <key id="standard&amp;_FILE_SURE_DEL" attributes="" save_date="2022-03-28 10:08:50"><![CDATA[Are you sure you want to delete this file?]]></key>
+        <key id="standard&amp;_FILE_TRANSLATION" attributes="" save_date="2024-05-09 13:19:16"><![CDATA[File translation]]></key>
         <key id="standard&amp;_FILTER" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Filter by]]></key>
         <key id="standard&amp;_FILTER_ALL_CONDS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[All conditions must be satisfied]]></key>
         <key id="standard&amp;_FILTER_APPLY" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Apply filter]]></key>
@@ -2695,6 +2697,7 @@ Username: [userid]]]></key>
         <key id="standard&amp;_INVALID_EXTENSION" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Invalid extension]]></key>
         <key id="standard&amp;_JUMP" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Jump to]]></key>
         <key id="standard&amp;_JUMP_TO" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Jump to module content]]></key>
+        <key id="standard&amp;_KEY" attributes="" save_date="2024-05-09 13:16:59"><![CDATA[Key]]></key>
         <key id="standard&amp;_LABEL" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Label]]></key>
         <key id="standard&amp;_LABELS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Labels]]></key>
         <key id="standard&amp;_LANGUAGE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Language]]></key>
@@ -2736,6 +2739,7 @@ Username: [userid]]]></key>
         <key id="standard&amp;_MIN_SCORE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Min score]]></key>
         <key id="standard&amp;_MOD" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Edit]]></key>
         <key id="standard&amp;_MODERATE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Moderate]]></key>
+        <key id="standard&amp;_MODULE" attributes="" save_date="2024-05-09 13:19:35"><![CDATA[Module]]></key>
         <key id="standard&amp;_MOD_LIMIT_PROFILE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Allow only password edit]]></key>
         <key id="standard&amp;_MOD_SELECTED" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Edit selected]]></key>
         <key id="standard&amp;_MOD_TITLE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Edit title]]></key>
@@ -2815,6 +2819,7 @@ Username: [userid]]]></key>
         <key id="standard&amp;_PLANNED" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Planned]]></key>
         <key id="standard&amp;_PLAY" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Play]]></key>
         <key id="standard&amp;_PLAY_CHANCE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Number of views]]></key>
+        <key id="standard&amp;_PLUGIN" attributes="" save_date="2024-05-09 13:17:47"><![CDATA[Plugin]]></key>
         <key id="standard&amp;_PRECOMPILE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Complete the missing fields]]></key>
         <key id="standard&amp;_PREREQUISITES" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Prerequisites]]></key>
         <key id="standard&amp;_PRESENCE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Presence]]></key>
