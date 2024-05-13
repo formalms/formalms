@@ -15,7 +15,7 @@
             </div>
         #}
 
-        <div class="dashboard__description">{{ Lang_translate('_'~block.postData.block|upper,'dashboardsetting') }}</div>
+        <div class="dashboard__description">{{ Lang_translate('_'~block.postData.block|upper~'_DESCRIPTION','dashboardsetting') }}</div>
 
         <div class="dashboard__info">
             {% if block.registeredActions | length > 0 %}
