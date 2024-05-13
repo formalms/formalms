@@ -1,0 +1,256 @@
+* {
+    box-sizing: border-box;
+}
+
+iframe[seamless] {
+    background-color: transparent;
+    border: none;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body > header {
+    margin: 2em 0;
+}
+
+body > footer {
+    
+}
+
+body > div#errors {
+    color: #ff0000;
+    max-height: 5em;
+    overflow: auto;
+}
+
+body > div#errors > p {
+    padding: 0.5em 1em;
+    margin: 0;
+    border-bottom: #ff0000 1px solid;
+}
+
+body > div#content {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+}
+
+body > div > iframe#scorm {
+    flex: 1 1;
+    order: 1;
+    width: 100%;
+    height: 100%;
+}
+
+body > div > aside {
+    min-width: 2em;
+    order: 0;
+}
+
+body > header > * {
+    display: inline-block;
+}
+
+#title {
+    font-size: 2em;
+}
+
+#sco-title::before {
+    content: ": ";
+}
+
+button#close {
+    position: absolute;
+    right: 5px;
+    width: 1.5em;
+    height: 1.5em;
+    padding: 0;
+    border: none;
+    outline: none;
+    background: none;
+    cursor: pointer;
+}
+
+body:not(.multisco) #sco-title {
+    display: none;
+}
+
+#toc {
+    display: flex;
+    flex-direction: column;
+    white-space: nowrap;
+    border-right: rgba(0, 0, 0, 0.063) 1px solid;
+    position: relative;
+}
+
+#toc.hidden #toc-content {
+    display: none;
+}
+
+#toc-toggle {
+    position: absolute;
+    border: none;
+    outline: none;
+    z-index: 10;
+    right: 0;
+    top: 0;
+    width: 2em;
+    height: 2em;
+    cursor: pointer;
+    background: none;
+}
+
+body:not(.multisco) #toc {
+    display: none;
+}
+
+#toc-content {
+    min-width: 300px;
+    padding: 1em;
+    height: 100%;
+    overflow-y: auto;
+}
+
+#toc-content ul h1,
+#toc-content ul h2,
+#toc-content ul h3,
+#toc-content ul h4,
+#toc-content ul h5,
+#toc-content ul h6 {
+    margin: 0;
+    padding: 0;
+    font-size: unset;
+    font-weight: unset;
+}
+
+#toc-content ul > li.current > h1,
+#toc-content ul > li.current > h2,
+#toc-content ul > li.current > h3,
+#toc-content ul > li.current > h4,
+#toc-content ul > li.current > h5,
+#toc-content ul > li.current > h6 {
+    font-weight: bold;
+    background: #00000010;
+}
+
+#toc-content ul {
+    padding: 0;
+    margin: 0;
+}
+
+#toc-content ul a {
+    background: none;
+    border: none;
+    outline: none;
+    padding: 0.2em;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: inherit;
+    color: inherit;
+    text-decoration: inherit;
+}
+
+#toc a:hover {
+    text-shadow: 0 0 3px rgba(0, 0, 0, 0.188);
+}
+
+#toc-content ul > li.prerequisites-satisfied,
+#toc-content ul > li.prerequisites-unsatisfied {    
+    cursor: help;
+}
+
+#toc-content ul > li.prerequisites-unsatisfied {
+    color: #cccccc;
+    text-decoration: line-through;
+}
+
+#toc-content ul > li.prerequisites-unsatisfied > * > a {
+    pointer-events: none;
+}
+
+#toc-content ul > li.prerequisites-satisfied > * > a::after,
+#toc-content ul > li.prerequisites-unsatisfied > * > a::after {
+    content: " *";
+    font-size: smaller;
+    vertical-align: text-top;
+}
+
+#toc-content ul > li.prerequisites-satisfied > * > a::after {
+    color: #00aa00;
+}
+
+#toc-content ul > li.prerequisites-unsatisfied > * > a::after {
+    color: #aa0000;
+}
+
+#toc-content ul > li > * > a::before {
+    content: "";
+    display: inline-block;
+    width: 1em;
+    margin-right: 0.5em;
+}
+
+#toc-content ul > li.completion-status-incomplete > * > a::before,
+#toc-content ul > li.completion-status-completed > * > a::before,
+#toc-content ul > li.success-status-passed > * > a::before,
+#toc-content ul > li.success-status-failed > * > a::before {
+    content: "\25CF";
+}
+
+#toc-content ul > li.completion-status-incomplete > * > a::before {
+    color: #ffaa00;
+}
+
+#toc-content ul > li.completion-status-completed > * > a::before,
+#toc-content ul > li.success-status-passed > * > a::before {
+    color: #00aa00;
+}
+
+#toc-content ul > li.success-status-failed > * > a::before {
+    color: #aa0000;
+}
+
+#toc-content li {
+    list-style-type: none;
+}
+
+#toc-content ul ul > li {
+    margin-left: 1em;
+}
+
+#toc-content ul > li.has-children.collapsed > ul {
+    display: none;
+}
+
+#toc-content ul > li.has-children > * > a::before {
+    content: '-';
+    font-size: smaller;
+    display: inline-block;
+    width: 1em;
+    margin-right: 0.5em;
+    vertical-align: baseline;
+    line-height: 1em;
+    border: 1px solid rgba(0, 0, 0, 0.188);
+    padding: 0;
+    text-align: center;
+}
+
+#toc-content ul > li.has-children.collapsed > * > a::before {
+    content: '+';
+}

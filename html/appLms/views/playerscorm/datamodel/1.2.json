@@ -73,7 +73,6 @@
             "score": {
                 "index": "no",
                 "item": "no",
-                "isset": "1",
                 "_children": {
                     "item": "yes",
                     "mandatory": "yes",
@@ -172,7 +171,7 @@
                 "permission": "readonly",
                 "text": "id,score,status"
             },
-            "index": {
+            "_index": {
                 "id": {
                     "item": "yes",
                     "mandatory": "no",
@@ -292,7 +291,7 @@
                 "permission": "readonly",
                 "text": "id,objectives,time,type,correct_responses,weighting,student_response,result,latency"
             },
-            "index": {
+            "_index": {
                 "id": {
                     "item": "yes",
                     "mandatory": "no",
@@ -309,7 +308,7 @@
                         "permission": "readonly",
                         "text": "id"
                     },
-                    "index": {
+                    "_index": {
                         "id": {
                             "item": "yes",
                             "mandatory": "no",
@@ -341,7 +340,7 @@
                         "permission": "readonly",
                         "text": "pattern"
                     },
-                    "index": {
+                    "_index": {
                         "pattern": {
                             "item": "yes",
                             "mandatory": "no",

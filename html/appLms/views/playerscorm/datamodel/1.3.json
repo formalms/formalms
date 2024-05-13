@@ -26,7 +26,7 @@
                 "permission": "readonly",
                 "text": "comment,location,timestamp"
             },
-            "index": {
+            "_index": {
                 "comment": {
                     "item": "yes",
                     "mandatory": "yes",
@@ -97,7 +97,7 @@
                 "permission": "readonly",
                 "text": "id,type,objectives,timestamp,correct_responses,weighting,learner_response,result,latency,description"
             },
-            "index": {
+            "_index": {
                 "id": {
                     "item": "yes",
                     "mandatory": "yes",
@@ -121,7 +121,7 @@
                         "permission": "readonly",
                         "text": "id"
                     },
-                    "index": {
+                    "_index": {
                         "id": {
                             "item": "yes",
                             "mandatory": "yes",
@@ -147,7 +147,7 @@
                         "permission": "readonly",
                         "text": "pattern"
                     },
-                    "index": {
+                    "_index": {
                         "pattern": {
                             "item": "yes",
                             "mandatory": "yes",
@@ -379,7 +379,6 @@
         "score": {
             "index": "no",
             "item": "no",
-            "isset": "1",
             "_children": {
                 "item": "yes",
                 "mandatory": "yes",

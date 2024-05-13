@@ -1,14 +1,17 @@
 function SCORM_Param(api, param) {
     this.api        = api;
     this.param      = param.split('.');
-    
-    if(this.param[0] === 'adl') {
+    this.path       = [];
+    for(let i = 0; i < this.param.length; i++) {
+        this.path.push(isNaN(this.param[i]) ? this.param[i] : "_index");
+    }    
+    if(this.path[0] === 'adl') {
         this.error("402");
     }
 }
 
 SCORM_Param.log = function(log, label) {
-    if(label !== undefined) {
+    if(label !== null && typeof label !== "undefined") {
         console.log("SCORM_Param", "-", label + ":", log);
     } else {
         console.log("SCORM_Param", "-", log);
@@ -16,7 +19,7 @@ SCORM_Param.log = function(log, label) {
 }
 
 SCORM_Param.debug = function(debug, label) {
-    if(label !== undefined) {
+    if(label !== null && typeof label !== "undefined") {
         console.debug("SCORM_Param", "-", label + ":", debug);
     } else {
         console.debug("SCORM_Param", "-", debug);
@@ -29,17 +32,17 @@ SCORM_Param.prototype.error = function(error) {
 
 SCORM_Param.prototype.model = function(param, required) {
     var model = deepObjGetValue(this.api.datamodel(), param);
-    if(required && model === undefined) {
+    if(required && (model === null || typeof model === "undefined")) {
         this.error("");
     }
     return model;
 }
 
 SCORM_Param.prototype.get = function() {
-    if(!this.param[0]) {
+    if(!this.path[0]) {
         this.error("301");
     }
-    switch(this.param[this.param.length - 1]) {
+    switch(this.path[this.path.length - 1]) {
         case '_count':      return this.getCount();
         case '_children':   return this.getChildren();
         case '_version':    return this.getVersion();
@@ -50,41 +53,41 @@ SCORM_Param.prototype.get = function() {
 SCORM_Param.prototype.getCount = function() {
     var param = this.param;
     param.pop();
-    var model = this.model(param, true);
+    var path = this.path;
+    path.pop();
+    var model = this.model(path, true);
     if(model.index !== "yes") {
         this.error("301");
     }
-    //check if is a runtime element that is reader before setted
     return this.api.value(param).length;
 }
 
 SCORM_Param.prototype.getChildren = function() {
-    var model = this.model(this.param, true);
+    var model = this.model(this.path, true);
     return model.text;
 }
 
 SCORM_Param.prototype.getVersion = function() {
-    var model = this.model(this.param, true);
+    var model = this.model(this.path, true);
     return model.text;
 }
 
 SCORM_Param.prototype.getValue = function() {
-    var model = this.model(this.param, true);
-    if(model.item !== "yes") {
+    var model = this.model(this.path, true);
+    if(model === null || typeof model === "undefined" || model.item !== "yes") {
         this.error("401");
     }
     if(!this.checkPermission(model.permission, 'read')) {
         this.error("405");
     }
-    //check if is a runtime element that is reader before setted
     return this.api.value(this.param);
 }
 
 SCORM_Param.prototype.set = function(value) {
-    if(!this.param[0]) {
-        this.error("351"); // cambiare
+    if(!this.path[0]) {
+        this.error("351");
     }
-    switch(this.param[this.param.length - 1]) {
+    switch(this.path[this.path.length - 1]) {
         case '_count':
         case '_children':
         case '_version': this.error(404);
@@ -93,12 +96,8 @@ SCORM_Param.prototype.set = function(value) {
 }
 
 SCORM_Param.prototype.setValue = function(value) {    
-    var model = this.model(this.param, false);
-    if(model === undefined) {
-        // vari controlli....
-        // cose...
-    }
-    if(model.item !== "yes") {
+    var model = this.model(this.path, false);
+    if(model === null || typeof model === "undefined" || model.item !== "yes") {
         this.error("401");
     }
     if(!this.checkPermission(model.permission, 'write')) {
@@ -120,7 +119,6 @@ SCORM_Param.prototype.setValue = function(value) {
         this.error("406");
     }
     this.api.value(this.param, value);
-    // set isset
 }
 
 SCORM_Param.prototype.checkPermission = function(permission, access) {

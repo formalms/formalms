@@ -1,7 +1,7 @@
 function SCORM_TypesHandler() { }
 
 SCORM_TypesHandler.log = function(log, label) {
-    if(label !== undefined) {
+    if(label !== null && typeof label !== "undefined") {
         console.log("SCORM_TypesHandler", "-", label + ":", log);
     } else {
         console.log("SCORM_TypesHandler", "-", log);
@@ -9,7 +9,7 @@ SCORM_TypesHandler.log = function(log, label) {
 }
 
 SCORM_TypesHandler.debug = function(debug, label) {
-    if(label !== undefined) {
+    if(label !== null && typeof label !== "undefined") {
         console.debug("SCORM_TypesHandler", "-", label + ":", debug);
     } else {
         console.debug("SCORM_TypesHandler", "-", debug);
@@ -92,6 +92,9 @@ SCORM_TypesHandler.prototype.timeValid = function(H, M, S) {
 	CT.setSeconds(S);
 	
 	return (( CT.getMinutes() == M ) && ( CT.getSeconds() == S ));
+}
+SCORM_TypesHandler.prototype.checkTime1 = function(value) {
+    return /^\d\d:\d\d:\d\d(($)|(\.\d{1,2}$))/.test(value);
 }
 SCORM_TypesHandler.prototype.checkTime2 = function(value) {
     var re = new RegExp( "^(\\d{4})(-(\\d{2})(-(\\d{2})(T(\\d{2})(:(\\d{2})(:(\\d{2})(\\.(\\d{1,2})(Z|(([+\\-])(\\d\\d):(\\d\\d)))?)?)?)?)?)?)?$" );
@@ -177,10 +180,10 @@ SCORM_TypesHandler.prototype.checkMin = function(value, min) {
     return parseFloat(value) >= min;
 }
 SCORM_TypesHandler.prototype.checkMaxLength = function(value, max) {
-    return value.length <= max;
+    return value.toString().length <= max;
 }
 SCORM_TypesHandler.prototype.checkMinLength = function(value, min) {
-    return value.length >= min;
+    return value.toString().length >= min;
 }
 
 
@@ -229,7 +232,7 @@ function SCORM_TypesHandler_12() {
     this.validate_CMIVocabulary = function(value, vocabulary) {
         switch(vocabulary) {
             case 'Mode':            return _this.checkValueInList(value, ["normal", "review", "browse"]);
-            case 'Status':          return _this.checkValueInList(value, ["passed", "completed", "failed", "incomplete", "browsed", "not attempted", "ab-inito"]);
+            case 'Status':          return _this.checkValueInList(value, ["passed", "completed", "failed", "incomplete", "browsed"]); // "not attempted" should only be set by the LMS 
             case 'Exit':            return _this.checkValueInList(value, ["time-out", "suspend", "logout", ""]);
             case 'Credit':          return _this.checkValueInList(value, ["credit", "no-credit"]);
             case 'Entry':           return _this.checkValueInList(value, ["ab-initio", "resume", ""]);

@@ -31,7 +31,21 @@ WHERE so.idscorm_organization = $id;
 SQL;
         $scorm = sql_fetch_object(sql_query($query));
         $scorm->scoes = $this->getSCOes($id);
-        return $scorm;
+
+        $return["result"]["scorm"] = $scorm;
+        return $return;
+    }
+
+    public function config($id) {
+
+        $config["autoplay"] = true;
+        $config["openToc"] = true;
+
+        $return["result"] = $config;
+
+        $return["success"] = true;
+
+        return $return;
     }
 
     public function getSCOes($id, $parent = null) {
@@ -42,7 +56,7 @@ SQL;
         }
         $query =
 <<<SQL
-SELECT idscorm_item AS id, title, '' AS prerequisites, idscorm_parentitem AS parent, CONCAT("../../../files/appLms/scorm/", sp.path, '/', sr.href) AS resource
+SELECT idscorm_item AS id, title, '' AS prerequisites, idscorm_parentitem AS parent, CONCAT("../../files/appLms/scorm/", sp.path, '/', sr.href) AS resource
 FROM %lms_scorm_items si
 LEFT JOIN (%lms_scorm_resources sr
 INNER JOIN %lms_scorm_package sp ON sp.idscorm_package = sr.idscorm_package)
@@ -111,7 +125,8 @@ SQL;
 
         scormInitializeParams($trackobj, $scormtype, $arrItemTrackData['idscorm_item']);
         
-        return $this->XMLtoJSON($trackobj->getXmlDoc());
+        $return["result"]["track"] = $this->XMLtoJSON($trackobj->getXmlDoc());
+        return $return;
     }
 
     public function commit($id, $data) {
@@ -126,6 +141,10 @@ SQL;
         foreach($flatdata as $parampath => $value) {
             $trackobj->setParam($parampath, $value);
         }
+    }
+
+    public function pull($id, $data) {
+        // PULL
     }
 
     public function finish($id) {

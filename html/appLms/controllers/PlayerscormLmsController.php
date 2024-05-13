@@ -35,16 +35,25 @@ class PlayerscormLmsController extends LmsController
 
     public function scorm()
     {
-        $id = FormaLms\lib\Get::req('id', DOTY_INT);
+        $id = FormaLms\lib\Get::req('scormId', DOTY_INT);
         header('Content-type: application/json');
         echo json_encode($this->model->getSCORM($id));
         http_response_code(200);
         exit;
     }
 
+    public function config()
+    {
+        $id = FormaLms\lib\Get::req('scormId', DOTY_INT);
+        header('Content-type: application/json');
+        echo json_encode($this->model->config($id));
+        http_response_code(200);
+        exit;
+    }
+
     public function initialize()
     {   
-        $id = FormaLms\lib\Get::req('id', DOTY_INT);
+        $id = FormaLms\lib\Get::req('scoId', DOTY_INT);
         header('Content-type: application/json');
         echo json_encode($this->model->initialize($id));
         http_response_code(200);
@@ -53,7 +62,7 @@ class PlayerscormLmsController extends LmsController
 
     public function commit()
     {   
-        $id = FormaLms\lib\Get::req('id', DOTY_INT);
+        $id = FormaLms\lib\Get::req('scoId', DOTY_INT);
         if (isset($GLOBALS['HTTP_RAW_POST_DATA'])) {
             $data = json_decode($GLOBALS['HTTP_RAW_POST_DATA']);
         } else {
@@ -67,7 +76,7 @@ class PlayerscormLmsController extends LmsController
 
     public function finish()
     {
-        $id = FormaLms\lib\Get::req('id', DOTY_INT);
+        $id = FormaLms\lib\Get::req('scoId', DOTY_INT);
         if (isset($GLOBALS['HTTP_RAW_POST_DATA'])) {
             $data = json_decode($GLOBALS['HTTP_RAW_POST_DATA']);
         } else {
@@ -75,6 +84,20 @@ class PlayerscormLmsController extends LmsController
         }
         $this->model->commit($id, $data);
         $this->model->finish($id);
+        header('Content-type: application/json');
+        http_response_code(200);
+        exit;
+    }
+
+    public function pull()
+    {
+        $id = FormaLms\lib\Get::req('scoId', DOTY_INT);
+        if (isset($GLOBALS['HTTP_RAW_POST_DATA'])) {
+            $data = json_decode($GLOBALS['HTTP_RAW_POST_DATA']);
+        } else {
+            $data = json_decode(file_get_contents('php://input'));
+        }
+        $this->model->pull($id, $data);
         header('Content-type: application/json');
         http_response_code(200);
         exit;

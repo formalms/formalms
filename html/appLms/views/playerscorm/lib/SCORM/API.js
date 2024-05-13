@@ -1,8 +1,12 @@
 SCORM_API.factory = function(player) {
     switch(player.SCORM().version()) {
-        case SCORM_API_12.version(): return new SCORM_API_12(player);
-        case SCORM_API_13.version(): return new SCORM_API_13(player);
-        default: throw new Error("Unsupported scorm version.");
+        case "1.2": return new SCORM_API_12(player);
+        case "CAM 1.3":
+        case "2004 3rd Edition":
+        case "2004 4th Edition":
+        case "1.3": return new SCORM_API_13(player);
+        case "xAPI": return new SCORM_xAPI(player);
+        default: SCORM_API.debug(player.SCORM().version(), "Unsupported scorm version"); throw new Error("Unsupported scorm version.");
     }
 }
 
@@ -35,7 +39,7 @@ SCORM_API.errors = function(code) {
         "407":  "Data model element value out of range",
         "408":  "Data model dependency not established"
     };
-    if(code !== undefined) {
+    if(code !== null && typeof code !== "undefined") {
         return errors[code];
     } else {
         return errors;
@@ -43,7 +47,7 @@ SCORM_API.errors = function(code) {
 }
 
 SCORM_API.log = function(log, label) {
-    if(label !== undefined) {
+    if(label !== null && typeof label !== "undefined") {
         console.log("SCORM_API", "-", label + ":", log);
     } else {
         console.log("SCORM_API", "-", log);
@@ -51,19 +55,16 @@ SCORM_API.log = function(log, label) {
 }
 
 SCORM_API.debug = function(debug, label) {
-    if(label !== undefined) {
+	if(label !== null && typeof label !== "undefined") {
         console.debug("SCORM_API", "-", label + ":", debug);
     } else {
         console.debug("SCORM_API", "-", debug);
     }
 }
 
-SCORM_API.triggerEvent = function(name, obj) {
-    triggerEvent("SCORM_API." + name, obj);
-}
-
 function SCORM_API(player) {
     this.player = player;
+    this.events = {};
     // ------------------------------------------------
     this.error("0");
 	this.initialized(false);
@@ -71,46 +72,46 @@ function SCORM_API(player) {
 }
 
 SCORM_API.prototype.initialized = function(initialized) {
-    if(initialized !== undefined) {
+    if(initialized !== null && typeof initialized !== "undefined") {
         this._initialized = initialized;
     }
     return this._initialized;
 }
 
 SCORM_API.prototype.finished = function(finished) {
-    if(finished !== undefined) {
+    if(finished !== null && typeof finished !== "undefined") {
         this._finished = finished;
     }
     return this._finished;
 }
 
 SCORM_API.prototype.value = function(param, value) {
-    if(value !== undefined) {
+    if(value !== null && typeof value !== "undefined") {
         this.data = deepObjSetValue(this.data, param, value);
     }
     value = deepObjGetValue(this.data, param);
-    if(value === undefined) {
+    if(value === null || typeof value === "undefined") {
         value = "";
     }
     return value;
 }
 
 SCORM_API.prototype.datamodel = function(datamodel) {
-    if(datamodel !== undefined) {
+    if(datamodel !== null && typeof datamodel !== "undefined") {
         this._datamodel = datamodel;
     }
     return this._datamodel;
 }
 
 SCORM_API.prototype.typesHandler = function(typesHandler) {
-    if(typesHandler !== undefined) {
+    if(typesHandler !== null && typeof typesHandler !== "undefined") {
         this._typesHandler = typesHandler;
     }
     return this._typesHandler;
 }
 
 SCORM_API.prototype.error = function(error) {
-    if(error !== undefined) {
+    if(error !== null && typeof error !== "undefined") {
         if(error !== "0") {
             SCORM_API.debug(SCORM_API.errors(error), "Error " + error);
         }
@@ -123,16 +124,51 @@ SCORM_API.prototype.errorString = function(error) {
     return SCORM_API.errors()[error];
 }
 
+SCORM_API.prototype.printReceivingTrackingDataError = function() {
+    this.player.printError(i18n.translate("receiving-tracking-data-error"));
+}
+
+SCORM_API.prototype.printSendingTrackingDataError = function() {
+    this.player.printError(i18n.translate("sending-tracking-data-error"));
+}
+
+SCORM_API.prototype.printSCORMProcessingError = function() {
+    this.player.printError(i18n.translate("scorm-processing-error"));
+}
+
+SCORM_API.prototype.trigger = function(name, args) {
+    if(!this.events[name]) {
+        this.events[name] = [];
+    }
+    this.events[name].forEach(function (listener) { listener(args); });
+}
+
+SCORM_API.prototype.listen = function(name, listener) {
+    if(!this.events[name]) {
+        this.events[name] = [];
+    }
+    this.events[name].push(listener);
+}
+
+SCORM_API.prototype.launch = function() { }
+SCORM_API.prototype.close = function() {
+    if(this.initialized() && !this.finished()) {
+        this.finish("");
+    }
+}
+
 SCORM_API.prototype.initialize = function(arg) {
     SCORM_API.debug("Initialize - start");
-    SCORM_API.triggerEvent("initializing");
+    this.trigger("initializing");
 	if(this.initialized()) {
         this.error("103");
+        this.printSCORMProcessingError();
         SCORM_API.debug("SCORM already initialized");
 		return "false";
 	}
 	if(arg != "") {
         this.error("201");
+        this.printSCORMProcessingError();
         SCORM_API.debug("arg must be an empty string");
         SCORM_API.debug(arg, "arg");
 		return "false";
@@ -141,32 +177,38 @@ SCORM_API.prototype.initialize = function(arg) {
         let response = this.player.requestInitialize();
         this.data = response;
         this.initialized(true);
-        this.finished(false)
+        this.finished(false);
         SCORM_API.debug(this.data, "data");
     } catch(e) {
+    	console.error(e ? e.message : 'Unknown error');
         this.error("102");
+        this.printReceivingTrackingDataError();
+        SCORM_API.debug(e.message);
 		return "false";
     }
-    SCORM_API.triggerEvent("initialized");
+    this.trigger("initialized");
     SCORM_API.debug("Initialize - end");
     return "true";
 }
 
 SCORM_API.prototype.commit = function(arg) {
     SCORM_API.debug("Commit - start");
-    SCORM_API.triggerEvent("committing");
+    this.trigger("committing");
     if(!this.initialized()) {
         this.error("142");
+        this.printSCORMProcessingError();
         SCORM_API.debug("SCORM not initialized");
 		return "false";
     }
-	if(this.finished()) {
-        this.error("143");
-        SCORM_API.debug("SCORM already finished");
-        return "false";
-    }
+//	if(this.finished()) {
+//        this.error("143");
+//        this.printSCORMProcessingError();
+//        SCORM_API.debug("SCORM already finished");
+//        return "false";
+//    }
 	if(arg !== "") {
         this.error("201");
+        this.printSCORMProcessingError();
         SCORM_API.debug("arg must be an empty string");
 		return "false";
     }
@@ -174,48 +216,58 @@ SCORM_API.prototype.commit = function(arg) {
     try {
         let response = this.player.requestCommit(this.data);
     } catch(e) {
+    	console.error(e ? e.message : 'Unknown error');
         this.error("391");
+        this.printSendingTrackingDataError();
+        SCORM_API.debug(e.message);
 		return "false";
     }
-    SCORM_API.triggerEvent("committed");
+    this.trigger("committed");
     SCORM_API.debug("Commit - end");
 	return "true";
 }
 
 SCORM_API.prototype.finish = function(arg) {
     SCORM_API.debug("Finish - start");
-    SCORM_API.triggerEvent("finishing");
-	if(this.finished()) {
-        this.error("113");
-        SCORM_API.debug("SCORM already finished");
-        return "false";
-    }
+    this.trigger("finishing");
+//	if(this.finished()) {
+//        this.error("113");
+//        this.printSCORMProcessingError();
+//        SCORM_API.debug("SCORM already finished");
+//        return "false";
+//    }
     if(!this.initialized()) {
         this.error("112");
+        this.printSCORMProcessingError();
         SCORM_API.debug("SCORM not initialized");
 		return "false";
     }
 	if(arg !== "") {
         this.error("201");
+        this.printSCORMProcessingError();
         SCORM_API.debug("arg must be an empty string");
 		return "false";
 	}
     this.error("0");
     try {
         let response = this.player.requestFinish(this.data);
-        this.initialized(false)
         this.finished(true);
+        this.initialized(false);
     } catch(e) {
+    	console.error(e ? e.message : 'Unknown error');
         this.error("111");
+        this.printSendingTrackingDataError();
+        SCORM_API.debug(e.message);
 		return "false";
     }
-    SCORM_API.triggerEvent("finished");
+    this.trigger("finished");
     SCORM_API.debug("Finish - end");
 	return "true";
 }
 
 SCORM_API.prototype.get = function(param) {
     SCORM_API.debug("Get " + param + " - start");
+    this.trigger("getting", { "param": param });
     if(!this.initialized()) {
         this.error("122");
         SCORM_API.debug("SCORM not initialized");
@@ -235,12 +287,14 @@ SCORM_API.prototype.get = function(param) {
     } catch(error) {
         this.error(error);
     }
+    this.trigger("got", { "param": param, "value": result });
     SCORM_API.debug("Get - end");
 	return result;
 }
 
 SCORM_API.prototype.set = function(param, value) {
     SCORM_API.debug("Set " + param + "=" + value + " - start");
+    this.trigger("setting", { "param": param, "value": value });
     if(!this.initialized()) {
         this.error("132");
         SCORM_API.debug("SCORM not initialized");
@@ -264,13 +318,14 @@ SCORM_API.prototype.set = function(param, value) {
             this.error(error);
         }
     }
+    this.trigger("set", { "param": param, "value": value });
     SCORM_API.debug("Set - end");
 	return result;
 }
 
 function SCORM_API_12(player) {
     SCORM_API.call(this, player);
-    let r = RESTClient.get("./datamodel/1.2.json");
+    let r = RESTClient.get("./datamodel/1.2.json", null, false);
     this.datamodel(r.response);
     this.typesHandler(new SCORM_TypesHandler_12());
     window.API = this;
@@ -289,7 +344,7 @@ SCORM_API_12.prototype.constructor = SCORM_API_12;
 
 function SCORM_API_13(player) {
     SCORM_API.call(this, player);
-    let r = RESTClient.get("./datamodel/1.3.json");
+    let r = RESTClient.get("./datamodel/1.3.json", null, false);
     this.datamodel(r.response);
     this.typesHandler(new SCORM_TypesHandler_13());
     window.API_1484_11 = this;
@@ -305,3 +360,25 @@ SCORM_API_13.prototype.GetLastError      = function()                { return th
 SCORM_API_13.prototype.GetErrorString    = function(code)            { return SCORM_API.errors(code); }
 SCORM_API_13.prototype.GetDiagnostic     = function(code)            { return SCORM_API.errors(code); } // TODO
 SCORM_API_13.prototype.constructor = SCORM_API_13;
+
+function SCORM_xAPI(player) {
+    SCORM_API.call(this, player);
+    this.tincan = new TinCan({ url: this.player.SCORM().path() + "/" + this.player.SCO().resource() + this.player.SCO().parameters() });
+    this.typesHandler(new SCORM_TypesHandler());
+}
+SCORM_xAPI.prototype = Object.create(SCORM_API.prototype);
+SCORM_xAPI.version = function() { return "xAPI"; };
+SCORM_xAPI.prototype.sendStatement = function(statement) {
+    this.tincan.sendStatement({ 
+        verb: { id: "verb://" + statement, display: { "und": statement } },
+        object: { id: parseQuery(this.player.SCO().parameters()).activity_id, definition: { name: { "und": this.player.SCO().title() } } }
+    });
+}
+SCORM_xAPI.prototype.launch = function() {
+    this.sendStatement("initialized");
+}
+SCORM_xAPI.prototype.close = function() {
+    this.sendStatement("terminated");
+    this.player.requestPull();
+}
+SCORM_xAPI.prototype.constructor = SCORM_xAPI;
