@@ -56,7 +56,7 @@ SQL;
         }
         $query =
 <<<SQL
-SELECT idscorm_item AS id, title, '' AS prerequisites, idscorm_parentitem AS parent, CONCAT("../../files/appLms/scorm/", sp.path, '/', sr.href) AS resource
+SELECT idscorm_item AS id, title, '' AS prerequisites, idscorm_parentitem AS parent, CONCAT("../../files/appLms/scorm/", sp.path, '/', sr.href) AS resource, true AS visible
 FROM %lms_scorm_items si
 LEFT JOIN (%lms_scorm_resources sr
 INNER JOIN %lms_scorm_package sp ON sp.idscorm_package = sr.idscorm_package)
@@ -77,7 +77,8 @@ SQL;
     public function getSCOTracking($id) {
         $query =
 <<<SQL
-SELECT IF(sit.status = 'not attempted', 'not-attempted', sit.status) AS status
+SELECT IF(sit.status = 'not attempted', 'not-attempted', sit.status) AS completionStatus,
+IF(sit.status = 'not attempted', 'not-attempted', sit.status) AS successStatus
 FROM %lms_scorm_items_track sit
 WHERE sit.idscorm_item = $id AND sit.idUser = {$this->user->getIdSt()};
 SQL;

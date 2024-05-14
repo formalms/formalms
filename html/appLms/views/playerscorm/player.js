@@ -431,7 +431,8 @@ Player.prototype.buildTOC = function(SCOes, level) {
                 tipoEntita: this.parameters.tipoEntita,
                 codEntita: this.parameters.codEntita,
                 token: this.parameters.token,
-                preview: this.parameters.preview
+                preview: this.parameters.preview,
+                authentic_request: this.parameters.authentic_request
             })));
         }
         li.appendChild(h);
