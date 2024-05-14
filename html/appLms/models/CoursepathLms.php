@@ -31,7 +31,7 @@ class CoursepathLms extends Model
         }
 
         // all selected path in which I am enrolled
-        $query = 'SELECT cp.id_path, cp.path_code, cp.path_name, cp.path_descr, cpu.course_completed'
+        $query = 'SELECT cp.id_path, cp.path_code, cp.path_name, cp.path_descr, cp.img_coursepath ,cp.check_path_info ,cpu.course_completed'
             . ' FROM %lms_coursepath AS cp '
             . ' JOIN %lms_coursepath_user AS cpu ON cpu.id_path = cp.id_path'
             . ' WHERE idUser = ' . (int) $id_user
