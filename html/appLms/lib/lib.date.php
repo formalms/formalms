@@ -234,7 +234,7 @@ class DateManager
     {
         $query = 'SELECT calendarId FROM %lms_course_date_day WHERE id_date = ' . $idDate;
 
-        list($calendarId) = sql_fetch_row(sql_query($query));
+        [$calendarId] = sql_fetch_row(sql_query($query));
 
         if (empty($calendarId)) {
             $calendarId = CalendarManager::generateUniqueCalendarId();
@@ -415,7 +415,7 @@ class DateManager
             . ' WHERE id_date = ' . $id_date
             . ' AND deleted = 0';
 
-        list($num_day) = sql_fetch_row(sql_query($query));
+        [$num_day] = sql_fetch_row(sql_query($query));
 
         return $num_day;
     }
@@ -426,13 +426,14 @@ class DateManager
             . ' FROM %lms_classroom, %lms_class_location '
             . ' WHERE idClassroom = ' . $id_classroom . ' and %lms_class_location.location_id=%lms_classroom.location_id';
 
-        list($name, $location, $street, $city, $zip_code) = sql_fetch_row(sql_query($query));
+        [$name, $location, $street, $city, $zip_code] = sql_fetch_row(sql_query($query));
 
         return $location . ' - ' . $name . '  ' . $street . '  ' . $city . ' ' . $zip_code . '';
     }
 
     public function getDateInfo($id_date)
     {
+        $result = [];
         $query = 'SELECT dt.*, MIN(dy.date_begin) AS date_begin, MAX(dy.date_end) AS date_end, COUNT(dy.id_day) as num_day, COUNT(DISTINCT du.id_user) as user_subscribed'
             . ' FROM %lms_course_date as dt'
             . ' LEFT JOIN %lms_course_date_day  as dy ON dy.id_date = dt.id_date'
@@ -444,6 +445,7 @@ class DateManager
 
         $res = sql_fetch_assoc(sql_query($query));
 
+
         if (is_array ($res) && $res['user_subscribed'] > 1) {
             $res['num_day'] = $res['num_day'] / $res['user_subscribed'];
         }
@@ -454,11 +456,14 @@ class DateManager
             . ' WHERE cd.id_date = ' . (int) $id_date . ' AND cu.level = 3';
         $rs = sql_query($query);
         if ($rs) {
-            list($count) = sql_fetch_row($rs);
+            [$count] = sql_fetch_row($rs);
             $res['num_students'] = (int) $count;
         }
+        if ($res) {
+            $result = $res;
+        }
 
-        return $res;
+        return $result;
     }
 
     public function getCustomFieldValue($idDate, $idField)
@@ -469,7 +474,7 @@ class DateManager
         $rs = sql_query($query) or
             errorCommunication('getValueCustom');
         if (sql_num_rows($rs) == 1) {
-            list($obj_entry) = sql_fetch_row($rs);
+            [$obj_entry] = sql_fetch_row($rs);
 
             return $obj_entry;
         } else {
@@ -572,7 +577,7 @@ class DateManager
     {
         $query = 'SELECT calendarId FROM %lms_course_date WHERE id_date = ' . $idDate;
 
-        list($calendarId) = sql_fetch_row(sql_query($query));
+        [$calendarId] = sql_fetch_row(sql_query($query));
 
         if (empty($calendarId)) {
             $calendarId = CalendarManager::generateUniqueCalendarId();
@@ -642,7 +647,7 @@ class DateManager
             . ' FROM %lms_course_date '
             . ' WHERE id_date = ' . $id_date;
 
-        list($id_course) = sql_fetch_row(sql_query($query));
+        [$id_course] = sql_fetch_row(sql_query($query));
 
         return $id_course;
     }
@@ -738,7 +743,7 @@ class DateManager
             . ' FROM %lms_course_date '
             . ' WHERE id_date = ' . $id_date;
 
-        list($res) = sql_fetch_row(sql_query($query));
+        [$res] = sql_fetch_row(sql_query($query));
 
         return $res;
     }
@@ -749,7 +754,7 @@ class DateManager
             . ' FROM %lms_course_date '
             . ' WHERE id_date = ' . $id_date;
 
-        list($res) = sql_fetch_row(sql_query($query));
+        [$res] = sql_fetch_row(sql_query($query));
 
         return $res;
     }
@@ -881,7 +886,7 @@ class DateManager
             . ' WHERE id_user = ' . (int) $id_user
             . ' AND id_date = ' . (int) $id_date;
 
-        list($control) = sql_fetch_row(sql_query($query));
+        [$control] = sql_fetch_row(sql_query($query));
 
         if ($control > 0) {
             return true;
@@ -940,7 +945,7 @@ class DateManager
             . ' WHERE id_course = ' . $id_course
             . ' )';
 
-        list($res) = sql_fetch_row(sql_query($query));
+        [$res] = sql_fetch_row(sql_query($query));
 
         if ($res > 0) {
             return true;
@@ -1054,7 +1059,7 @@ class DateManager
             . ' FROM %lms_course_date '
             . ' WHERE id_date = ' . $id_date;
 
-        list($test_type) = sql_fetch_row(sql_query($query));
+        [$test_type] = sql_fetch_row(sql_query($query));
 
         return $test_type;
     }
@@ -1210,7 +1215,7 @@ class DateManager
                     . ' FROM %lms_course_date_user '
                     . ' WHERE id_date = ' . $id_date;
 
-                list($control) = sql_fetch_row(sql_query($query));
+                [$control] = sql_fetch_row(sql_query($query));
 
                 if ($control >= $max_par) {
                     $res[$id_date] = $id_date;
@@ -1332,7 +1337,7 @@ class DateManager
                 . ' GROUP BY id_date, id_user';
                 $re = sql_query($query);
 
-                list($sum_presence, $tot_day) = sql_fetch_row($re);
+                [$sum_presence, $tot_day] = sql_fetch_row($re);
                 --$tot_day;
 
                 if (null !== $sum_presence && null !== $tot_day && $sum_presence >= $tot_day) {
@@ -1379,7 +1384,7 @@ class DateManager
             . ' WHERE id_user = ' . $id_user
             . ' AND id_date = ' . $id_date;
 
-        list($gratis) = sql_fetch_row(sql_query($query));
+        [$gratis] = sql_fetch_row(sql_query($query));
 
         if ($gratis == 0) {
             return false;
@@ -1497,7 +1502,7 @@ class DateManager
             . ' FROM %lms_course_date '
             . ' WHERE id_course = ' . $id_course;
 
-        list($res) = sql_fetch_row(sql_query($query));
+        [$res] = sql_fetch_row(sql_query($query));
 
         return $res;
     }
@@ -1555,20 +1560,20 @@ class DateManager
                     . " WHERE id_date = '" . $id_date . "'"
                     . ' AND ' . $adminManager->getAdminUsersQuery(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), 'id_user');
 
-                list($user_subscribed) = sql_fetch_row(sql_query($query));
+                [$user_subscribed] = sql_fetch_row(sql_query($query));
 
                 $query = 'SELECT COUNT(*) FROM %lms_courseuser AS cu JOIN %lms_course_date AS cd JOIN %lms_course_date_user AS cdu '
                     . ' ON (cd.id_date = cdu.id_date AND cd.id_course = cu.idCourse AND cu.idUser = cdu.id_user) '
                     . ' WHERE cd.id_date = ' . (int) $id_date . ' AND cu.level = 3'
                     . ' AND ' . $adminManager->getAdminUsersQuery(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), 'cdu.id_user');
 
-                list($num_student) = sql_fetch_row(sql_query($query));
+                [$num_student] = sql_fetch_row(sql_query($query));
             } else {
                 $query = 'SELECT COUNT(*) FROM %lms_courseuser AS cu JOIN %lms_course_date AS cd JOIN %lms_course_date_user AS cdu '
                     . ' ON (cd.id_date = cdu.id_date AND cd.id_course = cu.idCourse AND cu.idUser = cdu.id_user) '
                     . ' WHERE cd.id_date = ' . (int) $id_date . ' AND cu.level = 3';
 
-                list($num_student) = sql_fetch_row(sql_query($query));
+                [$num_student] = sql_fetch_row(sql_query($query));
             }
 
             $res[] = [
@@ -1803,7 +1808,7 @@ class DateManager
             }
         }
 
-        list($res) = sql_fetch_row(sql_query($query));
+        [$res] = sql_fetch_row(sql_query($query));
 
         return $res;
     }
@@ -1929,7 +1934,7 @@ class DateManager
                     . ' FROM %lms_course_date_user '
                     . ' WHERE id_date = ' . $id_date;
 
-                list($control) = sql_fetch_row(sql_query($query));
+                [$control] = sql_fetch_row(sql_query($query));
 
                 if ($control >= $max_par) {
                     $res[$id_date] = $id_date;
@@ -1993,7 +1998,7 @@ class DateManager
 						unsubscribe_date_limit = ''
 					)";
 
-        list($control) = sql_fetch_row(sql_query($query));
+        [$control] = sql_fetch_row(sql_query($query));
 
         if ($control > 0) {
             return true;
