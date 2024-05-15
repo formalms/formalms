@@ -326,7 +326,7 @@ class ClassroomAlms extends Model
         return false;
     }
 
-    public function getDateInfo()
+    public function getDateInfo() : array
     {
         if (isset($_POST['back'])) {
             $date_info = [];

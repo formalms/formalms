@@ -47,7 +47,7 @@ class DbConn
      * @param $link
      * @param array $connection_parameters
      *
-     * @return ?DbConn
+     * @return DbConn
      */
     public static function getInstance($link = false, $connection_parameters = [])
     {

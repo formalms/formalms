@@ -41,8 +41,6 @@ class CalendarManager
         $calendar = new \Eluceo\iCal\Domain\Entity\Calendar();
         $calendar->setProductIdentifier(FormaLms\lib\Get::sett('page_title'));
         $datetimezone = new DateTimeZone($timezoneString);
-        $calendar->setCalId($dateInfo['calendarId']);
-        $calendar->setName(sprintf('%s - %s', FormaLms\lib\Get::sett('page_title'), $dateInfo['name']));
 
         $date = $classroomModel->getDateInfo();
 
