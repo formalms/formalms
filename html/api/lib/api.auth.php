@@ -70,7 +70,7 @@ class Auth_API extends API
                 $timenow = time();
                 $now = date('Y-m-d H:i:s', $timenow);
                 $level = $this->aclManager->getUserLevelId($row->idst);
-                $token = md5(uniqid(rand(), true) + $username);
+                $token = md5(uniqid(rand(), true) . $username);
 
                 $lifetime = FormaLms\lib\Get::sett('rest_auth_lifetime', 1);
                 $expire = date('Y-m-d H:i:s', $timenow + $lifetime);
