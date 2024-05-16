@@ -109,7 +109,7 @@ function displayCourseList(&$url, $order_type)
             $pa_man = new AssessmentList();
             $arr_assessment = $pa_man->getUserAssessmentSubsription(Docebo::user()->getArrSt());
 
-            $report = new CourseReportManager();
+            $report = new CourseReportManager(0); //no course id available
             $user_result = $report->getAllUserFinalScore(getLogUserId(), $arr_assessment['course_list']);
 
             $rule_man = new AssessmentRule();
@@ -387,7 +387,7 @@ function displayCoursePathList(&$url, $selected_tab)
             $pa_man = new AssessmentList();
             $arr_assessment = $pa_man->getUserAssessmentSubsription(Docebo::user()->getArrSt());
 
-            $report = new CourseReportManager();
+            $report = new CourseReportManager(0); //no course id available
             $user_result = $report->getAllUserFinalScore(getLogUserId(), $arr_assessment['course_list']);
 
             $rule_man = new AssessmentRule();

@@ -121,7 +121,7 @@ class CoursereportLms extends Model
 
     private function grabCourseReports()
     {
-        $report_man = new CourseReportManager();
+        $report_man = new CourseReportManager($this->idCourse);
         $org_tests = $report_man->getTest();
 
         $report_man->removeDuplicatedReports();

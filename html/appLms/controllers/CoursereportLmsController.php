@@ -15,6 +15,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 require_once Forma::inc(_base_ . '/lib/lib.json.php');
 require_once Forma::inc(_adm_ . '/lib/lib.field.php');
+require_once Forma::inc(_lms_ . '/lib/lib.coursereport.php');
 
 class CoursereportLmsController extends LmsController
 {
@@ -22,13 +23,15 @@ class CoursereportLmsController extends LmsController
 
     private $completeFieldListArray;
 
+    protected  $courseReportManager;
+
     /** @var int */
     protected $idCourse;
 
     public function init()
     {
         $this->idCourse = (int) $this->session->get('idCourse');
-
+        $this->courseReportManager = new CourseReportManager($this->idCourse);
         /* @var Services_JSON json */
         $this->json = new Services_JSON();
         $this->_mvc_name = 'coursereport';
@@ -60,7 +63,7 @@ class CoursereportLmsController extends LmsController
     public function coursereport()
     {
         checkPerm('view', true, $this->_mvc_name);
-        require_once Forma::inc(_lms_ . '/lib/lib.coursereport.php');
+  
         require_once Forma::inc(_lms_ . '/lib/lib.test.php');
 
         $view_perm = checkPerm('view', true, $this->_mvc_name);
@@ -71,11 +74,10 @@ class CoursereportLmsController extends LmsController
         // XXX: Instance management
         $acl_man = Docebo::user()->getAclManager();
         $test_man = new GroupTestManagement();
-        $report_man = new CourseReportManager();
+ 
 
         // XXX: Find test from organization
-        $org_tests = &$report_man->getTest();
-        $tests_info = $test_man->getTestInfo($org_tests);
+  
 
         $type_filter = FormaLms\lib\Get::pReq('type_filter', DOTY_MIXED, false);
 
@@ -108,7 +110,7 @@ class CoursereportLmsController extends LmsController
 
         $tests_score = &$test_man->getTestsScores($included_test, $id_students);
 
-        $reports_scores = &$report_man->getReportsScores((isset($included_test_report_id) && is_array($included_test_report_id) ? array_diff($reports_id, $included_test_report_id) : $reports_id), $id_students);
+        $reports_scores = $this->courseReportManager->getReportsScores((isset($included_test_report_id) && is_array($included_test_report_id) ? array_diff($reports_id, $included_test_report_id) : $reports_id), $id_students);
 
         // XXX: Calculate statistic
         $test_details = [];
@@ -539,14 +541,13 @@ class CoursereportLmsController extends LmsController
 
         $acl_man = Docebo::user()->getAclManager();
         $test_man = new GroupTestManagement();
-        $report_man = new CourseReportManager();
+     
 
         $view_all_perm = checkPerm('view_all', true, $this->_mvc_name);
         $type_filter = FormaLms\lib\Get::pReq('type_filter', DOTY_MIXED, false);
         $edition_filter = FormaLms\lib\Get::pReq('edition_filter', DOTY_MIXED, false);
 
-        $org_tests = &$report_man->getTest();
-        $tests_info = $test_man->getTestInfo($org_tests);
+     
 
         if ($type_filter == 'false') {
             $type_filter = false;
@@ -647,7 +648,7 @@ class CoursereportLmsController extends LmsController
         foreach ($reportsArray as $info_report) {
             $reports_id[] = $info_report->getIdReport();
         }
-        $reports_score = $report_man->getReportsScores((isset($included_test_report_id) && is_array($included_test_report_id) ? array_diff($reports_id, $included_test_report_id) : $reports_id), $id_students);
+        $reports_score = $this->courseReportManager->getReportsScores((isset($included_test_report_id) && is_array($included_test_report_id) ? array_diff($reports_id, $included_test_report_id) : $reports_id), $id_students);
 
         $results_names = [];
         $results_activity = [];
@@ -1043,7 +1044,7 @@ class CoursereportLmsController extends LmsController
 
         // XXX: Retrive other score
         if (!empty($other_source)) {
-            $other_score = &$report_man->getReportsScores($other_source);
+            $other_score = $this->courseReportManager->getReportsScores($other_source);
         }
 
         $final_score = [];
@@ -1092,9 +1093,9 @@ class CoursereportLmsController extends LmsController
                 list($score) = sql_fetch_array($q);
 
                 if (FormaLms\lib\Get::req('round_report') || FormaLms\lib\Get::req('redo_final') || !$score) {
-                    $c = new CourseReportManager();
+                    
                     $users_scores = [$id_user => $final_score[$id_user]];
-                    $c->saveReportScore($info_final[0]->getIdReport(), $users_scores, [$id_user => date('d-m-Y H:i:s')], '');
+                    $this->courseReportManager->saveReportScore($info_final[0]->getIdReport(), $users_scores, [$id_user => date('d-m-Y H:i:s')], '');
                 } elseif ($score && $final_score[$id_user] != $score) {
                     $final_score[$id_user] .= ' (' . (float) $score . ')';
                 }
@@ -1355,7 +1356,7 @@ class CoursereportLmsController extends LmsController
         // XXX: Instance management
         $acl_man = Docebo::user()->getAclManager();
         $test_man = new GroupTestManagement();
-        $report_man = new CourseReportManager();
+
 
         // XXX: Find students
         $type_filter = false;
@@ -1762,7 +1763,7 @@ class CoursereportLmsController extends LmsController
         // XXX: Instance management
         $acl_man = Docebo::user()->getAclManager();
         $test_man = new GroupTestManagement();
-        $report_man = new CourseReportManager();
+
 
         // XXX: Save input if needed
         if (isset($_POST['view_answer'])) {
@@ -1922,7 +1923,7 @@ class CoursereportLmsController extends LmsController
 
         // XXX: Instance management
         $acl_man = Docebo::user()->getAclManager();
-        $report_man = new CourseReportManager();
+      
 
         // XXX: Find students
         $type_filter = false;
@@ -1960,7 +1961,7 @@ class CoursereportLmsController extends LmsController
             sql_query($query_upd_report);
             // save user score modification
 
-            $re = $report_man->saveReportScore($id_report, $_POST['user_score'], $_POST['date_attempt'], $_POST['comment']);
+            $re = $this->courseReportManager->saveReportScore($id_report, $_POST['user_score'], $_POST['date_attempt'], $_POST['comment']);
 
             Util::jump_to('index.php?r=coursereport/coursereport&result=' . ($re ? 'ok' : 'err'));
         }
@@ -2022,7 +2023,7 @@ class CoursereportLmsController extends LmsController
         $tb->addHead($cont_h);
 
         // XXX: retrive scores
-        $report_score = &$report_man->getReportsScores([$id_report]);
+        $report_score = $this->courseReportManager->getReportsScores([$id_report]);
 
         // XXX: Display user scores
         $i = 0;
@@ -2098,7 +2099,7 @@ class CoursereportLmsController extends LmsController
         // XXX: Instance management
         $acl_man = Docebo::user()->getAclManager();
         $test_man = new GroupTestManagement();
-        $report_man = new CourseReportManager();
+ 
 
         // XXX: Find test from organization
         $re = $test_man->roundTestScore($id_test);
@@ -2116,10 +2117,9 @@ class CoursereportLmsController extends LmsController
         require_once Forma::inc(_base_ . '/lib/lib.table.php');
 
         // XXX: Instance management
-        $report_man = new CourseReportManager();
 
         // XXX: Find test from organization
-        $re = $report_man->roundReportScore($idReport);
+        $re = $this->courseReportManager->roundReportScore($idReport);
 
         //Util::jump_to('index.php?r=coursereport/coursereport&amp;result=' . ($re ? 'ok' : 'err'));
     }
@@ -2145,16 +2145,12 @@ class CoursereportLmsController extends LmsController
         require_once Forma::inc(_base_ . '/lib/lib.form.php');
         require_once Forma::inc(_base_ . '/lib/lib.table.php');
 
-        // XXX: Initializaing
-        $lang = &DoceboLanguage::createInstance('coursereport', 'lms');
-
-        // XXX: Instance management
-        $acl_man = Docebo::user()->getAclManager();
+ 
         $test_man = new GroupTestManagement();
-        $report_man = new CourseReportManager();
+
 
         // XXX: Find students
-        $id_students = &$report_man->getStudentId();
+        $id_students = $this->courseReportManager->getStudentId();
 
         // XXX: retrive info about the final score
 
@@ -2191,7 +2187,7 @@ class CoursereportLmsController extends LmsController
 
         // XXX: Retrive other score
         if (!empty($other_source)) {
-            $other_score = &$report_man->getReportsScores($other_source);
+            $other_score = $this->courseReportManager->getReportsScores($other_source);
         }
 
         $final_score = [];
@@ -2308,7 +2304,7 @@ class CoursereportLmsController extends LmsController
         );
         // XXX: Save input if needed
         if (isset($_POST['save']) && is_numeric($_POST['id_source'])) {
-            $report_man = new CourseReportManager();
+      
             // check input
             if ($_POST['titolo'] == '') {
                 $_POST['titolo'] = $lang->def('_NOTITLE');
@@ -2328,13 +2324,13 @@ class CoursereportLmsController extends LmsController
             }
 
             $_POST['title'] = $_POST['titolo'];
-            $re_check = $report_man->checkActivityData($_POST);
+            $re_check = $this->courseReportManager->checkActivityData($_POST);
 
             if (!$re_check['error']) {
                 if ($id_report == 0) {
-                    $numero = $report_man->getNextSequence();
+                    $numero = $this->courseReportManager->getNextSequence();
                     $query_ins_report = "
-				INSERT INTO %lms_coursereport
+				INSERT IGNORE INTO %lms_coursereport
 				( id_course, title, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source, sequence ) VALUES (
 					'" . $this->idCourse . "',
 					'" . $_POST['title'] . "',
@@ -2530,18 +2526,18 @@ class CoursereportLmsController extends LmsController
         );
         // XXX: Save input if needed
         if (isset($_POST['save'])) {
-            $report_man = new CourseReportManager();
+          
             // check input
             if ($_POST['title'] == '') {
                 $_POST['title'] = $lang->def('_NOTITLE');
             }
 
-            $re_check = $report_man->checkActivityData($_POST);
+            $re_check = $this->courseReportManager->checkActivityData($_POST);
             if (!$re_check['error']) {
                 if ($id_report == 0) {
-                    $re = $report_man->addActivity($this->idCourse, $_POST);
+                    $re = $this->courseReportManager->addActivity($this->idCourse, $_POST);
                 } else {
-                    $re = $report_man->updateActivity($id_report, $this->idCourse, $_POST);
+                    $re = $this->courseReportManager->updateActivity($id_report, $this->idCourse, $_POST);
                 }
                 Util::jump_to('index.php?r=coursereport/coursereport&result=' . ($re ? 'ok' : 'err'));
             } else {
@@ -2631,7 +2627,7 @@ class CoursereportLmsController extends LmsController
 
         // XXX: Instance management
         $acl_man = Docebo::user()->getAclManager();
-        $report_man = new CourseReportManager();
+  
 
         // XXX: Find users
         $type_filter = false;
@@ -2651,7 +2647,7 @@ class CoursereportLmsController extends LmsController
 
             $info_report = $this->model->getCourseReports()[0];
 
-            $report_score = &$report_man->getReportsScores($info_report->getIdReport());
+            $report_score = $this->courseReportManager->getReportsScores($info_report->getIdReport());
         }
 
         // XXX: Write in output
@@ -2670,9 +2666,9 @@ class CoursereportLmsController extends LmsController
             if ($_POST['title'] == '') {
                 $_POST['title'] = $lang->def('_NOTITLE');
             }
-            $re_check = $report_man->checkActivityData($_POST);
+            $re_check = $this->courseReportManager->checkActivityData($_POST);
             if (!$re_check['error']) {
-                if (!$report_man->updateActivity($id_report, $this->idCourse, $info_report)) {
+                if (!$this->courseReportManager->updateActivity($id_report, $this->idCourse, $info_report)) {
                     $out->add(getErrorUi($lang->def('_OPERATION_FAILURE')));
                 } else {
                     // save user score modification
@@ -2684,7 +2680,7 @@ class CoursereportLmsController extends LmsController
 				WHERE id_course = '" . $this->idCourse . "' AND id_report = '" . $id_report . "'";
                     $re = sql_query($query_upd_report);
 
-                    $response = $report_man->saveReportScore($id_report, $_POST['user_score'], $_POST['date_attempt'], $_POST['comment']);
+                    $response = $this->courseReportManager->saveReportScore($id_report, $_POST['user_score'], $_POST['date_attempt'], $_POST['comment']);
                     Util::jump_to('index.php?r=coursereport/coursereport&result=' . ($response ? 'ok' : 'err'));
                 }
             } else {
@@ -2867,18 +2863,17 @@ class CoursereportLmsController extends LmsController
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
 
-        // XXX: Instance management
-        $acl_man = Docebo::user()->getAclManager();
-        $report_man = new CourseReportManager();
+ 
+
 
         if (isset($_POST['confirm'])) {
             $id_report = FormaLms\lib\Get::pReq('id_report', DOTY_MIXED, 0);
 
-            if (!$report_man->deleteReportScore($id_report)) {
+            if (!$this->courseReportManager->deleteReportScore($id_report)) {
                 Util::jump_to('index.php?r=coursereport/coursereport&amp;result=err');
             }
 
-            $re = $report_man->deleteReport($id_report);
+            $re = $this->courseReportManager->deleteReport($id_report);
 
             Util::jump_to('index.php?r=coursereport/coursereport&amp;result=' . ($re ? 'ok' : 'err'));
         }
@@ -2923,8 +2918,7 @@ class CoursereportLmsController extends LmsController
         $id_report = importVar('id_report', true, 0);
         $lang = &DoceboLanguage::createInstance('coursereport', 'lms');
 
-        // XXX: Instance management
-        $report_man = new CourseReportManager();
+   
 
         list($seq) = sql_fetch_row(sql_query("
 	SELECT sequence
@@ -2973,12 +2967,12 @@ class CoursereportLmsController extends LmsController
 
         $acl_man = Docebo::user()->getAclManager();
         $test_man = new GroupTestManagement();
-        $report_man = new CourseReportManager();
 
-        $org_tests = &$report_man->getTest();
+
+        $org_tests = $this->courseReportManager->getTest();
         $tests_info = $test_man->getTestInfo($org_tests);
 
-        $id_students = &$report_man->getStudentId();
+        $id_students = $this->courseReportManager->getStudentId();
         $students_info = &$acl_man->getUsers($id_students);
 
         if (isset($_POST['type_filter'])) {
@@ -3027,7 +3021,7 @@ class CoursereportLmsController extends LmsController
         }
 
         if ((int) $tot_report === 0) {
-            $report_man->initializeCourseReport($org_tests);
+            $this->courseReportManager->initializeCourseReport($org_tests);
         } else {
             if (is_array($included_test)) {
                 $test_to_add = array_diff($org_tests, $included_test);
@@ -3041,13 +3035,13 @@ class CoursereportLmsController extends LmsController
             }
 
             if (!empty($test_to_add) || !empty($test_to_del)) {
-                $report_man->addTestToReport($test_to_add, 1);
-                $report_man->delTestToReport($test_to_del);
+                $this->courseReportManager->addTestToReport($test_to_add, 1);
+                $this->courseReportManager->delTestToReport($test_to_del);
 
                 $included_test = $org_tests;
             }
         }
-        $report_man->updateTestReport($org_tests);
+        $this->courseReportManager->updateTestReport($org_tests);
 
         $img_mod = '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . '" />';
 
@@ -3214,7 +3208,7 @@ class CoursereportLmsController extends LmsController
             }
             reset($test_details);
         }
-        $reports_score = &$report_man->getReportsScores(
+        $reports_score = $this->courseReportManager->getReportsScores(
             (isset($included_test_report_id) && is_array($included_test_report_id) ? array_diff($reports_id, $included_test_report_id) : $reports_id)
         );
 

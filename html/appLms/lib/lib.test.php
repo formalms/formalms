@@ -141,8 +141,13 @@ class GroupTestManagement
                 $test_data['score'] = $test_data['score'] + $test_data['bonus_score'];
             }
             $data[$test_data['idTest']][$test_data['idUser']] = $test_data;
+
+   
+              
+            
         }
 
+    
         return $data;
     }
 

@@ -339,14 +339,14 @@ class Certificate
     }
 
     //fix: Php7.1+ compatibility
-    public function canRelExceptional($perm_close_lo, $id_user, $id_course = '')
+    public function canRelExceptional($perm_close_lo, $id_user, $id_course)
     {
         require_once _lms_ . '/lib/lib.coursereport.php';
         require_once _lms_ . '/lib/lib.orgchart.php';
 
         $course_score_final = false;
         $org_man = new OrganizationManagement(false);
-        $rep_man = new CourseReportManager();
+        $rep_man = new CourseReportManager($id_course);
 
         if ($perm_close_lo == 0) {
             $score_final = $org_man->getFinalObjectScore([$id_user], [$id_course]);
