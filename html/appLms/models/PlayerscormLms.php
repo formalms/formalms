@@ -106,11 +106,14 @@ SQL;
 
     public function initialize($id) {
         $dbconn = $GLOBALS['dbConn'];
-
-        $query = 'SELECT path, href, scormtype, scormVersion'
-                . ' FROM %lms_scorm_resources, %lms_scorm_package'
-                . ' WHERE %lms_scorm_resources.idscorm_package = %lms_scorm_package.idscorm_package'
-                . "   AND idscorm_resource = '" . $id . "'";
+        
+        $query = 'SELECT %lms_scorm_package.path, %lms_scorm_resources.href, %lms_scorm_resources.scormtype, %lms_scorm_package.scormVersion'
+                . ' FROM %lms_scorm_resources, %lms_scorm_package,  %lms_scorm_organizations,  %lms_scorm_items '
+                . ' WHERE %lms_scorm_package.idscorm_package = %lms_scorm_resources.idscorm_package '
+                . ' AND %lms_scorm_resources.idscorm_package = %lms_scorm_organizations.idscorm_package '
+                . ' AND %lms_scorm_organizations.idscorm_organization = %lms_scorm_items.idscorm_organization '
+                . ' AND %lms_scorm_items.idscorm_item = ' . $id;
+                
         $result = sql_query($query)
                     or exit('Error on load sco: ' . sql_error() . "[ $query ]");
         [$path, $href, $scormtype, $scormVersion] = sql_fetch_array($result);
