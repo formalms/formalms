@@ -219,7 +219,7 @@ class CourseReportManager
     }
 
     /**
-     * @param int $reports_id the id of the reports for which you need to recover the users scores
+     * @param array $reports_id the id of the reports for which you need to recover the users scores
      * @param array $id_user if != false filter result to this users
      *
      * @return array an array with this structure ( id_report => ( id_user => (id_report, id_user, date_attempt, score, score_status, comment)), ...)
