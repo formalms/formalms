@@ -329,7 +329,7 @@ class Certificate
         foreach ($res as $row) {
             if (
                 $this->certificateAvailableForUser($row['id_certificate'], $row['id_course'], $row['id_user'])
-                && $this->canRelExceptional($row['id_user'], $row['id_course'])
+                && $this->canRelExceptional($row['id_certificate'],$row['id_user'], $row['id_course'])
             ) {
                 $assignable[] = $row;
             }
