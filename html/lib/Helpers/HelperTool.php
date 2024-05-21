@@ -134,5 +134,21 @@ class HelperTool
         DEALLOCATE PREPARE createColumnIfNotExists;';
     }
 
+    public static function insertSettingIfNotExists(string $setting, array $params) : string{
+
+        $query = 'SELECT IF(
+            (
+              SELECT count(*) FROM `core_setting` 
+            WHERE `param_name` = "'.$setting.'" 
+            ) > 0,
+            "INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`) VALUES
+            ("'.$setting.'", "'.$params['param_value'].'", "'.$params['value_type'].'", '.$params['max_size'].', "'.$params['pack'].'", '.$params['regroup'].', '.$params['sequence'].', '.$params['param_load'].', '.$params['hide_in_modify'].', "'.$params['extra_info'].'")",
+            "SELECT 1"
+              )';
+
+        return   $query;
+
+    }
+
 
 }
