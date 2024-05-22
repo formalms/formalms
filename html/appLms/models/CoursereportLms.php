@@ -123,7 +123,7 @@ class CoursereportLms extends Model
 
     private function grabCourseReports()
     {
-        $report_man = new CourseReportManager();
+        $report_man = new CourseReportManager($this->idCourse);
         $org_tests = &$report_man->getTest();
 
         $query_final_tot_report = "SELECT COUNT(*) FROM %lms_coursereport WHERE id_course = '" . $this->idCourse . "' AND source_of = '" . self::SOURCE_OF_FINAL_VOTE . "'";

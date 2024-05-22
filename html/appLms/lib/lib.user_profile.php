@@ -4287,7 +4287,7 @@ class UserProfileData
         $org_man = new OrganizationManagement(false);
 
         require_once _lms_ . '/lib/lib.coursereport.php';
-        $rep_man = new CourseReportManager();
+        $rep_man = new CourseReportManager(0); // no course id available
         $score_course = $rep_man->getUserFinalScore([$id_user]);
 
         $score_start = $org_man->getStartObjectScore([$id_user], $id_courses);

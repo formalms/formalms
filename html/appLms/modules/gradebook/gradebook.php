@@ -31,7 +31,7 @@ function showgrade()
     $out->setWorkingZone('content');
 
     $test_man = new GroupTestManagement();
-    $report_man = new CourseReportManager();
+    $report_man = new CourseReportManager($idCourse);
 
     // XXX: update if needed
     $org_tests = &$report_man->getTest();
@@ -278,7 +278,7 @@ function coursereport()
     $out->setWorkingZone('content');
 
     $test_man = new GroupTestManagement();
-    $report_man = new CourseReportManager();
+    $report_man = new CourseReportManager($idCourse);
 
     // XXX: update if needed
     $org_tests = &$report_man->getTest();
