@@ -18,13 +18,9 @@ class CourseReportManager
     /** @var int */
     protected $idCourse;
 
-    public function __construct($idCourse = null)
+    public function __construct($idCourse)
     {
-        if ($idCourse === null) {
-            $this->idCourse = (int)\FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
-        } else {
-            $this->idCourse = (int)$idCourse;
-        }
+        $this->idCourse = (int)$idCourse;
     }
 
     /**

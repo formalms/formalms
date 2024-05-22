@@ -110,7 +110,7 @@ function displayCourseList(&$url, $order_type)
             $pa_man = new AssessmentList();
             $arr_assessment = $pa_man->getUserAssessmentSubsription(\FormaLms\lib\FormaUser::getCurrentUser()->getArrSt());
 
-            $report = new CourseReportManager();
+            $report = new CourseReportManager(0); //no course id available
             $user_result = $report->getAllUserFinalScore(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $arr_assessment['course_list']);
 
             $rule_man = new AssessmentRule();
@@ -388,7 +388,7 @@ function displayCoursePathList(&$url, $selected_tab)
             $pa_man = new AssessmentList();
             $arr_assessment = $pa_man->getUserAssessmentSubsription(\FormaLms\lib\FormaUser::getCurrentUser()->getArrSt());
 
-            $report = new CourseReportManager();
+            $report = new CourseReportManager(0); //no course id available
             $user_result = $report->getAllUserFinalScore(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $arr_assessment['course_list']);
 
             $rule_man = new AssessmentRule();
