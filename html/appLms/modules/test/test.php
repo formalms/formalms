@@ -840,7 +840,7 @@ function defmodality()
     $result = sql_fetch_assoc(sql_query("
     SELECT title, description, display_type, order_type, shuffle_answer, question_random_number, 
         save_keep, mod_doanswer, can_travel, 
-        show_score, show_score_cat, show_doanswer, show_solution, 
+        show_score, show_score_cat, show_doanswer, show_solution, show_quest_score,
         max_attempt, hide_info,
         order_info, cf_info, use_suspension, suspension_num_attempts, suspension_num_hours, suspension_prerequisites, mandatory_answer, retain_answers_history
     FROM %lms_test
