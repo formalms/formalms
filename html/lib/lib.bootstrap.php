@@ -28,28 +28,47 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  */
 class Boot
 {
+    const BOOT_COMPOSER_METHOD = 'composer';
+    const BOOT_PHP_METHOD = 'checkPhpVersion';
+    const BOOT_CONFIG_METHOD = 'config';
+    const BOOT_UTILITY_METHOD = 'utility';
+    const BOOT_SETTING_METHOD = 'loadSetting';
+    const BOOT_REQUEST_METHOD = 'request';
+    const BOOT_PLATFORM_METHOD = 'checkPlatform';
+    const BOOT_DOMAIN_AND_TEMPLATE_METHOD = 'domainAndTemplate';
+    const BOOT_PLUGINS_METHOD = 'plugins';
+    const BOOT_USER_METHOD = 'user';
+    const BOOT_SESSION_CHECK_METHOD = 'sessionCheck';
+    const BOOT_INPUT_METHOD = 'filteringInput';
+    const BOOT_LANGUAGE_METHOD = 'language';
+    const BOOT_HOOKS_METHOD = 'hooks';
+    const BOOT_DATETIME_METHOD = 'dateTime';
+    const BOOT_TEMPLATE_METHOD = 'template';
+    const BOOT_PAGE_WR_METHOD = 'loadPageWriter';
+    const CHECK_SYSTEM_STATUS_METHOD = 'checkSystemStatus';
+
     private static array $checkStatusFlags;
 
     private static bool $prettyRedirect;
 
     private static $_boot_seq = [
-        BOOT_UTILITY => 'utility',
-        BOOT_PHP => 'checkPhpVersion',
-        BOOT_CONFIG => 'config',
-        BOOT_SETTING => 'loadSetting',
-        BOOT_REQUEST => 'request',
-        BOOT_PLATFORM => 'checkPlatform',
-        BOOT_DOMAIN_AND_TEMPLATE => 'domainAndTemplate',
-        BOOT_PLUGINS => 'plugins',
-        BOOT_USER => 'user',
-        BOOT_SESSION_CHECK => 'sessionCheck',
-        BOOT_INPUT => 'filteringInput',
-        BOOT_LANGUAGE => 'language',
-        BOOT_HOOKS => 'hooks',
-        BOOT_DATETIME => 'dateTime',
-        BOOT_TEMPLATE => 'template',
-        BOOT_PAGE_WR => 'loadPageWriter',
-        CHECK_SYSTEM_STATUS => 'checkSystemStatus'
+        BOOT_UTILITY => self::BOOT_UTILITY_METHOD,
+        BOOT_PHP => self::BOOT_PHP_METHOD,
+        BOOT_CONFIG => self::BOOT_CONFIG_METHOD,
+        BOOT_SETTING => self::BOOT_SETTING_METHOD,
+        BOOT_REQUEST => self::BOOT_REQUEST_METHOD,
+        BOOT_PLATFORM => self::BOOT_PLATFORM_METHOD,
+        BOOT_DOMAIN_AND_TEMPLATE => self::BOOT_DOMAIN_AND_TEMPLATE_METHOD,
+        BOOT_PLUGINS => self::BOOT_PLUGINS_METHOD,
+        BOOT_USER => self::BOOT_USER_METHOD,
+        BOOT_SESSION_CHECK => self::BOOT_SESSION_CHECK_METHOD,
+        BOOT_INPUT => self::BOOT_INPUT_METHOD,
+        BOOT_LANGUAGE => self::BOOT_LANGUAGE_METHOD,
+        BOOT_HOOKS => self::BOOT_HOOKS_METHOD,
+        BOOT_DATETIME => self::BOOT_DATETIME_METHOD,
+        BOOT_TEMPLATE => self::BOOT_TEMPLATE_METHOD,
+        BOOT_PAGE_WR => self::BOOT_PAGE_WR_METHOD,
+        CHECK_SYSTEM_STATUS => self::CHECK_SYSTEM_STATUS_METHOD
     ];
 
     public static $log_array = [];
@@ -74,7 +93,7 @@ class Boot
 
         if (is_array($load_option)) {
             $last_step = CHECK_SYSTEM_STATUS;
-            $step_list = $load_option;
+            $step_list = self::getMethodMappings($load_option);
         } else {
             // custom boot sequence given, use this one
             $last_step = $load_option;
@@ -92,6 +111,26 @@ class Boot
                 self::$step_method();
             }
         }
+    }
+
+    private static function getMethodMappings(array $constants): array
+    {
+        $mappings = [];
+        foreach ($constants as $index => $constant) {
+            // Retrieve the name of the constant
+            $constantName = array_search($constant, (new \ReflectionClass(__CLASS__))->getConstants());
+            if ($constantName !== false) {
+                // Construct the method constant name
+                $methodConstant = $constantName . '_METHOD';
+                if (defined("self::$methodConstant")) {
+                    $mappings[$constantName] = constant("self::$methodConstant");
+                }
+            }
+            else {
+                $mappings[$index] = $constant;
+            }
+        }
+        return $mappings;
     }
 
     /**
@@ -460,6 +499,9 @@ class Boot
 
     private static function sessionCheck()
     {
+        if (self::isCommandLineInterface()){
+            return;
+        }
         if (FormaLms\lib\Session\SessionManager::getInstance()->isSessionExpired()) {
             $session = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest()->getSession();
             $session->invalidate();
@@ -743,5 +785,34 @@ class Boot
         if (\FormaLms\lib\Version\VersionChecker::comparePhpVersion()) {
             self::$checkStatusFlags[] = array_search(__FUNCTION__, self::$_boot_seq);
         }
+    }
+
+    private static function isCommandLineInterface()
+    {
+        if ( defined('STDIN') )
+        {
+            return true;
+        }
+
+        if ( php_sapi_name() === 'cli' )
+        {
+            return true;
+        }
+
+        if ( array_key_exists('SHELL', $_ENV) ) {
+            return true;
+        }
+
+        if ( empty($_SERVER['REMOTE_ADDR']) and !isset($_SERVER['HTTP_USER_AGENT']) and count($_SERVER['argv']) > 0)
+        {
+            return true;
+        }
+
+        if ( !array_key_exists('REQUEST_METHOD', $_SERVER) )
+        {
+            return true;
+        }
+
+        return false;
     }
 }
