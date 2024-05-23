@@ -118,7 +118,7 @@ class Boot
         $mappings = [];
         foreach ($constants as $index => $constant) {
             // Retrieve the name of the constant
-            $constantName = array_search($constant, (new \ReflectionClass(__CLASS__))->getConstants());
+            $constantName = array_search($constant, get_defined_constants());
             if ($constantName !== false) {
                 // Construct the method constant name
                 $methodConstant = $constantName . '_METHOD';

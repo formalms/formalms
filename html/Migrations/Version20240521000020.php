@@ -45,16 +45,17 @@ final class Version20240521000020 extends AbstractMigration
         $this->addSql('ALTER TABLE learning_coursereport
         ADD CONSTRAINT unique_coursereport UNIQUE (source_of, id_course, id_source)');
 
+        $connection = $this->connection;
 
-        $this->addSql(HelperTool::insertSettingIfNotExists('force_scorm_finish', ['param_value'=>'on', 
-                                                                                'value_type'=>'enum', 
-                                                                                'max_size'=>3, 
-                                                                                'pack'=>'0', 
-                                                                                'regroup'=>4, 
-                                                                                'sequence'=>17, 
-                                                                                'param_load'=>1, 
-                                                                                'hide_in_modify'=>0, 
-                                                                                'extra_info'=>'' ]));
+        // Step 1: Controlla se esiste il record
+        $count = $connection->fetchOne('SELECT COUNT(*) FROM `core_setting` WHERE `param_name` = ?', ['force_scorm_finish']);
+
+        // Step 2: Inserisci il record se non esiste
+        if ($count == 0) {
+            $connection->executeStatement('INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [
+                'force_scorm_finish', 'on', 'enum', 3, '0', 4, 17, 1, 0, ''
+            ]);
+        }
     }
 
     public function down(Schema $schema): void
