@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20240509</DATE>
+  <DATE>20240523</DATE>
   <LANG id="portuguese">
     <lang_code>portuguese</lang_code>
     <lang_description>Portuguese</lang_description>
@@ -533,6 +533,9 @@
         <key id="configuration&amp;_ECOMMERCE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[E-comércio]]></key>
         <key id="configuration&amp;_EMAIL_SETTINGS" attributes="" save_date="2024-01-15 22:30:25"><![CDATA[Configurações de e-mail]]></key>
         <key id="configuration&amp;_EMAIL_SETTINGS_CC" attributes="" save_date="2024-01-18 00:25:15"><![CDATA[Configurações de Com Cópia (CC) de e-mail]]></key>
+        <key id="configuration&amp;_FACEBOOK.OAUTH_KEY" attributes="" save_date="2024-05-23 10:24:40"><![CDATA[Chave oAuth]]></key>
+        <key id="configuration&amp;_FACEBOOK.OAUTH_SECRET" attributes="" save_date="2024-05-23 10:24:58"><![CDATA[Segredo oAuth]]></key>
+        <key id="configuration&amp;_FACEBOOKAUTH" attributes="" save_date="2024-05-23 10:24:15"><![CDATA[Autenticação do Facebook]]></key>
         <key id="configuration&amp;_FILE_UPLOAD_WHITELIST" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Extensões de ficheiros permitidas (whitelist)]]></key>
         <key id="configuration&amp;_FIRST_CATALOGUE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Mostrar o catálogo de cursos na página principal do utilizador]]></key>
         <key id="configuration&amp;_FORUM_AS_TABLE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Mostrar a lista dos fóruns numa tabela]]></key>

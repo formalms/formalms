@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20240509</DATE>
+  <DATE>20240523</DATE>
   <LANG id="english">
     <lang_code>english</lang_code>
     <lang_description>English</lang_description>
@@ -533,6 +533,9 @@
         <key id="configuration&amp;_ECOMMERCE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[E-commerce]]></key>
         <key id="configuration&amp;_EMAIL_SETTINGS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Email settings]]></key>
         <key id="configuration&amp;_EMAIL_SETTINGS_CC" attributes="" save_date="2024-01-18 00:25:15"><![CDATA[Email settings (CC)]]></key>
+        <key id="configuration&amp;_FACEBOOK.OAUTH_KEY" attributes="" save_date="2024-05-23 10:24:40"><![CDATA[oAuth Key]]></key>
+        <key id="configuration&amp;_FACEBOOK.OAUTH_SECRET" attributes="" save_date="2024-05-23 10:24:58"><![CDATA[oAuth Secret]]></key>
+        <key id="configuration&amp;_FACEBOOKAUTH" attributes="" save_date="2024-05-23 10:24:15"><![CDATA[Facebook Authentication]]></key>
         <key id="configuration&amp;_FILE_UPLOAD_WHITELIST" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Whitelist permitted file extensions]]></key>
         <key id="configuration&amp;_FIRST_CATALOGUE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Show "course catalog" as user main page]]></key>
         <key id="configuration&amp;_FORUM_AS_TABLE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Show forum list in a table]]></key>
@@ -1169,7 +1172,7 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="dashboardsetting&amp;_DASHBOARD_SETTING_SELECT_BLOCK" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Select block]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_SETTING_SELECT_STATUS" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Select a status]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_STATUS_DRAFT" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Draft]]></key>
-        <key id="dashboardsetting&amp;_DASHBOARD_STATUS_PUBLISH" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Published]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_STATUS_PUBLISH" attributes="" save_date="2024-05-23 10:27:19"><![CDATA[Published]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_WELCOME_MESSAGE" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Hi <strong>[firstname] [lastname]</strong>, welcome to the platform <strong>[platform]</strong>]]></key>
         <key id="dashboardsetting&amp;_ENABLED_ACTIONS" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Actions enabled]]></key>
         <key id="dashboardsetting&amp;_IMAGE_DASHBOARDBLOCKBANNERLMS_COVER" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Cover image]]></key>
