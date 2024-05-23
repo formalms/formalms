@@ -13,7 +13,7 @@
 namespace Composer;
 
 $GLOBALS['_composer_bin_dir'] = dirname(__DIR__);
-$GLOBALS['_composer_autoload_path'] = dirname(__DIR__, 1).'/vendor/autoload.php';
+$GLOBALS['_composer_autoload_path'] = dirname(__DIR__, 1) . '/vendor/autoload.php';
 
 
 define('IN_FORMA', true);
@@ -23,19 +23,35 @@ if (getenv('FORMA_BASE_PATH') !== false) {
     require_once getenv('FORMA_BASE_PATH') . '/base.php';
 } else {
     define('_deeppath_', dirname(__DIR__, 1));
-    require_once dirname(__DIR__, 1).'/base.php';
+    require_once dirname(__DIR__, 1) . '/base.php';
 }
 
+$bootSequence = [
+    BOOT_COMPOSER,
+    BOOT_PHP,
+    BOOT_CONFIG,
+    BOOT_UTILITY,
+    BOOT_SETTING,
+    BOOT_REQUEST,
+    BOOT_PLATFORM,
+    BOOT_DOMAIN_AND_TEMPLATE,
+    BOOT_PLUGINS,
+    BOOT_USER,
+    BOOT_INPUT,
+    BOOT_LANGUAGE,
+    BOOT_HOOKS,
+];
+
 require_once _lib_ . '/lib.bootstrap.php';
-\Boot::init(BOOT_HOOKS);
+\Boot::init($bootSequence);
 
 if (PHP_VERSION_ID < 80000) {
 
-    
+
     if (!class_exists('Composer\BinProxyWrapper')) {
 
         /**
-         * 
+         *
          * @internal
          */
         final class BinProxyWrapper
@@ -53,7 +69,7 @@ if (PHP_VERSION_ID < 80000) {
                 $this->handle = fopen($this->realpath, $mode);
                 $this->position = 0;
 
-                return (bool) $this->handle;
+                return (bool)$this->handle;
             }
 
             public function stream_read($count)
@@ -130,10 +146,10 @@ if (PHP_VERSION_ID < 80000) {
         (function_exists('stream_get_wrappers') && in_array('phpvfscomposer', stream_get_wrappers(), true))
         || (function_exists('stream_wrapper_register') && stream_wrapper_register('phpvfscomposer', 'Composer\BinProxyWrapper'))
     ) {
-        include("phpvfscomposer://" . dirname(__DIR__, 1) .'/vendor/doctrine/migrations/bin/doctrine-migrations');
+        include("phpvfscomposer://" . dirname(__DIR__, 1) . '/vendor/doctrine/migrations/bin/doctrine-migrations');
         exit(0);
     }
 }
 
 
-include dirname(__DIR__, 1) .'/vendor/doctrine/migrations/bin/doctrine-migrations';
+include dirname(__DIR__, 1) . '/vendor/doctrine/migrations/bin/doctrine-migrations';

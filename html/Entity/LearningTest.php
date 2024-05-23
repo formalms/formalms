@@ -134,6 +134,13 @@ class LearningTest
     /**
      * @var bool
      *
+     * @ORM\Column(name="show_quest_score", type="boolean", nullable=false)
+     */
+    private $showQuestScore = false;
+
+    /**
+     * @var bool
+     *
      * @ORM\Column(name="show_doanswer", type="boolean", nullable=false)
      */
     private $showDoanswer = '0';

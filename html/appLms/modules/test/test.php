@@ -41,12 +41,12 @@ function addtest($object_test)
     checkPerm('view', false, 'storage');
 
     $lang = FormaLanguage::createInstance('test');
-    if (!is_a($object_test, 'Learning_Test')) {
+    if (!$object_test instanceof \Learning_Test) {
         \FormaLms\lib\Forma::addError($lang->def('_OPERATION_FAILURE'));
         Util::jump_to('' . $object_test->back_url . '&amp;create_result=0');
     }
 
-    require_once _base_ . '/lib/lib.form.php';
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
     $url_encode = htmlentities(urlencode($object_test->back_url));
 
     $GLOBALS['page']->add(getTitleArea($lang->def('_TEST_SECTION'), 'test')
@@ -94,7 +94,7 @@ function instest()
         Util::jump_to('' . urldecode($_REQUEST['back_url']) . '&create_result=0');
     }
 
-    list($id_test) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
+    [$id_test] = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
 
     $test = Learning_Test::load($id_test);
 
@@ -113,12 +113,12 @@ function modtest()
     checkPerm('view', false, 'storage');
     $lang = FormaLanguage::createInstance('test');
 
-    require_once _base_ . '/lib/lib.form.php';
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
     $id_test = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
     $url_encode = htmlentities(urlencode($back_url));
 
-    list($test_title, $textof) = sql_fetch_row(sql_query('
+    [$test_title, $textof] = sql_fetch_row(sql_query('
     SELECT title, description
     FROM ' . $GLOBALS['prefix_lms'] . "_test
     WHERE idTest = '" . $id_test . "'"));
@@ -170,11 +170,11 @@ function uptest(Learning_Test $obj_test = null)
 
         if (!sql_query($mod_query)) {
             errorCommunication($lang->def('_OPERATION_FAILURE')
-                . getBackUi('index.php?modname=test&amp;op=modtest&amp;idTest=' . $id_test . '&amp;back_url=' . $url_encode));
+                . getBackUi('index.php?modname=test&amp;op=modtest&amp;idTest=' . $id_test . '&amp;back_url=' . $url_encode, Lang::t('_BACK','standard')));
 
             return;
         }
-        require_once _lms_ . '/class.module/track.object.php';
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/track.object.php');
         Track_Object::updateObjectTitle($id_test, $obj_test->getObjectType(), $_REQUEST['title']);
     }
 
@@ -198,16 +198,16 @@ function modtestgui($object_test)
 
     // ----------------------------------------------------------------------------------------
 
-    if (!is_a($object_test, 'Learning_Test')) {
+    if (!$object_test instanceof \Learning_Test) {
         \FormaLms\lib\Forma::addError($lang->def('_OPERATION_FAILURE'));
         Util::jump_to('' . $object_test->back_url . '&amp;create_result=0');
     }
 
-    require_once _base_ . '/lib/lib.table.php';
-    require_once _base_ . '/lib/lib.form.php';
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.table.php');
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
     $url_encode = htmlentities(urlencode($object_test->back_url));
 
-    list($test_title) = sql_fetch_row(sql_query('
+    [$test_title] = sql_fetch_row(sql_query('
     SELECT title 
     FROM ' . $GLOBALS['prefix_lms'] . "_test
     WHERE idTest = '" . $object_test->getId() . "'"));
@@ -220,7 +220,7 @@ function modtestgui($object_test)
     ORDER BY tq.sequence");
 
     $num_quest = sql_num_rows($re_quest);
-    list($num_page) = sql_fetch_row(sql_query('
+    [$num_page] = sql_fetch_row(sql_query('
     SELECT MAX(page) 
     FROM ' . $GLOBALS['prefix_lms'] . "_testquest
     WHERE idTest = '" . $object_test->getId() . "'"));
@@ -295,7 +295,7 @@ function modtestgui($object_test)
     $first = true;
 
     // Customfields initialize
-    require_once _adm_ . '/lib/lib.customfield.php';
+    require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/lib.customfield.php');
     $fman = new CustomFieldList();
     $fman->setFieldArea('LO_TEST');
 
@@ -474,7 +474,7 @@ function modtestgui($object_test)
         );
     }
 
-    require_once _lms_ . '/lib/lib.quest_bank.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.quest_bank.php');
     $qb_man = new QuestBankMan();
     $supported_format = $qb_man->supported_format();
 
@@ -528,7 +528,7 @@ function movequestion($direction)
     $back_url = urldecode(importVar('back_url'));
     $back_coded = htmlentities(urlencode($back_url));
 
-    list($seq, $idTest) = sql_fetch_row(sql_query('
+    [$seq, $idTest] = sql_fetch_row(sql_query('
     SELECT sequence, idTest 
     FROM ' . $GLOBALS['prefix_lms'] . "_testquest
     WHERE idQuest = '$idQuest'"));
@@ -569,7 +569,7 @@ function movequest()
     $source_seq = importVar('source_quest', true, 0);
     $dest_seq = importVar('dest_quest', true, 0);
 
-    list($idQuest) = sql_fetch_row(sql_query('
+    [$idQuest] = sql_fetch_row(sql_query('
     SELECT idQuest 
     FROM ' . $GLOBALS['prefix_lms'] . "_testquest
     WHERE idTest = '$idTest' AND sequence = '$source_seq'"));
@@ -629,7 +629,7 @@ function fixPageSequence($id_test)
     checkPerm('view', false, 'storage');
     $lang = FormaLanguage::createInstance('test');
 
-    list($tot_quest) = sql_fetch_row(sql_query('
+    [$tot_quest] = sql_fetch_row(sql_query('
     SELECT COUNT(*) 
     FROM ' . $GLOBALS['prefix_lms'] . "_testquest
     WHERE idTest = '" . $id_test . "'"));
@@ -671,7 +671,7 @@ function istanceQuest($type_of_quest, $id)
     if (!sql_num_rows($re_quest)) {
         return;
     }
-    list($type_file, $type_class) = sql_fetch_row($re_quest);
+    [$type_file, $type_class] = sql_fetch_row($re_quest);
 
     require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/' . $type_file);
     $quest_obj = eval("return new $type_class ( $id );");
@@ -726,7 +726,7 @@ function modquest()
 
     $idQuest = importVar('idQuest', true, 0);
 
-    list($idTest, $type_quest) = sql_fetch_row(sql_query('
+    [$idTest, $type_quest] = sql_fetch_row(sql_query('
     SELECT idTest, type_quest 
     FROM ' . $GLOBALS['prefix_lms'] . "_testquest
     WHERE idQuest = '" . $idQuest . "'"));
@@ -773,7 +773,7 @@ function delquest()
     $back_url = urldecode(importVar('back_url'));
     $url_coded = htmlentities(urlencode($back_url));
 
-    list($idTest, $title_quest, $type_quest, $seq) = sql_fetch_row(sql_query('
+    [$idTest, $title_quest, $type_quest, $seq] = sql_fetch_row(sql_query('
     SELECT idTest, title_quest, type_quest, sequence 
     FROM ' . $GLOBALS['prefix_lms'] . "_testquest
     WHERE idQuest = '" . $idQuest . "'"));
@@ -825,8 +825,8 @@ function defmodality()
 
     $lang = FormaLanguage::createInstance('test');
 
-    require_once _base_ . '/lib/lib.form.php';
-    require_once _base_ . '/lib/lib.json.php';
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.json.php');
 
     $idTest = importVar('idTest', true, 0);
     $db = \FormaLms\db\DbConn::getInstance();
@@ -846,7 +846,7 @@ function defmodality()
     FROM %lms_test
     WHERE idTest = '" . $idTest . "'"));
 
-    extract($result);
+    extract((array)$result);
 
     [$tot_quest] = sql_fetch_row(sql_query('
     SELECT COUNT(*) 
@@ -882,7 +882,7 @@ function defmodality()
 
     $cat_info = [];
     if ($order_info != '') {
-        require_once _base_ . '/lib/lib.json.php';
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.json.php');
         $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
         $arr = $json->decode($order_info);
         if (is_array($arr)) {
@@ -903,11 +903,7 @@ function defmodality()
             if ($id_cat == 0) {
                 $name_cat = $lang->def('_NO_CATEGORY');
             }
-            if (isset($cat_info[$id_cat])) {
-                $selected = $cat_info[$id_cat];
-            } else {
-                $selected = '0';
-            }
+            $selected = $cat_info[$id_cat] ?? '0';
             $categories[$id_cat] = ['name' => $name_cat, 'total' => $num_quest, 'selected' => (int) $selected];
         }
     }
@@ -971,14 +967,14 @@ function defmodality()
     );
 
     //Tabella Categorie
-    require_once _adm_ . '/lib/lib.customfield.php';
+    require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/lib.customfield.php');
     $fman = new CustomFieldList();
     $fman->setFieldArea('LO_TEST');
     $fields_mask = $fman->playFieldsFlat();
 
     $cust_info = [];
     if ($cf_info != '') {
-        require_once _base_ . '/lib/lib.json.php';
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.json.php');
         $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
         $arr = $json->decode($cf_info);
         if (is_array($arr)) {
@@ -1104,6 +1100,15 @@ function defmodality()
     $section_str .= '<label for="show_tot_yes">' . $lang->def('_YES') . '</label>';
     $section_str .= '<br /><br />';
 
+    $section_str .= $lang->def('_TEST_MM4_SHOWQUESTSCORE') . '<br />';
+    $section_str .= '<input class="valign_middle" type="radio" id="show_quest_score_no" name="show_quest_score" value="0"' . ($show_quest_score == 0 ? '  checked="checked"' : '') . ' /> ';
+    $section_str .= '<label for="show_quest_score_no">' . $lang->def('_NO') . '</label>&nbsp;&nbsp;';
+    $section_str .= '<input class="valign_middle" type="radio" id="show_quest_score_yes" name="show_quest_score" value="1"' . ($show_quest_score == 1 ? '  checked="checked"' : '') . ' /> ';
+    $section_str .= '<label for="show_quest_score_yes">' . $lang->def('_YES') . '</label>&nbsp;&nbsp;';
+    $section_str .= '<input class="valign_middle" type="radio" id="show_quest_score_yes_if_passed" name="show_quest_score" value="2"' . ($show_quest_score == 2 ? '  checked="checked"' : '') . ' /> ';
+    $section_str .= '<label for="show_quest_score_yes_if_passed">' . $lang->def('_YES_IF_PASSED') . '</label>';
+    $section_str .= '<br /><br />';
+
     $section_str .= $lang->def('_TEST_MM4_SHOWCAT') . '<br />';
     $section_str .= '<input class="valign_middle" type="radio" id="show_cat_no" name="show_cat" value="0"' . (!$show_score_cat ? '  checked="checked"' : '') . ' /> ';
     $section_str .= '<label for="show_cat_no">' . $lang->def('_NO') . '</label>&nbsp;&nbsp;';
@@ -1174,7 +1179,7 @@ function updatemodality()
 {
     checkPerm('view', false, 'storage');
 
-    require_once _base_ . '/lib/lib.json.php';
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.json.php');
     $json = new Services_JSON();
     $lang = FormaLanguage::createInstance('test');
 
@@ -1182,7 +1187,7 @@ function updatemodality()
     $back_url = urldecode(importVar('back_url'));
     $url_coded = htmlentities(urlencode($back_url));
 
-    list($time_dependent) = sql_fetch_row(sql_query('
+    [$time_dependent] = sql_fetch_row(sql_query('
     SELECT time_dependent 
     FROM ' . $GLOBALS['prefix_lms'] . "_test
     WHERE idTest = '" . $idTest . "'"));
@@ -1229,6 +1234,7 @@ function updatemodality()
         show_score_cat = '" . ($_REQUEST['show_cat'] ? 1 : 0) . "',
         show_doanswer = '" . $_REQUEST['show_doanswer'] . "',
         show_solution = '" . $_REQUEST['show_solution'] . "',
+        show_quest_score = '" . $_REQUEST['show_quest_score'] . "',
         retain_answers_history = '" . $_REQUEST['retain_answers_history'] . "',
         max_attempt = '" . (int) $_REQUEST['max_attempt'] . "'"
         . ($time_dependent == 2 && $_REQUEST['display_type'] == 0 ? ' ,time_dependent = 0 ' : '')
@@ -1258,16 +1264,16 @@ function deftime()
 
     $lang = FormaLanguage::createInstance('test');
 
-    require_once _base_ . '/lib/lib.form.php';
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
     $url_coded = htmlentities(urlencode($back_url));
 
-    list(
+    [
         $time_dependent, $time_assigned,
         $penality_test, $penality_time_test, $penality_quest, $penality_time_quest
-    ) = sql_fetch_row(sql_query('
+    ] = sql_fetch_row(sql_query('
     SELECT time_dependent, time_assigned, 
         penality_test, penality_time_test, penality_quest, penality_time_quest 
     FROM ' . $GLOBALS['prefix_lms'] . "_test
@@ -1333,7 +1339,7 @@ function deftime()
 
                 break;
             case 2:
-                    list($actual_tot_time) = sql_fetch_row(sql_query('
+                    [$actual_tot_time] = sql_fetch_row(sql_query('
                 SELECT SUM(time_assigned) 
                 FROM ' . $GLOBALS['prefix_lms'] . "_testquest
                 WHERE idTest = '$idTest'"));
@@ -1454,8 +1460,8 @@ function modassigntime()
 
     $lang = FormaLanguage::createInstance('test');
 
-    require_once _base_ . '/lib/lib.form.php';
-    require_once _base_ . '/lib/lib.table.php';
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.table.php');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -1480,12 +1486,12 @@ function modassigntime()
         Util::jump_to('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $url_coded . '&mod_operation=' . ($re ? 1 : 0));
     }
 
-    list($test_title) = sql_fetch_row(sql_query('
+    [$test_title] = sql_fetch_row(sql_query('
     SELECT title 
     FROM ' . $GLOBALS['prefix_lms'] . "_test
     WHERE idTest = '" . $idTest . "'"));
 
-    list($tot_quest, $tot_difficult, $actual_tot_time) = sql_fetch_row(sql_query('
+    [$tot_quest, $tot_difficult, $actual_tot_time] = sql_fetch_row(sql_query('
     SELECT COUNT(*), SUM(difficult), SUM(time_assigned) 
     FROM ' . $GLOBALS['prefix_lms'] . "_testquest
     WHERE idTest = '$idTest' AND type_quest <> 'break_page' AND type_quest <> 'title'"));
@@ -1607,13 +1613,13 @@ function defpoint()
 
     $lang = FormaLanguage::createInstance('test');
 
-    require_once _base_ . '/lib/lib.form.php';
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
     $url_coded = htmlentities(urlencode($back_url));
 
-    list($title, $description, $point_type, $point_required) = sql_fetch_row(sql_query('
+    [$title, $description, $point_type, $point_required] = sql_fetch_row(sql_query('
     SELECT title, description, point_type, point_required 
     FROM ' . $GLOBALS['prefix_lms'] . "_test
     WHERE idTest = '" . $idTest . "'"));
@@ -1771,12 +1777,12 @@ function modassignpoint()
         }
     }
 
-    list($test_title) = sql_fetch_row(sql_query('
+    [$test_title] = sql_fetch_row(sql_query('
     SELECT title 
     FROM ' . $GLOBALS['prefix_lms'] . "_test
     WHERE idTest = '" . $idTest . "'"));
 
-    list($tot_quest, $tot_difficult) = sql_fetch_row(sql_query('
+    [$tot_quest, $tot_difficult] = sql_fetch_row(sql_query('
     SELECT COUNT(*), SUM(difficult) 
     FROM ' . $GLOBALS['prefix_lms'] . "_testquest
     WHERE idTest = '$idTest' AND type_quest <> 'break_page' AND type_quest <> 'title'"));
@@ -1946,10 +1952,10 @@ function importquest()
     $back_url = urldecode(importVar('back_url'));
     $back_coded = htmlentities(urlencode($back_url));
 
-    require_once _base_ . '/lib/lib.form.php';
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
 
     $form = new Form();
-    require_once _lms_ . '/lib/lib.quest_bank.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.quest_bank.php');
     $qb_man = new QuestBankMan();
     $supported_format = $qb_man->supported_format();
 
@@ -1993,7 +1999,7 @@ function doimportquest()
     if (isset($_REQUEST['undo'])) {
         Util::jump_to('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $back_coded);
     }
-    require_once _lms_ . '/lib/lib.quest_bank.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.quest_bank.php');
 
     $qb_man = new QuestBankMan();
 
@@ -2041,7 +2047,7 @@ function exportquest()
     $back_url = urldecode(importVar('back_url'));
     $back_coded = htmlentities(urlencode($back_url));
 
-    require_once _lms_ . '/lib/lib.quest_bank.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.quest_bank.php');
     $qb_man = new QuestBankMan();
 
     $file_format = FormaLms\lib\Get::req('export_quest_select', DOTY_INT, 0);
@@ -2059,7 +2065,7 @@ function exportquest()
 
     $quest_export = $qb_man->export_quest($quests, $file_format);
 
-    require_once _base_ . '/lib/lib.download.php';
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.download.php');
     sendStrAsFile($quest_export, 'export_' . date('Y-m-d') . '.txt');
 }
 
@@ -2072,16 +2078,16 @@ function exportquestqb()
     $back_url = urldecode(importVar('back_url'));
     $back_coded = htmlentities(urlencode($back_url));
 
-    require_once _base_ . '/lib/lib.form.php';
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
 
     $form = new Form();
-    require_once _lms_ . '/lib/lib.quest_bank.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.quest_bank.php');
     $qb_man = new QuestBankMan();
     $supported_format = $qb_man->supported_format();
 
     unset($supported_format[-1]);
 
-    require_once _lms_ . '/lib/lib.questcategory.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.questcategory.php');
     $quest_categories = [
         0 => $lang->def('_NONE'),
     ];
@@ -2119,7 +2125,7 @@ function exportquestqb()
 
 function doexportquestqb()
 {
-    require_once _lms_ . '/lib/lib.quest_bank.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.quest_bank.php');
 
     $lang = FormaLanguage::createInstance('test');
     $back_url = urldecode(importVar('back_url'));
@@ -2202,8 +2208,8 @@ function feedbackman()
     checkPerm('view', false, 'storage');
     $res = '';
 
-    require_once _lms_ . '/lib/lib.questcategory.php';
-    require_once _lms_ . '/lib/lib.assessment_rule.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.questcategory.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.assessment_rule.php');
 
     $id_test = FormaLms\lib\Get::gReq('idTest', DOTY_INT, 0);
     $back_url = urldecode(FormaLms\lib\Get::gReq('back_url', DOTY_STRING));
@@ -2281,7 +2287,7 @@ function feedbackman()
     $res .= getBackUi($back_link_url, Lang::t('_BACK'))
         . '</div>';
 
-    require_once _base_ . '/lib/lib.dialog.php';
+    require_once \FormaLms\lib\Forma::inc( _base_ . '/lib/lib.dialog.php');
     setupHrefDialogBox('a[id^=del_rule_]');
 
     $GLOBALS['page']->add($res, 'content');
@@ -2293,8 +2299,8 @@ function coursereportMan()
 
     $lang = FormaLanguage::createInstance('test');
 
-    require_once _base_ . '/lib/lib.form.php';
-    require_once _base_ . '/lib/lib.json.php';
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.json.php');
 
     $idTest = importVar('idTest', true, 0);
 
@@ -2351,8 +2357,8 @@ function addfbkrule()
     checkPerm('view', false, 'storage');
     $res = '';
 
-    require_once _lms_ . '/lib/lib.questcategory.php';
-    require_once _lms_ . '/lib/lib.assessment_rule.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.questcategory.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.assessment_rule.php');
 
     $id_test = FormaLms\lib\Get::gReq('idTest', DOTY_INT, 0);
     $cat_id = FormaLms\lib\Get::gReq('cat_id', DOTY_INT, 0);
@@ -2398,8 +2404,8 @@ function editfbkrule()
     checkPerm('view', false, 'storage');
     $res = '';
 
-    require_once _lms_ . '/lib/lib.questcategory.php';
-    require_once _lms_ . '/lib/lib.assessment_rule.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.questcategory.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.assessment_rule.php');
 
     $rule_id = FormaLms\lib\Get::gReq('item_id', DOTY_INT, 0);
     $id_test = FormaLms\lib\Get::gReq('idTest', DOTY_INT, 0);
@@ -2442,8 +2448,8 @@ function delfbkrule()
     checkPerm('view', false, 'storage');
     $res = '';
 
-    require_once _lms_ . '/lib/lib.questcategory.php';
-    require_once _lms_ . '/lib/lib.assessment_rule.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.questcategory.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.assessment_rule.php');
 
     $rule_id = FormaLms\lib\Get::gReq('item_id', DOTY_INT, 0);
     $id_test = FormaLms\lib\Get::gReq('idTest', DOTY_INT, 0);

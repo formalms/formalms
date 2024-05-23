@@ -1693,7 +1693,8 @@ function review($object_test, $id_param)
     $GLOBALS['page']->add('<div class="test_answer_space">', 'content');
     $quest_sequence_number = 1;
     while (list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest)) {
-        require_once _lms_ . '/modules/question/' . $type_file;
+
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/' . $type_file);
         $quest_obj = eval("return new $type_class( $idQuest );");
 
         $review = $quest_obj->displayUserResult($idTrack,
@@ -1705,8 +1706,10 @@ function review($object_test, $id_param)
 
         if ($review['score'] !== false) {
             $GLOBALS['page']->add(
-                '<div class="test_answer_comment">'
-                . '<div class="test_score_note">' . $lang->def('_SCORE') . ' : ', 'content');
+                '<div class="test_answer_comment">', 'content');
+
+            if (!$test_info['show_quest_score']) {
+                $GLOBALS['page']->add('<div class="test_score_note">' . $lang->def('_SCORE') . ' : ', 'content');
             if ($quest_obj->getScoreSetType() == 'manual' && !$review['manual_assigned']) {
                 $GLOBALS['page']->add($lang->def('_NOT_ASSIGNED'), 'content');
             } else {
@@ -1716,10 +1719,9 @@ function review($object_test, $id_param)
                     $GLOBALS['page']->add('<span class="test_score_negative">' . $review['score'] . '</span>', 'content');
                 }
             }
-            $GLOBALS['page']->add(
-                '</div>'
-                . ($review['comment'] != '' ? $review['comment'] : '')
-                . '</div>', 'content');
+                $GLOBALS['page']->add('</div>', 'content');
+            }
+            $GLOBALS['page']->add(($review['comment'] != '' ? $review['comment'] : ''), 'content');
         }
         $GLOBALS['page']->add(
             '</div>', 'content');
@@ -1847,8 +1849,10 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
                 . $review['quest'];
 
             if ($review['score'] !== false) {
-                $report_test .= '<div class="test_answer_comment">'
-                    . '<div class="test_score_note">' . $lang->def('_SCORE') . ' : ';
+                $report_test .= '<div class="test_answer_comment">';
+                if ($test_info['show_quest_score']) {
+
+                    $report_test .= '<div class="test_score_note">' . $lang->def('_SCORE') . ' : ';
                 if ($quest_obj->getScoreSetType() == 'manual' && !$review['manual_assigned']) {
                     $report_test .= $lang->def('_NOT_ASSIGNED');
                 } else {
@@ -1858,13 +1862,14 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
                         $report_test .= '<span class="test_score_negative">' . $review['score'] . '</span>';
                     }
                 }
-                $report_test .= '</div>'
-                    . ($review['comment'] != '' ? $review['comment'] : '')
+                    $report_test . '</div>';
+                }
+
+                $report_test .= ($review['comment'] != '' ? $review['comment'] : '')
                     . '</div>';
             }
 
             $report_test .=
-                //.( $review['comment'] != '' ? $review['comment'] : '' )
                 '</div>' . "\n";
         }
         if ($quest_obj->getScoreSetType() == 'manual') {
@@ -2033,6 +2038,11 @@ function editUserReport($id_user, $id_test, $id_track, $number_time = null, $edi
 		WHERE q.idTest = '" . $id_test . "' AND q.type_quest = t.type_quest 
 		ORDER BY q.sequence";
     }
+
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.test.php');
+    $test_man = new TestManagement($id_test);
+    $test_info = $test_man->getTestAllInfo();
+
     $reQuest = sql_query($query_question);
     while (list($id_quest, $type_quest, $type_file, $type_class, $id_cat) = sql_fetch_row($reQuest)) {
         require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/' . $type_file);
@@ -2052,8 +2062,10 @@ function editUserReport($id_user, $id_test, $id_track, $number_time = null, $edi
                 . $review['quest'];
 
             if ($review['score'] !== false) {
-                $report_test .= '<div class="test_answer_comment_nomargin">'
-                    . '<div class="test_score_note">' . $lang->def('_SCORE') . ' : ';
+                $report_test .= '<div class="test_answer_comment_nomargin">';
+                if ($test_info['show_quest_score']) {
+
+                    $report_test .= '<div class="test_score_note">' . $lang->def('_SCORE') . ' : ';
                 if ($quest_obj->getScoreSetType() == 'manual' && !$review['manual_assigned']) {
                     $report_test .= $lang->def('_NOT_ASSIGNED');
                 } else {
@@ -2063,8 +2075,10 @@ function editUserReport($id_user, $id_test, $id_track, $number_time = null, $edi
                         $report_test .= '<span class="test_score_negative">' . $review['score'] . '</span>';
                     }
                 }
-                $report_test .= '</div>'
-                    . ($review['comment'] != '' ? $review['comment'] : '')
+                    $report_test . '</div>';
+                }
+
+                $report_test .= ($review['comment'] != '' ? $review['comment'] : '')
                     . '</div>';
             }
             if ($edit_new_score) {
