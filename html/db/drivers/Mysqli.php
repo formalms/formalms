@@ -86,6 +86,11 @@ class Mysqli extends DbConn
         $charset = \FormaLms\lib\Get::cfg('db_charset', 'utf8');
         $this->query("SET NAMES '" . $charset . "'", $this->conn);
         $this->query("SET CHARACTER SET '" . $charset . "'", $this->conn);
+
+        // required by userselector: almost 10000 users selected
+		//TODO to be removed when userselector reworked
+        $this->query('SET SESSION group_concat_max_len = 70000', $this->conn);
+
         //TODO NO_Strict_MODE: to be confirmed
         $this->query("SET SQL_MODE = 'NO_AUTO_CREATE_USER'", $this->conn);
 
@@ -98,7 +103,7 @@ class Mysqli extends DbConn
 
         if (\FormaLms\lib\Get::cfg('set_mysql_tz', false)) {
             $dt = new \DateTime();
-            $offset = $dt->format('P');        // get current timezone offeset
+            $offset = $dt->format('P');        // get current timezone offset
             $this->query("SET time_zone='" . $offset . "'", $this->conn);
             $this->log('mysql set connection timezone offset to : ' . $offset);
         }
