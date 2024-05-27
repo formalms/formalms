@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20240523</DATE>
+  <DATE>20240527</DATE>
   <LANG id="english">
     <lang_code>english</lang_code>
     <lang_description>English</lang_description>
@@ -892,6 +892,7 @@
         <key id="course&amp;_NOENTER" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Access denied]]></key>
         <key id="course&amp;_NO_COURSE_DATA" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Course with no start date]]></key>
         <key id="course&amp;_NO_COURSE_FOUND" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[No course found]]></key>
+        <key id="course&amp;_NO_NAME" attributes="" save_date="2024-05-27 11:49:43"><![CDATA[No name]]></key>
         <key id="course&amp;_OTHER_OPTION" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Other options]]></key>
         <key id="course&amp;_OTHER_USER_MATERIAL" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Material for other roles]]></key>
         <key id="course&amp;_OVERVIEW" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Overview]]></key>
