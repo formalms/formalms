@@ -629,15 +629,14 @@ class CoursestatsLms extends Model
         return $this->zeroToTime($this->decimal_to_time($output));
     }
 
-    private
-    function timeToSec($time)
+    private function timeToSec($time)
     {
         $seconds = 0;
         [$time] = explode('.', $time); // Remove decimals
         [$hour, $minute, $second] = explode(':', $time);
-        $seconds += $hour * 3600;
-        $seconds += $minute * 60;
-        $seconds += $second;
+        $seconds += (int)$hour * 3600;
+        $seconds += (int)$minute * 60;
+        $seconds += (int)$second;
 
         return $seconds;
     }
