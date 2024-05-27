@@ -201,7 +201,7 @@ class OrganizationManagement
         $query_lo = '
 		SELECT idOrg, idResource, objectType, idCourse  
 		FROM ' . $GLOBALS['prefix_lms'] . "_organization 
-		WHERE milestone = 'end' "
+		WHERE (milestone = 'end' OR isTerminator = 1)"
         . (!empty($arr_course)/* !== false */ ? ' AND idCourse IN ( ' . implode(',', $arr_course) . ' )' : '') . ' ';
         $re_lo = sql_query($query_lo);
 
