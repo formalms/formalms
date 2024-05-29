@@ -247,7 +247,7 @@ class CoursestatsLmsController extends LmsController
 
         $list = $this->model->getCourseStatsList($pagination, $this->idCourse);
 
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
         $cman = new CourseSubscribe_Manager();
         $arr_status = $cman->getUserStatus();
         $arr_level = $cman->getUserLevel();
@@ -899,7 +899,7 @@ class CoursestatsLmsController extends LmsController
         if (!empty($records)) {
             $acl_man = Docebo::user()->getAclManager();
 
-            require_once _lms_ . '/lib/lib.subscribe.php';
+            require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
             $cman = new CourseSubscribe_Manager();
             $arr_status = $cman->getUserStatus();
             $arr_level = $cman->getUserLevel();
@@ -960,7 +960,7 @@ class CoursestatsLmsController extends LmsController
         if (!empty($records)) {
             $acl_man = Docebo::user()->getAclManager();
 
-            require_once _lms_ . '/lib/lib.subscribe.php';
+            require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
             $cman = new CourseSubscribe_Manager();
             $arr_status = $cman->getUserStatus();
             $arr_level = $cman->getUserLevel();
@@ -1102,7 +1102,7 @@ class CoursestatsLmsController extends LmsController
         if (!empty($records)) {
             $acl_man = Docebo::user()->getAclManager();
 
-            require_once _lms_ . '/lib/lib.subscribe.php';
+            require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
             $cman = new CourseSubscribe_Manager();
             $arr_status = $cman->getUserStatus();
             $arr_level = $cman->getUserLevel();
@@ -1263,7 +1263,7 @@ class CoursestatsLmsController extends LmsController
         if (!empty($records)) {
             $acl_man = Docebo::user()->getAclManager();
 
-            require_once _lms_ . '/lib/lib.subscribe.php';
+            require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
             $cman = new CourseSubscribe_Manager();
             $arr_status = $cman->getUserStatus();
             $arr_level = $cman->getUserLevel();

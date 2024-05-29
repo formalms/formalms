@@ -839,7 +839,7 @@ class KbAlms extends Model
 
     public function getCoursesVisibleToUser($user_id = false)
     {
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
         $res = [];
         $user_id = ($user_id > 0 ? $user_id : getLogUserId());
 

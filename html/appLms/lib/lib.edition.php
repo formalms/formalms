@@ -29,7 +29,7 @@ class EditionManager
 
     public function __construct()
     {
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
         require_once _lms_ . '/lib/lib.course.php';
 
         $this->db = DbConn::getInstance();
@@ -706,7 +706,7 @@ class EditionManager
 
     public function subscribeUserToEdition($id_user, $id_course, $id_edition, $level, $waiting, $date_begin_validity = false, $date_expire_validity = false)
     {
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
         $subscribe_man = new CourseSubscribe_Manager();
 
@@ -757,7 +757,7 @@ class EditionManager
         $this->removeUserFromEdition($id_user, $id_edition, $id_course);
 
         if (!$this->controlUserSubscriptions($id_user, $id_course)) {
-            require_once _lms_ . '/lib/lib.subscribe.php';
+            require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
             require_once _lms_ . '/lib/lib.course.php';
 
             $subscribe_man = new CourseSubscribe_Manager();

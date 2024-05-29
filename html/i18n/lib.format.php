@@ -17,9 +17,13 @@ class Format
 {
     private static $_regset = false;
 
+
+
     private function __construct()
     {
     }
+
+ 
 
     private static function init()
     {
@@ -32,7 +36,7 @@ class Format
      */
     public static function instance()
     {
-        $classname = __CLASS__;
+       
         if (!self::$_regset) {
             self::init();
         }
@@ -51,7 +55,7 @@ class Format
     public static function date($date, $type = false, $seconds = false)
     {
         if (!self::$_regset) {
-            self::istance();
+            self::instance();
         }
 
         return self::$_regset->databaseToRegional($date, $type, $seconds);
@@ -68,7 +72,7 @@ class Format
     public static function dateDb($date, $type = false)
     {
         if (!self::$_regset) {
-            self::istance();
+            self::instance();
         }
 
         return self::$_regset->regionalToDatabase($date, $type);
@@ -84,13 +88,13 @@ class Format
     public static function toTimestamp($date)
     {
         if (!self::$_regset) {
-            self::istance();
+            self::instance();
         }
 
         return self::$_regset->databaseToTimestamp($date);
     }
 
-    public function dateDistance($date)
+    public function dateDinstance($date)
     {
         // yyyy-mm-dd hh:mm:ss
         // 0123456789012345678

@@ -165,7 +165,7 @@ function duplicateCourse()
 
     require_once _lms_ . '/lib/lib.course.php';
     require_once _lms_ . '/lib/lib.manmenu.php';
-    require_once _lms_ . '/lib/lib.subscribe.php';
+    require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
     $docebo_course = new DoceboCourse($id_dupcourse);
     $subscribe_man = new CourseSubscribe_Manager();

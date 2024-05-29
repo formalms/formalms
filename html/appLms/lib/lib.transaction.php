@@ -228,7 +228,7 @@ class Man_Transaction
 
     public function activateCourses($id_transaction, $id_user, $activations)
     {
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
         //require_once (_lms_.'/admin/modules/subscribe/subscribe.php');
         require_once _lms_ . '/lib/lib.date.php';
         require_once _lms_ . '/lib/lib.course.php';

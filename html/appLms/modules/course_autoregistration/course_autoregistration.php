@@ -113,7 +113,7 @@ function subscribe()
                     $array_course_name = [];
                     $counter = 0;
 
-                    require_once _lms_ . '/lib/lib.subscribe.php';
+                    require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
                     $subscribe = new CourseSubscribe_Management();
 
                     foreach ($array_course as $id_course) {
