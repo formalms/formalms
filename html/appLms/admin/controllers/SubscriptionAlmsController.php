@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Forma;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -1236,7 +1238,7 @@ class SubscriptionAlmsController extends AlmsController
             } else {
                 $users_list = explode(',', $users);
 
-                require_once _lms_ . '/lib/lib.subscribe.php';
+                require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
                 $sman = new CourseSubscribe_Manager();
 
                 $res1 = true;
@@ -2712,7 +2714,7 @@ class SubscriptionAlmsController extends AlmsController
     protected function _subscribeUsersToCatalogue($data)
     {
         require_once _lms_ . '/lib/lib.course.php';
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
         require_once _lms_ . '/lib/lib.edition.php';
         require_once _lms_ . '/lib/lib.date.php';
 
@@ -2811,7 +2813,7 @@ class SubscriptionAlmsController extends AlmsController
     //dialog for fast subscribing of an user to courses
     public function fast_subscribe_dialog()
     {
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
         $subscribe_man = new CourseSubscribe_Manager();
 
         $this->render('fast_subscribe_dialog', [
@@ -2912,7 +2914,7 @@ class SubscriptionAlmsController extends AlmsController
         $acl_man = new FormaACLManager();
 
         require_once _lms_ . '/lib/lib.course.php';
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
         if ($id_user <= 0) {
             echo $this->json->encode(['success' => true]);

@@ -11,6 +11,7 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
+use FormaLms\lib\Forma;
 use FormaLms\lib\Interfaces\Accessible;
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
@@ -469,7 +470,7 @@ class EnrollrulesAlms extends Model implements Accessible
             return $re;
         }
 
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
         $cs = new CourseSubscribe_Management();
         $course_list = array_unique($course_list);
 
@@ -550,7 +551,7 @@ class EnrollrulesAlms extends Model implements Accessible
         }
 
         // find rules for evry language in the array
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
         $cs = new CourseSubscribe_Management();
         $applicable = $this->getApplicableRuleForEntityMultiLang($ent);
         $course_list = $applicable['course_list'];
@@ -637,7 +638,7 @@ class EnrollrulesAlms extends Model implements Accessible
 
     public function logInfo($id_log)
     {
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
         $cs = new CourseSubscribe_Management();
 
         // remove all the subscription
@@ -646,7 +647,7 @@ class EnrollrulesAlms extends Model implements Accessible
 
     public function rollbackLog($id_log)
     {
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
         $cs = new CourseSubscribe_Management();
 
         // remove all the subscription

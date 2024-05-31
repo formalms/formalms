@@ -1,5 +1,7 @@
 <?php defined('IN_FORMA') or exit('Direct access is forbidden.');
 
+use FormaLms\lib\Forma;
+
 require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/organization/orglib.php');
 require_once _lms_ . '/lib/lib.stats.php';
 
@@ -1149,7 +1151,7 @@ function statoneuseroneitemhistory()
 function modstatus()
 {
     require_once _base_ . '/lib/lib.form.php';
-    require_once _lms_ . '/lib/lib.subscribe.php';
+    require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
 

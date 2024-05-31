@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Forma;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -766,7 +768,7 @@ class CourseAlmsController extends AlmsController
 
             require_once _lms_ . '/lib/lib.course.php';
             require_once _lms_ . '/lib/lib.manmenu.php';
-            require_once _lms_ . '/lib/lib.subscribe.php';
+            require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
             $formaCourse = new FormaCourse($idCourseToDulicate);
             $subscribeManager = new CourseSubscribe_Manager();

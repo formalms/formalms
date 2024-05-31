@@ -11,6 +11,7 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
+use FormaLms\lib\Forma;
 use FormaLms\lib\Interfaces\Accessible;
 
 defined('IN_FORMA') or exit('Direct access is forbidden');
@@ -99,7 +100,7 @@ class SubscriptionAlms extends Model implements Accessible
 
             return $date_man->getTotalUserSubscribed($this->id_course, $this->id_date, $filter);
         } else {
-            require_once _lms_ . '/lib/lib.subscribe.php';
+            require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
             $subscribe_man = new CourseSubscribe_Manager();
 
@@ -136,7 +137,7 @@ class SubscriptionAlms extends Model implements Accessible
 
             return $date_man->getDateSubscribed($this->id_date);
         } else {
-            require_once _lms_ . '/lib/lib.subscribe.php';
+            require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
             $subscribe_man = new CourseSubscribe_Manager();
 
@@ -146,7 +147,7 @@ class SubscriptionAlms extends Model implements Accessible
 
     public function loadSelectedUser($user_selected)
     {
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
         $subscribe_man = new CourseSubscribe_Manager();
 
@@ -179,7 +180,7 @@ class SubscriptionAlms extends Model implements Accessible
             $date_man = new DateManager();
             $output = $date_man->getDateSubscribed($this->id_date, $filter);
         } else {
-            require_once _lms_ . '/lib/lib.subscribe.php';
+            require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
             $subscribe_man = new CourseSubscribe_Manager();
             $output = $subscribe_man->getCourseSubscribedUserIdst($this->id_course, false, $filter);
         }
@@ -279,7 +280,7 @@ class SubscriptionAlms extends Model implements Accessible
 
             return $date_man->subscribeUserToDate($id_user, $this->id_course, $this->id_date, $level, $waiting, $date_begin_validity, $date_expire_validity);
         } else {
-            require_once _lms_ . '/lib/lib.subscribe.php'; // elearning enrollment
+            require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php'); // elearning enrollment
             $subscribe_man = new CourseSubscribe_Manager();
 
             return $subscribe_man->subscribeUserToCourse($id_user, $this->id_course, $level, $waiting, $date_begin_validity, $date_expire_validity, $overbooking);
@@ -299,7 +300,7 @@ class SubscriptionAlms extends Model implements Accessible
             // managing overbooked user on course_date_user here
             $ret = $date_man->delUserFromDate($id_user, $this->id_course, $this->id_date);
         } else {
-            require_once _lms_ . '/lib/lib.subscribe.php';
+            require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
             $subscribe_man = new CourseSubscribe_Manager();
             $ret = $subscribe_man->delUserFromCourse($id_user, $this->id_course);
         }
@@ -468,7 +469,7 @@ class SubscriptionAlms extends Model implements Accessible
 
     public function getUserLevel($id_user)
     {
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
         $subscribe_man = new CourseSubscribe_Manager();
 
         return $subscribe_man->getUserLeveInCourse($id_user, $this->id_course);
@@ -476,7 +477,7 @@ class SubscriptionAlms extends Model implements Accessible
 
     public function getLevel()
     {
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
         $subscribe_man = new CourseSubscribe_Manager();
 
@@ -485,7 +486,7 @@ class SubscriptionAlms extends Model implements Accessible
 
     public function getStatus()
     {
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
         $subscribe_man = new CourseSubscribe_Manager();
 
         return $subscribe_man->getUserStatus();
@@ -493,7 +494,7 @@ class SubscriptionAlms extends Model implements Accessible
 
     public function updateUserLevel($id_user, $new_level)
     {
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
         $subscribe_man = new CourseSubscribe_Manager();
 
         return $subscribe_man->updateUserLeveInCourse($id_user, $this->id_course, $new_level);
@@ -501,7 +502,7 @@ class SubscriptionAlms extends Model implements Accessible
 
     public function updateUserDateBeginValidity($id_user, $new_date_begin)
     {
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
         $subscribe_man = new CourseSubscribe_Manager();
 
         return $subscribe_man->updateUserDateBeginValidityInCourse($id_user, $this->id_course, $new_date_begin);
@@ -509,7 +510,7 @@ class SubscriptionAlms extends Model implements Accessible
 
     public function updateUserDateExpireValidity($id_user, $new_date_expire)
     {
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
         $subscribe_man = new CourseSubscribe_Manager();
 
         return $subscribe_man->updateUserDateExpireValidityInCourse($id_user, $this->id_course, $new_date_expire);
@@ -518,7 +519,7 @@ class SubscriptionAlms extends Model implements Accessible
     public function updateUserStatus($id_user, $new_status)
     {
         if ($this->id_edition != 0) {
-            require_once _lms_ . '/lib/lib.subscribe.php';
+            require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
             $subscribe_man = new CourseSubscribe_Manager();
 
@@ -531,7 +532,7 @@ class SubscriptionAlms extends Model implements Accessible
 
             return $subscribe_man->updateUserStatusInCourse($id_user, $this->id_course, $new_status);
         } elseif ($this->id_date != 0) {
-            require_once _lms_ . '/lib/lib.subscribe.php';
+            require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
             $subscribe_man = new CourseSubscribe_Manager();
             require_once _lms_ . '/lib/lib.date.php';
@@ -549,7 +550,7 @@ class SubscriptionAlms extends Model implements Accessible
 
             return $subscribe_man->updateUserStatusInCourse($id_user, $this->id_course, $new_status);
         } else {
-            require_once _lms_ . '/lib/lib.subscribe.php';
+            require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
             $subscribe_man = new CourseSubscribe_Manager();
             if ($new_status == _CUS_END) {
@@ -606,7 +607,7 @@ class SubscriptionAlms extends Model implements Accessible
 
     public function getUserLevelList()
     {
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
         $subscribe_man = new CourseSubscribe_Manager();
 
         return $subscribe_man->getUserLevel();
@@ -614,7 +615,7 @@ class SubscriptionAlms extends Model implements Accessible
 
     public function getUserStatusList()
     {
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
         $subscribe_man = new CourseSubscribe_Manager();
 
         return $subscribe_man->getUserStatus();

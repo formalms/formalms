@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Forma;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -612,7 +614,7 @@ class CatalogLmsController extends LmsController
         /////////////////////////
 
         if ($waiting == 0) {
-            require_once _lms_ . '/lib/lib.subscribe.php';
+            require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
             require_once _lms_ . '/lib/lib.coursepath.php';
 
             $cpath_man = new CoursePath_Manager();

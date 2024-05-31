@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Forma;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -165,7 +167,7 @@ function duplicateCourse()
 
     require_once _lms_ . '/lib/lib.course.php';
     require_once _lms_ . '/lib/lib.manmenu.php';
-    require_once _lms_ . '/lib/lib.subscribe.php';
+    require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
     $formaCourse = new FormaCourse($id_dupcourse);
     $subscribe_man = new CourseSubscribe_Manager();

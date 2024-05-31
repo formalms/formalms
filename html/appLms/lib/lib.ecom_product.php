@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Forma;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -24,7 +26,7 @@ class EcomProductCourse extends EcomProduct
 
     public function __construct()
     {
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
         $this->subs_man = new CourseSubscribe_Management();
     }
 
@@ -60,7 +62,7 @@ class EcomProductCourseEdition extends EcomProduct
 
     public function __construct()
     {
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
         $this->subs_man = new CourseSubscribe_Management();
     }
 

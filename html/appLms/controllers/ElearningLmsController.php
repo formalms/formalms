@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Forma;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -38,7 +40,7 @@ class ElearningLmsController extends LmsController
         }
 
         require_once _lms_ . '/lib/lib.course.php';
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
         require_once _lms_ . '/lib/lib.levels.php';
 
         $this->cstatus = [
