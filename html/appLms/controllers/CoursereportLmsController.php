@@ -2051,93 +2051,11 @@ class CoursereportLmsController extends LmsController
     {
         checkPerm('mod', true, $this->_mvc_name);
 
-        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.coursereport.php');
-        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.test.php');
-        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
-        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.table.php');
-
-        // XXX: Initializaing
-        $lang = FormaLanguage::createInstance('coursereport', 'lms');
-
-        // XXX: Instance management
-        $aclMan = \FormaLms\lib\Forma::getAclManager();
-        $testMan = new GroupTestManagement();
-      
-
-        // XXX: Find students
-        $id_students = &$this->courseReportManager->getStudentId();
-
         // XXX: retrive info about the final score
 
-        $courseReportLms = new CoursereportLms($this->idCourse);
+        $info_final = $this->courseReportManager->getReportsFilteredBySourceOf(CoursereportLms::SOURCE_OF_FINAL_VOTE);
 
-        $info_final = $courseReportLms->getReportsFilteredBySourceOf(CoursereportLms::SOURCE_OF_FINAL_VOTE);
-
-        // XXX: Retrive all reports (test and so), and set it
-
-        $reports = $courseReportLms->getReportsForFinal();
-
-        $sumMaxScore = 0;
-        $includedTest = [];
-        $otherSource = [];
-
-        foreach ($reports as $infoReport) {
-            $sumMaxScore += $infoReport->getMaxScore() * $infoReport->getWeight();
-
-            switch ($infoReport->getSourceOf()) {
-                case CoursereportLms::SOURCE_OF_ACTIVITY:
-                    $otherSource[$infoReport->getIdReport()] = $infoReport->getIdReport();
-                    break;
-                case CoursereportLms::SOURCE_OF_TEST:
-                    $includedTest[$id] = $id;
-                    break;
-                default:
-                    break;
-            }
-        }
-        // XXX: Retrive Test score
-        if (!empty($includedTest)) {
-            $testsScore = &$testMan->getTestsScores($includedTest, $id_students);
-        }
-
-        // XXX: Retrive other score
-        if (!empty($otherSource)) {
-            $otherScore = &$this->courseReportManager->getReportsScores($otherSource);
-        }
-
-        $finalScore = [];
-        foreach ($id_students as $idUser) {
-            $userScore = 0;
-            foreach ($reports as $infoReport) {
-                switch ($infoReport->getSourceOf()) {
-                    case CoursereportLms::SOURCE_OF_ACTIVITY:
-                        if (isset($otherScore[$infoReport->getIdReport()][$idUser]) && ($otherScore[$infoReport->getIdReport()][$idUser]['score_status'] == 'valid')) {
-                            $userScore += ($otherScore[$infoReport->getIdReport()][$idUser]['score'] * $infoReport->getWeight());
-                        } else {
-                            $userScore += 0;
-                        }
-
-                        break;
-                    case CoursereportLms::SOURCE_OF_TEST:
-                        if (isset($testsScore[$id][$idUser]) && ($testsScore[$id][$idUser]['score_status'] == 'valid')) {
-                            $userScore += ($testsScore[$id][$idUser]['score'] * $infoReport->getWeight());
-                        } else {
-                            $userScore += 0;
-                        }
-
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            // user final score
-            if ($sumMaxScore != 0) {
-                $finalScore[$idUser] = round(($userScore / $sumMaxScore) * $info_final[0]->getMaxScore(), 2);
-            } else {
-                $finalScore[$idUser] = 0;
-            }
-        }
+        $finalScore = $this->courseReportManager->getCourseFinalScoreComputation($this->idCourse);
         // Save final scores
         $exists_final = [];
         $query_final_score = "SELECT id_user

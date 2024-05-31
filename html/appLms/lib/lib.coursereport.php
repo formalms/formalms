@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Forma;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -295,8 +297,8 @@ class CourseReportManager
 					score_status = 'valid',
 					comment = '" . $comments[$idst_user] . "'
 					" . ($old_scores[$id_report][$idst_user] != $score
-                        ? ", score_status = 'valid'"
-                        : '') . " 
+                    ? ", score_status = 'valid'"
+                    : '') . " 
 				WHERE id_report = '" . $id_report . "' AND id_user = '" . $idst_user . "'";
             }
             $re = sql_query($query_scores);
@@ -360,8 +362,10 @@ class CourseReportManager
     public function checkActivityData(&$source)
     {
         if ($source['required_score'] > $source['max_score']) {
-            return ['error' => true,
-                'message' => Lang::t('_REQUIRED_MUST_BE_LESS_THEN_MAX', 'coursereport', 'lms'),];
+            return [
+                'error' => true,
+                'message' => Lang::t('_REQUIRED_MUST_BE_LESS_THEN_MAX', 'coursereport', 'lms'),
+            ];
         }
 
         return ['error' => false, 'message' => ''];
@@ -448,7 +452,7 @@ class CourseReportManager
         return sql_query($query_del_report);
     }
 
-    public function getAllUserFinalScore($id_user, $arr_courses = false)
+    public function getAllUserFinalScore($id_user, $arr_courses = [])
     {
         $re = [];
         $query_scores = "
@@ -458,7 +462,7 @@ class CourseReportManager
 		WHERE r.source_of = 'final_vote' 
 			AND s.id_report = r.id_report ";
         $query_scores .= " AND s.id_user = '" . $id_user . "'";
-        if ($arr_courses !== false) {
+        if (!empty($arr_courses)) {
             $query_scores .= ' AND r.id_course IN ( ' . implode(',', $arr_courses) . ' ) ';
         }
 
@@ -476,17 +480,16 @@ class CourseReportManager
         return $re;
     }
 
-    public function getUserFinalScore($arr_users, $arr_courses = false)
+    public function getUserFinalScore($arr_users, $arr_courses = [])
     {
         $re = [];
         $query_scores = "
-		SELECT s.id_user, r.id_course, s.score, s.score_status, r.max_score
-		FROM %lms_coursereport AS r
-			JOIN %lms_coursereport_score AS s
-		WHERE r.source_of = 'final_vote' 
-			AND s.id_report = r.id_report ";
-        $query_scores .= ' AND s.id_user IN ( ' . implode(',', $arr_users) . ' )';
-        if ($arr_courses !== false) {
+        SELECT s.id_user, r.id_course, r.max_score, COALESCE(s.score_status,'not_found') AS score_status
+        LEFT JOIN %lms_coursereport_score AS s ON s.score_status = 'valid' AND s.id_report = r.id_report 
+        WHERE 
+        r.source_of = 'final_vote' ";
+
+        if (!empty($arr_courses)) {
             $query_scores .= ' AND r.id_course IN ( ' . implode(',', $arr_courses) . ' ) ';
         }
 
@@ -494,15 +497,99 @@ class CourseReportManager
             return $re;
         }
         $re_scores = sql_query($query_scores);
-        foreach ($re_scores as $row) {
-            [$user, $id_course, $score, $score_status, $max_score] = array_values($row);
-            if ($score_status == 'valid') {
-                $re[$user][$id_course]['score'] = $score;
-                $re[$user][$id_course]['max_score'] = $max_score;
+        $commonScores = [];
+        foreach ($re_scores as $reScore) {
+            $commonScores[$reScore['id_course']]['status'] = $reScore['score_status'];
+            $commonScores[$reScore['id_course']]['max_score'] = $reScore['max_score'];
+        }
+
+
+        foreach ($arr_courses as $idCourse) {
+            $scores[$idCourse] = $this->getCourseFinalScoreComputation($idCourse);
+            foreach ($arr_users as $idUser) {
+                $re[$idUser][$idCourse]['score'] = ($commonScores[$idCourse]['status'] == 'not_found') ? 0 : $scores[$idCourse][$idUser];
+                $re[$idUser][$idCourse]['max_score'] = $commonScores[$idCourse]['max_score'];
             }
         }
 
         return $re;
+    }
+
+    public function getCourseFinalScoreComputation($idCourse, $idUser = null) {
+        require_once Forma::inc(_lms_ . '/lib/lib.coursereport.php');
+        require_once Forma::inc(_lms_ . '/lib/lib.test.php');
+        require_once Forma::inc(_base_ . '/lib/lib.form.php');
+        require_once Forma::inc(_base_ . '/lib/lib.table.php');
+        $test_man = new GroupTestManagement();
+        // XXX: Find students
+        $id_students = $idUser ? [$idUser] : $this->getStudentId() ;
+        // XXX: retrive info about the final score
+        $courseReportLms = new CoursereportLms($idCourse);
+        $info_final = $courseReportLms->getReportsFilteredBySourceOf(CoursereportLms::SOURCE_OF_FINAL_VOTE);
+
+        // XXX: Retrive all reports (test and so), and set it
+        $reports = $courseReportLms->getReportsForFinal();
+        $sum_max_score = 0;
+        $included_test = [];
+        $other_source = [];
+        foreach ($reports as $info_report) {
+            $sum_max_score += $info_report->getMaxScore() * $info_report->getWeight();
+            switch ($info_report->getSourceOf()) {
+                case CoursereportLms::SOURCE_OF_ACTIVITY:
+                    $other_source[$info_report->getIdReport()] = $info_report->getIdReport();
+                    break;
+                case CoursereportLms::SOURCE_OF_TEST:
+                    $included_test[$info_report->getIdSource()] = $info_report->getIdSource();
+                    break;
+                default:
+                    break;
+            }
+        }
+        // XXX: Retrive Test score
+        if (!empty($included_test)) {
+            $tests_score = $test_man->getTestsScores($included_test, $id_students);
+        }
+        // XXX: Retrive other score
+        if (!empty($other_source)) {
+            $other_score = $report_man->getReportsScores($other_source);
+        }
+        $final_score = [];
+
+        foreach ($id_students as $id_user) {
+            $user_score = 0;
+
+            foreach ($reports as $info_report) {
+                switch ($info_report->getSourceOf()) {
+                    case CoursereportLms::SOURCE_OF_ACTIVITY:
+                        if (isset($other_score[$info_report->getIdReport()][$id_user]) && ($other_score[$info_report->getIdReport()][$id_user]['score_status'] == 'valid')) {
+                            $user_score += ($other_score[$info_report->getIdReport()][$id_user]['score'] * $info_report->getWeight());
+                        } else {
+                            $user_score += 0;
+                        }
+
+                        break;
+                    case CoursereportLms::SOURCE_OF_TEST:
+                        if (isset($tests_score[$info_report->getIdSource()][$id_user]) && ($tests_score[$info_report->getIdSource()][$id_user]['score_status'] == 'valid')) {
+                            $user_score += ($tests_score[$info_report->getIdSource()][$id_user]['score'] * $info_report->getWeight());
+                        } else {
+                            $user_score += 0;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+            // user final score
+            if ($sum_max_score != 0) {
+                $final_score[$id_user] = round(($user_score / $sum_max_score) * $info_final[0]->getMaxScore(), 2);
+            } else {
+                $final_score[$id_user] = 0;
+            }
+        }
+        if($idUser) {
+            return $final_score[$id_user];
+        }
+        return $final_score;
     }
 
     /**
@@ -524,7 +611,7 @@ class CourseReportManager
         //get all existing report for the course
         $arr_id_report = [];
         $query = 'SELECT id_report FROM %lms_coursereport_score WHERE id_course = ' . (int)$id_course;
-        $res = $db->query($query);
+        $res = $db->query($query) ?? [];
         foreach ($res as $row) {
             [$id_report] = array_values($row);
             $arr_id_report[] = $id_report;
@@ -534,7 +621,7 @@ class CourseReportManager
         if (!empty($arr_id_report)) {
             $query = 'DELETE FROM %lms_coursereport_score WHERE id_report IN (' . implode(',', $arr_id_report) . ')';
             $res = $db->query($query);
-            if (!res) {
+            if (!$res) {
                 $db->rollback();
 
                 return false;
