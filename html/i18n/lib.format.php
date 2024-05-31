@@ -32,7 +32,7 @@ class Format
      */
     public static function instance()
     {
-        $classname = __CLASS__;
+       
         if (!self::$_regset) {
             self::init();
         }

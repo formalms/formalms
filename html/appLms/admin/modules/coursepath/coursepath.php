@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Forma;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -628,7 +630,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             }
             // update users course subscription
             require_once _lms_ . '/lib/lib.coursepath.php';
-            require_once _lms_ . '/lib/lib.subscribe.php';
+            require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
             $cpath_man = new CoursePath_Manager();
             $subs_man = new CourseSubscribe_Management();
@@ -809,7 +811,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             $re = $cpath_man->delFromSlot($id_path, $id_slot, $id_course);
             if ($re) {
                 // update users course subscription
-                require_once _lms_ . '/lib/lib.subscribe.php';
+                require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
                 $subs_man = new CourseSubscribe_Management();
 
@@ -869,7 +871,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         require_once _base_ . '/lib/lib.form.php';
         require_once _lms_ . '/lib/lib.course.php';
         require_once _lms_ . '/lib/lib.coursepath.php';
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
         $id_path = importVar('id_path', true, 0);
         $lang = &FormaLanguage::createInstance('coursepath', 'lms');
@@ -988,7 +990,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 
         require_once _base_ . '/lib/lib.form.php';
         require_once _adm_ . '/class.module/class.directory.php';
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
         require_once _lms_ . '/lib/lib.coursepath.php';
 
         $id_path = importVar('id_path', true, 0);
@@ -1164,7 +1166,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 
     function addsubscriptionedition()
     {
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
         require_once _lms_ . '/lib/lib.coursepath.php';
 
         $cpath_man = new CoursePath_Manager();

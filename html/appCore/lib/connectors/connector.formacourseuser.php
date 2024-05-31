@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Forma;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -76,7 +78,7 @@ class FormaConnectorFormaCourseUser extends FormaConnector
      **/
     public function __construct($params)
     {
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
         $this->acl_man = new FormaACLManager();
         $this->sub_man = new CourseSubscribe_Management();

@@ -216,7 +216,7 @@ class CertificateSubs_UserStat extends CertificateSubstitution
             $score_final = $org_man->getFinalObjectScore([$this->id_user], [$this->id_course]);
 
             require_once _lms_ . '/lib/lib.coursereport.php';
-            $rep_man = new CourseReportManager($id_course);
+            $rep_man = new CourseReportManager($this->id_course);
 
             $score_course = $rep_man->getUserFinalScore([$this->id_user], [$this->id_course]);
 

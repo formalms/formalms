@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Forma;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -32,7 +34,7 @@ function coursecatalogue($id_block, $title, $option = [])
         $session->set('chart', $sessionChart);
         $session->save();
     } else {
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
         $man_subscribe = new CourseSubscribe_Management();
 
@@ -387,7 +389,7 @@ function controlCourse($course_info, $page, $id_catalogue, $id_category, $ini)
 
 function subscribeToCourse($id_user, $id_course, $id_date = 0)
 {
-    require_once _lms_ . '/lib/lib.subscribe.php';
+    require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
     //require_once (_lms_.'/admin/modules/subscribe/subscribe.php');
     require_once _lms_ . '/lib/lib.date.php';
     require_once _lms_ . '/lib/lib.course.php';

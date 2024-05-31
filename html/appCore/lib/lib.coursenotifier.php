@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Forma;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -29,7 +31,7 @@ class FormaCourseNotifier extends FormaEventConsumer
 
     public function actionEvent(&$event)
     {
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
         parent::actionEvent($event);
 

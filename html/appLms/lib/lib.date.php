@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Forma;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -30,7 +32,7 @@ class DateManager
 
     public function __construct()
     {
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
         $this->lang = FormaLanguage::CreateInstance('admin_date', 'lms');
         $this->acl_man =  \FormaLms\lib\Forma::getAclManager();
@@ -1815,7 +1817,7 @@ class DateManager
 
     public function subscribeUserToDate($id_user, $id_course, $id_date, $level, $waiting, $date_begin_validity = false, $date_expire_validity = false)
     {
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
         //check for overbooking
         $is_overbooking = false;
@@ -1845,7 +1847,7 @@ class DateManager
         $this->removeUserFromDate($id_user, $id_date, $id_course);
         if (!$this->controlUserSubscriptions($id_user, $id_course)) {
             require_once _lms_ . '/lib/lib.course.php';
-            require_once _lms_ . '/lib/lib.subscribe.php';
+            require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
             $subscribe_man = new CourseSubscribe_Manager();
             $level = $this->subscribe_man->getUserLeveInCourse($id_user, $id_course);
