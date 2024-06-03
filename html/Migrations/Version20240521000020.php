@@ -23,7 +23,7 @@ final class Version20240521000020 extends AbstractMigration
 
         $this->addSql(HelperTool::dropIndexIfExistsQueryBuilder());
        
-        $this->addSql($this->dropIndexIfExists('unique_coursereport','learning_quest_type'));
+        $this->addSql($this->dropIndexIfExists('unique_coursereport','learning_coursereport'));
 
         $this->addSql(HelperTool::dropProcedure('drop_index_if_exists'));
         //delete all duplicates
