@@ -323,31 +323,11 @@ class ImportUser extends FormaImport_Destination
         $is_an_update = false;
         $err = false;
         $idst = $acl_manager->getUserST($tocompare['userid']);
-        $sameuserid = false;
 
-        if ($idst !== false) {
-            $user_mng = new UsermanagementAdm();
-            $infouser = $user_mng->getProfileData($idst);
-            $fielduser = $this->fl->getUserFieldEntryData($idst);
-
-            foreach ($tocompare as $field_id => $field_value) {
-                if (isset($this->arr_fields[$field_id])) {
-                    if ($field_value != $fielduser[$field_id]) {
-                        $idst = false;
-                        $sameuserid = true;
-                    }
-                } else {
-                    if ($field_value != $infouser->$field_id && $field_id != 'pass') {
-                        // $idst = FALSE;
-                        $sameuserid = true;
-                    }
-                }
-            }
-        }
 
         switch ($this->action_on_users) {
             case 'create_and_update':
-                if ($idst === false && !$sameuserid) {
+                if ($idst === false) {
                     // create a new user
                     $idst = $acl_manager->registerUser(
                         $userid,
@@ -371,7 +351,7 @@ class ImportUser extends FormaImport_Destination
                         $this->last_error = 'Error on insert user';
                         $err = true;
                     }
-                } elseif ($idst !== false) {	//   if ($sameuserid == TRUE) {
+                } else {
                     $result = $acl_manager->updateUser(
                         $acl_manager->getUserST($tocompare['userid']),
                         $userid,
@@ -395,39 +375,8 @@ class ImportUser extends FormaImport_Destination
                         $this->last_error = 'Error on update user';
                         $err = true;
                     }
-                } else {
-                    $a = 1;
-                    $newuserid = $userid;
-                    while ($acl_manager->getUserST($newuserid)) {
-                        $newuserid = $userid . $a;
-                        ++$a;
-                    }
-                    $userid = $newuserid;
-
-                    // create a new user
-                    $idst = $acl_manager->registerUser(
-                        $userid,
-                        $firstname,
-                        $lastname,
-                        $pass ? $pass : '',
-                        $email,
-                        '',
-                        '',
-                        false,
-                        false,
-                        '',
-                        $force_change,
-                        false,
-                        false,
-                        false,
-                        false
-                    );
-
-                    if ($idst === false) {
-                        $this->last_error = 'Error on insert user';
-                        $err = true;
-                    }
-                }
+                } 
+    
                 break;
             case 'create_all':
                 $a = 1;
@@ -463,7 +412,7 @@ class ImportUser extends FormaImport_Destination
                 }
                 break;
             case 'only_create':
-                if ($idst === false && !$sameuserid) {
+                if ($idst === false ) {
                     // create a new user
                     $idst = $acl_manager->registerUser(
                         $userid,
@@ -487,44 +436,13 @@ class ImportUser extends FormaImport_Destination
                         $this->last_error = 'Error on insert user';
                         $err = true;
                     }
-                } elseif ($idst !== false || $sameuserid) {
+                } else {
                     $idst = false;
                     $this->last_error = Lang::t('_USER_ALREADY_EXISTS', 'standard') . ' --> ' . $userid . ' | ' . $firstname . ' | ' . $lastname . ' | ' . $pass . ' | ' . $email . ' |';
 
                     return false;
-                } else {
-                    $a = 1;
-                    $newuserid = $userid;
-                    while ($acl_manager->getUserST($newuserid)) {
-                        $newuserid = $userid . $a;
-                        ++$a;
-                    }
-                    $userid = $newuserid;
-
-                    // create a new user
-                    $idst = $acl_manager->registerUser(
-                        $userid,
-                        $firstname,
-                        $lastname,
-                        $pass ? $pass : '',
-                        $email,
-                        '',
-                        '',
-                        false,
-                        false,
-                        '',
-                        $force_change,
-                        false,
-                        false,
-                        false,
-                        false
-                    );
-
-                    if ($idst === false) {
-                        $this->last_error = 'Error on insert user';
-                        $err = true;
-                    }
-                }
+                } 
+                
                 break;
             case 'only_update':
                 if ($userid) {   //if($sameuserid !== false) {
@@ -555,10 +473,7 @@ class ImportUser extends FormaImport_Destination
                 break;
         }
 
-        if ($idst !== false || $sameuserid == true) {
-            if ($idst == false && $sameuserid == true) {
-                $idst = $acl_manager->getUserST($tocompare['userid']);
-            }
+        if ($idst) {
 
             $result = true;
             $this->idst_imported[$idst] = $idst;
@@ -591,6 +506,20 @@ class ImportUser extends FormaImport_Destination
             } elseif ($this->idst_group != $this->idst_oc) {
                 $acl_manager->addToGroup($this->idst_group, $idst);
                 $acl_manager->addToGroup($this->idst_desc, $idst);
+            }
+
+
+            //-save extra field------------------------------------------
+
+            $arr_fields_toset = [];
+            foreach ($this->arr_fields as $field_id => $field_info) {
+                if (isset($row[$field_id]) && $row[$field_id] !== false) {
+                    $arr_fields_toset[$field_id] = $row[$field_id];
+                }
+            }
+
+            if (count($arr_fields_toset) > 0) {
+                $result = $this->fl->storeDirectFieldsForUser($idst, $arr_fields_toset);
             }
 
             $array_subst = [
