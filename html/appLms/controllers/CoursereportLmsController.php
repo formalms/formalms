@@ -1935,7 +1935,7 @@ class CoursereportLmsController extends LmsController
         $tb->addHead($cont_h);
 
         // XXX: retrive scores
-        $report_score = &$this->courseReportManager->getReportsScores([$id_report]);
+        $report_score = $this->courseReportManager->getReportsScores([$id_report]);
 
         // XXX: Display user scores
         $i = 0;

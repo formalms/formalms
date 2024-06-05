@@ -137,7 +137,7 @@ class GroupTestManagement
         $query_scores = '
 		SELECT lt.idTest, lt.idTrack, lt.idUser, lt.date_attempt, lt.date_attempt_mod, lt.score, lt.score_status, lt.comment, lt.bonus_score, count(ltt.idReference) as times
 		FROM %lms_testtrack as lt join %lms_testtrack_times as ltt on lt.idTrack=ltt.idTrack and lt.idTest=ltt.idTest
-        WHERE idTest IN ( ' . implode(',', $id_tests) . ' ) AND score_status IN ( "valid","passed" ) ';
+        WHERE ltt.idTest IN ( ' . implode(',', $id_tests) . ' ) AND lt.score_status IN ( "valid","passed" ) ';
         if (count($id_students)) {
             $query_scores .= ' AND lt.idUser IN ( ' . implode(',', $id_students) . ' )';
         }
