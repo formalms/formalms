@@ -542,11 +542,32 @@ class CoursestatsLms extends Model
         try {
             preg_match('/^PT((\d*H)?(\d*M)?)?(\d+(\.\d+)?S)$/', $pt_time, $matches);
 
-            if (count($matches) > 4) {
-                $seconds = floor($matches[4]);
+            // Inizializza variabili per ore, minuti e secondi
+            $hours = !empty($matches[2]) ? (int)$matches[2] : 0;
+            $minutes = !empty($matches[3]) ? (int)$matches[3] : 0;
+            $seconds = isset($matches[4]) ? (int)$matches[4] : 0;
+            $fraction = 0;
 
-                $pt_time = 'PT' . $seconds . 'S';  // Construct a valid interval spec without fractional part
+            // Controlla se ci sono secondi con frazione
+            if (isset($matches[5])) {
+                list($whole, $decimal) = explode('.', $matches[5]);
+             
+                $fraction = (float)("0." . $decimal);
             }
+
+            // Arrotonda la frazione di secondo e somma ai secondi
+            $roundedSeconds = $seconds + round($fraction);
+
+            // Crea un DateInterval usando le ore, i minuti e i secondi arrotondati
+            $pt_time = "PT";
+            if ($hours > 0) {
+                $pt_time .= "{$hours}H";
+            }
+            if ($minutes > 0) {
+                $pt_time .= "{$minutes}M";
+            }
+            $pt_time .= "{$roundedSeconds}S";
+
 
             $interval = new DateInterval($pt_time);
 
@@ -570,8 +591,6 @@ class CoursestatsLms extends Model
                     return sprintf('%u:%u:%u', $dateTime->format('H'), $dateTime->format('i'), $dateTime->format('s'));
                 }
             }
-
-
         }
         return $pt_time;
     }
@@ -622,7 +641,6 @@ class CoursestatsLms extends Model
                     $output += $this->timeToSec($this->parseScormTime($row['session_time'])); // Sum in seconds
 
                 }
-
             }
         }
 
