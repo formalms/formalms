@@ -111,7 +111,7 @@ class GroupTestManagement
      * @return array a matrix with the index [id_test] [id_user] and the values in
      *               ['idTest',' idUser', 'date_attempt', 'type_of_result', 'result', 'score_status', 'comment']
      */
-    public function getTestsScores($id_tests, $id_students = false, $pure = false)
+    public function getTestsScores($id_tests, $id_students = false, $pure = false, $scoreStatus = ["valid", "passed"])
     {
         $data = [];
         if (empty($id_tests)) {
@@ -123,7 +123,10 @@ class GroupTestManagement
         $query_scores = '
 		SELECT idTest, idTrack, idUser, date_attempt, date_attempt_mod, score, score_status, comment, bonus_score
 		FROM %lms_testtrack
-		WHERE idTest IN ( ' . implode(',', $id_tests) . ' ) AND score_status IN ( "valid","passed" ) ';
+		WHERE idTest IN ( ' . implode(',', $id_tests) . ' )';
+        if (!empty($scoreStatus)) {
+            $query_scores .= ' AND score_status IN ( ' . implode(',', $scoreStatus) . ' ) ';
+        }
         if ($id_students !== false) {
             $query_scores .= ' AND idUser IN ( ' . implode(',', $id_students) . ' )';
         }
