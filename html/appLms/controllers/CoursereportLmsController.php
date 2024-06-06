@@ -113,7 +113,7 @@ class CoursereportLmsController extends LmsController
         $reports_id = $this->model->getReportsId();
         $includedTestReportId = $this->model->getReportsId(CoursereportLms::SOURCE_OF_TEST);
 
-        $courseReportTestScores = $testMan->getReportTestsScoresAndDetails($includedTest, $id_students, false, []);
+        $courseReportTestScores = $testMan->getReportTestsScoresAndDetails($includedTest, $id_students, false, ["valid", "passed", "not_checked"]);
         $testsScore = $courseReportTestScores['testScores'];
         $testDetails = $courseReportTestScores['testDetails'];
 
@@ -1440,8 +1440,7 @@ class CoursereportLmsController extends LmsController
             . Form::closeElementSpace()
         );
 
-        // XXX: retrive scores
-        $tests_score = $test_man->getTestsScores([$idTest], $id_students);
+        $testsScore = $testMan->getTestsScores([$idTest], $id_students, false, ["valid", "passed", "not_checked"]);
 
         // XXX: Display user scores
         $i = 0;

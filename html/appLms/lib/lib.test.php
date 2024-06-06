@@ -117,12 +117,12 @@ class GroupTestManagement
      */
     public function getTestsScores($id_tests, $id_students = false, $pure = false, $scoreStatus = ["valid", "passed"])
     {
-        $data = $this->getReportTestsScoresAndDetails($id_tests, $id_students, $pure);
+        $data = $this->getReportTestsScoresAndDetails($id_tests, $id_students, $pure, $scoreStatus);
 
         return $data['testScores'];
     }
 
-    public function getReportTestsScoresAndDetails($id_tests, $id_students = [], $pure = false): array
+    public function getReportTestsScoresAndDetails($id_tests, $id_students = [], $pure = false, $scoreStatus = ["valid", "passed"]): array
     {
         $data = [
             'testScores' => [],
@@ -139,13 +139,16 @@ class GroupTestManagement
 		FROM %lms_testtrack as lt join %lms_testtrack_times as ltt on lt.idTrack=ltt.idTrack and lt.idTest=ltt.idTest
         WHERE ltt.idTest IN ( ' . implode(',', $id_tests) . ' )';
         if (!empty($scoreStatus)) {
-            $query_scores .= ' AND lt.score_status IN ( ' . implode(',', $scoreStatus) . ' ) ';
+            $query_scores .= ' AND lt.score_status IN ( ' . implode(',', array_map(function($value) {
+                return '"' . $value . '"';
+            }, $scoreStatus)) . ' ) ';
         }
         if (count($id_students)) {
             $query_scores .= ' AND lt.idUser IN ( ' . implode(',', $id_students) . ' )';
         }
         $query_scores .= ' GROUP by idTest, idTrack,idUser';
         $query_scores .= ' ORDER BY date_attempt DESC';
+      
         $re_scores = sql_query($query_scores);
         foreach ($re_scores as $test_data) {
 
