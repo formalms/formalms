@@ -23,7 +23,7 @@ class CoursereportLmsController extends LmsController
 
     private $completeFieldListArray;
 
-    protected  $courseReportManager;
+    protected $courseReportManager;
 
     /** @var int */
     protected $idCourse;
@@ -82,7 +82,7 @@ class CoursereportLmsController extends LmsController
         // XXX: Instance management
         $aclMan = \FormaLms\lib\Forma::getAclManager();
         $testMan = new GroupTestManagement();
-   
+
 
         $type_filter = FormaLms\lib\Get::pReq('type_filter', DOTY_MIXED, false);
 
@@ -113,7 +113,7 @@ class CoursereportLmsController extends LmsController
         $reports_id = $this->model->getReportsId();
         $includedTestReportId = $this->model->getReportsId(CoursereportLms::SOURCE_OF_TEST);
 
-        $courseReportTestScores = $testMan->getReportTestsScoresAndDetails($includedTest, $id_students);
+        $courseReportTestScores = $testMan->getReportTestsScoresAndDetails($includedTest, $id_students, false, []);
         $testsScore = $courseReportTestScores['testScores'];
         $testDetails = $courseReportTestScores['testDetails'];
 
@@ -290,7 +290,7 @@ class CoursereportLmsController extends LmsController
 
                                 if (!isset($testDetails[$id][CoursereportLms::TEST_STATUS_VARIANZA])) {
                                     $testDetails[$id][CoursereportLms::TEST_STATUS_VARIANZA] = 0;
-                                }
+                            }
 
                                 $totalTests = $testDetails[$id][CoursereportLms::TEST_STATUS_NOT_PASSED] + $testDetails[$id][CoursereportLms::TEST_STATUS_PASSED];
                                 if ($totalTests > 0) {
@@ -480,7 +480,7 @@ class CoursereportLmsController extends LmsController
 
         $aclMan = \FormaLms\lib\Forma::getAclManager();
         $testMan = new GroupTestManagement();
-   
+
 
         $view_all_perm = checkPerm('view_all', true, $this->_mvc_name);
         $type_filter = FormaLms\lib\Get::pReq('type_filter', DOTY_MIXED, false);
@@ -589,7 +589,7 @@ class CoursereportLmsController extends LmsController
         $reports_score = $this->courseReportManager->getReportsScores((isset($includedTestReportId) && is_array($includedTestReportId) ? array_diff($reports_id, $includedTestReportId) : $reports_id), $id_students);
 
         $results_names = [];
-  
+
         $students_array = [];
 
         if (!empty($students_info)) {
@@ -1030,7 +1030,7 @@ class CoursereportLmsController extends LmsController
                 [$score] = sql_fetch_array($q);
 
                 if (FormaLms\lib\Get::req('round_report') || FormaLms\lib\Get::req('redo_final') || !$score) {
-                  
+
                     $usersScores = [$idUser => $finalScore[$idUser]];
                     $this->courseReportManager->saveReportScore($info_final[0]->getIdReport(), $usersScores, [$idUser => date('d-m-Y H:i:s')], '');
                 } elseif ($score && $finalScore[$idUser] != $score) {
@@ -1294,7 +1294,7 @@ class CoursereportLmsController extends LmsController
         // XXX: Instance management
         $aclMan = \FormaLms\lib\Forma::getAclManager();
         $testMan = new GroupTestManagement();
-  
+
 
         // XXX: Find students
         $type_filter = false;
@@ -1441,7 +1441,7 @@ class CoursereportLmsController extends LmsController
         );
 
         // XXX: retrive scores
-        $testsScore = &$testMan->getTestsScores([$idTest], $id_students);
+        $tests_score = $test_man->getTestsScores([$idTest], $id_students);
 
         // XXX: Display user scores
         $i = 0;
@@ -1675,7 +1675,7 @@ class CoursereportLmsController extends LmsController
         // XXX: Instance management
         $aclMan = \FormaLms\lib\Forma::getAclManager();
         $testMan = new GroupTestManagement();
-  
+
 
         // XXX: Save input if needed
         if (isset($_POST['view_answer'])) {
@@ -1835,7 +1835,7 @@ class CoursereportLmsController extends LmsController
 
         // XXX: Instance management
         $aclMan = \FormaLms\lib\Forma::getAclManager();
-     
+
 
         // XXX: Find students
         $type_filter = false;
@@ -2009,7 +2009,7 @@ class CoursereportLmsController extends LmsController
         $out->setWorkingZone('content');
 
         $testMan = new GroupTestManagement();
-      
+
 
         // XXX: Find test from organization
         $re = $testMan->roundTestScore($idTest);
@@ -2027,7 +2027,7 @@ class CoursereportLmsController extends LmsController
         require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.table.php');
 
         // XXX: Instance management
-   
+
 
         // XXX: Find test from organization
         $re = $this->courseReportManager->roundReportScore($idReport);
@@ -2134,7 +2134,7 @@ class CoursereportLmsController extends LmsController
         );
         // XXX: Save input if needed
         if (isset($_POST['save']) && is_numeric($_POST['id_source'])) {
-     
+
             // check input
             if ($_POST['titolo'] == '') {
                 $_POST['titolo'] = $lang->def('_NOTITLE');
@@ -2457,7 +2457,7 @@ class CoursereportLmsController extends LmsController
 
         // XXX: Instance management
         $aclMan = \FormaLms\lib\Forma::getAclManager();
-      
+
 
         // XXX: Find users
         $type_filter = false;
@@ -2747,7 +2747,6 @@ class CoursereportLmsController extends LmsController
         $id_report = importVar('id_report', true, 0);
         $lang = FormaLanguage::createInstance('coursereport', 'lms');
 
-    
 
         [$seq] = sql_fetch_row(sql_query("
 	SELECT sequence
@@ -2996,7 +2995,7 @@ class CoursereportLmsController extends LmsController
 
         $csv .= "\n";
 
-        $testsScore = &$testMan->getTestsScores($includedTest, array_keys($students));
+        $testsScore = $testMan->getTestsScores($includedTest, array_keys($students));
 
         $testDetails = [];
         if (is_array($includedTest)) {
