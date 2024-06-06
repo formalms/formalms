@@ -115,7 +115,7 @@ class GroupTestManagement
      * @return array a matrix with the index [id_test] [id_user] and the values in
      *               ['idTest',' idUser', 'date_attempt', 'type_of_result', 'result', 'score_status', 'comment']
      */
-    public function getTestsScores($id_tests, $id_students = false, $pure = false)
+    public function getTestsScores($id_tests, $id_students = false, $pure = false, $scoreStatus = ["valid", "passed"])
     {
         $data = $this->getReportTestsScoresAndDetails($id_tests, $id_students, $pure);
 
@@ -137,7 +137,10 @@ class GroupTestManagement
         $query_scores = '
 		SELECT lt.idTest, lt.idTrack, lt.idUser, lt.date_attempt, lt.date_attempt_mod, lt.score, lt.score_status, lt.comment, lt.bonus_score, count(ltt.idReference) as times
 		FROM %lms_testtrack as lt join %lms_testtrack_times as ltt on lt.idTrack=ltt.idTrack and lt.idTest=ltt.idTest
-        WHERE ltt.idTest IN ( ' . implode(',', $id_tests) . ' ) AND lt.score_status IN ( "valid","passed" ) ';
+        WHERE ltt.idTest IN ( ' . implode(',', $id_tests) . ' )';
+        if (!empty($scoreStatus)) {
+            $query_scores .= ' AND lt.score_status IN ( ' . implode(',', $scoreStatus) . ' ) ';
+        }
         if (count($id_students)) {
             $query_scores .= ' AND lt.idUser IN ( ' . implode(',', $id_students) . ' )';
         }
