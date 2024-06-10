@@ -4302,8 +4302,11 @@ class UserProfileData
         $org_man = new OrganizationManagement(false);
 
         require_once _lms_ . '/lib/lib.coursereport.php';
-        $rep_man = new CourseReportManager();
-        $score_course = $rep_man->getUserFinalScore([$id_user]);
+        foreach($id_courses as $idCourse) {
+            $rep_man = new CourseReportManager($idCourse);
+            $score_course[$idCourse] = $rep_man->getUserFinalScore([$id_user]);  
+        }
+        
 
         $score_start = $org_man->getStartObjectScore([$id_user], $id_courses);
         $score_final = $org_man->getFinalObjectScore([$id_user], $id_courses);
@@ -4317,8 +4320,8 @@ class UserProfileData
                     : '');
             }
 
-            $point_do = (isset($score_course[$id_user][$id_c]) ? $score_course[$id_user][$id_c]['score'] : '');
-            $point_max = (isset($score_course[$id_user][$id_c]) ? $score_course[$id_user][$id_c]['max_score'] : '');
+            $point_do = (isset($score_course[$id_c][$id_user][$id_c]) ? $score_course[$id_c][$id_user][$id_c]['score'] : '');
+            $point_max = (isset($score_course[$id_c][$id_user][$id_c]) ? $score_course[$id_c][$id_user][$id_c]['max_score'] : '');
             $stats[$id_c]['point_do'] = ($point_do !== '' ? number_format($point_do, 2) . ' / ' . number_format($point_max, 2) : '');
         }
 
