@@ -151,7 +151,7 @@ function getCountableCourseItems($idCourse, $countHidden = true, $idUser = false
     if ($rs === false) {
         return [];
     } else {
-        list($list) = sql_fetch_row($rs);
+        [$list] = sql_fetch_row($rs);
         sql_free_result($rs);
 
         return explode("," , $list);
@@ -186,7 +186,7 @@ function getStatStatusCount($stat_idUser, $stat_idCourse, $arrStauts, $arrayFilt
 
         return;
     }
-    list($tot) = sql_fetch_row($rsItems);
+    [$tot] = sql_fetch_row($rsItems);
     sql_free_result($rsItems);
 
     return $tot;
@@ -201,10 +201,10 @@ function getStatStatusCount($stat_idUser, $stat_idCourse, $arrStauts, $arrayFilt
  **/
 function saveTrackStatusChange($idUser, $idCourse, $status)
 {
-    list($prev_status) = sql_fetch_row(sql_query("
+    [$prev_status] = sql_fetch_row(sql_query("
         SELECT status
         FROM %lms_courseuser
-        WHERE idUser = '" . (int) $idUser . "' AND idCourse = '" . (int) $idCourse . "'"));
+        WHERE idUser = '" . (int)$idUser . "' AND idCourse = '" . (int)$idCourse . "'"));
 
     $new_data = ['status' => $status, 'prev_status' => $prev_status];
     $data = Events::trigger('lms.course_user.updating', [

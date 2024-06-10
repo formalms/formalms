@@ -685,6 +685,26 @@ class FormaUser
         return $du;
     }
 
+    public static function getFormaUserFromId($field_name, $field_val, $prefix = 'base')
+    {
+        $user_manager = new \FormaACLManager();
+        $user_info = $user_manager->getUserInfoByField($field_name, $field_val);
+
+        $ret_value = false;
+        if ($user_info === false) {
+            return $ret_value;
+        }
+
+        if ($user_info[ACL_INFO_VALID] != '1') {
+            return $ret_value;
+        }
+
+        $login = $user_info[ACL_INFO_USERID];
+        $du = new FormaUser($login, $prefix);
+
+        return $du;
+    }
+
     public static function setupUser($user)
     {
         $user->loadUserSectionST();
