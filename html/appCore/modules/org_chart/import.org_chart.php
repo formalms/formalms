@@ -474,7 +474,6 @@ class ImportUser extends FormaImport_Destination
                         '',
                         false,
                         false,
-                        '',
                         $force_change,
                         false,
                         false,
