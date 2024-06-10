@@ -35,7 +35,7 @@ class DateManager
         require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
         $this->lang = FormaLanguage::CreateInstance('admin_date', 'lms');
-        $this->acl_man =  \FormaLms\lib\Forma::getAclManager();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();
         $this->subscribe_man = new CourseSubscribe_Manager();
     }
 
@@ -154,8 +154,8 @@ class DateManager
             . ' (`id_course`, `code`, `name`, `description`, `medium_time`, '
             . ' `max_par`, `price`, `overbooking`, `test_type`, `status`, '
             . ' `sub_start_date`, `sub_end_date`, `unsubscribe_date_limit`, `calendarId`) '
-            . ' VALUES (' . (int) $id_course . ", '" . $code . "', '" . $name . "', "
-            . " '" . $description . "', '" . $medium_time . "', " . (int) $max_par . ', '
+            . ' VALUES (' . (int)$id_course . ", '" . $code . "', '" . $name . "', "
+            . " '" . $description . "', '" . $medium_time . "', " . (int)$max_par . ', '
             . " '" . $price . "', " . ($overbooking ? '1' : '0') . ', ' . $test_type . ', '
             . ' ' . $status . ", '" . $sub_start_date . "', '" . $sub_end_date . "', "
             . " '" . $unsubscribe_date_limit . "','" . CalendarManager::generateUniqueCalendarId() . "')";
@@ -197,7 +197,7 @@ class DateManager
     {
         $query = 'select * from %adm_customfield_entry where id_obj=' . $idDate . ' and id_field=' . $id_field;
         $rs = sql_query($query) or
-            errorCommunication('countCustomForItem');
+        errorCommunication('countCustomForItem');
         if (sql_num_rows($rs) > 0) {
             return true;
         } else {
@@ -265,17 +265,17 @@ class DateManager
                 continue;
             }
 
-            if ((int) $dayInfo['id'] < 0 || !array_key_exists('id', $dayInfo)) {
+            if ((int)$dayInfo['id'] < 0 || !array_key_exists('id', $dayInfo)) {
                 $query = 'INSERT INTO %lms_course_date_day (id_day, id_date, classroom, date_begin, date_end, pause_begin, pause_end, calendarId, deleted)  VALUES 
                 (' . $index . ', ' . $idDate . ', ' . $dayInfo['classroom'] . ", '" . $dayInfo['date_begin'] . "', '" . $dayInfo['date_end'] . "', '" . $dayInfo['pause_begin'] . "', '" . $dayInfo['pause_end'] . "','" . CalendarManager::generateUniqueCalendarId() . "','0')";
             } else {
                 $query = 'UPDATE %lms_course_date_day ' .
                     ' SET `id_day` = ' . $index . ',' .
-                    ' `classroom` = "' . $dayInfo['classroom'] . '",'.
+                    ' `classroom` = "' . $dayInfo['classroom'] . '",' .
                     ' `date_begin` = "' . $dayInfo['date_begin'] . '",' .
                     ' `date_end` = "' . $dayInfo['date_end'] . '",' .
                     ' `pause_begin` = "' . $dayInfo['pause_begin'] . '",' .
-                    ' `pause_end` = "' . $dayInfo['pause_end'] . '",'.
+                    ' `pause_end` = "' . $dayInfo['pause_end'] . '",' .
                     ' `deleted` = "0"';
 
                 if (empty($dayInfo['calendarId'])) {
@@ -313,7 +313,7 @@ class DateManager
             return $res;
         }
         if (is_numeric($id_course)) {
-            $id_course = [(int) $id_course];
+            $id_course = [(int)$id_course];
         }
         if (!is_array($id_course)) {
             return false;
@@ -383,13 +383,12 @@ class DateManager
         }
 
 
-
         $query = 'SELECT c.name, cl.location '
             . ' FROM %lms_classroom AS c '
             . ' JOIN %lms_class_location AS cl '
             . ' ON (c.location_id = cl.location_id) ';
 
-        if(count($array_classroom)) {
+        if (count($array_classroom)) {
             $query .= ' WHERE c.idClassroom IN (' . implode(',', $array_classroom) . ')';
         }
 
@@ -448,18 +447,18 @@ class DateManager
         $res = sql_fetch_assoc(sql_query($query));
 
 
-        if (is_array ($res) && $res['user_subscribed'] > 1) {
+        if (is_array($res) && $res['user_subscribed'] > 1) {
             $res['num_day'] = $res['num_day'] / $res['user_subscribed'];
         }
 
         //find the number of students and waiting students already subscribed, we need him for overbooiking checkings
         $query = 'SELECT COUNT(*) FROM %lms_courseuser AS cu JOIN %lms_course_date AS cd JOIN %lms_course_date_user AS cdu '
             . ' ON (cd.id_date = cdu.id_date AND cd.id_course = cu.idCourse AND cu.idUser = cdu.id_user) '
-            . ' WHERE cd.id_date = ' . (int) $id_date . ' AND cu.level = 3';
+            . ' WHERE cd.id_date = ' . (int)$id_date . ' AND cu.level = 3';
         $rs = sql_query($query);
         if ($rs) {
             [$count] = sql_fetch_row($rs);
-            $res['num_students'] = (int) $count;
+            $res['num_students'] = (int)$count;
         }
         if ($res) {
             $result = $res;
@@ -474,7 +473,7 @@ class DateManager
             . "WHERE id_field = '" . $idField . "'"
             . '  AND id_obj = ' . $idDate;
         $rs = sql_query($query) or
-            errorCommunication('getValueCustom');
+        errorCommunication('getValueCustom');
         if (sql_num_rows($rs) == 1) {
             [$obj_entry] = sql_fetch_row($rs);
 
@@ -561,7 +560,7 @@ class DateManager
             . " SET `code` = '" . $code . "',"
             . " name = '" . $name . "',"
             . " description = '" . $description . "',"
-            . ' medium_time = ' . (int) $medium_time . ','
+            . ' medium_time = ' . (int)$medium_time . ','
             . " max_par = '" . $max_par . "',"
             . " price = '" . $price . "',"
             . ' overbooking = ' . $overbooking . ','
@@ -799,7 +798,7 @@ class DateManager
         $res = [];
 
         while (list($id_user) = sql_fetch_row($result)) {
-            $res[$id_user] = (int) $id_user;
+            $res[$id_user] = (int)$id_user;
         }
 
         return $res;
@@ -808,7 +807,7 @@ class DateManager
     public function getDatesSubscribed($arr_id_date, $no_flat = false, $filter = '')
     {
         if (is_numeric($arr_id_date)) {
-            $arr_id_date = [(int) $arr_id_date];
+            $arr_id_date = [(int)$arr_id_date];
         }
         if (!is_array($arr_id_date)) {
             return false;
@@ -858,7 +857,7 @@ class DateManager
             if ($no_flat) {
                 $res[$id_date][$id_user] = $id_user;
             } else {
-                $res[$id_user] = (int) $id_user;
+                $res[$id_user] = (int)$id_user;
             }
         }
         if (!$no_flat) {
@@ -885,8 +884,8 @@ class DateManager
     {
         $query = 'SELECT COUNT(*)'
             . ' FROM %lms_course_date_user'
-            . ' WHERE id_user = ' . (int) $id_user
-            . ' AND id_date = ' . (int) $id_date;
+            . ' WHERE id_user = ' . (int)$id_user
+            . ' AND id_date = ' . (int)$id_date;
 
         [$control] = sql_fetch_row(sql_query($query));
 
@@ -961,14 +960,14 @@ class DateManager
         return [_DATE_STATUS_PREPARATION => $this->lang->def('_CST_PREPARATION', 'course'),
             _DATE_STATUS_ACTIVE => $this->lang->def('_CST_AVAILABLE', 'course'),
             _DATE_STATUS_FINISHED => $this->lang->def('_CST_CONCLUDED', 'course'),
-            _DATE_STATUS_CANCELLED => $this->lang->def('_CST_CANCELLED', 'course'), ];
+            _DATE_STATUS_CANCELLED => $this->lang->def('_CST_CANCELLED', 'course'),];
     }
 
     public function getTestTypeForDropdown()
     {
         return [_DATE_TEST_TYPE_WEB => $this->lang->def('_WEB_TEST'),
             _DATE_TEST_TYPE_PAPER => $this->lang->def('_PAPER_TEST'),
-            _DATE_TEST_TYPE_NONE => $this->lang->def('_NONE'), ];
+            _DATE_TEST_TYPE_NONE => $this->lang->def('_NONE'),];
     }
 
     public function getHours()
@@ -996,7 +995,7 @@ class DateManager
             '20' => '20',
             '21' => '21',
             '22' => '22',
-            '23' => '23', ];
+            '23' => '23',];
     }
 
     public function getMinutes()
@@ -1012,7 +1011,7 @@ class DateManager
             '40' => '40',
             '45' => '45',
             '50' => '50',
-            '55' => '55', ];
+            '55' => '55',];
     }
 
     public function getUserForPresence($id_date, $id_course = null)
@@ -1081,7 +1080,7 @@ class DateManager
         $res = [];
 
         while ($row = sql_fetch_assoc($result)) {
-            $res[$row['id_user']][$row['day']??'1970-01-01'] = $row;
+            $res[$row['id_user']][$row['day'] ?? '1970-01-01'] = $row;
         }
 
         return $res;
@@ -1094,20 +1093,26 @@ class DateManager
         return sql_query($query);
     }
 
-    public function insDatePresence($id_course, $id_date, $user, $day, $score_min = 0)
+    public function insDatePresence($id_course, $id_date, $user, $days, $score_min = 0)
     {
+        $data = Events::trigger('lms.classroom.presence.updating', [
+            'id_course' => $id_course,
+            'id_date' => $id_date,
+            'days' => $days,
+            'presence_data' => $user,
+        ]);
+
         $clear = $this->clearDatePresence($id_date);
 
         if ($clear) {
             require_once _lms_ . '/lib/lib.course.php';
             require_once _lms_ . '/lib/lib.stats.php';
-            //require_once($GLOBALS['where_lms'].'/lib/lib.competences.php');
 
-            //$cman = new Competences_Manager();
             $cmodel = new CompetencesAdm();
 
             $first = true;
             $test_type = $this->getTestType($id_date);
+
 
             $query = 'INSERT INTO %lms_course_date_presence (`day`, `id_date`, `id_user`, `id_day`, `presence`, `score`, `note`) VALUES ';
 
@@ -1116,7 +1121,7 @@ class DateManager
                 $num_day_finished = 0;
 
                 foreach ($user_info['day_presence'] as $id_day => $presence) {
-                    $day_tmp = substr($day[$id_day]['date_begin'], 0, 10);
+                    $day_tmp = substr($days[$id_day]['date_begin'], 0, 10);
 
                     ++$num_day;
 
@@ -1174,7 +1179,16 @@ class DateManager
                 }
             }
 
-            return sql_query($query);
+            $result = sql_query($query);
+
+            $data = Events::trigger('lms.classroom.presence.updated', [
+                'id_course' => $id_course,
+                'id_date' => $id_date,
+                'days' => $days,
+                'presence_data' => $user,
+            ]);
+
+            return $result;
         }
 
         return false;
@@ -1333,10 +1347,10 @@ class DateManager
         foreach ($course_date as $date_info) {
             if (array_search($date_info['id_date'], $user_date) !== false) {
                 $query = 'SELECT SUM(presence) AS sum_presence, COUNT(*) AS tot_day'
-                    . ' FROM %lms_course_date_presence WHERE id_date = ' . (int) $date_info['id_date']
-                    . ' AND id_user = ' . (int) $id_user
-                . ' AND day IS NOT NULL'
-                . ' GROUP BY id_date, id_user';
+                    . ' FROM %lms_course_date_presence WHERE id_date = ' . (int)$date_info['id_date']
+                    . ' AND id_user = ' . (int)$id_user
+                    . ' AND day IS NOT NULL'
+                    . ' GROUP BY id_date, id_user';
                 $re = sql_query($query);
 
                 [$sum_presence, $tot_day] = sql_fetch_row($re);
@@ -1566,14 +1580,14 @@ class DateManager
 
                 $query = 'SELECT COUNT(*) FROM %lms_courseuser AS cu JOIN %lms_course_date AS cd JOIN %lms_course_date_user AS cdu '
                     . ' ON (cd.id_date = cdu.id_date AND cd.id_course = cu.idCourse AND cu.idUser = cdu.id_user) '
-                    . ' WHERE cd.id_date = ' . (int) $id_date . ' AND cu.level = 3'
+                    . ' WHERE cd.id_date = ' . (int)$id_date . ' AND cu.level = 3'
                     . ' AND ' . $adminManager->getAdminUsersQuery(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), 'cdu.id_user');
 
                 [$num_student] = sql_fetch_row(sql_query($query));
             } else {
                 $query = 'SELECT COUNT(*) FROM %lms_courseuser AS cu JOIN %lms_course_date AS cd JOIN %lms_course_date_user AS cdu '
                     . ' ON (cd.id_date = cdu.id_date AND cd.id_course = cu.idCourse AND cu.idUser = cdu.id_user) '
-                    . ' WHERE cd.id_date = ' . (int) $id_date . ' AND cu.level = 3';
+                    . ' WHERE cd.id_date = ' . (int)$id_date . ' AND cu.level = 3';
 
                 [$num_student] = sql_fetch_row(sql_query($query));
             }
@@ -1610,7 +1624,7 @@ class DateManager
             . ' FROM %lms_courseuser  AS s'
             . ' JOIN %lms_course_date_user AS cd ON s.idUser = cd.id_user'
             . ' JOIN %adm_user  AS u ON s.idUser = u.idst'
-            . ' WHERE s.idCourse = ' . (int) $idCourse
+            . ' WHERE s.idCourse = ' . (int)$idCourse
             . ' AND u.idst = ' . $idUser
             . ' AND cd.id_date = ' . $idDate;
 
@@ -1629,7 +1643,7 @@ class DateManager
         $query = 'SELECT u.idst, u.userid, u.firstname, u.lastname, s.level, s.status, s.date_complete, s.date_begin_validity, s.date_expire_validity '
             . ' FROM %lms_courseuser  AS s'
             . ' JOIN %adm_user  AS u ON s.idUser = u.idst'
-            . ' WHERE s.idCourse = ' . (int) $id_course
+            . ' WHERE s.idCourse = ' . (int)$id_course
             . ' AND u.idst IN (' . implode(', ', $this->getDateSubscribed($id_date)) . ')';
 
         if (is_array($filter)) {
@@ -1660,31 +1674,31 @@ class DateManager
                 //validate values
                 switch ($filter['show']) {
                     case 0:
-                         //all
-                            //no condition to check ...
+                        //all
+                        //no condition to check ...
 
                         break;
 
                     case 1:
-                         //expired
-                            $query .= ' AND (s.date_expire_validity IS NOT NULL AND s.date_expire_validity < NOW())';
+                        //expired
+                        $query .= ' AND (s.date_expire_validity IS NOT NULL AND s.date_expire_validity < NOW())';
 
                         break;
 
                     case 2:
-                         //not expired with expiring date
-                            $query .= ' AND (s.date_expire_validity IS NOT NULL AND s.date_expire_validity > NOW())';
+                        //not expired with expiring date
+                        $query .= ' AND (s.date_expire_validity IS NOT NULL AND s.date_expire_validity > NOW())';
 
                         break;
 
                     case 3:
-                         //not expired without expiring date
-                            $query .= " AND (s.date_expire_validity IS NULL OR s.date_expire_validity='') ";
+                        //not expired without expiring date
+                        $query .= " AND (s.date_expire_validity IS NULL OR s.date_expire_validity='') ";
 
                         break;
 
                     default:
-                            //all ...
+                        //all ...
 
                         break;
                 }
@@ -1737,7 +1751,7 @@ class DateManager
                 'date_begin_validity' => $date_begin_validity,
                 'date_expire_validity' => $date_expire_validity,
                 'overbooking' => in_array($id_user, $overbooking_users),
-                'del' => 'ajax.adm_server.php?r=alms/subscription/delPopUp&id_course=' . $id_course . '&id_date=' . $id_date . '&id_user=' . $id_user, ];
+                'del' => 'ajax.adm_server.php?r=alms/subscription/delPopUp&id_course=' . $id_course . '&id_date=' . $id_date . '&id_user=' . $id_user,];
         }
 
         return $res;
@@ -1748,7 +1762,7 @@ class DateManager
         $query = 'SELECT COUNT(*)'
             . ' FROM %lms_courseuser  AS s'
             . ' JOIN %adm_user  AS u ON s.idUser = u.idst'
-            . ' WHERE s.idCourse = ' . (int) $id_course
+            . ' WHERE s.idCourse = ' . (int)$id_course
             . ' AND u.idst IN (' . implode(', ', $this->getDateSubscribed($id_date)) . ')';
 
         if (is_array($filter)) {
@@ -1779,31 +1793,31 @@ class DateManager
                 //validate values
                 switch ($filter['show']) {
                     case 0:
-                         //all
-                            //no condition to check ...
+                        //all
+                        //no condition to check ...
 
                         break;
 
                     case 1:
-                         //expired
-                            $query .= ' AND (s.date_expire_validity IS NOT NULL AND s.date_expire_validity < NOW())';
+                        //expired
+                        $query .= ' AND (s.date_expire_validity IS NOT NULL AND s.date_expire_validity < NOW())';
 
                         break;
 
                     case 2:
-                         //not expired with expiring date
-                            $query .= ' AND (s.date_expire_validity IS NOT NULL AND s.date_expire_validity > NOW())';
+                        //not expired with expiring date
+                        $query .= ' AND (s.date_expire_validity IS NOT NULL AND s.date_expire_validity > NOW())';
 
                         break;
 
                     case 3:
-                         //not expired without expiring date
-                            $query .= " AND (s.date_expire IS NULL OR s.date_expire='') ";
+                        //not expired without expiring date
+                        $query .= " AND (s.date_expire IS NULL OR s.date_expire='') ";
 
                         break;
 
                     default:
-                            //all ...
+                        //all ...
 
                         break;
                 }
@@ -1851,7 +1865,7 @@ class DateManager
 
             $subscribe_man = new CourseSubscribe_Manager();
             $level = $this->subscribe_man->getUserLeveInCourse($id_user, $id_course);
-            $subscribe_man->delUserFromCourse($id_user, $id_course, null,$id_date);
+            $subscribe_man->delUserFromCourse($id_user, $id_course, null, $id_date);
 
             $formaCourse = new FormaCourse($id_course);
             $level_idst = &$formaCourse->getCourseLevel($id_course);
@@ -1874,7 +1888,7 @@ class DateManager
     {
         $query = 'SELECT id_date'
             . ' FROM %lms_course_date '
-            . ' WHERE id_course = ' . (int) $id_course;
+            . ' WHERE id_course = ' . (int)$id_course;
 
         $result = sql_query($query);
         $res = [];
@@ -1950,7 +1964,7 @@ class DateManager
     public function getDateOverbookingUsers($id_date)
     {
         $output = [];
-        $query = 'SELECT id_user FROM %lms_course_date_user WHERE id_date = ' . (int) $id_date . ' AND overbooking = 1';
+        $query = 'SELECT id_user FROM %lms_course_date_user WHERE id_date = ' . (int)$id_date . ' AND overbooking = 1';
         $res = sql_query($query);
         while (list($id_user) = sql_fetch_row($res)) {
             $output[] = $id_user;
@@ -1973,7 +1987,7 @@ class DateManager
     public function setFirstOverbookingUser($id_date)
     {
         $query = 'SELECT * FROM %lms_course_date_user '
-            . ' WHERE id_date = ' . (int) $id_date . ' AND overbooking = 1 '
+            . ' WHERE id_date = ' . (int)$id_date . ' AND overbooking = 1 '
             . ' ORDER BY date_subscription ASC LIMIT 1';
         $res = sql_query($query);
         if ($res && sql_num_rows($res) > 0) {
@@ -1993,7 +2007,7 @@ class DateManager
         $query = 'SELECT COUNT(*)'
             . ' FROM %lms_course_date '
             . ' WHERE id_date IN (' . implode(',', $user_dates) . ')'
-            . ' AND id_course = ' . (int) $id_course
+            . ' AND id_course = ' . (int)$id_course
             . " AND (
 						unsubscribe_date_limit >= '" . date('Y-m-d') . "' OR
 						unsubscribe_date_limit IS NULL OR
@@ -2016,7 +2030,7 @@ class DateManager
     public function getDatesInfoByCourses($id_courses, $use_objects = false)
     {
         if (is_numeric($id_courses)) {
-            $arr = [(int) $id_courses];
+            $arr = [(int)$id_courses];
         } elseif (is_array($id_courses) && count($id_courses) > 0) {
             $arr = &$id_courses;
         } else {
