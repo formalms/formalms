@@ -1714,7 +1714,7 @@ No tratamento desta informação, é garantida a integridade e a qualidade do
         <key id="login&amp;_TWO_USERS_LOGGED_WITH_SAME_USERNAME" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Outro utilizador está conectado com o seu nome de utilizador]]></key>
         <key id="login&amp;_UNKNOWNGOOGLERROR" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Erro desconhecido durante o login do Google]]></key>
         <key id="login&amp;_UNKNOWNSOCIALERROR" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Erro desconhecido no login social]]></key>
-        <key id="login&amp;_UNLOGGED" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Está conectado]]></key>
+        <key id="login&amp;_UNLOGGED" attributes="" save_date="2024-06-07 13:46:01"><![CDATA[Você está desconectado]]></key>
       </module>
       <module id="manmenu">
         <key id="manmenu&amp;_ADDCUSTOM" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Adicionar novo menu personalizado]]></key>
@@ -2800,6 +2800,7 @@ Senha: [password]]]></key>
         <key id="standard&amp;_ONLY_ONCE" attributes="" save_date="2024-01-23 21:17:35"><![CDATA[Uma única vez]]></key>
         <key id="standard&amp;_OPEN" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Aberto]]></key>
         <key id="standard&amp;_OPERATION_FAILURE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Erro ao processar a operação solicitada]]></key>
+        <key id="standard&amp;_OPERATION_FAILUREPROFILE" attributes="" save_date="2024-06-10 16:55:27"><![CDATA[Erro ao editar as propriedades do usuário]]></key>
         <key id="standard&amp;_OPERATION_SUCCESSFUL" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Operação concluída com êxito]]></key>
         <key id="standard&amp;_OPERATION_SUCCESSFULPWD" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Mudança de senha bem-sucedida]]></key>
         <key id="standard&amp;_ORD" attributes="" save_date="2024-01-23 20:46:00"><![CDATA[Ordem]]></key>

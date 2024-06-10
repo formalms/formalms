@@ -2094,6 +2094,7 @@ Please don't upload offensive images.]]></key>
         <key id="profile&amp;_OLDPASSWRONG" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[The inserted password is not yours]]></key>
         <key id="profile&amp;_OLD_PWD" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Old password]]></key>
         <key id="profile&amp;_OPERATION_SUCCESSFULPROFILE" attributes="" save_date="2024-01-18 14:10:12"><![CDATA[Profile updated successfully]]></key>
+        <key id="profile&amp;_OPERATION_FAILUREPROFILE" attributes="" save_date="2024-06-10 16:55:27"><![CDATA[Unable to edit user properties]]></key>
         <key id="profile&amp;_OTHER_POLICY" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Other options]]></key>
         <key id="profile&amp;_PFL_POLICY_NOONE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[No one]]></key>
         <key id="profile&amp;_PFL_POLICY_TEACHER" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Teachers]]></key>
