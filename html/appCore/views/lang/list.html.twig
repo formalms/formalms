@@ -203,6 +203,13 @@
         YAHOO.util.Dom.get('la_text').value = '';
         DataTable_lang_table.reload();
     });
+    YAHOO.util.Event.onDOMReady(function () {
+        YAHOO.util.Event.addListener(YAHOO.util.Selector.query("#lang_table_wrapper .dataTables_scrollHead input[type='text']"), "keydown", function(e) {
+            if ((e.ctrlKey || e.metaKey) && (e.keyCode == 65)) {
+                this.select();
+            }
+        });
+    });
 
     var body = {{ data | json_encode(constant('JSON_HEX_APOS')) | raw }};
     var rows = [];
