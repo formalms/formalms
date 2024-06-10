@@ -778,6 +778,9 @@ class Certificate
     private function cleanSpecialChars($stringArray)
     {
         $stringArray = str_replace('`', '\'', $stringArray);
+        foreach($stringArray as &$fieldValue) {
+            $fieldValue = Normalizer::normalize($fieldValue);
+        }
 
         return $stringArray;
     }
