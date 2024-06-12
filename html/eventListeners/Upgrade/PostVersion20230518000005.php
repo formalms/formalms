@@ -41,8 +41,9 @@ class PostVersion20230518000005 extends Upgrader{
         $query = 'SELECT DISTINCT param_name, param_value'
                 . ' FROM %adm_setting where param_name IN ("' . implode('","', array_keys($arrayConfig)) . '")';
         
-
+            
         $result = sql_query($query);
+      
         $res = [];
         if (sql_num_rows($result)) {
             while (list($param_name, $param_value) = sql_fetch_row($result)) {
@@ -52,6 +53,7 @@ class PostVersion20230518000005 extends Upgrader{
                 $res[$arrayConfig[$param_name]] = $param_value;
             }
 
+           
             $queryInsert = 'INSERT INTO'
             . ' %adm_mail_configs (title, system) VALUES ("DEFAULT", "1")';
            
