@@ -887,8 +887,8 @@ function statitem()
         $arr_status = [-1 => $lang->def('_FILTERSTATUSSELECTONEOPTION'),
                                 _CUS_SUBSCRIBED => $lang->def('_USER_STATUS_SUBS'),
                                 _CUS_BEGIN => $lang->def('_USER_STATUS_BEGIN'),
-                                _CUS_END => $lang->def('_END'),
-                                _CUS_SUSPEND => $lang->def('_SUSPENDED'), ];
+                                _CUS_END => $lang->def('_USER_STATUS_END'),
+                                _CUS_SUSPEND => $lang->def('_USER_STATUS_SUSPEND'), ];
         $out->add(Form::getDropdown($lang->def('_STATUS'),
                                         'status_filter',
                                         'status_filter',
