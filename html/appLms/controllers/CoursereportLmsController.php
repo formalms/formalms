@@ -108,8 +108,8 @@ class CoursereportLmsController extends LmsController
         $reports_id = $this->model->getReportsId();
         $included_test_report_id = $this->model->getReportsId(CoursereportLms::SOURCE_OF_TEST);
 
-        $tests_score = $test_man->getTestsScores($included_test, $id_students, false, []);
-
+    
+        $tests_score = $test_man->getReportTestsScoresAndDetails($included_test, $id_students, false, ["valid", "passed", "not_checked"]);
         $reports_scores = $this->courseReportManager->getReportsScores((isset($included_test_report_id) && is_array($included_test_report_id) ? array_diff($reports_id, $included_test_report_id) : $reports_id), $id_students);
 
         // XXX: Calculate statistic
@@ -1527,7 +1527,7 @@ class CoursereportLmsController extends LmsController
         );
 
         // XXX: retrive scores
-        $tests_score = $test_man->getTestsScores([$id_test], $id_students);
+        $tests_score = $test_man->getTestsScores([$id_test], $id_students, false, ["valid", "passed", "not_checked"]);
 
         // XXX: Display user scores
         $i = 0;

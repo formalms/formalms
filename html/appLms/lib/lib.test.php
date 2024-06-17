@@ -105,7 +105,7 @@ class GroupTestManagement
     /**
      * returns the users score for a list of test.
      *
-     * @param array $id_tests    an array with the id of the test for which the function must retrive scores
+     * @param array $id_tests an array with the id of the test for which the function must retrive scores
      * @param array $id_students the students of the course
      *
      * @return array a matrix with the index [id_test] [id_user] and the values in
@@ -113,48 +113,90 @@ class GroupTestManagement
      */
     public function getTestsScores($id_tests, $id_students = false, $pure = false, $scoreStatus = ["valid", "passed"])
     {
-        $data = [];
+        $data = $this->getReportTestsScoresAndDetails($id_tests, $id_students, $pure, $scoreStatus);
+
+        return $data['testScores'];
+    }
+
+    public function getReportTestsScoresAndDetails($id_tests, $id_students = [], $pure = false, $scoreStatus = ["valid", "passed"]): array
+    {
+        $data = [
+            'testScores' => [],
+            'testDetails' => [],
+        ];
         if (empty($id_tests)) {
             return $data;
         }
         if (empty($id_students)) {
-            $id_students = false;
+            $id_students =  [];
         }
         $query_scores = '
-		SELECT idTest, idTrack, idUser, date_attempt, date_attempt_mod, score, score_status, comment, bonus_score
-		FROM %lms_testtrack
-		WHERE idTest IN ( ' . implode(',', $id_tests) . ' )';
+		SELECT lt.idTest, lt.idTrack, lt.idUser, lt.date_attempt, lt.date_attempt_mod, lt.score, lt.score_status, lt.comment, lt.bonus_score, count(ltt.idReference) as times
+		FROM %lms_testtrack as lt join %lms_testtrack_times as ltt on lt.idTrack=ltt.idTrack and lt.idTest=ltt.idTest
+        WHERE ltt.idTest IN ( ' . implode(',', $id_tests) . ' )';
         if (!empty($scoreStatus)) {
-            $query_scores .= ' AND score_status IN ( ' . implode(',', $scoreStatus) . ' ) ';
+            $query_scores .= ' AND lt.score_status IN ( ' . implode(',', array_map(function($value) {
+                return '"' . $value . '"';
+            }, $scoreStatus)) . ' ) ';
         }
-        if ($id_students !== false) {
-            $query_scores .= ' AND idUser IN ( ' . implode(',', $id_students) . ' )';
+        if (count($id_students)) {
+            $query_scores .= ' AND lt.idUser IN ( ' . implode(',', $id_students) . ' )';
         }
-
+        $query_scores .= ' GROUP by idTest, idTrack,idUser';
         $query_scores .= ' ORDER BY date_attempt DESC';
+      
         $re_scores = sql_query($query_scores);
         foreach ($re_scores as $test_data) {
-            $times_sql = 'SELECT idReference FROM %lms_testtrack_times
-                        WHERE idTrack = ' . $test_data['idTrack'] . ' AND idTest = ' . $test_data['idTest'];
-            $re_times = sql_query($times_sql);
-            $test_data['times'] = sql_num_rows($re_times);
 
-            if ($test_data['date_attempt_mod'] != null && $test_data['date_attempt_mod'] !== '0000-00-00 00:00:00') {
+            if ($test_data['date_attempt_mod']) {
                 $test_data['date_attempt'] = $test_data['date_attempt_mod'];
             }
             if (!$pure) {
                 $test_data['score'] = $test_data['score'] + $test_data['bonus_score'];
             }
-            $data[$test_data['idTest']][$test_data['idUser']] = $test_data;
 
-   
-              
-            
+            $data['testDetails'][$test_data['idTest']] = [];
+
+            if ($test_data['score_status'] == 'valid') {
+                // max
+                if (!isset($data['testDetails'][$test_data['idTest']]['max_score'])) {
+                    $data['testDetails'][$test_data['idTest']]['max_score'] = $test_data['score'];
+                } elseif ($test_data['score'] > $data['testDetails'][$test_data['idTest']]['max_score']) {
+                    $data['testDetails'][$test_data['idTest']]['max_score'] = $test_data['score'];
+                }
+
+                // min
+                if (!isset($data['testDetails'][$test_data['idTest']]['min_score'])) {
+                    $data['testDetails'][$test_data['idTest']]['min_score'] = $test_data['score'];
+                } elseif ($test_data['score'] < $data['testDetails'][$test_data['idTest']]['min_score']) {
+                    $data['testDetails'][$test_data['idTest']]['min_score'] = $test_data['score'];
+                }
+
+                //number of valid score
+                if (!isset($data['testDetails'][$test_data['idTest']]['num_result'])) {
+                    $data['testDetails'][$test_data['idTest']]['num_result'] = 1;
+                } else {
+                    ++$data['testDetails'][$test_data['idTest']]['num_result'];
+                }
+
+
+                if (!isset($data['testDetails'][$test_data['idTest']]['maxScore'])) {
+                    $data['testDetails'][$test_data['idTest']]['maxScore'] = $test_data['score'];
+                } else {
+                    $data['testDetails'][$test_data['idTest']]['maxScore'] += $test_data['score'];
+                }
+                // average
+                if ($data['testDetails'][$test_data['idTest']]['num_result']) {
+                    $data['testDetails'][$test_data['idTest']]['average'] = $data['testDetails'][$test_data['idTest']]['maxScore'] / $data['testDetails'][$test_data['idTest']]['num_result'];
+                }
+            }
+
+            $data['testScores'][$test_data['idTest']][$test_data['idUser']] = $test_data;
+
         }
-
-    
         return $data;
     }
+
 
     /**
      * returns the users score for a list of test.
