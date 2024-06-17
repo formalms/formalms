@@ -50,11 +50,11 @@ class CourseReportManager
         return $seq;
     }
 
-    public function &getStudentId()
+    public function getStudentId($onlyStudents = false)
     {
         require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
-        $course_user = Man_Course::getIdUserOfLevel($this->idCourse, 3);
+        $course_user = Man_Course::getIdUserOfLevel($this->idCourse, $onlyStudents ? 3 : false);
 
         return $course_user;
     }
