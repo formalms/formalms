@@ -262,9 +262,6 @@ class PrivacypolicyAdmController extends AdmController
         $reset_policy = FormaLms\lib\Get::req('reset_policy', DOTY_INT, 0);
         $translations = FormaLms\lib\Get::req('translation', DOTY_MIXED, false);
 
-//        var_dump(FormaLms\lib\Get::req('translation', DOTY_MIXED, FALSE));
-        //  die();
-
         $res = $this->model->updatePolicy($id_policy, $name, $is_default, $reset_policy, $translations);
         $output = ['success' => $res ? true : false];
 

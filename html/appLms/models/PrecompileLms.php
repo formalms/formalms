@@ -177,11 +177,10 @@ class PrecompileLms extends Model
 
         //read value in DB
         $output = false;
-        //$query = "SELECT privacy_policy FROM %adm_user WHERE idst = ".(int)$id_user; // Old Method
         $query = 'SELECT ppu.id_policy, ppu.accept_date, pp.validity_date
 				FROM core_privacypolicy_user AS ppu, core_privacypolicy AS pp
 				WHERE ppu.id_policy = pp.id_policy
-				AND ppu.accept_date > pp.validity_date
+				AND (pp.validity_date IS NULL OR ppu.accept_date > pp.validity_date) 
 	    		AND ppu.idst = ' . (int) $id_user . '
 				AND ppu.id_policy= ' . (int) $id_policy;
 
