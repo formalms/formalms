@@ -279,7 +279,7 @@ class FormaUser
 
     public function saveInSession()
     {
-        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'] ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
+        $ip = isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
         if (strpos($ip, ',') !== false) {
             $ip = substr($ip, 0, strpos($ip, ','));
         }

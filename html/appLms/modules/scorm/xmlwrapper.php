@@ -180,13 +180,14 @@ class DDomNode
     }
 
     /** funzione astratta per creare oggetti da nodi **/
-    public static function createDDomObject(&$node)
+    public static function createDDomObject($node)
     {
         if ($node === null) {
             return $node;
         }
         $nodetype = DDomNode::_getNodeType($node);
         $nodeObj = new DDomNode($node);
+
         switch ($nodetype) {
             case XML_ELEMENT_NODE:
                 $nodeObj = new DDomElement($node);
@@ -220,7 +221,7 @@ class DDomNode
 
 class DDomTextNode extends DDomNode
 {
-    public function __construct(&$textnode)
+    public function __construct($textnode)
     {
         parent::__construct($textnode);
     }
@@ -228,7 +229,7 @@ class DDomTextNode extends DDomNode
 
 class DDomElement extends DDomNode
 {
-    public function __construct(&$element)
+    public function __construct($element)
     {
         parent::__construct($element);
     }

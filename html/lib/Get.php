@@ -749,7 +749,12 @@ class Get
      */
     public static function user_agent()
     {
-        $agent = strtolower($_SERVER['HTTP_USER_AGENT']);
+        if (array_key_exists('HTTP_USER_AGENT', $_SERVER)) {
+            $agent = $_SERVER['HTTP_USER_AGENT'];
+        } else {
+            return 'unknown';
+        }
+
         $known_browser_arr = explode(' ', 'firefox netscape konqueror epiphany mozilla safari opera mosaic lynx amaya omniweb msie chrome iphone');
         $required = [
             'firefox' => ['gecko', 'mozilla', 'firefox'],
