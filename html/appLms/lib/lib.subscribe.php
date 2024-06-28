@@ -1240,13 +1240,12 @@ class CourseSubscribe_Management
         }
         $query = 'DELETE FROM %lms_courseuser WHERE idUser IN ( ' . implode(',', [$arr_users]) . " )";
         if ($idPath != 0){
-            $query .= 'AND date_inscr >= (SELECT date_assign FROM %lms_coursepath_user WHERE id_path = '.$idPath.' AND idUser in( ' . implode(',', [$arr_users]) . '))';
-        }  else{
-            $query .= 'AND idCourse = ' . $id_course ;
+            $query .= ' AND date_inscr >= (SELECT date_assign FROM %lms_coursepath_user WHERE id_path = '.$idPath.' AND idUser in( ' . implode(',', [$arr_users]) . '))';
         }
-        $re = $this->_query($query);
-        return $re;
+        $query .= ' AND idCourse = ' . $id_course ;
 
+        $re = sql_query($query);
+        return sql_affected_rows();
     }
 
 
@@ -1279,7 +1278,7 @@ class CourseSubscribe_Management
                     FROM ' . $GLOBALS['prefix_lms'] . "_coursepath_courses
                     WHERE id_path = '" . $id_path . "'";
             $courseCoursepath = $this->_query($query);
-            $res = true;
+            $res = false;
             while (list($id_course) = sql_fetch_row($courseCoursepath)) {
                 $arrayUser = explode(",", $id_user);
                 foreach ($arrayUser as $user){
