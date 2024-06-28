@@ -22,7 +22,7 @@ final class Version20240522162433 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql(HelperTool::createColumnIfNotExistsQueryBuilder('show_quest_score', 'learning_test', 'TINYINT(1) NOT NULL'));
-     
+
         $this->addRoleForGodAdminIfNotExists('/lms/course/public/course/view');
         $this->addRoleForGodAdminIfNotExists('/lms/course/public/coursecatalogue/view');
         $this->addRoleForGodAdminIfNotExists('/lms/course/public/public_forum/view');
@@ -36,27 +36,20 @@ final class Version20240522162433 extends AbstractMigration
         $this->addSql('ALTER TABLE learning_test DROP show_quest_score');
     }
 
-    private function addRoleForGodAdminIfNotExists($role) {
-
+    private function addRoleForGodAdminIfNotExists($role)
+    {
         require_once _base_ . '/lib/lib.aclmanager.php';
+        $connection = $this->connection;
 
-        $aclManager = new \FormaACLManager();
         // this up() migration is auto-generated, please modify it to your needs
-        $roleQuery = sql_query("select * from core_role where roleid = '".$role."' limit 1");
-        $groupAdminSt =  $aclManager->getGroupST(ADMIN_GROUP_GODADMIN);
+        $roleData = $connection->fetchAssociative("select * from core_role where roleid = '" . $role . "' limit 1");
+        $groupAdminSt = $connection->fetchAssociative('SELECT idst FROM core_group WHERE groupid = "' . ADMIN_GROUP_GODADMIN . '"');
 
-    
-        if($roleQuery && sql_num_rows($roleQuery)) {
-            $roleObject = sql_fetch_object($roleQuery);
-            $roleIdst = $roleObject->idst;
-        } else {
-            $roleObject = sql_fetch_object(sql_query("select max(idst) + 1 as maxidst from `core_role`"));
-            $roleIdst = $roleObject->maxidst;
-            $this->addSql("INSERT INTO `core_role` (`idst`, `roleid`) VALUES (".$roleIdst .",  '".$role."' )");
+        if (empty($roleData)) {
+            $roleData = $connection->fetchAssociative("select max(idst) + 1 as idst from `core_role`");
+            $this->addSql("INSERT INTO `core_role` (`idst`, `roleid`) VALUES (" . $roleData['idst'] . ",  '" . $role . "' )");
         }
 
-        $this->addSql("INSERT IGNORE INTO `core_role_members` (`idst`, `idstMember`) VALUES (" . $roleIdst . ", ".$groupAdminSt." )");
-
-      
+        $this->addSql("INSERT IGNORE INTO `core_role_members` (`idst`, `idstMember`) VALUES (" . $roleData['idst'] . ", " . $groupAdminSt['idst'] . " )");
     }
 }
