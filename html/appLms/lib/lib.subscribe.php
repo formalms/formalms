@@ -592,7 +592,7 @@ class CourseSubscribe_Manager
         $result = $this->db->query($query_lvl);
         $old_level = [];
 
-        foreach ($result as $row){
+        foreach ($result as $row) {
 
             $old_level[$row['idUser']] = $row['level'];
         }
@@ -1238,11 +1238,11 @@ class CourseSubscribe_Management
                 $this->acl_man->removeFromGroup($group_levels[$lv], $id_user);
             }
         }
-        $query = 'DELETE FROM %lms_courseuser WHERE idUser IN ( ' . implode(',', [$arr_users]) . " )";
-        if ($idPath != 0){
-            $query .= ' AND date_inscr >= (SELECT date_assign FROM %lms_coursepath_user WHERE id_path = '.$idPath.' AND idUser in( ' . implode(',', [$arr_users]) . '))';
+        $query = 'DELETE FROM %lms_courseuser WHERE idUser IN ( ' . implode(',', $arr_users) . " )";
+        if ($idPath != 0) {
+            $query .= ' AND date_inscr >= (SELECT date_assign FROM %lms_coursepath_user WHERE id_path = ' . $idPath . ' AND idUser in( ' . implode(',', [$arr_users]) . '))';
         }
-        $query .= ' AND idCourse = ' . $id_course ;
+        $query .= ' AND idCourse = ' . $id_course;
 
         $re = sql_query($query);
         return sql_affected_rows();
@@ -1302,8 +1302,10 @@ class CourseSubscribe_Management
                     FROM ' . $GLOBALS['prefix_lms'] . "_courseuser
                     WHERE idUser = '" . $id_user . "'");
 
-            while (list($id_course) = sql_fetch_row($re)) {
-                $res &= $this->unsubscribeUsers($id_user, $id_course);
+            $res = true;
+            foreach ($re as $row){
+                $id_course = $row['idCourse'];
+                $res &= $this->unsubscribeUsers([$id_user], $id_course);
             }
 
         }
