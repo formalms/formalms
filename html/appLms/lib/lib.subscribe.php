@@ -592,7 +592,7 @@ class CourseSubscribe_Manager
         $result = $this->db->query($query_lvl);
         $old_level = [];
 
-        foreach ($result as $row){
+        foreach ($result as $row) {
 
             $old_level[$row['idUser']] = $row['level'];
         }
@@ -1224,7 +1224,7 @@ class CourseSubscribe_Management
      *
      * @return bool true if success, false otherwise
      */
-    public function unsubscribeUsers($arr_users, $id_course)
+    public function unsubscribeUsers($arr_users, $id_course, $idPath = 0)
     {
         if (empty($arr_users)) {
             return true;
@@ -1238,11 +1238,14 @@ class CourseSubscribe_Management
                 $this->acl_man->removeFromGroup($group_levels[$lv], $id_user);
             }
         }
-        $re = $this->_query('
-		DELETE FROM %lms_courseuser
-		WHERE idUser IN ( ' . implode(',', $arr_users) . " ) AND idCourse = '" . $id_course . "'");
+        $query = 'DELETE FROM %lms_courseuser WHERE idUser IN ( ' . implode(',', $arr_users) . " )";
+        if ($idPath != 0) {
+            $query .= ' AND date_inscr >= (SELECT date_assign FROM %lms_coursepath_user WHERE id_path = ' . $idPath . ' AND idUser in( ' . implode(',', [$arr_users]) . '))';
+        }
+        $query .= ' AND idCourse = ' . $id_course;
 
-        return $re;
+        $re = sql_query($query);
+        return sql_affected_rows();
     }
 
     /**
@@ -1265,18 +1268,46 @@ class CourseSubscribe_Management
      *
      * @return bool true if success, false otherwise
      */
-    public function unsubscribeUserFromAllCourses($id_user)
+    public function unsubscribeUserFromAllCourses($id_user, $id_path = 0)
     {
-        $re = $this->_query('
+
+        if ($id_path != 0) {
+            $query = '
+                    SELECT id_item
+                    FROM ' . $GLOBALS['prefix_lms'] . "_coursepath_courses
+                    WHERE id_path = '" . $id_path . "'";
+            $courseCoursepath = $this->_query($query);
+            $res = false;
+            while (list($id_course) = sql_fetch_row($courseCoursepath)) {
+                $arrayUser = explode(",", $id_user);
+                foreach ($arrayUser as $user) {
+                    $res = $this->unsubscribeUsers($user, $id_course, $id_path);
+                    if ($res) {
+                        $modelEdition = new DateManager();
+
+                        $isInEdition = $modelEdition->controlUserSubscriptions($user, $id_course);
+                        if ($isInEdition) {
+                            $idEdition = $modelEdition->getUserDates($user);
+                            foreach ($idEdition as $edition) {
+                                $modelEdition->delUserFromDate($user, $id_course, $edition);
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            $re = $this->_query('
 		SELECT idCourse
 		FROM ' . $GLOBALS['prefix_lms'] . "_courseuser
 		WHERE idUser = '" . $id_user . "'");
 
-        $res = true;
-        while (list($id_course) = sql_fetch_row($re)) {
-            $res &= $this->unsubscribeUsers([$id_user], $id_course);
-        }
+            $res = true;
+            foreach ($re as $row){
+                $id_course = $row['idCourse'];
+                $res &= $this->unsubscribeUsers([$id_user], $id_course);
+            }
 
+        }
         return $res;
     }
 
