@@ -10,21 +10,16 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240228000014 extends AbstractMigration
+final class Version20240502000019 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Adjust roles for privacy menu';
+        return 'Adjust roles for dashboard';
     }
 
     public function up(Schema $schema): void
     {
-
-
-        $this->addRoleForGodAdminIfNotExists('/framework/admin/privacypolicy/view');
-        $this->addRoleForGodAdminIfNotExists('/framework/admin/privacypolicy/mod');
-        $this->addRoleForGodAdminIfNotExists('/framework/admin/privacypolicy/del');
- 
+        $this->addRoleForGodAdminIfNotExists('/lms/course/public/dashboard/view');
 
     }
 
