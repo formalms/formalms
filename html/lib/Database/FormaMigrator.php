@@ -59,14 +59,11 @@ class FormaMigrator
 
     public function __construct()
     {
-
         $this->configFile = new YamlFile(_base_ . '/migrations.yaml');
-
     }
 
     public function setup()
     {
-
         $cfg = [];
         if (file_exists(_base_ . '/config.php')) {
             require _base_ . '/config.php';
@@ -94,7 +91,6 @@ class FormaMigrator
         } catch (\Exception $e) {
 
         }
-
         $this->syncMetadata();
 
     }
@@ -133,14 +129,10 @@ class FormaMigrator
 
         $output = new BufferedOutput();
 
-
         $exitcode = $command->run($input, $output);
-
 
         if ($exitcode > 0) {
             $response['success'] = false;
-            $response['message'] = $output->fetch();
-            //throw new Exception($output->fetch());
         }
 
         $response['message'] = $output->fetch();
@@ -161,17 +153,13 @@ class FormaMigrator
 
         $output = new BufferedOutput();
 
-
         $exitcode = $command->run($input, $output);
-
 
         return $output->fetch();
     }
 
     private function uptodate()
     {
-
-
         $command = new UpToDateCommand($this->dependencyFactory);
 
         $input = new ArrayInput([]);
@@ -196,7 +184,6 @@ class FormaMigrator
 
     private function list()
     {
-
         $command = new ListCommand($this->dependencyFactory);
 
         $input = new ArrayInput([]);
@@ -206,7 +193,7 @@ class FormaMigrator
 
         $exitcode = $command->run($input, $output);
         if ($exitcode > 0) {
-            throw new Exception($output->fetch());
+            throw new \Exception($output->fetch());
         }
 
         return $output->fetch();
@@ -225,7 +212,7 @@ class FormaMigrator
 
         $exitcode = $command->run($input, $output);
         if ($exitcode > 0) {
-            throw new Exception($output->fetch());
+            throw new \Exception($output->fetch());
         }
 
         return $output->fetch();
@@ -244,7 +231,7 @@ class FormaMigrator
 
         $exitcode = $command->run($input, $output);
         if ($exitcode > 0) {
-            throw new Exception($output->fetch());
+            throw new \Exception($output->fetch());
         }
 
         return $output->fetch();
