@@ -94,15 +94,36 @@ class HelperTool
             AND index_name = theIndexName;
             
             IF existing > 0 THEN
-                
                 SET @s = CONCAT( "DROP INDEX `", theIndexName, "` ON `", theTable, "`" );
                 PREPARE stmt FROM @s;
                 EXECUTE stmt;
-            
+                DEALLOCATE PREPARE stmt;
             END IF;
-        
         END;';
     }
+
+    public static function dropFieldIfExistsQueryBuilder() : string{
+
+        return HelperTool::dropProcedure('drop_field_if_exists') . '
+        CREATE PROCEDURE drop_field_if_exists ( IN theTableName VARCHAR ( 128 ), IN theColumnName VARCHAR ( 128 ) ) 
+            BEGIN
+               DECLARE column_exists INT;
+        SELECT 
+            COUNT(*) INTO column_exists
+        FROM 
+            information_schema.COLUMNS
+        WHERE 
+            TABLE_NAME = theTableName
+            AND COLUMN_NAME = theColumnName
+            
+            IF column_exists > 0 THEN
+                SET @s = CONCAT("ALTER TABLE `", theTableName, "` DROP COLUMN `", theColumnName, "`");
+                PREPARE stmt FROM @s;
+                EXECUTE stmt;
+            END IF;
+        END;';
+    }
+
 
     public static function dropProcedure($procedure) : string{
 
