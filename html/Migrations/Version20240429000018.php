@@ -24,7 +24,6 @@ final class Version20240429000018 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql(HelperTool::dropFieldIfExistsQueryBuilder());
         $this->addSql($this->dropFieldIfExists('core_user','signature'));
-        $this->addSql(HelperTool::dropProcedure('drop_field_if_exists'));
     }
 
     public function down(Schema $schema): void
