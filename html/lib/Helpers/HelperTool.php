@@ -113,8 +113,9 @@ class HelperTool
         FROM 
             information_schema.COLUMNS
         WHERE 
-            TABLE_NAME = theTableName
-            AND COLUMN_NAME = theColumnName
+            TABLE_SCHEMA = DATABASE () 
+            AND TABLE_NAME = theTableName
+            AND COLUMN_NAME = theColumnName;
             
             IF column_exists > 0 THEN
                 SET @s = CONCAT("ALTER TABLE `", theTableName, "` DROP COLUMN `", theColumnName, "`");
