@@ -2956,33 +2956,42 @@ class UsermanagementAdm extends Model implements Accessible
             [$control] = $this->db->fetch_row($this->db->query($queryRoot));
             if ($control < 0) {
                 $output = ['0' => '(' . Lang::t('_ROOT', 'standard') . ')'];
-            } elseif ($control == 0 && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN) { //#3725
+            } elseif ($control == 0 && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
                 $output = ['0' => '(' . Lang::t('_ROOT', 'standard') . ')'];
             }
         }
 
-        $org_lang = [];
-        $query = "SELECT * FROM %adm_org_chart WHERE lang_code = '" . Lang::get() . "'";
-        $res = $this->db->query($query);
-        while ($obj = $this->db->fetch_obj($res)) {
-            $org_lang[$obj->id_dir] = $obj->translation;
-        }
-
-        $query = 'SELECT * FROM %adm_org_chart_tree ORDER BY path';
+        // Main query to build data tree with level, idParent and translation for actual language
+        $query = 'SELECT t.idOrg, t.lev, t.idParent, c.translation FROM %adm_org_chart_tree as t JOIN %adm_org_chart as c ON c.id_dir = t.idOrg WHERE c.lang_code = "' . Lang::get() .'"';
         if ($idstUser != null) {
-            $org_groups = $this->_getAdminOrgTree($idstUser);
-            if (!empty($org_groups)) {
-                $query = 'SELECT * FROM %adm_org_chart_tree where idOrg in (' . implode(',', $org_groups) . ') ORDER BY path';
+            $orgGroups = $this->_getAdminOrgTree($idstUser);
+            if (!empty($orgGroups)) {
+                $query .= ' WHERE idOrg in (' . implode(',', $orgGroups) . ')';
             }
         }
         $res = $this->db->query($query);
+        $treeData = [];
         if ($res) {
-            while ($obj = $this->db->fetch_obj($res)) {
-                $indend = '';
-                for ($i = 0; $i < $obj->lev; ++$i) {
-                    $indend .= '&nbsp;&nbsp;';
+            foreach ($res as $row) {
+                $treeData[$row['idOrg']] = $row;
+            }
+        }
+
+        // Order first level elements
+        uasort($treeData, function ($a, $b) {
+            return strcmp($a['translation'], $b['translation']);
+        });
+
+        // Create output with indentation (based on element level)
+        foreach ($treeData as $node) {
+            if ($node['lev'] == 1) {
+                $output[$node['idOrg']] = $node['translation'];
+                foreach ($treeData as $childNode) {
+                    if ($childNode['idParent'] == $node['idOrg']) {
+                        $indend = str_repeat('&nbsp;', $childNode['lev'] * 2);
+                        $output[$childNode['idOrg']] = $indend . $childNode['translation'];
+                    }
                 }
-                $output[$obj->idOrg] = $indend . (isset($org_lang[$obj->idOrg]) ? $org_lang[$obj->idOrg] : '');
             }
         }
 

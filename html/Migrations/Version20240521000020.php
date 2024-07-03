@@ -22,28 +22,36 @@ final class Version20240521000020 extends AbstractMigration
     {
 
         $this->addSql(HelperTool::dropIndexIfExistsQueryBuilder());
-       
-        $this->addSql($this->dropIndexIfExists('unique_coursereport','learning_coursereport'));
+
+        $this->addSql($this->dropIndexIfExists('unique_coursereport', 'learning_coursereport'));
 
         $this->addSql(HelperTool::dropProcedure('drop_index_if_exists'));
-        //delete all duplicates
-        $this->addSql('DELETE FROM learning_coursereport
-                            WHERE id_report NOT IN (
-                                SELECT MIN(id_report) 
-                                FROM learning_coursereport 
-                                GROUP BY source_of, id_course, id_source
-                                )');
 
-        $this->addSql('DELETE FROM learning_coursereport
-                            WHERE id_course = 0;
-                            DELETE FROM learning_coursereport_score
-                            WHERE id_report NOT IN (
-                                SELECT id_report
-                                FROM learning_coursereport 
-            )');
+        $connection = $this->connection;
 
-        $this->addSql('ALTER TABLE learning_coursereport
-        ADD CONSTRAINT unique_coursereport UNIQUE (source_of, id_course, id_source)');
+        $courseReportDataToDelete = $connection->fetchAllAssociative('SELECT MIN(id_report) as min_id_report FROM learning_coursereport GROUP BY source_of, id_course, id_source');
+
+        $courseReportScoreDataToDelete = $connection->fetchAllAssociative('SELECT id_report FROM learning_coursereport');
+
+        $courseReportDataToDelete = array_map(function($item) {
+            return $item['min_id_report'];
+        }, $courseReportDataToDelete);
+
+        $courseReportScoreDataToDelete = array_map(function($item) {
+            return $item['id_report'];
+        }, $courseReportScoreDataToDelete);
+        
+        if (!empty($courseReportDataToDelete)) {
+            //delete all duplicates
+            $this->addSql('DELETE FROM learning_coursereport WHERE id_report NOT IN (' . implode(',',$courseReportDataToDelete) . ')');
+        }
+
+        $this->addSql('DELETE FROM learning_coursereport WHERE id_course = 0;');
+        if (!empty($courseReportScoreDataToDelete)) {
+            $this->addSql('DELETE FROM learning_coursereport_score WHERE id_report NOT IN (' . implode(', ', $courseReportScoreDataToDelete) . ')');
+        }
+
+        $this->addSql('ALTER TABLE learning_coursereport ADD CONSTRAINT unique_coursereport UNIQUE (source_of, id_course, id_source)');
 
         $connection = $this->connection;
 
@@ -64,8 +72,9 @@ final class Version20240521000020 extends AbstractMigration
         DROP INDEX unique_coursereport');
     }
 
-    private function dropIndexIfExists($index, $table) {
+    private function dropIndexIfExists($index, $table)
+    {
 
-        return 'CALL drop_index_if_exists ( "'.$index.'", "'. $table .'")';
+        return 'CALL drop_index_if_exists ( "' . $index . '", "' . $table . '")';
     }
 }

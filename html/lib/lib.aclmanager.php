@@ -409,6 +409,7 @@ class FormaACLManager
             . ' FROM ' . $this->_getTableGroup()
             . " WHERE groupid = '" . $this->absoluteId($groupid) . "'";
 
+
         $rs = $this->_executeQuery($query);
         if (sql_num_rows($rs) > 0) {
             $result = sql_fetch_row($rs);
