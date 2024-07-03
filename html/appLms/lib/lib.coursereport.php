@@ -549,6 +549,9 @@ class CourseReportManager
         if (!empty($included_test)) {
             $tests_score = $test_man->getTestsScores($included_test, $id_students);
         }
+
+        $report_man = new CourseReportManager($idCourse);
+
         // XXX: Retrive other score
         if (!empty($other_source)) {
             $other_score = $report_man->getReportsScores($other_source);
