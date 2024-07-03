@@ -8,7 +8,13 @@ echo getTitleArea([
 ?>
 <div class="std_block">
 <ul class="style_none">
-	<li><?php echo Lang::t('_COURSE', 'course') . ': <b>' . (trim($course_info['code']) ? '[' . trim($course_info['code']) . '] ' : '') . $course_info['name'] . '</b>'; ?></li>
+	<li><?php
+        if (isset($id_path)){
+            echo Lang::t('_COURSE_PATH', 'course') . ': <b>' . $course_name . '</b>';
+        }else{
+            echo Lang::t('_COURSE', 'course') . ': <b>' . $course_name . '</b>';
+        }
+        ?></li>
 	<li><?php echo Lang::t('_USER_STATUS_SUBS', 'subscribe') . ': <b>' . (int) $num_subscribed . '</b>'; ?></li>
 </ul>
 <?php
@@ -40,7 +46,13 @@ echo getTitleArea([
 
     $array_content = [];
 
-    echo Form::openForm('choose_level', 'index.php?r=' . ($post_url ?? $link) . '/ins&amp;id_course=' . $id_course . '&amp;id_edition=' . $id_edition . '&amp;id_date=' . $id_date);
+    if(strpos($link,'choose_editions_coursepath_action') > 0){
+        $getParams = '&id_course='. $id_course. '&id_path='. $id_path ;
+    }else{
+        $getParams = '/ins&amp;id_course=' . $id_course . '&amp;id_edition=' . $id_edition . '&amp;id_date=' . $id_date;
+    }
+
+    echo Form::openForm('choose_level', 'index.php?r=' . ($post_url ?? $link) . $getParams);
 
     if($send_alert) {
         echo Form::getHidden('send_alert', 'send_alert', $send_alert);

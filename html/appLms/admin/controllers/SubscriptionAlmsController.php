@@ -1402,7 +1402,7 @@ class SubscriptionAlmsController extends AlmsController
             $step = 0;
         }
 
-        
+
         switch ($step) {
             case '0':
                 Util::jump_to('index.php?r=' . $this->link_course . '/show');
@@ -2034,7 +2034,7 @@ class SubscriptionAlmsController extends AlmsController
                 sl_unlink(_files_ . $path . $savefile);
 
                 sl_close_fileoperations();
-                
+
                 $course_info = $this->model->getCourseInfoForSubscription();
                 $course_name = ($course_info['code'] !== '' ? '[' . $course_info['code'] . '] ' : '') . $course_info['name'];
 
@@ -2043,7 +2043,7 @@ class SubscriptionAlmsController extends AlmsController
                     $this->model->sendAlert($user_subscribed, $course_info,$sendAlert);
                 }
 
-              
+
                 $params = [
                     'table' => $tb,
                     'id_course' => $this->id_course,
@@ -2265,7 +2265,7 @@ class SubscriptionAlmsController extends AlmsController
 
                 $old_id_course = $_GET['id_course'];
                 $_GET['id_course'] = $id_course;
-               
+
 
                 while (list($id_user, $level) = sql_fetch_row($result)) {
                     if (!$limited_subscribe || $max_subscribe) {
@@ -3454,78 +3454,101 @@ class SubscriptionAlmsController extends AlmsController
 
     public function choose_editions_coursepath_action()
     {
-        if (isset($_POST['undo'])) {
-            Util::jump_to('index.php?r=' . $this->link . '/show_coursepath&id_path=' . (int) $_POST['id_path']);
-        }
-
+//        if (isset($_POST['undo'])) {
+//            Util::jump_to('index.php?r=' . $this->link . '/show_coursepath&id_path=' . (int) $_POST['id_path']);
+//        }
+//
         $courses = explode(',', FormaLms\lib\Get::req('courses_list', DOTY_MIXED, ''));
         $_to_add = explode(',', FormaLms\lib\Get::req('users_to_add', DOTY_MIXED, ''));
         $_to_del = explode(',', FormaLms\lib\Get::req('users_to_del', DOTY_MIXED, ''));
-        $id_path = FormaLms\lib\Get::req('id_path', DOTY_INT, 0);
+        $id_path[] = FormaLms\lib\Get::req('id_path', DOTY_INT, 0);
         $classrooms = FormaLms\lib\Get::req('classrooms', DOTY_MIXED, []);
         $editions = FormaLms\lib\Get::req('editions', DOTY_MIXED, []);
-
+//
         require_once _lms_ . '/lib/lib.coursepath.php';
         require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
         $path_man = new CoursePath_Manager();
 
-        foreach ($courses as $id_course) {
-            $res = true;
 
-            $formaCourse = new FormaCourse($id_course);
-            $level_idst = &$formaCourse->getCourseLevel($id_course);
-            if (count($level_idst) == 0 || $level_idst[1] == '') {
-                $level_idst = FormaCourse::createCourseLevel($id_course);
+            $model = new SubscriptionAlms($courses, $this->model->id_edition, $this->model->id_date);
+            $cman = new CourseAlms();
+
+            $model->loadSelectedUser($_to_add);
+
+            $coursepath_info = $path_man->getCoursepathAllInfo($id_path);
+            $int_id_path = intval(implode(',', $id_path));
+            $sel_date_begin_validity = FormaLms\lib\Get::req('sel_date_begin_validity', DOTY_INT, 0) > 0;
+            $sel_date_expire_validity = FormaLms\lib\Get::req('sel_date_expire_validity', DOTY_INT, 0) > 0;
+            $date_begin_validity = $sel_date_begin_validity ? FormaLms\lib\Get::req('set_date_begin_validity', DOTY_STRING, '') : false;
+            $date_expire_validity = $sel_date_expire_validity ? FormaLms\lib\Get::req('set_date_expire_validity', DOTY_STRING, '') : false;
+
+            foreach ($courses as $id_course) {
+                $res = true;
+
+                $formaCourse = new FormaCourse($id_course);
+                $level_idst = &$formaCourse->getCourseLevel($id_course);
+                if (count($level_idst) == 0 || $level_idst[1] == '') {
+                    $level_idst = FormaCourse::createCourseLevel($id_course);
+                }
+                foreach ($_to_add as $id_user) {
+                    if (isset($_POST['subs'])) {
+                        $subs_data = explode(',', $_POST['subs']);
+                        $courses = explode(',', FormaLms\lib\Get::req('id_course'));
+                        $id_path = FormaLms\lib\Get::req('id_path');
+                        foreach ($courses as $id_course) {
+                            foreach ($subs_data as $subs_item) {
+                                list($id_user, $level) = explode(':', $subs_item);
+                                $this->model->id_course = $id_course;
+                                $this->model->_addToCourseGroup($level_idst[$level], $id_user);
+                                $this->model->updateUserLevel($id_user, $level);
+
+                            }
+                        }
+                        Util::jump_to('index.php?r=' . $this->link . '/show_coursepath&id_path=' . $id_path . '&res=' . $res);
+                    }
+
+                    $waiting = false;
+                    //$this->acl_man->addToGroup($level_idst[$level], $id_user);
+
+                    $this->model->id_course = $id_course;
+                    if (isset($classrooms[$id_course])) {
+                        $this->model->id_date = $classrooms[$id_course];
+                    }
+                    if (isset($editions[$id_course])) {
+                        $this->model->id_edition = $editions[$id_course];
+                    }
+                    if (!$this->model->subscribeUser($id_user, $level, $waiting)) {
+                        $res = false;
+                    }
+
+
+                }
+
+            }
+            if (!isset($_POST['subs'])){
+                $this->render('level', [
+                    'link' => $this->link ."/choose_editions_coursepath_action",
+                    'id_course' => implode(',', $courses),
+                    'id_path' => implode(',', $id_path),
+                    'id_date' => $this->model->id_date,
+                    'model' => $model,
+                    'course_info' => $cman->getInfo($this->model->id_course, $this->model->id_edition, $this->model->id_date),
+                    'num_subscribed' => count($_to_add),
+                    'send_alert' => FormaLms\lib\Get::req('send_alert', DOTY_INT, 0),
+                    'date_begin_validity' => $date_begin_validity,
+                    'date_expire_validity' => $date_expire_validity,
+                    'course_name' => $coursepath_info[$int_id_path][2],
+                ]);
             }
 
-//            foreach ($_to_add as $id_user) {
-//                $level = 3; //student
-//                $waiting = false;
-//                //$this->acl_man->addToGroup($level_idst[$level], $id_user);
-//                $this->model->_addToCourseGroup($level_idst[$level], $id_user);
-//                $this->model->id_course = $id_course;
-//                if (isset($classrooms[$id_course])) {
-//                    $this->model->id_date = $classrooms[$id_course];
-//                }
-//                if (isset($editions[$id_course])) {
-//                    $this->model->id_edition = $editions[$id_course];
-//                }
-//                if (!$this->model->subscribeUser($id_user, $level, $waiting)) {
-//                    $res = false;
-//                }
-//            }
-        }
 
-        $model = new SubscriptionAlms($courses, $this->model->id_edition, $this->model->id_date);
-        $cman = new CourseAlms();
+            if ($res) {
+                $path_man->subscribeUserToCoursePath($id_path, $_to_add);
 
-        $model->loadSelectedUser($_to_add);
+            }
 
-        $course_info = $this->model->getCourseInfoForSubscription();
-        $course_name = ($course_info['code'] !== '' ? '[' . $course_info['code'] . '] ' : '') . $course_info['name'];
-        $sel_date_begin_validity = FormaLms\lib\Get::req('sel_date_begin_validity', DOTY_INT, 0) > 0;
-        $sel_date_expire_validity = FormaLms\lib\Get::req('sel_date_expire_validity', DOTY_INT, 0) > 0;
-        $date_begin_validity = $sel_date_begin_validity ? FormaLms\lib\Get::req('set_date_begin_validity', DOTY_STRING, '') : false;
-        $date_expire_validity = $sel_date_expire_validity ? FormaLms\lib\Get::req('set_date_expire_validity', DOTY_STRING, '') : false;
-
-        $this->render('level', [
-            'link' => $this->link,
-            'id_course' => implode(',',$courses),
-            'id_edition' => $this->model->id_edition,
-            'id_date' => $this->model->id_date,
-            'model' => $model,
-            'course_info' => $cman->getInfo($this->model->id_course, $this->model->id_edition, $this->model->id_date),
-            'num_subscribed' => count($_to_add),
-            'send_alert' => FormaLms\lib\Get::req('send_alert', DOTY_INT, 0),
-            'date_begin_validity' => $date_begin_validity,
-            'date_expire_validity' => $date_expire_validity,
-            'course_name' => $course_name,
-        ]);
-
-        if ($res) {
-            $path_man->subscribeUserToCoursePath($id_path, $_to_add);
-        }
     }
+
 
     /****** End coursepaths ****************************************************/
 
