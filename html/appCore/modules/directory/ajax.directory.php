@@ -26,7 +26,7 @@ if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit('You can\'t access');
 }
 
-require_once _adm_ . '/lib/lib.permission.php';
+require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/lib.permission.php');
 
 $op = FormaLms\lib\Get::req('op', DOTY_ALPHANUM, '');
 switch ($op) {

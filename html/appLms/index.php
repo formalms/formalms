@@ -28,7 +28,7 @@ $db = \FormaLms\db\DbConn::getInstance();
 
 // some specific lib to load
 require_once _lms_ . '/lib/lib.istance.php';
-require_once _lms_ . '/lib/lib.permission.php';
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.permission.php');
 require_once _lms_ . '/lib/lib.track_user.php';
 require_once _lms_ . '/class.module/class.definition.php';
 

@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once _adm_ . '/lib/lib.permission.php';
+require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/lib.permission.php');
 require_once _base_ . '/lib/lib.pagewriter.php';
 //require_once(_i18n_.'/lib.lang.php');
 require_once _base_ . '/lib/lib.template.php';

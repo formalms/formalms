@@ -79,7 +79,7 @@ switch ($command) {
         $courses = [];
         $course_list = &$man_courses->getCoursesRequest($startIndex, $results, $sort, $dir, $filter);
 
-        require_once _lms_ . '/lib/lib.permission.php';
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.permission.php');
 
         if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_ADMIN) {
             $moderate = checkPerm('moderate', true, 'course', 'lms');

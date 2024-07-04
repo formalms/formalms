@@ -24,7 +24,7 @@ require _base_ . '/lib/lib.bootstrap.php';
 Boot::init(BOOT_HOOKS);
 // some specific lib to load
 require_once _base_ . '/lib/lib.platform.php';
-require_once _adm_ . '/lib/lib.permission.php';
+require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/lib.permission.php');
 require_once _adm_ . '/lib/lib.istance.php';
 require_once _adm_ . '/class.module/class.definition.php';
 
