@@ -2810,7 +2810,7 @@ function getModuleFromId($id_module)
  **/
 function firstPage($idMain = false)
 {
-    require_once _lms_ . '/lib/lib.permission.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.permission.php');
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
     $query_main = "

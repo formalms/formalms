@@ -32,7 +32,7 @@ if (!function_exists('aout')) {
         $GLOBALS['operation_result'] .= $string;
     }
 }
-require_once _lms_ . '/lib/lib.permission.php';
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.permission.php');
 
 $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 

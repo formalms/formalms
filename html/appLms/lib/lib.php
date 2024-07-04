@@ -19,7 +19,7 @@ require_once _lms_ . '/lib/lib.track_user.php';
 require_once _base_ . '/lib/lib.template.php';
 require_once _base_ . '/lib/lib.mimetype.php';
 
-require_once _lms_ . '/lib/lib.permission.php';
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.permission.php');
 require_once _lms_ . '/lib/lib.module.php';
 
 require_once _lms_ . '/lib/lib.utils.php';

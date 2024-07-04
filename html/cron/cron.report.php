@@ -35,7 +35,7 @@ if (!function_exists('report_log')) {
     }
 }
 
-require_once _adm_ . '/lib/lib.permission.php';
+require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/lib.permission.php');
 require_once _base_ . '/lib/lib.pagewriter.php';
 require_once _base_ . '/lib/lib.template.php';
 

@@ -2099,7 +2099,7 @@ class Course_API extends API
     {
         require_once _lms_ . '/class.module/class.definition.php';
         require_once _lms_ . '/lib/lib.module.php';
-        require_once _lms_ . '/lib/lib.permission.php';
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.permission.php');
         $response = $this->validateDeleteParams($params);
 
         if ($response['success']) {
