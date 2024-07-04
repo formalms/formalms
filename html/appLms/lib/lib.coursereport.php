@@ -512,14 +512,17 @@ class CourseReportManager
         foreach ($commonScores as $idCourse => $score) {
             $scores[$idCourse] = $this->getCourseFinalScoreComputation($idCourse);
             foreach ($score['idUsers'] as $idUser){
-
+                if(array_key_exists($idUser, $scores[$idCourse])) {
                     $re[$idUser][$idCourse]['score'] = ($score['status'] == 'not_found') ? 0 : $scores[$idCourse][$idUser];
-
+                }
+                else {
+                    $re[$idUser][$idCourse]['score'] = 0;
+                }
                 $re[$idUser][$idCourse]['max_score'] = $score['max_score'];
             }
         }
 
-        
+
         /*
         foreach ($arr_courses as $idCourse) {
             $scores[$idCourse] = $this->getCourseFinalScoreComputation($idCourse);
