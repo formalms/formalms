@@ -485,12 +485,17 @@ class CourseReportManager
         $re = [];
         $query_scores = "
         SELECT s.id_user, r.id_course, r.max_score, COALESCE(s.score_status,'not_found') AS score_status
+        FROM %lms_coursereport AS r
         LEFT JOIN %lms_coursereport_score AS s ON s.score_status = 'valid' AND s.id_report = r.id_report 
         WHERE 
         r.source_of = 'final_vote' ";
 
         if (!empty($arr_courses)) {
             $query_scores .= ' AND r.id_course IN ( ' . implode(',', $arr_courses) . ' ) ';
+        }
+
+        if (!empty($arr_users)) {
+            $query_scores .= ' AND s.id_user IN ( ' . implode(',', $arr_users) . ' ) ';
         }
 
         if (is_array($arr_courses) && empty($arr_courses)) {
@@ -501,21 +506,40 @@ class CourseReportManager
         foreach ($re_scores as $reScore) {
             $commonScores[$reScore['id_course']]['status'] = $reScore['score_status'];
             $commonScores[$reScore['id_course']]['max_score'] = $reScore['max_score'];
+            $commonScores[$reScore['id_course']]['idUsers'][] = $reScore['id_user'];
         }
 
+        foreach ($commonScores as $idCourse => $score) {
+            $scores[$idCourse] = $this->getCourseFinalScoreComputation($idCourse);
+            foreach ($score['idUsers'] as $idUser){
 
+                    $re[$idUser][$idCourse]['score'] = ($score['status'] == 'not_found') ? 0 : $scores[$idCourse][$idUser];
+
+                $re[$idUser][$idCourse]['max_score'] = $score['max_score'];
+            }
+        }
+
+        
+        /*
         foreach ($arr_courses as $idCourse) {
             $scores[$idCourse] = $this->getCourseFinalScoreComputation($idCourse);
             foreach ($arr_users as $idUser) {
-                $re[$idUser][$idCourse]['score'] = ($commonScores[$idCourse]['status'] == 'not_found') ? 0 : $scores[$idCourse][$idUser];
+                if(array_key_exists($idUser, $scores[$idCourse])) {
+                    $re[$idUser][$idCourse]['score'] = ($commonScores[$idCourse]['status'] == 'not_found') ? 0 : $scores[$idCourse][$idUser];
+                }
+                else {
+                    $re[$idUser][$idCourse]['score'] = 0;
+                }
                 $re[$idUser][$idCourse]['max_score'] = $commonScores[$idCourse]['max_score'];
             }
         }
+        */
 
         return $re;
     }
 
     public function getCourseFinalScoreComputation($idCourse, $idUser = null) {
+        $this->idCourse = $idCourse;
         require_once Forma::inc(_lms_ . '/lib/lib.coursereport.php');
         require_once Forma::inc(_lms_ . '/lib/lib.test.php');
         require_once Forma::inc(_base_ . '/lib/lib.form.php');
