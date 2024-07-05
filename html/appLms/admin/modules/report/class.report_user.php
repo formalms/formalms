@@ -1322,7 +1322,7 @@ class Report_User extends Report
         $score_final = $org_man->getFinalObjectScore($user_selected, array_keys($id_courses));
 
         require_once _lms_ . '/lib/lib.coursereport.php';
-        $rep_man = new CourseReportManager($id_course);
+        $rep_man = new CourseReportManager(0);
 
         $score_course = $rep_man->getUserFinalScore($user_selected, array_keys($id_courses));
 
