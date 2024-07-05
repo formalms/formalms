@@ -272,10 +272,10 @@ class MailconfigAdm extends Model
     public function toggleSystem($id)
     {
 
-        $query = 'UPDATE %adm_mail_configs SET system = "0"';
+        $query = 'UPDATE %adm_mail_configs SET `system` = 0';
         $queryResult = $this->db->query($query);
         if ($queryResult) {
-            $query = 'UPDATE %adm_mail_configs SET system = "1" WHERE id = "' . $id . '"';
+            $query = 'UPDATE %adm_mail_configs SET `system` = 1 WHERE id = "' . $id . '"';
             $queryResult = $this->db->query($query);
         }
 
