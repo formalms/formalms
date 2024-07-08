@@ -124,7 +124,7 @@ class CoursereportLms extends Model
         $report_man = new CourseReportManager($this->idCourse);
         $org_tests = $report_man->getTest();
 
-        $report_man->removeDuplicatedReports();
+        $report_man->removeDuplicatedReports($this->idCourse);
 
         $query_final_tot_report = "SELECT COUNT(*) FROM %lms_coursereport WHERE id_course = '" . $this->idCourse . "' AND source_of = '" . self::SOURCE_OF_FINAL_VOTE . "'";
 
