@@ -3543,7 +3543,7 @@ class SubscriptionAlmsController extends AlmsController
 
 
             if ($res) {
-                $path_man->subscribeUserToCoursePath($id_path, $_to_add);
+                $path_man->subscribeUserToCoursePath($int_id_path, $_to_add);
 
             }
 
