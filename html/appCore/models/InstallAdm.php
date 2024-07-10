@@ -841,8 +841,7 @@ class InstallAdm extends Model
      *
      * @return string
      */
-    private
-    function validateAdminData($password, $confirmPassword, $email): string
+    private function validateAdminData($password, $confirmPassword, $email): string
     {
         $success = true;
         $messages = [];
@@ -873,8 +872,7 @@ class InstallAdm extends Model
      *
      * @return string
      */
-    private
-    function validateSmtpData($params): string
+    private function validateSmtpData($params): string
     {
         $success = true;
         $messages = [];
@@ -899,8 +897,7 @@ class InstallAdm extends Model
      *
      * @return bool
      */
-    public
-    function checkSmtpConnection($smtpHost, $smtpPort, $smtpSecure, $smtpAutoTls, $smtpUser, $smtpPwd): bool
+    public function checkSmtpConnection($smtpHost, $smtpPort, $smtpSecure, $smtpAutoTls, $smtpUser, $smtpPwd): bool
     {
         $mail = new PHPMailer\PHPMailer\PHPMailer();
 
@@ -935,8 +932,7 @@ class InstallAdm extends Model
      *
      * @return string
      */
-    private
-    function validateConnection($connectionResult, $dbName): string
+    private function validateConnection($connectionResult, $dbName): string
     {
         $success = false;
         $messages = [];
@@ -1013,8 +1009,7 @@ class InstallAdm extends Model
      *
      * @return bool
      */
-    public
-    function checkDBEmpty($dbName): bool
+    public function checkDBEmpty($dbName): bool
     {
         $row = sql_query("SELECT COUNT(DISTINCT `table_name`) FROM `information_schema`.`columns` WHERE `table_schema` = '" . $dbName . "'");
         [$count] = sql_fetch_row($row);
@@ -1035,8 +1030,7 @@ class InstallAdm extends Model
      *
      * @return string
      */
-    public
-    function getSqlVersionByQuery(): ?string
+    public function getSqlVersionByQuery(): ?string
     {
         $row = sql_query("SELECT version()");
 
@@ -1051,8 +1045,7 @@ class InstallAdm extends Model
      *
      * @return bool
      */
-    public
-    function checkDBCharset(): bool
+    public function checkDBCharset(): bool
     {
         $row = sql_query("show variables like 'character_set_database'");
         [, $charset] = sql_fetch_row($row);
@@ -1068,8 +1061,7 @@ class InstallAdm extends Model
      *
      * @return string
      */
-    public
-    function finalize($request): string
+    public function finalize($request): string
     {
         $params = $request->request->all();
         $messages = [];
@@ -1256,8 +1248,7 @@ class InstallAdm extends Model
      *
      * @return string
      */
-    public
-    function migrateByCli($debug = false, $testLine = '')
+    public function migrateByCli($debug = false, $testLine = '')
     {
         $migrationFile = dirname(__DIR__, 2) . '/bin/doctrine-migrations';
         $mainPath = dirname(__DIR__, 2);
@@ -1296,8 +1287,7 @@ class InstallAdm extends Model
      *
      * @return self
      */
-    public
-    function setResponse($success = false, $messages = [], $type = 'default'): self
+    public function setResponse($success = false, $messages = [], $type = 'default'): self
     {
         $this->response['success'] = $success;
         $this->response['messages'] = $messages;
@@ -1313,8 +1303,7 @@ class InstallAdm extends Model
      *
      * @return array
      */
-    public
-    function getErrorMessages($request): array
+    public function getErrorMessages($request): array
     {
         $params = $request->request->all();
         $messages = [];
@@ -1334,8 +1323,7 @@ class InstallAdm extends Model
      * @return string
      */
 
-    public
-    function wrapResponse()
+    public function wrapResponse()
     {
         return FormaLms\lib\Serializer\FormaSerializer::getInstance()->serialize($this->response, 'json');
     }
@@ -1347,8 +1335,7 @@ class InstallAdm extends Model
      * @return void
      */
 
-    private
-    function saveConfig()
+    private function saveConfig()
     {
         // ----------- Generating config file -----------------------------
         $config = '';
@@ -1380,8 +1367,7 @@ class InstallAdm extends Model
      * @return void
      */
 
-    public
-    function saveTmpConfig()
+    public function saveTmpConfig()
     {
         $config = $this->generateConfig();
 
@@ -1403,8 +1389,7 @@ class InstallAdm extends Model
      * @return void
      */
 
-    public
-    function deleteTmpConfig()
+    public function deleteTmpConfig()
     {
         @unlink(sys_get_temp_dir() . '/config.php');
     }
@@ -1415,8 +1400,7 @@ class InstallAdm extends Model
      *
      * @return string
      */
-    private
-    function generateConfig()
+    private function generateConfig()
     {
         $tpl_fn = _base_ . '/config_template.php';
         $values = $this->session->get('setValues');
@@ -1467,8 +1451,7 @@ class InstallAdm extends Model
      *
      * @return boolean
      */
-    private
-    function registerAdminUser()
+    private function registerAdminUser()
     {
         // ----------- Registering admin user ---------------------------------
 
@@ -1525,8 +1508,7 @@ class InstallAdm extends Model
      *
      * @return boolean
      */
-    public
-    function storeSettings()
+    public function storeSettings()
     {
 
         $values = $this->session->get('setValues') ?? [];
@@ -1563,8 +1545,7 @@ class InstallAdm extends Model
      *
      * @return boolean
      */
-    private
-    function addInstallerRoles()
+    private function addInstallerRoles()
     {
         require_once _lib_ . '/System/lib.role.php';
 
@@ -1589,8 +1570,7 @@ class InstallAdm extends Model
      * @return array
      */
 
-    public
-    function importLangs($langs = []): array
+    public function importLangs($langs = []): array
     {
         $langAdm = new LangAdm();
         $langsToInstall = count($langs) ? $langs : $this->session->get('setLangs');
@@ -1618,8 +1598,7 @@ class InstallAdm extends Model
      *
      * @return array
      */
-    private
-    function getInstalledLanguages(): array
+    private function getInstalledLanguages(): array
     {
         $langAdm = new LangAdm();
 
@@ -1633,8 +1612,7 @@ class InstallAdm extends Model
      *
      * @return boolean
      */
-    public
-    function saveSmtpToDatabase($smtpSettings = [], $update = false)
+    public function saveSmtpToDatabase($smtpSettings = [], $update = false)
     {
         $result = true;
 
@@ -1699,8 +1677,7 @@ class InstallAdm extends Model
      *
      * @return self
      */
-    public
-    function saveFields($request)
+    public function saveFields($request)
     {
         $params = $request->request->all();
 
@@ -1724,10 +1701,8 @@ class InstallAdm extends Model
      *
      * @return boolean
      */
-    public
-    function installMigrationsTable()
+    public function installMigrationsTable()
     {
-
         $migrationSettings = FormaLms\lib\Database\FormaMigrator::getInstance()->getMigrationTableSettings();
         $connection = \FormaLms\db\DbConn::getInstance();
         $createQuery = "CREATE TABLE IF NOT EXISTS " . $migrationSettings->getTableName() . "  ("
@@ -1745,6 +1720,19 @@ class InstallAdm extends Model
             sql_query("INSERT IGNORE INTO `core_migration_versions`(`version`, `executed_at`, `execution_time`) VALUES ('Formalms\\\Migrations\\\Version20220815000003','" . (new Datetime())->format("Y-m-d H:i:s") . "', 1000)");
         }
 
+        $rows = sql_num_rows(sql_query('SELECT version FROM `core_migration_versions` WHERE version LIKE %Version20221012000004'));
+
+        if ($rows === 1){
+            sql_query("INSERT IGNORE INTO `core_migration_versions`(`version`, `executed_at`, `execution_time`) VALUES ('Formalms\\\Migrations\\\Version20221012000014','" . (new Datetime())->format("Y-m-d H:i:s") . "', 1000)");
+            sql_query("INSERT IGNORE INTO `core_migration_versions`(`version`, `executed_at`, `execution_time`) VALUES ('Formalms\\\Migrations\\\Version20221012000024','" . (new Datetime())->format("Y-m-d H:i:s") . "', 1000)");
+            sql_query("INSERT IGNORE INTO `core_migration_versions`(`version`, `executed_at`, `execution_time`) VALUES ('Formalms\\\Migrations\\\Version20221012000034','" . (new Datetime())->format("Y-m-d H:i:s") . "', 1000)");
+            sql_query("INSERT IGNORE INTO `core_migration_versions`(`version`, `executed_at`, `execution_time`) VALUES ('Formalms\\\Migrations\\\Version20221012000044','" . (new Datetime())->format("Y-m-d H:i:s") . "', 1000)");
+            sql_query("INSERT IGNORE INTO `core_migration_versions`(`version`, `executed_at`, `execution_time`) VALUES ('Formalms\\\Migrations\\\Version20221012000054','" . (new Datetime())->format("Y-m-d H:i:s") . "', 1000)");
+            sql_query("INSERT IGNORE INTO `core_migration_versions`(`version`, `executed_at`, `execution_time`) VALUES ('Formalms\\\Migrations\\\Version20221012000064','" . (new Datetime())->format("Y-m-d H:i:s") . "', 1000)");
+            sql_query("INSERT IGNORE INTO `core_migration_versions`(`version`, `executed_at`, `execution_time`) VALUES ('Formalms\\\Migrations\\\Version20221012000074','" . (new Datetime())->format("Y-m-d H:i:s") . "', 1000)");
+            sql_query("INSERT IGNORE INTO `core_migration_versions`(`version`, `executed_at`, `execution_time`) VALUES ('Formalms\\\Migrations\\\Version20221012000084','" . (new Datetime())->format("Y-m-d H:i:s") . "', 1000)");
+        }
+
         return $creationTable;
     }
 
@@ -1754,8 +1742,7 @@ class InstallAdm extends Model
      *
      * @return boolean
      */
-    public
-    function saveUpgradeVersion()
+    public function saveUpgradeVersion()
     {
         $qtxt = "UPDATE core_setting SET param_value='" . \FormaLms\lib\Version\VersionChecker::getFileVersion() . "' WHERE param_name='core_version'";
         return sql_query($qtxt);
@@ -1767,8 +1754,7 @@ class InstallAdm extends Model
      *
      * @return boolean
      */
-    private
-    function setDefaultTemplate()
+    private function setDefaultTemplate()
     {
         $qtxt = "UPDATE core_setting SET param_value='standard' WHERE param_name='defaultTemplate'";
         return sql_query($qtxt);
@@ -1781,8 +1767,7 @@ class InstallAdm extends Model
      *
      * @return boolean
      */
-    private
-    function cleanSession()
+    private function cleanSession()
     {
         $this->session->set('setValues', []);
         $this->session->set('setLangs', []);
@@ -1799,8 +1784,7 @@ class InstallAdm extends Model
      * @return bool
      */
 
-    public
-    function generateLock()
+    public function generateLock()
     {
         $response = false;
         // ----------- Generating lock file -----------------------------
@@ -1819,8 +1803,7 @@ class InstallAdm extends Model
      *
      * @return void
      */
-    public
-    function downlodConfigFile()
+    public function downlodConfigFile()
     {
         $tmpName = sys_get_temp_dir() . '/config.php';
 
@@ -1847,8 +1830,7 @@ class InstallAdm extends Model
      *
      * @return void
      */
-    public
-    function downloadLockFile()
+    public function downloadLockFile()
     {
         header('Content-Description: File Transfer');
         header('Content-Type: text/plain');
@@ -1871,8 +1853,7 @@ class InstallAdm extends Model
      *
      * @return bool
      */
-    private
-    function handleErrors(): bool
+    private function handleErrors(): bool
     {
         $errors = $this->session->get('installErrors') ?? [];
         $result = true;
@@ -1895,8 +1876,7 @@ class InstallAdm extends Model
      *
      * @return self
      */
-    public
-    function testMigrate($params = [], $save = false)
+    public function testMigrate($params = [], $save = false)
     {
         if ($save) {
             $this->saveTmpConfig();

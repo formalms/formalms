@@ -9,7 +9,7 @@ migrations_paths:
    'Formalms\Migrations': ./Migrations
  #  'Formalms\Component\Migrations': ./html/Component/Migrations
 
-all_or_nothing: true
+all_or_nothing: false
 transactional: true
 check_database_platform: true
 # organize_migrations: year_and_month

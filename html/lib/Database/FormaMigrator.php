@@ -121,6 +121,7 @@ class FormaMigrator
         if ($test) {
             $arguments['--dry-run'] = true;
         }
+        $arguments['--all-or-nothing'] = false;
 
         $command = new MigrateCommand($this->dependencyFactory);
 
@@ -145,7 +146,6 @@ class FormaMigrator
 
     private function syncMetadata()
     {
-
         $command = new SyncMetadataCommand($this->dependencyFactory);
 
         $input = new ArrayInput([]);
@@ -180,7 +180,6 @@ class FormaMigrator
         return $output->fetch();
 
     }
-
 
     private function list()
     {
