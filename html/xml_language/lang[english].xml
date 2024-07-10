@@ -933,7 +933,7 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="coursepath&amp;_COURSE_PATH_LOGO" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Course path logo]]></key>
         <key id="coursepath&amp;_DOCUMENT_UPLOAD" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Documents upload]]></key>
         <key id="course&amp;_COURSEPATH_SPECIAL_OPTION" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Special options]]></key>
-        <key id="coursepath&amp;_CHECKBOX_EXPAND_PATH_INFO" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Show all courses in the course path]]></key>
+        <key id="coursepath&amp;_CHECKBOX_EXPAND_PATH_INFO" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Don't show the Expand / Collapse button]]></key>
       </module>
       <module id="coursereport">
         <key id="coursereport&amp;_ACTIVITY_INFO" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Information about the selected activities]]></key>

@@ -1,5 +1,10 @@
 {%  block coursepath_details %}
-<div id="courses_{{ id_path }}" style="display:none;clear:both;" class="coursepath_details">
+    {% if path_info['check_path_info'] %}
+        {% set style = 'display:block;clear:both;'%}
+    {% else %}
+        {% set style = 'display:none;clear:both;'%}
+    {% endif %}
+<div id="courses_{{ id_path }}" style="{{ style }}" class="coursepath_details">
     <table>
         {% for id_course, course_info in coursepath_courses %}
             <tr>

@@ -933,7 +933,7 @@ Per poterlo fare devi loggarti nella piattaforma se sei un utente registarto, al
         <key id="coursepath&amp;_SUBSCRIBED_CAPTION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Utenti attualmente iscritti]]></key><key id="coursepath&amp;_COURSE_PATH_LOGO" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Logo del percorso formativo]]></key>
         <key id="coursepath&amp;_DOCUMENT_UPLOAD" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Carica documenti]]></key>
         <key id="course&amp;_COURSEPATH_SPECIAL_OPTION" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Opzioni speciali]]></key>
-        <key id="coursepath&amp;_CHECKBOX_EXPAND_PATH_INFO" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Mostra tutti i corsi del percorso formativo]]></key>
+        <key id="coursepath&amp;_CHECKBOX_EXPAND_PATH_INFO" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Non mostrare il pulsante Espandi / Condensa]]></key>
 
       </module>
       <module id="coursereport">
