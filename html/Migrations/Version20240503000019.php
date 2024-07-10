@@ -21,15 +21,15 @@ final class Version20240503000019 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE learning_coursepath ADD img_coursepath varchar');
-        $this->addSql('ALTER TABLE learning_coursepath ADD check_path_info int');
+        $this->addSql('ALTER TABLE learning_coursepath ADD `img_coursepath` varchar(255)');
+        $this->addSql('ALTER TABLE learning_coursepath ADD `check_path_info` int');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE learning_coursepath DROP COLUMN img_coursepath');
-        $this->addSql('ALTER TABLE learning_coursepath DROP COLUMN check_path_info');
+        $this->addSql('ALTER TABLE learning_coursepath DROP COLUMN `img_coursepath`');
+        $this->addSql('ALTER TABLE learning_coursepath DROP COLUMN `check_path_info`');
 
     }
 
