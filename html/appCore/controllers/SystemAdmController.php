@@ -19,28 +19,27 @@ class SystemAdmController extends AdmController
 
     protected SystemAdm $systemModel;
 
+    protected bool $debug = false;
+
+    protected string $lang;
+
     public function init()
     {
-        $debug =  $this->request->query->has('debug') ? (int) $this->request->query->get('debug') : 0;
-        $lang = substr($this->request->server->get('HTTP_ACCEPT_LANGUAGE'), 0, 2);
+        $this->debug = (bool)$this->request->query->get('debug', false);
+        $this->lang = substr($this->request->server->get('HTTP_ACCEPT_LANGUAGE'), 0, 2);
 
-        $this->installModel = new InstallAdm($debug);
-        $this->systemModel = new SystemAdm($lang);
+        $this->installModel = new InstallAdm($this->debug);
+        $this->systemModel = new SystemAdm($this->lang);
     
     }
 
     public function install()
     {
-
         $params = $this->installModel->getData($this->request);
-
         $params['steps'] = $this->installModel->getSteps();
         $params['languages'] = ['english' => 'English']; //Lang::getFileSystemCoreLanguages('language');
         $params['languagesToInstall'] = Lang::getFileSystemCoreLanguages('language');
         $params['setLang'] = Lang::getSelLang();
-
-
-      
 
         $this->render('install', $params);
 
@@ -64,12 +63,9 @@ class SystemAdmController extends AdmController
 
     public function testMigrations()
     {
-
         $params = $this->request->request->all();
 
         echo $this->installModel->testMigrate($params, true);
-
-
         exit;
 
     }
