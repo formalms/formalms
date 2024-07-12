@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2023 (Forma)
+ * Copyright (c) 2013-2022 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -33,7 +33,7 @@ class Module_Stats extends LmsModule
                 //$GLOBALS['page']->add( '<link href="'.getPathTemplate().'style/style_organizations.css" rel="stylesheet" type="text/css" />'."\n" );
                 //$GLOBALS['page']->add( '<link href="'.getPathTemplate().'style/style_scormplayer.css" rel="stylesheet" type="text/css" />'."\n" );
         }
-        require _lms_ . '/modules/stats/stats.php';
+        require \FormaLms\lib\Forma::inc(_lms_ . '/modules/stats/stats.php');
     }
 
     public static function getAllToken($op = '')
