@@ -12,7 +12,7 @@
  */
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
-include_once _base_ . '/lib/lib.upload.php';
+require_once _base_ . '/lib/lib.upload.php';
 /*
  * @version  $Id: coursepath.php 767 2006-10-31 10:09:25Z fabio $
  * @author	 Fabio Pirovano <fabio [at] docebo [dot] com>
@@ -38,8 +38,8 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         }
 
         $query_pathlist = '
-	SELECT id_path, path_code, path_name, path_descr
-	FROM %lms_coursepath ';
+        SELECT id_path, path_code, path_name, path_descr
+        FROM %lms_coursepath ';
 
         if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
@@ -210,10 +210,10 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             $check_path_info = 0;
         } else {
             $query_pathlist = '
-		SELECT path_code, path_name, path_descr, subscribe_method, img_coursepath, check_path_info
-		FROM ' . $GLOBALS['prefix_lms'] . "_coursepath
-		WHERE id_path = '" . (int) $load_id . "'
-		ORDER BY path_name";
+                SELECT path_code, path_name, path_descr, subscribe_method, img_coursepath, check_path_info
+                FROM ' . $GLOBALS['prefix_lms'] . '_coursepath
+                WHERE id_path =  ' . (int) $load_id . '
+                ORDER BY path_name';
             list($path_code, $path_name, $path_descr, $subscribe_method, $img_coursepath, $check_path_info) = sql_fetch_row(sql_query($query_pathlist));
         }
 
@@ -264,19 +264,32 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     function savecoursepath()
     {
         checkPerm('mod');
+        $srcPath = $_FILES['coursepath_logo']['tmp_name']; // Assicurati che $srcPath sia il percorso completo al file sul server
+        $time = time();
 
-        $re = true;
+        $query_select = 'SELECT img_coursepath FROM %lms_coursepath WHERE id_path ='. (int) $_POST['id_path'];
+        $res = sql_query($query_select);
+        list($imgLogo) = sql_fetch_row($res);
+        if (isset($_POST['file_to_del']['coursepath_logo'])){
+            $img = null;
+        }elseif($imgLogo == ''){
+            $img = "coursePath_logo_". $time . "_" .$_FILES['coursepath_logo']['name']; // Utilizza $_FILES per accedere al file caricato, non $_POST
+        }else{
+            $img = $imgLogo;
+        }
+
+
         if (isset($_POST['id_path'])) {
             // Update existing
             $query_update = '
-		UPDATE ' . $GLOBALS['prefix_lms'] . "_coursepath
-		SET path_code = '" . $_POST['path_code'] . "',
-			path_name = '" . $_POST['path_name'] . "',
-			path_descr = '" . $_POST['path_descr'] . "',
-			subscribe_method = '" . $_POST['subscribe_method'] . "',
-			img_coursepath = '" . $_FILES['coursepath_logo']['name'] . "',
-			check_path_info = '" . $_POST['check_expand_path_info'] . "'
-		WHERE id_path = '" . (int) $_POST['id_path'] . "'";
+                UPDATE ' . $GLOBALS['prefix_lms'] . '_coursepath
+                SET path_code = "' . addslashes($_POST['path_code']) . '",
+                    path_name = "' . addslashes($_POST['path_name']) . '",
+                    path_descr = "' . addslashes($_POST['path_descr']) . '",
+                    subscribe_method = "' . addslashes($_POST['subscribe_method']) . '",
+                    img_coursepath = "' . addslashes($img) . '",
+                    check_path_info = "' . addslashes($_POST['check_expand_path_info']) . '"
+                WHERE id_path = ' . (int) $_POST['id_path'];
             $re = sql_query($query_update);
         } else {
             // Create new
@@ -297,19 +310,18 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 $adminManager->addAdminCoursepath($id_path, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
             }
         }
-        $srcPath = $_FILES['coursepath_logo']['tmp_name']; // Assicurati che $srcPath sia il percorso completo al file sul server
-        $img = $_FILES['coursepath_logo']['name']; // Utilizza $_FILES per accedere al file caricato, non $_POST
-        $destPath = '../appLms/coursepath/';
+        $destPath = '../appLms/course/';
+
         sl_open_fileoperations();
-        if($_POST['old_coursepath_logo'] == '' and $srcPath != ''){
-            sl_upload($srcPath, $destPath.$img);
+        if (!isset($_POST['file_to_del']['coursepath_logo']) and $_FILES['coursepath_logo']['name'] != ''){
+            sl_upload($srcPath, $destPath . $img);
         }
-        else{
-            //$finalDest = $destPath.$_POST['old_coursepath_logo'];
-            $finalDest = '/appLms/coursepath/'. $_POST['old_coursepath_logo'];
+        if (isset($_POST['file_to_del']['coursepath_logo']) or ($_FILES['coursepath_logo']['name'] != $_POST['old_coursepath_logo'] and $_FILES['coursepath_logo']['name'] != '')){
+            $finalDest = '/appLms/course/' . $_POST['old_coursepath_logo'];
             sl_unlink($finalDest);
         }
         sl_close_fileoperations();
+
 
         Util::jump_to('index.php?modname=coursepath&op=pathlist&result=' . ($re ? 'ok' : 'err'));
     }

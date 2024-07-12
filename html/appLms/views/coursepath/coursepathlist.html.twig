@@ -3,6 +3,8 @@
     canvasElements.forEach(canvas => {
         window.frontend.modules.DrawRadialProgress(canvas);
     });
+
+
 </script>
 
 {% for id_path, path_info in user_coursepath %}
@@ -11,11 +13,13 @@
     <div class="coursepath-main-description-and-percentage">
         <div class="coursepath-child-description">
             <div class="textof">
-                {% if path_info['img_coursepath']  is not empty %}
-                <img src="../files/appLms/coursepath/{{ path_info['img_coursepath'] }}">
-                {% endif %}
                 <div id="path_course_title">{{ path_info['path_name'] }}</div>
-                <p id="path_course_description">{{ path_info['path_descr']|raw }}</p>
+                <div id="path_course_description" style="display: flex; align-items: flex-start;">
+                    {% if path_info['img_coursepath'] is not empty %}
+                        <img src="../files/appLms/course/{{ path_info['img_coursepath'] }}" style="margin-right: 10px;">
+                    {% endif %}
+                    <div>{{ path_info['path_descr']|raw }}</div>
+                </div>
             </div>
         </div>
         <div class="coursepath-child-percentage">
