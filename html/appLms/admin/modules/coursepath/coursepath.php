@@ -270,9 +270,9 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         $query_select = 'SELECT img_coursepath FROM %lms_coursepath WHERE id_path ='. (int) $_POST['id_path'];
         $res = sql_query($query_select);
         list($imgLogo) = sql_fetch_row($res);
-        if (isset($_POST['file_to_del']['coursepath_logo'])){
+        if (isset($_POST['file_to_del']['coursepath_logo']) and $_FILES['coursepath_logo']['name'] == ''){
             $img = null;
-        }elseif($imgLogo == ''){
+        }elseif($imgLogo == '' or ($_POST['old_coursepath_logo'] != $_FILES['coursepath_logo']['name'] and $_FILES['coursepath_logo']['name'] != '')){
             $img = "coursePath_logo_". $time . "_" .$_FILES['coursepath_logo']['name']; // Utilizza $_FILES per accedere al file caricato, non $_POST
         }else{
             $img = $imgLogo;
@@ -313,7 +313,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         $destPath = '../appLms/course/';
 
         sl_open_fileoperations();
-        if (!isset($_POST['file_to_del']['coursepath_logo']) and $_FILES['coursepath_logo']['name'] != ''){
+        if ($_FILES['coursepath_logo']['name'] != '' or ($_POST['old_coursepath_logo'] != $_FILES['coursepath_logo']['name'] and $_FILES['coursepath_logo']['name'] != '')){
             sl_upload($srcPath, $destPath . $img);
         }
         if (isset($_POST['file_to_del']['coursepath_logo']) or ($_FILES['coursepath_logo']['name'] != $_POST['old_coursepath_logo'] and $_FILES['coursepath_logo']['name'] != '')){
