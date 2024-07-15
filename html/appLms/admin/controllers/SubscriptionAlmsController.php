@@ -3070,10 +3070,15 @@ class SubscriptionAlmsController extends AlmsController
 
         Form::loadDatefieldScript(); //some dialogs use date inputs
         $umodel = new UsermanagementAdm();
-
+        require_once _lms_ . '/lib/lib.coursepath.php';
+        $cman = new CoursePath_Manager();
+        $idCourse = $cman->getAllCourses([$id_path]);
         $params = [
+            //'idCourse' => implode(',', $idCourses),
             'back_link' => 'index.php?modname=coursepath&op=pathlist&of_platform=lms',
+            'level_list_js' => $this->_getJsArrayLevel(),
             'id_path' => $id_path,
+            'idCourse' => implode(',' , $idCourse),
             'message' => $message,
             'orgchart_list' => $umodel->getOrgChartDropdownList(),
             'is_active_advanced_filter' => false,
@@ -3140,6 +3145,7 @@ class SubscriptionAlmsController extends AlmsController
                 'id' => $record->idst,
                 'userid' => Layout::highlight($this->acl_man->relativeId($record->userid), $filter['text']),
                 'fullname' => Layout::highlight($record->lastname, $filter['text']) . ' ' . Layout::highlight($record->firstname, $filter['text']),
+                'level' =>$record->level,
                 'date_begin' => Format::date($record->date_begin_validity, 'date'),
                 'date_expire' => Format::date($record->date_expire_validity, 'date'),
                 'date_begin_timestamp' => Format::toTimestamp($record->date_begin_validity == null ? date('U') : $record->date_begin_validity),

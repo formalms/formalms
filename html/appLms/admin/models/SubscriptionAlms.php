@@ -1309,7 +1309,7 @@ class SubscriptionAlms extends Model implements Accessible
             //...
         }
 
-        $query = 'SELECT u.idst, u.userid, u.firstname, u.lastname, u.email, '
+        $query = 'SELECT u.idst, u.userid, s.level, u.firstname, u.lastname, u.email, '
             . ' MIN(s.date_expire_validity) as date_expire_validity, '
             . ' MAX(s.date_begin_validity) as date_begin_validity, s.idCourse '
             . ' FROM (%lms_courseuser as s JOIN %lms_coursepath_user as p '
