@@ -289,9 +289,15 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
                 }
 
                 if (count($req_arr) > 0) {
-                    $query = 'SELECT * FROM %lms_commontrack WHERE idReference IN (' . implode(',', $req_arr) . ') '
-                        . " AND dateAttempt>'" . $last_suspension_date . "' AND status IN ('completed','passed')";
+                    $query = 'SELECT * FROM %lms_commontrack WHERE idUser = '. \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() .' AND idReference IN (' . implode(',', $req_arr) . ') ';
+                    if(!empty($last_suspension_date)) {
+                        $query .= ' AND dateAttempt > "' . $last_suspension_date . '" ';
+                    } else {
+                        $query .= ' AND dateAttempt IS NOT NULL ';
+                    }
+                    $query .= ' AND status IN ("completed","passed")';
                     $res = sql_query($query);
+                    //die($query);
                     if (sql_num_rows($res) < count($req_arr)) {
                         cout(UIFeedback::pnotice($lang->def('_UNREACHED_PREREQUISITES')) . '<br /><br />', 'content');
                         cout(Form::closeForm() . '</div>', 'content');
