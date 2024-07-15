@@ -1375,12 +1375,12 @@ function showResult($object_test, $id_param)
         if ($next_status == 'failed') {
             $suspend_info['attempts_for_suspension'] = $track_info['attempts_for_suspension'] + 1;
 
-            if ($suspend_info['attempts_for_suspension'] >= $test_info['suspension_num_attempts']) {
+            if ($suspend_info['attempts_for_suspension'] >= (int)($test_info['suspension_num_attempts'])) {
                 if ($prerequisite = $test_man->getPrerequisite()) {
 
                     $prerequisite = str_replace(["=incomplete","=NULL"], '', $prerequisite);
                     $sql = "DELETE FROM %lms_materials_track WHERE idReference IN ($prerequisite) AND idUser = " . \FormaLms\lib\FormaUser::getCurrentUser()->getIdst();
-                    $q = sql_query($sql);
+                    $result = sql_query($sql);
 
                     Events::trigger('lms.lo_user.deleting', [
                         'ids_reference' => $prerequisite,
@@ -1389,7 +1389,7 @@ function showResult($object_test, $id_param)
                     ]);
 
                     $sql = "DELETE FROM %lms_commontrack WHERE idReference IN ($prerequisite) AND idUser = " . \FormaLms\lib\FormaUser::getCurrentUser()->getIdst();
-                    $q = sql_query($sql);
+                    $result = sql_query($sql);
 
                     Events::trigger('lms.lo_user.deleted', [
                         'ids_reference' => $prerequisite,
@@ -1398,23 +1398,25 @@ function showResult($object_test, $id_param)
                     ]);
 
                     $sql = "SELECT idscorm_tracking FROM %lms_scorm_tracking WHERE idReference IN ($prerequisite) AND idUser = " . \FormaLms\lib\FormaUser::getCurrentUser()->getIdst();
-                    $q = sql_query($sql);
+                    $result = sql_query($sql);
 
-                    while ($row = sql_fetch_row($q)) {
-                        $idscorm_tracking = $row[0];
+                    foreach ($result as $row) {
+                        $idscorm_tracking = $row['idscorm_tracking'];
                         $sql = "DELETE FROM %lms_scorm_tracking WHERE idscorm_tracking = $idscorm_tracking AND idUser = " . \FormaLms\lib\FormaUser::getCurrentUser()->getIdst();
-                        $q = sql_query($sql);
+                        $result = sql_query($sql);
                     }
+
                     $sql = "DELETE FROM %lms_scorm_items_track WHERE idReference IN ($prerequisite) AND idUser = " . \FormaLms\lib\FormaUser::getCurrentUser()->getIdst();
-                    $q = sql_query($sql);
+                    $result = sql_query($sql);
+
+                    $suspend_info['attempts_for_suspension'] = 0;
                 }
-                $suspend_info['attempts_for_suspension'] = 0;
+                if ($test_info['suspension_num_hours'] > 0) {
+                    //should we reset learning_test.suspension_num_attempts ??
+                    $suspend_info['attempts_for_suspension'] = 0; //from now on, it uses the suspended_until parameter, so only the date is needed, we can reset the attempts count
+                    $suspend_info['suspended_until'] = date('Y-m-d H:i:s', time() + $test_info['suspension_num_hours'] * 3600);
+                } //if num_hours is <= 0, never update attempts counter, so user won't never be de-suspended
             }
-            if ($suspend_info['attempts_for_suspension'] >= $test_info['suspension_num_attempts'] && $test_info['suspension_num_hours'] > 0) {
-                //should we reset learning_test.suspension_num_attempts ??
-                $suspend_info['attempts_for_suspension'] = 0; //from now on, it uses the suspended_until parameter, so only the date is needed, we can reset the attempts count
-                $suspend_info['suspended_until'] = date('Y-m-d H:i:s', time() + $test_info['suspension_num_hours'] * 3600);
-            } //if num_hours is <= 0, never update attempts counter, so user won't never be de-suspended
             $re = Track_Test::updateTrack($id_track, $suspend_info);
         } else {
             if ($next_status == 'completed' || $next_status == 'passed') {
