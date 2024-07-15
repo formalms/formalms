@@ -235,7 +235,7 @@ class Track_Test extends Track_Object
 		SET ';
         foreach ($new_info as $field_name => $field_value) {
             $query .= ($first ? '' : ', ');
-            if ($field_value == null) {
+            if (is_null($field_value)) {
                 $query .= $field_name . ' = NULL ';
             } else {
                 $query .= $field_name . " = '" . $field_value . "'";
