@@ -2,6 +2,72 @@ FORMA LMS
 RELEASE CHANGELOG
 
 ---------------------------------------------------------------------------------------
+forma.lms 4.0.9
+---------------------------------------------------------------------------------------
+Release date: 2024 july
+
+- #      -review question types
+- #      -Fix prerequisites check and mySQL 8 query handling.
+- #      -Fix suspension attempts handling and prerequisites check
+- #      -fix require forma inc
+- #      -fix migrazioni
+- #      -fix mailconfig for mysql compatibility
+- #      -fix warning in coursereport
+- #      -coursereport improve performance
+- #      -add forma::inc in lib.permissions.php require_once
+- #      -fix coursereport
+- #      -fix lang and remove migration
+- #      -fix procedure
+- #      -fix migrations
+- #      -fix migrations
+- #      -fixing unsubscribe procedure for learning course path
+- #      -added helper function for checking field existence
+- #      -Fix select data order by translation
+- #      -fix get-idstudent not only students
+- #      -fix installer and upgrader autocomplete and events
+- #      -error in the function interface
+- #      -add participant event - add course subscribed event
+- #      -fix coursereportmanager in userprofile
+- #      -fix coursereport gradebook views
+- #      -fix not-checked test showing in coursereport
+- #      -fix test error
+- #      -fix import on node iwth custom fields
+- #      -fix time scorm
+- #      -fix drop index if not exist in incorrect table learning_quest_type instead of learning_coursereport
+- #      -fix subscribe include
+- #      -fix coursereport
+- #      -fix migration for perms
+- #      -set mysql session variable group_concat_max_len  for big selection of users
+- #      -fix coursestats timeToSec function
+- #      -fix migrations
+- #      -increase bootstrap Boot::Init logic to load dynamically custom sequence from constants - Fix doctrine migration when doctrine has executed from command line
+- #      -fix from 3323
+- #      -update CoursereportManager
+- #      -fix query from 3323
+- #      -revert Sessionmanager
+- #      -fix iCal send and generation
+- #      -fix generate token in API lib
+- #      -fix unique insert in learning coursereport
+- #      -PHP 7.4 compatibility: funcion parameters ...$parm  (in upgrade)
+- #      -PHP 7.4 compatibility: funcion parameters ...$parm  (in cron report)
+- #      -PHP 7.4 compatibility: funcion parameters ...$parm  (in communications and in multiple subscriptions)
+- #      -Added block for plugin customization
+- #      -fix cc and ccn emails
+- #      -Migration - Fixed update error - Syntax error or access violation: 1071 Specified key was too long; max key length is 1000 bytes + DEV alignment
+- #      -Fix course report overview test name and other columns was misallined - Fix poll tracking
+- #      -Fixed update error - Syntax error or access violation: 1071 Specified key was too long; max key length is 1000 bytes
+- #      -Upgrade Legacy version formalms 3.3.22
+- #      -fix import from file csv and replace while instead foreach
+- #      -fix warning in LoData and in test.php
+- #      -fix remove day
+- #      -fix admin subnode org chart view
+- #      -fix step report user courses
+- #      -fix add child node in usermanagement
+- #      -add select all in newsletter feature
+- #      -fix course sheet update from lms side
+- #      -fix tracking material
+- #      -fix total accesses coursestats
+---------------------------------------------------------------------------------------
 forma.lms 4.0.7
 ---------------------------------------------------------------------------------------
 
