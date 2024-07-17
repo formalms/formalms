@@ -71,9 +71,16 @@ class Choice_Question extends Question
             . '<td rowspan="2" class="image">'
             //comment
             . '<label class="access-only" for="comment_' . $i . '">' . $lang->def('_COMMENTS') . '</label>'
-            . '<textarea class="test_comment" id="comment_' . $i . '" name="comment[' . $i . ']" rows="6">'
-            . (isset($_REQUEST['comment'][$i]) ? stripslashes($_REQUEST['comment'][$i]) : '')
-            . '</textarea>'
+			//.'<textarea class="test_comment" id="comment_'.$i.'" name="comment['.$i.']" rows="6">'
+			//.( isset($_REQUEST['comment'][$i]) ? stripslashes($_REQUEST['comment'][$i]) : '')
+			//.'</textarea>'
+			.loadHtmlEditor('',
+				'comment_'.$i,
+				'comment['.$i.']',
+				( isset($_REQUEST['comment'][$i]) ? stripslashes($_REQUEST['comment'][$i]) : ''),
+				false,
+				'rows="6"',
+				true)
             . '</td>'
             . '<td class="test_ifcorrect">'
             . '<label for="score_correct_' . $i . '">' . $lang->def('_TEST_IFCORRECT') . '</label>'

@@ -71,7 +71,7 @@ class Question
             $this->id = $id;
             $res = $this->db->query("SELECT idTest, idCategory, type_quest, title_quest, difficult FROM %lms_testquest WHERE idQuest = '" . (int)$id . "'");
             if ($res && $this->db->num_rows($res) > 0) {
-                list($this->testId, $this->categoryId, $this->type, $this->title, $this->difficult) = $this->db->fetch_row($res);
+                [$this->testId, $this->categoryId, $this->type, $this->title, $this->difficult] = $this->db->fetch_row($res);
             }
         }
         $this->_table_category = $GLOBALS['prefix_lms'] . '_quest_category';
@@ -155,7 +155,7 @@ class Question
     public function _getNextSequence($idTest)
     {
         //select max sequence number
-        list($seq) = sql_fetch_row(sql_query('
+        [$seq] = sql_fetch_row(sql_query('
 		SELECT MAX(sequence)
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquest 
 		WHERE idTest = '" . $idTest . "'"));
@@ -199,7 +199,7 @@ class Question
      */
     public function _getPageNumber($idTest)
     {
-        list($seq, $page) = sql_fetch_row(sql_query('
+        [$seq, $page] = sql_fetch_row(sql_query('
 		SELECT MAX(sequence), MAX(page)
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquest 
 		WHERE idTest = '" . $idTest . "'"));
@@ -207,7 +207,7 @@ class Question
             return 1;
         }
 
-        list($type_quest) = sql_fetch_row(sql_query('
+        [$type_quest] = sql_fetch_row(sql_query('
 		SELECT type_quest 
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquest 
 		WHERE sequence = '" . $seq . "' AND idTest = '" . $idTest . "'"));
@@ -287,7 +287,7 @@ class Question
     public function copy($new_id_test, $back_test = null)
     {
         //retriving question information
-        list($idCategory, $type_quest, $title_quest, $difficult, $time_assigned, $sequence, $page, $shuffle) = sql_fetch_row(sql_query('
+        [$idCategory, $type_quest, $title_quest, $difficult, $time_assigned, $sequence, $page, $shuffle] = sql_fetch_row(sql_query('
 		SELECT idCategory, type_quest, title_quest, difficult, time_assigned, sequence, page, shuffle
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquest 
 		WHERE idQuest = '" . (int)$this->id . "'"));
@@ -310,7 +310,7 @@ class Question
         }
 
         //find the id of the inserted question
-        list($new_id_quest) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
+        [$new_id_quest] = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
         if (!$new_id_quest) {
             return false;
         }
@@ -339,7 +339,7 @@ class Question
                 return false;
             }
 
-            list($map_answer[$idAnswer]) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
+            [$map_answer[$idAnswer]] = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
         }
 
         //retriving extra information for this question
@@ -489,7 +489,7 @@ class Question
 				SELECT idAnswer
 				FROM ' . $GLOBALS['prefix_lms'] . "_testtrack_answer 
 				WHERE idTrack = '" . $id_track . "' AND idQuest = '" . $id_quest . "'";
-                list($id_answer) = sql_fetch_row(sql_query($sel_answer));
+                [$id_answer] = sql_fetch_row(sql_query($sel_answer));
 
                 $query_update = '
 				UPDATE ' . $GLOBALS['prefix_lms'] . "_testtrack_answer 
@@ -556,7 +556,7 @@ class Question
      */
     public function getRealMaxScore($score)
     {
-        list($num_correct) = sql_fetch_row(sql_query('
+        [$num_correct] = sql_fetch_row(sql_query('
 		SELECT COUNT(*)
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquestanswer 
 		WHERE idQuest = '" . (int)$this->id . "' AND is_correct = '1'"));
@@ -582,7 +582,7 @@ class Question
      */
     public function setMaxScore($score)
     {
-        list($num_correct) = sql_fetch_row(sql_query('
+        [$num_correct] = sql_fetch_row(sql_query('
 		SELECT COUNT(*)
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquestanswer 
 		WHERE idQuest = '" . (int)$this->id . "' AND is_correct = '1'"));
@@ -690,7 +690,7 @@ class Question
         }
 
         //find id of auto_increment colum
-        list($new_id_quest) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
+        [$new_id_quest] = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
         if (!$new_id_quest) {
             return false;
         }
@@ -730,7 +730,7 @@ class Question
             . 'FROM ' . $this->_table_category . ' '
             . "WHERE idCategory = '" . $id_cat . "' ";
         $re = sql_query($qtxt);
-        list($name) = sql_fetch_row($re);
+        [$name] = sql_fetch_row($re);
 
         return $name;
     }
@@ -738,7 +738,7 @@ class Question
     public function exportToRaw($id_test = false)
     {
         //retriving question information
-        list($idCategory, $type_quest, $title_quest, $difficult, $time_assigned) = sql_fetch_row(sql_query('
+        [$idCategory, $type_quest, $title_quest, $difficult, $time_assigned] = sql_fetch_row(sql_query('
 		SELECT idCategory, type_quest, title_quest, difficult, time_assigned 
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquest 
 		WHERE idQuest = '" . (int)$this->id . "'"));
@@ -849,7 +849,7 @@ class Question
 										WHERE idTrack = $idTrack AND idQuest = $idQuest AND number_time = $number_time";
 
         $res = sql_query($track_query);
-        list($exists) = sql_fetch_row($res);
+        [$exists] = sql_fetch_row($res);
 
         return (bool)$exists;
     }
@@ -886,7 +886,7 @@ class QuestionRaw
                 $this->id_category = 0;
             }
         } else {
-            list($this->id_category) = sql_fetch_row($re);
+            [$this->id_category] = sql_fetch_row($re);
         }
     }
 }

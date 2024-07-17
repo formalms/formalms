@@ -59,7 +59,7 @@ class ExtendedText_Question extends Question
                     . getBackUi('index.php?modname=question&amp;op=create&amp;type_quest='
                         . $this->getQuestionType() . '&amp;idTest=' . $idTest . '&amp;back_test=' . $url_encode, $lang->def('_BACK')));
             }
-            list($id_quest) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
+            [$id_quest] = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
 
             if (!sql_query('
 			INSERT INTO ' . $GLOBALS['prefix_lms'] . "_testquestanswer 
@@ -154,12 +154,12 @@ class ExtendedText_Question extends Question
         //create array of difficult
         $arr_dufficult = [5 => '5 - ' . $lang->def('_VERY_HARD'), 4 => '4 - ' . $lang->def('_HARD'), 3 => '3 - ' . $lang->def('_DIFFICULT_MEDIUM'), 2 => '2 - ' . $lang->def('_DIFFICULT_EASY'), 1 => '1 - ' . $lang->def('_DIFFICULT_VERYEASY')];
 
-        list($title_quest, $cat_sel, $diff_sel, $sel_time) = sql_fetch_row(sql_query('
+        [$title_quest, $cat_sel, $diff_sel, $sel_time] = sql_fetch_row(sql_query('
 		SELECT title_quest, idCategory, difficult, time_assigned 
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquest 
 		WHERE idQuest = '" . $this->id . "'"));
 
-        list($max_score) = sql_fetch_row(sql_query('
+        [$max_score] = sql_fetch_row(sql_query('
 		SELECT score_correct
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquestanswer 
 		WHERE idQuest = '" . $this->id . "'"));
@@ -250,7 +250,7 @@ class ExtendedText_Question extends Question
     {
         $lang = FormaLanguage::createInstance('test');
 
-        list($id_quest, $title_quest) = sql_fetch_row(sql_query('
+        [$id_quest, $title_quest] = sql_fetch_row(sql_query('
 		SELECT idQuest, title_quest 
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquest 
 		WHERE idQuest = '" . $this->id . "'"));
@@ -268,7 +268,7 @@ class ExtendedText_Question extends Question
             if (sql_num_rows($re_answer_do)) {
                 //find previous answer
                 $find_prev = true;
-                list($answer_do) = sql_fetch_row($re_answer_do);
+                [$answer_do] = sql_fetch_row($re_answer_do);
             }
         }
 
@@ -382,7 +382,7 @@ class ExtendedText_Question extends Question
         $quest = '';
         $comment = '';
 
-        list($id_quest, $title_quest) = sql_fetch_row(sql_query('
+        [$id_quest, $title_quest] = sql_fetch_row(sql_query('
 		SELECT idQuest, title_quest 
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquest 
 		WHERE idQuest = '" . $this->id . "'"));
@@ -399,7 +399,7 @@ class ExtendedText_Question extends Question
             $recover_answer .= ' ORDER BY number_time DESC LIMIT 1';
         }
 
-        list($answer_do, $manual_assigned) = sql_fetch_row(sql_query($recover_answer));
+        [$answer_do, $manual_assigned] = sql_fetch_row(sql_query($recover_answer));
 
         $quest = '<div class="play_question">'
             . '<div class="title_question"><label for="quest_' . $id_quest . '">' . $num_quest . ') '
