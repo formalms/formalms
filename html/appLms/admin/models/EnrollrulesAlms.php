@@ -467,7 +467,7 @@ class EnrollrulesAlms extends Model
             return $re;
         }
 
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
         $cs = new CourseSubscribe_Management();
         $course_list = array_unique($course_list);
 
@@ -548,7 +548,7 @@ class EnrollrulesAlms extends Model
         }
 
         // find rules for evry language in the array
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
         $cs = new CourseSubscribe_Management();
         $applicable = $this->getApplicableRuleForEntityMultiLang($ent);
         $course_list = $applicable['course_list'];
@@ -635,7 +635,7 @@ class EnrollrulesAlms extends Model
 
     public function logInfo($id_log)
     {
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
         $cs = new CourseSubscribe_Management();
 
         // remove all the subscription
@@ -644,7 +644,7 @@ class EnrollrulesAlms extends Model
 
     public function rollbackLog($id_log)
     {
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
         $cs = new CourseSubscribe_Management();
 
         // remove all the subscription

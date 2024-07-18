@@ -1662,7 +1662,7 @@ class UserManagerRenderer
         }
         // and in array_course the courses
         if (!empty($array_course)) {
-            require_once _lms_ . '/lib/lib.subscribe.php';
+            require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
             foreach ($array_course as $id_course) {
                 $subscriber = new CourseSubscribe_Management();
@@ -2423,7 +2423,7 @@ class UserManagerRenderer
 
                         if (count($array_course)) {
                             foreach ($array_course as $id_course) {
-                                require_once _lms_ . '/lib/lib.subscribe.php';
+                                require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
                                 $subscribe = new CourseSubscribe_Management();
 

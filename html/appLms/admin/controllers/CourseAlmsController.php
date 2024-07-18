@@ -766,7 +766,7 @@ class CourseAlmsController extends AlmsController
 
             require_once _lms_ . '/lib/lib.course.php';
             require_once _lms_ . '/lib/lib.manmenu.php';
-            require_once _lms_ . '/lib/lib.subscribe.php';
+            require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
             $doceboCourse = new DoceboCourse($idCourseToDulicate);
             $subscribeManager = new CourseSubscribe_Manager();
@@ -1049,7 +1049,7 @@ class CourseAlmsController extends AlmsController
 
                 $result_dupman = true;
                 if (!empty($insertQueryList)) {
-                    $query = 'INSERT INTO %lms_coursereport
+                    $query = 'INSERT IGNORE INTO %lms_coursereport
 						(id_course,title,max_score,required_score,weight,show_to_user,use_for_final,sequence,source_of,id_source)
 						VALUES ' . implode(',', $insertQueryList);
                     $menuDuplicated = sql_query($query);

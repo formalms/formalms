@@ -329,7 +329,7 @@ class Certificate
         foreach ($res as $row) {
             if (
                 $this->certificateAvailableForUser($row['id_certificate'], $row['id_course'], $row['id_user'])
-                && $this->canRelExceptional($row['id_user'], $row['id_course'])
+                && $this->canRelExceptional(0, $row['id_user'], $row['id_course'])
             ) {
                 $assignable[] = $row;
             }
@@ -339,21 +339,21 @@ class Certificate
     }
 
     //fix: Php7.1+ compatibility
-    public function canRelExceptional($perm_close_lo, $id_user, $id_course = '')
+    public function canRelExceptional($perm_close_lo, $id_user, $id_course)
     {
         require_once _lms_ . '/lib/lib.coursereport.php';
         require_once _lms_ . '/lib/lib.orgchart.php';
 
         $course_score_final = false;
         $org_man = new OrganizationManagement(false);
-        $rep_man = new CourseReportManager();
+        $rep_man = new CourseReportManager($id_course);
 
         if ($perm_close_lo == 0) {
             $score_final = $org_man->getFinalObjectScore([$id_user], [$id_course]);
 
             if (isset($score_final[$id_course][$id_user]) && $score_final[$id_course][$id_user]['max_score']) {
-                $course_score_final = $score_final[$id_course][$id_user()]['score'];
-                $course_score_final_max = $score_final[$id_course][$id_user()]['max_score'];
+                $course_score_final = $score_final[$id_course][$id_user]['score'];
+                $course_score_final_max = $score_final[$id_course][$id_user]['max_score'];
             }
         } else {
             $score_course = $rep_man->getUserFinalScore([$id_user], [$id_course]);

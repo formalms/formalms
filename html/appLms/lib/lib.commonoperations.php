@@ -13,7 +13,7 @@
 
 function lmsLoginOperation()
 {
-    require_once _lms_ . '/lib/lib.subscribe.php';
+    require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
     require_once _lms_ . '/lib/lib.preassessment.php';
 
     $pa_man = new AssessmentList();

@@ -2,6 +2,29 @@ FORMA LMS
 RELEASE CHANGELOG
 
 ---------------------------------------------------------------------------------------
+forma.lms 3.3.24
+---------------------------------------------------------------------------------------
+Release date: 2024 july
+
+- #      - fix coursereport
+- #      - fix warning in coursereport
+- #      - Coursereport improve performance
+- #      - Fix select data order by translation
+- #      - remove auth
+- #      - fix get-idstudent not only studentscd
+- #      - fix coursereport gradebook views
+- #      - fix not-checked test showing in coursereport
+- #      - fix subscribe include
+- #      - fix coursereport
+- #      - fix upgrader
+- #      - fix certificate and test data
+- #      - fix test track score load
+- #      - fix generate token in API lib
+- #      - fix import from file csv and replace while instead foreach
+- #      - fix edit classroom in showclassroom file
+- #      - fix tracking object
+
+---------------------------------------------------------------------------------------
 forma.lms 3.3.22
 ---------------------------------------------------------------------------------------
 Release date: 2024 february

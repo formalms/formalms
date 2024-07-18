@@ -258,7 +258,7 @@ function statuserfilter()
     require_once _base_ . '/lib/lib.table.php';
 
     require_once _base_ . '/lib/lib.form.php';
-    require_once _lms_ . '/lib/lib.subscribe.php';
+    require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
@@ -727,7 +727,7 @@ function statitem()
 
     require_once _base_ . '/lib/lib.form.php';
     require_once _base_ . '/lib/lib.table.php';
-    require_once _lms_ . '/lib/lib.subscribe.php';
+    require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
     $view_all_perm = checkPerm('view_all_statcourse', true);
 
@@ -1140,7 +1140,7 @@ function statoneuseroneitemhistory()
 function modstatus()
 {
     require_once _base_ . '/lib/lib.form.php';
-    require_once _lms_ . '/lib/lib.subscribe.php';
+    require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
 

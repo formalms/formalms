@@ -196,7 +196,7 @@ class AssessmentRuleManager
     public function setRulesFromScore($score_arr)
     {
         require_once _base_ . '/lib/lib.json.php';
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
         $res = true;
 

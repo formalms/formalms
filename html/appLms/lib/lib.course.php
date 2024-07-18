@@ -27,7 +27,7 @@ const CST_CONCLUDED = 3;
 const CST_CANCELLED = 4;
 
 // course quota
-require_once _lms_ . '/lib/lib.subscribe.php';
+require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 require_once _lms_ . '/lib/lib.levels.php';
 const COURSE_QUOTA_INHERIT = -1;
 const COURSE_QUOTA_UNLIMIT = 0;
@@ -2090,7 +2090,7 @@ class Man_CourseUser
 
     public function subscribeUserWithCode($code, $id_user, $level = 3)
     {
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
         $subscriber = new CourseSubscribe_Management();
 
@@ -2341,7 +2341,7 @@ class DoceboCourse
      */
     public function getCourseLevel($idCourse, $also_waiting = false)
     {
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
         $subscribe_man = new CourseSubscribe_Manager();
 

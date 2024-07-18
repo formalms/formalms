@@ -23,7 +23,7 @@ class Track_Htmlpage extends Track_Object
         parent::__construct($idTrack);
     }
 
-    public function getIdTrack($idReference, $idUser, $idResource, $createOnFail = false)
+    public static function getIdTrack($idReference, $idUser, $idResource, $createOnFail = false)
     {
         $query = 'SELECT idTrack FROM %lms_materials_track'
                 . " WHERE idReference='" . (int) $idReference . "'"
@@ -32,7 +32,7 @@ class Track_Htmlpage extends Track_Object
         $rs = sql_query($query)
             or errorCommunication('getIdTrack:: ' . $query);
         if (sql_num_rows($rs) > 0) {
-            list($idTrack) = sql_fetch_row($rs);
+            [$idTrack] = sql_fetch_row($rs);
 
             return [true, $idTrack];
         } elseif ($createOnFail) {

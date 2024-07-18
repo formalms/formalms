@@ -69,7 +69,7 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
      **/
     public function __construct($params)
     {
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
         $this->acl_man = new DoceboACLManager();
         $this->sub_man = new CourseSubscribe_Management();

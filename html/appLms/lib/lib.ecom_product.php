@@ -24,7 +24,7 @@ class EcomProductCourse extends EcomProduct
 
     public function EcomProductCourse()
     {
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
         $this->subs_man = new CourseSubscribe_Management();
     }
 
@@ -58,7 +58,7 @@ class EcomProductCourseEdition extends EcomProduct
 {
     public function EcomProductCourseEdition()
     {
-        require_once _lms_ . '/lib/lib.subscribe.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
         $this->subs_man = new CourseSubscribe_Management();
     }
 

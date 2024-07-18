@@ -576,7 +576,7 @@ class GroupmanagementAdm extends Model
         if (empty($users)) {
             return $output;
         }
-
+        $users = array_unique($users);
         $count_total = 0;
         foreach ($users as $user) {
             $users_list[] = strtolower($this->acl_man->absoluteId($user));
@@ -586,15 +586,15 @@ class GroupmanagementAdm extends Model
         $output['total'] = $count_total;
         $output['not_inserted'] = $count_total;
 
-        $users_list = array_unique($users_list);
-
         $users_idst = [];
-        $query = "SELECT idst, LOWER(userid) FROM %adm_user WHERE userid IN ('" . implode("','", $users_list) . "') ";
+        $query = "SELECT idst, LOWER(userid) as userid FROM %adm_user WHERE userid IN ('" . implode("','", $users_list) . "') ";
         $res = $this->db->query($query);
-        while (list($idst, $userid) = $this->db->fetch_row($res)) {
-            $users_idst[$this->acl_man->relativeId($userid)] = (int) $idst;
+        
+        foreach ($res as $row){
+            $users_idst[$this->acl_man->relativeId($row['userid'])] = (int) $row['idst'];
+           
         }
-
+        
         if (empty($users_idst)) {
             return $output;
         }
@@ -604,10 +604,11 @@ class GroupmanagementAdm extends Model
         $query = 'SELECT idstMember from %adm_group_members where idst = ' . $id_group
             . " AND idstMember in ('" . implode("','", $users_idst) . "') ";
         $res = $this->db->query($query);
-        while (list($idstMember) = $this->db->fetch_row($res)) {
-            $dup[] = $idstMember;
-        }
 
+        foreach ($res as $row) { 
+            $dup[] = $row['idstMember'];
+        }
+        
         $query = 'INSERT INTO %adm_group_members (idst,idstMember) VALUES ';
 
         $counter = 0;
@@ -631,14 +632,17 @@ class GroupmanagementAdm extends Model
             return $output;
         }
 
-        $output['total'] = $count_total;
-        $output['inserted'] = $counter;
-        $output['not_inserted'] = $count_total - $counter;
-        $output['duplicated'] = $dup_counter;
+        
 
         $query .= implode(',', $insert_values);
         $res = $this->db->query($query);
-
+        if ($res) {
+            $output['total'] = $count_total;
+            $output['inserted'] = $counter;
+            $output['not_inserted'] = $count_total - $counter;
+            $output['duplicated'] = $dup_counter;
+        }
+        
         return $output;
     }
 

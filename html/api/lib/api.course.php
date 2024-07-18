@@ -1892,7 +1892,7 @@ class Course_API extends API
 
         //--- clear coursereports --------------------------------------------------
         require_once _lms_ . '/lib/lib.coursereport.php';
-        $cman = new CourseReportManager();
+        $cman = new CourseReportManager($id_course);
         $cman->deleteAllReports($id_course);
         //--- end coursereports ----------------------------------------------------
 
