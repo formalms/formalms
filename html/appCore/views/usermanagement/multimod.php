@@ -72,11 +72,13 @@ $mask .= $_close_cell . $_open_cell;
 $mask .= '&nbsp;' . '<b>' . Lang::t('_SEND_LINK_RESET_PASSWORD', 'register') . '</b>';
 $mask .= $_close_cell . $_close_row;
 
-$mask .= $_open_row . $_open_cell;
-$mask .= Form::getInputCheckbox('multimod_sel_level', 'multimod_sel[level]', 1, false, '');
-$mask .= $_close_cell . $_open_cell;
-$mask .= Form::getDropdown(Lang::t('_LEVEL', 'admin_directory'), 'level', 'level', $levels, $info['level']);
-$mask .= $_close_cell . $_close_row;
+if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
+    $mask .= $_open_row . $_open_cell;
+    $mask .= Form::getInputCheckbox('multimod_sel_level', 'multimod_sel[level]', 1, false, '');
+    $mask .= $_close_cell . $_open_cell;
+    $mask .= Form::getDropdown(Lang::t('_LEVEL', 'admin_directory'), 'level', 'level', $levels, $info['level']);
+    $mask .= $_close_cell . $_close_row;
+}
 
 foreach ($fields_mask as $id_item => $item) {
     if (!in_array($id_item, $fields_to_exclude)) {
