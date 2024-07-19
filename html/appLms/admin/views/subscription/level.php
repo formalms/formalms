@@ -1,4 +1,4 @@
-<?php
+ <?php
 $_subs_url = '&id_course=' . (int) $id_course . ($id_edition ? '&id_edition=' . (int) $id_edition : '') . ($id_date ? '&id_date=' . (int) $id_date : '');
 echo getTitleArea([
     'index.php?r=' . $link_course . '/show' => Lang::t('_COURSES', 'admin_course_managment'),
@@ -84,7 +84,7 @@ echo getTitleArea([
         'caption' => false, //Lang::t('_LEVELS', 'subscribe')
     ]);
 
-    echo  Form::getInputCheckbox('send_alert', 'send_alert', 0, 0, false)
+    echo  Form::getInputCheckbox('send_alert', 'send_alert', 1, 0, false)
     . ' <label for="send_alert">' . Lang::t('_SEND_ALERT', 'subscribe') . '</label>&nbsp;&nbsp;&nbsp;&nbsp;';
   
 
