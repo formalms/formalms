@@ -53,7 +53,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             switch ($error) {
                 case 'del_event':
                     $out->add(getErrorUi($lang->def('_DEL_EVENT_ERROR')));
-                break;
+                    break;
             }
         }
 
@@ -65,20 +65,6 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 
             $cont_h =
                 [
-                $lang->def('_TITLE'),
-                $lang->def('_CATEGORY'),
-                $lang->def('_DATE'),
-                $lang->def('_FROM_TIME'),
-                $lang->def('_TO_TIME'),
-                $lang->def('_NUMBER_SUBSCRIBED'),
-                $lang->def('_AVAILABLE_PLACES'),
-                $lang->def('_DEADLINE'),
-                ];
-            $type_h = ['', '', '', '', '', '', '', ''];
-            if ($mod_perm) {
-                $type_h = ['', '', '', '', '', '', '', '', 'image', 'image', 'image']; //,'image');
-                $cont_h =
-                    [
                     $lang->def('_TITLE'),
                     $lang->def('_CATEGORY'),
                     $lang->def('_DATE'),
@@ -87,10 +73,24 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                     $lang->def('_NUMBER_SUBSCRIBED'),
                     $lang->def('_AVAILABLE_PLACES'),
                     $lang->def('_DEADLINE'),
-                    '<img src="' . getPathImage() . 'standard/moduser.png" title="' . $lang->def('_SET_ROOM_VIEW_PERM') . '" alt="' . $lang->def('_SET_ROOM_VIEW_PERM') . '" />',
-                    //'<img src="'.getPathImage().'/standard/add.png" title="'.$lang->def('_ADD_USER').'" alt="'.$lang->def('_ALT_ADD_USER').'" />',
-                    '<img src="' . getPathImage() . '/standard/edit.png" title="' . $lang->def('_MOD') . '" alt="' . $lang->def('_MOD') . '" />',
-                    '<img src="' . getPathImage() . '/standard/delete.png" title="' . $lang->def('_DEL') . '" alt="' . $lang->def('_DEL') . '" />',
+                ];
+            $type_h = ['', '', '', '', '', '', '', ''];
+            if ($mod_perm) {
+                $type_h = ['', '', '', '', '', '', '', '', 'image', 'image', 'image']; //,'image');
+                $cont_h =
+                    [
+                        $lang->def('_TITLE'),
+                        $lang->def('_CATEGORY'),
+                        $lang->def('_DATE'),
+                        $lang->def('_FROM_TIME'),
+                        $lang->def('_TO_TIME'),
+                        $lang->def('_NUMBER_SUBSCRIBED'),
+                        $lang->def('_AVAILABLE_PLACES'),
+                        $lang->def('_DEADLINE'),
+                        '<img src="' . getPathImage() . 'standard/moduser.png" title="' . $lang->def('_SET_ROOM_VIEW_PERM') . '" alt="' . $lang->def('_SET_ROOM_VIEW_PERM') . '" />',
+                        //'<img src="'.getPathImage().'/standard/add.png" title="'.$lang->def('_ADD_USER').'" alt="'.$lang->def('_ALT_ADD_USER').'" />',
+                        '<img src="' . getPathImage() . '/standard/edit.png" title="' . $lang->def('_MOD') . '" alt="' . $lang->def('_MOD') . '" />',
+                        '<img src="' . getPathImage() . '/standard/delete.png" title="' . $lang->def('_DEL') . '" alt="' . $lang->def('_DEL') . '" />',
                     ];
             }
             $tb->setColsStyle($type_h);
@@ -125,8 +125,8 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                     . $lang->def('_NEW_EVENT') . '</a>');
             }
             $out->add($tb->getTable()
-            . $tb->getNavBar($ini, count($events))
-            . '</div>'
+                . $tb->getNavBar($ini, count($events))
+                . '</div>'
             );
         } else {
             if ($mod_perm) {
@@ -204,15 +204,15 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             switch ($error) {
                 case 'date':
                     $out->add(getErrorUi($lang->def('_WRONG_DATE')));
-                break;
+                    break;
 
                 case 'time':
                     $out->add(getErrorUi($lang->def('_WRONG_TIME')));
-                break;
+                    break;
 
                 case 'laboratory':
                     $out->add(getErrorUi($lang->def('_LOCATION_BUSY')));
-                break;
+                    break;
             }
         }
 
@@ -313,15 +313,15 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             switch ($error) {
                 case 'date':
                     $out->add(getErrorUi($lang->def('_WRONG_DATE')));
-                break;
+                    break;
 
                 case 'time':
                     $out->add(getErrorUi($lang->def('_WRONG_TIME')));
-                break;
+                    break;
 
                 case 'laboratory':
                     $out->add(getErrorUi($lang->def('_LOCATION_BUSY')));
-                break;
+                    break;
             }
         }
 
@@ -394,11 +394,11 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             getTitleArea($lang->def('_DEL'), '', $lang->def('_EVENT'))
             . '<div class="std_block">'
             . getDeleteUi($lang->def('_AREYOUSURE'),
-                            $lang->def('_EVENT'),
-                            true,
-                            'index.php?modname=reservation&amp;op=del_event&amp;id_event=' . $id_event . '&amp;confirm=1',
-                            'index.php?modname=reservation&amp;op=view_event'
-                        )
+                $lang->def('_EVENT'),
+                true,
+                'index.php?modname=reservation&amp;op=del_event&amp;id_event=' . $id_event . '&amp;confirm=1',
+                'index.php?modname=reservation&amp;op=view_event'
+            )
             . '</div>', 'content'
         );
     }
@@ -430,7 +430,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             switch ($error) {
                 case 'del_category':
                     $out->add(getErrorUi($lang->def('_DEL_CATEGORY_ERROR')));
-                break;
+                    break;
             }
         }
 
@@ -440,20 +440,20 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         $ini = $tb->getSelectedElement();
 
         $cont_h =
-                [
+            [
                 $lang->def('_NAME'),
                 $lang->def('_DESCRIPTION'),
-                ];
+            ];
         $type_h = ['', ''];
         if ($mod_perm) {
             $type_h = ['', '', 'image', 'image'];
             $cont_h =
-                    [
+                [
                     $lang->def('_NAME'),
                     $lang->def('_DESCRIPTION'),
                     '<img src="' . getPathImage() . '/standard/edit.png" title="' . $lang->def('_MOD') . '" alt="' . $lang->def('_MOD') . '" />',
                     '<img src="' . getPathImage() . '/standard/delete.png" title="' . $lang->def('_DEL') . '" alt="' . $lang->def('_DEL') . '" />',
-                    ];
+                ];
         }
 
         $tb->setColsStyle($type_h);
@@ -482,12 +482,12 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         }
         if ($mod_perm) {
             $tb->addActionAdd('<a class="ico-wt-sprite subs_add" href="index.php?modname=reservation&amp;op=add_category" title="' . $lang->def('_ADD') . '">'
-                    . '<span>' . $lang->def('_ADD') . '</span></a>');
+                . '<span>' . $lang->def('_ADD') . '</span></a>');
         }
         $out->add($tb->getTable()
             . $tb->getNavBar($ini, count($category))
             . '</div>'
-            );
+        );
     }
 
     function addCategoy()
@@ -533,11 +533,11 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             switch ($error) {
                 case 'name':
                     $out->add(getErrorUi($lang->def('_WRONG_NAME_CATEGORY')));
-                break;
+                    break;
 
                 case 'category':
                     $out->add(getErrorUi($lang->def('_WRONG_INSERT_CATEGORY')));
-                break;
+                    break;
             }
         }
 
@@ -603,7 +603,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 case 'name':
                 case 'category':
                     $out->add(getErrorUi($lang->def('_OPERATION_FAILURE')));
-                break;
+                    break;
             }
         }
 
@@ -656,11 +656,11 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             getTitleArea($lang->def('_DEL_CATEGORY_TITLE'), '', $lang->def('_NEW_CATEGORY'))
             . '<div class="std_block">'
             . getDeleteUi($lang->def('_AREYOUSURE'),
-                            $lang->def('_DEL_CATEGORY_INFO'),
-                            true,
-                            'index.php?modname=reservation&amp;op=del_category&amp;id_category=' . $id_category . '&amp;confirm=1',
-                            'index.php?modname=reservation&amp;op=view_category'
-                        )
+                $lang->def('_DEL_CATEGORY_INFO'),
+                true,
+                'index.php?modname=reservation&amp;op=del_category&amp;id_category=' . $id_category . '&amp;confirm=1',
+                'index.php?modname=reservation&amp;op=view_category'
+            )
             . '</div>', 'content'
         );
     }
@@ -696,11 +696,11 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             switch ($error) {
                 case 'del_registration':
                     $out->add(getErrorUi($lang->def('_DEL_REGISTRATION_ERROR')));
-                break;
+                    break;
 
                 case 'insert':
                     $out->add(getErrorUi($lang->def('_INS_REGISTRATION_ERROR')));
-                break;
+                    break;
             }
         }
 
@@ -712,24 +712,24 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 
             $cont_h =
                 [
-                $lang->def('_TITLE'),
-                $lang->def('_DATE'),
-                $lang->def('_NUMBER_SUBSCRIBED'),
-                $lang->def('_DEADLINE'),
+                    $lang->def('_TITLE'),
+                    $lang->def('_DATE'),
+                    $lang->def('_NUMBER_SUBSCRIBED'),
+                    $lang->def('_DEADLINE'),
                 ];
             $type_h = ['', '', '', ''];
             if ($mod_perm) {
                 $type_h = ['', '', '', '', 'image', 'image', 'image', 'image'];
                 $cont_h =
                     [
-                    $lang->def('_TITLE'),
-                    $lang->def('_DATE'),
-                    $lang->def('_NUMBER_SUBSCRIBED'),
-                    $lang->def('_DEADLINE'),
-                    '<img src="' . getPathImage() . '/standard/identity.png" title="' . $lang->def('_VIEW_USER_SUBSCRIBED') . '" alt="' . $lang->def('_VIEW_USER_SUBSCRIBED') . '" />',
-                    '<img src="' . getPathImage() . '/standard/add.png" title="' . $lang->def('_ADD_USER') . '" alt="' . $lang->def('_ADD_USER') . '" />',
-                    '<img src="' . getPathImage() . '/standard/edit.png" title="' . $lang->def('_MOD') . '" alt="' . $lang->def('_MOD') . '" />',
-                    '<img src="' . getPathImage() . '/standard/delete.png" title="' . $lang->def('_DEL') . '" alt="' . $lang->def('_DEL') . '" />',
+                        $lang->def('_TITLE'),
+                        $lang->def('_DATE'),
+                        $lang->def('_NUMBER_SUBSCRIBED'),
+                        $lang->def('_DEADLINE'),
+                        '<img src="' . getPathImage() . '/standard/identity.png" title="' . $lang->def('_VIEW_USER_SUBSCRIBED') . '" alt="' . $lang->def('_VIEW_USER_SUBSCRIBED') . '" />',
+                        '<img src="' . getPathImage() . '/standard/add.png" title="' . $lang->def('_ADD_USER') . '" alt="' . $lang->def('_ADD_USER') . '" />',
+                        '<img src="' . getPathImage() . '/standard/edit.png" title="' . $lang->def('_MOD') . '" alt="' . $lang->def('_MOD') . '" />',
+                        '<img src="' . getPathImage() . '/standard/delete.png" title="' . $lang->def('_DEL') . '" alt="' . $lang->def('_DEL') . '" />',
                     ];
             }
             $tb->setColsStyle($type_h);
@@ -758,8 +758,8 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                     . $lang->def('_NEW_EVENT') . '</a>');
             }
             $out->add($tb->getTable()
-            . $tb->getNavBar($ini, count($events))
-            . '</div>'
+                . $tb->getNavBar($ini, count($events))
+                . '</div>'
             );
         } else {
             if ($mod_perm) {
@@ -795,13 +795,9 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 
         $user_idst = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
-        $user_subscribed = [];
-
         $user_sunscribed = $man_res->getSubscribedUserIdst($id_event);
 
-        $user_info = [];
-
-        $user_info = &$acl_man->getUsers($user_sunscribed);
+        $user_info = $acl_man->getUsers($user_sunscribed);
 
         $out->add(
             getTitleArea($lang->def('_VIEW_EVENT_USER'), '', $lang->def('_EVENT'))
@@ -814,7 +810,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             switch ($error) {
                 case 'del_registration':
                     $out->add(getErrorUi($lang->def('_DEL_REGISTRATION_ERROR')));
-                break;
+                    break;
             }
         }
 
@@ -826,21 +822,21 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 
             $cont_h =
                 [
-                $lang->def('_USERNAME'),
-                $lang->def('_FIRSTNAME'),
-                $lang->def('_LASTNAME'),
-                $lang->def('_EMAIL'),
+                    $lang->def('_USERNAME'),
+                    $lang->def('_FIRSTNAME'),
+                    $lang->def('_LASTNAME'),
+                    $lang->def('_EMAIL'),
                 ];
             $type_h = ['', '', '', ''];
 
             if ($mod_perm) {
                 $cont_h =
                     [
-                    $lang->def('_USERNAME'),
-                    $lang->def('_FIRSTNAME'),
-                    $lang->def('_LASTNAME'),
-                    $lang->def('_EMAIL'),
-                    '<img src="' . getPathImage() . '/standard/delete.png" title="' . $lang->def('_REM_USER') . '" alt="' . $lang->def('_REM_USER') . '" />',
+                        $lang->def('_USERNAME'),
+                        $lang->def('_FIRSTNAME'),
+                        $lang->def('_LASTNAME'),
+                        $lang->def('_EMAIL'),
+                        '<img src="' . getPathImage() . '/standard/delete.png" title="' . $lang->def('_REM_USER') . '" alt="' . $lang->def('_REM_USER') . '" />',
                     ];
                 $type_h = ['', '', '', '', 'img'];
             }
@@ -866,7 +862,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                     . $lang->def('_NEW_EVENT') . '</a>');
             }
             $out->add($tb->getTable()
-            . $tb->getNavBar($ini, count($user_info))
+                . $tb->getNavBar($ini, count($user_info))
             );
             $out->add('<a href="index.php?modname=reservation&amp;op=excel&amp;id_event=' . $id_event . '" target="_blank">' . $lang->def('_EXPORT_XLS') . '</a>', 'content');
         } else {
@@ -886,8 +882,6 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         $man_res = new Man_Reservation();
 
         $acl_man = \FormaLms\lib\Forma::getAclManager();
-
-        $user_subscribed = [];
 
         $user_sunscribed = $man_res->getSubscribedUserIdst($id_event);
 
@@ -941,10 +935,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 
         $man_res = new Man_Reservation();
 
-        $subscribed = [];
         $subscribed = $man_res->getSubscribedUserIdst($id_event);
-
-        $subscribed_empty = [];
 
         $lang = FormaLanguage::CreateInstance('reservation');
         $out = &$GLOBALS['page'];
@@ -957,19 +948,16 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 
         // ema -- add requested_tab to show user selector
         $user_select->requested_tab = PEOPLEVIEW_TAB;
-        if (!$subscribed) {
-            $user_select->resetSelection($subscribed_empty);
-        } else {
-            $user_select->resetSelection($subscribed);
-        }
+
+        $user_select->resetSelection($subscribed);
 
         $acl_man = \FormaLms\lib\Forma::getAclManager();
         $user_select->setUserFilter('exclude', [$acl_man->getAnonymousId()]);
 
         $user_select->loadSelector('index.php?modname=reservation&amp;op=add_registration&amp;id_course=' . $id_course . '&amp;id_event=' . $id_event,
-                $lang->def('_SUBSCRIBE_EVENT'),
-                $lang->def('_CHOOSE_SUBSCRIBE'),
-                true);
+            $lang->def('_SUBSCRIBE_EVENT'),
+            $lang->def('_CHOOSE_SUBSCRIBE'),
+            true);
     }
 
     function sendRegistration()
@@ -990,10 +978,8 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 
         $user_select = new UserSelector();
 
-        $user_subscribed = [];
         $user_subscribed = $man_res->getSubscribedUserIdst($id_event);
 
-        $user_selected = [];
         $user_selected = $user_select->getSelection($_POST);
 
         $wrong_result = false;
@@ -1060,11 +1046,11 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             getTitleArea($lang->def('_DEL_SUBSCRIPTION_TITLE'), '', $lang->def('_EVENT'))
             . '<div class="std_block">'
             . getDeleteUi($lang->def('_AREYOUSURE_DEL_SUBSCRIPTION'),
-                            $lang->def('_DEL_SUBSCRIPTION_INFO'),
-                            true,
-                            'index.php?modname=reservation&amp;op=del_registration&amp;id_event=' . $id_event . '&amp;id_user=' . $id_user . '&amp;confirm=1',
-                            'index.php?modname=reservation&amp;op=view_user_event&id_event=' . $id_event
-                        )
+                $lang->def('_DEL_SUBSCRIPTION_INFO'),
+                true,
+                'index.php?modname=reservation&amp;op=del_registration&amp;id_event=' . $id_event . '&amp;id_user=' . $id_user . '&amp;confirm=1',
+                'index.php?modname=reservation&amp;op=view_user_event&id_event=' . $id_event
+            )
             . '</div>', 'content'
         );
     }
@@ -1164,35 +1150,35 @@ function reservationDispatch($op)
     switch ($op) {
         case 'view_event':
             viewEvent();
-        break;
+            break;
 
         case 'add_event':
             addEvent();
-        break;
+            break;
 
         case 'mod_event':
             modEvent();
-        break;
+            break;
 
         case 'del_event':
             delEvent();
-        break;
+            break;
 
         case 'view_category':
             viewCategoy();
-        break;
+            break;
 
         case 'add_category':
             addCategoy();
-        break;
+            break;
 
         case 'mod_category':
             modCategoy();
-        break;
+            break;
 
         case 'del_category':
             delCategoy();
-        break;
+            break;
 
         /*case 'view_laboratory':
             viewLaboratories();
@@ -1212,30 +1198,30 @@ function reservationDispatch($op)
 
         case 'view_registration':
             viewRegistration();
-        break;
+            break;
 
         case 'view_user_event':
             viewUserEvent();
-        break;
+            break;
 
         case 'excel':
             getExcelFile();
-        break;
+            break;
 
         case 'add_registration':
             addRegistration();
-        break;
+            break;
 
         case 'send_registration':
             sendRegistration();
-        break;
+            break;
 
         case 'del_registration':
             delRegistration();
-        break;
+            break;
 
         case 'set_room_view_perm':
             setRoomViewPerm();
-        break;
+            break;
     }
 }

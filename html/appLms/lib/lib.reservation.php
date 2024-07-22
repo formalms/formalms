@@ -118,8 +118,8 @@ class Man_Reservation
         }
 
         $query = 'SELECT name' .
-                ' FROM ' . $this->getTableCategory() . '' .
-                " WHERE idCategory = '" . $id_category . "'";
+            ' FROM ' . $this->getTableCategory() . '' .
+            " WHERE idCategory = '" . $id_category . "'";
 
         $result = sql_query($query);
 
@@ -138,22 +138,18 @@ class Man_Reservation
     public function getSubscribedUserIdst($id_event)
     {
         $query = 'SELECT idstUser' .
-                ' FROM ' . $this->getTableSubscribed() . '' .
-                " WHERE idEvent = '" . $id_event . "'";
+            ' FROM ' . $this->getTableSubscribed() . '' .
+            " WHERE idEvent = '" . $id_event . "'";
 
         $result = sql_query($query);
 
         $re = [];
 
-        while (list($subscribed) = sql_fetch_row($result)) {
-            $re[] = $subscribed;
+        foreach ($result as $row) {
+            $re[] = $row['idstUser'];
         }
 
-        if (count($re)) {
-            return $re;
-        }
-
-        return false;
+        return $re;
     }
 
     /**
@@ -166,8 +162,8 @@ class Man_Reservation
     public function getSubscribedUser($id_event)
     {
         $query = 'SELECT COUNT(*)' .
-                ' FROM ' . $this->getTableSubscribed() . '' .
-                " WHERE idEvent = '" . $id_event . "'";
+            ' FROM ' . $this->getTableSubscribed() . '' .
+            " WHERE idEvent = '" . $id_event . "'";
 
         $result = sql_query($query);
 
@@ -186,7 +182,7 @@ class Man_Reservation
         $lang = FormaLanguage::createInstance('reservation');
 
         $query = 'SELECT idCategory, name' .
-                ' FROM ' . $this->getTableCategory() . '';
+            ' FROM ' . $this->getTableCategory() . '';
         if ($id_course) {
             $query .= " WHERE idCourse = '" . $id_course . "'";
         }
@@ -209,8 +205,8 @@ class Man_Reservation
     public function getEventCategory($id_event)
     {
         $query = 'SELECT idCategory' .
-                ' FROM ' . $this->getTableEvents() . '' .
-                " WHERE idEvent = '" . $id_event . "'";
+            ' FROM ' . $this->getTableEvents() . '' .
+            " WHERE idEvent = '" . $id_event . "'";
 
         list($id_category) = sql_fetch_row(sql_query($query));
 
@@ -227,7 +223,7 @@ class Man_Reservation
         $lang = FormaLanguage::createInstance('reservation');
 
         $query = 'SELECT idClassroom, name' .
-                ' FROM ' . $this->getTableClassroom() . '';
+            ' FROM ' . $this->getTableClassroom() . '';
 
         $result = sql_query($query);
         $num_rows = sql_num_rows($result);
@@ -308,8 +304,8 @@ class Man_Reservation
     public function getEventInfo($id_event)
     {
         $query = 'SELECT idEvent, idCourse, idLaboratory, idCategory, title, description, date, maxUser, deadLine, fromTime, toTime' .
-                ' FROM ' . $this->getTableEvents() . '' .
-                " WHERE idEvent = '" . $id_event . "'";
+            ' FROM ' . $this->getTableEvents() . '' .
+            " WHERE idEvent = '" . $id_event . "'";
 
         $result = sql_query($query);
         $num_rows = sql_num_rows($result);
@@ -341,12 +337,10 @@ class Man_Reservation
     {
         $mail = [];
 
-        $idst_user = [];
         $idst_user = $this->getSubscribedUserIdst($id_event);
 
         $acl_man = \FormaLms\lib\Forma::getAclManager();
 
-        $user_info = [];
         $user_info = &$acl_man->getUsers($idst_user);
 
         if ($user_info) {
@@ -361,15 +355,15 @@ class Man_Reservation
     public function getEventDropDown($id_course, $id_category, $id_user)
     {
         $query = 'SELECT idEvent, title' .
-                ' FROM ' . $this->getTableEvents() . '' .
-                " WHERE idCourse = '" . $id_course . "'" .
-                " AND idCategory = '" . $id_category . "'" .
-                " AND deadline >= '" . date('Y-m-d') . "'" .
-                ' AND idEvent IN (' .
-                    ' SELECT idEvent' .
-                    ' FROM ' . $this->getTableSubscribed() . '' .
-                    " WHERE idstUser = '" . $id_user . "'" .
-                ')';
+            ' FROM ' . $this->getTableEvents() . '' .
+            " WHERE idCourse = '" . $id_course . "'" .
+            " AND idCategory = '" . $id_category . "'" .
+            " AND deadline >= '" . date('Y-m-d') . "'" .
+            ' AND idEvent IN (' .
+            ' SELECT idEvent' .
+            ' FROM ' . $this->getTableSubscribed() . '' .
+            " WHERE idstUser = '" . $id_user . "'" .
+            ')';
 
         $result = sql_query($query);
 
@@ -411,8 +405,8 @@ class Man_Reservation
     public function getMaxSubscriptionForCategory($id_category)
     {
         $query = 'SELECT maxSubscription' .
-                ' FROM ' . $this->getTableCategory() . '' .
-                " WHERE idCategory = '" . $id_category . "'";
+            ' FROM ' . $this->getTableCategory() . '' .
+            " WHERE idCategory = '" . $id_category . "'";
 
         list($re) = sql_fetch_row(sql_query($query));
 
@@ -422,8 +416,8 @@ class Man_Reservation
     public function controlMaxSubscriptionForCategory($id_category, $id_user)
     {
         $query = 'SELECT maxSubscription' .
-                ' FROM ' . $this->getTableCategory() . '' .
-                " WHERE idCategory = '" . $id_category . "'";
+            ' FROM ' . $this->getTableCategory() . '' .
+            " WHERE idCategory = '" . $id_category . "'";
 
         list($max_subscription) = sql_fetch_row(sql_query($query));
 
@@ -432,14 +426,14 @@ class Man_Reservation
         }
 
         $query_control = 'SELECT COUNT(*)' .
-                        ' FROM ' . $this->getTableEvents() . '' .
-                        " WHERE idCategory = '" . $id_category . "'" .
-                        " AND date >= '" . date('Y-m-d') . "'" .
-                        ' AND idEvent IN (' .
-                        ' SELECT idEvent' .
-                        ' FROM ' . $this->getTableSubscribed() . '' .
-                        " WHERE idstUser = '" . $id_user . "'" .
-                        ')';
+            ' FROM ' . $this->getTableEvents() . '' .
+            " WHERE idCategory = '" . $id_category . "'" .
+            " AND date >= '" . date('Y-m-d') . "'" .
+            ' AND idEvent IN (' .
+            ' SELECT idEvent' .
+            ' FROM ' . $this->getTableSubscribed() . '' .
+            " WHERE idstUser = '" . $id_user . "'" .
+            ')';
 
         list($subscription) = sql_fetch_row(sql_query($query_control));
 
@@ -453,7 +447,7 @@ class Man_Reservation
     /**
      * Function that control if an user is subscribed to an event.
      *
-     * @param int $id_user  The idst of the user
+     * @param int $id_user The idst of the user
      * @param int $id_event The id of the event
      *
      * @return int 1 if is subscribed else 0
@@ -461,9 +455,9 @@ class Man_Reservation
     public function controlUserSubscription($id_user, $id_event)
     {
         $query = 'SELECT COUNT(*)' .
-                ' FROM ' . $this->getTableSubscribed() . '' .
-                " WHERE idstUser = '" . $id_user . "'" .
-                " AND idEvent = '" . $id_event . "'";
+            ' FROM ' . $this->getTableSubscribed() . '' .
+            " WHERE idstUser = '" . $id_user . "'" .
+            " AND idEvent = '" . $id_event . "'";
 
         $result = sql_query($query);
 
@@ -482,8 +476,8 @@ class Man_Reservation
     public function controlEventFull($id_event)
     {
         $query = 'SELECT maxUser' .
-                ' FROM ' . $this->getTableEvents() . '' .
-                " WHERE idEvent = '" . $id_event . "'";
+            ' FROM ' . $this->getTableEvents() . '' .
+            " WHERE idEvent = '" . $id_event . "'";
 
         $result = sql_query($query);
 
@@ -505,10 +499,10 @@ class Man_Reservation
     /**
      * Control if there's another events in the laboratory.
      *
-     * @param int    $id_laboratory The of the event to control
-     * @param string $from_time     The starting time of the event (time format hh:mm:ss)
-     * @param string $to_time       The finish time of the event (time format hh:mm:ss)
-     * @param string $date          The date of the event (date format YYYY-mm-dd)
+     * @param int $id_laboratory The of the event to control
+     * @param string $from_time The starting time of the event (time format hh:mm:ss)
+     * @param string $to_time The finish time of the event (time format hh:mm:ss)
+     * @param string $date The date of the event (date format YYYY-mm-dd)
      *
      * @return bool True if there'isnt another event in the same laboratory and in the same time else false
      */
@@ -521,11 +515,11 @@ class Man_Reservation
         $date = $date[0] . $date[1] . $date[2] . $date[3] . $date[4] . $date[5] . $date[6] . $date[7] . $date[8] . $date[9];
 
         $query = 'SELECT COUNT(*)' .
-                ' FROM ' . $this->getTableEvents() . '' .
-                " WHERE idLaboratory = '" . $id_laboratory . "'" .
-                " AND date = '" . $date . "'" .
-                " AND fromTime <= '" . $from_time . "'" .
-                " AND toTime > '" . $from_time . "'";
+            ' FROM ' . $this->getTableEvents() . '' .
+            " WHERE idLaboratory = '" . $id_laboratory . "'" .
+            " AND date = '" . $date . "'" .
+            " AND fromTime <= '" . $from_time . "'" .
+            " AND toTime > '" . $from_time . "'";
         if ($id_event) {
             $query .= " AND idEvent <> '" . $id_event . "'";
         }
@@ -537,11 +531,11 @@ class Man_Reservation
         }
 
         $query = 'SELECT COUNT(*)' .
-                ' FROM ' . $this->getTableEvents() . '' .
-                " WHERE idLaboratory = '" . $id_laboratory . "'" .
-                " AND date = '" . $date . "'" .
-                " AND fromTime < '" . $to_time . "'" .
-                " AND toTime >= '" . $to_time . "'";
+            ' FROM ' . $this->getTableEvents() . '' .
+            " WHERE idLaboratory = '" . $id_laboratory . "'" .
+            " AND date = '" . $date . "'" .
+            " AND fromTime < '" . $to_time . "'" .
+            " AND toTime >= '" . $to_time . "'";
         if ($id_event) {
             $query .= " AND idEvent <> '" . $id_event . "'";
         }
@@ -558,15 +552,15 @@ class Man_Reservation
     public function controlSwitchPossibility($id_course, $id_category, $id_user)
     {
         $query = 'SELECT COUNT(*)' .
-                ' FROM ' . $this->getTableEvents() . '' .
-                " WHERE idCourse = '" . $id_course . "'" .
-                " AND idCategory = '" . $id_category . "'" .
-                " AND deadline >= '" . date('Y-m-d') . "'" .
-                ' AND idEvent NOT IN (' .
-                    ' SELECT idEvent' .
-                    ' FROM ' . $this->getTableSubscribed() . '' .
-                    " WHERE idstUser = '" . $id_user . "'" .
-                ')';
+            ' FROM ' . $this->getTableEvents() . '' .
+            " WHERE idCourse = '" . $id_course . "'" .
+            " AND idCategory = '" . $id_category . "'" .
+            " AND deadline >= '" . date('Y-m-d') . "'" .
+            ' AND idEvent NOT IN (' .
+            ' SELECT idEvent' .
+            ' FROM ' . $this->getTableSubscribed() . '' .
+            " WHERE idstUser = '" . $id_user . "'" .
+            ')';
 
         $result = sql_query($query);
         list($number_of_events) = sql_fetch_row($result);
@@ -610,8 +604,8 @@ class Man_Reservation
     /**
      * Function that insert a new laboratory in the db.
      *
-     * @param string $name        The name of the laboratory
-     * @param string $location    The location of the laboratory
+     * @param string $name The name of the laboratory
+     * @param string $location The location of the laboratory
      * @param string $description The description of the laboratory
      *
      * @return bool True if done else false
@@ -650,10 +644,10 @@ class Man_Reservation
     /**
      * Function that modify a laboratory.
      *
-     * @param int    $id_laboratory The id of the laboratory
-     * @param string $name          New name
-     * @param string $location      The location of the laboratory
-     * @param string $description   The description of the laboratory
+     * @param int $id_laboratory The id of the laboratory
+     * @param string $name New name
+     * @param string $location The location of the laboratory
+     * @param string $description The description of the laboratory
      *
      * @return bool True if done else false
      */
@@ -672,16 +666,16 @@ class Man_Reservation
     /**
      * Function that insert a new event in the db.
      *
-     * @param int    $id_course     Id of the course
-     * @param int    $id_laboratory Id of the laboratory
-     * @param int    $id_category   Id of the category
-     * @param string $title         Title
-     * @param string $description   Description
-     * @param string $date          Date of the event (date format YYYY-mm-dd)
-     * @param int    $max_user      Max number of user
-     * @param string $deadline      Last day for the subscription (date format YYYY-mm-dd)
-     * @param string $from_time     Starting time (time format hh:mm:ss)
-     * @param string $to_time       Finish time (time format hh:mm:ss))
+     * @param int $id_course Id of the course
+     * @param int $id_laboratory Id of the laboratory
+     * @param int $id_category Id of the category
+     * @param string $title Title
+     * @param string $description Description
+     * @param string $date Date of the event (date format YYYY-mm-dd)
+     * @param int $max_user Max number of user
+     * @param string $deadline Last day for the subscription (date format YYYY-mm-dd)
+     * @param string $from_time Starting time (time format hh:mm:ss)
+     * @param string $to_time Finish time (time format hh:mm:ss))
      *
      * @return bool True if done else false
      */
@@ -694,8 +688,8 @@ class Man_Reservation
         }
 
         $query = 'INSERT INTO ' . $this->getTableEvents() . '' .
-                ' (idCourse, idLaboratory, idCategory, title, description, date, maxUser, deadLine, fromTime, toTime)' .
-                " VALUES ('" . $id_course . "', '" . $id_laboratory . "', '" . $id_category . "', '" . $title . "', '" . $description . "', '" . $date . "', '" . $max_user . "', '" . $deadline . "', '" . $from_time . "', '" . $to_time . "')";
+            ' (idCourse, idLaboratory, idCategory, title, description, date, maxUser, deadLine, fromTime, toTime)' .
+            " VALUES ('" . $id_course . "', '" . $id_laboratory . "', '" . $id_category . "', '" . $title . "', '" . $description . "', '" . $date . "', '" . $max_user . "', '" . $deadline . "', '" . $from_time . "', '" . $to_time . "')";
 
         return $result = sql_query($query);
     }
@@ -710,16 +704,16 @@ class Man_Reservation
     public function delEvent($id_event)
     {
         $query = 'DELETE' .
-                ' FROM ' . $this->getTableEvents() . '' .
-                " WHERE idEvent = '" . $id_event . "'" .
-                ' LIMIT 1';
+            ' FROM ' . $this->getTableEvents() . '' .
+            " WHERE idEvent = '" . $id_event . "'" .
+            ' LIMIT 1';
 
         $result = sql_query($query);
 
         if ($result) {
             $query_2 = 'DELETE' .
-                    ' FROM ' . $this->getTableSubscribed() . '' .
-                    " WHERE idEvent = '" . $id_event . "'";
+                ' FROM ' . $this->getTableSubscribed() . '' .
+                " WHERE idEvent = '" . $id_event . "'";
 
             return $result_2 = sql_query($query_2);
         } else {
@@ -730,17 +724,17 @@ class Man_Reservation
     /**
      * Function that modify an event.
      *
-     * @param int    $id_event      Id of the event to modify
-     * @param int    $id_course     Id of the course
-     * @param int    $id_laboratory Id of the laboratory
-     * @param int    $id_category   Id of the category
-     * @param string $title         Title
-     * @param string $description   Description
-     * @param string $date          Date of the event (date format YYYY-mm-dd)
-     * @param int    $max_user      Max number of user
-     * @param string $deadline      Last day for the subscription (date format YYYY-mm-dd)
-     * @param string $from_time     Starting time (time format hh:mm:ss)
-     * @param string $to_time       Finish time (time format hh:mm:ss))
+     * @param int $id_event Id of the event to modify
+     * @param int $id_course Id of the course
+     * @param int $id_laboratory Id of the laboratory
+     * @param int $id_category Id of the category
+     * @param string $title Title
+     * @param string $description Description
+     * @param string $date Date of the event (date format YYYY-mm-dd)
+     * @param int $max_user Max number of user
+     * @param string $deadline Last day for the subscription (date format YYYY-mm-dd)
+     * @param string $from_time Starting time (time format hh:mm:ss)
+     * @param string $to_time Finish time (time format hh:mm:ss))
      *
      * @return bool True if done else false
      */
@@ -753,17 +747,17 @@ class Man_Reservation
         }
 
         $query = 'UPDATE ' . $this->getTableEvents() . '' .
-                " SET idCourse = '" . $id_course . "'," .
-                " idLaboratory = '" . $id_laboratory . "'," .
-                " idCategory = '" . $id_category . "'," .
-                " title = '" . $title . "'," .
-                " description = '" . $description . "'," .
-                " date = '" . $date . "'," .
-                " maxUser = '" . $max_user . "'," .
-                " deadLine = '" . $deadline . "'," .
-                " fromTime = '" . $from_time . "'," .
-                " toTime = '" . $to_time . "'" .
-                " WHERE idEvent = '" . $id_event . "'";
+            " SET idCourse = '" . $id_course . "'," .
+            " idLaboratory = '" . $id_laboratory . "'," .
+            " idCategory = '" . $id_category . "'," .
+            " title = '" . $title . "'," .
+            " description = '" . $description . "'," .
+            " date = '" . $date . "'," .
+            " maxUser = '" . $max_user . "'," .
+            " deadLine = '" . $deadline . "'," .
+            " fromTime = '" . $from_time . "'," .
+            " toTime = '" . $to_time . "'" .
+            " WHERE idEvent = '" . $id_event . "'";
 
         return $result = sql_query($query);
     }
@@ -781,10 +775,10 @@ class Man_Reservation
 
         if ($id_course) {
             $query = 'SELECT e.idEvent, e.idCourse, e.idLaboratory, e.idCategory, e.title, e.description, e.date, e.maxUser, e.deadLine, e.fromTime, e.toTime, c.name, l.name' .
-                    ' FROM ' . $this->getTableEvents() . ' as e LEFT JOIN ' . $this->getTableCategory() . ' as c  ON ( e.idCategory = c.idCategory ) ' .
-                    ' LEFT JOIN ' . $this->getTableClassroom() . ' as l ON l.idClassroom = e.idLaboratory' .
-                    " WHERE e.idCourse = '" . $id_course . "'" .
-                    " AND e.deadLine >= '" . date('Y-m-d') . "'";
+                ' FROM ' . $this->getTableEvents() . ' as e LEFT JOIN ' . $this->getTableCategory() . ' as c  ON ( e.idCategory = c.idCategory ) ' .
+                ' LEFT JOIN ' . $this->getTableClassroom() . ' as l ON l.idClassroom = e.idLaboratory' .
+                " WHERE e.idCourse = '" . $id_course . "'" .
+                " AND e.deadLine >= '" . date('Y-m-d') . "'";
             if ($order_by) {
                 $query .= 'ORDER BY ' . $order_by;
             } else {
@@ -792,10 +786,10 @@ class Man_Reservation
             }
         } else {
             $query = 'SELECT e.idEvent, e.idCourse, e.idLaboratory, e.idCategory, e.title, e.description, e.date, e.maxUser, e.deadLine, e.fromTime, e.toTime, c.name, l.name' .
-                    ' FROM ' . $this->getTableEvents() . ' as e LEFT JOIN ' . $this->getTableCategory() . ' as c  ON ( e.idCategory = c.idCategory ) ' .
-                    ' LEFT JOIN ' . $this->getTableClassroom() . ' as l ON l.idClassroom = e.idLaboratory' .
-                    ' WHERE 1 ' .
-                    ' ORDER BY e.date DESC, e.deadLine DESC, e.title';
+                ' FROM ' . $this->getTableEvents() . ' as e LEFT JOIN ' . $this->getTableCategory() . ' as c  ON ( e.idCategory = c.idCategory ) ' .
+                ' LEFT JOIN ' . $this->getTableClassroom() . ' as l ON l.idClassroom = e.idLaboratory' .
+                ' WHERE 1 ' .
+                ' ORDER BY e.date DESC, e.deadLine DESC, e.title';
         }
 
         $result = sql_query($query);
@@ -853,9 +847,9 @@ class Man_Reservation
 
         if ($id_course) {
             $query = 'SELECT e.idEvent, e.idCourse, e.idLaboratory, e.idCategory, e.title, e.description, e.date, e.maxUser, e.deadLine, e.fromTime, e.toTime, c.name, l.name' .
-                    ' FROM ' . $this->getTableEvents() . ' as e LEFT JOIN ' . $this->getTableCategory() . ' as c ON ( e.idCategory = c.idCategory ) ' .
-                    ' LEFT JOIN ' . $this->getTableClassroom() . ' as l ON l.idClassroom = e.idLaboratory' .
-                    " WHERE e.idCourse = '" . $id_course . "'";
+                ' FROM ' . $this->getTableEvents() . ' as e LEFT JOIN ' . $this->getTableCategory() . ' as c ON ( e.idCategory = c.idCategory ) ' .
+                ' LEFT JOIN ' . $this->getTableClassroom() . ' as l ON l.idClassroom = e.idLaboratory' .
+                " WHERE e.idCourse = '" . $id_course . "'";
             if ($order_by) {
                 $query .= 'ORDER BY ' . $order_by;
             } else {
@@ -863,10 +857,10 @@ class Man_Reservation
             }
         } else {
             $query = 'SELECT e.idEvent, e.idCourse, e.idLaboratory, e.idCategory, e.title, e.description, e.date, e.maxUser, e.deadLine, e.fromTime, e.toTime, c.name, l.name' .
-                    ' FROM ' . $this->getTableEvents() . ' as e LEFT JOIN ' . $this->getTableCategory() . ' as c ON ( e.idCategory = c.idCategory ) ' .
-                    ' LEFT JOIN ' . $this->getTableClassroom() . ' as l ON l.idClassroom = e.idLaboratory' .
-                    ' WHERE 1 ' .
-                    ' ORDER BY c.name, e.date DESC, e.deadLine DESC';
+                ' FROM ' . $this->getTableEvents() . ' as e LEFT JOIN ' . $this->getTableCategory() . ' as c ON ( e.idCategory = c.idCategory ) ' .
+                ' LEFT JOIN ' . $this->getTableClassroom() . ' as l ON l.idClassroom = e.idLaboratory' .
+                ' WHERE 1 ' .
+                ' ORDER BY c.name, e.date DESC, e.deadLine DESC';
         }
 
         $result = sql_query($query);
@@ -914,7 +908,7 @@ class Man_Reservation
      * Function that return the event maked in the past by the user.
      *
      * @param int $id_course The id of the course for show the event, if false show all events
-     * @param int $id_user   The idst of the user
+     * @param int $id_user The idst of the user
      *
      * @return array List of the id of the events that the user maked else return false
      */
@@ -924,13 +918,13 @@ class Man_Reservation
 
         if ($id_course) {
             $query = 'SELECT e.idEvent, e.idCourse, e.idLaboratory, e.idCategory, e.title, e.description, e.date, e.maxUser, e.deadLine, e.fromTime, e.toTime, c.name' .
-                    ' FROM ( ' . $this->getTableEvents() . ' as e LEFT JOIN  ' . $this->getTableCategory() . ' as c ON (e.idCategory = c.idCategory) )' .
-                    ' JOIN  ' . $this->getTableSubscribed() . ' as s' .
-                    ' LEFT JOIN ' . $this->getTableClassroom() . ' as l ON l.idClassroom = e.idLaboratory' .
-                    " WHERE e.idCourse = '" . $id_course . "'" .
-                    " AND e.date < '" . date('Y-m-d') . "'" .
-                    ' AND s.idEvent = e.idEvent' .
-                    " AND s.idstUser = '" . $id_user . "' ";
+                ' FROM ( ' . $this->getTableEvents() . ' as e LEFT JOIN  ' . $this->getTableCategory() . ' as c ON (e.idCategory = c.idCategory) )' .
+                ' JOIN  ' . $this->getTableSubscribed() . ' as s' .
+                ' LEFT JOIN ' . $this->getTableClassroom() . ' as l ON l.idClassroom = e.idLaboratory' .
+                " WHERE e.idCourse = '" . $id_course . "'" .
+                " AND e.date < '" . date('Y-m-d') . "'" .
+                ' AND s.idEvent = e.idEvent' .
+                " AND s.idstUser = '" . $id_user . "' ";
             if ($order_by) {
                 $query .= 'ORDER BY ' . $order_by;
             } else {
@@ -938,13 +932,13 @@ class Man_Reservation
             }
         } else {
             $query = 'SELECT e.idEvent, e.idCourse, e.idLaboratory, e.idCategory, e.title, e.description, e.date, e.maxUser, e.deadLine, e.fromTime, e.toTime, c.name' .
-                    ' FROM ( ' . $this->getTableEvents() . ' as e LEFT JOIN ' . $this->getTableCategory() . ' as c  ON (e.idCategory = c.idCategory) ) ' .
-                    ' JOIN ' . $this->getTableSubscribed() . ' as s' .
-                    ' LEFT JOIN ' . $this->getTableClassroom() . ' as l ON l.idClassroom = e.idLaboratory' .
-                    " WHERE e.date < '" . date('Y-m-d') . "'" .
-                    ' s.idEvent = e.idEvent' .
-                    " AND s.idstUser = '" . $id_user . "' " .
-                    ' ORDER BY c.name, e.date, e.deadLine';
+                ' FROM ( ' . $this->getTableEvents() . ' as e LEFT JOIN ' . $this->getTableCategory() . ' as c  ON (e.idCategory = c.idCategory) ) ' .
+                ' JOIN ' . $this->getTableSubscribed() . ' as s' .
+                ' LEFT JOIN ' . $this->getTableClassroom() . ' as l ON l.idClassroom = e.idLaboratory' .
+                " WHERE e.date < '" . date('Y-m-d') . "'" .
+                ' s.idEvent = e.idEvent' .
+                " AND s.idstUser = '" . $id_user . "' " .
+                ' ORDER BY c.name, e.date, e.deadLine';
         }
 
         $result = sql_query($query);
@@ -992,7 +986,7 @@ class Man_Reservation
      * Function that return the event where and user is subscribed, don't show the past events.
      *
      * @param int $id_course The id of the course for show the event, if false show all events
-     * @param int $id_user   The idst of the user
+     * @param int $id_user The idst of the user
      *
      * @return array List of the id of the events where the user is subscribed else return false
      */
@@ -1002,13 +996,13 @@ class Man_Reservation
 
         if ($id_course) {
             $query = 'SELECT e.idEvent, e.idCourse, e.idLaboratory, e.idCategory, e.title, e.description, e.date, e.maxUser, e.deadLine, e.fromTime, e.toTime, c.name, l.name' .
-                    ' FROM ( ' . $this->getTableEvents() . ' as e LEFT JOIN ' . $this->getTableCategory() . ' as c ON (e.idCategory = c.idCategory) )' .
-                    ' JOIN ' . $this->getTableSubscribed() . ' as s' .
-                    ' LEFT JOIN ' . $this->getTableClassroom() . ' as l ON l.idClassroom = e.idLaboratory' .
-                    " WHERE e.idCourse = '" . $id_course . "'" .
-                    " AND e.date >= '" . date('Y-m-d') . "'" .
-                    ' AND s.idEvent = e.idEvent' .
-                    " AND s.idstUser = '" . $id_user . "'";
+                ' FROM ( ' . $this->getTableEvents() . ' as e LEFT JOIN ' . $this->getTableCategory() . ' as c ON (e.idCategory = c.idCategory) )' .
+                ' JOIN ' . $this->getTableSubscribed() . ' as s' .
+                ' LEFT JOIN ' . $this->getTableClassroom() . ' as l ON l.idClassroom = e.idLaboratory' .
+                " WHERE e.idCourse = '" . $id_course . "'" .
+                " AND e.date >= '" . date('Y-m-d') . "'" .
+                ' AND s.idEvent = e.idEvent' .
+                " AND s.idstUser = '" . $id_user . "'";
             if ($order_by) {
                 $query .= 'ORDER BY ' . $order_by;
             } else {
@@ -1016,13 +1010,13 @@ class Man_Reservation
             }
         } else {
             $query = 'SELECT e.idEvent, e.idCourse, e.idLaboratory, e.idCategory, e.title, e.description, e.date, e.maxUser, e.deadLine, e.fromTime, e.toTime, c.name, l.name' .
-                    ' FROM ( ' . $this->getTableEvents() . ' as e LEFT JOIN  ' . $this->getTableCategory() . ' as c ON (e.idCategory = c.idCategory) ) ' .
-                    ' JOIN ' . $this->getTableSubscribed() . ' as s' .
-                    ' LEFT JOIN ' . $this->getTableClassroom() . ' as l ON l.idClassroom = e.idLaboratory' .
-                    " WHERE e.date >= '" . date('Y-m-d') . "'" .
-                    ' AND s.idEvent = e.idEvent' .
-                    " AND s.idstUser = '" . $id_user . "'" .
-                    ' ORDER BY c.name, e.date, e.deadLine';
+                ' FROM ( ' . $this->getTableEvents() . ' as e LEFT JOIN  ' . $this->getTableCategory() . ' as c ON (e.idCategory = c.idCategory) ) ' .
+                ' JOIN ' . $this->getTableSubscribed() . ' as s' .
+                ' LEFT JOIN ' . $this->getTableClassroom() . ' as l ON l.idClassroom = e.idLaboratory' .
+                " WHERE e.date >= '" . date('Y-m-d') . "'" .
+                ' AND s.idEvent = e.idEvent' .
+                " AND s.idstUser = '" . $id_user . "'" .
+                ' ORDER BY c.name, e.date, e.deadLine';
         }
 
         $result = sql_query($query);
@@ -1070,7 +1064,7 @@ class Man_Reservation
      * Function that add a new subscription to an event.
      *
      * @param int $idst_user Idst of the user
-     * @param int $id_event  Id of the event
+     * @param int $id_event Id of the event
      *
      * @return bool True if done else false
      */
@@ -1085,8 +1079,8 @@ class Man_Reservation
         }
 
         $query = 'INSERT INTO ' . $this->getTableSubscribed() . '' .
-                ' (idstUser, idEvent)' .
-                " VALUES ('" . $idst_user . "', '" . $id_event . "')";
+            ' (idstUser, idEvent)' .
+            " VALUES ('" . $idst_user . "', '" . $id_event . "')";
 
         return $result = sql_query($query);
     }
@@ -1095,17 +1089,17 @@ class Man_Reservation
      * Function that delete a subscription to an event.
      *
      * @param int $idst_user Idst of the user
-     * @param int $id_event  Id of the event
+     * @param int $id_event Id of the event
      *
      * @return bool True if done else false
      */
     public function delSubscription($idst_user, $id_event)
     {
         $query = 'DELETE' .
-                ' FROM ' . $this->getTableSubscribed() . '' .
-                " WHERE idstUser = '" . $idst_user . "'" .
-                " AND idEvent = '" . $id_event . "'" .
-                ' LIMIT 1';
+            ' FROM ' . $this->getTableSubscribed() . '' .
+            " WHERE idstUser = '" . $idst_user . "'" .
+            " AND idEvent = '" . $id_event . "'" .
+            ' LIMIT 1';
 
         return $result = sql_query($query);
     }
@@ -1113,7 +1107,7 @@ class Man_Reservation
     /**
      * Function that switch a subscription.
      *
-     * @param int $idst_user    Idst of the user
+     * @param int $idst_user Idst of the user
      * @param int $id_old_event Id of the subscription event to delete
      * @param int $id_new_event Id of the subscription event to insert
      *
@@ -1146,8 +1140,8 @@ class Man_Reservation
     public function viewSubscription($id_event)
     {
         $query = 'SELECT idstUser' .
-                ' FROM ' . $this->getTableSubscribed() . '' .
-                " WHERE idEvent = '" . $id_event . "'";
+            ' FROM ' . $this->getTableSubscribed() . '' .
+            " WHERE idEvent = '" . $id_event . "'";
 
         $result = sql_query($query);
 
@@ -1163,11 +1157,11 @@ class Man_Reservation
         $lang = FormaLanguage::createInstance('reservation');
 
         $query = 'SELECT idCategory, name, idCourse, maxSubscription' .
-                ' FROM ' . $this->getTableCategory() . '';
+            ' FROM ' . $this->getTableCategory() . '';
 
         if ($id_course) {
             $query .= " WHERE idCourse = '" . $id_course . "'" .
-                        " OR idCourse = '0'";
+                " OR idCourse = '0'";
         }
 
         $result = sql_query($query);
@@ -1194,8 +1188,8 @@ class Man_Reservation
     public function getCategoryMaxSubscription($id_category)
     {
         $query = 'SELECT maxSubscription' .
-                ' FROM ' . $this->getTableCategory() . '' .
-                " WHERE idCategory = '" . $id_category . "'";
+            ' FROM ' . $this->getTableCategory() . '' .
+            " WHERE idCategory = '" . $id_category . "'";
 
         $result = sql_query($query);
 
@@ -1215,12 +1209,12 @@ class Man_Reservation
     {
         if ($id_course) {
             $query = 'INSERT INTO ' . $this->getTableCategory() . '' .
-                    ' (name, idCourse, maxSubscription)' .
-                    " VALUES ('" . $name . "', '" . $id_course . "', '" . $max_subscription . "')";
+                ' (name, idCourse, maxSubscription)' .
+                " VALUES ('" . $name . "', '" . $id_course . "', '" . $max_subscription . "')";
         } else {
             $query = 'INSERT INTO ' . $this->getTableCategory() . '' .
-                    ' (name, maxSubscription)' .
-                    " VALUES ('" . $name . "', '" . $max_subscription . "')";
+                ' (name, maxSubscription)' .
+                " VALUES ('" . $name . "', '" . $max_subscription . "')";
         }
 
         return $result = sql_query($query);
@@ -1236,16 +1230,16 @@ class Man_Reservation
     public function delCategory($id_category)
     {
         $query = 'DELETE' .
-                ' FROM ' . $this->getTableCategory() . '' .
-                " WHERE idCategory = '" . $id_category . "'" .
-                ' LIMIT 1';
+            ' FROM ' . $this->getTableCategory() . '' .
+            " WHERE idCategory = '" . $id_category . "'" .
+            ' LIMIT 1';
 
         $result = sql_query($query);
 
         if ($result) {
             $query = 'UPDATE ' . $this->getTableEvents() . '' .
-                    " SET idCategory = '0'" .
-                    " WHERE idCategory = '" . $id_category . "'";
+                " SET idCategory = '0'" .
+                " WHERE idCategory = '" . $id_category . "'";
 
             return $result = sql_query($query);
         } else {
@@ -1256,18 +1250,18 @@ class Man_Reservation
     /**
      * Function that modify a category.
      *
-     * @param int    $id_category Id of the category
-     * @param string $name        New name
+     * @param int $id_category Id of the category
+     * @param string $name New name
      *
      * @return bool True if done else false
      */
     public function modCategory($id_category, $name, $max_subscription)
     {
         $query = 'UPDATE ' . $this->getTableCategory() . '' .
-                " SET name = '" . $name . "'," .
-                " maxSubscription = '" . $max_subscription . "'" .
-                " WHERE idCategory = '" . $id_category . "'" .
-                ' LIMIT 1';
+            " SET name = '" . $name . "'," .
+            " maxSubscription = '" . $max_subscription . "'" .
+            " WHERE idCategory = '" . $id_category . "'" .
+            ' LIMIT 1';
 
         return $result = sql_query($query);
     }

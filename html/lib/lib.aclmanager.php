@@ -580,7 +580,7 @@ class FormaACLManager
 
         if ($this->_executeQuery($query)) {
             $query_h = 'INSERT INTO ' . $GLOBALS['prefix_fw'] . '_password_history ( idst_user, pwd_date, passw, changed_by ) '
-                . 'VALUES ( ' . (int) $idst . ", '" . date('Y-m-d H:i:s') . "', '" . ($alredy_encripted === true ? $pass : $this->encrypt($pass)) . "', " . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . '  )';
+                . 'VALUES ( ' . (int)$idst . ", '" . date('Y-m-d H:i:s') . "', '" . ($alredy_encripted === true ? $pass : $this->encrypt($pass)) . "', " . (int)\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . '  )';
             $this->_executeQuery($query_h);
 
             Events::triggerDeprecated('core.user.registered', ['idst' => $idst]);
@@ -971,7 +971,7 @@ class FormaACLManager
         $result = $this->_executeQuery($query);
         if ($result && $pass !== false) {
             $query_h = 'INSERT INTO ' . $GLOBALS['prefix_fw'] . '_password_history ( idst_user, pwd_date, passw, changed_by ) '
-                . 'VALUES ( ' . (int) $idst . ", '" . date('Y-m-d H:i:s') . "', '" . $this->encrypt($pass) . "'," . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . '  )';
+                . 'VALUES ( ' . (int)$idst . ", '" . date('Y-m-d H:i:s') . "', '" . $this->encrypt($pass) . "'," . (int)\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . '  )';
             $this->_executeQuery($query_h);
         }
 
@@ -1130,7 +1130,7 @@ class FormaACLManager
 
         $insert_query = 'INSERT INTO ' . $this->_getTableUserDeleted() . ' ' .
             ' (id_deletion, idst, userid, firstname, lastname, pass, email, avatar, signature, level, lastenter, valid, pwd_expire_at, register_date, deletion_date, deleted_by)' .
-            " VALUES ('', '" . (int) $idst . "', '" . addslashes($userid) . "', '" . addslashes($firstname) . "', '" . addslashes($lastname) . "', '" . addslashes($pass) . "', '" . addslashes($email) . "', '" . addslashes($avatar) . "', '" . addslashes($signature) . "', '" . $level . "', '" . $lastenter . "', '" . $valid . "', '" . $pwd_expire_at . "', '" . $register_date . "', '" . date('Y-m-d H:i:s') . "','" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "')";
+            " VALUES ('', '" . (int)$idst . "', '" . addslashes($userid) . "', '" . addslashes($firstname) . "', '" . addslashes($lastname) . "', '" . addslashes($pass) . "', '" . addslashes($email) . "', '" . addslashes($avatar) . "', '" . addslashes($signature) . "', '" . $level . "', '" . $lastenter . "', '" . $valid . "', '" . $pwd_expire_at . "', '" . $register_date . "', '" . date('Y-m-d H:i:s') . "','" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "')";
 
         $insert_result = sql_query($insert_query);
 
@@ -1181,7 +1181,7 @@ class FormaACLManager
                 $extra_field = new FieldList();
                 $extra_field->quickRemoveUserEntry($idst);
                 //remove also from courseuser if neeeded
-                \FormaLms\db\DbConn::getInstance()->query('DELETE FROM %lms_courseuser WHERE idUser = ' . (int) $idst . ' ');
+                \FormaLms\db\DbConn::getInstance()->query('DELETE FROM %lms_courseuser WHERE idUser = ' . (int)$idst . ' ');
             }
             $query = 'DELETE FROM ' . $this->_getTableTempUser()
                 . " WHERE idst = '" . $idst . "'";
@@ -1460,54 +1460,49 @@ class FormaACLManager
      *               - idst, userid, firstname, lastname, pass, email, avatar, signature
      *               - FALSE if user is not found
      */
-    public function &getUsers($array_idst)
+    public function getUsers($array_idst)
     {
-        if (!is_array($array_idst) || empty($array_idst)) {
-            $false_var = false;
+        $users_info = [];
 
-            return $false_var;
-        } else {
-            foreach ($array_idst as $index => $idst) {
-                if (!is_numeric($idst)) {
-                    unset($array_idst[$index]);
-                }
+        if (!is_array($array_idst)){
+            $array_idst = [];
+        }
+
+        foreach ($array_idst as $index => $idst) {
+            if (!is_numeric($idst)) {
+                unset($array_idst[$index]);
             }
         }
 
-        $users_info = [];
-        $query = 'SELECT idst, userid, firstname, lastname, pass, email, avatar, signature,'
+        $query = 'SELECT userid,idst,  firstname, lastname, pass, email, avatar, signature,'
             . ' level, lastenter, valid, pwd_expire_at, register_date, lastenter'
             . ' FROM ' . $this->_getTableUser()
             . ' WHERE idst IN (' . implode(',', $array_idst) . ') '
             . ' ORDER BY lastname, firstname, userid';
         $rs = $this->_executeQuery($query);
-        if (sql_num_rows($rs) > 0) {
-            while ($info = sql_fetch_row($rs)) {
-                $users_info[$info[ACL_INFO_IDST]] = $info;
-            }
 
-            return $users_info;
-        } else {
-            $false_var = false;
+        foreach ($rs as $row) {
 
-            return $false_var;
+            $users_info[] = array_values($row);
         }
+
+
+        return $users_info;
     }
 
-    public function &getUsersMappedData($array_idst)
+    public function getUsersMappedData($array_idst)
     {
         $responseUsers = [];
         $users = $this->getUsers($array_idst);
-        if ($users) {
-            foreach ($users as $user) {
-                $responseUsers[] = $this->getUserMappedData($user);
-            }
+
+        foreach ($users as $user) {
+            $responseUsers[] = $this->getUserMappedData($user);
         }
 
         return $responseUsers;
     }
 
-    public function &getUserMappedData($user)
+    public function getUserMappedData($user)
     {
         $path = $GLOBALS['where_files_relative'] . '/appCore/' . FormaLms\lib\Get::sett('pathphoto');
 
@@ -1528,7 +1523,8 @@ class FormaACLManager
     }
 
     /**
-     * @return all idst of users
+     * return all idst of users
+     * @return array idst of users
      **/
     public function &getAllUsersIdst()
     {
@@ -2878,15 +2874,15 @@ class FormaACLManager
         $list = $this->getBasePathGroupST('/framework/level/');
 
         $output = [];
-        if(array_key_exists(ADMIN_GROUP_GODADMIN, $list)) {
+        if (array_key_exists(ADMIN_GROUP_GODADMIN, $list)) {
             $output[ADMIN_GROUP_GODADMIN] = $list[ADMIN_GROUP_GODADMIN];
         }
 
-        if(array_key_exists(ADMIN_GROUP_ADMIN, $list)) {
+        if (array_key_exists(ADMIN_GROUP_ADMIN, $list)) {
             $output[ADMIN_GROUP_ADMIN] = $list[ADMIN_GROUP_ADMIN];
         }
 
-        if(array_key_exists(ADMIN_GROUP_USER, $list)) {
+        if (array_key_exists(ADMIN_GROUP_USER, $list)) {
             $output[ADMIN_GROUP_USER] = $list[ADMIN_GROUP_USER];
         }
 
