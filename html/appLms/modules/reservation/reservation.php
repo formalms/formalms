@@ -579,10 +579,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 
         $user_idst = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
-        $user_subscribed = [];
         $user_sunscribed = $man_res->getSubscribedUserIdst($id_event);
-
-        $user_info = [];
 
         $user_info = &$acl_man->getUsers($user_sunscribed);
 
@@ -1072,7 +1069,6 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         $man_res = new Man_Reservation();
         $aclManager = new FormaACLManager();
 
-        $subscribed = [];
         $subscribed = $man_res->getSubscribedUserIdst($id_event);
 
         $subscribed_empty = [];
@@ -1128,7 +1124,6 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 
         $user_select = new UserSelector();
 
-        $user_subscribed = [];
         $user_subscribed = $man_res->getSubscribedUserIdst($id_event);
 
         $user_selected = [];
