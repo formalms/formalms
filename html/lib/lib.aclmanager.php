@@ -1461,7 +1461,7 @@ class FormaACLManager
             }
         }
 
-        $query = 'SELECT userid,idst,  firstname, lastname, pass, email, avatar, '
+        $query = 'SELECT idst, userid, firstname, lastname, pass, email, avatar, '
             . ' level, lastenter, valid, pwd_expire_at, register_date, lastenter'
             . ' FROM ' . $this->_getTableUser()
             . ' WHERE idst IN (' . implode(',', $array_idst) . ') '
