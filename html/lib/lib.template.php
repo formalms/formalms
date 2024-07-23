@@ -28,61 +28,53 @@ function getTemplate()
 {
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
+    $template = '';
 
     // If saved in session use this one
     if ($session->has('template') && $session->get('template') != false) {
-        if (!checkTemplateVersion($session->get('template'))) {
-            return 'standard';
-        }
+        $template = $session->get('template');
+    } else {
+        //search for a template associated to the current host
+        $template = parseTemplateDomain($request->server->get('HTTP_HOST'));
 
-        return $session->get('template');
-    }
+        if ($template === false) {
+            // search template according to the org_chart_tree option
+            if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
+                $qtxt = 'SELECT associated_template FROM
+                  %adm_org_chart_tree
+                  WHERE associated_template IS NOT NULL AND
+                  idst_oc IN (' . implode(',', \FormaLms\lib\FormaUser::getCurrentUser()->getArrSt()) . ')
+                  ORDER BY iLeft DESC
+                  LIMIT 0,1';
 
-    //search for a template associated to the current host
-    $plat_templ = parseTemplateDomain($request->server->get('HTTP_HOST'));
-
-    if ($plat_templ != false) {
-        $session->set('template', $plat_templ);
-        $session->save();
-        if (!checkTemplateVersion($session->get('template'))) {
-            return 'standard';
-        }
-
-        return $plat_templ;
-    }
-    // search template according to the org_chart_tree option
-    if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
-        $qtxt = 'SELECT associated_template FROM
-			%adm_org_chart_tree
-			WHERE associated_template IS NOT NULL AND
-			idst_oc IN (' . implode(',', \FormaLms\lib\FormaUser::getCurrentUser()->getArrSt()) . ')
-			ORDER BY iLeft DESC
-			LIMIT 0,1';
-
-        $re = sql_query($qtxt);
-        if (sql_num_rows($re) > 0) {
-            list($template_code) = sql_fetch_row($re);
-            setTemplate($template_code);
-            if (!checkTemplateVersion($session->get('template'))) {
-                return 'standard';
+                $re = sql_query($qtxt);
+                if (sql_num_rows($re) > 0) {
+                    [$template_code] = sql_fetch_row($re);
+                    $template = $template_code;
+                }
             }
+        }
 
-            return $session->get('template');
+        if ($template === false) {
+            $template = getDefaultTemplate();
         }
     }
 
-    // search for the default template
-    setTemplate(getDefaultTemplate());
+    if (!checkTemplateVersion($template)) {
+        $template = 'standard';
+    }
 
-    return $session->get('template');
+    setTemplate($template);
+
+    return $template;
 }
 
 /**
  * Search in the settings if the domain given has a template associated.
  *
- * @param <type> $curr_domain the current domain
+ * @param string $curr_domain the current domain
  *
- * @return <mixed> fals eif there isn't a template associated, or the template name
+ * @return bool false if there isn't a template associated, or the template name
  */
 function parseTemplateDomain($curr_domain = false)
 {
@@ -90,8 +82,8 @@ function parseTemplateDomain($curr_domain = false)
                 %adm_domain_configs';
 
     $result = sql_query($queryTxt);
-    if (sql_num_rows($result) > 0) {
-        while ($item = sql_fetch_assoc($result)) {
+    if ($result) {
+        foreach ($result as $item) {
             if ($item['domain'] == $curr_domain) {
                 return $item['template'];
             }
@@ -108,12 +100,12 @@ function getCurrentDomain($idOrg = null, $baseUrl = false)
     %adm_domain_configs';
     $domains = [];
     $result = sql_query($queryTxt);
-    if (sql_num_rows($result) > 0) {
-        while ($item = sql_fetch_assoc($result)) {
+    if ($result) {
+        foreach ($result as $item) {
             $domains[$item['orgId']] = $item;
+
         }
     }
-
     if ($idOrg && isset($domains[$idOrg]) && $domains[$idOrg]['domain']) {
         return 'https://' . $domains[$idOrg]['domain'] . '/';
     } else {
@@ -136,12 +128,20 @@ function getCurrentDomain($idOrg = null, $baseUrl = false)
 function setTemplate($new_template)
 {
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-    if (is_dir(_templates_ . '/' . $new_template)) {
+
+    if (is_dir(_templates_ . '/' . $new_template) && checkTemplateVersion($new_template)) {
         $session->set('template', $new_template);
         $session->set('template_info', new TemplateInfo($new_template));
     } else {
-        $session->set('template', getDefaultTemplate());
-        $session->set('template_info', new TemplateInfo(getDefaultTemplate()));
+        $default_template = getDefaultTemplate();
+        if (checkTemplateVersion($default_template)) {
+            $session->set('template', $default_template);
+            $session->set('template_info', new TemplateInfo($default_template));
+        } else {
+            // Fallback to 'standard' if even the default template is incompatible
+            $session->set('template', 'standard');
+            $session->set('template_info', new TemplateInfo('standard'));
+        }
     }
     $session->save();
 }
@@ -168,10 +168,10 @@ function readTemplateManifest($template_name, $key = false)
         if (!file_exists($template_file)) {
             return false;
         }
-        if ($xml = simplexml_load_file($template_file)) {
+        if ($xml = simplexml_load_string(file_get_contents($template_file))) {
             $man_json = json_encode($xml);
             $man_array = json_decode($man_json, true);
-            if (key_exists($key, $man_array)) {
+            if (array_key_exists($key, $man_array)) {
                 return $man_array[$key];
             }
 
@@ -193,7 +193,7 @@ function checkTemplateVersion($template_name)
     if ($session->has('template_info') && $session->get('template_info') != false) {
         return $session->get('template_info')->getCheckVersion();
     } else {
-        $template_forma_version = readTemplateManifest($template_name, 'forma_version');
+        $template_forma_version = getTemplateVersion($template_name);
         $check = [];
         if ($template_forma_version) {
 
@@ -218,41 +218,39 @@ function getTemplateVersion($template_name)
 function getTemplateList($set_keys = false, $addUndefined = false, $excludeNotCompliant = true)
 {
     $templArray = [];
-    $templ = dir(_templates_ . '/');
-    while ($elem = $templ->read()) {
-        if ((is_dir(_templates_ . '/' . $elem)) && ($elem != '.') && ($elem != '..') && ($elem != '.svn') && $elem[0] != '_' && checkTemplateVersion($elem)) {
-            if($addUndefined) {
-                $templArray[0] = Lang::t('_NOT_ASSIGNED');
-            }
 
-            $xml = simplexml_load_string(file_get_contents(_templates_ . '/' . $elem. '/manifest.xml'));
+    if ($addUndefined) {
+        $templArray[] = Lang::t('_NOT_ASSIGNED');
+    }
 
-            $compliance = version_compare((string)$xml->forma_version, \FormaLms\lib\Version\VersionChecker::getMinimumTemplateVersion());
+    $templateDir = _templates_ . '/';
+    $templates = scandir($templateDir);
 
-            if($excludeNotCompliant && ($compliance < 0)) {
-                continue;
-            }
+    foreach ($templates as $elem) {
+        if ($elem[0] === '.' || $elem[0] === '_' || !is_dir($templateDir . $elem)) {
+            continue;
+        }
 
-            if (!$set_keys) {
-                $templArray[] = $elem;
-            } else {
-                $templArray[$elem] = $elem;
-            }
+        if (!checkTemplateVersion($elem)) {
+            continue;
+        }
+
+        if ($set_keys) {
+            $templArray[$elem] = $elem;
+        } else {
+            $templArray[] = $elem;
         }
     }
-    closedir($templ->handle);
 
-    if (is_array($templArray)) {
-        if (!$set_keys) {
-            sort($templArray);
-        } else {
-            ksort($templArray);
-        }
-        reset($templArray);
+    if ($set_keys) {
+        ksort($templArray);
+    } else {
+        sort($templArray);
     }
 
     return $templArray;
 }
+
 
 /**
  * Search for the default template.
@@ -262,12 +260,19 @@ function getTemplateList($set_keys = false, $addUndefined = false, $excludeNotCo
 function getDefaultTemplate($platform = false)
 {
     $plat_templ = FormaLms\lib\Get::sett('defaultTemplate') ?: 'standard';
-    if (is_dir(_templates_ . '/' . $plat_templ)) {
+
+    if (is_dir(_templates_ . '/' . $plat_templ) && checkTemplateVersion($plat_templ)) {
         return $plat_templ;
     } else {
         $array = getTemplateList();
 
-        return count($array) ? array_pop($array) : 'standard';
+        foreach ($array as $template) {
+            if (checkTemplateVersion($template)) {
+                return $template;
+            }
+        }
+
+        return 'standard';
     }
 }
 
@@ -668,7 +673,7 @@ function getTemplateFromIdOrg(int $id_org)
  * */
 function getPageName()
 {
-    $pageRef = str_replace('/', '_','adm/homepage/show');
+    $pageRef = str_replace('/', '_', 'adm/homepage/show');
 
     $request = FormaLms\lib\Get::req('r', DOTY_MIXED, '');
     $modName = FormaLms\lib\Get::req('modname', DOTY_ALPHANUM, '');
