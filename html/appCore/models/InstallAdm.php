@@ -1720,7 +1720,7 @@ class InstallAdm extends Model
             sql_query("INSERT IGNORE INTO `core_migration_versions`(`version`, `executed_at`, `execution_time`) VALUES ('Formalms\\\Migrations\\\Version20220815000003','" . (new Datetime())->format("Y-m-d H:i:s") . "', 1000)");
         }
 
-        $rows = sql_num_rows(sql_query('SELECT version FROM `core_migration_versions` WHERE version LIKE %Version20221012000004'));
+        $rows = sql_num_rows(sql_query('SELECT version FROM `core_migration_versions` WHERE version LIKE "%Version20221012000004"'));
 
         if ($rows === 1){
             sql_query("INSERT IGNORE INTO `core_migration_versions`(`version`, `executed_at`, `execution_time`) VALUES ('Formalms\\\Migrations\\\Version20221012000014','" . (new Datetime())->format("Y-m-d H:i:s") . "', 1000)");
