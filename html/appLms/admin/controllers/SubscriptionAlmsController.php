@@ -3488,52 +3488,20 @@ class SubscriptionAlmsController extends AlmsController
             $date_begin_validity = $sel_date_begin_validity ? FormaLms\lib\Get::req('set_date_begin_validity', DOTY_STRING, '') : false;
             $date_expire_validity = $sel_date_expire_validity ? FormaLms\lib\Get::req('set_date_expire_validity', DOTY_STRING, '') : false;
 
+
             foreach ($courses as $id_course) {
                 $res = true;
-
+                $level = 0;
                 $formaCourse = new FormaCourse($id_course);
                 $level_idst = &$formaCourse->getCourseLevel($id_course);
                 if (count($level_idst) == 0 || $level_idst[1] == '') {
                     $level_idst = FormaCourse::createCourseLevel($id_course);
                 }
-                foreach ($_to_add as $id_user) {
-                    if (isset($_POST['subs'])) {
-                        $subs_data = explode(',', $_POST['subs']);
-                        $courses = explode(',', FormaLms\lib\Get::req('id_course'));
-                        $id_path = FormaLms\lib\Get::req('id_path');
-                        foreach ($courses as $id_course) {
-                            foreach ($subs_data as $subs_item) {
-                                list($id_user, $level) = explode(':', $subs_item);
-                                $this->model->id_course = $id_course;
-                                $this->model->_addToCourseGroup($level_idst[$level], $id_user);
-                                $this->model->updateUserLevel($id_user, $level);
-
-                            }
-                        }
-                        Util::jump_to('index.php?r=' . $this->link . '/show_coursepath&id_path=' . $id_path . '&res=' . $res);
-                    }
-
-                    $waiting = false;
-                    //$this->acl_man->addToGroup($level_idst[$level], $id_user);
-
-                    $this->model->id_course = $id_course;
-                    if (isset($classrooms[$id_course])) {
-                        $this->model->id_date = $classrooms[$id_course];
-                    }
-                    if (isset($editions[$id_course])) {
-                        $this->model->id_edition = $editions[$id_course];
-                    }
-                    if (!$this->model->subscribeUser($id_user, $level, $waiting)) {
-                        $res = false;
-                    }
-
-
-                }
 
             }
-            if (!isset($_POST['subs'])){
+            if (!isset($_POST['subs']) && !isset($_POST['undo'])){
                 $this->render('level', [
-                    'link' => $this->link ."/choose_editions_coursepath_action",
+                    'link' => $this->link ."/subToCoursepathWithLevel",
                     'id_course' => implode(',', $courses),
                     'id_path' => implode(',', $id_path),
                     'id_date' => $this->model->id_date,
@@ -3544,15 +3512,73 @@ class SubscriptionAlmsController extends AlmsController
                     'date_begin_validity' => $date_begin_validity,
                     'date_expire_validity' => $date_expire_validity,
                     'course_name' => $coursepath_info[$int_id_path][2],
+                    'classrooms' => $classrooms,
                 ]);
             }
-
-
-            if ($res) {
-                $path_man->subscribeUserToCoursePath($int_id_path, $_to_add);
-
+            if (isset($_POST['undo'])){
+                Util::jump_to('index.php?r=' . $this->link . '/show_coursepath&id_path=' . $int_id_path . '&res=' . $res);
             }
 
+    }
+
+    public function subToCoursepathWithLevel(){
+
+        require_once _lms_ . '/lib/lib.coursepath.php';
+        $path_man = new CoursePath_Manager();
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
+        $subs_data = explode(',', $_POST['subs']);
+        $courses = explode(',', FormaLms\lib\Get::req('id_course'));
+        $id_path = FormaLms\lib\Get::req('id_path');
+        $coursepath_info = $path_man->getCoursepathAllInfo([$id_path]);
+        $classrooms = FormaLms\lib\Get::req('classrooms', DOTY_MIXED, []);
+        foreach ($courses as $id_course) {
+            $formaCourse = new \FormaCourse($id_course);
+            $level_idst = &$formaCourse->getCourseLevel($id_course);
+            foreach ($subs_data as $subs_item) {
+                $res = true;
+                list($id_user, $level) = explode(':', $subs_item);
+                $this->model->id_course = $id_course;
+                $this->model->_addToCourseGroup($level_idst[$level], $id_user);
+                //$this->model->updateUserLevel($id_user, $level);
+
+                $waiting = false;
+                //$this->acl_man->addToGroup($level_idst[$level], $id_user);
+
+                $this->model->id_course = $id_course;
+                if (isset($classrooms[$id_course])) {
+                    $this->model->id_date = $classrooms[$id_course];
+                }
+                if (!isset($_POST['undo'])){
+                    if (!$this->model->subscribeUser($id_user, $level, $waiting)) {
+                        $res = false;
+                    }
+
+                }
+                $users[$id_user] = true;
+
+            }
+        }
+        $users = array_keys($users);
+        if ($res and !isset($_POST['undo'])) {
+            $path_man->subscribeUserToCoursePath($id_path,$users);
+
+        }
+
+        $user_selected = [];
+        if ($_POST['subs']) {
+            $subs = explode(',', $_POST['subs']);
+            foreach ($subs as $sub) {
+                [$user, $level] = explode(':', $sub);
+                $user_selected[$user] = $level;
+            }
+        }
+        $send_alert = $_POST['send_alert'];
+        //basically we will consider the alert as a checkbox, the initial state of the checkbox will be setted according to the alert status
+        if (!empty($id_user) && $send_alert) {
+
+            $this->model->sendAlert(array_keys($user_selected), $coursepath_info , $send_alert, $id_path);
+        }
+        Util::jump_to('index.php?r=' . $this->link . '/show_coursepath&id_path=' . $id_path . '&res=' . $res);
     }
 
 

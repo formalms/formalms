@@ -1197,8 +1197,10 @@ Titolo: [thread_title]]]></key>
         <key id="email&amp;_NEW_USER_OVERBOOKING_SUBSCRIBED_SUBJECT" attributes="" save_date="2021-08-02 13:31:11"><![CDATA[Utente in lista d'attesa]]></key>
         <key id="email&amp;_NEW_USER_OVERBOOKING_SUBSCRIBED_TEXT" attributes="" save_date="2021-08-02 13:27:47"><![CDATA[L'utente [firstname] [lastname], è stato iscritto al corso [course] in lista d'attesa sulla piattaforma [url]]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT" attributes="email" save_date="2021-01-22 10:16:55"><![CDATA[Sei stato iscritto a un nuovo corso]]></key>
+        <key id="email&amp;_NEW_USER_SUBSCRIBED_COURSEPATH_SUBJECT" attributes="email" save_date="2021-01-22 10:16:55"><![CDATA[Sei stato iscritto a un nuovo percorso formativo]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT_MODERATORS" attributes="" save_date="2020-09-21 12:58:27"><![CDATA[Un nuovo utente è stato iscritto ad un corso]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_TEXT" attributes="email" save_date="2021-01-22 10:17:22"><![CDATA[Sei stato iscritto al corso [course] sulla piattaforma [url]]]></key>
+        <key id="email&amp;_NEW_USER_SUBSCRIBED_COURSEPATH_TEXT" attributes="email" save_date="2021-01-22 10:17:22"><![CDATA[Sei stato iscritto al percorso formativo [coursepath] sulla piattaforma [url]]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_TEXT_MODERATORS" attributes="" save_date="2020-03-02 13:15:09"><![CDATA[Un nuovo utente [firstname] [lastname] [username] è stato iscritto al corso [course]]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_TEXT_SMS" attributes="" save_date="2021-01-22 10:18:07"><![CDATA[Sei stato iscritto al corso: [course] nella piattaforma: [url]]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_SUBJECT" attributes="email" save_date="2015-09-30 15:32:39"><![CDATA[Un utente è in attesa di essere iscritto ad un corso]]></key>

@@ -45,9 +45,9 @@ echo getTitleArea([
     ];
 
     $array_content = [];
-
-    if(strpos($link,'choose_editions_coursepath_action') > 0){
-        $getParams = '&id_course='. $id_course. '&id_path='. $id_path ;
+    $classrooms_query = http_build_query(['classrooms' => $classrooms]);
+    if(strpos($link,'choose_editions_coursepath_action') > 0 || strpos($link,'subToCoursepathWithLevel') > 0){
+        $getParams = '&id_course='. $id_course. '&id_path='. $id_path . '&' . $classrooms_query;
     }else{
         $getParams = '/ins&amp;id_course=' . $id_course . '&amp;id_edition=' . $id_edition . '&amp;id_date=' . $id_date;
     }
@@ -96,7 +96,7 @@ echo getTitleArea([
         'caption' => false, //Lang::t('_LEVELS', 'subscribe')
     ]);
 
-    echo  Form::getInputCheckbox('send_alert', 'send_alert', 0, 0, false)
+    echo  Form::getInputCheckbox('send_alert', 'send_alert', 1, 0, false)
     . ' <label for="send_alert">' . Lang::t('_SEND_ALERT', 'subscribe') . '</label>&nbsp;&nbsp;&nbsp;&nbsp;';
   
 

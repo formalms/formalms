@@ -1192,8 +1192,10 @@ Username: [userid]]]></key>
         <key id="email&amp;_NEW_USER_OVERBOOKING_SUBSCRIBED_SUBJECT" attributes="" save_date="2021-08-02 13:31:37"><![CDATA[User enrolled in overbooking]]></key>
         <key id="email&amp;_NEW_USER_OVERBOOKING_SUBSCRIBED_TEXT" attributes="" save_date="2021-08-02 13:27:47"><![CDATA[The user [firstname] [lastname], has been enrolled in course [course] with overbooking state on platform [url]]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT" attributes="email" save_date="2021-01-07 12:01:19"><![CDATA[You have been enrolled in course]]></key>
+        <key id="email&amp;_NEW_USER_SUBSCRIBED_COURSEPATH_SUBJECT" attributes="email" save_date="2021-01-07 12:01:19"><![CDATA[You have been enrolled in course path]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT_MODERATORS" attributes="" save_date="2020-09-21 12:58:38"><![CDATA[A new user has been enrolled in a course]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_TEXT" attributes="email" save_date="2021-01-07 12:05:39"><![CDATA[You have been enrolled in the course : [course] at URL: <a href="[url]">[url]</a>]]></key>
+        <key id="email&amp;_NEW_USER_SUBSCRIBED_COURSEPATH_TEXT" attributes="email" save_date="2021-01-07 12:05:39"><![CDATA[You have been enrolled in the course path : [coursepath] at URL: <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_TEXT_MODERATORS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[A new user, [firstname] [lastname] [username] has been enrolled in course [course]]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_TEXT_SMS" attributes="" save_date="2021-01-07 12:06:12"><![CDATA[You have been enrolled in the course : [course] at URL: [url]]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_SUBJECT" attributes="email" save_date="2020-09-15 14:47:12"><![CDATA[User is waiting for course subscription approval]]></key>
