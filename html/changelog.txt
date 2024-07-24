@@ -6,6 +6,12 @@ forma.lms 4.0.9
 ---------------------------------------------------------------------------------------
 Release date: 2024 july
 
+
+- #      -fix typo in install.adm
+- #      -fix typo
+- #      -fixed check box value
+- #      -fix error in sendRegistration of reservation registration - other minor fixes
+- #      -fix privilege escalation in "Other actions" menu.
 - #      -review question types
 - #      -Fix prerequisites check and mySQL 8 query handling.
 - #      -Fix suspension attempts handling and prerequisites check
