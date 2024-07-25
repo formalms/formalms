@@ -158,10 +158,10 @@ function resetTemplate()
     setTemplate(getTemplate());
 }
 
-function readTemplateManifest($template_name, $key = false)
+function readTemplateManifest($template_name, $key = false, $check = false)
 {
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-    if ($session->has('template_info') && $session->get('template_info') != false) {
+    if ($session->has('template_info') && $session->get('template_info') != false && !$check) {
         return $session->get('template_info')->getVersion();
     } else {
         $template_file = _templates_ . '/' . $template_name . '/manifest.xml';
@@ -187,13 +187,13 @@ function readTemplateManifest($template_name, $key = false)
  *
  * @return bool false if template is not compatible, true if it is compatible
  */
-function checkTemplateVersion($template_name)
+function checkTemplateVersion($template_name, $bypassSession = false)
 {
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-    if ($session->has('template_info') && $session->get('template_info') != false) {
+    if ($session->has('template_info') && $session->get('template_info') != false && !$bypassSession) {
         return $session->get('template_info')->getCheckVersion();
     } else {
-        $template_forma_version = getTemplateVersion($template_name);
+        $template_forma_version = getTemplateVersion($template_name, $bypassSession);
         $check = [];
         if ($template_forma_version) {
 
@@ -205,9 +205,9 @@ function checkTemplateVersion($template_name)
     }
 }
 
-function getTemplateVersion($template_name)
+function getTemplateVersion($template_name, $bypassSession = false)
 {
-    return readTemplateManifest($template_name, 'forma_version');
+    return readTemplateManifest($template_name, 'forma_version', $bypassSession);
 }
 
 /**
@@ -231,7 +231,7 @@ function getTemplateList($set_keys = false, $addUndefined = false, $excludeNotCo
             continue;
         }
 
-        if (!checkTemplateVersion($elem)) {
+        if (!checkTemplateVersion($elem, true)) {
             continue;
         }
 
