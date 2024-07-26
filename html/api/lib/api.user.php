@@ -19,6 +19,13 @@ require_once _base_ . '/api/lib/lib.api.php';
 
 class User_API extends API
 {
+    public function __construct()
+    {
+        parent::__construct();
+        $this->needAuthentication = true;
+        $this->endpoingWithoutAuthentication = ['api/user/downloadCertificate'];
+    }
+
     protected function _getBranch($like, $parent = false, $lang_code = false)
     {
         if (!$like) {
@@ -34,7 +41,7 @@ class User_API extends API
         }
         $res = $this->db->query($query);
         if ($this->db->num_rows($res) > 0) {
-            list($output) = $this->db->fetch_row($res);
+            [$output] = $this->db->fetch_row($res);
 
             return $output;
         } else {
@@ -60,7 +67,7 @@ class User_API extends API
 
         $res = $this->db->query($query);
         if ($this->db->num_rows($res) > 0) {
-            list($output) = $this->db->fetch_row($res);
+            [$output] = $this->db->fetch_row($res);
 
             return $output;
         } else {
@@ -712,7 +719,7 @@ class User_API extends API
 
         $q = $this->db->query($qtxt);
         if ($q) {
-            list($tot) = $this->db->fetch_row($q);
+            [$tot] = $this->db->fetch_row($q);
             $output['users_count'] = $tot;
         } else {
             $output['success'] = false;
@@ -800,7 +807,7 @@ class User_API extends API
         $q = "SELECT idst from core_group where groupid = '/framework/adminrules/" . $profile_name . "'";
         $res = $this->db->query($q);
         if ($res) {
-            list($out) = $this->db->fetch_row($res);
+            [$out] = $this->db->fetch_row($res);
         }
 
         return $out;
@@ -821,7 +828,7 @@ class User_API extends API
         $q = 'SELECT count(*) as t from core_group_members where idst = 4 and idstMember =' . $idst;
         $res = $this->db->query($q);
         if ($res) {
-            list($out) = $this->db->fetch_row($res);
+            [$out] = $this->db->fetch_row($res);
         }
 
         return $out;
@@ -877,7 +884,7 @@ class User_API extends API
             $q = "select idst from core_group where core_group.groupid = '/" . $params['group_name'] . "'";
             $rs = $this->db->query($q);
             if ($rs) {
-                list($selected_group) = $this->db->fetch_row($rs);
+                [$selected_group] = $this->db->fetch_row($rs);
             }
         }
 
@@ -886,7 +893,7 @@ class User_API extends API
             $q = "select idst_ocd from core_org_chart_tree where code = '" . $params['orgchart_code'] . "'";
             $rs = $this->db->query($q);
             if ($rs) {
-                list($selected_group) = $this->db->fetch_row($rs);
+                [$selected_group] = $this->db->fetch_row($rs);
             }
         }
 
@@ -895,11 +902,11 @@ class User_API extends API
             $q = "select id_dir from core_org_chart where translation = '" . $params['orgchart_name'] . "' LIMIT 1";
             $rs = $this->db->query($q);
             if ($rs) {
-                list($id_org) = $this->db->fetch_row($rs);
+                [$id_org] = $this->db->fetch_row($rs);
                 $q = 'select idst_ocd from core_org_chart_tree where idOrg = ' . intval($id_org);
                 $rs = $this->db->query($q);
                 if ($rs) {
-                    list($selected_group) = $this->db->fetch_row($rs);
+                    [$selected_group] = $this->db->fetch_row($rs);
                 }
             }
         }
@@ -909,7 +916,7 @@ class User_API extends API
             $q = "select idst from core_user where userid = '/" . $params['single_user'] . "'";
             $rs = $this->db->query($q);
             if ($rs) {
-                list($selected_group) = $this->db->fetch_row($rs);
+                [$selected_group] = $this->db->fetch_row($rs);
             }
         }
 
@@ -1008,7 +1015,7 @@ class User_API extends API
 
         $rs = $this->db->query($query);
         if ($rs) {
-            list($idParent) = $this->db->fetch_row($rs);
+            [$idParent] = $this->db->fetch_row($rs);
         }
 
         return $idParent;
@@ -1212,7 +1219,7 @@ class User_API extends API
 
         $rs = $this->db->query($query);
         if ($rs) {
-            list($numChild) = $this->db->fetch_row($rs);
+            [$numChild] = $this->db->fetch_row($rs);
         }
 
         if ($numChild > 0) {
