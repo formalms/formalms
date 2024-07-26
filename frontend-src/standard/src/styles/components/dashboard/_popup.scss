@@ -8,12 +8,16 @@
 }
 
 .d-popup__item {
-  width: 180px;
+  min-width: 180px;
   height: auto;
   padding: 7px;
   background-color: var(--color-grey);
   border-radius: 6px;
-  position: relative;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
 }
 
 .d-popup__type {

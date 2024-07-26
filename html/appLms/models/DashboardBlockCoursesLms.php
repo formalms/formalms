@@ -300,7 +300,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
             if ($startDate >= $now) {
                 $courseDateData['showStartDate'] = true;
             }
-            if ($endDate >= $now) {
+            if ($endDate >= $now && $startDate->format('Y-m-d') < $endDate->format('Y-m-d')) {
                 $courseDateData['showEndDate'] = true;
             }
 
@@ -327,7 +327,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
         if ($startDate >= $now) {
             $courseData['showStartDate'] = true;
         }
-        if ($endDate >= $now) {
+        if ($endDate >= $now && $startDate->format('Y-m-d') < $endDate->format('Y-m-d')) {
             $courseData['showEndDate'] = true;
         }
 

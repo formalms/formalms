@@ -1,6 +1,26 @@
 .d-calendar {
   font-family: $font;
 
+  .fc-daygrid-day-events {
+    overflow: visible !important;
+  }
+
+  .fc-daygrid-day-frame {
+    overflow: visible !important;
+  }
+
+  .fc-daygrid-event-harness {
+    z-index: 1;
+  }
+
+  .fc-daygrid-event-harness:hover {
+    z-index: 1000001;
+  }
+
+  .fc .fc-scroller-harness {
+    overflow: visible;
+  }
+
   .fc-button{
     background-color: var(--color-white)!important;
     border: none!important;
@@ -40,14 +60,23 @@
     }
   }
 
+  .fc-event-time {
+    display: none;
+  }
+
+  .fc-event-title {
+    position: relative;
+    z-index: 1;
+  }
+
   .fc-event {
     width: 65.48%;
     min-height: 20px;
     height: auto;
-    margin-left: auto!important;
     position: relative;
     cursor: pointer;
     border-radius: 0!important;
+    overflow: visible !important;
     
     &.is-open {
       &:before {
@@ -61,17 +90,8 @@
       }
     }
 
-    &:before {
-      content: '';
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      @include center-object(y, absolute);
-      left: -10px;
-
-      @include breakpoint($ipad) {
-        left: -11px;
-      }
+    .fc-daygrid-event-dot {
+      border-color: var(--color-secondary) !important;
     }
 
     @include breakpoint($ipad) {
@@ -83,6 +103,7 @@
       .d-popup {
         opacity: 1;
         visibility: visible;
+        z-index: 1000000;
       }
     }
 
