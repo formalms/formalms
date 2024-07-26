@@ -1235,7 +1235,8 @@ class User_API extends API
 
     public function downloadCertificate()
     {
-        $downloadString = end(explode('/', $this->request->get('q')));
+        $queryStringArray = explode('/', $this->request->get('q'));
+        $downloadString = end($queryStringArray);
         $fileName = SSLEncryption::decryptDownloadUrl($downloadString);
         $baseUrl = $_SERVER['DOCUMENT_ROOT'] . '/files/appLms/certificate/';
         $fileUrl = $baseUrl . $fileName;
