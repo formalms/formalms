@@ -44,6 +44,7 @@ class API
     protected $session;
 
     protected $needAuthentication = true;
+    protected $endpoingWithoutAuthentication;
     protected $authenticated = false;
     protected $buffer = '';
     protected \Symfony\Component\HttpFoundation\Request $request;
@@ -95,6 +96,18 @@ class API
         return $this->db->num_rows($res) > 0;
     }
 
+    private function isAuthenticationNeeded()
+    {
+        $requestedEndpoint = \FormaLms\lib\Get::req(_REST_PARAM_NAME, DOTY_STRING);
+        foreach ($this->endpoingWithoutAuthentication as $url) {
+            if (str_contains($requestedEndpoint, $url)) {
+                return false;
+            }
+        }
+
+        return $this->needAuthentication;
+    }
+
     /*
      * Check user authentication
      */
@@ -105,7 +118,7 @@ class API
         $query = 'DELETE FROM %adm_rest_authentication WHERE expiry_date < NOW()';
         $this->db->query($query);
 
-        if (!$this->needAuthentication) {
+        if (!$this->isAuthenticationNeeded()) {
             $result = ['success' => true];
             //no authentication needed for this module
             return $result;
@@ -120,40 +133,40 @@ class API
         switch ($auth_method) {
             // use application's pre-set authentication code
             case _AUTH_UCODE:
-                    $auth_code = FormaLms\lib\Get::sett('rest_auth_code', false);
+                $auth_code = FormaLms\lib\Get::sett('rest_auth_code', false);
 
-                    $headerAuth = str_replace(['FormaLMS', ' '], '', $_SERVER['HTTP_X_AUTHORIZATION']);
+                $headerAuth = str_replace(['FormaLMS', ' '], '', $_SERVER['HTTP_X_AUTHORIZATION']);
 
-                    if ($code !== $auth_code && $headerAuth !== $auth_code) {
-                        $result['message'] = 'Autentication code is not valid';
-                    } else {
-                        $result['success'] = true;
-                    }
+                if ($code !== $auth_code && $headerAuth !== $auth_code) {
+                    $result['message'] = 'Autentication code is not valid';
+                } else {
+                    $result['success'] = true;
+                }
 
                 break;
             // search the token in  authentications DB table
             case _AUTH_TOKEN:
-                    $query = "SELECT * FROM %adm_rest_authentication WHERE token='$code'";
-                    $res = $this->db->query($query);
-                    if ($this->db->num_rows($res) > 0) {
-                        $now = time();
-                        $result = true;
-                        $query = "UPDATE %adm_rest_authentication SET last_enter_date='" . date('Y-m-d H:i:s', $now) . "' ";
-                        if (FormaLms\lib\Get::sett('rest_auth_update', false)) {
-                            $lifetime = FormaLms\lib\Get::sett('rest_auth_lifetime', 1);
-                            $query .= " , expiry_date='" . date('Y-m-d H:i:s', $now + $lifetime) . "' ";
-                        }
-                        $query .= " WHERE token='$code'";
-                        $this->db->query($query);
-                        $result['success'] = true;
-                    } else {
-                        $result['message'] = 'Autentication Token is not valid';
+                $query = "SELECT * FROM %adm_rest_authentication WHERE token='$code'";
+                $res = $this->db->query($query);
+                if ($this->db->num_rows($res) > 0) {
+                    $now = time();
+                    $result = true;
+                    $query = "UPDATE %adm_rest_authentication SET last_enter_date='" . date('Y-m-d H:i:s', $now) . "' ";
+                    if (FormaLms\lib\Get::sett('rest_auth_update', false)) {
+                        $lifetime = FormaLms\lib\Get::sett('rest_auth_lifetime', 1);
+                        $query .= " , expiry_date='" . date('Y-m-d H:i:s', $now + $lifetime) . "' ";
                     }
+                    $query .= " WHERE token='$code'";
+                    $this->db->query($query);
+                    $result['success'] = true;
+                } else {
+                    $result['message'] = 'Autentication Token is not valid';
+                }
 
                 break;
             case _AUTH_SECRET_KEY:
-                 // ---- new auth method (alpha) 20110610 ---- [
-                    $result = $this->checkKeys($GLOBALS['UNFILTERED_POST']);
+                // ---- new auth method (alpha) 20110610 ---- [
+                $result = $this->checkKeys($GLOBALS['UNFILTERED_POST']);
 
                 break; // ]----
             default:
@@ -356,7 +369,7 @@ class API
 
         if (!empty($data['ext_user']) && !empty($data['ext_user_type'])) {
             $pref_path = 'ext.user.' . $data['ext_user_type'];
-            $pref_val = 'ext_user_' . $data['ext_user_type'] . '_' . (int) $data['ext_user'];
+            $pref_val = 'ext_user_' . $data['ext_user_type'] . '_' . (int)$data['ext_user'];
 
             $res = $this->aclManager->getUsersBySetting($pref_path, $pref_val);
 
