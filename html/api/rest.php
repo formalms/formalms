@@ -26,7 +26,9 @@ ob_start();
 $GLOBALS['UNFILTERED_POST'] = $_POST;
 
 // initialize
-require _base_ . '/lib/lib.bootstrap.php';
+require_once _base_ . '/lib/lib.bootstrap.php';
+require_once _base_ . '/api/lib/lib.rest.php';
+require_once _base_ . '/api/lib/lib.api.php';
 Boot::init(BOOT_HOOKS);
 
 $GLOBALS['output'] = '';
@@ -34,22 +36,21 @@ function rest_cout($string)
 {
     echo $string;
     ob_end_flush();
+    exit();
 }
 
 // -----------------------------------------------------------------------------
 
 if (FormaLms\lib\Get::sett('use_rest_api', 'off') !== 'on') {
     rest_cout(RestAPI::HandleError('Error: API not enabled.', $GLOBALS['REST_API_ACCEPT']));
-    exit();
+
 }
 
-require_once _base_ . '/api/lib/lib.api.php';
-require_once _base_ . '/api/lib/lib.rest.php';
 
 // parsing request
 if (!isset($_GET[_REST_PARAM_NAME])) {
     rest_cout(RestAPI::HandleError('Error: no input parameters.', $GLOBALS['REST_API_ACCEPT']));
-    exit();
+   
 }
 
 //code provided by the user in the request
@@ -59,14 +60,14 @@ $rest_params = explode('/', $_GET[_REST_PARAM_NAME]);
 $numparams = count($rest_params);
 if ($numparams < _REST_MINIMUM_PARAMS) {
     rest_cout(RestAPI::HandleError('Error: not enough input parameters.', $GLOBALS['REST_API_ACCEPT']));
-    exit();
+  
 }
 $last_index = $numparams - 1;
 
 // check if this is a valid call
 if ($rest_params[0] != '' || $rest_params[1] != _REST_VALIDATOR_PARAM) {
     rest_cout(RestAPI::HandleError('Error: Invalid request.', $GLOBALS['REST_API_ACCEPT']));
-    exit();
+   
 }
 
 // you may force a different REQUEST_METHOD
