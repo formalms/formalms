@@ -1483,7 +1483,7 @@ class FormaACLManager
 
         foreach ($rs as $row) {
 
-            $users_info[] = array_values($row);
+            $users_info[$row['idst']] = array_values($row);
         }
 
 
