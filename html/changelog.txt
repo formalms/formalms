@@ -6,7 +6,7 @@ forma.lms 4.0.10
 ---------------------------------------------------------------------------------------
 Release date: 2024 july
 
-
+- #     - Update Rest API 
 - #     - fix rest api buffer
 - #     - fix enroll users list
 - #     - update forma version
