@@ -3524,7 +3524,9 @@ class SubscriptionAlmsController extends AlmsController
     public function subToCoursepathWithLevel(){
 
         require_once _lms_ . '/lib/lib.coursepath.php';
+        require_once _lms_ . '/lib/lib.course.php';
         $path_man = new CoursePath_Manager();
+        $course_man = new \Man_Course();
         require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
         $subs_data = explode(',', $_POST['subs']);
         $courses = explode(',', FormaLms\lib\Get::req('id_course'));
@@ -3534,11 +3536,13 @@ class SubscriptionAlmsController extends AlmsController
         foreach ($courses as $id_course) {
             $formaCourse = new \FormaCourse($id_course);
             $level_idst = &$formaCourse->getCourseLevel($id_course);
+
             foreach ($subs_data as $subs_item) {
                 $res = true;
                 list($id_user, $level) = explode(':', $subs_item);
                 $this->model->id_course = $id_course;
                 $this->model->_addToCourseGroup($level_idst[$level], $id_user);
+                $courses_subscribed = $course_man->getUserCourses($id_user);
                 //$this->model->updateUserLevel($id_user, $level);
 
                 $waiting = false;
@@ -3549,7 +3553,10 @@ class SubscriptionAlmsController extends AlmsController
                     $this->model->id_date = $classrooms[$id_course];
                 }
                 if (!isset($_POST['undo'])){
-                    if (!$this->model->subscribeUser($id_user, $level, $waiting)) {
+                    if (isset($courses_subscribed[$id_course])){
+                        $this->model->updateUserLevel($id_user,$level);
+                    }
+                    elseif (!$this->model->subscribeUser($id_user, $level, $waiting)) {
                         $res = false;
                     }
 

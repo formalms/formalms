@@ -272,7 +272,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         list($imgLogo) = sql_fetch_row($res);
         if (isset($_POST['file_to_del']['coursepath_logo']) and $_FILES['coursepath_logo']['name'] == ''){
             $img = null;
-        }elseif($imgLogo == '' or ($_POST['old_coursepath_logo'] != $_FILES['coursepath_logo']['name'] and $_FILES['coursepath_logo']['name'] != '')){
+        }elseif(($imgLogo == '' or $_POST['old_coursepath_logo'] != $_FILES['coursepath_logo']['name']) and $_FILES['coursepath_logo']['name'] != ''){
             $img = "coursePath_logo_". $time . "_" .$_FILES['coursepath_logo']['name']; // Utilizza $_FILES per accedere al file caricato, non $_POST
         }else{
             $img = $imgLogo;

@@ -1683,31 +1683,7 @@ class SubscriptionAlms extends Model implements Accessible
                      if (count($level_idst) == 0 || $level_idst[1] == '') {
                          $level_idst = FormaCourse::createCourseLevel($id_course);
                      }
-//                     foreach ($_to_add as $id_user) {
-//                         if (isset($_POST['subs'])) {
-//                             $subs_data = explode(',', $_POST['subs']);
-//                             $courses = explode(',', FormaLms\lib\Get::req('id_course'));
-//                             $id_path = FormaLms\lib\Get::req('id_path');
-//                             foreach ($courses as $id_course) {
-//                                 foreach ($subs_data as $subs_item) {
-//                                     list($id_user, $level) = explode(':', $subs_item);
-//                                     $this->_addToCourseGroup($level_idst[$level], $id_user);
-//                                     $this->updateUserLevel($id_user, $level);
-//
-//                                 }
-//                             }
-//                             $this->setResponseforAccessor($result);
-//                         }
-//
-//                         if ($this->id_course != 0){
-//                             $waiting = false;
-//                             //$this->acl_man->addToGroup($level_idst[$level], $id_user);
-//
-//                             $res = $this->subscribeUser($id_user, $level, $waiting);
-//                         }
-//                     }
                      if (!isset($_POST['subs'])){
-//
                          $this->setResponseforAccessor($result);
                      }
 
