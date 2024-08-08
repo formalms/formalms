@@ -18,10 +18,10 @@
  */
 
 /*!
- * GSAP 3.12.3
+ * GSAP 3.12.5
  * https://gsap.com
  *
- * @license Copyright 2008-2023, GreenSock. All rights reserved.
+ * @license Copyright 2008-2024, GreenSock. All rights reserved.
  * Subject to the terms at https://gsap.com/standard-license or for
  * Club GSAP members, the agreement issued with that membership.
  * @author: Jack Doyle, jack@greensock.com
@@ -65,11 +65,11 @@
  * © SpryMedia Ltd - datatables.net/license
  */
 
-/*! DataTables 1.13.7
- * ©2008-2023 SpryMedia Ltd - datatables.net/license
+/*! DataTables 1.13.10
+ * ©2008-2024 SpryMedia Ltd - datatables.net/license
  */
 
-/*! Select for DataTables 1.7.0
+/*! Select for DataTables 1.7.0-dev
  * © SpryMedia Ltd - datatables.net/license/mit
  */
 
@@ -84,7 +84,7 @@
  */
 
 /**!
- * Sortable 1.15.1
+ * Sortable 1.15.2
  * @author	RubaXa   <trash@rubaxa.org>
  * @author	owenm    <owen23355@gmail.com>
  * @license MIT

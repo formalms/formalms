@@ -23,7 +23,7 @@
     <!-- blind nav -->
     {{ Layout_getZone('blind_navigation') }}
     <!-- container -->
-    <div id="container">
+    <div id="main_container" class="h-100">
 
 
 
@@ -68,8 +68,8 @@
 
         <!-- content  -->
         {#{{ <div class="layout_colum_container"> }}#}
-        <div class="row lms-user-content-wrapper">
-            <div class="container-fluid">
+        <div class="row lms-user-content-wrapper" style="height: 100%">
+            <div id="container"  class="container-fluid">
                 {{ Layout_getZone('content') }}
 
                 <div class="nofloat"></div>
@@ -79,11 +79,8 @@
     <!-- footer  -->
     <div id="footer" class="layout_footer">
         {{ Layout_getZone('footer') }}
-            {{ Layout_getCopyright() }}
+        {{ Layout_getCopyright() }}
     </div>
-
-
-
 
     <!-- scripts -->
     {{ Layout_getZone('scripts') }}
@@ -91,4 +88,5 @@
     {{ Layout_getZone('debug') }}
     <!-- def_lang -->
     {{ Layout_getZone('def_lang') }}
+
 {% endblock %}
