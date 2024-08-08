@@ -368,8 +368,8 @@ img.course_logo.sponsor {
 
 .green_menu .badge {
   position: absolute;
-  right: -3px;
-  top: 0px;
+  right: 4px;
+  top: 4px;
   background-color: #ddd;
   z-index: 1;
 }

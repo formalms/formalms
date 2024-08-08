@@ -48,7 +48,7 @@
 
 .layout_footer {
     padding: 20px 0;
-    background: var(--color-primary) !important;
+    background: #fff !important;
     border-top: solid 4px var(--color-primary);
     height: auto !important;
     font-size: 100% !important;
@@ -181,7 +181,7 @@
 @media only screen and (min-width: 768px) {
   #lms_menu_container #navbar ul.nav {
     text-align: right;
-      margin-top: 0px;
+      margin-top: 5px;
   }
 }
 #lms_menu_container #navbar ul.nav > * {
