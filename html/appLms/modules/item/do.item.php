@@ -49,7 +49,7 @@ function play($idResource, $idParams, $back_url)
     $expFileName = explode('.', $file);
     $totPart = count($expFileName) - 1;
 
-    require_once _lms_ . '/lib/lib.param.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
     $idReference = getLOParam($idParams, 'idReference');
     // NOTE: Track only if $idReference is present
     if ($idReference !== false) {

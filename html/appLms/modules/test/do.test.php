@@ -63,7 +63,7 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
 
     require_once _base_ . '/lib/lib.form.php';
     require_once _lms_ . '/class.module/track.test.php';
-    require_once _lms_ . '/lib/lib.param.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
     require_once _lms_ . '/lib/lib.test.php';
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
@@ -297,7 +297,6 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
                     }
                     $query .= ' AND status IN ("completed","passed")';
                     $res = sql_query($query);
-                    //die($query);
                     if (sql_num_rows($res) < count($req_arr)) {
                         cout(UIFeedback::pnotice($lang->def('_UNREACHED_PREREQUISITES')) . '<br /><br />', 'content');
                         cout(Form::closeForm() . '</div>', 'content');
@@ -485,7 +484,7 @@ function playTestDispatch($object_test, $id_param)
 
     require_once _base_ . '/lib/lib.form.php';
     require_once _lms_ . '/class.module/track.test.php';
-    require_once _lms_ . '/lib/lib.param.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
     require_once _lms_ . '/lib/lib.test.php';
 
     $lang = FormaLanguage::createInstance('test');
@@ -572,7 +571,7 @@ function play($object_test, $id_param)
 
     require_once _base_ . '/lib/lib.form.php';
     require_once _lms_ . '/class.module/track.test.php';
-    require_once _lms_ . '/lib/lib.param.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
     require_once _lms_ . '/lib/lib.test.php';
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
@@ -1050,7 +1049,7 @@ function saveAndExit($object_test, $id_param)
 
     require_once _base_ . '/lib/lib.form.php';
     require_once _lms_ . '/class.module/track.test.php';
-    require_once _lms_ . '/lib/lib.param.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
     require_once _lms_ . '/lib/lib.test.php';
 
     $lang = &FormaLanguage::createInstance('test');
@@ -1149,7 +1148,7 @@ function showResult($object_test, $id_param)
 
     require_once _base_ . '/lib/lib.form.php';
     require_once _lms_ . '/class.module/track.test.php';
-    require_once _lms_ . '/lib/lib.param.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
     require_once _lms_ . '/lib/lib.test.php';
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
@@ -1632,7 +1631,7 @@ function review($object_test, $id_param)
 {
     $lang = &FormaLanguage::createInstance('test');
 
-    require_once _lms_ . '/lib/lib.param.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
     require_once _lms_ . '/class.module/track.test.php';
     require_once _lms_ . '/lib/lib.test.php';
 
@@ -1747,7 +1746,7 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
     $lang = FormaLanguage::createInstance('test');
 
     if ($id_param !== false) {
-        require_once _lms_ . '/lib/lib.param.php';
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
 
         $idReference = getLOParam($id_param, 'idReference');
 

@@ -1387,7 +1387,7 @@ class CourseAlms extends Model
         //--- clear LOs ------------------------------------------------------------
 
         require_once _lms_ . '/lib/lib.module.php';
-        require_once _lms_ . '/lib/lib.param.php';
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
         require_once _lms_ . '/class.module/track.object.php';
 
         $arr_lo_param = [];
