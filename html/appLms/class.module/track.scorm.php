@@ -62,7 +62,7 @@ class Track_ScormOrg extends Track_Object
     public function loadReport($idUser = false, $mvc = false)
     {
         require_once _track_scorm_basepath . 'scorm_stats.php';
-        require_once _lms_ . '/lib/lib.param.php';
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
         if ($idUser !== false) {
             $this->idReference = getLOParam($this->idParams, 'idReference');
 

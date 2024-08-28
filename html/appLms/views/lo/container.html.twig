@@ -38,63 +38,7 @@
             {% endif %}
             <div class="folderView">
                 <ul class="folderView__ul js-sortable-view">
-                {#
-                    {% for el in data %}
-                         <li data-id="{{ el.id }}" class="folderView__li is-droppable {% if el.type %}js-folderView-file{% else %}js-folderView-folder is-dropzone{% endif %} {% if el.locked %}fv-is-locked{% endif %}">
-                            <div data-id="{{ el.id }}" class="folderView__el {% if el.type %}fv-is-{{ el.type }}{% else %}fv-is-folder{% endif %}">
-                                <span class="folderView__label">{{ el.title }}</span>
-                            </div>
 
-                            <div class="folderView__visibleActions">
-                                {% if el.visible_actions | length %}
-                                    {% for action in el.visible_actions %}
-                                        {% if action.type == 'submit' %}
-                                            <input type="submit"
-                                                   id="{{ action.content }}"
-                                                   name="{{ action.content }}"
-                                                   class="folderView__action fv-is-{{ action.name }} js-fv-action"
-                                                   title="{{ action.label }}"
-                                                   value=""/>
-                                        {% elseif (action.type == 'link') %}
-                                            <a href="{{ action.content }}" class="folderView__action fv-is-{{ action.name }}" title="{{ action.label }}">
-                                            </a>
-                                        {% endif %}
-                                    {% endfor %}
-                                {% endif %}
-                                {% if el.status %}
-                                    <div class="folderView__status fv-is-{{ el.status }}" title="{{ el.status }}"></div>
-                                {% endif %}
-                            </div>
-                             {% if el.actions | length %}
-                                 <div class="folderView__buttons">
-                                     <button type="button" class="folderView__button fv-is-menu-open js-fv-open-actions"></button>
-                                 </div>
-                                 <div class="actions-wrapper">
-                                   <div class="folderView__actions">
-                                     {% for action in el.actions %}
-                                             {% if action.name == 'copy' %}
-                                                 <button type="button" class="folderView__button fv-is-{{ action.name }} js-fv-open-overlay" title="{{ action.label }}"></button>
-                                             {% else %}
-                                                 {% if action.type == 'submit' %}
-                                                     <input type="submit"
-                                                            id="{{ action.content }}"
-                                                            name="{{ action.content }}"
-                                                            class="folderView__action fv-is-{{ action.name }} js-fv-action"
-                                                            title="{{ action.label }}"
-                                                            value=""/>
-                                                 {% elseif (action.type == 'link') %}
-                                                     <a href="{{ action.content }}" class="folderView__action fv-is-{{ action.name }}" title="{{ action.label }}">
-                                                     </a>
-                                                 {% endif %}
-                                             {% endif %}
-                                     {% endfor %}
-                                     <button type="button" class="folderView__action fv-is-menu-close js-fv-close-actions"></button>
-                                 </div>
-                                 </div>
-                             {% endif %}
-                        </li>
-                    {% endfor %}
-                    #}
                 </ul>
             </div>
         </main>

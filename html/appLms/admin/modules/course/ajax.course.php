@@ -200,7 +200,7 @@ function duplicateCourse()
     }
 
     require_once _lms_ . '/modules/organization/orglib.php';
-    require_once _lms_ . '/lib/lib.param.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
     require_once _lms_ . '/class.module/track.object.php';
     require_once _lms_ . '/class.module/learning.object.php';
 

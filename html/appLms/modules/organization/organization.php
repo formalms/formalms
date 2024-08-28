@@ -184,7 +184,7 @@ function organization_import(&$treeView)
 function organization_play(&$treeView, $idItem)
 {
     global $modname, $op;
-    require_once _lms_ . '/lib/lib.param.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
     $tdb = $treeView->getTreeDb();
     $item = $tdb->getFolderById($idItem);
     $values = $item->otherValues;

@@ -19,7 +19,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         !checkPerm('view', true, 'organization') && !checkPerm('view', true, 'storage');
 
         require_once _base_ . '/lib/lib.form.php';
-        require_once _lms_ . '/lib/lib.param.php';
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
 
         $lang = FormaLanguage::createInstance('faq');
 

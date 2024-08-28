@@ -23,7 +23,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         $mode = importVar('mode', false, 'link');
         $back_coded = htmlentities(urlencode($object_link->back_url));
 
-        require_once _lms_ . '/lib/lib.param.php';
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
         $idReference = getLOParam($id_param, 'idReference');
         // NOTE: Track only if $idReference is present
         if ($idReference !== false) {

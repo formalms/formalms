@@ -47,7 +47,7 @@ function intro($object_poll, $id_param)
 
     require_once _base_ . '/lib/lib.form.php';
     require_once _lms_ . '/class.module/track.poll.php';
-    require_once _lms_ . '/lib/lib.param.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
     require_once _lms_ . '/lib/lib.poll.php';
 
     $lang = &FormaLanguage::createInstance('poll');
@@ -103,7 +103,7 @@ function playPollDispatch($object_poll, $id_param)
 
     require_once _base_ . '/lib/lib.form.php';
     require_once _lms_ . '/class.module/track.poll.php';
-    require_once _lms_ . '/lib/lib.param.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
     require_once _lms_ . '/lib/lib.poll.php';
 
     $id_poll = $object_poll->getId();
@@ -126,7 +126,7 @@ function play($object_poll, $id_param)
 
     require_once _base_ . '/lib/lib.form.php';
     require_once _lms_ . '/class.module/track.poll.php';
-    require_once _lms_ . '/lib/lib.param.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
     require_once _lms_ . '/lib/lib.poll.php';
 
     $lang = &FormaLanguage::createInstance('poll');
@@ -230,7 +230,7 @@ function showResult($object_poll, $id_param)
 
     require_once _base_ . '/lib/lib.form.php';
     require_once _lms_ . '/class.module/track.poll.php';
-    require_once _lms_ . '/lib/lib.param.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
     require_once _lms_ . '/lib/lib.poll.php';
 
     $lang = &FormaLanguage::createInstance('poll');
@@ -283,7 +283,7 @@ function showResult($object_poll, $id_param)
 
 function writePollReport($id_poll, $id_param, $back_url, $mvc = false)
 {
-    require_once _lms_ . '/lib/lib.param.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
     require_once _lms_ . '/lib/lib.poll.php';
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $poll_man = new PollManagement($id_poll);

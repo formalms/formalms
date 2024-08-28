@@ -40,7 +40,7 @@ function decodeSessionTime($stime)
 function getCompilationTable($id_user, $id_test)
 {
     require_once _base_ . '/lib/lib.table.php';
-    require_once _lms_ . '/lib/lib.param.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
     require_once _lms_ . '/class.module/track.test.php';
     require_once _lms_ . '/lib/lib.test.php';
 

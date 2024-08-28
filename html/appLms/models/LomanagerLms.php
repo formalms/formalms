@@ -83,7 +83,7 @@ class LomanagerLms extends Model
         return $this->treeView->getChildrensDataById($rootId);
     }
 
-    public function getFolders($collection_id, $id = 0)
+    public function getFolders($collection_id, $id = 0, $folders = false)
     {
         $learning_objects = $this->getLearningObjects($id);
         if (!isUserCourseSubcribed(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $collection_id)) {
@@ -135,7 +135,7 @@ class LomanagerLms extends Model
 
     public function deleteFolder($id)
     {
-        $folder = $this->tdb->getFolderById((string) $id);
+        $folder = $this->tdb->getFolderById((string)$id);
         $lo = createLO($folder->otherValues[REPOFIELDOBJECTTYPE]);
         if ($lo) {
             // delete categorized resource
@@ -155,22 +155,22 @@ class LomanagerLms extends Model
 
     public function renameFolder($id, $newName)
     {
-        $folder = $this->tdb->getFolderById((string) $id);
+        $folder = $this->tdb->getFolderById((string)$id);
 
         return $this->tdb->renameFolder($folder, $newName);
     }
 
     public function moveFolder($id, $newParentId)
     {
-        $folder = $this->tdb->getFolderById((string) $id);
-        $newParent = $this->tdb->getFolderById((string) $newParentId);
+        $folder = $this->tdb->getFolderById((string)$id);
+        $newParent = $this->tdb->getFolderById((string)$newParentId);
 
         return $folder->move($newParent);
     }
 
     public function reorder($idToMove, $newParent, $newOrder)
     {
-        $folder = $this->tdb->getFolderById((string) $idToMove);
+        $folder = $this->tdb->getFolderById((string)$idToMove);
 
         return $folder->reorder($newParent, $newOrder);
     }
@@ -180,7 +180,7 @@ class LomanagerLms extends Model
         require_once _adm_ . '/lib/lib.sessionsave.php';
         $saveObj = new Session_Save();
         $saveName = $saveObj->getName('crepo', true);
-        $folder = $this->tdb->getFolderById((string) $id);
+        $folder = $this->tdb->getFolderById((string)$id);
         $saveData = [
             'repo' => $fromType,
             'id' => $id,
@@ -202,7 +202,7 @@ class LomanagerLms extends Model
 
             if ($saveData['objectType']) {
                 $lo = createLO($saveData['objectType']);
-                $idResource = $lo->copy((int) $saveData['idResource']);
+                $idResource = $lo->copy((int)$saveData['idResource']);
                 if ($idResource != 0) {
                     $idReference = $this->tdb->addItem($folderId,
                         $saveData['name'],
@@ -309,24 +309,24 @@ class LomanagerLms extends Model
                 ];
 
                 $lo['actions'][] = [
-                     'name' => 'access',
-                     'active' => true,
-                     'type' => 'link',
-                     'content' => "/appCore/index.php?r=adm/userselector/show&id=$id&instance=$type",
-                     'showIcon' => true,
-                     'icon' => 'icon-access',
-                     'label' => 'Access',
-                 ];
+                    'name' => 'access',
+                    'active' => true,
+                    'type' => 'link',
+                    'content' => "/appCore/index.php?r=adm/userselector/show&id=$id&instance=$type",
+                    'showIcon' => true,
+                    'icon' => 'icon-access',
+                    'label' => 'Access',
+                ];
 
-               // $lo['actions'][] = [
-               //     'name' => 'access',
-               //     'active' => true,
-               //     'type' => 'submit',
-               //     'content' => "${type}[org_opaccess][$id]",
-               //     'showIcon' => true,
-               //     'icon' => 'icon-access',
-               //     'label' => 'Access',
-               // ];
+                // $lo['actions'][] = [
+                //     'name' => 'access',
+                //     'active' => true,
+                //     'type' => 'submit',
+                //     'content' => "${type}[org_opaccess][$id]",
+                //     'showIcon' => true,
+                //     'icon' => 'icon-access',
+                //     'label' => 'Access',
+                // ];
 
                 if ($lo['canBeCategorized']) {
                     $lo['actions'][] = [

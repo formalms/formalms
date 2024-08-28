@@ -203,7 +203,7 @@ class Learning_Htmlpage extends Learning_Object
             }
         }
 
-        require_once _lms_ . '/lib/lib.param.php';
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
         $idReference = getLOParam($id_param, 'idReference');
         // NOTE: Track only if $idReference is present
         if ($idReference !== false) {

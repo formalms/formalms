@@ -15,9 +15,10 @@ use FormaLms\lib\Interfaces\Accessible;
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once _base_ . '/lib/lib.treedb.php';
-require_once _base_ . '/lib/lib.treeview.php';
-require_once _lms_ . '/lib/lib.repo.php';
+require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.treedb.php');
+require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.treeview.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.repo.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
 
 define('ORGFIELDIDCOURSE', 13);
 define('ORGFIELDPREREQUISITES', 14);
@@ -388,7 +389,7 @@ class OrgDirDb extends RepoDirDb implements Accessible
         $language, $resource, $objective, $dateInsert,
         $otherData = null, $idCourse = false)
     {
-        require_once _lms_ . '/lib/lib.param.php';
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
         $this->org_title = $title;
         $this->org_objectType = $objectType;
         $this->org_idResource = $idResource;
@@ -445,7 +446,7 @@ class OrgDirDb extends RepoDirDb implements Accessible
 
     public function addItemById($idParent, $idObject, $idCourse = false)
     {
-        require_once _lms_ . '/lib/lib.param.php';
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
         $query = 'SELECT `title`, `objectType`, `idResource`'
             . ' FROM %lms_homerepo'
             . " WHERE idObject='" . (int) $idObject . "'";
@@ -660,7 +661,7 @@ class OrgDirDb extends RepoDirDb implements Accessible
             $arrParamsInfo = $lo->getParamInfo();
 
             if ($arrParamsInfo !== false) {
-                require_once _lms_ . '/lib/lib.param.php';
+                require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
                 while ($param = current($arrParamsInfo)) {
                     if (isset($arrData[$param['param_name']])) {
                         setLOParam($this->org_idParam, $param['param_name'], $arrData[$param['param_name']]);
@@ -736,7 +737,7 @@ class OrgDirDb extends RepoDirDb implements Accessible
     public function deleteAllTree()
     {
         // loop on all items
-        require_once _lms_ . '/lib/lib.param.php';
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
         require_once _lms_ . '/class.module/track.object.php';
         $nullVal = null;
         $coll = $this->getFoldersCollection($nullVal);
@@ -1991,6 +1992,9 @@ class Org_TreeView extends RepoTreeView
             } else {
                 $node['childCount'] = (int) $this->countChildren($folder->id);
             }
+
+            $node['autoplay'] = (bool)getLOParam($folder->otherValues[ORGFIELDIDPARAM],'autoplay');
+
             $res[$idLo] = $node;
         }
 

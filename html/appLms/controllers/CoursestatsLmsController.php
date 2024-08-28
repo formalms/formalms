@@ -720,7 +720,7 @@ class CoursestatsLmsController extends LmsController
         }
 
         require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/organization/orglib.php');
-        require_once _lms_ . '/lib/lib.param.php';
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
 
         $repoDb = new OrgDirDb($this->idCourse);
         $folder = $repoDb->getFolderById($id_lo);

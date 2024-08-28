@@ -1817,7 +1817,7 @@ class Course_API extends API
         //--- clear LOs ------------------------------------------------------------
 
         require_once _lms_ . '/lib/lib.module.php';
-        require_once _lms_ . '/lib/lib.param.php';
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
         require_once _lms_ . '/class.module/track.object.php';
 
         $arr_lo_param = [];
@@ -2613,7 +2613,7 @@ class Course_API extends API
         }
 
         require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/organization/orglib.php');
-        require_once _lms_ . '/lib/lib.param.php';
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
         require_once _lms_ . '/class.module/track.object.php';
         require_once _lms_ . '/class.module/learning.object.php';
 
