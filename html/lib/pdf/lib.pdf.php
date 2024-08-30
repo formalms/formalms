@@ -112,7 +112,7 @@ class PDF extends TCPDF
     {
         @ob_end_clean();
 
-        $doc = new DOMDocument(null, $this->encoding);
+        $doc = new DOMDocument('1.0', $this->encoding);
 if(!empty($html)) {
 
 
