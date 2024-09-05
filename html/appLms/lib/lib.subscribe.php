@@ -1232,8 +1232,8 @@ class CourseSubscribe_Management
 
         $group_levels = &$this->course_man->getCourseIdstGroupLevel($id_course);
         $user_level = $this->course_man->getLevelsOfUsers($id_course, $arr_users);
-        foreach ([$arr_users] as $id_user) {
-            if (isset($user_level[$id_user])) {
+        foreach ($arr_users as $id_user) {
+            if (isset($user_level)) {
                 $lv = $user_level[$id_user];
                 $this->acl_man->removeFromGroup($group_levels[$lv], $id_user);
             }
