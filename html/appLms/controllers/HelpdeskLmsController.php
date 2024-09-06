@@ -31,7 +31,6 @@ class HelpdeskLmsController extends LmsController
         $telefono = $_POST['telefono'];
         $username = $_POST['username'];
         $oggetto = $_POST['oggetto'];
-        $copia = $_POST['send_cc'];
         $priorita = $_POST['priorita'];
 
         $help_req_resolution = $_POST['help_req_resolution'];
@@ -41,9 +40,6 @@ class HelpdeskLmsController extends LmsController
         $headers = "From: \"$sender_name\" <" . strip_tags($sendto) . ">\r\n";
         $headers .= "MIME-Version: 1.0\r\n";
         $headers .= "Content-Type: text/html;charset=utf-8 \r\n";
-        if ($copia == 'on') {
-            $headers .= 'Cc: ' . $usermail . "\r\n";
-        }
         $headers .= 'Ccn: ' . $ccn . "\r\n";
         if ($priorita != 'on') {
             //SET EMAIL PRIORITY
