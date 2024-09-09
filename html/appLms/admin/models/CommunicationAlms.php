@@ -89,7 +89,7 @@ class CommunicationAlms extends Model implements Accessible
             . ' LEFT JOIN %lms_course AS cs ON (c.id_course = cs.idCourse)'
             . '	LEFT JOIN %lms_communication_track AS ct ON (c.id_comm = ct.idReference AND ct.idUser = ' . (int) $reader . '  )'
     
-            . (($filter['only_to_read'] == true ) ? ' WHERE ( ct.status = "failed" OR  ct.status = "ab-initio" OR  ct.status = "attempted" OR ct.idReference IS NULL ) ' : ' WHERE 1')
+            . ((isset($filter['only_to_read'])) && ($filter['only_to_read'] == true ) ? ' WHERE ( ct.status = "failed" OR  ct.status = "ab-initio" OR  ct.status = "attempted" OR ct.idReference IS NULL ) ' : ' WHERE 1')
             . (!empty($filter['text']) ? " AND ( title LIKE '%" . $filter['text'] . "%' OR description LIKE '%" . $filter['text'] . "%' ) " : '')
             . (!empty($filter['viewer']) ? ' AND ca.idst IN ( ' . implode(',', $filter['viewer']) . ' ) ' : '')
             . (!empty($filter['categories']) ? ' AND c.id_category IN (' . implode(',', $filter['categories']) . ') ' : '')
