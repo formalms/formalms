@@ -21,7 +21,7 @@ class HelpdeskLmsController extends LmsController
 {
     public function show()
     {
-        $sender = DomainHandler::getInstance()->getMailerField('helper_desk_mail') ?? DomainHandler::getInstance()->getMailerField('sender_mail_system');
+        $sender = DomainHandler::getInstance()->getMailerField('sender_mail_system');
         $sender_name = DomainHandler::getInstance()->getMailerField('helper_desk_name') ?? DomainHandler::getInstance()->getMailerField('sender_name_system');
         $prefix_subj = DomainHandler::getInstance()->getMailerField('helper_desk_subject');
         $ccn = FormaLms\lib\Get::sett('send_ccn_for_system_emails');
