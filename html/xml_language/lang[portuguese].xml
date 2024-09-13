@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20240527</DATE>
+  <DATE>20240913</DATE>
   <LANG id="portuguese">
     <lang_code>portuguese</lang_code>
     <lang_description>Portuguese</lang_description>
@@ -11,6 +11,9 @@
       <module id="">
         <key id="&amp;_NEW_USER_SUBSCRIBED_TEXT_MODERATORS" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
       </module>
+      <module id="adminmanager">
+        <key id="adminmanager&amp;_ALL_COURSES_IN_CATALOGUE" attributes="" save_date="2024-06-13 09:33:07"><![CDATA[Todos os cursos no catálogo]]></key>
+      </module>
       <module id="adminrules">
         <key id="adminrules&amp;_ADMIN_ASSIGNTREEDESCR" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Selecionar as pastas/diretórios do utilizador que o administrador pode ver]]></key>
         <key id="adminrules&amp;_ADMIN_MANAGMENT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Gestor de administradores]]></key>
@@ -20,6 +23,7 @@
         <key id="adminrules&amp;_ADMIN_PREFERENCES_TITLE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Configurações especiais]]></key>
         <key id="adminrules&amp;_ADMIN_RULES" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Perfil de administrador]]></key>
         <key id="adminrules&amp;_ADMIN_SPECIAL_SETTING" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Configurações especiais para:]]></key>
+        <key id="adminrules&amp;_COURSE_PRESENCE_ADMIN" attributes="" save_date="2024-06-13 09:36:41"><![CDATA[Administração de presença de curso]]></key>
         <key id="adminrules&amp;_DIRECT_COURSE_SUBSCRIBE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Ativar diretamente os registos feitos por este administrador]]></key>
         <key id="adminrules&amp;_DIRECT_USER_INSERT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Ativar diretamente os utilizadores criados por este administrador]]></key>
         <key id="adminrules&amp;_LANG_SETTING" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Configurações de idioma]]></key>
@@ -32,8 +36,8 @@
         <key id="adminrules&amp;_SPECIAL_SETTING" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Configurações especiais]]></key>
       </module>
       <module id="admin_date">
-        <key id="admin_date&amp;_PAPER_TEST" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Teste de papel]]></key>
-        <key id="admin_date&amp;_WEB_TEST" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Teste web]]></key>
+        <key id="admin_date&amp;_PAPER_TEST" attributes="" save_date="2024-09-13 15:50:32"><![CDATA[Teste no papel]]></key>
+        <key id="admin_date&amp;_WEB_TEST" attributes="" save_date="2024-09-13 15:50:24"><![CDATA[Teste Web]]></key>
       </module>
       <module id="admin_directory">
         <key id="admin_directory&amp;_ACCEPT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Aceitar]]></key>
@@ -1425,6 +1429,7 @@ Senha: [password]]]></key>
       <module id="fncroles">
         <key id="fncroles&amp;_GAP_ANALYSIS" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Análise de falhas]]></key>
         <key id="fncroles&amp;_GAP_ONLY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Com falha]]></key>
+        <key id="fncroles&amp;_NONE" attributes="" save_date="2024-06-13 09:30:49"><![CDATA[Nenhum]]></key>
         <key id="fncroles&amp;_NO_GAP_ONLY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Sem falha]]></key>
       </module>
       <module id="forum">
@@ -1683,6 +1688,7 @@ Senha: [password]]]></key>
 <br/>
 Para alterar estas palavras por favor vá a  gestão Admin/Idioma, pesquise por <b>login</b> e edite as chaves <b>_INTRO_STD_TEXT_TITLE</b> e <b>_INTRO_STD_TEXT</b>]]></key>
         <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[forma.lms é uma plataforma de e-learning Open Source (LMS and LCMS) utilizada nos mercados de educação corporativa e superior.]]></key>
+        <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2024-06-07 13:35:01"><![CDATA[Bem-vindo à plataforma de educação da RNetworks! ]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Vá para formulário de <b> login </b>]]></key>
         <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Autenticação LDAP está activa, funcionalidade indisponível por favor informe o seu administrador]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Entrar]]></key>
@@ -1714,7 +1720,7 @@ No tratamento desta informação, é garantida a integridade e a qualidade do
         <key id="login&amp;_TWO_USERS_LOGGED_WITH_SAME_USERNAME" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Outro utilizador está conectado com o seu nome de utilizador]]></key>
         <key id="login&amp;_UNKNOWNGOOGLERROR" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Erro desconhecido durante o login do Google]]></key>
         <key id="login&amp;_UNKNOWNSOCIALERROR" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Erro desconhecido no login social]]></key>
-        <key id="login&amp;_UNLOGGED" attributes="" save_date="2024-06-07 13:46:01"><![CDATA[Você está desconectado]]></key>
+        <key id="login&amp;_UNLOGGED" attributes="" save_date="2024-06-07 13:46:01"><![CDATA[Você está desconectado]]></key>
       </module>
       <module id="manmenu">
         <key id="manmenu&amp;_ADDCUSTOM" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Adicionar novo menu personalizado]]></key>
@@ -2087,6 +2093,7 @@ Por favor não carregue imagens ofensivas.]]></key>
         <key id="profile&amp;_NO_VIDEO_FOUND" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Nenhum video encontrado]]></key>
         <key id="profile&amp;_OLDPASSWRONG" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[A senha inserida não é a sua]]></key>
         <key id="profile&amp;_OLD_PWD" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Senha antiga]]></key>
+        <key id="profile&amp;_OPERATION_FAILUREPROFILE" attributes="" save_date="2024-06-10 17:02:16"><![CDATA[Erro ao editar as propriedades do usuário]]></key>
         <key id="profile&amp;_OPERATION_SUCCESSFULPROFILE" attributes="" save_date="2024-01-18 14:10:12"><![CDATA[Perfil atualizado com êxito]]></key>
         <key id="profile&amp;_OTHER_POLICY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Outras opções]]></key>
         <key id="profile&amp;_PFL_POLICY_NOONE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Niguém]]></key>
@@ -2800,7 +2807,6 @@ Senha: [password]]]></key>
         <key id="standard&amp;_ONLY_ONCE" attributes="" save_date="2024-01-23 21:17:35"><![CDATA[Uma única vez]]></key>
         <key id="standard&amp;_OPEN" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Aberto]]></key>
         <key id="standard&amp;_OPERATION_FAILURE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Erro ao processar a operação solicitada]]></key>
-        <key id="standard&amp;_OPERATION_FAILUREPROFILE" attributes="" save_date="2024-06-10 16:55:27"><![CDATA[Erro ao editar as propriedades do usuário]]></key>
         <key id="standard&amp;_OPERATION_SUCCESSFUL" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Operação concluída com êxito]]></key>
         <key id="standard&amp;_OPERATION_SUCCESSFULPWD" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Mudança de senha bem-sucedida]]></key>
         <key id="standard&amp;_ORD" attributes="" save_date="2024-01-23 20:46:00"><![CDATA[Ordem]]></key>
@@ -3043,6 +3049,7 @@ Senha: [password]]]></key>
         <key id="subscribe&amp;_BEFORE_THIS_APPROVE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[A inscrição de utilizadores para este curso só será confirmada após a aprovação do administrador]]></key>
         <key id="subscribe&amp;_CAPTION_SELECT_LEVELS" attributes="" save_date="2024-01-16 00:05:11"><![CDATA[Seleccione o nível para o utilizador seleccionado]]></key>
         <key id="subscribe&amp;_CHOOSE_SUBSCRIBE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Seleccionar os alunos para serem inscritos ao curso]]></key>
+        <key id="subscribe&amp;_CHOSE_LEVEL" attributes="" save_date="2024-06-13 09:24:19"><![CDATA[Seleccione o nível]]></key>
         <key id="subscribe&amp;_CONFIRM_DELETION" attributes="" save_date="2024-01-23 22:18:24"><![CDATA[Confirmar eliminação]]></key>
         <key id="subscribe&amp;_COPY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Copiar]]></key>
         <key id="subscribe&amp;_COPY_TO_COURSE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Copiar Inscrições]]></key>
