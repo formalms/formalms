@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20240913</DATE>
+  <DATE>20240916</DATE>
   <LANG id="portuguese">
     <lang_code>portuguese</lang_code>
     <lang_description>Portuguese</lang_description>
@@ -408,7 +408,7 @@
       </module>
       <module id="classroom">
         <key id="classroom&amp;_ADD_DATE_ROW" attributes="" save_date="2024-01-24 10:55:33"><![CDATA[Adicionar nova data]]></key>
-        <key id="classroom&amp;_AVAILABLE_INSTRUMENT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Hardware Disponível]]></key>
+        <key id="classroom&amp;_AVAILABLE_INSTRUMENT" attributes="" save_date="2024-09-13 17:53:12"><![CDATA[Equipamentos disponíveis]]></key>
         <key id="classroom&amp;_BUILDING_ROOM" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Sala]]></key>
         <key id="classroom&amp;_CAPACITY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Capacidade]]></key>
         <key id="classroom&amp;_CITY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Cidade]]></key>
@@ -418,7 +418,7 @@
         <key id="classroom&amp;_DISPOSITION" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Layout (disposição)]]></key>
         <key id="classroom&amp;_EXISTING_DATA" attributes="" save_date="2024-01-24 17:41:32"><![CDATA[Em uma data existente]]></key>
         <key id="classroom&amp;_FAX" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Fax]]></key>
-        <key id="classroom&amp;_INSTRUMENT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Hardware da sala de aula]]></key>
+        <key id="classroom&amp;_INSTRUMENT" attributes="" save_date="2024-09-13 17:53:02"><![CDATA[Equipamentos da sala de aula]]></key>
         <key id="classroom&amp;_LOCATION_INFO" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Informação de localização]]></key>
         <key id="classroom&amp;_MOD_CLASSROOM" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Editar curso presencial (em sala de aula)]]></key>
         <key id="classroom&amp;_NEW_CLASSROOM" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Nova sala de aula (curso presencial)]]></key>
@@ -784,7 +784,7 @@
         <key id="course&amp;_CASCADE_MOD_ON_EDITION" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Copiar as modificações também para as edições]]></key>
         <key id="course&amp;_CATEGORY_PATH" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Está dentro]]></key>
         <key id="course&amp;_CATEGORY_SELECTED" attributes="" save_date="2024-01-16 00:06:29"><![CDATA[Selecção de categoria]]></key>
-        <key id="course&amp;_CERTIFICATE_ASSIGN_STATUS" attributes="" save_date="2024-01-15 23:42:47"><![CDATA[Liberação de certificados]]></key>
+        <key id="course&amp;_CERTIFICATE_ASSIGN_STATUS" attributes="" save_date="2024-09-16 14:48:29"><![CDATA[Atribuição de certificados]]></key>
         <key id="course&amp;_CERTIFICATE_EX_ASSIGN_STATUS" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Atribuição de certificado de Excelência]]></key>
         <key id="course&amp;_CERTIFICATE_LANGUAGE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Idioma do certificado]]></key>
         <key id="course&amp;_CERTIFICATE_NAME" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Certificado]]></key>
