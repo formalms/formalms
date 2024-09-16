@@ -750,6 +750,9 @@ class SettingAdm extends Model
                 case 'template':
                         $templ = getTemplateList();
                         $new_value = $templ[$_POST['option'][$var_name]];
+                        if ($new_value !== getTemplate()){
+                            setTemplate($new_value);
+                        }
                     break;
                 case 'template_domain_node':
                         $values = [];
