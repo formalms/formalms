@@ -180,8 +180,10 @@ class Form
      *
      * @return string with the html code produced
      */
-    public static function getLineTimeSelectorField($line_class, $label_class, $label_text, $input_class, $id, $name, $value, $alt_name, $min_time = '00:00', $max_time = '23:59', $other_param, $other_after, $other_before)
+    public static function getLineTimeSelectorField($line_class, $label_class, $label_text, $input_class, $id, $name, $value, $alt_name, $min_time, $max_time, $other_param, $other_after, $other_before)
     {
+        if(!isset($min_time)) $min_time = '00:00';
+        if(!isset($max_time)) $max_time = '23:59';
         return "<div class='$line_class'>"
             . $other_before
             . "<p><label for='$id' class='$label_class'>$label_text</label></p>"
