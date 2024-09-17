@@ -13,7 +13,27 @@ DELETE FROM learning_coursereport_score
                               
                                 );
 
-ALTER TABLE learning_coursereport DROP INDEX unique_coursereport;
+-- DROP INDEX IF EXISTS
+SELECT
+    COUNT(*)
+INTO
+    @INDEX_my_index_ON_TABLE_my_table_EXISTS
+FROM
+    `information_schema`.`statistics`
+WHERE
+    `table_schema` = 'my_database'
+    AND `index_name` = 'unique_coursereport'
+    AND `table_name` = 'learning_coursereport'
+;
+SET @statement := IF(
+    @INDEX_my_index_ON_TABLE_my_table_EXISTS > 0,
+    -- 'SELECT "info: index exists."',
+    'DROP INDEX `unique_coursereport` ON `learning_coursereport`',
+    'SELECT "info: index does not exist."'
+);
+PREPARE statement FROM @statement;
+EXECUTE statement;
+DEALLOCATE PREPARE statement;
 
 ALTER TABLE learning_coursereport
         ADD CONSTRAINT unique_coursereport UNIQUE (source_of, id_course, id_source);
