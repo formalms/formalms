@@ -333,7 +333,7 @@ class Get
         } else {
             $platform = $item;
         }
-                $path = Get::rel_path(_base_ . '/templates') . '/' . getTemplate() . '/';
+        $path = Get::rel_path(_base_ . '/templates') . '/' . getTemplate() . '/';
 
         return str_replace('/./', '/', $path);
     }
