@@ -333,7 +333,7 @@ class Get
         } else {
             $platform = $item;
         }
-        $path = $GLOBALS['where_templates_relative'] . '/' . getTemplate() . '/';
+        $path = Get::cfg('where_templates_relative') . '/' . getTemplate() . '/';
 
         return str_replace('/./', '/', $path);
     }
@@ -404,7 +404,7 @@ class Get
     public static function link_img($url, $title, $src, $alt, $extra = false)
     {
         // where are we ?
-        $src = $GLOBALS['where_templates_relative'] . '/standard/images/' . $src;
+        $src = Get::cfg('where_templates_relative') . '/standard/images/' . $src;
 
         return '<a href="' . $url . '" title="' . $title . '"' .
             (!empty($extra['link']) != false ? ' ' . $extra['link'] : '') .
