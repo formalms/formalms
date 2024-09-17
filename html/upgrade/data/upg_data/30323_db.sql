@@ -14,19 +14,14 @@ DELETE FROM learning_coursereport_score
                                 );
 
 -- DROP INDEX IF EXISTS
-SELECT
-    COUNT(*)
-INTO
-    @INDEX_my_index_ON_TABLE_my_table_EXISTS
-FROM
-    `information_schema`.`statistics`
-WHERE
-    `table_schema` = DATABASE()
-    AND `index_name` = 'unique_coursereport'
-    AND `table_name` = 'learning_coursereport'
-;
+SELECT COUNT(*) AS index_exists
+FROM information_schema.STATISTICS
+WHERE table_schema = DATABASE()
+  AND table_name = 'learning_coursereport'
+  AND index_name = 'unique_coursereport';
+
 SET @statement := IF(
-    @INDEX_my_index_ON_TABLE_my_table_EXISTS > 0,
+    @index_exists > 0,
     -- 'SELECT "info: index exists."',
     'DROP INDEX `unique_coursereport` ON `learning_coursereport`',
     'SELECT "info: index does not exist."'
