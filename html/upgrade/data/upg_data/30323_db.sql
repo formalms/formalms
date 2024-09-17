@@ -13,11 +13,12 @@ DELETE FROM learning_coursereport_score
                               
                                 );
 
+ALTER TABLE learning_coursereport DROP INDEX unique_coursereport;
 
 ALTER TABLE learning_coursereport
         ADD CONSTRAINT unique_coursereport UNIQUE (source_of, id_course, id_source);
 
-INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`) VALUES
+INSERT IGNORE INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`) VALUES
                         ('force_scorm_finish', 'on', 'enum', 3, '0', 4, 17, 1, 0, '');
 
 /*repeated from former version for errors*/
@@ -31,7 +32,7 @@ CREATE TABLE IF NOT EXISTS learning_communication_lang (
 UPDATE `core_reg_setting` SET `value` = '-' WHERE `val_name` = 'date_sep';
 
 UPDATE core_menu_under SET module_name = 'dashboard' WHERE default_name = '_DASHBOARD' and associated_token = 'view' and of_platform = 'lms';
-INSERT INTO core_role ( idst, roleId )
+INSERT IGNORE INTO core_role ( idst, roleId )
 SELECT max(idst)+1, '/lms/course/public/dashboard/view' FROM core_st LIMIT 1;
 
 INSERT IGNORE INTO `core_menu` ( `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform` )
