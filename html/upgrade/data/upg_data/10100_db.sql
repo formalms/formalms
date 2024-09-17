@@ -65,9 +65,22 @@ INSERT IGNORE INTO `learning_middlearea` (`obj_index`, `disabled`, `idst_list`, 
 
 -- -----------
 
-INSERT IGNORE INTO `learning_menu_under`
+-- Check if the table exists
+SELECT COUNT(*)
+INTO @table_exists
+FROM information_schema.tables 
+WHERE table_schema = DATABASE()
+AND table_name = 'learning_menu_under';
+
+-- Conditionally insert if the table exists
+SET @sql = IF(@table_exists > 0, "INSERT IGNORE INTO `learning_menu_under`
 (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES
-(8, 1, 'coursecategory', '_COURSECATEGORY', '', 'view', NULL, 4, '', '', 'alms/coursecategory/show');
+(8, 1, 'coursecategory', '_COURSECATEGORY', '', 'view', NULL, 4, '', '', 'alms/coursecategory/show');", 'SELECT "Table does not exist" AS Message;');
+
+-- Execute the SQL statement
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
 
 INSERT IGNORE INTO `core_lang_text` (`id_text` ,`text_key` ,`text_module` ,`text_attributes`) VALUES (NULL , '_COURSECATEGORY', 'standard', '');
 
