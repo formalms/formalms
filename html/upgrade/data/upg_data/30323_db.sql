@@ -1,9 +1,9 @@
 DELETE FROM learning_coursereport
                             WHERE id_report NOT IN (
-                                SELECT MIN(id_report) 
+                                SELECT * FROM (SELECT MIN(id_report) 
                                 FROM learning_coursereport 
                                 GROUP BY source_of, id_course, id_source
-                                );
+                                ) as t);
 DELETE FROM learning_coursereport
                             WHERE id_course = 0;
 DELETE FROM learning_coursereport_score
