@@ -21,7 +21,7 @@ INTO
 FROM
     `information_schema`.`statistics`
 WHERE
-    `table_schema` = 'my_database'
+    `table_schema` = DATABASE()
     AND `index_name` = 'unique_coursereport'
     AND `table_name` = 'learning_coursereport'
 ;
