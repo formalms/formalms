@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20240916</DATE>
+  <DATE>20240917</DATE>
   <LANG id="portuguese">
     <lang_code>portuguese</lang_code>
     <lang_description>Portuguese</lang_description>
@@ -767,7 +767,7 @@
         <key id="course&amp;_ADVERT_ADVICE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Existem [advice] novos avisos]]></key>
         <key id="course&amp;_ADVERT_FORUM" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Existem [forum] novas mensagens no fórum.]]></key>
         <key id="course&amp;_ADVERT_LOBJ" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Existem [lobj] novos objetos de aprendizagem]]></key>
-        <key id="course&amp;_ALLOW_OVERBOOKING" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Permitir excesso de reservas (overbooking)]]></key>
+        <key id="course&amp;_ALLOW_OVERBOOKING" attributes="" save_date="2024-09-17 12:09:36"><![CDATA[Permitir excesso de reservas (<i>overbooking</i>)]]></key>
         <key id="course&amp;_ALL_COURSE_TYPE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Todos os tipos de cursos]]></key>
         <key id="course&amp;_ALL_OPEN" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Todos os cursos abertos]]></key>
         <key id="course&amp;_ALL_YEARS" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Todos os anos]]></key>
@@ -1310,7 +1310,7 @@ Senha: [password]]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_TEXT_COURSE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Recebeu uma nova mensagem no sistema e-learning em <a href="[url]">[url]</a> no curso <b>[course]</b> do utilizador [from]]]></key>
       </module>
       <module id="enrollrules">
-        <key id="enrollrules&amp;_APPLY_RULE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Aplicação de política de inscrições]]></key>
+        <key id="enrollrules&amp;_APPLY_RULE" attributes="" save_date="2024-09-17 11:04:05"><![CDATA[Aplicar política de inscrições]]></key>
         <key id="enrollrules&amp;_BASE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Base]]></key>
         <key id="enrollrules&amp;_ENTITY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Entidade]]></key>
         <key id="enrollrules&amp;_SHOW_LOGS" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Mostrar logs]]></key>
@@ -2728,6 +2728,7 @@ Senha: [password]]]></key>
         <key id="standard&amp;_LOGOUT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Desconectar]]></key>
         <key id="standard&amp;_LOG_USERS_TO_FNCROLE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Atribuição de utilizadores para uma função funcional]]></key>
         <key id="standard&amp;_LOG_USERS_TO_GROUP" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Atribuição de utilizadores para um grupo]]></key>
+        <key id="standard&amp;_LOG_USERS_TO_ORGCHART" attributes="" save_date="2024-09-16 18:08:34"><![CDATA[Atribuição de utilizadores para um organograma]]></key>
         <key id="standard&amp;_MAKE_A_COPY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Fazer uma cópia]]></key>
         <key id="standard&amp;_MANAGE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Gerir]]></key>
         <key id="standard&amp;_MANAGED_BY" attributes="" save_date="2024-01-18 14:04:32"><![CDATA[Gerido por:]]></key>
@@ -2798,7 +2799,7 @@ Senha: [password]]]></key>
         <key id="standard&amp;_NO_ADMIN" attributes="" save_date="2024-01-18 14:07:56"><![CDATA[- Nenhum administrador -]]></key>
         <key id="standard&amp;_NO_ANSWER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Sem respostas]]></key>
         <key id="standard&amp;_NO_BACK" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Não, por favor voltar atrás]]></key>
-        <key id="standard&amp;_NO_CATEGORY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Categoria]]></key>
+        <key id="standard&amp;_NO_CATEGORY" attributes="" save_date="2024-09-17 09:36:19"><![CDATA[Sem categorias]]></key>
         <key id="standard&amp;_NO_CONTENT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Sem conteúdo disponível]]></key>
         <key id="standard&amp;_OF" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[De]]></key>
         <key id="standard&amp;_OFF" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Desligado]]></key>
@@ -2858,7 +2859,7 @@ Senha: [password]]]></key>
         <key id="standard&amp;_REQUIRED_SCORE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Pontuação necessária]]></key>
         <key id="standard&amp;_RESET" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Reset]]></key>
         <key id="standard&amp;_RESET_POLICY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Desfazer políticas previamente definidas]]></key>
-        <key id="standard&amp;_ROLLBACK" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Repor]]></key>
+        <key id="standard&amp;_ROLLBACK" attributes="" save_date="2024-09-17 11:11:16"><![CDATA[Reverter]]></key>
         <key id="standard&amp;_ROOT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Raiz]]></key>
         <key id="standard&amp;_ROW" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Linha]]></key>
         <key id="standard&amp;_SAVE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Guardar alterações]]></key>
@@ -3142,6 +3143,7 @@ Senha: [password]]]></key>
         <key id="templedit&amp;_UPGRADE_CONFIRM" attributes="" save_date="2024-01-15 22:21:20"><![CDATA[Confirmar atualização]]></key>
       </module>
       <module id="test">
+        <key id="test&amp;_ADD_FEEDBACK_RULE" attributes="" save_date="2024-09-16 16:38:47"><![CDATA[Adicionar regra de feedback]]></key>
         <key id="test&amp;_ALL_DIFFICULT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Toda dificuldade]]></key>
         <key id="test&amp;_ALL_QUEST_CATEGORY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Qualquer categoria]]></key>
         <key id="test&amp;_ALL_QUEST_TYPE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Todos tipos]]></key>
