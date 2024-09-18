@@ -364,7 +364,7 @@ class Certificate
             }
         }
 
-        if (isset($certificate[CERT_AV_POINT_REQUIRED]) && $course_score_final >= $certificate[CERT_AV_POINT_REQUIRED]) {
+        if (!isset($certificate[CERT_AV_POINT_REQUIRED]) || $course_score_final >= $certificate[CERT_AV_POINT_REQUIRED]) {
             return true;
         } else {
             return false;
