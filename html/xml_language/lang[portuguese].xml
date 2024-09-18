@@ -1494,7 +1494,7 @@ Senha: [password]]]></key>
         <key id="forum&amp;_UNNOTIFY_ME_FORUM_TITLE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Deixar de me alertar quando forem criados tópicos neste fórum]]></key>
         <key id="forum&amp;_UNNOTIFY_ME_THREAD" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Alternar notificações]]></key>
         <key id="forum&amp;_UNNOTIFY_ME_THREAD_TITLE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Anular notificações (não incomodar)]]></key>
-        <key id="forum&amp;_USERFORUMPARAM" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Foto, avatar e assinatura]]></key>
+        <key id="forum&amp;_USERFORUMPARAM" attributes="" save_date="2024-09-18 09:19:48"><![CDATA[Foto, avatar e subscrição]]></key>
         <key id="forum&amp;_USERPARAM" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Informação de utilizador]]></key>
         <key id="forum&amp;_VIEW_PROFILE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Mostrar perfil]]></key>
         <key id="forum&amp;_WRITTED_BY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Escrito por]]></key>
@@ -2118,7 +2118,7 @@ Por favor não carregue imagens ofensivas.]]></key>
         <key id="profile&amp;_USERCOURSE_STATS_SUMMARY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Cursos dos utilizadores]]></key>
         <key id="profile&amp;_USERCOURSE_STATS_TITLE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Estatísticas dos utilizadores]]></key>
         <key id="profile&amp;_USERCOURSE_STATUS" attributes="" save_date="2024-01-16 09:32:53"><![CDATA[Estado do utilizador]]></key>
-        <key id="profile&amp;_USERFORUMPARAM" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Foto, avatar e assinatura]]></key>
+        <key id="profile&amp;_USERFORUMPARAM" attributes="" save_date="2024-09-18 09:19:55"><![CDATA[Foto, avatar e subscrição]]></key>
         <key id="profile&amp;_USERID_DELETER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[ID Operador]]></key>
         <key id="profile&amp;_USEROFFLINE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Offline]]></key>
         <key id="profile&amp;_USERONLINE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Online]]></key>
@@ -2887,7 +2887,7 @@ Senha: [password]]]></key>
         <key id="standard&amp;_SHOW" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Mostrar]]></key>
         <key id="standard&amp;_SHOW_RESULTS" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Resultados]]></key>
         <key id="standard&amp;_SHOW_STATISTICS" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Ver gráficos]]></key>
-        <key id="standard&amp;_SIGNATURE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Assinatura]]></key>
+        <key id="standard&amp;_SIGNATURE" attributes="" save_date="2024-09-18 09:19:42"><![CDATA[Subscrição]]></key>
         <key id="standard&amp;_SORT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Ordenar por]]></key>
         <key id="standard&amp;_STANDINGS" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Classificação]]></key>
         <key id="standard&amp;_START" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[início]]></key>
