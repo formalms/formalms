@@ -26,11 +26,11 @@
 
     $html .= '<h3>' . Lang::t('_SERVER_MYSQL', 'configuration') . '</h3><ul class="link_list">';
 
-    $html .= '<li>' . Lang::t('_sql_VERS', 'configuration') . ':&nbsp;<b>' . $sql_server_info . '</b>';
-    $html .= '<li>' . Lang::t('_sql_MODE', 'configuration') . ':&nbsp;' . ($sql_additional_info['sql_mode'] ? '<b>' . $sql_additional_info['sql_mode'] . '</b>' : '<i>""</i>');
-    $html .= '<li>' . Lang::t('_sql_ENCODING', 'configuration') . ':&nbsp;<b>' . $sql_additional_info['character_info']['character_set_connection'] . '</b>';
-    $html .= '<li>' . Lang::t('_sql_COLLATION', 'configuration') . ':&nbsp;<b>' . $sql_additional_info['collation_info']['collation_connection'] . '</b>';
-    $html .= '<li>' . Lang::t('_sql_TIMEZONE', 'configuration') . ':&nbsp;<b>' . $sql_additional_info['sql_timezone'] . '</b>';
+    $html .= '<li>' . Lang::t('_MYSQL_VERS', 'configuration') . ':&nbsp;<b>' . $sql_server_info . '</b>';
+    $html .= '<li>' . Lang::t('_MYSQL_MODE', 'configuration') . ':&nbsp;' . ($sql_additional_info['sql_mode'] ? '<b>' . $sql_additional_info['sql_mode'] . '</b>' : '<i>""</i>');
+    $html .= '<li>' . Lang::t('_MYSQL_ENCODING', 'configuration') . ':&nbsp;<b>' . $sql_additional_info['character_info']['character_set_connection'] . '</b>';
+    $html .= '<li>' . Lang::t('_MYSQL_COLLATION', 'configuration') . ':&nbsp;<b>' . $sql_additional_info['collation_info']['collation_connection'] . '</b>';
+    $html .= '<li>' . Lang::t('_MYSQL_TIMEZONE', 'configuration') . ':&nbsp;<b>' . $sql_additional_info['sql_timezone'] . '</b>';
 
     $html .= '</ul><br />';
 
