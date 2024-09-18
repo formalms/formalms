@@ -333,7 +333,7 @@ class Get
         } else {
             $platform = $item;
         }
-        $path = Get::rel_path(_base_) . '/' . _folder_templates_ . '/' . getTemplate() . '/';
+        $path = self::rel_path(_base_) . '/' . _folder_templates_ . '/' . getTemplate() . '/';
 
         return str_replace('/./', '/', $path);
     }
@@ -404,7 +404,7 @@ class Get
     public static function link_img($url, $title, $src, $alt, $extra = false)
     {
         // where are we ?
-        $src = Get::rel_path(_base_) . '/' . _folder_templates_ . '/standard/images/' . $src;
+        $src = self::rel_path(_base_) . '/' . _folder_templates_ . '/standard/images/' . $src;
 
         return '<a href="' . $url . '" title="' . $title . '"' .
             (!empty($extra['link']) != false ? ' ' . $extra['link'] : '') .
