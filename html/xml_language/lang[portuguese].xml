@@ -472,7 +472,7 @@
         <key id="conference&amp;_CONFERENCE_NAME" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Nome da sala]]></key>
         <key id="conference&amp;_CONFERENCE_SYSTEM" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Sistema]]></key>
         <key id="conference&amp;_MAX_PARTICIPANTS" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Máximo de utilizadores permitidos]]></key>
-        <key id="conference&amp;_MEETING_HOURS" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Duração de reunião (horas)]]></key>
+        <key id="conference&amp;_MEETING_HOURS" attributes="" save_date="2024-09-18 12:56:02"><![CDATA[Duração da reunião (horas)]]></key>
         <key id="conference&amp;_NO_MORE_ROOM" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Não pode criar mais nenhuma sala]]></key>
         <key id="conference&amp;_NO_ROOM_AVAILABLE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Salas não disponíveis]]></key>
         <key id="conference&amp;_ROOMS_AVAILABLE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Salas de videoconferência disponíveis]]></key>
@@ -2216,16 +2216,16 @@ Por favor não carregue imagens ofensivas.]]></key>
         <key id="register&amp;_REG_CONFIRM_FAILED" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[A confirmação da sua conta falhou]]></key>
         <key id="register&amp;_REG_ELAPSEDREQUEST" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[O pedido não é válido porque o tempo de validade expirou]]></key>
         <key id="register&amp;_REG_HOUR_REQUEST_LIMIT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Este pedido expirará após <b>[hour] horas</b>]]></key>
-        <key id="register&amp;_REG_MAIL_TEXT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Nós recebemos o pedido de subscrição com a seguinte informação:<br />
+        <key id="register&amp;_REG_MAIL_TEXT" attributes="" save_date="2024-09-18 12:55:11"><![CDATA[Nós recebemos o pedido de subscrição com a seguinte informação:<br />
 <br />
 Nome de utilizador : [userid]<br />
 Senha : [password]<br />
 <br />
-Para completar o processo de registo, por favor clique no link abaixo, (ou copie o link na barra de endereço do seu browser)<br />
+Para completar o processo de registo, por favor clique no link abaixo, (ou copie o link na barra de endereço do seu browser)<br />
 <br />
 <a href="[link]">[link]</a><br />
 <br />
-Este pedido será válido para as próximas [hour] horas]]></key>
+Este pedido será válido para as próximas [hour] horas]]></key>
         <key id="register&amp;_REG_MAIL_TEXT_SELF" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Nós recebemos o pedido de subscrição com a seguinte informação:<br />
 <br />
 Nome de utilizador : [userid]<br />
