@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20240509</DATE>
+  <DATE>20240918</DATE>
   <LANG id="portuguese">
     <lang_code>portuguese</lang_code>
     <lang_description>Portuguese</lang_description>
@@ -11,6 +11,9 @@
       <module id="">
         <key id="&amp;_NEW_USER_SUBSCRIBED_TEXT_MODERATORS" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
       </module>
+      <module id="adminmanager">
+        <key id="adminmanager&amp;_ALL_COURSES_IN_CATALOGUE" attributes="" save_date="2024-06-13 09:33:07"><![CDATA[Todos os cursos no catálogo]]></key>
+      </module>
       <module id="adminrules">
         <key id="adminrules&amp;_ADMIN_ASSIGNTREEDESCR" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Selecionar as pastas/diretórios do utilizador que o administrador pode ver]]></key>
         <key id="adminrules&amp;_ADMIN_MANAGMENT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Gestor de administradores]]></key>
@@ -20,6 +23,7 @@
         <key id="adminrules&amp;_ADMIN_PREFERENCES_TITLE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Configurações especiais]]></key>
         <key id="adminrules&amp;_ADMIN_RULES" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Perfil de administrador]]></key>
         <key id="adminrules&amp;_ADMIN_SPECIAL_SETTING" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Configurações especiais para:]]></key>
+        <key id="adminrules&amp;_COURSE_PRESENCE_ADMIN" attributes="" save_date="2024-06-13 09:36:41"><![CDATA[Administração de presença de curso]]></key>
         <key id="adminrules&amp;_DIRECT_COURSE_SUBSCRIBE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Ativar diretamente os registos feitos por este administrador]]></key>
         <key id="adminrules&amp;_DIRECT_USER_INSERT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Ativar diretamente os utilizadores criados por este administrador]]></key>
         <key id="adminrules&amp;_LANG_SETTING" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Configurações de idioma]]></key>
@@ -32,8 +36,8 @@
         <key id="adminrules&amp;_SPECIAL_SETTING" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Configurações especiais]]></key>
       </module>
       <module id="admin_date">
-        <key id="admin_date&amp;_PAPER_TEST" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Teste de papel]]></key>
-        <key id="admin_date&amp;_WEB_TEST" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Teste web]]></key>
+        <key id="admin_date&amp;_PAPER_TEST" attributes="" save_date="2024-09-13 15:50:32"><![CDATA[Teste no papel]]></key>
+        <key id="admin_date&amp;_WEB_TEST" attributes="" save_date="2024-09-13 15:50:24"><![CDATA[Teste Web]]></key>
       </module>
       <module id="admin_directory">
         <key id="admin_directory&amp;_ACCEPT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Aceitar]]></key>
@@ -404,7 +408,7 @@
       </module>
       <module id="classroom">
         <key id="classroom&amp;_ADD_DATE_ROW" attributes="" save_date="2024-01-24 10:55:33"><![CDATA[Adicionar nova data]]></key>
-        <key id="classroom&amp;_AVAILABLE_INSTRUMENT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Hardware Disponível]]></key>
+        <key id="classroom&amp;_AVAILABLE_INSTRUMENT" attributes="" save_date="2024-09-13 17:53:12"><![CDATA[Equipamentos disponíveis]]></key>
         <key id="classroom&amp;_BUILDING_ROOM" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Sala]]></key>
         <key id="classroom&amp;_CAPACITY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Capacidade]]></key>
         <key id="classroom&amp;_CITY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Cidade]]></key>
@@ -414,7 +418,7 @@
         <key id="classroom&amp;_DISPOSITION" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Layout (disposição)]]></key>
         <key id="classroom&amp;_EXISTING_DATA" attributes="" save_date="2024-01-24 17:41:32"><![CDATA[Em uma data existente]]></key>
         <key id="classroom&amp;_FAX" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Fax]]></key>
-        <key id="classroom&amp;_INSTRUMENT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Hardware da sala de aula]]></key>
+        <key id="classroom&amp;_INSTRUMENT" attributes="" save_date="2024-09-13 17:53:02"><![CDATA[Equipamentos da sala de aula]]></key>
         <key id="classroom&amp;_LOCATION_INFO" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Informação de localização]]></key>
         <key id="classroom&amp;_MOD_CLASSROOM" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Editar curso presencial (em sala de aula)]]></key>
         <key id="classroom&amp;_NEW_CLASSROOM" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Nova sala de aula (curso presencial)]]></key>
@@ -502,7 +506,7 @@
         <key id="configuration&amp;_BBB_SALT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Salt BigBlueButton]]></key>
         <key id="configuration&amp;_BBB_SERVER" attributes="" save_date="2024-05-09 13:50:15"><![CDATA[Endereço do servidor BigBlueButton]]></key>
         <key id="configuration&amp;_BBB_USER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Nome de utilizador BigBlueButton]]></key>
-        <key id="configuration&amp;_CLEAR_TWIG_CACHE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Eliminar o "Twig cache"]]></key>
+        <key id="configuration&amp;_CLEAR_TWIG_CACHE" attributes="" save_date="2024-05-09 14:27:39"><![CDATA[Eliminar o "Twig cache"]]></key>
         <key id="configuration&amp;_CODE_TELESKILL" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Código de cliente]]></key>
         <key id="configuration&amp;_COMMON_ADMIN_SESSION" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Unificar sessão do administrador e sessões públicas]]></key>
         <key id="configuration&amp;_CONFERENCE_CREATION_LIMIT_PER_USER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Limitar o número de conferência que podem ser planeadas por um só utilizador]]></key>
@@ -533,12 +537,15 @@
         <key id="configuration&amp;_ECOMMERCE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[E-comércio]]></key>
         <key id="configuration&amp;_EMAIL_SETTINGS" attributes="" save_date="2024-01-15 22:30:25"><![CDATA[Configurações de e-mail]]></key>
         <key id="configuration&amp;_EMAIL_SETTINGS_CC" attributes="" save_date="2024-01-18 00:25:15"><![CDATA[Configurações de Com Cópia (CC) de e-mail]]></key>
-        <key id="configuration&amp;_FILE_UPLOAD_WHITELIST" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Extensões de ficheiros permitidas (whitelist)]]></key>
+        <key id="configuration&amp;_FACEBOOK.OAUTH_KEY" attributes="" save_date="2024-05-23 10:24:40"><![CDATA[Chave oAuth]]></key>
+        <key id="configuration&amp;_FACEBOOK.OAUTH_SECRET" attributes="" save_date="2024-05-23 10:24:58"><![CDATA[Segredo oAuth]]></key>
+        <key id="configuration&amp;_FACEBOOKAUTH" attributes="" save_date="2024-05-23 10:24:15"><![CDATA[Autenticação do Facebook]]></key>
+        <key id="configuration&amp;_FILE_UPLOAD_WHITELIST" attributes="" save_date="2024-09-18 00:31:32"><![CDATA[Extensões de ficheiros permitidas (<i>whitelist</i>)]]></key>
         <key id="configuration&amp;_FIRST_CATALOGUE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Mostrar o catálogo de cursos na página principal do utilizador]]></key>
         <key id="configuration&amp;_FORUM_AS_TABLE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Mostrar a lista dos fóruns numa tabela]]></key>
         <key id="configuration&amp;_FTPERR" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Erro no FTP]]></key>
         <key id="configuration&amp;_FTPOK" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[FTP OK]]></key>
-        <key id="configuration&amp;_GOOGLE_STAT_CODE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Código fornecido pelo Google]]></key>
+        <key id="configuration&amp;_GOOGLE_STAT_CODE" attributes="" save_date="2024-05-09 14:27:39"><![CDATA[Código fornecido pelo Google]]></key>
         <key id="configuration&amp;_GOOGLE_STAT_IN_LMS" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Ativar Google Analytics]]></key>
         <key id="configuration&amp;_HELPDESK" attributes="" save_date="2024-01-18 00:28:13"><![CDATA[Configurações de help desk]]></key>
         <key id="configuration&amp;_HELPDESK_SUBJ" attributes="" save_date="2024-01-15 23:29:57"><![CDATA[Assunto da Central de Ajuda (Help Desk)]]></key>
@@ -610,7 +617,7 @@
         <key id="configuration&amp;_PATHTEST" attributes="" save_date="2024-01-18 00:06:50"><![CDATA[Nome da pasta para envio de ficheiro de questões]]></key>
         <key id="configuration&amp;_PAYPAL_CURRENCY" attributes="" save_date="2024-01-16 09:21:22"><![CDATA[Código de moeda PayPal]]></key>
         <key id="configuration&amp;_PAYPAL_MAIL" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Conta PayPal]]></key>
-        <key id="configuration&amp;_PAYPAL_SANDBOX" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Utilizar <i>sandbox</i> do PayPal em vez do ambiente real (esta é uma opção de depuração e testes)]]></key>
+        <key id="configuration&amp;_PAYPAL_SANDBOX" attributes="" save_date="2024-05-09 14:27:39"><![CDATA[Utilizar <i>sandbox</i> do PayPal em vez do ambiente real (esta é uma opção de depuração e testes)]]></key>
         <key id="configuration&amp;_PHPINFO" attributes="" save_date="2024-01-16 12:04:34"><![CDATA[Informação sobre o PHP]]></key>
         <key id="configuration&amp;_PHPVERSION" attributes="" save_date="2024-05-09 13:50:15"><![CDATA[Versão do PHP]]></key>
         <key id="configuration&amp;_PHP_TIMEZONE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Fuso horário do site]]></key>
@@ -760,7 +767,7 @@
         <key id="course&amp;_ADVERT_ADVICE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Existem [advice] novos avisos]]></key>
         <key id="course&amp;_ADVERT_FORUM" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Existem [forum] novas mensagens no fórum.]]></key>
         <key id="course&amp;_ADVERT_LOBJ" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Existem [lobj] novos objetos de aprendizagem]]></key>
-        <key id="course&amp;_ALLOW_OVERBOOKING" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Permitir excesso de reservas (overbooking)]]></key>
+        <key id="course&amp;_ALLOW_OVERBOOKING" attributes="" save_date="2024-09-17 12:09:36"><![CDATA[Permitir excesso de reservas (<i>overbooking</i>)]]></key>
         <key id="course&amp;_ALL_COURSE_TYPE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Todos os tipos de cursos]]></key>
         <key id="course&amp;_ALL_OPEN" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Todos os cursos abertos]]></key>
         <key id="course&amp;_ALL_YEARS" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Todos os anos]]></key>
@@ -777,7 +784,7 @@
         <key id="course&amp;_CASCADE_MOD_ON_EDITION" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Copiar as modificações também para as edições]]></key>
         <key id="course&amp;_CATEGORY_PATH" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Está dentro]]></key>
         <key id="course&amp;_CATEGORY_SELECTED" attributes="" save_date="2024-01-16 00:06:29"><![CDATA[Selecção de categoria]]></key>
-        <key id="course&amp;_CERTIFICATE_ASSIGN_STATUS" attributes="" save_date="2024-01-15 23:42:47"><![CDATA[Liberação de certificados]]></key>
+        <key id="course&amp;_CERTIFICATE_ASSIGN_STATUS" attributes="" save_date="2024-09-16 14:48:29"><![CDATA[Atribuição de certificados]]></key>
         <key id="course&amp;_CERTIFICATE_EX_ASSIGN_STATUS" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Atribuição de certificado de Excelência]]></key>
         <key id="course&amp;_CERTIFICATE_LANGUAGE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Idioma do certificado]]></key>
         <key id="course&amp;_CERTIFICATE_NAME" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Certificado]]></key>
@@ -806,7 +813,7 @@
         <key id="course&amp;_COURSE_LANG_METHOD" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Idioma do curso]]></key>
         <key id="course&amp;_COURSE_LIST_SUMMARY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Lista com todos os cursos nos quais o utilizador se inscreveu e outras informações relevantes]]></key>
         <key id="course&amp;_COURSE_LOGO" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Logótipo do curso]]></key>
-        <key id="course&amp;_COURSE_MENU_TO_ASSIGN" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Atribuir o menu]]></key>
+        <key id="course&amp;_COURSE_MENU_TO_ASSIGN" attributes="" save_date="2024-05-09 14:33:08"><![CDATA[Atribuir ao menu]]></key>
         <key id="course&amp;_COURSE_PRIZE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Preço]]></key>
         <key id="course&amp;_COURSE_QUOTA" attributes="" save_date="2024-01-18 14:08:27"><![CDATA[Atribuir limite de espaço em disco para este curso (MB)]]></key>
         <key id="course&amp;_COURSE_SELECTION" attributes="" save_date="2024-01-16 00:04:50"><![CDATA[Seleccionar um curso]]></key>
@@ -889,6 +896,7 @@
         <key id="course&amp;_NOENTER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Acesso negado]]></key>
         <key id="course&amp;_NO_COURSE_DATA" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Curso sem data de início]]></key>
         <key id="course&amp;_NO_COURSE_FOUND" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Nenhum curso encontrado]]></key>
+        <key id="course&amp;_NO_NAME" attributes="" save_date="2024-05-27 11:49:43"><![CDATA[Sem nome]]></key>
         <key id="course&amp;_OTHER_OPTION" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Outras opções]]></key>
         <key id="course&amp;_OTHER_USER_MATERIAL" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Material para outras funções]]></key>
         <key id="course&amp;_OVERVIEW" attributes="" save_date="2022-03-10 11:47:19"><![CDATA[Vista geral]]></key>
@@ -907,7 +915,7 @@
         <key id="course&amp;_RANDOM_COURSE_AUTOREGISTRATION_CODE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Gerar código aleatório para auto-registo]]></key>
         <key id="course&amp;_RESERVE_COURSE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Reservar curso]]></key>
         <key id="course&amp;_RESULT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Resultado]]></key>
-        <key id="course&amp;_SC_EVERYWHERE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Todos, e mostrar na <i>home page</i>]]></key>
+        <key id="course&amp;_SC_EVERYWHERE" attributes="" save_date="2024-05-09 14:36:08"><![CDATA[Todos, e mostrar na página inicial]]></key>
         <key id="course&amp;_SC_ONLYINSC_USER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Apenas utilizadores inscritos no curso]]></key>
         <key id="course&amp;_SC_ONLY_IN" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Apenas para utilizadores conectados]]></key>
         <key id="course&amp;_SELECT_DAYS_COURSE" attributes="" save_date="2024-01-16 00:04:39"><![CDATA[Seleccionar os dias do curso]]></key>
@@ -1144,7 +1152,7 @@ Se não estiver registado, você deve registar-se no nosso sistema, seguindo est
         <key id="dashboardsetting&amp;_DASHBOARDBLOCKWELCOMELMS_DESCRIPTION" attributes="" save_date="2024-01-15 22:29:05"><![CDATA[Descrição de Boas-vindas]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_DELETE_LAYOUT" attributes="" save_date="2024-01-16 16:18:02"><![CDATA[Dashboard]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT" attributes="" save_date="2024-01-16 16:17:43"><![CDATA[Dashboard]]></key>
-        <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT_CAPTION" attributes="" save_date="2024-05-09 13:52:55"><![CDATA[Legenda do layout]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT_CAPTION" attributes="" save_date="2024-05-09 14:27:39"><![CDATA[Legenda do layout]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT_DEFAULT" attributes="" save_date="2024-01-15 22:27:51"><![CDATA[Padrão]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT_SAVE_MESSAGE_KO" attributes="" save_date="2024-01-16 16:17:33"><![CDATA[O dashboard não pôde ser criado, verifique os dados inseridos]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT_SAVE_MESSAGE_OK" attributes="" save_date="2024-01-16 16:17:58"><![CDATA[Dashboard criado com sucesso]]></key>
@@ -1199,8 +1207,8 @@ Se não estiver registado, você deve registar-se no nosso sistema, seguindo est
         <key id="dropzone&amp;_DESCRIPTION" attributes="" save_date="2024-01-25 10:40:03"><![CDATA[Descrição]]></key>
         <key id="dropzone&amp;_ERRORS_OCCURRED" attributes="" save_date="2024-01-16 09:19:28"><![CDATA[Ocorreu um erro]]></key>
         <key id="dropzone&amp;_OBJECT_CONTAINS_ERROR" attributes="" save_date="2024-01-18 00:49:23"><![CDATA[Esse ficheiro contém um erro]]></key>
-        <key id="dropzone&amp;_SUCCESSFUL_MULTIPLE_ITEMS" attributes="" save_date="2024-01-25 18:24:48"><![CDATA[[nObjects] novos materiais de aprendizagem foram criados. Redirecionar em 2 segundos...]]></key>
-        <key id="dropzone&amp;_SUCCESSFUL_ONE_ITEM" attributes="" save_date="2024-01-25 18:24:43"><![CDATA[Novo material de aprendizagem foi criado. Redirecionar em 2 segundos...]]></key>
+        <key id="dropzone&amp;_SUCCESSFUL_MULTIPLE_ITEMS" attributes="" save_date="2024-05-09 14:58:38"><![CDATA[[nObjects] novos materiais de aprendizagem foram criados. Redirecionando em 2 segundos...]]></key>
+        <key id="dropzone&amp;_SUCCESSFUL_ONE_ITEM" attributes="" save_date="2024-05-09 14:58:33"><![CDATA[Novo material de aprendizagem foi criado. Redirecionando em 2 segundos...]]></key>
         <key id="dropzone&amp;_TITLE" attributes="" save_date="2024-01-25 10:39:56"><![CDATA[Título]]></key>
         <key id="dropzone&amp;_UPLOAD_FILES" attributes="" save_date="2024-01-15 23:24:31"><![CDATA[Carregar ficheiros]]></key>
       </module>
@@ -1302,7 +1310,7 @@ Senha: [password]]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_TEXT_COURSE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Recebeu uma nova mensagem no sistema e-learning em <a href="[url]">[url]</a> no curso <b>[course]</b> do utilizador [from]]]></key>
       </module>
       <module id="enrollrules">
-        <key id="enrollrules&amp;_APPLY_RULE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Aplicação de política de inscrições]]></key>
+        <key id="enrollrules&amp;_APPLY_RULE" attributes="" save_date="2024-09-17 11:04:05"><![CDATA[Aplicar política de inscrições]]></key>
         <key id="enrollrules&amp;_BASE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Base]]></key>
         <key id="enrollrules&amp;_ENTITY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Entidade]]></key>
         <key id="enrollrules&amp;_SHOW_LOGS" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Mostrar logs]]></key>
@@ -1421,6 +1429,7 @@ Senha: [password]]]></key>
       <module id="fncroles">
         <key id="fncroles&amp;_GAP_ANALYSIS" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Análise de falhas]]></key>
         <key id="fncroles&amp;_GAP_ONLY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Com falha]]></key>
+        <key id="fncroles&amp;_NONE" attributes="" save_date="2024-06-13 09:30:49"><![CDATA[Nenhum]]></key>
         <key id="fncroles&amp;_NO_GAP_ONLY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Sem falha]]></key>
       </module>
       <module id="forum">
@@ -1710,7 +1719,7 @@ No tratamento desta informação, é garantida a integridade e a qualidade do
         <key id="login&amp;_TWO_USERS_LOGGED_WITH_SAME_USERNAME" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Outro utilizador está conectado com o seu nome de utilizador]]></key>
         <key id="login&amp;_UNKNOWNGOOGLERROR" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Erro desconhecido durante o login do Google]]></key>
         <key id="login&amp;_UNKNOWNSOCIALERROR" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Erro desconhecido no login social]]></key>
-        <key id="login&amp;_UNLOGGED" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Está conectado]]></key>
+        <key id="login&amp;_UNLOGGED" attributes="" save_date="2024-06-07 13:46:01"><![CDATA[Você está desconectado]]></key>
       </module>
       <module id="manmenu">
         <key id="manmenu&amp;_ADDCUSTOM" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Adicionar novo menu personalizado]]></key>
@@ -1746,7 +1755,7 @@ No tratamento desta informação, é garantida a integridade e a qualidade do
         <key id="menu&amp;_ADMIN_MANAGER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Gestão de administradores]]></key>
         <key id="menu&amp;_ADMIN_RULES" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Perfil de administrador]]></key>
         <key id="menu&amp;_ASSOCIATE_USER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Utilizadores associados]]></key>
-        <key id="menu&amp;_BLIND_MAIN_MENU" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Ir até ao menu principal]]></key>
+        <key id="menu&amp;_BLIND_MAIN_MENU" attributes="" save_date="2024-09-18 00:32:56"><![CDATA[Ir para o menu principal]]></key>
         <key id="menu&amp;_BLIND_MENU_MODULES" attributes="accessibility" save_date="2020-09-15 14:47:20"><![CDATA[Ir até à lista de módulos]]></key>
         <key id="menu&amp;_CATEGORIES" attributes="" save_date="2024-01-15 22:19:16"><![CDATA[Categorias]]></key>
         <key id="menu&amp;_CERTIFICATE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Certificados]]></key>
@@ -1782,8 +1791,8 @@ No tratamento desta informação, é garantida a integridade e a qualidade do
         <key id="menu&amp;_PRIVACYPOLICIES" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Políticas de privacidade]]></key>
         <key id="menu&amp;_PUBLIC_ADMIN_MANAGER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Gestão de Administradores Públicos]]></key>
         <key id="menu&amp;_PUBLIC_ADMIN_RULES" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Perfil de Administradores Públicos]]></key>
-        <key id="menu&amp;_QUESTCATEGORY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Categoria de questão]]></key>
-        <key id="menu&amp;_QUEST_CATEGORY" attributes="" save_date="2024-01-16 00:01:44"><![CDATA[Categoria de Questão]]></key>
+        <key id="menu&amp;_QUESTCATEGORY" attributes="" save_date="2024-09-18 00:24:49"><![CDATA[Categorias de questão]]></key>
+        <key id="menu&amp;_QUEST_CATEGORY" attributes="" save_date="2024-09-18 00:23:21"><![CDATA[Categoria de Questão]]></key>
         <key id="menu&amp;_REPORT_CERTIFICATE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Certificados Emitidos]]></key>
         <key id="menu&amp;_RESERVATION" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Reservas]]></key>
         <key id="menu&amp;_SMS_GATEWAY_1" attributes="" save_date="2024-01-18 00:26:44"><![CDATA[Gateway SMS 1]]></key>
@@ -1804,7 +1813,7 @@ No tratamento desta informação, é garantida a integridade e a qualidade do
         <key id="menu_course&amp;Stat Area" attributes="" save_date="2024-01-16 14:10:34"><![CDATA[Área de Estatísticas]]></key>
         <key id="menu_course&amp;Statistiche" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Estatísticas]]></key>
         <key id="menu_course&amp;Student Area" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Área de Estudantes]]></key>
-        <key id="menu_course&amp;Teacher Area" attributes="" save_date="2024-01-16 15:16:50"><![CDATA[Área do Professor]]></key>
+        <key id="menu_course&amp;Teacher Area" attributes="" save_date="2024-05-09 14:44:36"><![CDATA[Área de Professores]]></key>
         <key id="menu_course&amp;_ADVICE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Avisos/informações]]></key>
         <key id="menu_course&amp;_COURSECHART" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Gráficos de curso]]></key>
         <key id="menu_course&amp;_COURSEREPORT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Livro de notas]]></key>
@@ -2066,8 +2075,8 @@ Por favor não carregue imagens ofensivas.]]></key>
         <key id="profile&amp;_FIRSTNAME_DELETER" attributes="" save_date="2024-01-23 15:17:01"><![CDATA[Primeiro nome do operador]]></key>
         <key id="profile&amp;_FIRST_ACCESS" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Bem-vindo à plataforma de e-learning]]></key>
         <key id="profile&amp;_FORUM_MESSAGE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Fórum]]></key>
-        <key id="profile&amp;_GOTO_BLOG" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Ir para blog [firstname]]]></key>
-        <key id="profile&amp;_GOTO_BLOG_TITLE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Ir para blog utilizador]]></key>
+        <key id="profile&amp;_GOTO_BLOG" attributes="" save_date="2024-09-18 00:33:11"><![CDATA[Ir para o blog de [firstname]]]></key>
+        <key id="profile&amp;_GOTO_BLOG_TITLE" attributes="" save_date="2024-09-18 00:33:05"><![CDATA[Ir para o blog do utilizador]]></key>
         <key id="profile&amp;_GO_TO_PROFILE" attributes="" save_date="2024-01-18 13:47:56"><![CDATA[Ir para o perfil de [firstname]]]></key>
         <key id="profile&amp;_IDST_DELETED_USER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Base dados ID]]></key>
         <key id="profile&amp;_LASTNAME_DELETER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Último nome operador]]></key>
@@ -2083,6 +2092,7 @@ Por favor não carregue imagens ofensivas.]]></key>
         <key id="profile&amp;_NO_VIDEO_FOUND" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Nenhum video encontrado]]></key>
         <key id="profile&amp;_OLDPASSWRONG" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[A senha inserida não é a sua]]></key>
         <key id="profile&amp;_OLD_PWD" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Senha antiga]]></key>
+        <key id="profile&amp;_OPERATION_FAILUREPROFILE" attributes="" save_date="2024-06-10 17:02:16"><![CDATA[Erro ao editar as propriedades do usuário]]></key>
         <key id="profile&amp;_OPERATION_SUCCESSFULPROFILE" attributes="" save_date="2024-01-18 14:10:12"><![CDATA[Perfil atualizado com êxito]]></key>
         <key id="profile&amp;_OTHER_POLICY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Outras opções]]></key>
         <key id="profile&amp;_PFL_POLICY_NOONE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Niguém]]></key>
@@ -2675,7 +2685,7 @@ Senha: [password]]]></key>
         <key id="standard&amp;_HELP" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Ajuda]]></key>
         <key id="standard&amp;_HIDDEN" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Escondido]]></key>
         <key id="standard&amp;_HISTORY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Histórico]]></key>
-        <key id="standard&amp;_HOME" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Página inicial tab]]></key>
+        <key id="standard&amp;_HOME" attributes="" save_date="2024-05-09 14:36:51"><![CDATA[Aba Página inicial]]></key>
         <key id="standard&amp;_HOME_TAB" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Página inicial]]></key>
         <key id="standard&amp;_HOURS" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Horas]]></key>
         <key id="standard&amp;_ID" attributes="" save_date="2024-01-23 20:45:45"><![CDATA[ID]]></key>
@@ -2691,7 +2701,7 @@ Senha: [password]]]></key>
         <key id="standard&amp;_INSTRUCTION" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Instrucções]]></key>
         <key id="standard&amp;_INVALID_EXTENSION" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Extensão inválida]]></key>
         <key id="standard&amp;_JUMP" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Ir para]]></key>
-        <key id="standard&amp;_JUMP_TO" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Ir para módulo de conteúdo]]></key>
+        <key id="standard&amp;_JUMP_TO" attributes="" save_date="2024-09-18 00:33:15"><![CDATA[Ir para o módulo de conteúdo]]></key>
         <key id="standard&amp;_KEY" attributes="" save_date="2024-05-09 13:16:59"><![CDATA[Chave]]></key>
         <key id="standard&amp;_LABEL" attributes="" save_date="2024-01-15 23:07:13"><![CDATA[Rótulos]]></key>
         <key id="standard&amp;_LABELS" attributes="" save_date="2024-01-15 23:07:05"><![CDATA[Rótulo]]></key>
@@ -2717,6 +2727,7 @@ Senha: [password]]]></key>
         <key id="standard&amp;_LOGOUT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Desconectar]]></key>
         <key id="standard&amp;_LOG_USERS_TO_FNCROLE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Atribuição de utilizadores para uma função funcional]]></key>
         <key id="standard&amp;_LOG_USERS_TO_GROUP" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Atribuição de utilizadores para um grupo]]></key>
+        <key id="standard&amp;_LOG_USERS_TO_ORGCHART" attributes="" save_date="2024-09-16 18:08:34"><![CDATA[Atribuição de utilizadores para um organograma]]></key>
         <key id="standard&amp;_MAKE_A_COPY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Fazer uma cópia]]></key>
         <key id="standard&amp;_MANAGE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Gerir]]></key>
         <key id="standard&amp;_MANAGED_BY" attributes="" save_date="2024-01-18 14:04:32"><![CDATA[Gerido por:]]></key>
@@ -2787,7 +2798,7 @@ Senha: [password]]]></key>
         <key id="standard&amp;_NO_ADMIN" attributes="" save_date="2024-01-18 14:07:56"><![CDATA[- Nenhum administrador -]]></key>
         <key id="standard&amp;_NO_ANSWER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Sem respostas]]></key>
         <key id="standard&amp;_NO_BACK" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Não, por favor voltar atrás]]></key>
-        <key id="standard&amp;_NO_CATEGORY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Categoria]]></key>
+        <key id="standard&amp;_NO_CATEGORY" attributes="" save_date="2024-09-17 09:36:19"><![CDATA[Sem categorias]]></key>
         <key id="standard&amp;_NO_CONTENT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Sem conteúdo disponível]]></key>
         <key id="standard&amp;_OF" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[De]]></key>
         <key id="standard&amp;_OFF" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Desligado]]></key>
@@ -2847,7 +2858,7 @@ Senha: [password]]]></key>
         <key id="standard&amp;_REQUIRED_SCORE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Pontuação necessária]]></key>
         <key id="standard&amp;_RESET" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Reset]]></key>
         <key id="standard&amp;_RESET_POLICY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Desfazer políticas previamente definidas]]></key>
-        <key id="standard&amp;_ROLLBACK" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Repor]]></key>
+        <key id="standard&amp;_ROLLBACK" attributes="" save_date="2024-09-17 11:11:16"><![CDATA[Reverter]]></key>
         <key id="standard&amp;_ROOT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Raiz]]></key>
         <key id="standard&amp;_ROW" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Linha]]></key>
         <key id="standard&amp;_SAVE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Guardar alterações]]></key>
@@ -3038,6 +3049,7 @@ Senha: [password]]]></key>
         <key id="subscribe&amp;_BEFORE_THIS_APPROVE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[A inscrição de utilizadores para este curso só será confirmada após a aprovação do administrador]]></key>
         <key id="subscribe&amp;_CAPTION_SELECT_LEVELS" attributes="" save_date="2024-01-16 00:05:11"><![CDATA[Seleccione o nível para o utilizador seleccionado]]></key>
         <key id="subscribe&amp;_CHOOSE_SUBSCRIBE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Seleccionar os alunos para serem inscritos ao curso]]></key>
+        <key id="subscribe&amp;_CHOSE_LEVEL" attributes="" save_date="2024-06-13 09:24:19"><![CDATA[Seleccione o nível]]></key>
         <key id="subscribe&amp;_CONFIRM_DELETION" attributes="" save_date="2024-01-23 22:18:24"><![CDATA[Confirmar eliminação]]></key>
         <key id="subscribe&amp;_COPY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Copiar]]></key>
         <key id="subscribe&amp;_COPY_TO_COURSE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Copiar Inscrições]]></key>
@@ -3130,6 +3142,7 @@ Senha: [password]]]></key>
         <key id="templedit&amp;_UPGRADE_CONFIRM" attributes="" save_date="2024-01-15 22:21:20"><![CDATA[Confirmar atualização]]></key>
       </module>
       <module id="test">
+        <key id="test&amp;_ADD_FEEDBACK_RULE" attributes="" save_date="2024-09-16 16:38:47"><![CDATA[Adicionar regra de feedback]]></key>
         <key id="test&amp;_ALL_DIFFICULT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Toda dificuldade]]></key>
         <key id="test&amp;_ALL_QUEST_CATEGORY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Qualquer categoria]]></key>
         <key id="test&amp;_ALL_QUEST_TYPE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Todos tipos]]></key>
