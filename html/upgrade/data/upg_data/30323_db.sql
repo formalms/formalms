@@ -66,7 +66,7 @@ WHERE NOT EXISTS (
         WHERE `name` = '_MANAGEMENT_COMMUNICATION'
 ) LIMIT 1;
 
-SET @idParent = ( SELECT `idMenu` FROM `core_menu` WHERE NAME = '_MANAGEMENT_COMMUNICATION' LIMIT 1 );
+SET @idParent = ( SELECT `idMenu` FROM `core_menu` WHERE `name` = '_MANAGEMENT_COMMUNICATION' LIMIT 1 );
 INSERT INTO `core_menu` ( `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform` )
 SELECT * FROM (
     SELECT '_CATEGORIES', '', '1', TRUE AS `true1`, TRUE AS `true2`, @idParent, NULL, 'framework' 
@@ -76,7 +76,7 @@ WHERE NOT EXISTS (
         WHERE `name` = '_CATEGORIES'
 ) LIMIT 1;
 
-UPDATE `core_menu` SET `idParent` =  (SELECT `idMenu` FROM ( SELECT `idMenu` FROM `core_menu` WHERE NAME = '_MANAGEMENT_COMMUNICATION' LIMIT 1) tbl) WHERE name = '_COMMUNICATION_MAN';
+UPDATE `core_menu` SET `idParent` =  (SELECT `idMenu` FROM ( SELECT `idMenu` FROM `core_menu` WHERE `name` = '_MANAGEMENT_COMMUNICATION' LIMIT 1) tbl) WHERE `name` = '_COMMUNICATION_MAN';
 
 SET @idMenu = ( SELECT `idMenu` FROM `core_menu` WHERE `name` = '_CATEGORIES' LIMIT 1 );
 INSERT INTO `core_menu_under` ( `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path` )
@@ -95,3 +95,7 @@ WHERE NOT EXISTS (
     SELECT `idMenu` FROM `core_menu_under`
         WHERE `idMenu` = @idMenu
 ) LIMIT 1;
+
+INSERT INTO `core_menu_under` SET `default_name` = '_CATEGORIES' WHERE `module_name` = 'reservation' AND `default_name` = '_CATEGORY';
+
+UPDATE `core_menu` SET `name` = '_CATEGORIES' WHERE `idMenu` = ( SELECT `idMenu` FROM `core_menu_under` WHERE `module_name` = 'reservation' AND `default_name` = '_CATEGORIES' LIMIT 1 );
