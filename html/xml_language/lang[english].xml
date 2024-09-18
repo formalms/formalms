@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20240509</DATE>
+  <DATE>20240918</DATE>
   <LANG id="english">
     <lang_code>english</lang_code>
     <lang_description>English</lang_description>
@@ -11,6 +11,9 @@
       <module id="">
         <key id="&amp;_NEW_USER_SUBSCRIBED_TEXT_MODERATORS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[[url] [firstname] [lastname] [course] [username]]]></key>
       </module>
+      <module id="adminmanager">
+        <key id="adminmanager&amp;_ALL_COURSES_IN_CATALOGUE" attributes="" save_date="2024-06-13 09:33:07"><![CDATA[All courses in catalogue]]></key>
+      </module>
       <module id="adminrules">
         <key id="adminrules&amp;_ADMIN_ASSIGNTREEDESCR" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Select folders for administrator user visibility]]></key>
         <key id="adminrules&amp;_ADMIN_MANAGMENT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Administrators manager]]></key>
@@ -20,6 +23,7 @@
         <key id="adminrules&amp;_ADMIN_PREFERENCES_TITLE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Special settings]]></key>
         <key id="adminrules&amp;_ADMIN_RULES" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Administrator Profile]]></key>
         <key id="adminrules&amp;_ADMIN_SPECIAL_SETTING" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Special settings for:]]></key>
+        <key id="adminrules&amp;_COURSE_PRESENCE_ADMIN" attributes="" save_date="2024-06-13 09:36:41"><![CDATA[Course presence admin]]></key>
         <key id="adminrules&amp;_DIRECT_COURSE_SUBSCRIBE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Activate directly the enrollments made by this administrator]]></key>
         <key id="adminrules&amp;_DIRECT_USER_INSERT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Activate directly the users created by this administrator]]></key>
         <key id="adminrules&amp;_LANG_SETTING" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Languages settings]]></key>
@@ -37,6 +41,7 @@
       </module>
       <module id="admin_directory">
         <key id="admin_directory&amp;_ACCEPT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Accept]]></key>
+        <key id="admin_directory&amp;_ALREADY_ASSIGNED" attributes="" save_date="2024-09-18 12:13:36"><![CDATA[already assigned]]></key>
         <key id="admin_directory&amp;_APPROVED_USER_SBJ" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[User accepted]]></key>
         <key id="admin_directory&amp;_ASSIGNED_EXTRAFIELD" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Additional fields assigned]]></key>
         <key id="admin_directory&amp;_DECLINE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Decline]]></key>
@@ -533,6 +538,9 @@
         <key id="configuration&amp;_ECOMMERCE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[E-commerce]]></key>
         <key id="configuration&amp;_EMAIL_SETTINGS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Email settings]]></key>
         <key id="configuration&amp;_EMAIL_SETTINGS_CC" attributes="" save_date="2024-01-18 00:25:15"><![CDATA[Email settings (CC)]]></key>
+        <key id="configuration&amp;_FACEBOOK.OAUTH_KEY" attributes="" save_date="2024-05-23 10:24:40"><![CDATA[oAuth Key]]></key>
+        <key id="configuration&amp;_FACEBOOK.OAUTH_SECRET" attributes="" save_date="2024-05-23 10:24:58"><![CDATA[oAuth Secret]]></key>
+        <key id="configuration&amp;_FACEBOOKAUTH" attributes="" save_date="2024-05-23 10:24:15"><![CDATA[Facebook Authentication]]></key>
         <key id="configuration&amp;_FILE_UPLOAD_WHITELIST" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Whitelist permitted file extensions]]></key>
         <key id="configuration&amp;_FIRST_CATALOGUE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Show "course catalog" as user main page]]></key>
         <key id="configuration&amp;_FORUM_AS_TABLE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Show forum list in a table]]></key>
@@ -889,6 +897,7 @@
         <key id="course&amp;_NOENTER" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Access denied]]></key>
         <key id="course&amp;_NO_COURSE_DATA" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Course with no start date]]></key>
         <key id="course&amp;_NO_COURSE_FOUND" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[No course found]]></key>
+        <key id="course&amp;_NO_NAME" attributes="" save_date="2024-05-27 11:49:43"><![CDATA[No name]]></key>
         <key id="course&amp;_OTHER_OPTION" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Other options]]></key>
         <key id="course&amp;_OTHER_USER_MATERIAL" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Material for other roles]]></key>
         <key id="course&amp;_OVERVIEW" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Overview]]></key>
@@ -1169,7 +1178,7 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="dashboardsetting&amp;_DASHBOARD_SETTING_SELECT_BLOCK" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Select block]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_SETTING_SELECT_STATUS" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Select a status]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_STATUS_DRAFT" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Draft]]></key>
-        <key id="dashboardsetting&amp;_DASHBOARD_STATUS_PUBLISH" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Published]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARD_STATUS_PUBLISH" attributes="" save_date="2024-05-23 10:27:19"><![CDATA[Published]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_WELCOME_MESSAGE" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Hi <strong>[firstname] [lastname]</strong>, welcome to the platform <strong>[platform]</strong>]]></key>
         <key id="dashboardsetting&amp;_ENABLED_ACTIONS" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Actions enabled]]></key>
         <key id="dashboardsetting&amp;_IMAGE_DASHBOARDBLOCKBANNERLMS_COVER" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Cover image]]></key>
@@ -1425,6 +1434,7 @@ Password: [password]]]></key>
       <module id="fncroles">
         <key id="fncroles&amp;_GAP_ANALYSIS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Gap analysis]]></key>
         <key id="fncroles&amp;_GAP_ONLY" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[With a gap]]></key>
+        <key id="fncroles&amp;_NONE" attributes="" save_date="2024-06-13 09:30:49"><![CDATA[None]]></key>
         <key id="fncroles&amp;_NO_GAP_ONLY" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Without a gap]]></key>
       </module>
       <module id="forum">
@@ -2089,6 +2099,7 @@ Please don't upload offensive images.]]></key>
         <key id="profile&amp;_NO_VIDEO_FOUND" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[No videos found]]></key>
         <key id="profile&amp;_OLDPASSWRONG" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[The inserted password is not yours]]></key>
         <key id="profile&amp;_OLD_PWD" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Old password]]></key>
+        <key id="profile&amp;_OPERATION_FAILUREPROFILE" attributes="" save_date="2024-06-10 17:02:16"><![CDATA[Unable to edit user properties]]></key>
         <key id="profile&amp;_OPERATION_SUCCESSFULPROFILE" attributes="" save_date="2024-01-18 14:10:12"><![CDATA[Profile updated successfully]]></key>
         <key id="profile&amp;_OTHER_POLICY" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Other options]]></key>
         <key id="profile&amp;_PFL_POLICY_NOONE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[No one]]></key>
@@ -2211,9 +2222,10 @@ Please don't upload offensive images.]]></key>
         <key id="register&amp;_REG_CONFIRM_FAILED" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[The confirmation of your account is failed]]></key>
         <key id="register&amp;_REG_ELAPSEDREQUEST" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[The request is not valid because the validity period is elapsed]]></key>
         <key id="register&amp;_REG_HOUR_REQUEST_LIMIT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[This request will expire after <b>[hour] hours</b>]]></key>
-        <key id="register&amp;_REG_MAIL_TEXT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[We have received your subscription request with the following information:<br />
+        <key id="register&amp;_REG_MAIL_TEXT" attributes="" save_date="2024-09-18 11:56:13"><![CDATA[We have received your subscription request with the following information:<br />
 <br />
 Username : [userid]<br />
+Password : [password]<br />
 <br />
 To complete  the registration process, please click on the link below, (or copy it in your web browser address bar)<br />
 <br />
@@ -2669,6 +2681,7 @@ Username: [userid]]]></key>
         <key id="standard&amp;_FINAL_SCORE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Final score]]></key>
         <key id="standard&amp;_FIRSTNAME" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[First name]]></key>
         <key id="standard&amp;_FIX_SEQUENCE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Fix sequence error]]></key>
+        <key id="standard&amp;_FOLDER_NAME" attributes="" save_date="2024-09-18 11:22:16"><![CDATA[Folder name]]></key>
         <key id="standard&amp;_FORUM" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Forum]]></key>
         <key id="standard&amp;_FROM" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[from]]></key>
         <key id="standard&amp;_FULLNAME" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Fullname]]></key>
@@ -2724,6 +2737,7 @@ Username: [userid]]]></key>
         <key id="standard&amp;_LOGOUT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Logout]]></key>
         <key id="standard&amp;_LOG_USERS_TO_FNCROLE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Assignment of users to a functional role]]></key>
         <key id="standard&amp;_LOG_USERS_TO_GROUP" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Assignment of users to a group]]></key>
+        <key id="standard&amp;_LOG_USERS_TO_ORGCHART" attributes="" save_date="2024-09-16 18:08:34"><![CDATA[Assignment of users to an organization chart]]></key>
         <key id="standard&amp;_MAKE_A_COPY" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Make a copy]]></key>
         <key id="standard&amp;_MANAGE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Manage]]></key>
         <key id="standard&amp;_MANAGED_BY" attributes="" save_date="2024-01-18 14:04:32"><![CDATA[Managed by:]]></key>
@@ -3045,6 +3059,7 @@ Username: [userid]]]></key>
         <key id="subscribe&amp;_BEFORE_THIS_APPROVE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[The users subscription to this course will be confirmed only after the administrator approval]]></key>
         <key id="subscribe&amp;_CAPTION_SELECT_LEVELS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Select the level for the user selected]]></key>
         <key id="subscribe&amp;_CHOOSE_SUBSCRIBE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Select the students to be subscribed to the course]]></key>
+        <key id="subscribe&amp;_CHOSE_LEVEL" attributes="" save_date="2024-06-13 09:24:57"><![CDATA[Choose the level]]></key>
         <key id="subscribe&amp;_CONFIRM_DELETION" attributes="" save_date="2024-01-23 22:18:24"><![CDATA[Confirm deletion]]></key>
         <key id="subscribe&amp;_COPY" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Copy]]></key>
         <key id="subscribe&amp;_COPY_TO_COURSE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Copy Subscriptions]]></key>
@@ -3137,6 +3152,7 @@ Username: [userid]]]></key>
         <key id="templedit&amp;_UPGRADE_CONFIRM" attributes="" save_date="2022-03-28 10:15:08"><![CDATA[Confirm upgrade]]></key>
       </module>
       <module id="test">
+        <key id="test&amp;_ADD_FEEDBACK_RULE" attributes="" save_date="2024-09-16 16:38:47"><![CDATA[Add feedback rule]]></key>
         <key id="test&amp;_ALL_DIFFICULT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Any difficulty]]></key>
         <key id="test&amp;_ALL_QUEST_CATEGORY" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Any category]]></key>
         <key id="test&amp;_ALL_QUEST_TYPE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Any type]]></key>
