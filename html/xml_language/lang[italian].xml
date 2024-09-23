@@ -699,6 +699,7 @@ http://server/path/index.php?modname=login) \]]></key>
         <key id="configuration&amp;_WARINNG_SOCIAL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Attenzione senza questi settaggi la login social non funzioner&agrave;]]></key>
         <key id="configuration&amp;_PURCHASE_USER" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Utente notifiche acquisti (Username o idst)]]></key>
         <key id="configuration&amp;_FORCE_SCORM_FINISH" attributes="" save_date="2024-01-15 14:47:12"><![CDATA[Forza il finish nei corsi SCORM]]></key>
+        <key id="configuration&amp;_EXCLUDE_COMPLETED_COURSES" attributes="" save_date="2024-01-15 14:47:12"><![CDATA[Esclude i corsi completati dalla vista "Tutti i corsi aperti"]]></key>
         <key id="configuration&amp;_PASS_SPECIAL_CHAR" attributes="" save_date="2024-01-15 14:47:12"><![CDATA[Numero minimo di caratteri speciali<br>( 0 = caratteri speciali non obbligatori )]]></key>
         <key id="configuration&amp;_PASS_MIN_UPPERCASE" attributes="" save_date="2024-01-15 14:47:12"><![CDATA[Numero minimo di caratteri maiuscoli<br>( 0 = caratteri maiuscoli non obbligatori )]]></key>
         <key id="configuration&amp;_PASS_MIN_LOWERCASE" attributes="" save_date="2024-01-15 14:47:12"><![CDATA[Numero minimo di caratteri minuscoli<br>( 0 = caratteri minuscoli non obbligatori )]]></key>
