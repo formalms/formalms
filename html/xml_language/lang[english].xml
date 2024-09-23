@@ -696,6 +696,7 @@
         <key id="configuration&amp;_WARINNG_SOCIAL" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Attention without these settings the social login will not work]]></key>
         <key id="configuration&amp;_PURCHASE_USER" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Purchase User (Username or idst)]]></key>
         <key id="configuration&amp;_FORCE_SCORM_FINISH" attributes="" save_date="2024-01-15 14:47:12"><![CDATA[Force SCORM finish]]></key>
+        <key id="configuration&amp;_EXCLUDE_COMPLETED_COURSES" attributes="" save_date="2024-01-15 14:47:12"><![CDATA[Exclude completed course from the view "All open"]]></key>
         <key id="configuration&amp;_PASS_SPECIAL_CHAR" attributes="" save_date="2024-01-15 14:47:12"><![CDATA[Minimum number of special characters<br>( 0 = special characters not mandatory )]]></key>
         <key id="configuration&amp;_PASS_MIN_UPPERCASE" attributes="" save_date="2024-01-15 14:47:12"><![CDATA[Minimum number of uppercase characters<br>( 0 = uppercase characters not mandatory)]]></key>
         <key id="configuration&amp;_PASS_MIN_LOWERCASE" attributes="" save_date="2024-01-15 14:47:12"><![CDATA[Minimum number of lowercase characters<br>( 0 = lowercase characters not mandatory )]]></key>
