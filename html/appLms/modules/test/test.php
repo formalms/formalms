@@ -789,7 +789,7 @@ function delquest()
         sql_query('
         UPDATE ' . $GLOBALS['prefix_lms'] . "_testquest
         SET sequence = sequence -1 
-        WHERE sequence > '$seq'");
+        WHERE sequence > '$seq' and idTest=".$idTest);
         fixPageSequence($idTest);
 
         $max_score = _getTestMaxScore($idTest);

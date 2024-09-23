@@ -291,7 +291,7 @@ function organization_property_settings(&$treeView, $idItem, &$form, &$lang)
 
         $arrParamsInfo = $lo->getParamInfo();
         if ($arrParamsInfo !== false) {
-            require_once _lms_ . '/lib/lib.param.php';
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
             $param_values = getLOParamArray($values['idParam']);
             if (is_callable([$lo, 'renderCustomSettings'])) {
                 $GLOBALS['page']->add($lo->renderCustomSettings($param_values,

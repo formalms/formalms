@@ -384,7 +384,7 @@ class KbRes
 
     public function playResource($res_id, $back_url)
     {
-        require_once _lms_ . '/lib/lib.param.php';
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
         require_once _lms_ . '/lib/lib.module.php';
 
         $data = $this->getResource($res_id);

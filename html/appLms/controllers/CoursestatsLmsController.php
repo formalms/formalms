@@ -14,6 +14,7 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 require_once _base_ . '/lib/lib.json.php';
+
 use FormaLms\lib\Forma;
 use FormaLms\lib\Session\SessionManager;
 
@@ -138,7 +139,7 @@ class CoursestatsLmsController extends LmsController
     {
         $view_all_perm = checkPerm('view_all', true, 'coursestats');
 
-        if ((int) $this->idCourse <= 0) {
+        if ((int)$this->idCourse <= 0) {
             //...
             return;
         }
@@ -154,19 +155,18 @@ class CoursestatsLmsController extends LmsController
                 'dir' => 'asc',
             ];
 
-            $list = $this->model->getCourseStatsList($pagination, $this->idCourse, $filter);
+            $list = $this->model->getCourseStatsList($pagination, $this->idCourse);
 
             //filter users
             require_once _base_ . '/lib/lib.preference.php';
             $ctrlManager = new ControllerPreference();
             $ctrl_users = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
-            $idx = 0;
-            foreach ($list as $record) {
-                if (!in_array($record->idst, $ctrl_users)) {
+
+            foreach ($list as $idx => $record) {
+                if (!in_array($record->idst, $ctrl_users) && array_key_exists($idx, $list)) {
                     // Elimino gli studenti non amministrati
                     unset($list[$idx]);
                 }
-                ++$idx;
             }
             $total_users = count($list);
         }
@@ -175,7 +175,7 @@ class CoursestatsLmsController extends LmsController
         $_arr_js = [];
         foreach ($lo_totals as $id_lo => $total_lo) {
             $_arr_js[] = '{id:"lo_totals_' . $id_lo . '", total:"' . $total_lo . ' / ' . $total_users . '", '
-                . 'percent:"' . number_format(($total_lo / $total_users), 2) . ' %"}';
+                . 'percent:"' . number_format($total_users > 0 ? ($total_lo / $total_users) : 0, 2) . ' %"}';
         }
         $lo_totals_js = implode(',', $_arr_js);
         //WARNING: lo_list and lo_totals must have the same keys order
@@ -194,7 +194,7 @@ class CoursestatsLmsController extends LmsController
             'is_active_advanced_filter' => false,
             'orgchart_list' => $umodel->getOrgChartDropdownList(),
             'groups_list' => $gmodel->getGroupsDropdownList(),
-            'total_users' => (int) $total_users,
+            'total_users' => (int)$total_users,
             'lo_totals_js' => $lo_totals_js,
             'status_list' => $this->_getJsArrayStatus(),
             'permissions' => $this->permissions,
@@ -278,7 +278,7 @@ class CoursestatsLmsController extends LmsController
                 $_userid = $acl_man->relativeId($record->userid);
                 $row = [
                     // 'id' => (int)$record->idst,
-                    'userid' => '<a href="./index.php?r=lms/coursestats/show_user&id_user=' . (int) $record->idst . '">' . Layout::highlight($_userid, $filter_text) . '</a>',
+                    'userid' => '<a href="./index.php?r=lms/coursestats/show_user&id_user=' . (int)$record->idst . '">' . Layout::highlight($_userid, $filter_text) . '</a>',
                     'firstname' => Layout::highlight($record->lastname, $filter_text) . ' ' . Layout::highlight($record->firstname, $filter_text),
                     'level' => isset($arr_level[$record->level]) ? $arr_level[$record->level] : '',
                     'status' => isset($arr_status[$record->status]) ? $arr_status[$record->status] : '',
@@ -322,7 +322,7 @@ class CoursestatsLmsController extends LmsController
 
     public function show_userTask()
     {
-        if ((int) $this->idCourse <= 0) {
+        if ((int)$this->idCourse <= 0) {
             //...
             return;
         }
@@ -481,7 +481,7 @@ class CoursestatsLmsController extends LmsController
 
     public function show_user_objectTask()
     {
-        if ((int) $this->idCourse <= 0) {
+        if ((int)$this->idCourse <= 0) {
             //...
             return;
         }
@@ -563,7 +563,7 @@ class CoursestatsLmsController extends LmsController
 
     public function show_objectTask()
     {
-        if ((int) $this->idCourse <= 0) {
+        if ((int)$this->idCourse <= 0) {
             //...
             return;
         }
@@ -605,7 +605,7 @@ class CoursestatsLmsController extends LmsController
             return;
         }
 
-        if ((int) $this->idCourse <= 0) {
+        if ((int)$this->idCourse <= 0) {
             //...
             return;
         }
@@ -623,7 +623,7 @@ class CoursestatsLmsController extends LmsController
         }
 
         $res = $this->model->resetTrack($id_lo, $id_user);
-        Util::jump_to('index.php?r=lms/coursestats/show_user_object&id_user=' . (int) $id_user . '&id_lo=' . (int) $id_lo . '&res=' . ($res ? 'ok_reset' : 'err_reset'));
+        Util::jump_to('index.php?r=lms/coursestats/show_user_object&id_user=' . (int)$id_user . '&id_lo=' . (int)$id_lo . '&res=' . ($res ? 'ok_reset' : 'err_reset'));
     }
 
     public function inline_editorTask()
@@ -634,7 +634,7 @@ class CoursestatsLmsController extends LmsController
 
             return;
         }
-        if ((int) $this->idCourse <= 0) {
+        if ((int)$this->idCourse <= 0) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('invalid course')];
             echo $this->json->encode($output);
 
@@ -686,7 +686,7 @@ class CoursestatsLmsController extends LmsController
             return;
         }
 
-        if ((int) $this->idCourse <= 0) {
+        if ((int)$this->idCourse <= 0) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('invalid course')];
             echo $this->json->encode($output);
 
@@ -720,7 +720,7 @@ class CoursestatsLmsController extends LmsController
         }
 
         require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/organization/orglib.php');
-        require_once _lms_ . '/lib/lib.param.php';
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
 
         $repoDb = new OrgDirDb($this->idCourse);
         $folder = $repoDb->getFolderById($id_lo);
@@ -852,7 +852,7 @@ class CoursestatsLmsController extends LmsController
 
         require_once _base_ . '/lib/lib.download.php';
 
-        if ((int) $this->idCourse <= 0) {
+        if ((int)$this->idCourse <= 0) {
             //...
             return;
         }
@@ -944,7 +944,7 @@ class CoursestatsLmsController extends LmsController
 
         require_once _base_ . '/lib/lib.download.php';
 
-        if ((int) $this->idCourse <= 0) {
+        if ((int)$this->idCourse <= 0) {
             //...
             return;
         }
@@ -1091,7 +1091,7 @@ class CoursestatsLmsController extends LmsController
 
         require_once _base_ . '/lib/lib.download.php';
 
-        if ((int) $this->idCourse <= 0) {
+        if ((int)$this->idCourse <= 0) {
             //...
             return;
         }
@@ -1171,7 +1171,7 @@ class CoursestatsLmsController extends LmsController
 
         $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, $this->idCourse);
         $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, 0);
-        if ((int) $this->idCourse <= 0) {
+        if ((int)$this->idCourse <= 0) {
             //...
             return;
         }
@@ -1250,7 +1250,7 @@ class CoursestatsLmsController extends LmsController
 
         require_once _base_ . '/lib/lib.download.php';
 
-        if ((int) $this->idCourse <= 0) {
+        if ((int)$this->idCourse <= 0) {
             //...
             return;
         }
@@ -1397,7 +1397,7 @@ class CoursestatsLmsController extends LmsController
 
         require_once _base_ . '/lib/lib.download.php';
 
-        if ((int) $this->idCourse <= 0) {
+        if ((int)$this->idCourse <= 0) {
             //...
             return;
         }
@@ -1514,15 +1514,15 @@ class CoursestatsLmsController extends LmsController
 
         $usersList = &$acl_man->getUsers($course_user);
 
-        $queryTime = 'SELECT idUser, SUM((UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime))) as time FROM %lms_tracksession WHERE idCourse = ' . (int) $this->idCourse . ' GROUP BY idUser';
+        $queryTime = 'SELECT idUser, SUM((UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime))) as time FROM %lms_tracksession WHERE idCourse = ' . (int)$this->idCourse . ' GROUP BY idUser';
         $totalTimesResult = sql_query($queryTime);
 
         $totalTimes = [];
         foreach ($totalTimesResult as $totalTime) {
             $totTime = $totalTime['time'];
-            $hours = (int) ($totTime / 3600);
-            $minutes = (int) (($totTime % 3600) / 60);
-            $seconds = (int) ($totTime % 60);
+            $hours = (int)($totTime / 3600);
+            $minutes = (int)(($totTime % 3600) / 60);
+            $seconds = (int)($totTime % 60);
             if ($minutes < 10) {
                 $minutes = '0' . $minutes;
             }

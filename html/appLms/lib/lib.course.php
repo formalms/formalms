@@ -263,7 +263,7 @@ class Selector_Course
         if ($this->filter['course_name'] != '') {
             $query_course .= " AND ( c.code LIKE '%" . $this->filter['course_name'] . "%' OR c.name LIKE '%" . $this->filter['course_name'] . "%' ) ";
         }
-        list($tot_course) = sql_fetch_row(sql_query('SELECT COUNT(*) ' . $query_course));
+        [$tot_course] = sql_fetch_row(sql_query('SELECT COUNT(*) ' . $query_course));
         $query_course .= ' ORDER BY c.name
 							LIMIT ' . $ini . ',' . (int) FormaLms\lib\Get::sett('visuItem', 25);
 
@@ -485,7 +485,7 @@ class Man_Course
         if (!($re_course = sql_query($query_course))) {
             return 0;
         }
-        list($number) = sql_fetch_row($re_course);
+        [$number] = sql_fetch_row($re_course);
 
         return $number;
     }
@@ -557,7 +557,7 @@ class Man_Course
             return false;
         }
 
-        list($idCourse) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
+        [$idCourse] = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
 
         return $idCourse;
     }
@@ -796,7 +796,7 @@ class Man_Course
 			VALUES ( '" . $idCourse . "','0', '" . $name . "', '')")) {
             return false;
         }
-        list($id_main) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
+        [$id_main] = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
 
         return $id_main;
     }
@@ -1260,7 +1260,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
         if (!($re_category = sql_query($query_cat))) {
             return '';
         }
-        list($id_parent, $lev, $path) = sql_fetch_row($re_category);
+        [$id_parent, $lev, $path] = sql_fetch_row($re_category);
 
         $name = ((($pos = strrpos($path, '/')) === false) ? $path : substr($path, $pos + 1));
         if ($lev <= 1) {
@@ -1309,7 +1309,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                     if ($filter['c_category']['value'] != 0) {
                         $bounds_query = 'SELECT iLeft, iRight FROM %lms_category WHERE idCategory=' . $filter['c_category']['value'];
                         $res = sql_query($bounds_query);
-                        list($c_left, $c_right) = sql_fetch_row($res);
+                        [$c_left, $c_right] = sql_fetch_row($res);
                         $categories_query = 'SELECT idCategory FROM %lms_category WHERE iLeft>' . $c_left . ' AND iRight<' . $c_right;
                         $res = sql_query($categories_query);
                         while (list($sub_category) = sql_fetch_row($res)) {
@@ -1449,7 +1449,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                     //retrieve category's sub-categories ids
                     $bounds_query = 'SELECT iLeft, iRight FROM %lms_category WHERE idCategory=' . $filter['c_category']['value'];
                     $res = sql_query($bounds_query);
-                    list($c_left, $c_right) = sql_fetch_row($res);
+                    [$c_left, $c_right] = sql_fetch_row($res);
                     $categories_query = 'SELECT idCategory FROM %lms_category WHERE iLeft>' . $c_left . ' AND iRight<' . $c_right;
                     $res = sql_query($categories_query);
                     while (list($sub_category) = sql_fetch_row($res)) {
@@ -1547,7 +1547,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
             . " WHERE course_type = 'elearning' " . $filter_conds
             . (($is_subadmin && !$all_courses) ? (!empty($admin_courses['course']) ? (' AND c.idCourse IN (' . implode(',', $admin_courses['course']) . ')') : '') : '');
         $re_course = sql_query($query);
-        list($number) = sql_fetch_row($re_course);
+        [$number] = sql_fetch_row($re_course);
 
         return $number;
     }
@@ -1641,7 +1641,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
 
         $query .= (($is_subadmin && !$all_courses) ? (!empty($admin_courses['course']) ? (' AND c.idCourse IN (' . implode(',', $admin_courses['course']) . ')') : ' AND c.idCourse = 0') : '');
 
-        list($res) = sql_fetch_row(sql_query($query));
+        [$res] = sql_fetch_row(sql_query($query));
 
         return $res;
     }
@@ -1785,7 +1785,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
         $query = "SELECT idCourse FROM %lms_course WHERE name LIKE '" . $name . "'";
         $res = sql_query($query);
         if ($res && (sql_num_rows($res) > 0)) {
-            list($idCourse) = sql_fetch_row($res);
+            [$idCourse] = sql_fetch_row($res);
             $output = $idCourse;
         }
 
@@ -1937,7 +1937,7 @@ class Man_CourseUser
     public function countUserCourses($id_user)
     {
         $query = "SELECT COUNT(*) FROM %lms_courseuser WHERE idUser = $id_user";
-        list($count) = sql_fetch_row(sql_query($query));
+        [$count] = sql_fetch_row(sql_query($query));
 
         return (int) $count;
     }
@@ -2679,7 +2679,7 @@ function logIntoCourse($idCourse, $gotofirst_page = true)
 	SELECT level, status, waiting
 	FROM %lms_courseuser
 	WHERE idCourse = ' . (int) $idCourse . ' AND idUser = ' . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getId() . '');
-    list($level_c, $status_user, $waiting_user) = sql_fetch_row($re_course);
+    [$level_c, $status_user, $waiting_user] = sql_fetch_row($re_course);
 
     \FormaLms\lib\Forma::setCourse($idCourse);
     $course_info = \FormaLms\lib\Forma::course()->getAllInfo();
@@ -2738,7 +2738,7 @@ function logIntoCourse($idCourse, $gotofirst_page = true)
                     . ' LIMIT 0,1';
                 $res = sql_query($query);
                 if ($res && (sql_num_rows($res) > 0)) {
-                    list($id_org, $id_test) = sql_fetch_row($res);
+                    [$id_org, $id_test] = sql_fetch_row($res);
                     if ($id_test > 0) {
                         require_once _lms_ . '/lib/lib.test.php';
                         $tman = new TestManagement($id_test);
@@ -2765,7 +2765,7 @@ function logIntoCourse($idCourse, $gotofirst_page = true)
                 $obj = array_shift($first_lo);
                 // if we have more than an object we need to play the first one until it's completed
                 $query = 'SELECT status FROM %lms_commontrack WHERE idReference = ' . (int) $obj['id_org'] . ' AND idUser = ' . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getId();
-                list($status) = sql_fetch_row(sql_query($query));
+                [$status] = sql_fetch_row(sql_query($query));
 
                 if ((($status == 'completed') || ($status == 'passed')) && $gotofirst_page) {
                     Util::jump_to($jumpurl);
