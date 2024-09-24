@@ -12,6 +12,7 @@
  */
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
+
 use FormaLms\lib\Encryption\SSLEncryption;
 
 require_once _base_ . '/api/lib/lib.api.php';
@@ -36,7 +37,7 @@ class User_API extends API
             $query .= " AND oc.lang_code = '" . $lang_code . "'";
         }
         if ($parent !== false) {
-            $query .= ' AND oct.idParent = ' . (int) $parent;
+            $query .= ' AND oct.idParent = ' . (int)$parent;
         }
         $res = $this->db->query($query);
         if ($this->db->num_rows($res) > 0) {
@@ -61,7 +62,7 @@ class User_API extends API
             $query .= " AND oc.lang_code = '" . $lang_code . "'";
         }
         if ($parent !== false) {
-            $query .= ' AND oct.idParent = ' . (int) $parent;
+            $query .= ' AND oct.idParent = ' . (int)$parent;
         }
 
         $res = $this->db->query($query);
@@ -253,7 +254,7 @@ class User_API extends API
             // save external user data:
             if ($params['ext_not_found'] && !empty($params['ext_user']) && !empty($params['ext_user_type'])) {
                 $pref_path = 'ext.user.' . $params['ext_user_type'];
-                $pref_val = 'ext_user_' . $params['ext_user_type'] . '_' . (int) $params['ext_user'];
+                $pref_val = 'ext_user_' . $params['ext_user_type'] . '_' . (int)$params['ext_user'];
 
                 $pref = new UserPreferencesDb();
                 $pref->assignUserValue($id_user, $pref_path, $pref_val);
@@ -304,7 +305,8 @@ class User_API extends API
         return $id_user;
     }
 
-    public function updateUser($id_user, $userdata) {
+    public function updateUser($id_user, $userdata)
+    {
 
         $acl_man = new FormaACLManager();
         $output = array();
@@ -316,22 +318,22 @@ class User_API extends API
 
         }
 
-        if (isset($userdata['valid']) && $userdata['valid'] == '1'){
+        if (isset($userdata['valid']) && $userdata['valid'] == '1') {
             $res = $this->aclManager->recoverUser($id_user);
-        } elseif (isset($userdata['valid']) && $userdata['valid'] == '0'){
+        } elseif (isset($userdata['valid']) && $userdata['valid'] == '0') {
             $res = $this->aclManager->suspendUser($id_user);
         }
 
         $res = $this->aclManager->updateUser(
             $id_user,
-            (isset($userdata['userid']) ? $userdata['userid'] :  false),
-            (isset($userdata['firstname']) ? $userdata['firstname'] :  false),
-            (isset($userdata['lastname']) ? $userdata['lastname'] :  false),
-            (isset($userdata['password']) ? $userdata['password'] :  false),
-            (isset($userdata['email']) ? $userdata['email'] :  false),
+            (isset($userdata['userid']) ? $userdata['userid'] : false),
+            (isset($userdata['firstname']) ? $userdata['firstname'] : false),
+            (isset($userdata['lastname']) ? $userdata['lastname'] : false),
+            (isset($userdata['password']) ? $userdata['password'] : false),
+            (isset($userdata['email']) ? $userdata['email'] : false),
             false,
-            (isset($userdata['signature']) ? $userdata['signature'] :  false),
-            (isset($userdata['lastenter']) ? $userdata['lastenter'] :  false),
+            (isset($userdata['signature']) ? $userdata['signature'] : false),
+            (isset($userdata['lastenter']) ? $userdata['lastenter'] : false),
             false
         );
 
@@ -343,8 +345,8 @@ class User_API extends API
                     $idOrg = $this->_getBranch($branch);
 
                     if ($idOrg !== false) {
-                        $oc = $this->aclManager->getGroupST('/oc_'.$idOrg);
-                        $ocd = $this->aclManager->getGroupST('/ocd_'.$idOrg);
+                        $oc = $this->aclManager->getGroupST('/oc_' . $idOrg);
+                        $ocd = $this->aclManager->getGroupST('/ocd_' . $idOrg);
                         $this->aclManager->addToGroup($oc, $id_user);
                         $this->aclManager->addToGroup($ocd, $id_user);
                         $entities[$oc] = $oc;
@@ -362,8 +364,8 @@ class User_API extends API
                     $idOrg = $this->_getBranchByCode($branch);
 
                     if ($idOrg !== false) {
-                        $oc = $this->aclManager->getGroupST('/oc_'.$idOrg);
-                        $ocd = $this->aclManager->getGroupST('/ocd_'.$idOrg);
+                        $oc = $this->aclManager->getGroupST('/oc_' . $idOrg);
+                        $ocd = $this->aclManager->getGroupST('/ocd_' . $idOrg);
                         $this->aclManager->addToGroup($oc, $id_user);
                         $this->aclManager->addToGroup($ocd, $id_user);
                         $entities[$oc] = $oc;
@@ -378,7 +380,7 @@ class User_API extends API
         if (isset($userdata['_customfields']) && $res) {
             require_once _adm_ . '/lib/lib.field.php';
             $fields =& $userdata['_customfields'];
-            if(count($fields) > 0) {
+            if (count($fields) > 0) {
                 $fl = new FieldList();
                 $okcustom = $fl->storeDirectFieldsForUser($id_user, $fields);
             }
@@ -408,47 +410,65 @@ class User_API extends API
      *
      * @param <int> $id_user the idst of the user
      */
-    private function getUserDetails($id_user)
+    private function getUserDetails($id_user_list)
     {
         require_once _adm_ . '/lib/lib.field.php';
 
-        $user_data = $this->aclManager->getUser($id_user, false);
+        $userCount = count($id_user_list);
+        // Recupera tutti gli utenti in una singola query
+        $users_data = $this->aclManager->getUsers($id_user_list);
+
+        // Recupera tutti i campi personalizzati in una singola query
+        $field_man = new FieldList();
+        $all_field_data = $field_man->getFieldsAndValueFromMultipleUsers($id_user_list);
+
         $output = [];
-        if (!$user_data) {
-            $output['success'] = false;
-            $output['message'] = 'Invalid user ID: ' . $id_user . '.';
-            $output['details'] = false;
-        } else {
-            $user_details = [
-                'idst' => $user_data[ACL_INFO_IDST],
-                'userid' => $this->aclManager->relativeId($user_data[ACL_INFO_USERID]),
-                'firstname' => $user_data[ACL_INFO_FIRSTNAME],
-                'lastname' => $user_data[ACL_INFO_LASTNAME],
-                'email' => $user_data[ACL_INFO_EMAIL],
-                'signature' => $user_data[ACL_INFO_SIGNATURE],
-                'valid' => $user_data[ACL_INFO_VALID],
-                'pwd_expire_at' => $user_data[ACL_INFO_PWD_EXPIRE_AT],
-                'register_date' => $user_data[ACL_INFO_REGISTER_DATE],
-                'last_enter' => $user_data[ACL_INFO_LASTENTER],
-            ];
+        foreach ($id_user_list as $id_user) {
+            if (!isset($users_data[(int)$id_user])) {
+                $output[$id_user] = [
+                    'success' => false,
+                    'message' => 'Invalid user ID: ' . $id_user . '.',
+                    'detail' => false
+                ];
+            } else {
+                $user_data = $users_data[(int)$id_user];
+                $user_details = [
+                    'idst' => $user_data[ACL_INFO_IDST],
+                    'userid' => $this->aclManager->relativeId($user_data[ACL_INFO_USERID]),
+                    'firstname' => $user_data[ACL_INFO_FIRSTNAME],
+                    'lastname' => $user_data[ACL_INFO_LASTNAME],
+                    'email' => $user_data[ACL_INFO_EMAIL],
+                    'signature' => $user_data[ACL_INFO_SIGNATURE],
+                    'valid' => $user_data[ACL_INFO_VALID],
+                    'pwd_expire_at' => $user_data[ACL_INFO_PWD_EXPIRE_AT],
+                    'register_date' => $user_data[ACL_INFO_REGISTER_DATE],
+                    'last_enter' => $user_data[ACL_INFO_LASTENTER],
+                ];
 
-            $field_man = new FieldList();
-            $field_data = $field_man->getFieldsAndValueFromUser($id_user, false, true);
+                $fields = [];
+                if (isset($all_field_data[$id_user])) {
+                    foreach ($all_field_data[$id_user] as $field_id => $value) {
+                        $fields[] = ['id' => $field_id, 'name' => $value[0], 'value' => $value[1]];
+                    }
+                }
 
-            $fields = [];
-            foreach ($field_data as $field_id => $value) {
-                $fields[] = ['id' => $field_id, 'name' => $value[0], 'value' => $value[1]];
+                $user_details['custom_fields'] = $fields;
+
+                if ($userCount === 1) {
+                    $output = $user_details;
+                } else {
+                    $output[$id_user] = [
+                        'success' => true,
+                        'message' => '',
+                        'details' => $user_details
+                    ];
+                }
             }
-
-            $user_details['custom_fields'] = $fields;
-
-            $output['success'] = true;
-            $output['message'] = '';
-            $output['details'] = $user_details;
         }
 
         return $output;
     }
+
 
     /**
      * @param type $params
@@ -520,7 +540,7 @@ class User_API extends API
         if ($res) {
             $output['success'] = true;
             $output['users_list'] = [];
-            while ($row = $this->db->fetch_assoc($res)) {
+            foreach ($res as $row) {
                 $output['users_list'][] = [
                     'userid' => $this->aclManager->relativeId($row['userid']),
                     'idst' => $row['idst'],
@@ -552,7 +572,7 @@ class User_API extends API
         return $output;
     }
 
-    public function getMyCourses($id_user, $params = false)
+    public function getMyCourses($id_user_list, $params = false)
     {
         require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
@@ -560,8 +580,8 @@ class User_API extends API
 
         $output['success'] = true;
 
-        $search = ['cu.iduser = :id_user'];
-        $search_params = [':id_user' => $id_user];
+        $search = ['cu.idUser IN ( :id_user )'];
+        $search_params = [':id_user' => "'" . implode("','", $id_user_list) . "'"];
 
         if (!empty($params['filter'])) {
             switch ($params['filter']) {
@@ -583,45 +603,7 @@ class User_API extends API
         }
 
         $model = new CourseLms();
-        $course_list = $model->findAll($search, $search_params);
-
-        //check courses accessibility
-
-        foreach ($course_list as $key => $value) {
-            $course_list[$key]['can_enter'] = Man_Course::canEnterCourse($course_list[$key]);
-        }
-
-        //$output['log'] = $course_list;
-
-        foreach ($course_list as $key => $course_info) {
-            $dates = [];
-
-            switch ($course_info['course_type']) {
-                case 'classroom':
-                    $classroomManager = new DateManager();
-                    $courseDates = $classroomManager->getCourseDate($course_info['idCourse']);
-
-                    foreach ($courseDates as $courseDate) {
-                        $userStatus = $classroomManager->getCourseEditionUserStatus($id_user, $course_info['idCourse'], $courseDate['id_date']);
-                        if (!empty($userStatus)) {
-                            $dates[] = $userStatus;
-                        }
-                    }
-                    break;
-                default:
-                    break;
-            }
-
-            $output['courses'][]['course_info'] = [
-                'course_id' => $course_info['idCourse'],
-                'course_type' => $course_info['course_type'],
-                'course_name' => str_replace('&', '&amp;', $course_info['name']),
-                'course_description' => str_replace('&', '&amp;', $course_info['description']),
-                'course_link' => FormaLms\lib\Get::site_url() . _folder_lms_ . '/index.php?modname=course&amp;op=aula&amp;idCourse=' . $course_info['idCourse'],
-                'user_status' => $course_info['user_status'],
-                'dates' => $dates,
-            ];
-        }
+        $output['courses'] = $model->findMyCourses($search, $search_params);
 
         return $output;
     }
@@ -634,9 +616,9 @@ class User_API extends API
         $output['success'] = true;
 
         $filter_text = (!empty($params['search']) ? $params['search'] : '');
-        $course_filter = (!empty($params['course_filter']) ? (int) $params['course_filter'] : -1);
-        $start_index = (!empty($params['start_index']) ? (int) $params['start_index'] : false);
-        $results = (!empty($params['results']) ? (int) $params['results'] : false);
+        $course_filter = (!empty($params['course_filter']) ? (int)$params['course_filter'] : -1);
+        $start_index = (!empty($params['start_index']) ? (int)$params['start_index'] : false);
+        $results = (!empty($params['results']) ? (int)$params['results'] : false);
 
         //TODO: call getSearchFilter()
 
@@ -660,7 +642,7 @@ class User_API extends API
         $i = 0;
         foreach ($userdata as $user_info) {
             $pref_path = 'ext.user.' . $user_info['ext_user_type'];
-            $pref_val = 'ext_user_' . $user_info['ext_user_type'] . '_' . (int) $user_info['ext_user'];
+            $pref_val = 'ext_user_' . $user_info['ext_user_type'] . '_' . (int)$user_info['ext_user'];
 
             $users = $this->aclManager->getUsersBySetting($pref_path, $pref_val);
 
@@ -785,7 +767,7 @@ class User_API extends API
                 'message' => 'User not found',
             ];
         } else {
-            $output['idst'] = (int) $res[ACL_INFO_IDST];
+            $output['idst'] = (int)$res[ACL_INFO_IDST];
             $output['success'] = true;
             $output['message'] = ($res[ACL_INFO_VALID] == 0) ? '_DISABLED' : '';
         }
@@ -1269,7 +1251,7 @@ class User_API extends API
         }
 
         if (empty($params['idst']) && !empty($_POST['idst'])) {
-            $params['idst'] = (int) $_POST['idst'];
+            $params['idst'] = (int)$_POST['idst'];
         }
 
         switch ($name) {
@@ -1285,12 +1267,20 @@ class User_API extends API
 
             case 'userdetails':
                 if (count($params) > 0 && !isset($params['ext_not_found'])) { //params[0] should contain user id
-                    if (is_numeric($params['idst'])) {
-                        $res = $this->getUserDetails($params['idst']);
+                    $userIds = [];
+                    if (array_key_exists('idsts', $params)) {
+                        $userIds = explode(',', $params['idsts']);
+                    } else if (array_key_exists('idst', $params) && is_numeric($params['idst'])) {
+                        $userIds[] = $params['idst'];
+                    }
+
+                    if (!empty($userIds)) {
+
+                        $res = $this->getUserDetails($userIds);
                         if (!$res) {
                             $output = ['success' => false, 'message' => 'Error: unable to retrieve user details.'];
                         } else {
-                            $output = ['success' => true, 'details' => $res['details']];
+                            $output = ['success' => true, 'details' => $res];
                         }
                     } else {
                         $output = ['success' => false, 'message' => 'Invalid passed parameter.'];
@@ -1315,7 +1305,7 @@ class User_API extends API
 
             case 'create':
             case 'createuser':
-                $res = $this->createUser($params, $_POST);
+                $res = $this->createUser($params, $params);
                 if (is_array($res)) {
                     $output = $res;
                 } elseif ($res > 0) {
@@ -1328,7 +1318,7 @@ class User_API extends API
             case 'edit':
             case 'updateuser':
                 if (count($params) > 0 && !isset($params['ext_not_found'])) { //params[0] should contain user id
-                    $res = $this->updateUser($params['idst'], $_POST);
+                    $res = $this->updateUser($params['idst'], $params);
 
                     if ($res > 0) {
                         $output = ['success' => true];
@@ -1343,7 +1333,7 @@ class User_API extends API
             case 'delete':
             case 'deleteuser':
                 if (count($params) > 0 && !isset($params['ext_not_found'])) { //params[0] should contain user id
-                    $output = $this->deleteUser($params['idst'], $_POST);
+                    $output = $this->deleteUser($params['idst'], $params);
                 } else {
                     $output = ['success' => false, 'message' => 'Error: user id to update has not been specified.'];
                 }
@@ -1361,7 +1351,7 @@ class User_API extends API
 
             case 'userdetailsfromcredentials':
                 if (!isset($params['ext_not_found'])) {
-                    $output = $this->getUserDetailsFromCredentials($_POST);
+                    $output = $this->getUserDetailsFromCredentials($params);
                 }
                 break;
 
@@ -1372,7 +1362,7 @@ class User_API extends API
                     if (!$idst) {
                         $output = ['success' => false, 'message' => 'Error: invalid userid: ' . $params['userid'] . '.'];
                     } else {
-                        $res = $this->updateUser($idst, $_POST);
+                        $res = $this->updateUser($idst, $params);
                         $output = ['success' => true];
                     }
                 } else {
@@ -1382,90 +1372,99 @@ class User_API extends API
 
             case 'userCourses':
             case 'mycourses':
-                if (!isset($params['ext_not_found'])) {
-                    $output = $this->getMyCourses($params['idst'], $_POST);
+                if (count($params) > 0 && !isset($params['ext_not_found'])) { //params[0] should contain user id
+                    $userIds = [];
+                    if (array_key_exists('idsts', $params)) {
+                        $userIds = explode(',', $params['idsts']);
+                    } else if (array_key_exists('idst', $params) && is_numeric($params['idst'])) {
+                        $userIds[] = $params['idst'];
+                    }
+
+                    if (!empty($userIds)) {
+                        $output = $this->getMyCourses($userIds, $params);
+                    }
                 }
                 break;
 
             case 'kbsearch':
                 if (!isset($params['ext_not_found'])) {
-                    $output = $this->KbSearch($params['idst'], $_POST);
+                    $output = $this->KbSearch($params['idst'], $params);
                 }
                 break;
 
             case 'importextusers':
-                $output = $this->importExternalUsers($_POST);
+                $output = $this->importExternalUsers($params);
                 break;
 
             case 'importextusersfromemail':
-                $output = $this->importExternalUsersFromEmail($_POST);
+                $output = $this->importExternalUsersFromEmail($params);
                 break;
 
             case 'countusers':
-                $output = $this->countUsers($_POST);
+                $output = $this->countUsers($params);
                 break;
 
             case 'checkregcode':
-                $output = $this->checkRegistrationCode($_POST);
+                $output = $this->checkRegistrationCode($params);
                 break;
 
             case 'checkUsername':
             case 'checkusername':
-                $output = $this->checkUsername($_POST);
+                $output = $this->checkUsername($params);
                 break;
 
             case 'assignprofile':
             case 'assignProfile':
-                $output = $this->assignProfile($_POST);
+                $output = $this->assignProfile($params);
                 break;
 
             case 'admin_assignUsers':
             case 'admin_assignusers':
-                $output = $this->admin_assignUsers($_POST, 'assign');
+                $output = $this->admin_assignUsers($params, 'assign');
                 break;
 
             case 'admin_revokeUsers':
             case 'admin_revokeusers':
-                $output = $this->admin_assignUsers($_POST, 'revoke');
+                $output = $this->admin_assignUsers($params, 'revoke');
                 break;
 
             case 'admin_assignCourses':
             case 'admin_assigncourses':
-                $output = $this->admin_assignCourses($_POST);
+                $output = $this->admin_assignCourses($params);
                 break;
 
-// LRZ
+            // LRZ
             case 'newOrg':
             case 'neworg':
             case 'addorg':
-                $output = $this->newOrg($_POST);
+                $output = $this->newOrg($params);
 
                 break;
 
             case 'moveOrg':
             case 'moveorg':
-                $output = $this->moveOrg($_POST);
+                $output = $this->moveOrg($params);
 
                 break;
 
             case 'moveOrgUser':
             case 'moveorguser':
-                $output = $this->moveUserInOrg($_POST);
+                $output = $this->moveUserInOrg($params);
                 break;
 
             case 'removeUserFromOrg':
             case 'removeuserfromorg':
-                $output = $this->removeUserFromOrg($_POST);
+                $output = $this->removeUserFromOrg($params);
                 break;
 
             case 'renameOrg':
             case 'renameorg':
-                $output = $this->renameOrg($_POST);
+                $output = $this->renameOrg($params);
                 break;
 
             case 'removeOrg':
             case 'removeorg':
-                $output = $this->removeOrg($_POST);
+                $output = $this->removeOrg($params);
                 break;
 
             case 'downloadCertificate':
@@ -1473,7 +1472,7 @@ class User_API extends API
                 break;
 
             default:
-                $output = parent::call($name, $_POST);
+                $output = parent::call($name, $params);
         }
 
         return $output;

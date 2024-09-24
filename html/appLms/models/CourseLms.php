@@ -101,7 +101,8 @@ class CourseLms extends Model
     {
         $commonLabel = $this->session->get('id_common_label');
         $db = \FormaLms\db\DbConn::getInstance();
-        $queryResult = $db->query(
+
+        $queryString =
             'SELECT c.idCourse, c.course_type, c.idCategory, c.code, c.name, c.description, c.difficult, c.status AS course_status, c.course_edition, '
             . '	c.max_num_subscribe, c.create_date, '
             . '	c.direct_play, c.img_othermaterial, c.course_demo, c.use_logo_in_courselist, c.img_course, c.lang_code, '
@@ -114,8 +115,9 @@ class CourseLms extends Model
             . ' JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse) '
             . ' WHERE ' . $this->compileWhere($conditions, $params)
             . ($commonLabel > 0 ? " AND c.idCourse IN (SELECT id_course FROM %lms_label_course WHERE id_common_label = '" . $commonLabel . "')" : '')
-            . ' ORDER BY ' . $this->_resolveOrder(['cu', 'c'])
-        );
+            . ' ORDER BY ' . $this->_resolveOrder(['cu', 'c']);
+
+        $queryResult = $db->query($queryString);
 
         $result = [];
         $courses = [];
@@ -150,6 +152,79 @@ class CourseLms extends Model
             foreach ($firstLearningObjectResponse as $data) {
                 $result[$data['idCourse']]['first_lo_type'] = $data['objectType'];
             }
+        }
+
+        return $result;
+    }
+
+    public function findMyCourses($conditions, $params)
+    {
+        $classroomManager = new DateManager();
+        $db = \FormaLms\db\DbConn::getInstance();
+
+        $queryString = "
+            WITH course_counts AS (
+                SELECT 
+                    idCourse,
+                    COUNT(*) as total_associated,
+                    SUM(waiting) as total_waiting
+                FROM 
+                    learning_courseuser
+                WHERE 
+                    status >= 0 AND status < 2
+                GROUP BY 
+                    idCourse
+            )
+            SELECT 
+                c.idCourse AS course_id,
+                c.course_type,
+                c.name AS course_name,
+                c.description AS course_description,
+                CONCAT('https://elearning.texa.com/appLms/index.php?modname=course&amp;op=aula&amp;idCourse=', c.idCourse) AS course_link,
+                cu.status AS user_status,
+                cc.total_associated as numof_associated,
+                cc.total_waiting as numof_waiting,
+                cu.idUser as id_user
+            FROM %lms_course AS c
+            JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse)
+            LEFT JOIN course_counts cc ON (c.idCourse = cc.idCourse)
+            WHERE " . $this->compileWhere($conditions, $params) . "
+            ORDER BY " . $this->_resolveOrder(['cu', 'c']);
+
+        // Esecuzione della query
+        $queryResult = $db->query($queryString);
+
+        $result = [];
+        $courses = []; // Assicurati che questa variabile sia definita o passata correttamente
+
+        foreach ($queryResult as $data) {
+            // Sostituzione dei caratteri & per evitare problemi con XML/HTML
+            $data['course_name'] = str_replace('&', '&amp;', $data['course_name']);
+            $data['course_description'] = str_replace('&', '&amp;', $data['course_description']);
+
+            // Calcolo di enrolled e numof_waiting
+            $data['numof_waiting'] = $data['numof_waiting'] ?? 0;
+            $data['enrolled'] = $data['numof_associated'] - $data['numof_waiting'];
+
+            // Inizializzazione di campi aggiuntivi
+            $data['first_lo_type'] = false;
+            $dates = [];
+
+            // Gestione specifica per corsi di tipo 'classroom'
+            if ($data['course_type'] === 'classroom') {
+                $courseDates = $courses[$data['course_id']] ?? $classroomManager->getCourseDate($data['course_id']);
+                foreach ($courseDates as $courseDate) {
+                    $userStatus = $classroomManager->getCourseEditionUserStatus($data['id_user'], $data['course_id'], $courseDate['id_date']);
+                    if (!empty($userStatus)) {
+                        $dates[] = $userStatus;
+                    }
+                }
+            }
+
+            $data['dates'] = $dates;
+
+            // Aggiunta dei dati al risultato finale
+            $result[$data['id_user']]['courses'][] = $data;
         }
 
         return $result;
@@ -300,7 +375,7 @@ class CourseLms extends Model
     {
         $query = 'select date_first_access from learning_courseuser where idCourse=' . $id_course . ' and idUser=' . $id_user;
 
-        list($date_first_access) = sql_fetch_row(sql_query($query));
+        [$date_first_access] = sql_fetch_row(sql_query($query));
 
         return $date_first_access;
     }
@@ -532,7 +607,7 @@ class CourseLms extends Model
             }
         } else {
             // if course date end, cannot unenroll
-       
+
             if ($course['date_end'] && $now > DateTime::createFromFormat('Y-m-d', $course['date_end'])) {
                 return false;
             }

@@ -150,7 +150,7 @@ class FormaACL
      * get all security token of a group.
      *
      * @param string $groupid id of the group
-     * @param string $filter  (Optional). Filter to applay.
+     * @param string $filter (Optional). Filter to applay.
      *
      * @return mixed array of security tokens associated to the group or FALSE
      **/
@@ -192,22 +192,13 @@ class FormaACL
     /**
      * get all groups of a idst.
      *
-     * @param int    $idst   idst
+     * @param int $idst idst
      * @param string $filter (Optional). Filter to applay.
      *
      * @return mixed array of groups of the user or FALSE
      **/
     public function getSTGroupsST($idst, $filter = '')
     {
-        /*$arrST = $this->aclManager->getGroupsContainer( $idst, $filter );
-        // search in groups
-        $count = 0;
-        while( $count < count( $arrST ) ) {
-            $idST = $arrST[$count];
-            $arrResult = $this->aclManager->getGroupsContainer( $idST, $filter );
-            $arrST = array_merge( $arrST, array_diff($arrResult, $arrST ));
-            $count++;
-        }*/
         $arrST = [$idst];
         $arrRoles = [];
         $new_st = [$idst];
@@ -224,11 +215,50 @@ class FormaACL
         return $arrST;
     }
 
+    public function getMultipleSTGroupsST($idst_list, $filter = '')
+    {
+        $idst_list = array_filter($idst_list, 'is_numeric');
+        if (empty($idst_list)) {
+            return [];
+        }
+
+        $all_groups = [];
+        $new_groups = $idst_list;
+        $depth = 0;
+        $max_depth = 50; // Limite di profondità per evitare loop infiniti
+
+        while (!empty($new_groups) && $depth < $max_depth) {
+            $batch_result = $this->aclManager->getGroupsAllContainerBatch($new_groups, $filter);
+
+            $temp_groups = [];
+            foreach ($batch_result as $idst => $members) {
+                foreach ($members as $member) {
+                    if (!isset($all_groups[$member])) {
+                        $all_groups[$member] = [];
+                    }
+                    $all_groups[$member][] = $idst;
+                    $temp_groups[] = $idst;
+                }
+            }
+
+            $new_groups = array_unique($temp_groups);
+            $new_groups = array_diff($new_groups, $idst_list);
+            $depth++;
+        }
+
+        $result = [];
+        foreach ($idst_list as $idst) {
+            $result[$idst] = isset($all_groups[$idst]) ? array_merge([$idst], $all_groups[$idst]) : [$idst];
+        }
+
+        return $result;
+    }
+
     /**
      * get all groups of an array of idst.
      *
-     * @param int    $arr_idst idst
-     * @param string $filter   (Optional). Filter to applay.
+     * @param int $arr_idst idst
+     * @param string $filter (Optional). Filter to applay.
      *
      * @return mixed array of groups of the user or FALSE
      **/
@@ -253,8 +283,8 @@ class FormaACL
     /**
      * get all groups of a idst_user.
      *
-     * @param int    $idst_user idst
-     * @param string $filter    (Optional). Filter to applay.
+     * @param int $idst_user idst
+     * @param string $filter (Optional). Filter to applay.
      *
      * @return mixed array of groups of the user or FALSE
      **/
@@ -263,11 +293,16 @@ class FormaACL
         return $this->getSTGroupsST($idst_user, $filter);
     }
 
+    public function getMultipleUserGroupsST($idst_user_list, $filter = '')
+    {
+        return $this->getMultipleSTGroupsST($idst_user_list, $filter);
+    }
+
     /**
      * get all groups of a idst_group.
      *
-     * @param int    $idst_group idst
-     * @param string $filter     (Optional). Filter to applay.
+     * @param int $idst_group idst
+     * @param string $filter (Optional). Filter to applay.
      *
      * @return mixed array of groups of the user or FALSE
      **/
@@ -368,7 +403,7 @@ class FormaACL
      * match a user with a security token.
      *
      * @param string $userid id of the user
-     * @param int    $st     security token to match
+     * @param int $st security token to match
      *
      * @return bool TRUE if match, FALSE otherwise
      **/
@@ -383,7 +418,7 @@ class FormaACL
      * match a group with a security token.
      *
      * @param string $groupid id of the group
-     * @param int    $st      security token to match
+     * @param int $st security token to match
      *
      * @return bool TRUE if match, FALSE otherwise
      **/
@@ -399,7 +434,7 @@ class FormaACL
      * match a user with an array of security token.
      *
      * @param string $userid id of the user
-     * @param array  $st     array of security token to match
+     * @param array $st array of security token to match
      *
      * @return bool TRUE if match, FALSE otherwise
      **/
@@ -414,7 +449,7 @@ class FormaACL
      * match a group with an array of security token.
      *
      * @param string $groupid id of the group
-     * @param int    $st      array of security token to match
+     * @param int $st array of security token to match
      *
      * @return bool TRUE if match, FALSE otherwise
      **/
