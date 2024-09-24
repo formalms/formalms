@@ -406,6 +406,68 @@ class FieldList
         return $result;
     }
 
+    public function getFieldsAndValueFromMultipleUsers($id_user_list, $show_invisible_to_user = false, $filter_category = false)
+    {
+        $acl = new FormaACL();
+        $all_user_groups = $acl->getMultipleUserGroupsST($id_user_list);
+
+        $query = 'SELECT ft.id_common, ft.type_field, ftt.type_file, ftt.type_class, ft.translation, gft.mandatory, gft.useraccess, gft.idst AS group_idst '
+            . 'FROM ' . $this->getFieldTable() . ' AS ft '
+            . '	JOIN ' . $this->getGroupFieldsTable() . ' AS gft '
+            . ' 	JOIN ' . $this->getTypeFieldTable() . ' AS ftt '
+            . 'WHERE ft.id_common = gft.id_field '
+            . ' 	AND ft.type_field = ftt.type_field '
+            . " 	AND ft.lang_code = '" . Lang::get() . "'"
+            . ($show_invisible_to_user === false
+                ? " AND gft.useraccess <> 'readwrite' "
+                : '')
+            . ' AND gft.idst IN (' . implode(',', array_unique(array_merge(...array_values($all_user_groups)))) . ')'
+            . ($filter_category !== false
+                ? " AND ftt.type_category IN ( '" . implode("','", $filter_category) . "' ) "
+                : '')
+            . 'ORDER BY ft.sequence';
+
+        $re_fields = sql_query($query);
+
+        $result = [];
+        foreach ($re_fields as $row) {
+            $id_common = $row['id_common'];
+            $type_field = $row['type_field'];
+            $type_file = $row['type_file'];
+            $type_class = $row['type_class'];
+            $translation = $row['translation'];
+            $mandatory = $row['mandatory'];
+            $useraccess = $row['useraccess'];
+            $group_idst = $row['group_idst'];
+
+            if (!class_exists($type_class)) {
+                require_once \FormaLms\lib\Forma::inc(_adm_ . '/modules/field/' . $type_file);
+            }
+            $quest_obj = new $type_class($id_common);
+            if ($this->field_entry_table !== false) {
+                $quest_obj->setFieldEntryTable($this->field_entry_table);
+            }
+
+            $quest_obj->setMainTable($this->getFieldTable());
+
+            foreach ($id_user_list as $id_user) {
+                if (in_array($group_idst, $all_user_groups[$id_user])) {
+                    $result[$id_user][$id_common] = [
+                        0 => $translation,
+                        1 => !$this->getUseMultiLang() ? $quest_obj->show($id_user) : $quest_obj->showInLang($id_user, Lang::get()),
+                        2 => $mandatory,
+                        3 => $useraccess,
+                        4 => $type_field,
+                        5 => $type_file,
+                        6 => $type_class,
+                    ];
+                }
+            }
+        }
+
+        return $result;
+    }
+
     /**
      * @param array $arr_idst idst to search
      * @param int $value_key the required information that has to be filled in the array

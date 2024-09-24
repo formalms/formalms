@@ -1433,7 +1433,7 @@ class FormaACLManager
         if (!$rs || !sql_num_rows($rs)) {
             return false;
         }
-        list($level) = sql_fetch_row($rs);
+        [$level] = sql_fetch_row($rs);
 
         return $arr_levels_idst[$level];
     }
@@ -1447,11 +1447,11 @@ class FormaACLManager
      *               - idst, userid, firstname, lastname, pass, email, avatar,
      *               - FALSE if user is not found
      */
-    public function getUsers($array_idst)
+    public function getUsers($array_idst, $customField = false)
     {
         $users_info = [];
 
-        if (!is_array($array_idst)){
+        if (!is_array($array_idst)) {
             $array_idst = [];
         }
 
@@ -2318,12 +2318,39 @@ class FormaACLManager
         $rs = $this->_executeQuery($query);
 
         $arrGroups = [];
-        while (list($idst) = sql_fetch_row($rs)) {
-            $arrGroups[] = $idst;
+        foreach ($rs as $row) {
+            $arrGroups[] = $row['idst'];
         }
 
         return $arrGroups;
     }
+
+    public function getGroupsAllContainerBatch($arrMembers, $filter = '')
+    {
+        $arrMembers = array_filter($arrMembers, 'is_numeric');
+
+        if (empty($arrMembers)) {
+            return [];
+        }
+
+        $query = "SELECT idst, idstMember 
+              FROM " . $this->_getTableGroupMembers() . "
+              WHERE idstMember IN (" . implode(',', $arrMembers) . ")
+              AND filter = '" . $filter . "'";
+
+        $rs = $this->_executeQuery($query);
+
+        $arrGroups = [];
+        foreach ($rs as $row) {
+            if (!isset($arrGroups[$row['idst']])) {
+                $arrGroups[$row['idst']] = [];
+            }
+            $arrGroups[$row['idst']][] = $row['idstMember'];
+        }
+
+        return $arrGroups;
+    }
+
 
     /**
      * search roles containing a security token.
