@@ -329,7 +329,7 @@ var Subscription = {
 			var key = oEditor.getColumn().getKey();
 			var dt = "";
 			switch (key) {
-				case "date_begin":   
+				case "date_begin":
 					var dt=oEditor.getRecord().getData("date_begin_timestamp")
 					if (dt==0){
 						oEditor.value = new Date();
@@ -337,9 +337,9 @@ var Subscription = {
 					else{
 						dt = dt*1000
 						oEditor.value = new Date( dt );
-					}					
+					}
 					break;
-				case "date_expire":    
+				case "date_expire":
 					var dt=oEditor.getRecord().getData("date_expire_timestamp")
 					if (dt==0){
 						oEditor.value = new Date();
@@ -347,7 +347,7 @@ var Subscription = {
 					else{
 						dt = dt*1000
 						oEditor.value = new Date( dt );
-					}	
+					}
 					break;
 			}
 			return true;
@@ -453,7 +453,19 @@ var Subscription = {
                 +"&new_value=" + new_value
                 +"&old_value=" + old_value;
 
-            YAHOO.util.Connect.asyncRequest("POST", url, callback, post);
+            window.frontend.helpers.Axios.defaults.headers.post['X-Signature'] = window.frontend.config.signature;
+
+            window.frontend.helpers.Axios.post(url, post)
+                .then(response => {
+                    if (callback && typeof callback.success === 'function') {
+                        callback.success(response);
+                    }
+                })
+                .catch(error => {
+                    if (callback && typeof callback.failure === 'function') {
+                        callback.failure(error);
+                    }
+                });
         });
     },
 

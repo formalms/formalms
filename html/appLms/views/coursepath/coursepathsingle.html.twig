@@ -1,8 +1,8 @@
 {%  block coursepath_details %}
+    {% set style = 'display:none;clear:both;' %} {# Imposta lo stile di default #}
+
     {% if path_info['check_path_info'] %}
-        {% set style = 'display:block;clear:both;'%}
-    {% else %}
-        {% set style = 'display:none;clear:both;'%}
+        {% set style = 'display:block;clear:both;' %} {# Sovrascrive solo se la condizione è vera #}
     {% endif %}
 <div id="courses_{{ id_path }}" style="{{ style }}" class="coursepath_details">
     <table>
