@@ -956,7 +956,6 @@ class CoursePath_Manager
     public function unAssignComplete(int $id_course, int $id_user): bool{
         $completed_paths = [];
         // path_courses containing course
-        echo "SONO QUI";
         $q = ' SELECT id_path FROM %lms_coursepath_courses WHERE id_item = ' . (int) $id_course;
         $rs = sql_query($q);
         $results = $rs->fetch_all();

@@ -35,10 +35,10 @@ class AlertService
         require_once _base_ . '/appCore/models/UsermanagementAdm.php';
 
         $uma = new \UsermanagementAdm();
-        $langText = '_NEW_USER_SUBSCRIBED'; // Imposta lo stile di default
+        $langText = '_NEW_USER_SUBSCRIBED';
 
         if ($id_path != 0) {
-            $langText = '_NEW_USER_SUBSCRIBED_COURSEPATH'; // Sovrascrive solo se la condizione è vera
+            $langText = '_NEW_USER_SUBSCRIBED_COURSEPATH'; 
         }
 
         foreach ($user_selected as $user_id) {
