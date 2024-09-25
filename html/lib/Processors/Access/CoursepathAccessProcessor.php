@@ -32,6 +32,7 @@ class CoursepathAccessProcessor extends AccessProcessor
         require_once _lms_ . '/lib/lib.coursepath.php';
         $path_man = new \CoursePath_Manager();
         $course_man = new \Man_Course();
+        $cman = new \CourseAlms();
         $courses = $path_man->getAllCourses([$resourceId]);
         $classroom = $course_man->getAllCourses(false, 'classroom', $courses);
         $edition = $course_man->getAllCourses(false, 'edition', $courses);
@@ -106,8 +107,23 @@ class CoursepathAccessProcessor extends AccessProcessor
                         'path_name' => $this->accessModel->getCoursepathNameForSubscription($resourceId),
                     ]);
             } else {
-                $this->setRedirect($url . '&res=' . $this->accessModel->getResponseForAccessor());
-       
+                $model = new \SubscriptionAlms($courses);
+                $coursepath_info = $path_man->getCoursepathAllInfo([$resourceId]);
+                $model->loadSelectedUser($this->accessModel->getAccessUsers()['to_add']);
+                $this->setReturnType('render');
+                $this->setReturnView('level');
+                $this->setSubFolderView('subscription');
+                $this->setAdditionalPaths([_lms_.'/admin/views']);
+                $this->setParams([
+                     'link' => 'alms/subscription/subToCoursepathWithLevel' ,
+                     'id_course' => implode(',', $courses),
+                     'id_path' => $resourceId,
+                     'model' => $model,
+                     'course_info' => $cman->getInfo($model->id_course),
+                     'num_subscribed' => count($this->accessModel->getAccessUsers()['to_add']),
+                     'send_alert' => \FormaLms\lib\Get::req('send_alert', DOTY_INT, 0),
+                     'course_name' => $coursepath_info[$resourceId][2],
+                 ]);
             }
         }   
             

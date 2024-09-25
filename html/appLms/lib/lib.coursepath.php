@@ -953,6 +953,28 @@ class CoursePath_Manager
 
         return true;
     }
+    public function unAssignComplete(int $id_course, int $id_user): bool{
+        $completed_paths = [];
+        // path_courses containing course
+        echo "SONO QUI";
+        $q = ' SELECT id_path FROM %lms_coursepath_courses WHERE id_item = ' . (int) $id_course;
+        $rs = sql_query($q);
+        $results = $rs->fetch_all();
+        $path_courses =  [];
+        foreach ($results as $r) {
+            $path_courses[] = $r[0];
+        }
+
+        // update for the user
+        $query = 'UPDATE %lms_coursepath_user SET course_completed = course_completed - 1 '
+            . ' WHERE idUser = ' . (int) $id_user . ' AND id_path IN ( '
+            . implode(',', $path_courses) . ' )';
+        if(sql_query($query)){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
     public function assignComplete($id_course, $id_user)
     {

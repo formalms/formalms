@@ -71,7 +71,9 @@ $columns = [
         ['key' => 'userid', 'label' => Lang::t('_USERNAME', 'subscribe'), 'sortable' => true, 'formatter' => 'Subscription.labelFormatter'],
         ['key' => 'fullname', 'label' => Lang::t('_FULLNAME', 'subscribe'), 'sortable' => true, 'formatter' => 'Subscription.labelFormatter'],
 ];
-
+$columns[] = ['key' => 'level', 'label' => Lang::t('_LEVEL', 'subscribe'), 'sortable' => true,
+    'formatter' => 'Subscription.levelFormatter',
+    'editor' => 'new YAHOO.widget.DropdownCellEditor({dropdownOptions:' . $level_list_js . '})', ];
 $columns[] = ['key' => 'date_begin', 'label' => Lang::t('_DATE_BEGIN_VALIDITY', 'subscribe'), 'sortable' => true, 'formatter' => 'Subscription.dateFormatter',
     'editor' => 'new YAHOO.widget.DateCellEditor({asyncSubmitter: Subscription.asyncSubmitter})', 'className' => 'img-cell', ];
 $columns[] = ['key' => 'date_expire', 'label' => Lang::t('_DATE_EXPIRE_VALIDITY', 'subscribe'), 'sortable' => true, 'formatter' => 'Subscription.dateFormatter',
@@ -89,13 +91,14 @@ $this->widget('table', [
     'sort' => 'userid',
     'dir' => 'asc',
     'columns' => $columns,
-    'fields' => ['id', 'userid', 'fullname', 'date_begin', 'date_expire', 'date_begin_timestamp', 'date_expire_timestamp', 'del'],
+    'fields' => ['id', 'userid', 'fullname', 'level', 'date_begin', 'date_expire', 'date_begin_timestamp', 'date_expire_timestamp', 'del'],
     'stdSelection' => true,
     //'stdSelectionField' => '_checked',
     'selectAllAdditionalFilter' => 'Subscription.selectAllAdditionalFilter()',
     'rel_actions' => [$rel_action . $count_selected_over, $rel_action . $count_selected_bottom],
     'delDisplayField' => 'userid',
     'generateRequest' => 'Subscription.requestBuilder',
+    'editorSaveEvent' => 'Subscription.editorSaveEvent',
     'events' => [
         'initEvent' => 'Subscription.initEvent',
         'beforeRenderEvent' => 'Subscription.beforeRenderEvent',
@@ -200,12 +203,13 @@ var Subscription = {
 
 	idPath: 0,
 	idEdition: 0,
-
+    idCourse: [<?php echo $idCourse; ?>],
+    levelList: <?php echo $level_list_js; ?>,
 	filterText: "",
 	filterOrgChart: 0,
 	filterDescendants: false,
 	filterDateValid: "",
-
+    baseLink: "alms/subscription",
 	oLangs: new LanguageManager(),
 
 	init: function(idPath, oConfig) {
@@ -309,6 +313,7 @@ var Subscription = {
 		});
 	},
 
+
 	initEvent: function() {
 		var updateSelected = function() {
 			var prefix = "num_users_selected_", D = YAHOO.util.Dom;
@@ -324,7 +329,7 @@ var Subscription = {
 			var key = oEditor.getColumn().getKey();
 			var dt = "";
 			switch (key) {
-				case "date_begin":   
+				case "date_begin":
 					var dt=oEditor.getRecord().getData("date_begin_timestamp")
 					if (dt==0){
 						oEditor.value = new Date();
@@ -332,9 +337,9 @@ var Subscription = {
 					else{
 						dt = dt*1000
 						oEditor.value = new Date( dt );
-					}					
+					}
 					break;
-				case "date_expire":    
+				case "date_expire":
 					var dt=oEditor.getRecord().getData("date_expire_timestamp")
 					if (dt==0){
 						oEditor.value = new Date();
@@ -342,7 +347,7 @@ var Subscription = {
 					else{
 						dt = dt*1000
 						oEditor.value = new Date( dt );
-					}	
+					}
 					break;
 			}
 			return true;
@@ -408,6 +413,62 @@ var Subscription = {
 		elLiner.innerHTML = '<label for="subscribed_table_sel_'+oRecord.getData("id")+'">'+oData+'</label>';
 	},
 
+    levelFormatter: function(elLiner, oRecord, oColumn, oData) {
+        var i, valid = false, list = Subscription.levelList;
+        for (i=0; i<list.length; i++) {
+
+            if (list[i].value == oData) {
+                elLiner.innerHTML = list[i].label;
+                valid = true;
+                break;
+            }
+        }
+        if (!valid) elLiner.innerHTML = '&nbsp;';
+        //elLiner.innerHTML = (YAHOO.lang.isNumber(parseInt(oData)) ? oRecord.getData("level_tr") : oData);
+    },
+
+    editorSaveEvent: function(oArgs) {
+        var oEditor = oArgs.editor;
+        var new_value = oArgs.newData;
+        var old_value = oArgs.oldData;
+        var id_user = oEditor.getRecord().getData("id");
+        var col = oEditor.getColumn().getKey();
+        var idCourses = Subscription.idCourse;
+
+        idCourses.forEach(function(id_course) {
+            var callback = {
+                success: function(o) {
+                    var res = YAHOO.lang.JSON.parse(o.responseText);
+                    if (res.success) {
+                        //oEditor.getRecord().setData(col+"_id");
+                    }
+                },
+                failure: function() {}
+            };
+
+            var url = "ajax.adm_server.php?r="+Subscription.baseLink+"/update";
+            var post = "id_course=" + id_course
+                +"&id_user=" + id_user
+                +"&col=" + col
+                +"&new_value=" + new_value
+                +"&old_value=" + old_value;
+
+            window.frontend.helpers.Axios.defaults.headers.post['X-Signature'] = window.frontend.config.signature;
+
+            window.frontend.helpers.Axios.post(url, post)
+                .then(response => {
+                    if (callback && typeof callback.success === 'function') {
+                        callback.success(response);
+                    }
+                })
+                .catch(error => {
+                    if (callback && typeof callback.failure === 'function') {
+                        callback.failure(error);
+                    }
+                });
+        });
+    },
+
 	dateFormatter: function(elLiner, oRecord, oColumn, oData) {
 		if (!oData || oData == "00-00-00") {
 			elLiner.innerHTML = '-';
@@ -415,6 +476,7 @@ var Subscription = {
 			elLiner.innerHTML = oData;
 		}
 	},
+
 
 	resetDatesFormatter: function(elLiner, oRecord, oColumn, oData) {
 		var url = 'ajax.adm_server.php?r=<?php echo $this->link; ?>/reset_validity_dates_coursepath&id_path='

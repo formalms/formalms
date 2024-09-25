@@ -685,7 +685,12 @@ class CourseSubscribe_Manager
                 }
 
                 return true; //this should be in dependance with above results
-            } else { //no 'completed' status --> just return with "ok"
+            } elseif($new_status != _CUS_END && $oldStatus == _CUS_END) { //no 'completed' status --> just return with "ok"
+                require_once _lms_ . '/lib/lib.coursepath.php';
+                $cpmodel = new CoursePath_Manager();
+                $cpmodel->unAssignComplete($data['id_course'], $data['id_user']);
+            }
+            else{
                 return true;
             }
         } else { //query error

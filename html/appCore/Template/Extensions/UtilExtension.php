@@ -29,6 +29,9 @@ class UtilExtension extends \Twig\Extension\AbstractExtension
             new TwigFunction('Util_getConstant', function ($value) {
                 return constant($value);
             }),
+            new TwigFunction('Util_getCourseFilePath', function() {
+                return '../files/appLms/course/';
+            }),
         ];
     }
 }

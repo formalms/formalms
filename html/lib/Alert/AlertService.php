@@ -28,13 +28,18 @@ class AlertService
         return self::$instance;
     }
 
-    public function send($user_selected, $course_info = [], $forceSendAlert = false)
+    public function send($user_selected, $course_info = [], $forceSendAlert = false, $id_path = 0)
     {
         require_once _base_ . '/lib/lib.eventmanager.php';
         require_once _base_ . '/lib/calendar/CalendarManager.php';
         require_once _base_ . '/appCore/models/UsermanagementAdm.php';
 
         $uma = new \UsermanagementAdm();
+        $langText = '_NEW_USER_SUBSCRIBED'; // Imposta lo stile di default
+
+        if ($id_path != 0) {
+            $langText = '_NEW_USER_SUBSCRIBED_COURSEPATH'; // Sovrascrive solo se la condizione è vera
+        }
 
         foreach ($user_selected as $user_id) {
             $reg_code = null;
@@ -50,6 +55,7 @@ class AlertService
                 '[url]' => \FormaLms\lib\Get::site_url(),
                 '[dynamic_link]' => getCurrentDomain($reg_code) ?: \FormaLms\lib\Get::site_url(),
                 '[course]' => $course_info['name'],
+                '[coursepath]' => $course_info[$id_path][2],
                 '[medium_time]' => $course_info['mediumTime'], //Format::date(date("Y-m-d", time() + ($course_info['mediumTime']*24*60*60) ), 'date'))
                 '[course_name]' => $course_info['name'],
                 '[course_code]' => $course_info['code'],
@@ -57,8 +63,8 @@ class AlertService
 
             // message to user that is waiting
             $msg_composer = new \EventMessageComposer();
-            $msg_composer->setSubjectLangText('email', '_NEW_USER_SUBSCRIBED_SUBJECT', false);
-            $msg_composer->setBodyLangText('email', '_NEW_USER_SUBSCRIBED_TEXT', $array_subst);
+            $msg_composer->setSubjectLangText('email', $langText.'_SUBJECT', false);
+            $msg_composer->setBodyLangText('email', $langText.'_TEXT', $array_subst);
             $msg_composer->setBodyLangText('sms', '_NEW_USER_SUBSCRIBED_TEXT_SMS', $array_subst);
             if ($course_info['sendCalendar'] && $course_info['course_type'] == 'classroom') {
                 $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($user_id, false);
