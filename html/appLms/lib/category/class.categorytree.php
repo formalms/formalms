@@ -139,7 +139,7 @@ class CategoryTree extends TreeDb_CatDb
 
             return $false_var;
         }
-        list($num_row) = sql_fetch_row($rs);
+        [$num_row] = sql_fetch_row($rs);
         $folder = new Folder($this, [0, 0, '/root', 0, 1, $num_row * 2], false, true);
 
         return $folder;
@@ -228,7 +228,7 @@ class CategoryTree extends TreeDb_CatDb
 
                 return $false_var;
             }
-            list($num_row) = sql_fetch_row($rs);
+            [$num_row] = sql_fetch_row($rs);
             $result = ['iLeft' => 1, 'iRight' => $num_row * 2];
 
             return $result;
@@ -306,6 +306,42 @@ class CategoryTree extends TreeDb_CatDb
         return $rs;
     }
 
+    public function getCategoryTree($parentId = 0)
+    {
+        $tree = [];
+
+        // Get the root folder or the specified parent folder
+        $rootFolder = $parentId === 0 ? $this->getRootFolder() : $this->getFolderById($parentId);
+
+        if ($rootFolder === null) {
+            return $tree;
+        }
+
+        // Recursive function to build the tree
+        $buildTree = function ($folder) use (&$buildTree) {
+            $node = [
+                'id' => $folder->id,
+                'name' => $folder->getFolderName(),
+                'children' => []
+            ];
+
+            $childrenIds = $this->getChildrensById($folder->id);
+            foreach ($childrenIds as $childRow){
+                $childFolder = $this->getFolderById($childRow[$this->fields['id']]);
+                if ($childFolder !== null) {
+                    $node['children'][] = $buildTree($childFolder);
+                }
+            }
+
+            return $node;
+        };
+
+        // Build the tree starting from the root folder
+        $tree = $buildTree($rootFolder);
+
+        return $tree;
+    }
+
     public function getFoldersCollection(&$arrayId)
     {
         $query = 'SELECT ' . $this->_getDISTINCT() . $this->_getBaseFields('t1') . ', count(t2.' . $this->fields['id'] . ') '
@@ -364,7 +400,7 @@ class CategoryTree extends TreeDb_CatDb
 
     public function checkAncestor($folderA, $folderB)
     {
-        if (strpos($folderB->path, strval($folderA->path)) !== false) {
+        if (str_contains($folderB->path, (string)$folderA->path)) {
             return true;
         } else {
             return false;
@@ -454,7 +490,7 @@ class CategoryTree extends TreeDb_CatDb
 
     public function getCategoryName($id)
     {
-        list($name) = sql_fetch_row(sql_query('SELECT path FROM ' . $this->table . ' WHERE idCategory=' . $id));
+        [$name] = sql_fetch_row(sql_query('SELECT path FROM ' . $this->table . ' WHERE idCategory=' . $id));
 
         return end(explode('/', $name));
     }
@@ -487,8 +523,8 @@ class CategoryTree extends TreeDb_CatDb
         }
         $output = true; //false;
 
-        list($src_left, $src_right, $lvl_src) = $this->_getFolderLimits($src_folder, true);
-        list($dest_left, $dest_right, $lvl_dest) = $this->_getFolderLimits($dest_folder, true);
+        [$src_left, $src_right, $lvl_src] = $this->_getFolderLimits($src_folder, true);
+        [$dest_left, $dest_right, $lvl_dest] = $this->_getFolderLimits($dest_folder, true);
 
         //dest folder is a son of the src ?
         if ($src_left < $dest_left && $src_right > $dest_right) {
@@ -519,8 +555,8 @@ class CategoryTree extends TreeDb_CatDb
         $this->_shiftRL($src_right + 1, -$gap);
 
         //update path column for source
-        list($parent_level, $parent_path) = sql_fetch_row(sql_query('SELECT lev, path FROM ' . $this->table . ' WHERE idCategory=' . (int) $dest_folder));
-        list($source_path) = sql_fetch_row(sql_query('SELECT path FROM ' . $this->table . ' WHERE idCategory=' . (int) $src_folder));
+        [$parent_level, $parent_path] = sql_fetch_row(sql_query('SELECT lev, path FROM ' . $this->table . ' WHERE idCategory=' . (int)$dest_folder));
+        [$source_path] = sql_fetch_row(sql_query('SELECT path FROM ' . $this->table . ' WHERE idCategory=' . (int)$src_folder));
         $source_name = end(explode('/', $source_path));
         $res = sql_query('UPDATE ' . $this->table . ' SET lev=' . (int) ($parent_level + 1) . ", path='" . $parent_path . '/' . $source_name . "' WHERE idCategory=" . (int) $src_folder);
 
