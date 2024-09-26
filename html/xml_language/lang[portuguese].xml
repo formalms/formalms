@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20240918</DATE>
+  <DATE>20240926</DATE>
   <LANG id="portuguese">
     <lang_code>portuguese</lang_code>
     <lang_description>Portuguese</lang_description>
@@ -543,6 +543,7 @@
         <key id="configuration&amp;_FACEBOOKAUTH" attributes="" save_date="2024-05-23 10:24:15"><![CDATA[Autenticação do Facebook]]></key>
         <key id="configuration&amp;_FILE_UPLOAD_WHITELIST" attributes="" save_date="2024-09-18 00:31:32"><![CDATA[Extensões de ficheiros permitidas (<i>whitelist</i>)]]></key>
         <key id="configuration&amp;_FIRST_CATALOGUE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Mostrar o catálogo de cursos na página principal do utilizador]]></key>
+        <key id="configuration&amp;_FORCE_SCORM_FINISH" attributes="" save_date="2024-09-26 11:42:33"><![CDATA[Forçar a conclusão do SCORM]]></key>
         <key id="configuration&amp;_FORUM_AS_TABLE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Mostrar a lista dos fóruns numa tabela]]></key>
         <key id="configuration&amp;_FTPERR" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Erro no FTP]]></key>
         <key id="configuration&amp;_FTPOK" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[FTP OK]]></key>
@@ -677,7 +678,7 @@
         <key id="configuration&amp;_SAVE_LA_AFTER_MAX" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Sim, apenas se o número máximo for atingido]]></key>
         <key id="configuration&amp;_SAVE_LA_ALL" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Sim, para todos]]></key>
         <key id="configuration&amp;_SAVE_LOG_ATTEMPT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Guardar informação sobre tentativas falhadas de login]]></key>
-        <key id="configuration&amp;_SCO_DIRECT_PLAY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Permitir uso de links diretos de fontes externas para capítulos SCORM (sco e ativos)]]></key>
+        <key id="configuration&amp;_SCO_DIRECT_PLAY" attributes="" save_date="2024-09-26 11:44:19"><![CDATA[Permitir uso de links diretos de fontes externas para capítulos SCORM (SCO e ativos)]]></key>
         <key id="configuration&amp;_SECURITY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Configuração de segurança]]></key>
         <key id="configuration&amp;_SELECT_NODE" attributes="" save_date="2024-09-18 09:55:24"><![CDATA[Selecionar nó]]></key>
         <key id="configuration&amp;_SENDER_EVENT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Endereço de email do remetente para mensagens de alerta (notificações)]]></key>
@@ -2724,7 +2725,7 @@ Senha: [password]]]></key>
         <key id="standard&amp;_LINK" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Link]]></key>
         <key id="standard&amp;_LINKEDIN" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Linkedin]]></key>
         <key id="standard&amp;_LOADED_FILE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Ficheiro enviados]]></key>
-        <key id="standard&amp;_LOADING" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Carregar]]></key>
+        <key id="standard&amp;_LOADING" attributes="" save_date="2024-09-26 10:37:22"><![CDATA[Carregando]]></key>
         <key id="standard&amp;_LOCATION" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Locais]]></key>
         <key id="standard&amp;_LOGOUT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Desconectar]]></key>
         <key id="standard&amp;_LOG_USERS_TO_FNCROLE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Atribuição de utilizadores para uma função funcional]]></key>
