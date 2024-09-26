@@ -81,7 +81,7 @@ class MycertificateLms extends Model
         }
 
         usort($data, function ($a, $b) use ($sort, $dir) {
-            if (!isset($a[$sort]) && !isset($b[$sort])) return null;
+            if (!isset($a[$sort]) || !isset($b[$sort])) return null;
             return $dir == 'desc' ? strcmp($b[$sort], $a[$sort]) : strcmp($a[$sort], $b[$sort]);
         });
 
