@@ -2605,7 +2605,7 @@ class UsermanagementAdmController extends AdmController
         $head[] = $this->_formatCsvValue(Lang::t('_EMAIL', 'standard'), $delimiter);
         $head[] = $this->_formatCsvValue(Lang::t('_SIGNATURE', 'standard'), $delimiter);
         $head[] = $this->_formatCsvValue(Lang::t('_REGISTER_DATE', 'standard'), $delimiter);
-        $head[] = $this->_formatCsvValue(Lang::t('_DATE_LAST_ACCESS', 'standard'), $delimiter);
+        $head[] = $this->_formatCsvValue(Lang::t('_LAST_ENTER', 'standard'), $delimiter);
         foreach ($field_list as $id_field => $field_translation) {
             $head[] = $this->_formatCsvValue($field_translation, $delimiter);
         }

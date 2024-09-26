@@ -17,10 +17,10 @@ class Learning_Cart
 {
     public function __construct()
     {
-        Learning_Cart::init();
+        Learning_Cart::istance();
     }
 
-    public static function init()
+    public function init()
     {
         if (!SessionManager::getInstance()->getSession()->has('lms_cart')) {
             SessionManager::getInstance()->getSession()->set('lms_cart', []);
@@ -28,7 +28,7 @@ class Learning_Cart
         }
     }
 
-    public static function cartItemCount()
+    public function cartItemCount()
     {
         $count = 0;
         $cart = SessionManager::getInstance()->getSession()->get('lms_cart');
@@ -53,7 +53,7 @@ class Learning_Cart
         return $count;
     }
 
-    public static function emptyCart()
+    public function emptyCart()
     {
         SessionManager::getInstance()->getSession()->set('lms_cart', []);
         SessionManager::getInstance()->getSession()->save();
