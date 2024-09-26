@@ -228,7 +228,7 @@
                         <select class="form-control select-box" id="form-day_classroom">
 
                             {% for id,classroom in availableClassrooms %}
-                                <option value="{{ id }}">{{ classroom|raw }}</option>
+                                <option value="{{ id }}">{{ classroom|striptags }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -535,26 +535,25 @@
                 data = JSON.parse(data);
 
                 if (data.success) {
-                    for (let day of data.days) {
-                        date = day.date_begin.split(" ");
+                    for (let day in data.days) {
+                        date = data.days[day].date_begin.split(" ");
                         if (date.length > 1) {
-                            day.date_begin = date[1].substring(0, 5);
+                            data.days[day].date_begin = date[1].substring(0, 5);
                         }
-                        date = day.date_end.split(" ");
+                        date = data.days[day].date_end.split(" ");
                         if (date.length > 1) {
-                            day.date_end = date[1].substring(0, 5);
+                            data.days[day].date_end = date[1].substring(0, 5);
                         }
-                        date = day.pause_begin.split(" ");
+                        date = data.days[day].pause_begin.split(" ");
                         if (date.length > 1) {
-                            day.pause_begin = date[1].substring(0, 5);
+                            data.days[day].pause_begin = date[1].substring(0, 5);
                         }
-                        date = day.pause_end.split(" ");
+                        date = data.days[day].pause_end.split(" ");
                         if (date.length > 1) {
-                            day.pause_end = date[1].substring(0, 5);
+                            data.days[day].pause_end = date[1].substring(0, 5);
                         }
 
-
-                        insertOrUpdateRow(day.id, day.format_date, day.date, day.date_begin, day.date_end, day.pause_begin, day.pause_end, day.classroom)
+                        insertOrUpdateRow(data.days[day].id, data.days[day].format_date, data.days[day].date, data.days[day].date_begin, data.days[day].date_end, data.days[day].pause_begin, data.days[day].pause_end, data.days[day].classroom)
                     }
                 }
                 document.getElementById('sendCalendar').checked = false;
@@ -590,7 +589,7 @@
 
         document.getElementById('form-day_date').valueAsDate = date;
 
-        document.getElementById('form-day_value').value = dateToString(new Date(date));;
+        document.getElementById('form-day_value').value = dateToString(new Date(date));
 
         /** split date_begin string to use only time */
         date = rowData.date_begin.split(" ");
