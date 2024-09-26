@@ -500,7 +500,7 @@ div.bar_text {float: left;width: 100%;text-align: center;z-index: 100;margin: 0p
 #language_setup a{margin:6px;color:#ffffff;font-size:90%;font-weight:bold;text-decoration:none;}
 #language_setup a:hover{text-decoration:underline;}
 
-.def_lang{position:absolute;top:0;right:20px;padding:2px 4px;background:#ffffff;border:1px solid #808080;border-top:0px none;font-size:90%;line-height:1.6em;}
+.def_lang{position:absolute;top:0;right:20px;z-index:10000;padding:2px 4px;background:#ffffff;border:1px solid #808080;border-top:0px none;font-size:90%;line-height:1.6em;}
 .def_lang a{text-decoration:none;}
 /* deprecated */
 /* Olds Tabs and Table for backward compatibility */
