@@ -348,7 +348,7 @@ class Lang
             }
         }
         if (empty($substitution) || !is_array($substitution)) {
-            return html_entity_decode($translation);
+            return $translation;
         }
 
         return str_replace(array_keys($substitution), array_values($substitution), $translation);

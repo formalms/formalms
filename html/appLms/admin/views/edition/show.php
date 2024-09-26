@@ -18,7 +18,7 @@ $_columns = [
 ];
 
 if ($permissions['subscribe']) {
-    $_columns[] = ['key' => 'subscription', 'label' => FormaLms\lib\Get::sprite('subs_users', Lang::t('_SUBSCRIPTION', 'course')), 'className' => 'img-cell'];
+    $_columns[] = ['key' => 'subscription', 'label' => FormaLms\lib\Get::img('course/subscribe.png', Lang::t('_SUBSCRIPTION', 'course')), 'className' => 'img-cell'];
 }
 
 if ($permissions['mod']) {

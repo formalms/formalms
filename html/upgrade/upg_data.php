@@ -58,7 +58,7 @@ if ($session->get('upgrade_ok')) {
     } else {
         $formalms_version = $GLOBALS['cfg']['versions'][$GLOBALS['cfg']['endversion']];
     }
-    $upgrade_msg = ' <br/>' . 'Upgrading to version: ' . $formalms_version;
+    $upgrade_msg .= ' <br/>' . 'Upgrading to version: ' . $formalms_version;
 
     // --- pre upgrade -----------------------------------------------------------
     $fn = _upgrader_ . '/data/upg_data/' . $GLOBALS['cfg']['detailversions'][$current_ver]['pre'];

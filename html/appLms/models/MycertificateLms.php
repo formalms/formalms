@@ -63,7 +63,7 @@ class MycertificateLms extends Model
             }
         }
 
-        if (isset($_REQUEST['order']) && $order = $_REQUEST['order']) {
+        if ($order = $_REQUEST['order']) {
             $sort_index = $order[0]['column'];
 
             $fields = [
@@ -81,7 +81,6 @@ class MycertificateLms extends Model
         }
 
         usort($data, function ($a, $b) use ($sort, $dir) {
-            if (!isset($a[$sort]) && !isset($b[$sort])) return null;
             return $dir == 'desc' ? strcmp($b[$sort], $a[$sort]) : strcmp($a[$sort], $b[$sort]);
         });
 
