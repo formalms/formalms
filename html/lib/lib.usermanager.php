@@ -1067,7 +1067,7 @@ class UserManagerRenderer
 
         $all_languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
 
-        $info['lang'] = FormaLms\lib\Get::req('login_lang', DOTY_STRING, false);
+        $info['lang'] = FormaLms\lib\Get::req('login_lang', DOTY_STRING, Lang::get());
         if ($info['lang'] === 'default') {
             $info['lang'] = false;
         } else {
