@@ -187,6 +187,7 @@ class PDF extends TCPDF
             if ($img != '') {
                 $this->setXY(0, 0);
                 $this->Image($GLOBALS['where_files_relative'] . '/appLms/certificate/' . $img, 0, 0, ($this->CurOrientation == 'P' ? 210 : 298), 0, '', '', '', true);
+                $this->setPageMark();
                 $this->setXY(0, 0);
             }
 
