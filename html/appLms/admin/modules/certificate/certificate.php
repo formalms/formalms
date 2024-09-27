@@ -780,6 +780,16 @@ function gen_zip_cert()
 
         $file = $info_report[ASSIGN_CERT_FILE];
         if ($file === null) {
+            $subs = $certificate->getSubstitutionArray($id_user, $id_course);
+            $certificate->send_certificate($id_certificate, $id_user, $id_course, $subs, false, true);
+        }
+
+        $report_info = $certificate->getInfoForCourseCertificate($id_course, $id_certificate, $id_user);
+        
+        $info_report = current($report_info);
+
+        $file = $info_report[ASSIGN_CERT_FILE];
+        if ($file == null) {
             continue;
         }
 
