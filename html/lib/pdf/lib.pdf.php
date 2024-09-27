@@ -113,6 +113,7 @@ class PDF extends TCPDF
         @ob_end_clean();
 
         $doc = new DOMDocument(null, $this->encoding);
+        $html = normalizer_normalize($html, Normalizer::FORM_C);
         $doc->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', $this->encoding));
         $xpath = new DOMXPath($doc);
         $nodelist = $xpath->query('//img'); // "/images/image.jpg"
