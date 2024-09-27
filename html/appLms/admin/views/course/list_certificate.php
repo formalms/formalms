@@ -269,7 +269,7 @@ echo getTitleArea([
         location.reload();
       });
       posting.fail(function() {
-        alert("Error generating certificate: " + id_certificate + " - " + id_course + " - " + id_user);
+        alert(<?php echo Lang::t('_ERROR_GENERATING_CERTIFICATE', 'certificate'); ?> " " + id_certificate + " - " + id_course + " - " + id_user);
       })
     }
 
