@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20240926</DATE>
+  <DATE>20240927</DATE>
   <LANG id="portuguese">
     <lang_code>portuguese</lang_code>
     <lang_description>Portuguese</lang_description>
@@ -314,8 +314,10 @@
         <key id="certificate&amp;_CERTIFICATES_GENERATION" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Geração de certificados]]></key>
         <key id="certificate&amp;_CERTIFICATE_AGGREGATE_ASSOCIATION" attributes="" save_date="2024-01-15 22:01:31"><![CDATA[Associar certificado agregado]]></key>
         <key id="certificate&amp;_CERTIFICATE_ASSIGN" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Atribuição de certificados]]></key>
-        <key id="certificate&amp;_CERTIFICATE_CAPTION" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Lista de certificados]]></key>
+        <key id="certificate&amp;_CERTIFICATE_CAPTION" attributes="" save_date="2024-09-27 13:21:32"><![CDATA[Lista de modelos de certificados]]></key>
+        <key id="certificate&amp;_CERTIFICATE_ID" attributes="" save_date="2024-09-27 13:39:30"><![CDATA[ID de certificado]]></key>
         <key id="certificate&amp;_CERTIFICATE_LIST" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Lista de certificados]]></key>
+        <key id="certificate&amp;_CERTIFICATE_PRINT_ERROR" attributes="" save_date="2024-09-27 12:53:35"><![CDATA[Erro ao gerar o certificado]]></key>
         <key id="certificate&amp;_CERTIFICATE_REPORT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Certificados lançados]]></key>
         <key id="certificate&amp;_CERTIFICATE_SUMMARY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Lista de modelos de certificados]]></key>
         <key id="certificate&amp;_CERTIFICATE_VIEW_CAPTION" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Certificados lançados]]></key>
@@ -358,7 +360,6 @@
         <key id="certificate&amp;_NEW_ASSING_META_CERTIFICATE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Nova associação]]></key>
         <key id="certificate&amp;_NEW_CERTIFICATE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Novo certificado]]></key>
         <key id="certificate&amp;_NOT_ENDED" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Não terminado]]></key>
-        <key id="certificate&amp;_NO_CERTIFICATE_AVAILABLE" attributes="" save_date="2024-01-23 22:17:49"><![CDATA[Nenhum certificado disponível]]></key>
         <key id="certificate&amp;_NO_CERT_AVAILABLE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Nenhum certificado disponível]]></key>
         <key id="certificate&amp;_NO_USER_FOR_CERTIFICATE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Ninguém acedeu a este certificado ainda]]></key>
         <key id="certificate&amp;_NO_USER_FOUND" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Sem meta-certificados prontos para serem publicados]]></key>
@@ -393,7 +394,7 @@
         <key id="certificate&amp;_TITLE_META_CERTIFICATE_ASSIGN" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Atribuição de meta-certificados]]></key>
         <key id="certificate&amp;_TITLE_META_CERTIFICATE_CREATE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Emissão de meta-certificados]]></key>
         <key id="certificate&amp;_TITLE_META_CERTIFICATE_DELETING" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Apagar associação]]></key>
-        <key id="certificate&amp;_TITLE_VIEW_CERT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Ver uma cópia]]></key>
+        <key id="certificate&amp;_TITLE_VIEW_CERT" attributes="" save_date="2024-09-27 13:16:57"><![CDATA[Ver cópia do certificado]]></key>
         <key id="certificate&amp;_TOTAL_SECONDS" attributes="" save_date="2024-01-23 14:17:01"><![CDATA[Tempo total despendido no curso (segundos)]]></key>
         <key id="certificate&amp;_TOTAL_TIME" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Tempo total despendido no curso]]></key>
         <key id="certificate&amp;_TOTAL_TIME_HOUR" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Tempo total despendido no curso (horas)]]></key>
@@ -435,6 +436,7 @@
       <module id="code">
         <key id="code&amp;_CODE_LIST" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Lista de códigos]]></key>
         <key id="code&amp;_CODE_USED_NUMBER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Número de utilizações]]></key>
+        <key id="code&amp;_GENERATE" attributes="" save_date="2024-09-27 11:49:14"><![CDATA[Gerar]]></key>
         <key id="code&amp;_UNLIMITED_USE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Uso ilimitado]]></key>
         <key id="code&amp;_USED" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Usado]]></key>
       </module>
@@ -899,6 +901,7 @@
         <key id="course&amp;_NO_COURSE_DATA" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Curso sem data de início]]></key>
         <key id="course&amp;_NO_COURSE_FOUND" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Nenhum curso encontrado]]></key>
         <key id="course&amp;_NO_NAME" attributes="" save_date="2024-05-27 11:49:43"><![CDATA[Sem nome]]></key>
+        <key id="course&amp;_OF" attributes="" save_date="2024-09-27 11:48:17"><![CDATA[de]]></key>
         <key id="course&amp;_OTHER_OPTION" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Outras opções]]></key>
         <key id="course&amp;_OTHER_USER_MATERIAL" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Material para outras funções]]></key>
         <key id="course&amp;_OVERVIEW" attributes="" save_date="2022-03-10 11:47:19"><![CDATA[Vista geral]]></key>
@@ -1187,8 +1190,6 @@ Se não estiver registado, você deve registar-se no nosso sistema, seguindo est
         <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKBANNERLMS_TITLE" attributes="" save_date="2024-01-15 22:43:26"><![CDATA[Título]]></key>
         <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKBANNERLMS_VIDEO" attributes="" save_date="2024-01-15 22:12:16"><![CDATA[URL do vídeo do YouTube / Vimeo]]></key>
         <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKCALENDARLMS_TITLE" attributes="" save_date="2024-01-15 22:43:30"><![CDATA[Título]]></key>
-        <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKCERTIFICATESLMS_ALTERNATIVE_T" attributes="" save_date="2024-01-15 22:17:31"><![CDATA[Texto alternativo]]></key>
-        <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKCERTIFICATESLMS_ALTERNATIVE_TEXT" attributes="" save_date="2024-01-15 22:17:34"><![CDATA[Texto alternativo]]></key>
         <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKCERTIFICATESLMS_MAX_LAST_RECO" attributes="" save_date="2024-01-15 22:54:24"><![CDATA[Número máximo de certificados]]></key>
         <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKCERTIFICATESLMS_MAX_LAST_RECORDS" attributes="" save_date="2024-01-15 22:54:31"><![CDATA[Número máximo de certificados visíveis]]></key>
         <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKCERTIFICATESLMS_TITLE" attributes="" save_date="2024-01-15 22:43:29"><![CDATA[Título]]></key>
@@ -2080,8 +2081,8 @@ Por favor não carregue imagens ofensivas.]]></key>
         <key id="profile&amp;_GOTO_BLOG" attributes="" save_date="2024-09-18 00:33:11"><![CDATA[Ir para o blog de [firstname]]]></key>
         <key id="profile&amp;_GOTO_BLOG_TITLE" attributes="" save_date="2024-09-18 00:33:05"><![CDATA[Ir para o blog do utilizador]]></key>
         <key id="profile&amp;_GO_TO_PROFILE" attributes="" save_date="2024-01-18 13:47:56"><![CDATA[Ir para o perfil de [firstname]]]></key>
-        <key id="profile&amp;_IDST_DELETED_USER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Base dados ID]]></key>
-        <key id="profile&amp;_LASTNAME_DELETER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Último nome operador]]></key>
+        <key id="profile&amp;_IDST_DELETED_USER" attributes="" save_date="2024-09-27 13:18:33"><![CDATA[ID da base de dados]]></key>
+        <key id="profile&amp;_LASTNAME_DELETER" attributes="" save_date="2024-09-27 13:43:00"><![CDATA[Último nome do operador]]></key>
         <key id="profile&amp;_LAST_PROFILE_VIEW" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Quem viu este perfil]]></key>
         <key id="profile&amp;_MESSAGE_TEXT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Texto mensagem]]></key>
         <key id="profile&amp;_NEWPWDVALID" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[A nova senha é válida para]]></key>
@@ -2121,7 +2122,7 @@ Por favor não carregue imagens ofensivas.]]></key>
         <key id="profile&amp;_USERCOURSE_STATS_TITLE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Estatísticas dos utilizadores]]></key>
         <key id="profile&amp;_USERCOURSE_STATUS" attributes="" save_date="2024-01-16 09:32:53"><![CDATA[Estado do utilizador]]></key>
         <key id="profile&amp;_USERFORUMPARAM" attributes="" save_date="2024-09-18 10:34:29"><![CDATA[Foto, avatar e assinatura]]></key>
-        <key id="profile&amp;_USERID_DELETER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[ID Operador]]></key>
+        <key id="profile&amp;_USERID_DELETER" attributes="" save_date="2024-09-27 13:18:45"><![CDATA[ID do Operador]]></key>
         <key id="profile&amp;_USEROFFLINE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Offline]]></key>
         <key id="profile&amp;_USERONLINE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Online]]></key>
         <key id="profile&amp;_USERPARAM" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Parâmetro do utilizador]]></key>
@@ -2803,7 +2804,7 @@ Senha: [password]]]></key>
         <key id="standard&amp;_NO_BACK" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Não, por favor voltar atrás]]></key>
         <key id="standard&amp;_NO_CATEGORY" attributes="" save_date="2024-09-17 09:36:19"><![CDATA[Sem categorias]]></key>
         <key id="standard&amp;_NO_CONTENT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Sem conteúdo disponível]]></key>
-        <key id="standard&amp;_OF" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[De]]></key>
+        <key id="standard&amp;_OF" attributes="" save_date="2024-09-27 11:46:52"><![CDATA[de]]></key>
         <key id="standard&amp;_OFF" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Desligado]]></key>
         <key id="standard&amp;_ON" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Ligado]]></key>
         <key id="standard&amp;_ONEMONTH" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Um mês]]></key>
@@ -2937,7 +2938,7 @@ Senha: [password]]]></key>
         <key id="standard&amp;_USERNAME" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Nome de utilizador]]></key>
         <key id="standard&amp;_USERS" attributes="" save_date="2024-01-18 09:14:52"><![CDATA[Utilizadores]]></key>
         <key id="standard&amp;_USER_ALREADY_EXISTS" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Utilizador já existe]]></key>
-        <key id="standard&amp;_USER_ID" attributes="" save_date="2024-01-24 15:32:17"><![CDATA[ID do utilizador]]></key>
+        <key id="standard&amp;_USER_ID" attributes="" save_date="2024-09-27 13:39:18"><![CDATA[ID de utilizador]]></key>
         <key id="standard&amp;_USER_RELEASE" attributes="" save_date="2024-01-23 14:51:47"><![CDATA[Lançamento pelo utilizador]]></key>
         <key id="standard&amp;_USER_STATUS_BEGIN" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Em progresso]]></key>
         <key id="standard&amp;_USER_STATUS_CANCELLED" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Apagado]]></key>
