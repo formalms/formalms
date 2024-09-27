@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20240918</DATE>
+  <DATE>20240927</DATE>
   <LANG id="english">
     <lang_code>english</lang_code>
     <lang_description>English</lang_description>
@@ -315,7 +315,9 @@
         <key id="certificate&amp;_CERTIFICATE_AGGREGATE_ASSOCIATION" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Associate aggregate certificate]]></key>
         <key id="certificate&amp;_CERTIFICATE_ASSIGN" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Certificate assignment]]></key>
         <key id="certificate&amp;_CERTIFICATE_CAPTION" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Certificate template list]]></key>
+        <key id="certificate&amp;_CERTIFICATE_ID" attributes="" save_date="2024-09-27 13:25:46"><![CDATA[Certificate ID]]></key>
         <key id="certificate&amp;_CERTIFICATE_LIST" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Certificates list]]></key>
+        <key id="certificate&amp;_CERTIFICATE_PRINT_ERROR" attributes="" save_date="2024-09-27 12:53:35"><![CDATA[Error generating certificate]]></key>
         <key id="certificate&amp;_CERTIFICATE_REPORT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Released certificate]]></key>
         <key id="certificate&amp;_CERTIFICATE_SUMMARY" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Certificate template list]]></key>
         <key id="certificate&amp;_CERTIFICATE_VIEW_CAPTION" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Released certificates]]></key>
@@ -358,7 +360,6 @@
         <key id="certificate&amp;_NEW_ASSING_META_CERTIFICATE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[New association]]></key>
         <key id="certificate&amp;_NEW_CERTIFICATE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[New certificate]]></key>
         <key id="certificate&amp;_NOT_ENDED" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Not ended]]></key>
-        <key id="certificate&amp;_NO_CERTIFICATE_AVAILABLE" attributes="" save_date="2024-01-23 22:17:49"><![CDATA[No certificates available]]></key>
         <key id="certificate&amp;_NO_CERT_AVAILABLE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[No available certificates]]></key>
         <key id="certificate&amp;_NO_USER_FOR_CERTIFICATE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[No one has accessed this certificate yet]]></key>
         <key id="certificate&amp;_NO_USER_FOUND" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[No meta-certificates ready to be published]]></key>
@@ -435,6 +436,7 @@
       <module id="code">
         <key id="code&amp;_CODE_LIST" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Code list]]></key>
         <key id="code&amp;_CODE_USED_NUMBER" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Number of uses]]></key>
+        <key id="code&amp;_GENERATE" attributes="" save_date="2024-09-27 11:49:14"><![CDATA[Generate]]></key>
         <key id="code&amp;_UNLIMITED_USE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Unlimited use]]></key>
         <key id="code&amp;_USED" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Used]]></key>
       </module>
@@ -543,6 +545,7 @@
         <key id="configuration&amp;_FACEBOOKAUTH" attributes="" save_date="2024-05-23 10:24:15"><![CDATA[Facebook Authentication]]></key>
         <key id="configuration&amp;_FILE_UPLOAD_WHITELIST" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Whitelist permitted file extensions]]></key>
         <key id="configuration&amp;_FIRST_CATALOGUE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Show "course catalog" as user main page]]></key>
+        <key id="configuration&amp;_FORCE_SCORM_FINISH" attributes="" save_date="2024-09-26 11:42:33"><![CDATA[Force SCORM completion]]></key>
         <key id="configuration&amp;_FORUM_AS_TABLE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Show forum list in a table]]></key>
         <key id="configuration&amp;_FTPERR" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Error in FTP]]></key>
         <key id="configuration&amp;_FTPOK" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[FTP OK]]></key>
@@ -898,6 +901,7 @@
         <key id="course&amp;_NO_COURSE_DATA" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Course with no start date]]></key>
         <key id="course&amp;_NO_COURSE_FOUND" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[No course found]]></key>
         <key id="course&amp;_NO_NAME" attributes="" save_date="2024-05-27 11:49:43"><![CDATA[No name]]></key>
+        <key id="course&amp;_OF" attributes="" save_date="2024-09-27 11:48:17"><![CDATA[of]]></key>
         <key id="course&amp;_OTHER_OPTION" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Other options]]></key>
         <key id="course&amp;_OTHER_USER_MATERIAL" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Material for other roles]]></key>
         <key id="course&amp;_OVERVIEW" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Overview]]></key>
@@ -1186,8 +1190,6 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKBANNERLMS_TITLE" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Title]]></key>
         <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKBANNERLMS_VIDEO" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Youtube / vimeo video url]]></key>
         <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKCALENDARLMS_TITLE" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Title]]></key>
-        <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKCERTIFICATESLMS_ALTERNATIVE_T" attributes="" save_date="2022-03-28 10:09:01"><![CDATA[Alternative text]]></key>
-        <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKCERTIFICATESLMS_ALTERNATIVE_TEXT" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Alternative text]]></key>
         <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKCERTIFICATESLMS_MAX_LAST_RECO" attributes="" save_date="2022-03-28 10:13:04"><![CDATA[Maximum number of certificates]]></key>
         <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKCERTIFICATESLMS_MAX_LAST_RECORDS" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Maximum number of visible certificates]]></key>
         <key id="dashboardsetting&amp;_INPUT_DASHBOARDBLOCKCERTIFICATESLMS_TITLE" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Title]]></key>
