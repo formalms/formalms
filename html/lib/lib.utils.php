@@ -146,7 +146,8 @@ class Util
         //send file length info
         header('Content-Length:' . filesize($path . $filename));
         //content type forcing dowlad
-        header("Content-type: application/download; charset=utf-8\n");
+        require_once _base_ . '/lib/lib.mimetype.php';
+        header("Content-type: " . mimetype($ext) . "; charset=utf-8\n");
         //cache control
         header('Cache-control: private');
         //sending creation time
