@@ -133,7 +133,7 @@ class Util
         }
 
         if (!file_exists($path . $filename)) {
-            Util::fatal('Error: the file that you are searching for no longer exists on the server.<br/>Please contact the system administrator');
+            Util::fatal(Lang::t('_DOWNLOAD_FILE_NOT_EXISTS'));
         }
 
         $db = DbConn::getInstance();
