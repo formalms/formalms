@@ -312,7 +312,8 @@ class Module_Organization extends LmsModule
                     );
                 }
             } else {
-                exit("You don't have permissions");
+                $lang = &DoceboLanguage::createInstance('organization', 'lms');
+                exit($lang->def('_OPERATION_FAILUREPERMISSION'));
             }
 
             return;
