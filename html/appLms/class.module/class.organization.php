@@ -276,6 +276,7 @@ class Module_Organization extends LmsModule
             $saveObj->save($saveName, $this->treeView->getState());
 
             $id_item = FormaLms\lib\Get::req('id_item', DOTY_INT, 0);
+            $embedded = FormaLms\lib\Get::req('embedded', DOTY_INT, 0);
             $folder = $this->repoDb->getFolderById($id_item);
             $idItem = $folder->otherValues[REPOFIELDIDRESOURCE];
             $lo = createLO($folder->otherValues[REPOFIELDOBJECTTYPE], $idItem);
@@ -291,11 +292,25 @@ class Module_Organization extends LmsModule
                 $folder->otherValues[ORGFIELDPREREQUISITES],
                 getLogUserId()
             ) || (isset($_GET['edit']) && $_GET['edit'])) {
-                $lo->play(
-                    $idItem,
-                    $folder->otherValues[ORGFIELDIDPARAM],
-                    $back_url
-                );
+                if(isset($embedded) && $embedded) {
+                    require_once _base_ . '/lib/lib.download.php';
+
+                    list($file) = sql_fetch_row(sql_query('SELECT path'
+                                                            . ' FROM %lms_materials_lesson'
+                                                            . " WHERE idLesson = '" . $idItem . "'"));
+                    
+                    //recognize mime type
+                    $expFileName = explode('.', $file);
+                    $totPart = count($expFileName) - 1;
+
+                    sendFile('/appLms/' . FormaLms\lib\Get::sett('pathlesson'), $file, $expFileName[$totPart], null, true);
+                } else {
+                    $lo->play(
+                        $idItem,
+                        $folder->otherValues[ORGFIELDIDPARAM],
+                        $back_url
+                    );
+                }
             } else {
                 exit("You don't have permissions");
             }

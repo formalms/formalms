@@ -264,4 +264,26 @@ class PDF extends TCPDF
     {
         $this->password = $password;
     }
+
+    public function getPdfDimensions($filePath, $box="MediaBox") {
+        //$box can be set to BleedBox, CropBox or MediaBox 
+
+        $result = false;
+
+        $file = fopen($filePath, 'rb');
+        if (!$file) {
+            return $result; // Handle error
+        }
+    
+        $pdfContent = fread($file, filesize($filePath));
+        fclose($file);
+    
+        // Look for the /MediaBox in the PDF content
+        if (preg_match('/\/'.$box.'\s*\[(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\]/', $pdfContent, $matches)) {
+            $result["width"] = $matches[3]; // width in points
+            $result["height"] = $matches[4]; // height in points
+        }
+    
+        return $result; // Handle error if MediaBox not found
+    }
 }

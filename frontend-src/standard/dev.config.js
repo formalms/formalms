@@ -75,5 +75,9 @@ module.exports = {
       from: __dirname + '/node_modules/tinymce-i18n/langs5',
       to: __dirname + '/../../html/addons/tiny_mce/langs',
     }]),
+    new CopyWebpackPlugin([{
+      from: __dirname + '/node_modules/pdfobject/pdfobject.min.js',
+      to: __dirname + '/../../html/addons/pdfobject/pdfobject.min.js',
+    }]),
   ]
 };
