@@ -89,7 +89,7 @@ class SettingAdm extends Model
             . '<br />'
 
             . '<div class="conf_line_title">' . $lang->def('_SERVER_MYSQL') . '</div>'
-            . config_line($lang->def('_sql_VERS'), sql_get_server_info())
+            . config_line($lang->def('_MYSQL_VERS'), sql_get_server_info())
             . '<br />'
 
             . '<div class="conf_line_title">' . $lang->def('_PHPINFO') . '</div>'
