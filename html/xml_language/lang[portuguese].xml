@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20240927</DATE>
+  <DATE>20240930</DATE>
   <LANG id="portuguese">
     <lang_code>portuguese</lang_code>
     <lang_description>Portuguese</lang_description>
@@ -750,6 +750,7 @@
         <key id="configuration&amp;_USE_ADVANCED_FORM" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Utilizar formulário de registo avançado]]></key>
         <key id="configuration&amp;_USE_COURSE_LABEL" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Etiqueta nos cursos]]></key>
         <key id="configuration&amp;_USE_DIMDIM_API" attributes="" save_date="2024-01-15 23:21:45"><![CDATA[Utilizar API DimDim da vez da interface URL]]></key>
+        <key id="configuration&amp;_USE_EMAIL_AS_USERID" attributes="" save_date="2024-09-30 14:21:30"><![CDATA[Utilizar e-mail como nome de utilizador]]></key>
         <key id="configuration&amp;_USE_IMMEDIATE_REPORT" attributes="" save_date="2024-01-15 22:22:46"><![CDATA[Criar relatório e enviá-lo por e-mail assim que estiver pronto (a execução do relatório deve estar habilitada no crontab)]]></key>
         <key id="configuration&amp;_USE_REST_API" attributes="" save_date="2024-01-15 23:20:53"><![CDATA[Ativar a funcionalidade de API]]></key>
         <key id="configuration&amp;_USE_SENDER_ACLNAME" attributes="" save_date="2024-01-15 22:48:00"><![CDATA[Nome do remetente (From) de mensagens de alerta]]></key>

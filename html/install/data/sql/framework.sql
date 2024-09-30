@@ -2605,6 +2605,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('user_quota', '50', 'string', 255, '0', 8, 6, 1, 0, ''),
 ('use_advanced_form', 'off', 'enum', 3, 'register', 3, 16, 1, 0, ''),
 ('use_course_label', 'off', 'enum', 3, '0', 4, 7, 1, 0, ''),
+('use_email_as_userid', 'off', 'enum', 3, 'register', 3, 16, 1, 0, ''),
 ('use_rest_api', 'off', 'enum', 3, 'api', 9, 7, 1, 0, ''),
 ('use_tag', 'on', 'enum', 3, '0', 4, 8, 1, 0, ''),
 ('visuItem', '25', 'int', 3, '0', 2, 1, 1, 1, ''),
