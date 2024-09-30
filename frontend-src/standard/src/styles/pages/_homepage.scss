@@ -356,6 +356,10 @@ p {
   }
 
   &[type='submit'] {
+    &[id='reg_button'] {
+      margin-bottom: 15px;
+    }
+
     .homepage__row & {
       margin-top: 15px;
     }
