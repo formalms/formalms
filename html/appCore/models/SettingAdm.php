@@ -770,7 +770,7 @@ class SettingAdm extends Model
 
         echo '<script type="text/javascript">
                 window.onload = function() {
-                    $("#global_conf form").dirtyForms();
+                    $("#global_conf form, form#conf_option").dirtyForms();
 
                     const queryString = window.location.search;
                     const urlParams = new URLSearchParams(queryString);
@@ -784,7 +784,7 @@ class SettingAdm extends Model
                     }
 
                     $("#global_conf ul.nav.nav-tabs li a.nav-link").on("click", function(event) {
-                        if ($("form").dirtyForms("isDirty")) {
+                        if ($("#global_conf form").dirtyForms("isDirty")) {
                             if (urlParams.has("r")) {
                                 if (urlParams.has("plugin")) {
                                     url = url + "&plugin=" + plugin
