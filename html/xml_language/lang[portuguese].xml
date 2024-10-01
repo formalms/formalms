@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20240930</DATE>
+  <DATE>20241001</DATE>
   <LANG id="portuguese">
     <lang_code>portuguese</lang_code>
     <lang_description>Portuguese</lang_description>
@@ -129,8 +129,7 @@
         <key id="admin_lang&amp;_PLUGIN_NAME" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Nome do plugin]]></key>
         <key id="admin_lang&amp;_TOTAL_LANGUAGE_UPDATED" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Definição de linguagem atualizada]]></key>
         <key id="admin_lang&amp;_TRANSALTIONTABLEFOR" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Tabela de traduções para %module%]]></key>
-        <key id="admin_lang&amp;_TRANSLATELANG" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Traduzir]]></key>
-        <key id="admin_lang&amp;_TRANSLATELANGG" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Traduzir idioma]]></key>
+        <key id="admin_lang&amp;_TRANSLATELANG" attributes="" save_date="2024-09-30 13:49:37"><![CDATA[Traduzir idioma]]></key>
         <key id="admin_lang&amp;_TRANSLATION_COTAINS" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[A tradução contém]]></key>
         <key id="admin_lang&amp;_YESIMPORT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Sim, importar]]></key>
       </module>
@@ -633,8 +632,8 @@
         <key id="configuration&amp;_PLUGIN_ERROR_ACTIVATE_DEPENDENCE" attributes="" save_date="2024-01-18 00:51:24"><![CDATA[Erro ao ativar: Dependência]]></key>
         <key id="configuration&amp;_PLUGIN_ERROR_ACTIVATE_UNSUITABLE_FORMA" attributes="" save_date="2024-01-18 00:50:47"><![CDATA[Erro ao ativar: Formato inapropriado]]></key>
         <key id="configuration&amp;_PLUGIN_ERROR_CORE_DEACTIVATE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[O plugin não pode ser desativado porque pertence ao núcleo]]></key>
-        <key id="configuration&amp;_PLUGIN_ERROR_CORE_UNINSTALL" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[O Plugin não pode ser desinstalado porque pertence ao núcleo]]></key>
-        <key id="configuration&amp;_PLUGIN_ERROR_DEACTIVATE_DEPENDENCE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[O Plugin não pode ser desativado devido a plugins dependentes]]></key>
+        <key id="configuration&amp;_PLUGIN_ERROR_CORE_UNINSTALL" attributes="" save_date="2024-09-30 11:33:31"><![CDATA[O plugin não pode ser desinstalado porque pertence ao núcleo]]></key>
+        <key id="configuration&amp;_PLUGIN_ERROR_DEACTIVATE_DEPENDENCE" attributes="" save_date="2024-09-30 11:33:38"><![CDATA[O plugin não pode ser desativado devido a plugins dependentes]]></key>
         <key id="configuration&amp;_PLUGIN_ERROR_NOT_ONLINE_UPDATE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[A atualização do plugin online não está disponível]]></key>
         <key id="configuration&amp;_PLUGIN_ERROR_NO_DEPENDENCIES" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[O plugin não pode ser instalado devido a estar dependente de plugins em falta]]></key>
         <key id="configuration&amp;_PLUGIN_ERROR_OLD_VERSION" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[A versão dos ficheiros do plugin não coincide com forma.lms]]></key>
@@ -1353,7 +1352,7 @@ Senha: [password]]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserNew2" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Um novo utilizador foi registado através de "registo automático gratuito" ou "registo automático livre com verificação/confirmação (double opt-in)".]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserNewModerated" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Utilizador a aguardar para ser aprovado na plataforma de inscrição.]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserNewWaiting" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Novo utilizador aguardando a aprovação]]></key>
-        <key id="event_manager&amp;_EVENT_CLASS_UserRegistrationSuperadmins" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Utilizador registado - superadministrador.]]></key>
+        <key id="event_manager&amp;_EVENT_CLASS_UserRegistrationSuperadmins" attributes="" save_date="2024-09-30 11:34:09"><![CDATA[Utilizador registado - superadministrador]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserSuspendedSuperAdmin" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[O utlizador foi suspenso.]]></key>
         <key id="event_manager&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_SBJ" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[O utlizador foi suspenso.]]></key>
         <key id="event_manager&amp;_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[O utilizador [firstname] [lastname], com o Id: [username] foi suspenso do curso: [course] na plataforma: [url]]]></key>
@@ -2180,13 +2179,13 @@ Por favor não carregue imagens ofensivas.]]></key>
         <key id="register&amp;_ERR_DUPLICATE_USER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[O nome de utilizador não está disponível, escolha outro]]></key>
         <key id="register&amp;_ERR_INVALID_MAIL" attributes="" save_date="2024-05-09 13:50:15"><![CDATA[Deve inserir um endereço de e-mail válido]]></key>
         <key id="register&amp;_ERR_INVALID_USER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Nome de utilizador está vazio ou inválido]]></key>
-        <key id="register&amp;_ERR_PASSWORD_MIN_LENGTH" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[A senha deve conter um número mínimo de caracteres]]></key>
+        <key id="register&amp;_ERR_PASSWORD_MIN_LENGTH" attributes="" save_date="2024-09-30 11:34:18"><![CDATA[Senha deve conter um número mínimo de caracteres]]></key>
         <key id="register&amp;_ERR_PASSWORD_MUSTBE_ALPHA" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Senha deve conter números e caracteres]]></key>
         <key id="register&amp;_ERR_PASSWORD_MUSTBE_TEXT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Senha deve conter só caracteres]]></key>
         <key id="register&amp;_ERR_PASSWORD_NO_MATCH" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[A senha não combina com a segunda que inseriu]]></key>
         <key id="register&amp;_ERR_POLICY_NOT_CHECKED" attributes="" save_date="2024-01-22 10:19:31"><![CDATA[Você deve aceitar a política de privacidade de modo a registar]]></key>
         <key id="register&amp;_ERR_PWD_OLD" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[A senha antiga é errada]]></key>
-        <key id="register&amp;_ERR_PWD_SAME_OLD" attributes="" save_date="2024-01-15 22:55:22"><![CDATA[Nova senha idêntica a antiga]]></key>
+        <key id="register&amp;_ERR_PWD_SAME_OLD" attributes="" save_date="2024-09-30 11:33:58"><![CDATA[Nova senha é idêntica a antiga]]></key>
         <key id="register&amp;_FIRST_ACCESS" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Esta é a primeira vez que acede ao sistema. Por favor altere a sua senha temporária]]></key>
         <key id="register&amp;_FORCE_CHANGE" attributes="" save_date="2024-09-18 09:58:33"><![CDATA[Selecione uma nova senha]]></key>
         <key id="register&amp;_GOTO_LOGIN" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Voltar à página de login]]></key>
@@ -2571,7 +2570,7 @@ Senha: [password]]]></key>
         <key id="standard&amp;_COMPLETED" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Completo]]></key>
         <key id="standard&amp;_CONFIRM" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Confirmar]]></key>
         <key id="standard&amp;_CONNECT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Conectar]]></key>
-        <key id="standard&amp;_CONNECTION_ERROR" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Erro ligação]]></key>
+        <key id="standard&amp;_CONNECTION_ERROR" attributes="" save_date="2024-09-30 11:32:46"><![CDATA[Erro de ligação]]></key>
         <key id="standard&amp;_CONTAINS" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Contém]]></key>
         <key id="standard&amp;_CONTENTS" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Conteúdos]]></key>
         <key id="standard&amp;_CONTENT_FILE_MANAGER" attributes="" save_date="2024-01-17 09:46:42"><![CDATA[Gerenciador de Ficheiros de Conteúdo]]></key>
@@ -2628,6 +2627,7 @@ Senha: [password]]]></key>
         <key id="standard&amp;_DISCONNECT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Desconectar]]></key>
         <key id="standard&amp;_DOWN" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Baixo]]></key>
         <key id="standard&amp;_DOWNLOAD" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Download]]></key>
+        <key id="standard&amp;_DOWNLOAD_FILE_NOT_EXISTS" attributes="" save_date="2024-09-28 02:12:12"><![CDATA[Erro: o arquivo que você está procurando não existe mais no servidor.<br/>Entre em contato com o administrador do sistema]]></key>
         <key id="standard&amp;_EDITION" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Edição]]></key>
         <key id="standard&amp;_EDITIONS" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Edições]]></key>
         <key id="standard&amp;_EDIT_SCORE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Editar pontuação]]></key>
@@ -2812,6 +2812,7 @@ Senha: [password]]]></key>
         <key id="standard&amp;_ONLY_ONCE" attributes="" save_date="2024-01-23 21:17:35"><![CDATA[Uma única vez]]></key>
         <key id="standard&amp;_OPEN" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Aberto]]></key>
         <key id="standard&amp;_OPERATION_FAILURE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Erro ao processar a operação solicitada]]></key>
+        <key id="standard&amp;_OPERATION_FAILUREPERMISSION" attributes="" save_date="2024-09-27 18:12:51"><![CDATA[Você não tem permissões.]]></key>
         <key id="standard&amp;_OPERATION_SUCCESSFUL" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Operação concluída com êxito]]></key>
         <key id="standard&amp;_OPERATION_SUCCESSFULPWD" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Mudança de senha bem-sucedida]]></key>
         <key id="standard&amp;_ORD" attributes="" save_date="2024-01-23 20:46:00"><![CDATA[Ordem]]></key>
@@ -2886,7 +2887,7 @@ Senha: [password]]]></key>
         <key id="standard&amp;_SENDER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Remetente]]></key>
         <key id="standard&amp;_SEND_CC" attributes="" save_date="2024-01-23 19:43:03"><![CDATA[Coloque em CC]]></key>
         <key id="standard&amp;_SEND_TO" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Enviar para]]></key>
-        <key id="standard&amp;_SET" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Definar]]></key>
+        <key id="standard&amp;_SET" attributes="" save_date="2024-10-01 01:34:31"><![CDATA[Definir]]></key>
         <key id="standard&amp;_SET_AS_DEFAULT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Predefinição]]></key>
         <key id="standard&amp;_SHORTDESC" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Descrição breve]]></key>
         <key id="standard&amp;_SHOW" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Mostrar]]></key>

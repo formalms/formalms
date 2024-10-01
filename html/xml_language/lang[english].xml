@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <LANGUAGES>
-  <DATE>20240930</DATE>
+  <DATE>20241001</DATE>
   <LANG id="english">
     <lang_code>english</lang_code>
     <lang_description>English</lang_description>
@@ -130,7 +130,6 @@
         <key id="admin_lang&amp;_TOTAL_LANGUAGE_UPDATED" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Language definition updated]]></key>
         <key id="admin_lang&amp;_TRANSALTIONTABLEFOR" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Translation table for %module%]]></key>
         <key id="admin_lang&amp;_TRANSLATELANG" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Translate]]></key>
-        <key id="admin_lang&amp;_TRANSLATELANGG" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Translate language]]></key>
         <key id="admin_lang&amp;_TRANSLATION_COTAINS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Translation contains]]></key>
         <key id="admin_lang&amp;_YESIMPORT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Yes, import]]></key>
       </module>
@@ -2636,6 +2635,7 @@ Username: [userid]]]></key>
         <key id="standard&amp;_DISCONNECT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Disconnect]]></key>
         <key id="standard&amp;_DOWN" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Down]]></key>
         <key id="standard&amp;_DOWNLOAD" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Download]]></key>
+        <key id="standard&amp;_DOWNLOAD_FILE_NOT_EXISTS" attributes="" save_date="2024-09-28 02:12:12"><![CDATA[Error: the file that you are searching for no longer exists on the server.<br/>Please contact the system administrator]]></key>
         <key id="standard&amp;_EDITION" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Edition]]></key>
         <key id="standard&amp;_EDITIONS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Editions]]></key>
         <key id="standard&amp;_EDIT_SCORE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Edit score]]></key>
@@ -2820,6 +2820,7 @@ Username: [userid]]]></key>
         <key id="standard&amp;_ONLY_ONCE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Only one time]]></key>
         <key id="standard&amp;_OPEN" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Open]]></key>
         <key id="standard&amp;_OPERATION_FAILURE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Error while processing the requested operation]]></key>
+        <key id="standard&amp;_OPERATION_FAILUREPERMISSION" attributes="" save_date="2024-09-27 18:12:51"><![CDATA[You don't have permissions.]]></key>
         <key id="standard&amp;_OPERATION_SUCCESSFUL" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Operation successfully completed]]></key>
         <key id="standard&amp;_OPERATION_SUCCESSFULPWD" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Successful password change]]></key>
         <key id="standard&amp;_ORD" attributes="" save_date="2024-01-23 20:45:59"><![CDATA[Order]]></key>
