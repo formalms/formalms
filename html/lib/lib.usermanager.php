@@ -2280,7 +2280,7 @@ class UserManagerRenderer
                     isset($_POST['register']['privacy']),
                     ''
                 )
-                . '<label class="checkbox-inline">' . $lang->def('_REG_PRIVACY_ACCEPT') . '</label>'
+                . '<label class="checkbox-inline" for="register_privacy">' . $lang->def('_REG_PRIVACY_ACCEPT') . '</label>'
                 . '</div>';
 
             if ($error) {
@@ -2299,13 +2299,6 @@ class UserManagerRenderer
         $out .= '<div class="homepage__row homepage__links">'
             . '<a href="' . FormaLms\lib\Get::rel_path('base') . '/index.php"><em>' . $lang->def('_LOGIN') . '</em></a>'
             . '</div>';
-
-        $out .= '<script type="text/javascript">'
-            . '$("form#register div.homepage__row--privacy label.checkbox-inline").on("click", function(event) {'
-            . '     var privacy_checkBox = $("form#register div.homepage__row--privacy input[id=register_privacy]");'
-            . '     privacy_checkBox.prop("checked", !privacy_checkBox.prop("checked"));'
-            . '});'
-            . '</script>';
 
         return $out;
     }

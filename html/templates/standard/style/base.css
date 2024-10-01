@@ -36,7 +36,7 @@ a:hover{text-decoration:none;}
 a.nounder{text-decoration:none;}
 a.nounder:hover{text-decoration:underline;}
 a img{vertical-align:middle; max-width: inherit;}
-h1 img,h2 img,h3 img,h4 img,h5 img,h6 img{vertical-align:middle;}
+h1 img,h2 img,h3 img,h4 img,h5 img,h6 img,label{vertical-align:middle;}
 /* Main Page Container */
 /*
 div#container { margin:0 auto; padding:0 10px; background:#fff;  border-top:0; border-bottom:0;}
