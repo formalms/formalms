@@ -51,6 +51,7 @@
     "gsap": "1.20.3",
     "imports-loader": "0.8.0",
     "jquery": "^3.6.0",
+    "jquery.dirtyforms": "^2.0.0",
     "moment": "^2.29.3",
     "node-sass": "^9.0.0",
     "pdfobject": "^2.3.0",

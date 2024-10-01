@@ -85,5 +85,9 @@ module.exports = {
       from: __dirname + '/node_modules/pdfobject/pdfobject.min.js',
       to: __dirname + '/../../html/addons/pdfobject/pdfobject.min.js',
     }]),
+    new CopyWebpackPlugin([{
+      from: __dirname + '/node_modules/jquery.dirtyforms/jquery.dirtyforms.min.js',
+      to: __dirname + '/../../html/addons/jquery/dirtyforms/jquery.dirtyforms.min.js',
+    }]),
   ]
 };

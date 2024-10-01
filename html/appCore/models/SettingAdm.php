@@ -765,6 +765,68 @@ class SettingAdm extends Model
         }
         echo '</div>';
 
+        require_once _base_ . '/lib/lib.utils.php';
+        addJs('addons/jquery/dirtyforms/', 'jquery.dirtyforms.min.js');
+
+        echo '<script type="text/javascript">
+                window.onload = function() {
+                    $("#global_conf form").dirtyForms();
+
+                    const queryString = window.location.search;
+                    const urlParams = new URLSearchParams(queryString);
+                            
+                    const plugin = urlParams.get("plugin");
+                    const r = urlParams.get("r");
+                            
+                    var url = window.location.origin + window.location.pathname;
+                    if (urlParams.has("r")) {
+                        url = url + "?r=" + r;
+                    }
+
+                    $("#global_conf ul.nav.nav-tabs li a.nav-link").on("click", function(event) {
+                        if ($("form").dirtyForms("isDirty")) {
+                            if (urlParams.has("r")) {
+                                if (urlParams.has("plugin")) {
+                                    url = url + "&plugin=" + plugin
+                                } else {
+                                    var active_tab = $(this).attr("href").split("_")[2];
+                                    var active_tab_cur = $("#global_conf .tab-pane.active input[name=active_tab]").val();
+                                    
+                                    if (active_tab !== "" && active_tab !== active_tab_cur) {
+                                        url = url + "&active_tab=" + active_tab;
+                                    }
+                                }
+                                
+                                if (url !== (window.location.origin + window.location.pathname + "?r=" + r)) {
+                                    event.stopPropagation();
+                                    event.preventDefault();
+                                    window.location.replace(url);
+                                }
+                            }
+                        }
+                    });
+
+                    $("#global_conf form").on("submit", function(event) {
+                        var submitter_btn = $(event.originalEvent.submitter);
+
+                        if (submitter_btn.attr("name") == "undo") {
+                            if ($("form").dirtyForms("isDirty")) {
+                                var active_tab_cur = $("#global_conf .tab-pane.active input[name=active_tab]").val();
+                                if (active_tab_cur !== "") {
+                                    url = url + "&active_tab=" + active_tab_cur;
+                                }
+
+                                if (url !== (window.location.origin + window.location.pathname + "?r=" + r)) {
+                                    event.stopPropagation();
+                                    event.preventDefault();
+                                    window.location.replace(url);
+                                }
+                            }
+                        }
+                    });
+                };
+            </script>';
+
         return;
     }
 
