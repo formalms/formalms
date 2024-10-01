@@ -2029,7 +2029,7 @@ class UserManagerRenderer
         /** EMAIL */
         if ($options['use_email_as_userid'] == 'on') {
             $error = (isset($errors) && ($errors['userid'] || $errors['email']));
-            $errorMessage = $errors['userid']['msg'] . $errorMessage = $errors['email']['msg'];
+            $errorMessage = $errors['userid']['msg'] . $errors['email']['msg'];
         } else {
             $error = (isset($errors) && $errors['email']);
             $errorMessage = $errors['email']['msg'];
