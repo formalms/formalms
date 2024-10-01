@@ -2300,6 +2300,13 @@ class UserManagerRenderer
             . '<a href="' . FormaLms\lib\Get::rel_path('base') . '/index.php"><em>' . $lang->def('_LOGIN') . '</em></a>'
             . '</div>';
 
+        $out .= '<script type="text/javascript">'
+            . '$("form#register div.homepage__row--privacy label.checkbox-inline").on("click", function(event) {'
+            . '     var privacy_checkBox = $("form#register div.homepage__row--privacy input[id=register_privacy]");'
+            . '     privacy_checkBox.prop("checked", !privacy_checkBox.prop("checked"));'
+            . '});'
+            . '</script>';
+
         return $out;
     }
 
