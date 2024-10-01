@@ -345,6 +345,7 @@ ul.style_none li{list-style:none; }
 .form_line_l textarea.textarea_full{width:98%;margin:0 auto;}
 .form_line_l select, .form-line select{margin-right:2px;}
 .form_line_l input[type=checkbox], .form-line input[type=checkbox]{width:auto; border:0px none; padding:0;}
+input[type="checkbox"]+label, input[type=radio]+label{cursor:pointer;}
 .form_line_l input.radio { display: inline-block; }
 .form_elem_button{padding-top:12px;padding-right:1em;text-align:right;}
 .form_elem_button .button{margin:0 8px;}
