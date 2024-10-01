@@ -41,7 +41,7 @@ function play($idResource, $idParams, $back_url)
 {
     //if(!checkPerm('view', true, 'organization') && !checkPerm('view', true, 'storage')) die("You can't access");
     //echo ("idResource = ".$idResource."; idParams = ".$idParams."; back_url = ".$back_url);
-    list($file) = sql_fetch_row(sql_query('SELECT path'
+    list($file_title, $file) = sql_fetch_row(sql_query('SELECT title, path'
                                             . ' FROM %lms_materials_lesson'
                                             . " WHERE idLesson = '" . $idResource . "'"));
 
@@ -103,7 +103,7 @@ function play($idResource, $idParams, $back_url)
             . '<div id="pdf-canvas"></div>'
             . '<script type="text/javascript">'
             . 'var options = {'
-            . '    title: "My embedded PDF",'
+            . '    title: "' . $file_title . '",'
             . '    pdfOpenParams: { view: "Fit" },'
             . '    height: "' . (isset($pdf_dimensions["height"]) ? $pdf_dimensions["height"].'pt' : '100vh') . '"'
             . '};'
