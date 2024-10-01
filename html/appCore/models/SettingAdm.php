@@ -770,7 +770,7 @@ class SettingAdm extends Model
 
         echo '<script type="text/javascript">
                 window.onload = function() {
-                    $("#global_conf form, form#conf_option").dirtyForms();
+                    $("form[id^=conf_option]").dirtyForms();
 
                     const queryString = window.location.search;
                     const urlParams = new URLSearchParams(queryString);
@@ -784,7 +784,7 @@ class SettingAdm extends Model
                     }
 
                     $("#global_conf ul.nav.nav-tabs li a.nav-link").on("click", function(event) {
-                        if ($("#global_conf form").dirtyForms("isDirty")) {
+                        if ($("form[id^=conf_option]").dirtyForms("isDirty")) {
                             if (urlParams.has("r")) {
                                 if (urlParams.has("plugin")) {
                                     url = url + "&plugin=" + plugin
@@ -806,20 +806,22 @@ class SettingAdm extends Model
                         }
                     });
 
-                    $("#global_conf form").on("submit", function(event) {
-                        var submitter_btn = $(event.originalEvent.submitter);
+                    $("form[id^=conf_option]").on("submit", function(event) {
+                        if (!urlParams.has("plugin")) {
+                            var submitter_btn = $(event.originalEvent.submitter);
 
-                        if (submitter_btn.attr("name") == "undo") {
-                            if ($("form").dirtyForms("isDirty")) {
-                                var active_tab_cur = $("#global_conf .tab-pane.active input[name=active_tab]").val();
-                                if (active_tab_cur !== "") {
-                                    url = url + "&active_tab=" + active_tab_cur;
-                                }
+                            if (submitter_btn.attr("name") == "undo") {
+                                if ($("form").dirtyForms("isDirty")) {
+                                    var active_tab_cur = $("#global_conf .tab-pane.active input[name=active_tab]").val();
+                                    if (active_tab_cur !== "") {
+                                        url = url + "&active_tab=" + active_tab_cur;
+                                    }
 
-                                if (url !== (window.location.origin + window.location.pathname + "?r=" + r)) {
-                                    event.stopPropagation();
-                                    event.preventDefault();
-                                    window.location.replace(url);
+                                    if (url !== (window.location.origin + window.location.pathname + "?r=" + r)) {
+                                        event.stopPropagation();
+                                        event.preventDefault();
+                                        window.location.replace(url);
+                                    }
                                 }
                             }
                         }
