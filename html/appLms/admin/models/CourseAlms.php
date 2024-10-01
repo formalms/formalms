@@ -26,6 +26,9 @@ class CourseAlms extends Model
     protected $id_date;
     protected $id_edition;
 
+    protected $admin_courses = [];
+    protected $admin_users = [];
+
     public const boxDescrMaxLimit = 140;
 
     public function __construct($id_course = 0, $id_date = 0, $id_edition = 0)
@@ -43,6 +46,17 @@ class CourseAlms extends Model
         $this->edition_man = new EditionManager();
 
         $this->acl_man = \FormaLms\lib\Forma::getAclManager();
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
+        if ($userlevelid != ADMIN_GROUP_GODADMIN) {
+            require_once _base_ . '/lib/lib.preference.php';
+            $adminManager = new AdminPreference();
+
+
+            $this->admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
+
+            $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
+            $this->admin_users = $this->acl_man->getAllUsersFromIdst($admin_tree);
+        }
         parent::__construct();
     }
 
@@ -60,26 +74,13 @@ class CourseAlms extends Model
 
     public function getUserInOverbooking($idCourse)
     {
-        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
-        if ($userlevelid != ADMIN_GROUP_GODADMIN) {
-            require_once _base_ . '/lib/lib.preference.php';
-            $adminManager = new AdminPreference();
-            $acl_man = \FormaLms\lib\Forma::getAclManager();
-
-            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
-
-            $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
-            $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
-        }
 
         // skipping those that are both in ovebooking and waiting (admin approval course + overbooking) otherwise they are couted twice
 
         $query = 'select COUNT(cu.idUser) as num_overbooking'
             . ' FROM %lms_course AS c'
             . ' LEFT JOIN %lms_courseuser AS cu ON c.idCourse = cu.idCourse and cu.idCourse=' . $idCourse
-            . ($userlevelid != ADMIN_GROUP_GODADMIN
-                ? (!empty($admin_users) ? ' AND cu.idUser IN (' . implode(',', $admin_users) . ')' : ' AND cu.idUser IN (0)')
-                : '')
+            . (!empty($this->admin_users) ? ' AND cu.idUser IN (' . implode(',', $this->admin_users) . ')' : '')
             . " WHERE c.course_type <> 'assessment' and cu.status=4 and cu.waiting = 0";
 
         $res = sql_query($query);
@@ -294,24 +295,12 @@ class CourseAlms extends Model
 
     public function loadCourse($start_index, $results, $sort, $dir, $filter = false)
     {
-        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
-        if ($userlevelid != ADMIN_GROUP_GODADMIN) {
-            require_once _base_ . '/lib/lib.preference.php';
-            $adminManager = new AdminPreference();
-            $acl_man = \FormaLms\lib\Forma::getAclManager();
 
-            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
-
-            $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
-            $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
-        }
 
         $query = 'SELECT c.*, COUNT(cu.idUser) as subscriptions, SUM(cu.waiting) as pending'
             . ' FROM %lms_course AS c'
             . ' LEFT JOIN %lms_courseuser AS cu ON c.idCourse = cu.idCourse'
-            . ($userlevelid != ADMIN_GROUP_GODADMIN
-                ? (!empty($admin_users) ? ' AND cu.idUser IN (' . implode(',', $admin_users) . ')' : ' AND cu.idUser IN (0)')
-                : '')
+            . (!empty($this->admin_users) ? ' AND cu.idUser IN (' . implode(',', $this->admin_users) . ')' : '')
             . " WHERE c.course_type <> 'assessment'";
 
         if ($filter) {
@@ -351,61 +340,61 @@ class CourseAlms extends Model
             }
         }
 
-        if ($userlevelid != ADMIN_GROUP_GODADMIN) {
-            $all_courses = false;
-            if (isset($admin_courses['course'][0])) {
+
+        $all_courses = false;
+        if (isset($this->admin_courses['course'][0])) {
+            $all_courses = true;
+        } elseif (isset($this->admin_courses['course'][-1])) {
+            require_once _lms_ . '/lib/lib.catalogue.php';
+            $cat_man = new Catalogue_Manager();
+
+            $user_catalogue = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
+            if (count($user_catalogue) > 0) {
+                $courses = [0];
+
+                foreach ($user_catalogue as $id_cat) {
+                    $catalogue_course = &$cat_man->getCatalogueCourse($id_cat, true);
+
+                    $courses = array_merge($courses, $catalogue_course);
+                }
+
+                foreach ($courses as $id_course) {
+                    if ($id_course != 0) {
+                        $this->admin_courses['course'][$id_course] = $id_course;
+                    }
+                }
+            } elseif (FormaLms\lib\Get::sett('on_catalogue_empty', 'off') == 'on') {
                 $all_courses = true;
-            } elseif (isset($admin_courses['course'][-1])) {
+            }
+        } else {
+            $array_courses = [];
+            $array_courses = array_merge($array_courses, $this->admin_courses['course']);
+
+            if (!empty($this->admin_courses['coursepath'])) {
+                require_once _lms_ . '/lib/lib.coursepath.php';
+                $path_man = new CoursePath_Manager();
+                $coursepath_course = &$path_man->getAllCourses($this->admin_courses['coursepath']);
+                $array_courses = array_merge($array_courses, $coursepath_course);
+            }
+            if (!empty($this->admin_courses['catalogue'])) {
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
-
-                $user_catalogue = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
-                if (count($user_catalogue) > 0) {
-                    $courses = [0];
-
-                    foreach ($user_catalogue as $id_cat) {
-                        $catalogue_course = &$cat_man->getCatalogueCourse($id_cat, true);
-
-                        $courses = array_merge($courses, $catalogue_course);
-                    }
-
-                    foreach ($courses as $id_course) {
-                        if ($id_course != 0) {
-                            $admin_courses['course'][$id_course] = $id_course;
-                        }
-                    }
-                } elseif (FormaLms\lib\Get::sett('on_catalogue_empty', 'off') == 'on') {
-                    $all_courses = true;
+                foreach ($this->admin_courses['catalogue'] as $id_cat) {
+                    $catalogue_course = &$cat_man->getCatalogueCourse($id_cat, true);
+                    $array_courses = array_merge($array_courses, $catalogue_course);
                 }
-            } else {
-                $array_courses = [];
-                $array_courses = array_merge($array_courses, $admin_courses['course']);
-
-                if (!empty($admin_courses['coursepath'])) {
-                    require_once _lms_ . '/lib/lib.coursepath.php';
-                    $path_man = new CoursePath_Manager();
-                    $coursepath_course = &$path_man->getAllCourses($admin_courses['coursepath']);
-                    $array_courses = array_merge($array_courses, $coursepath_course);
-                }
-                if (!empty($admin_courses['catalogue'])) {
-                    require_once _lms_ . '/lib/lib.catalogue.php';
-                    $cat_man = new Catalogue_Manager();
-                    foreach ($admin_courses['catalogue'] as $id_cat) {
-                        $catalogue_course = &$cat_man->getCatalogueCourse($id_cat, true);
-                        $array_courses = array_merge($array_courses, $catalogue_course);
-                    }
-                }
-                $admin_courses['course'] = array_merge($admin_courses['course'], $array_courses);
             }
+            $this->admin_courses['course'] = array_merge($this->admin_courses['course'], $array_courses);
+        }
 
-            if (!$all_courses) {
-                if (empty($admin_courses['course'])) {
-                    $query .= ' AND 0 ';
-                } else {
-                    $query .= ' AND c.idCourse IN (' . implode(',', $admin_courses['course']) . ') ';
-                }
+        if (!$all_courses) {
+            if (empty($this->admin_courses['course'])) {
+                $query .= ' AND 0 ';
+            } else {
+                $query .= ' AND c.idCourse IN (' . implode(',', $this->admin_courses['course']) . ') ';
             }
         }
+
 
         $query .= ' GROUP BY c.idCourse'
             . ' ORDER BY ' . $sort . ' ' . $dir;
@@ -1757,8 +1746,12 @@ class CourseAlms extends Model
             }
 
             $user1 = [
-                'id_user' => $id_user, 'id_certificate' => $id_certificate, 'edition' => $this->getInfoClassroom($id_user, $id_course), 'username' => substr($userid, 1),
-                'lastname' => $lastname, 'firstname' => $firstname,
+                'id_user' => $id_user,
+                'id_certificate' => $id_certificate,
+                'edition' => $this->getInfoClassroom($id_user, $id_course),
+                'username' => substr($userid, 1),
+                'lastname' => $lastname,
+                'firstname' => $firstname,
             ];
             // getting custom fields values
             $cf_values = $usermanagementAdm->getCustomFieldUserValues((int)$id_user);
@@ -1789,10 +1782,11 @@ class CourseAlms extends Model
     }
 
 
-    public function getCourseCompletedPercentage($idCourse, $idUser) : array{
+    public function getCourseCompletedPercentage($idCourse, $idUser): array
+    {
 
         require_once _lms_ . '/lib/lib.stats.php';
-        
+
         $totalArray = getCountableCourseItems(
             $idCourse,
             false,
@@ -1807,7 +1801,7 @@ class CourseAlms extends Model
             ['completed', 'passed'],
             $totalArray
         );
-        
+
         $tot_failed = getStatStatusCount(
             $idUser,
             $idCourse,
@@ -1817,7 +1811,7 @@ class CourseAlms extends Model
 
         $result['complete_percentage'] = 0;
         $result['failed_percentage'] = 0;
-        if ( $total > 0 ) {
+        if ($total > 0) {
             $result['complete_percentage'] = round(($tot_complete / $total) * 100, 2);
             $result['failed_percentage'] = round(($tot_failed / $total) * 100, 2);
         }
