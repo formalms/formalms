@@ -206,6 +206,10 @@ p {
     border: solid 2px var(--color-1-550);
     border-radius: 4px;
   }
+
+  & > label.checkbox-inline {
+    margin-bottom: 4px;
+  }
 }
 
 .homepage__back {
