@@ -29,10 +29,6 @@
         color: #2D8CFF;
     }
 
-    .add-classroom-dates .select-box {
-        margin-left: 5px;
-    }
-
     .edit-classroom-dates .edit-classroom-dates--new-date {
         display: flex;
         justify-content: flex-end;
@@ -194,7 +190,7 @@
                 <input type="hidden" id="form-day_value">
                 <div class="col form-data-default">
                     <div class="form-outline">
-                        <label for="form-day_date">Date</label>
+                        <label for="form-day_date">{{ Lang_translate('_DATE','course') }}</label>
                         <input class="form-control" id="form-day_date" type="date" required>
                     </div>
                 </div>
@@ -232,7 +228,7 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <div class="form-outline">
+                    <div class="form-outline" style="padding-left:10px;">
                         <button class="btn btn-delete"
                                 id="js-classroom-dates-delete">{{ Lang_translate('_UNDO','course') }}</button>
                         <button class="btn btn-save form-data-default"
