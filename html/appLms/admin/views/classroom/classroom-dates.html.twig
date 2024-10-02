@@ -212,7 +212,6 @@
 
     </div>
 </div>
-<div id="myModal"></div>
 
 </div>
 
@@ -334,6 +333,13 @@
             }
         }
 
+        if (
+            !moment(pauseBegin, 'hh:mm').isBetween(moment(dateBegin, 'hh:mm'), moment(dateEnd, 'hh:mm')) ||
+            !moment(pauseEnd, 'hh:mm').isBetween(moment(dateBegin, 'hh:mm'), moment(dateEnd, 'hh:mm'))
+        ) {
+            showError('{{ Lang_translate('_PAUSE_OUTRANGE', 'classroom') }}');
+            return;
+        }
 
         document.getElementById('form-day_date').classList.remove('input-not-valid');
 
