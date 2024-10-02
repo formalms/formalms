@@ -56,45 +56,6 @@
         /* insert your own styles for valid form input */
     }
     
-    /* need to be shared */
-    .modal-background {
-      display: none; 
-      position: fixed;
-      z-index: 1; 
-      padding-top: 100px; 
-      left: 0;
-      top: 0;
-      width: 100%; 
-      height: 100%; 
-      overflow: auto; 
-      background-color: rgb(0,0,0); 
-      background-color: rgba(0,0,0,0.4); 
-    }
-
-    /* Modal Content */
-    .modal-content {
-      background-color: #fefefe;
-      margin: auto;
-      padding: 20px;
-      border: 3px solid #777;
-      width: 20%;
-      height: 20%
-    }
-
-    /* The Close Button */
-    .close {
-      color: black;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-    }
-
-    .close:hover,
-    .close:focus {
-      color: red;
-      text-decoration: none;
-      cursor: pointer;
-    }   
         
     
 
@@ -251,29 +212,29 @@
 
     </div>
 </div>
-<div id="myModal" class="modal-background">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <p id="modal-text"></p>
-  </div>
+<div id="myModal"></div>
 
 </div>
 
 <script type="text/javascript">
     /* MODAL */
 
-    var modal = document.getElementById("myModal");
-    var span = document.getElementsByClassName("close")[0];
+    var confirm = function() { this.hide(); };
 
-    span.onclick = function() {
-      modal.style.display = "none";
-    }
-
-    window.onclick = function(event) {
-      if (event.target == modal) {
-        modal.style.display = "none";
-      }
-    }    
+	var dialogBox = new YAHOO.widget.Dialog("classroom-dates_modalDialog", {
+		width: "400px",
+		modal: true,
+		close: true,
+		visible: false,
+		fixedcenter: true,
+		constraintoviewport: true,
+		draggable: true,
+		hideaftersubmit: true,
+		buttons: [
+			{text: "{{ Lang_translate('_CLOSE','standard') }}", handler: confirm}
+		]
+	});
+	dialogBox.render(document.body);
     
     
     /* end modal */
@@ -354,7 +315,7 @@
         var id = document.getElementById('form-id').value;
         var date = document.getElementById('form-day_date').value;
         var editDate = document.getElementById('form-day_value').value;
-        var dateFormatted = dateToString(new Date(date));
+        var dateFormatted = dateToString(new Date(date + ' 00:00:00'));
         var dateBegin = document.getElementById('form-day_date_begin').value;
         var dateEnd = document.getElementById('form-day_date_end').value;
         var pauseBegin = document.getElementById('form-day_pause_begin').value;
@@ -395,8 +356,8 @@
         for (let row of tableBody.rows) {
 
             var date = stringToDate(row.dataset.date, 'DD-MM-YYYY');
-            row.dataset.date = dateToString(date, 'YYYY-MM-DD')
-            var dateFormatted = dateToString(date, 'DD-MM-YYYY');
+            row.dataset.date = dateToString(date + ' 00:00:00', 'YYYY-MM-DD')
+            var dateFormatted = dateToString(date + ' 00:00:00', 'DD-MM-YYYY');
         
             insertOrUpdateRow(row.dataset.id, row.dataset.date, dateFormatted, dateBegin, dateEnd, pauseBegin, pauseEnd, classroom);
         }
@@ -549,6 +510,7 @@
                             data.days[day].pause_end = date[1].substring(0, 5);
                         }
 
+
                         insertOrUpdateRow(data.days[day].id, data.days[day].format_date, data.days[day].date, data.days[day].date_begin, data.days[day].date_end, data.days[day].pause_begin, data.days[day].pause_end, data.days[day].classroom)
                     }
                 }
@@ -585,7 +547,7 @@
 
         document.getElementById('form-day_date').valueAsDate = date;
 
-        document.getElementById('form-day_value').value = dateToString(new Date(date));
+        document.getElementById('form-day_value').value = dateToString(new Date(date + ' 00:00:00'));
 
         /** split date_begin string to use only time */
         date = rowData.date_begin.split(" ");
@@ -634,13 +596,15 @@
     }
 
     function showError(text) {
-        document.getElementById("modal-text").innerText = text
-        modal.style.display = "block";
+        dialogBox.setHeader("{{ Lang_translate('_OPERATION_FAILURE','standard') }}");
+        dialogBox.setBody(text);
+        dialogBox.show();
     }
 
     function showSuccess(text) {
-        document.getElementById("modal-text").innerText = text
-        modal.style.display = "block";
+        dialogBox.setHeader("{{ Lang_translate('_OPERATION_SUCCESSFUL','standard') }}");
+        dialogBox.setBody(text);
+        dialogBox.show();
     }
 
 </script>
