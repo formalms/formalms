@@ -368,7 +368,7 @@ class CourseAlms extends Model
             }
         } else {
             $array_courses = [];
-            $array_courses = array_merge($array_courses, $this->admin_courses['course']);
+            $array_courses = array_merge($array_courses, $this->admin_courses['course'] ?? []);
 
             if (!empty($this->admin_courses['coursepath'])) {
                 require_once _lms_ . '/lib/lib.coursepath.php';
@@ -384,13 +384,12 @@ class CourseAlms extends Model
                     $array_courses = array_merge($array_courses, $catalogue_course);
                 }
             }
-            $this->admin_courses['course'] = array_merge($this->admin_courses['course'], $array_courses);
+            $this->admin_courses['course'] = array_merge($this->admin_courses['course'] ?? [], $array_courses);
         }
 
         if (!$all_courses) {
-            if (empty($this->admin_courses['course'])) {
-                $query .= ' AND 0 ';
-            } else {
+            if (!empty($this->admin_courses['course'])) {
+             
                 $query .= ' AND c.idCourse IN (' . implode(',', $this->admin_courses['course']) . ') ';
             }
         }
