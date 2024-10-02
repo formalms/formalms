@@ -2964,7 +2964,7 @@ class UsermanagementAdm extends Model implements Accessible
         if ($idstUser != null) {
             $orgGroups = $this->_getAdminOrgTree($idstUser);
             if (!empty($orgGroups)) {
-                $query .= ' WHERE idOrg in (' . implode(',', $orgGroups) . ')';
+                $query .= ' AND idOrg in (' . implode(',', $orgGroups) . ')';
             }
         }
         $query .= ' order by path';
