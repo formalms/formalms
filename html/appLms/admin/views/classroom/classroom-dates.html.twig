@@ -315,7 +315,7 @@
         var id = document.getElementById('form-id').value;
         var date = document.getElementById('form-day_date').value;
         var editDate = document.getElementById('form-day_value').value;
-        var dateFormatted = dateToString(new Date(date + ' 00:00:00'));
+        var dateFormatted = dateToString(new Date(date));
         var dateBegin = document.getElementById('form-day_date_begin').value;
         var dateEnd = document.getElementById('form-day_date_end').value;
         var pauseBegin = document.getElementById('form-day_pause_begin').value;
@@ -356,8 +356,8 @@
         for (let row of tableBody.rows) {
 
             var date = stringToDate(row.dataset.date, 'DD-MM-YYYY');
-            row.dataset.date = dateToString(date + ' 00:00:00', 'YYYY-MM-DD')
-            var dateFormatted = dateToString(date + ' 00:00:00', 'DD-MM-YYYY');
+            row.dataset.date = dateToString(date, 'YYYY-MM-DD')
+            var dateFormatted = dateToString(date, 'DD-MM-YYYY');
         
             insertOrUpdateRow(row.dataset.id, row.dataset.date, dateFormatted, dateBegin, dateEnd, pauseBegin, pauseEnd, classroom);
         }
@@ -547,7 +547,7 @@
 
         document.getElementById('form-day_date').valueAsDate = date;
 
-        document.getElementById('form-day_value').value = dateToString(new Date(date + ' 00:00:00'));
+        document.getElementById('form-day_value').value = dateToString(new Date(date));
 
         /** split date_begin string to use only time */
         date = rowData.date_begin.split(" ");
@@ -587,12 +587,12 @@
 
     function dateToString(date = new Date, format = 'DD-MM-YYYY') {
 
-        return moment(date).format(format);
+        return moment.utc(date).format(format);
     }
 
     function stringToDate(_date, _format) {
 
-        return moment(_date, _format).toDate();
+        return moment.utc(_date, _format).toDate();
     }
 
     function showError(text) {
