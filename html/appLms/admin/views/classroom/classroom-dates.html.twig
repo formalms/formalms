@@ -324,6 +324,36 @@
         if (date === '') {
             document.getElementById('form-day_date').classList.add('input-not-valid');
             return;
+        } else {
+            document.getElementById('form-day_date').classList.remove('input-not-valid');
+        }
+
+        if (dateBegin === '') {
+            document.getElementById('form-day_date_begin').classList.add('input-not-valid');
+            return;
+        } else {
+            document.getElementById('form-day_date_begin').classList.remove('input-not-valid');
+        }
+
+        if (dateEnd === '') {
+            document.getElementById('form-day_date_end').classList.add('input-not-valid');
+            return;
+        } else {
+            document.getElementById('form-day_date_end').classList.remove('input-not-valid');
+        }
+
+        if (pauseBegin === '') {
+            document.getElementById('form-day_pause_begin').classList.add('input-not-valid');
+            return;
+        } else {
+            document.getElementById('form-day_pause_begin').classList.remove('input-not-valid');
+        }
+
+        if (pauseEnd === '') {
+            document.getElementById('form-day_pause_end').classList.add('input-not-valid');
+            return;
+        } else {
+            document.getElementById('form-day_pause_end').classList.remove('input-not-valid');
         }
 
         if (editDate === '' || editDate != '' && editDate != dateFormatted ) {
@@ -333,12 +363,14 @@
             }
         }
 
-        if (
-            !moment(pauseBegin, 'hh:mm').isBetween(moment(dateBegin, 'hh:mm'), moment(dateEnd, 'hh:mm')) ||
-            !moment(pauseEnd, 'hh:mm').isBetween(moment(dateBegin, 'hh:mm'), moment(dateEnd, 'hh:mm'))
-        ) {
-            showError('{{ Lang_translate('_PAUSE_OUTRANGE', 'classroom') }}');
-            return;
+        if (pauseBegin !== '00:00' || pauseEnd !== '00:00') {
+            if (
+                !moment(pauseBegin, 'hh:mm').isBetween(moment(dateBegin, 'hh:mm'), moment(dateEnd, 'hh:mm')) ||
+                !moment(pauseEnd, 'hh:mm').isBetween(moment(dateBegin, 'hh:mm'), moment(dateEnd, 'hh:mm'))
+            ) {
+                showError('{{ Lang_translate('_PAUSE_OUTRANGE', 'classroom') }}');
+                return;
+            }
         }
 
         document.getElementById('form-day_date').classList.remove('input-not-valid');
