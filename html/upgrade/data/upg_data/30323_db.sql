@@ -54,9 +54,9 @@ UPDATE `core_reg_setting` SET `value` = '-' WHERE `val_name` = 'date_sep';
 
 UPDATE core_menu_under SET module_name = 'dashboard' WHERE default_name = '_DASHBOARD' and associated_token = 'view' and of_platform = 'lms';
 INSERT IGNORE INTO core_role ( idst, roleId )
-SELECT max(idst)+1, '/lms/course/public/dashboard/view' FROM core_st LIMIT 1;
+SELECT max(idst)+1, '/lms/course/public/dashboard/view' FROM core_st;
 
-SET @idParent = ( SELECT `idMenu` FROM `core_menu` WHERE `name` = '_CONTENTS' LIMIT 1 );
+SET @idParent = ( SELECT max(`idMenu`) FROM `core_menu` WHERE `name` = '_CONTENTS' );
 INSERT INTO `core_menu` ( `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform` )
 SELECT * FROM (
     SELECT '_MANAGEMENT_COMMUNICATION', '', '4', TRUE AS `true1`, TRUE AS `true2`, @idParent, NULL, 'framework' 
@@ -66,7 +66,7 @@ WHERE NOT EXISTS (
         WHERE `name` = '_MANAGEMENT_COMMUNICATION'
 ) LIMIT 1;
 
-SET @idParent = ( SELECT `idMenu` FROM `core_menu` WHERE `name` = '_MANAGEMENT_COMMUNICATION' LIMIT 1 );
+SET @idParent = ( SELECT max(`idMenu`) FROM `core_menu` WHERE `name` = '_MANAGEMENT_COMMUNICATION' );
 INSERT INTO `core_menu` ( `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform` )
 SELECT * FROM (
     SELECT '_CATEGORIES', '', '1', TRUE AS `true1`, TRUE AS `true2`, @idParent, NULL, 'framework' 
@@ -76,9 +76,9 @@ WHERE NOT EXISTS (
         WHERE `name` = '_CATEGORIES'
 ) LIMIT 1;
 
-UPDATE `core_menu` SET `idParent` =  (SELECT `idMenu` FROM ( SELECT `idMenu` FROM `core_menu` WHERE `name` = '_MANAGEMENT_COMMUNICATION' LIMIT 1) tbl) WHERE `name` = '_COMMUNICATION_MAN';
+UPDATE `core_menu` SET `idParent` =  (SELECT `idMenu` FROM ( SELECT max(`idMenu`) FROM `core_menu` WHERE `name` = '_MANAGEMENT_COMMUNICATION') tbl) WHERE `name` = '_COMMUNICATION_MAN';
 
-SET @idMenu = ( SELECT `idMenu` FROM `core_menu` WHERE `name` = '_CATEGORIES' LIMIT 1 );
+SET @idMenu = ( SELECT max(`idMenu`) FROM `core_menu` WHERE `name` = '_CATEGORIES' );
 INSERT INTO `core_menu_under` ( `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path` )
 SELECT * FROM (SELECT @idMenu,
     'communication',
@@ -98,4 +98,4 @@ WHERE NOT EXISTS (
 
 UPDATE `core_menu_under` SET `default_name` = '_CATEGORIES' WHERE `module_name` = 'reservation' AND `default_name` = '_CATEGORY';
 
-UPDATE `core_menu` SET `name` = '_CATEGORIES' WHERE `idMenu` = ( SELECT `idMenu` FROM `core_menu_under` WHERE `module_name` = 'reservation' AND `default_name` = '_CATEGORIES' LIMIT 1 );
+UPDATE `core_menu` SET `name` = '_CATEGORIES' WHERE `idMenu` = ( SELECT max(`idMenu`) FROM `core_menu_under` WHERE `module_name` = 'reservation' AND `default_name` = '_CATEGORIES' );
