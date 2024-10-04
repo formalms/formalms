@@ -1,0 +1,20 @@
+{
+    "version": {
+      "name": "3.3.25",
+      "number": "303025",
+      "description": "questa è la 3.3.25",
+      "pretty_desc": "3 3 25",
+      "pre": "30325_pre.php",
+      "post": "30325_post.php",
+      "config": "30325_conf.php",
+      "file_sytem": "30325_fs.php",
+      "role": "30325_role.php",
+      "mysql": "30325_db.sql",
+      "date": "2024-09-26 00:00",
+      "status": "stable",
+      "php": {
+        "min": "7.4",
+        "max": "7.4"
+      }
+    }
+  }

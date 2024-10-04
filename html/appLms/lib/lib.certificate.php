@@ -869,13 +869,14 @@ class Certificate
 
         if ((sql_num_rows($re) > 0)) {
             if (!$download) {
+                $this->delCertificateForUserInCourse($id_certificate, $id_user, $id_course);
+            } else {
+                require_once _base_ . '/lib/lib.download.php';
+                list($cert_file) = sql_fetch_row($re);
+                sendFile(CERTIFICATE_PATH, $cert_file);
+
                 return;
             }
-            require_once _base_ . '/lib/lib.download.php';
-            list($cert_file) = sql_fetch_row($re);
-            sendFile(CERTIFICATE_PATH, $cert_file);
-
-            return;
         }
 
         $query_certificate = '

@@ -29,10 +29,6 @@
         color: #2D8CFF;
     }
 
-    .add-classroom-dates .select-box {
-        margin-left: 5px;
-    }
-
     .edit-classroom-dates .edit-classroom-dates--new-date {
         display: flex;
         justify-content: flex-end;
@@ -60,45 +56,6 @@
         /* insert your own styles for valid form input */
     }
     
-    /* need to be shared */
-    .modal-background {
-      display: none; 
-      position: fixed;
-      z-index: 1; 
-      padding-top: 100px; 
-      left: 0;
-      top: 0;
-      width: 100%; 
-      height: 100%; 
-      overflow: auto; 
-      background-color: rgb(0,0,0); 
-      background-color: rgba(0,0,0,0.4); 
-    }
-
-    /* Modal Content */
-    .modal-content {
-      background-color: #fefefe;
-      margin: auto;
-      padding: 20px;
-      border: 3px solid #777;
-      width: 20%;
-      height: 20%
-    }
-
-    /* The Close Button */
-    .close {
-      color: black;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-    }
-
-    .close:hover,
-    .close:focus {
-      color: red;
-      text-decoration: none;
-      cursor: pointer;
-    }   
         
     
 
@@ -194,7 +151,7 @@
                 <input type="hidden" id="form-day_value">
                 <div class="col form-data-default">
                     <div class="form-outline">
-                        <label for="form-day_date">Date</label>
+                        <label for="form-day_date">{{ Lang_translate('_DATE','course') }}</label>
                         <input class="form-control" id="form-day_date" type="date" required>
                     </div>
                 </div>
@@ -228,11 +185,11 @@
                         <select class="form-control select-box" id="form-day_classroom">
 
                             {% for id,classroom in availableClassrooms %}
-                                <option value="{{ id }}">{{ classroom|raw }}</option>
+                                <option value="{{ id }}">{{ classroom|striptags }}</option>
                             {% endfor %}
                         </select>
                     </div>
-                    <div class="form-outline">
+                    <div class="form-outline" style="padding-left:10px;">
                         <button class="btn btn-delete"
                                 id="js-classroom-dates-delete">{{ Lang_translate('_UNDO','course') }}</button>
                         <button class="btn btn-save form-data-default"
@@ -255,29 +212,28 @@
 
     </div>
 </div>
-<div id="myModal" class="modal-background">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <p id="modal-text"></p>
-  </div>
 
 </div>
 
 <script type="text/javascript">
     /* MODAL */
 
-    var modal = document.getElementById("myModal");
-    var span = document.getElementsByClassName("close")[0];
+    var confirm = function() { this.hide(); };
 
-    span.onclick = function() {
-      modal.style.display = "none";
-    }
-
-    window.onclick = function(event) {
-      if (event.target == modal) {
-        modal.style.display = "none";
-      }
-    }    
+	var dialogBox = new YAHOO.widget.Dialog("classroom-dates_modalDialog", {
+		width: "400px",
+		modal: true,
+		close: true,
+		visible: false,
+		fixedcenter: true,
+		constraintoviewport: true,
+		draggable: true,
+		hideaftersubmit: true,
+		buttons: [
+			{text: "{{ Lang_translate('_CLOSE','standard') }}", handler: confirm}
+		]
+	});
+	dialogBox.render(document.body);
     
     
     /* end modal */
@@ -368,6 +324,36 @@
         if (date === '') {
             document.getElementById('form-day_date').classList.add('input-not-valid');
             return;
+        } else {
+            document.getElementById('form-day_date').classList.remove('input-not-valid');
+        }
+
+        if (dateBegin === '') {
+            document.getElementById('form-day_date_begin').classList.add('input-not-valid');
+            return;
+        } else {
+            document.getElementById('form-day_date_begin').classList.remove('input-not-valid');
+        }
+
+        if (dateEnd === '') {
+            document.getElementById('form-day_date_end').classList.add('input-not-valid');
+            return;
+        } else {
+            document.getElementById('form-day_date_end').classList.remove('input-not-valid');
+        }
+
+        if (pauseBegin === '') {
+            document.getElementById('form-day_pause_begin').classList.add('input-not-valid');
+            return;
+        } else {
+            document.getElementById('form-day_pause_begin').classList.remove('input-not-valid');
+        }
+
+        if (pauseEnd === '') {
+            document.getElementById('form-day_pause_end').classList.add('input-not-valid');
+            return;
+        } else {
+            document.getElementById('form-day_pause_end').classList.remove('input-not-valid');
         }
 
         if (editDate === '' || editDate != '' && editDate != dateFormatted ) {
@@ -377,6 +363,15 @@
             }
         }
 
+        if (pauseBegin !== '00:00' || pauseEnd !== '00:00') {
+            if (
+                !moment(pauseBegin, 'hh:mm').isBetween(moment(dateBegin, 'hh:mm'), moment(dateEnd, 'hh:mm')) ||
+                !moment(pauseEnd, 'hh:mm').isBetween(moment(dateBegin, 'hh:mm'), moment(dateEnd, 'hh:mm'))
+            ) {
+                showError('{{ Lang_translate('_PAUSE_OUTRANGE', 'classroom') }}');
+                return;
+            }
+        }
 
         document.getElementById('form-day_date').classList.remove('input-not-valid');
 
@@ -535,26 +530,26 @@
                 data = JSON.parse(data);
 
                 if (data.success) {
-                    for (let day of data.days) {
-                        date = day.date_begin.split(" ");
+                    for (let day in data.days) {
+                        date = data.days[day].date_begin.split(" ");
                         if (date.length > 1) {
-                            day.date_begin = date[1].substring(0, 5);
+                            data.days[day].date_begin = date[1].substring(0, 5);
                         }
-                        date = day.date_end.split(" ");
+                        date = data.days[day].date_end.split(" ");
                         if (date.length > 1) {
-                            day.date_end = date[1].substring(0, 5);
+                            data.days[day].date_end = date[1].substring(0, 5);
                         }
-                        date = day.pause_begin.split(" ");
+                        date = data.days[day].pause_begin.split(" ");
                         if (date.length > 1) {
-                            day.pause_begin = date[1].substring(0, 5);
+                            data.days[day].pause_begin = date[1].substring(0, 5);
                         }
-                        date = day.pause_end.split(" ");
+                        date = data.days[day].pause_end.split(" ");
                         if (date.length > 1) {
-                            day.pause_end = date[1].substring(0, 5);
+                            data.days[day].pause_end = date[1].substring(0, 5);
                         }
 
 
-                        insertOrUpdateRow(day.id, day.format_date, day.date, day.date_begin, day.date_end, day.pause_begin, day.pause_end, day.classroom)
+                        insertOrUpdateRow(data.days[day].id, data.days[day].format_date, data.days[day].date, data.days[day].date_begin, data.days[day].date_end, data.days[day].pause_begin, data.days[day].pause_end, data.days[day].classroom)
                     }
                 }
                 document.getElementById('sendCalendar').checked = false;
@@ -590,7 +585,7 @@
 
         document.getElementById('form-day_date').valueAsDate = date;
 
-        document.getElementById('form-day_value').value = dateToString(new Date(date));;
+        document.getElementById('form-day_value').value = dateToString(new Date(date));
 
         /** split date_begin string to use only time */
         date = rowData.date_begin.split(" ");
@@ -630,22 +625,24 @@
 
     function dateToString(date = new Date, format = 'DD-MM-YYYY') {
 
-        return moment(date).format(format);
+        return moment.utc(date).format(format);
     }
 
     function stringToDate(_date, _format) {
 
-        return moment(_date, _format).toDate();
+        return moment.utc(_date, _format).toDate();
     }
 
     function showError(text) {
-        document.getElementById("modal-text").innerText = text
-        modal.style.display = "block";
+        dialogBox.setHeader("{{ Lang_translate('_OPERATION_FAILURE','standard') }}");
+        dialogBox.setBody(text);
+        dialogBox.show();
     }
 
     function showSuccess(text) {
-        document.getElementById("modal-text").innerText = text
-        modal.style.display = "block";
+        dialogBox.setHeader("{{ Lang_translate('_OPERATION_SUCCESSFUL','standard') }}");
+        dialogBox.setBody(text);
+        dialogBox.show();
     }
 
 </script>

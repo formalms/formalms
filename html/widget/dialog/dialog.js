@@ -9,8 +9,8 @@ if (!YAHOO.dialogConstants) {
 		_LOADING: "Loading",
 		_ERROR: "Error",
 		_CONNECTION_ERROR: "Server error",
-		_loadingIcon: "",
-		_smallLoadingIcon: "",
+		_loadingIcon: "/templates/standard/images/standard/loadbar.gif",
+		_smallLoadingIcon: "/templates/standard/images/standard/loading_circle.gif",
 		setProperties: function(o) {
 			var x, name;
 			for (x in o) this.setProperty(x, o[x]);

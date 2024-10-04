@@ -153,7 +153,7 @@ $(function() {
         height: 28px;
     }
     #plugins tr td .forma-button {
-        display: inline-block; width: auto; margin-left: 10px; height: 28px; line-height: 20px; padding-left: 10px; padding-right:10px;
+        display: inline-block; width: auto; height: 28px; line-height: 28px; padding-left: 10px; padding-right:10px;
     }
     #plugins tr td .purge-button {
         background-color: white;

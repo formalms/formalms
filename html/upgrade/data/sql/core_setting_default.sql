@@ -158,6 +158,7 @@ INSERT INTO `core_setting_default` (`param_name`, `param_value`, `value_type`, `
 ('user_quota', '50', 'string', 255, '0', 8, 6, 1, 0, ''),
 ('use_advanced_form', 'off', 'enum', 3, 'register', 3, 16, 1, 0, ''),
 ('use_dimdim_api', 'off', 'enum', 3, 'dimdim', 6, 8, 1, 0, ''),
+('use_email_as_userid', 'off', 'enum', 3, 'register', 3, 16, 1, 0, ''),
 ('use_rest_api', 'off', 'enum', 3, 'api', 9, 2, 1, 0, ''),
 ('use_tag', 'off', 'enum', 3, '0', 4, 5, 1, 0, ''),
 ('visuItem', '25', 'int', 3, '0', 2, 1, 1, 1, ''),

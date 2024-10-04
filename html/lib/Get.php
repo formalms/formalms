@@ -97,7 +97,7 @@ class Get
                 $value = (float)$value;
                 break;
             case DOTY_STRING:
-                $value = strip_tags($value);
+                $value = (isset($value) ? strip_tags($value) : null);
                 break;
             case DOTY_ALPHANUM:
                 $value = preg_replace('/[^a-zA-Z0-9\-\_]+/', '', $value);
@@ -333,7 +333,7 @@ class Get
         } else {
             $platform = $item;
         }
-        $path = $GLOBALS['where_templates_relative'] . '/' . getTemplate() . '/';
+        $path = _deeppath_ . _folder_templates_ . '/' . getTemplate() . '/';
 
         return str_replace('/./', '/', $path);
     }
@@ -404,7 +404,7 @@ class Get
     public static function link_img($url, $title, $src, $alt, $extra = false)
     {
         // where are we ?
-        $src = $GLOBALS['where_templates_relative'] . '/standard/images/' . $src;
+        $src = _deeppath_ . _folder_templates_ . '/standard/images/' . $src;
 
         return '<a href="' . $url . '" title="' . $title . '"' .
             (!empty($extra['link']) != false ? ' ' . $extra['link'] : '') .

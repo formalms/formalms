@@ -46,4 +46,7 @@ test/behat/behat_config.yml
 docs/
 .vscode/**
 .DS_Store
+._.DS_Store
+**/.DS_Store
+**/._.DS_Store
 html/check.php

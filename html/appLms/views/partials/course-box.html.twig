@@ -2,7 +2,14 @@
     <article class="course-box {{ courseBoxClasses|join(' ') }}" data-course-id="{{ course.idCourse }}">
 
         {% block courseBoxCover %}
-            <div class="course-box__cover" {% if course.use_logo_in_courselist %} style="background-image: url( {{ course.img_course }})"{% endif %}></div>
+            {% if course.canEnter %}
+            <a href="index.php?modname=course&amp;op=aula&amp;idCourse={{ course.idCourse }}"
+                rel="{{ course.rel }}">
+            {% endif %}
+                <div class="course-box__cover" {% if course.use_logo_in_courselist %} style="background-image: url( {{ course.img_course }})"{% endif %}></div>
+            {% if course.canEnter %}
+            </a>
+            {% endif %}
         {% endblock %}
 
         {% block courseBoxHeader %}
@@ -59,7 +66,16 @@
 
 
         {% block courseBoxTitle %}
-            <h3 class="course-box__title">{{ course.name }}</h3>
+            <h3 class="course-box__title">
+                {% if course.canEnter %}
+                <a href="index.php?modname=course&amp;op=aula&amp;idCourse={{ course.idCourse }}"
+                    rel="{{ course.rel }}">
+                {% endif %}
+                    {{ course.name }}
+                {% if course.canEnter %}
+                </a>
+                {% endif %}
+            </h3>
             {# <h3 class="course-box__title {{ course.tooltipClass }}">{{ course.name }}</h3>
                         <span class="twig-course-tooltipElement_raw">{{ course.tooltipElement|raw }}</span> #}
         {% endblock %}
@@ -152,8 +168,8 @@
                     {% if course.canEnter %}
 
                         <a class="forma-button course-box__cta__button" title="{{ course.name }}"
-                           href="index.php?modname=course&amp;op=aula&amp;idCourse={{ course.idCourse }} "
-                           rel= {{ course.rel }}>
+                           href="index.php?modname=course&amp;op=aula&amp;idCourse={{ course.idCourse }}"
+                           rel="{{ course.rel }}">
                             <span class="forma-button__label"> {{ Lang_translate('_USER_STATUS_ENTER', 'catalogue') }}</span>
                         </a>
 

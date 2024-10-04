@@ -41,7 +41,7 @@ function play($idResource, $idParams, $back_url)
 {
     //if(!checkPerm('view', true, 'organization') && !checkPerm('view', true, 'storage')) die("You can't access");
     //echo ("idResource = ".$idResource."; idParams = ".$idParams."; back_url = ".$back_url);
-    list($file) = sql_fetch_row(sql_query('SELECT path'
+    list($file_title, $file) = sql_fetch_row(sql_query('SELECT title, path'
                                             . ' FROM %lms_materials_lesson'
                                             . " WHERE idLesson = '" . $idResource . "'"));
 
@@ -88,6 +88,32 @@ function play($idResource, $idParams, $back_url)
         $session->save();
     }
 
-    //send file
-    sendFile('/appLms/' . FormaLms\lib\Get::sett('pathlesson'), $file, $expFileName[$totPart]);
+    if(strtolower($expFileName[$totPart]) === 'pdf') {
+        $id_item = FormaLms\lib\Get::req('id_item', DOTY_INT, 0);
+
+        require_once _base_ . '/lib/lib.utils.php';
+        addJs('addons/pdfobject/', 'pdfobject.min.js');
+
+        require_once Forma::inc(_base_ . '/lib/pdf/lib.pdf.php');
+        $pdf = new PDF();
+        $pdf_dimensions = $pdf->getPdfDimensions(_files_ . '/appLms/' . FormaLms\lib\Get::sett('pathlesson') . $file);
+
+        $GLOBALS['page']->add('<div id="top" class="std_block">'
+            . getBackUi(str_replace('&', '&amp;', $back_url), Lang::t('_BACK'))
+            . '<div id="pdf-canvas"></div>'
+            . '<script type="text/javascript">'
+            . 'var options = {'
+            . '    title: "' . $file_title . '",'
+            . '    pdfOpenParams: { view: "Fit" },'
+            . '    height: "' . (isset($pdf_dimensions["height"]) ? $pdf_dimensions["height"].'pt' : '100vh') . '"'
+            . '};'
+            . 'PDFObject.embed(".?modname=organization&op=custom_playitem&id_item=' . $id_item . '&embedded=1", "#pdf-canvas", options);'
+            . '</script>'
+            . '<br /><br />'
+            . getBackUi(str_replace('&', '&amp;', $back_url), Lang::t('_BACK'))
+            . '</div>', 'content');
+    } else {
+        //send file
+        sendFile('/appLms/' . FormaLms\lib\Get::sett('pathlesson'), $file, $expFileName[$totPart]);
+    }
 }
