@@ -33,9 +33,9 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  * @return nothing
  */
-function sendFile($path, $filename, $ext = null, $sendname = null)
+function sendFile($path, $filename, $ext = null, $sendname = null, $embedded = false)
 {
-    sendFileFromFS($path, $filename, $ext, $sendname);  //TODO: EVT_OBJECT (§)
+    sendFileFromFS($path, $filename, $ext, $sendname, $embedded);  //TODO: EVT_OBJECT (§)
     //\appCore\Events\DispatcherManager::addListener(
     //    \appCore\Events\Core\FileSystem\DownloadEvent::EVENT_NAME,
     //    'sendFileFromFS'
@@ -53,7 +53,7 @@ function sendFile($path, $filename, $ext = null, $sendname = null)
  * @return bool
  */
 //function sendFileFromFS(\appCore\Events\Core\FileSystem\DownloadEvent $event){ //TODO: EVT_OBJECT (§)
-function sendFileFromFS($path, $filename, $ext, $sendname)
+function sendFileFromFS($path, $filename, $ext, $sendname, $embedded)
 {
     if (FormaLms\lib\Get::cfg('uploadType') == 'fs' || FormaLms\lib\Get::cfg('uploadType') == 'ftp' || FormaLms\lib\Get::cfg('uploadType', null) == null) {
         //$path = $event->getPath(); //TODO: EVT_OBJECT (§)
@@ -84,7 +84,8 @@ function sendFileFromFS($path, $filename, $ext, $sendname)
         ob_end_clean();
         ob_start();
         session_write_close();
-        header('Content-type: application/download; charset=utf-8');
+        require_once _base_ . '/lib/lib.mimetype.php';
+        header('Content-type: ' . mimetype($ext) . '; charset=utf-8');
         //ini_set("output_buffering", 0);
         //Download file
         //send file length info
@@ -99,7 +100,11 @@ function sendFileFromFS($path, $filename, $ext, $sendname)
         if (FormaLms\lib\Get::scheme() === 'https') {
             header('Pragma: private');
         }
-        header('Content-Disposition: attachment; filename="' . $sendname . '"');
+        if ($embedded) {
+            header('Content-Disposition: inline; filename="' . $sendname . '"');
+        } else {
+            header('Content-Disposition: attachment; filename="' . $sendname . '"');
+        }
         //sending file
         $file = fopen($path . $filename, 'rb');
         $i = 0;

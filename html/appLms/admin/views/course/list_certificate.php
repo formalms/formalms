@@ -110,14 +110,14 @@ echo getTitleArea([
       },
       columns: [{
           data: 'id_user',
-          title: 'id_user',
+          title: '<?php echo Lang::t('_USER_ID', 'standard'); ?>',
           sortable: false,
           visible: false,
           searchable: false
         },
         {
           data: 'id_certificate',
-          title: 'id_certificate',
+          title: '<?php echo Lang::t('_CERTIFICATE_ID', 'certificate'); ?>',
           sortable: false,
           visible: false,
           searchable: false
@@ -212,7 +212,7 @@ echo getTitleArea([
       language: {
         'sInfo': '<?php echo Lang::t('_FROM', 'standard'); ?>  _START_  <?php echo Lang::t('_TO', 'standard'); ?> _END_ <?php echo Lang::t('_OF', 'standard'); ?>   _TOTAL_ <?php echo Lang::t('_CERTIFICATE', 'menu'); ?> <?php echo Lang::t('_TOTAL', 'standard'); ?> ',
         'infoEmpty': '',
-        'sEmptyTable': '<?php echo Lang::t('_NO_CERTIFICATE_AVAILABLE', 'certificate'); ?> '
+        'sEmptyTable': '<?php echo Lang::t('_NO_CERT_AVAILABLE', 'certificate'); ?> '
       },
       dom: 'Bfrtip',
       stateSave: true,
@@ -269,7 +269,7 @@ echo getTitleArea([
         location.reload();
       });
       posting.fail(function() {
-        alert("Error generating certificate: " + id_certificate + " - " + id_course + " - " + id_user);
+        alert("<?php echo Lang::t('_CERTIFICATE_PRINT_ERROR', 'certificate'); ?>: " + id_certificate + " - " + id_course + " - " + id_user);
       })
     }
 

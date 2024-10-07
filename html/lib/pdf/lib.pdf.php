@@ -113,6 +113,7 @@ class PDF extends TCPDF
         @ob_end_clean();
 
         $doc = new DOMDocument(null, $this->encoding);
+        $html = normalizer_normalize($html, Normalizer::FORM_C);
         $doc->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', $this->encoding));
         $xpath = new DOMXPath($doc);
         $nodelist = $xpath->query('//img'); // "/images/image.jpg"
@@ -187,6 +188,7 @@ class PDF extends TCPDF
             if ($img != '') {
                 $this->setXY(0, 0);
                 $this->Image($GLOBALS['where_files_relative'] . '/appLms/certificate/' . $img, 0, 0, ($this->CurOrientation == 'P' ? 210 : 298), 0, '', '', '', true);
+                $this->setPageMark();
                 $this->setXY(0, 0);
             }
 
@@ -261,5 +263,27 @@ class PDF extends TCPDF
     public function setPassword($password)
     {
         $this->password = $password;
+    }
+
+    public function getPdfDimensions($filePath, $box="MediaBox") {
+        //$box can be set to BleedBox, CropBox or MediaBox 
+
+        $result = false;
+
+        $file = fopen($filePath, 'rb');
+        if (!$file) {
+            return $result; // Handle error
+        }
+    
+        $pdfContent = fread($file, filesize($filePath));
+        fclose($file);
+    
+        // Look for the /MediaBox in the PDF content
+        if (preg_match('/\/'.$box.'\s*\[(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\]/', $pdfContent, $matches)) {
+            $result["width"] = $matches[3]; // width in points
+            $result["height"] = $matches[4]; // height in points
+        }
+    
+        return $result; // Handle error if MediaBox not found
     }
 }

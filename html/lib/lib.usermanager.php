@@ -358,6 +358,7 @@ class UserManager
             'lastfirst_mandatory' => $this->_option->getOption('lastfirst_mandatory'),
             'register_type' => $this->_option->getOption('register_type'),
             'use_advanced_form' => $this->_option->getOption('use_advanced_form'),
+            'use_email_as_userid' => $this->_option->getOption('use_email_as_userid'),
             'pass_alfanumeric' => $this->_option->getOption('pass_alfanumeric'),
             'pass_min_char' => $this->_option->getOption('pass_min_char'),
             'hour_request_limit' => $this->_option->getOption('hour_request_limit'),
@@ -1681,13 +1682,13 @@ class UserManagerRenderer
         $errors = [];
 
         // Insert temporary
-        $random_code = md5($_POST['register']['userid'] . mt_rand() . mt_rand() . mt_rand());
+        $random_code = md5((($options['use_email_as_userid'] == 'on') ? $_POST['register']['email'] : $_POST['register']['userid']) . mt_rand() . mt_rand() . mt_rand());
         // register as temporary user and send mail
         $acl_man = &Docebo::user()->getAclManager();
         $iduser = '';
 
         $iduser = $acl_man->registerTempUser(
-            $_POST['register']['userid'],
+            (($options['use_email_as_userid'] == 'on') ? $_POST['register']['email'] : $_POST['register']['userid']),
             $_POST['register']['firstname'],
             $_POST['register']['lastname'],
             $_POST['register']['pwd'],
@@ -1768,7 +1769,7 @@ class UserManagerRenderer
         // END FIX BUG 399
 
         $text = $lang->def('_REG_MAIL_TEXT');
-        $text = str_replace(['[userid]', '[firstname]', '[lastname]', '[password]', '[link]', '[dynamic_link]', '[hour]'], [$_POST['register']['userid'], $_POST['register']['firstname'], $_POST['register']['lastname'], $_POST['register']['pwd'], '' . $link . '', '' . $dynamicLink . '', $options['hour_request_limit']], $text);
+        $text = str_replace(['[userid]', '[firstname]', '[lastname]', '[password]', '[link]', '[dynamic_link]', '[hour]'], [(($options['use_email_as_userid'] == 'on') ? $_POST['register']['email'] : $_POST['register']['userid']), $_POST['register']['firstname'], $_POST['register']['lastname'], $_POST['register']['pwd'], '' . $link . '', '' . $dynamicLink . '', $options['hour_request_limit']], $text);
         $text = stripslashes($text);
 
         //check register_type != self (include all previous cases except the new one "self without opt-in")
@@ -1798,7 +1799,7 @@ class UserManagerRenderer
         //check register_type = self
         if (strcmp($options['register_type'], 'self') == 0) {
             $text_self = $lang->def('_REG_MAIL_TEXT_SELF');
-            $text_self = str_replace(['[userid]', '[firstname]', '[lastname]', '[password]', '[link]', '[dynamic_link]'], [$_POST['register']['userid'], $_POST['register']['firstname'], $_POST['register']['lastname'], $_POST['register']['pwd'], '' . $link . '', '' . $dynamicLink . ''], $text_self);
+            $text_self = str_replace(['[userid]', '[firstname]', '[lastname]', '[password]', '[link]', '[dynamic_link]'], [(($options['use_email_as_userid'] == 'on') ? $_POST['register']['email'] : $_POST['register']['userid']), $_POST['register']['firstname'], $_POST['register']['lastname'], $_POST['register']['pwd'], '' . $link . '', '' . $dynamicLink . ''], $text_self);
 
             $mailer = FormaMailer::getInstance();
             if (!$mailer->SendMail($admin_mail, [$_POST['register']['email']], Lang::t('_MAIL_OBJECT_SELF', 'register'), $text_self, [], [MAIL_REPLYTO => $admin_mail, MAIL_SENDER_ACLNAME => $sender_name])) {
@@ -1935,7 +1936,7 @@ class UserManagerRenderer
 
         $out .= Form::getHidden('next_step', 'next_step', 'opt_in')
 
-            . Form::getHidden('register_userid', 'register[userid]', $_POST['register']['userid'])
+            . Form::getHidden('register_userid', 'register[userid]', (($options['use_email_as_userid'] == 'on') ? $_POST['register']['email'] : $_POST['register']['userid']))
             . Form::getHidden('register_email', 'register[email]', $_POST['register']['email'])
             . Form::getHidden('register_firstname', 'register[firstname]', $_POST['register']['firstname'])
             . Form::getHidden('register_lastname', 'register[lastname]', $_POST['register']['lastname'])
@@ -2005,28 +2006,35 @@ class UserManagerRenderer
         $out .= '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">';
 
         /** USER ID */
-        $error = (isset($errors) && $errors['userid']);
-        $errorMessage = $errors['userid']['msg'];
-        $out .= '<div class="col-xs-12 col-sm-6">'
-            . Form::getInputTextfield(
-                'form-control ' . ($error ? 'has-error' : ''),
-                'register_userid',
-                'register[userid]',
-                (isset($_POST['register']['userid']) ? stripslashes($_POST['register']['userid']) : ''),
-                '',
-                255,
-                'placeholder="' . $lang->def('_USERNAME') . ' ' . $mand_symbol . '"'
-            );
+        if ($options['use_email_as_userid'] == 'off') {
+            $error = (isset($errors) && $errors['userid']);
+            $errorMessage = $errors['userid']['msg'];
+            $out .= '<div class="col-xs-12 col-sm-6">'
+                . Form::getInputTextfield(
+                    'form-control ' . ($error ? 'has-error' : ''),
+                    'register_userid',
+                    'register[userid]',
+                    (isset($_POST['register']['userid']) ? stripslashes($_POST['register']['userid']) : ''),
+                    '',
+                    255,
+                    'placeholder="' . $lang->def('_USERNAME') . ' ' . $mand_symbol . '"'
+                );
 
-        if ($error) {
-            $out .= '<small class="form-text">* ' . $errorMessage . '</small>';
+            if ($error) {
+                $out .= '<small class="form-text">* ' . $errorMessage . '</small>';
+            }
+            $out .= '</div>';
         }
-        $out .= '</div>';
 
         /** EMAIL */
-        $error = (isset($errors) && $errors['email']);
-        $errorMessage = $errors['email']['msg'];
-        $out .= '<div class="col-xs-12 col-sm-6">'
+        if ($options['use_email_as_userid'] == 'on') {
+            $error = (isset($errors) && ($errors['userid'] || $errors['email']));
+            $errorMessage = $errors['userid']['msg'] . $errors['email']['msg'];
+        } else {
+            $error = (isset($errors) && $errors['email']);
+            $errorMessage = $errors['email']['msg'];
+        }
+        $out .= '<div class="col-xs-12' . (($options['use_email_as_userid'] == 'off') ? ' col-sm-6' : '') . '">'
             . Form::getInputTextfield(
                 'form-control ' . ($error ? 'has-error' : ''),
                 'register_email',
@@ -2272,7 +2280,7 @@ class UserManagerRenderer
                     isset($_POST['register']['privacy']),
                     ''
                 )
-                . '<label class="checkbox-inline">' . $lang->def('_REG_PRIVACY_ACCEPT') . '</label>'
+                . '<label class="checkbox-inline" for="register_privacy">' . $lang->def('_REG_PRIVACY_ACCEPT') . '</label>'
                 . '</div>';
 
             if ($error) {

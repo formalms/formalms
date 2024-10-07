@@ -140,7 +140,7 @@ class Util
         }
 
         if (!file_exists($path . $filename)) {
-            Util::fatal('Error: the file that you are searching for no longer exists on the server.<br/>Please contact the system administrator');
+            Util::fatal(Lang::t('_DOWNLOAD_FILE_NOT_EXISTS'));
         }
 
         $db = DbConn::getInstance();
@@ -153,7 +153,8 @@ class Util
         //send file length info
         header('Content-Length:' . filesize($path . $filename));
         //content type forcing dowlad
-        header("Content-type: application/download; charset=utf-8\n");
+        require_once _base_ . '/lib/lib.mimetype.php';
+        header("Content-type: " . mimetype($ext) . "; charset=utf-8\n");
         //cache control
         header('Cache-control: private');
         //sending creation time

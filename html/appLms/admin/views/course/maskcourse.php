@@ -225,3 +225,10 @@ $htmlData = '';
         });
     });
 </script>
+<?php require_once _base_ . '/lib/lib.utils.php'; addJs('addons/jquery/dirtyforms/', 'jquery.dirtyforms.min.js'); ?>
+<script type="text/javascript">
+    var E = YAHOO.util.Event;
+    E.onDOMReady(function () {
+        $("form#maskcourse_form").dirtyForms();
+    });
+</script>
