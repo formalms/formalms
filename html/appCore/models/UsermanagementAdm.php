@@ -2992,6 +2992,7 @@ class UsermanagementAdm extends Model implements Accessible
                         $output[$childNode['idOrg']] = $indend . $childNode['translation'];
                     }
                 }
+            }
         }
 
 
