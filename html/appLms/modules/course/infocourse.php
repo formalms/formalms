@@ -484,7 +484,8 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 	FROM ' . $GLOBALS['prefix_lms'] . "_course_file 
 	WHERE id_course='" . $session->get('idCourse') . "' AND id_file = '" . (int) $_GET['id'] . "'"));
         if (!$filename) {
-            $GLOBALS['page']->add(getErrorUi('Sorry, such file does not exist!'), 'content');
+            $lang = &FormaLanguage::createInstance('course');
+            $GLOBALS['page']->add(getErrorUi($lang->def('_FILE_NOT_EXISTS', 'standard')), 'content');
 
             return;
         }

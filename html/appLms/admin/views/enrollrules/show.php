@@ -1,4 +1,4 @@
-<?php FormaLms\lib\Get::title(Lang::t('_ENROLLRULES', 'enrollrules')); ?>
+<?php echo getTitleArea(Lang::t('_ENROLLRULES', 'enrollrules')); ?>
 <div class="std_block">
 <script type="text/javascript">
 var RulesActiveFormatter = function(elLiner, oRecord, oColumn, oData) {

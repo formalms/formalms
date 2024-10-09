@@ -23,7 +23,7 @@ class MailconfigAdmController extends AdmController
 
     protected $requestObj;
 
-    protected $title = ' _MAIL_CONFIG';
+    protected $title = '_MAIL_CONFIG';
     public array $queryString;
 
     public function init()

@@ -116,6 +116,7 @@ class PDF extends TCPDF
 if(!empty($html)) {
 
 
+    $html = normalizer_normalize($html, Normalizer::FORM_C);
     $doc->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', $this->encoding));
     $xpath = new DOMXPath($doc);
     $nodelist = $xpath->query('//img'); // "/images/image.jpg"
@@ -190,6 +191,7 @@ if(!empty($html)) {
         if ($img != '') {
             $this->setXY(0, 0);
             $this->Image($GLOBALS['where_files_relative'] . '/appLms/certificate/' . $img, 0, 0, ($this->CurOrientation == 'P' ? 210 : 298), 0, '', '', '', true);
+            $this->setPageMark();
             $this->setXY(0, 0);
         }
 

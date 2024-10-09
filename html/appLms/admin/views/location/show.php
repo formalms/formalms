@@ -1,4 +1,4 @@
-<?php FormaLms\lib\Get::title(Lang::t('_LOCATION', 'classroom')); ?>
+<?php echo getTitleArea(Lang::t('_LOCATION', 'classroom')); ?>
 <div class="std_block">
 
 	<?php

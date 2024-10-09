@@ -194,6 +194,17 @@ p {
     max-height: 70px;
     overflow: auto;
   }
+
+  .mCustomScrollbar::-webkit-scrollbar {
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    width: 7px;
+    height: 2px;
+  }
+  .mCustomScrollbar::-webkit-scrollbar-thumb {
+      background-color: #000000;
+      border-radius: 10px;
+  }
 }
 
 .homepage__row--privacy {
@@ -201,6 +212,11 @@ p {
     padding: 6px 12px;
     border: solid 2px var(--color-primary);
     border-radius: 4px;
+  }
+
+  & > label.checkbox-inline {
+    margin-bottom: 4px;
+    padding-left: 4px;
   }
 }
 
@@ -222,6 +238,7 @@ p {
 
   .fa {
     color: var(--color-primary);
+    padding: 0 4px;
   }
 }
 
@@ -356,6 +373,10 @@ p {
   }
 
   &[type='submit'] {
+    &[id='reg_button'] {
+      margin-bottom: 15px;
+    }
+    
     .homepage__row & {
       margin-top: 26px;
     }

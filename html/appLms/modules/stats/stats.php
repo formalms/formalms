@@ -211,7 +211,7 @@ function printReport($status, $returnToCaller = false, $show_progress = true)
         if (isset($GLOBALS['statusLabels'][$status])) {
             $strOut .= $GLOBALS['statusLabels'][$status];
         } else {
-            $strOut .= Lang::t($status, 'standard');
+            $strOut .= Lang::t('_' . preg_replace('/\s+/', '_', strtoupper($status)), 'standard');
         }
         $strOut .= '</div>';
     } else {

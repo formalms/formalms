@@ -30,8 +30,7 @@
     "style-loader": "0.20.2",
     "twig": "1.10.5",
     "twig-loader": "0.3.1",
-    "webpack": "^4.44.2",
-    "webpack-cli": "^4.10.0"
+    "webpack": "^3.10.0"
   },
   "dependencies": {
     "@babel/polyfill": "7.8.7",
@@ -59,8 +58,8 @@
     "jquery": "^3.6.1",
     "jquery-datatables-checkboxes": "^1.2.13",
     "moment": "^2.29.3",
-    "node-sass": "^4.14.1",
-    "react": "16.2.0",
+    "node-sass": "^9.0.0",
+    "react": "16.14.0",
     "react-dom": "^16.14.0",
     "reset-css": "2.2.1",
     "select2": "^4.1.0-rc.0",

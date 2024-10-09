@@ -170,7 +170,7 @@ function editnews($load = false)
 		WHERE idNews = '" . $id_news . "'";
         list($title, $short_desc, $long_desc, $impo, $lang_sel) = sql_fetch_row(sql_query($query_news));
     } else {
-        $title = $lang->def('_NOTITLE');
+        $title = '';
         $short_desc = '';
         $long_desc = '';
         $impo = 0;

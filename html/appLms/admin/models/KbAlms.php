@@ -351,7 +351,9 @@ class KbAlms extends Model
         if ($userFilter) {
             $userlevelid = 0; //$this->getUserLevel();
             if ($userlevelid != ADMIN_GROUP_GODADMIN) {
-                $orgTree = $this->_getAdminOrgTree();
+                require_once _adm_ . '/models/UsermanagementAdm.php';
+                $uma = new \UsermanagementAdm();
+                $orgTree = $uma->_getAdminOrgTree();
                 $is_subadmin = true;
             }
         }

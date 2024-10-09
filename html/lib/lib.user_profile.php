@@ -1273,7 +1273,7 @@ class UserProfileViewer
             . "_SEND : '" . addslashes($lang->def('_SEND')) . "',  "
             . "_UNDO : '" . addslashes($lang->def('_UNDO')) . "', "
             . "_ASK_FRIEND_SEND : '" . addslashes($lang->def('_SEND')) . "', "
-            . "_ASK_FRIEND_FAIL : '" . addslashes($lang->def('failed')) . "',  "
+            . "_ASK_FRIEND_FAIL : '" . addslashes($lang->def('_FAILED')) . "',  "
             . "_SUBJECT :  '" . addslashes($lang->def('_SUBJECT')) . "', "
             . "_MESSAGE_TEXT : '" . addslashes($lang->def('_MESSAGE_TEXT')) . "',  "
             . "_OPERATION_SUCCESSFUL : '" . addslashes($lang->def('_OPERATION_SUCCESSFUL')) . "',  "
@@ -3052,7 +3052,7 @@ class UserProfileViewer
             foreach ($comp_data as $id_competence => $value) {
                 $_category_name = '';
                 if ($value->id_category <= 0) {
-                    $_category_name .= '<i>(' . Lang::t('_NO_CATEGORY', 'competences') . ')</i>';
+                    $_category_name .= '<i>(' . Lang::t('_NO_CATEGORY', 'standard') . ')</i>';
                 } else {
                     if (isset($_categories[$value->id_category][$lang_code]['name'])) {
                         $_category_name .= $_categories[$value->id_category][$lang_code]['name'];

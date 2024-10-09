@@ -2,7 +2,7 @@ $(document).ready(function() {
 
     $('#_HELPDESK').click(function() {
         $('#_HELPDESK').attr('href', '#');
-        $('#send_request').hide();
+        $('#send_request').prop("disabled", "disabled");
         $("#disclaimer").prop("checked", false);
         $('#modal_helpdesk').modal('show');
     })
@@ -10,9 +10,9 @@ $(document).ready(function() {
 
     $("#disclaimer").change(function() {
         if ($("#disclaimer").is(":checked")) {
-            $("#send_request").show();
+            $("#send_request").prop("disabled", false);
         } else {
-            $("#send_request").hide();
+            $("#send_request").prop("disabled", "disabled");
         }
     });
 

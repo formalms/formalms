@@ -815,7 +815,8 @@ class sys_forum
 			FROM ' . $this->prefix . "_sysforum
 			WHERE idMessage='" . (int) $_GET['sf_fileid'] . "'"));
         if (!$attach) {
-            echo '<div class="errorBlock">Sorry, such file does not exist!</div>';
+
+            echo '<div class="errorBlock">' . Lang::t('_FILE_NOT_EXISTS', 'standard') . '</div>';
 
             return;
         }

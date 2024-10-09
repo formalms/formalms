@@ -296,7 +296,7 @@ class HomepageAdmController extends AdmController
             . Form::closeForm() .
             '</div>';
 
-        $params['back']['title'] = Lang::t('_BACK', 'standard');
+        $params['back']['title'] = str_replace('&lt;&lt; ', '', Lang::t('_BACK', 'standard'));
         $params['back']['link'] = './index.php';
         $params['titleArea'] = Lang::t('_LOGIN', 'login');
 

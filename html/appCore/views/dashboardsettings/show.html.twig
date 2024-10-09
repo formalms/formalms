@@ -105,26 +105,26 @@
                 },
                 { data: 'clone', title: '&nbsp;', sortable: false, width: '10%', 
                     render: function(data, type, row, meta) {
-                        return '<div class="text-center"><a onclick="cloneFunc(' + row.id + ')" href="#" class="btn btn-primary"><i class="glyphicon glyphicon-duplicate"></i> </a></div>';
+                        return '<div class="text-center"><a onclick="cloneFunc(' + row.id + ')" href="#" class="btn btn-primary" title="{{ Lang_translate('_CLONE', 'standard') }}"><i class="glyphicon glyphicon-duplicate"></i> </a></div>';
                     }
                 },
                 { data: 'edit', title: '&nbsp;', sortable: false, width: '10%', 
                     render: function(data, type, row, meta) {
-                        return '<div class="text-center"><a href="' + editUrl + '&dashboard=' + row.id + '" class="btn btn-warning"><i class="glyphicon glyphicon-pencil"></i> </a></div>';
+                        return '<div class="text-center"><a href="' + editUrl + '&dashboard=' + row.id + '" class="btn btn-warning" title="{{ Lang_translate('_MOD', 'standard') }}"><i class="glyphicon glyphicon-pencil"></i> </a></div>';
                     }
                 },
 
                 { data: 'permission', title: '&nbsp;', sortable: false, width: '10%', 
                     render: function(data, type, row, meta) {
                         var disabled = row.default ? 'disabled' : '';
-                        return '<div class="text-center"><a href="' + permissionUrl + '&id=' + row.id + '&instance=dashboardsetting&load=1" class="btn btn-success ' + disabled + '"><i class="glyphicon glyphicon-user"></i> </a></div>';
+                        return '<div class="text-center"><a href="' + permissionUrl + '&id=' + row.id + '&instance=dashboardsetting&load=1" class="btn btn-success ' + disabled + '" title="{{ Lang_translate('_ASSIGN_USERS', 'standard') }}"><i class="glyphicon glyphicon-user"></i> </a></div>';
                     }
                 }, 
 
                 { data: 'delete', title: '&nbsp;', sortable: false, width: '10%', 
                     render: function(data, type, row, meta) {
                          var disabled = row.default ? 'disabled' : '';
-                        return '<div class="text-center"><button ' + disabled + ' type="button" class="btn btn-danger btn-del" data-id="' + row.id + '"><i class="glyphicon glyphicon-trash"></i> </button></div>';
+                        return '<div class="text-center"><button ' + disabled + ' type="button" class="btn btn-danger btn-del" data-id="' + row.id + '" title="{{ Lang_translate('_DEL', 'standard') }}"><i class="glyphicon glyphicon-trash"></i> </button></div>';
                     }
                 },
                 

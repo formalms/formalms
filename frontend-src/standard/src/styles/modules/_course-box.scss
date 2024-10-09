@@ -320,7 +320,7 @@ $course-box-border: 2px;
     &::before {
       position: absolute;
       content: '';
-      left: -21px;
+      left: -20px;
       top: 0;
       bottom: 0;
       width: 21px;
@@ -604,6 +604,14 @@ div {
 
 .course-box > strong {
   padding-left: 6px!important;
+}
+
+.course-box > strong > a {
+  color: #333;
+}
+
+.course-box > strong > a:hover {
+  color: var(--color-primary);
 }
 
 

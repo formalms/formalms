@@ -45,7 +45,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 
         $events = $man_res->viewEvents();
 
-        $out->add(getTitleArea($lang->def('_RESERVATION')) . '<div class="std_block">', 'content');
+        $out->add(getTitleArea($lang->def('_EVENTS', 'menu')) . '<div class="std_block">', 'content');
 
         $error = importVar('error', false, '');
 
@@ -168,6 +168,10 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             $to_time_h = importVar('to_time_h', false, '');
             $to_time_m = importVar('to_time_m', false, '');
 
+            if (empty($title)) {
+                $title = $lang->def('_NOTITLE');
+            }
+
             $date = Format::dateDb($date, 'date');
 
             $deadline = Format::dateDb($deadline, 'date');
@@ -229,9 +233,9 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             . Form::getTextfield($lang->def('_TITLE'), 'title', 'title', 255)
             . Form::getTextarea($lang->def('_DESCRIPTION'), 'description', 'description')
             . Form::getDropdown($lang->def('_COURSE'), 'id_course', 'id_course', $course_id)
-            . Form::getDropdown($lang->def('_LOCATION'), 'id_laboratory', 'id_laboratory', $man_res->getLaboratories())
+            . Form::getDropdown($lang->def('_LOCATION', 'classroom'), 'id_laboratory', 'id_laboratory', $man_res->getLaboratories())
             . Form::getDropdown($lang->def('_CATEGORY'), 'id_category', 'id_category', $man_res->getCategory())
-            . Form::getDateField($lang->def('_DATE'), 'date', 'date')
+            . Form::getDateField($lang->def('_DATE'), 'date', 'date', '', false, false, '', '', '', 'data-date-start-date="' . date("d-m-Y") . '"')
             . Form::getDateField($lang->def('_DEADLINE'), 'deadline', 'deadline')
             . Form::getTextfield($lang->def('_MAX_USER'), 'max_user', 'max_user', 255)
             . Form::getLineBox($lang->def('_FROM_TIME'), Form::getInputDropdown('', 'from_time_h', 'from_time_h', $man_res->getHours(), false, false) . ' : ' . Form::getInputDropdown('', 'from_time_m', 'from_time_m', $man_res->getMinutes(), false, false))
@@ -277,6 +281,10 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             $to_time_h = importVar('to_time_h', false, '');
             $to_time_m = importVar('to_time_m', false, '');
 
+            if (empty($title)) {
+                $title = $lang->def('_NOTITLE');
+            }
+
             $date = Format::dateDb($date, 'date');
 
             $deadline = Format::dateDb($deadline, 'date');
@@ -303,7 +311,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         }
 
         $out->add(
-            getTitleArea($lang->def('_SAVE'), '', $lang->def('_EVENT'))
+            getTitleArea($lang->def('_EVENT'), '', $lang->def('_EVENT'))
             . '<div class="std_block">'
         );
 
@@ -345,9 +353,9 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             . Form::getHidden('id_course', 'id_course', $event[EVENT_ID_COURSE])
             . Form::getTextfield($lang->def('_TITLE'), 'title', 'title', 255, $event[EVENT_TITLE])
             . Form::getTextarea($lang->def('_DESCRIPTION'), 'description', 'description', $event[EVENT_DESCRIPTION])
-            . Form::getDropdown($lang->def('_LOCATION'), 'id_laboratory', 'id_laboratory', $man_res->getLaboratories(), $event[EVENT_ID_LABORATORY])
+            . Form::getDropdown($lang->def('_LOCATION', 'classroom'), 'id_laboratory', 'id_laboratory', $man_res->getLaboratories(), $event[EVENT_ID_LABORATORY])
             . Form::getDropdown($lang->def('_CATEGORY'), 'id_category', 'id_category', $man_res->getCategory(), $event[EVENT_ID_CATEGORY])
-            . Form::getDateField($lang->def('_DATE'), 'date', 'date', $date)
+            . Form::getDateField($lang->def('_DATE'), 'date', 'date', $date, false, false, '', '', '', 'data-date-start-date="' . date("d-m-Y") . '"')
             . Form::getDateField($lang->def('_DEADLINE'), 'deadline', 'deadline', $deadline)
             . Form::getTextfield($lang->def('_MAX_USER'), 'max_user', 'max_user', 255, $event[EVENT_MAX_USER])
             . Form::getLineBox($lang->def('_FROM_TIME'), Form::getInputDropdown('', 'from_time_h', 'from_time_h', $man_res->getHours(), $from_time_h, false) . ' : ' . Form::getInputDropdown('', 'from_time_m', 'from_time_m', $man_res->getMinutes(), $from_time_m, false))
@@ -422,7 +430,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         $category = [];
         $category = $man_res->viewCategory();
 
-        $out->add(getTitleArea($lang->def('_CATEGORY')) . '<div class="std_block">', 'content');
+        $out->add(getTitleArea($lang->def('_RESERVATION_CATEGORIES', 'reservation')) . '<div class="std_block">', 'content');
 
         $error = importVar('error', false, '');
 
@@ -688,7 +696,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 
         $events = $man_res->viewEventsForSubscribedTab();
 
-        $out->add(getTitleArea($lang->def('_RESERVATION')) . '<div class="std_block">', 'content');
+        $out->add(getTitleArea($lang->def('_RESERVATIONS')) . '<div class="std_block">', 'content');
 
         $error = importVar('error', false, '');
 

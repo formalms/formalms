@@ -38,7 +38,7 @@
 
 <script>
   var data = {{ categoriesDropdownData | json_encode(constant('JSON_HEX_APOS')) | raw }};
-    var dropPlaceholder = '{{ Lang_translate('_OPTION','communication') }}';
+    var dropPlaceholder = '{{ Lang_translate('_ROOT','standard') }}';
     var selected = {{ idParent | json_encode(constant('JSON_HEX_APOS')) | raw }};
   
     const categoryDropdown = new window.frontend.modules.Select2($("#parent"),{

@@ -1,4 +1,4 @@
-  <div class="col-lg-12 page-title"><h1 class="text-uppercase">{{ Lang_translate( title , 'standard') }}</h1></div>
+  <div class="col-lg-12 page-title"><h1 class="text-uppercase">{{ title }}</h1></div>
 <br/>
 
 
@@ -61,6 +61,13 @@
     {{ Form_closeForm() }}
 </div>
 
-
+<script type="text/javascript">
+    YAHOO.util.Event.addListener("undo", "click", function(e) {
+		YAHOO.util.Event.preventDefault(e);
+		YAHOO.util.Dom.get("title").removeAttribute("required");
+		YAHOO.util.Dom.get("domain").removeAttribute("required");
+		history.back();
+	});
+</script>
 
 

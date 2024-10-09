@@ -43,7 +43,7 @@ class CourseTableView extends TableView
         $array_columns[] = ['key' => 'waiting', 'label' => Lang::t('_WAITING_USERS', 'course', 'lms'), 'className' => 'img-cell'];
 
         if (checkPerm('subscribe', true, 'course', 'lms')) {
-            $array_columns[] = ['key' => 'subscriptions', 'label' => FormaLms\lib\Get::img('course/subscribe.png', Lang::t('_SUBSCRIBE', 'course', 'lms')), 'sortable' => true, 'className' => 'img-cell', 'formatter' => $this->getCellFormatter('man_subscr')];
+            $array_columns[] = ['key' => 'subscriptions', 'label' => FormaLms\lib\Get::sprite('subs_users', Lang::t('_SUBSCRIBE', 'course', 'lms')), 'sortable' => true, 'className' => 'img-cell', 'formatter' => $this->getCellFormatter('man_subscr')];
         }
         if (checkPerm('mod', true, 'course', 'lms')) {
             $array_columns[] = ['key' => 'classroom', 'label' => FormaLms\lib\Get::img('course/classroom-cal.png', Lang::t('_CLASSROOM', 'course', 'lms')), 'className' => 'img-cell'];

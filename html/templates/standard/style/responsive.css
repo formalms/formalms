@@ -18,6 +18,9 @@
 .table th.image, .table td.image {
     text-align: center;
 }
+.table-actions--above a {
+    padding: 2px 4px;
+}
 
 @media only screen and (max-width: 479px) {
 

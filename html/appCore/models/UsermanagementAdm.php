@@ -1271,7 +1271,7 @@ class UsermanagementAdm extends Model implements Accessible
     {
         require_once _base_ . '/lib/lib.preference.php';
         require_once _adm_ . '/lib/lib.field.php';
-        $result = 'unable to edit user properties';
+        $result = Lang::t('_OPERATION_FAILUREPROFILE', 'profile');
 
         if (is_numeric($idst) && $idst > 0) {
             $acl_man = \FormaLms\lib\Forma::getAclManager();
