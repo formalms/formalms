@@ -66,7 +66,7 @@ class LomanagerorganizationLmsController extends LomanagerLmsController
                         'content' => "index.php?modname=organization&op=custom_playitem&id_item=$id",
                         'showIcon' => false,
                         'icon' => 'icon-play',
-                        'label' => 'Play',
+                        'label' => Lang::t('_PLAY', 'standard'),
                     ];
                 } elseif ($lo['canEdit']) {
                     $lo['actions'][] = [
@@ -76,7 +76,7 @@ class LomanagerorganizationLmsController extends LomanagerLmsController
                         'content' => "index.php?modname=organization&op=custom_playitem&edit=1&id_item=$id",
                         'showIcon' => false,
                         'icon' => 'icon-play',
-                        'label' => 'Play',
+                        'label' => Lang::t('_PLAY', 'standard'),
                     ];
                 }
             }
@@ -89,7 +89,7 @@ class LomanagerorganizationLmsController extends LomanagerLmsController
                         'content' => "index.php?r=lms/lomanagerorganization/edit&id=$id&type=$type",
                         'showIcon' => true,
                         'icon' => 'icon-edit',
-                        'label' => 'Edit',
+                        'label' => Lang::t('_EDIT', 'course'),
                     ];
                 }
 
@@ -100,7 +100,7 @@ class LomanagerorganizationLmsController extends LomanagerLmsController
                     'content' => "${type}[org_opproperties][$id]",
                     'showIcon' => true,
                     'icon' => 'icon-properties',
-                    'label' => 'Properties',
+                    'label' => Lang::t('_PROPERTIES', 'standard'),
                 ];
 
                 $lo['actions'][] = [
@@ -110,7 +110,7 @@ class LomanagerorganizationLmsController extends LomanagerLmsController
                     'content' => "/appCore/index.php?r=adm/userselector/show&id=$id&instance=$type",
                     'showIcon' => true,
                     'icon' => 'icon-access',
-                    'label' => 'Access',
+                    'label' => Lang::t('_ACCESS', 'course'),
                 ];
 
                 //$lo['actions'][] = [
@@ -131,7 +131,7 @@ class LomanagerorganizationLmsController extends LomanagerLmsController
                         'content' => "${type}[org_opcategorize][$id]",
                         'showIcon' => true,
                         'icon' => 'icon-categorize',
-                        'label' => 'Categorize',
+                        'label' => Lang::t('_CATEGORIZE', 'standard'),
                     ];
                 }
 
@@ -143,7 +143,7 @@ class LomanagerorganizationLmsController extends LomanagerLmsController
                         'content' => "index.php?r=lms/lomanagerorganization/copy&id=$id&type=$type&newType=",
                         'showIcon' => true,
                         'icon' => 'icon-copy',
-                        'label' => 'Copy',
+                        'label' => Lang::t('_COPY', 'learningObjectContextMenu'),
                     ];
                 }
 
@@ -154,7 +154,7 @@ class LomanagerorganizationLmsController extends LomanagerLmsController
                     'content' => "index.php?r=lms/lomanagerorganization/delete&id=$id&type=$type",
                     'showIcon' => true,
                     'icon' => 'icon-delete',
-                    'label' => 'Delete',
+                    'label' => Lang::t('_DELETE', 'learningObjectContextMenu'),
                 ];
             }
             $results[] = $lo;

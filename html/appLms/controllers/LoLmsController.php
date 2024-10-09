@@ -104,7 +104,7 @@ class LoLmsController extends LmsController
                     'content' => "index.php?modname=organization&op=custom_playitem&id_item=$id",
                     'showIcon' => false,
                     'icon' => 'icon-play',
-                    'label' => 'Play',
+                    'label' => Lang::t('_PLAY', 'standard'),
                     'directPlay' => $lo['directPlay'],
                 ];
                 if (array_key_exists('track_detail', $lo) && $lo['track_detail']) {
@@ -116,7 +116,7 @@ class LoLmsController extends LmsController
                         'content' => 'index.php?modname=organization&amp;op=track_details&amp;type=' . $lo['track_detail']['type'] . '&amp;id_user=' . $lo['track_detail']['is_user'] . '&amp;id_org=' . $lo['track_detail']['id_org'] . '"',
                         'showIcon' => false,
                         'icon' => 'icon-chart',
-                        'label' => 'Tracking',
+                        'label' => Lang::t('_TRACKING', 'course'),
                         'directPlay' => $lo['directPlay'],
                     ];
                 }
