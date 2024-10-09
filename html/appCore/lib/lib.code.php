@@ -218,6 +218,10 @@ class CodeManager
 
     public function controlCode($code, $old_code = '')
     {
+        if ($code === '') {
+            return 'empty';
+        }
+
         if ($code === $old_code) {
             return true;
         }
@@ -239,7 +243,7 @@ class CodeManager
     {
         $control = $this->controlCode($code);
 
-        if ($control !== 'dup') {
+        if ($control !== 'dup' && $control !== 'empty') {
             $query = 'INSERT INTO ' . $this->_getCodeTable()
                         . ' (`code`, `idCodeGroup`, `unlimitedUse`)'
                         . " VALUES ('" . $code . "', '" . $id_code_group . "', '" . ($unlimited_use ? '1' : '0') . "')";
@@ -269,7 +273,7 @@ class CodeManager
     {
         $control = $this->controlCode($code, $old_code);
 
-        if ($control !== 'dup') {
+        if ($control !== 'dup' && $control !== 'empty') {
             $query = 'UPDATE ' . $this->_getCodeTable()
                         . " SET `code` = '" . $code . "',"
                         . " `unlimitedUse` = '" . ($unlimited_use ? '1' : '0') . "'"

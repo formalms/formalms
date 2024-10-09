@@ -253,6 +253,10 @@ function codeList()
         case 'err_dup':
             UIFeedback::error($lang->def('_DUPLICATED_CODE'));
             break;
+
+        case 'err_empty':
+            UIFeedback::error($lang->def('_EMPTY_CODE'));
+            break;
     }
 
     $tot_code = $code_manager->getCodeNumber($id_code_group, isset($_POST['undo_filter']) ? $_POST['undo_filter'] : false);
@@ -370,10 +374,12 @@ function addCode()
 
         $result = $code_manager->addCode($code, $id_code_group, $unlimited_use);
 
-        if ($result && $result !== 'dup') {
+        if ($result && $result !== 'dup' && $result !== 'empty') {
             Util::jump_to('index.php?modname=code&amp;op=code_list&id_code_group=' . $id_code_group . '&result=ok');
         } elseif ($result === 'dup') {
             Util::jump_to('index.php?modname=code&amp;op=code_list&id_code_group=' . $id_code_group . '&result=err_dup');
+        } elseif ($result === 'empty') {
+            Util::jump_to('index.php?modname=code&amp;op=code_list&id_code_group=' . $id_code_group . '&result=err_empty');
         }
         Util::jump_to('index.php?modname=code&amp;op=code_list&id_code_group=' . $id_code_group . '&result=err');
     }
