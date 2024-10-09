@@ -41,7 +41,7 @@ class Certificate
 {
     public function findAll($filter, $pagination)
     {
-        list($aval_status, $minutes_required) = sql_fetch_row(
+        [$aval_status, $minutes_required] = sql_fetch_row(
             sql_query(
                 'SELECT available_for_status, minutes_required FROM %lms_certificate_course as cc'
                 . ' WHERE id_course=' . $filter['id_course']
@@ -400,7 +400,7 @@ class Certificate
     {
         $sql = 'SELECT minutes_required FROM learning_certificate_course WHERE id_course = ' . $id_course . ' AND id_certificate = ' . $id_cert;
         $re = sql_query($sql);
-        list($minutes_required) = sql_fetch_row($re);
+        [$minutes_required] = sql_fetch_row($re);
         if ($minutes_required > 0) {
             require_once _lms_ . '/lib/lib.track_user.php';
 
@@ -452,7 +452,7 @@ class Certificate
             . ' FROM %lms_certificate_course'
             . ' WHERE id_course = ' . $id_course;
 
-        list($res) = sql_fetch_row(sql_query($query));
+        [$res] = sql_fetch_row(sql_query($query));
 
         if ($res == null) {
             $res = '0';
@@ -755,7 +755,7 @@ class Certificate
 		SELECT name, cert_structure, base_language, orientation, bgimage
 		FROM ' . $GLOBALS['prefix_lms'] . "_certificate
 		WHERE id_certificate = '" . $id_certificate . "'";
-        list($name, $cert_structure, $base_language, $orientation, $bgimage) = sql_fetch_row(sql_query($query_certificate));
+        [$name, $cert_structure, $base_language, $orientation, $bgimage] = sql_fetch_row(sql_query($query_certificate));
 
         //require_once($GLOBALS['where_framework'].'/addons/html2pdf/html2fpdf.php');
 
@@ -794,7 +794,7 @@ class Certificate
 		SELECT name, cert_structure, base_language, orientation, bgimage
 		FROM ' . $GLOBALS['prefix_lms'] . "_certificate
 		WHERE id_certificate = '" . $id_certificate . "'";
-        list($name, $cert_structure, $base_language, $orientation, $bgimage) = sql_fetch_row(sql_query($query_certificate));
+        [$name, $cert_structure, $base_language, $orientation, $bgimage] = sql_fetch_row(sql_query($query_certificate));
 
         if ($array_substituton !== false) {
             $cert_structure = str_replace(array_keys($array_substituton), $array_substituton, $cert_structure);
@@ -839,7 +839,7 @@ class Certificate
                 return;
             }
             require_once _base_ . '/lib/lib.download.php';
-            list($cert_file) = sql_fetch_row($re);
+            [$cert_file] = sql_fetch_row($re);
             sendFile(CERTIFICATE_PATH, $cert_file);
 
             return;
@@ -854,7 +854,7 @@ class Certificate
         $query_certificate = '
 		SELECT name, cert_structure, base_language, orientation, bgimage
 		FROM %lms_certificate WHERE id_certificate = "' . $id_certificate . '"';
-        list($name, $cert_structure, $base_language, $orientation, $bgimage) = sql_fetch_row(sql_query($query_certificate));
+        [$name, $cert_structure, $base_language, $orientation, $bgimage] = sql_fetch_row(sql_query($query_certificate));
 
         require_once _base_ . '/lib/lib.upload.php';
 
@@ -1028,7 +1028,7 @@ class Certificate
             " WHERE id_certificate = '" . $id_certificate . "'" .
             " AND id_course = '" . $id_course . "'";
 
-        list($res) = sql_fetch_row(sql_query($query));
+        [$res] = sql_fetch_row(sql_query($query));
 
         return $res;
     }
@@ -1109,7 +1109,7 @@ class Certificate
             . ' ON (t1.id_certificate = t2.id_certificate AND t2.id_user = t3.idst)  '
             . (count($conditions) > 0 ? 'WHERE ' . implode(' AND ', $conditions) : '');
 
-        list($total) = sql_fetch_row(sql_query($query));
+        [$total] = sql_fetch_row(sql_query($query));
         echo sql_error();
 
         return $total;
@@ -1180,7 +1180,7 @@ function getCertificateQueryTotal($users = false, $id_cert = false, $year = fals
         . ' ON (t1.id_certificate = t2.id_certificate AND t2.id_user = t3.idst)  '
         . (count($conditions) > 0 ? 'WHERE ' . implode(' AND ', $conditions) : '');
 
-    list($total) = sql_fetch_row(sql_query($query));
+    [$total] = sql_fetch_row(sql_query($query));
 
     return $total;
 }
