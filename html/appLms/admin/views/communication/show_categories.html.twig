@@ -1,5 +1,5 @@
 {{ Get_title({
-	'index.php?r=alms/communication/showCategories' : Lang_translate('_CATEGORY', 'communication'),
+	'index.php?r=alms/communication/showCategories' : Lang_translate('_CATEGORIES', 'communication'),
 	'':Lang_translate('_CATEGORIES', 'communication')
 },false) }}
 
@@ -188,6 +188,23 @@
  
  })
 
+$('input[name=undo]').on('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
 
+    var modalSelector = '#categoryModal';
+    let modal = $(modalSelector);
+
+    modal.modal("hide");
+ });
+
+ $('#confirmModal').on('shown.bs.modal', function() {
+    var modalSelector = '#confirmModal';
+    let modal = $(modalSelector);
+
+    setTimeout(function(){ 
+        modal.find("*[data-val=no]").focus();
+    }, 150);
+ });
     
 </script>

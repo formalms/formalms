@@ -244,6 +244,15 @@
 			stateSave: true,
 			deferRender: true,
 		});
+
+		$('#confirmModal').on('shown.bs.modal', function() {
+			var modalSelector = '#confirmModal';
+			let modal = $(modalSelector);
+
+			setTimeout(function(){ 
+				modal.find("*[data-val=no]").focus();
+			}, 150);
+		});
 	});
 </script>
 </div>
