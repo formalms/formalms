@@ -14,7 +14,7 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 /* absolute base path to the main directory of the docebo installation */
-define('_base_', dirname(__FILE__));
+define('_base_', __DIR__);
 
 /*
  * Subsystem folder
