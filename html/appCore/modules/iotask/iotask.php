@@ -243,7 +243,7 @@ function ioTask_UIConnectionsList(&$module)
         . '<select id="type_connection" name="type_connection">'
         . $options
         . '</select> '
-        . $form->getButton('new_connection', 'action[new_connection]', $lang->def('_CREATE'), 'button_nowh', (empty($options) ? 'disabled' : ''))
+        . $form->getButton('new_connection', 'action[new_connection]', $lang->def('_CREATE'), 'button_nowh')
     );
 
     $out->add($tb_connections->getTable());
@@ -396,7 +396,7 @@ function ioTask_UITaskList(&$module)
         $lang->def('_DESTINATION'),
         $lang->def('_SCHEDULE'),
         $lang->def('_LAST_EXECUTION'),
-        '<span class="ico-sprite subs_play" alt="' . $lang->def('_TASK_RUN') . '" title="' . $lang->def('_TASK_RUN') . '"/>',
+        '<img src="' . getPathImage() . '/standard/play.png" alt="' . $lang->def('_TASK_RUN') . '" title="' . $lang->def('_TASK_RUN') . '"/>',
         '<img src="' . getPathImage() . '/standard/edit.png" alt="' . $lang->def('_MOD') . '" title="' . $lang->def('_MOD') . '"/>',
         '<img src="' . getPathImage() . '/standard/cancel.png" alt="' . $lang->def('_TASK_DEL') . '" title="' . $lang->def('_DEL') . '"/>',
     ];
@@ -454,7 +454,7 @@ function ioTask_UITaskList(&$module)
     }
 
     $tb_tasks->addActionAdd(
-        '<label for="new_task" style="margin-left: 15px;">'
+        '<label for="new_task">'
         . '<img class="valing-middle" src="' . getPathImage() . 'standard/add.png" alt="' . $lang->def('_ADD') . '" />'
         . ' ' . $lang->def('_ADD_NEW_TASK') . '</label> '
         . $form->getButton('new_task', 'action[new_task]', $lang->def('_CREATE'), 'button_nowh')
@@ -585,14 +585,8 @@ function ioTask_UITaskNew_step0(&$module, &$params)
 
     $out->add($form->getTextfield($lang->def('_NAME'), 'task_name', 'task_params[' . CONNMGR_TASK_NAME . ']', 50, $params[CONNMGR_TASK_NAME]));
     $out->add($form->getTextfield($lang->def('_DESCRIPTION'), 'task_description', 'task_params[' . CONNMGR_TASK_DESCRIPTION . ']', 255, $params[CONNMGR_TASK_DESCRIPTION]));
-    $out->add($form->getDropdown($lang->def('_SOURCE'), 'task_source', 'task_params[' . CONNMGR_TASK_SOURCE . ']', $arr_options, $params[CONNMGR_TASK_SOURCE], '', '', 'required'));
-    $out->add($form->getDropdown($lang->def('_DESTINATION'), 'task_destination', 'task_params[' . CONNMGR_TASK_DESTINATION . ']', $arr_options, $params[CONNMGR_TASK_DESTINATION], '', '', 'required'));
-    $out->add('<script type="text/javascript">
-        YAHOO.util.Event.addListener("cancel", "click", function(e) {
-            YAHOO.util.Dom.get("task_source").removeAttribute("required");
-            YAHOO.util.Dom.get("task_destination").removeAttribute("required");
-        });
-    </script>');
+    $out->add($form->getDropdown($lang->def('_SOURCE'), 'task_source', 'task_params[' . CONNMGR_TASK_SOURCE . ']', $arr_options, $params[CONNMGR_TASK_SOURCE]));
+    $out->add($form->getDropdown($lang->def('_DESTINATION'), 'task_destination', 'task_params[' . CONNMGR_TASK_DESTINATION . ']', $arr_options, $params[CONNMGR_TASK_DESTINATION]));
 }
 
 /**

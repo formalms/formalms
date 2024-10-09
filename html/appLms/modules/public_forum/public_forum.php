@@ -495,7 +495,7 @@ function addforum()
 
     $GLOBALS['page']->add(
         '</select>'
-        . '<select class="form-control dropdown" id="emoticons_menu" name="emoticons">' . $emoticon_items . '</select>'
+        . '<select class="dropdown" id="emoticons_menu" name="emoticons">' . $emoticon_items . '</select>'
         . Form::closeFormLine()
         . Form::closeElementSpace()
         . Form::openButtonSpace()
@@ -666,7 +666,7 @@ function modforum()
 
     $GLOBALS['page']->add(
         '</select>'
-        . '<select class="form-control dropdown" id="emoticons_menu" name="emoticons">' . $emoticon_items . '</select>'
+        . '<select class="dropdown" id="emoticons_menu" name="emoticons">' . $emoticon_items . '</select>'
         . Form::closeFormLine()
         . Form::closeElementSpace()
         . Form::openButtonSpace()
@@ -1280,7 +1280,7 @@ function thread()
     if ($mod_perm || $moderate) {
         $cont_h[] = '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . '" title="' . $lang->def('_MOD') . '" />';
         $type_h[] = 'image';
-        $cont_h[] = '<img src="' . getPathImage() . 'standard/move.png" alt="' . $lang->def('_MOVE') . '" title="' . $lang->def('_MOVETHREAD_TITLE') . '" style="height: 18px;" />';
+        $cont_h[] = '<img src="' . getPathImage() . 'standard/move.png" alt="' . $lang->def('_MOVE') . '" title="' . $lang->def('_MOVETHREAD_TITLE') . '" />';
         $type_h[] = 'image';
         $cont_h[] = '<img src="' . getPathImage() . 'standard/delete.png" alt="' . $lang->def('_DEL') . '" title="' . $lang->def('_DEL') . '" />';
         $type_h[] = 'image';
@@ -1406,7 +1406,7 @@ function thread()
                 . (isset($unreadedForum[PUBLIC_FORUM_COURSE_ID][$id_forum][$idT]) && $unreadedForum[PUBLIC_FORUM_COURSE_ID][$id_forum][$idT] != 'new_thread'
                     ? '<br />(<span class="forum_notread">' . $unreadedForum[PUBLIC_FORUM_COURSE_ID][$id_forum][$idT] . ' ' . $lang->def('_ADD') . ')</span>'
                     : (isset($unreadedForum[PUBLIC_FORUM_COURSE_ID][$id_forum][$idT]) && $unreadedForum[PUBLIC_FORUM_COURSE_ID][$id_forum][$idT] == 'new_thread'
-                        ? '<br />(<span class="forum_notread">' . $lang->def('_NEW_THREAD', 'forum') . ')</span>'
+                        ? '<br />(<span class="forum_notread">' . $lang->def('_NEW_THREAD') . ')</span>'
                         : ''));
             $content[] = $t_author;
             $content[] = $num_view;
@@ -1470,7 +1470,7 @@ function thread()
         $text_inner .= ' <a href="index.php?modname=public_forum&amp;op=modstatus&amp;idForum=' . $id_forum . '">'
             . ($locked_f
                 ? '' . $lang->def('_UNLOCKFORUM')
-                : '<img src="' . getPathImage() . 'standard/locked.png" alt="' . $lang->def('_LOCKFORUMALT') . '" />' . $lang->def('_LOCKFORUM'))
+                : '<img src="' . getPathImage() . 'standard/locked.png" alt="' . $lang->def('_LOCKFORUMALT') . '" /> ' . $lang->def('_LOCKFORUM'))
             . '</a>';
     }
 
@@ -1540,7 +1540,7 @@ function addthread()
     $page_title = [
         'index.php?modname=public_forum&amp;forum' => Lang::t('_FORUM'),
         'index.php?modname=public_forum&amp;op=thread&amp;idForum=' . $idForum => $title,
-        Lang::t('_NEW_THREAD', 'forum'),
+        Lang::t('_NEW_THREAD'),
     ];
     $GLOBALS['page']->add(
         getTitleArea($page_title, 'forum', Lang::t('_FORUM'))
@@ -1561,13 +1561,13 @@ function addthread()
         }
 
         if (checkPerm('mod', true) || checkPublicForumPerm('moderate', (int) $_GET['idForum'])) {
-            $GLOBALS['page']->add(Form::getCheckbox(Lang::t('_IMPORTANT_THREAD', 'forum'), 'important', 'important', 1), 'content');
+            $GLOBALS['page']->add(Form::getCheckbox(Lang::t('_IMPORTANT_THREAD'), 'important', 'important', 1), 'content');
         }
 
         if ((int) $threadsArePrivate == 1) {
             $GLOBALS['page']->add(Form::getHidden('private', 'private', 1), 'content');
         } else {
-            $GLOBALS['page']->add(Form::getCheckbox(Lang::t('_PRIVATE_THREAD', 'forum'), 'private', 'private', 1), 'content');
+            $GLOBALS['page']->add(Form::getCheckbox(Lang::t('_PRIVATE_THREAD'), 'private', 'private', 1), 'content');
         }
 
         $GLOBALS['page']->add(
@@ -1752,7 +1752,7 @@ function insthread()
         '[forum_title]' => $forum_title,
         '[thread_title]' => $_POST['title'], ]);
 
-    launchNotify('forum', $id_forum, $lang->def('_NEW_THREAD', 'forum'), $msg_composer);
+    launchNotify('forum', $id_forum, $lang->def('_NEW_THREAD'), $msg_composer);
 
     Util::jump_to('index.php?modname=public_forum&op=message&idThread=' . $id_thread);
 }
@@ -2217,15 +2217,10 @@ function message()
     // Retriving level and number of post of the authors
     if (!empty($authors)) {
         $re_num_post = sql_query('
-        SELECT u.idUser, u.level, COALESCE(m.num_post, 0) AS num_post
-        FROM ' . $GLOBALS['prefix_lms'] . '_courseuser AS u
-        LEFT JOIN (
-            SELECT author, COUNT(*) AS num_post
-            FROM %lms_forummessage
-            WHERE idCourse = "' . (int) PUBLIC_FORUM_COURSE_ID . '"
-            GROUP BY author
-        ) AS m ON m.author = u.idUser
-        WHERE u.idUser IN ( ' . implode(',', $authors) . ' ) LIMIT 1');
+		SELECT u.idUser, u.level, COUNT(*)
+		FROM %lms_forummessage AS m, ' . $GLOBALS['prefix_lms'] . "_courseuser AS u
+		WHERE m.idCourse = '" . (int) PUBLIC_FORUM_COURSE_ID . "' AND m.author = u.idUser AND m.author IN ( " . implode(',', $authors) . ' )
+		GROUP BY u.idUser, u.level');
         while (list($id_u, $level_u, $num_post_a) = sql_fetch_row($re_num_post)) {
             $authors_info[$id_u] = ['num_post' => $num_post_a, 'level' => $level_name[$level_u]];
         }
@@ -2291,19 +2286,19 @@ function message()
             $msgtext .= '<div class="forum_post_posted">';
         }
 
-        if ($message_info['attach'] != '') {
-            $msgtext .= '<div class="forum_post_attach">'
-                . '<a href="index.php?modname=public_forum&amp;op=download&amp;id=' . $id_message . '">'
-                . $lang->def('_ATTACHMENT') . ' : '
-                . '<img src="' . getPathImage('fw') . mimeDetect($message_info['attach']) . '" alt="' . $lang->def('_ATTACHMENT') . '" /></a>'
-                . '</div>';
-        }
         $msgtext .= $lang->def('_DATE') . ' : ' . Format::date($message_info['posted'])
             . ' ( ' . loadDistance($message_info['posted']) . ' )'
             . '</div>';
         if ($message_info['locked']) {
             $msgtext .= '<div class="forum_post_locked">' . $lang->def('_LOCKEDMESS') . '</div>';
         } else {
+            if ($message_info['attach'] != '') {
+                $msgtext .= '<div class="forum_post_attach">'
+                    . '<a href="index.php?modname=public_forum&amp;op=download&amp;id=' . $id_message . '">'
+                    . $lang->def('_ATTACHMENT') . ' : '
+                    . '<img src="' . getPathImage('fw') . mimeDetect($message_info['attach']) . '" alt="' . $lang->def('_ATTACHMENT') . '" /></a>'
+                    . '</div>';
+            }
             $msgtext .= '<div class="forum_post_title">' . $lang->def('_SUBJECT') . ' : ' . $message_info['title'] . '</div>';
             $msgtext .= '<div class="forum_post_text">'
                 . str_replace('[quote]', '<blockquote class="forum_quote">', str_replace('[/quote]', '</blockquote>', $message_info['textof']))
@@ -2333,29 +2328,29 @@ function message()
             if ($message_info['locked']) {
                 $action .= '<li><a href="index.php?modname=public_forum&amp;op=moderatemessage&amp;idMessage=' . $id_message . '&amp;ini=' . $ini_page . '" '
                     . 'title="' . $lang->def('_DEMODERATE') . ' : ' . strip_tags($message_info['title']) . '">'
-                    . '<img src="' . getPathImage() . 'standard/demoderate.png" alt="' . $lang->def('_DEMODERATE') . ' : ' . strip_tags($message_info['title']) . '" />'
+                    . '<img src="' . getPathImage() . 'standard/demoderate.png" alt="' . $lang->def('_DEMODERATE') . ' : ' . strip_tags($message_info['title']) . '" /> '
                     . $lang->def('_DEMODERATE') . '</a></li>';
             } else {
                 $action .= '<li><a href="index.php?modname=public_forum&amp;op=moderatemessage&amp;idMessage=' . $id_message . '&amp;ini=' . $ini_page . '" '
                     . 'title="' . $lang->def('_MODERATE') . ' : ' . strip_tags($message_info['title']) . '">'
-                    . '<img src="' . getPathImage() . 'standard/moderate.png" alt="' . $lang->def('_MODERATE') . ' : ' . strip_tags($message_info['title']) . '" />'
+                    . '<img src="' . getPathImage() . 'standard/moderate.png" alt="' . $lang->def('_MODERATE') . ' : ' . strip_tags($message_info['title']) . '" /> '
                     . $lang->def('_MODERATE') . '</a></li>';
             }
         }
         if (!$locked_t && !$locked_f && !$message_info['locked'] && $write_perm) {
             $action .= '<li><a href="index.php?modname=public_forum&amp;op=addmessage&amp;idThread=' . $id_thread . '&amp;idMessage=' . $id_message . '&amp;ini=' . $ini_page . '" '
                 . 'title="' . $lang->def('_REPLY') . ' : ' . strip_tags($message_info['title']) . '">'
-                . '<img src="' . getPathImage() . 'standard/reply.png" alt="' . $lang->def('_REPLY') . ' : ' . strip_tags($message_info['title']) . '" />'
+                . '<img src="' . getPathImage() . 'standard/reply.png" alt="' . $lang->def('_REPLY') . ' : ' . strip_tags($message_info['title']) . '" /> '
                 . $lang->def('_QUOTE') . '</a></li>';
         }
         if ($moderate || $mod_perm || ($m_author == \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
             $action .= '<li><a href="index.php?modname=public_forum&amp;op=modmessage&amp;idMessage=' . $id_message . '&amp;ini=' . $ini_page . '" '
                 . 'title="' . $lang->def('_MOD_MESSAGE') . ' : ' . strip_tags($message_info['title']) . '">'
-                . '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . ' : ' . strip_tags($message_info['title']) . '" />'
+                . '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . ' : ' . strip_tags($message_info['title']) . '" /> '
                 . $lang->def('_MOD') . '</a></li>'
                 . '<li><a href="index.php?modname=public_forum&amp;op=delmessage&amp;idMessage=' . $id_message . '&amp;ini=' . $ini_page . '" '
                 . 'title="' . $lang->def('_DEL') . ' : ' . strip_tags($message_info['title']) . '">'
-                . '<img src="' . getPathImage() . 'standard/delete.png" alt="' . $lang->def('_DEL') . ' : ' . strip_tags($message_info['title']) . '" />'
+                . '<img src="' . getPathImage() . 'standard/delete.png" alt="' . $lang->def('_DEL') . ' : ' . strip_tags($message_info['title']) . '" /> '
                 . $lang->def('_DEL') . '</a></li>';
         }
         $tb->addBodyExpanded('<ul class="link_list_inline align-right">' . $action . '</ul>', 'forum_action');
@@ -2404,9 +2399,8 @@ function message()
 
     $text_inner = '';
     if (!$locked_t && !$locked_f && $write_perm) {
-        $text_inner .= '<a href="index.php?modname=public_forum&amp;op=addmessage&amp;idThread=' . $id_thread . '&amp;ini=' . $ini_page . '">'
-            . '<img src="' . getPathImage() . 'standard/reply.png" alt="' . $lang->def('_REPLY') . '" />' . $lang->def('_REPLY')
-            . '</a>';
+        $text_inner .= '<a href="index.php?modname=public_forum&amp;op=addmessage&amp;idThread=' . $id_thread . '&amp;ini=' . $ini_page . '" title="' . $lang->def('_REPLY') . '" class="ico-wt-sprite subs_add">'
+            . '<span>' . $lang->def('_REPLY') . '</span></a>';
     }
     if ($can_notify) {
         $text_inner .= ' <a href="index.php?modname=public_forum&amp;op=message&amp;notify=1&amp;idThread=' . $id_thread . '&amp;ini=' . $ini_page . '" '
@@ -2421,23 +2415,23 @@ function message()
     if ($mod_perm) {
         $text_inner .= ' <a href="index.php?modname=public_forum&amp;op=modstatusthread&amp;idThread=' . $id_thread . '&amp;ini=' . $ini_page . '">'
             . ($locked_t
-                ? '<img src="' . getPathImage() . 'standard/msg_read.png" alt="' . $lang->def('_FREE') . '" />' . $lang->def('_FREETHREAD')
-                : '<img src="' . getPathImage() . 'standard/locked.png" alt="' . $lang->def('_LOCKTHREAD') . '" />' . $lang->def('_LOCKTHREAD'))
+                ? '<img src="' . getPathImage() . 'standard/msg_read.png" alt="' . $lang->def('_FREE') . '" /> ' . $lang->def('_FREETHREAD')
+                : '<img src="' . getPathImage() . 'standard/locked.png" alt="' . $lang->def('_LOCKTHREAD') . '" /> ' . $lang->def('_LOCKTHREAD'))
             . '</a>';
     }
     if ($mod_perm) {
         $text_inner .= ' <a href="index.php?modname=public_forum&amp;op=changeerased&amp;idThread=' . $id_thread . '&amp;ini=' . $ini_page . '">'
             . ($erased_t
-                ? '<img src="' . getPathImage() . 'standard/msg_read.png" alt="' . $lang->def('_UNERASE') . '" />' . $lang->def('_UNERASE')
-                : '<img src="' . getPathImage() . 'standard/moderate.png" alt="' . $lang->def('_MODERATE') . '" />' . $lang->def('_MODERATE')
+                ? '<img src="' . getPathImage() . 'standard/msg_read.png" alt="' . $lang->def('_UNERASE') . '" /> ' . $lang->def('_UNERASE')
+                : '<img src="' . getPathImage() . 'standard/moderate.png" alt="' . $lang->def('_MODERATE') . '" /> ' . $lang->def('_MODERATE')
             )
             . '</a>';
     }
     if (checkPublicForumPerm('moderate', $id_forum) || checkPerm('mod', true)) {
         if ($is_important) {
-            $text_inner .= ' <a href="index.php?modname=public_forum&op=message&amp;idThread=' . $id_thread . '&amp;ini=' . $ini_page . '&amp;important=2"><img src="' . getPathImage() . 'standard/notimportant.png" alt="' . $lang->def('_SET_NOT_IMPORTANT_THREAD') . '" />' . $lang->def('_SET_NOT_IMPORTANT_THREAD') . '</a>';
+            $text_inner .= ' <a href="index.php?modname=public_forum&op=message&amp;idThread=' . $id_thread . '&amp;ini=' . $ini_page . '&amp;important=2"><img src="' . getPathImage() . 'standard/notimportant.png" alt="' . $lang->def('_SET_NOT_IMPORTANT_THREAD') . '" /> ' . $lang->def('_SET_NOT_IMPORTANT_THREAD') . '</a>';
         } else {
-            $text_inner .= ' <a href="index.php?modname=public_forum&op=message&amp;idThread=' . $id_thread . '&amp;ini=' . $ini_page . '&amp;important=1"><img src="' . getPathImage() . 'standard/important.png" alt="' . $lang->def('_MARK_AS_IMPORTANT') . '" />' . $lang->def('_MARK_AS_IMPORTANT') . '</a>';
+            $text_inner .= ' <a href="index.php?modname=public_forum&op=message&amp;idThread=' . $id_thread . '&amp;ini=' . $ini_page . '&amp;important=1"><img src="' . getPathImage() . 'standard/important.png" alt="' . $lang->def('_MARK_AS_IMPORTANT') . '" /> ' . $lang->def('_MARK_AS_IMPORTANT') . '</a>';
         }
     }
 
@@ -2585,15 +2579,10 @@ function showMessageForAdd($id_thread, $how_much)
 
     // Retriving level and number of post of th authors
     $re_num_post = sql_query('
-        SELECT u.idUser, u.level, COALESCE(m.num_post, 0) AS num_post
-        FROM ' . $GLOBALS['prefix_lms'] . '_courseuser AS u
-        LEFT JOIN (
-            SELECT author, COUNT(*) AS num_post
-            FROM %lms_forummessage
-            WHERE idCourse = "' . (int) PUBLIC_FORUM_COURSE_ID . '"
-            GROUP BY author
-        ) AS m ON m.author = u.idUser
-        WHERE u.idUser IN ( ' . implode(',', $authors) . ' ) LIMIT 1');
+	SELECT u.idUser, u.level, COUNT(*)
+	FROM %lms_forummessage AS m, ' . $GLOBALS['prefix_lms'] . "_courseuser AS u
+	WHERE m.idCourse = '" . (int) PUBLIC_FORUM_COURSE_ID . "' AND m.author = u.idUser AND m.author IN ( " . implode(',', $authors) . ' )
+	GROUP BY u.idUser, u.level');
     while (list($id_u, $level_u, $num_post_a) = sql_fetch_row($re_num_post)) {
         $authors_info[$id_u] = ['num_post' => $num_post_a, 'level' => $level_name[$level_u]];
     }
@@ -3247,10 +3236,10 @@ function forumBackUrl()
     $id_thread = importVar('idThread', true, 0);
     $id_message = importVar('idMessage', true, 0);
     if ($id_user === 0) {
-        return getBackUi('index.php?modname=public_forum&amp;op=message&amp;idThread=' . $id_thread . '&amp;ini=' . $ini . '&amp;idMessage=' . $id_message . '', $lang->def('_BACK'));
+        return getBackUi('index.php?modname=public_forum&amp;op=message&amp;idThread=' . $id_thread . '&amp;ini=' . $ini . '&amp;idMessage=' . $id_message . '', '<< ' . $lang->def('_BACK') . '');
     }
 
-    return getBackUi('index.php?modname=public_forum&amp;op=viewprofile&amp;idThread=' . $id_thread . '&amp;ini=' . $ini . '&amp;idMessage=' . $id_message . '', $lang->def('_BACK'));
+    return getBackUi('index.php?modname=public_forum&amp;op=viewprofile&amp;idThread=' . $id_thread . '&amp;ini=' . $ini . '&amp;idMessage=' . $id_message . '', '<< ' . $lang->def('_BACK') . '');
 }
 
 //---------------------------------------------------------------------------//
@@ -3603,15 +3592,10 @@ function forumsearchmessage()
 
     // Retriving level and number of post of th authors
     $re_num_post = sql_query('
-        SELECT u.idUser, u.level, COALESCE(m.num_post, 0) AS num_post
-        FROM ' . $GLOBALS['prefix_lms'] . '_courseuser AS u
-        LEFT JOIN (
-            SELECT author, COUNT(*) AS num_post
-            FROM %lms_forummessage
-            WHERE idCourse = "' . (int) PUBLIC_FORUM_COURSE_ID . '"
-            GROUP BY author
-        ) AS m ON m.author = u.idUser
-        WHERE u.idUser IN ( ' . implode(',', $authors) . ' ) LIMIT 1');
+	SELECT u.idUser, u.level, COUNT(*)
+	FROM %lms_forummessage AS m, ' . $GLOBALS['prefix_lms'] . "_courseuser AS u
+	WHERE m.idCourse = '" . (int) PUBLIC_FORUM_COURSE_ID . "' AND m.author = u.idUser AND m.author IN ( " . implode(',', $authors) . ' )
+	GROUP BY u.idUser, u.level');
     while (list($id_u, $level_u, $num_post_a) = sql_fetch_row($re_num_post)) {
         $authors_info[$id_u] = ['num_post' => $num_post_a, 'level' => $level_name[$level_u]];
     }
@@ -3653,13 +3637,6 @@ function forumsearchmessage()
         // msg info
         $msgtext = '';
 
-        if ($message_info['attach'] != '') {
-            $msgtext .= '<div class="forum_post_attach">'
-                . '<a href="index.php?modname=public_forum&amp;op=download&amp;id=' . $id_message . '">'
-                . $lang->def('_ATTACHMENT') . ' : '
-                . '<img src="' . getPathImage('fw') . mimeDetect($message_info['attach']) . '" alt="' . $lang->def('_ATTACHMENT') . '" /></a>'
-                . '</div>';
-        }
         $msgtext .= '<div class="forum_post_posted">'
             . $lang->def('_DATE') . ' : ' . Format::date($message_info['posted'])
             . ' ( ' . loadDistance($message_info['posted']) . ' )'
@@ -3667,6 +3644,14 @@ function forumsearchmessage()
         if ($message_info['locked']) {
             $msgtext .= '<div class="forum_post_locked">' . $lang->def('_LOCKEDMESS') . '</div>';
         } else {
+            if ($message_info['attach'] != '') {
+                $msgtext .= '<div class="forum_post_attach">'
+                    . '<a href="index.php?modname=public_forum&amp;op=download&amp;id=' . $id_message . '">'
+                    . $lang->def('_ATTACHMENT') . ' : '
+                    . '<img src="' . getPathImage('fw') . mimeDetect($message_info['attach']) . '" alt="' . $lang->def('_ATTACHMENT') . '" /></a>'
+                    . '</div>';
+            }
+
             $textof = str_replace('[quote]', '<blockquote class="forum_quote">', str_replace('[/quote]', '</blockquote>', $message_info['textof']));
             $msgtext .= '<div class="forum_post_title">' . $lang->def('_SUBJECT') . ' : '
                 . ($search_arg !== ''
@@ -3707,36 +3692,36 @@ function forumsearchmessage()
             }
             $action .= '<a href="index.php?modname=public_forum&amp;op=editsema&amp;idMessage=' . $id_message . '&amp;ini=' . $ini_page . '" '
                 . 'title="' . $lang->def('_MOD') . ' : ' . strip_tags($message_info['title']) . '">'
-                . '<img src="' . getPathImage() . 'forum/' . $img_sema . '.gif" alt="' . $lang->def('_MOD') . ' : ' . strip_tags($message_info['title']) . '" />'
+                . '<img src="' . getPathImage() . 'forum/' . $img_sema . '.gif" alt="' . $lang->def('_MOD') . ' : ' . strip_tags($message_info['title']) . '" /> '
                 . $lang->def('_SEMATAG') . '</a> ';
         }
         if ($moderate || $mod_perm) {
             if ($message_info['locked']) {
                 $action .= '<a href="index.php?modname=public_forum&amp;op=moderatemessage&amp;idMessage=' . $id_message . '&amp;ini=' . $ini_page . '" '
                     . 'title="' . $lang->def('_DEMODERATE') . ' : ' . strip_tags($message_info['title']) . '">'
-                    . '<img src="' . getPathImage() . 'standard/demoderate.png" alt="' . $lang->def('_DEMODERATE') . ' : ' . strip_tags($message_info['title']) . '" />'
+                    . '<img src="' . getPathImage() . 'standard/demoderate.png" alt="' . $lang->def('_DEMODERATE') . ' : ' . strip_tags($message_info['title']) . '" /> '
                     . $lang->def('_DEMODERATE') . '</a> ';
             } else {
                 $action .= '<a href="index.php?modname=public_forum&amp;op=moderatemessage&amp;idMessage=' . $id_message . '&amp;ini=' . $ini_page . '" '
                     . 'title="' . $lang->def('_MODERATE') . ' : ' . strip_tags($message_info['title']) . '">'
-                    . '<img src="' . getPathImage() . 'standard/moderate.png" alt="' . $lang->def('_MODERATE') . ' : ' . strip_tags($message_info['title']) . '" />'
+                    . '<img src="' . getPathImage() . 'standard/moderate.png" alt="' . $lang->def('_MODERATE') . ' : ' . strip_tags($message_info['title']) . '" /> '
                     . $lang->def('_MODERATE') . '</a> ';
             }
         }
         if ((!$locked_t && !$locked_f) || $mod_perm || $moderate) {
             $action .= '<a href="index.php?modname=public_forum&amp;op=addmessage&amp;idThread=' . $id_thread . '&amp;idMessage=' . $id_message . '&amp;ini=' . $ini_page . '" '
                 . 'title="' . $lang->def('_REPLY') . ' : ' . strip_tags($message_info['title']) . '">'
-                . '<img src="' . getPathImage() . 'standard/reply.png" alt="' . $lang->def('_REPLY') . ' : ' . strip_tags($message_info['title']) . '" />'
+                . '<img src="' . getPathImage() . 'standard/reply.png" alt="' . $lang->def('_REPLY') . ' : ' . strip_tags($message_info['title']) . '" /> '
                 . $lang->def('_QUOTE') . '</a>';
         }
         if ($moderate || $mod_perm || ($m_author == \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
             $action .= '<a href="index.php?modname=public_forum&amp;op=modmessage&amp;idMessage=' . $id_message . '&amp;ini=' . $ini_page . '" '
                 . 'title="' . $lang->def('_MOD_MESSAGE') . ' : ' . strip_tags($message_info['title']) . '">'
-                . '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . ' : ' . strip_tags($message_info['title']) . '" />'
+                . '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . ' : ' . strip_tags($message_info['title']) . '" /> '
                 . $lang->def('_MOD') . '</a>'
                 . '<a href="index.php?modname=public_forum&amp;op=delmessage&amp;idMessage=' . $id_message . '&amp;ini=' . $ini_page . '" '
                 . 'title="' . $lang->def('_DEL') . ' : ' . strip_tags($message_info['title']) . '">'
-                . '<img src="' . getPathImage() . 'standard/delete.png" alt="' . $lang->def('_DEL') . ' : ' . strip_tags($message_info['title']) . '" />'
+                . '<img src="' . getPathImage() . 'standard/delete.png" alt="' . $lang->def('_DEL') . ' : ' . strip_tags($message_info['title']) . '" /> '
                 . $lang->def('_DEL') . '</a> ';
         }
         $tb->addBodyExpanded($action, 'forum_action');
@@ -3744,7 +3729,7 @@ function forumsearchmessage()
     if ((!$locked_t && !$locked_f) || $mod_perm || $moderate) {
         $tb->addActionAdd(
             '<a href="index.php?modname=public_forum&amp;op=addmessage&amp;idThread=' . $id_thread . '&amp;ini=' . $ini_page . '" title="' . $lang->def('_REPLY') . '">'
-            . '<img src="' . getPathImage() . 'standard/add.png" alt="' . $lang->def('_ADD') . '" />'
+            . '<img src="' . getPathImage() . 'standard/add.png" alt="' . $lang->def('_ADD') . '" /> '
             . $lang->def('_REPLY') . '</a>'
         );
     }
@@ -3768,13 +3753,13 @@ function forumsearchmessage()
             '<div class="forum_action_top">'
             . '<a href="index.php?modname=public_forum&amp;op=modstatusthread&amp;idThread=' . $id_thread . '&amp;ini=' . $ini_page . '">'
             . ($locked_t
-                ? '<img src="' . getPathImage() . 'standard/msg_read.png" alt="' . $lang->def('_FREE') . '" />' . $lang->def('_FREETHREAD')
-                : '<img src="' . getPathImage() . 'standard/locked.png" alt="' . $lang->def('_LOCKTHREAD') . '" />' . $lang->def('_LOCKTHREAD'))
+                ? '<img src="' . getPathImage() . 'standard/msg_read.png" alt="' . $lang->def('_FREE') . '" /> ' . $lang->def('_FREETHREAD')
+                : '<img src="' . getPathImage() . 'standard/locked.png" alt="' . $lang->def('_LOCKTHREAD') . '" /> ' . $lang->def('_LOCKTHREAD'))
             . '</a> '
             . '<a href="index.php?modname=public_forum&amp;op=changeerased&amp;idThread=' . $id_thread . '&amp;ini=' . $ini_page . '">'
             . ($erased_t
-                ? '<img src="' . getPathImage() . 'standard/msg_read.png" alt="' . $lang->def('_UNERASE') . '" />' . $lang->def('_UNERASE')
-                : '<img src="' . getPathImage() . 'standard/moderate.png" alt="' . $lang->def('_MODERATE') . '" />' . $lang->def('_MODERATE')
+                ? '<img src="' . getPathImage() . 'standard/msg_read.png" alt="' . $lang->def('_UNERASE') . '" /> ' . $lang->def('_UNERASE')
+                : '<img src="' . getPathImage() . 'standard/moderate.png" alt="' . $lang->def('_MODERATE') . '" /> ' . $lang->def('_MODERATE')
             )
             . '</a>'
             . '</div>', 'content');
@@ -3785,13 +3770,13 @@ function forumsearchmessage()
             '<div class="forum_action_bottom">'
             . '<a href="index.php?modname=public_forum&amp;op=modstatusthread&amp;idThread=' . $id_thread . '&amp;ini=' . $ini_page . '">'
             . ($locked_t
-                ? '<img src="' . getPathImage() . 'standard/msg_read.png" alt="' . $lang->def('_FREE') . '" />' . $lang->def('_FREETHREAD')
-                : '<img src="' . getPathImage() . 'standard/locked.png" alt="' . $lang->def('_LOCKTHREAD') . '" />' . $lang->def('_LOCKTHREAD'))
+                ? '<img src="' . getPathImage() . 'standard/msg_read.png" alt="' . $lang->def('_FREE') . '" /> ' . $lang->def('_FREETHREAD')
+                : '<img src="' . getPathImage() . 'standard/locked.png" alt="' . $lang->def('_LOCKTHREAD') . '" /> ' . $lang->def('_LOCKTHREAD'))
             . '</a> '
             . '<a href="index.php?modname=public_forum&amp;op=changeerased&amp;idThread=' . $id_thread . '&amp;ini=' . $ini_page . '">'
             . ($erased_t
-                ? '<img src="' . getPathImage() . 'standard/msg_read.png" alt="' . $lang->def('_UNERASE') . '" />' . $lang->def('_UNERASE')
-                : '<img src="' . getPathImage() . 'standard/moderate.png" alt="' . $lang->def('_MODERATE') . '" />' . $lang->def('_MODERATE')
+                ? '<img src="' . getPathImage() . 'standard/msg_read.png" alt="' . $lang->def('_UNERASE') . '" /> ' . $lang->def('_UNERASE')
+                : '<img src="' . getPathImage() . 'standard/moderate.png" alt="' . $lang->def('_MODERATE') . '" /> ' . $lang->def('_MODERATE')
             )
             . '</a>'
             . '</div>', 'content');
@@ -4318,7 +4303,6 @@ function forumDispatch($op)
     require_once _base_ . '/lib/lib.urlmanager.php';
     $url_man = UrlManager::getInstance('forum');
     $url_man->setStdQuery('index.php?modname=public_forum&op=forum');
-    $lang = FormaLanguage::CreateInstance('forum');
 
     switch ($op) {
         case 'public_forum':
@@ -4480,7 +4464,7 @@ function forumDispatch($op)
 			FROM ' . $GLOBALS['prefix_lms'] . "_forummessage
 			WHERE idMessage='" . (int) $_GET['id'] . "'"));
             if (!$attach) {
-                $GLOBALS['page']->add(getErrorUi($lang->def('_FILE_NOT_EXISTS', 'standard')), 'content');
+                $GLOBALS['page']->add(getErrorUi('Sorry, such file does not exist!'), 'content');
 
                 return;
             }

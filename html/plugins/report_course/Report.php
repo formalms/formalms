@@ -345,7 +345,7 @@ class Report extends \ReportPlugin
                     . '<div id="use_classrooms" style="display:' . ($show_classrooms_editions ? 'block' : 'none') . '">'
                     . Form::getCheckBox(Lang::t('_NAME', 'standard'), 'col_sel_classroomname', 'cols[]', '_TH_CLASSROOM_CODE', is_showed('_TH_CLASSROOM_CODE', $ref))
                     . Form::getCheckBox(Lang::t('_CODE', 'standard'), 'col_sel_classroomcode', 'cols[]', '_TH_CLASSROOM_NAME', is_showed('_TH_CLASSROOM_NAME', $ref))
-                    . Form::getCheckBox(Lang::t('_LOCATION', 'classroom'), 'col_sel_classroomlocation', 'cols[]', '_TH_CLASSROOM_LOCATION', is_showed('_TH_CLASSROOM_LOCATION', $ref))
+                    . Form::getCheckBox(Lang::t('_LOCATION', 'standard'), 'col_sel_classroomlocation', 'cols[]', '_TH_CLASSROOM_LOCATION', is_showed('_TH_CLASSROOM_LOCATION', $ref))
                     . Form::getCheckBox(Lang::t('_LOCATION_CLASSNAME', 'standard'), 'col_sel_classroomlocation_classname', 'cols[]', '_TH_CLASSROOM_LOCATION_CLASSNAME', is_showed('_TH_CLASSROOM_LOCATION_CLASSNAME', $ref))
                     . Form::getCheckBox(Lang::t('_DATE_BEGIN', 'standard'), 'col_sel_classroomdatebegin', 'cols[]', '_TH_CLASSROOM_MIN_DATE', is_showed('_TH_CLASSROOM_MIN_DATE', $ref))
                     . Form::getCheckBox(Lang::t('_DATE_END', 'standard'), 'col_sel_classroomdateend', 'cols[]', '_TH_CLASSROOM_MAX_DATE', is_showed('_TH_CLASSROOM_MAX_DATE', $ref))

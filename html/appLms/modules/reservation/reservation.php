@@ -77,7 +77,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             $tab_man->setActiveTab($active_tab);
         }
 
-        $out->add(getTitleArea(Lang::t('_RESERVATIONS', 'reservation')) . '<div class="std_block">', 'content');
+        $out->add(getTitleArea(Lang::t('_RESERVATION', 'reservation')) . '<div class="std_block">', 'content');
 
         $out->add(Form::openForm('tab_reservation', 'index.php?modname=reservation&amp;op=reservation&amp;confirm=1&amp;ap=mod_profile&amp;from=2')
                 . $tab_man->printTabView_Begin('', false), 'content'
@@ -1192,10 +1192,6 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 
             $deadline = Format::dateDb($deadline, 'date');
 
-            if (empty($title)) {
-                $title = $lang->def('_NOTITLE');
-            }
-
             if ($date) {
                 $from_time = $from_time_h . ':' . $from_time_m . ':00';
             }
@@ -1295,10 +1291,6 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             $to_time_h = importVar('to_time_h', false, '');
             $to_time_m = importVar('to_time_m', false, '');
 
-            if (empty($title)) {
-                $title = $lang->def('_NOTITLE');
-            }
-
             $date = Format::dateDb($date, 'date');
 
             $deadline = Format::dateDb($deadline, 'date');
@@ -1325,7 +1317,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         }
 
         $out->add(
-            getTitleArea($lang->def('_EVENT'), '', $lang->def('_EVENT'))
+            getTitleArea($lang->def('_SAVE'), '', $lang->def('_EVENT'))
             . '<div class="std_block">'
         );
 

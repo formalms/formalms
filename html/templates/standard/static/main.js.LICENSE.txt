@@ -6,9 +6,9 @@
  */
 
 /*!
- * Chart.js v4.4.4
+ * Chart.js v4.4.1
  * https://www.chartjs.org
- * (c) 2024 Chart.js Contributors
+ * (c) 2023 Chart.js Contributors
  * Released under the MIT License
  */
 
@@ -18,10 +18,10 @@
  */
 
 /*!
- * GSAP 3.12.5
+ * GSAP 3.12.3
  * https://gsap.com
  *
- * @license Copyright 2008-2024, GreenSock. All rights reserved.
+ * @license Copyright 2008-2023, GreenSock. All rights reserved.
  * Subject to the terms at https://gsap.com/standard-license or for
  * Club GSAP members, the agreement issued with that membership.
  * @author: Jack Doyle, jack@greensock.com
@@ -44,7 +44,7 @@
  * jQuery DataTables Checkboxes (https://www.gyrocode.com/projects/jquery-datatables-checkboxes/)
  * Checkboxes extension for jQuery DataTables
  *
- * @version     1.3.0
+ * @version     1.2.14
  * @author      Gyrocode LLC (https://www.gyrocode.com)
  * @copyright   (c) Gyrocode LLC
  * @license     MIT
@@ -65,11 +65,11 @@
  * © SpryMedia Ltd - datatables.net/license
  */
 
-/*! DataTables 1.13.11
- * ©2008-2024 SpryMedia Ltd - datatables.net/license
+/*! DataTables 1.13.7
+ * ©2008-2023 SpryMedia Ltd - datatables.net/license
  */
 
-/*! Select for DataTables 1.7.0-dev
+/*! Select for DataTables 1.7.0
  * © SpryMedia Ltd - datatables.net/license/mit
  */
 
@@ -84,7 +84,7 @@
  */
 
 /**!
- * Sortable 1.15.3
+ * Sortable 1.15.1
  * @author	RubaXa   <trash@rubaxa.org>
  * @author	owenm    <owen23355@gmail.com>
  * @license MIT

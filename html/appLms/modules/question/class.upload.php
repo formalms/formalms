@@ -495,8 +495,7 @@ class Upload_Question extends Question
         [$filename] = sql_fetch_row(sql_query($recover_answer));
 
         if (!$filename) {
-            $lang = FormaLanguage::createInstance('test');
-            $GLOBALS['page']->add(getErrorUi($lang->def('_FILE_NOT_EXISTS', 'standard') . ' ' . $filename), 'content');
+            $GLOBALS['page']->add(getErrorUi('Sorry, such file does not exist!' . $filename), 'content');
 
             return;
         }

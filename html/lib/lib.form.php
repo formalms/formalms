@@ -191,7 +191,7 @@ class Form
     }
 
     /**
-     * public static function getInputTextfield( $css_text, $id, $name, $value, $alt_name, $maxlenght, $other_param ).
+     * public static function getTextfield( $css_text, $id, $name, $value, $alt_name, $maxlenght, $other_param ).
      *
      * @param string $css_text    the css class for the input element
      * @param string $id          the id of the element
@@ -219,7 +219,7 @@ class Form
     }
 
     /**
-     * public static function getSearchInputTextfield( $css_text, $id, $name, $value, $alt_name, $maxlenght, $other_param ).
+     * public static function getTextfield( $css_text, $id, $name, $value, $alt_name, $maxlenght, $other_param ).
      *
      * @param string $css_text    the css class for the input element
      * @param string $id          the id of the element

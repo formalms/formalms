@@ -1510,7 +1510,7 @@ class CourseAlms extends Model
     {
         $query = 'SELECT idCategory, path, lev'
             . ' FROM %lms_category'
-            . ' ORDER BY path';
+            . ' ORDER BY iLeft';
 
         $result = sql_query($query);
         $res = ['0' => 'root'];

@@ -1271,8 +1271,7 @@ class MessageModule implements Accessible
 		WHERE idMessage = '" . $_GET['id_message'] . "'"));
 
         if (!$filename) {
-            $lang = FormaLanguage::createInstance('message', 'lms');
-            $output = getErrorUi($lang->def('_FILE_NOT_EXISTS', 'standard'));
+            $output = getErrorUi('Sorry, such file does not exist!');
             cout($output, 'content');
 
             return;

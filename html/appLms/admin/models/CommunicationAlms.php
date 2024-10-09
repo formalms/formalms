@@ -498,7 +498,7 @@ class CommunicationAlms extends Model implements Accessible
             $objOut = new stdClass();
             $objOut->id = '';
             $objOut->level = 0;
-            $objOut->text = Lang::t('_ROOT', 'standard');
+            $objOut->text = Lang::t('_NO_OPTION', 'commnication');
             $output[] = $objOut;
         }
 

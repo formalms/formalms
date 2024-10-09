@@ -297,8 +297,7 @@ class Module_Organization extends LmsModule
                     $back_url
                 );
             } else {
-                $lang = &FormaLanguage::createInstance('organization', 'lms');
-                exit($lang->def('_OPERATION_FAILUREPERMISSION'));
+                exit("You don't have permissions");
             }
 
             return;

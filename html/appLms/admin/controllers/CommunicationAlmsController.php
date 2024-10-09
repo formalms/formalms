@@ -285,8 +285,8 @@ class CommunicationAlmsController extends AlmsController
             $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangcode();
             foreach ($lang_codes as $lang_code) {
                 $data['langs'][$lang_code] = [
-                    'title' => (!empty($titles[$lang_code]) ? $titles[$lang_code] : Lang::t('_NOTITLE', 'standard')),
-                    'description' => (!empty($descriptions[$lang_code]) ? $descriptions[$lang_code] : ''),
+                    'title' => (isset($titles[$lang_code]) ? $titles[$lang_code] : ''),
+                    'description' => (isset($descriptions[$lang_code]) ? $descriptions[$lang_code] : ''),
                 ];
             }
         }

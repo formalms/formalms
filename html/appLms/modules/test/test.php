@@ -901,7 +901,7 @@ function defmodality()
         $has_categories = true;
         while (list($id_cat, $name_cat, $num_quest) = sql_fetch_row($res)) {
             if ($id_cat == 0) {
-                $name_cat = $lang->def('_NO_CATEGORIES');
+                $name_cat = $lang->def('_NO_CATEGORY');
             }
             $selected = $cat_info[$id_cat] ?? '0';
             $categories[$id_cat] = ['name' => $name_cat, 'total' => $num_quest, 'selected' => (int) $selected];

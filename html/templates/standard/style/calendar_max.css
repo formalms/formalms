@@ -46,7 +46,7 @@ a.addEventLink span{display:none;}
 .calendar td.time .colon{font-weight:bold;padding:0px 2px 0px 3px;}
 .calendar td.time span.hilite{background-color:#666677;border-color:#000000;color:#FFFFFF;}
 .calendar td.time span.active{background-color:#000000;border-color:#FF0000;color:#00FF00;}
-.eventForm .label{font-weight:bold;text-align:right;vertical-align:top;color:#333333;}
+.eventForm .label{font-weight:bold;text-align:right;vertical-align:top;}
 .eventForm .field{text-align:left;vertical-align:top;}
 .eventForm textarea{font-size:90%;height:100px;width:300px;}
 .eventForm input, .eventForm select{font-size:100%;}

@@ -140,7 +140,7 @@ class Util
         }
 
         if (!file_exists($path . $filename)) {
-            Util::fatal(Lang::t('_DOWNLOAD_FILE_NOT_EXISTS'));
+            Util::fatal('Error: the file that you are searching for no longer exists on the server.<br/>Please contact the system administrator');
         }
 
         $db = \FormaLms\db\DbConn::getInstance();
@@ -153,8 +153,7 @@ class Util
         //send file length info
         header('Content-Length:' . filesize($path . $filename));
         //content type forcing dowlad
-        require_once _base_ . '/lib/lib.mimetype.php';
-        header("Content-type: " . mimetype($ext) . "; charset=utf-8\n");
+        header("Content-type: application/download; charset=utf-8\n");
         //cache control
         header('Cache-control: private');
         //sending creation time
@@ -246,7 +245,7 @@ class Util
             if (!defined('IS_AJAX')) {
                 Util::jump_to(FormaLms\lib\Get::rel_path('lms') . '/index.php?modname=login&op=logout&msg=101');
             }
-            Util::fatal(Lang::t('_SECURITY_INVALID_REQUEST'));
+            Util::fatal('Security issue, the request seem invalid ! Try a new login and retry.');
         }
     }
 

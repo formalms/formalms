@@ -251,7 +251,7 @@ class ElearningLms extends Model
             natcasesort($output);
             $output = [0 => Lang::t('_ALL_CATEGORIES', 'standard')] + $output;
         } else {
-            $output[0] = Lang::t('_NO_CATEGORIES', 'standard');
+            $output[0] = Lang::t('_NO_CATEGORY', 'standard');
         }
 
         return $output;

@@ -45,7 +45,7 @@ function field_list()
     $field_select = ['all_field' => $lang->def('_ALL_FIELD_TYPE')];
     while (list($type_field) = sql_fetch_row($re_field)) {
         $field_av[] = $type_field;
-        $field_select[] = strip_tags($lang->def('_' . strtoupper($type_field)));
+        $field_select[] = $lang->def('_' . strtoupper($type_field));
     }
 
     $out->setWorkingZone('content');
@@ -170,7 +170,7 @@ function field_list()
     foreach ($field_av as $k => $type_field) {
         $select .= '<option value="' . $type_field . '"'
                 . ($type_field == $lat_type ? ' selected="selected"' : '') . '>'
-                . strip_tags($lang->def('_' . strtoupper($type_field))) . '</option>';
+                . $lang->def('_' . strtoupper($type_field)) . '</option>';
     }
 
     if ($del_perm) {
@@ -183,15 +183,13 @@ function field_list()
         $tb_field->addActionAdd(
                 $create_form->openForm('field_add', 'index.php?modname=field&amp;op=manage&amp;fo=create')
                 . $create_form->getHidden('back', 'back', $back_coded)
-                . '<div class="form_line_l">'
                 . '<label for="type_field">'
                 . '<img class="valing-middle" src="' . getPathImage() . 'standard/add.png" alt="' . $std_lang->def('_ADD') . '" />'
                 . ' ' . $lang->def('_ADD_NEW_FIELD') . '</label> '
-                . '<select id="type_field" name="type_field" class="form-control dropdown">'
+                . '<select id="type_field" name="type_field">'
                 . $select
                 . '</select> '
                 . $filter->getButton('new_field', 'new_field', $std_lang->def('_CREATE'), 'button_nowh')
-                . '</div>'
                 . $filter->closeForm()
         );
     }

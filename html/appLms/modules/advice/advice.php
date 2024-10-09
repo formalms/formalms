@@ -109,7 +109,7 @@ function adviceList()
                 . '<img src="' . getPathImage() . 'standard/msg_read.png" alt="' . $lang->def('_ALT_ARCHIVE') . '" /> ' . $lang->def('_ALT_ARCHIVE') . '</a></li>');
             if ($mod_perm) {
                 $out->add('<li><a class="ico-wt-sprite subs_users" href="index.php?modname=advice&amp;op=modreader&amp;id_advice=' . $idA . '&amp;load=1" title="' . $lang->def('_VIEW_PERMISSION') . ' : ' . $title . '">'
-                    . '<span>' . $lang->def('_ASSIGN_USERS') . '</span></a></li>'
+                    . '<span>' . $lang->def('_MOD') . '</span></a></li>'
                     . '<li><a class="ico-wt-sprite subs_mod" href="index.php?modname=advice&amp;op=modadvice&amp;idAdvice=' . $idA . '" title="' . $lang->def('_MOD') . ' : ' . $title . '">'
                     . '<span>' . $lang->def('_MOD') . '</span></a></li>'
                     . '<li><a class="ico-wt-sprite subs_del" href="index.php?modname=advice&amp;op=deladvice&amp;idAdvice=' . $idA . '" title="' . $lang->def('_DEL') . ' : ' . $title . '">'
@@ -331,7 +331,7 @@ function insadvice()
     }
     
     // Fix Vulnerability CVE-2023-46693
-    $_REQUEST['title'] = FormaLms\lib\Get::filter($_REQUEST['title'], DOTY_STRING);
+    $_REQUEST['title'] = FormaLms\lib\Get::filter($_REQUEST['title'], DOTY_ALPHANUM);
 
     $queryIns = '
 		INSERT INTO ' . $GLOBALS['prefix_lms'] . "_advice

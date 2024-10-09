@@ -293,9 +293,9 @@ class CoursestatsLmsController extends LmsController
                         if ($record->lo_status[$idOrg] === 'completed') {
                             $row['lo_' . $idOrg] = Lang::t('_COMPLETED', 'standard');
                         } elseif ($record->lo_status[$idOrg] == 'passed') {
-                            $row['lo_' . $idOrg] = Lang::t('_PASSED', 'standard');
+                            $row['lo_' . $idOrg] = Lang::t('passed', 'standard');
                         } elseif ($record->lo_status[$idOrg] == 'failed') {
-                            $row['lo_' . $idOrg] = Lang::t('_FAILED', 'standard');
+                            $row['lo_' . $idOrg] = Lang::t('failed', 'standard');
                         } else {
                             $row['lo_' . $idOrg] = Lang::t($record->lo_status[$idOrg], 'standard');
                         }
