@@ -106,19 +106,20 @@ class CourseReportManager
 
         $test_info = $test_man->getTestInfo($id_tests);
         $insertParams = [];
-        $insertParam['idCourse'] = $this->idCourse;
+        $insertParams['idCourse'] = $this->idCourse;
 
         foreach ($id_tests as $id_test => $title) {
             $insertParams['max_score'] = $test_man->getMaxScore($id_test);
             $insertParams['title'] =  $test_info[$id_test]['title'];
             $insertParams['required_score'] = $test_man->getRequiredScore($id_test);
-            $insertParams['required_score'] = '100';
+            $insertParams['weight'] = '100';
             $insertParams['show_to_user'] = $test_info[$id_test]['show_score'] == 1 || $test_info[$id_test]['show_score_cat'] == 1 ? 'true' : 'false';
             $insertParams['use_for_final'] = 'true';
             $insertParams['source_of'] = 'test';
             $insertParams['idSource'] = $id_test;
             $insertParams['sequence'] = $from_sequence++;
             $query_test = CoursereportLms::getInsertQueryCourseReportAsForeignKey($insertParams);
+     
             sql_query($query_test);
         }
     }

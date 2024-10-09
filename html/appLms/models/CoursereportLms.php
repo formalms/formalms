@@ -351,7 +351,7 @@ class CoursereportLms extends Model
         WHERE EXISTS (
             SELECT 1
             FROM %lms_organization 
-            WHERE idResource = "'.$params['source_of'].'"
+            WHERE idResource = "'.$params['idSource'].'"
             AND idCourse = '.$params['idCourse'].'
         )';
     }
