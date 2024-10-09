@@ -308,7 +308,7 @@ class AggregatedcertificateAlmsController extends AlmsController
 
         $page_title = [
             'index.php?r=alms/' . $this->controller_name . '/' . $this->op['layout'] => Lang::t('_TITLE_META_CERTIFICATE', 'certificate') . ':&nbsp;' . $this->cert_name,
-            ($edit ? Lang::t('_MOD') : Lang::t('_NEW')),
+            ($edit ? Lang::t('_MOD') : Lang::t('_NEW_CERTIFICATE', 'certificate')),
         ];
 
         if ($edit && $this->id_certificate !== 0) {
