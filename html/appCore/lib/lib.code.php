@@ -112,7 +112,7 @@ class CodeManager
     {
         $query = 'INSERT INTO ' . $this->_getCodeGroupsTable()
                     . ' (title, description)'
-                    . " VALUES ('" . $title . "', '" . $description . "')";
+                    . " VALUES ('" . (!empty($title) ? $title : Lang::t('_NOTITLE', 'standard')) . "', '" . $description . "')";
 
         return sql_query($query);
     }
@@ -134,7 +134,7 @@ class CodeManager
     public function updateCodeGroup($id_code_group, $title, $description)
     {
         $query = 'UPDATE ' . $this->_getCodeGroupsTable()
-                    . " SET title = '" . $title . "',"
+                    . " SET title = '" . (!empty($title) ? $title : Lang::t('_NOTITLE', 'standard')) . "',"
                     . " description = '" . $description . "'"
                     . " WHERE idCodeGroup = '" . $id_code_group . "'";
 

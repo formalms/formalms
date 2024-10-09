@@ -69,7 +69,7 @@ function groupCodeList()
             FormaLms\lib\Get::sprite('subs_csv', Lang::t('_CODE', 'course')),
             FormaLms\lib\Get::sprite('subs_add', Lang::t('_GENERATE_CODE', 'course')),
             FormaLms\lib\Get::sprite('subs_import', Lang::t('_IMPORT', 'course')),
-            FormaLms\lib\Get::sprite('subs_elem', Lang::t('_COURSES', 'course')),
+            FormaLms\lib\Get::sprite('subs_elem', Lang::t('_ASSIGN_COURSES', 'course')),
             FormaLms\lib\Get::sprite('subs_users', Lang::t('_ASSIGN_USERS', 'course')),
             FormaLms\lib\Get::sprite('subs_mod', Lang::t('_MOD', 'course')),
             FormaLms\lib\Get::sprite('subs_del', Lang::t('_DEL', 'course')), ];
@@ -96,7 +96,7 @@ function groupCodeList()
 
             $cont[] = '<a href="index.php?modname=code&amp;op=import_code&amp;id_code_group=' . $group_code_info['id_code_group'] . '">' . FormaLms\lib\Get::sprite('subs_import', Lang::t('_IMPORT', 'course')) . '</a>';
 
-            $cont[] = '<a href="index.php?modname=code&amp;op=assign_course&amp;id_code_group=' . $group_code_info['id_code_group'] . '">' . FormaLms\lib\Get::sprite('subs_elem' . ($group_code_info['course_associated'] ? '' : '_grey'), Lang::t('_COURSES', 'course')) . '</a>';
+            $cont[] = '<a href="index.php?modname=code&amp;op=assign_course&amp;id_code_group=' . $group_code_info['id_code_group'] . '">' . FormaLms\lib\Get::sprite('subs_elem' . ($group_code_info['course_associated'] ? '' : '_grey'), Lang::t('_ASSIGN_COURSES', 'course')) . '</a>';
 
             $cont[] = '<a href="index.php?modname=code&amp;op=assign_tree&amp;id_code_group=' . $group_code_info['id_code_group'] . '">' . FormaLms\lib\Get::sprite('subs_users' . ($group_code_info['folder_associated'] ? '' : '_grey'), Lang::t('_ASSIGN_USERS', 'course')) . '</a>';
 
@@ -107,8 +107,8 @@ function groupCodeList()
             $tb->addBody($cont);
         }
 
-        $tb->addActionAdd('<a href="index.php?modname=code&amp;op=add_group_code">'
-                . '<img src="' . getPathImage() . 'standard/add.png" alt="' . $lang->def('_ADD') . '" />' . $lang->def('_ADD') . '</a>');
+        $tb->addActionAdd('<a class="ico-wt-sprite subs_add" title="' . $lang->def('_ADD') . '" href="index.php?modname=code&amp;op=add_group_code">'
+                . '<span>' . $lang->def('_ADD') . '</span></a>');
 
         cout($tb->getTable()
                 . $tb->getNavBar($ini, $tot_group_code));
@@ -117,8 +117,8 @@ function groupCodeList()
     } else {
         cout($lang->def('_NO_CONTENT')
                 . '<br/>'
-                . '<a href="index.php?modname=code&amp;op=add_group_code">'
-                . '<img src="' . getPathImage() . 'standard/add.png" alt="' . $lang->def('_ADD') . '" />' . $lang->def('_ADD') . '</a>');
+                . '<a class="ico-wt-sprite subs_add" title="' . $lang->def('_ADD') . '" href="index.php?modname=code&amp;op=add_group_code">'
+                . '<span>' . $lang->def('_ADD') . '</span></a>');
     }
 
     cout('</div>');
@@ -234,7 +234,7 @@ function codeList()
 
     cout('<div class="quick_search_form">'
             . Form::openForm('code_list_filter', 'index.php?modname=code&amp;op=code_list&amp;id_code_group=' . $id_code_group)
-            . Form::getInputTextfield('search_t', 'code_filter', 'code_filter', (isset($_POST['code_filter']) ? $_POST['code_filter'] : ''), '', 255, '')
+            . Form::getInputTextfield('search_t', 'code_filter', 'code_filter', (isset($_POST['code_filter']) ? $_POST['code_filter'] : ''), '', 255, 'placeholder="' . Lang::t('_SEARCH', 'standard') . '"')
             . Form::getButton('filter', 'filter', Lang::t('_SEARCH', 'standard'), 'search_b')
             . Form::getButton('undo_filter', 'undo_filter', Lang::t('_RESET', 'standard'), 'reset_b')
             . Form::closeForm()
@@ -322,8 +322,8 @@ function codeList()
             $tb->addBody($cont);
         }
 
-        $tb->addActionAdd('<a href="index.php?modname=code&amp;op=add_code&amp;id_code_group=' . $id_code_group . '">'
-                . '<img src="' . getPathImage() . 'standard/add.png" alt="' . $lang->def('_ADD') . '" />' . $lang->def('_ADD') . '</a>');
+        $tb->addActionAdd('<a class="ico-wt-sprite subs_add" title="' . $lang->def('_ADD') . '" href="index.php?modname=code&amp;op=add_code&amp;id_code_group=' . $id_code_group . '">'
+                . '<span>' . $lang->def('_ADD') . '</span></a>');
 
         $tb->addActionAdd('<a class="ico-wt-sprite subs_xls" title="' . Lang::t('_EXPORT_XLS', 'report') . '" '
                 . 'href="index.php?modname=code&amp;op=export&amp;id_code_group=' . $id_code_group . '&amp;format=xls">'
@@ -340,8 +340,8 @@ function codeList()
     } else {
         cout($lang->def('_NO_CODE_FOUND')
                 . '<br/>'
-                . '<a href="index.php?modname=code&amp;op=add_code&amp;id_code_group=' . $id_code_group . '">'
-                . '<img src="' . getPathImage() . 'standard/add.png" alt="' . $lang->def('_ADD') . '" />' . $lang->def('_ADD') . '</a>');
+                . '<a class="ico-wt-sprite subs_add" title="' . $lang->def('_ADD') . '" href="index.php?modname=code&amp;op=add_code&amp;id_code_group=' . $id_code_group . '">'
+                . '<span>' . $lang->def('_ADD') . '</span></a>');
     }
 
     cout('<br/><br/>'

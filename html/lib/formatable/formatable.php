@@ -302,8 +302,8 @@ $date_picker_param = 'data-provide="datepicker" data-date-autoclose=true data-da
                                     edit_form.append('<input type="' + (_thisColumn.edit.type || 'text') + '" name="new_value" value="' + cell.data() + '">');
                                 }
                                 edit_form.append('<div class="button-container">');
-                                edit_form.find('.button-container').append('<button type="submit" class="btn btn-primary ft-edit-save">Save</button>');
-                                edit_form.find('.button-container').append('<button type="reset" class="btn btn-default ft-edit-cancel">Cancel</button>');
+                                edit_form.find('.button-container').append('<button type="submit" class="btn btn-primary ft-edit-save"><?php echo Lang::t('_DASHBOARD_SETTING_SAVE', 'dashboardsetting'); ?></button>');
+                                edit_form.find('.button-container').append('<button type="reset" class="btn btn-default ft-edit-cancel"><?php echo Lang::t('_CANCEL', 'standard'); ?></button>');
                                 $(this).append(edit_form);
                             }
                         }
