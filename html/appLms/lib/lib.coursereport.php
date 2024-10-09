@@ -105,20 +105,20 @@ class CourseReportManager
         sql_query($query_seq);
 
         $test_info = $test_man->getTestInfo($id_tests);
+        $insertParams = [];
+        $insertParam['idCourse'] = $this->idCourse;
+
         foreach ($id_tests as $id_test => $title) {
-            $query_test = "
-			INSERT IGNORE INTO %lms_coursereport 
-			( id_course, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source, sequence ) VALUES (
-				'" . $this->idCourse . "',
-				'" . $test_man->getMaxScore($id_test) . "', 
-				'" . $test_man->getRequiredScore($id_test) . "',
-				'100',
-				'" . ($test_info[$id_test]['show_score'] == 1 || $test_info[$id_test]['show_score_cat'] == 1 ? 'true' : 'false') . "',
-				'true',
-				'test',
-				'" . $id_test . "',
-				'" . $from_sequence++ . "'
-			)";
+            $insertParams['max_score'] = $test_man->getMaxScore($id_test);
+            $insertParams['title'] =  $test_info[$id_test]['title'];
+            $insertParams['required_score'] = $test_man->getRequiredScore($id_test);
+            $insertParams['required_score'] = '100';
+            $insertParams['show_to_user'] = $test_info[$id_test]['show_score'] == 1 || $test_info[$id_test]['show_score_cat'] == 1 ? 'true' : 'false';
+            $insertParams['use_for_final'] = 'true';
+            $insertParams['source_of'] = 'test';
+            $insertParams['idSource'] = $id_test;
+            $insertParams['sequence'] = $from_sequence++;
+            $query_test = CoursereportLms::getInsertQueryCourseReportAsForeignKey($insertParams);
             sql_query($query_test);
         }
     }

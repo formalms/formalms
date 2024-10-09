@@ -2158,21 +2158,15 @@ class CoursereportLmsController extends LmsController
             if (!$re_check['error']) {
                 if ($id_report == 0) {
                     $numero = $this->courseReportManager->getNextSequence();
-                    $query_ins_report = "
-				INSERT IGNORE INTO %lms_coursereport
-				( id_course, title, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source, sequence ) VALUES (
-					'" . $this->idCourse . "',
-					'" . $_POST['title'] . "',
-					'0',
-					'0',
-					'" . $_POST['weight'] . "',
-					'" . $_POST['show_to_user'] . "',
-					'" . $_POST['use_for_final'] . "',
-					'" . $_POST['source_of'] . "',
-					'" . $_POST['id_source'] . "',
-					'" . $numero . "'
-				)";
-                    echo $query_ins_report;
+
+                    $insertParams = $_POST;
+                    $insertParams['idCourse'] = $this->idCourse;
+                    $insertParams['sequence'] = $numero;
+                    $insertParams['idSource'] = $_POST['id_source'];
+                    $insertParams['max_score'] = 0;
+                    $insertParams['required_score'] = 0;
+                    $query_ins_report = CoursereportLms::getInsertQueryCourseReportAsForeignKey($insertParams);
+                    
 
                     $re = sql_query($query_ins_report);
                 } else {

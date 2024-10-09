@@ -148,9 +148,10 @@ class CoursereportLms extends Model
             $tot_report = 0;
         }
 
-        $query_tests = 'SELECT id_report, id_source '
-            . ' FROM %lms_coursereport '
-            . " WHERE id_course = '" . $this->idCourse . "' AND source_of = '" . self::SOURCE_OF_TEST . "'";
+        $query_tests = 'SELECT cr.id_report, cr.id_source '
+            . ' FROM %lms_coursereport cr '
+            . ' RIGHT JOIN %lms_organization lo ON lo.idResource = cr.id_source AND lo.idCourse = ' . $this->idCourse 
+            . ' WHERE cr.id_course = ' . $this->idCourse . ' AND cr. source_of = "' . self::SOURCE_OF_TEST . '"';
 
         $re_tests = sql_query($query_tests);
 
@@ -185,25 +186,26 @@ class CoursereportLms extends Model
 
         $report_man->updateTestReport($org_tests);
 
-        $query_report = "SELECT id_report FROM %lms_coursereport WHERE id_course = '" . $this->idCourse . "'";
+        $query_report = "SELECT cr.id_report FROM %lms_coursereport cr RIGHT JOIN %lms_organization lo ON lo.idResource = cr.id_source AND lo.idCourse = '" . $this->idCourse . "' WHERE cr.id_course = '" . $this->idCourse . "'";
 
         if (!is_null($this->idReport)) {
-            $query_report .= " AND id_report = '" . $this->idReport . "'";
+            $query_report .= " AND cr.id_report = '" . $this->idReport . "'";
         }
 
         if (!is_null($this->sourceOf)) {
             if (is_array($this->sourceOf)) {
-                $query_report .= " AND source_of IN ('" . implode("','", $this->sourceOf) . "')";
+                $query_report .= " AND cr.source_of IN ('" . implode("','", $this->sourceOf) . "')";
             } else {
-                $query_report .= " AND source_of = '" . $this->sourceOf . "'";
+                $query_report .= " AND cr.source_of = '" . $this->sourceOf . "'";
             }
         }
 
         if (!is_null($this->idSource)) {
-            $query_report .= " AND id_source = '" . $this->idSource . "'";
+            $query_report .= " AND cr.id_source = '" . $this->idSource . "'";
         }
 
-        $query_report .= ' ORDER BY sequence ';
+        $query_report .= ' ORDER BY cr.sequence ';
+   
 
         $re_report = sql_query($query_report);
 
@@ -318,5 +320,39 @@ class CoursereportLms extends Model
         }
 
         return $responseArray;
+    }
+
+    public static function getInsertQueryCourseReportAsForeignKey(array $params) : string {
+       
+        //non potendo mettere chiavi esterne mettiamo la tabella dual che permette di estrarre da 
+        //una tabella non esistente sul db dove applicare la condizione exists
+        return 'INSERT IGNORE INTO %lms_coursereport 
+                        (id_course, 
+                        title,
+                        max_score, 
+                        required_score, 
+                        weight, 
+                        show_to_user, 
+                        use_for_final, 
+                        source_of, 
+                        id_source, 
+                        sequence)
+        SELECT "'.$params['idCourse'].'",
+                "'.$params['title'].'",
+                "'.$params['max_score'].'",
+                "'.$params['required_score'].'",
+                "'.$params['weight'].'",
+                "'.$params['show_to_user'].'",
+                "'.$params['use_for_final'].'",
+                "'.$params['source_of'].'",
+                "'.$params['idSource'].'",
+                "'.$params['sequence'].'"
+        FROM dual
+        WHERE EXISTS (
+            SELECT 1
+            FROM %lms_organization 
+            WHERE idResource = "'.$params['source_of'].'"
+            AND idCourse = '.$params['idCourse'].'
+        )';
     }
 }

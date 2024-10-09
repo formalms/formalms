@@ -348,14 +348,11 @@ function duplicateCourse()
         if (!isset($array_organization[$list_selmenun['id_source']]) or $array_organization[$list_selmenun['id_source']] == '') {
             $array_organization[$list_selmenun['id_source']] = 0;
         }
-        $query_dupmen = 'INSERT IGNORE INTO
-		' . $GLOBALS['prefix_lms'] . "_coursereport
-		(id_course,title,max_score,required_score,weight,show_to_user,use_for_final,sequence,source_of,id_source)
-		VALUES
-		('" . $new_course_dup . "', '" . $list_selmenun['title'] . "', '" . $list_selmenun['max_score'] . "',
-		'" . $list_selmenun['required_score'] . "', '" . $list_selmenun['weight'] . "', '" . $list_selmenun['show_to_user'] . "', '" . $list_selmenun['use_for_final'] . "', '" . $list_selmenun['sequence'] . "', '" . $list_selmenun['source_of'] . "', '" . $array_organization[$list_selmenun['id_source']] . "')";
-        $sql2 = $query_dupmen;
-        $result_dupmen = sql_query($query_dupmen);
+        $list_selmenun['idCourse'] = $new_course_dup;
+        $list_selmenun['idSource'] = $array_organization[$list_selmenun['id_source']];
+        $query_dupmen = CoursereportLms::getInsertQueryCourseReportAsForeignKey($list_selmenun);
+
+        sql_query($query_dupmen);
     }
 
     $query_selmenun = 'SELECT *

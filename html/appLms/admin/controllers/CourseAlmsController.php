@@ -1042,19 +1042,18 @@ class CourseAlmsController extends AlmsController
                             break;
                         default:
                     }
+                    
+                    $newOrg['idCourse'] = $newCourseId;
+                    $newOrg['idSource'] = $idSourceValue;
 
-                    $insertQueryList[] = "('" . $newCourseId . "', '" . sql_escape_string($newOrg['title']) . "', '" . $newOrg['max_score'] . "',
-						'" . $newOrg['required_score'] . "', '" . $newOrg['weight'] . "', '" . $newOrg['show_to_user'] . "',
-						'" . $newOrg['use_for_final'] . "', '" . $newOrg['sequence'] . "', '" . $newOrg['source_of'] . "',
-						'" . $idSourceValue . "')";
+
                 }
 
-                $result_dupman = true;
-                if (!empty($insertQueryList)) {
-                    $query = 'INSERT IGNORE INTO %lms_coursereport
-						(id_course,title,max_score,required_score,weight,show_to_user,use_for_final,sequence,source_of,id_source)
-						VALUES ' . implode(',', $insertQueryList);
-                    $menuDuplicated = sql_query($query);
+                if (!empty($newOrg)) {
+
+                    $query = CoursereportLms::getInsertQueryCourseReportAsForeignKey($newOrg);
+                    
+                    sql_query($query);
                 }
                 //--- end coursereports ------------------------------------------------
 
