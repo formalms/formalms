@@ -222,6 +222,11 @@ class UserselectorAdmController extends AdmController
             }
         }
 
+        //filtro la selezione da eventuali valori mandati vuoti
+        $selection = array_filter($selection, function($value) {
+            return !empty($value); 
+        });
+
         $result = $this->multiUserSelector->associate($instanceId, $selection);
         $this->multiUserSelector->postProcess(compact('allIdst', 'instanceId', 'selection'));
 
