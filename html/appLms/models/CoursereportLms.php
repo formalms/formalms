@@ -150,7 +150,7 @@ class CoursereportLms extends Model
 
         $query_tests = 'SELECT cr.id_report, cr.id_source '
             . ' FROM %lms_coursereport cr '
-            . ' RIGHT JOIN %lms_organization lo ON lo.idResource = cr.id_source AND lo.idCourse = ' . $this->idCourse 
+            . ' RIGHT JOIN %lms_organization lo ON lo.idResource = cr.id_source AND lo.idCourse = ' . $this->idCourse
             . ' WHERE cr.id_course = ' . $this->idCourse . ' AND cr. source_of = "' . self::SOURCE_OF_TEST . '"';
 
         $re_tests = sql_query($query_tests);
@@ -186,27 +186,40 @@ class CoursereportLms extends Model
 
         $report_man->updateTestReport($org_tests);
 
-        $query_report = "SELECT cr.id_report FROM %lms_coursereport cr RIGHT JOIN %lms_organization lo ON lo.idResource = cr.id_source AND lo.idCourse = '" . $this->idCourse . "' WHERE cr.id_course = '" . $this->idCourse . "'";
+        $query_report = "SELECT tbl.* FROM ((SELECT cr.id_report, cr.sequence FROM %lms_coursereport cr 
+                        RIGHT JOIN %lms_organization lo ON lo.idResource = cr.id_source 
+                        AND lo.idCourse = '" . $this->idCourse . "' 
+                        WHERE cr.id_course = '" . $this->idCourse . "' AND (cr.source_of = '" . self::SOURCE_OF_TEST . "' OR cr.source_of = '" . self::SOURCE_OF_SCOITEM . "'))
+                        UNION 
+                        (SELECT cr.id_report, cr.sequence FROM %lms_coursereport cr  
+                        WHERE cr.id_course = '" . $this->idCourse . "'
+                        AND cr.source_of NOT IN ('" . self::SOURCE_OF_TEST . "','" . self::SOURCE_OF_SCOITEM . "'))) tbl";
 
+
+        if (!is_null($this->idReport) || !is_null($this->sourceOf) || !is_null($this->idSource)) {
+            $query_report .= " WHERE 1";
+        }
+        
         if (!is_null($this->idReport)) {
-            $query_report .= " AND cr.id_report = '" . $this->idReport . "'";
+            $query_report .= " AND tbl.id_report = '" . $this->idReport . "'";
         }
 
         if (!is_null($this->sourceOf)) {
             if (is_array($this->sourceOf)) {
-                $query_report .= " AND cr.source_of IN ('" . implode("','", $this->sourceOf) . "')";
+                $query_report .= " AND tbl.source_of IN ('" . implode("','", $this->sourceOf) . "')";
             } else {
-                $query_report .= " AND cr.source_of = '" . $this->sourceOf . "'";
+                $query_report .= " AND tbl.source_of = '" . $this->sourceOf . "'";
             }
         }
 
         if (!is_null($this->idSource)) {
-            $query_report .= " AND cr.id_source = '" . $this->idSource . "'";
+            $query_report .= " AND tbl.id_source = '" . $this->idSource . "'";
         }
 
-        $query_report .= ' ORDER BY cr.sequence ';
-   
+        $query_report .= ' ORDER BY tbl.sequence ';
 
+
+        //echo($query_report); exit;
         $re_report = sql_query($query_report);
 
         foreach ($re_report as $infoReport) {
@@ -322,8 +335,9 @@ class CoursereportLms extends Model
         return $responseArray;
     }
 
-    public static function getInsertQueryCourseReportAsForeignKey(array $params) : string {
-       
+    public static function getInsertQueryCourseReportAsForeignKey(array $params): string
+    {
+
         //non potendo mettere chiavi esterne mettiamo la tabella dual che permette di estrarre da 
         //una tabella non esistente sul db dove applicare la condizione exists
         return 'INSERT IGNORE INTO %lms_coursereport 
@@ -337,22 +351,22 @@ class CoursereportLms extends Model
                         source_of, 
                         id_source, 
                         sequence)
-        SELECT "'.$params['idCourse'].'",
-                "'.$params['title'].'",
-                "'.$params['max_score'].'",
-                "'.$params['required_score'].'",
-                "'.$params['weight'].'",
-                "'.$params['show_to_user'].'",
-                "'.$params['use_for_final'].'",
-                "'.$params['source_of'].'",
-                "'.$params['idSource'].'",
-                "'.$params['sequence'].'"
+        SELECT "' . $params['idCourse'] . '",
+                "' . $params['title'] . '",
+                "' . $params['max_score'] . '",
+                "' . $params['required_score'] . '",
+                "' . $params['weight'] . '",
+                "' . $params['show_to_user'] . '",
+                "' . $params['use_for_final'] . '",
+                "' . $params['source_of'] . '",
+                "' . $params['idSource'] . '",
+                "' . $params['sequence'] . '"
         FROM dual
         WHERE EXISTS (
             SELECT 1
             FROM %lms_organization 
-            WHERE idResource = "'.$params['idSource'].'"
-            AND idCourse = '.$params['idCourse'].'
+            WHERE idResource = "' . $params['idSource'] . '"
+            AND idCourse = ' . $params['idCourse'] . '
         )';
     }
 }
