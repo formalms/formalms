@@ -497,6 +497,7 @@ a.btn.btn-default {
   border-color: transparent !important;
   &:hover {
     color:  var(--color-action-button-text);
+    border: 1px solid transparent !important;
   }
   &:active {
     color:  var(--color-action-button-text);
