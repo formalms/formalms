@@ -605,8 +605,6 @@ class onecolPageWriter extends PageWriter
         $this->addStart('<ul id="blind_navigation" class="container-blindnav">', 'blind_navigation');
         $this->addEnd('</ul>' . "\n", 'blind_navigation');
 
-        $this->addStart('<div id="feedback" class="container-feedback">', 'feedback');
-        $this->addEnd('</div>' . "\n", 'feedback');
         /*
         $browser_code = \FormaLms\lib\Forma::langManager()->getLanguageBrowsercode(getLanguage());
         $pos = strpos($browser_code, ';');

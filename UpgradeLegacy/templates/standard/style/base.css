@@ -1826,3 +1826,6 @@ ul.tabs li.current{
     border: none;
 }
 
+.container-feedback span.ico-sprite {
+    margin-right: 4px;
+}
