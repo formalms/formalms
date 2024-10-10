@@ -297,9 +297,10 @@
               content: "";
               width: 30px;
               height: 30px;
-              -webkit-mask-image: url("#{$assets}images/icons/user-panel/icon--up-close.svg");
+              // -webkit-mask-image: url("#{$assets}images/icons/user-panel/icon--up-close.svg");
+              background-image: url("#{$assets}images/icons/user-panel/icon--up-close.png");
               background-color: var(--color-grey-04);
-              -webkit-mask-size: contain;
+              // -webkit-mask-size: contain;
             }
           }
         }
@@ -320,9 +321,10 @@
             top: 7px;
             right: 3px;
             left: inherit;
-            -webkit-mask-image: url("#{$assets}images/icons/user-panel/icon--up-logout.svg");
-            -webkit-mask-size: contain;
-            background-color: var(--color-grey-04);
+            /* -webkit-mask-image: url("#{$assets}images/icons/user-panel/icon--up-logout.svg");
+            -webkit-mask-size: contain; */
+            background-image: url("#{$assets}images/icons/user-panel/icon--up-logout.png");
+            // background-color: var(--color-grey-04);
           }
         }
       }

@@ -86,6 +86,9 @@ html, body {}
 .sm-forma a.disabled {
   color: #cccccc;
 }
+.sm-forma a i.fa {
+  padding-right: 4px;
+}
 .sm-forma a span.sub-arrow {
   position: absolute;
   top: 50%;

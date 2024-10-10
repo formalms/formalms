@@ -65,7 +65,7 @@ class FolderView extends LearningView {
         });
 		
        _this.container.addEventListener('keydown', (e) => {
-			if (event.keyCode === 13) {
+			if (e.keyCode === 13) {
 				_this.triggerDblClick(e);
 			}	
 		});					
@@ -298,6 +298,9 @@ class FolderView extends LearningView {
             }
             if (el.classList.contains('fv-is-copy')) {
                 li.classList.add('is-ready-for-copy');
+            }
+            if (el.classList.contains('fv-is-menu-close')) {
+                li.classList.remove('fv-is-selected');
             }
         }
     }
