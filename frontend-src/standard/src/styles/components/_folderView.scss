@@ -39,6 +39,14 @@
 
   .folderView__copyOverlay__content & {
     height: 48px;
+
+    &:hover {
+      background-color: rgba(0,0,0,.1);
+    }
+  
+    &:last-child {
+      border-bottom: none;
+    }
   }
 
   &:focus-within {
@@ -388,7 +396,7 @@ a.fv-is-delete {
 
 .folderView__copyOverlay__close {
   position: absolute;
-  top: 0;
+  // top: 0;
   right: 0;
   background: {
     image: url('images/folderView/icon-delete.svg');

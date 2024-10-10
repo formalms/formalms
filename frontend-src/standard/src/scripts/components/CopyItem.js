@@ -9,10 +9,15 @@ class CopyItem {
 
       document.addEventListener('click', this.openOverlay);
       document.querySelector('.js-fv-close-overlay').addEventListener('click', () => {
-         this.closeOverlay();
+         _this.closeOverlay();
       });
-      document.addEventListener('keydown', () => {
-         if (event.key === 'Escape') {
+      document.querySelector('.folderView__copyOverlay').addEventListener('click', (e) => {
+         if(e.target.classList.contains('folderView__copyOverlay')) {
+            _this.closeOverlay();
+          }
+      });
+      document.addEventListener('keydown', (e) => {
+         if (e.key === 'Escape') {
             _this.closeOverlay();
          }
       });
