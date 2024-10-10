@@ -187,7 +187,9 @@ class PDF extends TCPDF
             $cnt = count($pages);
             $index = 0;
 
-            $imagePath = realpath($GLOBALS['where_files_relative'] . '/appLms/certificate/' . $img);
+            $htmlFolderPath = dirname(__FILE__, 3);
+
+            $imagePath = $htmlFolderPath . '/' . _folder_files_ . '/appLms/certificate/' . $img;
             $imageType = '';
             if ($img != '' && file_exists($imagePath)) {
                 $mime_type = mime_content_type($imagePath);
