@@ -60,11 +60,12 @@
   right: 0;
   top: 50%;
   transform: translateY(-50%);
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   border: 1px solid #000;
   border-radius: 50%;
   cursor: pointer;
+  margin: 0 4px;
   background: {
     image: url('images/folderTree/icon-check.svg');
     repeat: no-repeat;
@@ -117,7 +118,7 @@
         &:last-child {
           border-bottom: none;
         }
-        
+
         a {
           color: #333;
         }
