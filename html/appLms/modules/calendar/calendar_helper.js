@@ -46,6 +46,8 @@ var WEEK = 7 * DAY;
 var ajax_failure = function(o) { alert('Unable to connect with the server.'); }
 
 function openEvent (year,month,day,id) {
+	if (YAHOO.util.Dom.get('progress_msg').innerHTML == _TT._PLS_WAIT) return;
+
 	if (mode=="view") {
 		showEvent(id);
 		return;
@@ -75,6 +77,8 @@ function openEvent (year,month,day,id) {
 }
 
 function showEvent(year,month,day,id) {
+	if (YAHOO.util.Dom.get('progress_msg').innerHTML == _TT._PLS_WAIT) return;
+	
 	if (evDisabled) return;
 	
 	eYear=year;
