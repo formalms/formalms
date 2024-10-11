@@ -142,8 +142,8 @@ li#up_modify_pwd a{padding:3px 0 7px 3px;}
 li#up_modify_policy a{padding:3px 0 7px 3px;}
 /* header with level 2 =======================================*/
 h2.up_type1{margin:0;padding:1px 4px;color:#fff;font-size:100%;letter-spacing:0.2em;background:#cccccc;}
-.up_left_block{float:left;width:48%;margin:4px 0 0 0;padding:1px 4px;font-size:83%;line-height:1.5em;}
-.up_left_block h3{margin:8px 4px 4px;padding:0;border-bottom:1px solid #cccccc;}
+.up_left_block{float:left;width:48%;margin:4px 0 0 4px;padding:1px 4px;font-size:83%;line-height:1.5em;}
+.up_left_block h3{margin:8px 0 4px;padding:0;border-bottom:1px solid #cccccc;}
 .up_left_block span.up_offline{}
 .up_left_block span.up_online{}
 .up_right_block{float:right;width:48%;margin:4px 0 0;padding:1px 4px;font-size:83%;}
@@ -157,10 +157,13 @@ h2.up_type1{margin:0;padding:1px 4px;color:#fff;font-size:100%;letter-spacing:0.
 p.up_middle_other_action{padding-top:10px;clear:both;font-size:83%;}
 a#up_goblog{float:left;width:48%;margin:4px 0;padding:0px 4px;color:#fff;font-weight:bold;text-align:right;text-decoration:none;letter-spacing:0.1em;}
 a#up_goblog:hover{text-decoration:underline; }
-a#up_gofriend{float:right;width:48%;margin:4px 0;padding:0px 4px;color:#fff;font-weight:bold;text-align:right;text-decoration:none;letter-spacing:0.1em;}
+a#up_gofriend{float:right;width:48%;margin:4px 0;padding:0px 4px;font-weight:bold;text-align:right;text-decoration:none;letter-spacing:0.1em;}
 a#up_gofriend:hover{text-decoration:underline; }
-p.up_last_view{clear:both;margin:12px 0;padding:4px 1px;font-size:83%;background:#fff;border-top:1px solid #cccccc;border-bottom:1px solid #cccccc;}
-p.up_last_view a.last_visit{color:#0c0;}
+p.up_middle_other_action + div.up_last_view{clear:both;}
+div.up_last_view{float:right;margin:12px 4px;padding:4px 1px;font-size:83%;background:#fff;}
+div.up_last_view h2{margin:4px 1px;padding:1px 1px 1px 4px;}
+div.up_last_view p{border-top:1px solid #ccc;border-bottom: 1px solid #ccc;padding: 4px 1px;}
+div.up_last_view p a.last_visit{color:#0c0;}
 /* user file =============================*/
 .up_box_files{margin:0px 8px 8px;padding:4px;font-size:83%;}
 .up_description{margin:8px;padding:4px;font-size:83%;background:#e3e9eb;border:1px solid #cccccc;}
