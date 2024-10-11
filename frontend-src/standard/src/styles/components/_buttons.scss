@@ -503,3 +503,8 @@ a.btn.btn-default {
     color:  var(--color-action-button-text);
   }
 }
+
+.dropdown.open .create-object-button {
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125) !important;
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125) !important;
+}
