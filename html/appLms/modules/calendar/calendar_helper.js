@@ -443,10 +443,12 @@ function viewEvent (ObjReq) {
 	buttns += '<input type="submit" value="'+_TT._CLOSE+'" onclick="enableCal();destroyWindow(\'wEvent\');return false;" />';
   */
 	var buttns=[];
-	buttns[buttns.length] = { text:_TT._MOD, handler: function(){
-		openEvent(this.cal_data.eYear, this.cal_data.eMonth, this.cal_data.eDay, this.cal_data.id);
-		this.destroy();
-	} };
+	if (CalEvents[k].editable) {
+		buttns[buttns.length] = { text:_TT._MOD, handler: function(){
+			openEvent(this.cal_data.eYear, this.cal_data.eMonth, this.cal_data.eDay, this.cal_data.id);
+			this.destroy();
+		} };
+	}
 	buttns[buttns.length] = { text: _TT._CLOSE, handler: function(){this.destroy();}, isDefault:true};
 	
 	var w = new YAHOO.widget.SimpleDialog("simpledialog_"+name, {
