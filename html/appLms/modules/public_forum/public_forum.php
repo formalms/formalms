@@ -453,8 +453,8 @@ function addforum()
         . getBackUi('index.php?modname=public_forum&amp;op=forum', Lang::t('_BACK'))
         . Form::openForm('addforumform', 'index.php?modname=public_forum&amp;op=insforum')
         . Form::openElementSpace()
-        . Form::getTextfield(Lang::t('_TITLE'), 'title', 'title', 255, Lang::t('_NOTITLE'))
-        . Form::getTextarea(Lang::t('_DESCRIPTION'), 'description', 'description', Lang::t('_DESCRIPTION'))
+        . Form::getTextfield(Lang::t('_TITLE'), 'title', 'title', 255, '')
+        . Form::getTextarea(Lang::t('_DESCRIPTION'), 'description', 'description', '')
         . Form::openFormLine()
 
         //.Form::getLabel('emoticons', $lang->def('_EMOTICONS'))
@@ -511,7 +511,7 @@ function insforum()
     checkPerm('add');
 
     $undo = FormaLms\lib\Get::pReq('undo', DOTY_MIXED, false);
-    $title = FormaLms\lib\Get::pReq('title', DOTY_STRING, Lang::t('_NOTITLE'));
+    $title = FormaLms\lib\Get::pReq('title', DOTY_STRING, '');
     $description = FormaLms\lib\Get::pReq('description', DOTY_MIXED, '');
     $emoticons = FormaLms\lib\Get::pReq('emoticons', DOTY_MIXED, '');
     $maxThreads = FormaLms\lib\Get::pReq('max_threads_per_user', DOTY_INT, 0);
@@ -519,6 +519,10 @@ function insforum()
 
     if ($undo !== false) {
         Util::jump_to('index.php?modname=public_forum&op=forum');
+    }
+
+    if ($title == '') {
+        $title = Lang::t('_NOTITLE');
     }
 
     // finding sequence
@@ -683,7 +687,7 @@ function upforum()
 
     $idForum = FormaLms\lib\Get::pReq('idForum', DOTY_INT, 0);
     $undo = FormaLms\lib\Get::pReq('undo', DOTY_MIXED, false);
-    $title = FormaLms\lib\Get::pReq('title', DOTY_STRING, Lang::t('_NOTITLE'));
+    $title = FormaLms\lib\Get::pReq('title', DOTY_STRING, '');
     $description = FormaLms\lib\Get::pReq('description', DOTY_MIXED, '');
     $emoticons = FormaLms\lib\Get::pReq('emoticons', DOTY_MIXED, '');
     $maxThreads = FormaLms\lib\Get::pReq('max_threads_per_user', DOTY_INT, 0);
@@ -691,6 +695,10 @@ function upforum()
 
     if ($undo !== false) {
         Util::jump_to('index.php?modname=public_forum&op=forum');
+    }
+
+    if ($title == '') {
+        $title = Lang::t('_NOTITLE');
     }
 
     $ins_query = '

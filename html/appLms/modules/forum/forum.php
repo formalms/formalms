@@ -454,8 +454,8 @@ function addforum()
         . getBackUi('index.php?modname=forum&amp;op=forum', $lang->def('_BACK'))
         . Form::openForm('addforumform', 'index.php?modname=forum&amp;op=insforum')
         . Form::openElementSpace()
-        . Form::getTextfield($lang->def('_TITLE'), 'title', 'title', 255, $lang->def('_NOTITLE'))
-        . Form::getTextarea($lang->def('_DESCRIPTION'), 'description', 'description', $lang->def('_DESCRIPTION'))
+        . Form::getTextfield($lang->def('_TITLE'), 'title', 'title', 255, '')
+        . Form::getTextarea($lang->def('_DESCRIPTION'), 'description', 'description', '')
         . Form::openFormLine()
         //.Form::getLabel('emoticons', $lang->def('_EMOTICONS'))
         //.'<select class="dropdown" id="emoticons" name="emoticons" '.$onchange.'>'
@@ -515,14 +515,18 @@ function insforum()
     $idCourse = $session->get('idCourse');
 
     $undo = FormaLms\lib\Get::pReq('undo', DOTY_MIXED, false);
-    $title = FormaLms\lib\Get::pReq('title', DOTY_STRING, Lang::t('_NOTITLE'));
+    $title = FormaLms\lib\Get::pReq('title', DOTY_STRING, '');
     $description = FormaLms\lib\Get::pReq('description', DOTY_MIXED, '');
     $emoticons = FormaLms\lib\Get::pReq('emoticons', DOTY_MIXED, '');
     $maxThreads = FormaLms\lib\Get::pReq('max_threads_per_user', DOTY_INT, 0);
     $allThreadsPrivate = FormaLms\lib\Get::pReq('all_threads_private', DOTY_INT, 0);
 
     if ($undo !== false) {
-        Util::jump_to('index.php?modname=public_forum&op=forum');
+        Util::jump_to('index.php?modname=forum&op=forum');
+    }
+
+    if ($title == '') {
+        $title = $lang->def('_NOTITLE', 'standard');
     }
 
     // finding sequence
@@ -545,6 +549,11 @@ function insforum()
         Util::jump_to('index.php?modname=forum&op=forum&result=err');
     }
 
+    // istance the course description class
+    if (!isset($GLOBALS['course_descriptor'])) {
+        require_once _lms_ . '/lib/lib.course.php';
+        $GLOBALS['course_descriptor'] = new FormaCourse($idCourse);
+    }
     $recipients = $GLOBALS['course_descriptor']->getSubscribed();
     if (!empty($recipients)) {
         require_once _base_ . '/lib/lib.eventmanager.php';
@@ -653,7 +662,7 @@ function upforum()
 
     $idForum = FormaLms\lib\Get::pReq('idForum', DOTY_INT, 0);
     $undo = FormaLms\lib\Get::pReq('undo', DOTY_MIXED, false);
-    $title = FormaLms\lib\Get::pReq('title', DOTY_STRING, Lang::t('_NOTITLE'));
+    $title = FormaLms\lib\Get::pReq('title', DOTY_STRING, '');
     $description = FormaLms\lib\Get::pReq('description', DOTY_MIXED, '');
     $emoticons = FormaLms\lib\Get::pReq('emoticons', DOTY_MIXED, '');
     $maxThreads = FormaLms\lib\Get::pReq('max_threads_per_user', DOTY_INT, 0);
@@ -661,7 +670,11 @@ function upforum()
 
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     if ($undo !== false) {
-        Util::jump_to('index.php?modname=public_forum&op=forum');
+        Util::jump_to('index.php?modname=forum&op=forum');
+    }
+
+    if ($title == '') {
+        $title = Lang::t('_NOTITLE', 'standard');
     }
 
     $ins_query = '
@@ -1464,7 +1477,7 @@ function insthread()
     }
 
     // Fix Vulnerability CVE-2023-46693
-    $_POST['title'] = FormaLms\lib\Get::filter($_POST['title'], DOTY_ALPHANUM);
+    $_POST['title'] = FormaLms\lib\Get::filter($_POST['title'], DOTY_STRING);
 
     $now = date('Y-m-d H:i:s');
     $important = importVar('important', true, '0');
