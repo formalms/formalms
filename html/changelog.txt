@@ -6,6 +6,12 @@ forma.lms 3.3.25
 ---------------------------------------------------------------------------------------
 Release date: 2024 october
 
+
+- #      - Update changelog
+- #      - fix query and update lms.sql
+- #      - Update version to 3.3.25
+- #      - fix api authentication not neded for explicit route
+- #      - fix org chart report
 - #      - Update 30323_db.sql
 - #      - Fix dashboard courses margin/padding
 - #      - Validate start/time and interval hours
