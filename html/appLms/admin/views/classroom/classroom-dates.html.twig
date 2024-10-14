@@ -234,7 +234,7 @@
                     </div>
                     <div class="form-outline">
                         <button class="btn btn-delete"
-                                id="js-classroom-dates-delete">{{ Lang_translate('_UNDO','course') }}</button>
+                                id="js-classroom-dates-delete">{{ Lang_translate('_BACK', 'course')|replace({'&lt;&lt; ': ''}) }}</button>
                         <button class="btn btn-save form-data-default"
                                 id="js-classroom-dates-save">{{ Lang_translate('_SAVE','course') }}</button>
                         <button class="btn btn-save hidden form-data-hours"
@@ -249,7 +249,7 @@
 
         <label for="sendCalendar">{{ Lang_translate('_SEND_CALENDAR', 'course') }}</label>:
         {{ Form_getInputCheckbox("sendCalendar", "sendCalendar", "1", courseInfo.sendCalendar,'') }}
-        {{ Form_getButton('js-back', 'undo', Lang_translate('_BACK', 'standard')) }}
+        {{ Form_getButton('js-undo', 'undo', Lang_translate('_BACK', 'course')|replace({'&lt;&lt; ': ''})) }}
         {{ Form_getButton('js-save', 'save', Lang_translate('_SAVE', 'course'),'','disabled') }}
         {{ Form_closeElementSpace() }}
 
