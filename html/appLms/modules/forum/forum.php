@@ -2382,10 +2382,15 @@ function showMessageForAdd($id_thread, $how_much)
 
     // Retriving level and number of post of th authors
     $re_num_post = sql_query('
-	SELECT u.idUser, u.level, COUNT(*)
-	FROM %lms_forummessage AS m, ' . $GLOBALS['prefix_lms'] . "_courseuser AS u
-	WHERE u.idCourse = '" . (int) $idCourse . "' AND m.author = u.idUser AND m.author IN ( " . implode(',', $authors) . ' )
-	GROUP BY u.idUser, u.level');
+        SELECT u.idUser, u.level, COALESCE(m.num_post, 0) AS num_post
+        FROM ' . $GLOBALS['prefix_lms'] . '_courseuser AS u
+        LEFT JOIN (
+            SELECT author, COUNT(*) AS num_post
+            FROM %lms_forummessage
+            WHERE idCourse = "' . (int) PUBLIC_FORUM_COURSE_ID . '"
+            GROUP BY author
+        ) AS m ON m.author = u.idUser
+        WHERE u.idUser IN ( ' . implode(',', $authors) . ' ) LIMIT 1');
     while (list($id_u, $level_u, $num_post_a) = sql_fetch_row($re_num_post)) {
         $authors_info[$id_u] = ['num_post' => $num_post_a, 'level' => $level_name[$level_u]];
     }
