@@ -295,7 +295,7 @@ class PageZoneLang extends PageZone
 							draggable: true,
 							hideaftersubmit: false,
 							isDynamic: true,
-							ajaxUrl: "/appCore/ajax.adm_server.php?r=adm/lang/translatemask",
+							ajaxUrl: "' . $GLOBALS['where_framework_relative'] . '/ajax.adm_server.php?r=adm/lang/translatemask",
 							confirmOnly: false,
 							directSubmit: false
 						};

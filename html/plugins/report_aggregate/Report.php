@@ -264,11 +264,11 @@ class Report extends \ReportPlugin
         YuiLib::load([
             'yahoo' => 'yahoo-min.js',
             'yahoo-dom-event' => 'yahoo-dom-event.js',
-            'element' => 'element-beta-min.js',
-            'datasource' => 'datasource-beta-min.js',
+            'element' => 'element-min.js',
+            'datasource' => 'datasource-min.js',
             'connection' => 'connection-min.js',
             'event' => 'event-min.js',
-            'json' => 'json-beta-min.js',
+            'json' => 'json-min.js',
         ], [
             '/assets/skins/sam' => 'skin.css',
         ]);

@@ -1171,7 +1171,7 @@ function thread()
                 $status = '<img src="' . getPathImage() . 'standard/msg_unread.png" alt="' . $lang->def('_UNREAD') . '" />';
                 $c_css = ' class="text_bold"';
             } else {
-                $status = '<img src="' . getPathImage() . 'standard/msg_read.png" alt="' . $lang->def('_FREE') . '" />';
+                $status = '<img src="' . getPathImage() . 'standard/msg_read.png" alt="' . $lang->def('_TITLE_READ', 'message') . '" />';
             }
             $content = [$status];
             $content_temp = ($erased && !$mod_perm ?
@@ -1587,7 +1587,7 @@ function modthread()
     [$id_message, $title, $textof, $author] = sql_fetch_row(sql_query($mess_query));
 
     if (!$moderate && !$mod_perm && ($author != \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
-        exit("You can't access");
+        exit($lang->def('_CANNOTENTER', 'forum'));
     }
 
     // Some info about forum and thread
@@ -1667,7 +1667,7 @@ function upthread()
     }
 
     if (!$moderate && !$mod_perm && ($author != \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
-        exit("You can't access");
+        exit($lang->def('_CANNOTENTER', 'forum'));
     }
 
     [$id_forum, $locked_t, $erased_t] = sql_fetch_row(sql_query('
@@ -1871,19 +1871,19 @@ function loadDistance($date)
     $distance = (int) ($distance / 60);
     //< 1 hour print minutes
     if (($distance >= 0) && ($distance < 60)) {
-        return $distance . ' ' . Lang::t('_MINUTES');
+        return $distance . ' ' . (($distance > 1) ? Lang::t('_MINUTES') : Lang::t('_MINUTE'));
     }
 
     //minutes -> hour
     $distance = (int) ($distance / 60);
     if (($distance >= 0) && ($distance < 60)) {
-        return $distance . ' ' . Lang::t('_HOURS');
+        return $distance . ' ' . (($distance > 1) ? Lang::t('_HOURS') : Lang::t('_HOUR'));
     }
 
     //hour -> day
     $distance = (int) ($distance / 24);
     if (($distance >= 0) && ($distance < 30)) {
-        return $distance . ' ' . Lang::t('_DAYS');
+        return $distance . ' ' . (($distance > 1) ? Lang::t('_DAYS') : Lang::t('_DAY'));
     }
 
     //echo > 1 month
@@ -2096,20 +2096,34 @@ function message()
 
         $msgtext .= '<a id="' . $id_message . '" name="' . $id_message . '"></a>';
 
+        $strip_text = strip_tags($message_info['textof']);
+
+        if ($message_info['attach'] != '') {
+            $msgtext .= '<div class="forum_post_attach">'
+                . '<a href="index.php?modname=forum&amp;op=download&amp;id=' . $id_message . '">'
+                . $lang->def('_ATTACHMENT') . ' : '
+                . '<img src="' . getPathImage() . mimeDetect($message_info['attach']) . '" alt="' . $lang->def('_ATTACHMENT') . '" /></a>'
+                . '</div>';
+        }
         $msgtext .= $lang->def('_DATE') . ' : ' . Format::date($message_info['posted'])
             . ' ( ' . loadDistance($message_info['posted']) . ' )'
             . '</div>';
         if ($message_info['locked']) {
             $msgtext .= '<div class="forum_post_locked">' . $lang->def('_LOCKEDMESS') . '</div>';
         } else {
-            if ($message_info['attach'] != '') {
-                $msgtext .= '<div class="forum_post_attach">'
-                    . '<a href="index.php?modname=forum&amp;op=download&amp;id=' . $id_message . '">'
-                    . $lang->def('_ATTACHMENT') . ' : '
-                    . '<img src="' . getPathImage() . mimeDetect($message_info['attach']) . '" alt="' . $lang->def('_ATTACHMENT') . '" /></a>'
-                    . '</div>';
-            }
-            $msgtext .= '<div class="forum_post_title">' . $lang->def('_SUBJECT') . ' : ' . $message_info['title'] . '</div>';
+            $msgtext .= '<div class="forum_post_title">' . $lang->def('_SUBJECT') . ' : ' . $message_info['title'];
+            
+            $strip_text = strip_tags($message_info['textof']);
+            $msgtext .= '<div class="tags align-right">'
+                . $tags->showTags($id_message,
+                    'tags-',
+                    $message_info['title'],
+                    substr($strip_text, 0, 200) . (strlen($strip_text) > 200 ? '...' : ''),
+                    'index.php?modname=forum&op=message&idThread=' . $id_thread . '&ini=' . $ini_page . '#' . $id_message)
+                . '</div>';
+                
+            $msgtext .= '</div>';
+
             $msgtext .= '<div class="forum_post_text">'
                 . str_replace('[quote]', '<blockquote class="forum_quote">', str_replace('[/quote]', '</blockquote>', $message_info['textof']))
                 . '</div>';
@@ -2128,15 +2142,6 @@ function message()
                     . Format::date($message_info['modified_by_on'])
                     . '</div>';
             }
-
-            $strip_text = strip_tags($message_info['textof']);
-            $msgtext .= '<div class="tags align-right">'
-                . $tags->showTags($id_message,
-                    'tags-',
-                    $message_info['title'],
-                    substr($strip_text, 0, 200) . (strlen($strip_text) > 200 ? '...' : ''),
-                    'index.php?modname=forum&op=message&idThread=' . $id_thread . '&ini=' . $ini_page . '#' . $id_message)
-                . '</div>';
         }
         $content = [$sender, $msgtext];
         $tb->addBody($content);
@@ -2276,7 +2281,7 @@ function message()
 function moderatemessage()
 {
     if (!checkPerm('moderate', true) && !checkPerm('mod', true)) {
-        exit("You can't access");
+        exit(Lang::t('_CANNOTENTER', 'forum'));
     }
 
     [$id_thread, $lock] = sql_fetch_row(sql_query('
@@ -2301,7 +2306,7 @@ function moderatemessage()
 function modstatusthread()
 {
     if (!checkPerm('moderate', true) && !checkPerm('mod', true)) {
-        exit("You can't access");
+        exit(Lang::t('_CANNOTENTER', 'forum'));
     }
 
     $id_thread = importVar('idThread', true, 0);
@@ -2328,7 +2333,7 @@ function modstatusthread()
 function changeerase()
 {
     if (!checkPerm('moderate', true) && !checkPerm('mod', true)) {
-        exit("You can't access");
+        exit(Lang::t('_CANNOTENTER', 'forum'));
     }
 
     $id_thread = importVar('idThread', true, 0);
@@ -2722,7 +2727,7 @@ function modmessage()
     [$id_thread, $title, $textof, $author] = sql_fetch_row(sql_query($mess_query));
 
     if (!$moderate && !$mod_perm && ($author != \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
-        exit("You can't access");
+        exit($lang->def('_CANNOTENTER', 'forum'));
     }
 
     // Some info about forum and thread
@@ -2805,7 +2810,7 @@ function upmessage()
     }
 
     if (!$moderate && !$mod_perm && ($author != \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
-        exit("You can't access");
+        exit($lang->def('_CANNOTENTER', 'forum'));
     }
 
     [$id_forum, $locked_t, $erased_t] = sql_fetch_row(sql_query('
@@ -2873,7 +2878,7 @@ function delmessage()
     [$id_thread, $title, $textof, $author, $file, $answer_tree] = sql_fetch_row(sql_query($mess_query));
 
     if (!$moderate && !$mod_perm && ($author != \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
-        exit("You can't access");
+        exit($lang->def('_CANNOTENTER', 'forum'));
     }
 
     $thread_query = '
@@ -2891,7 +2896,7 @@ function delmessage()
     if (isset($_POST['undo'])) {
         Util::jump_to('index.php?modname=forum&op=message&idThread=' . $id_thread . '&amp;ini=' . $ini);
     }
-    if (isset($_GET['confirm'])) {
+    if (isset($_POST['confirm'])) {
         $new_answer_tree = substr($answer_tree, 0, -21);
         if (!sql_query('
 		UPDATE ' . $GLOBALS['prefix_lms'] . "_forummessage
@@ -2950,7 +2955,11 @@ function delmessage()
         $tags = new Tags('lms_forum');
         $tags->deleteResource($id_message, 'lms_forum');
 
-        Util::jump_to('index.php?modname=forum&op=message&idThread=' . $id_thread . '&amp;result=ok');
+        if($num_post == 0) {
+            Util::jump_to('index.php?modname=forum&op=thread&idForum=' . $id_forum . '&amp;result=ok');
+        } else {
+            Util::jump_to('index.php?modname=forum&op=message&idThread=' . $id_thread . '&amp;result=ok');
+        }
     } else {
         $page_title = [
             'index.php?modname=forum&amp;op=forum' => $lang->def('_FORUM'),
@@ -3233,7 +3242,7 @@ function forumsearch()
             $status = '<img src="' . getPathImage() . 'standard/msg_unread.png" alt="' . $lang->def('_UNREAD') . '" />';
             $c_css = ' class="text_bold"';
         } else {
-            $status = '<img src="' . getPathImage() . 'standard/msg_read.png" alt="' . $lang->def('_FREE') . '" />';
+            $status = '<img src="' . getPathImage() . 'standard/msg_read.png" alt="' . $lang->def('_TITLE_READ') . '" />';
         }
         $content = [$status];
 

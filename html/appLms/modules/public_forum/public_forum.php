@@ -1123,7 +1123,7 @@ function loadForumSavedPerm($idForum)
 function thread()
 {
     if (!checkPublicForumPerm('view', (int) $_GET['idForum'])) {
-        exit("You can't access'");
+        exit(Lang::t('_CANNOTENTER', 'forum'));
     }
 
     $idForum = FormaLms\lib\Get::gReq('idForum', DOTY_INT, 0);
@@ -1381,7 +1381,7 @@ function thread()
                 $status = '<img src="' . getPathImage() . 'standard/msg_unread.png" alt="' . $lang->def('_UNREAD') . '" />';
                 $c_css = ' class="text_bold"';
             } else {
-                $status = '<img src="' . getPathImage() . 'standard/msg_read.png" alt="' . $lang->def('_FREE') . '" />';
+                $status = '<img src="' . getPathImage() . 'standard/msg_read.png" alt="' . $lang->def('_TITLE_READ', 'message') . '" />';
             }
             $content = [$status];
             //'<img src="'.getPathImage().'standard/important.png" alt="'.$lang->def('_IMPORTANT').'" />'
@@ -1794,7 +1794,7 @@ function modthread()
     $moderate = checkPublicForumPerm('moderate', $id_forum);
 
     if (!$moderate && !$mod_perm && ($author != \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
-        exit("You can't access");
+        exit($lang->def('_CANNOTENTER', 'forum'));
     }
 
     $forum_query = '
@@ -1872,7 +1872,7 @@ function upthread()
     }
 
     if (!$moderate && !$mod_perm && ($author != \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
-        exit("You can't access");
+        exit($lang->def('_CANNOTENTER', 'forum'));
     }
 
     list($id_forum, $locked_t, $erased_t) = sql_fetch_row(sql_query('
@@ -2075,19 +2075,19 @@ function loadDistance($date)
     $distance = (int) ($distance / 60);
     //< 1 hour print minutes
     if (($distance >= 0) && ($distance < 60)) {
-        return $distance . ' ' . Lang::t('_MINUTES');
+        return $distance . ' ' . (($distance > 1) ? Lang::t('_MINUTES') : Lang::t('_MINUTE'));
     }
 
     //minutes -> hour
     $distance = (int) ($distance / 60);
     if (($distance >= 0) && ($distance < 60)) {
-        return $distance . ' ' . Lang::t('_HOURS');
+        return $distance . ' ' . (($distance > 1) ? Lang::t('_HOURS') : Lang::t('_HOUR'));
     }
 
     //hour -> day
     $distance = (int) ($distance / 24);
     if (($distance >= 0) && ($distance < 30)) {
-        return $distance . ' ' . Lang::t('_DAYS');
+        return $distance . ' ' . (($distance > 1) ? Lang::t('_DAYS') : Lang::t('_DAY'));
     }
 
     //echo > 1 month
@@ -2470,7 +2470,7 @@ function moderatemessage()
     list($id_forum) = sql_fetch_row(sql_query($query_id_forum));
 
     if (!checkPublicForumPerm('moderate', $id_forum) && !checkPerm('mod', true)) {
-        exit("You can't access");
+        exit(Lang::t('_CANNOTENTER', 'forum'));
     }
 
     if ($lock == 1) {
@@ -2498,7 +2498,7 @@ function modstatusthread()
     list($id_forum) = sql_fetch_row(sql_query($query_id_forum));
 
     if (!checkPublicForumPerm('moderate', $id_forum) && !checkPerm('mod', true)) {
-        exit("You can't access");
+        exit(Lang::t('_CANNOTENTER', 'forum'));
     }
 
     list($idF, $lock) = sql_fetch_row(sql_query('
@@ -2531,7 +2531,7 @@ function changeerase()
     list($id_forum) = sql_fetch_row(sql_query($query_id_forum));
 
     if (!checkPublicForumPerm('moderate', $id_forum) && !checkPerm('mod', true)) {
-        exit("You can't access");
+        exit(Lang::t('_CANNOTENTER', 'forum'));
     }
 
     list($idF, $erased) = sql_fetch_row(sql_query('
@@ -2922,14 +2922,14 @@ function modmessage()
     list($id_forum) = sql_fetch_row(sql_query($query_id_forum));
 
     if (!checkPublicForumPerm('view', $id_forum)) {
-        exit("You can't access!'");
+        exit($lang->def('_CANNOTENTER', 'forum'));
     }
 
     $moderate = checkPublicForumPerm('moderate', $id_forum);
     $mod_perm = checkPerm('mod', true);
 
     if (!$moderate && !$mod_perm && ($author != \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
-        exit("You can't access");
+        exit($lang->def('_CANNOTENTER', 'forum'));
     }
 
     // Some info about forum and thread
@@ -3013,14 +3013,14 @@ function upmessage()
 	WHERE idThread = '" . $id_thread . "'"));
 
     if (!checkPublicForumPerm('view', $id_forum)) {
-        exit("You can't access!'");
+        exit($lang->def('_CANNOTENTER', 'forum'));
     }
 
     $moderate = checkPublicForumPerm('moderate', $id_forum);
     $mod_perm = checkPerm('mod', true);
 
     if (!$moderate && !$mod_perm && ($author != \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
-        exit("You can't access");
+        exit($lang->def('_CANNOTENTER', 'forum'));
     }
 
     if ($locked_t || $erased_t && (!$mod_perm && !$moderate)) {
@@ -3083,14 +3083,14 @@ function delmessage()
     list($id_forum, $thread_title, $num_post, $last_post) = sql_fetch_row(sql_query($thread_query));
 
     if (!checkPublicForumPerm('view', $id_forum)) {
-        exit("You can't access");
+        exit($lang->def('_CANNOTENTER', 'forum'));
     }
 
     $moderate = checkPublicForumPerm('moderate', $id_forum);
     $mod_perm = checkPerm('mod', true);
 
     if (!$moderate && !$mod_perm && ($author != \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
-        exit("You can't access");
+        exit($lang->def('_CANNOTENTER', 'forum'));
     }
 
     $forum_query = '
@@ -3212,7 +3212,7 @@ function viewprofile()
     list($id_forum) = sql_fetch_row(sql_query($query_id_forum));
 
     if (!checkPublicForumPerm('view', $id_forum)) {
-        exit("You can't access");
+        exit($lang->def('_CANNOTENTER', 'forum'));
     }
 
     require_once _lms_ . '/lib/lib.lms_user_profile.php';
@@ -3457,7 +3457,7 @@ function forumsearch()
             $status = '<img src="' . getPathImage() . 'standard/msg_unread.png" alt="' . $lang->def('_UNREAD') . '" />';
             $c_css = ' class="text_bold"';
         } else {
-            $status = '<img src="' . getPathImage() . 'standard/msg_read.png" alt="' . $lang->def('_FREE') . '" />';
+            $status = '<img src="' . getPathImage() . 'standard/msg_read.png" alt="' . $lang->def('_TITLE_READ', 'message') . '" />';
         }
         $content = [$status];
         $content[] = ($erased && !$mod_perm ?
@@ -3511,7 +3511,7 @@ function forumsearchmessage()
     list($id_forum) = sql_fetch_row(sql_query($query_id_forum));
 
     if (!checkPublicForumPerm('view', $id_forum)) {
-        exit("You can't access");
+        exit($lang->def('_CANNOTENTER', 'forum'));
     }
 
     $sema_perm = checkPerm('sema', true);
