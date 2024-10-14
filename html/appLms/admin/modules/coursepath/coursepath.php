@@ -149,7 +149,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         $tb_path->setColsStyle($type_h);
         $tb_path->addHead($cont_h);
         while (list($id_path, $path_code, $path_name, $path_descr) = sql_fetch_row($re_pathlist)) {
-            $cont = [$path_code, $path_name, $path_descr];
+            $cont = [$path_code, $path_name, '<div style="max-width: 100px; max-height: 100px; overflow: hidden;">'.$path_descr.'</div>'];
             if ($subscribe_perm) {
                 $url_subscribe = 'index.php?r=alms/subscription/show_coursepath&id_path=' . (int) $id_path;
                 $cont[] = '<a href="' . $url_subscribe . '" ' //index.php?modname=coursepath&amp;op=addsubscription&amp;id_path='.$id_path.'&amp;load=1
@@ -269,41 +269,43 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         $srcPath = $_FILES['coursepath_logo']['tmp_name']; // Assicurati che $srcPath sia il percorso completo al file sul server
         $time = time();
 
+
+
         $query_select = 'SELECT img_coursepath FROM %lms_coursepath WHERE id_path ='. (int) $_POST['id_path'];
         $res = sql_query($query_select);
         list($imgLogo) = sql_fetch_row($res);
         if (isset($_POST['file_to_del']['coursepath_logo']) and $_FILES['coursepath_logo']['name'] == ''){
             $img = null;
         }elseif(($imgLogo == '' or $_POST['old_coursepath_logo'] != $_FILES['coursepath_logo']['name']) and $_FILES['coursepath_logo']['name'] != ''){
-            $img = "coursePath_logo_". $time . "_" .$_FILES['coursepath_logo']['name']; // Utilizza $_FILES per accedere al file caricato, non $_POST
+            $img = "coursePath_logo_". $time . "_" .$_FILES['coursepath_logo']['name'];
         }else{
             $img = $imgLogo;
         }
 
-
+        $path_name = \FormaLms\lib\Get::req('path_name', DOTY_STRING);
         if (isset($_POST['id_path'])) {
             // Update existing
             $query_update = '
                 UPDATE ' . $GLOBALS['prefix_lms'] . '_coursepath
-                SET path_code = "' . addslashes($_POST['path_code']) . '",
-                    path_name = "' . addslashes($_POST['path_name']) . '",
-                    path_descr = "' . addslashes($_POST['path_descr']) . '",
-                    subscribe_method = "' . addslashes($_POST['subscribe_method']) . '",
-                    img_coursepath = "' . addslashes($img) . '",
-                    check_path_info = "' . addslashes($_POST['check_expand_path_info']) . '"
-                WHERE id_path = ' . (int) $_POST['id_path'];
+                SET path_code = "' . \FormaLms\lib\Get::req('path_code', DOTY_STRING) . '",
+                    path_name = "' . $path_name . '",
+                    path_descr = "' . \FormaLms\lib\Get::req('path_descr', DOTY_MIXED) . '",
+                    subscribe_method = "' . \FormaLms\lib\Get::req('subscribe_method', DOTY_STRING) . '",
+                    img_coursepath = "' . $img . '",
+                    check_path_info = "' . \FormaLms\lib\Get::req('check_expand_path_info', DOTY_INT) . '"
+                WHERE id_path = ' . (int)\FormaLms\lib\Get::req('id_path', DOTY_INT);
             $re = sql_query($query_update);
         } else {
             // Create new
             $query_insert = '
 		INSERT INTO ' . $GLOBALS['prefix_lms'] . "_coursepath
 		( path_code, path_name, path_descr, subscribe_method, img_coursepath, check_path_info ) VALUES
-		( '" . $_POST['path_code'] . "',
-		  '" . ($_POST['path_name'] != '' ? $_POST['path_name'] : Lang::t('_EMPTY_NAME', 'coursegpath')) . "',
-		  '" . $_POST['path_descr'] . "',
-		  '" . $_POST['subscribe_method'] . "',
-		  '" . $_POST['coursepath_logo'] . "',
-		  '" . $_POST['check_expand_path_info'] . "' )";
+		( '" . \FormaLms\lib\Get::req('path_code', DOTY_STRING) . "',
+		  '" . ($path_name != '' ? $path_name : Lang::t('_EMPTY_NAME', 'coursegpath')) . "',
+		  '" .\FormaLms\lib\Get::req('path_descr', DOTY_MIXED)  . "',
+		  '" . \FormaLms\lib\Get::req('subscribe_method', DOTY_STRING)  . "',
+		  '" . $_FILES['coursepath_logo']['name'] . "',
+		  '" . \FormaLms\lib\Get::req('check_expand_path_info', DOTY_INT). "' )";
             $re = sql_query($query_insert);
             if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 list($id_path) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
@@ -312,7 +314,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 $adminManager->addAdminCoursepath($id_path, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
             }
         }
-        $destPath = '../appLms/course/';
+        $destPath = '/appLms/course/';
 
         sl_open_fileoperations();
         if ($_FILES['coursepath_logo']['name'] != '' or ($_POST['old_coursepath_logo'] != $_FILES['coursepath_logo']['name'] and $_FILES['coursepath_logo']['name'] != '')){
