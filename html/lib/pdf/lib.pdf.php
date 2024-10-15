@@ -116,6 +116,7 @@ class PDF extends TCPDF
         if (!empty($html)) {
 
 
+            $html = normalizer_normalize($html, Normalizer::FORM_C);
             $doc->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', $this->encoding));
             $xpath = new DOMXPath($doc);
             $nodelist = $xpath->query('//img'); // "/images/image.jpg"
@@ -218,6 +219,7 @@ class PDF extends TCPDF
                 if ($img != '' && file_exists($imagePath)) {
                     $this->setXY(0, 0);
                     $this->Image($imagePath, 0, 0, ($this->CurOrientation == 'P' ? 210 : 298), 0, $imageType, '', '', true);
+                    $this->setPageMark();
                     $this->setXY(0, 0);
                 }
 
