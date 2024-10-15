@@ -1928,7 +1928,7 @@ class UserManagerRenderer
 
         $out .= '<div class="homepage__row homepage__row--gray homepage__back">
 	                <a href="javascript:history.back()">
-		                <span class="fa fa-chevron-left"></span>' . str_replace('&lt;&lt; ', '', $lang->def('_BACK', 'standard')) . '
+		                <span class="fa fa-chevron-left"></span>' . str_replace('<', '', $lang->def('_BACK', 'standard')) . '
 	                </a>
                 </div>';
 
@@ -1990,7 +1990,7 @@ class UserManagerRenderer
 
         $out .= '<div class="homepage__row homepage__row--gray homepage__back">
 	                <a href="./index.php">
-		                <span class="fa fa-chevron-left"></span>' . str_replace('&lt;&lt; ', '', $lang->def('_BACK', 'standard')) . '
+		                <span class="fa fa-chevron-left"></span>' . str_replace('<', '', $lang->def('_BACK', 'standard')) . '
 	                </a>
                 </div>';
 
