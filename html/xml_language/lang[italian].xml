@@ -1228,6 +1228,8 @@ Titolo: [thread_title]]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_SUBJECT" attributes="email" save_date="2015-09-30 15:32:39"><![CDATA[Hai ricevuto un nuovo messaggio]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_TEXT" attributes="email" save_date="2015-09-30 15:32:39"><![CDATA[Hai ricevuto un nuovo messaggio sul sistema di e-learning all'indirizzo <a href="[url]">[url]</a> dall'utente [from]]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_TEXT_COURSE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Hai ricevuto un nuovo messaggio sul sistema di e-learning all'indirizzo <a href="[url]">[url]</a> nel corso<b> [course] </b>dall'utente [from]]]></key>
+        <key id="email&amp;_SCHEDULED_REPORT_BODY" attributes="email" save_date="2015-09-30 15:32:39"><![CDATA[Di seguito il link del report [report_url] avrà una durata di [report_persistence_days]. ]]></key>
+        <key id="email&amp;_SCHEDULED_REPORT_SUBJECT" attributes="email" save_date="2015-09-30 15:32:39"><![CDATA[Report: [name]. ]]></key>
         <key id="email&amp;_EVENT_CLASSROOM_COURSE_DATE_EVENT_UNSUBSCRIBE_USER_SBJ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Sei stato disiscritto dal corso]]></key>
         <key id="email&amp;_EVENT_CLASSROOM_COURSE_DATE_EVENT_UNSUBSCRIBE_USER_TEXT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Gentile [firstname] [lastname],
 sei stato disiscritto dal corso d'aula ([classroom_code]) - [classroom_date]]]></key>

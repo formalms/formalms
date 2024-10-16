@@ -406,8 +406,8 @@ if ($lock_stream) {
                     foreach ($recipients as $recipient) {
                         //Sends an email containing the report link
 
-                        $subject = str_replace('[name]', $row['filter_name'], Lang::t('_SCHEDULED_REPORT_SUBJECT_', 'email', [], $recipient['language']));
-                        $body = str_replace('[report_url]', $report_url, Lang::t('_SCHEDULED_REPORT_BODY_', 'email', [], $recipient['language']));
+                        $subject = str_replace('[name]', $row['filter_name'], Lang::t('_SCHEDULED_REPORT_SUBJECT', 'email', [], $recipient['language']));
+                        $body = str_replace('[report_url]', $report_url, Lang::t('_SCHEDULED_REPORT_BODY', 'email', [], $recipient['language']));
                         $body = str_replace('[report_persistence_days]', $report_persistence_days, $body);
 
                         $response = $mailer->SendMail([$recipient['email']], //sender
