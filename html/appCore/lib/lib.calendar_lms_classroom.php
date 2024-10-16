@@ -208,8 +208,8 @@ class FormaCal_lms_classroom extends FormaCal_core
                 $calevents[$i]->end_sec = $parts[6];
 
                 $calevents[$i]->classroom = $row['classroom_id'];
-                $calevents[$i]->title = $row['title'];
-                $calevents[$i]->description = $row['description'];
+                $calevents[$i]->title = htmlentities($row['title']);
+                $calevents[$i]->description = htmlentities($row['description']);
                 $calevents[$i]->owner = $row['owner'];
 
                 $calevents[$i]->editable = 1;
