@@ -1728,7 +1728,7 @@ class Org_TreeView extends RepoTreeView
     public function getChildrensDataById($id)
     {
         $root_folder = $this->tdb->getFolderById($id);
-        $childrens = $this->tdb->getChildrensIdById($root_folder->id);
+        $childrens = isset($root_folder) ? $this->tdb->getChildrensIdById($root_folder->id) : [];
 
         return $this->getLoData($childrens);
     }
@@ -1993,7 +1993,7 @@ class Org_TreeView extends RepoTreeView
                 $node['childCount'] = (int) $this->countChildren($folder->id);
             }
 
-            $node['autoplay'] = (bool)getLOParam($folder->otherValues[ORGFIELDIDPARAM],'autoplay');
+            $node['autoplay'] = isset($folder->otherValues[ORGFIELDIDPARAM]) ? (bool)getLOParam($folder->otherValues[ORGFIELDIDPARAM],'autoplay') : false;
 
             $res[$idLo] = $node;
         }

@@ -49,8 +49,8 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         . Form::openElementSpace()
         . Form::getHidden('back_url', 'back_url', htmlentities(urlencode($object_page->back_url)))
 
-        . Form::getTextfield($lang->def('_TITLE'), 'title', 'title', 150, $lang->def('_TITLE'))
-        . Form::getTextarea($lang->def('_TEXTOF'), 'textof', 'textof', $lang->def('_TEXTOF'))
+        . Form::getTextfield($lang->def('_TITLE'), 'title', 'title', 150, '')
+        . Form::getTextarea($lang->def('_TEXTOF'), 'textof', 'textof', '')
         . '<div id="attachment_area">'
         . Form::getFilefield($lang->def('_UPLOAD'), 'attach1', 'attach1')
         . '</div>'
@@ -72,7 +72,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 
         $insert_query = '
 	INSERT INTO ' . $GLOBALS['prefix_lms'] . "_htmlpage
-	SET title = '" . ((trim(sql_escape_string($_REQUEST['title'])) == '') ? sql_escape_string(LanguageService::t('_NOTITLE', 'htmlpage', 'lms')) : sql_escape_string($_REQUEST['title'])) . "',
+	SET title = '" . ((trim(sql_escape_string($_REQUEST['title'])) == '') ? sql_escape_string(Lang::t('_NOTITLE', 'standard')) : sql_escape_string($_REQUEST['title'])) . "',
 		textof = '" . sql_escape_string($_REQUEST['textof']) . "',
 		author = '" . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'";
         if (!sql_query($insert_query)) {
@@ -185,7 +185,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 
         $insert_query = '
 	UPDATE ' . $GLOBALS['prefix_lms'] . "_htmlpage
-	SET title = '" . ((trim(sql_escape_string($_REQUEST['title'])) == '') ? sql_escape_string(LanguageService::t('_NOTITLE', 'htmlpage', 'lms')) : sql_escape_string($_REQUEST['title'])) . "',
+	SET title = '" . ((trim(sql_escape_string($_REQUEST['title'])) == '') ? sql_escape_string(Lang::t('_NOTITLE', 'standard')) : sql_escape_string($_REQUEST['title'])) . "',
 		textof = '" . sql_escape_string($_REQUEST['textof']) . "'
 	WHERE idPage = '" . (int) $_REQUEST['idPage'] . "'";
         if (!sql_query($insert_query)) {

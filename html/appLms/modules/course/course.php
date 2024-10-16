@@ -732,7 +732,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
                 ++$course_stats['expiring'];
             }
         }
-        if ($cinfo['valid_time'] != '0' && $cinfo['valid_time'] != '' && $cinfo['date_first_access'] != '') {
+        if ($cinfo['valid_time'] != '0' && $cinfo['valid_time'] != '' && !empty($cinfo['date_first_access'])) {
             $time_first_access = fromDatetimeToTimestamp($cinfo['date_first_access']);
             if ($range > ($time_first_access + ($cinfo['valid_time'] * 24 * 3600))) {
                 $expiring = true;

@@ -154,7 +154,7 @@ class LomanagerLmsController extends LmsController
                 $responseData[] = ['success' => $res, 'id' => $id];
             }
         }
-        echo $this->json->encode($res);
+        echo $this->json->encode($responseData);
         exit;
     }
 
