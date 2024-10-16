@@ -105,6 +105,13 @@
 			YAHOO.util.Dom.get('la_text').value = '';
 			DataTable_lang_table.refresh();
 		});
+		YAHOO.util.Event.onDOMReady(function () {
+			YAHOO.util.Event.addListener(YAHOO.util.Selector.query("#lang_table_wrapper .dataTables_scrollHead input[type='text']"), "keydown", function(e) {
+				if ((e.ctrlKey || e.metaKey) && (e.keyCode == 65)) {
+					this.select();
+				}
+			});
+		});
 
 		var columns = [{
 				data: 'text_module',
@@ -159,7 +166,7 @@
 				searching: true,
 				columns,
 				dom: 'Bfrtip',
-				stateSave: true,
+				stateSave: false,
 				deferRender: true
 			});
 		});

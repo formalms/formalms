@@ -422,7 +422,7 @@ if (!Docebo::user()->isAnonymous()) {
         $category = [];
         $category = $man_res->viewCategory();
 
-        $out->add(getTitleArea($lang->def('_CATEGORY')) . '<div class="std_block">', 'content');
+        $out->add(getTitleArea($lang->def('_CATEGORIES', 'menu')) . '<div class="std_block">', 'content');
 
         $error = importVar('error', false, '');
 

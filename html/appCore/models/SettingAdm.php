@@ -89,7 +89,7 @@ class SettingAdm extends Model
             . '<br />'
 
             . '<div class="conf_line_title">' . $lang->def('_SERVER_MYSQL') . '</div>'
-            . config_line($lang->def('_sql_VERS'), sql_get_server_info())
+            . config_line($lang->def('_MYSQL_VERS'), sql_get_server_info())
             . '<br />'
 
             . '<div class="conf_line_title">' . $lang->def('_PHPINFO') . '</div>'
@@ -764,6 +764,70 @@ class SettingAdm extends Model
             echo '<br></div>';
         }
         echo '</div>';
+
+        require_once _base_ . '/lib/lib.utils.php';
+        addJs('addons/jquery/dirtyforms/', 'jquery.dirtyforms.min.js');
+
+        echo '<script type="text/javascript">
+                window.onload = function() {
+                    $("form[id^=conf_option]").dirtyForms();
+
+                    const queryString = window.location.search;
+                    const urlParams = new URLSearchParams(queryString);
+                            
+                    const plugin = urlParams.get("plugin");
+                    const r = urlParams.get("r");
+                            
+                    var url = window.location.origin + window.location.pathname;
+                    if (urlParams.has("r")) {
+                        url = url + "?r=" + r;
+                    }
+
+                    $("#global_conf ul.nav.nav-tabs li a.nav-link").on("click", function(event) {
+                        if ($("form[id^=conf_option]").dirtyForms("isDirty")) {
+                            if (urlParams.has("r")) {
+                                if (urlParams.has("plugin")) {
+                                    url = url + "&plugin=" + plugin
+                                } else {
+                                    var active_tab = $(this).attr("href").split("_")[2];
+                                    var active_tab_cur = $("#global_conf .tab-pane.active input[name=active_tab]").val();
+                                    
+                                    if (active_tab !== "" && active_tab !== active_tab_cur) {
+                                        url = url + "&active_tab=" + active_tab;
+                                    }
+                                }
+                                
+                                if (url !== (window.location.origin + window.location.pathname + "?r=" + r)) {
+                                    event.stopPropagation();
+                                    event.preventDefault();
+                                    window.location.replace(url);
+                                }
+                            }
+                        }
+                    });
+
+                    $("form[id^=conf_option]").on("submit", function(event) {
+                        if (!urlParams.has("plugin")) {
+                            var submitter_btn = $(event.originalEvent.submitter);
+
+                            if (submitter_btn.attr("name") == "undo") {
+                                if ($("form").dirtyForms("isDirty")) {
+                                    var active_tab_cur = $("#global_conf .tab-pane.active input[name=active_tab]").val();
+                                    if (active_tab_cur !== "") {
+                                        url = url + "&active_tab=" + active_tab_cur;
+                                    }
+
+                                    if (url !== (window.location.origin + window.location.pathname + "?r=" + r)) {
+                                        event.stopPropagation();
+                                        event.preventDefault();
+                                        window.location.replace(url);
+                                    }
+                                }
+                            }
+                        }
+                    });
+                };
+            </script>';
 
         return;
     }

@@ -2,6 +2,102 @@ FORMA LMS
 RELEASE CHANGELOG
 
 ---------------------------------------------------------------------------------------
+forma.lms 3.3.25
+---------------------------------------------------------------------------------------
+Release date: 2024 october
+
+
+- #      - Update changelog
+- #      - fix query and update lms.sql
+- #      - Update version to 3.3.25
+- #      - fix api authentication not neded for explicit route
+- #      - fix org chart report
+- #      - Update 30323_db.sql
+- #      - Fix dashboard courses margin/padding
+- #      - Validate start/time and interval hours
+- #      - Validate if pause time is between start/end hour
+- #      - Proper fix for wrong date
+- #      - Fix date add and use YUI2 dialog
+- #      - Fix translation and button alignment on classroom dates
+- #      - Make course image and title clickable
+- #      - Order course categories dropdown by name
+- #      - Make label for checkbox and radio clickable
+- #      - Add toggle support for "I accept the privacy terms"
+- #      - Fix userid error message on 'use_email_as_userid'
+- #      - Padding alignment of "I accept the privacy terms" and toggle on click
+- #      - Align "I accept the privacy terms" text on registration page
+- #      - Add form dirty support for course edition edit
+- #      - Add title property for PDFObject embed
+- #      - Add form dirty check for course add
+- #      - Limit scope of form dirty on settings page only
+- #      - Update translations
+- #      - Fix buttons alignment on plugin manager
+- #      - Add support for form dirty on plugin settings
+- #      - Add "form dirty" check for settings/plugin settings
+- #      - Fixes warnings during "npm install"
+- #      - Fix warning about node-sass duplicate on package.json
+- #      - Fix MySQL_VERS translation variable on settings
+- #      - Revert "Fix MySQL_VERS translation variable on settings"
+- #      - Fix MySQL_VERS translation variable on settings
+- #      - Back to previous tab when Cleaning Twig Cache
+- #      - Add title to icon sprites on Translation page
+- #      - Add option "Use email as userid"
+- #      - Add margin-top to "Back to login" link on Register page
+- #      - Always show scrollbar on privacy terms
+- #      - Generate certificate on download (optimize logic)
+- #      - Use real mimetype instead of pseudo one
+- #      - Translate error message (download file not exists)
+- #      - Translate "You don't have permissions" message
+- #      - Embed PDFs instead of downloading them
+- #      - Upgrade node-sass for TinyMCE5
+- #      - Generate certificate on download
+- #      - Update lang[english].xml
+- #      - Update lang[portuguese].xml
+- #      - Translate certificate release columns and error message
+- #      - Force regenerate certificate
+- #      - Translate "Error generating certificate: " error message
+- #      - Revert "Translate "Error generating certificate" error message"
+- #      - Translate "Error generating certificate" error message
+- #      - Normalize UTF-8 strings on certificates
+- #      - Enable border on tables
+- #      - Fix translation of "Certificate" batch generation
+- #      - Update lang[portuguese].xml
+- #      - Fix language editing click
+- #      - Fix attendance date and dialog images
+- #      - Upgrade to 3.3.25
+- #      - Update 30323_db.sql
+- #      - Update Get.php
+- #      - Update Portuguese translation
+- #      - Update Portuguese translation
+- #      - Update English translation
+- #      - Update Portuguese translation
+- #      - Update translation of "Last access" header
+- #      - Update Portuguese translation
+- #      - Update Reservation "Category" menu to plural
+- #      - Replace legacy PNG icon by sprite on course editions
+- #      - Update Portuguese translation
+- #      - Update English translation
+- #      - Fix PHP warning error during phase 5 of FormaLMS installation
+- #      - Allows the SQL upgrade script to run multiple times
+- #      - Convert URLManager getInstance() to static
+- #      - Revert "Convert URLManager getInstance() to static"
+- #      - Convert URLManager getInstance() to static
+- #      - Fix PHP Warnings on Get.php
+- #      - Update Installation translation for Portuguese
+- #      - Handle special chars on translation
+- #      - Fix PHP Warnings during FormaLMS upgrade
+- #      - Convert Learning_Cart to static
+- #      - Standardize "Language" title on Language management page
+- #      - Allows to use Ctrl + A to select all text from translation field and als…
+- #      - Revert "Allows to use Ctrl + A to select all text from translation field and also do not save it's state"
+- #      - Allows to use Ctrl + A to select all text from translation field and also do not save it's state
+- #      - Translation fixes
+- #      - fix api authentication not neded for explicit route
+- #      - fix org chart report
+- #      - upgrade version
+
+
+---------------------------------------------------------------------------------------
 forma.lms 3.3.24
 ---------------------------------------------------------------------------------------
 Release date: 2024 july

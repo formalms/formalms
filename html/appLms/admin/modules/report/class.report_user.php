@@ -839,7 +839,7 @@ class Report_User extends Report
         $sort_dir_dropdown = Form::getInputDropdown('', 'order_dir', 'order_dir', $dir_list, $dir_selected, '');
         $box->body .= Form::getDropdown(Lang::t('_ORDER_BY', 'standard'), 'order_by', 'order_by', $sort_list, $sort_selected, $sort_dir_dropdown);
 
-        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool) $reportTempData['columns_filter']['show_suspended']);
+        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool)$reportTempData['columns_filter']['show_suspended']);
 
         cout($box->get());
     }
@@ -1053,8 +1053,8 @@ class Report_User extends Report
     /**
      * Return the output in the selected format for the report with the filters given.
      *
-     * @param string $type        output type
-     * @param array  $report_data a properly formatted list of rule to follow
+     * @param string $type output type
+     * @param array $report_data a properly formatted list of rule to follow
      * @param string $other
      *
      * @return string the properly formated report
@@ -1222,7 +1222,7 @@ class Report_User extends Report
             }
         }
 
-        $show_classrooms_editions = isset($filter_columns['show_classrooms_editions']) ? (bool) $filter_columns['show_classrooms_editions'] : false;
+        $show_classrooms_editions = isset($filter_columns['show_classrooms_editions']) ? (bool)$filter_columns['show_classrooms_editions'] : false;
 
         $classrooms_editions_info = [];
         if ($show_classrooms_editions) {
@@ -1918,13 +1918,15 @@ class Report_User extends Report
 
                     if (count($folders) > 1) {
                         foreach ($customcols_org as $val) {
-                            $v = '';
+                            $customColsValue = [];
                             if ($val['selected']) {
                                 foreach ($folders as $folder_name) {
-                                    $v[] = $fman->getValueCustomOrg($val['label'], $folder_name);
+                                    $customColsValue[] = $fman->getValueCustomOrg($val['label'], $folder_name);
                                 }
                             }
-                            $row[] = implode('<hr>', $v);
+                            if (!empty($customColsValue)) {
+                                $row[] = implode('<hr>', $customColsValue);
+                            }
                         }
                     } else {
                         foreach ($customcols_org as $val) {
@@ -2037,9 +2039,9 @@ class Report_User extends Report
 
                 if (in_array('_TH_USER_ELAPSED_TIME', $cols)) {
                     $row[] = (isset($time_list[$id_user . '_' . $id_course]) ?
-                        substr('0' . ((int) ($time_list[$id_user . '_' . $id_course] / 3600)), -2) . 'h '
-                        . substr('0' . ((int) (($time_list[$id_user . '_' . $id_course] % 3600) / 60)), -2) . 'm '
-                        . substr('0' . ((int) ($time_list[$id_user . '_' . $id_course] % 60)), -2) . 's ' : '&nbsp;');
+                        substr('0' . ((int)($time_list[$id_user . '_' . $id_course] / 3600)), -2) . 'h '
+                        . substr('0' . ((int)(($time_list[$id_user . '_' . $id_course] % 3600) / 60)), -2) . 'm '
+                        . substr('0' . ((int)($time_list[$id_user . '_' . $id_course] % 60)), -2) . 's ' : '&nbsp;');
                 }
 
                 if (in_array('_TH_ESTIMATED_TIME', $cols)) {
@@ -2709,7 +2711,7 @@ class Report_User extends Report
         $sort_dir_dropdown = Form::getInputDropdown('', 'order_dir', 'order_dir', $dir_list, $dir_selected, '');
         $box->body .= Form::getDropdown(Lang::t('_ORDER_BY', 'standard'), 'order_by', 'order_by', $sort_list, $sort_selected, $sort_dir_dropdown);
 
-        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool) $reportTempData['columns_filter']['show_suspended']);
+        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool)$reportTempData['columns_filter']['show_suspended']);
 
         cout($box->get());
     }
@@ -2820,7 +2822,7 @@ class Report_User extends Report
 
         $order_by = (isset($cdata['order_by']) ? $cdata['order_by'] : 'userid');
         $order_dir = (isset($cdata['order_dir']) ? $cdata['order_dir'] : 'asc');
-        $show_suspended = (isset($cdata['show_suspended']) ? (bool) $cdata['show_suspended'] : false);
+        $show_suspended = (isset($cdata['show_suspended']) ? (bool)$cdata['show_suspended'] : false);
 
         if (!$alluser) {
             $user_selected = &$acl_man->getAllUsersFromIdst($rdata['users']);
@@ -3405,7 +3407,7 @@ class Report_User extends Report
         $sort_dir_dropdown = Form::getInputDropdown('', 'order_dir', 'order_dir', $dir_list, $dir_selected, '');
         $box->body .= Form::getDropdown(Lang::t('_ORDER_BY', 'standard'), 'order_by', 'order_by', $sort_list, $sort_selected, $sort_dir_dropdown);
 
-        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool) $reportTempData['columns_filter']['show_suspended']);
+        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool)$reportTempData['columns_filter']['show_suspended']);
 
         cout($box->get(), 'content');
     }
@@ -3521,7 +3523,7 @@ class Report_User extends Report
         $customcols = $_cols['custom_fields'];
         $order_by = isset($_cols['order_by']) ? $_cols['order_by'] : 'userid';
         $order_dir = isset($_cols['order_dir']) ? $_cols['order_dir'] : 'asc';
-        $suspended = isset($_cols['show_suspended']) ? (bool) $_cols['show_suspended'] : false;
+        $suspended = isset($_cols['show_suspended']) ? (bool)$_cols['show_suspended'] : false;
         if ($all_users) {
             $users = $acl_man->getAllUsersIdst();
         } else {
@@ -3597,7 +3599,7 @@ class Report_User extends Report
             if ($val['selected']) {
                 ++$colspans['user'];
                 $temp_head2[] = $val['label'];
-                $field_values[$val['id']] = $fman->fieldValue((int) $val['id'], $users);
+                $field_values[$val['id']] = $fman->fieldValue((int)$val['id'], $users);
             }
         }
 
@@ -4454,7 +4456,7 @@ class Report_User extends Report
     }
 
     // +++++++++++++++++++++++++++++++++
-//     TEST STAT report functions
+    //     TEST STAT report functions
     // +++++++++++++++++++++++++++++++++
     public function get_TESTSTAT_filter()
     {
@@ -4665,7 +4667,7 @@ class Report_User extends Report
         $sort_dir_dropdown = Form::getInputDropdown('', 'order_dir', 'order_dir', $dir_list, $dir_selected, '');
         $box->body .= Form::getDropdown(Lang::t('_ORDER_BY', 'standard'), 'order_by', 'order_by', $sort_list, $sort_selected, $sort_dir_dropdown);
 
-        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool) $reportTempData['columns_filter']['show_suspended']);
+        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool)$reportTempData['columns_filter']['show_suspended']);
 
         cout($box->get(), 'content');
     }
@@ -4768,7 +4770,7 @@ class Report_User extends Report
         $customcols = &$_cols['custom_fields'];
         $order_by = isset($_cols['order_by']) ? $_cols['order_by'] : 'userid';
         $order_dir = isset($_cols['order_dir']) ? $_cols['order_dir'] : 'asc';
-        $suspended = isset($_cols['show_suspended']) ? (bool) $_cols['show_suspended'] : false;
+        $suspended = isset($_cols['show_suspended']) ? (bool)$_cols['show_suspended'] : false;
         if ($all_users) {
             $users = $acl_man->getAllUsersIdst();
         } else {
@@ -4829,7 +4831,7 @@ class Report_User extends Report
             if ($val['selected']) {
                 ++$colspans['user'];
                 $temp_head2[] = $val['label'];
-                $field_values[$val['id']] = $fman->fieldValue((int) $val['id'], $users);
+                $field_values[$val['id']] = $fman->fieldValue((int)$val['id'], $users);
             }
         }
 
