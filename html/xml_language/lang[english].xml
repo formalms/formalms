@@ -1232,6 +1232,8 @@ Password: [password]]]></key>
         <key id="email&amp;_EVENT_CLASSROOM_COURSE_DATE_EVENT_UNSUBSCRIBE_USER_SBJ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[You have been unsubscribed from the course]]></key>
         <key id="email&amp;_EVENT_CLASSROOM_COURSE_DATE_EVENT_UNSUBSCRIBE_USER_TEXT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Dear [firstname] [lastname],
 you have been unsubscribed from the classroom course ([classroom_code]) - [classroom_date]]]></key>
+        <key id="email&amp;_SCHEDULED_REPORT_BODY" attributes="email" save_date="2015-09-30 15:32:39"><![CDATA[Below the report link [report_url] will last [report_persistence_days]. ]]></key>
+        <key id="email&amp;_SCHEDULED_REPORT_SUBJECT" attributes="email" save_date="2015-09-30 15:32:39"><![CDATA[Report: [name]]]></key>
         <key id="email&amp;_EVENT_EDITION_COURSE_EVENT_UNSUBSCRIBE_USER_SBJ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[You have been unsubscribed from the course]]></key>
         <key id="email&amp;_EVENT_EDITION_COURSE_EVENT_UNSUBSCRIBE_USER_TEXT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Dear [firstname] [lastname],
 you have been unsubscribed from the edition ([edition_code]) - [edition]]]></key>
