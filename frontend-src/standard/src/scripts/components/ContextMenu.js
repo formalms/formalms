@@ -29,8 +29,24 @@ class ContextMenu {
 
       if(target.classList.contains('folderTree__link')) { // se clicco su una voce del folder tree
         _this.currentEls = Array.prototype.slice.call(_this.container.querySelectorAll('.ft-is-selected'));
+
+        if(!target.closest('.folderTree__link').classList.contains('ft-is-selected')) {
+          _this.currentEls.forEach(item => {
+            item.classList.remove('ft-is-selected');
+          });
+          target.closest('.folderTree__link').classList.add('ft-is-selected');
+          _this.currentEls = Array.prototype.slice.call(_this.container.querySelectorAll('.ft-is-selected'));
+        }
       } else {
         _this.currentEls = Array.prototype.slice.call(_this.container.querySelectorAll('.fv-is-selected'));
+
+        if(!target.closest('.folderView__li').classList.contains('fv-is-selected')) {
+          _this.currentEls.forEach(item => {
+            item.classList.remove('fv-is-selected');
+          });
+          target.closest('.folderView__li').classList.add('fv-is-selected');
+          _this.currentEls = Array.prototype.slice.call(_this.container.querySelectorAll('.fv-is-selected'));
+        }
       }
 
       // ? The object on which the actions of the context menu affect must be the object the menu is linked to, not the selected items
@@ -118,7 +134,7 @@ class ContextMenu {
         text: Lang.Translation('_COPY', 'learningObjectContextMenu'),
         onClick() {
           _this.currentElsIds.forEach((id) => {
-            _this.container.querySelector('li[data-id="' + parseInt(id) + '"]').classList.add('is-ready-for-copy');
+            _this.container.closest('li').querySelector('div[data-id="' + parseInt(id) + '"]').classList.add('is-ready-for-copy');
           });
           document.querySelector('.folderView__copyOverlay').classList.add('is-shown');
         }
@@ -132,7 +148,7 @@ class ContextMenu {
             if(element.classList.contains('folderTree__link')) {
               objectsNames.push(element.querySelector('span').outerText);
             } else {
-              objectsNames.push(element.querySelector('.folderView__el span').outerText);
+              objectsNames.push(element.closest('.folderView__li').querySelector('.folderView__el span').outerText);
             }
           });
           let deleteElements;
