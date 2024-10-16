@@ -69,10 +69,13 @@ class CreateItem {
     this.showErr();
 
     const text = createFolderForm.querySelector('.createFolder__input').value;
+    const createFolderBtn = createFolderForm.querySelector('.createFolder__btn');
     
     const authentic_request = createFolderForm.querySelector('input[name=authentic_request]').value;
     const dropdownBtn = _this.container.querySelector('#dropdownMenuBtn_' + _this.type);
     const dropdown = _this.container.querySelector('#dropdownMenu_' + _this.type);
+
+    createFolderBtn.setAttribute('style', 'background-color:transparent;background-image:url("/templates/standard/images/standard/loading_snake.gif")');
 
     const apiUrl = _this.getApiUrl('createFolder', {
       folderName: text,
@@ -86,6 +89,7 @@ class CreateItem {
         dropdown.classList.remove('hidden');
         createFolderForm.classList.add('hidden');
         createFolderForm.querySelector('.createFolder__input').value = '';
+        createFolderBtn.removeAttribute('style');
 
         // dispatch createdItem event
         _this.container.dispatchEvent(new CustomEvent('createTreeItem', {
