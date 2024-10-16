@@ -48,6 +48,7 @@ class ContextMenu {
           _this.currentEls = Array.prototype.slice.call(_this.container.querySelectorAll('.fv-is-selected'));
         }
       }
+      _this.currentEls.filter(function(value, index){ return _this.currentEls.indexOf(value) == index });
 
       // ? The object on which the actions of the context menu affect must be the object the menu is linked to, not the selected items
       const targetFound = _this.currentEls.find(element => element.getAttribute('data-id') === target.getAttribute('data-id'));
