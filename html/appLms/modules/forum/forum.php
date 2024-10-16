@@ -150,7 +150,7 @@ function forum()
 	WHERE f.idCourse = '" . (int) $idCourse . "'");
     while (list($idF_p, $idT_p, $posted, $title_p, $id_a) = sql_fetch_row($re_last_post)) {
         if ($posted !== null) {
-            $last_post[$idF_p]['info'] = Format::date($posted) . '<br />' . substr(strip_tags($title_p), 0, 15) . ' ...';
+            $last_post[$idF_p]['info'] = '<span class="last_post_date">' . Format::date($posted) . '</span> <span class="last_post_timezone">UTC</span><br />' . substr(strip_tags($title_p), 0, 15) . ' ...';
             $last_post[$idF_p]['author'] = $id_a;
             $last_authors[] = $id_a;
         }
@@ -164,7 +164,7 @@ function forum()
     if (FormaLms\lib\Get::sett('forum_as_table') == 'on') {
         // show forum list in a table -----------------------------------------
         // table header
-        $type_h = ['image', '', '', 'image', 'image', ''];
+        $type_h = ['image', '', '', '', '', ''];
         if ($mod_perm) {
             $type_h[] = 'image';
             $type_h[] = 'image';
@@ -430,6 +430,7 @@ function forum()
                 . '</span></a>'
                 . '</div>', 'content');
         }
+        $GLOBALS['page']->add(formatUTCdatesasLocal(), 'content');
         $GLOBALS['page']->add(
             $tb->getNavBar($ini, $tot_forum)
             . '</div>', 'content');
@@ -1028,7 +1029,7 @@ function thread()
     while (list($idT_p, $id_ta, $posted, $title_p, $id_a, $is_gener) = sql_fetch_row($re_last_post)) {
         $last_authors[$id_ta] = $id_ta;
         if ($posted !== null) {
-            $last_post[$idT_p]['info'] = Format::date($posted) . '<br />' . substr(strip_tags($title_p), 0, 15) . ' ...';
+            $last_post[$idT_p]['info'] = '<span class="last_post_date">' . Format::date($posted) . '</span> <span class="last_post_timezone">UTC</span><br />' . substr(strip_tags($title_p), 0, 15) . ' ...';
             $last_post[$idT_p]['author'] = $id_a;
             $last_authors[$id_a] = $id_a;
         }
@@ -1072,7 +1073,7 @@ function thread()
         '<a href="' . $jump_url . '&amp;ord=' . ($ord == 'post' ? 'posti' : 'post') . '" title="' . $lang->def('_ORDER_BY') . '">'
         . ($ord == 'post' ? $img_up : ($ord == 'posti' ? $img_down : '')) . $lang->def('_LASTPOST') . '</a>',
     ];
-    $type_h = ['image', '', 'align_center', 'align_center', 'image',
+    $type_h = ['image', '', 'align_center', 'align_center', 'align_center',
         //'align_center',
         'align_center', ];
     if ($mod_perm) {
@@ -1221,6 +1222,7 @@ function thread()
             }
             $tb->addBody($content);
         }
+        $GLOBALS['page']->add(formatUTCdatesasLocal(), 'content');
     }
 
     // NOTE: If notify request register it
@@ -1876,7 +1878,7 @@ function loadDistance($date)
 
     //minutes -> hour
     $distance = (int) ($distance / 60);
-    if (($distance >= 0) && ($distance < 60)) {
+    if (($distance >= 0) && ($distance < 24)) {
         return $distance . ' ' . (($distance > 1) ? Lang::t('_HOURS') : Lang::t('_HOUR'));
     }
 
@@ -1884,6 +1886,18 @@ function loadDistance($date)
     $distance = (int) ($distance / 24);
     if (($distance >= 0) && ($distance < 30)) {
         return $distance . ' ' . (($distance > 1) ? Lang::t('_DAYS') : Lang::t('_DAY'));
+    }
+
+    //day -> month
+    $distance = (int) ($distance / 30);
+    if (($distance >= 0) && ($distance < 12)) {
+        return $distance . ' ' . (($distance > 1) ? Lang::t('_MONTHS') : Lang::t('_MONTH'));
+    }
+
+    //month -> year
+    $distance = (int) ($distance / 12);
+    if (($distance >= 0)) {
+        return $distance . ' ' . (($distance > 1) ? Lang::t('_YEARS') : Lang::t('_YEAR'));
     }
 
     //echo > 1 month
@@ -2020,15 +2034,10 @@ function message()
     // Retriving level and number of post of the authors
     if (!empty($authors)) {
         $re_num_post = sql_query('
-        SELECT u.idUser, u.level, COALESCE(m.num_post, 0) AS num_post
-        FROM ' . $GLOBALS['prefix_lms'] . '_courseuser AS u
-        LEFT JOIN (
-            SELECT author, COUNT(*) AS num_post
-            FROM %lms_forummessage
-            WHERE idCourse = "' . (int) $idCourse . '"
-            GROUP BY author
-        ) AS m ON m.author = u.idUser
-        WHERE u.idUser IN ( ' . implode(',', $authors) . ' ) LIMIT 1');
+                SELECT u.idUser, u.level, COUNT(*)
+                FROM %lms_forummessage AS m, ' . $GLOBALS['prefix_lms'] . "_courseuser AS u
+                WHERE u.idCourse = '" . (int) $idCourse . "' AND m.author = u.idUser AND m.author IN ( " . implode(',', $authors) . ' )
+                GROUP BY u.idUser, u.level');
         while (list($id_u, $level_u, $num_post_a) = sql_fetch_row($re_num_post)) {
             $authors_info[$id_u] = ['num_post' => $num_post_a, 'level' => $level_name[$level_u]];
         }
@@ -2105,8 +2114,8 @@ function message()
                 . '<img src="' . getPathImage() . mimeDetect($message_info['attach']) . '" alt="' . $lang->def('_ATTACHMENT') . '" /></a>'
                 . '</div>';
         }
-        $msgtext .= $lang->def('_DATE') . ' : ' . Format::date($message_info['posted'])
-            . ' ( ' . loadDistance($message_info['posted']) . ' )'
+        $msgtext .= $lang->def('_DATE') . ' : <span class="forum_post_date">' . Format::date($message_info['posted'])
+            . '</span> <span class="forum_post_timezone">UTC</span> ( ' . loadDistance($message_info['posted']) . ' )'
             . '</div>';
         if ($message_info['locked']) {
             $msgtext .= '<div class="forum_post_locked">' . $lang->def('_LOCKEDMESS') . '</div>';
@@ -2139,7 +2148,7 @@ function message()
                         : $lang->def('_UNKNOWN_AUTHOR')
                     )
                     . ' ' . $lang->def('_ON') . ' : '
-                    . Format::date($message_info['modified_by_on'])
+                    . '<span class="forum_post_modified_date">' . Format::date($message_info['modified_by_on']) . '</span> <span class="forum_post_modified_timezone">UTC</span>'
                     . '</div>';
             }
         }
@@ -2186,6 +2195,7 @@ function message()
                 . $lang->def('_DEL') . '</a> ';
         }
         $tb->addBodyExpanded($action, 'forum_action');
+        $GLOBALS['page']->add(formatUTCdatesasLocal(), 'content');
     }
 
     $GLOBALS['page']->add(
@@ -2392,15 +2402,10 @@ function showMessageForAdd($id_thread, $how_much)
 
     // Retriving level and number of post of th authors
     $re_num_post = sql_query('
-        SELECT u.idUser, u.level, COALESCE(m.num_post, 0) AS num_post
-        FROM ' . $GLOBALS['prefix_lms'] . '_courseuser AS u
-        LEFT JOIN (
-            SELECT author, COUNT(*) AS num_post
-            FROM %lms_forummessage
-            WHERE idCourse = "' . (int) $idCourse . '"
-            GROUP BY author
-        ) AS m ON m.author = u.idUser
-        WHERE u.idUser IN ( ' . implode(',', $authors) . ' ) LIMIT 1');
+        SELECT u.idUser, u.level, COUNT(*)
+        FROM %lms_forummessage AS m, ' . $GLOBALS['prefix_lms'] . "_courseuser AS u
+        WHERE u.idCourse = '" . (int) $idCourse . "' AND m.author = u.idUser AND m.author IN ( " . implode(',', $authors) . ' )
+        GROUP BY u.idUser, u.level');
     while (list($id_u, $level_u, $num_post_a) = sql_fetch_row($re_num_post)) {
         $authors_info[$id_u] = ['num_post' => $num_post_a, 'level' => $level_name[$level_u]];
     }
@@ -2445,8 +2450,8 @@ function showMessageForAdd($id_thread, $how_much)
         $msgtext = '';
 
         $msgtext .= '<div class="forum_post_posted">'
-            . $lang->def('_DATE') . ' : ' . Format::date($message_info['posted'])
-            . ' ( ' . loadDistance($message_info['posted']) . ' )'
+            . $lang->def('_DATE') . ' : <span class="forum_post_date">' . Format::date($message_info['posted'])
+            . '</span> <span class="forum_post_timezone">UTC</span> ( ' . loadDistance($message_info['posted']) . ' )'
             . '</div>';
         if ($message_info['locked']) {
             $msgtext .= '<div class="forum_post_locked">' . $lang->def('_LOCKEDMESS') . '</div>';
@@ -2472,6 +2477,7 @@ function showMessageForAdd($id_thread, $how_much)
         $content = [$sender, $msgtext];
         $tb->addBody($content);
     }
+    $GLOBALS['page']->add(formatUTCdatesasLocal(), 'content');
     $GLOBALS['page']->add($tb->getTable(), 'content');
 }
 
@@ -3153,7 +3159,7 @@ function forumsearch()
     while (list($idT_p, $id_ta, $posted, $title_p, $id_a, $is_gener) = sql_fetch_row($re_last_post)) {
         $last_authors[$id_ta] = $id_ta;
         if ($posted !== null) {
-            $last_post[$idT_p]['info'] = Format::date($posted) . '<br />' . substr(strip_tags($title_p), 0, 15) . ' ...';
+            $last_post[$idT_p]['info'] = '<span class="last_post_date">' . Format::date($posted) . '</span> <span class="last_post_timezone">UTC</span><br />' . substr(strip_tags($title_p), 0, 15) . ' ...';
             $last_post[$idT_p]['author'] = $id_a;
             $last_authors[$id_a] = $id_a;
         }
@@ -3198,7 +3204,7 @@ function forumsearch()
         '<a href="' . $jump_url . '&amp;ord=' . ($ord == 'post' ? 'posti' : 'post') . '" title="' . $lang->def('_ORDER_BY') . '">'
         . ($ord == 'post' ? $img_up : ($ord == 'posti' ? $img_down : '')) . $lang->def('_LASTPOST') . '</a>',
     ];
-    $type_h = ['image', '', 'align_center', 'align_center', 'image',
+    $type_h = ['image', '', 'align_center', 'align_center', 'align_center',
         //'align_center',
         'align_center', ];
     if ($mod_perm) {
@@ -3272,6 +3278,7 @@ function forumsearch()
     }
     $GLOBALS['page']->add($tb->getTable(), 'content');
 
+    $GLOBALS['page']->add(formatUTCdatesasLocal(), 'content');
     $GLOBALS['page']->add(
         $nav_bar->getNavBar($ini)
         . '</div>', 'content');
@@ -3375,15 +3382,10 @@ function forumsearchmessage()
 
     // Retriving level and number of post of th authors
     $re_num_post = sql_query('
-        SELECT u.idUser, u.level, COALESCE(m.num_post, 0) AS num_post
-        FROM ' . $GLOBALS['prefix_lms'] . '_courseuser AS u
-        LEFT JOIN (
-            SELECT author, COUNT(*) AS num_post
-            FROM %lms_forummessage
-            WHERE idCourse = "' . (int) $idCourse . '"
-            GROUP BY author
-        ) AS m ON m.author = u.idUser
-        WHERE u.idUser IN ( ' . implode(',', $authors) . ' ) LIMIT 1');
+        SELECT u.idUser, u.level, COUNT(*)
+		FROM %lms_forummessage AS m, ' . $GLOBALS['prefix_lms'] . "_courseuser AS u
+		WHERE u.idCourse = '" . (int) $idCourse . "' AND m.author = u.idUser AND m.author IN ( " . implode(',', $authors) . ' )
+		GROUP BY u.idUser, u.level');
     while (list($id_u, $level_u, $num_post_a) = sql_fetch_row($re_num_post)) {
         $authors_info[$id_u] = ['num_post' => $num_post_a, 'level' => $level_name[$level_u]];
     }
@@ -3427,8 +3429,8 @@ function forumsearchmessage()
         $msgtext = '';
 
         $msgtext .= '<div class="forum_post_posted">'
-            . $lang->def('_DATE') . ' : ' . Format::date($message_info['posted'])
-            . ' ( ' . loadDistance($message_info['posted']) . ' )'
+            . $lang->def('_DATE') . ' : <span class="forum_post_date">' . Format::date($message_info['posted'])
+            . '</span> <span class="forum_post_timezone">UTC</span> ( ' . loadDistance($message_info['posted']) . ' )'
             . '</div>';
         if ($message_info['locked']) {
             $msgtext .= '<div class="forum_post_locked">' . $lang->def('_LOCKEDMESS') . '</div>';
@@ -3464,7 +3466,7 @@ function forumsearchmessage()
                         : $lang->def('_UNKNOWN_AUTHOR')
                     )
                     . ' ' . $lang->def('_ON') . ' : '
-                    . Format::date($message_info['modified_by_on'])
+                    . '<span class="forum_post_modified_date">' . Format::date($message_info['modified_by_on']) . '</span> <span class="forum_post_modified_timezone">UTC</span>'
                     . '</div>';
             }
 
@@ -3560,6 +3562,7 @@ function forumsearchmessage()
             . '</a>'
             . '</div>', 'content');
     }
+    $GLOBALS['page']->add(formatUTCdatesasLocal(), 'content');
     $GLOBALS['page']->add(
         $tb->getNavBar($ini, $tot_message)
         . '</div>', 'content');
@@ -4229,4 +4232,37 @@ function forumDispatch($op)
             break;
         //-----------------------------------------------//
     }
+}
+
+function formatUTCdatesasLocal()
+{
+    return '
+    <script type="text/javascript">
+        $( document ).ready(function() {
+            $(".last_post_date").each(function(index) {
+                var localText = new window.frontend.modules.Moment.utc($(this).text(), "DD-MM-YYYY hh:mm").local();
+                $(this).text(localText.format("DD-MM-YYYY hh:mm"));
+            });
+            $(".last_post_timezone").each(function(index) {
+                $(this).text("");
+            });
+
+            $(".forum_post_date").each(function(index) {
+                var localText = new window.frontend.modules.Moment.utc($(this).text(), "DD-MM-YYYY hh:mm").local();
+                $(this).text(localText.format("DD-MM-YYYY hh:mm"));
+            });
+            $(".forum_post_timezone").each(function(index) {
+                $(this).text("");
+            });
+
+            $(".forum_post_modified_date").each(function(index) {
+                var localText = new window.frontend.modules.Moment.utc($(this).text(), "DD-MM-YYYY hh:mm").local();
+                $(this).text(localText.format("DD-MM-YYYY hh:mm"));
+            });
+            $(".forum_post_modified_timezone").each(function(index) {
+                $(this).text("");
+            });
+        });
+    </script>
+    ';
 }

@@ -152,7 +152,7 @@ function forum()
 	WHERE f.idCourse = '" . (int) PUBLIC_FORUM_COURSE_ID . "'");
     while (list($idF_p, $idT_p, $posted, $title_p, $id_a) = sql_fetch_row($re_last_post)) {
         if ($posted !== null) {
-            $last_post[$idF_p]['info'] = Format::date($posted) . '<br />' . substr(strip_tags($title_p), 0, 15) . ' ...';
+            $last_post[$idF_p]['info'] = '<span class="last_post_date">' . Format::date($posted) . '</span> <span class="last_post_timezone">UTC</span><br />' . substr(strip_tags($title_p), 0, 15) . ' ...';
             $last_post[$idF_p]['author'] = $id_a;
             $last_authors[] = $id_a;
         }
@@ -428,6 +428,7 @@ function forum()
                 . '</span></a>'
                 . '</div>', 'content');
         }
+        $GLOBALS['page']->add(formatUTCdatesasLocal(), 'content');
         $GLOBALS['page']->add(
             $tb->getNavBar($ini, $tot_forum)
             . '</div>', 'content');
@@ -1238,7 +1239,7 @@ function thread()
     while (list($idT_p, $id_ta, $posted, $title_p, $id_a, $is_gener) = sql_fetch_row($re_last_post)) {
         $last_authors[$id_ta] = $id_ta;
         if ($posted !== null) {
-            $last_post[$idT_p]['info'] = Format::date($posted) . '<br />' . substr(strip_tags($title_p), 0, 15) . ' ...';
+            $last_post[$idT_p]['info'] = '<span class="last_post_date">' . Format::date($posted) . '</span> <span class="last_post_timezone">UTC</span><br />' . substr(strip_tags($title_p), 0, 15) . ' ...';
             $last_post[$idT_p]['author'] = $id_a;
             $last_authors[$id_a] = $id_a;
         }
@@ -1282,7 +1283,7 @@ function thread()
         '<a href="' . $jump_url . '&amp;ord=' . ($ord == 'post' ? 'posti' : 'post') . '" title="' . $lang->def('_ORDER_BY') . '">'
         . ($ord == 'post' ? $img_up : ($ord == 'posti' ? $img_down : '')) . $lang->def('_LASTPOST') . '</a>',
     ];
-    $type_h = ['image', '', 'align_center', 'align_center', 'image',
+    $type_h = ['image', '', 'align_center', 'align_center', 'align_center',
         //'align_center',
         'align_center', ];
     if ($mod_perm || $moderate) {
@@ -1431,6 +1432,7 @@ function thread()
             }
             $tb->addBody($content);
         }
+        $GLOBALS['page']->add(formatUTCdatesasLocal(), 'content');
     }
 
     // NOTE: If notify request register it
@@ -2080,7 +2082,7 @@ function loadDistance($date)
 
     //minutes -> hour
     $distance = (int) ($distance / 60);
-    if (($distance >= 0) && ($distance < 60)) {
+    if (($distance >= 0) && ($distance < 24)) {
         return $distance . ' ' . (($distance > 1) ? Lang::t('_HOURS') : Lang::t('_HOUR'));
     }
 
@@ -2088,6 +2090,18 @@ function loadDistance($date)
     $distance = (int) ($distance / 24);
     if (($distance >= 0) && ($distance < 30)) {
         return $distance . ' ' . (($distance > 1) ? Lang::t('_DAYS') : Lang::t('_DAY'));
+    }
+
+    //day -> month
+    $distance = (int) ($distance / 30);
+    if (($distance >= 0) && ($distance < 12)) {
+        return $distance . ' ' . (($distance > 1) ? Lang::t('_MONTHS') : Lang::t('_MONTH'));
+    }
+
+    //month -> year
+    $distance = (int) ($distance / 12);
+    if (($distance >= 0)) {
+        return $distance . ' ' . (($distance > 1) ? Lang::t('_YEARS') : Lang::t('_YEAR'));
     }
 
     //echo > 1 month
@@ -2294,8 +2308,15 @@ function message()
             $msgtext .= '<div class="forum_post_posted">';
         }
 
-        $msgtext .= $lang->def('_DATE') . ' : ' . Format::date($message_info['posted'])
-            . ' ( ' . loadDistance($message_info['posted']) . ' )'
+        if ($message_info['attach'] != '') {
+            $msgtext .= '<div class="forum_post_attach">'
+                . '<a href="index.php?modname=public_forum&amp;op=download&amp;id=' . $id_message . '">'
+                . $lang->def('_ATTACHMENT') . ' : '
+                . '<img src="' . getPathImage('fw') . mimeDetect($message_info['attach']) . '" alt="' . $lang->def('_ATTACHMENT') . '" /></a>'
+                . '</div>';
+        }
+        $msgtext .= $lang->def('_DATE') . ' : <span class="forum_post_date">' . Format::date($message_info['posted'])
+            . '</span> <span class="forum_post_timezone">UTC</span> ( ' . loadDistance($message_info['posted']) . ' )'
             . '</div>';
         if ($message_info['locked']) {
             $msgtext .= '<div class="forum_post_locked">' . $lang->def('_LOCKEDMESS') . '</div>';
@@ -2323,7 +2344,7 @@ function message()
                         : $lang->def('_UNKNOWN_AUTHOR')
                     )
                     . ' ' . $lang->def('_ON') . ' : '
-                    . Format::date($message_info['modified_by_on'])
+                    . '<span class="forum_post_modified_date">' . Format::date($message_info['modified_by_on'] . '</span> <span class="forum_post_modified_timezone">UTC</span>')
                     . '</div>';
             }
         }
@@ -2449,6 +2470,7 @@ function message()
     $GLOBALS['page']->add($tb->getNavBar($ini, $tot_message), 'content');
     $GLOBALS['page']->add($tb->getTable(), 'content');
 
+    $GLOBALS['page']->add(formatUTCdatesasLocal(), 'content');
     $GLOBALS['page']->add(
         $tb->getNavBar($ini, $tot_message)
         . '</div>', 'content');
@@ -2634,8 +2656,8 @@ function showMessageForAdd($id_thread, $how_much)
         $msgtext = '';
 
         $msgtext .= '<div class="forum_post_posted">'
-            . $lang->def('_DATE') . ' : ' . Format::date($message_info['posted'])
-            . ' ( ' . loadDistance($message_info['posted']) . ' )'
+            . $lang->def('_DATE') . ' : <span class="forum_post_date">' . Format::date($message_info['posted'])
+            . '</span> <span class="forum_post_timezone">UTC</span> ( ' . loadDistance($message_info['posted']) . ' )'
             . '</div>';
         if ($message_info['locked']) {
             $msgtext .= '<div class="forum_post_locked">' . $lang->def('_LOCKEDMESS') . '</div>';
@@ -2661,6 +2683,7 @@ function showMessageForAdd($id_thread, $how_much)
         $content = [$sender, $msgtext];
         $tb->addBody($content);
     }
+    $GLOBALS['page']->add(formatUTCdatesasLocal(), 'content');
     $GLOBALS['page']->add($tb->getTable(), 'content');
 }
 
@@ -3370,7 +3393,7 @@ function forumsearch()
     while (list($idT_p, $id_ta, $posted, $title_p, $id_a, $is_gener) = sql_fetch_row($re_last_post)) {
         $last_authors[$id_ta] = $id_ta;
         if ($posted !== null) {
-            $last_post[$idT_p]['info'] = Format::date($posted) . '<br />' . substr(strip_tags($title_p), 0, 15) . ' ...';
+            $last_post[$idT_p]['info'] = '<span class="last_post_date">' . Format::date($posted) . '</span> <span class="last_post_timezone">UTC</span><br />' . substr(strip_tags($title_p), 0, 15) . ' ...';
             $last_post[$idT_p]['author'] = $id_a;
             $last_authors[$id_a] = $id_a;
         }
@@ -3415,7 +3438,7 @@ function forumsearch()
         '<a href="' . $jump_url . '&amp;ord=' . ($ord == 'post' ? 'posti' : 'post') . '" title="' . $lang->def('_ORDER_BY') . '">'
         . ($ord == 'post' ? $img_up : ($ord == 'posti' ? $img_down : '')) . $lang->def('_LASTPOST') . '</a>',
     ];
-    $type_h = ['image', '', 'align_center', 'align_center', 'image',
+    $type_h = ['image', '', 'align_center', 'align_center', 'align_center',
         //'align_center',
         'align_center', ];
     if ($mod_perm) {
@@ -3646,8 +3669,8 @@ function forumsearchmessage()
         $msgtext = '';
 
         $msgtext .= '<div class="forum_post_posted">'
-            . $lang->def('_DATE') . ' : ' . Format::date($message_info['posted'])
-            . ' ( ' . loadDistance($message_info['posted']) . ' )'
+            . $lang->def('_DATE') . ' : <span class="forum_post_date">' . Format::date($message_info['posted'])
+            . '</span> <span class="forum_post_timezone">UTC</span> ( ' . loadDistance($message_info['posted']) . ' )'
             . '</div>';
         if ($message_info['locked']) {
             $msgtext .= '<div class="forum_post_locked">' . $lang->def('_LOCKEDMESS') . '</div>';
@@ -3683,7 +3706,7 @@ function forumsearchmessage()
                         : $lang->def('_UNKNOWN_AUTHOR')
                     )
                     . ' ' . $lang->def('_ON') . ' : '
-                    . Format::date($message_info['modified_by_on'])
+                    . '<span class="forum_post_modified_date">' . Format::date($message_info['modified_by_on']) . '</span> <span class="forum_post_modified_timezone">UTC</span>'
                     . '</div>';
             }
         }
@@ -3789,6 +3812,7 @@ function forumsearchmessage()
             . '</a>'
             . '</div>', 'content');
     }
+    $GLOBALS['page']->add(formatUTCdatesasLocal(), 'content');
     $GLOBALS['page']->add(
         $tb->getNavBar($ini, $tot_message)
         . '</div>', 'content');
@@ -4496,4 +4520,37 @@ function forumDispatch($op)
             break;
         //-----------------------------------------------//
     }
+}
+
+function formatUTCdatesasLocal()
+{
+    return '
+    <script type="text/javascript">
+        $( document ).ready(function() {
+            $(".last_post_date").each(function(index) {
+                var localText = new window.frontend.modules.Moment.utc($(this).text(), "DD-MM-YYYY hh:mm").local();
+                $(this).text(localText.format("DD-MM-YYYY hh:mm"));
+            });
+            $(".last_post_timezone").each(function(index) {
+                $(this).text("");
+            });
+
+            $(".forum_post_date").each(function(index) {
+                var localText = new window.frontend.modules.Moment.utc($(this).text(), "DD-MM-YYYY hh:mm").local();
+                $(this).text(localText.format("DD-MM-YYYY hh:mm"));
+            });
+            $(".forum_post_timezone").each(function(index) {
+                $(this).text("");
+            });
+
+            $(".forum_post_modified_date").each(function(index) {
+                var localText = new window.frontend.modules.Moment.utc($(this).text(), "DD-MM-YYYY hh:mm").local();
+                $(this).text(localText.format("DD-MM-YYYY hh:mm"));
+            });
+            $(".forum_post_modified_timezone").each(function(index) {
+                $(this).text("");
+            });
+        });
+    </script>
+    ';
 }

@@ -160,7 +160,7 @@ a#up_goblog:hover{text-decoration:underline; }
 a#up_gofriend{float:right;width:48%;margin:4px 0;padding:0px 4px;font-weight:bold;text-align:right;text-decoration:none;letter-spacing:0.1em;}
 a#up_gofriend:hover{text-decoration:underline; }
 p.up_middle_other_action + div.up_last_view{clear:both;}
-div.up_last_view{float:right;margin:12px 4px;padding:4px 1px;font-size:83%;background:#fff;}
+div.up_last_view{text-align:right;margin:12px 4px;padding:4px 1px;font-size:83%;background:#fff;}
 div.up_last_view h2{margin:4px 1px;padding:1px 1px 1px 4px;}
 div.up_last_view p{border-top:1px solid #ccc;border-bottom: 1px solid #ccc;padding: 4px 1px;}
 div.up_last_view p a.last_visit{color:#0c0;}
