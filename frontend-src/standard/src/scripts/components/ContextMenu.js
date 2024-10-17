@@ -95,9 +95,11 @@ class ContextMenu {
                 case 13: // enter
                   _this.renameEl();
                   e.preventDefault();
+                  break;
                 case 27: // esc
                   renameInput.blur();
                   rename.classList.remove('is-show');
+                  break;
               }
             });
           }

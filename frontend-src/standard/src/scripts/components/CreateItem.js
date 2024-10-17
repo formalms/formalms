@@ -35,6 +35,7 @@ class CreateItem {
     const createFolderBtn = createFolderForm.querySelector('.createFolder__btn');
     const cancelCreateFolderBtn = createFolderForm.querySelector('.cancelCreateFolder__btn');
     const folderInputText = createFolderForm.querySelector('.createFolder__input');
+    const err = this.container.querySelector('.createFolder__input_err');
     
     createFolderBtn.addEventListener('click', (e) => { this.createNewFolder(e, createFolderForm) });
     cancelCreateFolderBtn.addEventListener('click', () => {
@@ -43,12 +44,30 @@ class CreateItem {
       dropdown.classList.remove('hidden');
       createFolderForm.classList.add('hidden');
       createFolderForm.querySelector('.createFolder__input').value = '';
+      err.classList.add('hidden');
+      createFolderBtn.removeAttribute('style');
     });
 
-    folderInputText.addEventListener('keypress', (e) => {
-      if (e.keyCode === 13) {
-        this.createNewFolder(e, createFolderForm);
-        return false;
+    folderInputText.addEventListener('keyup', (e) => {
+      switch(e.keyCode) {
+        case 13: // enter
+          this.createNewFolder(e, createFolderForm);
+          return false;
+        case 27: // esc
+          const dropdownBtn = this.container.querySelector('#dropdownMenuBtn_' + this.type);
+          dropdownBtn.classList.remove('hidden');
+          dropdown.classList.remove('hidden');
+          createFolderForm.classList.add('hidden');
+          createFolderForm.querySelector('.createFolder__input').value = '';
+          err.classList.add('hidden');
+          createFolderBtn.removeAttribute('style');
+          break;
+      }
+    });
+
+    document.addEventListener('keypress', (e) => {
+      if(e.key == "Enter" && e.target.classList.contains('createFolder__input')) {
+        e.preventDefault();
       }
     });
   }
@@ -97,6 +116,7 @@ class CreateItem {
         }));
       }
     }).catch((error) => {
+      createFolderBtn.removeAttribute('style');
       _this.showErr(error.response.data.error);
     });
 
