@@ -149,6 +149,8 @@ class FolderView extends LearningView {
                 fallbackOnBody: true,
                 invertSwap: true,
                 swapThreshold: 0.13,
+                filter: '.folderTree__rename__input',
+                preventOnFilter: false,
                 onUpdate: function (evt) {
                     const currentElement = evt.item;
                     const currentElementId = currentElement.getAttribute('data-id');
