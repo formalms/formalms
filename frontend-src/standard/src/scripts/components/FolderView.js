@@ -179,6 +179,12 @@ class FolderView extends LearningView {
                         newParent: parentElementId,
                         newOrder: childElementArray
                     }));
+                },
+                setData: function (dataTransfer, el) {
+                    if (el) el.style.cursor = 'grabbing';
+                },
+                onEnd: function (e) {
+                    if (e.item) e.item.style.cursor = 'pointer';
                 }
             });
         }
