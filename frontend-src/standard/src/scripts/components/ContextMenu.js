@@ -65,13 +65,14 @@ class ContextMenu {
       }
 
       const renameBtn = {
-        text: Lang.Translation('_RENAME', 'learningObjectContextMenu'),
+        text: Lang.Translation('_RENAME', 'learning_object_context_menu'),
         onClick() {
           const renameOrig = document.querySelector('.folderTree__rename');
           const rename = renameOrig.cloneNode(true);
           const renameInput = rename.querySelector('.folderTree__rename__input');
 
           const btn = rename.querySelector('.js-ft-rename-el');
+          const btnCancel = rename.querySelector('.js-ft-cancel-el');
           const inputRename = rename.querySelector('.folderTree__rename__input');
 
           if (btn) {
@@ -80,11 +81,22 @@ class ContextMenu {
             });
           }
 
+          if (btnCancel) {
+            btnCancel.addEventListener('click', () => {
+              renameInput.blur();
+              rename.classList.remove('is-show');
+            });
+          }
+
           if (inputRename) {
             inputRename.addEventListener('keyup', (e) => {
-              if (e.keyCode === 13) {
-                _this.renameEl();
-                e.preventDefault();
+              switch (e.keyCode) {
+                case 13: // enter
+                  _this.renameEl();
+                  e.preventDefault();
+                case 27: // esc
+                  renameInput.blur();
+                  rename.classList.remove('is-show');
               }
             });
           }
@@ -94,13 +106,13 @@ class ContextMenu {
               target.classList.add('ft-no-click');
               target.appendChild(rename);
             } else {
-              target.parentNode.classList.add('ft-no-click');
-              target.parentNode.appendChild(rename);
+              target.closest('li').classList.add('ft-no-click');
+              target.closest('li').appendChild(rename);
             }
             rename.classList.add('is-show');  
             renameInput.focus();
-            renameInput.value = target.getElementsByTagName('span')[0].outerText;
-            renameInput.setAttribute('value', target.getElementsByTagName('span').outerText);
+            renameInput.value = target.closest('li').getElementsByTagName('span')[0].outerText;
+            renameInput.setAttribute('value', target.closest('li').getElementsByTagName('span')[0].outerText);
 
             // Rendo tutti gli elementi non cliccabili se sono in modalità rinomina
             const elsNotClick = _this.container.querySelectorAll('.ft-no-click');
@@ -131,7 +143,7 @@ class ContextMenu {
       };
 
       const copyBtn = {
-        text: Lang.Translation('_COPY', 'learningObjectContextMenu'),
+        text: Lang.Translation('_COPY', 'learning_object_context_menu'),
         onClick() {
           _this.currentElsIds.forEach((id) => {
             _this.container.closest('li').querySelector('div[data-id="' + parseInt(id) + '"]').classList.add('is-ready-for-copy');
@@ -141,7 +153,7 @@ class ContextMenu {
       };
 
       const deleteBtn = {
-        text: Lang.Translation('_DELETE', 'learningObjectContextMenu'),
+        text: Lang.Translation('_DELETE', 'learning_object_context_menu'),
         onClick() {
           let objectsNames = [];
           _this.currentEls.forEach(element => {
@@ -153,9 +165,9 @@ class ContextMenu {
           });
           let deleteElements;
           if (objectsNames.length === 1) {
-            deleteElements = Lang.Translation('_DELETE_ELEMENT', 'learningObjectContextMenu').replace('[objectName]', objectsNames.join(','));
+            deleteElements = Lang.Translation('_DELETE_ELEMENT', 'learning_object_context_menu').replace('[objectName]', objectsNames.join(','));
           } else {
-            deleteElements = Lang.Translation('_DELETE_ELEMENTS', 'learningObjectContextMenu').replace('[objectNames]', objectsNames.join(','));
+            deleteElements = Lang.Translation('_DELETE_ELEMENTS', 'learning_object_context_menu').replace('[objectNames]', objectsNames.join(','));
           }
           if (confirm(deleteElements)) {
             const deleteData = _this.getApiUrl('delete', { ids: _this.currentElsIds });

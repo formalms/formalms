@@ -143,7 +143,7 @@ class LomanagerorganizationLmsController extends LomanagerLmsController
                         'content' => "index.php?r=lms/lomanagerorganization/copy&id=$id&type=$type&newType=",
                         'showIcon' => true,
                         'icon' => 'icon-copy',
-                        'label' => Lang::t('_COPY', 'learningObjectContextMenu'),
+                        'label' => Lang::t('_COPY', 'learning_object_context_menu'),
                     ];
                 }
 
@@ -154,7 +154,7 @@ class LomanagerorganizationLmsController extends LomanagerLmsController
                     'content' => "index.php?r=lms/lomanagerorganization/delete&id=$id&type=$type",
                     'showIcon' => true,
                     'icon' => 'icon-delete',
-                    'label' => Lang::t('_DELETE', 'learningObjectContextMenu'),
+                    'label' => Lang::t('_DELETE', 'learning_object_context_menu'),
                 ];
             }
             $results[] = $lo;

@@ -348,7 +348,7 @@ class LomanagerLms extends Model
                         'content' => "index.php?r=lms/lomanager/copy&id=$id&type=$type&newType=",
                         'showIcon' => true,
                         'icon' => 'icon-copy',
-                        'label' => Lang::t('_COPY', 'learningObjectContextMenu'),
+                        'label' => Lang::t('_COPY', 'learning_object_context_menu'),
                     ];
                 }
 
@@ -359,7 +359,7 @@ class LomanagerLms extends Model
                     'content' => "index.php?r=lms/lomanager/delete&id=$id&type=$type",
                     'showIcon' => true,
                     'icon' => 'icon-delete',
-                    'label' => Lang::t('_DELETE', 'learningObjectContextMenu'),
+                    'label' => Lang::t('_DELETE', 'learning_object_context_menu'),
                 ];
             }
             $results[] = $lo;
