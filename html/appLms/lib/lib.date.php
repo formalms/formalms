@@ -1608,7 +1608,7 @@ class DateManager
                 'presence' => '<a href="index.php?r=alms/classroom/presence&id_course=' . $id_course . '&amp;id_date=' . $id_date . '">' . Lang::t('_ATTENDANCE', 'course') . '</a>',
                 'num_day' => $num_day,
                 'user_subscribed' => $user_subscribed,
-                'mod' => '<a href="index.php?r=alms/classroom/updateClassroom&id_course=' . $id_course . '&amp;id_date=' . $id_date . '">' . FormaLms\lib\Get::img('standard/edit.png', Lang::t('_MOD', 'course')) . '</a>',
+                'mod' => '<a href="index.php?r=alms/classroom/updateClassroom&id_course=' . $id_course . '&amp;id_date=' . $id_date . '">' . FormaLms\lib\Get::sprite('subs_mod', Lang::t('_MOD', 'course')) . '</a>',
                 'del' => 'ajax.adm_server.php?r=alms/classroom/delclassroom&id_course=' . $id_course . '&amp;id_date=' . $id_date,
                 'unsubscribe_date_limit' => $unsubscribe_date_limit,
                 'registro' => '<a href="index.php?r=alms/classroom/classroomDateDays&id_course=' . $id_course . '&amp;id_date=' . $id_date . '">' . FormaLms\lib\Get::img('standard/date.png', Lang::t('_DAYS', 'course')) . '</a>',

@@ -105,7 +105,7 @@ class AggregatedcertificateAlmsController extends AlmsController
 
         // Label for all columns
         $cont_h = [
-            Lang::t('_CODE'),
+            Lang::t('_CODE', 'certificate'),
             Lang::t('_NAME'),
             Lang::t('_DESCRIPTION'),
         ];
@@ -116,19 +116,19 @@ class AggregatedcertificateAlmsController extends AlmsController
             $cont_h[] = Lang::t('_TEMPLATE', 'certificate');
         }
 
-        $cont_h[] = FormaLms\lib\Get::img('standard/view.png', Lang::t('_PREVIEW'));
+        $cont_h[] = FormaLms\lib\Get::sprite('subs_view', Lang::t('_PREVIEW'));
 
         if ($userCanModify) {
-            $cont_h[] = FormaLms\lib\Get::img('standard/moduser.png', Lang::t('_CERTIFICATE_AGGREGATE_ASSOCIATION', 'certificate'));
+            $cont_h[] = FormaLms\lib\Get::sprite('subs_users', Lang::t('_CERTIFICATE_AGGREGATE_ASSOCIATION', 'certificate'));
             $type_h[] = 'image';
 
             $cont_h[] = FormaLms\lib\Get::sprite('subs_print', Lang::t('_CERTIFICATE_AGGREGATE_ASSOCIATION', 'certificate'));
             $type_h[] = 'image';
 
-            $cont_h[] = FormaLms\lib\Get::img('standard/edit.png', Lang::t('_MOD'), Lang::t('_MOD'));
+            $cont_h[] = FormaLms\lib\Get::sprite('subs_mod', Lang::t('_MOD'), Lang::t('_MOD'));
             $type_h[] = 'image';
 
-            $cont_h[] = FormaLms\lib\Get::img('standard/delete.png', Lang::t('_DEL'), Lang::t('_DEL'));
+            $cont_h[] = FormaLms\lib\Get::sprite('subs_del', Lang::t('_DEL'), Lang::t('_DEL'));
             $type_h[] = 'image';
         }
 
