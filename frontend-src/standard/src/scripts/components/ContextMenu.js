@@ -91,12 +91,13 @@ class ContextMenu {
 
           if (inputRename) {
             inputRename.addEventListener('keyup', (e) => {
-              switch (e.keyCode) {
-                case 13: // enter
+              switch (e.key) {
+                case 'Enter':
                   _this.renameEl();
                   e.preventDefault();
                   break;
-                case 27: // esc
+                case 'Esc':
+                case 'Escape':
                   renameInput.blur();
                   rename.classList.remove('is-show');
                   break;

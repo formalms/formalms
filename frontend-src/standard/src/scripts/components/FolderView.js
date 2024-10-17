@@ -65,7 +65,7 @@ class FolderView extends LearningView {
         });
 		
        _this.container.addEventListener('keydown', (e) => {
-			if (e.keyCode === 13) {
+			if (e.key === 'Enter') {
 				_this.triggerDblClick(e);
 			}	
 		});					

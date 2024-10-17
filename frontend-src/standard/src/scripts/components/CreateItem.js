@@ -49,11 +49,12 @@ class CreateItem {
     });
 
     folderInputText.addEventListener('keyup', (e) => {
-      switch(e.keyCode) {
-        case 13: // enter
+      switch(e.key) {
+        case 'Enter':
           this.createNewFolder(e, createFolderForm);
           return false;
-        case 27: // esc
+        case 'Esc':
+        case 'Escape':
           const dropdownBtn = this.container.querySelector('#dropdownMenuBtn_' + this.type);
           dropdownBtn.classList.remove('hidden');
           dropdown.classList.remove('hidden');
