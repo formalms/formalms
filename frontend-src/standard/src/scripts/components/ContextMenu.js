@@ -236,7 +236,7 @@ class ContextMenu {
     const elId = el.getAttribute('data-id');
     const renameData = _this.getApiUrl('rename', { id: elId, newName: encodeURIComponent(value) });
 
-    if (input.value == null || input.value.toString().trim() == '') {
+    if (input.value == null || input.value.toString().trim() == '' || value == el.getElementsByTagName('span')[0].outerText) {
       input.blur();
       rename.classList.remove('is-show');
       return;
