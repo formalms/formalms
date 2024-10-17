@@ -2,6 +2,34 @@ FORMA LMS
 RELEASE CHANGELOG
 
 ---------------------------------------------------------------------------------------
+forma.lms 4.0.11
+---------------------------------------------------------------------------------------
+Release date: 2024 October
+
+- #     - add translate and fix keys form cron.report
+- #     - fix absolute path calculate
+- #     - fix right join coursereports for not test items
+- #     - fix insertparams
+- #     - fix unjoinead course reports on learning course reports
+- #     - update certificate generation
+- #     - update composer packages
+- #     - fix clean selection from empy values in userselector
+- #     - fixed mail sender
+- #     - fix org nodelist dropdown query
+- #     - fix null values in courselist
+- #     - fix getAllselection from UserDataSelector.php
+- #     - fix admin courselist data
+- #     - fix api
+- #     - mycourses - filter closed couse in "all course" mycourses
+- #     - fix sequence questions test on delete
+- #     - fix exception stats when user is tutor - fix division by zero when turo does not have any student
+- #     - fix get pdf constructor
+- #     - fix api authentication not neded for explicit route
+- #     - Fix autoplay object
+- #     - fix Man_course in certificate.php
+
+
+---------------------------------------------------------------------------------------
 forma.lms 4.0.10
 ---------------------------------------------------------------------------------------
 Release date: 2024 july
