@@ -1234,6 +1234,9 @@ class CourseSubscribe_Management
         if (empty($arr_users)) {
             return true;
         }
+        if (!is_array($arr_users)) {
+            $arr_users = [$arr_users];
+        }
 
         $group_levels = &$this->course_man->getCourseIdstGroupLevel($id_course);
         $user_level = $this->course_man->getLevelsOfUsers($id_course, $arr_users);
@@ -1245,7 +1248,7 @@ class CourseSubscribe_Management
         }
         $query = 'DELETE FROM %lms_courseuser WHERE idUser IN ( ' . implode(',', $arr_users) . " )";
         if ($idPath != 0) {
-            $query .= ' AND date_inscr >= (SELECT date_assign FROM %lms_coursepath_user WHERE id_path = ' . $idPath . ' AND idUser in( ' . implode(',', [$arr_users]) . '))';
+            $query .= ' AND date_inscr >= (SELECT date_assign FROM %lms_coursepath_user WHERE id_path = ' . $idPath . ' AND idUser in( ' . implode(',', $arr_users) . '))';
         }
         $query .= ' AND idCourse = ' . $id_course;
 
