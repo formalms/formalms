@@ -232,6 +232,12 @@ class ContextMenu {
     const elId = el.getAttribute('data-id');
     const renameData = _this.getApiUrl('rename', { id: elId, newName: encodeURIComponent(value) });
 
+    if (input.value == null || input.value.toString().trim() == '') {
+      input.blur();
+      rename.classList.remove('is-show');
+      return;
+    }
+
     axios.get(renameData).then((res) => {
       if (res) {
         rename.classList.remove('is-show');
