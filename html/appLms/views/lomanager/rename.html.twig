@@ -1,8 +1,7 @@
 <div class="folderTree__rename">
     <input type="text" id="folder_rename_input" value="" class="folderTree__rename__input"
             onfocus="this.value = value"
-            onkeypress="return !(window.event && window.event.keyCode == 13);"
-            style="padding-left:10px"/>
+            onkeypress="return !(window.event && window.event.keyCode == 13);"/>
     <label class="screenreader" for="folder_rename_input">{{ Lang_translate('_RENAME_FOLDER_LABEL', 'screen_reader') }}</label>
     <button class="folderTree__rename__btn cancelCreateFolder__btn noBorder js-ft-cancel-el" type="button">
         <span class="screenreader">{{ Lang_translate('_CANCEL', 'standard') }}</span>

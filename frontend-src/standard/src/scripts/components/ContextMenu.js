@@ -67,6 +67,7 @@ class ContextMenu {
       const renameBtn = {
         text: Lang.Translation('_RENAME', 'learning_object_context_menu'),
         onClick() {
+          const renameParent = target.closest('.folderTree__li') ? target.closest('.folderTree__li') : target.closest('.folderView__li');
           const renameOrig = document.querySelector('.folderTree__rename');
           const rename = renameOrig.cloneNode(true);
           const renameInput = rename.querySelector('.folderTree__rename__input');
@@ -106,13 +107,13 @@ class ContextMenu {
               target.classList.add('ft-no-click');
               target.appendChild(rename);
             } else {
-              target.closest('li').classList.add('ft-no-click');
-              target.closest('li').appendChild(rename);
+              renameParent.classList.add('ft-no-click');
+              renameParent.appendChild(rename);
             }
             rename.classList.add('is-show');  
             renameInput.focus();
-            renameInput.value = target.closest('li').getElementsByTagName('span')[0].outerText;
-            renameInput.setAttribute('value', target.closest('li').getElementsByTagName('span')[0].outerText);
+            renameInput.value = renameParent.getElementsByTagName('span')[0].outerText;
+            renameInput.setAttribute('value', renameParent.getElementsByTagName('span')[0].outerText);
 
             // Rendo tutti gli elementi non cliccabili se sono in modalità rinomina
             const elsNotClick = _this.container.querySelectorAll('.ft-no-click');

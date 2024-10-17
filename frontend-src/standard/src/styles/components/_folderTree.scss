@@ -54,6 +54,10 @@
   padding-right: 48px;
 }
 
+.folderTree__rename__input {
+  padding-left: 10px;
+}
+
 .folderTree__rename__btn, .createFolder__btn, .cancelCreateFolder__btn {
   background: transparent;
   position: absolute;
@@ -85,6 +89,10 @@
   background: {
     image: url('images/folderView/icon-delete.svg');
   }
+}
+
+li:has(.folderTree__li) .cancelCreateFolder__btn {
+  display: none;
 }
 
 .folderTree__actions {
