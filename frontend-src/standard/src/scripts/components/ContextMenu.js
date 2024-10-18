@@ -14,6 +14,7 @@ class ContextMenu {
 
     _this.container = target.closest('*[data-container]');
     _this.type = _this.container.getAttribute('data-container');
+    _this.controller = _this.container.getAttribute('data-controller');
   }
 
   set(selector) {
@@ -264,7 +265,7 @@ class ContextMenu {
   }
 
   getApiUrl(action, params) {
-    let url = `${window.frontend.config.url.appLms}/index.php?r=lms/lomanager${this.type}/${action}`;
+    let url = `${window.frontend.config.url.appLms}/index.php?r=lms/${this.controller}/${action}`;
     if (!params) {
       params = {};
     }
