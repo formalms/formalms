@@ -95,7 +95,7 @@ class CreateItem {
     const dropdownBtn = _this.container.querySelector('#dropdownMenuBtn_' + _this.type);
     const dropdown = _this.container.querySelector('#dropdownMenu_' + _this.type);
 
-    createFolderBtn.setAttribute('style', 'background-color:transparent;background-image:url("/templates/standard/images/standard/loading_snake.gif")');
+    createFolderBtn.setAttribute('style', `background-color:transparent;background-image:url("${window.frontend.config.url.template}/images/standard/loading_snake.gif")`);
 
     const apiUrl = _this.getApiUrl('createFolder', {
       folderName: text,

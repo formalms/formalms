@@ -80,6 +80,10 @@
   padding: 10px;
 }
 
+.folderView__label > img {
+  padding-left: 4px;
+}
+
 @media only screen and (max-width: 600px) {
   .folderView__label {
     max-width: 210px !important;

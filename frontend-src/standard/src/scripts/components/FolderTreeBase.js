@@ -346,9 +346,9 @@ class FolderTreeBase {
   _setAsOpen(id) {
     let subtree = this.container.querySelector('.folderTree__li[data-id="' + id + '"] .folderTree__ul.hidden');
     let directoryButton = this.container.querySelector('.folderTree__li[data-id="' + id + '"] button.folderTree__link');
-    directoryButton.classList.add('ft-is-folderOpen');
+    if (directoryButton) directoryButton.classList.add('ft-is-folderOpen');
     let arrowSpan = this.container.querySelector('.folderTree__li[data-id="' + id + '"] span.arrow');
-    arrowSpan.classList.add('opened');
+    if (arrowSpan) arrowSpan.classList.add('opened');
     if (subtree) {
       subtree.classList.remove('hidden');
     }

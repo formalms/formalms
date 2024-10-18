@@ -13,16 +13,23 @@ class CopyItem {
       });
       document.querySelector('.folderView__copyOverlay').addEventListener('click', (e) => {
          if(e.target.classList.contains('folderView__copyOverlay')) {
-            _this.closeOverlay();
+            const copyCloseButton = document.querySelector('.folderView__copyOverlay__close');
+            if (copyCloseButton.style.pointerEvents !== 'none') {
+               _this.closeOverlay();
+            }
           }
       });
       document.addEventListener('keydown', (e) => {
-         if (e.key === 'Escape') {
-            _this.closeOverlay();
+         if (e.key === 'Esc' || e.key === 'Escape') {
+            const copyCloseButton = document.querySelector('.folderView__copyOverlay__close');
+            if (copyCloseButton.style.pointerEvents !== 'none') {
+               _this.closeOverlay();
+            }
          }
       });
       document.querySelectorAll('.js-fv-copy-target').forEach(el => {
          el.addEventListener('click', () => {
+            _this.toggleBlockCopyClick(el);
             const targetType = el.getAttribute('data-type');
             _this.copyElement(targetType);
          })
@@ -50,6 +57,27 @@ class CopyItem {
       document.querySelector('.folderView__copyOverlay').classList.remove('is-shown');
    }
 
+   toggleBlockCopyClick(el) {
+      el = typeof el !== 'undefined' ? el : document.querySelector('.folderView__copyOverlay .folderView__label > img').closest('.folderView__li');
+      const copyParent = document.querySelector('.folderView__copyOverlay');
+      const copyCloseButton = copyParent.querySelector('.folderView__copyOverlay__close');
+      const copiesTo = copyParent.querySelectorAll('.js-fv-copy-target');
+      if (copyCloseButton.style.pointerEvents == 'none') { // unblock
+         copyCloseButton.style.pointerEvents = 'auto';
+         copiesTo.forEach((copyTo) => {
+            copyTo.style.pointerEvents = 'auto';
+         });
+         const copyLoadingGif = el.querySelector('.folderView__label').getElementsByTagName('img')[0];
+         copyLoadingGif.parentNode.removeChild(copyLoadingGif);
+      } else {
+         copyCloseButton.style.pointerEvents = 'none';
+         copiesTo.forEach((copyTo) => {
+            copyTo.style.pointerEvents = 'none';
+         });
+         el.querySelector('.folderView__label').appendChild(document.createElement('img')).src = `${window.frontend.config.url.template}/images/standard/loading_snake.gif`;
+      }
+   }
+
    copyElement(newtype) {
       const _this = this;
       let ids = [];
@@ -59,7 +87,7 @@ class CopyItem {
       });
       axios.get(_this.getApiUrl('copy', { ids: ids, newtype, type: this.currentType })).then(() => {
          const container = document.querySelector('*[data-container=' + newtype + ']');
-
+         _this.toggleBlockCopyClick();
          _this.closeOverlay();
          document.querySelector('.tab-link[data-type="' + newtype + '"]').click();
          container.querySelector('.ft-is-root').click();
