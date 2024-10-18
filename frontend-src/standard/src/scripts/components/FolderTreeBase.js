@@ -344,13 +344,16 @@ class FolderTreeBase {
   }
 
   _setAsOpen(id) {
-    let subtree = this.container.querySelector('.folderTree__li[data-id="' + id + '"] .folderTree__ul.hidden');
-    let directoryButton = this.container.querySelector('.folderTree__li[data-id="' + id + '"] button.folderTree__link');
-    directoryButton.classList.add('ft-is-folderOpen');
-    let arrowSpan = this.container.querySelector('.folderTree__li[data-id="' + id + '"] span.arrow');
-    arrowSpan.classList.add('opened');
-    if (subtree) {
-      subtree.classList.remove('hidden');
+    let count = this.container.querySelectorAll(".folderTree__li").length;
+    if (count > 1) {
+      let subtree = this.container.querySelector('.folderTree__li[data-id="' + id + '"] .folderTree__ul.hidden');
+      let directoryButton = this.container.querySelector('.folderTree__li[data-id="' + id + '"] button.folderTree__link');
+      directoryButton.classList.add('ft-is-folderOpen');
+      let arrowSpan = this.container.querySelector('.folderTree__li[data-id="' + id + '"] span.arrow');
+      arrowSpan.classList.add('opened');
+      if (subtree) {
+        subtree.classList.remove('hidden');
+      }
     }
   }
 
