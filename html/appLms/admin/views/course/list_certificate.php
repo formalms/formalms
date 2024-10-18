@@ -234,7 +234,8 @@ echo '</div>';
                 }
 
 
-            ]
+            ],
+            order: [2, 'asc']
         })
         cert_table.searchBar.init('#table_certificate');
 
@@ -257,6 +258,16 @@ echo '</div>';
                 authentication: '<?php echo Util::getSignature(); ?>'
             })
             cert_table
+        });
+
+        $('th.select-checkbox').on('click', function() {
+            if (!$(this).hasClass("selected")) {
+                cert_table._datatable.rows().select();
+                $(this).addClass('selected');
+            } else {
+                cert_table._datatable.rows().deselect();
+                $(this).removeClass('selected');
+            }
         });
 
         function print_certificate(id_user, id_course, id_certificate) {
