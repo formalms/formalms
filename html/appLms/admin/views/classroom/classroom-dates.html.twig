@@ -255,29 +255,34 @@
 
     </div>
 </div>
-<div id="myModal" class="modal-background">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <p id="modal-text"></p>
-  </div>
+<div class="modal" id="confirmModal" style="display: none; z-index: 9999;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body" data-val="body">
+			</div>
+			<div class="modal-footer">
+				<div id="modal-text" class="alert alert-danger text-center" style="display: none;" data-val="message"></div>
+				<button type="button" class="btn btn-primary" data-val="no">{{ Lang_translate('_CLOSE', 'standard') }}</button>
+			</div>
+		</div>
+	</div>
+</div>
 
 </div>
 
 <script type="text/javascript">
     /* MODAL */
 
-    var modal = document.getElementById("myModal");
-    var span = document.getElementsByClassName("close")[0];
-
-    span.onclick = function() {
-      modal.style.display = "none";
+    var confirmDialog = function (modalSelector, message, onConfirm) {
+        var fClose = function() {
+            modal.modal("hide");
+        };
+        var modal = $(modalSelector);
+        modal.modal("show");
+        modal.find("*[data-val=body]").empty().append(message);
+        modal.find("*[data-val=yes]").unbind().one('click', onConfirm).one('click', fClose);
+        modal.find("*[data-val=no]").unbind().one("click", fClose);
     }
-
-    window.onclick = function(event) {
-      if (event.target == modal) {
-        modal.style.display = "none";
-      }
-    }    
     
     
     /* end modal */
@@ -644,13 +649,19 @@
     }
 
     function showError(text) {
-        document.getElementById("modal-text").innerText = text
-        modal.style.display = "block";
+        confirmDialog("#confirmModal", text, function() {});
     }
 
     function showSuccess(text) {
-        document.getElementById("modal-text").innerText = text
-        modal.style.display = "block";
+        confirmDialog("#confirmModal", text, function() {});
     }
 
+    $('#confirmModal').on('shown.bs.modal', function() {
+        var modalSelector = '#confirmModal';
+        let modal = $(modalSelector);
+
+        setTimeout(function(){ 
+            modal.find("*[data-val=no]").focus();
+        }, 150);
+    });
 </script>
