@@ -151,7 +151,7 @@ class ContextMenu {
         text: Lang.Translation('_COPY', 'learning_object_context_menu'),
         onClick() {
           _this.currentElsIds.forEach((id) => {
-            _this.container.closest('li').querySelector('div[data-id="' + parseInt(id) + '"]').classList.add('is-ready-for-copy');
+            target.closest('.folderView__li').querySelector('div[data-id="' + parseInt(id) + '"]').classList.add('is-ready-for-copy');
           });
           document.querySelector('.folderView__copyOverlay').classList.add('is-shown');
         }
@@ -205,7 +205,7 @@ class ContextMenu {
         }
       };
 
-      const foundFolder = _this.currentEls.find(element => element.classList.contains('js-folderView-folder'));
+      const foundFolder = _this.currentEls.find(element => (element.classList.contains('js-folderView-folder') || element.classList.contains('ft-is-folder')));
       let buttons = [];
       if(_this.currentElsIds.length <= 1) {
         buttons.push(renameBtn);
