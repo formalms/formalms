@@ -86,12 +86,20 @@ class FolderTreeBase {
   clickOnFolder(event) {
     const _this = this;
 
-    // Try to get clicked dir
+    // Try to get clicked dir on folderTree
     let el = event.target.closest('.folderTree__link');
     if (!el) {
       const li = event.target.closest('.folderTree__li');
       if (li) {
         el = li.querySelector('.folderTree__link');
+      }
+    }
+
+    // Try to get double clicked dir on folderView
+    if (!el && event.detail == 2) {
+      const li = event.target.closest('.folderView__li');
+      if (li) {
+        el = _this.container.querySelector('.folderTree__li[data-id="' + li.getAttribute('data-id') + '"] .folderTree__link');
       }
     }
 
@@ -145,7 +153,7 @@ class FolderTreeBase {
         event.target.classList.add('opened');
         el.classList.add('ft-is-folderOpen');
       } else {
-        const li = event.target.closest('.folderTree__li');
+        const li = el.closest('.folderTree__li');
         const arrow = li.querySelector('.arrow');
         if(this.options.activeStatus) {
           el.parentNode.classList.add('selected');

@@ -28,17 +28,7 @@ class ContextMenu {
       _this.setContainerByTarget(target);
       _this.currentEls = [];
 
-      if(target.classList.contains('folderTree__link')) { // se clicco su una voce del folder tree
-        _this.currentEls = Array.prototype.slice.call(_this.container.querySelectorAll('.ft-is-selected'));
-
-        if(!target.closest('.folderTree__link').classList.contains('ft-is-selected')) {
-          _this.currentEls.forEach(item => {
-            item.classList.remove('ft-is-selected');
-          });
-          target.closest('.folderTree__link').classList.add('ft-is-selected');
-          _this.currentEls = Array.prototype.slice.call(_this.container.querySelectorAll('.ft-is-selected'));
-        }
-      } else {
+      if(!target.classList.contains('folderTree__link')) { // se clicco su una voce del folder tree
         _this.currentEls = Array.prototype.slice.call(_this.container.querySelectorAll('.fv-is-selected'));
 
         if(!target.closest('.folderView__li').classList.contains('fv-is-selected')) {
@@ -68,14 +58,13 @@ class ContextMenu {
       const renameBtn = {
         text: Lang.Translation('_RENAME', 'learning_object_context_menu'),
         onClick() {
-          const renameParent = target.closest('.folderTree__li') ? target.closest('.folderTree__li') : target.closest('.folderView__li');
+          const renameParent = target.closest('.folderTree__li') ? target : target.closest('.folderView__li');
           const renameOrig = document.querySelector('.folderTree__rename');
           const rename = renameOrig.cloneNode(true);
           const renameInput = rename.querySelector('.folderTree__rename__input');
 
           const btn = rename.querySelector('.js-ft-rename-el');
           const btnCancel = rename.querySelector('.js-ft-cancel-el');
-          const inputRename = rename.querySelector('.folderTree__rename__input');
 
           if (btn) {
             btn.addEventListener('click', () => {
@@ -90,8 +79,8 @@ class ContextMenu {
             });
           }
 
-          if (inputRename) {
-            inputRename.addEventListener('keyup', (e) => {
+          if (renameInput) {
+            renameInput.addEventListener('keyup', (e) => {
               switch (e.key) {
                 case 'Enter':
                   _this.renameEl();
@@ -107,13 +96,8 @@ class ContextMenu {
           }
 
           if (target.classList.contains('folderTree__rename__input') === false) {
-            if (target.hasAttribute('data-id')) {
-              target.classList.add('ft-no-click');
-              target.appendChild(rename);
-            } else {
-              renameParent.classList.add('ft-no-click');
-              renameParent.appendChild(rename);
-            }
+            renameParent.classList.add('ft-no-click');
+            renameParent.appendChild(rename);
             rename.classList.add('is-show');  
             renameInput.focus();
             renameInput.value = renameParent.getElementsByTagName('span')[0].outerText;
@@ -204,6 +188,14 @@ class ContextMenu {
           }
         }
       };
+
+      // Cancel current renameInput on right click
+      if (_this.container.querySelector('.folderTree__rename.is-show') !== null) {
+        const rename = _this.container.querySelector('.folderTree__rename.is-show');
+        const renameInput = rename.querySelector('.folderTree__rename__input');
+        renameInput.blur();
+        rename.classList.remove('is-show');
+      }
 
       const foundFolder = _this.currentEls.find(element => (element.classList.contains('js-folderView-folder') || element.classList.contains('ft-is-folder')));
       let buttons = [];

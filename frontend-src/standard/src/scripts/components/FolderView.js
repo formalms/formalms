@@ -44,6 +44,13 @@ class FolderView extends LearningView {
 
         _this.emptySelectedItems();
 
+        document.addEventListener('click', (e) => {
+            // Click outside folderView
+            if(!e.target.closest('div.folderView')) {
+                _this.emptySelectedItems();
+            }
+        });
+
         _this.container.addEventListener('createTreeItem', (e) => {
             if (_this.isReady) {
                 _this.refresh(e.detail.selectedId);
