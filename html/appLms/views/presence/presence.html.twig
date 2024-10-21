@@ -21,22 +21,21 @@
 </div>
 <script type="text/javascript">
     var _MIN_SCORE_NOT_SET = "'.$lang->def('_MIN_SCORE_NOT_SET').'";
-    YAHOO.util.Event.addListener("save", "click", controlMinScore);
-    YAHOO.util.Event.addListener("id_date", "change", formSubmit);
+    window.frontend.helpers.Axios.defaults.headers.post['X-Signature'] = window.frontend.config.signature;
+    document.getElementById("save").addEventListener("click", controlMinScore);
+    document.getElementById("id_date").addEventListener("change", formSubmit);
 
     function formSubmit()
     {
-        var form = YAHOO.util.Dom.get("presence_form");
+        var form = document.getElementById("presence_form")
         form.submit();
     }
-    function controlMinScore()
-    {
-        var score = YAHOO.util.Dom.get('score_min').value;
+    function controlMinScore(e) {
+        var score = document.getElementById('score_min').value;
 
-        if(score == '')
-        {
-            YAHOO.util.Event.preventDefault(e);
-            alert('window.frontend.config.lang.translations.admin_date._MIN_SCORE_NOT_SET');
+        if (score === '') {
+            e.preventDefault();
+            alert(_MIN_SCORE_NOT_SET);
         }
     }
 </script>

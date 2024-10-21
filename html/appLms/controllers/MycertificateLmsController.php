@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.certificate.php');
+require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/','lib.certificate.php');
 
 class MycertificateLmsController extends LmsController
 {
@@ -39,7 +39,7 @@ class MycertificateLmsController extends LmsController
 
     public function show()
     {
-        include \FormaLms\lib\Forma::inc(_lib_ . '/formatable/include.php');
+        include \FormaLms\lib\Forma::include(_lib_ . '/formatable/','include.php');
         checkPerm('view', false, self::mod_name);
 
         //TODO: EVT_OBJECT (§)
@@ -61,6 +61,7 @@ class MycertificateLmsController extends LmsController
         $this->render('show',
             [
                 'metacertificates' => $this->json->encode($metaCertificates),
+                'certa' => $this->json->encode(\Util::config('tables.columnsacert')),
                 'totalMetaCertificates' => $totalMetaCertificates,
                 'id_user' => $this->id_user,
                 'cert_columns' => $cert_columns,
