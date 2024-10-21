@@ -102,10 +102,10 @@ class HelperTool
         END;';
     }
 
-    public static function dropFieldIfExistsQueryBuilder() : string{
+    public static function dropColumnIfExistsQueryBuilder() : string{
 
-        return HelperTool::dropProcedure('drop_field_if_exists') . '
-    CREATE PROCEDURE drop_field_if_exists ( IN theTableName VARCHAR ( 128 ), IN theColumnName VARCHAR ( 128 ) ) 
+        return HelperTool::dropProcedure('drop_column_if_exists') . '
+    CREATE PROCEDURE drop_column_if_exists ( IN theTableName VARCHAR ( 128 ), IN theColumnName VARCHAR ( 128 ) ) 
         BEGIN
             DECLARE column_exists INT DEFAULT 0;
             
