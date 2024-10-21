@@ -1,0 +1,20 @@
+{
+    "en": {
+        "server-communication-error": "Error communicating with server.",
+        "missing-scorm-parameter": "Missing \"scorm\" parameter.",
+        "scorm-loading-error": "Error loading SCORM.",
+        "receiving-tracking-data-error": "Error receiving tracking data from server.",
+        "sending-tracking-data-error": "Error sending tracking data to server.",
+        "scorm-processing-error": "Error processing SCORM.",
+        "check-network-connection-alert": "Please check your network connection before continuing."
+    },
+    "it": {
+        "server-communication-error": "Errore di comunicazione con il server.",
+        "missing-scorm-parameter": "Parametro \"scorm\" mancante.",
+        "scorm-loading-error": "Errore nel caricamento dell'oggetto SCORM.",
+        "receiving-tracking-data-error": "Errore nella ricezione dei dati di tracciamento dal server.",
+        "sending-tracking-data-error": "Errore nell'invio dei dati di tracciamento al server.",
+        "scorm-processing-error": "Errore nel processare lo SCORM.",
+        "check-network-connection-alert": "Controlla la connessione di rete prima di continuare."
+    }
+}

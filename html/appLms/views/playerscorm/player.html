@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Info -->
+    <title>Ready Player One</title>
+    <meta name="description" content="SCORM player">
+    <meta name="author" content="Joint Technologies">
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles/standard.css">
+    <!-- Library -->
+    <script type="text/javascript" src="lib/Utils.js"></script>
+    <script type="text/javascript" src="lib/RESTClient.js"></script>
+    <script type="text/javascript" src="lib/i18n.js"></script>
+    <script type="text/javascript" src="lib/SCORM/Types.js"></script>
+    <script type="text/javascript" src="lib/SCORM/Param.js"></script>
+    <script type="text/javascript" src="lib/SCORM/API.js"></script>
+    <script type="text/javascript" src="lib/SCORM/SCO.js"></script>
+    <script type="text/javascript" src="lib/SCORM/SCORM.js"></script>
+    <script type="text/javascript" src="vendor/tincan-min.js"></script>
+    <!-- Main -->
+    <script type="text/javascript" src="player.js"></script>
+</head>
+
+<body>
+    <header>
+        <div id="title"><span id="scorm-title"></span><span id="sco-title"></span></div>
+        <button id="close" title="Close">✖</button>
+    </header>
+    <div id="errors">
+
+    </div>
+    <div id="content">
+        <iframe id="scorm" seamless allowfullscreen></iframe>
+        <aside id="toc" class="hidden">
+            <header>
+                <button id="toc-toggle" title="TOC">☰</button>
+            </header>
+            <div id="toc-content"></div>
+        </aside>
+    </div>
+    <footer>
+        
+    </footer>
+</body>
+
+</html>

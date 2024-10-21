@@ -1,0 +1,452 @@
+{
+    "cmi": {
+        "index": "no",
+        "item": "no",
+        "_children": {
+            "item": "yes",
+            "mandatory": "yes",
+            "type": "characterstring",
+            "permission": "readonly",
+            "text": "version,core,launch_data,suspend_data"
+        },
+        "_version": {
+            "item": "yes",
+            "mandatory": "yes",
+            "type": "characterstring",
+            "permission": "readonly",
+            "text": "1.0"
+        },
+        "comments_from_learner": {
+            "index": "yes",
+            "item": "no",
+            "_children": {
+                "item": "yes",
+                "mandatory": "yes",
+                "type": "characterstring",
+                "permission": "readonly",
+                "text": "comment,location,timestamp"
+            },
+            "_index": {
+                "comment": {
+                    "item": "yes",
+                    "mandatory": "yes",
+                    "type": "localized",
+                    "subtype": "4000",
+                    "permission": "readwrite"
+                },
+                "location": {
+                    "item": "yes",
+                    "mandatory": "yes",
+                    "type": "characterstring",
+                    "subtype": "250",
+                    "permission": "readwrite"
+                },
+                "timestamp": {
+                    "item": "yes",
+                    "mandatory": "yes",
+                    "type": "time",
+                    "subtype": "second,10,0",
+                    "permission": "readwrite"
+                }
+            }
+        },
+        "completion_status": {
+            "item": "yes",
+            "mandatory": "yes",
+            "type": "state",
+            "subtype": "completion_status",
+            "permission": "readwrite"
+        },
+        "completion_threshold": {
+            "item": "yes",
+            "mandatory": "yes",
+            "type": "real10_7",
+            "subtype": "0..1",
+            "permission": "readonly"
+        },
+        "credit": {
+            "item": "yes",
+            "mandatory": "yes",
+            "type": "state",
+            "subtype": "credit",
+            "permission": "readonly",
+            "text": "credit"
+        },
+        "entry": {
+            "item": "yes",
+            "mandatory": "yes",
+            "type": "state",
+            "subtype": "entry",
+            "permission": "readonly",
+            "text": "ab-initio"
+        },
+        "exit": {
+            "item": "yes",
+            "mandatory": "yes",
+            "type": "state",
+            "subtype": "exit",
+            "permission": "writeonly"
+        },
+        "interactions": {
+            "index": "yes",
+            "item": "no",
+            "_children": {
+                "item": "yes",
+                "mandatory": "yes",
+                "type": "characterstring",
+                "permission": "readonly",
+                "text": "id,type,objectives,timestamp,correct_responses,weighting,learner_response,result,latency,description"
+            },
+            "_index": {
+                "id": {
+                    "item": "yes",
+                    "mandatory": "yes",
+                    "type": "longidentifier",
+                    "permission": "readwrite"
+                },
+                "type": {
+                    "item": "yes",
+                    "mandatory": "yes",
+                    "type": "state",
+                    "subtype": "interaction_type",
+                    "permission": "readwrite"
+                },
+                "objectives": {
+                    "index": "yes",
+                    "item": "no",
+                    "_children": {
+                        "item": "yes",
+                        "mandatory": "yes",
+                        "type": "characterstring",
+                        "permission": "readonly",
+                        "text": "id"
+                    },
+                    "_index": {
+                        "id": {
+                            "item": "yes",
+                            "mandatory": "yes",
+                            "type": "longidentifier",
+                            "permission": "readwrite"
+                        }
+                    }
+                },
+                "timestamp": {
+                    "item": "yes",
+                    "mandatory": "yes",
+                    "type": "time",
+                    "subtype": "second,10,0",
+                    "permission": "readwrite"
+                },
+                "correct_responses": {
+                    "index": "yes",
+                    "item": "no",
+                    "_children": {
+                        "item": "yes",
+                        "mandatory": "yes",
+                        "type": "characterstring",
+                        "permission": "readonly",
+                        "text": "pattern"
+                    },
+                    "_index": {
+                        "pattern": {
+                            "item": "yes",
+                            "mandatory": "yes",
+                            "type": "longidentifier",
+                            "permission": "readwrite"
+                        }
+                    }
+                },
+                "weighting": {
+                    "item": "yes",
+                    "mandatory": "yes",
+                    "type": "real10_7",
+                    "permission": "readwrite"
+                },
+                "learner_response": {
+                    "item": "yes",
+                    "mandatory": "yes",
+                    "type": "characterstring",
+                    "permission": "readwrite"
+                },
+                "result": {
+                    "item": "yes",
+                    "mandatory": "yes",
+                    "type": "real10_7,state",
+                    "subtype": "interaction_result",
+                    "permission": "readwrite"
+                },
+                "latency": {
+                    "item": "yes",
+                    "mandatory": "yes",
+                    "type": "timeinterval",
+                    "subtype": "second,10,2",
+                    "permission": "readwrite"
+                },
+                "description": {
+                    "item": "yes",
+                    "mandatory": "yes",
+                    "type": "localized",
+                    "permission": "readwrite",
+                    "subtype": "4000"
+                }
+            }
+        },
+        "launch_data": [
+            {
+                "item": "yes",
+                "mandatory": "yes",
+                "type": "characterstring",
+                "permission": "readonly"
+            },
+            {
+                "item": "yes",
+                "mandatory": "yes",
+                "type": "characterstring",
+                "permission": "readwrite"
+            }
+        ],
+        "learner_id": {
+            "item": "yes",
+            "mandatory": "yes",
+            "type": "longidentifier",
+            "permission": "readonly"
+        },
+        "learner_name": {
+            "item": "yes",
+            "mandatory": "yes",
+            "type": "localized",
+            "permission": "readonly"
+        },
+        "learner_preference": {
+            "index": "no",
+            "item": "no",
+            "_children": {
+                "item": "yes",
+                "mandatory": "yes",
+                "type": "characterstring",
+                "permission": "readonly",
+                "text": "audio_level,language,delivery_speed,audio_captioning"
+            },
+            "audio_level": {
+                "item": "yes",
+                "mandatory": "yes",
+                "type": "real10_7",
+                "subtype": "0..*",
+                "permission": "readwrite",
+                "text": "1"
+            },
+            "language": {
+                "item": "yes",
+                "mandatory": "yes",
+                "type": "language",
+                "permission": "readwrite"
+            },
+            "delivery_speed": {
+                "item": "yes",
+                "mandatory": "yes",
+                "type": "real10_7",
+                "subtype": "0..*",
+                "permission": "readwrite",
+                "text": "1"
+            },
+            "audio_captioning": {
+                "item": "yes",
+                "mandatory": "yes",
+                "type": "state",
+                "subtype": "audio_captioning",
+                "permission": "readwrite"
+            }
+        },
+        "location": {
+            "item": "yes",
+            "mandatory": "yes",
+            "type": "characterstring",
+            "permission": "readwrite"
+        },
+        "max_time_allowed": {
+            "item": "yes",
+            "mandatory": "yes",
+            "type": "timeinterval",
+            "subtype": "second,10,2",
+            "permission": "readonly"
+        },
+        "mode": {
+            "item": "yes",
+            "mandatory": "no",
+            "type": "state",
+            "subtype": "mode",
+            "permission": "readonly",
+            "text": "normal"
+        },
+        "objectives": {
+            "index": "yes",
+            "item": "no",
+            "_children": {
+                "item": "yes",
+                "mandatory": "yes",
+                "type": "characterstring",
+                "permission": "readonly",
+                "text": "id,score,success_status,completion_status,progress_measure,description"
+            },
+            "index": {
+                "id": {
+                    "item": "yes",
+                    "mandatory": "yes",
+                    "type": "longidentifier",
+                    "permission": "readwrite"
+                },
+                "score": {
+                    "index": "no",
+                    "item": "no",
+                    "_children": {
+                        "item": "yes",
+                        "mandatory": "yes",
+                        "type": "characterstring",
+                        "permission": "readonly",
+                        "text": "scaled,raw,min,max"
+                    },
+                    "scaled": {
+                        "item": "yes",
+                        "mandatory": "no",
+                        "type": "real10_7",
+                        "subtype": "-1..1",
+                        "permission": "readwrite"
+                    },
+                    "min": {
+                        "item": "yes",
+                        "mandatory": "no",
+                        "type": "real10_7",
+                        "permission": "readwrite"
+                    },
+                    "raw": {
+                        "item": "yes",
+                        "mandatory": "yes",
+                        "type": "real10_7",
+                        "permission": "readwrite"
+                    },
+                    "max": {
+                        "item": "yes",
+                        "mandatory": "no",
+                        "type": "real10_7",
+                        "permission": "readwrite"
+                    }
+                },
+                "success_status": {
+                    "item": "yes",
+                    "mandatory": "no",
+                    "type": "state",
+                    "subtype": "success_status",
+                    "permission": "readwrite",
+                    "text": "unknown"
+                },
+                "completion_status": {
+                    "item": "yes",
+                    "mandatory": "no",
+                    "type": "state",
+                    "subtype": "completion_status",
+                    "permission": "readwrite",
+                    "text": "unknown"
+                },
+                "progress_measure": {
+                    "item": "yes",
+                    "mandatory": "no",
+                    "type": "real10_7",
+                    "subtype": "(0..1)",
+                    "permission": "readwrite"
+                },
+                "description": {
+                    "item": "yes",
+                    "mandatory": "yes",
+                    "type": "localized",
+                    "permission": "readwrite"
+                }
+            }
+        },
+        "progress_measure": {
+            "item": "yes",
+            "mandatory": "no",
+            "type": "real10_7",
+            "subtype": "(0..1)",
+            "permission": "readwrite"
+        },
+        "scaled_passing_score": {
+            "item": "yes",
+            "mandatory": "no",
+            "type": "real10_7",
+            "subtype": "(-1..1)",
+            "permission": "readonly"
+        },
+        "score": {
+            "index": "no",
+            "item": "no",
+            "_children": {
+                "item": "yes",
+                "mandatory": "yes",
+                "type": "characterstring",
+                "permission": "readonly",
+                "text": "scaled,raw,min,max"
+            },
+            "scaled": {
+                "item": "yes",
+                "mandatory": "no",
+                "type": "real10_7",
+                "subtype": "(-1..1)",
+                "permission": "readwrite"
+            },
+            "min": {
+                "item": "yes",
+                "mandatory": "no",
+                "type": "real10_7",
+                "permission": "readwrite"
+            },
+            "raw": {
+                "item": "yes",
+                "mandatory": "yes",
+                "type": "real10_7",
+                "permission": "readwrite"
+            },
+            "max": {
+                "item": "yes",
+                "mandatory": "no",
+                "type": "real10_7",
+                "permission": "readwrite"
+            }
+        },
+        "session_time": {
+            "item": "yes",
+            "mandatory": "yes",
+            "type": "timeinterval",
+            "subtype": "second,10,2",
+            "permission": "writeonly"
+        },
+        "success_status": {
+            "item": "yes",
+            "mandatory": "no",
+            "type": "state",
+            "subtype": "success_status",
+            "permission": "readwrite",
+            "text": "unknown"
+        },
+        "suspend_data": {
+            "item": "yes",
+            "mandatory": "yes",
+            "type": "characterstring",
+            "permission": "readwrite"
+        },
+        "time_limit_action": {
+            "item": "yes",
+            "mandatory": "yes",
+            "type": "state",
+            "subtype": "time_limit_action",
+            "permission": "readonly"
+        },
+        "total_time": {
+            "item": "yes",
+            "mandatory": "yes",
+            "type": "timeinterval",
+            "subtype": "second,10,2",
+            "permission": "readonly",
+            "text": "PT0H0M0S"
+        }
+    }
+}
