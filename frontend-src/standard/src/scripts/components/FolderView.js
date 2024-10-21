@@ -293,15 +293,6 @@ class FolderView extends LearningView {
                 if (confirm(deleteElement)) {
                     const deleteLoData = _this.getApiUrl('delete', {id: elId});
                     axios.get(deleteLoData).then(() => {
-                        const elTree = _this.container.querySelector('.folderTree__li[data-id="' + elId + '"]');
-                        if (elTree) {
-                            elTree.remove();
-                        }
-                        const el = _this.container.querySelector('.folderView__li[data-id="' + elId + '"]');
-                        if (el) {
-                            el.remove();
-                        }
-
                         // dispatch deletedItem event
                         _this.container.dispatchEvent(new CustomEvent('deleteTreeItem', {
                             detail: {selectedId: elId,}

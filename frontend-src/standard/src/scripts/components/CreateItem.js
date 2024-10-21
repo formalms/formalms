@@ -21,16 +21,6 @@ class CreateItem {
         type.addEventListener('click', this.clickOnType.bind(this));
       });
     }
-    if (treeLinks) {
-      treeLinks.forEach(l => {
-        l.addEventListener('click', this.clickOnFolder.bind(this));
-      });
-    }
-    if (folderView) {
-      folderView.forEach(l => {
-        l.addEventListener('dblclick', this.clickOnFolder.bind(this));
-      });
-    }
     const createFolderForm = this.container.querySelector('.createFolderForm');
     const createFolderBtn = createFolderForm.querySelector('.createFolder__btn');
     const cancelCreateFolderBtn = createFolderForm.querySelector('.cancelCreateFolder__btn');
@@ -38,14 +28,17 @@ class CreateItem {
     const err = this.container.querySelector('.createFolder__input_err');
     
     createFolderBtn.addEventListener('click', (e) => { this.createNewFolder(e, createFolderForm) });
-    cancelCreateFolderBtn.addEventListener('click', () => {
-      const dropdownBtn = this.container.querySelector('#dropdownMenuBtn_' + this.type);
-      dropdownBtn.classList.remove('hidden');
-      dropdown.classList.remove('hidden');
-      createFolderForm.classList.add('hidden');
-      createFolderForm.querySelector('.createFolder__input').value = '';
-      err.classList.add('hidden');
-      createFolderBtn.removeAttribute('style');
+    document.addEventListener('click', (e) => {
+      if(e.target.id != 'type_folder' && 
+        (e.target.classList.contains('cancelCreateFolder__btn') || !e.target.closest('div.createFolderForm'))) {
+        const dropdownBtn = this.container.querySelector('#dropdownMenuBtn_' + this.type);
+        dropdownBtn.classList.remove('hidden');
+        dropdown.classList.remove('hidden');
+        createFolderForm.classList.add('hidden');
+        createFolderForm.querySelector('.createFolder__input').value = '';
+        err.classList.add('hidden');
+        createFolderBtn.removeAttribute('style');
+      }
     });
 
     folderInputText.addEventListener('keyup', (e) => {
@@ -73,16 +66,6 @@ class CreateItem {
     });
   }
 
-  clickOnFolder(event) {
-    const el = event.target;
-    const elId = el.getAttribute('data-id');
-    if (elId >= 0) {
-      this.selectedId = elId;
-    }
-
-    event.preventDefault();
-  }
-
   createNewFolder(event, createFolderForm) {
     const _this = this;
 
@@ -99,7 +82,7 @@ class CreateItem {
 
     const apiUrl = _this.getApiUrl('createFolder', {
       folderName: text,
-      selectedNode: _this.selectedId ? _this.selectedId : 0,
+      selectedNode: localStorage.selectedId ? localStorage.selectedId : 0,
       authentic_request,
     });
 
@@ -113,7 +96,7 @@ class CreateItem {
 
         // dispatch createdItem event
         _this.container.dispatchEvent(new CustomEvent('createTreeItem', {
-          detail: { selectedId: _this.selectedId, }
+          detail: { selectedId: localStorage.selectedId, }
         }));
       }
     }).catch((error) => {
@@ -137,7 +120,7 @@ class CreateItem {
 
   getNewLoUrl(type) {
     const _this = this;
-    const selectedId = _this.selectedId ? _this.selectedId : 0;
+    const selectedId = localStorage.selectedId ? localStorage.selectedId : 0;
     //const currentState = document.getElementById(`treeview_state_${_this.type}`).value;
 
     //return `index.php?modname=storage&op=display&${_this.type}_createLOSel=1&radiolo=${type}&treeview_selected_${_this.type}=${selectedId}&treeview_state_${_this.type}=${currentState}`;

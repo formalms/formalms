@@ -43,8 +43,8 @@ class FolderTreeBase {
         this.container.addEventListener('createTreeItem', (e) => {
             self.refresh(e.detail.selectedId);
         });
-        this.container.addEventListener('deleteTreeItem', () => {
-            self.refresh();
+        this.container.addEventListener('deleteTreeItem', (e) => {
+            self.deleteTreeItem(e.detail.selectedId);
         });
         this.container.addEventListener('reorderData', () => {
             self.refresh();
@@ -196,6 +196,34 @@ class FolderTreeBase {
       this.selectedId = item.getAttribute('data-id');
     }
     this.storeStatus();
+  }
+
+  deleteTreeItem(elId) {
+    const _this = this;
+
+    const elTree = _this.container.querySelector('.folderTree__li[data-id="' + elId + '"]');
+    if (elTree) {
+      const ul = elTree.parentNode;
+      if(elId == _this.selectedId) {
+        const parentElTree = ul.closest('.folderTree__li');
+        const parentElId = parentElTree.getAttribute('data-id');
+        this.selectedId = parentElId;
+        this.storeStatus();
+      }
+      
+      elTree.remove();
+      
+      if (!ul.querySelector('li')) {
+        ul.remove();
+      }
+    }
+    const el = _this.container.querySelector('.folderView__li[data-id="' + elId + '"]');
+    if (el) {
+      el.remove();
+      document.querySelector('.context-menu').classList.remove('menu-visible');
+    }
+
+    this.refresh();
   }
 
   getApiUrl(action, params) {

@@ -163,20 +163,6 @@ class ContextMenu {
 
             axios.get(deleteData).then(() => {
               _this.currentElsIds.forEach((elId) => {
-                const elTree = _this.container.querySelector('.folderTree__li[data-id="' + elId + '"]');
-                if (elTree) {
-                  const ul = elTree.parentNode;
-                  elTree.remove();
-
-                  if (!ul.querySelector('li')) {
-                    ul.remove();
-                  }
-                }
-                const el = _this.container.querySelector('.folderView__li[data-id="' + elId + '"]');
-                if (el) {
-                  el.remove();
-                  document.querySelector('.context-menu').classList.remove('menu-visible');
-                }
                 // dispatch deletedItem event
                 _this.container.dispatchEvent(new CustomEvent('deleteTreeItem', {
                   detail: { selectedId: elId, }
