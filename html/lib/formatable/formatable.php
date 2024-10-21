@@ -592,12 +592,24 @@ $date_picker_param = 'data-provide="datepicker" data-date-autoclose=true data-da
          * Language translation
          */
         _options.language = {
+            'sEmptyTable': '<?php echo Lang::t('_EMPTY_TABLE', 'formatable') ?>',
+            'sLoadingRecords': '<?php echo Lang::t('_LOADING_RECORDS', 'formatable') ?>',
+            'sProcessing': '<?php echo Lang::t('_PROCESSING', 'formatable') ?>',
+            'sLengthMenu': '<?php echo Lang::t('_LENGTH_MENU', 'formatable') ?>',
+            'sZeroRecords': '<?php echo Lang::t('_ZERO_RECORDS', 'formatable') ?>',
+            'sInfo': '<?php echo Lang::t('_INFO', 'formatable') ?>',
+            'sInfoEmpty': '<?php echo Lang::t('_INFO_EMPTY', 'formatable') ?>',
+            'sInfoFiltered': '<?php echo Lang::t('_INFO_FILTERED', 'formatable') ?>',
             'sSearch': '<?php echo Lang::t('_SEARCH', 'standard'); ?>',
             'oPaginate': {
                 'sFirst': '<?php echo Lang::t('_START', 'standard'); ?>',
                 'sPrevious': '<?php echo Lang::t('_PREV_B', 'standard'); ?>',
                 'sNext': '<?php echo Lang::t('_NEXT', 'standard'); ?>',
                 'sLast': '<?php echo Lang::t('_END', 'standard'); ?>'
+            },
+            'oAria': {
+                "sSortAscending": '<?php echo Lang::t('_SORT_ASCENDING', 'formatable') ?>',
+                "sSortDescending": '<?php echo Lang::t('_SORT_DESCENDING', 'formatable') ?>'
             }
         }
 
