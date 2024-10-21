@@ -57,6 +57,8 @@ class PrecompileLmsController extends LmsController
                 'policy_id' => $this->model->getPrivacyPolicyId(),
                 'policy_text' => $this->model->getPrivacyPolicyText(),
                 'id_user' => \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(),
+                'signature' => Util::getSignature(),
+                'request_mandatory_fields_compilation' => FormaLms\lib\Get::sett('request_mandatory_fields_compilation', 'on'),
                 'fieldlist' => $fieldlist,
             ]);
         } elseif ($_REQUEST['r'] == 'precompile/show') {

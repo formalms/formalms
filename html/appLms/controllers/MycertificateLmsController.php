@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.certificate.php');
+require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/','lib.certificate.php');
 
 class MycertificateLmsController extends LmsController
 {
@@ -39,6 +39,7 @@ class MycertificateLmsController extends LmsController
 
     public function show()
     {
+        include \FormaLms\lib\Forma::include(_lib_ . '/formatable/','include.php');
         checkPerm('view', false, self::mod_name);
 
         //TODO: EVT_OBJECT (§)
@@ -48,7 +49,23 @@ class MycertificateLmsController extends LmsController
 
         $metaCertificates = $this->model->getMyMetaCertificates();
         $totalMetaCertificates = count($metaCertificates);
-        $this->render('show', ['metacertificates' => $this->json->encode($metaCertificates), 'totalMetaCertificates' => $totalMetaCertificates, 'id_user' => $this->id_user]);
+        $cert_columns = [
+            ['key' => 'on_date', 'label' => Lang::t('_DATE'), 'className' => 'min-cell', 'sortable' => true],
+            ['key' => 'code', 'label' => Lang::t('_CODE')],
+            ['key' => 'course_name', 'label' => Lang::t('_COURSE', 'certificate')],
+            ['key' => 'cert_name', 'label' => Lang::t('_CERTIFICATE_NAME', 'course')],
+            ['key' => 'date_complete', 'label' => Lang::t('_DATE_COMPLETE', 'certificate')],
+            ['key' => 'download', 'label' => Lang::t('_TAKE_A_COPY', 'certificate'), 'className' => 'img-cell'],
+        ];
+        $selected_tab = FormaLms\lib\Get::req('current_tab', DOTY_STRING, 'cert');
+        $this->render('show',
+            [
+                'metacertificates' => $this->json->encode($metaCertificates),
+                'certa' => $this->json->encode(\Util::config('tables.columnsacert')),
+                'totalMetaCertificates' => $totalMetaCertificates,
+                'id_user' => $this->id_user,
+                'cert_columns' => $cert_columns,
+                'selected_tab' => $selected_tab]);
 
         /*
                 //NEW Event Method
