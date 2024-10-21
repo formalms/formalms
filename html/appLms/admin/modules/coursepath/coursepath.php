@@ -304,7 +304,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 		  '" . ($path_name != '' ? $path_name : Lang::t('_EMPTY_NAME', 'coursegpath')) . "',
 		  '" .\FormaLms\lib\Get::req('path_descr', DOTY_MIXED)  . "',
 		  '" . \FormaLms\lib\Get::req('subscribe_method', DOTY_STRING)  . "',
-		  '" . $_FILES['coursepath_logo']['name'] . "',
+		  '" . $img . "',
 		  '" . \FormaLms\lib\Get::req('check_expand_path_info', DOTY_INT). "' )";
             $re = sql_query($query_insert);
             if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
