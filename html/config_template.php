@@ -138,3 +138,10 @@ $cfg['mail_br'] = "\r\n";
  */
 //$cfg['certificate_encryption'] = true;
 //$cfg['certificate_password']  = "12345678901234567890123456789012";
+
+/*
+ *  scorm player feature
+ *  legacy = standard player  (default)
+ *  ng     =  next generation
+ */
+//$cfg['scorm_player'] = 'legacy';	// 'ng' ==> new generation

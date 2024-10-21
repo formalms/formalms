@@ -163,3 +163,10 @@ $cfg['mail_br'] = "\r\n";
  *  Enabling SMS sending
  */
 //$cfg['sms_on'] = true;
+
+/*
+ *  scorm player feature
+ *  legacy = standard player  (default)
+ *  ng     =  next generation
+ */
+//$cfg['scorm_player'] = 'legacy';	// 'ng' ==> new generation
