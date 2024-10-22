@@ -26,7 +26,7 @@
 		<?php
             echo !is_array($rel_actions) ? $rel_actions : $rel_actions[1];
             if ($useStdSelectFormatter && $use_paginator) {
-                echo '<p>'
+                echo '<p class="table_selection">'
                     . Lang::t('_SELECT', 'directory') . ': '
                     . '<a class="" id="' . $id . '_select_all_down" href="#"><span>' . Lang::t('_ALL_PAGES', 'directory') . '</span></a>'
                     . ', '
