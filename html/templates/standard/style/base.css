@@ -125,7 +125,8 @@ a.no_decoration{text-decoration:none;}
 
 .yui-skin-docebo .little_table .yui-dt{font-size:83%;overflow:auto;}
 .yui-skin-docebo .little_table .yui-dt .yui-dt-liner{padding:2px;}
-.yui-skin-docebo .table_selection{margin:4px 2px 2px;}
+.yui-skin-docebo .table_selection{margin:4px 2em 2px;}
+.row.table-actions{margin-left:0;}
 .table-actions{text-align:left;margin:0;line-height:1.6em;float:left;}
 .table-actions ul.ta{margin:8px 0 8px;}
 .table-actions ul.ta li{display:inline;padding:2px 4px;}
