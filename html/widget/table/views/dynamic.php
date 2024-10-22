@@ -112,7 +112,10 @@ var initDataTable = function(oConfig) {
 	var configs = {
 		initialLoad: false,
 		dynamicData: true,
-		sortedBy : {key: oConfig.sort, dir: oConfig.dir}
+		sortedBy : {key: oConfig.sort, dir: oConfig.dir},
+		MSG_EMPTY: "<?php echo Lang::t('_EMPTY_TABLE', 'formatable'); ?>",
+		MSG_ERROR: "<?php echo Lang::t('_SERVER_CONNECTION_ERROR', 'standard'); ?>",
+		MSG_LOADING: "<?php echo Lang::t('_LOADING', 'standard'); ?>"
 	};
 
 	if (oConfig.scrollX) configs.width = oConfig.scrollX;
@@ -231,7 +234,7 @@ var initDataTable = function(oConfig) {
 
 		YAHOO.util.Event.addListener(["<?php echo $id; ?>_select_all_up", "<?php echo $id; ?>_select_all_down"], "click", function(e) {
 			YAHOO.util.Event.preventDefault(e);
-			oDt.showTableMessage("<?php echo Lang::t('_LOADING', 'admin_directory'); ?> ...", YAHOO.widget.DataTable.CLASS_LOADING);
+			oDt.showTableMessage("<?php echo Lang::t('_LOADING', 'admin_directory'); ?>", YAHOO.widget.DataTable.CLASS_LOADING);
 			/*var postdata = <?php echo isset($selectAllAdditionalFilter) ? $selectAllAdditionalFilter : '""'; ?>;*/
 			var postdata = "";
 			<?php if (isset($selectAllAdditionalFilter)) { ?>
@@ -483,7 +486,7 @@ var initDataTable = function(oConfig) {
 			var callback = {
 				customevents:{
 					onStart: function(eventType, args) {
-						YAHOO.util.Dom.get('lo_list').innerHTML = 'loading';
+						YAHOO.util.Dom.get('lo_list').innerHTML = '<?php echo Lang::t('_LOADING', 'standard'); ?>';
 					},
 					onComplete: function(eventType, args) {
 					},

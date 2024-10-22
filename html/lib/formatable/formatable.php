@@ -593,8 +593,8 @@ $date_picker_param = 'data-provide="datepicker" data-date-autoclose=true data-da
          */
         _options.language = {
             'sEmptyTable': '<?php echo Lang::t('_EMPTY_TABLE', 'formatable') ?>',
-            'sLoadingRecords': '<?php echo Lang::t('_LOADING_RECORDS', 'formatable') ?>',
-            'sProcessing': '<?php echo Lang::t('_PROCESSING', 'formatable') ?>',
+            'sLoadingRecords': '<?php echo Lang::t('_LOADING', 'standard') ?>',
+            'sProcessing': '<?php echo Lang::t('_PROCESSING', 'standard') ?>',
             'sLengthMenu': '<?php echo Lang::t('_LENGTH_MENU', 'formatable') ?>',
             'sZeroRecords': '<?php echo Lang::t('_ZERO_RECORDS', 'formatable') ?>',
             'sInfo': '<?php echo Lang::t('_INFO', 'formatable') ?>',
