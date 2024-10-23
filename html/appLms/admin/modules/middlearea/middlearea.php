@@ -70,7 +70,7 @@ HTML;
         'tb_dashboard' => Lang::t('_DASHBOARD', 'middlearea'),
         'tb_label' => Lang::t('_LABELS', 'label'),
         'tb_coursepath' => Lang::t('_COURSEPATH', 'coursepath'),
-        'tb_games' => Lang::t('_CONTEST', 'middlearea'),
+        //'tb_games' => Lang::t('_CONTEST', 'middlearea'),
         'tb_communication' => Lang::t('_COMMUNICATIONS', 'middlearea'),
         'tb_videoconference' => Lang::t('_VIDEOCONFERENCE', 'middlearea'),
         'tb_kb' => Lang::t('_CONTENT_LIBRARY', 'middlearea'),
@@ -115,7 +115,7 @@ HTML;
         'career' => Lang::t('_CAREER', 'middlearea'),
         //aggiunto box iscrizione corso
         'course' => Lang::t('_SUBSCRIBE_COURSE', 'middlearea'),
-        'news' => Lang::t('_NEWS', 'middlearea'),
+       // 'news' => Lang::t('_NEWS', 'middlearea'),
         'mo_message' => Lang::t('_MESSAGES', 'menu_over'),
     ];
 

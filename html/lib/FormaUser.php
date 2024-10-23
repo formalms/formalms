@@ -695,36 +695,7 @@ class FormaUser
             return false;
         }
 
-        if (Get::sett('ldap_used') == 'on') {
-            if ($password == '') {
-                $false_public = false;
-
-                return $false_public;
-            }
-            //connect to ldap server
-            if (!($ldap_conn = @ldap_connect(Get::sett('ldap_server'), Get::sett('ldap_port', '389')))) {
-                exit('Could not connect to ldap server');
-            }
-
-            //bind on server
-            $ldap_user = preg_replace('/\$user/', $login, Get::sett('ldap_user_string'));
-            if (!(@ldap_bind($ldap_conn, $ldap_user, $password))) {
-                ldap_unbind($ldap_conn);
-
-                // Edited by Claudio Redaelli
-                if (Get::sett('ldap_alternate_check') == 'on') {
-                    if (!$user_manager->password_verify_update($password, $user_info[ACL_INFO_PASS], $user_info[ACL_INFO_IDST])) {
-                        return false;
-                    }
-                } else {
-                    $false_public = false;
-
-                    return $false_public;
-                }
-                // End edit
-            }
-            ldap_unbind($ldap_conn);
-        } elseif (!$user_manager->password_verify_update($password, $user_info[ACL_INFO_PASS], $user_info[ACL_INFO_IDST])) {
+     if (!$user_manager->password_verify_update($password, $user_info[ACL_INFO_PASS], $user_info[ACL_INFO_IDST])) {
             return false;
         }
         $session = Session\SessionManager::getInstance()->getSession();
@@ -852,11 +823,7 @@ class FormaUser
      */
     public function isPasswordElapsed()
     {
-        //if the password is managed by an external program jump this procedure
-        if (Get::sett('ldap_used') == 'on') {
-            return 0;
-        }
-
+       
         //change password forced from admin or is the first login. When a new user is created
         // and the setting for a change at irst login is active this flag wil be turned on
         $user_data = \FormaLms\lib\Forma::getAclManager()->getUser($this->idst, false);

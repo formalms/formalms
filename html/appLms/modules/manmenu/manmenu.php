@@ -394,10 +394,19 @@ function manmodule()
         $used_module .= $id_mod_used . ',';
     }
 
+    $noDefaultName = [
+        '_CALENDAR',
+        '_NOTES',
+        '_WIKI',
+        '_PROJECT'
+    ];
+    $noDefaultNameMod = implode(', ', array_map(function ($element) { return '"'.$element.'"'; }, $noDefaultName));
     $query_free_module = '
 	SELECT idModule, default_name 
 	FROM ' . $GLOBALS['prefix_lms'] . "_module AS module 
-	WHERE module_info = '' AND idModule NOT IN ( " . substr($used_module, 0, -1) . ' )';
+	WHERE module_info = '' AND idModule NOT IN ( " . substr($used_module, 0, -1) . ' ) AND 
+    default_name  NOT IN ('.$noDefaultNameMod.')';
+    
     $re_free_module = sql_query($query_free_module);
 
     $tb = new Table(0, $lang->def('_TB_MANMODULE_CAPTION'), $lang->def('_TB_MANMODULE_SUMMARY'));

@@ -78,7 +78,7 @@ function event_manager_view($op)
         $lang->def('_MANDATORY'),
         //$lang->def('_EVENT_PERM_USERSEL'),
         $lang->def('_EMAIL'),
-        $lang->def('_EVENT_CHANNEL_SMS'),
+       
         $lang->def('_RECIPIENTS'),
     ];
     //$type_h 	= array('', '', '', 'image', 'image', 'image', 'image', 'image', '');
@@ -106,9 +106,9 @@ function event_manager_view($op)
         //$cont[] = '<input type="radio" name="permission['.$idEventMgr.']" value="user_selectable"'.$perm_user_selectable.'/>';
         $arr_channel = explode(',', $channel);
         $channel_email = in_array('email', $arr_channel) ? ' checked="checked" ' : '';
-        $channel_sms = in_array('sms', $arr_channel) ? ' checked="checked" ' : '';
+       
         $cont[] = '<input type="checkbox" name="channel[' . $idEventMgr . '][email]" value="email"' . $channel_email . '/>';
-        $cont[] = '<input type="checkbox" name="channel[' . $idEventMgr . '][sms]" value="sms"' . $channel_sms . '/>';
+        
         $cont[] = $lang->def($recipients);
         $tb_event_classes->addBody($cont);
     }
@@ -192,7 +192,7 @@ function event_user_view($op)
         $lang->def('_NAME'),
         $lang->def('_DESCRIPTION'),
         $lang->def('_EMAIL'),
-        $lang->def('_EVENT_CHANNEL_SMS'),
+       
     ];
     $type_h = ['', '', '', 'image', 'image'];
 
@@ -211,7 +211,7 @@ function event_user_view($op)
         $perm_user_selectable = ($permission == 'user_selectable');
         $arr_channel = explode(',', $channel);
         $channel_email = in_array('email', $arr_channel);
-        $channel_sms = in_array('sms', $arr_channel);
+      
 
         if ($perm_mandatory || $perm_user_selectable) {
             $cont = [];
@@ -223,9 +223,7 @@ function event_user_view($op)
                 $cont[] = '<input type="checkbox" name="Mchannel[' . $idEventMgr . '][email]" value="email"'
                             . ($channel_email ? ' checked="checked"' : '')
                             . ' disabled="disabled"/>';
-                $cont[] = '<input type="checkbox" name="Mchannel[' . $idEventMgr . '][sms]" value="sms"'
-                            . ($channel_sms ? ' checked="checked"' : '')
-                            . ' disabled="disabled"/>';
+                
             } else {
                 $query = 'SELECT channel '
                         . ' FROM ' . $GLOBALS['prefix_fw'] . '_event_user'
@@ -240,18 +238,12 @@ function event_user_view($op)
                                             (in_array('email', $arr_user_channel) ? ' checked="checked"' : '')
                                             : ' disabled="disabled"')
                                 . ' />';
-                    $cont[] = '<input type="checkbox" name="channel[' . $idEventMgr . '][sms]" value="sms"'
-                                . ($channel_sms ?
-                                            (in_array('sms', $arr_user_channel) ? ' checked="checked"' : '')
-                                            : ' disabled="disabled"')
-                                . ' />';
+                    
                 } else {
                     $cont[] = '<input type="checkbox" name="channel[' . $idEventMgr . '][email]" value="email"'
                                 . ($channel_email ? '' : ' disabled="disabled"')
                                 . ' />';
-                    $cont[] = '<input type="checkbox" name="channel[' . $idEventMgr . '][sms]" value="sms"'
-                                . ($channel_sms ? '' : ' disabled="disabled"')
-                                . ' />';
+                    
                 }
                 sql_free_result($rs_user);
             }

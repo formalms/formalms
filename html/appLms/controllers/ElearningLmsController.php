@@ -90,7 +90,7 @@ class ElearningLmsController extends LmsController
             ];
 
             $params_t = [
-                ':id_user' => (int) \FormaLms\lib\FormaUser::getCurrentUser()->getId(),
+                ':id_user' => (int)\FormaLms\lib\FormaUser::getCurrentUser()->getId(),
             ];
 
             $cp_courses = $model->getUserCoursePathCourses(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst());
@@ -106,37 +106,23 @@ class ElearningLmsController extends LmsController
         }
 
         $block_list = [];
-        $tb_label = (FormaLms\lib\Get::sett('use_course_label', false) == 'off' ? false : true);
-        if (!$tb_label) {
-            $this->session->set('id_common_label', 0);
-            $this->session->save();
-        } else {
-            $id_common_label = FormaLms\lib\Get::req('id_common_label', DOTY_INT, -1);
-            $this->session->set('id_common_label', $id_common_label);
-            $block_list['labels'] = true;
-        }
+        $this->session->set('id_common_label', 0);
+        $this->session->save();
 
 
         $statusFilters = $model->getFilterStatusCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst());
-        $_select_category = Form::getInputDropdown('', 'course_search_filter_cat', 'filter_cat', $model->getListCategory(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst(), false), 0, 'title="'.Lang::t('_CATEGORY_SELECTED', 'course').'"');
+        $_select_category = Form::getInputDropdown('', 'course_search_filter_cat', 'filter_cat', $model->getListCategory(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst(), false), 0, 'title="' . Lang::t('_CATEGORY_SELECTED', 'course') . '"');
         $_select_category = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width="" multiple data-actions-box="true"', $_select_category);
 
-        $_select_course_type = Form::getInputDropdown('', 'course_search_filter_type', 'filter_type', $model->getFilterCourseType(), 'all', 'title="'.Lang::t('_COURSE_TYPE_SELECTION', 'course').'"');
+        $_select_course_type = Form::getInputDropdown('', 'course_search_filter_type', 'filter_type', $model->getFilterCourseType(), 'all', 'title="' . Lang::t('_COURSE_TYPE_SELECTION', 'course') . '"');
         $_select_course_type = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width="" data-actions-box="true"', $_select_course_type);
 
-        $_select_year = Form::getInputDropdown('', 'course_search_filter_year', 'filter_year', $model->getFilterYears(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst()), 0, 'title="'.Lang::t('_YEAR_SELECTION', 'simplesel').'"');
+        $_select_year = Form::getInputDropdown('', 'course_search_filter_year', 'filter_year', $model->getFilterYears(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst()), 0, 'title="' . Lang::t('_YEAR_SELECTION', 'simplesel') . '"');
         $_select_year = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width=""  data-actions-box="true"', $_select_year);
 
 
-        if ($tb_label) {
-            require_once _lms_ . '/admin/models/LabelAlms.php';
-            $label_model = new LabelAlms();
-            $user_label = $label_model->getLabelForUser(\FormaLms\lib\FormaUser::getCurrentUser()->getId());
-            $this->render('_tabs_block', ['block_list' => $block_list, 'use_label' => $tb_label, 'label' => $user_label, 'current_label' => $id_common_label]);
-        } else {
-            $this->render('_tabs_block', ['block_list' => $block_list, 'use_label' => $tb_label, 'statusFilters' => $statusFilters,
-                                                    '_select_category' => $_select_category, '_select_course_type' => $_select_course_type, '_select_year' => $_select_year]);
-        }
+            $this->render('_tabs_block', ['block_list' => $block_list, 'statusFilters' => $statusFilters,
+                '_select_category' => $_select_category, '_select_course_type' => $_select_course_type, '_select_year' => $_select_year]);
 
         // add feedback:
         // - feedback_type: [err|inf] display error feedback or info feedback
@@ -173,7 +159,7 @@ class ElearningLmsController extends LmsController
         ];
 
         $params = [
-            ':id_user' => (int) \FormaLms\lib\FormaUser::getCurrentUser()->getId(),
+            ':id_user' => (int)\FormaLms\lib\FormaUser::getCurrentUser()->getId(),
         ];
 
         if (!empty($filter_text)) {
@@ -192,7 +178,7 @@ class ElearningLmsController extends LmsController
             $arr_cat = explode(',', $filter_cat);
             $arr_cat = array_map(
                 function ($value) {
-                    return (int) $value;
+                    return (int)$value;
                 },
                 $arr_cat
             );
@@ -205,7 +191,7 @@ class ElearningLmsController extends LmsController
             $arr_status = explode(',', $filter_status);
             $arr_status = array_map(
                 function ($value) {
-                    return (int) $value;
+                    return (int)$value;
                 },
                 $arr_status
             );

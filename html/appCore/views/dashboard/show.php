@@ -213,11 +213,7 @@
                                         <a href="index.php?r=alms/communication/add"><?php echo Lang::t('_COMMUNICATIONS', 'communication'); ?></a>
                                     </li>
                                 <?php } ?>
-                                <?php if ($permissions['add_games']) { ?>
-                                    <li>
-                                        <a href="index.php?r=alms/games/add"><?php echo Lang::t('_CONTEST', 'games'); ?></a>
-                                    </li>
-                                <?php } ?>
+
                             </ul>
                         </div>
                     <?php

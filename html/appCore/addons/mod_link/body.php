@@ -31,12 +31,6 @@ $menu_url = [];
 $menu_label['main'] = $lang->def('_LINK');
 $menu_url['main'] = $page_url . '&amp;op=main';
 
-if (isEditorInWiki()) {
-    $menu_label['wiki_new'] = $lang->def('_WIKI_PAGE_NEW');
-    $menu_url['wiki_new'] = $page_url . '&amp;op=wiki_new';
-    $menu_label['wiki_sel'] = $lang->def('_WIKI_PAGE_SEL');
-    $menu_url['wiki_sel'] = $page_url . '&amp;op=wiki_sel';
-}
 
 // ---------------------------------------------
 
@@ -66,13 +60,7 @@ switch ($op) {
         show_main($out, $lang);
      break;
 
-    case 'wiki_new':
-        showWikiNew($out, $lang);
-     break;
-
-    case 'wiki_sel':
-        showWikiSelect($out, $lang);
-     break;
+    
 }
 
 // --------------------------------------------------------------------------------------------
@@ -119,116 +107,7 @@ function show_main(&$out, &$lang)
     addLinkPopupAfterJS();
 }
 
-function showWikiNew(&$out, &$lang)
-{
-    require_once _base_ . '/lib/lib.form.php';
 
-    $form = new Form();
-
-    $from = importVar('from');
-    $item_id = (int) importVar('item_id');
-
-    $title = '';
-
-    $res = '';
-    $url = getPopupBaseUrl() . '&amp;op=wiki_new';
-
-    addLinkPopupJS();
-
-    $res .= $form->openForm('popup_form', $url, false, false, '', 'onSubmit="insItem();" onReset="closePopup();"');
-
-    $res .= $form->openElementSpace();
-
-    $type = getPopupSelType();
-
-    $res .= $form->getTextfield($lang->def('_PAGE_TITLE'), 'title', 'title', 255);
-    //$res.=$form->getTextfield($lang->def("_EXTENDED_TITLE"), "ext_title", "ext_title", 255);
-
-    $res .= $form->closeElementSpace();
-
-    $res .= $form->openButtonSpace();
-    $res .= $form->getButton('apply', 'apply', $lang->def('_SAVE'));
-    $res .= $form->getReset('undo', 'undo', $lang->def('_UNDO'));
-    $res .= $form->closeButtonSpace();
-
-    $res .= $form->closeForm();
-
-    $out->add($res);
-}
-
-function showWikiSelect(&$out, &$lang)
-{
-    require_once _base_ . '/lib/lib.form.php';
-    require_once _base_ . '/lib/lib.urlmanager.php';
-    require_once _adm_ . '/lib/lib.wiki.php';
-
-    $um = &UrlManager::getInstance();
-    $um->setStdQuery('sn=' . FormaLms\lib\Get::cur_plat() . '&op=wiki_sel');
-    //$um->setBaseUrl($_SERVER["script_name"]);
-
-    $wiki_id = getEditorWikiId();
-    $cwp = new CoreWikiPublic($wiki_id);
-
-    $form = new Form();
-
-    $from = importVar('from');
-    $item_id = (int) importVar('item_id');
-
-    $title = '';
-
-    $res = '';
-
-    $url = getPopupBaseUrl() . '&amp;op=wiki_sel';
-
-    addLinkPopupJS();
-
-    $res .= $form->openForm('popup_form', $url, false, false, '', 'onReset="closePopup();"');
-
-    $res .= $form->openElementSpace();
-
-    $type = getPopupSelType();
-
-    /*
-        $res.=$form->getTextfield($lang->def("_PAGE_TITLE"), "title", "title", 255);
-        $res.=$form->getTextfield($lang->def("_EXTENDED_TITLE"), "ext_title", "ext_title", 255);
-        */
-
-    $wiki_lang = $cwp->getWikiLanguage();
-
-    // TODO: change Lang::get() with the current wiki language;
-    // try to pass arguments in a better way, like using GET.. [?]
-    $wiki_page_db = new TreeDb_WikiDb($cwp->wikiManager->getWikiPageTable(), $cwp->wikiManager->getWikiPageInfoTable(), $wiki_id, $wiki_lang);
-    $treeView = new TreeView_WikiView($wiki_page_db, 'wiki_tree');
-
-    $treeView->hideAction();
-    $treeView->parsePositionData($_POST, $_POST, $_POST);
-    $folder_id = $treeView->getSelectedFolderId();
-    $folder_name = $treeView->getFolderPrintName($wiki_page_db->getFolderById($folder_id));
-
-    $res .= $treeView->autoLoad();
-
-    if ($folder_id > 0) {
-        $other_param = 'onClick="insItem();"';
-        $page_id = &$folder_id;
-
-        $page_info = $cwp->wikiManager->getPageInfo($wiki_id, $wiki_lang, false, $page_id);
-        $res .= $form->getHidden('title', 'title', $page_info['title']);
-        $res .= $form->getHidden('page_code', 'page_code', $page_info['page_code']);
-    } else {
-        $other_param = 'disabled="disabled"';
-    }
-
-    $res .= $form->closeElementSpace();
-
-    $res .= $form->openButtonSpace();
-    $res .= $form->getButton('apply', 'apply', $lang->def('_SAVE'), false, $other_param);
-    $res .= $form->getReset('undo', 'undo', $lang->def('_UNDO'));
-    $res .= $form->closeButtonSpace();
-
-    $res .= $form->closeForm();
-
-    $out->add($res);
-}
 
 function addLinkPopupJS()
 {
@@ -385,14 +264,7 @@ function addXinhaPopupJS()
             $field_list = "['url', 'title', 'code']";
          break;
 
-        case 'wiki_new':
-            $field_list = "['title']";
-         break;
-
-        case 'wiki_sel':
-            $field_list = "['title', 'page_code']";
-         break;
-    }
+        
 
     $res .= <<<JS_END
 
@@ -572,38 +444,7 @@ function addFckPopupJS()
             //$res.="oItem.alt=altTxt ;\n";
          break;
 
-        case 'wiki_new':
-            $res .= "dialogArguments = window.opener.FCKLastDialogInfo ;\n";
-            $res .= "var oEditor		= dialogArguments.Editor ;\n";
-            $res .= "var FCK			= oEditor.FCK ;\n";
-            $res .= "var FCKLang		= oEditor.FCKLang ;\n";
-            $res .= "var FCKConfig	= oEditor.FCKConfig ;\n";
-
-            $res .= "var title = GetE('title').value;\n";
-
-            //$res.="// Get the selected item (if available).\n";
-            //$res.="var oItem = FCK.Selection.GetSelectedElement() ;\n";
-
-            $res .= "FCK.InsertHtml('[['+title+']]');\n";
-            $res .= "FCK.OnAfterSetHTML() ;\n";
-         break;
-
-        case 'wiki_sel':
-            $res .= "dialogArguments = window.opener.FCKLastDialogInfo ;\n";
-            $res .= "var oEditor		= dialogArguments.Editor ;\n";
-            $res .= "var FCK			= oEditor.FCK ;\n";
-            $res .= "var FCKLang		= oEditor.FCKLang ;\n";
-            $res .= "var FCKConfig	= oEditor.FCKConfig ;\n";
-
-            $res .= "var title = GetE('title').value;\n";
-            $res .= "var page_code = GetE('page_code').value;\n";
-
-            //$res.="// Get the selected item (if available).\n";
-            //$res.="var oItem = FCK.Selection.GetSelectedElement() ;\n";
-
-            $res .= "FCK.InsertHtml('[['+page_code+'|'+title+']]');\n";
-            $res .= "FCK.OnAfterSetHTML() ;\n";
-         break;
+        
     }
 
     $res .= "window.close();\n";
@@ -749,40 +590,11 @@ function getPopupSelType()
                 $res = 'link';
              break;
 
-            case 'wiki_new':
-                $res = 'wiki_new';
-             break;
-
-            case 'wiki_sel':
-                $res = 'wiki_sel';
-             break;
+            
         }
     }
 
     return $res;
 }
 
-function isEditorInWiki()
-{
-    $wiki_id = getEditorWikiId();
-
-    $res = ($wiki_id > 0 ? true : false);
-
-    return $res;
-}
-
-function getEditorWikiId()
-{
-    $wiki_id = 0;
-
-    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-    if (!empty($session->get('editor_in_wiki'))) {
-        $wiki_id = $session->get('editor_in_wiki');
-    }
-
-    if (!empty(FormaLms\lib\Get::req('wiki_id', DOTY_ALPHANUM, ''))) {
-        $wiki_id = FormaLms\lib\Get::req('wiki_id', DOTY_ALPHANUM, '');
-    }
-
-    return $wiki_id;
 }

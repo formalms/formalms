@@ -238,7 +238,14 @@ class LomanagerLms extends Model
 
     public function getLoTypes()
     {
-        $query = 'SELECT objectType AS type FROM %lms_lo_types';
+        $arrayObjectType = [
+            'glossary',
+            'faq',
+            'link'
+        ];
+        $arrayObjectTypeMod = implode(', ', array_map(function ($element) { return '"'.$element.'"'; }, $arrayObjectType));
+
+        $query = 'SELECT objectType AS type FROM %lms_lo_types where objectType NOT IN ('.$arrayObjectTypeMod.')';
         $rs = sql_query($query);
 
         $lo_types = [
@@ -248,6 +255,7 @@ class LomanagerLms extends Model
             ],
         ];
         while ($lo_type = sql_fetch_assoc($rs)) {
+          
             $lo_type['title'] = Lang::t("_LONAME_{$lo_type['type']}", 'storage');
             $lo_types[] = $lo_type;
         }

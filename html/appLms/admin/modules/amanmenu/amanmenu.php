@@ -83,6 +83,7 @@ function mancustom()
     $tb->setColsStyle($type_h);
     $tb->addHead($content_h);
     while (list($id_custom, $title_custom, $text_custom) = sql_fetch_row($re_custom)) {
+        
         $title_custom = strip_tags($title_custom);
         $content = [
             '<a href="index.php?modname=amanmenu&amp;op=manmenu&amp;id_custom=' . $id_custom . '" '
@@ -700,10 +701,17 @@ function manmodule()
         $used_module .= $id_mod_used . ',';
     }
 
+    $noDefaultName = [
+                        '_CALENDAR',
+                        '_NOTES',
+                        '_WIKI',
+                        '_PROJECT'
+    ];
+    $noDefaultNameMod = implode(', ', array_map(function ($element) { return '"'.$element.'"'; }, $noDefaultName));
     $query_free_module = '
 	SELECT idModule, default_name 
 	FROM %lms_module AS module 
-	WHERE 1=1 ';
+    WHERE     default_name  NOT IN ('.$noDefaultNameMod.')';
 
     if ($used_module != '') {
         $query_free_module .= ' AND idModule NOT IN ( ' . substr($used_module, 0, -1) . ' )';
@@ -733,6 +741,7 @@ function manmodule()
     while (list($id_mod, $name_db, $my_name) = sql_fetch_row($re_module)) {
         $name = ($my_name != '' ? $my_name : $menu_lang->def($name_db));
         $strip_name = strip_tags($name);
+       
         $content = [$name];
 
         $content[] = ($i != ($tot_module - 1) ? '<a href="index.php?modname=amanmenu&amp;op=mdmodule&amp;id_main=' . $id_main . '&amp;id_module=' . $id_mod . '"'
@@ -769,7 +778,7 @@ function manmodule()
     while (list($id_import_mod, $name_db) = sql_fetch_row($re_free_module)) {
         $name = $menu_lang->def($name_db);
         $strip_name = strip_tags($name);
-
+        
         $content = [$name];
         if ($mod_perm) {
             $content[] = '<a href="index.php?modname=amanmenu&amp;op=addmodule&amp;id_main=' . $id_main . '&amp;id_module=' . $id_import_mod . '"'
