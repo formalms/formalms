@@ -200,7 +200,7 @@ class HomepageAdmController extends AdmController
         $params = [];
         $res = null;
 
-        $ldapEnabled = FormaLms\lib\Get::sett('ldap_used') == 'on';
+       
 
         $mand_symbol = '*';
 
@@ -303,7 +303,6 @@ class HomepageAdmController extends AdmController
         $params['lost_username'] = [
             'title' => Lang::t('_LOST_TITLE_USER', 'register'),
             'istruction' => Lang::t('_LOST_INSTRUCTION_USER', 'register'),
-            'ldap' => $ldapEnabled,
             'ldap_title' => Lang::t('_LDAPACTIVE', 'register'),
             'form' => $lostUsernameForm,
         ];
@@ -474,10 +473,10 @@ class HomepageAdmController extends AdmController
     {
         $login_user = stripslashes(FormaLms\lib\Get::req('login_user', DOTY_MIXED, false));
         $login_idst = FormaLms\lib\Get::req('use_user_idst', DOTY_MIXED, false);
-        $secret = FormaLms\lib\Get::sett('sso_secret', '');
+       
         $redirection = [];
 
-        if (empty($secret) || FormaLms\lib\Get::sett('sso_token', 'off') != 'on' || !$login_user) {
+        if (!$login_user) {
             $redirection['req'] = _homepage_;
             $redirection['query'] = [
                 'msg' => ACCESS_FAILURE, // XXX: o SSO_FAILURE?
@@ -493,7 +492,7 @@ class HomepageAdmController extends AdmController
 
         $time = FormaLms\lib\Get::req('time', DOTY_MIXED, '');
         $token = strtoupper(FormaLms\lib\Get::req('token', DOTY_MIXED, ''));
-        $recalc_token = strtoupper(md5($login_user . ',' . $time . ',' . $secret));
+        $recalc_token = strtoupper(md5($login_user . ',' . $time ));
 
         $lifetime = FormaLms\lib\Get::sett('rest_auth_lifetime', 1);
 

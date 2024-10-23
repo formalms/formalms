@@ -11,7 +11,6 @@
         'tb_catalog' => Lang::t('_CATALOGUE', 'middlearea'),
         'tb_assessment' => Lang::t('_ASSESSMENT', 'middlearea'),
         'tb_coursepath' => Lang::t('_COURSEPATH', 'coursepath'),
-        'tb_games' => Lang::t('_CONTEST', 'middlearea'),
         'tb_communication' => Lang::t('_COMMUNICATIONS', 'middlearea'),
         'tb_videoconference' => Lang::t('_VIDEOCONFERENCE', 'middlearea'),
         'tb_kb' => Lang::t('_CONTENT_LIBRARY', 'middlearea'),

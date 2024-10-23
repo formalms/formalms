@@ -46,9 +46,7 @@ class Lms_BlockWidget_menu extends Widget
         if ($ma->currentCanAccessObj('credits')) {
             $this->block_list['credits'] = true;
         }
-        if ($ma->currentCanAccessObj('news')) {
-            $this->block_list['news'] = true;
-        }
+
         if ($ma->currentCanAccessObj('career')) {
             $this->block_list['career'] = true;
         }
@@ -69,11 +67,7 @@ class Lms_BlockWidget_menu extends Widget
             $this->credits($this->link);
             echo '</div>';
         }
-        if (isset($this->block_list['news'])) {
-            echo '<div class="inline_block">';
-            $this->news($this->link);
-            echo '</div>';
-        }
+
         // modifica box carriera
         if (isset($this->block_list['career'])) {
             echo '<div class="inline_block">';
@@ -143,7 +137,7 @@ class Lms_BlockWidget_menu extends Widget
 
             //loop per creare l'elemento news
 
-            $html .= '<h2 class="heading">' . Lang::t('_NEWS', 'catalogue') . '</h2>';
+           $html .= '<h2 class="heading">' . Lang::t('_NEWS', 'catalogue') . '</h2>';
             $html .= '<div id="user-panel-carousel" class="carousel slide carousel-fade" data-ride="carousel">';
             $html .= '<ol class="carousel-indicators">';
 
@@ -163,7 +157,7 @@ class Lms_BlockWidget_menu extends Widget
 
             $html .= '<div class="carousel-inner" role="listbox">';
 
-            while (list($id_news, $publish_date, $title, $short_desc, $impo, $viewer) = sql_fetch_row($re_news)) {
+           while (list($id_news, $publish_date, $title, $short_desc, $impo, $viewer) = sql_fetch_row($re_news)) {
                 $viewer = (is_string($viewer) && $viewer != false ? unserialize($viewer) : []);
                 $intersect = array_intersect($user_assigned, $viewer);
                 if (!empty($intersect) || empty($viewer)) {
@@ -194,7 +188,7 @@ class Lms_BlockWidget_menu extends Widget
             $html .= '</div>'; //chiudo il carosello
         }
 
-        return $html;
+        //return $html;
     }
 
     public function label()

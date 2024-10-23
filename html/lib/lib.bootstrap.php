@@ -558,8 +558,8 @@ class Boot
 
         // todo: check if we can do in other way the same thing
         // save login password from modification
-        $ldap_used = FormaLms\lib\Get::sett('ldap_used');
-        if (($ldap_used === 'on') && isset($_POST['modname']) && ($_POST['modname'] === 'login') && isset($_POST['passIns'])) {
+       
+        if (isset($_POST['modname']) && ($_POST['modname'] === 'login') && isset($_POST['passIns'])) {
             $password_login = $_POST['passIns'];
         }
 
@@ -587,7 +587,7 @@ class Boot
 
             $filter_input->sanitize();
         }
-        if (($ldap_used === 'on') && isset($_POST['modname']) && ($_POST['modname'] === 'login') && isset($_POST['passIns'])) {
+        if ( isset($_POST['modname']) && ($_POST['modname'] === 'login') && isset($_POST['passIns'])) {
             $_POST['passIns'] = \voku\helper\UTF8::clean(stripslashes($password_login));
         }
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();

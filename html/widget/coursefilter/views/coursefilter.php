@@ -3,10 +3,6 @@ $str_search = Lang::t("_SEARCH", 'standard');
 $str_elearning = Lang::t("_COURSE_TYPE_ELEARNING", 'course');
 $str_classroom = Lang::t("_CLASSROOM_COURSE", 'cart');
 $str_all = Lang::t("_ALL_COURSE_TYPE", 'course');
-
-
-
-
 ?>
 
 <nav class="forma-quick-search-form filterBar quick_search_form navbar<?php echo isset($css_class) && $css_class != '' ? ' ' . $css_class : ''; ?>" aria-label="<?php Lang::t('_COURSE_SEARCH_BAR', 'menu_course') ?>">
@@ -105,17 +101,9 @@ $str_all = Lang::t("_ALL_COURSE_TYPE", 'course');
             </div>
         </div>
 
-
-
-
-
         <?php if ($inline_filters) { ?>
           <div class="filterBar__buttons navbar-extra"><?php echo $inline_filters; ?></div>
         <?php } ?>
-
-
-
-
 
         <div class="filterBar__mobile navbar-header">
             <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#filter-container">

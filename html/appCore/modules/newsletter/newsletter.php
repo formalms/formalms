@@ -94,7 +94,7 @@ function newsletter()
     $out->add($form->getDropdown($lang->def('_LANGUAGE'), 'sel_lang', 'sel_lang', $lang_list));
 
     $out->add($form->getRadio($lang->def('_EMAIL'), 'send_type_email', 'send_type', 'email', true));
-    $out->add($form->getRadio($lang->def('_SEND_SMS'), 'send_type_sms', 'send_type', 'sms', false));
+    //$out->add($form->getRadio($lang->def('_SEND_SMS'), 'send_type_sms', 'send_type', 'sms', false));
 
     $out->add($form->closeElementSpace());
     $out->add($form->openButtonSpace());

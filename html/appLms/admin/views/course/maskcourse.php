@@ -54,8 +54,8 @@ $htmlData = '';
         . ($id_course === false ? Form::getDropdown(Lang::t('_COURSE_MENU_TO_ASSIGN', 'course'), 'selected_menu', 'selected_menu', $menu_custom, $sel_custom) : '')
         . Form::getDropdown(Lang::t('_COURSE_LANG_METHOD', 'course'), 'course_lang', 'course_lang', $array_lang, array_search($course['lang_code'], $array_lang))
         . Form::getDropdown(Lang::t('_DIFFICULTY', 'course'), 'course_difficult', 'course_difficult', $difficult_lang, $course['difficult'])
-        . Form::getTextfield(Lang::t('_CREDITS', 'course'), 'credits', 'credits', '50', $course['credits'])
-        . Form::getDropdown(Lang::t('_LABELS', 'label'), 'label', 'label', $label_model->getLabelFromDropdown(true), ($id_course === false ? false : $label_model->getCourseLabel($course['idCourse']))));
+        . Form::getTextfield(Lang::t('_CREDITS', 'course'), 'credits', 'credits', '50', $course['credits']));
+
     //. (!$classroom ? Form::getCheckbox(Lang::t('_COURSE_EDITION', 'course'), 'course_edition_yes', 'course_edition', 1, $course['course_edition'] == 1) : '' )
     //. Form::getCloseCombo()
 

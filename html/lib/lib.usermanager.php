@@ -2691,7 +2691,7 @@ class UserManagerRenderer
             . '<span class="text_bold">' . $lang->def('_LOST_TITLE_USER') . ' - </span>'
             . $lang->def('_LOST_INSTRUCTION_USER');
 
-        if (FormaLms\lib\Get::sett('ldap_used') == 'off') {
+      
             $html .= Form::openForm('lost_user', $jump_url)
                 . Form::openElementSpace('form_right')
                 . Form::getLabel('email', $lang->def('_EMAIL'), 'text_bold')
@@ -2700,9 +2700,7 @@ class UserManagerRenderer
                 . Form::getButton('email_ins', 'email_ins', $lang->def('_SEND'), 'button_nowh')
                 . Form::closeElementSpace()
                 . Form::closeForm();
-        } else {
-            $html .= '<div class="form_right"><span class="font_red">' . $lang->def('_LDAPACTIVE') . '</span></div>';
-        }
+        
         $html .= '</div>';
 
         $html .=

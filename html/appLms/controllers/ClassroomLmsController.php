@@ -263,7 +263,6 @@ class ClassroomLmsController extends LmsController
         $this->render('courselist', [
             'path_course' => $this->path_course,
             'courselist' => $courselist,
-            'use_label' => $ma->currentCanAccessObj('tb_label'),
             'display_info' => $this->_getClassDisplayInfo($keys),
             'dm' => new DateManager(),
             'keyword' => $filter_text,
@@ -316,7 +315,6 @@ class ClassroomLmsController extends LmsController
         $this->render('courselist', [
             'path_course' => $this->path_course,
             'courselist' => $courselist,
-            'use_label' => $ma->currentCanAccessObj('tb_label'),
             'display_info' => $this->_getClassDisplayInfo($keys),
             'dm' => new DateManager(),
             'keyword' => $filter_text,
@@ -369,7 +367,6 @@ class ClassroomLmsController extends LmsController
         $this->render('courselist', [
             'path_course' => $this->path_course,
             'courselist' => $courselist,
-            'use_label' => $ma->currentCanAccessObj('tb_label'),
             'display_info' => $this->_getClassDisplayInfo($keys),
             'dm' => new DateManager(),
             'keyword' => $filter_text,
@@ -417,7 +414,6 @@ class ClassroomLmsController extends LmsController
         $this->render('courselist', [
             'path_course' => $this->path_course,
             'courselist' => $courselist,
-            'use_label' => $ma->currentCanAccessObj('tb_label'),
             'display_info' => $this->_getClassDisplayInfo($keys),
             'dm' => new DateManager(),
             'keyword' => $filter_text,
