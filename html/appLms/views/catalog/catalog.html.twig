@@ -5,7 +5,7 @@
 		<div id="treeview1" class="aside"></div>
 	</div>
 	<div class="{% if data.total_category > 0 %}col-sm-9{% else %}col-sm-12 {% endif %}" id="div_course"><br>
-		<p align="center"><img src='{{ Layout_getPath() }}images/standard/loadbar.gif'></p>
+		<p align="center"><span>{{ Lang_translate('_LOADING', 'standard') }}</span>:&nbsp;<img src='{{ Layout_getPath() }}images/standard/loadbar.gif'></p>
 	</div>
 	<div>
 		{% if not data.show_empty_catalogue_tab %}
@@ -31,7 +31,7 @@ function callAjaxCatalog(id_category) {
 
 window.catalog.selectedCategory = id_category;
 str_loading = "{{ Layout_getPath() }}images/standard/loadbar.gif";
-$("#div_course").html("<br><p align='center'><img src=' {{ Layout_getPath() }}images/standard/loadbar.gif'></p>");
+$("#div_course").html("<br><p align='center'><span>{{ Lang_translate('_LOADING', 'standard') }}</span>:&nbsp;<img src=' {{ Layout_getPath() }}images/standard/loadbar.gif'></p>");
 var type_course = getCurrentTypeCourse();
 var posting = $.get(window.frontend.config.url.appLms + '/ajax.server.php', {
 r: '{{ data.endpoint }}/allCourseForma',
