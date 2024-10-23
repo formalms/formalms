@@ -115,7 +115,7 @@ class HelperTool
                 information_schema.COLUMNS
             WHERE 
                 TABLE_SCHEMA = DATABASE () 
-            ANDTABLE_NAME = theTableName
+            AND TABLE_NAME = theTableName
                 AND COLUMN_NAME = theColumnName;
                 
             IF column_exists > 0 THEN
