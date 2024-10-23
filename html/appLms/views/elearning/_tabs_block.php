@@ -46,7 +46,7 @@
     <?php if ($use_label) { ?>
     $('#course_search_label').on('changed.bs.select', function (e) {
         var id_common_label =  $("#course_search_label").selectpicker().val();
-        $("#div_course").html("<br><p align='center'><span><?php echo Lang::t('_LOADING', 'standard') ?></span>:&nbsp;<img src='<?php echo Layout::path(); ?>images/standard/loadbar.gif'></p>");
+        $("#div_course").html("<br><p align='center'><img src='<?php echo Layout::path(); ?>images/standard/loadbar.gif'>&nbsp;<span><?php echo Lang::t('_LOADING', 'standard') ?></span></p>");
         urlCall = 'ajax.server.php?r=elearning/show&id_common_label='+id_common_label
         var posting = $.get( urlCall, {})
         posting.done(function(responseText){
@@ -86,7 +86,7 @@
         <?php if ($use_label) { ?>
         var id_common_label =  $("#course_search_label").selectpicker().val();
         if(id_common_label == 0 ) {
-            $("#div_course").html("<br><p align='center'><span><?php echo Lang::t('_LOADING', 'standard') ?></span>:&nbsp;<img src='<?php echo Layout::path(); ?>images/standard/loadbar.gif'></p>");
+            $("#div_course").html("<br><p align='center'><img src='<?php echo Layout::path(); ?>images/standard/loadbar.gif'>&nbsp;<span><?php echo Lang::t('_LOADING', 'standard') ?></span></p>");
             var posting = $.get( 'ajax.server.php?r=elearning/allLabel', {})
             posting.done(function(responseText){
                 $("#div_course").html(responseText);
@@ -101,7 +101,7 @@
         var cyear = $("#course_search_filter_year").selectpicker().val();
         var json_status = $('.js-label-menu-filter.selected').attr('data-value');
 
-        $("#div_course").html("<br><p align='center'><span><?php echo Lang::t('_LOADING', 'standard') ?></span>:&nbsp;<img src='<?php echo Layout::path(); ?>images/standard/loadbar.gif'></p>");
+        $("#div_course").html("<br><p align='center'><img src='<?php echo Layout::path(); ?>images/standard/loadbar.gif'>&nbsp;<span><?php echo Lang::t('_LOADING', 'standard') ?></span></p>");
         var posting = $.get( 'ajax.server.php?r=elearning/all&rnd=<?php echo time(); ?>&filter_text=' + ft + '&filter_type=' + ctype + '&filter_cat=' + category + '&filter_status=' + json_status + '&filter_year=' + cyear, {}
 
         );
