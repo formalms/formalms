@@ -249,6 +249,13 @@ class FolderTreeBase {
 
   getStatus() {
     this.openedIds = localStorage.getItem('openedIds') ? localStorage.getItem('openedIds').split(',') : [];
+
+    // Reset selectedId when switching between Courses on LMS
+    const idCourse = `${window.frontend.config.idCourse}`;
+    if (localStorage.getItem('idCourse') != idCourse) {
+      localStorage.setItem('selectedId', '0')
+      localStorage.setItem('idCourse', idCourse)
+    }
     this.selectedId = localStorage.getItem('selectedId');
   }
 

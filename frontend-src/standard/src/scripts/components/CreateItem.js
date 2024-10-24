@@ -22,6 +22,7 @@ class CreateItem {
       });
     }
     this.container.addEventListener('openDir', (e) => {
+      // Update selectedId on Student Area (LMS)
       this.clickOnFolder(e);
     });
     const createFolderForm = this.container.querySelector('.createFolderForm');
@@ -73,7 +74,7 @@ class CreateItem {
     const el = event.target;
     const elId = event.detail.selectedId ? event.detail.selectedId : el.getAttribute('data-id');
     if (elId >= 0) {
-      this.selectedId = elId;
+      localStorage.setItem('selectedId', elId);
     }
 
     event.preventDefault();
@@ -93,15 +94,9 @@ class CreateItem {
 
     createFolderBtn.setAttribute('style', `background-color:transparent;background-image:url("${window.frontend.config.url.template}/images/standard/loading_snake.gif")`);
 
-    const selectedId = _this.selectedId ? _this.selectedId : 0;
-    const el = document.querySelector('.folderTree__li[data-id="' + selectedId + '"]');
-    if(!el) {
-      selectedId = localStorage.selectedId;
-    }
-
     const apiUrl = _this.getApiUrl('createFolder', {
       folderName: text,
-      selectedNode: selectedId,
+      selectedNode: localStorage.selectedId ? localStorage.selectedId : 0,
       authentic_request,
     });
 
@@ -115,7 +110,7 @@ class CreateItem {
 
         // dispatch createdItem event
         _this.container.dispatchEvent(new CustomEvent('createTreeItem', {
-          detail: { selectedId: selectedId, }
+          detail: { selectedId: localStorage.selectedId, }
         }));
       }
     }).catch((error) => {
@@ -139,7 +134,7 @@ class CreateItem {
 
   getNewLoUrl(type) {
     const _this = this;
-    const selectedId = _this.selectedId ? _this.selectedId : 0;
+    const selectedId = localStorage.selectedId ? localStorage.selectedId : 0;
     //const currentState = document.getElementById(`treeview_state_${_this.type}`).value;
 
     //return `index.php?modname=storage&op=display&${_this.type}_createLOSel=1&radiolo=${type}&treeview_selected_${_this.type}=${selectedId}&treeview_state_${_this.type}=${currentState}`;
