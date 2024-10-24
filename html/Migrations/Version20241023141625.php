@@ -20,77 +20,30 @@ final class Version20241023141625 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $connection = $this->connection;
+        $this->addSql('DELETE FROM `core_menu_under` WHERE `default_name` IN ("_LABEL","_CONTEST","_NEWS_INTERNAL")');
 
-        $arrayCoreMenuUnder = [
-            '_LABEL',
-            '_CONTEST',
-            '_NEWS_INTERNAL',
-        ];
+        $this->addSql('DELETE FROM `core_menu` WHERE `name` IN ("_LABEL","_CONTEST","_NEWS_INTERNAL")');
 
-        $arrayDefaultNameCoreMenuUnder = $arrayDefaultNameCoreMenu =implode(', ', array_map(function ($element) {
-            return '"' . $element . '"';
-        }, $arrayCoreMenuUnder));
+        $this->addSql('DELETE FROM `core_setting` WHERE `param_name` IN ("use_course_label") OR `param_name` LIKE "ldap%" OR `param_name` LIKE "sso%"');
 
-        $connection->executeStatement('DELETE FROM `core_menu_under` WHERE `default_name` IN (?)',
-            [$arrayDefaultNameCoreMenuUnder]);
+        $this->addSql('DELETE FROM `learning_middlearea` WHERE `obj_index` IN ("tb_games", "news")');
 
-        $connection->executeStatement(
-            'DELETE FROM `core_menu` WHERE `name` IN (?)',
-            [$arrayDefaultNameCoreMenu]);
+        $this->addSql('DELETE FROM `dashboard_blocks` WHERE `block_class` = "DashboardBlockNewsLms"');
 
-
-        $arrayCoreSetting = [
-            'use_course_label',
-            'ldap%',
-            'sso%',
-        ];
-
-        $arrayParamNameCoreSetting = implode(', ', array_map(function ($element) {
-            return '"' . $element . '"';
-        }, $arrayCoreSetting));
-
-        $connection->executeStatement('DELETE FROM `core_setting` WHERE `param_name` IN (?)', [$arrayParamNameCoreSetting]);
-
-
-        $arrayLearningMiddleArea = [
-            'tb_games',
-            'news',
-        ];
-
-        $arrayObjIndexLearningMiddleArea = implode(', ', array_map(function ($element) {
-            return '"' . $element . '"';
-        }, $arrayLearningMiddleArea));
-
-        $connection->executeStatement('DELETE FROM `learning_middlearea` WHERE `obj_index` IN (?)',
-             [$arrayObjIndexLearningMiddleArea]
-        );
-
-
-
-       $connection->executeStatement('DELETE FROM `dashboard_blocks` WHERE `block_class` = (?)', ['DashboardBlockNewsLms']);
-            
-        $connection->executeStatement('DELETE FROM `dashboard_block_config` WHERE `block_class` = (?)', ['DashboardBlockNewsLms']);
-            
-        
-
-       
+        $this->addSql('DELETE FROM `dashboard_block_config` WHERE `block_class` = "DashboardBlockNewsLms"');
+   
         $this->addSql("UPDATE core_menu_under set module_name = 'forum' WHERE default_name = '_PUBLIC_FORUM'");
 
-        $arrayModulesOB = [
-            '_WIKI',
-            '_CALENDAR',
-            '_NOTES',
-            '_PROJECT'
-        ];
+        $this->addSql('DELETE FROM `learning_module` WHERE `default_name` IN ("_WIKI", "_CALENDAR", "_NOTES", "_PROJECT")');
 
-        $arrayDefaultNameOB = implode(', ', array_map(function ($element) {
-            return '"' . $element . '"';
-        }, $arrayModulesOB));
-            $connection->executeStatement('DELETE FROM `learning_module` WHERE `default_name` IN  (?)', [$arrayDefaultNameOB]);
-        
         // cancellazione tabella progetto e derivate      
-        $this->addSql("DELETE FROM `learning_sysforum` WHERE `learning_sysforum`.`key1` ='project_message' AND `learning_sysforum`.`key2` IN (SELECT `learning_prj`.`id` FROM `learning_prj`)");
+        $schemaTable = $this->connection->createSchemaManager();
+        if ($schemaTable->tablesExist(['learning_prj'])) {
+            $this->addSql("DELETE FROM `learning_sysforum` 
+            WHERE `key1` = 'project_message' 
+            AND `key2` IN (SELECT `id` FROM `learning_prj`)");
+        }
+
         $this->addSql('DROP TABLE IF EXISTS `learning_prj_files`');
         $this->addSql('DROP TABLE IF EXISTS `learning_prj_tasks`');
         $this->addSql('DROP TABLE IF EXISTS `learning_prj_news`');
