@@ -12,7 +12,7 @@ use FormaLms\lib\Helpers\HelperTool;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20241029000018 extends AbstractMigration
+final class Version20241021000018 extends AbstractMigration
 {
     public function getDescription(): string
     {
