@@ -6,7 +6,10 @@ forma.lms 4.1.0
 ---------------------------------------------------------------------------------------
 Release date: 2024 october
 
-
+- #     - resolve migration
+- #     - fix migration name
+- #     - features: remove some modules
+- #     - delete migration
 - #     - Adding image to course path fixed
 - #     - Rename migration and rename procedure
 - #     - configuration setting to switch from scorm player standard (aka legacy) to new player (ng = next generation)
@@ -14,32 +17,15 @@ Release date: 2024 october
 - #     - Sometime gets string, sometime gets array....
 - #     - Corrected destination path;
 - #     - Managed case array[0] = "";
-- #     - update certificate generation
-- #     - update composer packages
 - #     - Missing  curly bracket screws up the whole file
-- #     - fix null values in courselist
-- #     - fix getAllelection from UserDataSelector.php
-- #     - fix admin courselist data
-- #     - fix org nodelist dropdown query
-- #     - update version to 4.0.11
 - #     - fix helper tool drop_field_if_exists error
 - #     - add getCategories API
-- #     - fixed typos
-- #     - Changes made for merge request !26
-- #     - fix sequence questions test on delete
-- #     - mycourses - filter closed couse in "all course" mycourses
 - #     - add idsts variable for multiple users in user/userdetails - add idsts variable for multiple users in user/mycourses
 - #     - implement API for multiple users
-- #     - fix exception stats when user is tutor - fix division by zero when turo does not have any student
 - #     - Fix template loading
 - #     - Conversion to twig #1
-- #     - fix get pdf constructor
-- #     - fix api authentication not neded for explicit route
-- #     - fixed mail sender
 - #     - fixed bug data error in communication
 - #     - removed send cc (besides in the related javascript that sends the request is not managed)
-- #     - Fix autoplay object
-- #     - fix Man_course in certificate.php
 - #     - Revert "First commit template Corso Accessibilità"
 - #     - First commit template Corso Accessibilità
 - #     - Fix bug percorsi formativi report
@@ -52,7 +38,6 @@ Release date: 2024 october
 - #     - fix template loading flow and check compatibilty
 - #     - fix typo in install.adm
 - #     - Aggiornamento processi iscrizione percorsi formativi con invio email di avviso
-- #     - fix typo
 - #     - fix error in sendRegistration of reservation registration - other minor fixes
 - #     - fixed check box value
 - #     - Fix privilege escalation in "Other actions" menu.
@@ -64,12 +49,10 @@ Release date: 2024 october
 - #     - Fix suspension attempts handling and prerequisites check
 - #     - Logo Percorsi formativi
 - #     - Non mostrare il pulsante Espandi / Condensa
-- #     - fix migrazioni
 - #     - fix mailconfig for mysql compatibility
 - #     - fix warning in coursereport
 - #     - coursereport improve performance
 - #     - add forma::inc in lib.permissions.php require_once
-- #     - Fixing migration
 - #     - Fix bug iscrizione a percorso formativo
 - #     - Aggiunta scelta livello utente nei percosi formativi
 - #     - fix procedure
@@ -93,7 +76,6 @@ Release date: 2024 october
 - #     - fix time scorm
 - #     - fix drop index if not exist in incorrect table learning_quest_type instead of learning_coursereport
 - #     - fix subscribe include
-- #     - fix coursereport
 - #     - fixed search in coursepath
 - #     - fix migration for perms
 - #     - set mysql session variable group_concat_max_len  for big selection of users
@@ -113,11 +95,9 @@ Release date: 2024 october
 - #     - update translations
 - #     - fixed translations
 - #     - New scorm player - Update scorm player to last version
-- #     - New scorm player
 - #     - add dashboard permission
 - #     - remove undo button in add category
 - #     - Re-added dropping of signature field
-- #     - fixed  typo
 - #     - Added block for plugin customization
 - #     - fix cc and ccn emails
 - #     - PHP 7.4 compatibility: funcion parameters ...$parm  (in upgrade)
@@ -127,7 +107,6 @@ Release date: 2024 october
 - #     - Migration - Fixed update error - Syntax error or access violation: 1071 Specified key was too long; max key length is 1000 bytes
 - #     - Fix course report overview test name and other columns was misallined - Fix poll tracking
 - #     - fix core settings reported in new tables
-- #     - Fixed update error - Syntax error or access violation: 1071 Specified key was too long; max key length is 1000 bytes
 - #     - Upgrade Legacy version formalms 3.3.22
 - #     - fix import from file csv and replace while instead foreach
 - #     - fix warning in LoData and in test.php
@@ -139,7 +118,6 @@ Release date: 2024 october
 - #     - fix step report user courses
 - #     - fix add child node in usermanagement
 - #     - remove amp; form Url string in locationcontroller
-- #     - fixed typo
 - #     - minor fixed on communication dashboard widget, deleting unused code, fixed bugs on mail configuration related do SQL server 8.0
 - #     - Added password rule check on forget password feature on login page
 - #     - fix because of dropping of "signature" user field
@@ -159,6 +137,31 @@ Release date: 2024 october
 - #     - fix null value userselector old
 - #     - fix to course menu
 
+---------------------------------------------------------------------------------------
+forma.lms 4.0.11
+---------------------------------------------------------------------------------------
+Release date: 2024 October
+- #     - add translate and fix keys form cron.report
+- #     - fix absolute path calculate
+- #     - fix right join coursereports for not test items
+- #     - fix insertparams
+- #     - fix unjoinead course reports on learning course reports
+- #     - update certificate generation
+- #     - update composer packages
+- #     - fix clean selection from empy values in userselector
+- #     - fixed mail sender
+- #     - fix org nodelist dropdown query
+- #     - fix null values in courselist
+- #     - fix getAllselection from UserDataSelector.php
+- #     - fix admin courselist data
+- #     - fix api
+- #     - mycourses - filter closed couse in "all course" mycourses
+- #     - fix sequence questions test on delete
+- #     - fix exception stats when user is tutor - fix division by zero when turo does not have any student
+- #     - fix get pdf constructor
+- #     - fix api authentication not neded for explicit route
+- #     - Fix autoplay object
+- #     - fix Man_course in certificate.php
 
 ---------------------------------------------------------------------------------------
 forma.lms 4.0.10
