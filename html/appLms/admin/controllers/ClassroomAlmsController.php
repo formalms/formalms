@@ -669,16 +669,40 @@ class ClassroomAlmsController extends AlmsController
         } elseif (isset($_POST['undo'])) {
             Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&id_course=' . $this->model->getIdCourse());
         }
+        $result_message = FormaLms\lib\Get::req('result', DOTY_MIXED, false);
+        switch ($result_message) {
+            case 'ok_ins':
+                UIFeedback::info(Lang::t('_OPERATION_SUCCESSFUL', 'standard'));
+                break;
+            case 'err_csv':
+                UIFeedback::error(Lang::t('_OPERATION_FAILURE', 'standard'));
+                break;
+        }
 
         $cmodel = new CourseAlms();
         $course_info = $cmodel->getInfo($this->idCourse, false, $this->idDate);
         $course_name = ($course_info['code'] !== '' ? '[' . $course_info['code'] . '] ' : '') . $course_info['name'];
 
+        $days = $this->model->getAllDateDay();
+        for ($i = 0; $i < count($days); $i++) {
+            foreach ($days[$i] as $key => $value) {
+                if ($key == "id") {
+                    $idDay = $value;
+                }
+                if ($key == "date") {
+                    $dateDays[$idDay] = $value;
+                }
+            }
+        }
+        //Events::trigger('core.presence', ['days' => $dateDays, 'id_course' => $this->model->getIdCourse(), ]);
         $this->render('presence', [
             'model' => $this->model,
             'base_link_course' => $this->baseLinkCourse,
             'base_link_classroom' => $this->baseLinkClassroom,
             'course_name' => $course_name,
+            'id_course' => $this->model->getIdCourse(),
+            'id_date' => $this->model->getIdDate(),
+            'days' => $dateDays,
         ]);
     }
 
