@@ -36,6 +36,7 @@ a.nounder{text-decoration:none;}
 a.nounder:hover{text-decoration:underline;}
 a img{vertical-align:middle; max-width: inherit;}
 a > span.ico-sprite{margin-left:4px;}
+a:has(> span.ico-sprite){display: flex;align-items: center;}
 h1 img,h2 img,h3 img,h4 img,h5 img,h6 img,label{vertical-align:middle;}
 /* Main Page Container */
 /*
