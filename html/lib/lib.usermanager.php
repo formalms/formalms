@@ -1065,13 +1065,9 @@ class UserManagerRenderer
             'password' => FormaLms\lib\Get::req('login_pwd', DOTY_STRING),
         ];
 
-        $all_languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
-
         $info['lang'] = FormaLms\lib\Get::req('login_lang', DOTY_STRING, Lang::get());
         if ($info['lang'] === 'default') {
             $info['lang'] = false;
-        } else {
-            $info['lang'] = $all_languages[$info['lang']];
         }
 
         /*if (!isset($_POST['login_lang'])) $info['lang'] = false;

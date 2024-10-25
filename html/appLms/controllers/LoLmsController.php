@@ -105,7 +105,7 @@ class LoLmsController extends LmsController
                     'showIcon' => false,
                     'icon' => 'icon-play',
                     'label' => Lang::t('_PLAY', 'standard'),
-                    'directPlay' => $lo['directPlay'],
+                    'directPlay' => $lo['directPlay'] ?? false,
                 ];
                 if (array_key_exists('track_detail', $lo) && $lo['track_detail']) {
 
@@ -117,7 +117,7 @@ class LoLmsController extends LmsController
                         'showIcon' => false,
                         'icon' => 'icon-chart',
                         'label' => Lang::t('_TRACKING', 'course'),
-                        'directPlay' => $lo['directPlay'],
+                        'directPlay' => $lo['directPlay'] ?? false,
                     ];
                 }
             }

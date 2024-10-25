@@ -243,7 +243,7 @@ class PageZoneLang extends PageZone
         $out .= Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/js_utils.js', true, false);
 
         $json = new Services_JSON();
-        $script .= 'YAHOO.dialogConstants.setProperties({'
+        $script = 'YAHOO.dialogConstants.setProperties({'
                 . 'CONFIRM: ' . $json->encode(Lang::t('_CONFIRM', 'standard')) . ', '
                 . 'UNDO: ' . $json->encode(Lang::t('_UNDO', 'standard')) . ', '
                 . 'CLOSE: ' . $json->encode(Lang::t('_CLOSE', 'standard')) . ', '

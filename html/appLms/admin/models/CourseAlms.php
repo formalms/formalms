@@ -917,7 +917,7 @@ class CourseAlms extends Model
         // load user material ---------------------------------------------------------------------------
         $arr_file = $this->manageCourseFile(
             'course_user_material',
-            $data_params['old_course_user_material'],
+            $data_params['old_course_user_material'] ?? '',
             $path,
             ($quota != 0 ? $quota - $used : false),
             isset($data_params['file_to_del']['course_user_material'])
@@ -931,7 +931,7 @@ class CourseAlms extends Model
         // course otheruser material -------------------------------------------------------------------
         $arr_file = $this->manageCourseFile(
             'course_otheruser_material',
-            $data_params['old_course_otheruser_material'],
+            $data_params['old_course_otheruser_material'] ?? '',
             $path,
             ($quota != 0 ? $quota - $used : false),
             isset($data_params['file_to_del']['course_otheruser_material'])
@@ -1029,7 +1029,7 @@ class CourseAlms extends Model
             name                = '" . $data_params['course_name'] . "',
             idCategory          = '" . (int)$data_params['idCategory'] . "',
             description         = '" . $data_params['course_descr'] . "',
-            box_description         = '" . $data_params['course_box_descr'] . "',
+            box_description     = '" . $data_params['course_box_descr'] . "',
             lang_code           = '" . $array_lang[$data_params['course_lang']] . "',
             status              = '" . (int)$data_params['course_status'] . "',
             level_show_user     = '" . $show_level . "',
@@ -1076,7 +1076,7 @@ class CourseAlms extends Model
             course_edition      = '" . (isset($data_params['course_edition']) ? $data_params['course_edition'] : 0) . "',
             selling             = '" . (isset($data_params['course_sell']) ? 1 : 0) . "',
             prize               = '" . (isset($data_params['course_prize']) ? $data_params['course_prize'] : 0) . "',
-            policy_point        = '" . $data_params['policy_point'] . "',
+            policy_point        = '" . (isset($data_params['policy_point']) ? $data_params['policy_point'] : '') . "',
 
             course_quota        = '" . $data_params['course_quota'] . "',
 

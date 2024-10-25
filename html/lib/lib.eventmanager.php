@@ -238,7 +238,7 @@ class EventMessageComposer
      *                            ), ...
      *                            )
      */
-    public function __construct($module = false, $platform = false, $arr_subject = [], $arr_body = false, $attachments = [])
+    public function __construct($module = false, $platform = false, $arr_subject = [], $arr_body = [], $attachments = [])
     {
         $this->module = 'email';
         $this->platform = false;
