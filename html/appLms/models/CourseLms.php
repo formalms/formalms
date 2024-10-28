@@ -190,14 +190,7 @@ class CourseLms extends Model
         //    $parsedData['dateClosing_month'] = Lang::t('_MONTH_' . substr('0' . date('m', $time_expired), -2), 'standard');
         //    $parsedData['dateClosing_day'] = date('d', $time_expired);
         //}
-        if ($parsedData['date_end'] !== null) {
-            $date_closing = getdate(strtotime(Format::date($parsedData['date_end'], 'date')));
-            if ($date_closing['year'] > 0) {
-                $parsedData['dateClosing_year'] = $date_closing['year'];
-                $parsedData['dateClosing_month'] = Lang::t('_MONTH_' . substr('0' . $date_closing['mon'], -2), 'standard');
-                $parsedData['dateClosing_day'] = $date_closing['mday'];
-            }
-        }
+    
 
         $parsedData['is_enrolled'] = !empty($infoEnroll);
         if ($parsedData['is_enrolled']) {
@@ -209,6 +202,35 @@ class CourseLms extends Model
         } else {
             $parsedData['canEnter'] = false;
         }
+
+        if ($parsedData['date_begin'] !== null) {
+            //se la data di inizio è superiore ad oggi
+            if(new DateTime($parsedData['date_begin']) > new DateTime()) {
+                $parsedData['canEnter'] = false;
+
+                //anche nel caso di semplice iscrizione metto un flag fake per impedire iscrizione
+                $parsedData['subscribe_method'] = -1;
+            }
+        }
+
+
+        if ($parsedData['date_end'] !== null) {
+            $date_closing = getdate(strtotime(Format::date($parsedData['date_end'], 'date')));
+            if ($date_closing['year'] > 0) {
+                $parsedData['dateClosing_year'] = $date_closing['year'];
+                $parsedData['dateClosing_month'] = Lang::t('_MONTH_' . substr('0' . $date_closing['mon'], -2), 'standard');
+                $parsedData['dateClosing_day'] = $date_closing['mday'];
+            }
+
+            if(new DateTime($parsedData['date_end']) < new DateTime()) {
+                $parsedData['canEnter'] = false;
+
+                //anche nel caso di semplice iscrizione metto un flag fake per impedire iscrizione
+                $parsedData['subscribe_method'] = -1;
+            }
+        }
+
+
         $parsedData['editions'] = false;
         $parsedData['course_full'] = false;
         $parsedData['in_cart'] = false;

@@ -1061,8 +1061,8 @@ class CourseAlms extends Model
 
             direct_play         = '" . (isset($data_params['direct_play']) ? 1 : 0) . "',
 
-            date_begin          = '" . $date_begin . "',
-            date_end            = '" . $date_end . "',
+            date_begin          = " . (!empty($date_begin) ? "'" . $date_begin . "'" : 'NULL') . ",
+            date_end            = " . (!empty($date_end) ? "'" . $date_end . "'" : 'NULL') . ",
             hour_begin          = '" . $hour_begin . "',
             hour_end            = '" . $hour_end . "',
 
