@@ -683,16 +683,11 @@ class ClassroomAlmsController extends AlmsController
         $course_info = $cmodel->getInfo($this->idCourse, false, $this->idDate);
         $course_name = ($course_info['code'] !== '' ? '[' . $course_info['code'] . '] ' : '') . $course_info['name'];
 
-        $days = $this->model->getAllDateDay();
-        for ($i = 0; $i < count($days); $i++) {
-            foreach ($days[$i] as $key => $value) {
-                if ($key == "id") {
-                    $idDay = $value;
-                }
-                if ($key == "date") {
-                    $dateDays[$idDay] = $value;
-                }
-            }
+        $days = $this->model->getDateDay();
+        foreach ($days as $key => $value) {
+            $idDay = $value['id'];
+            $dateDays[$idDay] = $value['date'];
+
         }
         //Events::trigger('core.presence', ['days' => $dateDays, 'id_course' => $this->model->getIdCourse(), ]);
         $this->render('presence', [
