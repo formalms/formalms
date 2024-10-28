@@ -975,9 +975,7 @@ class TreeView_OrgView extends TreeView
                             if (($limit_insert == 'off') || ($limit_insert == 'on' && $max_insert > 0)) {
                                 if ($direct_insert == 'on') {
                                     \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->setPreference('admin_rules.max_user_insert', $max_insert - 1);
-                                    $idst = $this->aclManager->registerUser($userid, $firstname, $lastname,
-                                        $pass, $email, '',
-                                        '');
+                                    $idst = $this->aclManager->registerUser($userid, $firstname, $lastname, $pass, $email, '');
 
                                     require_once _base_ . '/lib/lib.preference.php';
                                     $preference = new UserPreferences($idst);
@@ -1054,9 +1052,7 @@ class TreeView_OrgView extends TreeView
                                 }
                             }
                         } else {
-                            $idst = $this->aclManager->registerUser($userid, $firstname, $lastname,
-                                $pass, $email, '',
-                                '');
+                            $idst = $this->aclManager->registerUser($userid, $firstname, $lastname,$pass, $email, '');
 
                             require_once _base_ . '/lib/lib.preference.php';
                             $preference = new UserPreferences($idst);

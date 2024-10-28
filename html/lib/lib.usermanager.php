@@ -2338,7 +2338,6 @@ class UserManagerRenderer
                 $request['pass'],                        // $pass
                 addslashes($request['email']),            // $email
                 $request['avatar'],                        // $avatar
-                '',                                        // $signature
                 true,                                    // $alredy_encripted
                 $request['idst'],                        // $idst
                 '',                                        // $pwd_expire_at

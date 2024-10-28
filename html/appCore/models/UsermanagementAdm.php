@@ -2681,7 +2681,6 @@ class UsermanagementAdm extends Model implements Accessible
                 $uinfo[$idst]['pass'],
                 addslashes($uinfo[$idst]['email']),
                 '',
-                '',
                 true,
                 $idst
             );

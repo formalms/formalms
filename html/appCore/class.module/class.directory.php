@@ -1910,7 +1910,6 @@ class Module_Directory extends Module
                         $request[$idst]['pass'],
                         addslashes($request[$idst]['email']),
                         '',
-                        '',
                         true,
                         $idst)) {
                         $approved[] = $idst;
