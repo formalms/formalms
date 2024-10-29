@@ -2548,7 +2548,6 @@ you have been unsubscribed from the course ([course_code]) - [course]]]></key>
         <key id="standard&amp;_EDIT_SETTINGS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Edit setting]]></key>
         <key id="standard&amp;_ELEARNING" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[E-learning]]></key>
         <key id="standard&amp;_EMAIL" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Email]]></key>
-        <key id="standard&amp;_EMAIL_NOT_FOUND_IN_THE_CSV" attributes="" save_date="2017-03-15 11:04:00"><![CDATA[Email not found in the CSV]]></key>
         <key id="standard&amp;_EMPTY_SELECTION" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Empty selection]]></key>
         <key id="standard&amp;_END" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[End]]></key>
         <key id="standard&amp;_ENDELEM" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Last element]]></key>
@@ -2612,6 +2611,7 @@ you have been unsubscribed from the course ([course_code]) - [course]]]></key>
         <key id="standard&amp;_IMPORTANT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Important]]></key>
         <key id="standard&amp;_IMPORT_FROM_XML" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Import XML]]></key>
         <key id="standard&amp;_INCORRECT_DELIMITER_IN_THE_CSV" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Multiple delimiters within the file]]></key>
+        <key id="standard&amp;_INCORRECTLY_FORMATTED_CSV" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Incorrectly formatted CSV]]></key>
         <key id="standard&amp;_INHERIT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Descendants]]></key>
         <key id="standard&amp;_INSERT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Insert]]></key>
         <key id="standard&amp;_INSERT_PRESENCES" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Insert Presences]]></key>

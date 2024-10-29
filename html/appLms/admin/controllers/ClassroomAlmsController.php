@@ -681,7 +681,7 @@ class ClassroomAlmsController extends AlmsController
                 UIFeedback::error(Lang::t('_INCORRECT_DELIMITER_IN_THE_CSV', 'standard'));
                 break;
             case 'email_not_found':
-                UIFeedback::error(Lang::t('_EMAIL_NOT_FOUND_IN_THE_CSV', 'standard'));
+                UIFeedback::error(Lang::t('_INCORRECTLY_FORMATTED_CSV', 'standard'));
                 break;
         }
 

@@ -2542,7 +2542,6 @@ sei stato disiscritto dal corso ([course_code]) - [course]]]></key>
         <key id="standard&amp;_EDIT_SETTINGS" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Modifica impostazioni]]></key>
         <key id="standard&amp;_ELEARNING" attributes="" save_date="2015-12-14 09:54:57"><![CDATA[Corsi]]></key>
         <key id="standard&amp;_EMAIL" attributes="" save_date="2017-03-15 11:04:00"><![CDATA[Email]]></key>
-        <key id="standard&amp;_EMAIL_NOT_FOUND_IN_THE_CSV" attributes="" save_date="2017-03-15 11:04:00"><![CDATA[Email non trovata nel CSV]]></key>
         <key id="standard&amp;_EMPTY_SELECTION" attributes="" save_date="2017-06-28 12:21:46"><![CDATA[Selezione vuota]]></key>
         <key id="standard&amp;_END" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Fine]]></key>
         <key id="standard&amp;_ENDELEM" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Ultimo elemento]]></key>
@@ -2605,7 +2604,8 @@ sei stato disiscritto dal corso ([course_code]) - [course]]]></key>
         <key id="standard&amp;_IMPORT" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Importa]]></key>
         <key id="standard&amp;_IMPORTANT" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Importante]]></key>
         <key id="standard&amp;_IMPORT_FROM_XML" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Importa XML]]></key>
-        <key id="standard&amp;_INCORRECT_DELIMITER_IN_THE_CSV" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Vari separatori all'inteno del file]]></key>
+        <key id="standard&amp;_INCORRECT_DELIMITER_IN_THE_CSV" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Molteplici separatori all'inteno del file]]></key>
+        <key id="standard&amp;_INCORRECTLY_FORMATTED_CSV" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[CSV formattato in maniera errata]]></key>
         <key id="standard&amp;_INHERIT" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Discendenti]]></key>
         <key id="standard&amp;_INSERT" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Inserisci]]></key>
         <key id="standard&amp;_INSERT_PRESENCES" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Inserisci Presenze]]></key>
