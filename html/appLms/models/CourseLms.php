@@ -203,13 +203,17 @@ class CourseLms extends Model
             $parsedData['canEnter'] = false;
         }
 
+
+        // se l'utente è in attesa dsi approvazione ne sovrascrivo i permessi derivati dalla sessione
+        if($infoEnroll['waiting']) {
+            $parsedData['canEnter'] = false;
+        }
+
         if ($parsedData['date_begin'] !== null) {
             //se la data di inizio è superiore ad oggi
             if(new DateTime($parsedData['date_begin']) > new DateTime()) {
                 $parsedData['canEnter'] = false;
 
-                //anche nel caso di semplice iscrizione metto un flag fake per impedire iscrizione
-                $parsedData['subscribe_method'] = -1;
             }
         }
 
