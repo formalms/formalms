@@ -89,7 +89,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 
         $tableCat->addActionAdd('<a href="index.php?modname=link&amp;op=newlink&amp;idCategory='
             . $object_link->getId() . '&amp;back_url=' . $back_coded . '" title="' . $lang->def('_ADDLINKT') . '">'
-            . '<img src="' . getPathImage() . 'standard/add.png" alt="' . $lang->def('_ADD') . '" /> ' . $lang->def('_ADDLINK') . '</a>');
+            . '<img src="' . getPathImage() . 'standard/add.png" alt="' . $lang->def('_ADD') . '" />' . $lang->def('_ADDLINK') . '</a>');
 
         $GLOBALS['page']->add($tableCat->getTable()
         . '<span class="text_bold text_little">[ '
