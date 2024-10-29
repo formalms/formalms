@@ -282,7 +282,7 @@ function statuserfilter()
     $status_filter = FormaLms\lib\Get::req('status_filter', DOTY_INT, STATFILTER_ALL_STATUS);
     $editions_filter = FormaLms\lib\Get::req('editions_filter', DOTY_INT, STATFILTER_ALL_EDITION);
     $date_filter = FormaLms\lib\Get::req('date_filter', DOTY_INT, STATFILTER_ALL_EDITION);
-    $user_filter = FormaLms\lib\Get::req('user_filter', DOTY_MIXED, '');
+    $user_filter['search'] = FormaLms\lib\Get::req('user_filter', DOTY_MIXED, '');
 
     $cs = new CourseSubscribe_Manager();
     /*
@@ -305,7 +305,7 @@ function statuserfilter()
     }
     $aclManager->setContext($std_content);
 
-    $out->add(Form::getTextField(Lang::t('_FULLNAME', 'standard'), 'user_filter', 'user_filter', 255, $user_filter));
+    $out->add(Form::getTextField(Lang::t('_FULLNAME', 'standard'), 'user_filter', 'user_filter', 255, $user_filter['search']));
 
     $out->add(Form::getDropdown(
         $lang->def('_GROUPS'),
@@ -433,6 +433,15 @@ function statuserfilter()
     if ($group_filter != STATFILTER_ALL_GROUP) {
         $group_all_members = $aclManager->getGroupAllUser($group_filter);
     }
+
+    //apply sub admin filters, if needed
+    if (!$view_all_perm && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == '/framework/level/admin') {
+        //filter users
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.preference.php');
+        $ctrlManager = new ControllerPreference();
+        $user_filter['ctrl_users']  = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
+    }
+
     $students = getSubscribedInfo(
         (int)$idCourse,
         false,
@@ -447,30 +456,18 @@ function statuserfilter()
         ($date_filter != STATFILTER_ALL_EDITION ? $date_filter : false)
     );
 
-    $query = 'SELECT COUNT(*)'
+    $query = 'SELECT COUNT(*) as total_count'
         . ' FROM %lms_courseuser AS cu'
         . ($user_filter !== '' ? ' JOIN ' . $GLOBALS['prefix_fw'] . '_user AS u ON u.idst = cu.idUser' : '')
         . ' WHERE cu.idCourse = ' . (int)$idCourse
         . ($status_filter != STATFILTER_ALL_STATUS ? " AND cu.status = '" . $status_filter . "'" : '')
-        . ($user_filter !== '' ? " AND (u.firstname LIKE '%" . $user_filter . "%' OR u.lastname LIKE '%" . $user_filter . "%' OR u.userid LIKE '%" . $user_filter . "%')" : '')
+        . ($user_filter['search'] !== '' ? " AND (u.firstname LIKE '%" . $user_filter['search'] . "%' OR u.lastname LIKE '%" . $user_filter['search'] . "%' OR u.userid LIKE '%" . $user_filter['search'] . "%')" : '')
+        . (isset($user_filter['ctrl_users']) && $user_filter['ctrl_users'] != '' ? " AND u.idst IN (".implode(',', $user_filter['ctrl_users']). ")": '')
         . ($group_all_members !== false ? ' AND c.idUser IN (' . implode(',', $group_all_members) . ')' : '');
+   $r = sql_fetch_assoc(sql_query($query));
+   $total_user = $r['total_count'];
 
-    [$total_user] = sql_fetch_row(sql_query($query));
 
-    //apply sub admin filters, if needed
-    if (!$view_all_perm && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == '/framework/level/admin') {
-        //filter users
-        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.preference.php');
-        $ctrlManager = new ControllerPreference();
-        $ctrl_users = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
-        foreach ($students as $idst => $user_course_info) {
-            if (!in_array($idst, $ctrl_users)) {
-                // Elimino gli studenti non amministrati
-                unset($students[$idst]);
-            }
-        }
-        $total_user = count($students);
-    }
 
     $content_h = [
         $lang->def('_USERNAME'),
@@ -487,19 +484,6 @@ function statuserfilter()
     $aclManager = \FormaLms\lib\Forma::getAclManager();;
     $acl = \FormaLms\lib\Forma::getAcl();
 
-    //apply sub admin filters, if needed
-    if ($view_all_perm && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == '/framework/level/admin') {
-        //filter users
-        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.preference.php');
-        $ctrlManager = new ControllerPreference();
-        $ctrl_users = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
-        foreach ($students as $idst => $user_course_info) {
-            if (!in_array($idst, $ctrl_users)) {
-                // Elimino gli studenti non amministrati
-                unset($students[$idst]);
-            }
-        }
-    }
 
     // search memebers of the selected group
 
@@ -750,7 +734,7 @@ function statitem()
 
     $group_filter = FormaLms\lib\Get::req('group_filter', DOTY_INT, -1);
     $status_filter = FormaLms\lib\Get::req('status_filter', DOTY_INT, -1);
-    $user_filter = FormaLms\lib\Get::req('user_filter', DOTY_MIXED, '');
+    $user_filter['search'] = FormaLms\lib\Get::req('user_filter', DOTY_MIXED, '');
     $editions_filter = 0;
 
 
@@ -767,6 +751,14 @@ function statitem()
     if ($group_filter != '-1') {
         $group_all_members = $aclManager->getGroupAllUser($group_filter);
     }
+    //apply sub admin filters, if needed
+    if ($view_all_perm && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == '/framework/level/admin') {
+        //filter users
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.preference.php');
+        $ctrlManager = new ControllerPreference();
+        $user_filter['ctrl_users'] = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
+    }
+
     $students = getSubscribedInfo(
         (int)$idCourse,
         false,
@@ -779,30 +771,17 @@ function statitem()
         $group_all_members,
         $limit);
 
-    $query = 'SELECT COUNT(*)'
+    $query = 'SELECT COUNT(*) as total_count'
         . ' FROM %lms_courseuser AS cu'
         . ($user_filter !== '' ? ' JOIN ' . $GLOBALS['prefix_fw'] . '_user AS u ON u.idst = cu.idUser' : '')
         . ' WHERE cu.idCourse = ' . (int)$idCourse
         . ($status_filter != -1 ? " AND cu.status = '" . $status_filter . "'" : '')
-        . ($user_filter !== '' ? " AND (u.firstname LIKE '%" . $user_filter . "%' OR u.lastname LIKE '%" . $user_filter . "%' OR u.userid LIKE '%" . $user_filter . "%')" : '')
+        . ($user_filter['search'] !== '' ? " AND (u.firstname LIKE '%" . $user_filter['search'] . "%' OR u.lastname LIKE '%" . $user_filter['search'] . "%' OR u.userid LIKE '%" . $user_filter['search'] . "%')" : '')
+        . (isset($user_filter['ctrl_users']) && $user_filter['ctrl_users'] != '' ? " AND u.idst IN (".implode(',', $user_filter['ctrl_users']). ")": '')
         . ($group_all_members !== false ? ' AND c.idUser IN (' . implode(',', $group_all_members) . ')' : '');
+    $r = sql_fetch_assoc(sql_query($query));
+    $total_user = $r['total_count'];
 
-    [$total_user] = sql_fetch_row(sql_query($query));
-
-    //apply sub admin filters, if needed
-    if ($view_all_perm && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == '/framework/level/admin') {
-        //filter users
-        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.preference.php');
-        $ctrlManager = new ControllerPreference();
-        $ctrl_users = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
-        foreach ($students as $idst => $user_course_info) {
-            if (!in_array($idst, $ctrl_users)) {
-                // Elimino gli studenti non amministrati
-                unset($students[$idst]);
-            }
-        }
-        $total_user = count($students);
-    }
 
     // get idst of the access in item
     $query = 'SELECT value FROM %lms_organization_access'
@@ -882,7 +861,7 @@ function statitem()
 
         $aclManager->setContext($std_content);
 
-        $out->add(Form::getTextField(Lang::t('_FULLNAME', 'standard'), 'user_filter', 'user_filter', 255, $user_filter));
+        $out->add(Form::getTextField(Lang::t('_FULLNAME', 'standard'), 'user_filter', 'user_filter', 255, $user_filter['search']));
 
         $out->add(Form::getDropdown(
             $lang->def('_GROUPS'),

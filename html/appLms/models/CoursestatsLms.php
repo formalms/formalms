@@ -122,10 +122,13 @@ class CoursestatsLms extends Model
                     }
                 }
             }
-
             $where = '';
             if (isset($pagination['search']) && $pagination['search'] != '') {
-                $where = " AND (u.userid LIKE '%" . $pagination['search'] . "%' OR u.firstname LIKE '%" . $pagination['search'] . "%' OR u.lastname LIKE '%" . $pagination['search'] . "%') ";
+                $where .= " AND (u.userid LIKE '%" . $pagination['search'] . "%' OR u.firstname LIKE '%" . $pagination['search'] . "%' OR u.lastname LIKE '%" . $pagination['search'] . "%') ";
+            }
+
+            if (isset($pagination['ctrl_user']) && $pagination['ctrl_user'] != '') {
+                $where .= ' AND cu.idUser IN (' . implode(',', $pagination['ctrl_user']). ')';
             }
         }
 
@@ -173,15 +176,19 @@ class CoursestatsLms extends Model
         $query = 'SELECT COUNT(*) '
             . ' FROM ' . $this->tables['courseuser'] . ' as cu '
             . ' JOIN ' . $this->tables['user'] . ' as u '
-            . ' ON (cu.idUser = u.idst AND cu.idCourse=' . (int)$id_course . ') ';
+            . ' ON (cu.idUser = u.idst AND cu.idCourse=' . (int)$id_course . ') WHERE 1=1 ';
 
         if ($filtered) {
-            $where = 'WHERE 1=1';
             if (isset($filter['search']) && $filter['search'] != '') {
                 $where = " AND (u.userid LIKE '%" . $filter['search'] . "%' OR u.firstname LIKE '%" . $filter['search'] . "%' OR u.lastname LIKE '%" . $filter['search'] . "%') ";
             }
             $query .= $where;
         }
+        //apply sub admin filters, if needed
+        if (isset($filter['ctrl_user']) && $filter['ctrl_user'] != '' ) {
+            $query .= ' AND cu.idUser IN (' . implode(',', $filter['ctrl_user']). ')';
+        }
+
 
         $res = $this->db->query($query);
         if ($res) {

@@ -232,6 +232,15 @@ class CoursestatsLmsController extends LmsController
             $pagination['search'] = null;
         }
 
+        if (!$view_all_perm && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == '/framework/level/admin') {
+            //filter users
+            require_once _base_ . '/lib/lib.preference.php';
+            $ctrlManager = new ControllerPreference();
+            $pagination['ctrl_user'] = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
+        }
+
+
+
         //get total from database and validate the results count
         $total = $this->model->getCourseStatsTotal($this->idCourse, $pagination, false);
         $total_filtered = $this->model->getCourseStatsTotal($this->idCourse, $pagination, true);
@@ -254,23 +263,6 @@ class CoursestatsLmsController extends LmsController
         //format models' data
         $records = [];
         $acl_man = \FormaLms\lib\Forma::getAclManager();
-
-        //apply sub admin filters, if needed
-        if (!$view_all_perm) {
-            //filter users
-            require_once _base_ . '/lib/lib.preference.php';
-            $ctrlManager = new ControllerPreference();
-            $ctrl_users = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
-            $idx = 0;
-            foreach ($list as $record) {
-                if (!in_array($record->idst, $ctrl_users)) {
-                    // Elimino gli studenti non amministrati
-                    unset($list[$idx]);
-                }
-                ++$idx;
-            }
-            $total = count($list);
-        }
 
         if (is_array($list)) {
             $lo_list = $this->model->getCourseLOs($this->idCourse);

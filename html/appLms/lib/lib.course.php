@@ -2501,9 +2501,14 @@ function getSubscribedInfo($idCourse, $subdived_for_level = false, $id_level = f
             $query_courseuser .= ' AND c.idUser IN (-1)';
         }
     }
-    if ($user_filter && $user_filter !== '') {
-        $query_courseuser .= " AND (u.firstname LIKE '%" . $user_filter . "%' OR u.lastname LIKE '%" . $user_filter . "%' OR u.userid LIKE '%" . $user_filter . "%')";
+    if (isset($user_filter['search']) && $user_filter['search'] != '') {
+        $query_courseuser .= " AND (u.firstname LIKE '%" . $user_filter['search'] . "%' OR u.lastname LIKE '%" . $user_filter['search'] . "%' OR u.userid LIKE '%" . $user_filter['search'] . "%')";
     }
+
+    if (isset($user_filter['ctrl_users']) && $user_filter['ctrl_users'] != '') {
+        $query_courseuser .= " AND u.idst IN (".implode(',', $user_filter['ctrl_users']). ")";
+    }
+
     if ($sort) {
         $query_courseuser .= ' ORDER BY u.lastname, u.firstname, u.userid';
     }

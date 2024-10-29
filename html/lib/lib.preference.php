@@ -1652,7 +1652,7 @@ class ControllerPreference extends AdminPreference
     {
         $ctrl_users = [];
         $admin_users = $this->getAdminUsers($id_controller);
-        $admin_users[] = $id_controller;
+        $admin_users[] = (int) $id_controller;
         $ctrl_users = array_unique($admin_users);
 
         return $ctrl_users;
