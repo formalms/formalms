@@ -1094,6 +1094,8 @@ class FormaACLManager
 
             $query1 = 'DELETE FROM %lms_courseuser where idUser =' . $idst;
 
+            $this->removeAdminFromCoreTree($idst);
+
             $result = $this->_executeQuery($query1);
 
             // --- mod. 06-09-2010
@@ -3308,6 +3310,11 @@ class FormaACLManager
 
         return $this->_executeQuery($query);
     }
+
+    public function removeAdminFromCoreTree(int $idst) {
+
+        return (bool) $this->_executeQuery('DELETE FROM %adm_admin_tree where idstAdmin = '.$idst);
+    }
 } //END ACLManagaer class
 
 require_once _base_ . '/lib/lib.dataretriever.php';
@@ -3712,5 +3719,8 @@ class GroupMembersDataRetriever extends DataRetriever
 
         return $count;
     }
+
+
+   
 
 }

@@ -1313,6 +1313,14 @@ class UsermanagementAdm extends Model implements Accessible
                     }
                     //remove user to old group
                     $old_level = $this->getUserLevel($idst);
+
+                    //se il vecchio livello è admin o super admin e lo cambio a utente devo togliere 
+                    //tutti i riferimenti di admin nel core admin tree
+                    if($old_level != ADMIN_GROUP_USER && $level == ADMIN_GROUP_USER) {
+                        $acl_man->removeAdminFromCoreTree($idst);
+                    }
+
+
                     $old_group = $acl_man->getGroupST($old_level);
                     $acl_man->removeFromGroup($old_group, $idst);
 
