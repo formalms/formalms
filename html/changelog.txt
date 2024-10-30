@@ -6,10 +6,11 @@ forma.lms 4.1.0
 ---------------------------------------------------------------------------------------
 Release date: 2024 october
 
+- #     - The menu by which a org chart node is selected for importing user does not show nodes with level > 2
+- #     - Entering each Course Statistic as platform admin with assigned users I cannot see my users in case role > student
+- #     - fix registerUser function call.after signature remove
 - #     - resolve migration
-- #     - fix migration name
 - #     - features: remove some modules
-- #     - delete migration
 - #     - Adding image to course path fixed
 - #     - Rename migration and rename procedure
 - #     - configuration setting to switch from scorm player standard (aka legacy) to new player (ng = next generation)
@@ -20,7 +21,8 @@ Release date: 2024 october
 - #     - Missing  curly bracket screws up the whole file
 - #     - fix helper tool drop_field_if_exists error
 - #     - add getCategories API
-- #     - add idsts variable for multiple users in user/userdetails - add idsts variable for multiple users in user/mycourses
+- #     - add idsts variable for multiple users in user/userdetails 
+- #     - add idsts variable for multiple users in user/mycourses
 - #     - implement API for multiple users
 - #     - Conversion to twig #1
 - #     - fixed bug data error in communication
@@ -37,12 +39,12 @@ Release date: 2024 october
 - #     - Fix bug iscrizione a percorso formativo
 - #     - Aggiunta scelta livello utente nei percosi formativi
 - #     - review # fixing unsubscribe procedure for learning course path
-- #     - fix migrations
 - #     - fixing some instructions that generates warning o notice in error_log
 - #     - fixed querys
 - #     - fixed course class call
 - #     - fixed search in coursepath
-- #     - Scorm player - fix bug parameters in question.js
+- #     - Scorm player 
+- #     - fix bug parameters in question.js
 - #     - Fix initialize query in scorm player
 - #     - Fix bug con aggiunta di nuove implementazioni
 - #     - Fix error in multi-Sco Scorm
@@ -66,10 +68,19 @@ Release date: 2024 october
 - #     - new user profile
 - #     - new front end user profile management
 - #     - new user profle management
-- #     - fix prerequistes in suspension LO with incomplete selfrequisite - fix migration privacy policy menu
+- #     - fix prerequistes in suspension LO with incomplete selfrequisite 
+- #     - fix migration privacy policy menu
 - #     - fix css
 - #     - frontend fix
 - #     - fix to course menu
+- #     - removing classes, libraries and tables of obsolete wiki, calendar, notepad and project modules
+- #     - migration creation to replace public_forum with forum in the core_role table
+- #     - management public_forum by forum
+- #     - remove ldap and news for dashboard block
+- #     - remove use label in all controllers and views
+- #     - remove functionality sms
+- #     - removed commented parts and variable names in camelCase
+- #     - remove label, news,competitions
 
 ---------------------------------------------------------------------------------------
 forma.lms 4.0.11
