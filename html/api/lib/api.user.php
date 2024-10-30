@@ -420,7 +420,7 @@ class User_API extends API
 
         // Recupera tutti i campi personalizzati in una singola query
         $field_man = new FieldList();
-        $all_field_data = $field_man->getFieldsAndValueFromMultipleUsers($id_user_list);
+        $all_field_data = $field_man->getFieldsAndValueFromMultipleUsers($id_user_list, true);
 
         $output = [];
         foreach ($id_user_list as $id_user) {
