@@ -532,25 +532,48 @@ class User_API extends API
     /**
      * Return the complete user list.
      */
-    private function getUsersList()
+    private function getUsersList($showCustomFields = false)
     {
+        require_once _adm_ . '/lib/lib.field.php';
         $output = [];
         $query = 'SELECT idst, userid, firstname, lastname FROM %adm_user WHERE idst<>' . $this->aclManager->getAnonymousId() . ' ORDER BY userid';
         $res = $this->db->query($query);
+        $field_man = new FieldList();
         if ($res) {
             $output['success'] = true;
             $output['users_list'] = [];
             foreach ($res as $row) {
-                $output['users_list'][] = [
-                    'userid' => $this->aclManager->relativeId($row['userid']),
-                    'idst' => $row['idst'],
-                    'firstname' => $row['firstname'],
-                    'lastname' => $row['lastname'],
+                $users[$row['idst']] = $row;
+            }
+
+            if ($showCustomFields) {
+                $allFieldData = $field_man->getFieldsAndValueFromMultipleUsers(array_keys($users), true);
+            }
+
+            foreach ($users as $user) {
+                $user_details = [
+                    'userid' => $this->aclManager->relativeId($user['userid']),
+                    'idst' => $user['idst'],
+                    'firstname' => $user['firstname'],
+                    'lastname' => $user['lastname'],
                 ];
+
+                $fields = [];
+                if (isset($allFieldData[$user['idst']])) {
+                    foreach ($allFieldData[$user['idst']] as $field_id => $value) {
+                        $fields[] = ['id' => $field_id, 'name' => $value[0], 'value' => $value[1]];
+                    }
+                }
+                $user_details['custom_fields'] = $fields;
+
+                $output['users_list'][] = $user_details;
             }
         } else {
             $output['success'] = false;
         }
+
+        // Recupera tutti i campi personalizzati in una singola query
+
 
         return $output;
     }
@@ -1257,7 +1280,9 @@ class User_API extends API
         switch ($name) {
             case 'listUsers':
             case 'userslist':
-                $list = $this->getUsersList();
+                $showCustomFields = (bool)$_POST['show_custom_fields'];
+
+                $list = $this->getUsersList($showCustomFields);
                 if ($list['success']) {
                     $output = ['success' => true, 'list' => $list['users_list']];
                 } else {
