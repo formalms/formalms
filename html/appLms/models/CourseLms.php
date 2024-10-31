@@ -283,6 +283,13 @@ class CourseLms extends Model
 
         $parsedData['courseBoxEnabled'] = false;
 
+        //se l'utente è superadmin sovrascrive quanto presente per vincoli di accesso al corso
+        $userLevel = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
+        if ($userLevel == ADMIN_GROUP_GODADMIN) {
+            $parsedData['canEnter'] = true;
+            $parsedData['subscribe_method'] = 2;
+        }
+
         return $parsedData;
     }
 
