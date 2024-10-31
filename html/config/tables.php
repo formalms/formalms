@@ -7,9 +7,15 @@ return [
             'title' => 'id_certificate',
             'sortable' => false,
             'visible' => false,
-            'searchable' => false],
+            'searchable' => false
+        ],
         ['data' => 'idAssociation', 'title' => 'idAssociation', 'sortable' => false, 'visible' => false, 'searchable' => false],
-        ['data' => 'on_date', 'title' => Lang::t('_DATE'), 'sortable' => true, 'visible' => true, 'searchable' => false,
+        [
+            'data' => 'on_date',
+            'title' => Lang::t('_DATE'),
+            'sortable' => true,
+            'visible' => true,
+            'searchable' => false,
             'render' => 'function(data){
                 if (data !=  "" && data != "0000/00/00") {
                     d = new Date(data);
@@ -20,14 +26,28 @@ return [
         ],
         ['data' => 'code', 'title' => Lang::t('_CODE'), 'sortable' => true, 'visible' => true, 'searchable' => false],
         ['data' => 'name', 'title' => Lang::t('_CERTIFICATE_NAME', 'course'), 'sortable' => true, 'visible' => true, 'searchable' => true],
-        ['data' => 'course_name', 'title' => Lang::t('_COURSES'), 'sortable' => true, 'visible' => true, 'searchable' => true,
+        [
+            'data' => 'course_name',
+            'title' => Lang::t('_COURSES'),
+            'sortable' => true,
+            'visible' => true,
+            'searchable' => true,
             'render' => 'function(data){return data.split("|").join("<br>");}'
         ],
-        ['data' => 'path_name', 'title' => Lang::t('_COURSEPATH'), 'sortable' => true, 'visible' => true, 'searchable' => true,
+        [
+            'data' => 'path_name',
+            'title' => Lang::t('_COURSEPATH'),
+            'sortable' => true,
+            'visible' => true,
+            'searchable' => true,
             'render' => 'function(data){return data.split("|").join("<br>");}'
         ],
-        ['data' => 'cert_file', 'title' => Lang::t('_TAKE_A_COPY', 'certificate'),
-            'sortable' => false, 'visible' => true, 'searchable' => false,
+        [
+            'data' => 'cert_file',
+            'title' => Lang::t('_TAKE_A_COPY', 'certificate'),
+            'sortable' => false,
+            'visible' => true,
+            'searchable' => false,
             'render' => 'function(data, type, row){
                 title = (data !== "" ? "' . Lang::t('_DOWNLOAD', 'certificate') . '" : "' . Lang::t('_GENERATE', 'certificate') . '");
                 return "<a id=\"pdf_download\" class=\"ico-wt-sprite subs_pdf\" href=\"?r=mycertificate/downloadMetaCert&"
@@ -37,7 +57,80 @@ return [
                     + title + "</a>";
             }'
         ]
+    ],
+    'certificate_users' => [
+        'columns' => [
+            [
+                "data" => 'id_user',
+                "title" => 'id_user',
+                "sortable" => false,
+                "visible" => false,
+                "searchable" => false,
+            ],
+            [
+                "data" => 'id_certificate',
+                "title" => 'id_certificate',
+                "sortable" => false,
+                "visible" => false,
+                "searchable" => false,
+            ],
+            [
+                "data" => 'edition',
+                "title" => Lang::t('_EDITION', 'standard'),
+                "sortable" => true,
+                "visible" =>  false,
+            ],
+            [
+                "data" => 'username',
+                "title" => Lang::t('_USERNAME', 'standard'),
+                "sortable" => true,
+                "searchable" => true,
+                "search_field" => 'text'
+            ],
+            [
+                "data" => 'lastname',
+                "title" => Lang::t('_LASTNAME', 'standard'),
+                "sortable" => true,
+            ],
+            [
+                "data" => 'firstname',
+                "title" => Lang::t('_NAME', 'standard'),
+                "sortable" => true,
+            ],
+            [
+                "data" => 'status',
+                "title" => Lang::t('_STATUS', 'standard'),
+                "sortable" => true,
+            ],
+            [
+                "data" => 'name_certificate',
+                "title" => Lang::t('_CERTIFICATE_REPORT', 'certificate'),
+                "sortable" => true
+            ],
+            [
+                "data" => 'date_complete',
+                "title" => Lang::t('_DATE_END', 'standard'),
+                "sortable" => true,
+                "type" => 'date-euro',
+            ], // TBD converting to local time
+            [
+                "data" => 'on_date',
+                "title" => Lang::t('_RELASE_DATE', 'certificate'),
+                "sortable" => true,
+                "type" => 'date-euro'
+            ], // TBD converting to local time
+            [
+                "data" => 'cell_down_gen',
+                "title" => \FormaLms\lib\Get::sprite('subs_pdf', Lang::t('_TITLE_VIEW_CERT', 'certificate')),
+                "sortable" => true,
+                "searchable" => false
+            ],
+            [
+                "data" => 'cell_del_cert',
+                "title" => \FormaLms\lib\Get::sprite('subs_del', Lang::t('_DEL', 'certificate')),
+                "sortable" => false,
+                "searchable" => false,
+            ]
+        ],
     ]
 ];
-
-?>

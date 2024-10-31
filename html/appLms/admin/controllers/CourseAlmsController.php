@@ -1564,9 +1564,67 @@ class CourseAlmsController extends AlmsController
             array_unshift($data_certificate[$key], '');
         }
 
+        Util::get_js('../appLms/admin/modules/certificate/certificate.js', true, true);
         $course_info = $this->model->getCourseModDetails($id_course);
+        switch ($from) {
+            case 'course':
+                $url = "index.php?r=alms/course/certificate&amp;id_course=" . $id_course;
+                break;
+            case 'manage':
+                $url = "index.php?modname=certificate&op=report_certificate&of_platform=lms&id_certificate=" . $id_certificate;
+                break;
+            default:
+                $url = "index.php?r=alms/course/show";
+        }
+
+        $columns = Util::config('tables.certificate_users.columns');
+
+        $hidden_fields_n = 6;
+        $hidden_fields_array = [];
+        if ($custom_fields && is_countable($custom_fields)) {
+            foreach ($custom_fields as $key => $value) {
+                ++$hidden_fields_n;
+                $hidden_fields_array[] = $hidden_fields_n;
+                //echo "{data:'cf_$key', title:'" . addslashes($value) . "', sortable:true, visible: false}," . PHP_EOL;
+            }
+        }
         $this->render(
             'list_certificate', [
+            'id_course' => $id_course,
+            'id_certificate' => $id_certificate,
+            'course_type' => $course_info['course_type'],
+            'course_name' => $course_info['name'],
+            'from' => $from,
+            'data_certificate' => $data_certificate,
+            'custom_fields' => $custom_field_array,
+            'op' => $op,
+            'url' => $url,
+            'columns' => $columns,
+        ]);
+    }
+
+    public function _list_certificate()
+    {
+        $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
+        $id_certificate = FormaLms\lib\Get::req('id_certificate', DOTY_INT, 0);
+        $from = FormaLms\lib\Get::req('from');
+        $op = FormaLms\lib\Get::req('op');
+
+        require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/lib.field.php');
+        $fman = new FieldList();
+        $custom_field_array = $fman->getFlatAllFields();
+
+        $data_certificate = $this->model->getListTototalUserCertificate($id_course, $id_certificate, $custom_field_array);
+        // pushing empty element at the top of array
+        foreach ($data_certificate as $key => $value) {
+            array_unshift($data_certificate[$key], '');
+        }
+
+     
+        $course_info = $this->model->getCourseModDetails($id_course);
+   
+        $this->render(
+            '_list_certificate', [
             'id_course' => $id_course,
             'id_certificate' => $id_certificate,
             'course_type' => $course_info['course_type'],

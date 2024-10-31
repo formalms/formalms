@@ -1,0 +1,315 @@
+<style>
+    thead input {
+        width: 100%;
+    }
+
+    .actionButtons {
+        float: left;
+        padding: 1%;
+        margin: 0 1%;
+    }
+
+    .custom {
+        background-color: yellow;
+    }
+</style>
+
+
+<script>
+
+var ajax_url="ajax.adm_server.php?plf=lms&mn=certificate"; 
+var _CLOSE="' . Lang::t('_CLOSE') . '"; 
+var _STOP="' . Lang::t('_STOP') . '"; 
+var glob_id_certificate = 0;
+var glob_id_course = ' . (int)$id_course . ';
+/*var single_list = [' . (isset($downloadables) && count($downloadables) ? '"' . implode('","', $downloadables) . '"' : '') . '];*/
+
+
+</script>
+
+{{ Get_title({
+    'index.php?r=alms/course/show' : Lang_translate('_CERTIFICATE_ASSIGN_STATUS', 'course'),
+    '':course_name
+}, false) }}
+
+<div class="actionsContainer">
+    <a id="print_selected_button_1" class="actionButtons" href="javascript:generate_all_certificate();">
+    {{ Get_img('course/certificate.png', Lang_translate('_GENERATE_ALL_SELECTED', 'certificate')) }}
+    {{ Lang_translate('_GENERATE_ALL_SELECTED', 'certificate') }}
+</a>
+<a id="download_selected_button_1" class="actionButtons" href="javascript:download_all_certificate();">
+ {{ Get_img('standard/download.png', Lang_translate('_DOWNLOAD_ALL_SELECTED', 'certificate')) }}
+    {{ Lang_translate('_DOWNLOAD_ALL_SELECTED', 'certificate') }}
+</a>
+<a id="delete_selected_button_1" class="actionButtons" href="javascript:delete_all_certificate();">
+ {{ Get_img('standard/delete.png', Lang_translate('_DELETE_ALL_SELECTED', 'certificate')) }}
+  {{ Lang_translate('_DELETE_ALL_SELECTED', 'certificate') }}
+</a>
+</div>
+
+
+<div class='container-back'>
+
+<a href="{{ url }}"> {{ Lang_translate('_BACK', 'standard') }} </a>
+
+
+<input type='hidden' id='show_search' value='false'>
+<input type='hidden' id='sel_all' value='false'>
+
+<div class='std_block' style="width:95%; margin:auto; display:block">
+    <table id='table_certificate' data-id_course=" {{ id_course }}"
+        data-id_certificate=" {{ id_certificate }}" class='table table-striped table-bordered'
+        style='width:100%'></table>
+    <script type="text/javascript">
+        $.extend(jQuery.fn.dataTableExt.oSort, {
+            "date-euro-pre": function(a) {
+                var x;
+
+                if ($.trim(a) !== '') {
+                    var frDatea = $.trim(a).split(' ');
+                    var frTimea = (undefined != frDatea[1]) ? frDatea[1].split(':') : [00, 00, 00];
+                    var frDatea2 = frDatea[0].split('-');
+                    x = (frDatea2[2] + frDatea2[1] + frDatea2[0] + frTimea[0] + frTimea[1] + ((undefined != frTimea[2]) ? frTimea[2] : 0)) * 1;
+                } else {
+                    x = Infinity;
+                }
+
+                return x;
+            },
+
+            "date-euro-asc": function(a, b) {
+                return a - b;
+            },
+
+            "date-euro-desc": function(a, b) {
+                return b - a;
+            }
+        });
+
+        var columns = {{ columns | json_encode(constant('JSON_HEX_APOS')) | raw }};
+           
+        var id_course = $('#table_certificate').data('id_course');
+        let rel ='table_certificate';
+        let cert_table = new window.frontend.modules.FormaTable('#table_certificate', {
+            margin: '0 auto',
+            scrollX: true,
+            rowId: function(row) {
+                return row.id_user + '-' + row.id_certificate;
+            },
+            deferRender: true,
+            data: {{ data_certificate | json_encode(constant('JSON_HEX_APOS')) | raw }},
+            select: {
+                style: 'multi',
+                all: true
+            },
+            columns: columns,
+            pagingType: 'full_numbers',
+            language: {
+                'sInfo': '{{ Lang_translate("_FROM", "standard") }}  _START_  {{ Lang_translate("_TO", "standard") }} _END_ {{ Lang_translate("_OF", "standard") }}   _TOTAL_ {{ Lang_translate("_CERTIFICATE", "menu") }} {{ Lang_translate("_TOTAL", "standard") }}',
+                'infoEmpty': '',
+                'sEmptyTable': '{{ Lang_translate("_NO_CERTIFICATE_AVAILABLE", "certificate") }}'
+            },
+            dom: 'Bfrtip',
+            stateSave: true,
+            buttons: [{
+                    extend: 'colvis',
+                    text: '{{ Lang_translate("_CHANGEPOLICY", "profile") }}',
+                     className: 'btn btn-default',
+                        collectionLayout: 'dropdown-menu',
+                        columns: ':not(":first")',
+                }
+                /*,
+                {
+                    text: '{{ Lang_translate("_CHANGEPOLICY", "profile") }}',,
+                    className: 'btn btn-default',
+                    action: function(e, dt, node, config) {
+                        //DTable[rel].searchBar.init().show()
+
+                        if ($('.searchbar').length > 0) {
+                            $('.searchbar').each(function(e) {
+                                if ($(this).hasClass('hidden')) {
+                                    $(this).removeClass('hidden');
+                                } else {
+                                    $(this).addClass('hidden');
+                                }
+                            });
+                        }
+
+                    }
+                }
+                */
+
+            ]
+
+        });
+
+          // Setup - add a text input to each header cell
+          columns.forEach(function (item, i) {
+                    if (item.searchable === true) {
+
+                        var title = item.data;
+
+                        var table = cert_table.DataTable;
+
+                        var formatable = cert_table;
+
+                        var cell = $('#' + rel + '_wrapper .dataTables_scrollHeadInner .dataTable thead tr th:nth-child(' + (i - 1) + ')')
+
+                        var searchInput = $('#' + rel + 'Content_filter');
+
+                        var search = $.fn.dataTable.util.throttle(
+                            function (val) {
+                                table.column(i + 1).search(val).draw();
+                            },
+                            1000
+                        );
+
+                        cell.append(getInputSearchField(item.search_field));
+
+                        cell.find('input').add(searchInput.find('input')).on('keyup clear', function (e) {
+
+                            if (table.column(i + 1).search() !== this.value) {
+
+                                if (this.value == '') {
+                                    $('#' + rel + 'Content_wrapper .dataTables_scrollHeadInner .dataTable').attr('active_search', 0);
+                                    formatable.activeSearch = false;
+                                    $('#' + rel + 'Content_length select').val(formatable.pageLength);
+                                    $('#' + rel + 'Content_length').show();
+
+                                } else {
+                                    formatable.activeSearch = true;
+                                    $('#' + rel + 'Content_wrapper .dataTables_scrollHeadInner .dataTable').attr('active_search', 1);
+
+                                    $('#' + rel + 'Content_length').hide();
+                                    if (formatable._selection.all) {
+                                        $('.buttons-select-none').trigger('click');
+                                    }
+                                }
+                                table.settings()[0].jqXHR.abort();
+                                search(this.value);
+                                //table
+                                //    .column(i+1)
+                                //    .search(this.value)
+                                //    .draw();
+                            }
+
+                            table.columns.adjust();
+                        });
+                    }
+                });
+
+
+        $('#table_certificate').on('column-visibility.dt', function(e, settings, column, state) {
+            // if adding or remove fields, force redraw
+            cert_table.searchBar.redraw()
+        });
+
+        $('#table_certificate').on('draw.dt', function() {
+
+            initDialogHref.call({
+                elementsFilter: 'a[href*=del_report_certificate]',
+                title: '{{ Lang_translate("_CONFIRM_DELETION") }}',
+                okButton: '{{ Lang_translate("_YES", "standard") }}',
+                cancelButton: '{{ Lang_translate("_NO", "standard") }}',
+                composeBody: function(o) {
+                    if ((o.title).match(':')) return (o.title).replace(/:/, ':<b>') + '<b>'
+                    return o.title;
+                },
+                authentication: '{{ Util_getSignature() }}'
+            })
+            cert_table
+        });
+
+        function getInputSearchField(type, value = '') {
+            var returnString = '<br />';
+            var searchPlaceholder = '{{ Lang_translate("_SEARCH", "standard") }}';
+
+            switch (type) {
+                case 'date':
+
+                    break;
+
+                default:
+                    returnString = returnString + '<input type="text" class="form-control input-sm searchbar hidden" placeholder="' + searchPlaceholder + '" value="' + value + '" />';
+                    break;
+            }
+            return returnString;
+        }
+
+        function print_certificate(id_user, id_course, id_certificate) {
+            var posting = $.get(
+                'index.php', {
+                    modname: 'certificate',
+                    of_platform: 'lms',
+                    op: 'print_certificate',
+                    certificate_id: id_certificate,
+                    course_id: id_course,
+                    user_id: id_user
+                }
+            );
+            posting.done(function(responseText) {
+                location.reload();
+            });
+            posting.fail(function() {
+                alert("Error generating certificate: " + id_certificate + " - " + id_course + " - " + id_user);
+            })
+        }
+
+        function generate_all_certificate() {
+
+            if (cert_table.getFlatSelection().length == 0) return
+
+            $.each(cert_table.getFlatSelection(), function(index, value) {
+
+                var this_row = value.split("-");
+                push_arr_id_users(this_row[0]);
+                push_arr_id_certificates(this_row[1]);
+                push_arr_course_id(id_course);
+
+            });
+
+
+            set_signature('{{ Util_getSignature() }}');
+            send_print(null, {
+                scope: null,
+                type: "total"
+            });
+
+
+        }
+
+
+        function download_all_certificate() {
+
+            var newarray = [];
+            $.each(cert_table.getFlatSelection(), function(index, value) {
+                var this_row = value.split("-");
+                var id_user = this_row[0];
+                var id_certificate = this_row[1];
+                newarray.push(id_user + "-" + id_certificate + "-" + id_course);
+            });
+            var strRows = newarray.join();
+            if (strRows == "") return
+            document.location.href = 'index.php?modname=certificate&of_platform=lms&op=download_all&str_rows=' + strRows;
+        }
+
+        function delete_all_certificate() {
+
+            var newarray = [];
+            $.each(cert_table.getFlatSelection(), function(index, value) {
+                var id_certificate = this_row[1];
+                newarray.push(this_row[1]);
+            });
+            var strRows = newarray.join();
+            if (strRows == "") return
+
+            const modal = new window.frontend.modules.Modal('mail-test','#admcontainer');
+            var btnLabel = "{{Lang_translate('_TEST', 'mailconfig')}}";
+          
+            modal.Title = '{{Lang_translate("_TEST", "standard")}}';
+            modal.Open();
+
+        }
+       
+    </script>
+
