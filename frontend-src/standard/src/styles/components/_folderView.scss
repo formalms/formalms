@@ -7,6 +7,18 @@
   }
 }
 
+@mixin status-icon {
+  content: "";
+  width: 30px;
+  height: 30px;
+  display: block;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  top: 50%;
+  position: relative;
+  -webkit-mask-size: contain;
+}
+
 .folderView {
   padding: 16px;
 }
@@ -28,6 +40,12 @@
   .folderView__copyOverlay__content & {
     height: 48px;
   }
+
+  &:focus-within {
+    outline: 1px solid rgb(178, 206, 79)!important;
+    box-shadow: 0px 0px 0px 5px rgba(178, 206, 79,0.26);
+    border: inherit;
+  }
 }
 
 .folderView__el {
@@ -39,16 +57,14 @@
   pointer-events: none;
   padding: 8px 16px 8px 56px;
   overflow: visible;
-  background: {
-    repeat: no-repeat;
-    position: 16px center;
-    size: 24px auto;
-  };
+  background-repeat: no-repeat;
+  background-position: 16px center;
+  background-size: 24px auto;
+}
 
-  .folderView__copyOverlay__content & {
-    padding-left: 16px;
-    justify-content: center;
-  }
+.folderView__copyOverlay__content .folderView__el {
+  padding-left: 16px;
+  justify-content: center;
 }
 
 .folderView__label {
@@ -72,7 +88,7 @@
 }
 
 .fv-is-selected {
-  background-color: var(--color-1-100);
+  background-color: var(--color-grey);
   font-weight: bold;
 }
 
@@ -98,6 +114,7 @@
   .sortable-chosen & {
     opacity: 0;
   }
+
 }
 
 .folderView__visibleActions {
@@ -115,12 +132,14 @@
 
 .folderView__action,
 .folderView__button {
+  -webkit-mask-size: contain;
+  -webkit-mask-position-y: center;
   cursor: pointer;
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background-color: var(--color-1-100);
-  border: 1px solid #000;
+  background-color: transparent;
+  border: 1px solid var(--color-primary);
   margin: 0 4px;
   transition: all .2s ease-in-out;
   background: {
@@ -129,22 +148,68 @@
     size: 18px;
   };
 
-  &:hover {
-    background-color: #ff6c00;
-    border-color: #ff6c00;
+  a:hover {
+    background-color: var(--color-primary);
+    color: var(--color-primary-text);
+    border-color: var(--color-primary);
     transition: all .2s ease-in-out;
+  }
+
+  &:after {
+    content: '';
+    -webkit-mask-size: contain;
+    background: var(--color-primary);
+    width: 20px;
+    -webkit-mask-repeat: no-repeat;
+    height: 20px;
+    display: block;
+    margin: 12px 13px;
+  }
+}
+
+.folderView__action {
+    &:hover {
+      background-color: var(--color-primary);
+      border-color: var(--color-primary);
+      &:after {
+        background-color: var(--color-primary-text);
+      }
+    }
+}
+
+.folderView__button {
+  &:hover {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    &:after {
+      background-color: var(--color-primary-text);
+    }
+  }
+}
+
+input.folderView__action {
+  &:hover {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    &:after {
+      background-color: var(--color-primary-text);
+    }
   }
 }
 
 .folderView__status {
+  -webkit-mask-size: contain;
+  -webkit-mask-position-y: center;
   width: 48px;
   height: 48px;
+  border-radius: 50%;
+  background-color: rgba(0,0,0,0);
+  border: 1px solid var(--color-primary);
   margin: 0 4px;
-  background: {
-    repeat: no-repeat;
-    position: center;
-    size: 24px;
-  };
+  transition: all .2s ease-in-out;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 18px;
 }
 
 .folderView__buttons {
@@ -160,100 +225,127 @@
   }
 }
 
-.fv-is-play {
-  background-image: url('images/folderView/icon-eye.svg');
+.fv-is-play:after {
+  -webkit-mask-image: url('images/folderView/icon-eye.svg');
+  margin: 16px 13px
 }
 
-.fv-is-edit {
-  background-image: url('images/folderView/icon-edit.svg');
+.fv-is-edit:after {
+  -webkit-mask-image: url('images/folderView/icon-edit.svg');
+  margin: 13px 13px;
 }
 
-.fv-is-copy {
-  background-image: url('images/folderView/icon-copy.svg');
+.fv-is-copy:after {
+  -webkit-mask-image: url('images/folderView/icon-copy.svg');
 }
 
-.fv-is-properties {
-  background-image: url('images/folderView/icon-settings.svg');
+.fv-is-properties:after {
+  -webkit-mask-image: url('images/folderView/icon-settings.svg');
 }
 
-.fv-is-access {
-  background-image: url('images/folderView/icon-user.svg');
+.fv-is-access:after {
+  -webkit-mask-image: url('images/folderView/icon-user.svg');
 }
 
-.fv-is-categorize {
-  background-image: url('images/folderView/icon-categorize.svg');
+.fv-is-categorize:after {
+  -webkit-mask-image: url('images/folderView/icon-categorize.svg');
 }
 
-.fv-is-delete {
-  background-image: url('images/folderView/icon-delete.svg');
+/*
+a.fv-is-delete {
+    display: inline-block;
+    margin-left: -1px;
+    border: none;
+    margin: 0;
+}
+*/
+
+.fv-is-delete:after {
+  -webkit-mask-image: url('images/folderView/icon-delete.svg');
 }
 
-.fv-is-folder {
-  background-image: url('images/folderView/icon-folder.svg');
+.fv-is-folder:after {
+  -webkit-mask-image: url('images/folderView/icon-folder.svg');
 }
 
-.fv-is-faq {
-  background-image: url('images/folderView/icon-faq.svg');
+.fv-is-faq:after {
+  -webkit-mask-image: url('images/folderView/icon-faq.svg');
 }
 
-.fv-is-htmlpage {
-  background-image: url('images/folderView/icon-document.svg');
+.fv-is-htmlpage:after {
+  -webkit-mask-image: url('images/folderView/icon-document.svg');
 }
 
-.fv-is-link {
-  background-image: url('images/folderView/icon-link.svg');
+.fv-is-link:after {
+  -webkit-mask-image: url('images/folderView/icon-link.svg');
 }
 
-.fv-is-attachment {
-  background-image: url('images/folderView/icon-attachment.svg');
+.fv-is-attachment:after {
+  -webkit-mask-image: url('images/folderView/icon-attachment.svg');
 }
 
-.fv-is-test {
-  background-image: url('images/folderView/icon-test.svg');
+.fv-is-test:after {
+  -webkit-mask-image: url('images/folderView/icon-test.svg');
 }
 
-.fv-is-item {
-  background-image: url('images/folderView/icon-item.svg');
+.fv-is-item:after {
+  -webkit-mask-image: url('images/folderView/icon-item.svg');
 }
 
-.fv-is-glossary {
-  background-image: url('images/folderView/icon-glossary.svg');
+.fv-is-glossary:after {
+  -webkit-mask-image: url('images/folderView/icon-glossary.svg');
 }
 
-.fv-is-poll {
-  background-image: url('images/folderView/icon-survey.svg');
+.fv-is-poll:after {
+  -webkit-mask-image: url('images/folderView/icon-survey.svg');
 }
 
-.fv-is-menu-open {
-  background-image: url('images/folderView/icon-horizontal-dots.svg');
+.fv-is-menu-open:after {
+  -webkit-mask-image: url('images/folderView/icon-horizontal-dots.svg');
 }
 
-.fv-is-menu-close {
-  background-image: url('images/folderView/icon-vertical-dots.svg');
+.fv-is-menu-close:after {
+  -webkit-mask-image: url('images/folderView/icon-vertical-dots.svg');
 }
 
-.fv-is-scormorg {
-  background-image: url('images/folderView/icon-scorm.svg');
+.fv-is-scormorg:after {
+  -webkit-mask-image: url('images/folderView/icon-scorm.svg');
 }
 
 .fv-is-attempted,
 .fv-is-incomplete,
 .fv-is-not-attempted,
-.fv-is-ab-initio {
-  background-image: url('images/folderView/icon-attempted.svg');
-}
-
-.fv-is-completed,
+.fv-is-ab-initio,
+.fv-is-completed, 
+.fv-is-failed,
 .fv-is-passed {
-  background-image: url('images/folderView/icon-completed.svg');
+  border: none;
 }
 
-.fv-is-failed {
-  background-image: url('images/folderView/icon-failed.svg');
+.fv-is-attempted:after,
+.fv-is-incomplete:after,
+.fv-is-ab-initio:after {
+  -webkit-mask-image: url("#{$assets}images/folderView/icon-completed.svg");
+  @include status-icon;
+  background-color: var(--color-warning);
 }
 
-.fv-is-tracking {
-  background-image: url('images/folderView/icon-chart.svg');
+.fv-is-failed:after {
+  @include status-icon;
+  background-color: var(--color-error);
+  -webkit-mask-image: url("#{$assets}images/folderView/icon-delete.svg");
+}
+
+
+.fv-is-completed:after,
+.fv-is-passed:after {
+  @include status-icon;
+  background-color: var(--color-success);
+  -webkit-mask-image: url("#{$assets}images/folderView/icon-completed.svg");
+}
+
+.fv-is-tracking:after {
+  -webkit-mask-image: url('images/folderView/icon-chart.svg');
 }
 
 .folderView__copyOverlay {
@@ -344,4 +436,54 @@
   right: 0;
   width: 500px;
   height: 64px;
+}
+
+
+.bg-fv-is-access {
+  background-image: url('images/folderView/icon-user.svg');
+}
+
+.bg-fv-is-categorize {
+  background-image: url('images/folderView/icon-categorize.svg');
+}
+
+
+.bg-fv-is-folder {
+  background-image: url('images/folderView/icon-folder.svg');
+}
+
+.bg-fv-is-faq {
+  background-image: url('images/folderView/icon-faq.svg');
+}
+
+.bg-fv-is-htmlpage {
+  background-image: url('images/folderView/icon-document.svg');
+}
+
+.bg-fv-is-link {
+  background-image: url('images/folderView/icon-link.svg');
+}
+
+.bg-fv-is-attachment {
+  background-image: url('images/folderView/icon-attachment.svg');
+}
+
+.bg-fv-is-test {
+  background-image: url('images/folderView/icon-test.svg');
+}
+
+.bg-fv-is-item {
+  background-image: url('images/folderView/icon-item.svg');
+}
+
+.bg-fv-is-glossary {
+  background-image: url('images/folderView/icon-glossary.svg');
+}
+
+.bg-fv-is-poll {
+  background-image: url('images/folderView/icon-survey.svg');
+}
+
+.bg-fv-is-scormorg {
+  background-image: url('images/folderView/icon-scorm.svg');
 }

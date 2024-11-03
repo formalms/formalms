@@ -47,8 +47,8 @@ class Learning_Object
         $this->idAuthor = '';
         $this->title = '';
 
-        $this->db = DbConn::getInstance();
-        $this->aclManager = Docebo::user()->getAclManager();
+        $this->db = \FormaLms\db\DbConn::getInstance();
+        $this->aclManager = \FormaLms\lib\Forma::getAclManager();
         $this->table = '';
 
         $this->plugin_manager = new PluginManager('LearningObject');
@@ -59,7 +59,7 @@ class Learning_Object
     {
         $res = false;
 
-        $env = ($env ? $env : $this->environment);
+        $env = ($env ?: $this->environment);
         switch ($env) {
             case 'communication' :
                 return 0;
@@ -75,7 +75,7 @@ class Learning_Object
 
         if (!empty($qtxt)) {
             $re = $this->db->query($qtxt);
-            list($id_param) = $this->db->fetch_row($re);
+            [$id_param] = $this->db->fetch_row($re);
             $res = $id_param;
         }
 
@@ -177,7 +177,7 @@ class Learning_Object
      * function getParamInfo()
      * return array of require params for play.
      *
-     * @return an example of associative array returned is:
+     * @return array|null example of associative array returned is:
      *            [0] => (
      *            ['label'] => _DEFINITION,
      *            ['param_name'] => parameter name;
@@ -217,7 +217,7 @@ class Learning_Object
      * @param int    $id_param contains the id needed for params retriving
      * @param string $back_url contain the back url
      *
-     * @return nothing return
+     * @return null return
      */
     public function play($id, $id_param, $back_url)
     {
@@ -263,7 +263,7 @@ class Learning_Object
     /**
      * function canBeMilestone().
      *
-     * @return true if this object can be a milestone
+     * @return bool if this object can be a milestone
      *              FALSE otherwise
      */
     public function canBeMilestone()

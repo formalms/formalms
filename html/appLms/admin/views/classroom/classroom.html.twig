@@ -31,7 +31,7 @@
         {{ Form_getHidden('id_date','id_date',idDate) }}
         {{ Form_getTextfield( Lang_translate('_CODE', 'course') , 'code', 'code', 255, postData.code ) }}
         {{ Form_getTextfield(Lang_translate('_NAME', 'course') , 'name', 'name', 255, postData.name ) }}
-        {{ Form_getTextarea(Lang_translate('_DESCRIPTION', 'course'), 'description', 'description', postData.description|escape) }}
+        {{ Form_getTextarea(Lang_translate('_DESCRIPTION', 'course'), 'description', 'description', postData.description|raw) }}
         {{ Form_getTextfield( Lang_translate('_MEDIUM_TIME', 'course'), 'mediumTime', 'mediumTime', 255, postData.mediumTime) }}
         {{ Form_getTextfield( Lang_translate('_MAX_NUM_SUBSCRIBE', 'course') , 'maxNumSubscribes', 'max_par', 255, postData.maxNumSubscribes) }}
         {{ Form_getTextfield( Lang_translate('_COURSE_PRIZE', 'course'), 'price', 'price', 255, postData.price) }}
@@ -64,31 +64,3 @@
     </div>
 
 </div>
-<script src="/addons/jquery/dirtyforms/jquery.dirtyforms.min.js" type="text/javascript"></script>
-<script type="text/javascript">
-    window.onload = function() {
-        $("form#date").dirtyForms();
-        var submitted_undo = false;
-
-        $(window).on('beforeunload', function (event) {
-            if ($("form#date").dirtyForms("isDirty")) {
-                if (submitted_undo) {
-                    event.stopPropagation();
-                    event.preventDefault();
-
-                    event.returnValue = true;
-                    return true;
-                }
-            }
-        });
-
-        $("form#date").on("submit", function(event) {
-            var submitter_btn = $(event.originalEvent.submitter);
-            submitted_undo = false;
-
-            if (submitter_btn.attr("name") == "undo") {
-                submitted_undo = true;
-            }
-        });
-    };
-</script>

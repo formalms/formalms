@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once __DIR__ . '/lib.connector.php';
+require_once dirname(__FILE__) . '/lib.connector.php';
 
 /**
  * class for define csv connection to data source.
@@ -22,7 +22,7 @@ require_once __DIR__ . '/lib.connector.php';
  *
  * @author        Emanuele Sandri <emanuele (@) docebo (.) com>
  **/
-class DoceboConnectorCsv extends DoceboConnector
+class FormaConnectorCsv extends FormaConnector
 {
     public $curr_file = '';
     public $filename = '';
@@ -46,7 +46,7 @@ class DoceboConnectorCsv extends DoceboConnector
      *                      - 'first_row_header' => bool TRUE if first row is header (Optional, default = TRUE )
      *                      - 'separator' => string a char with the fields separator (Optional, default = ,)
      **/
-    public function DoceboConnectorCsv($params)
+    public function __construct($params)
     {
         $this->set_config($params);
     }
@@ -94,7 +94,7 @@ class DoceboConnectorCsv extends DoceboConnector
 
     public function get_configUI()
     {
-        return new DoceboConnectorCsvUI($this);
+        return new FormaConnectorCsvUI($this);
     }
 
     /**
@@ -106,14 +106,14 @@ class DoceboConnectorCsv extends DoceboConnector
 
         /* search for file with pattern */
         $pat = str_replace(['*', '?'], ['.*', '.{1}'], $this->filename);
-        $arr_files = preg_ls(DOCEBOIMPORT_BASEDIR . $this->subpattern, false, '/' . $pat . '/');
+        $arr_files = preg_ls(FORMAIMPORT_BASEDIR . $this->subpattern, false, '/' . $pat . '/');
         if (count($arr_files) == 0 && !$this->is_writeonly()) {
-            //$this->last_error = 'file not found: '.DOCEBOIMPORT_BASEDIR.$this->filename;
-            return DOCEBO_IMPORT_NOTHINGTOPROCESS;
+            //$this->last_error = 'file not found: '.FORMAIMPORT_BASEDIR.$this->filename;
+            return FORMA_IMPORT_NOTHINGTOPROCESS;
         } elseif (!$this->is_writeonly()) {
             $this->curr_file = $arr_files[0];
         } else {
-            $this->curr_file = DOCEBOIMPORT_BASEDIR . $this->subpattern . $pat;
+            $this->curr_file = FORMAIMPORT_BASEDIR . $this->subpattern . $pat;
         }
         /* open file */
         if ($this->is_readonly()) {
@@ -161,15 +161,15 @@ class DoceboConnectorCsv extends DoceboConnector
                 return false;
             }
             if ($this->is_writeonly()) {
-                rename($this->curr_file, DOCEBOIMPORT_BASEDIR . basename($this->curr_file));
+                rename($this->curr_file, FORMAIMPORT_BASEDIR . basename($this->curr_file));
             } else {
                 $currentDate = new DateTime();
-                if (file_exists(DOCEBOIMPORT_BASEDIR . 'processed_' . $currentDate->format('Y-m-d_H:i:s') . '_' . basename($this->curr_file))) {
+                if (file_exists(FORMAIMPORT_BASEDIR . 'processed_' . $currentDate->format('Y-m-d_H:i:s') . '_' . basename($this->curr_file))) {
                     require_once _base_ . '/lib/lib.upload.php';
-                    sl_unlink(DOCEBOIMPORT_BASEDIR . 'processed' . $currentDate->format('Y-m-d_H:i:s') . '_' . basename($this->curr_file));
-                    rename($this->curr_file, DOCEBOIMPORT_BASEDIR . 'processed' . $currentDate->format('Y-m-d_H:i:s') . '_' . basename($this->curr_file));
+                    sl_unlink(FORMAIMPORT_BASEDIR . 'processed' . $currentDate->format('Y-m-d_H:i:s') . '_' . basename($this->curr_file));
+                    rename($this->curr_file, FORMAIMPORT_BASEDIR . 'processed' . $currentDate->format('Y-m-d_H:i:s') . '_' . basename($this->curr_file));
                 } else {
-                    rename($this->curr_file, DOCEBOIMPORT_BASEDIR . 'processed_' . $currentDate->format('Y-m-d_H:i:s') . '_' . basename($this->curr_file));
+                    rename($this->curr_file, FORMAIMPORT_BASEDIR . 'processed_' . $currentDate->format('Y-m-d_H:i:s') . '_' . basename($this->curr_file));
                 }
             }
         }
@@ -226,10 +226,10 @@ class DoceboConnectorCsv extends DoceboConnector
     public function get_cols_descripor()
     {
         foreach ($this->cols_descriptor as $colname) {
-            $arr_cols[] = [DOCEBOIMPORT_COLNAME => $colname,
-                DOCEBOIMPORT_COLMANDATORY => false,
-                DOCEBOIMPORT_DATATYPE => 'text',
-                DOCEBOIMPORT_DEFAULT => '',
+            $arr_cols[] = [FORMAIMPORT_COLNAME => $colname,
+                FORMAIMPORT_COLMANDATORY => false,
+                FORMAIMPORT_DATATYPE => 'text',
+                FORMAIMPORT_DEFAULT => '',
             ];
         }
 
@@ -292,7 +292,7 @@ class DoceboConnectorCsv extends DoceboConnector
         return 0;
     }
 
-    public function add_row($row)
+    public function add_row($row, $pk = null)
     {
         $arr_out = array_flip($this->cols_descriptor);
         foreach ($arr_out as $colname => $val) {
@@ -338,7 +338,7 @@ class DoceboConnectorCsv extends DoceboConnector
  *
  * @version    1.0
  **/
-class DoceboConnectorCsvUI extends DoceboConnectorUI
+class FormaConnectorCsvUI extends FormaConnectorUI
 {
     public $connector = null;
     public $post_params = null;
@@ -348,7 +348,7 @@ class DoceboConnectorCsvUI extends DoceboConnectorUI
     public $step_next = '';
     public $step_prev = '';
 
-    public function DoceboConnectorCsvUI(&$connector)
+    public function __construct(&$connector)
     {
         $this->connector = $connector;
     }
@@ -469,7 +469,7 @@ class DoceboConnectorCsvUI extends DoceboConnectorUI
         return '';
     }
 
-    public function get_html()
+    public function get_html($get = null, $post = null)
     {
         $out = '';
         switch ($this->post_params['step']) {
@@ -591,7 +591,7 @@ class DoceboConnectorCsvUI extends DoceboConnectorUI
 
 function csv_factory()
 {
-    return new DoceboConnectorCsv([]);
+    return new FormaConnectorCsv([]);
 }
 
 function preg_ls($path = '.', $rec = false, $pat = '/.*/')

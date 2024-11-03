@@ -17,7 +17,7 @@ echo Form::openForm('mod_label_form', 'index.php?r=alms/label/mod&amp;id_common_
 	<ul class="yui-nav">
 		<?php
         foreach ($all_languages as $lang_code) {
-            echo '<li' . ($lang_code == getLanguage() ? ' class="selected"' : '') . '>'
+            echo '<li' . ($lang_code == Lang::get() ? ' class="selected"' : '') . '>'
                 . '<a href="#langs_tab_' . $lang_code . '"><em>' . $lang_code . '</em></a>'
                 . '</li>';
         }

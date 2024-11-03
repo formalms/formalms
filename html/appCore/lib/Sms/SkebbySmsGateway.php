@@ -11,8 +11,8 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-require_once Forma::inc(_adm_ . '/lib/Sms/SmsGatewayInterface.php');
-require_once Forma::inc(_adm_ . '/lib/Sms/SmsGatewayException.php');
+require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/Sms/SmsGatewayInterface.php');
+require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/Sms/SmsGatewayException.php');
 
 class SkebbySmsGateway implements SmsGatewayInterface
 {
@@ -191,30 +191,30 @@ class SkebbySmsGateway implements SmsGatewayInterface
 
     protected function skebbyGatewaySendSMS($username, $password, $recipients, $text, $sms_type = SMS_TYPE_CLASSIC, $sender_number = '', $sender_string = '', $user_reference = '', $charset = '', $optional_headers = null)
     {
-        $url = 'https://gateway.skebby.it/api/send/smseasy/advanced/http.php';
+        $url = 'http://gateway.skebby.it/api/send/smseasy/advanced/http.php';
 
         if (!is_array($recipients)) {
             $recipients = [$recipients];
         }
 
         switch ($sms_type) {
-            case SMS_TYPE_CLASSIC:
+            case self::SMS_TYPE_CLASSIC:
             default:
                 $method = 'send_sms_classic';
                 break;
-            case SMS_TYPE_CLASSIC_PLUS:
+            case self::SMS_TYPE_CLASSIC_PLUS:
                 $method = 'send_sms_classic_report';
                 break;
-            case SMS_TYPE_BASIC:
+            case self::SMS_TYPE_BASIC:
                 $method = 'send_sms_basic';
                 break;
-            case SMS_TYPE_TEST_CLASSIC:
+            case self::SMS_TYPE_TEST_CLASSIC:
                 $method = 'test_send_sms_classic';
                 break;
-            case SMS_TYPE_TEST_CLASSIC_PLUS:
+            case self::SMS_TYPE_TEST_CLASSIC_PLUS:
                 $method = 'test_send_sms_classic_report';
                 break;
-            case SMS_TYPE_TEST_BASIC:
+            case self::SMS_TYPE_TEST_BASIC:
                 $method = 'test_send_sms_basic';
                 break;
         }

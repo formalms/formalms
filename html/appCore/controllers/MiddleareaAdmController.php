@@ -20,7 +20,7 @@ class MiddleareaAdmController extends AdmController
 
     public function __construct()
     {
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         $this->table = 'learning_middlearea';
     }
 

@@ -11,7 +11,7 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-include_once Forma::inc(_lms_ . '/modules/scorm/scorm_utils.php');
+include_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/scorm_utils.php');
 
 /**
  * @class CPManager
@@ -30,6 +30,7 @@ class CPManager
     public $defaultOrg;
     public $orgElems;
     public $resElems;
+    public DDomDocument $dom;
 
     public function Open($path)
     {
@@ -50,7 +51,7 @@ class CPManager
 
         if (strpos($filename, 'http') === 0) {
             // Remote manifest
-            require_once Forma::inc(_lib_ . '/lib.fsock_wrapper.php');
+            require_once \FormaLms\lib\Forma::inc(_lib_ . '/lib.fsock_wrapper.php');
             $fsock = new FSock();
             $contents = $fsock->send_request($filename, '80', '');
             if (!$contents) {
@@ -448,11 +449,9 @@ class CPManager
     {
         $nextElem = $elem->getFirstChild();
         $node = null;
-
-        if ($GLOBALS['xmlv'] != XMLV4 && $prefix != '') {
+        if ($prefix != '') {
             $tagname = $prefix . ':' . $tagname;
         }
-
         while ($nextElem) {
             if (($nextElem->getNodeType() == XML_ELEMENT_NODE)) { // only node elements
                 if ($tagname != '') {
@@ -489,8 +488,7 @@ class CPManager
     {
         $nextElem = $elem->getFirstChild();
         $node = null;
-
-        if ($GLOBALS['xmlv'] != XMLV4 && $prefix != '') {
+        if ($prefix != '') {
             $tagname = $prefix . ':' . $tagname;
         }
 

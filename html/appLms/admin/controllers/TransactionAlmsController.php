@@ -17,13 +17,15 @@ class TransactionAlmsController extends AlmsController
 {
     protected $acl_man;
     protected $permissions;
+    public TransactionAlms $model;
+    public Services_JSON $json;
 
     public function init()
     {
         parent::init();
         require_once _base_ . '/lib/lib.json.php';
         $this->json = new Services_JSON();
-        $this->acl_man = &Docebo::user()->getAclManager();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();
         $this->model = new TransactionAlms();
         $this->permissions = [
             'view' => checkPerm('view', true, 'transaction', 'lms'),

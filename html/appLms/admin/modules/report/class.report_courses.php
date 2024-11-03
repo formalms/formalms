@@ -13,9 +13,9 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once Forma::include(_lms_ . '/lib/', 'lib.course.php');
+require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 require_once __DIR__ . '/class.report.php';
-require_once Forma::include(_lms_ . '/lib/', 'lib.date.php');
+require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
 
 define('_RCS_CATEGORY_USERS', 'users');
 define('_RCS_CATEGORY_LO', 'LO');
@@ -30,6 +30,8 @@ class Report_Courses extends Report
     public $status_u = [];
     public $status_c = [];
 
+    public $page_title;
+
     public function __construct($id_report, $report_name = false)
     {
         $this->Report_Courses();
@@ -38,12 +40,12 @@ class Report_Courses extends Report
 
     public function Report_Courses()
     {
-        $this->lang = &DoceboLanguage::createInstance('report', 'framework');
+        $this->lang = FormaLanguage::createInstance('report', 'framework');
 
         $this->usestandardtitle_rows = true;
         //$this->usestandardtitle_cols = false;
 
-        $lang = &DoceboLanguage::CreateInstance('course', 'lms');
+        $lang = FormaLanguage::CreateInstance('course', 'lms');
 
         $this->_set_columns_category(_RCS_CATEGORY_USERS, $this->lang->def('_RCS_CAT_USER'), 'get_user_filter', 'show_report_user', '_get_users_query', false);
         $this->_set_columns_category(_RCS_CATEGORY_DOC_VAL, $this->lang->def('_RCS_CAT_DOC_VAL'), 'get_doc_val_filter', 'show_report_doc_val', '_get_doc_val_query', false);
@@ -57,7 +59,7 @@ class Report_Courses extends Report
             CST_CANCELLED => $lang->def('_CST_CANCELLED'), //, 'course', 'lms')
         ];
 
-        $lang = &DoceboLanguage::CreateInstance('course', 'lms');
+        $lang = FormaLanguage::CreateInstance('course', 'lms');
         $this->status_u = [
             _CUS_CONFIRMED => $lang->def('_USER_STATUS_CONFIRMED'), //, 'subscribe', 'lms'),
 
@@ -87,10 +89,8 @@ class Report_Courses extends Report
         require_once _lms_ . '/lib/lib.course.php';
         require_once _lms_ . '/lib/lib.course_managment.php';
 
-        $lang = &DoceboLanguage::createInstance('report', 'framework');
+        $lang = FormaLanguage::createInstance('report', 'framework');
 
-        //$sel = new Course_Manager();
-        //$sel->setLink('index.php?modname=report&op=report_rows_filter');
 
         if (isset($_POST['undo_filter'])) {
             Util::jump_to($back_url);
@@ -129,7 +129,7 @@ class Report_Courses extends Report
         $box->title = $this->lang->def('_COURSES_SELECTION_TITLE');
         $box->description = false;
 
-        $boxlang = &DoceboLanguage::createInstance('report', 'framework');
+        $boxlang = FormaLanguage::createInstance('report', 'framework');
         $box->body .= '<div class="fc_filter_line filter_corr">';
         $box->body .= '<input id="all_courses" name="all_courses" type="radio" value="1" ' . ($reportTempData['rows_filter']['all_courses'] ? 'checked="checked"' : '') . ' />';
         $box->body .= ' <label for="all_courses">' . $boxlang->def('_ALL_COURSES') . '</label>';
@@ -184,7 +184,7 @@ class Report_Courses extends Report
         }
         //****
 
-        $lang = &DoceboLanguage::createInstance('report', 'framework');
+        $lang = FormaLanguage::createInstance('report', 'framework');
         $org_chart_subdivision = importVar('org_chart_subdivision', true, 0);
 
         //detect the step in which we are
@@ -303,7 +303,7 @@ class Report_Courses extends Report
 
                 cout($box->get() . Form::getBreakRow(), 'content');
 
-                $glang = &DoceboLanguage::createInstance('course', 'lms');
+                $glang = &FormaLanguage::createInstance('course', 'lms');
                 $show_classrooms_editions = $reportTempData['columns_filter']['show_classrooms_editions'];
                 cout('<script type="text/javascript">
 						function activateClassrooms() {
@@ -407,7 +407,7 @@ class Report_Courses extends Report
                 break;
 
             case _SUBSTEP_USERS:
-                //$aclManager = new DoceboACLManager();
+                //$aclManager = new FormaACLManager();
                 $user_select = new UserSelector();
                 $user_select->use_suspended = true;
 
@@ -452,7 +452,7 @@ class Report_Courses extends Report
                 //$user_select->show_orgchart_simple_selector = FALSE;
                 //$user_select->multi_choice = TRUE;
 
-                if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
+                if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                     $user_select->addFormInfo(
                         Form::getCheckbox($lang->def('_REPORT_FOR_ALL'), 'all_users', 'all_users', 1, ($reportTempData['columns_filter']['all_users'] ? 1 : 0)) .
                         Form::getBreakRow() .
@@ -488,8 +488,8 @@ class Report_Courses extends Report
         require_once _adm_ . '/class.module/class.directory.php';
         require_once _lms_ . '/lib/lib.course.php';
 
-        $lang = &DoceboLanguage::createInstance('report', 'framework');
-        $glang = &DoceboLanguage::createInstance('admin_course_managment', 'lms');
+        $lang = FormaLanguage::createInstance('report', 'framework');
+        $glang = FormaLanguage::createInstance('admin_course_managment', 'lms');
 
         $reportTempData = $this->session->get(_REPORT_SESSION);
         if (!isset($reportTempData['columns_filter'])) {
@@ -564,8 +564,8 @@ class Report_Courses extends Report
         require_once _adm_ . '/class.module/class.directory.php';
         require_once _lms_ . '/lib/lib.course.php';
 
-        $lang = &DoceboLanguage::createInstance('report', 'framework');
-        $glang = &DoceboLanguage::createInstance('admin_course_managment', 'lms');
+        $lang = FormaLanguage::createInstance('report', 'framework');
+        $glang = FormaLanguage::createInstance('admin_course_managment', 'lms');
 
         $reportTempData = $this->session->get(_REPORT_SESSION);
 
@@ -665,7 +665,7 @@ class Report_Courses extends Report
         checkPerm('view');
         $view_all_perm = checkPerm('view_all', true);
 
-        $lang = &DoceboLanguage::createInstance('report', 'framework');
+        $lang = &FormaLanguage::createInstance('report', 'framework');
 
         if ($report_data == null) {
             $reportTempData = $this->session->get(_REPORT_SESSION);
@@ -690,7 +690,7 @@ class Report_Courses extends Report
             $admin_allcourses = false;
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $course_selected = array_intersect($admin_courses['course'], $course_selected);
 
             $reportTempData['rows_filter']['selected_courses'] = $course_selected;
@@ -726,7 +726,7 @@ class Report_Courses extends Report
             //filter users
             require_once _base_ . '/lib/lib.preference.php';
             $ctrlManager = new ControllerPreference();
-            $ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
+            $ctrl_users = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
         }
 
         if (empty($question_id)) {
@@ -762,7 +762,7 @@ class Report_Courses extends Report
         checkPerm('view');
         $view_all_perm = checkPerm('view_all', true);
 
-        $lang = &DoceboLanguage::createInstance('report', 'framework');
+        $lang = &FormaLanguage::createInstance('report', 'framework');
 
         if ($report_data == null) {
             $reportTempData = $this->session->get(_REPORT_SESSION);
@@ -787,7 +787,7 @@ class Report_Courses extends Report
             $admin_allcourses = false;
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $course_selected = array_intersect($admin_courses['course'], $course_selected);
             $reportTempData['rows_filter']['selected_courses'] = $course_selected;
             $this->session->set(_REPORT_SESSION, $reportTempData);
@@ -819,7 +819,7 @@ class Report_Courses extends Report
             //filter users
             require_once _base_ . '/lib/lib.preference.php';
             $ctrlManager = new ControllerPreference();
-            $ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
+            $ctrl_users = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
         }
 
         if (empty($question_id)) {
@@ -873,11 +873,11 @@ class Report_Courses extends Report
 
         $show_suspended = (isset($reportTempData['columns_filter']['show_suspended']) ? (bool) $reportTempData['columns_filter']['show_suspended'] : false);
         $only_students = (isset($reportTempData['columns_filter']['only_students']) ? (bool) $reportTempData['columns_filter']['only_students'] : false);
-        $show_assessment = (isset($reportTempData['columns_filter']['show_assessment']) ? (bool) $reportTempData['columns_filter']['show_assessment'] : false);
 
         $show_classrooms_editions = (isset($reportTempData['columns_filter']['show_classrooms_editions']) ? (bool) $reportTempData['columns_filter']['show_classrooms_editions'] : false);
 
-        if ($time_range != 0) {
+ 
+        if ((int) $time_range != 0) {
             $start_time = date('Y-m-d H:i:s', time() - $time_range * 24 * 3600);
             $end_time = date('Y-m-d H:i:s');
         } else {
@@ -888,21 +888,21 @@ class Report_Courses extends Report
 
         $output = '';
 
-        $lang = &DoceboLanguage::createInstance('course', 'framework');
+        $lang = FormaLanguage::createInstance('course', 'framework');
 
         require_once _adm_ . '/lib/lib.directory.php';
         require_once _base_ . '/lib/lib.userselector.php';
 
-        $acl_man = new DoceboACLManager();
+        $acl_man = new FormaACLManager();
         $acl_man->include_suspended = true;
         $course_man = new Man_Course();
 
-        $user_level = Docebo::user()->getUserLevelId();
+        $user_level = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
 
         if ($alluser == 0) {
-            $user_selected = &$acl_man->getAllUsersFromSelection($reportTempData['columns_filter']['users']);
+            $user_selected = $acl_man->getAllUsersFromSelection($reportTempData['columns_filter']['users']);
         } else {
-            $user_selected = &$acl_man->getAllUsersIdst();
+            $user_selected = $acl_man->getAllUsersIdst();
         }
 
         //apply filters for sub-admins
@@ -911,13 +911,13 @@ class Report_Courses extends Report
             $alluser = 0;
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_users = $adminManager->getAdminUsers(Docebo::user()->getIdST());
+            $admin_users = $adminManager->getAdminUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $admin_users = $acl_man->getAllUsersFromSelection($admin_users);
             $user_selected = array_intersect($user_selected, $admin_users);
             unset($admin_users);
 
             //filter courses
-            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             if ($all_courses) {
                 $all_courses = false;
                 $rs = sql_query('SELECT idCourse FROM %lms_course');
@@ -933,7 +933,7 @@ class Report_Courses extends Report
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
+                $user_catalogue = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if (count($user_catalogue) > 0) {
                     $courses = [0];
 
@@ -993,9 +993,9 @@ class Report_Courses extends Report
             require_once _adm_ . '/lib/lib.orgchart.php';
             $org_man = new OrgChartManager();
             if ($alluser == 1) {
-                $user_level = Docebo::user()->getUserLevelId();
+                $user_level = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
 
-                if ($user_level != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
+                if ($user_level != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                     $elem_selected = $user_selected;
                 } else {
                     $elem_selected = $org_man->getAllGroupIdFolder();
@@ -1005,10 +1005,10 @@ class Report_Courses extends Report
             }
             $org_name = $org_man->getFolderFormIdst($elem_selected);
 
-            if ($user_level != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
+            if ($user_level != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+                $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
 
                 $org_name_temp = $org_name;
                 $org_name = [];
@@ -1034,7 +1034,6 @@ class Report_Courses extends Report
         if (!$show_classrooms_editions) {
             $q_courses = 'SELECT c.idCourse, c.code, c.name, c.description, c.course_type '
                 . ' FROM %lms_course As c '
-                . ($show_assessment ? '' : " WHERE c.course_type <> 'assessment' ")
                 . ' ORDER BY c.code, c.name';
             $r_courses = sql_query($q_courses);
             foreach ($r_courses as $courseData) {
@@ -1056,7 +1055,6 @@ class Report_Courses extends Report
         } else {
             $q_courses = 'SELECT c.idCourse, c.code, c.name, c.description, c.course_type, d.id_date '
                 . ' FROM %lms_course As c LEFT JOIN %lms_course_date AS d ON (c.idCourse = d.id_course) '
-                . ($show_assessment ? '' : " WHERE c.course_type <> 'assessment' ")
                 . ' ORDER BY c.code, c.name, d.code, d.name';
             $r_courses = sql_query($q_courses);
             foreach ($r_courses as $courseData) {
@@ -1116,10 +1114,10 @@ class Report_Courses extends Report
                     . ($all_courses ? '' : 'AND cu.idCourse IN (' . implode(',', $course_selected) . ') ')
                     . ($show_suspended ? '' : ' AND u.valid = 1 ')
                     . ($only_students ? ' AND cu.level = 3 ' : '');
-                if ($start_time != '' && $start_time != '0000-00-00') {
+                if ($start_time != '' && $start_time) {
                     $query_course_user .= " AND greatest(coalesce(cu.date_complete, 0), coalesce(cu.date_first_access, 0), coalesce(cu.date_inscr), 0) >= '" . $start_time . "' ";
                 }
-                if ($end_time != '' && $end_time != '0000-00-00') {
+                if ($end_time != '' && $end_time) {
                     $query_course_user .= " AND greatest(coalesce(cu.date_complete, 0), coalesce(cu.date_first_access, 0), coalesce(cu.date_inscr), 0) <= '" . $end_time . "'";
                 }
 
@@ -1172,10 +1170,10 @@ class Report_Courses extends Report
 						SELECT idCourse, SUM(UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime))
 						FROM %lms_tracksession
 						WHERE  idUser IN ( ' . implode(',', $effective_user) . ' )  ';
-                    if ($start_time != '' && $start_time != '0000-00-00') {
+                    if ($start_time != '' && $start_time) {
                         $query_time .= " AND enterTime >= '" . $start_time . "' ";
                     }
-                    if ($end_time != '' && $end_time != '0000-00-00') {
+                    if ($end_time != '' && $end_time) {
                         $query_time .= " AND enterTime <= '" . $end_time . "' ";
                     }
                     $query_time .= ' GROUP BY idCourse ';
@@ -1215,12 +1213,12 @@ class Report_Courses extends Report
                     $output .= '<div class="datasummary">'
                         . '<b>' . $lang->def('_FOLDER_NAME') . ' :</b> ' . $folder_name['name']
                         . ($folder_name['type_of_folder'] == ORG_CHART_WITH_DESCENDANTS ? ' (' . $lang->def('_WITH_DESCENDANTS') . ')' : '') . '<br />';
-                    if (($start_time != '' && $start_time != '0000-00-00') || ($end_time != '' && $end_time != '0000-00-00')) {
+                    if (($start_time != '' && $start_time) || ($end_time != '' && $end_time)) {
                         $output .= '<b>' . $lang->def('_TIME_BELT_2') . ' :</b> '
-                            . ($start_time != '' && $start_time != '0000-00-00'
+                            . ($start_time != '' && $start_time
                                 ? ' <b>' . $lang->def('_START_TIME') . ' </b>' . Format::date($start_time, 'date')
                                 : '')
-                            . ($end_time != '' && $end_time != '0000-00-00'
+                            . ($end_time != '' && $end_time
                                 ? ' <b>' . $lang->def('_TO') . ' </b>' . Format::date($end_time, 'date')
                                 : '')
                             . '<br />';
@@ -1233,10 +1231,10 @@ class Report_Courses extends Report
                         . ($all_courses ? '' : 'AND cu.idCourse IN (' . implode(',', $course_selected) . ') ')
                         . ($show_suspended ? '' : ' AND u.valid = 1 ')
                         . ($only_students ? ' AND cu.level = 3 ' : '');
-                    if ($start_time != '' && $start_time != '0000-00-00') {
+                    if ($start_time != '' && $start_time) {
                         $query_course_user .= " AND cu.date_complete >= '" . $start_time . "' ";
                     }
-                    if ($end_time != '' && $end_time != '0000-00-00') {
+                    if ($end_time != '' && $end_time) {
                         $query_course_user .= " AND cu.date_complete <= '" . $end_time . "'  AND cu.level='3'";
                     }
 
@@ -1284,10 +1282,10 @@ class Report_Courses extends Report
 						SELECT idCourse, SUM(UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime))
 						FROM %lms_tracksession
 						WHERE  idUser IN ( ' . implode(',', $group_user) . ' )  ';
-                        if ($start_time != '' && $start_time != '0000-00-00') {
+                        if ($start_time != '' && $start_time) {
                             $query_time .= " AND enterTime >= '" . $start_time . "' ";
                         }
-                        if ($end_time != '' && $end_time != '0000-00-00') {
+                        if ($end_time != '' && $end_time) {
                             $query_time .= " AND enterTime <= '" . $end_time . "' ";
                         }
                         $query_time .= ' GROUP BY idCourse ';
@@ -1333,10 +1331,10 @@ class Report_Courses extends Report
                     . ($all_courses ? '' : 'AND cu.idCourse IN (' . implode(',', $course_selected) . ')')
                     . ($show_suspended ? '' : ' AND u.valid = 1 ')
                     . ($only_students ? ' AND cu.level = 3 ' : '');
-                if ($start_time != '' && $start_time != '0000-00-00') {
+                if ($start_time != '' && $start_time) {
                     $query_course_user .= " AND cu.date_complete >= '" . $start_time . "' ";
                 }
-                if ($end_time != '' && $end_time != '0000-00-00') {
+                if ($end_time != '' && $end_time) {
                     $query_course_user .= " AND cu.date_complete <= '" . $end_time . "'";
                 }
 
@@ -1392,10 +1390,10 @@ class Report_Courses extends Report
                 if (!empty($effective_user)) {
                     $query_time = 'SELECT idCourse, SUM(UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)) '
                         . ' FROM %lms_tracksession WHERE  idUser IN ( ' . implode(',', $effective_user) . ' ) ';
-                    if ($start_time != '' && $start_time != '0000-00-00') {
+                    if ($start_time != '' && $start_time) {
                         $query_time .= " AND enterTime >= '" . $start_time . "' ";
                     }
-                    if ($end_time != '' && $end_time != '0000-00-00') {
+                    if ($end_time != '' && $end_time) {
                         $query_time .= " AND enterTime <= '" . $end_time . "' ";
                     }
                     $query_time .= ' GROUP BY idCourse ';
@@ -1433,12 +1431,12 @@ class Report_Courses extends Report
                     $output .= '<div class="datasummary">'
                         . '<b>' . $lang->def('_FOLDER_NAME') . ' :</b> ' . $folder_name['name']
                         . ($folder_name['type_of_folder'] == ORG_CHART_WITH_DESCENDANTS ? ' (' . $lang->def('_WITH_DESCENDANTS') . ')' : '') . '<br />';
-                    if (($start_time != '' && $start_time != '0000-00-00') || ($end_time != '' && $end_time != '0000-00-00')) {
+                    if (($start_time != '' && $start_time) || ($end_time != '' && $end_time)) {
                         $output .= '<b>' . $lang->def('_TIME_BELT_2') . ' :</b> '
-                            . ($start_time != '' && $start_time != '0000-00-00'
+                            . ($start_time != '' && $start_time
                                 ? ' <b>' . $lang->def('_START_TIME') . ' </b>' . Format::date($start_time, 'date')
                                 : '')
-                            . ($end_time != '' && $end_time != '0000-00-00'
+                            . ($end_time != '' && $end_time
                                 ? ' <b>' . $lang->def('_TO') . ' </b>' . Format::date($end_time, 'date')
                                 : '')
                             . '<br />';
@@ -1454,10 +1452,10 @@ class Report_Courses extends Report
                         . ($all_courses ? '' : 'AND cu.idCourse IN (' . implode(',', $course_selected) . ')')
                         . ($show_suspended ? '' : ' AND u.valid = 1 ')
                         . ($only_students ? ' AND cu.level = 3 ' : '');
-                    if ($start_time != '' && $start_time != '0000-00-00') {
+                    if ($start_time != '' && $start_time) {
                         $query_course_user .= " AND cu.date_complete >= '" . $start_time . "' ";
                     }
-                    if ($end_time != '' && $end_time != '0000-00-00') {
+                    if ($end_time != '' && $end_time) {
                         $query_course_user .= " AND cu.date_complete <= '" . $end_time . "'";
                     }
 
@@ -1510,10 +1508,10 @@ class Report_Courses extends Report
                     if (!empty($group_user)) {
                         $query_time = 'SELECT idCourse, SUM(UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)) '
                             . ' FROM %lms_tracksession WHERE  idUser IN ( ' . implode(',', $group_user) . ' ) ';
-                        if ($start_time != '' && $start_time != '0000-00-00') {
+                        if ($start_time != '' && $start_time) {
                             $query_time .= " AND enterTime >= '" . $start_time . "' ";
                         }
-                        if ($end_time != '' && $end_time != '0000-00-00') {
+                        if ($end_time != '' && $end_time) {
                             $query_time .= " AND enterTime <= '" . $end_time . "' ";
                         }
                         $query_time .= ' GROUP BY idCourse ';
@@ -1615,9 +1613,9 @@ class Report_Courses extends Report
 
         require_once _lms_ . '/lib/lib.course.php';
 
-        $lang = &DoceboLanguage::createInstance('course', 'lms');
-        $course_lang = &DoceboLanguage::createInstance('course', 'lms');
-        $rg_lang = &DoceboLanguage::createInstance('report', 'framework');
+        $lang = FormaLanguage::createInstance('course', 'lms');
+        $course_lang = FormaLanguage::createInstance('course', 'lms');
+        $rg_lang = FormaLanguage::createInstance('report', 'framework');
 
         $colspan_course = 0;
         if (in_array('_CODE_COURSE', $filter_cols)) {
@@ -1898,8 +1896,8 @@ class Report_Courses extends Report
         $buffer->closeHeader();
 
         $i = 0;
-        $tot_waiting = $tot_iscr = $tot_itinere = $tot_nobegin = $tot_comple = '';
-        $tot_perc_itinere = $tot_perc_nobegin = $tot_perc_comple = '';
+        $tot_waiting = $tot_iscr = $tot_itinere = $tot_nobegin = $tot_comple = 0;
+        $tot_perc_itinere = $tot_perc_nobegin = $tot_perc_comple = 0;
         $total_time = 0;
 
         $array_status = [CST_PREPARATION => $lang->def('_CST_PREPARATION', 'course', 'lms'),
@@ -1956,7 +1954,6 @@ class Report_Courses extends Report
 
         $course_man = new Man_Course();
         $buffer->openBody();
-
         foreach ($id_courses as $index => $course_info) {
             $idc = $id_date = 0;
             if ($show_classrooms_editions) {
@@ -1974,13 +1971,13 @@ class Report_Courses extends Report
             $code_c = $course_info['code'];
             $name_c = $course_info['name'];
 
-            $_date_create = $info_course['create_date'] != '0000-00-00 00:00:00' && $info_course['create_date'] != ''
+            $_date_create = $info_course['create_date'] && $info_course['create_date'] != ''
                 ? Format::date($info_course['create_date'], 'datetime')
                 : '';
-            $_date_begin = $info_course['date_begin'] != '0000-00-00 00:00:00' && $info_course['date_begin'] != ''
+            $_date_begin = $info_course['date_begin'] && $info_course['date_begin'] != ''
                 ? Format::date($info_course['date_begin'], 'date')
                 : '';
-            $_date_end = $info_course['date_end'] != '0000-00-00 00:00:00' && $info_course['date_end'] != ''
+            $_date_end = $info_course['date_end'] && $info_course['date_end'] != ''
                 ? Format::date($info_course['date_end'], 'date')
                 : '';
 
@@ -2000,7 +1997,7 @@ class Report_Courses extends Report
                 $course_label_id = $label_model->getCourseLabel($course_info['id_course']);
                 if ($course_label_id > 0) {
                     $arr_course_label = $label_model->getLabelInfo($course_label_id);
-                    $trow[] = $arr_course_label[getLanguage()][LABEL_TITLE];
+                    $trow[] = $arr_course_label [Lang::get()][LABEL_TITLE];
                 } else {
                     $trow[] = '';
                 }
@@ -2298,11 +2295,11 @@ class Report_Courses extends Report
     {
         $query = 'select count(*) as c from learning_courseuser where idCourse=' . $idCourse . ' and waiting=1';
 
-        $current_level = Docebo::user()->getUserLevelId();
+        $current_level = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         // get users of admin
         if ($current_level == ADMIN_GROUP_ADMIN) {
             require_once _base_ . '/lib/lib.aclmanager.php';
-            $acl_manager = $aclManager = Docebo::user()->getACLManager();
+            $acl_manager = $aclManager = \FormaLms\lib\Forma::getAclManager();;
             $idst_admin = $aclManager->getGroupST(ADMIN_GROUP_ADMIN);
             $users = $aclManager->getGroupUMembersNumber($idst_admin);
             $str_users = implode(',', $users);
@@ -2328,8 +2325,8 @@ class Report_Courses extends Report
 
         $output = '';
 
-        $lang = &DoceboLanguage::createInstance('report', 'framework');
-        $glang = &DoceboLanguage::createInstance('admin_course_managment', 'lms');
+        $lang = &FormaLanguage::createInstance('report', 'framework');
+        $glang = &FormaLanguage::createInstance('admin_course_managment', 'lms');
 
         $query = 'SELECT idCategory, path'
             . ' FROM %lms_category';
@@ -2459,8 +2456,8 @@ class Report_Courses extends Report
 
         $output = '';
 
-        $lang = &DoceboLanguage::createInstance('report', 'framework');
-        $glang = &DoceboLanguage::createInstance('admin_course_managment', 'lms');
+        $lang = &FormaLanguage::createInstance('report', 'framework');
+        $glang = &FormaLanguage::createInstance('admin_course_managment', 'lms');
 
         $query = 'SELECT idCategory, path'
             . ' FROM %lms_category';

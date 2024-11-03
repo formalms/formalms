@@ -134,7 +134,7 @@ class qformat_gift
 
     public function defaultquestion()
     {
-        require_once \Forma::inc(_lms_ . '/modules/question/class.question.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/class.question.php');
         $question = new QuestionRaw();
 
         return $question;
@@ -669,9 +669,11 @@ class qformat_gift
             $question->text = text_format_name( (int)$textformat );
             $question->text = "[$question->text]";
         }*/
+
+
         $qtext_format = '[' . $question->qtype . ']';
         // output depends on question type
-        switch ($question->qtype) {
+        switch (strtolower($question->qtype)) {
             case 'category' :
                 // not a real question, used to insert category switch
                 $expout .= "\$CATEGORY: $question->category\n";
@@ -751,14 +753,15 @@ class qformat_gift
                 $expout .= '::' . $this->repchar($question->prompt) . '::' . $qtext_format . $this->repchar($question->quest_text) . "{\n";
 
                 foreach ($question->answers as $answer) {
-                    if ($answer->score_correct == 1) {
-                        $answertext = '=';
-                    } elseif ($answer->score_correct == 0) {
-                        $answertext = '~';
-                    } else {
+                    if ($answer->is_correct == 1) {
+                        $answer_sign= '=';
                         $export_weight = $answer->score_correct * 100;
-                        $answertext = "~%$export_weight%";
+                    } else {
+                        $answer_sign = '~';
+                        $export_weight = $answer->score_penalty * -100;
                     }
+
+                    $answertext = "$answer_sign%$export_weight%";
                     $expout .= "\t" . $answertext . $this->repchar($answer->text);
                     if ($answer->comment != '') {
                         $expout .= '#' . $this->repchar($answer->comment);
@@ -774,7 +777,7 @@ class qformat_gift
                 }
                 $expout .= "}\n";
              break;
-            case NUMERICAL:
+            case 'numerical':
                 $expout .= '::' . $this->repchar($question->prompt) . '::' . $qtext_format . $this->repchar($question->quest_text) . "{#\n";
                 foreach ($question->options->answers as $answer) {
                     if ($answer->text != '') {
@@ -790,10 +793,10 @@ class qformat_gift
                 }
                 $expout .= "}\n";
                 break;
-            case DESCRIPTION:
+            case 'description':
                 $expout .= "// DESCRIPTION type is not supported\n";
                 break;
-            case MULTIANSWER:
+            case 'multianswer':
                 $expout .= "// CLOZE type is not supported\n";
                 break;
             default:

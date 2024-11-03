@@ -16,9 +16,13 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 /**
  * @version  $Id:$
  */
-class DoceboCalEvent_lms_classroom extends DoceboCalEvent_core
+class FormaCalEvent_lms_classroom extends FormaCalEvent_core
 {
     public $idCourse;
+    /**
+     * @var string
+     */
+    public string $classroom;
 
     public function assignVar()
     {
@@ -48,7 +52,7 @@ class DoceboCalEvent_lms_classroom extends DoceboCalEvent_core
 
         $this->_owner = importVar('_owner');
         if (!$this->_owner) {
-            $this->_owner == Docebo::user()->getIdSt();
+            $this->_owner == \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
         }
 
         $this->category = importVar('category');
@@ -156,7 +160,7 @@ class DoceboCalEvent_lms_classroom extends DoceboCalEvent_core
                 $old_start_date = $start_date;
                 $old_end_date = $end_date;
 
-                $query = 'INSERT INTO ' . $GLOBALS['prefix_lms'] . "_classroom_calendar SET owner='" . Docebo::user()->getIdSt() . "',";
+                $query = 'INSERT INTO ' . $GLOBALS['prefix_lms'] . "_classroom_calendar SET owner='" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "',";
             }
 
             $query .= "start_date='" . $start_date . "',";
@@ -242,7 +246,7 @@ class DoceboCalEvent_lms_classroom extends DoceboCalEvent_core
         if ($permissions == 2) {
             return 1;
         }
-        if ($permissions == 1 and Docebo::user()->getIdSt() == $this->_owner) {
+        if ($permissions == 1 and \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() == $this->_owner) {
             return 1;
         }
 

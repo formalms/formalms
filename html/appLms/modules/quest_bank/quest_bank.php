@@ -20,7 +20,7 @@ function questbank(&$url)
     require_once _lib_ . '/lib.form.php';
     require_once _lms_ . '/lib/lib.quest_bank.php';
 
-    $lang = &DoceboLanguage::createInstance('test', 'lms');
+    $lang = &FormaLanguage::createInstance('test', 'lms');
     // now add the yui for the table
 
     $qb_select = new QuestBank_Selector();
@@ -45,7 +45,7 @@ function questbank(&$url)
 
     $export_f = $qb_man->supported_format();
 
-    cout(Form::openForm('search_form', $url->getUrl(), false, 'POST')
+    cout($form->openForm('search_form', $url->getUrl(), false, 'POST')
         . '<input type="hidden" id="selected_quest" name="selected_quest" value="">'
 
         . '<div class="align_right">
@@ -64,7 +64,7 @@ function questbank(&$url)
 
     cout($qb_select->get_filter(), 'content');
 
-    cout(Form::closeForm(), 'content');
+    cout($form->closeForm(), 'content');
 
     // -------------------------------------------------------------------
 
@@ -78,7 +78,7 @@ function questbank(&$url)
 
     cout('
 	<div class="align_left">'
-        . Form::openForm('add_quest_form', $url->getUrl('op=addquest'), 'GET') . '
+        . $form->openForm('add_quest_form', $url->getUrl('op=addquest'), 'GET') . '
 		<input type="submit" id="add_quest" name="add_quest" value="' . $lang->def('_ADD') . '">
 		<select id="add_test_quest" name="add_test_quest">', 'content');
     while (list($type_quest) = sql_fetch_row($re_type)) {
@@ -87,7 +87,7 @@ function questbank(&$url)
             . '</option>', 'content');
     }
     cout('</select>'
-        . Form::closeForm() . '
+        . $form->closeForm() . '
 	</div>', 'content');
 
     cout('</div>', 'content');
@@ -97,18 +97,18 @@ function questbank(&$url)
 function addquest(&$url)
 {
     checkPerm('view', false, 'storage');
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = &FormaLanguage::createInstance('test');
 
     $type_quest = FormaLms\lib\Get::pReq('add_test_quest', DOTY_STRING, 'choice');
 
-    require_once \Forma::inc(_lms_ . '/modules/question/question.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/question.php');
 
     quest_create($type_quest, 0, $url->getUrl());
 }
 
 function modquest(&$url)
 {
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = &FormaLanguage::createInstance('test');
 
     $id_quest = importVar('id_quest', true, 0);
 
@@ -117,7 +117,7 @@ function modquest(&$url)
 	FROM ' . $GLOBALS['prefix_lms'] . "_testquest
 	WHERE idQuest = '" . $id_quest . "' AND idTest = 0"));
 
-    require_once \Forma::inc(_lms_ . '/modules/question/question.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/question.php');
 
     quest_edit($type_quest, $id_quest, $url->getUrl());
 }
@@ -126,7 +126,7 @@ function importquest(&$url)
 {
     require_once _lib_ . '/lib.form.php';
 
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = &FormaLanguage::createInstance('test');
     $form = new Form();
 
     require_once _lms_ . '/lib/lib.quest_bank.php';
@@ -149,20 +149,20 @@ function importquest(&$url)
         getTitleArea($title, 'quest_bank')
         . '<div class="std_block">'
 
-        . Form::openForm('import_form', $url->getUrl('op=doimportquest'), false, false, 'multipart/form-data')
+        . $form->openForm('import_form', $url->getUrl('op=doimportquest'), false, false, 'multipart/form-data')
 
-        . Form::openElementSpace()
-        . Form::getFilefield($lang->def('_FILE'), 'import_file', 'import_file')
-        . Form::getRadioSet($lang->def('_FILE_FORMAT'), 'file_format', 'file_format', $supported_format, 0)
-        . Form::getTextfield($lang->def('_FILE_ENCODE'), 'file_encode', 'file_encode', 255, 'utf-8')
-        . Form::getDropdown($lang->def('_QUEST_CATEGORY'), 'quest_category', 'quest_category', $quest_categories)
-        . Form::closeElementSpace()
+        . $form->openElementSpace()
+        . $form->getFilefield($lang->def('_FILE'), 'import_file', 'import_file')
+        . $form->getRadioSet($lang->def('_FILE_FORMAT'), 'file_format', 'file_format', $supported_format, 0)
+        . $form->getTextfield($lang->def('_FILE_ENCODE'), 'file_encode', 'file_encode', 255, 'utf-8')
+        . $form->getDropdown($lang->def('_QUEST_CATEGORY'), 'quest_category', 'quest_category', $quest_categories)
+        . $form->closeElementSpace()
 
-        . Form::openButtonSpace()
-        . Form::getButton('undo', 'undo', $lang->def('_UNDO'))
-        . Form::getButton('quest_search', 'quest_search', $lang->def('_IMPORT'))
-        . Form::closeButtonSpace()
-        . Form::closeForm()
+        . $form->openButtonSpace()
+        . $form->getButton('undo', 'undo', $lang->def('_UNDO'))
+        . $form->getButton('quest_search', 'quest_search', $lang->def('_IMPORT'))
+        . $form->closeButtonSpace()
+        . $form->closeForm()
         . '</div>', 'content');
 }
 
@@ -170,7 +170,7 @@ function doimportquest(&$url)
 {
     require_once _lms_ . '/lib/lib.quest_bank.php';
 
-    $lang_t = &DoceboLanguage::createInstance('test');
+    $lang_t = &FormaLanguage::createInstance('test');
 
     $qb_man = new QuestBankMan();
 
@@ -215,7 +215,7 @@ function exportquest(&$url)
 {
     require_once _lms_ . '/lib/lib.quest_bank.php';
 
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = &FormaLanguage::createInstance('test');
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
@@ -279,31 +279,31 @@ function exportquest(&$url)
 
                 cout('<label>' . $lang->def('_SELECTTEST', 'storage') . '</label></br></br>', 'content');
 
-                cout(Form::openForm('search_form', $url->getUrl(), false, 'POST')
-                    . Form::getHidden('new_test_step', 'new_test_step', '2')
-                    . Form::getHidden('export_quest', 'export_quest', $lang->def('_EXPORT'))
-                    . Form::getHidden('export_quest_select', 'export_quest_select', $file_format)
-                    . Form::getHidden('quest_category', 'quest_category', $quest_category)
-                    . Form::getHidden('quest_difficult', 'quest_difficult', $quest_difficult)
-                    . Form::getHidden('quest_type', 'quest_type', $quest_type)
-                    . Form::getHidden('selected_quest', 'selected_quest', $_POST['selected_quest']), 'content');
+                cout($form->openForm('search_form', $url->getUrl(), false, 'POST')
+                    . $form->getHidden('new_test_step', 'new_test_step', '2')
+                    . $form->getHidden('export_quest', 'export_quest', $lang->def('_EXPORT'))
+                    . $form->getHidden('export_quest_select', 'export_quest_select', $file_format)
+                    . $form->getHidden('quest_category', 'quest_category', $quest_category)
+                    . $form->getHidden('quest_difficult', 'quest_difficult', $quest_difficult)
+                    . $form->getHidden('quest_type', 'quest_type', $quest_type)
+                    . $form->getHidden('selected_quest', 'selected_quest', $_POST['selected_quest']), 'content');
 
                 foreach ($test as $t) {
-                    cout(Form::openElementSpace()
-                                        . Form::getInputRadio('test_sel_' . $t['id_resource'], 'test_sel', $t['id_resource'], false, '')
+                    cout($form->openElementSpace()
+                                        . $form->getInputRadio('test_sel_' . $t['id_resource'], 'test_sel', $t['id_resource'], false, '')
                                         . '<label for="test_sel_' . $t['id_resource'] . '">' . $t['title'] . '</label>'
-                                        . Form::closeElementSpace(), 'content');
+                                        . $form->closeElementSpace(), 'content');
                 }
 
-                cout(Form::openButtonSpace()
-                    . Form::getButton('button_ins', 'button_ins', $lang->def('_SAVE'))
-                    . Form::getButton('button_undo', 'button_undo', $lang->def('_UNDO'))
-                    . Form::closeButtonSpace()
-                    . Form::closeForm(), 'content');
+                cout($form->openButtonSpace()
+                    . $form->getButton('button_ins', 'button_ins', $lang->def('_SAVE'))
+                    . $form->getButton('button_undo', 'button_undo', $lang->def('_UNDO'))
+                    . $form->closeButtonSpace()
+                    . $form->closeForm(), 'content');
 
                 cout('</div>', 'content');
             } else {
-                Forma::addError($lang->def('_EMPTY_SELECTION'));
+                \FormaLms\lib\Forma::addError($lang->def('_EMPTY_SELECTION'));
                 questbank($url);
             }
         }
@@ -329,10 +329,10 @@ function exportquest(&$url)
 				INSERT INTO ' . $GLOBALS['prefix_lms'] . "_test
 				( author, title, description )
 					VALUES
-				( '" . (int) getLogUserId() . "', '" . $title . "', '" . $_POST['textof'] . "' )";
+				( '" . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "', '" . $title . "', '" . $_POST['textof'] . "' )";
                 //TODO:
                 if (!sql_query($ins_query)) {
-                    Forma::addError($lang->def('_OPERATION_FAILURE'));
+                    \FormaLms\lib\Forma::addError($lang->def('_OPERATION_FAILURE'));
                 }
 
                 list($id_test) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
@@ -346,18 +346,18 @@ function exportquest(&$url)
 					WHERE q.idQuest IN (' . implode(',', $quest_selection) . ') AND q.type_quest = t.type_quest');
 
                     while (list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest)) {
-                        require_once Forma::inc(_lms_ . '/modules/question/' . $type_file);
+                        require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/' . $type_file);
                         $quest_obj = new $type_class($idQuest);
                         $new_id = $quest_obj->copy($id_test);
                     }
 
                     //Adding the item to the tree
 
-                    require_once Forma::inc(_lms_ . '/modules/organization/orglib.php');
+                    require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/organization/orglib.php');
 
                     $odb = new OrgDirDb($idCourse);
 
-                    $odb->addItem(0, $title, 'test', $id_test, '0', '0', getLogUserId(), '1.0', '_DIFFICULT_MEDIUM', '', '', '', '', date('Y-m-d H:i:s'));
+                    $odb->addItem(0, $title, 'test', $id_test, '0', '0', \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), '1.0', '_DIFFICULT_MEDIUM', '', '', '', '', date('Y-m-d H:i:s'));
                 }
             }
 
@@ -371,27 +371,27 @@ function exportquest(&$url)
 
                 $form = new Form();
 
-                cout(Form::openForm('search_form', $url->getUrl(), false, 'POST')
-                    . Form::getHidden('new_test_step', 'new_test_step', '2')
-                    . Form::getHidden('export_quest', 'export_quest', $lang->def('_EXPORT'))
-                    . Form::getHidden('export_quest_select', 'export_quest_select', $file_format)
-                    . Form::getHidden('quest_category', 'quest_category', $quest_category)
-                    . Form::getHidden('quest_difficult', 'quest_difficult', $quest_difficult)
-                    . Form::getHidden('quest_type', 'quest_type', $quest_type)
-                    . Form::getHidden('selected_quest', 'selected_quest', $_POST['selected_quest'])
-                    . Form::openElementSpace()
-                    . Form::getTextfield($lang->def('_TITLE'), 'title', 'title', '255')
-                    . Form::getTextarea($lang->def('_DESCRIPTION'), 'textof', 'textof')
-                    . Form::closeElementSpace()
-                    . Form::openButtonSpace()
-                    . Form::getButton('button_ins', 'button_ins', $lang->def('_TEST_INSERT'))
-                    . Form::getButton('button_undo', 'button_undo', $lang->def('_UNDO'))
-                    . Form::closeButtonSpace()
-                    . Form::closeForm(), 'content');
+                cout($form->openForm('search_form', $url->getUrl(), false, 'POST')
+                    . $form->getHidden('new_test_step', 'new_test_step', '2')
+                    . $form->getHidden('export_quest', 'export_quest', $lang->def('_EXPORT'))
+                    . $form->getHidden('export_quest_select', 'export_quest_select', $file_format)
+                    . $form->getHidden('quest_category', 'quest_category', $quest_category)
+                    . $form->getHidden('quest_difficult', 'quest_difficult', $quest_difficult)
+                    . $form->getHidden('quest_type', 'quest_type', $quest_type)
+                    . $form->getHidden('selected_quest', 'selected_quest', $_POST['selected_quest'])
+                    . $form->openElementSpace()
+                    . $form->getTextfield($lang->def('_TITLE'), 'title', 'title', '255')
+                    . $form->getTextarea($lang->def('_DESCRIPTION'), 'textof', 'textof')
+                    . $form->closeElementSpace()
+                    . $form->openButtonSpace()
+                    . $form->getButton('button_ins', 'button_ins', $lang->def('_TEST_INSERT'))
+                    . $form->getButton('button_undo', 'button_undo', $lang->def('_UNDO'))
+                    . $form->closeButtonSpace()
+                    . $form->closeForm(), 'content');
 
                 cout('</div>', 'content');
             } else {
-                Forma::addError($lang->def('_EMPTY_SELECTION'));
+                \FormaLms\lib\Forma::addError($lang->def('_EMPTY_SELECTION'));
                 questbank($url);
             }
         }
@@ -408,7 +408,7 @@ function deletequest(&$url)
 {
     require_once _lms_ . '/lib/lib.quest_bank.php';
 
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = &FormaLanguage::createInstance('test');
 
     $quest_selection = FormaLms\lib\Get::req('selected_quest', DOTY_NUMLIST, '');
     $quest_selection = array_filter(preg_split('/,/', $quest_selection, -1, PREG_SPLIT_NO_EMPTY));
@@ -421,7 +421,7 @@ function deletequest(&$url)
                 WHERE q.idQuest IN (' . implode(',', $quest_selection) . ') AND q.type_quest = t.type_quest');
 
         while (list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest)) {
-            require_once \Forma::inc(_lms_ . '/modules/question/' . $type_file);
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/' . $type_file);
             $quest_obj = new $type_class($idQuest);
             $new_id = $quest_obj->del();
         }

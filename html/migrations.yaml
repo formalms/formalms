@@ -1,0 +1,18 @@
+table_storage:
+   table_name: core_migration_versions
+   version_column_name: version
+   version_column_length: 767
+   executed_at_column_name: executed_at
+   execution_time_column_name: execution_time
+
+migrations_paths:
+   'Formalms\Migrations': ./Migrations
+ #  'Formalms\Component\Migrations': ./html/Component/Migrations
+
+all_or_nothing: false
+transactional: true
+check_database_platform: true
+# organize_migrations: year_and_month
+
+connection: null
+em: null

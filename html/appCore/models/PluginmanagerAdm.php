@@ -19,14 +19,16 @@ class PluginmanagerAdm extends Model
     protected $table;
     protected $plugin_core;
     public static $plugins_active;
+    protected $systemManager;
 
     public function __construct()
     {
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         $this->table = '%adm_plugin';
         $this->plugin_core = [
             'FormaAuth',
         ];
+        $this->systemManager = \FormaLms\lib\System\SystemManager::getInstance();
         parent::__construct();
     }
 
@@ -60,10 +62,9 @@ class PluginmanagerAdm extends Model
             } else {
                 if (is_array($man_array) && $key !== false) {
                     if (array_key_exists($key, $man_array)) {
-                        return $man_array[(string) $key];
+                        return $man_array[(string)$key];
                     }
                 }
-
                 return $man_array;
             }
         } else {
@@ -145,13 +146,14 @@ class PluginmanagerAdm extends Model
         $forma_version = FormaLms\lib\Get::sett('core_version');
         $check['dependencies'] = [];
         $check['forma_version'] = [];
+
         if (array_key_exists('forma_version', $manifest)) {
-            if (array_key_exists('min', $manifest['forma_version'])) {
+            if (is_array($manifest['forma_version']) && array_key_exists('min', $manifest['forma_version'])) {
                 if (version_compare($forma_version, $manifest['forma_version']['min']) < 0) {
                     $check['forma_version'][] = ['name' => 'forma.lms', 'version' => $manifest['forma_version']['min']];
                 }
             }
-            if (array_key_exists('max', $manifest['forma_version'])) {
+            if (is_array($manifest['forma_version']) && array_key_exists('max', $manifest['forma_version'])) {
                 if (version_compare($manifest['forma_version']['max'], $forma_version) < 0) {
                     $check['forma_version'][] = ['name' => 'forma.lms', 'version' => $manifest['forma_version']['max']];
                 }
@@ -230,7 +232,12 @@ class PluginmanagerAdm extends Model
     {
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
+        if ($this->systemManager->checkSystemRoutes()) {
+            self::$plugins_active = [];
+            return self::$plugins_active;
+        }
         if (!isset(self::$plugins_active)) {
+
             if ($session && $session->has('notuse_plugin') && $session->get('notuse_plugin') === true) {
                 $query = 'SELECT * FROM ' . $this->table . ' WHERE core=1 ORDER BY priority ASC';
             } else {
@@ -238,17 +245,19 @@ class PluginmanagerAdm extends Model
             }
             $re = $this->db->query($query);
             $plugins = [];
-            foreach ($re as $row) {
-                if ($row['core'] == 1) {
-                    if ($row['active'] == 1) {
-                        $plugins[$row['name']] = $row;
+            if (is_iterable($re)) {
+                foreach ($re as $row) {
+                    if ($row['core'] == 1) {
+                        if ($row['active'] == 1) {
+                            $plugins[$row['name']] = $row;
+                        } else {
+                            $plugins[$row['name']] = [];
+                        }
                     } else {
-                        $plugins[$row['name']] = false;
+                        $plugins[$row['name']] = $row;
                     }
-                } else {
-                    $plugins[$row['name']] = $row;
+                    $plugins[$row['name']]['missing'] = !file_exists(_base_ . '/plugins/' . $row['name']);
                 }
-                $plugins[$row['name']]['missing'] = !file_exists(_base_ . '/plugins/' . $row['name']);
             }
             foreach ($this->plugin_core as $core_name) {
                 if (!array_key_exists($core_name, $plugins)) {
@@ -280,7 +289,8 @@ class PluginmanagerAdm extends Model
                 $tmpDependencies = [];
                 $manifest = self::readPluginManifest($file);
                 //accept only plugins where manifest name is the folder name
-                if ($manifest['name'] == $file) {
+
+                if ($manifest && $manifest['name'] == $file) {
                     $info = $this->getPluginFromDB($file, 'name');
                     //if plugin is installed
                     if ($info) {
@@ -360,25 +370,32 @@ class PluginmanagerAdm extends Model
     {
         $res = ['ok' => true, 'log' => ''];
 
-        $handle = fopen($fn, 'rb');
-        $content = fread($handle, filesize($fn));
-        fclose($handle);
-
-        // This two regexp works fine; don't edit them! :)
-        $content = preg_replace('/--(.*)[^$]/', '', $content);
-        $sql_arr = preg_split("/;([\s]*)[\n\r]/", $content);
-        foreach ($sql_arr as $sql) {
-            $qtxt = trim($sql);
-            if (!empty($qtxt)) {
-                $q = sql_query($qtxt);
-                if (!$q) {
-                    $res['log'] .= sql_error() . "\n";
-                    Forma::addError(sql_error());
-                    $res['ok'] = false;
+        if (file_exists($fn)) {
+            $handle = fopen($fn, 'rb');
+            if ($handle == false) {
+                $res = ['ok' => false, 'log' => 'error opening file'];
+            } else {
+                $fileSz = filesize($fn);
+                if ($fileSz > 0) {
+                    $content = fread($handle, $fileSz);
+                    fclose($handle);
+                    // This two regexp works fine; don't edit them! :)
+                    $content = preg_replace('/--(.*)[^$]/', '', $content);
+                    $sql_arr = preg_split("/;([\s]*)[\n\r]/", $content);
+                    foreach ($sql_arr as $sql) {
+                        $qtxt = trim($sql);
+                        if (!empty($qtxt)) {
+                            $q = sql_query($qtxt);
+                            if (!$q) {
+                                $res['log'] .= sql_error() . "\n";
+                                \FormaLms\lib\Forma::addError(sql_error());
+                                $res['ok'] = false;
+                            }
+                        }
+                    }
                 }
             }
         }
-
         return $res;
     }
 
@@ -392,7 +409,8 @@ class PluginmanagerAdm extends Model
      */
     public function callPluginMethod($plugin_id, $method)
     {
-        $res = sql_query('select name, version from ' . $this->table . " where name = '" . $plugin_id . "'");
+        $res = sql_query('select name, version from ' . $this->table . "
+					where name = '" . $plugin_id . "'");
         $plugin_name = $plugin_id;
         $plugin_version = null;
         if (sql_num_rows($res) > 0) {
@@ -421,7 +439,7 @@ class PluginmanagerAdm extends Model
      */
     private function removeSettings($plugin_name)
     {
-        return (bool) sql_query('DELETE FROM %adm_setting WHERE pack="' . $plugin_name . '"');
+        return (bool)sql_query('DELETE FROM %adm_setting WHERE pack="' . $plugin_name . '"');
     }
 
     /**
@@ -435,7 +453,7 @@ class PluginmanagerAdm extends Model
     {
         $plugin_info = $this->getPluginFromDB($plugin_name, 'name');
 
-        return (bool) sql_query('DELETE FROM %adm_requests WHERE plugin="' . $plugin_info['plugin_id'] . '"');
+        return (bool)sql_query('DELETE FROM %adm_requests WHERE plugin="' . $plugin_info['plugin_id'] . '"');
     }
 
     private function getIdMenu($plugin_name)
@@ -488,7 +506,7 @@ class PluginmanagerAdm extends Model
             $lang_file = $path . 'lang[' . $installedLang . '].xml';
 
             if (file_exists($lang_file)) {
-                $check = $model->importTranslation($lang_file, true, false, (int) $plugin_info['plugin_id']);
+                $check = $model->importTranslation($lang_file, true, false, (int)$plugin_info['plugin_id']);
             }
         }
 
@@ -509,23 +527,24 @@ class PluginmanagerAdm extends Model
      * Insert specified plugin in forma.
      *
      * @param $plugin_name
-     * @param int  $priority
+     * @param int $priority
      * @param bool $update
-     * @param int  $core
+     * @param int $core
      *
      * @return bool|mixed
      */
     public function installPlugin($plugin_name, $priority = 0, $update = false, $core = 0)
     {
         $plugin_info = self::readPluginManifest($plugin_name);
-        if ($plugin_info['core'] == 'true') {
+        if (array_key_exists('core', $plugin_info) && $plugin_info['core'] == 'true') {
             $core = 1;
         }
         //FORMA_PLUGIN: QUI AGGIUNGERE IL CONTROLLO DELLA VERSIONE
         $query = 'insert into ' . $this->table . "
-				values(null,'" . addslashes($plugin_name) . "', '" . addslashes($plugin_info['title']) . "', '" . addslashes($plugin_info['category']) . "',
+                ( name, title, category, version, author, link, priority, description, regroup, active, core, created_at, updated_at) 
+				values('" . addslashes($plugin_name) . "', '" . addslashes($plugin_info['title']) . "', '" . addslashes($plugin_info['category']) . "',
 					'" . addslashes($plugin_info['version']) . "', '" . addslashes($plugin_info['author']) . "', '" . addslashes($plugin_info['link']) . "', $priority,
-					'" . addslashes($plugin_info['description']) . "'," . time() . ' ,0,' . (int) $core . ' )';
+					'" . (is_array($plugin_info['description']) ? 'Description' : addslashes($plugin_info['description'])) . "'," . time() . ' ,0,' . (int)$core . ', now(), now() )';
         if ($plugin_info) {
             $result = sql_query($query);
             if ($result) {
@@ -561,7 +580,7 @@ class PluginmanagerAdm extends Model
     {
         $updateQuery = sql_query('
         UPDATE ' . $this->table . '
-        SET priority=' . (int) $priority . "
+        SET priority=' . (int)$priority . "
         WHERE name = '" . $plugin_name . "'");
         if ($updateQuery) {
             return true;
@@ -622,7 +641,7 @@ class PluginmanagerAdm extends Model
 
         sql_query('
 			UPDATE ' . $this->table . '
-			SET active=' . (int) $active . "
+			SET active=' . (int)$active . "
 			WHERE name = '" . $plugin_id . "'");
 
         return $reSetting;
@@ -673,7 +692,6 @@ class PluginmanagerAdm extends Model
             }
             $zip->extractTo(_plugins_);
             $zip->close();
-            fclose(_plugins_ . '/' . $package_name);
             unlink(_plugins_ . '/' . $package_name);
 
             return true;
@@ -770,7 +788,8 @@ class PluginmanagerAdm extends Model
                         version = '" . addslashes($plugin_info['version']) . "',
                         author = '" . addslashes($plugin_info['author']) . "',
                         link = '" . addslashes($plugin_info['link']) . "',
-                        description = '" . addslashes($plugin_info['description']) . "'
+                        description = '" . addslashes($plugin_info['description']) . "',
+                        updated_at = now()
                     WHERE
                         plugin_id = " . $plugin_db['plugin_id'];
             $result = sql_query($query);

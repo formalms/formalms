@@ -13,21 +13,27 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Docebo::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit('You can\'t access');
 }
 
-function retriveTrack($id_reference, $id_poll, $id_user)
+function retriveTrack($idReference, $idPoll, $idUser)
 {
     if (isset($_POST['id_track']) || isset($_GET['id_track'])) {
         return importVar('id_track', true, 0);
     }
 
-    if ($id_reference !== false) {
+    if ($idReference !== false) {
         require_once _lms_ . '/class.module/track.poll.php';
         $itemtrack = new Track_Poll(null);
 
-        list($exist, $idTrack) = $itemtrack->getIdTrack($id_reference, $id_user, $id_poll, true);
+        [$exist, $idTrack] = $itemtrack->getIdTrack($idReference, $idUser, $idPoll, true);
+
+        if ($exist){
+            $itemtrack->setIdUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
+            $itemtrack->setIdReference($idReference);
+            $itemtrack->update();
+        }
 
         return $idTrack;
     }
@@ -41,17 +47,17 @@ function intro($object_poll, $id_param)
 
     require_once _base_ . '/lib/lib.form.php';
     require_once _lms_ . '/class.module/track.poll.php';
-    require_once _lms_ . '/lib/lib.param.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
     require_once _lms_ . '/lib/lib.poll.php';
 
-    $lang = &DoceboLanguage::createInstance('poll');
+    $lang = &FormaLanguage::createInstance('poll');
     $id_poll = $object_poll->getId();
     $id_reference = getLoParam($id_param, 'idReference');
     $url_coded = urlencode(Util::serialize($object_poll->back_url));
-    $id_track = retriveTrack($id_reference, $id_poll, getLogUserId());
+    $id_track = retriveTrack($id_reference, $id_poll, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
     $poll_man = new PollManagement($id_poll);
-    $play_man = new PlayPollManagement($id_poll, getLogUserId(), $id_track, $poll_man);
+    $play_man = new PlayPollManagement($id_poll, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_track, $poll_man);
     $poll_info = $poll_man->getPollAllInfo();
 
     $page_title = [
@@ -97,13 +103,13 @@ function playPollDispatch($object_poll, $id_param)
 
     require_once _base_ . '/lib/lib.form.php';
     require_once _lms_ . '/class.module/track.poll.php';
-    require_once _lms_ . '/lib/lib.param.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
     require_once _lms_ . '/lib/lib.poll.php';
 
     $id_poll = $object_poll->getId();
     $id_reference = getLoParam($id_param, 'idReference');
     $url_coded = urlencode(Util::serialize($object_poll->back_url));
-    $id_track = retriveTrack($id_reference, $id_poll, getLogUserId());
+    $id_track = retriveTrack($id_reference, $id_poll, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
     if (isset($_POST['show_result'])) {
         // continue a poll completed, show the result
@@ -120,17 +126,17 @@ function play($object_poll, $id_param)
 
     require_once _base_ . '/lib/lib.form.php';
     require_once _lms_ . '/class.module/track.poll.php';
-    require_once _lms_ . '/lib/lib.param.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
     require_once _lms_ . '/lib/lib.poll.php';
 
-    $lang = &DoceboLanguage::createInstance('poll');
+    $lang = &FormaLanguage::createInstance('poll');
     $id_poll = $object_poll->getId();
     $id_reference = getLoParam($id_param, 'idReference');
     $url_coded = urlencode(Util::serialize($object_poll->back_url));
-    $id_track = retriveTrack($id_reference, $id_poll, getLogUserId());
+    $id_track = retriveTrack($id_reference, $id_poll, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
     $poll_man = new PollManagement($id_poll);
-    $play_man = new PlayPollManagement($id_poll, getLogUserId(), $id_track, $poll_man);
+    $play_man = new PlayPollManagement($id_poll, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_track, $poll_man);
     $poll_info = $poll_man->getPollAllInfo();
     $track_info = $play_man->getTrackAllInfo();
 
@@ -224,25 +230,25 @@ function showResult($object_poll, $id_param)
 
     require_once _base_ . '/lib/lib.form.php';
     require_once _lms_ . '/class.module/track.poll.php';
-    require_once _lms_ . '/lib/lib.param.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
     require_once _lms_ . '/lib/lib.poll.php';
 
-    $lang = &DoceboLanguage::createInstance('poll');
+    $lang = &FormaLanguage::createInstance('poll');
     $id_poll = $object_poll->getId();
     $id_reference = getLoParam($id_param, 'idReference');
     $url_coded = urlencode(Util::serialize($object_poll->back_url));
-    $id_track = retriveTrack($id_reference, $id_poll, getLogUserId());
+    $id_track = retriveTrack($id_reference, $id_poll, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
-    $trackPoll = new Track_Poll($id_track, $id_poll);
+    $trackPoll = new Track_Poll($id_track,$id_poll);
     $trackPoll->createTrack($id_reference,
                                 $id_track,
-                                getLogUserId(),
+                                \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(),
                                 date('Y-m-d H:i:s'),
                                 'completed',
                                 'poll');
 
     $poll_man = new PollManagement($id_poll);
-    $play_man = new PlayPollManagement($id_poll, getLogUserId(), $id_track, $poll_man);
+    $play_man = new PlayPollManagement($id_poll, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_track, $poll_man);
     $poll_info = $poll_man->getPollAllInfo();
     $track_info = $play_man->getTrackAllInfo();
 
@@ -277,7 +283,7 @@ function showResult($object_poll, $id_param)
 
 function writePollReport($id_poll, $id_param, $back_url, $mvc = false)
 {
-    require_once _lms_ . '/lib/lib.param.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
     require_once _lms_ . '/lib/lib.poll.php';
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $poll_man = new PollManagement($id_poll);
@@ -325,7 +331,7 @@ function writePollReport($id_poll, $id_param, $back_url, $mvc = false)
             if ($einfo->name != '') {
                 $_label .= $einfo->neme;
             }
-            if (($einfo->date_begin != '' || $einfo->date_begin != '0000-00-00') && ($einfo->date_end != '' || $einfo->date_end != '0000-00-00')) {
+            if (($einfo->date_begin != '' || $einfo->date_begin) && ($einfo->date_end != '' || $einfo->date_end)) {
                 $_label .= ' (' . Format::date($einfo->date_begin, 'date')
                     . ' - ' . Format::date($einfo->date_end, 'date') . ')';
             }

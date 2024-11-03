@@ -306,6 +306,17 @@ class Table
     public $row_count = 0;
     public $join_next_row = false;
     public $force_print = false;
+    public $typeCol;
+    /**
+     * @var false|int
+     */
+    public int $maxRowsAtTime;
+    public int $rows;
+    /**
+     * @var false
+     */
+    public bool $hide_over;
+    public array $table_foot;
 
     /**
      * Construct the table drawer class.
@@ -336,13 +347,10 @@ class Table
         $this->add_action = [];
 
         $this->hide_over = false;
-
         $this->nav_bar = null;
-
-        /*i need this for the transiction from old to new*/
         $this->rows = 0;
         $this->maxRowsAtTime = $max_rows;
-        //Util::get_css(FormaLms\lib\Get::tmpl_path('base').'yui-skin/datatable.css', true, true);
+
     }
 
     public function setTableStyle($table_style)

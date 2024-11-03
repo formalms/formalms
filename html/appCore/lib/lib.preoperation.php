@@ -14,10 +14,13 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+
+$eventData = Events::trigger('core.index.preoperation');
+
 // access granted only if user is logged in
-if (Docebo::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     // save requested page in session to call it after login
-    $loginRedirect = $_SERVER[REQUEST_URI];
+    $loginRedirect = $_SERVER['REQUEST_URI'];
 
     // redirect to index
 
@@ -25,13 +28,11 @@ if (Docebo::user()->isAnonymous()) {
 }
 
 // get maintenence setting
-$query = ' SELECT param_value FROM %adm_setting'
-        . " WHERE param_name = 'maintenance'"
-        . ' ORDER BY pack, sequence';
-$maintenance = $db->fetch_row($db->query($query))[0];
+
+$maintenance = \FormaLms\lib\Get::sett('maintenance');
 
 // handling maintenece
-if ($maintenance == 'on' && Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+if ($maintenance == 'on' && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
     // only god admins can access maintenence - logout the user
     Util::jump_to(FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _logout_);
 }
@@ -44,7 +45,7 @@ if (!empty(FormaLms\lib\Get::req('of_platform', DOTY_ALPHANUM, ''))) {
 
 // handling required password renewal
 if (!$session->has('must_renew_pwd') && $session->get('must_renew_pwd') == 1
-        && Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
     // redirect to lms where password renewal is performed
     Util::jump_to(FormaLms\lib\Get::rel_path('lms'));
 }
@@ -54,3 +55,5 @@ if (!empty(FormaLms\lib\Get::req('close_over', DOTY_MIXED, ''))) {
     $session->set('menu_over', ['p_sel' => '', 'main_sel' => 0]);
     $session->save();
 }
+
+$eventData = Events::trigger('core.index.beforenavigation');

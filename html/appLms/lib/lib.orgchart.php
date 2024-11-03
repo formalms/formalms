@@ -65,7 +65,7 @@ class OrganizationManagement
         return $l_obj;
     }
 
-    public function getCountUnreaded($id_user, $courses, &$last_access)
+    public static function getCountUnreaded($id_user, $courses, &$last_access)
     {
         $unreaded = [];
         if (empty($courses)) {
@@ -96,7 +96,7 @@ class OrganizationManagement
         return $unreaded;
     }
 
-    public function objectFilter($arr_course, $filter_type = false)
+    public static function objectFilter($arr_course, $filter_type = false)
     {
         $l_obj = [];
         $query_lo = '
@@ -201,7 +201,7 @@ class OrganizationManagement
         $query_lo = '
 		SELECT idOrg, idResource, objectType, idCourse  
 		FROM ' . $GLOBALS['prefix_lms'] . "_organization 
-		WHERE (milestone = 'end' OR isTerminator = 1)"
+        WHERE (milestone = 'end' OR isTerminator = 1)"
         . (!empty($arr_course)/* !== false */ ? ' AND idCourse IN ( ' . implode(',', $arr_course) . ' )' : '') . ' ';
         $re_lo = sql_query($query_lo);
 

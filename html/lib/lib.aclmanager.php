@@ -67,7 +67,7 @@ define('ADMIN_GROUP_USER', '/framework/level/user');
  *
  * @version  $Id: lib.aclmanager.php 1000 2007-03-23 16:03:43Z fabio $
  */
-class DoceboACLManager
+class FormaACLManager
 {
     /** the actual context for acl management */
     public $context = '';
@@ -208,7 +208,7 @@ class DoceboACLManager
      */
     public function __construct($dbconn = false, $prefix = false)
     {
-        $this->dbconn = ($dbconn === false) ? $GLOBALS['dbConn'] : $dbconn;
+        $this->dbconn = ($dbconn === false) ? \FormaLms\db\DbConn::getInstance() : $dbconn;
         $this->prefix = ($prefix === false) ? $GLOBALS['prefix_fw'] : $prefix;
         $this->context = ACL_SEPARATOR;
     }
@@ -240,7 +240,7 @@ class DoceboACLManager
 
     /**
      * An userid/groupid/roleid can be absolute (if start with ACL_SEPARATOR charater) or
-     * relative to actual DoceboACLManager context.
+     * relative to actual FormaACLManager context.
      * This function return always the absolute id of the given id. ( If it's
      *    an absolute id return it unchanged).
      *
@@ -262,7 +262,7 @@ class DoceboACLManager
 
     /**
      * An userid/groupid/roleid can be absolute (if start with ACL_SEPARATOR charater) or
-     * relative to actual DoceboACLManager context.
+     * relative to actual FormaACLManager context.
      * This function return always the relative id of the given id; normally
      *    remove the context from $id if it's absolute.
      * If it's an relative id return it unchanged.
@@ -408,6 +408,7 @@ class DoceboACLManager
         $query = 'SELECT idst'
             . ' FROM ' . $this->_getTableGroup()
             . " WHERE groupid = '" . $this->absoluteId($groupid) . "'";
+
 
         $rs = $this->_executeQuery($query);
         if (sql_num_rows($rs) > 0) {
@@ -579,7 +580,7 @@ class DoceboACLManager
 
         if ($this->_executeQuery($query)) {
             $query_h = 'INSERT INTO ' . $GLOBALS['prefix_fw'] . '_password_history ( idst_user, pwd_date, passw, changed_by ) '
-                . 'VALUES ( ' . (int)$idst . ", '" . date('Y-m-d H:i:s') . "', '" . ($alredy_encripted === true ? $pass : $this->encrypt($pass)) . "', " . (int)getLogUserId() . '  )';
+                . 'VALUES ( ' . (int)$idst . ", '" . date('Y-m-d H:i:s') . "', '" . ($alredy_encripted === true ? $pass : $this->encrypt($pass)) . "', " . (int)\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . '  )';
             $this->_executeQuery($query_h);
 
             Events::triggerDeprecated('core.user.registered', ['idst' => $idst]);
@@ -970,7 +971,7 @@ class DoceboACLManager
         $result = $this->_executeQuery($query);
         if ($result && $pass !== false) {
             $query_h = 'INSERT INTO ' . $GLOBALS['prefix_fw'] . '_password_history ( idst_user, pwd_date, passw, changed_by ) '
-                . 'VALUES ( ' . (int)$idst . ", '" . date('Y-m-d H:i:s') . "', '" . $this->encrypt($pass) . "'," . (int)getLogUserId() . '  )';
+                . 'VALUES ( ' . (int)$idst . ", '" . date('Y-m-d H:i:s') . "', '" . $this->encrypt($pass) . "'," . (int)\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . '  )';
             $this->_executeQuery($query_h);
         }
 
@@ -1065,7 +1066,7 @@ class DoceboACLManager
      */
     public function deleteUser($idst)
     {
-        //if ($idst == Docebo::user()->getIdSt()) return FALSE;
+        //if ($idst == \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()) return FALSE;
 
         $userdata = $this->getUser($idst, null);
 
@@ -1129,7 +1130,7 @@ class DoceboACLManager
 
         $insert_query = 'INSERT INTO ' . $this->_getTableUserDeleted() . ' ' .
             ' (id_deletion, idst, userid, firstname, lastname, pass, email, avatar, signature, level, lastenter, valid, pwd_expire_at, register_date, deletion_date, deleted_by)' .
-            " VALUES ('', '" . (int)$idst . "', '" . addslashes($userid) . "', '" . addslashes($firstname) . "', '" . addslashes($lastname) . "', '" . addslashes($pass) . "', '" . addslashes($email) . "', '" . addslashes($avatar) . "', '" . addslashes($signature) . "', '" . $level . "', '" . $lastenter . "', '" . $valid . "', '" . $pwd_expire_at . "', '" . $register_date . "', '" . date('Y-m-d H:i:s') . "','" . getLogUserId() . "')";
+            " VALUES ('', '" . (int)$idst . "', '" . addslashes($userid) . "', '" . addslashes($firstname) . "', '" . addslashes($lastname) . "', '" . addslashes($pass) . "', '" . addslashes($email) . "', '" . addslashes($avatar) . "', '" . addslashes($signature) . "', '" . $level . "', '" . $lastenter . "', '" . $valid . "', '" . $pwd_expire_at . "', '" . $register_date . "', '" . date('Y-m-d H:i:s') . "','" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "')";
 
         $insert_result = sql_query($insert_query);
 
@@ -1146,7 +1147,7 @@ class DoceboACLManager
      *
      * @return true if success, FALSE otherwise
      */
-    public function deleteTempUser($idst_single = false, $random_code = false, $time = false, $del_field = true, $reset_code = trued)
+    public function deleteTempUser($idst_single = false, $random_code = false, $time = false, $del_field = true, $reset_code = true)
     {
         require_once _adm_ . '/lib/lib.field.php';
 
@@ -1180,7 +1181,7 @@ class DoceboACLManager
                 $extra_field = new FieldList();
                 $extra_field->quickRemoveUserEntry($idst);
                 //remove also from courseuser if neeeded
-                DbConn::getInstance()->query('DELETE FROM %lms_courseuser WHERE idUser = ' . (int)$idst . ' ');
+                \FormaLms\db\DbConn::getInstance()->query('DELETE FROM %lms_courseuser WHERE idUser = ' . (int)$idst . ' ');
             }
             $query = 'DELETE FROM ' . $this->_getTableTempUser()
                 . " WHERE idst = '" . $idst . "'";
@@ -1459,58 +1460,53 @@ class DoceboACLManager
      *               - idst, userid, firstname, lastname, pass, email, avatar, signature
      *               - FALSE if user is not found
      */
-    public function &getUsers($array_idst)
+    public function getUsers($array_idst)
     {
-        if (!is_array($array_idst) || empty($array_idst)) {
-            $false_var = false;
+        $users_info = [];
 
-            return $false_var;
-        } else {
-            foreach ($array_idst as $index => $idst) {
-                if (!is_numeric($idst)) {
-                    unset($array_idst[$index]);
-                }
+        if (!is_array($array_idst)){
+            $array_idst = [];
+        }
+
+        foreach ($array_idst as $index => $idst) {
+            if (!is_numeric($idst)) {
+                unset($array_idst[$index]);
             }
         }
 
-        $users_info = [];
         $query = 'SELECT idst, userid, firstname, lastname, pass, email, avatar, signature,'
             . ' level, lastenter, valid, pwd_expire_at, register_date, lastenter'
             . ' FROM ' . $this->_getTableUser()
             . ' WHERE idst IN (' . implode(',', $array_idst) . ') '
             . ' ORDER BY lastname, firstname, userid';
         $rs = $this->_executeQuery($query);
-        if (sql_num_rows($rs) > 0) {
-            while ($info = sql_fetch_row($rs)) {
-                $users_info[$info[ACL_INFO_IDST]] = $info;
-            }
 
-            return $users_info;
-        } else {
-            $false_var = false;
+        foreach ($rs as $row) {
 
-            return $false_var;
+            $users_info[$row['idst']] = array_values($row);
         }
+
+
+        return $users_info;
     }
 
-    public function &getUsersMappedData($array_idst)
+    public function getUsersMappedData($array_idst)
     {
         $responseUsers = [];
         $users = $this->getUsers($array_idst);
-        if ($users) {
-            foreach ($users as $user) {
-                $responseUsers[] = $this->getUserMappedData($user);
-            }
+
+        foreach ($users as $user) {
+            $responseUsers[] = $this->getUserMappedData($user);
         }
 
         return $responseUsers;
     }
 
-    public function &getUserMappedData($user)
+    public function getUserMappedData($user)
     {
         $path = $GLOBALS['where_files_relative'] . '/appCore/' . FormaLms\lib\Get::sett('pathphoto');
 
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $responseUser['idst'] = $user[ACL_INFO_IDST];
         $responseUser['name'] = $acl_man->getConvertedUserName($user);
@@ -1527,7 +1523,8 @@ class DoceboACLManager
     }
 
     /**
-     * @return all idst of users
+     * return all idst of users
+     * @return array idst of users
      **/
     public function &getAllUsersIdst()
     {
@@ -1871,7 +1868,7 @@ class DoceboACLManager
     public function &getAllGroupsId($arr_type = false, $find_text = false, $also_image = true)
     {
         if ($also_image) {
-            $lang = &DoceboLanguage::createInstance('admin_directory', 'framework');
+            $lang = &FormaLanguage::createInstance('admin_directory', 'framework');
         }
 
         $query = ' SELECT g.idst, g.groupid, g.description, g.type '
@@ -2110,7 +2107,7 @@ class DoceboACLManager
         }
 
         if (count($values) > 0) {
-            $query = 'INSERT INTO ' . $this->_getTableGroupMembers()
+            $query = 'INSERT IGNORE INTO ' . $this->_getTableGroupMembers()
                 . ' (idst, idstMember, filter) VALUES '
                 //." ('".$idst."','".$idstMember."','".$filter."')";
                 . implode(',', $values);
@@ -2480,6 +2477,7 @@ class DoceboACLManager
                 $query .= " AND tu.valid = '1'";
             }
         }
+
 
         $rs = $this->_executeQuery($query);
         $arrUsers = [];
@@ -2876,9 +2874,17 @@ class DoceboACLManager
         $list = $this->getBasePathGroupST('/framework/level/');
 
         $output = [];
-        $output[ADMIN_GROUP_GODADMIN] = $list[ADMIN_GROUP_GODADMIN];
-        $output[ADMIN_GROUP_ADMIN] = $list[ADMIN_GROUP_ADMIN];
-        $output[ADMIN_GROUP_USER] = $list[ADMIN_GROUP_USER];
+        if (array_key_exists(ADMIN_GROUP_GODADMIN, $list)) {
+            $output[ADMIN_GROUP_GODADMIN] = $list[ADMIN_GROUP_GODADMIN];
+        }
+
+        if (array_key_exists(ADMIN_GROUP_ADMIN, $list)) {
+            $output[ADMIN_GROUP_ADMIN] = $list[ADMIN_GROUP_ADMIN];
+        }
+
+        if (array_key_exists(ADMIN_GROUP_USER, $list)) {
+            $output[ADMIN_GROUP_USER] = $list[ADMIN_GROUP_USER];
+        }
 
         return $output;
     }
@@ -3023,7 +3029,7 @@ class DoceboACLManager
         if ($owned_directly) {
             $all_roles = $this->getRolesContainer($user_idst);
         } else {
-            $acl = Docebo::user()->getAcl();
+            $acl = \FormaLms\lib\Forma::getAcl();
             $all_roles = $acl->getUserAllST(false, '', $user_idst);
         }
 
@@ -3217,7 +3223,7 @@ class DoceboACLManager
 
     public function &getGroupsIdByPaths($paths = false)
     {
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
 
         $temp = false;
 
@@ -3316,12 +3322,12 @@ class PeopleDataRetriever extends DataRetriever
     public $field_filter = [];
     public $custom_join = [];
     public $custom_where = [];
-    public $aclManager;
+    public FormaACLManager $ACLManager;
 
     public function __construct($dbconn = false, $prefix = false)
     {
         parent::__construct($dbconn, $prefix);
-        $this->aclManager = new DoceboACLManager($dbconn, $prefix);
+        $this->aclManager = new FormaACLManager($dbconn, $prefix);
     }
 
     public function setUserFilter($arr_users)
@@ -3531,7 +3537,7 @@ class GroupDataRetriever extends DataRetriever
     public function __construct($dbconn = false, $prefix = false)
     {
         parent::__construct($dbconn, $prefix);
-        $this->aclManager = new DoceboACLManager($dbconn, $prefix);
+        $this->aclManager = new FormaACLManager($dbconn, $prefix);
     }
 
     public function getFieldCount()
@@ -3652,7 +3658,7 @@ class GroupMembersDataRetriever extends DataRetriever
     {
         $this->idstGroup = $idstGroup;
         parent::__construct($dbconn, $prefix);
-        $this->aclManager = new DoceboACLManager($dbconn, $prefix);
+        $this->aclManager = new FormaACLManager($dbconn, $prefix);
     }
 
     public function getFieldCount()

@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2023 (Forma)
+ * Copyright (c) 2013-2022 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -108,7 +108,7 @@ class BigBlueButton
      *
      *@return The url to join the meeting
      */
-    public function joinURL($meetingID, $userName, $PW, $SALT, $URL)
+    public static function joinURL($meetingID, $userName, $PW, $SALT, $URL)
     {
         $url_join = $URL . 'api/join?';
         $params = 'meetingID=' . urlencode($meetingID) . '&fullName=' . urlencode($userName) . '&password=' . urlencode($PW);
@@ -258,7 +258,7 @@ class BigBlueButton
      *	- If failed it returns an array containing a returncode, messageKey, message.
      *	- If success it returns an array containing a returncode, messageKey, message, meetingID, attendeePW, moderatorPW, hasBeenForciblyEnded.
      */
-    public function createMeetingArray($name, $meetingID, $welcomeString, $mPW, $aPW, $SALT, $URL, $logoutURL)
+    public static function createMeetingArray($name, $meetingID, $welcomeString, $mPW, $aPW, $SALT, $URL, $logoutURL)
     {
         $xml = bbb_wrap_simplexml_load_file(BigBlueButton::createMeetingURL($name, $meetingID, $aPW, $mPW, $welcomeString, $logoutURL, $SALT, $URL));
 

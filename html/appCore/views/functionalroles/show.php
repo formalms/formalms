@@ -93,7 +93,7 @@ $this->widget('table', [
 </div>
 <script type="text/javascript">
 FunctionalRoles.init({
-	currentLanguage: "<?php echo getLanguage(); ?>",
+	currentLanguage: "<?php echo Lang::get(); ?>",
 	langs: {
 		_MOD: "<?php echo Lang::t('_MOD', 'standard'); ?>",
 		_USERS: "<?php echo Lang::t('_USERS', 'standard'); ?>",

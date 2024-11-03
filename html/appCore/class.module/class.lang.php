@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once __DIR__ . '/class.definition.php';
+require_once dirname(__FILE__) . '/class.definition.php';
 
 class Module_Lang extends Module
 {
@@ -35,7 +35,7 @@ class Module_Lang extends Module
     }
 
     // Function for permission managment
-    public function getAllToken($op)
+    public static function getAllToken($op)
     {
         switch ($op) {
             case 'lang':

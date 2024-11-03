@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once __DIR__ . '/class.definition.php';
+require_once dirname(__FILE__) . '/class.definition.php';
 
 class Module_Configuration extends Module
 {
@@ -23,7 +23,7 @@ class Module_Configuration extends Module
         configurationDispatch($GLOBALS['op']);
     }
 
-    public function getAllToken($op)
+    public static function getAllToken($op)
     {
         return [
             'view' => ['code' => 'view',

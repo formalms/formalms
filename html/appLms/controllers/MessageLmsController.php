@@ -32,14 +32,18 @@ class MessageLmsController extends LmsController
     protected $model;
     protected $json;
     protected $aclManager;
+    /**
+     * @var true
+     */
+    public bool $can_send;
 
     public function init()
     {
         require_once _base_ . '/lib/lib.json.php';
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         $this->model = new MessageLms();
         $this->json = new Services_JSON();
-        $this->aclManager = Docebo::user()->getAClManager();
+        $this->aclManager = \FormaLms\lib\Forma::getAcl()->getACLManager();
         $this->can_send = true; //checkPerm('send_all', true) || checkPerm('send_upper', true);
     }
 

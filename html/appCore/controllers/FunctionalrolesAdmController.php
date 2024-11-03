@@ -364,7 +364,7 @@ class FunctionalrolesAdmController extends AdmController
         //validate inputs
         if (is_array($names)) {
             //prepare langs array
-            $lang_codes = Docebo::langManager()->getAllLangcode();
+            $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangcode();
             foreach ($lang_codes as $lang_code) {
                 $langs[$lang_code] = [
                     'name' => (isset($names[$lang_code]) ? $names[$lang_code] : ''),
@@ -406,7 +406,7 @@ class FunctionalrolesAdmController extends AdmController
         //validate inputs
         if (is_array($names)) {
             //prepare langs array
-            $lang_codes = Docebo::langManager()->getAllLangcode();
+            $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangcode();
             foreach ($lang_codes as $lang_code) {
                 $langs[$lang_code] = [
                     'name' => (isset($names[$lang_code]) ? $names[$lang_code] : ''),
@@ -457,7 +457,7 @@ class FunctionalrolesAdmController extends AdmController
         $_lang_desc = FormaLms\lib\Get::req('description', DOTY_MIXED, []);
 
         $_arr_langs = [];
-        $arr = Docebo::langManager()->getAllLangcode();
+        $arr = \FormaLms\lib\Forma::langManager()->getAllLangcode();
         foreach ($arr as $lang_code) {
             $_arr_langs[$lang_code] = [
                 'name' => (isset($_lang_name[$lang_code]) ? $_lang_name[$lang_code] : ''),
@@ -509,7 +509,7 @@ class FunctionalrolesAdmController extends AdmController
         $_lang_desc = FormaLms\lib\Get::req('description', DOTY_MIXED, []);
 
         $_arr_langs = [];
-        $arr = Docebo::langManager()->getAllLangcode();
+        $arr = \FormaLms\lib\Forma::langManager()->getAllLangcode();
         foreach ($arr as $lang_code) {
             $_arr_langs[$lang_code] = [
                 'name' => (isset($_lang_name[$lang_code]) ? $_lang_name[$lang_code] : ''),
@@ -738,7 +738,7 @@ class FunctionalrolesAdmController extends AdmController
         $list = $this->model->getManageUsersList($id_fncrole, $pagination, $searchFilter);
 
         //prepare the data for sending
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $output_results = [];
         if (is_array($list) && count($list) > 0) {
             foreach ($list as $idst => $record) {
@@ -888,7 +888,7 @@ class FunctionalrolesAdmController extends AdmController
         } elseif (isset($_POST['okselector'])) {
             //--- SAVE: users selection has been done --------------------------------
 
-            $acl_man = Docebo::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $user_selector = new UserSelector();
             $selection = $user_selector->getSelection();
 
@@ -922,12 +922,12 @@ class FunctionalrolesAdmController extends AdmController
             //$user_select->show_orgchart_simple_selector = TRUE;
 
             //filter selectable user by sub-admin permission
-            $acl_man = Docebo::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $user_selector->setUserFilter('exclude', [$acl_man->getAnonymousId()]);
-            if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+                $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
                 $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
                 $user_selector->setUserFilter('user', $admin_users);
                 $user_selector->setUserFilter('group', $admin_tree);
@@ -1185,7 +1185,7 @@ class FunctionalrolesAdmController extends AdmController
         $count_score = 0;
         $_std_score = 0;
         $_std_expiration = 0;
-        $lang_code = getLanguage();
+        $lang_code = Lang::get();
         $properties = $this->model->getCompetencesProperties($list);
         foreach ($cinfo as $key => $value) {
             $line = [];
@@ -1312,7 +1312,7 @@ class FunctionalrolesAdmController extends AdmController
 
         $this->render('competences_courses', [
             'title' => $title_arr,
-            'language' => getLanguage(),
+            'language' => Lang::get(),
             'competences_info' => $competences_info,
             'courses_info' => $courses_info,
             'json' => $this->json,
@@ -1364,7 +1364,7 @@ class FunctionalrolesAdmController extends AdmController
             'level' => Lang::t('_LEVEL', 'standard'),
         ];
         $f_list = $f_list + $fields;
-        $f_selected = $this->json->decode(Docebo::user()->getPreference('ui.directory.custom_columns'));
+        $f_selected = $this->json->decode(\FormaLms\lib\FormaUser::getCurrentUser()->getPreference('ui.directory.custom_columns'));
         if ($f_selected == false) {
             $f_selected = ['email', 'lastenter', 'register_date'];
         }
@@ -1446,7 +1446,7 @@ class FunctionalrolesAdmController extends AdmController
         $list = $this->model->getGapList($id_fncrole, $pagination, $searchFilter);
 
         //prepare the data for sending
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $output_results = [];
         if (is_array($list) && count($list) > 0) {
             foreach ($list as $idst => $record) {
@@ -1591,7 +1591,7 @@ class FunctionalrolesAdmController extends AdmController
         $list = $this->model->getGapList($id_fncrole, $pagination, $searchFilter);
 
         //prepare the data for exporting
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         if (is_array($list) && count($list) > 0) {
             if ($format == 'xls') {
@@ -1669,7 +1669,7 @@ class FunctionalrolesAdmController extends AdmController
         require_once _base_ . '/lib/lib.download.php';
         $format = FormaLms\lib\Get::req('format', DOTY_STRING, 'csv');
 
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $user_info = $acl_man->getUser($id_user, false);
         $buffer = '';
         $filename = preg_replace('/[\W]/i', '_', $this->model->getFunctionalRoleName($id_fncrole)) . '_' . preg_replace('/\//i', '', $user_info[1]) . '_' . date('Y_m_d') . '.' . $format;
@@ -1758,7 +1758,7 @@ class FunctionalrolesAdmController extends AdmController
         YuiLib::load('charts');
 
         //prepare page title
-        $acl_man = Docebo::user()->getACLManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();;
         $title_arr = [
             $base_url => Lang::t('_FUNCTIONAL_ROLE', 'fncroles'),
             $back_url => Lang::t('_USERS', 'fncroles') . ': ' . $this->model->getFunctionalRoleName($id_fncrole),
@@ -1844,7 +1844,7 @@ class FunctionalrolesAdmController extends AdmController
         $list = $this->model->getGapList($id_fncrole, $pagination, $searchFilter);
 
         //prepare the data for sending
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $output_results = [];
         if (is_array($list) && count($list) > 0) {
             foreach ($list as $idst => $record) {

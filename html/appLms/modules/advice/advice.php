@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2023 (Forma)
+ * Copyright (c) 2013-2022 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -13,16 +13,19 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Docebo::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit("You can't access");
 }
 
+/** @noinspection PhpUnusedLocalVariableInspection
+ * @noinspection PhpUnusedLocalVariableInspection
+ */
 function adviceList()
 {
     require_once _base_ . '/lib/lib.navbar.php';
     require_once _base_ . '/lib/lib.table.php';
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-    $lang = &DoceboLanguage::createInstance('advice');
+    $lang = FormaLanguage::createInstance('advice');
     $mod_perm = checkPerm('mod', true);
     $out = $GLOBALS['page'];
     $out->setWorkingZone('content');
@@ -31,7 +34,7 @@ function adviceList()
     $nav_bar->setLink('index.php?modname=advice&amp;op=advice&amp;tab=advice');
     $ini = $nav_bar->getSelectedElement();
 
-    $user_idst = Docebo::user()->getArrSt(); // $acl->getUserGroupsST(getLogUserId());
+    $user_idst = \FormaLms\lib\FormaUser::getCurrentUser()->getArrSt(); // $acl->getUserGroupsST(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
     $query_my_advice = 'SELECT DISTINCT idAdvice FROM %lms_adviceuser
 		WHERE ( idUser IN ( ' . implode(',', $user_idst) . " ) AND archivied = '0' )";
@@ -42,7 +45,7 @@ function adviceList()
         $advice_all[$row['idAdvice']] = $row['idAdvice'];
     }
     $query_my_arch_advice = "SELECT DISTINCT idAdvice FROM %lms_adviceuser
-		WHERE idUser = '" . getLogUserId() . "' AND archivied = '1'";
+		WHERE idUser = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' AND archivied = '1'";
     $re_my_arch_advice = sql_query($query_my_arch_advice);
 
     foreach ($re_my_arch_advice as $row) {
@@ -136,7 +139,7 @@ function archiveList()
 {
     require_once _base_ . '/lib/lib.table.php';
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-    $lang = &DoceboLanguage::createInstance('advice');
+    $lang = FormaLanguage::createInstance('advice');
     $mod_perm = checkPerm('mod', true);
     $out = $GLOBALS['page'];
     $out->setWorkingZone('content');
@@ -147,7 +150,7 @@ function archiveList()
     $query_my_arch_advice = '
 		SELECT DISTINCT idAdvice
 		FROM ' . $GLOBALS['prefix_lms'] . "_adviceuser
-		WHERE idUser = '" . getLogUserId() . "' AND archivied = '1'";
+		WHERE idUser = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' AND archivied = '1'";
     $re_my_arch_advice = sql_query($query_my_arch_advice);
     while (list($id) = sql_fetch_row($re_my_arch_advice)) {
         $advice_arch[] = $id;
@@ -215,10 +218,11 @@ function archiveList()
     }
 
     $form = new Form();
-    $out->add(Form::getHidden('archive_status', 'archive_status', '1')
+    $out->add($form->getHidden('archive_status', 'archive_status', '1')
         . $nav_bar->getNavBar($ini));
 }
 
+/** @noinspection PhpUnusedLocalVariableInspection */
 function advice()
 {
     checkPerm('view');
@@ -228,7 +232,7 @@ function advice()
 
     $active_tab = FormaLms\lib\Get::req('tab', DOTY_ALPHANUM, 'advice');
 
-    $lang = &DoceboLanguage::createInstance('advice');
+    $lang = FormaLanguage::createInstance('advice');
     $mod_perm = checkPerm('mod', true);
     $out = $GLOBALS['page'];
     $out->setWorkingZone('content');
@@ -272,11 +276,11 @@ function addadvice()
     checkPerm('mod');
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     require_once _base_ . '/lib/lib.form.php';
-    $lang = &DoceboLanguage::createInstance('advice');
+    $lang = FormaLanguage::createInstance('advice');
     $form = new Form();
 
     //finding group
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     $db_groups = $acl_man->getBasePathGroupST('/lms/course/' . $session->get('idCourse') . '/group/', true);
     $groups = [];
     $groups['me'] = $lang->def('_YOUONLY');
@@ -297,19 +301,19 @@ function addadvice()
     $GLOBALS['page']->add(getTitleArea($title, 'advice')
         . '<div class="std_block">'
         . getBackUi('index.php?modname=advice&amp;op=advice', $lang->def('_BACK'))
-        . Form::openForm('adviceform', 'index.php?modname=advice&amp;op=insadvice')
-        . Form::openElementSpace()
-        . Form::getTextfield($lang->def('_TITLE'), 'title', 'title', 255, $lang->def('_NOTITLE'))
-        . Form::getCheckbox($lang->def('_MARK_AS_IMPORTANT'), 'impo', 'impo', 1)
-        . Form::getTextarea($lang->def('_DESCRIPTION'), 'description', 'description', $lang->def('_DESCRIPTION'))
+        . $form->openForm('adviceform', 'index.php?modname=advice&amp;op=insadvice')
+        . $form->openElementSpace()
+        . $form->getTextfield($lang->def('_TITLE'), 'title', 'title', 255, $lang->def('_NOTITLE'))
+        . $form->getCheckbox($lang->def('_MARK_AS_IMPORTANT'), 'impo', 'impo', 1)
+        . $form->getTextarea($lang->def('_DESCRIPTION'), 'description', 'description', $lang->def('_DESCRIPTION'))
 
-        . Form::getDropDown($lang->def('_RECIPIENTS'), 'group', 'idGroup', $groups, $sel)
-        . Form::closeElementSpace()
-        . Form::openButtonSpace()
-        . Form::getButton('addadvice', 'addadvice', $lang->def('_INSERT'), false, 'onclick="showMsg(\'' . $lang->def('_WAITING') . '\');"')
-        . Form::getButton('undo', 'undo', $lang->def('_UNDO'))
-        . Form::closeButtonSpace()
-        . Form::closeForm()
+        . $form->getDropDown($lang->def('_RECIPIENTS'), 'group', 'idGroup', $groups, $sel)
+        . $form->closeElementSpace()
+        . $form->openButtonSpace()
+        . $form->getButton('addadvice', 'addadvice', $lang->def('_INSERT'), false, 'onclick="showMsg(\'' . $lang->def('_WAITING') . '\');"')
+        . $form->getButton('undo', 'undo', $lang->def('_UNDO'))
+        . $form->closeButtonSpace()
+        . $form->closeForm()
         . '</div>', 'content');
 }
 
@@ -325,7 +329,7 @@ function insadvice()
     } else {
         $impo = '0';
     }
-
+    
     // Fix Vulnerability CVE-2023-46693
     $_REQUEST['title'] = FormaLms\lib\Get::filter($_REQUEST['title'], DOTY_ALPHANUM);
 
@@ -333,7 +337,7 @@ function insadvice()
 		INSERT INTO ' . $GLOBALS['prefix_lms'] . "_advice
 		( idCourse, author, title, description, posted, important ) VALUES
 		( 	'" . (int) $session->get('idCourse') . "',
-			'" . getLogUserId() . "',
+			'" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "',
 			'" . addslashes($_REQUEST['title']) . "',
 			'" . addslashes($_REQUEST['description']) . "',
 			'" . date('Y-m-d H:i:s') . "',
@@ -344,19 +348,18 @@ function insadvice()
     }
     list($id_advice) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
 
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     switch ($_REQUEST['idGroup']) {
         case 'sel_user':
                 Util::jump_to('index.php?modname=advice&op=modreader&id_advice=' . $id_advice . '&load=1');
-
             break;
         case 'me':
-                $members = [getLogUserId()];
+                $members = [\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()];
                 $query_insert = '
 				INSERT INTO ' . $GLOBALS['prefix_lms'] . "_adviceuser
 				( idUser, idAdvice ) VALUES
-				( '" . getLogUserId() . "', '" . $id_advice . "' )";
+				( '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "', '" . $id_advice . "' )";
                 if (!sql_query($query_insert)) {
                     Util::jump_to('index.php?modname=advice&op=advice&result=err_user');
                 }
@@ -366,7 +369,7 @@ function insadvice()
                 $query_insert = '
 				INSERT INTO ' . $GLOBALS['prefix_lms'] . "_adviceuser
 				( idUser, idAdvice ) VALUES
-				( '" . getLogUserId() . "', '" . $id_advice . "' )";
+				( '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "', '" . $id_advice . "' )";
                 if (!sql_query($query_insert)) {
                     Util::jump_to('index.php?modname=advice&op=advice&result=err_user');
                 }
@@ -383,23 +386,25 @@ function insadvice()
 
             break;
     }
-    $members[] = getLogUserId();
+    $members[] = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
     require_once _base_ . '/lib/lib.eventmanager.php';
 
     $msg_composer = new EventMessageComposer();
     $_REQUEST['description'] = str_replace(['\r', '\n'], '', $_REQUEST['description']);
-
-    $arr_subst = [
+    $msg_composer->setSubjectLangText('email', '_ALERT_SUBJECT', false);
+    $msg_composer->setBodyLangText('email', '_ALERT_TEXT', [
         '[url]' => FormaLms\lib\Get::site_url(),
         '[course]' => $GLOBALS['course_descriptor']->getValue('name'),
         '[title]' => stripslashes($_REQUEST['title']),
         '[text]' => stripslashes($_REQUEST['description']),
-    ];
+    ]);
 
-    $msg_composer->setSubjectLangText('email', '_ALERT_SUBJECT', $arr_subst);
-    $msg_composer->setBodyLangText('email', '_ALERT_TEXT', $arr_subst);
-
-    $msg_composer->setBodyLangText('sms', '_ALERT_TEXT_SMS', $arr_subst);
+    $msg_composer->setBodyLangText('sms', '_ALERT_TEXT_SMS', [
+        '[url]' => FormaLms\lib\Get::site_url(),
+        '[course]' => $GLOBALS['course_descriptor']->getValue('name'),
+        '[title]' => stripslashes($_REQUEST['title']),
+        '[text]' => stripslashes($_REQUEST['description']),
+    ]);
 
     createNewAlert(
         'AdviceNew',
@@ -419,7 +424,7 @@ function modadvice()
     checkPerm('mod');
 
     require_once _base_ . '/lib/lib.form.php';
-    $lang = &DoceboLanguage::createInstance('advice');
+    $lang = &FormaLanguage::createInstance('advice');
     $form = new Form();
 
     $query_advice = '
@@ -436,18 +441,18 @@ function modadvice()
         getTitleArea($page_title, 'advice')
             . '<div class="std_block">'
             . getBackUi('index.php?modname=advice&amp;op=advice', $lang->def('_BACK'))
-            . Form::openForm('adviceform', 'index.php?modname=advice&amp;op=upadvice')
-            . Form::openElementSpace()
-            . Form::getHidden('idAdvice', 'idAdvice', $_GET['idAdvice'])
-            . Form::getTextfield($lang->def('_TITLE'), 'title', 'title', 60, $title)
-            . Form::getCheckbox($lang->def('_MARK_AS_IMPORTANT'), 'impo', 'impo', 1, $impo)
-            . Form::getTextarea($lang->def('_DESCRIPTION'), 'description', 'description', $description)
-            . Form::closeElementSpace()
-            . Form::openButtonSpace()
-            . Form::getButton('addadvice', 'addadvice', $lang->def('_SAVE'))
-            . Form::getButton('undo', 'undo', $lang->def('_UNDO'))
-            . Form::closeButtonSpace()
-            . Form::closeForm()
+            . $form->openForm('adviceform', 'index.php?modname=advice&amp;op=upadvice')
+            . $form->openElementSpace()
+            . $form->getHidden('idAdvice', 'idAdvice', $_GET['idAdvice'])
+            . $form->getTextfield($lang->def('_TITLE'), 'title', 'title', 60, $title)
+            . $form->getCheckbox($lang->def('_MARK_AS_IMPORTANT'), 'impo', 'impo', 1, $impo)
+            . $form->getTextarea($lang->def('_DESCRIPTION'), 'description', 'description', $description)
+            . $form->closeElementSpace()
+            . $form->openButtonSpace()
+            . $form->getButton('addadvice', 'addadvice', $lang->def('_SAVE'))
+            . $form->getButton('undo', 'undo', $lang->def('_UNDO'))
+            . $form->closeButtonSpace()
+            . $form->closeForm()
             . '</div>',
         'content'
     );
@@ -459,11 +464,6 @@ function upadvice()
 
     if ($_REQUEST['title'] == '') {
         $_REQUEST['title'] = Lang::t('_NOTITLE');
-    }
-    if ($_REQUEST['impo'] != '1') {
-        $impo = '0';
-    } else {
-        $impo = '1';
     }
 
     $query_advice = '
@@ -484,11 +484,13 @@ function modreader()
     checkPerm('mod');
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     require_once _base_ . '/lib/lib.userselector.php';
-    $lang = &DoceboLanguage::createInstance('advice', 'lms');
-    $out = &$GLOBALS['page'];
+    $lang = FormaLanguage::createInstance('advice', 'lms');
+    $out = $GLOBALS['page'];
     $id_advice = importVar('id_advice', true, 0);
 
-    $aclManager = new DoceboACLManager();
+    Util::jump_to('index.php?r=adm/userselector/show&instance=advicecourse&id=' . $id_advice . '&load=1');
+    //*DEPRECATED AFTER NEW USERSELECTOR /** */
+    $aclManager = new FormaACLManager();
     $user_select = new UserSelector();
 
     $user_select->show_user_selector = true;
@@ -526,7 +528,7 @@ function modreader()
         $user_select->resetSelection($users);
     }
     $arr_idstGroup = $aclManager->getGroupsIdstFromBasePath('/lms/course/' . (int) $session->get('idCourse') . '/subscribed/');
-    $me = [getLogUserId()];
+    $me = [\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()];
     $user_select->setUserFilter('exclude', $me);
     $user_select->setUserFilter('group', $arr_idstGroup);
     $arr_idstUser = $aclManager->getAllUsersFromIdst($arr_idstGroup);
@@ -554,8 +556,6 @@ function updreader()
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     require_once _base_ . '/lib/lib.userselector.php';
 
-    $lang = &DoceboLanguage::createInstance('advice', 'lms');
-
     $id_advice = importVar('id_advice', true, 0);
 
     $user_select = new UserSelector();
@@ -569,7 +569,7 @@ function updreader()
     $old_users = [];
 
     $found = false;
-    $me = getLogUserId();
+    $me = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
     while (list($id_user) = sql_fetch_row($re_reader)) {
         $old_users[] = $id_user;
         if ($id_user == $me) {
@@ -610,21 +610,24 @@ function updreader()
 			SELECT title, description, important
 			FROM ' . $GLOBALS['prefix_lms'] . "_advice
 			WHERE idAdvice='" . (int) $id_advice . "'";
-        [$title, $description, $impo] = sql_fetch_row(sql_query($query_advice));
-
-        $arr_subst = [
-            '[url]' => FormaLms\lib\Get::site_url(),
-            '[course]' => $GLOBALS['course_descriptor']->getValue('name'),
-            '[title]' => stripslashes($title),
-            '[text]' => stripslashes($description),
-        ];
+        list($title, $description, $impo) = sql_fetch_row(sql_query($query_advice));
 
         $msg_composer = new EventMessageComposer();
 
         $msg_composer->setSubjectLangText('email', '_ALERT_SUBJECT', false);
-        $msg_composer->setBodyLangText('email', '_ALERT_TEXT',$arr_subst );
+        $msg_composer->setBodyLangText('email', '_ALERT_TEXT', [
+            '[url]' => FormaLms\lib\Get::site_url(),
+            '[course]' => $GLOBALS['course_descriptor']->getValue('name'),
+            '[title]' => stripslashes($title),
+            '[text]' => stripslashes($description),
+        ]);
 
-        $msg_composer->setBodyLangText('sms', '_ALERT_TEXT_SMS', $arr_subst);
+        $msg_composer->setBodyLangText('sms', '_ALERT_TEXT_SMS', [
+            '[url]' => FormaLms\lib\Get::site_url(),
+            '[course]' => $GLOBALS['course_descriptor']->getValue('name'),
+            '[title]' => stripslashes($title),
+            '[text]' => stripslashes($description),
+        ]);
 
         createNewAlert(
             'AdviceNew',
@@ -645,7 +648,7 @@ function deladvice()
 
     require_once _base_ . '/lib/lib.form.php';
 
-    $lang = &DoceboLanguage::createInstance('advice');
+    $lang = FormaLanguage::createInstance('advice');
     $id_advice = importVar('idAdvice', true, 0);
 
     if (isset($_POST['undo'])) {
@@ -676,8 +679,8 @@ function deladvice()
         $GLOBALS['page']->add(
             getTitleArea($page_title, 'advice')
                 . '<div class="std_block">'
-                . Form::openForm('del_advice', 'index.php?modname=advice&amp;op=deladvice')
-                . Form::getHidden('idAdvice', 'idAdvice', $id_advice)
+                . $form->openForm('del_advice', 'index.php?modname=advice&amp;op=deladvice')
+                . $form->getHidden('idAdvice', 'idAdvice', $id_advice)
                 . getDeleteUi(
                     $lang->def('_AREYOUSURE'),
                     '<span>' . $lang->def('_TITLE') . ' : </span>' . $advice . '<br />'
@@ -686,7 +689,7 @@ function deladvice()
                     'confirm',
                     'undo'
                 )
-                . Form::closeForm()
+                . $form->closeForm()
                 . '</div>',
             'content'
         );
@@ -699,9 +702,9 @@ function archiveadvice()
 
     $id_advice = importVar('idAdvice');
 
-    $acl = &Docebo::user()->getAcl();
-    $user_idst = $acl->getUserGroupsST(getLogUserId());
-    $iam = getLogUserId();
+    $acl = \FormaLms\lib\Forma::getAcl();;
+    $user_idst = $acl->getUserGroupsST(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
+    $iam = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
     $user_idst[] = $iam;
 
     $query_my_advice = '

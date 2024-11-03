@@ -20,11 +20,24 @@ define('REPOFIELDIDOWNER', 13);
 class HomerepoDirDb extends RepoDirDb
 {
     public $idOwner = 0;
+    public $org_publish_for;
+    public $org_access;
+    public $org_publish_to;
+    public $org_publish_from;
+    public $org_height;
+    public $org_width;
+    public $org_milestone;
+    public $org_visible;
+    public $org_idParam;
+    public $org_isTerminator;
+    public $org_prerequisites;
+    public $org_idCourse;
+    public $org_objectType;
 
-    public function HomerepoDirDb($table_name, $idOwner)
+    public function __construct($table_name, $idOwner)
     {
         $this->idOwner = $idOwner;
-        parent::RepoDirDb($table_name);
+        parent::__construct($table_name);
     }
 
     public function _getOtherFields($tname = false)
@@ -177,8 +190,8 @@ function homerepo_opfolder(&$treeView, $op)
 function homerepo_itemproperties(&$treeView, &$arrayData, $idItem)
 {
     //function loadFields( $arrayData, &$lo, $idLO ) {
-    $lang = &DoceboLanguage::createInstance('homerepo', 'lms');
-    $langClassification = &DoceboLanguage::createInstance('classification', 'lms');
+    $lang = &FormaLanguage::createInstance('homerepo', 'lms');
+    $langClassification = &FormaLanguage::createInstance('classification', 'lms');
 
     $GLOBALS['page']->add('<form id="manHomerepo" method="post"'
         . ' action="index.php?' . $_SERVER['QUERY_STRING'] . '"'
@@ -206,7 +219,7 @@ function homerepo_itemproperties(&$treeView, &$arrayData, $idItem)
         }
     closedir($langl->handle);
     sort($langArray);*/
-    $langArray = Docebo::langManager()->getAllLangCode();
+    $langArray = \FormaLms\lib\Forma::langManager()->getAllLangCode();
 
     if (!isset($_POST['idItem'])) {
         if ($idItem !== null) {

@@ -21,9 +21,14 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 class Config_Lms extends Config
 {
     /**
+     * @var mixed|string
+     */
+    public $table;
+
+    /**
      * class constructor.
      */
-    public function Config_Lms($table = false)
+    public function __construct($table = false)
     {
         parent::Config($table);
 
@@ -39,7 +44,7 @@ class Config_Lms extends Config
      */
     public function getRegroupUnit($with_invisible = false)
     {
-        $lang = &DoceboLanguage::createInstance('admin_config', 'lms');
+        $lang = &FormaLanguage::createInstance('admin_config', 'lms');
 
         $query_regroup = '
 		SELECT DISTINCT regroup 
@@ -63,7 +68,7 @@ class Config_Lms extends Config
     {
         require_once _base_ . '/lib/lib.form.php';
 
-        $lang = &DoceboLanguage::createInstance('configuration', 'lms');
+        $lang = &FormaLanguage::createInstance('configuration', 'lms');
 
         $reSetting = sql_query('
 		SELECT param_name, param_value, value_type, max_size 
@@ -92,7 +97,7 @@ class Config_Lms extends Config
 
                 case 'language':
                     //drop down language
-                    $langs = Docebo::langManager()->getAllLangCode();
+                    $langs = \FormaLms\lib\Forma::langManager()->getAllLangCode();
                     $html .= Form::getDropdown($lang->def('_' . strtoupper($var_name)),
                                                 $var_name,
                                                 'option[' . $var_name . ']',
@@ -161,7 +166,7 @@ class Config_Lms extends Config
                  break;
 
                 case 'tablist_coursecatalogue':
-                    $lang_c = &DoceboLanguage::createInstance('catalogue', 'lms');
+                    $lang_c = &FormaLanguage::createInstance('catalogue', 'lms');
 
                     $tab_selected = Util::unserialize(urldecode($var_value));
 
@@ -186,7 +191,7 @@ class Config_Lms extends Config
                  break;
 
                 case 'first_coursecatalogue_tab':
-                    $lang_c = &DoceboLanguage::createInstance('catalogue', 'lms');
+                    $lang_c = &FormaLanguage::createInstance('catalogue', 'lms');
 
                     $tab_list = [
                         'time' => $lang_c->def('_TAB_VIEW_TIME'),
@@ -261,7 +266,7 @@ class Config_Lms extends Config
             switch ($value_type) {
                 //if is int cast it
                 case 'language':
-                    $lang = Docebo::langManager()->getAllLangCode();
+                    $lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
                     $new_value = $lang[$_POST['option'][$var_name]];
                  break;
                 case 'template':
@@ -348,8 +353,8 @@ class Config_Lms extends Config
         }
 
         if ($after_reload_perm) {
-            Docebo::user()->loadUserSectionST('/');
-            Docebo::user()->SaveInSession();
+            \FormaLms\lib\FormaUser::getCurrentUser()->loadUserSectionST('/');
+            \FormaLms\lib\FormaUser::getCurrentUser()->saveInSession();
         }
 
         return $re;

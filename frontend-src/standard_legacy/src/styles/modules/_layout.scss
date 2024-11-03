@@ -1,0 +1,152 @@
+* {
+  outline: none !important;
+  box-sizing: border-box;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+  min-width: 100%;
+  max-width: 100%;
+  min-height: 100%;
+  max-height: 100%;
+  margin: 0 auto;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: #fff;
+  -webkit-overflow-scrolling: touch;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  max-height: 100%;
+  margin: 0 auto;
+  padding: 0;
+  background-color: transparent;
+  transition: visibility 0.4s linear 0s, opacity 0.4s linear 0s;
+
+  &.appIsReady {
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: all !important;
+    transition: visibility 0.4s linear 0s, opacity 0.4s linear 0s;
+  }
+}
+
+.clear {
+  clear: both;
+}
+
+.text--open-sans {
+  font-family: "Open-sans", sans-serif;
+}
+
+//FIXME fixare griglia
+.forma-grid {
+  //padding: 0 8.33%;
+  overflow: auto;
+
+  @include breakpoint($ipad) {
+    padding: 0;
+  }
+}
+
+.forma-grid__item {
+  float: left;
+  width: 100%;
+  padding: 0 0.78%;
+  margin-bottom: 30px;
+
+  @include breakpoint($tablet) {
+    width: 50%;
+  }
+
+  @include breakpoint($ipad) {
+    width: 33.33%;
+  }
+}
+
+.forma-grid__item--catalogue {
+  float: left;
+  width: 100%;
+  padding: 0 0.78%;
+  margin-bottom: 30px;
+
+  @include breakpoint($tablet) {
+    width: 50%;
+  }
+
+  @include breakpoint($ipad) {
+    width: 50%;
+  }
+}
+
+.glyphicon {
+  -webkit-font-smoothing: auto;
+}
+
+.no-scroll {
+  overflow: hidden;
+}
+
+.middlearea_container {
+  margin-top: 80px;
+}
+
+#middlearea.yui-navset,
+.middlearea_container--margintop-small {
+  margin-top: 0;
+
+  @include breakpoint($tablet) {
+    margin-top: 20px;
+  }
+}
+
+.header--external-catalogue {
+  top: 0;
+}
+
+.lms-user-content-wrapper {
+  @media (max-width: 1024px) {
+    padding: 0;
+    margin: 0;
+    width: 100vw;
+  }
+  > .container-fluid {
+    height: auto;
+    min-height: 90vh;
+    @media (max-width: 1024px) {
+      padding: 0;
+    }
+
+    > .row {
+      @media (max-width: 1024px) {
+        margin: 0;
+      }
+
+      > .col-md-12 {
+        @media (max-width: 1024px) {
+          margin: 0;
+          padding: 0;
+        }
+      }
+    }
+  }
+}
+
+div#container {
+  min-height: calc(100% - 86px);
+}
+
+.dataTables_wrapper {
+  .dataTables_filter {
+    float: right;
+  }
+  .dataTables_length {
+    float: right;
+    margin-left: 1rem;
+  }
+}

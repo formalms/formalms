@@ -40,16 +40,16 @@ class DashboardBlockWelcomeLms extends DashboardBlockLms
     public function getViewData()
     {
         $data = $this->getCommonViewData();
-        $acl_man = Docebo::user()->getAclManager();
-        $user = $acl_man->getUser(Docebo::user()->idst, null);
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
+        $user = $acl_man->getUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), null);
         $data['data'] = [
             'firstname' => $user[2],
             'lastname' => $user[3],
             'platform' => FormaLms\lib\Get::sett('page_title'),
         ];
 
-        $title = str_replace('u0027', '\'', $this->data['title']);
-        $msg = str_replace('u0027', '\'', $this->data['welcome_text']);
+        $title = str_replace('u0027', '\'', array_key_exists('title',$this->data ?? []) ? $this->data['title'] : '');
+        $msg = str_replace('u0027', '\'', array_key_exists('welcome_text',$this->data ?? []) ? $this->data['welcome_text'] : '');
 
 
         $msg = Lang::t($msg ?: '_DASHBOARD_WELCOME_MESSAGE', 'dashboardsetting');
@@ -60,7 +60,7 @@ class DashboardBlockWelcomeLms extends DashboardBlockLms
             $msg = str_replace("[$placeholder]", $data['data'][$placeholder], $msg);
         }
         $data['msg'] = $msg;
-        $data['title'] =  $title;
+        $data['title'] = $title;
 
         return $data;
     }

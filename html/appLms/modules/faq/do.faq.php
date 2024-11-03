@@ -13,15 +13,15 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (!Docebo::user()->isAnonymous()) {
+if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     function play($object_faq, $id_param)
     {
         !checkPerm('view', true, 'organization') && !checkPerm('view', true, 'storage');
 
         require_once _base_ . '/lib/lib.form.php';
-        require_once _lms_ . '/lib/lib.param.php';
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
 
-        $lang = &DoceboLanguage::createInstance('faq');
+        $lang = FormaLanguage::createInstance('faq');
 
         $idCategory = $object_faq->getId();
         $mode = importVar('mode', false, 'faq');
@@ -42,7 +42,7 @@ if (!Docebo::user()->isAnonymous()) {
         // NOTE: Track only if $idReference is present
         if ($idReference !== false) {
             require_once _lms_ . '/class.module/track.faq.php';
-            list($exist, $idTrack) = Track_Faq::getIdTrack($idReference, getLogUserId(), $idCategory, true);
+            list($exist, $idTrack) = Track_Faq::getIdTrack($idReference, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $idCategory, true);
             if ($exist) {
                 $ti = new Track_Faq($idTrack);
                 $ti->setDate(date('Y-m-d H:i:s'));
@@ -50,7 +50,7 @@ if (!Docebo::user()->isAnonymous()) {
                 $ti->update();
             } else {
                 $ti = new Track_Faq(false);
-                $ti->createTrack($idReference, $idTrack, getLogUserId(), date('Y-m-d H:i:s'), 'completed', 'faq');
+                $ti->createTrack($idReference, $idTrack, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), date('Y-m-d H:i:s'), 'completed', 'faq');
             }
         }
 
@@ -241,7 +241,7 @@ if (!Docebo::user()->isAnonymous()) {
         }
         $GLOBALS['page']->add('<div class="align_center">'
         . '<a href="#top">'
-            . '<img src="' . getPathImage() . 'standard/up.png" title="' . $lang->def('_BACKTOTOP') . '" />'
+            . '<img src="' . getPathImage() . 'standard/up_arrow.png" title="' . $lang->def('_BACKTOTOP') . '" />'
             . $lang->def('_BACKTOTOP')
         . '</a>'
         . getBackUi(Util::str_replace_once('&', '&amp;', $back_filtered), $lang->def('_BACK')), 'content');

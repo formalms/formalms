@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Docebo::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit("You can't access");
 }
 
@@ -26,7 +26,7 @@ function showgrade()
     require_once _base_ . '/lib/lib.table.php';
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
 
-    $lang = &DoceboLanguage::createInstance('gradebook', 'lms');
+    $lang = &FormaLanguage::createInstance('gradebook', 'lms');
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
 
@@ -107,8 +107,8 @@ function showgrade()
     }
 
     // XXX: retrive report and test score
-    $report_score = &$report_man->getReportsScores($id_report, getLogUserId());
-    $tests_score = &$test_man->getTestsScores($id_test, [getLogUserId()]);
+    $report_score = &$report_man->getReportsScores($id_report, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
+    $tests_score = &$test_man->getTestsScores($id_test, [\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()]);
 
     // XXX: create table
     $table = new Table(0, $lang->def('_GRADEBOOK_CAPTION'), $lang->def('_GRADEBOOK_SUMMARY'));
@@ -149,7 +149,7 @@ function showgrade()
     $table->setColsStyle($type_h);
     $table->addHead($cont_h);
 
-    $id_user = getLogUserId();
+    $id_user = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
     // XXX: construct table data
     if (!empty($reports)) {
@@ -273,7 +273,7 @@ function coursereport()
     require_once _lms_ . '/lib/lib.coursereport.php';
     require_once _base_ . '/lib/lib.table.php';
 
-    $lang = &DoceboLanguage::createInstance('gradebook', 'lms');
+    $lang = &FormaLanguage::createInstance('gradebook', 'lms');
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
 
@@ -350,10 +350,10 @@ function coursereport()
         }
     }
 
-    $id_user = getLogUserId();
+    $id_user = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
     if (count($id_test)) {
         $title = $GLOBALS['course_descriptor']->getValue('name');
-        $username = Docebo::user()->getUserName();
+        $username = \FormaLms\lib\FormaUser::getCurrentUser()->getUserName();
 
         $GLOBALS['page']->add(
             getTitleArea($lang->def('_GRADEBOOK_AREATITLE'), 'gradebook')
@@ -419,7 +419,7 @@ function user_test_report($idUser, $idTest, $id_track)
     if (!checkPerm('view', true, 'organization') && !checkPerm('view', true, 'storage')) {
         exit("You can't access");
     }
-    $lang = &DoceboLanguage::createInstance('gradebook', 'lms');
+    $lang = &FormaLanguage::createInstance('gradebook', 'lms');
     $idTrack = $id_track;
 
     //test info---------------------------------------------------------
@@ -469,7 +469,7 @@ function user_test_report($idUser, $idTest, $id_track)
         }
         $reQuest = sql_query($query_question);
         while (list($id_quest, $title_quest, $type_quest, $type_file, $type_class, $id_cat) = sql_fetch_row($reQuest)) {
-            require_once Forma::inc(_lms_ . '/modules/question/' . $type_file);
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/' . $type_file);
 
             $quest_point_do = 0;
 

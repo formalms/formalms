@@ -313,9 +313,9 @@ class CodeManager
         . ' FROM ' . $this->_getCodeCourseTable() . ' AS ccc JOIN ' . $this->_getCourseTable() . ' AS lc ON ccc.idCourse = lc.idCourse'
         . " WHERE ccc.idCodeGroup  = '" . $id_code_group . "'
 		 	AND ((lc.can_subscribe = 2
-			AND (lc.sub_end_date = '0000-00-00'
+			AND (lc.sub_end_date IS NULL
 				OR lc.sub_end_date >= '2015-02-06')
-			AND (lc.sub_start_date = '0000-00-00'
+			AND (lc.sub_start_date IS NULL
 				OR '2015-02-06' >= lc.sub_start_date))
 		OR (lc.can_subscribe = 1))";
 

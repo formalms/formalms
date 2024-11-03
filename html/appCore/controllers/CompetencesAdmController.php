@@ -24,6 +24,8 @@ class CompetencesAdmController extends AdmController
     /*
      * initialize the class
      */
+    public array $permissions;
+
     public function init()
     {
         parent::init();
@@ -236,7 +238,7 @@ class CompetencesAdmController extends AdmController
             'selected_node' => $this->_getFromSession('selected_node', 0),
             'filter_text' => $this->_getFromSession('filter_text', ''),
             'show_descendants' => $this->_getFromSession('show_descendants', false),
-            'language' => getLanguage(),
+            'language' => Lang::get(),
             'startIndex' => $this->_getFromSession('startIndex', 0),
             'results' => $this->_getFromSession('results', FormaLms\lib\Get::sett('visuItem', 25)),
             'rowsPerPage' => $this->_getFromSession('rowsPerPage', FormaLms\lib\Get::sett('visuItem', 25)),
@@ -588,7 +590,7 @@ class CompetencesAdmController extends AdmController
         //validate inputs
         if (is_array($names)) {
             //prepare langs array
-            $lang_codes = Docebo::langManager()->getAllLangcode();
+            $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangcode();
             foreach ($lang_codes as $lang_code) {
                 $langs[$lang_code] = [
                     'name' => (isset($names[$lang_code]) ? $names[$lang_code] : ''),
@@ -603,7 +605,7 @@ class CompetencesAdmController extends AdmController
             //return node data to add in the treeview of the page
             $nodedata = [
                 'id' => $res,
-                'label' => $this->model->getCategoryName($res, getLanguage()),
+                'label' => $this->model->getCategoryName($res, Lang::get()),
                 'is_leaf' => true,
                 'count_objects' => 0,
             ];
@@ -650,7 +652,7 @@ class CompetencesAdmController extends AdmController
         //validate inputs
         if (is_array($names)) {
             //prepare langs array
-            $lang_codes = Docebo::langManager()->getAllLangcode();
+            $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangcode();
             foreach ($lang_codes as $lang_code) {
                 $langs[$lang_code] = [
                     'name' => (isset($names[$lang_code]) ? $names[$lang_code] : ''),
@@ -662,7 +664,7 @@ class CompetencesAdmController extends AdmController
         //insert data in the DB
         $res = $this->model->updateCategory($id_category, $langs);
         if ($res) {
-            $_language = FormaLms\lib\Get::req('lang', DOTY_ALPHANUM, getLanguage());
+            $_language = FormaLms\lib\Get::req('lang', DOTY_ALPHANUM, Lang::get());
             $output = [
                 'success' => true,
                 'new_name' => (isset($names[$lang_code]) ? $names[$lang_code] : ''),
@@ -742,7 +744,7 @@ class CompetencesAdmController extends AdmController
         $_lang_desc = FormaLms\lib\Get::req('description', DOTY_MIXED, []);
 
         $_arr_langs = [];
-        $arr = Docebo::langManager()->getAllLangcode();
+        $arr = \FormaLms\lib\Forma::langManager()->getAllLangcode();
         foreach ($arr as $lang_code) {
             $_arr_langs[$lang_code] = [
                 'name' => (isset($_lang_name[$lang_code]) ? $_lang_name[$lang_code] : ''),
@@ -792,7 +794,7 @@ class CompetencesAdmController extends AdmController
         $_lang_desc = FormaLms\lib\Get::req('description', DOTY_MIXED, []);
 
         $_arr_langs = [];
-        $arr = Docebo::langManager()->getAllLangcode();
+        $arr = \FormaLms\lib\Forma::langManager()->getAllLangcode();
         foreach ($arr as $lang_code) {
             $_arr_langs[$lang_code] = [
                 'name' => (isset($_lang_name[$lang_code]) ? $_lang_name[$lang_code] : ''),
@@ -936,7 +938,7 @@ class CompetencesAdmController extends AdmController
 
         $output_results = [];
         if (is_array($list)) {
-            $acl_man = Docebo::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $required_users = $this->model->getRequiredUsers($id_competence);
 
             foreach ($list as $user) {
@@ -1009,10 +1011,10 @@ class CompetencesAdmController extends AdmController
         } elseif (isset($_POST['okselector'])) {
             //--- SAVE: users selection has been done --------------------------------
 
-            $acl_man = Docebo::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $user_selector = new UserSelector();
             $selection = $user_selector->getSelection($_POST);
-            $users_selected = &$acl_man->getAllUsersFromIdst($selection);
+            $users_selected = $acl_man->getAllUsersFromIdst($selection);
             $competence_users = $this->model->getCompetenceUsers($id_competence, true);
             $users_existent = array_keys($competence_users);
 
@@ -1102,12 +1104,12 @@ class CompetencesAdmController extends AdmController
             //$user_select->show_orgchart_simple_selector = TRUE;
 
             //filter selectable user by sub-admin permission
-            $acl_man = Docebo::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $user_selector->setUserFilter('exclude', [$acl_man->getAnonymousId()]);
-            if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+                $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
                 $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
                 $user_selector->setUserFilter('user', $admin_users);
                 $user_selector->setUserFilter('group', $admin_tree);
@@ -1158,6 +1160,14 @@ class CompetencesAdmController extends AdmController
         }
         $assign = FormaLms\lib\Get::req('assign_score', DOTY_MIXED, []);
         $remove = FormaLms\lib\Get::req('del_selection', DOTY_STRING, '');
+        $allValue = FormaLms\lib\Get::req('_score_', DOTY_INT, 0);
+
+        if($allValue) {
+            foreach($assign as $userId => $assigned_user) {
+                $assign[$userId] = $allValue;
+            }
+        }
+
         $del_selection = ($remove != '' ? explode(',', $remove) : []);
 
         $res1 = $this->model->assignCompetenceUsers($id_competence, $assign, true);
@@ -1302,7 +1312,7 @@ class CompetencesAdmController extends AdmController
             $_user_data = $user_model->getUsersDetails($users, true, true);
 
             $_std_score = 0;
-            $acl_man = Docebo::user()->getACLManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();;
             foreach (array_keys($_user_data) as $id_user) {
                 $line = [];
 
@@ -1539,7 +1549,7 @@ class CompetencesAdmController extends AdmController
 
             $counter = 0; //how many score type competences
             $info = $this->model->getCompetencesInfo($_new_competences);
-            $lang_code = getLanguage();
+            $lang_code = Lang::get();
             $std_value = 0;
             foreach ($info as $id => $competence) {
                 if ($competence->type == 'score') {
@@ -1759,7 +1769,7 @@ class CompetencesAdmController extends AdmController
 
         $counter = 0; //how many score type competences
         $info = $this->model->getCompetencesInfo($arr_competences);
-        $lang_code = getLanguage();
+        $lang_code = Lang::get();
         $std_value = 0;
         foreach ($info as $id => $competence) {
             if ($competence->type == 'score') {
@@ -1903,15 +1913,15 @@ class CompetencesAdmController extends AdmController
         $table->addHead($label_h, $style_h);
 
         $type = $this->model->getCompetenceType($id_competence);
-        $acl_man = Docebo::user()->getACLManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();;
         foreach ($userdata as $id_user => $record) {
             $line = [];
 
             $line[] = Layout::highlight($acl_man->relativeId($uinfo[$id_user]->userid), $filter_text);
             $line[] = Layout::highlight($uinfo[$id_user]->lastname, $filter_text);
             $line[] = Layout::highlight($uinfo[$id_user]->firstname, $filter_text);
-            $line[] = ($type == 'score' ? $userdata[$id_user]->score_got : '-');
-            $line[] = Format::date($userdata[$id_user]->last_assign_date, 'datetime');
+            $line[] = ($type == 'score' ? $record->score_got : '-');
+            $line[] = Format::date($record->last_assign_date, 'datetime');
             $line[] = $icon_history;
 
             $table->addBody($line);
@@ -1958,7 +1968,7 @@ class CompetencesAdmController extends AdmController
         $new_value = FormaLms\lib\Get::req('new_value', DOTY_MIXED, '');
         $old_value = FormaLms\lib\Get::req('old_value', DOTY_MIXED, '');
         $column = FormaLms\lib\Get::req('column', DOTY_STRING, '');
-        $language = FormaLms\lib\Get::req('language', DOTY_STRING, getLanguage());
+        $language = FormaLms\lib\Get::req('language', DOTY_STRING, Lang::get());
 
         if ($new_value === $old_value) {
             echo $this->json->encode(['success' => true]);

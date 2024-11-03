@@ -45,7 +45,7 @@ class PrecompileLmsController extends LmsController
         switch ($res) {
             case 'err': $result_message .= UIFeedback::notice(Lang::t('_SOME_MANDATORY_EMPTY', 'register'), true);
         }
-        $id_user = Docebo::user()->getIdst();
+        $id_user = \FormaLms\lib\FormaUser::getCurrentUser()->getIdst();
         $policy_checked = $this->model->getAcceptingPolicy($id_user);
         $fields_checked = $fieldlist->checkUserMandatoryFields(false);
 
@@ -56,7 +56,7 @@ class PrecompileLmsController extends LmsController
                 'fields_checked' => $fields_checked,
                 'policy_id' => $this->model->getPrivacyPolicyId(),
                 'policy_text' => $this->model->getPrivacyPolicyText(),
-                'id_user' => Docebo::user()->getIdSt(),
+                'id_user' => \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(),
                 'fieldlist' => $fieldlist,
             ]);
         } elseif ($_REQUEST['r'] == 'precompile/show') {
@@ -69,7 +69,7 @@ class PrecompileLmsController extends LmsController
      */
     public function set()
     {
-        $id_user = Docebo::user()->getIdst();
+        $id_user = \FormaLms\lib\FormaUser::getCurrentUser()->getIdst();
 
         require_once _adm_ . '/lib/lib.field.php';
         $fl = new FieldList();

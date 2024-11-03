@@ -20,7 +20,7 @@ function GetAdminPanel()
 {
     $ret_str = '
         <li data-sm-reverse="true" style="float:right">
-            <a href="#"><i class="fa fa-user"></i>&nbsp;<b>' . Docebo::user()->getUserName() . '</b></a>
+            <a href="#"><i class="fa fa-user"></i>&nbsp;<b>' . \FormaLms\lib\FormaUser::getCurrentUser()->getUserName() . '</b></a>
             <ul> ';
 
     if (FormaLms\lib\Get::sett('profile_modify', 'allow') != 'disallow') {
@@ -51,7 +51,7 @@ function GetCompanyLogo()
 
 function BackToLms()
 {
-    $lang = &DoceboLanguage::createInstance('menu', 'framework');
+    $lang = FormaLanguage::createInstance('menu', 'framework');
 
     return '<li data-sm-reverse="true" style="float:right">
                 <a href="' . $GLOBALS['where_lms_relative'] . '"><i class="fa fa-home" aria-hidden="true"></i>&nbsp;' .

@@ -13,13 +13,13 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (!Docebo::user()->isAnonymous()) {
+if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     function notes()
     {
         checkPerm('view');
 
         require_once _base_ . '/lib/lib.table.php';
-        $lang = &DoceboLanguage::createInstance('notes', 'lms');
+        $lang = &FormaLanguage::createInstance('notes', 'lms');
         $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         $nav_bar = new NavBar('ini', FormaLms\lib\Get::sett('visuItem'), 0);
 
@@ -50,13 +50,13 @@ if (!Docebo::user()->isAnonymous()) {
         $reNotes = sql_query('
 	SELECT idNotes, data, title 
 	FROM ' . $GLOBALS['prefix_lms'] . "_notes 
-	WHERE owner ='" . getLogUserId() . "' AND idCourse='" . $idCourse . "' 
+	WHERE owner ='" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' AND idCourse='" . $idCourse . "' 
 	ORDER BY $order 
 	LIMIT $ini," . FormaLms\lib\Get::sett('visuItem'));
 
         list($num_notes) = sql_fetch_row(sql_query('SELECT COUNT(*) 
 	FROM ' . $GLOBALS['prefix_lms'] . "_notes 
-	WHERE owner ='" . getLogUserId() . "' AND idCourse='" . $idCourse . "' "));
+	WHERE owner ='" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' AND idCourse='" . $idCourse . "' "));
         $nav_bar->setElementTotal($num_notes);
 
         $img_up = '<img class="valing-middle" src="' . getPathImage() . 'standard/up_arrow.png" alt="' . $lang->def('_UP') . '"/>';
@@ -138,7 +138,7 @@ if (!Docebo::user()->isAnonymous()) {
         checkPerm('view');
         $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         require_once _base_ . '/lib/lib.table.php';
-        $lang = &DoceboLanguage::createInstance('notes', 'lms');
+        $lang = &FormaLanguage::createInstance('notes', 'lms');
 
         list($data, $title, $textof) = sql_fetch_row(sql_query('
 	SELECT data,title,textof 
@@ -168,7 +168,7 @@ if (!Docebo::user()->isAnonymous()) {
         checkPerm('view');
 
         require_once _base_ . '/lib/lib.form.php';
-        $lang = &DoceboLanguage::createInstance('notes', 'lms');
+        $lang = &FormaLanguage::createInstance('notes', 'lms');
 
         $title_page = [
         'index.php?modname=notes&amp;op=notes' => $lang->def('_NOTES'),
@@ -197,7 +197,7 @@ if (!Docebo::user()->isAnonymous()) {
     {
         checkPerm('view');
 
-        $lang = &DoceboLanguage::createInstance('notes', 'lms');
+        $lang = &FormaLanguage::createInstance('notes', 'lms');
         $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         if (isset($_POST['undo'])) {
             Util::jump_to('index.php?modname=notes&op=notes');
@@ -208,7 +208,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         $query_ins = '
 	INSERT INTO ' . $GLOBALS['prefix_lms'] . "_notes 
-	SET owner = '" . getLogUserId() . "',
+	SET owner = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "',
 		idCourse = '" . (int) $idCourse . "',
 		data = '" . date('Y-m-d H:i:s') . "',
 		title = '" . $_POST['title'] . "',
@@ -227,10 +227,10 @@ if (!Docebo::user()->isAnonymous()) {
         list($title, $textof) = sql_fetch_row(sql_query('
 	SELECT title, textof 
 	FROM ' . $GLOBALS['prefix_lms'] . "_notes 
-	WHERE  idNotes = '" . $_GET['idNotes'] . "'  AND owner ='" . getLogUserId() . "' AND idCourse='" . $idCourse . "'"));
+	WHERE  idNotes = '" . $_GET['idNotes'] . "'  AND owner ='" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' AND idCourse='" . $idCourse . "'"));
 
         require_once _base_ . '/lib/lib.form.php';
-        $lang = &DoceboLanguage::createInstance('notes', 'lms');
+        $lang = &FormaLanguage::createInstance('notes', 'lms');
 
         $page_title = [
         'index.php?modname=notes&amp;op=notes' => $lang->def('_NOTES'),
@@ -261,7 +261,7 @@ if (!Docebo::user()->isAnonymous()) {
     function upnotes()
     {
         checkPerm('view');
-        $lang = &DoceboLanguage::createInstance('notes', 'lms');
+        $lang = &FormaLanguage::createInstance('notes', 'lms');
 
         if (isset($_POST['undo'])) {
             Util::jump_to('index.php?modname=notes&op=notes');
@@ -275,7 +275,7 @@ if (!Docebo::user()->isAnonymous()) {
 	SET data = '" . date('Y-m-d H:i:s') . "',
 		title = '" . $_POST['title'] . "',
 		textof = '" . $_POST['description'] . "'
-	WHERE idNotes = '" . (int) $_POST['idNotes'] . "' AND owner = '" . (int) getLogUserId() . "'";
+	WHERE idNotes = '" . (int) $_POST['idNotes'] . "' AND owner = '" . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'";
 
         if (!sql_query($query_ins)) {
             Util::jump_to('index.php?modname=notes&op=notes&amp;result=err');
@@ -286,12 +286,12 @@ if (!Docebo::user()->isAnonymous()) {
     function delnotes()
     {
         checkPerm('view');
-        $lang = &DoceboLanguage::createInstance('notes', 'lms');
+        $lang = &FormaLanguage::createInstance('notes', 'lms');
         $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         if (isset($_GET['confirm'])) {
             $query = '
 		DELETE FROM ' . $GLOBALS['prefix_lms'] . "_notes
-		WHERE idNotes='" . $_GET['idNotes'] . "' AND owner='" . getLogUserId() . "' AND idCourse='" . $idCourse . "'";
+		WHERE idNotes='" . $_GET['idNotes'] . "' AND owner='" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' AND idCourse='" . $idCourse . "'";
             if (!sql_query($query)) {
                 Util::jump_to('index.php?modname=notes&op=notes&amp;result=err');
             }
@@ -300,7 +300,7 @@ if (!Docebo::user()->isAnonymous()) {
             list($title) = sql_fetch_row(sql_query('
 		SELECT title
 		FROM ' . $GLOBALS['prefix_lms'] . "_notes 
-		WHERE owner = '" . getLogUserId() . "' AND idNotes = '" . (int) $_GET['idNotes'] . "'"));
+		WHERE owner = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' AND idNotes = '" . (int) $_GET['idNotes'] . "'"));
 
             $title_page = [
             'index.php?modname=notes&amp;op=notes' => $lang->def('_NOTES'),

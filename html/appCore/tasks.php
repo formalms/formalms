@@ -18,7 +18,7 @@ if ($_SERVER['REMOTE_ADDR'] != '127.0.0.1') {
 define('CORE', true);
 define('IN_FORMA', true);
 define('_deeppath_', '../');
-require dirname(__DIR__) . '/base.php';
+require dirname(__FILE__) . '/../base.php';
 
 // start buffer
 ob_start();
@@ -28,7 +28,7 @@ require _base_ . '/lib/lib.bootstrap.php';
 Boot::init(BOOT_DATETIME);
 // some specific lib to load
 require_once _base_ . '/lib/lib.platform.php';
-require_once _adm_ . '/lib/lib.permission.php';
+require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/lib.permission.php');
 require_once _adm_ . '/lib/lib.istance.php';
 require_once _adm_ . '/class.module/class.definition.php';
 

@@ -21,7 +21,7 @@ class CoursestatsLms extends Model
 
     public function __construct()
     {
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         $this->tables = [
             'organization' => '%lms_organization',
             'commontrack' => '%lms_commontrack',
@@ -280,7 +280,7 @@ class CoursestatsLms extends Model
         if ($res) {
             $scores = $this->getLOScores($id_course, $id_user); //actually only tests can be scored
 
-            require_once Forma::inc(_lms_ . '/class.module/track.object.php');
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/track.object.php');
 
             foreach ($res as $obj) {
                 if (((bool)$obj['visible'] === false) && $export) {
@@ -493,6 +493,25 @@ class CoursestatsLms extends Model
         return $output;
     }
 
+    public static function fixUserTrackInfo($idReference, $idUser, $idLo, $idTrack, $objectType)
+    {
+        $query = "SELECT id FROM %lms_commontrack WHERE idTrack='" . (int)$idTrack . "' AND objectType='" . $objectType . "' order by idTrack";
+        $rs = sql_query($query);
+        $id = false;
+        foreach ($rs as $row) {
+            if ($id) {
+                $query = 'DELETE from %lms_commontrack WHERE id="' . (int)$row['id'] . '"';
+                sql_query($query);
+            } else {
+                $id = $row['id'];
+            }
+        }
+        if ($id) {
+            $query = 'UPDATE `%lms_commontrack` SET `idReference` = ' . $idReference . ', `idUser` = ' . $idUser . ' WHERE `id` = ' . $id . ';';
+            sql_query($query);
+        }
+    }
+
     public function getUserScormHistoryTrackInfo($id_user, $id_lo)
     {
         $output = [];
@@ -523,11 +542,32 @@ class CoursestatsLms extends Model
         try {
             preg_match('/^PT((\d*H)?(\d*M)?)?(\d+(\.\d+)?S)$/', $pt_time, $matches);
 
-            if (count($matches) > 4) {
-                $seconds = floor($matches[4]);
+            // Inizializza variabili per ore, minuti e secondi
+            $hours = !empty($matches[2]) ? (int)$matches[2] : 0;
+            $minutes = !empty($matches[3]) ? (int)$matches[3] : 0;
+            $seconds = isset($matches[4]) ? (int)$matches[4] : 0;
+            $fraction = 0;
 
-                $pt_time = 'PT' . $seconds . 'S';  // Construct a valid interval spec without fractional part
+            // Controlla se ci sono secondi con frazione
+            if (isset($matches[5])) {
+                list($whole, $decimal) = explode('.', $matches[5]);
+             
+                $fraction = (float)("0." . $decimal);
             }
+
+            // Arrotonda la frazione di secondo e somma ai secondi
+            $roundedSeconds = $seconds + round($fraction);
+
+            // Crea un DateInterval usando le ore, i minuti e i secondi arrotondati
+            $pt_time = "PT";
+            if ($hours > 0) {
+                $pt_time .= "{$hours}H";
+            }
+            if ($minutes > 0) {
+                $pt_time .= "{$minutes}M";
+            }
+            $pt_time .= "{$roundedSeconds}S";
+
 
             $interval = new DateInterval($pt_time);
 
@@ -551,8 +591,6 @@ class CoursestatsLms extends Model
                     return sprintf('%u:%u:%u', $dateTime->format('H'), $dateTime->format('i'), $dateTime->format('s'));
                 }
             }
-
-
         }
         return $pt_time;
     }
@@ -599,22 +637,24 @@ class CoursestatsLms extends Model
 
             foreach ($res as $row) {
 
-                $output += $this->timeToSec($this->parseScormTime($row['session_time'])); // Sum in seconds
+                if (!empty($row)) {
+                    $output += $this->timeToSec($this->parseScormTime($row['session_time'])); // Sum in seconds
+
+                }
             }
         }
 
         return $this->zeroToTime($this->decimal_to_time($output));
     }
 
-    private
-    function timeToSec($time)
+    private function timeToSec($time)
     {
         $seconds = 0;
         [$time] = explode('.', $time); // Remove decimals
         [$hour, $minute, $second] = explode(':', $time);
-        $seconds += $hour * 3600;
-        $seconds += $minute * 60;
-        $seconds += $second;
+        $seconds += (int)$hour * 3600;
+        $seconds += (int)$minute * 60;
+        $seconds += (int)$second;
 
         return $seconds;
     }
@@ -661,7 +701,7 @@ class CoursestatsLms extends Model
             [$type] = $this->db->fetch_row($res);
         }
         if (is_array($types) && isset($types[$type])) {
-            require_once Forma::inc(_lms_ . '/class.module/' . $types[$type]->fileName);
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/' . $types[$type]->fileName);
             $classname = $types[$type]->className;
             $output = new $classname($id_lo);
         }
@@ -689,7 +729,7 @@ class CoursestatsLms extends Model
             [$type] = $this->db->fetch_row($res);
         }
         if (is_array($types) && isset($types[$type])) {
-            require_once Forma::inc(_lms_ . '/class.module/' . $types[$type]->fileNameTrack);
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/' . $types[$type]->fileNameTrack);
             $classname = $types[$type]->classNameTrack;
             $output = new $classname($id_track);
         }

@@ -1,0 +1,8 @@
+.fc-theme-standard td {
+    position: relative;
+    z-index: 1;
+}
+
+.fc-theme-standard td:hover {
+    z-index: 2;
+}

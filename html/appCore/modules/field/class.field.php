@@ -178,7 +178,7 @@ class Field
      *
      * @return string return the identifier of the field
      */
-    public function getFieldType()
+    public static function getFieldType()
     {
         return 'field';
     }
@@ -489,8 +489,8 @@ class Field
     {
         require_once _base_ . '/lib/lib.form.php';
 
-        return Form::getHidden('field_' . $this->getFieldType() . '_' . $this->id_common . '',
-                                'field_' . $this->getFieldType() . '[' . $this->id_common . ']',
+        return Form::getHidden('field_' . self::getFieldType() . '_' . $this->id_common . '',
+                                'field_' . self::getFieldType() . '[' . $this->id_common . ']',
                                 htmlentities($this->getFilledVal($grab_from, $dropdown_val), ENT_COMPAT, 'UTF-8'));
     }
 
@@ -508,8 +508,8 @@ class Field
             $grab_from = $_POST;
         }
 
-        if (isset($grab_from['field_' . $this->getFieldType()][$this->id_common])) {
-            return $grab_from['field_' . $this->getFieldType()][$this->id_common];
+        if (isset($grab_from['field_' . self::getFieldType()][$this->id_common])) {
+            return $grab_from['field_' . self::getFieldType()][$this->id_common];
         } else {
             return null;
         }
@@ -585,7 +585,7 @@ class Field
         $re_field = sql_query('
 		SELECT translation
 		FROM ' . $this->_getMainTable() . "
-		WHERE lang_code = '" . getLanguage() . "' AND id_common = '" . (int) $this->id_common . "' AND type_field = '" . $this->getFieldType() . "'");
+		WHERE lang_code = '" . Lang::get() . "' AND id_common = '" . (int) $this->id_common . "' AND type_field = '" . self::getFieldType() . "'");
         list($translation) = sql_fetch_row($re_field);
 
         return $translation;
@@ -595,7 +595,7 @@ class Field
     function getClientClassObject() {
       return '
         {
-          type: "'.$this->getFieldType().'",
+          type: "'.self::getFieldType().'",
           getValue: function(id_sel, id_filter) { return ""; },
           setValue: function(id_sel, id_filter, newValue) {},
           render: function(id_sel, id_filter, oEl) {}
@@ -609,7 +609,7 @@ class Field
         require_once _base_ . '/lib/lib.json.php';
         $json = new Services_JSON();
         /*
-        return 'YAHOO.dynamicFilter.renderTypes.get("'.$this->getFieldType().'", {'
+        return 'YAHOO.dynamicFilter.renderTypes.get("'.self::getFieldType().'", {'
             .'_EQUAL:'.$json->encode(Lang::t('_EQUAL')).','
             .'_CONTAINS:'.$json->encode(Lang::t('_CONTAINS')).','
             .'_NOT_EQUAL:'.$json->encode(Lang::t('_NOT_EQUAL')).','
@@ -618,17 +618,17 @@ class Field
         */
         return '
       {
-        type: "' . $this->getFieldType() . '",
+        type: "' . static::getFieldType() . '",
       
         getValue: function(id_sel, id_filter) {
-          var o, id = "' . $this->getFieldType() . '_"+id_filter+"_"+id_sel, $D = YAHOO.util.Dom;
+          var o, id = "' . static::getFieldType() . '_"+id_filter+"_"+id_sel, $D = YAHOO.util.Dom;
           return YAHOO.lang.JSON.stringify({cond: $D.get(id+"_sel").value, value: $D.get(id).value});
         },
         
         setValue: function(id_sel, id_filter, newValue) {
           if (!newValue) o = {cond: 0, value: ""};
           else o = YAHOO.lang.JSON.parse(newValue);
-          var i, s, id = "' . $this->getFieldType() . '_"+id_filter+"_"+id_sel, $D = YAHOO.util.Dom;
+          var i, s, id = "' . static::getFieldType() . '_"+id_filter+"_"+id_sel, $D = YAHOO.util.Dom;
           $D.get(id).value = o.value;
           s = $D.get(id+"_sel");
           for (i=0; i<s.options.length; i++) {
@@ -644,8 +644,8 @@ class Field
           s.className = "condition_select";
           d.className = "textfield_container";
           
-          d.className = "' . $this->getFieldType() . '_container";
-          t.type = "text"; t.id = "' . $this->getFieldType() . '_"+id_filter+"_"+id_sel; s.id = t.id+"_sel";t.className = "filter_value";
+          d.className = "' . static::getFieldType() . '_container";
+          t.type = "text"; t.id = "' . static::getFieldType() . '_"+id_filter+"_"+id_sel; s.id = t.id+"_sel";t.className = "filter_value";
           
           s.options[0] = new Option("' . Lang::t('_CONTAINS', 'standard') . '",0);
 					s.options[1] = new Option("' . Lang::t('_NOT_CONTAINS', 'standard') . '",1);
@@ -735,7 +735,7 @@ class Field
     //------------------------------------------------------------------------------
     public function getFilteredUsers($filter, $exec = true)
     {
-        $grab = ['field_' . $this->getFieldType() => [$this->id_common => $filter]];
+        $grab = ['field_' . self::getFieldType() => [$this->id_common => $filter]];
         $request = [
             'cond' => 1,
             'value' => $this->getFilledVal($grab, true),

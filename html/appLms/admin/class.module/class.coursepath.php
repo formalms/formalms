@@ -20,13 +20,13 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  * @author	 Fabio Pirovano <fabio [at] docebo [dot] com>
  */
-require_once __DIR__ . '/class.definition.php';
+require_once dirname(__FILE__) . '/class.definition.php';
 
 class Module_Coursepath extends LmsAdminModule
 {
     public function loadBody()
     {
-        require_once dirname(__DIR__) . '/modules/' . $this->module_name . '/' . $this->module_name . '.php';
+        require_once dirname(__FILE__) . '/../modules/' . $this->module_name . '/' . $this->module_name . '.php';
         coursepathDispatch($GLOBALS['op']);
     }
     // Function for permission managment

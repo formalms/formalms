@@ -91,11 +91,11 @@ class Util
         }
     }
 
-    public static function jump_to($relative_url, $anchor = '')
+    public static function jump_to($relative_url, $anchor = '', $folder = false)
     {
         $relative_url = trim(str_replace('&amp;', '&', $relative_url));
 
-        $url = FormaLms\lib\Get::abs_path() . $relative_url . $anchor;
+        $url = FormaLms\lib\Get::abs_path($folder) . $relative_url . $anchor;
         header("Location: $url");
 
         ob_clean();
@@ -112,7 +112,7 @@ class Util
      *                         assumed that $filename is [number]_[number]_[time]_[filename]
      *                         the file sended will have the name [filename].$ext
      */
-    public function download($path, $filename, $ext = null, $sendname = null)
+    public static function download($path, $filename, $ext = null, $sendname = null)
     {
         //empty and close buffer
         if (!(_files_ == substr($path, 0, strlen(_files_)))) {
@@ -133,10 +133,10 @@ class Util
         }
 
         if (!file_exists($path . $filename)) {
-            Util::fatal(Lang::t('_DOWNLOAD_FILE_NOT_EXISTS'));
+            Util::fatal('Error: the file that you are searching for no longer exists on the server.<br/>Please contact the system administrator');
         }
 
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
         $db->close();
 
         ob_end_clean();
@@ -146,8 +146,7 @@ class Util
         //send file length info
         header('Content-Length:' . filesize($path . $filename));
         //content type forcing dowlad
-        require_once _base_ . '/lib/lib.mimetype.php';
-        header("Content-type: " . mimetype($ext) . "; charset=utf-8\n");
+        header("Content-type: application/download; charset=utf-8\n");
         //cache control
         header('Cache-control: private');
         //sending creation time
@@ -181,7 +180,7 @@ class Util
     /**
      * Return if the page was requested in POST by the client.
      *
-     * @return <bool>
+     * @return bool
      */
     public static function requestIsPost()
     {
@@ -248,7 +247,7 @@ class Util
     /**
      * Display a fatal app message.
      *
-     * @param <string> $msg  the errore message
+     * @param string $msg  the errore message
      */
     public static function fatal($msg)
     {
@@ -274,11 +273,16 @@ class Util
 
     public static function load_setting($from_table, $into_globals)
     {
+     
         if (isset($GLOBALS[$into_globals])) {
             return;
         }
 
-        $db = &DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
+
+        if(!$db) {
+            return;
+        }
 
         $re_sett = $db->query('SELECT param_name, param_value, value_type ' .
         'FROM ' . $from_table . ' ' .
@@ -303,6 +307,8 @@ class Util
                     $GLOBALS[$into_globals][$var_name] = $var_value;
             } // end switch
         } // end while
+
+        return true;
     }
 
     public static function draw_progress_bar($percent, $show_percent = true, $bar_class = false, $fill_class = false, $txt_class = false, $text = false)
@@ -407,7 +413,7 @@ class Util
      *
      * @return string the converted string
      */
-    public function unhtmlentities($string)
+    public static function unhtmlentities($string)
     {
         // replace numeric entities
         $string = preg_replace('~&#x([0-9a-f]+);~ei', 'chr(hexdec("\\1"))', $string);
@@ -419,7 +425,7 @@ class Util
         return strtr($string, $trans_tbl);
     }
 
-    public function widget($widget_name, $params = null, $return = false)
+    public static function widget($widget_name, $params = null, $return = false)
     {
         ob_start();
         $widget = new Widget();
@@ -449,7 +455,7 @@ class Util
         return true;
     }
 
-    public function getIsAjaxRequest()
+    public static function getIsAjaxRequest()
     {
         return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
     }
@@ -473,7 +479,7 @@ class Util
      */
     public static function serialize($string)
     {
-        return json_encode($string);
+        return \FormaLms\lib\Serializer\FormaSerializer::getInstance()->serialize($string,'json');
     }
 
     /**
@@ -509,6 +515,42 @@ class Util
         }
 
         return $array;
+    }
+
+
+    public static function config($path, $plugin = null) {
+
+        if(!preg_match("/^[a-z0-9_.]+$/i", $path)) {
+            throw new Exception('Config path not regularly expressed:use only chars and dots');
+        }
+        
+        $pathParts = explode(".", $path);
+
+        $base =  _base_."/config/";
+        if($plugin) {
+
+            $base =  _base_."/plugins/".$plugin."/Features/config/";
+        }
+
+        $configFile = $base . array_shift($pathParts) . ".php";
+
+       
+        if(!file_exists($configFile)) {
+            throw new Exception('Config file $configFile not existing');
+        }
+        $configResult = include $configFile;
+     
+        foreach($pathParts as $index) {
+            $configResult = (is_array($configResult) && array_key_exists($index, $configResult)) ? $configResult[$index] : null;
+        }
+
+        $event = Events::trigger('core.util.config', array_merge(['result' => $configResult], compact('path','plugin')));
+
+        if(array_key_exists('result', $event)) {
+            $configResult = $event['result'];
+        }
+
+        return $configResult;
     }
 }
 
@@ -642,7 +684,7 @@ function getPLSetting($platform, $param_name, $default = false)
  * @param string $folder
  * @param string $add_start
  *
- * @return nothing
+ * @return void
  */
 function addCss($name, $platform = false, $folder = false, $add_start = false)
 {
@@ -884,11 +926,11 @@ function &getTranslateTable()
  * function translateChr
  *	Do html charset translation.
  *
- *  @param $text the text that will be translated
- *  @param &$translate_tabel the array that contain the charset substitution rule usualy return by getTranslateTable()
- *  @param $reverse if is true flip the translate_table array
+ *  @param $text string text that will be translated
+ *  @param &$translate_tabel string array that contain the charset substitution rule usualy return by getTranslateTable()
+ *  @param $reverse bool is true flip the translate_table array
  *
- *	@return the translated text
+ *	@return string translated text
  **/
 function translateChr(&$text, &$translate_table, $reverse = false)
 {
@@ -896,7 +938,7 @@ function translateChr(&$text, &$translate_table, $reverse = false)
         return $text;
     }
     if (!isset($GLOBALS['is_utf'])) {
-        $GLOBALS['is_utf'] = (strpos(getUnicode(), 'utf-8') === false ? false : true);
+        $GLOBALS['is_utf'] = (strpos(Lang::charset(), 'utf-8') === false ? false : true);
     }
 
     if ($GLOBALS['is_utf'] === false) {
@@ -939,11 +981,11 @@ function guiResultStatus(&$lang, $text)
  * function highlightText
  *	Highlight parts of text strings with HTML tags.
  *
- *  @param $string the text that will be checked for parts to highlight
- *  @param $key the text to be highlighted
- *  @param $classname class of the highlight <span> tag, "highlight" by default
+ *  @param $string string text that will be checked for parts to highlight
+ *  @param $key string text to be highlighted
+ *  @param $classname string of the highlight <span> tag, "highlight" by default
  *
- *	@return the highlighted text
+ *	@return string highlighted text
  **/
 function highlightText($string, $key, $classname = 'highlight')
 {
@@ -954,6 +996,48 @@ function highlightText($string, $key, $classname = 'highlight')
 
     return preg_replace('/' . $key . '/i', '<span class="highlight">$0</span>', $string);
 }
+
+/**
+ * function formatUpgradeClass
+ *	format the class for upgrade in the right passed string.
+ *
+ *  @param string $classPath whole path of a class 
+ *  @param string $prefix prefix that should be pre or post
+ *
+ *	@return string
+ **/
+function formatUpgradeClass(string $classPath, string $prefix = 'post') : string {
+
+    return ucfirst($prefix) . (new \ReflectionClass($classPath))->getShortName();
+    
+}
+
+/**
+ * function recursiveRmdir
+ *	remove directory and all its content recursively.
+ *
+ *  @param string $dir 
+ *
+ *	@return void
+ **/
+function recursiveRmdir($dir) {
+
+    if (is_dir($dir)) {
+        $objects = scandir($dir);
+        foreach ($objects as $object) {
+            if ($object != '.' && $object != '..') {
+                if (is_dir($dir . '/' . $object)) {
+                    recursiveRmdir($dir . '/' . $object);
+                } else {
+                    unlink($dir . '/' . $object);
+                }
+            }
+        }
+        rmdir($dir);
+    }
+}
+
+
 function doDebug($text)
 {
     if (FormaLms\lib\Get::sett('do_debug') == 'on') {

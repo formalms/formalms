@@ -63,6 +63,12 @@ class FolderView extends LearningView {
             _this.refresh(e.detail.selectedId);
             _this.isReady = true;
         });
+		
+       _this.container.addEventListener('keydown', (e) => {
+			if (event.keyCode === 13) {
+				_this.triggerDblClick(e);
+			}	
+		});					
 
     }
 
@@ -137,7 +143,7 @@ class FolderView extends LearningView {
                 dataIdAttr: 'data-id',
                 multiDrag: true, // Enable the plugin
                 // multiDragKey: 'Meta', // Fix 'ctrl' or 'Meta' button pressed
-                selectedClass: 'fv-is-selected',
+                selectedClass: 'fv-is-selectedx',
                 animation: 150,
                 easing: 'cubic-bezier(1, 0, 0, 1)',
                 fallbackOnBody: true,
@@ -251,7 +257,7 @@ class FolderView extends LearningView {
         const _this = this;
 
         if (el) {
-            if (el.tagName === 'BUTTON') {
+            if (el.tagName === 'BUTTON' && el.getAttribute('type') !== 'submit') {
                 e.preventDefault();
             }
 

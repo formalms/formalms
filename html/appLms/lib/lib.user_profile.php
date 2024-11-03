@@ -68,7 +68,7 @@ class UserProfile
     public $_up_data_man;
 
     /**
-     * @var DoceboLanguage the instance of the language manager
+     * @var FormaLanguage the instance of the language manager
      */
     public $_lang;
 
@@ -89,7 +89,7 @@ class UserProfile
     /**
      * class constructor.
      */
-    public function UserProfile($id_user, $edit_mode = false)
+    public function __construct($id_user, $edit_mode = false)
     {
         $this->_id_user = $id_user;
 
@@ -115,7 +115,7 @@ class UserProfile
         $this->_std_query = $std_query;
         $this->_varname_action = $varname_action;
 
-        $this->_id_viewer = getLogUserId();
+        $this->_id_viewer = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
         $this->_varname_action = $varname_action;
 
@@ -161,7 +161,7 @@ class UserProfile
     {
         require_once _base_ . '/lib/lib.urlmanager.php';
 
-        $this->_url_man = &UrlManager::getInstance();
+        $this->_url_man = UrlManager::getInstance();
         $this->_url_man->setStdQuery($std_query);
     }
 
@@ -172,7 +172,7 @@ class UserProfile
      */
     public function initLang($module_name, $platform)
     {
-        $this->_lang = &DoceboLanguage::createInstance('profile', 'framework');
+        $this->_lang = &FormaLanguage::createInstance('profile', 'framework');
     }
 
     /**
@@ -234,7 +234,7 @@ class UserProfile
      */
     public function setViewer($id_viewer)
     {
-        return $id_viewer === false ? $this->_id_viewer = getLogUserId() : $this->_id_viewer = $id_viewer;
+        return $id_viewer === false ? $this->_id_viewer = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() : $this->_id_viewer = $id_viewer;
     }
 
     /**
@@ -300,7 +300,7 @@ class UserProfile
     }
 
     /**
-     * @return DoceboLanguage the class used for lang
+     * @return FormaLanguage the class used for lang
      */
     public function &getLang()
     {
@@ -483,7 +483,7 @@ class UserProfile
                         require_once _lms_ . '/lib/lib.reservation.php';
                         $id_event = FormaLms\lib\Get::req('id_event', DOTY_INT, 0);
                         $man_res = new Man_Reservation();
-                        $result = $man_res->addSubscription(getLogUserId(), $id_event);
+                        $result = $man_res->addSubscription(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_event);
                         Util::jump_to('index.php?modname=reservation&op=reservation');
                     } else {
                         // SET EDIT USER EVENT
@@ -609,12 +609,12 @@ class UserProfile
              break;
             // display the profile ------------------------------------
             case 'view_files':
-                $this->_id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, getLogUserId());
+                $this->_id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
                 return $this->_up_viewer->getViewUserFiles();
              break;
             case 'file_details':
-                $this->_id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, getLogUserId());
+                $this->_id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
                 return $this->_up_viewer->getViewUserFileDetail();
              break;
@@ -660,12 +660,12 @@ class UserProfile
 
         // save the users view of the profile
         if ($this->_id_viewer != $this->_id_user) {
-            if ($this->_id_viewer == getLogUserId()) {
-                if (!Docebo::user()->isAnonymous()) {
+            if ($this->_id_viewer == \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()) {
+                if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                     $this->_up_data_man->addView($this->_id_user, $this->_id_viewer);
                 }
             } else {
-                $acl_man = &Docebo::user()->getAclManager();
+                $acl_man = \FormaLms\lib\Forma::getAclManager();
                 $id_anonymous = $acl_man->getAnonymousId();
                 if ($this->_id_viewer !== $id_anonymous) {
                     $this->_up_data_man->addView($this->_id_user, $this->_id_viewer);
@@ -952,7 +952,7 @@ class UserProfileViewer
     public $_url_man;
 
     /**
-     * @var DoceboLanguage the instance of the language manager
+     * @var FormaLanguage the instance of the language manager
      */
     public $_lang;
 
@@ -982,10 +982,10 @@ class UserProfileViewer
     /**
      * class constructor.
      */
-    public function UserProfileViewer(&$user_profile, $varname_action = 'ap')
+    public function __construct(&$user_profile, $varname_action = 'ap')
     {
         $this->_user_profile = &$user_profile;
-        $this->acl_man = Docebo::user()->getAclManager();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $this->_lang = &$this->_user_profile->getLang();
 
@@ -1265,7 +1265,7 @@ class UserProfileViewer
         //addJs($GLOBALS['where_framework_relative'].'/lib/', 'ajax.user_profile.js');
         Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/ajax.user_profile.js', true, true);
 
-        $lang = &DoceboLanguage::createInstance($this->_user_profile->_module_name, $this->_user_profile->_platform);
+        $lang = &FormaLanguage::createInstance($this->_user_profile->_module_name, $this->_user_profile->_platform);
 
         $GLOBALS['page']->add('<script type="text/javascript">'
             . "	setup_user_profile('" . $GLOBALS['where_framework_relative'] . "/ajax.adm_server.php?file=user_profile', "
@@ -1445,9 +1445,9 @@ class UserProfileViewer
 
         if ($this->_user_profile->godMode()) {
             // show user level
-            $lv_lang = &DoceboLanguage::createInstance('admin_directory', 'framework');
+            $lv_lang = &FormaLanguage::createInstance('admin_directory', 'framework');
 
-            $acl_man = &Docebo::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             switch ($acl_man->getUserLevelId($this->_user_profile->getIdUser())) {
                 case ADMIN_GROUP_GODADMIN: $user_level_string = $lv_lang->def('_DIRECTORY_' . ADMIN_GROUP_GODADMIN); break;
                 case ADMIN_GROUP_ADMIN: $user_level_string = $lv_lang->def('_DIRECTORY_' . ADMIN_GROUP_ADMIN); break;
@@ -1576,7 +1576,7 @@ class UserProfileViewer
         $ini = $nav_bar->getSelectedElement();
         $nav_bar->setLink($this->_url_man->getUrl($this->_varname_action . '=view_files&type=' . $type . ''));
 
-        $re_files = $user_file->getFileList($type, false, $ini, UP_FILE_LIMIT);
+        $re_files = $user_file->getFileList($type, false,false, $ini, UP_FILE_LIMIT);
 
         switch ($type) {
             case 'image':
@@ -1895,7 +1895,7 @@ class UserProfileViewer
                 ? '<a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>'
                 : $this->_lang->def('_HIDDEN')));
         if ($this->getViewer() != $this->_id_user) {
-            if ($this->_up_data_man->isFriend($this->_id_user, getLogUserId())) {
+            if ($this->_up_data_man->isFriend($this->_id_user, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
                 $html .= $this->getUIRowCode($this->_lang->def('_IS_FRIEND'), $this->_lang->def('_YES'));
             } else {
                 $html .= $this->getUIRowCode($this->_lang->def('_IS_FRIEND'), $this->_lang->def('_NO'));
@@ -1922,7 +1922,7 @@ class UserProfileViewer
     public function homePhotoProfile($picture = false, $viewer = false, $intest = false)
     {
         $this->loadUserData($this->getViewer());
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         list($class_picture, $this->max_dim_avatar) = $this->getPhotoLimit($picture);
 
         $html = '';
@@ -1939,7 +1939,7 @@ class UserProfileViewer
     public function homeUserProfile($picture = false, $viewer = false, $intest = false)
     { //crea la parte del profilo riguardante la foto e i certificati/messaggi
         $this->loadUserData($this->getViewer());
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         list($class_picture, $this->max_dim_avatar) = $this->getPhotoLimit($picture);
 
         //$html = ' <div class="container-fluid"> <div class="row">';
@@ -1950,7 +1950,7 @@ class UserProfileViewer
             $perm_message = true;
             require_once _adm_ . '/lib/lib.message.php';
             $msg = new Man_Message();
-            $unread_num = $msg->getCountUnreaded(getLogUserId(), [], '', true);
+            $unread_num = $msg->getCountUnreaded(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), [], '', true);
         }
 
         if ($ma->currentCanAccessObj('mo_7')) {
@@ -2059,7 +2059,7 @@ class UserProfileViewer
                 } //end foreach
             }
 
-            require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.certificate.php');
             $cert = new Certificate();
 
             $filter['id_user'] = $this->_id_user;
@@ -2110,7 +2110,7 @@ class UserProfileViewer
     public function userIdMailProfile($picture = false, $viewer = false, $intest = true)
     {
         $this->loadUserData($this->getViewer());
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $html = '<div class="user_presentation">' . "\n"
 
@@ -2180,7 +2180,7 @@ class UserProfileViewer
         $html .= $preference->getModifyMask('ui.');
 
         if ($this->_user_profile->godMode()) {
-            $acl_man = &Docebo::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
 
             $html .= Form::getPassword(Lang::t('_NEW_PASSWORD', 'register'),
                                     'up_new_pwd',
@@ -2192,12 +2192,12 @@ class UserProfileViewer
                                     'up_repeat_pwd',
                                     '255');
 
-            if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN && FormaLms\lib\Get::cur_plat() === 'framework') {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN && FormaLms\lib\Get::cur_plat() === 'framework') {
                 $html .= Form::getCheckBox(Lang::t('_FORCE_PASSWORD_CHANGE', 'admin_directory'), 'force_changepwd', 'force_changepwd', 1, $this->user_info[ACL_INFO_FORCE_CHANGE]);
             }
 
-            $lv_lang = &DoceboLanguage::createInstance('admin_directory', 'framework');
-            if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
+            $lv_lang = &FormaLanguage::createInstance('admin_directory', 'framework');
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
                 $level_list = [
                     ADMIN_GROUP_GODADMIN => $lv_lang->def('_DIRECTORY_' . ADMIN_GROUP_GODADMIN),
                     ADMIN_GROUP_ADMIN => $lv_lang->def('_DIRECTORY_' . ADMIN_GROUP_ADMIN),
@@ -2300,7 +2300,7 @@ class UserProfileViewer
         require_once _base_ . '/lib/lib.form.php';
 
         $html = '<div class="up_user_info">'
-                . '<div class="up_name">' . $this->resolveUsername(false, getLogUserId()) . '</div>';
+                . '<div class="up_name">' . $this->resolveUsername(false, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()) . '</div>';
         // user standard info -----------------------------------------------------------------
         $html .= Form::openForm('mod_pwd', $this->_url_man->getUrl($this->_varname_action . '=savepwd'));
 
@@ -2339,11 +2339,11 @@ class UserProfileViewer
      */
     public function checkUserPwd()
     {
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
-        $this->loadUserData(getLogUserId());
+        $this->loadUserData(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         if (!$this->_user_profile->godMode()) {
-            if (!$acl_man->password_verify_update($_POST['up_old_pwd'], $this->user_info[ACL_INFO_PASS], getLogUserId())) {
+            if (!$acl_man->password_verify_update($_POST['up_old_pwd'], $this->user_info[ACL_INFO_PASS], \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
                 return $this->_lang->def('_OLDPASSWRONG');
             }
             // control password
@@ -2364,7 +2364,7 @@ class UserProfileViewer
                 }
                 $re_pwd = sql_query('SELECT passw '
                 . ' FROM ' . $GLOBALS['prefix_fw'] . '_password_history'
-                . ' WHERE idst_user = ' . getLogUserId() . ''
+                . ' WHERE idst_user = ' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . ''
                 . ' ORDER BY pwd_date DESC');
 
                 list($pwd_history) = sql_fetch_row($re_pwd);
@@ -2398,10 +2398,10 @@ class UserProfileViewer
         require_once _base_ . '/lib/lib.form.php';
         require_once _base_ . '/lib/lib.preference.php';
 
-        $this->loadUserData(getLogUserId());
+        $this->loadUserData(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
         $html = '<div class="up_user_info">'
-                . '<div class="up_name">' . $this->resolveUsername(false, getLogUserId()) . '</div>';
+                . '<div class="up_name">' . $this->resolveUsername(false, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()) . '</div>';
 
         // user standard info -----------------------------------------------------------------
         $html .= getInfoUi(str_replace('[max_px]', $this->max_dim_avatar, $this->_lang->def('_AVATAR_PHOTO_INSTRUCTION')));
@@ -2612,7 +2612,7 @@ class UserProfileViewer
         $last_view = $this->_up_data_man->getUserProfileViewList($this->_user_profile->getIdUser(), 15);
         $user_stat = $this->_up_data_man->getUserStats($this->_user_profile->getIdUser());
 
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $html = '<h2 class="up_type1">' . $this->_lang->def('_COMMUNITY') . '</h2>';
 
@@ -2704,7 +2704,7 @@ class UserProfileViewer
     {
         return;
         /*
-        require_once(_adm_.'/lib/lib.myfiles.php');
+        require_once($GLOBALS['where_framework'].'/lib/lib.myfiles.php');
 
         $user_file = new MyFilesPolicy(	$this->_user_profile->getIdUser(),
                                         $this->getViewer(),
@@ -2937,7 +2937,7 @@ class UserProfileViewer
         $query = 'SELECT COUNT(*)' .
                 ' FROM %lms_courseuser' .
                 " WHERE idCourse = '" . $id_course . "'" .
-                " AND idUser = '" . getLogUserId() . "'";
+                " AND idUser = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'";
 
         $result = sql_fetch_row(sql_query($query));
 
@@ -2949,7 +2949,7 @@ class UserProfileViewer
         if (isset($_GET['confirm'])) {
             $query = 'UPDATE %lms_teacher_profile' .
                     " SET curriculum = ''" .
-                    " WHERE id_user = '" . getLogUserId() . "'";
+                    " WHERE id_user = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'";
 
             $result = sql_query($query);
 
@@ -3008,7 +3008,7 @@ class UserProfileViewer
         require_once _base_ . '/lib/lib.form.php';
 
         $html = '<div class="up_user_info">'
-                . '<div class="up_name">' . $this->resolveUsername(false, getLogUserId()) . '</div>';
+                . '<div class="up_name">' . $this->resolveUsername(false, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()) . '</div>';
 
         // user standard info -----------------------------------------------------------------
         $html .= Form::openForm('mod_publications', $this->_url_man->getUrl($this->_varname_action . '=save_teach_publ'));
@@ -3038,7 +3038,7 @@ class UserProfileViewer
 
     public function getUserCourseStatUi($stats_data)
     {
-        $lang_test = &DoceboLanguage::createInstance('test', 'lms');
+        $lang_test = &FormaLanguage::createInstance('test', 'lms');
 
         $tb = new Table(0, $this->_lang->def('_USERCOURSE_CAPTION'), $this->_lang->def('_USERCOURSE_STATS_SUMMARY'));
         $tb->addHead([
@@ -3106,7 +3106,7 @@ class UserProfileViewer
         $_types = $cmodel->getCompetenceTypes();
         $_typologies = $cmodel->getCompetenceTypologies();
         $_categories = $cmodel->getCategoriesLangs();
-        $lang_code = getLanguage();
+        $lang_code = Lang::get();
 
         if (count($comp_data) > 0) {
             foreach ($comp_data as $id_competence => $value) {
@@ -3337,17 +3337,16 @@ class UserProfileData
     /**
      * class constructor.
      */
-    public function UserProfileData($db_conn = null)
+    public function __construct($db_conn = null)
     {
-        require_once _base_ . '/lib/lib.user.php';
         require_once _base_ . '/lib/lib.preference.php';
         require_once _adm_ . '/lib/lib.myfriends.php';
         require_once _lms_ . '/lib/lib.course.php';
 
         $this->_db_conn = $db_conn;
 
-        $this->acl = Docebo::user()->getAcl();
-        $this->acl_man = Docebo::user()->getAclManager();
+        $this->acl = \FormaLms\lib\Forma::getAcl();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();
     }
 
     public function _query($query)
@@ -3767,7 +3766,7 @@ class UserProfileData
                                                 'value' => $value[1], ];
                 }
             } else {
-                if ($id_user === Docebo::user()->getIdSt()) {
+                if ($id_user === \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()) {
                     $field[$field_id] = ['name' => $value[0],
                                             'value' => $value[1], ];
                 }
@@ -3901,7 +3900,7 @@ class UserProfileData
             return false;
         }
         if (isset($data['level'])) {
-            $acl_man = &Docebo::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $current_level = $acl_man->getUserLevelId($id_user);
             if ($data['level'] != $current_level) {
                 $arr_levels = $acl_man->getAdminLevels();
@@ -4241,8 +4240,8 @@ class UserProfileData
 
         $stats = [];
 
-        $c_lang = &DoceboLanguage::CreateInstance('course', 'lms');
-        $lang = &DoceboLanguage::createInstance('course', 'lms');
+        $c_lang = &FormaLanguage::CreateInstance('course', 'lms');
+        $lang = &FormaLanguage::createInstance('course', 'lms');
 
         $id_courses = [];
         $query_course_user = '
@@ -4288,7 +4287,7 @@ class UserProfileData
         $org_man = new OrganizationManagement(false);
 
         require_once _lms_ . '/lib/lib.coursereport.php';
-        $rep_man = new CourseReportManager($id_c);
+        $rep_man = new CourseReportManager(0); // no course id available
         $score_course = $rep_man->getUserFinalScore([$id_user]);
 
         $score_start = $org_man->getStartObjectScore([$id_user], $id_courses);
@@ -4338,7 +4337,7 @@ class UserProfileData
             $info = [];
         }
         $output = [];
-        $lang_code = getLanguage();
+        $lang_code = Lang::get();
 
         foreach ($info as $id_competence => $cdata) {
             $obj = new stdClass();
@@ -4370,7 +4369,7 @@ class UserProfileData
             $info = [];
         }
         $output = [];
-        $lang_code = getLanguage();
+        $lang_code = Lang::get();
 
         foreach ($info as $id_fncrole => $fdata) {
             $obj = new stdClass();

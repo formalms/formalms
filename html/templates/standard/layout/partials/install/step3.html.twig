@@ -1,0 +1,27 @@
+<div class="step3">
+    <form id="formstep3" autocomplete="off">
+    
+        <h1>{{ adminInfoLabel }}</h1>
+        {# campi per distrarre il browser dall'autocmplete di campi ed indirizzo #}
+       <input type="text" class="hidden" name="hidden_username" autocomplete="username">
+        <input type="password" class="hidden" name="hidden_password" autocomplete="new-password">
+        
+        <div id="adminPanel">
+            {{ Form_getLineTextfield('form_line_l', 'floating',adminUserLabel, 'textfield','admin_user', 'adminUser', setValues.adminUser, '',255,'autocomplete=off','','') }}
+            {{ Form_getLineTextfield('form_line_l', 'floating',adminNameLabel, 'textfield','admin_firstname', 'adminName', setValues.adminName, '',255,'autocomplete=new-password','','') }}
+            {{ Form_getLineTextfield('form_line_l', 'floating',adminLastnameLabel, 'textfield','admin_lastname', 'adminLastname', setValues.adminLastname, '',255,'autocomplete=new-password','','') }}
+            {{ Form_getPassword(adminPasswordLabel, 'admin_pass', 'adminPassword', 255) }}
+            {{ Form_getPassword(adminConfpassLabel, 'admin_confpass', 'adminConfpass', 255) }}
+            {{ Form_getLineTextfield('form_line_l', 'floating',adminEmailLabel, 'textfield','admin_email', 'adminEmail', setValues.adminEmail, '',255,'autocomplete=new-password','','') }}
+        </div>
+
+
+        <h1>{{ langInstallLabel }}</h1>
+        <ul class="lang_to_install_list">
+                {% set languages = languagesToInstall|slice(start + 1, length) %}
+                {% for code, language in languages %}
+                    <li> {{ Form_getCheckbox(language, 'lang_' ~ code, 'lang_install['~  code ~ ']', code , (setLang == code or code in setLangs)  ? '1' : '0' ) }} </li>
+                {% endfor %}
+        </ul>
+    </form>
+</div>

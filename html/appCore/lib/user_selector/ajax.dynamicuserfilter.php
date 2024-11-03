@@ -21,7 +21,7 @@ require_once _base_ . '/lib/lib.json.php';
 require_once _adm_ . '/lib/lib.field.php';
 require_once _base_ . '/lib/lib.aclmanager.php';
 
-$db = DbConn::getInstance();
+$db = \FormaLms\db\DbConn::getInstance();
 
 $op = FormaLms\lib\Get::req('op', DOTY_ALPHANUM);
 
@@ -52,7 +52,7 @@ switch($op) {
     case "checkuser": {
 
         $json	= new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
-        $a_obj	= new DoceboACLManager();
+        $a_obj	= new FormaACLManager();
         $fman	= new FieldList();
 
         $output		= false;
@@ -84,8 +84,8 @@ switch($op) {
                     switch ($id_type) {
                         // stadard core_user fields
                         case _STANDARD_FIELDS_PREFIX: {
-                            require_once(_adm_.'/modules/field/class.field.php');
-                            require_once(_adm_.'/modules/field/class.date.php');
+                            require_once($GLOBALS['where_framework'].'/modules/field/class.field.php');
+                            require_once($GLOBALS['where_framework'].'/modules/field/class.date.php');
 
                             switch ($id) {
                                 case 0: { //userid
@@ -147,7 +147,7 @@ switch($op) {
 
         $output		= array();
         $json		= new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
-        $a_obj		= new DoceboACLManager();
+        $a_obj		= new FormaACLManager();
         $fman		= new FieldList();
 
         $user_to_check = FormaLms\lib\Get::req('user', DOTY_INT, false);
@@ -175,8 +175,8 @@ switch($op) {
             switch ($id_type) {
 
                 case _STANDARD_FIELDS_PREFIX: {
-                    require_once(_adm_.'/modules/field/class.field.php');
-                    require_once(_adm_.'/modules/field/class.date.php');
+                    require_once($GLOBALS['where_framework'].'/modules/field/class.field.php');
+                    require_once($GLOBALS['where_framework'].'/modules/field/class.date.php');
 
                     switch ($id) {
                         case 0: { //userid

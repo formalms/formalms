@@ -137,7 +137,7 @@ class User_API extends API
 
         // registration code:
         if ($id_user && !empty($userdata['reg_code']) && !empty($userdata['reg_code_type'])) {
-            require_once Forma::inc(_base_ . '/lib/lib.usermanager.php');
+            require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.usermanager.php');
             $user_manager = new UserManager();
             $uma = new UsermanagementAdm();
             $reg_code_res = $user_manager->_render->processRegistrationCode(
@@ -216,11 +216,13 @@ class User_API extends API
                             $this->aclManager->addToGroup($ocd, $id_user);
                             $entities[$oc] = $oc;
                             $entities[$ocd] = $ocd;
+
                         }
                     }
                 }
             }
 
+            $enrollrules = new EnrollrulesAlms();
             if (isset($userdata['orgchart_code'])) {
                 $branches = explode(';', $userdata['orgchart_code']);
                 if (is_array($branches)) {
@@ -234,12 +236,13 @@ class User_API extends API
                             $this->aclManager->addToGroup($ocd, $id_user);
                             $entities[$oc] = $oc;
                             $entities[$ocd] = $ocd;
+                            $enrollrules->applyRulesMultiLang('_LOG_USERS_TO_ORGCHART', [$id_user], $idOrg);
                         }
                     }
                 }
             }
 
-            $enrollrules = new EnrollrulesAlms();
+
             $enrollrules->newRules('_NEW_USER',
                 [$id_user],
                 $userdata['language'],
@@ -288,7 +291,7 @@ class User_API extends API
             ];
 
             $e_msg = new EventMessageComposer();
-            $e_msg->setSubjectLangText('email', '_REGISTERED_USER_SBJ', $array_subst);
+            $e_msg->setSubjectLangText('email', '_REGISTERED_USER_SBJ', false);
             $e_msg->setBodyLangText('email', '_REGISTERED_USER_TEXT', $array_subst);
 
             $recipients = [$id_user];
@@ -303,8 +306,8 @@ class User_API extends API
 
     public function updateUser($id_user, $userdata) {
 
-        $acl_man = new DoceboACLManager();
-        $output = [];
+        $acl_man = new FormaACLManager();
+        $output = array();
 
         $user_data = $this->aclManager->getUser($id_user, false);
 
@@ -551,8 +554,8 @@ class User_API extends API
 
     public function getMyCourses($id_user, $params = false)
     {
-        require_once Forma::include(_lms_ . '/lib/', 'lib.course.php');
-        require_once Forma::include(_lms_ . '/lib/', 'lib.date.php');
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
         $output = [];
 
         $output['success'] = true;
@@ -734,7 +737,7 @@ class User_API extends API
         if (empty($registration_code_type) || empty($code)) {
             $output['success'] = false;
         } else {
-            require_once Forma::inc(_base_ . '/lib/lib.usermanager.php');
+            require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.usermanager.php');
             $user_manager = new UserManager();
 
             $res = $user_manager->checkRegistrationCode($code, $registration_code_type);
@@ -1147,7 +1150,7 @@ class User_API extends API
 
         $id_org = $this->_getBranchByCode($code_org);
 
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $idst_org = $acl_man->getGroupST('oc_' . $id_org);
         $idst_orgd = $acl_man->getGroupST('ocd_' . $id_org);
@@ -1242,8 +1245,8 @@ class User_API extends API
 
     public function downloadCertificate()
     {
-        $queryArray = explode('/', $this->request->get('q'));
-        $downloadString = end($queryArray);
+        $queryStringArray = explode('/', $this->request->get('q'));
+        $downloadString = end($queryStringArray);
         $fileName = SSLEncryption::decryptDownloadUrl($downloadString);
         $baseUrl = $_SERVER['DOCUMENT_ROOT'] . '/files/appLms/certificate/';
         $fileUrl = $baseUrl . $fileName;
@@ -1347,7 +1350,7 @@ class User_API extends API
                 break;
 
             case 'userdetailsbyuserid':
-                $acl_man = new DoceboACLManager();
+                $acl_man = new FormaACLManager();
                 $idst = $acl_man->getUserST($params['userid']);
                 if (!$idst) {
                     $output = ['success' => false, 'message' => 'Error: invalid userid: ' . $params['userid'] . '.'];
@@ -1364,7 +1367,7 @@ class User_API extends API
 
             case 'updateuserbyuserid':
                 if (count($params) > 0) { //params[0] should contain user id
-                    $acl_man = new DoceboACLManager();
+                    $acl_man = new FormaACLManager();
                     $idst = $acl_man->getUserST($params['userid']);
                     if (!$idst) {
                         $output = ['success' => false, 'message' => 'Error: invalid userid: ' . $params['userid'] . '.'];

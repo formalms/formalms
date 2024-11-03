@@ -13,27 +13,27 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (!Docebo::user()->isAnonymous()) {
+if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     function play($object_glos, $id_param)
     {
         //-kb-play-// if(!checkPerm('view', true, 'organization') && !checkPerm('view', true, 'storage')) die("You can't access");
 
-        $lang = &DoceboLanguage::createInstance('glossary');
+        $lang = &FormaLanguage::createInstance('glossary');
 
         $letter = importVar('letter', true, '');
         $idGlossary = $object_glos->getId();
         $back_coded = htmlentities(urlencode($object_glos->back_url));
         $search = urldecode(importVar('search'));
 
-        require_once dirname(__DIR__,2) . '/lib/lib.param.php';
+        require_once dirname(__FILE__) . '/../../lib/lib.param.php';
 
         require_once _base_ . '/lib/lib.form.php';
 
         $idReference = getLOParam($id_param, 'idReference');
         // NOTE: Track only if $idReference is present
         if ($idReference !== false) {
-            require_once dirname(__DIR__,2) . '/class.module/track.glossary.php';
-            list($exist, $idTrack) = Track_Glossary::getIdTrack($idReference, getLogUserId(), $idGlossary, true);
+            require_once dirname(__FILE__) . '/../../class.module/track.glossary.php';
+            list($exist, $idTrack) = Track_Glossary::getIdTrack($idReference, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $idGlossary, true);
             if ($exist) {
                 $ti = new Track_Glossary($idTrack);
                 $ti->setDate(date('Y-m-d H:i:s'));
@@ -41,7 +41,7 @@ if (!Docebo::user()->isAnonymous()) {
                 $ti->update();
             } else {
                 $ti = new Track_Glossary(false);
-                $ti->createTrack($idReference, $idTrack, getLogUserId(), date('Y-m-d H:i:s'), 'completed', 'glossary');
+                $ti->createTrack($idReference, $idTrack, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), date('Y-m-d H:i:s'), 'completed', 'glossary');
             }
         }
 

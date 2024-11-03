@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2023 (Forma)
+ * Copyright (c) 2013-2022 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -17,9 +17,9 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class Plugin extends \FormaPlugin
 {
-    public function install()
+    public static function install()
     {
-        $acl_manager = \Docebo::user()->getAclManager();
+        $acl_manager = \FormaLms\lib\Forma::getAclManager();
 
         $permission_godadmin = [$acl_manager->getGroupST(ADMIN_GROUP_GODADMIN)];
         $permission_org_chart_root = [$acl_manager->getGroupST('/oc_0')];

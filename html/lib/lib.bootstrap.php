@@ -10,25 +10,17 @@
  * from docebo 4.0.5 CE 2008-2012 (c) docebo
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
+require_once _base_ . '/vendor/autoload.php';
+
+use FormaLms\lib\Domain\DomainHandler;
+use FormaLms\lib\System\SystemManager;
+
+use function GuzzleHttp\default_ca_bundle;
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-const BOOT_COMPOSER = 0;
-const BOOT_CONFIG = 1;
-const BOOT_UTILITY = 2;
-const BOOT_SETTING = 3;
-const BOOT_REQUEST = 4;
-const BOOT_PLATFORM = 5;
-const BOOT_PLUGINS = 6;
-const BOOT_SESSION_CHECK = 7;
-const BOOT_USER = 8;
-const BOOT_INPUT = 9;
-const BOOT_LANGUAGE = 10;
-const BOOT_DATETIME = 11;
-const BOOT_HOOKS = 12;
-const BOOT_TEMPLATE = 13;
-const BOOT_PAGE_WR = 14;
-const BOOT_INPUT_ALT = 99;
+
+
 
 /**
  * This class manage the startup operation needed.
@@ -36,33 +28,52 @@ const BOOT_INPUT_ALT = 99;
  */
 class Boot
 {
+    const BOOT_COMPOSER_METHOD = 'composer';
+    const BOOT_PHP_METHOD = 'checkPhpVersion';
+    const BOOT_CONFIG_METHOD = 'config';
+    const BOOT_UTILITY_METHOD = 'utility';
+    const BOOT_SETTING_METHOD = 'loadSetting';
+    const BOOT_REQUEST_METHOD = 'request';
+    const BOOT_PLATFORM_METHOD = 'checkPlatform';
+    const BOOT_DOMAIN_AND_TEMPLATE_METHOD = 'domainAndTemplate';
+    const BOOT_PLUGINS_METHOD = 'plugins';
+    const BOOT_USER_METHOD = 'user';
+    const BOOT_SESSION_CHECK_METHOD = 'sessionCheck';
+    const BOOT_INPUT_METHOD = 'filteringInput';
+    const BOOT_LANGUAGE_METHOD = 'language';
+    const BOOT_HOOKS_METHOD = 'hooks';
+    const BOOT_DATETIME_METHOD = 'dateTime';
+    const BOOT_TEMPLATE_METHOD = 'template';
+    const BOOT_PAGE_WR_METHOD = 'loadPageWriter';
+    const CHECK_SYSTEM_STATUS_METHOD = 'checkSystemStatus';
+
+    private static array $checkStatusFlags;
+
+    private static bool $prettyRedirect;
+
     private static $_boot_seq = [
-        BOOT_COMPOSER => 'composer',
-        BOOT_CONFIG => 'config',
-        BOOT_UTILITY => 'utility',
-        BOOT_SETTING => 'loadSetting',
-        BOOT_REQUEST => 'request',
-        BOOT_PLATFORM => 'checkPlatform',
-        BOOT_PLUGINS => 'plugins',
-        BOOT_USER => 'user',
-        BOOT_SESSION_CHECK => 'sessionCheck',
-        BOOT_INPUT => 'filteringInput',
-        BOOT_INPUT_ALT => 'anonFilteringInput',
-        BOOT_LANGUAGE => 'language',
-        BOOT_HOOKS => 'hooks',
-        BOOT_DATETIME => 'dateTime',
-        BOOT_TEMPLATE => 'template',
-        BOOT_PAGE_WR => 'loadPageWriter',
+        BOOT_UTILITY => self::BOOT_UTILITY_METHOD,
+        BOOT_PHP => self::BOOT_PHP_METHOD,
+        BOOT_CONFIG => self::BOOT_CONFIG_METHOD,
+        BOOT_SETTING => self::BOOT_SETTING_METHOD,
+        BOOT_REQUEST => self::BOOT_REQUEST_METHOD,
+        BOOT_PLATFORM => self::BOOT_PLATFORM_METHOD,
+        BOOT_DOMAIN_AND_TEMPLATE => self::BOOT_DOMAIN_AND_TEMPLATE_METHOD,
+        BOOT_PLUGINS => self::BOOT_PLUGINS_METHOD,
+        BOOT_USER => self::BOOT_USER_METHOD,
+        BOOT_SESSION_CHECK => self::BOOT_SESSION_CHECK_METHOD,
+        BOOT_INPUT => self::BOOT_INPUT_METHOD,
+        BOOT_LANGUAGE => self::BOOT_LANGUAGE_METHOD,
+        BOOT_HOOKS => self::BOOT_HOOKS_METHOD,
+        BOOT_DATETIME => self::BOOT_DATETIME_METHOD,
+        BOOT_TEMPLATE => self::BOOT_TEMPLATE_METHOD,
+        BOOT_PAGE_WR => self::BOOT_PAGE_WR_METHOD,
+        CHECK_SYSTEM_STATUS => self::CHECK_SYSTEM_STATUS_METHOD
     ];
 
     public static $log_array = [];
 
-    public static function composer()
-    {
-        // composer autoload
-        self::log('Load composer autoload.');
-        require_once _base_ . '/vendor/autoload.php';
-    }
+    public static SystemManager $systemManager;
 
     /**
      * Load all the step requested.
@@ -72,16 +83,23 @@ class Boot
      *                        if you pass an array you can tell the function
      *                        exactly which step you want to be done
      */
-    public static function init($load_option = BOOT_PAGE_WR)
+    public static function init($load_option = CHECK_SYSTEM_STATUS)
     {
+        //inizializzazione
+        self::$checkStatusFlags = [];
+
+        self::$systemManager = SystemManager::getInstance();
+        self::$prettyRedirect = self::$systemManager->checkWebServer();
+
         if (is_array($load_option)) {
-            $last_step = BOOT_PAGE_WR;
-            $step_list = $load_option;
+            $last_step = CHECK_SYSTEM_STATUS;
+            $step_list = self::getMethodMappings($load_option);
         } else {
             // custom boot sequence given, use this one
             $last_step = $load_option;
             $step_list = self::$_boot_seq;
         }
+
         foreach ($step_list as $step_num => $step_method) {
             // custom boot sequence given, must retrive the correct method to call
             if (is_array($load_option)) {
@@ -95,16 +113,36 @@ class Boot
         }
     }
 
+    private static function getMethodMappings(array $constants): array
+    {
+        $mappings = [];
+        foreach ($constants as $index => $constant) {
+            // Retrieve the name of the constant
+            $constantName = array_search($constant, get_defined_constants());
+            if ($constantName !== false) {
+                // Construct the method constant name
+                $methodConstant = $constantName . '_METHOD';
+                if (defined("self::$methodConstant")) {
+                    $mappings[$constantName] = constant("self::$methodConstant");
+                }
+            }
+            else {
+                $mappings[$index] = $constant;
+            }
+        }
+        return $mappings;
+    }
+
     /**
      * Load all the final operation, if something need to do some check or data
      * manipulation before the page is return to the browser this is the place.
      */
     public static function finalize()
     {
-        if (isset($GLOBALS['current_user']) && Docebo::user()->isLoggedIn()) {
-            Docebo::user()->SaveInSession();
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->isLoggedIn()) {
+            \FormaLms\lib\FormaUser::getCurrentUser()->saveInSession();
         }
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
         $db->close();
     }
 
@@ -119,7 +157,25 @@ class Boot
      */
     private static function config()
     {
-        $step_report = [];
+        $cfg = null;
+
+        if (!file_exists(dirname(__DIR__, 1) . '/config.php')) {
+            self::$checkStatusFlags[] = array_search(__FUNCTION__, self::$_boot_seq);
+        } else {
+            require dirname(__DIR__, 1) . '/config.php';
+        }
+
+        if (!isset($cfg) || !is_array($cfg)) {
+            self::$checkStatusFlags[] = array_search(__FUNCTION__, self::$_boot_seq);
+        }
+
+        $checkRoute = self::$systemManager->checkSystemRoutes();
+
+        if (!$checkRoute && !self::$systemManager->fileLockExistence()) {
+            static::customRedirect('install');
+        }
+
+        //controllare request
 
         //unset all the globals that aren't php setted
         if (ini_get('register_globals')) {
@@ -149,19 +205,31 @@ class Boot
         self::log('Include configuration file.');
 
         $cfg = [];
-        if (!file_exists(__DIR__ . '/../config.php')) {
-            $path = _deeppath_
-                . str_replace(_base_, '.', constant('_base_'));
-            header('Location: ' . str_replace(['//', '\\/', '/./'], '/', $path) . '/install/');
+        if (file_exists(dirname(__DIR__, 1) . '/config.php')) {
+            require dirname(__DIR__, 1) . '/config.php';
+            $configExists = true;
+        } else {
+            $configExists = false;
         }
-        require __DIR__ . '/../config.php';
+
+        if (empty($cfg)) {
+            $cfg['prefix_fw'] = 'core';
+            $cfg['prefix_lms'] = 'learning';
+            $cfg['prefix_cms'] = 'cms';
+            $cfg['prefix_scs'] = 'conference';
+            $cfg['prefix_ecom'] = 'ecom';
+            $cfg['prefix_crm'] = 'crm';
+        }
+        $cfg['configExists'] = $configExists;
         $GLOBALS['cfg'] = $cfg;
+
 
         $GLOBALS['prefix_fw'] = $cfg['prefix_fw'];
         $GLOBALS['prefix_lms'] = $cfg['prefix_lms'];
         $GLOBALS['prefix_scs'] = $cfg['prefix_scs'];
         $GLOBALS['prefix_ecom'] = $cfg['prefix_ecom'];
         $GLOBALS['prefix_crm'] = $cfg['prefix_crm'];
+
 
         // setup some php.ini things
         $step_report[] = 'Setup some php.ini settings.';
@@ -177,27 +245,33 @@ class Boot
         }
         self::log('Time zone setted to TZ= ' . @date_default_timezone_get());
 
+        if (!isset($cfg['do_debug'])) {
+            $cfg['do_debug'] = false;
+        }
         // debugging ?
+
         self::log(($cfg['do_debug'] ? 'Enable (set: E_ALL) ' : 'Disable (set: E_COMPILE_ERROR|E_ERROR|E_CORE_ERROR)') . ' error reporting.');
         if ($cfg['do_debug']) {
-            if (!in_array('debug_level', $cfg, true)) {
-                $cfg['debug_level'] = 'all';
+            if (!array_key_exists('debug_level', $cfg)) {
+                $cfg['debug_level'] = 'error';
             }
+
             switch ($cfg['debug_level']) {
                 case 'error':
-                    @error_reporting(E_ERROR);
+                    error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING & ~E_DEPRECATED);
+                    @ini_set('display_startup_errors', 1);
                     break;
                 case 'warning':
-                    @error_reporting(E_WARNING);
+                    error_reporting(E_WARNING);
                     break;
                 case 'notice':
-                    @error_reporting(E_NOTICE);
+                    error_reporting(E_NOTICE);
                     break;
                 case 'deprecated':
-                    @error_reporting(E_DEPRECATED);
+                    error_reporting(E_DEPRECATED);
                     break;
                 default:
-                    @error_reporting(E_ALL);
+                    error_reporting(E_ALL ^ E_DEPRECATED);
                     break;
             }
 
@@ -240,6 +314,12 @@ class Boot
      */
     private static function utility()
     {
+        //precheck per bloccare ogni cosa se sbagli la minima versione accettata
+        $configResult = include _base_ . "/config/version.php";
+        if (version_compare(PHP_VERSION, $configResult['php_min_version']) < 0) {
+            // La versione di PHP non è supportata
+            die("Your PHP Version is not suitable. Min version: " . $configResult['php_min_version']);
+        }
         self::log('Include autoload file.');
         require_once _base_ . '/lib/lib.autoload.php';
 
@@ -251,6 +331,7 @@ class Boot
         require_once _base_ . '/lib/lib.utils.php';
 
         // UTF8 Support
+        // should be substituted with symfony string library and handled in class since package is abandoned
         \Patchwork\Utf8\Bootup::initAll();
         \Patchwork\Utf8\Bootup::filterRequestInputs();
 
@@ -262,23 +343,29 @@ class Boot
         self::log('Load yui library.');
         require_once _base_ . '/lib/lib.yuilib.php';
 
-        // template
-        self::log('Load template library.');
-        require_once _base_ . '/lib/lib.template.php';
-
         // mimetype
         self::log('Load mimetype library.');
         require_once _base_ . '/lib/lib.mimetype.php';
 
         require_once _lib_ . '/lib.acl.php';
 
-        self::log('Load mailer library.');
-        require_once _base_ . '/lib/lib.mailer.php';
-
         self::log('Load Calendar library.');
         require_once _lib_ . '/calendar/CalendarManager.php';
         require_once _lib_ . '/calendar/CalendarDataContainer.php';
         require_once _lib_ . '/calendar/CalendarMailer.php';
+    }
+
+    private static function domainAndTemplate()
+    {
+        //create the handler who will fix values in session
+        $domainHandler = DomainHandler::getInstance();
+
+        // template
+        self::log('Load template library.');
+        require_once _base_ . '/lib/lib.template.php';
+
+        // i set mail later because it has a dependancy on li.template
+        $domainHandler->attachDefaultMailer();
     }
 
     /**
@@ -308,7 +395,7 @@ class Boot
      * - load the appropiate database driver
      * - connect to the database
      * - load setting from database.
-     * - check config.
+     * - check config
      *
      * @return array
      */
@@ -316,28 +403,54 @@ class Boot
     {
         self::log('Load database funtion management library.');
 
+        $cfg = null;
         $configExist = true;
-        if (!file_exists(__DIR__ . '/../config.php')) {
+        if (!file_exists(dirname(__DIR__, 1) . '/config.php')) {
             $configExist = false;
+        } else {
+            require dirname(__DIR__, 1) . '/config.php';
         }
 
+        if (!isset($cfg) || !is_array($cfg)) {
+            $configExist = false;
+
+            $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+            // i'm in installer
+            if ($session->has('setValues')) {
+                $values = $session->get('setValues');
+
+                $cfg['db_type'] = 'mysqli';
+                $cfg['db_user'] = $values['dbUser'];
+                $cfg['db_pass'] = $values['dbPass'];
+                $cfg['db_name'] = $values['dbName'];
+                $cfg['db_host'] = $values['dbHost'];
+            }
+        }
+
+
         self::log('Load database funtion management library.');
-        require_once _base_ . '/db/lib.docebodb.php';
+
 
         // utf8 support
         self::log('Connect to database.');
-        DbConn::getInstance();
+        \FormaLms\db\DbConn::getInstance(null, $cfg);
 
         $dbIsEmpty = true;
-        if (DbConn::$connected) {
+        if (\FormaLms\db\DbConn::$connected) {
             try {
-                $dbIsEmpty = !(bool) sql_query('SELECT * FROM `core_setting`');
+                $dbIsEmpty = !(bool)sql_query("SELECT * FROM `core_setting`");
             } catch (\Exception $exception) {
             }
         }
 
-        if ((!$configExist || $dbIsEmpty) && file_exists(_base_ . '/install')) {
-            header('Location: ' . FormaLms\lib\Get::rel_path('base') . '/install/');
+        //controllare request
+        $checkRoute = self::$systemManager->checkSystemRoutes();
+
+        if ($dbIsEmpty) {
+            self::$checkStatusFlags[] = array_search(__FUNCTION__, self::$_boot_seq);
+        }
+        if (!$checkRoute && !self::$systemManager->fileLockExistence()) {
+            static::customRedirect('install');
         }
     }
 
@@ -348,6 +461,15 @@ class Boot
      */
     private static function loadSetting()
     {
+
+        if (
+            file_exists(dirname(__DIR__, 1) . '/config.php') &&
+            !\FormaLms\db\DbConn::getInstance()
+        ) {
+
+            die("Your Config File contains wrong informations about connection");
+            //posso aver caricato un file di config con dati di connessione errate faccio un test
+        }
         self::log(' Load settings from database.');
         Util::load_setting(FormaLms\lib\Get::cfg('prefix_fw') . '_setting', 'framework');
 
@@ -360,8 +482,8 @@ class Boot
     {
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
         if (!$request->hasSession()) {
-            if (file_exists(__DIR__ . '/../config.php')) {
-                require __DIR__ . '/../config.php';
+            if (file_exists(dirname(__DIR__, 1) . '/config.php')) {
+                require dirname(__DIR__, 1) . '/config.php';
             }
             $config = [];
             if (!empty($cfg)) {
@@ -377,11 +499,19 @@ class Boot
 
     private static function sessionCheck()
     {
+        if (self::isCommandLineInterface()){
+            return;
+        }
         if (FormaLms\lib\Session\SessionManager::getInstance()->isSessionExpired()) {
             $session = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest()->getSession();
             $session->invalidate();
             $session->save();
             \Util::jump_to(FormaLms\lib\Get::rel_path('base') . '/index.php?msg=103');
+        }
+
+        $sessionCheck = \FormaLms\lib\Session\SessionManager::getInstance()->getConfig()->getCookieName();
+        if (\FormaLms\lib\Request\RequestManager::getInstance()->getRequest()->isSecure() && !(preg_match('/__Secure/', $sessionCheck))) {
+            self::$checkStatusFlags[] = array_search(__FUNCTION__, self::$_boot_seq);
         }
     }
 
@@ -396,7 +526,6 @@ class Boot
      */
     private static function user()
     {
-        require_once _base_ . '/lib/lib.user.php';
         $session = FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         self::log("Load user from session '" . $session->getName() . "'");
 
@@ -405,14 +534,15 @@ class Boot
         // ip coerency check
         self::log('Ip coerency check.');
         if (FormaLms\lib\Get::sett('session_ip_control', 'on') == 'on') {
-            $ip = (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER) && $_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
+            $fallbackIp = array_key_exists('REMOTE_ADDR', $_SERVER) ? $_SERVER['REMOTE_ADDR'] : '::1';
+            $ip = (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER) && $_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $fallbackIp;
             if (strpos($ip, ',') !== false) {
                 $ip = substr($ip, 0, strpos($ip, ','));
             }
-            if (Docebo::user()->isLoggedIn() && (Docebo::user()->getLogIp() != $ip)) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->isLoggedIn() && (\FormaLms\lib\FormaUser::getCurrentUser()->getLogIp() != $ip)) {
                 \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->invalidate();
                 Util::jump_to(FormaLms\lib\Get::rel_path('base') . '/index.php?msg=104');
-                //Util::fatal("logip: ".Docebo::user()->getLogIp()."<br/>"."addr: ".$_SERVER['REMOTE_ADDR']."<br/>".'Ip incoherent!');
+                //Util::fatal("logip: ".\FormaLms\lib\FormaUser::getCurrentUser()->getLogIp()."<br/>"."addr: ".$_SERVER['REMOTE_ADDR']."<br/>".'Ip incoherent!');
                 //unlog the user
                 exit();
             }
@@ -420,31 +550,6 @@ class Boot
         // Generate a session signature or regenerate it if needed
         self::log('Generating session signature');
         Util::generateSignature();
-    }
-
-    private static function anonFilteringInput()
-    {
-        $step_report = [];
-
-        // Convert ' and " (quote or unquote)
-        self::log('Sanitize the input.');
-
-        $filter_input = new FilterInput();
-        $filter_input->tool = FormaLms\lib\Get::cfg('filter_tool', 'htmlpurifier');
-
-        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-        // Whitelist some tags if we're a teacher in a course:
-        if ($session->has('idCourse') && $session->get('levelCourse') >= 6) {
-            $filter_input->appendToWhitelist([
-                'tag' => ['object', 'param'],
-                'attrib' => [
-                    'object.data', 'object.type', 'object.width',
-                    'object.height', 'param.name', 'param.value',
-                ],
-            ]);
-        }
-
-        $filter_input->sanitize();
     }
 
     private static function filteringInput()
@@ -461,7 +566,7 @@ class Boot
         // Convert ' and " (quote or unquote)
         self::log('Sanitize the input.');
 
-        if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
             $filter_input = new FilterInput();
             $filter_input->tool = 'none';
             $filter_input->sanitize();
@@ -485,8 +590,9 @@ class Boot
         if (($ldap_used === 'on') && isset($_POST['modname']) && ($_POST['modname'] === 'login') && isset($_POST['passIns'])) {
             $_POST['passIns'] = \voku\helper\UTF8::clean(stripslashes($password_login));
         }
+        $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
 
-        if (!defined('IS_API') && !defined('IS_PAYPAL') && (strtoupper($_SERVER['REQUEST_METHOD']) === 'POST' || defined('IS_AJAX'))) {
+        if ((!defined('IS_API') && !defined('IS_PAYPAL') && ($request->isMethod('post') || defined('IS_AJAX'))) && !self::$systemManager->checkSystemRoutes()) {
             // If this is a post or a ajax request then we must have a signature attached
             Util::checkSignature();
         }
@@ -502,7 +608,7 @@ class Boot
     {
         self::log('Loading session language functions');
 
-        require_once Forma::inc(_i18n_ . '/lib.lang.php');
+        require_once \FormaLms\lib\Forma::inc(_i18n_ . '/lib.lang.php');
         $sop = FormaLms\lib\Get::req('sop', DOTY_ALPHANUM, false);
         if (!$sop) {
             $sop = FormaLms\lib\Get::req('special', DOTY_ALPHANUM, false);
@@ -516,7 +622,7 @@ class Boot
                 break;
         }
 
-        //$glang =& DoceboLanguage::createInstance( 'standard', 'framework');
+        //$glang =& FormaLanguage::createInstance( 'standard', 'framework');
         //$glang->setGlobal();
     }
 
@@ -562,7 +668,7 @@ class Boot
     {
         list($usec, $sec) = explode(' ', microtime());
         $GLOBALS['start'] = [
-            'time' => ((float) $usec + (float) $sec),
+            'time' => ((float)$usec + (float)$sec),
             'memory' => function_exists('memory_get_usage') ? memory_get_usage() : 0,
         ];
     }
@@ -570,7 +676,7 @@ class Boot
     public static function current_time()
     {
         list($usec, $sec) = explode(' ', microtime());
-        $now = ((float) $usec + (float) $sec);
+        $now = ((float)$usec + (float)$sec);
 
         return $now - $GLOBALS['start']['time'];
     }
@@ -640,5 +746,73 @@ class Boot
             echo '</table>';
             exit();
         }
+    }
+
+
+    public static function checkSystemStatus()
+    {
+        $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
+
+        if (count(self::$checkStatusFlags) && self::$systemManager->fileLockExistence() && !self::$systemManager->checkSystemRoutes(true) && !defined('IS_AJAX')) {
+            $params['errorStatus'] = base64_encode(implode("_", array_unique(self::$checkStatusFlags)));
+            static::customRedirect('checkSystemStatus', $params);
+        }
+    }
+
+
+    public static function customRedirect($route, $params = [])
+    {
+        $baseRoute = FormaLms\lib\Get::rel_path('base');
+        if (substr($baseRoute, -1) === '/') {
+            $baseRoute = substr($baseRoute, 0, -1);
+        }
+        $sistemPrefix = '/index.php?r=adm/system/';
+        $baseRoute .= ($sistemPrefix . $route);
+
+        if (count($params)) {
+            $baseRoute .=  '&';
+            foreach ($params as $key => $param) {
+                $baseRoute .= $key . '=' . $param;
+            }
+        }
+
+        header('Location: ' . $baseRoute);
+    }
+
+    public static function checkPhpVersion()
+    {
+
+        if (\FormaLms\lib\Version\VersionChecker::comparePhpVersion()) {
+            self::$checkStatusFlags[] = array_search(__FUNCTION__, self::$_boot_seq);
+        }
+    }
+
+    private static function isCommandLineInterface()
+    {
+        if ( defined('STDIN') )
+        {
+            return true;
+        }
+
+        if ( php_sapi_name() === 'cli' )
+        {
+            return true;
+        }
+
+        if ( array_key_exists('SHELL', $_ENV) ) {
+            return true;
+        }
+
+        if ( empty($_SERVER['REMOTE_ADDR']) and !isset($_SERVER['HTTP_USER_AGENT']) and count($_SERVER['argv']) > 0)
+        {
+            return true;
+        }
+
+        if ( !array_key_exists('REQUEST_METHOD', $_SERVER) )
+        {
+            return true;
+        }
+
+        return false;
     }
 }

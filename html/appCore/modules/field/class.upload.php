@@ -20,7 +20,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  * @author   Fabio Pirovano <fabio@docebo.com>
  */
-require_once Forma::inc(_adm_ . '/modules/field/class.field.php');
+require_once \FormaLms\lib\Forma::inc(_adm_ . '/modules/field/class.field.php');
 
 class Field_Upload extends Field
 {
@@ -29,7 +29,7 @@ class Field_Upload extends Field
      *
      * @return string return the identifier of the field
      */
-    public function getFieldType()
+    public static function getFieldType()
     {
         return 'upload';
     }
@@ -46,32 +46,32 @@ class Field_Upload extends Field
         $back_coded = htmlentities(urlencode($back));
 
         $array_lang = [];
-        $std_lang = &DoceboLanguage::createInstance('standard');
-        $lang = &DoceboLanguage::createInstance('field');
-        $array_lang = Docebo::langManager()->getAllLangCode();
-        $out = &$GLOBALS['page'];
+        $std_lang = FormaLanguage::createInstance('standard');
+        $lang = FormaLanguage::createInstance('field');
+        $array_lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
+        $out = $GLOBALS['page'];
 
         if (isset($_POST['undo'])) {
             //undo action
             Util::jump_to($back . '&result=undo');
         }
-        if (isset($_POST['save_field_' . $this->getFieldType()])) {
+        if (isset($_POST['save_field_' . self::getFieldType()])) {
             //insert mandatory translation
-            $mand_lang = getLanguage();
+            $mand_lang = Lang::get();
             if (isset($_POST['show_on_platform'])) {
                 foreach ($_POST['show_on_platform']  as $code) {
                     $show_on .= $code . ',';
                 }
             }
             //insert mandatory translation
-            $mand_lang = getLanguage();
+            $mand_lang = Lang::get();
 
             //control if all is ok
             if (!isset($_POST['new_upload'][$mand_lang])) {
                 $out->add(
                     getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_TRANSLATION'))
                     . getBackUi($this->getUrl() . '&amp;type_field='
-                        . $this->getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
+                        . self::getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
                     'content'
                 );
 
@@ -81,7 +81,7 @@ class Field_Upload extends Field
                 $out->add(
                     getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_TRANSLATION'))
                     . getBackUi($this->getUrl() . '&amp;type_field='
-                        . $this->getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
+                        . self::getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
                     'content'
                 );
 
@@ -92,7 +92,7 @@ class Field_Upload extends Field
             if (!sql_query('
 			INSERT INTO ' . $this->_getMainTable() . "
 			(type_field, lang_code, translation, show_on_platform, use_multilang) VALUES
-			('" . $this->getFieldType() . "', '" . $mand_lang . "', '" . $_POST['new_upload'][$mand_lang] . "', '" . $show_on . "', '" . $use_multilang . "') ")) {
+			('" . self::getFieldType() . "', '" . $mand_lang . "', '" . $_POST['new_upload'][$mand_lang] . "', '" . $show_on . "', '" . $use_multilang . "') ")) {
                 Util::jump_to($back . '&result=fail');
             }
             list($id_common) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
@@ -109,7 +109,7 @@ class Field_Upload extends Field
                     $re_ins = sql_query('
 					INSERT INTO ' . $this->_getMainTable() . "
 					(type_field, id_common, lang_code, translation, show_on_platform, use_multilang) VALUES
-					('" . $this->getFieldType() . "', '" . (int) $id_common . "', '" . $lang_code . "', '" . $translation . "', '" . $show_on . "', '" . $use_multilang . "') ");
+					('" . self::getFieldType() . "', '" . (int) $id_common . "', '" . $lang_code . "', '" . $translation . "', '" . $show_on . "', '" . $use_multilang . "') ");
                     $re = $re && $re_ins;
                 }
             }
@@ -124,12 +124,12 @@ class Field_Upload extends Field
         $out->add('<div class="std_block">');
         $out->add(
             $form->getFormHeader($lang->def('_NEW_UPLOAD'))
-            . $form->openForm('create_' . $this->getFieldType(), $this->getUrl())
+            . $form->openForm('create_' . self::getFieldType(), $this->getUrl())
             . $form->openElementSpace()
-            . $form->getHidden('type_field', 'type_field', $this->getFieldType())
+            . $form->getHidden('type_field', 'type_field', self::getFieldType())
             . $form->getHidden('back', 'back', $back_coded)
         );
-        $mand_lang = getLanguage();
+        $mand_lang = Lang::get();
         foreach ($array_lang as $k => $lang_code) {
             $out->add(
                 $form->getTextfield((($mand_lang == $lang_code) ? '<span class="mandatory">*</span>' : '') . $lang_code,
@@ -147,7 +147,7 @@ class Field_Upload extends Field
         $out->add(
             $form->closeElementSpace()
             . $form->openButtonSpace()
-            . $form->getButton('save_field', 'save_field_' . $this->getFieldType(), $std_lang->def('_CREATE', 'standard'))
+            . $form->getButton('save_field', 'save_field_' . self::getFieldType(), $std_lang->def('_CREATE', 'standard'))
             . $form->getButton('undo', 'undo', $std_lang->def('_UNDO', 'standard'))
             . $form->closeButtonSpace()
             . $form->closeForm()
@@ -167,25 +167,25 @@ class Field_Upload extends Field
         $back_coded = htmlentities(urlencode($back));
 
         $array_lang = [];
-        $std_lang = &DoceboLanguage::createInstance('standard');
-        $lang = &DoceboLanguage::createInstance('field');
-        $array_lang = Docebo::langManager()->getAllLangCode();
+        $std_lang = FormaLanguage::createInstance('standard');
+        $lang = FormaLanguage::createInstance('field');
+        $array_lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $out = &$GLOBALS['page'];
 
         if (isset($_POST['undo'])) {
             //undo action
             Util::jump_to($back . '&result=undo');
         }
-        if (isset($_POST['save_field_' . $this->getFieldType()])) {
+        if (isset($_POST['save_field_' . self::getFieldType()])) {
             //insert mandatory translation
-            $mand_lang = getLanguage();
+            $mand_lang = Lang::get();
 
             //control if all is ok
             if (!isset($_POST['new_upload'][$mand_lang])) {
                 $out->add(
                     getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_TRANSLATION'))
                     . getBackUi($this->getUrl() . '&amp;type_field='
-                        . $this->getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
+                        . self::getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
                     'content'
                 );
 
@@ -195,7 +195,7 @@ class Field_Upload extends Field
                 $out->add(
                     getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_TRANSLATION'))
                     . getBackUi($this->getUrl() . '&amp;type_field='
-                        . $this->getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
+                        . self::getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
                     'content'
                 );
 
@@ -234,7 +234,7 @@ class Field_Upload extends Field
                     if (!sql_query('
 					INSERT INTO ' . $this->_getMainTable() . "
 					(type_field, id_common, lang_code, translation, show_on_platform, use_multilang) VALUES
-					('" . $this->getFieldType() . "', '" . (int) $this->id_common . "', '" . $lang_code . "', '" . $translation . "', '" . $show_on . "', '" . $use_multilang . "') ")) {
+					('" . self::getFieldType() . "', '" . (int) $this->id_common . "', '" . $lang_code . "', '" . $translation . "', '" . $show_on . "', '" . $use_multilang . "') ")) {
                         $re = false;
                     }
                 }
@@ -264,13 +264,13 @@ class Field_Upload extends Field
         $out->setWorkingZone('content');
         $out->add('<div class="std_block">');
         $out->add(
-            $form->openForm('create_' . $this->getFieldType(), $this->getUrl())
+            $form->openForm('create_' . self::getFieldType(), $this->getUrl())
             . $form->openElementSpace()
-            . $form->getHidden('type_field', 'type_field', $this->getFieldType())
+            . $form->getHidden('type_field', 'type_field', self::getFieldType())
             . $form->getHidden('id_common', 'id_common', $this->id_common)
             . $form->getHidden('back', 'back', $back_coded)
         );
-        $mand_lang = getLanguage();
+        $mand_lang = Lang::get();
         foreach ($array_lang as $k => $lang_code) {
             $out->add(
                 $form->getTextfield((($mand_lang == $lang_code) ? '<span class="mandatory">*</span>' : '') . $lang_code,
@@ -288,7 +288,7 @@ class Field_Upload extends Field
         $out->add(
             $form->closeElementSpace()
             . $form->openButtonSpace()
-            . $form->getButton('save_field', 'save_field_' . $this->getFieldType(), $std_lang->def('_SAVE', 'standard'))
+            . $form->getButton('save_field', 'save_field_' . self::getFieldType(), $std_lang->def('_SAVE', 'standard'))
             . $form->getButton('undo', 'undo', $std_lang->def('_UNDO', 'standard'))
             . $form->closeButtonSpace()
             . $form->closeForm()
@@ -315,7 +315,7 @@ class Field_Upload extends Field
 			id_common_son = '0'"));
 
         if ($user_entry != '') {
-            $entry_link = '<a href="' . FormaLms\lib\Get::rel_path('adm') . '/index.php?modname=field&amp;op=manage&amp;fo=special&amp;type_field=' . $this->getFieldType() . '&amp;id_user=' . $id_user . '&amp;id_common=' . $this->id_common . '">'
+            $entry_link = '<a href="' . FormaLms\lib\Get::rel_path('adm') . '/index.php?modname=field&amp;op=manage&amp;fo=special&amp;type_field=' . self::getFieldType() . '&amp;id_user=' . $id_user . '&amp;id_common=' . $this->id_common . '">'
             . '<img src="' . getPathImage() . mimeDetect($user_entry) . '" alt="' . Lang::t('_MIME_TYPE') . '" />'
             . '&nbsp;' . Lang::t('_DOWNLOAD')
             . '</a>';
@@ -331,7 +331,7 @@ class Field_Upload extends Field
         require_once _base_ . '/lib/lib.mimetype.php';
 
         if ($value != '') {
-            $entry_link = '<a href="' . FormaLms\lib\Get::rel_path('adm') . '/index.php?modname=field&amp;op=manage&amp;fo=special&amp;type_field=' . $this->getFieldType() . '&amp;id_user=' . $id_user . '&amp;id_common=' . $this->id_common . '">'
+            $entry_link = '<a href="' . FormaLms\lib\Get::rel_path('adm') . '/index.php?modname=field&amp;op=manage&amp;fo=special&amp;type_field=' . self::getFieldType() . '&amp;id_user=' . $id_user . '&amp;id_common=' . $this->id_common . '">'
             . '<img src="' . getPathImage() . mimeDetect($value) . '" alt="' . Lang::t('_MIME_TYPE') . '" />'
             . '&nbsp;' . Lang::t('_DOWNLOAD')
             . '</a>';
@@ -365,11 +365,11 @@ class Field_Upload extends Field
         $re_field = sql_query('
 		SELECT translation
 		FROM ' . $this->_getMainTable() . "
-		WHERE lang_code = '" . getLanguage() . "' AND id_common = '" . (int) $this->id_common . "' AND type_field = '" . $this->getFieldType() . "'");
+		WHERE lang_code = '" . Lang::get() . "' AND id_common = '" . (int) $this->id_common . "' AND type_field = '" . self::getFieldType() . "'");
         list($translation) = sql_fetch_row($re_field);
 
         if ($user_entry != '') {
-            $entry_link = '<a href="' . FormaLms\lib\Get::rel_path('adm') . '/index.php?modname=field&amp;op=manage&amp;fo=special&amp;type_field=' . $this->getFieldType() . '&amp;id_user=' . $id_user . '&amp;id_common=' . $this->id_common . '">'
+            $entry_link = '<a href="' . FormaLms\lib\Get::rel_path('adm') . '/index.php?modname=field&amp;op=manage&amp;fo=special&amp;type_field=' . self::getFieldType() . '&amp;id_user=' . $id_user . '&amp;id_common=' . $this->id_common . '">'
             . '<img src="' . getPathImage() . mimeDetect($user_entry) . '" alt="' . Lang::t('_MIME_TYPE') . '" />'
             . '&nbsp;' . Lang::t('_DOWNLOAD')
             . '</a> ';
@@ -391,8 +391,8 @@ class Field_Upload extends Field
 
             $formField .= Form::getInputFilefield(
                     'form-control ' . ($error ? 'has-error' : ''),
-                    'field_' . $this->getFieldType() . '_' . $this->id_common,
-                    'field_' . $this->getFieldType() . '[' . $this->id_common . ']',
+                    'field_' . self::getFieldType() . '_' . $this->id_common,
+                    'field_' . self::getFieldType() . '[' . $this->id_common . ']',
                     '',
                     $translation,
                     'placeholder="' . $translation . ($mandatory ? ' *' : '') . '"'
@@ -413,8 +413,8 @@ class Field_Upload extends Field
         }
 
         return Form::getFilefield($translation . ($mandatory ? ' <span class="mandatory">*</span>' : ''),
-                                'field_' . $this->getFieldType() . '_' . $this->id_common,
-                                'field_' . $this->getFieldType() . '[' . $this->id_common . ']',
+                                'field_' . self::getFieldType() . '_' . $this->id_common,
+                                'field_' . self::getFieldType() . '[' . $this->id_common . ']',
                                 '',
                                 $translation,
                                 '',
@@ -442,7 +442,7 @@ class Field_Upload extends Field
     public function play_filter($id_field, $value = false, $label = false, $field_prefix = false, $other_after = '', $other_before = '', $field_special = false)
     {
         require_once _base_ . '/lib/lib.form.php';
-        $lang = &DoceboLanguage::createInstance('field');
+        $lang = FormaLanguage::createInstance('field');
 
         if ($value === false) {
             echo 'Trallallero: ' . Field::getFieldValue_Filter($_POST, $id_field, $field_prefix, 'false');
@@ -478,9 +478,9 @@ class Field_Upload extends Field
      */
     public function isFilled($id_user)
     {
-        if (!isset($_FILES['field_' . $this->getFieldType()]['tmp_name'][$this->id_common])) {
+        if (!isset($_FILES['field_' . self::getFieldType()]['tmp_name'][$this->id_common])) {
             return false;
-        } elseif ($_FILES['field_' . $this->getFieldType()]['tmp_name'][$this->id_common] == '') {
+        } elseif ($_FILES['field_' . self::getFieldType()]['tmp_name'][$this->id_common] == '') {
             return false;
         } else {
             return true;
@@ -495,7 +495,7 @@ class Field_Upload extends Field
      *
      * @return bool true if operation success false otherwise
      */
-    public function store($id_user, $no_overwrite)
+    public function store($id_user, $no_overwrite, $int_userid = true)
     {
         require_once _base_ . '/lib/lib.upload.php';
 
@@ -503,17 +503,17 @@ class Field_Upload extends Field
 
         $file = '';
         sl_open_fileoperations();
-        if (isset($_FILES['field_' . $this->getFieldType()]['tmp_name'][$this->id_common]) &&
-            $_FILES['field_' . $this->getFieldType()]['tmp_name'][$this->id_common] != '') {
-            $file = $id_user . '_' . $this->id_common . '_' . time() . '_' . $_FILES['field_' . $this->getFieldType()]['name'][$this->id_common];
-            if (!sl_upload($_FILES['field_' . $this->getFieldType()]['tmp_name'][$this->id_common], $path . $file)) {
+        if (isset($_FILES['field_' . self::getFieldType()]['tmp_name'][$this->id_common]) &&
+            $_FILES['field_' . self::getFieldType()]['tmp_name'][$this->id_common] != '') {
+            $file = $id_user . '_' . $this->id_common . '_' . time() . '_' . $_FILES['field_' . self::getFieldType()]['name'][$this->id_common];
+            if (!sl_upload($_FILES['field_' . self::getFieldType()]['tmp_name'][$this->id_common], $path . $file)) {
                 $error = 1;
                 $file = '';
             }
         }
         sl_close_fileoperations();
 
-        if (empty($_FILES['field_' . $this->getFieldType()]['name'][$this->id_common])) {
+        if (empty($_FILES['field_' . self::getFieldType()]['name'][$this->id_common])) {
             return true;
         }
         $re_entry = sql_query('
@@ -577,24 +577,24 @@ class Field_Upload extends Field
 
     public function getClientClassObject()
     {
-        $lang = &DoceboLanguage::createInstance('field');
+        $lang = FormaLanguage::createInstance('field');
 
         return '{
-			type: "' . $this->getFieldType() . '",
+			type: "' . self::getFieldType() . '",
 			getValue: function(id_sel, id_filter) {
-				var o, id = "' . $this->getFieldType() . '_"+id_filter+"_"+id_sel, $D = YAHOO.util.Dom;
+				var o, id = "' . self::getFieldType() . '_"+id_filter+"_"+id_sel, $D = YAHOO.util.Dom;
 				return YAHOO.lang.JSON.stringify({cond: $D.get(id+"_sel").value, value: $D.get(id).value});
 			},
 			setValue: function(id_sel, id_filter, newValue) {
-				var id = "' . $this->getFieldType() . '_"+id_filter+"_"+id_sel;
+				var id = "' . self::getFieldType() . '_"+id_filter+"_"+id_sel;
 			},
 			render: function(id_sel, id_filter, oEl, id_field) {
 				var r = document.createElement("INPUT");
 				var l = document.createElement("LABEL");
 				var d = document.createElement("DIV");
-				var id = "' . $this->getFieldType() . '_"+id_filter+"_"+id_sel;
+				var id = "' . self::getFieldType() . '_"+id_filter+"_"+id_sel;
 
-				d.className = "' . $this->getFieldType() . '_container";
+				d.className = "' . self::getFieldType() . '_container";
 
 				r.type = "radio";
 				r.id = id+"_1";

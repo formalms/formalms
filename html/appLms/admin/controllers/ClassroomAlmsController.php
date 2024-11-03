@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden');
 
-require_once Forma::inc(_base_ . '/lib/lib.upload.php');
+require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.upload.php');
 
 class ClassroomAlmsController extends AlmsController
 {
@@ -43,7 +43,7 @@ class ClassroomAlmsController extends AlmsController
         checkPerm('view', false, 'course', 'lms');
         require_once _base_ . '/lib/lib.json.php';
         $this->json = new Services_JSON();
-        $this->acl_man = &Docebo::user()->getAclManager();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();
         $this->idCourse = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
         $this->idDate = FormaLms\lib\Get::req('id_date', DOTY_INT, 0);
 
@@ -194,21 +194,21 @@ class ClassroomAlmsController extends AlmsController
                     $node_id = FormaLms\lib\Get::req('node_id', DOTY_INT, 0);
                     $initial = FormaLms\lib\Get::req('initial', DOTY_INT, 0);
 
-                    $db = DbConn::getInstance();
+                    $db = \FormaLms\db\DbConn::getInstance();
                     $result = [];
                     if ($initial == 1) {
                         $treestatus = $this->_getSessionTreeData('c_category', 0);
                         $folders = $treecat->getOpenedFolders($treestatus);
                         $result = [];
 
-                        $ref = &$result;
+                        $ref = $result;
                         foreach ($folders as $folder) {
                             $countRef = count($ref);
                             if ($folder > 0) {
                                 for ($i = 0; $i < $countRef; ++$i) {
                                     if ($ref[$i]['node']['id'] == $folder) {
                                         $ref[$i]['children'] = [];
-                                        $ref = &$ref[$i]['children'];
+                                        $ref = $ref[$i]['children'];
                                         break;
                                     }
                                 }
@@ -346,7 +346,7 @@ class ClassroomAlmsController extends AlmsController
 
     public function addClassroom()
     {
-        require_once Forma::include(_adm_ . '/lib/', 'lib.customfield.php');
+        require_once \FormaLms\lib\Forma::include(_adm_ . '/lib/', 'lib.customfield.php');
         $customFields = [];
         if (isset($_POST['back']) || isset($_POST['undo'])) {
             Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&id_course=' . $this->model->getIdCourse());
@@ -372,6 +372,7 @@ class ClassroomAlmsController extends AlmsController
             }
         }
 
+
         $this->render('classroom', [
             'action' => sprintf('index.php?r=%s/addclassroom&id_course=%s', $this->baseLinkClassroom, $this->idCourse),
             'edit' => false,
@@ -383,7 +384,7 @@ class ClassroomAlmsController extends AlmsController
             'postData' => [
                 'name' => FormaLms\lib\Get::req('name', DOTY_STRING, $course_info['name']),
                 'code' => FormaLms\lib\Get::req('code', DOTY_STRING, $course_info['code']),
-                'description' => FormaLms\lib\Get::req('description', DOTY_STRING, $course_info['description']),
+                'description' => FormaLms\lib\Get::req('description', DOTY_MIXED, $course_info['description']),
                 'mediumTime' => FormaLms\lib\Get::req('mediumTime', DOTY_STRING, $course_info['mediumTime']),
                 'maxNumSubscribes' => FormaLms\lib\Get::req('maxNumSubscribes', DOTY_STRING, ''),
                 'price' => FormaLms\lib\Get::req('price', DOTY_STRING, ''),
@@ -402,7 +403,7 @@ class ClassroomAlmsController extends AlmsController
 
     public function updateClassroom()
     {
-        require_once Forma::include(_adm_ . '/lib/', 'lib.customfield.php');
+        require_once \FormaLms\lib\Forma::include(_adm_ . '/lib/', 'lib.customfield.php');
         $customFields = [];
 
         if (isset($_POST['back']) || isset($_POST['undo'])) {
@@ -443,7 +444,7 @@ class ClassroomAlmsController extends AlmsController
                 'postData' => [
                     'name' => FormaLms\lib\Get::req('name', DOTY_STRING, $dateInfo['name']),
                     'code' => FormaLms\lib\Get::req('code', DOTY_STRING, $dateInfo['code']),
-                    'description' => FormaLms\lib\Get::req('description', DOTY_STRING, $dateInfo['description']),
+                    'description' => FormaLms\lib\Get::req('description', DOTY_MIXED, $dateInfo['description']),
                     'mediumTime' => FormaLms\lib\Get::req('mediumTime', DOTY_STRING, $dateInfo['medium_time']),
                     'maxNumSubscribes' => FormaLms\lib\Get::req('maxNumSubscribes', DOTY_STRING, $dateInfo['max_par']),
                     'price' => FormaLms\lib\Get::req('price', DOTY_STRING, $dateInfo['price']),
@@ -464,6 +465,7 @@ class ClassroomAlmsController extends AlmsController
 
     public function classroomDateDays()
     {
+      
         $postData = FormaLms\lib\Get::pReq('data', DOTY_MIXED, []);
         $removedDays = FormaLms\lib\Get::pReq('removedDays', DOTY_MIXED, []);
         $sendCalendar = (bool) FormaLms\lib\Get::pReq('sendCalendar', DOTY_BOOL, false);
@@ -489,6 +491,7 @@ class ClassroomAlmsController extends AlmsController
             return;
         }
 
+     
         $this->render('classroom-dates',
             [
                 'actions' => [
@@ -534,7 +537,7 @@ class ClassroomAlmsController extends AlmsController
 
     protected function delclassroom()
     {
-        require_once Forma::include(_adm_ . '/lib/', 'lib.customfield.php');
+        require_once \FormaLms\lib\Forma::include(_adm_ . '/lib/', 'lib.customfield.php');
         $customFields = [];
 
         if (FormaLms\lib\Get::cfg('demo_mode')) {
@@ -621,7 +624,7 @@ class ClassroomAlmsController extends AlmsController
         echo '<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"></head><body>';
         echo $edition_name;
         echo '<table border=1><tr><td><b>Username</b></td><td><b>' . Lang::t('_FULLNAME', 'standard') . '</b></td>';
-        $query = "SELECT DISTINCT day FROM learning_course_date_presence WHERE day<>'0000-00-00' AND id_date=" . $this->idDate . ' ORDER BY day';
+        $query = "SELECT DISTINCT day FROM learning_course_date_presence WHERE day IS NOT NULL AND id_date=" . $this->idDate . ' ORDER BY day';
         $res = sql_query($query);
         while ($row = sql_fetch_array($res)) {
             echo '<td><b>' . substr($row[0], 8, 2) . '-' . substr($row[0], 5, 2) . '-' . substr($row[0], 0, 4) . '</b></td>';
@@ -645,7 +648,7 @@ class ClassroomAlmsController extends AlmsController
                     echo '<td>X</td>';
                 }
             }
-            $query = 'SELECT note FROM learning_course_date_presence WHERE id_date=' . $this->idDate . ' AND id_user=' . $row[3] . " AND day='0000-00-00'";
+            $query = 'SELECT note FROM learning_course_date_presence WHERE id_date=' . $this->idDate . ' AND id_user=' . $row[3] . " AND day IS NULL";
             $res3 = sql_query($query);
             $row3 = sql_fetch_array($res3);
             echo '<td>' . $row3[0] . '</td></tr>';
@@ -723,7 +726,7 @@ class ClassroomAlmsController extends AlmsController
     // EXPORT EXCEL IN PDF
     public function registro()
     {
-        require_once Forma::inc(_base_ . '/lib/pdf/lib.pdf.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/pdf/lib.pdf.php');
 
         $query = 'SELECT  name FROM learning_course WHERE idCourse=' . $this->idCourse;
         $res = sql_query($query);
@@ -846,7 +849,7 @@ class ClassroomAlmsController extends AlmsController
     // estrai PDF
     public function getPdf($html, $name, $img = false, $orientation = 'L', $download = true, $facs_simile = false, $for_saving = false)
     {
-        require_once Forma::inc(_base_ . '/lib/pdf/lib.pdf.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/pdf/lib.pdf.php');
 
         $pdf = new PDF($orientation);
 

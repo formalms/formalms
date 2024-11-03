@@ -18,6 +18,7 @@ class GamesAlmsController extends AlmsController
     protected $model = null;
     protected $json = null;
     protected $permissions = null;
+    public $data;
 
     public function init()
     {
@@ -72,7 +73,7 @@ class GamesAlmsController extends AlmsController
 
         $games_id_arr = [];
         foreach ($array_games as $key => $value) {
-            $type = $array_games[$key]['type_of'];
+            $type = $value['type_of'];
             if ($type == 'file') {
                 $games_id_arr[] = $value['id_game'];
             }
@@ -499,7 +500,7 @@ class GamesAlmsController extends AlmsController
             $param = FormaLms\lib\Get::req('r_param', DOTY_STRING, '');
             $alt_desc = '';
             $lang_id = FormaLms\lib\Get::req('r_lang', DOTY_INT, '');
-            $lang_arr = Docebo::langManager()->getAllLangCode();
+            $lang_arr = \FormaLms\lib\Forma::langManager()->getAllLangCode();
             $lang = $lang_arr[$lang_id];
             $force_visible = FormaLms\lib\Get::req('force_visible', DOTY_INT, 0);
             $is_mobile = FormaLms\lib\Get::req('is_mobile', DOTY_INT, 0);

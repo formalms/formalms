@@ -17,13 +17,13 @@ require_once _lms_ . '/class.module/track.object.php';
 
 class Track_Link extends Track_Object
 {
-    public function Track_Link($idTrack)
+    public function __construct($idTrack)
     {
         $this->objectType = 'link';
         parent::__construct($idTrack);
     }
 
-    public function getIdTrack($idReference, $idUser, $idResource, $createOnFail = false)
+    public static function getIdTrack($idReference, $idUser, $idResource, $createOnFail = false)
     {
         $query = 'SELECT idTrack FROM %lms_materials_track'
                 . " WHERE idReference='" . (int) $idReference . "'"

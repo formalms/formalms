@@ -18,14 +18,18 @@ require_once _adm_ . '/class/class.admin_menu.php';
 
 class Admin_Scs extends Admin
 {
+    public string $platform;
+    public string $table_level_one;
+    public string $table_level_two;
+
     /**
      * class constructor.
      *
-     * @param FormaUser $user the object of the Forma User, for permission control
+     * @param \FormaLms\lib\FormaUser $user the object of the Forma User, for permission control
      *
      * @return nothing
      */
-    public function Admin_Scs(&$user)
+    public function __construct(&$user)
     {
         $this->user = &$user;
         $this->platform = 'scs';
@@ -43,7 +47,7 @@ class Admin_Scs extends Admin
     {
         return []; // disabling the menu
 
-        $lang = &DoceboLanguage::createInstance('menu', $this->platform);
+        $lang = &FormaLanguage::createInstance('menu', $this->platform);
 
         $query_under = '
 		SELECT tab.idMenu, menu.module_name, menu.associated_token, tab.name, tab.image, tab.collapse, menu.of_platform
@@ -68,7 +72,7 @@ class Admin_Scs extends Admin
 
     public function getLevelOneIntest($idMenu)
     {
-        $lang = &DoceboLanguage::createInstance('menu', $this->platform);
+        $lang = &FormaLanguage::createInstance('menu', $this->platform);
 
         $query_menu = '
 		SELECT name, image
@@ -93,7 +97,7 @@ class Admin_Scs extends Admin
      */
     public function getLevelTwo($id_level_one = false)
     {
-        $lang = &DoceboLanguage::createInstance('menu', $this->platform);
+        $lang = &FormaLanguage::createInstance('menu', $this->platform);
 
         $query_menu = '
 		 SELECT idUnder, module_name, default_name, default_op, associated_token, of_platform
@@ -119,12 +123,16 @@ class Admin_Scs extends Admin
 
 class Admin_Managment_Scs extends Admin_Managment
 {
+    public string $platform;
+    public string $table_level_one;
+    public string $table_level_two;
+
     /**
      * class constructor.
      *
      * @return nothing
      */
-    public function Admin_Managment_Scs()
+    public function __construct()
     {
         $this->platform = 'scs';
         $this->table_level_one = $GLOBALS['prefix_scs'] . '_menu';
@@ -133,7 +141,7 @@ class Admin_Managment_Scs extends Admin_Managment
 
     public function getLevelOne()
     {
-        $lang = &DoceboLanguage::createInstance('menu', $this->platform);
+        $lang = &FormaLanguage::createInstance('menu', $this->platform);
 
         $query_menu = '
 		SELECT idMenu, name, image
@@ -153,7 +161,7 @@ class Admin_Managment_Scs extends Admin_Managment
     public function savePreferences(&$source_array, $base_path, $adminidst, $all_admin_permission)
     {
         require_once _adm_ . '/lib/lib.adminmanager.php';
-        $aclManager = &Docebo::user()->getAclManager();
+        $aclManager = \FormaLms\lib\Forma::getAclManager();
         $admin_manager = new AdminManager();
 
         // Retriving main menu
@@ -174,13 +182,13 @@ class Admin_Managment_Scs extends Admin_Managment
                     $module = eval("return new $class_name();");
 
                     // Retriving all token for this module
-                    $all_module_token = &$module->getAllToken($op);
+                    $all_module_token = $module->getAllToken($op);
 
                     // Retriving appropiated idst
-                    $all_module_idst = &$admin_manager->fromRolePathToIdst($base_path . '/' . $modname, $all_module_token);
+                    $all_module_idst = $admin_manager->fromRolePathToIdst($base_path . '/' . $modname, $all_module_token);
 
                     // Match with the real user permission
-                    $module_perm = &$admin_manager->modulePermissionAsToken($all_admin_permission, $all_module_idst);
+                    $module_perm = $admin_manager->modulePermissionAsToken($all_admin_permission, $all_module_idst);
 
                     // Retrive new permission
                     $selected_token = $module->getSelectedPermission($source_array, $modname, $op);
@@ -206,10 +214,10 @@ class Admin_Managment_Scs extends Admin_Managment
         require_once _base_ . '/lib/lib.form.php';
         require_once _adm_ . '/lib/lib.adminmanager.php';
 
-        $lang = &DoceboLanguage::createInstance('menu', 'lms');
+        $lang = &FormaLanguage::createInstance('menu', 'lms');
         $out = &$GLOBALS['page'];
 
-        $aclManager = &Docebo::user()->getAclManager();
+        $aclManager = \FormaLms\lib\Forma::getAclManager();
         $admin_manager = new AdminManager();
 
         // Retriving main menu

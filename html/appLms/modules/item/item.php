@@ -13,12 +13,12 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (!Docebo::user()->isAnonymous()) {
+if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     // XXX: additem
     function additem($object_item)
     {
         //checkPerm('view', false, 'storage');
-        $lang = &DoceboLanguage::createInstance('item');
+        $lang = FormaLanguage::createInstance('item');
 
         require_once _base_ . '/lib/lib.form.php';
 
@@ -69,6 +69,7 @@ if (!Docebo::user()->isAnonymous()) {
         }
         if (isset($idCourse) && defined('LMS')) {
             $quota = $GLOBALS['course_descriptor']->getQuotaLimit();
+        
             $used = $GLOBALS['course_descriptor']->getUsedSpace();
 
             $totalSize = 0;
@@ -120,7 +121,7 @@ if (!Docebo::user()->isAnonymous()) {
                     $response['errors']['files'][$fileIndex] = Lang::t('_FILE_ERROR_UPLOAD', 'item');
                 }
 
-                $insert_query = "INSERT INTO %lms_materials_lesson  SET author = '" . getLogUserId() . "', title = '" . $fileItem['title'] . "', description = '" . $fileItem['description'] . "', path = '$savefile'";
+                $insert_query = "INSERT INTO %lms_materials_lesson  SET author = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "', title = '" . $fileItem['title'] . "', description = '" . $fileItem['description'] . "', path = '$savefile'";
 
                 if (!sql_query($insert_query)) {
                     sl_unlink($path . $savefile);
@@ -148,7 +149,7 @@ if (!Docebo::user()->isAnonymous()) {
         //checkPerm('view', false, 'storage');
         $units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
         require_once _base_ . '/lib/lib.form.php';
-        $lang = &DoceboLanguage::createInstance('item');
+        $lang = &FormaLanguage::createInstance('item');
 
         $back_coded = htmlentities(urlencode($object_item->back_url));
 
@@ -211,7 +212,7 @@ if (!Docebo::user()->isAnonymous()) {
         }
 
         //save file
-        if (count($filesInfo)) {
+        if (is_countable($filesInfo) && count($filesInfo)) {
             $path = '/appLms/' . FormaLms\lib\Get::sett('pathlesson');
 
             // retrive and delte ld file --------------------------------------------------
@@ -224,7 +225,7 @@ if (!Docebo::user()->isAnonymous()) {
             $size = FormaLms\lib\Get::file_size(_files_ . $path . $old_file);
             if (!sl_unlink($path . $old_file)) {
                 sl_close_fileoperations();
-                Forma::addError(Lang::t('_OPERATION_FAILURE', 'item', 'lms'));
+                \FormaLms\lib\Forma::addError(Lang::t('_OPERATION_FAILURE', 'item', 'lms'));
                 Util::jump_to($back_url . '&id_los=' . (int) $idLesson . '&mod_result=0');
             }
 
@@ -285,7 +286,7 @@ if (!Docebo::user()->isAnonymous()) {
                         $response['errors']['files'][$fileIndex] = Lang::t('_FILE_ERROR_UPLOAD', 'item');
                     }
 
-                    $update_query = "UPDATE %lms_materials_lesson  SET author = '" . getLogUserId() . "', title = '" . $fileItem['title'] . "', description = '" . $fileItem['description'] . "', path = '$savefile'
+                    $update_query = "UPDATE %lms_materials_lesson  SET author = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "', title = '" . $fileItem['title'] . "', description = '" . $fileItem['description'] . "', path = '$savefile'
                     WHERE idLesson = '" . (int) $idLesson . "'";
 
                     if (!sql_query($update_query)) {
@@ -298,7 +299,7 @@ if (!Docebo::user()->isAnonymous()) {
                 }
             }
         } else {
-            $update_query = 'UPDATE %lms_materials_lesson  SET author = "' . getLogUserId() . '", title = "' . $title . '", description = "' . $description . '"
+            $update_query = 'UPDATE %lms_materials_lesson  SET author = "' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . '", title = "' . $title . '", description = "' . $description . '"
             WHERE idLesson = "' . (int) $idLesson . '"';
 
             if (!sql_query($update_query)) {
@@ -307,8 +308,9 @@ if (!Docebo::user()->isAnonymous()) {
             $back_url = FormaLms\lib\Get::site_url() . _folder_lms_ . '/' . $back_url;
         }
 
-        if (isset($idCourse) && defined('LMS')) {
-            require_once _lms_ . '/class.module/track.object.php';
+        if(isset($idCourse) && defined("LMS")) {
+
+            require_once($GLOBALS['where_lms'].'/class.module/track.object.php');
             Track_Object::updateObjectTitle($_POST['id_comm'], 'item', $_POST['title']);
         }
 

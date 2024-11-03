@@ -5,10 +5,9 @@
  *
  * @version $Id:$
  */
-define('LMS', true);
-define('IN_FORMA', true);
-//define("IS_AJAX", true);
-define('_deeppath_', '../../../');
+const LMS = true;
+const IN_FORMA = true;
+const _deeppath_ = '../../../';
 require __DIR__ . '/' . _deeppath_ . 'base.php';
 
 // start buffer

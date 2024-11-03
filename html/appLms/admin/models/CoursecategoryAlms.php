@@ -17,7 +17,7 @@ class CoursecategoryAlms extends TreeModel
 {
     public function __construct()
     {
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         $this->t_id = 'idCategory';
         $this->tree_table = '%lms_category';
     }

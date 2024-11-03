@@ -16,14 +16,14 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 /**
  * Definition of php magic __autoload() method.
  *
- * @param <string> $classname the classname that php are tring to istanciate
+ * @param string $classname the classname that php are tring to istanciate
  *
- * @return not used
+ * @return void used
  */
-function docebo_autoload($classname)
+function forma_autoload($classname)
 {
     // purify the request
-    $classname = preg_replace('/[^a-zA-Z0-9\-\_]+/', '', $classname);
+    $classname = (string)preg_replace('/[^a-zA-Z0-9\-\_]+/', '', $classname);
 
     // fixed bases classes
     $fixed = [
@@ -43,41 +43,30 @@ function docebo_autoload($classname)
         'LobjLmsController' => _lms_ . '/controllers/LobjLmsController.php',
 
         // db
-        'DbConn' => _base_ . '/db/lib.docebodb.php',
-        'Mysqli_DbConn' => _base_ . '/db/drivers/docebodb.mysqli.php',
+        'DbHelper' => _base_ . '/db/DbHelper.php',
+
+        'Services_JSON' => _lib_ . '/lib.json.php',
 
         // i18n
         'Lang' => _i18n_ . '/lib.lang.php',
-        'DoceboLanguage' => _i18n_ . '/lib.lang.php',
+        'FormaLanguage' => _i18n_ . '/lib.lang.php',
         'Format' => _i18n_ . '/lib.format.php',
-
-        // Cache
-        'ICache' => _lib_ . '/cache/icache.php',
-        'DCache' => _lib_ . '/cache/dcache.php',
-        'DApcCache' => _lib_ . '/cache/dapccache.php',
-        'DDummyCache' => _lib_ . '/cache/ddummycache.php',
-        'DFileCache' => _lib_ . '/cache/dfilecache.php',
-        'DMemcache' => _lib_ . '/cache/dmemcache.php',
 
         // form file
         'Form' => _lib_ . '/lib.form.php',
         'DForm' => _lib_ . '/forms/lib.dform.php',
 
         // lib files
-        'DoceboACL' => _lib_ . '/lib.acl.php',
-        'DoceboACLManager' => _lib_ . '/lib.aclmanager.php',
+        'FormaACL' => _lib_ . '/lib.acl.php',
+        'FormaACLManager' => _lib_ . '/lib.aclmanager.php',
 
         // widget
         'Widget' => _base_ . '/widget/lib.widget.php',
 
-        // exception
-        'DoceboException' => _lib_ . '/error/doceboexception.php',
-        'MvcException' => _lib_ . '/error/mvcexception.php',
-
         //aws
         'Plugin' => _lib_ . '/lib.plugin.php',
         'PluginManager' => _lib_ . '/lib.pluginmanager.php',
-         // lib jquery
+        // lib jquery
         'JQueryLib' => _lib_ . '/lib.jquerylib.php',
     ];
 
@@ -117,7 +106,7 @@ function docebo_autoload($classname)
         $loc = (isset($location[1]) ? strtolower($location[1]) : 'adm');
         $c_file = $path[$loc][1] . '/' . $classname . '.php';
         //if(file_exists($c_file))
-        include_once Forma::inc($c_file);
+        include_once \FormaLms\lib\Forma::inc($c_file);
 
         return;
     } elseif (preg_match('/(Mobile|Adm|Alms|Lms|Acms|Cms|Lobj)$/', $classname, $location)) {
@@ -125,7 +114,7 @@ function docebo_autoload($classname)
         $loc = (isset($location[1]) ? strtolower($location[1]) : 'adm');
         $c_file = $path[$loc][0] . '/' . $classname . '.php';
         //if(file_exists($c_file))
-        include_once Forma::inc($c_file);
+        include_once \FormaLms\lib\Forma::inc($c_file);
 
         return;
     }
@@ -137,7 +126,7 @@ function docebo_autoload($classname)
             // include controller file
             $c_file = $loc . '/controller/' . $classname . '.php';
             if (file_exists($c_file)) {
-                include_once Forma::inc($c_file);
+                include_once \FormaLms\lib\Forma::inc($c_file);
             }
 
             return;
@@ -145,7 +134,7 @@ function docebo_autoload($classname)
             // include model file
             $c_file = $loc . '/model/' . $classname . '.php';
             if (file_exists($c_file)) {
-                include_once Forma::inc($c_file);
+                include_once \FormaLms\lib\Forma::inc($c_file);
             }
 
             return;
@@ -156,7 +145,7 @@ function docebo_autoload($classname)
         if (!class_exists('Forma', false)) {
             include_once _lib_ . '/lib.' . strtolower($classname) . '.php';
         } else {
-            include_once Forma::inc(_lib_ . '/lib.' . strtolower($classname) . '.php');
+            include_once \FormaLms\lib\Forma::inc(_lib_ . '/lib.' . strtolower($classname) . '.php');
         }
 
         return;
@@ -165,4 +154,4 @@ function docebo_autoload($classname)
     // unable to autoload
 }
 
-spl_autoload_register('docebo_autoload');
+spl_autoload_register('forma_autoload');

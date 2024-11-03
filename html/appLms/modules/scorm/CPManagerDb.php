@@ -11,7 +11,7 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-include_once Forma::inc(_lms_ . '/modules/scorm/scorm_utils.php');
+include_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/scorm_utils.php');
 
 /**
  * @class CPManagerDb
@@ -28,6 +28,7 @@ class CPManagerDb
     public $idReference;
     public $dbconn;
     public $prefix;
+    public string $path;
 
     public function Open($idReference, $idscorm_package, $dbconn, $prefix)
     {

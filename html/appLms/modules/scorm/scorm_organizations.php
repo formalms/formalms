@@ -11,8 +11,8 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-require_once Forma::inc(_lms_ . '/modules/scorm/config.scorm.php');
-require_once Forma::inc(_lms_ . '/modules/scorm/CPManager.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/config.scorm.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/CPManager.php');
 
 class Scorm_Organization
 {
@@ -28,7 +28,7 @@ class Scorm_Organization
 
     public $orgtable = 'scorm_organizations';
 
-    public function Scorm_Organization($org_identifier, $idscorm_package, $connection, $createonfail = false, $title = '')
+    public function __construct($org_identifier, $idscorm_package, $connection, $createonfail = false, $title = '')
     {
         $this->org_identifier = $org_identifier;
         $this->idscorm_package = $idscorm_package;

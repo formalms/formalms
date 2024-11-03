@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Forma;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -77,15 +79,45 @@ class CoursepathLmsController extends LmsController
             $conditions[] = "(cpu.date_assign >= '" . $filter_year . "-00-00 00:00:00' AND cpu.date_assign <= '" . $filter_year . "-12-31 23:59:59')";
         }
 
-        $user_coursepath = $this->model->getCoursepath(Docebo::user()->getIdSt(), $conditions, $filter_status);
-        $coursepath_courses = $this->model->getCoursepathCourseDetails(array_keys($user_coursepath));
-
+        $user_coursepath = $this->model->getCoursepath(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $conditions, $filter_status);
         if (count($user_coursepath) > 0) {
-            $this->render('coursepath', ['type' => 'all',
-                                                'user_coursepath' => $user_coursepath,
-                                                'coursepath_courses' => $coursepath_courses, ]);
+            $coursepath_courses = $this->parseDetailsCourse($this->model->getCoursepathCourseDetails(array_keys($user_coursepath)));
+            $path_details = $coursepath_courses['path_details'];
+            $starting_courses = $coursepath_courses['starting_course'];
+            $this->render('coursepathlist', ['type' => 'all', 'user_coursepath' => $user_coursepath,
+                                                       'coursepath_courses' => $path_details,'starting_courses'  =>  $starting_courses ]);
         } else {
             echo Lang::t('_NO_COURSEPATH_IN_SECTION', 'coursepath');
         }
+    }
+
+    private function parseDetailsCourse($result){
+        $res = [];
+        $starting_course = [];
+        while ($row = sql_fetch_assoc($result)) {
+            $can_enter = Man_Course::canEnterCourse($row, (int)$row['id_path']);
+            $row['course_unlocked'] = ($can_enter['can'] == true && $can_enter['reason'] != 'prerequisites');
+            $row['can_enter'] = $can_enter['can'];
+            if ($row['course_type'] === 'elearning') {
+                $row['course_type'] = Lang::t('_COURSE_TYPE_ELEARNING', 'course');
+            } else {
+                $row['course_type'] =  Lang::t('_CLASSROOM_COURSE', 'cart');
+            }
+            if ($row['user_status'] == _CUS_END) {
+                $row['ico_style'] = 'subs_actv';
+                $row['ico_text'] = Lang::t('_COURSE_COMPLETED', 'coursepath');
+            } elseif (!$row['course_unlocked']) {
+                $row['ico_style'] = 'subs_locked';
+                $row['ico_text'] = Lang::t('_COURSE_LOCKED', 'coursepath');
+            } else {
+                $row['ico_style']  = 'subs_noac';
+                $row['ico_text'] = Lang::t('_COURSE_ACTIVE', 'coursepath');
+            }
+            if ($row['can_enter'] &&  $row['user_status'] != _CUS_END &&  $starting_course[$row['id_path']] == null) {
+                $starting_course[$row['id_path']] = ['name'=>$row['name'], 'idCourse'=>$row['idCourse'], 'course_unlocked'=>$row['course_unlocked']];
+            }
+            $res[$row['id_path']][$row['idCourse']] = $row;
+        }
+        return ['path_details'=>$res, 'starting_course'=>$starting_course];
     }
 }

@@ -32,8 +32,7 @@ class Widget
         } else {
             $data_for_view = $data_for_view;
         }
-        $filePath = __DIR__ . '/' . $this->_widget . '/views/' . $view_name . '.php';
-        include $filePath;
+        include dirname(__FILE__) . '/' . $this->_widget . '/views/' . $view_name . '.php';
     }
 
     public function beginWidget()
@@ -54,7 +53,7 @@ class Widget
      * @param <type> $widget_name
      * @param <type> $params
      */
-    public function widget($widget_name, $params = null)
+    public function widget($widget_name, $params = null, $run = true)
     {
         $widget_name = strtolower($widget_name);
         require_once _base_ . '/widget/' . $widget_name . '/lib.' . $widget_name . '.php';
@@ -71,7 +70,10 @@ class Widget
         // Initialize the widget
         $widget_obj->init();
         // Run the the widget (will print the view)
-        $widget_obj->run();
+        if($run) {
+            $widget_obj->run();
+        }
+        
         // Return the widget for further use
         return $widget_obj;
     }

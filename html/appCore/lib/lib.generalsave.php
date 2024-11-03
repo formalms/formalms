@@ -49,7 +49,7 @@ class General_Save
      *
      * @return bool true if $var_name is valid else false
      **/
-    public function save($var_name, &$content, $serialize_for_me = true)
+    public function save($var_name, $content, $serialize_for_me = true)
     {
         return true;
     }
@@ -61,7 +61,7 @@ class General_Save
      *
      * @return mixed content of $var_name if $var_name is valid else false
      **/
-    public function &load($var_name, $deserialize_for_me = true)
+    public function load($var_name, $deserialize_for_me = true)
     {
         $false_var = false;
 

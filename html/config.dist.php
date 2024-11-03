@@ -139,6 +139,7 @@ $cfg['demo_mode'] = false;
 //$cfg['session']['user'] = $cfg['db_user']; // authentication user session handler
 //$cfg['session']['pass'] = $cfg['db_pass']; // authentication psw session handler
 //$cfg['session']['options'] = []; // other options key value array to pass based on selected handler
+//$cfg['session']['cookieName'] = '__Secure-FORMALMS';
 
 /*
  * Technical preferences
@@ -157,3 +158,8 @@ $cfg['mail_br'] = "\r\n";
  */
 //$cfg['certificate_encryption'] = true;
 //$cfg['certificate_password']  = "12345678901234567890123456789012";
+
+/*
+ *  Enabling SMS sending
+ */
+//$cfg['sms_on'] = true;

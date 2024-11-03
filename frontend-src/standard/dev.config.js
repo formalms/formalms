@@ -11,38 +11,49 @@ module.exports = {
     filename: '[name].js',
     chunkFilename: '[name].js'
   },
+  devtool: 'source-map',
+  optimization: {
+    minimize: false
+  },
   module: {
     rules: [
       {
         test: /\.scss$/,
-        loaders: ['style-loader', 'css-loader', 'sass-loader']
+        use: ['style-loader', 'css-loader', 'sass-loader']
       },
       {
         test: /\.less$/,
-        loaders: ["style-loader", "css-loader", "less-loader"]
+        use: ['style-loader', 'css-loader', 'less-loader']
       }, {
         test: /\.css$/,
-        loaders: ["style-loader", "css-loader"]
+        use: ['style-loader', 'css-loader']
       },
+           /*
       {
         test: /\.js$/,
         enforce: 'pre',
-        loader: 'eslint-loader',
-        exclude: [/(node_modules)/, __dirname + '/' + 'src/scripts/vendors'],
-        options: {
-          configFile: './.eslintrc'
-        }
+        use: {
+          loader: 'eslint-webpack-plugin',
+          options: {
+            configFile: './.eslintrc'
+          }
+        },
+        exclude: [/node_modules/, __dirname + '/' + 'src/scripts/vendors'],
       },
+      */
       {
         test: /\.js$/,
-        exclude: /(node_modules)/,
+        exclude: [/node_modules/],
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['env', 'react', 'es2015', 'stage-0']
+            // presets: ['@babel/preset-env'],
+            presets: ['@babel/preset-env','@babel/preset-react'],
+            plugins: ['@babel/plugin-transform-runtime']
           }
         }
       },
+      /*
       {
         test: /\.jsx$/,
         use: {
@@ -52,13 +63,14 @@ module.exports = {
           }
         }
       },
+      */
       {
         test: /\.twig$/,
-        loader: 'twig-loader'
+        use: 'twig-loader'
       },
       {
         test: /(jquery-mousewheel|malihu-custom-scrollbar-plugin)/,
-        loader: 'imports-loader?define=>false&this=>window'
+        use: 'imports-loader?define=>false&this=>window'
       }
     ]
   },
@@ -71,17 +83,15 @@ module.exports = {
     }
   },
   plugins: [
-    new CopyWebpackPlugin([{
-      from: __dirname + '/node_modules/tinymce-i18n/langs5',
-      to: __dirname + '/../../html/addons/tiny_mce/langs',
-    }]),
-    new CopyWebpackPlugin([{
-      from: __dirname + '/node_modules/pdfobject/pdfobject.min.js',
-      to: __dirname + '/../../html/addons/pdfobject/pdfobject.min.js',
-    }]),
-    new CopyWebpackPlugin([{
-      from: __dirname + '/node_modules/jquery.dirtyforms/jquery.dirtyforms.min.js',
-      to: __dirname + '/../../html/addons/jquery/dirtyforms/jquery.dirtyforms.min.js',
-    }]),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'src/images/', to: __dirname + '/../../html/templates/standard/static/images' },
+        { from: 'src/fonts/', to: __dirname + '/../../html/templates/standard/static/fonts' },
+        {
+          from: __dirname + '/node_modules/tinymce-i18n/langs5',
+          to: __dirname + '/../../html/templates/standard/static/tiny_mce/langs'
+        }
+      ]
+    })
   ]
 };

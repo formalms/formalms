@@ -17,7 +17,7 @@ class Learning_Cart
 {
     public function __construct()
     {
-        Learning_Cart::init();
+        Learning_Cart::istance();
     }
 
     public static function init()

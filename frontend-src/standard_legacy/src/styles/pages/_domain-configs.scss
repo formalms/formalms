@@ -1,0 +1,9 @@
+.domainconfigtable td {
+    overflow: hidden;
+    max-width: 15%;
+}
+
+.domainconfigtable td select, .domainconfigtable td input {
+    max-width:100%;
+    
+}

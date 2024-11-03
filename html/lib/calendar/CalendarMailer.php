@@ -1,5 +1,6 @@
 <?php
 
+namespace FormaLms\lib\Calendar;
 /*
  * FORMA - The E-Learning Suite
  *
@@ -10,24 +11,27 @@
  * from docebo 4.0.5 CE 2008-2012 (c) docebo
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
+use CalendarDataContainer;
+use FormaLms\lib\Mailer\FormaMailer;
+use FormaLms\lib\Domain\DomainHandler;
 
 class CalendarMailer extends FormaMailer
 {
     public function sendCalendarToUser(CalendarDataContainer $calendar, $user)
     {
-        $mail_text = Lang::t('_COURSE_DATE_CALENDAR_MAILTEXT', 'course');
-        $mail_text = str_replace(['[url]', '[userid]'], [FormaLms\lib\Get::site_url(), $user['userid']], $mail_text);
+        $mail_text = \Lang::t('_COURSE_DATE_CALENDAR_MAILTEXT', 'course');
+        $mail_text = str_replace(['[url]', '[userid]'], [\FormaLms\lib\Get::site_url(), $user['username']], $mail_text);
 
-        $subject = Lang::t('_COURSE_DATE_CALENDAR_MAILTEXT_TITLE', 'course');
+        $subject = \Lang::t('_COURSE_DATE_CALENDAR_MAILTEXT_TITLE', 'course');
         $this->SendMail(
-            FormaLms\lib\Get::sett('sender_event'),
             [$user['email']],
             $subject,
             $mail_text,
+            DomainHandler::getInstance()->getMailerField('sender_mail_system'),
             [$calendar->getFile()],
             [
-                MAIL_REPLYTO => FormaLms\lib\Get::sett('sender_event'),
-                MAIL_SENDER_ACLNAME => FormaLms\lib\Get::sett('use_sender_aclname'),
+                MAIL_REPLYTO => DomainHandler::getInstance()->getMailerField('replyto_mail'),
+                MAIL_SENDER_ACLNAME => DomainHandler::getInstance()->getMailerField('sender_name_system'),
             ]
         );
     }

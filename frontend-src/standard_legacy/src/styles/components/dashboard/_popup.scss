@@ -1,0 +1,132 @@
+.d-popup {
+  padding-top: 25px;
+  @include center-object(x, absolute);
+  z-index: 999999;
+  transition: all .2s ease-in-out 0s;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.d-popup__item {
+  width: 130px;
+  height: auto;
+  padding: 7px;
+  background-color: var(--color-grey);
+  border-radius: 6px;
+  position: relative;
+}
+
+.d-popup__type {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  font-weight: $bold;
+  font-size: 12px;
+  line-height: 19px;
+  text-transform: uppercase;
+  border-top: 1px solid #D8D8D8;
+  position: relative;
+
+  .is-elearning & {
+    color: var(--color-elearning);
+
+    &:before {
+      content: '';
+      width: 20px;
+      height: 17px;
+      background-image: url(#{$assets}images/icons/icon--elearning.svg);
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: absolute;
+      top: 7px;
+      right: 7px;
+    }
+  }
+
+  .is-classroom & {
+    color: var(--color-info);
+
+    &:before {
+      content: '';
+      width: 20px;
+      height: 17px;
+      background-image: url(#{$assets}images/icons/icon--classroom.svg);
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: absolute;
+      top: 7px;
+      right: 7px;
+    }
+  }
+}
+
+.d-popup__desc {
+  height: auto;
+  margin-bottom: 2px;
+  font-size: 10px;
+  font-weight: $bold;
+  line-height: 14px;
+  overflow: hidden;
+  color: var(--color-grey-02);
+}
+
+.d-popup__category {
+  margin-bottom: 2px;
+  font-size: 10px;
+  font-weight: $bold;
+  line-height: 14px;
+  overflow: hidden;
+  color: var(--color-grey-03);
+}
+
+.d-popup__hours {
+  margin-bottom: 5px;
+  font-size: 12px;
+  font-weight: $regular;
+  line-height: 17px; 
+  color: var(--color-grey-02);
+}
+
+.d-popup__title {
+  height: auto;
+  margin-bottom: 2px;
+  padding: {
+    left: 13px;
+  }
+  font-size: 12px;
+  font-weight: $bold;
+  line-height: 14px;
+  overflow: hidden;
+  color: var(--color-grey-03);
+  position: relative;
+  
+  &:before {
+    content: '';
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    left: 0;
+
+    .is-open & {
+      background-color: var(--color-secondary);
+    }
+    
+    .is-closed & {
+      background-color: var(--color-primary);
+    }
+  }
+
+}
+
+.d-popup__triangle {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 12px 12px 12px;
+  border-color: transparent transparent var(--color-grey) transparent;
+  @include center-object(x, absolute);
+  top: -12px;
+}

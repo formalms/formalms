@@ -1,0 +1,55 @@
+<div data-comp="forma-plugin-ftmu" class="{% if not options.activeStatus %}no-active-gui{% endif %}">
+    {% import _self as macros %}
+    {% macro tree_links(data, dataB, disabled) %}
+        {% import _self as macros %}
+        {% for el in data %}
+            <li data-id="{{ el.id }}" class="folderTree__li {% if el.children %}ft-is-parent{% endif %} {% if options.dragAndDrop %}is-droppable{% endif %}" {% if options.dragAndDrop %}draggable="true"{% endif %}>
+                <div class="actions" data-id="{{ el.id }}">
+                    {% if el.children.length %}
+                        <span data-id="{{ el.id }}" class="arrow opened"></span>
+                    {% else %}
+                        {% if el.hasChildren %}
+                            <span id="{{ el.id }}" data-id="{{ el.id }}" class="arrow"></span>
+                        {% endif %}
+                    {% endif %}
+                    <button data-id="{{ el.id }}"
+                        type="button"
+                        class="folderTree__link {% if el.hasChildren %}has-children{% endif %} ft-is-folder {% if options.dragAndDrop %}is-dropzone{% endif %} {% if el.children.length %}ft-is-folderOpen{% endif %}">
+                        <span>{{ el.name }}</span>
+                        <span class="loader loader_{{ el.id }} hidden">
+                            <div style="width: 15px; height: 15px;">
+                                <div class="loading loading--full-height"></div>
+                            </div>
+                        </span>
+                    </button>
+                    <div class="fields-holder">
+                        {% if el.actions %}
+                            {% for action in el.actions %}
+                                {% if action.type == 'radioButton' %}
+                                   {% for option in action.options %}
+                                        <input
+                                            class="radiosel"
+                                            {% if disabled %} disabled {% endif %}
+                                            data-opt="{{ el.id }}"
+                                            id="{{ option.name }}"
+                                            {% if arrayContains(dataB.extraData.formData, el.id, option.value) %} checked {% endif %}
+                                            {% if not arrayContains(dataB.extraData.formData, el.id, option.value) and not getId(el.id, option.value)%} checked {% endif %}
+                                            type="radio"
+                                            value="{{ getId(el.id, option.value) }}">
+                                        <label for="{{ option.name }}">{{ option.label }}</label>
+                                   {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+                    {% if el.children %}
+                        <ul class="folderTree__ul {% if options.sortable %}js-sortable-tree{% endif %}">
+                            {{ macros.tree_links(el.children, dataB, disabled ? true : arrayContains(dataB.extraData.formData, el.id, 2) ? true : false) }}
+                        </ul>
+                    {% endif %}
+            </li>
+        {% endfor %}
+    {% endmacro %}
+    {{ macros.tree_links(data, data, null) }}
+</div>

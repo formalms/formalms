@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Forma;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -14,7 +16,7 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 /*
- * @package DoceboLms
+ * @package FormaLms
  * @subpackage Course managment
  * @author Fabio Pirovano <fabio [at] docebo-com>
  * @version  $Id: lib.course.php 1002 2007-03-24 11:55:51Z fabio $
@@ -59,7 +61,7 @@ class Selector_Course
         require_once _base_ . '/lib/lib.form.php';
         require_once _lms_ . '/lib/lib.levels.php';
 
-        $lang = &DoceboLanguage::createInstance('course', 'lms');
+        $lang = FormaLanguage::createInstance('course', 'lms');
 
         $this->show_filter = true;
         $this->treeDB = new TreeDb_CatDb('%lms_category');
@@ -153,7 +155,7 @@ class Selector_Course
         require_once _base_ . '/lib/lib.table.php';
         require_once _base_ . '/lib/lib.form.php';
 
-        $lang = &DoceboLanguage::createInstance('course', 'lms');
+        $lang = FormaLanguage::createInstance('course', 'lms');
 
         $output = '';
         $output .= $this->treeview->load();
@@ -195,12 +197,12 @@ class Selector_Course
 		FROM %lms_course AS c
 		WHERE ' . ($with_assesment ? '1' : "c.course_type <> 'assessment'") .
             ' AND c.idCategory IN ( ' . (!$this->filter['course_flat'] ? $category_selected : implode(',', $id_categories)) . ' )';
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             $all_courses = false;
 
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $all_courses = false;
             if (isset($admin_courses['course'][0])) {
                 $all_courses = true;
@@ -208,7 +210,7 @@ class Selector_Course
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
+                $user_catalogue = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if (count($user_catalogue) > 0) {
                     $courses = [0];
 
@@ -261,7 +263,7 @@ class Selector_Course
         if ($this->filter['course_name'] != '') {
             $query_course .= " AND ( c.code LIKE '%" . $this->filter['course_name'] . "%' OR c.name LIKE '%" . $this->filter['course_name'] . "%' ) ";
         }
-        list($tot_course) = sql_fetch_row(sql_query('SELECT COUNT(*) ' . $query_course));
+        [$tot_course] = sql_fetch_row(sql_query('SELECT COUNT(*) ' . $query_course));
         $query_course .= ' ORDER BY c.name
 							LIMIT ' . $ini . ',' . (int) FormaLms\lib\Get::sett('visuItem', 25);
 
@@ -316,7 +318,7 @@ class Man_Course
     public function saveCourseStatus()
     {/*
         require_once(_lms_.'/admin/modules/category/tree.category.php');
-        require_once(_adm_.'/lib/lib.sessionsave.php');
+        require_once($GLOBALS['where_framework'].'/lib/lib.sessionsave.php');
 
         $categoryDb = new TreeDb_CatDb($GLOBALS['prefix_lms'].'_category');
         $treeView = new TreeView_CatView($categoryDb, 'course_category', Lang::t('_CATEGORY', 'course', 'lms'));
@@ -341,7 +343,7 @@ class Man_Course
      *
      * @return array return som info about the course [code, name, description, status, difficult, subscribe_method, max_num_subscribe]
      */
-    public function getCourseInfo($idCourse)
+    public static function getCourseInfo($idCourse)
     {
         $query = "
 		SELECT *
@@ -483,7 +485,7 @@ class Man_Course
         if (!($re_course = sql_query($query_course))) {
             return 0;
         }
-        list($number) = sql_fetch_row($re_course);
+        [$number] = sql_fetch_row($re_course);
 
         return $number;
     }
@@ -555,7 +557,7 @@ class Man_Course
             return false;
         }
 
-        list($idCourse) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
+        [$idCourse] = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
 
         return $idCourse;
     }
@@ -601,14 +603,14 @@ class Man_Course
      */
     public function &getWaitingSubscribed($idCourse, $edition_id = 0)
     {
-        $userlevelid = Docebo::user()->getUserLevelId();
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             // BUG FIX 2469: GETTING THE USERS OF THE ADMIN
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $acl_man = &Docebo::user()->getAclManager();
-            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
-            $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
+            $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
         }
 
@@ -681,7 +683,7 @@ class Man_Course
     {
         $map = [];
         $levels = CourseLevel::getTranslatedLevels();
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         // find all the group created for this menu custom for permission management
         foreach ($levels as $lv => $name_level) {
@@ -794,7 +796,7 @@ class Man_Course
 			VALUES ( '" . $idCourse . "','0', '" . $name . "', '')")) {
             return false;
         }
-        list($id_main) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
+        [$id_main] = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
 
         return $id_main;
     }
@@ -815,10 +817,10 @@ class Man_Course
      */
     public function addModuleToCourse($idCourse, $level_idst, $id_main, $id_m = false, $m_name = false, $d_op = false, $level_token_to_assign = false)
     {
-        require_once Forma::include(_lms_ . '/lib/', 'lib.manmenu.php');
-        require_once Forma::include(_adm_ . '/lib/', 'lib.istance.php');
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.manmenu.php');
+        require_once \FormaLms\lib\Forma::include(_adm_ . '/lib/', 'lib.istance.php');
 
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $re = true;
         $query_menu = '
@@ -861,7 +863,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
 
     public function removeCourseRole($idCourse)
     {
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $base_path = '/lms/course/private/' . $idCourse . '/';
         $acl_man->deleteRoleFromPath($base_path);
     }
@@ -896,8 +898,10 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
     public static function canEnterCourse($course, $id_path = 0)
     {
         $now = time();
-        $userLevel = Docebo::user()->getUserLevelId();
-        $userCourses = Docebo::user()->getUserCourses();
+        $a = \FormaLms\lib\FormaUser::getCurrentUser();
+        $b = $a->getUserCourses();
+        $userLevel = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
+        $userCourses = \FormaLms\lib\FormaUser::getCurrentUser()->getUserCourses();
 
         $expiring = false;
 
@@ -963,7 +967,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
             }
 
             if ($response['can']) {
-                if (!empty($userCourse['dateBeginValidity']) && ($userCourse['dateBeginValidity'] !== '0000-00-00 00:00:00') && (strcmp(date('Y-m-d H:i:s'), $userCourse['dateBeginValidity']) <= 0)) {
+                if (!empty($userCourse['dateBeginValidity']) && ($userCourse['dateBeginValidity']) && (strcmp(date('Y-m-d H:i:s'), $userCourse['dateBeginValidity']) <= 0)) {
                     $response['can'] = false;
 
                     $response['reason'] = 'subscription_not_started';
@@ -971,7 +975,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
             }
 
             if ($response['can']) {
-                if (!empty($userCourse['dateExpireValidity']) && ($userCourse['dateExpireValidity'] !== '0000-00-00 00:00:00') && (strcmp(date('Y-m-d H:i:s'), $userCourse['dateExpireValidity']) >= 0)) {
+                if (!empty($userCourse['dateExpireValidity']) && ($userCourse['dateExpireValidity']) && (strcmp(date('Y-m-d H:i:s'), $userCourse['dateExpireValidity']) >= 0)) {
                     $response['can'] = false;
 
                     $response['reason'] = 'subscription_expired';
@@ -996,7 +1000,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
 
             if ($response['can']) {
                 // control if the course is elapsed
-                if ($course['date_begin'] !== '0000-00-00') {
+                if ($course['date_begin']!== '0000-00-00') {
                     try {
                         $date = new DateTime($course['date_begin']);
                         $timeStart = $date->format('U');
@@ -1056,7 +1060,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                 $query = 'SELECT cc.prerequisites '
                     . ' FROM %lms_coursepath_courses AS cc '
                     . ' JOIN %lms_coursepath_user AS cu ON cc.id_path = cu.id_path '
-                    . ' WHERE cu.idUser = ' . (int) Docebo::user()->getIdSt() . ' '
+                    . ' WHERE cu.idUser = ' . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . ' '
                     . ' AND cc.id_item = ' . (int) $course['idCourse'] . ' '
                     . (($id_path != 0) ? (' AND cc.id_path = ' . (int) $id_path) : '');
 
@@ -1075,7 +1079,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                         $query = 'SELECT COUNT(*) as count'
                             . ' FROM %lms_courseuser '
                             . ' WHERE idCourse IN (' . $prerequisites . ') '
-                            . ' AND idUser = ' . (int) Docebo::user()->getIdSt() . ' '
+                            . ' AND idUser = ' . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . ' '
                             . ' AND status = ' . _CUS_END;
 
                         $countResult = sql_fetch_assoc(sql_query($query));
@@ -1097,7 +1101,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                 case ADMIN_GROUP_ADMIN:
                 case ADMIN_GROUP_USER:
                 default:
-                    if (($course['sub_start_date'] !== '0000-00-00') && !empty($course['sub_start_date'])) {
+                    if (($course['sub_start_date']) && !empty($course['sub_start_date'])) {
                         try {
                             $date = new DateTime($course['sub_start_date']);
                             $expireTime = $date->format('U') - $now;
@@ -1109,7 +1113,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                         }
                     }
 
-                    if (empty($response) && ($course['sub_end_date'] !== '0000-00-00') && !empty($course['sub_end_date'])) {
+                    if (empty($response) && ($course['sub_end_date']) && !empty($course['sub_end_date'])) {
                         try {
                             $date = new DateTime($course['sub_end_date']);
                             $expireTime = $date->format('U') - $now;
@@ -1129,6 +1133,8 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
 
     public function getClassroomTeachers($idCourse)
     {
+
+        $teachers = [];
         $q = 'select  id_user, lcdu.id_date, u.firstname, u.lastname, lcd.code, lcd.name 
              from %lms_course_date_user lcdu, %lms_course_date lcd, %adm_user u, %lms_courseuser lcu
              where lcd.id_date = lcdu.id_date and 
@@ -1167,7 +1173,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
         $query_cat = "
 		SELECT idCategory, COUNT(*)
 		FROM %lms_course
-		WHERE show_rules = '0' " . (!Docebo::user()->isAnonymous() ? " OR show_rules = '1' " : '') . '
+		WHERE show_rules = '0' " . (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous() ? " OR show_rules = '1' " : '') . '
 		GROUP BY idCategory';
         $re_category = sql_query($query_cat);
         while (list($id, $num) = sql_fetch_array($re_category)) {
@@ -1254,7 +1260,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
         if (!($re_category = sql_query($query_cat))) {
             return '';
         }
-        list($id_parent, $lev, $path) = sql_fetch_row($re_category);
+        [$id_parent, $lev, $path] = sql_fetch_row($re_category);
 
         $name = ((($pos = strrpos($path, '/')) === false) ? $path : substr($path, $pos + 1));
         if ($lev <= 1) {
@@ -1303,7 +1309,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                     if ($filter['c_category']['value'] != 0) {
                         $bounds_query = 'SELECT iLeft, iRight FROM %lms_category WHERE idCategory=' . $filter['c_category']['value'];
                         $res = sql_query($bounds_query);
-                        list($c_left, $c_right) = sql_fetch_row($res);
+                        [$c_left, $c_right] = sql_fetch_row($res);
                         $categories_query = 'SELECT idCategory FROM %lms_category WHERE iLeft>' . $c_left . ' AND iRight<' . $c_right;
                         $res = sql_query($categories_query);
                         while (list($sub_category) = sql_fetch_row($res)) {
@@ -1332,13 +1338,13 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                     $temp = '';
                     switch ($filter['c_expire']['value']) {
                         case 1:
-                            $temp .= " AND c.date_end = '0000-00-00' ";
+                            $temp .= " AND c.date_end IS NULL ";
                             break;
                         case 2:
                             $temp .= " AND c.date_end >= '" . date('Y-m-d') . "' ";
                             break;
                         case 3:
-                            $temp .= " AND c.date_end <= '" . date('Y-m-d') . "' AND c.date_end <> '0000-00-00' ";
+                            $temp .= " AND c.date_end <= '" . date('Y-m-d') . "' AND c.date_end IS NOT NULL ";
                             break;
                     }
                     $filter_conds .= $temp;
@@ -1357,15 +1363,15 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
             }
         }
 
-        $userlevelid = Docebo::user()->getUserLevelId();
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         $is_subadmin = false;
         $all_courses = false;
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $acl_man = &Docebo::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
 
-            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $all_courses = false;
             if (isset($admin_courses['course'][0])) {
                 $all_courses = true;
@@ -1373,7 +1379,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
+                $user_catalogue = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if (count($user_catalogue) > 0) {
                     $courses = [0];
 
@@ -1420,7 +1426,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
             . ' LEFT JOIN %lms_courseuser as cu ON (c.idCourse=cu.idCourse) '
             . " WHERE c.course_type = 'elearning' " . $filter_conds
             . (($is_subadmin && !$all_courses) ? (!empty($admin_courses['course']) ? (' AND c.idCourse IN (' . implode(',', $admin_courses['course']) . ')') : ' AND c.idCourse = 0') : '')
-            . ($is_subadmin ? (' AND ' . $adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'cu.idUser')) : '')
+            . ($is_subadmin ? (' AND ' . $adminManager->getAdminUsersQuery(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), 'cu.idUser')) : '')
             . ' GROUP BY c.idCourse '
             . ($sort ? (' ORDER BY ' . $sort . ' ' . $dir . ' ') : '')
             . ' LIMIT ' . $startIndex . ', ' . $records;
@@ -1443,7 +1449,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                     //retrieve category's sub-categories ids
                     $bounds_query = 'SELECT iLeft, iRight FROM %lms_category WHERE idCategory=' . $filter['c_category']['value'];
                     $res = sql_query($bounds_query);
-                    list($c_left, $c_right) = sql_fetch_row($res);
+                    [$c_left, $c_right] = sql_fetch_row($res);
                     $categories_query = 'SELECT idCategory FROM %lms_category WHERE iLeft>' . $c_left . ' AND iRight<' . $c_right;
                     $res = sql_query($categories_query);
                     while (list($sub_category) = sql_fetch_row($res)) {
@@ -1467,13 +1473,13 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                     $temp = '';
                     switch ($filter['c_expire']['value']) {
                         case 1:
-                            $temp .= " AND c.date_end = '0000-00-00' ";
+                            $temp .= " AND c.date_end IS NULL ";
                             break;
                         case 2:
                             $temp .= " AND UNIX_TIMESTAMP(c.date_end) >= '" . time() . "' ";
                             break;
                         case 3:
-                            $temp .= " AND UNIX_TIMESTAMP(c.date_end) <= '" . time() . "' AND c.date_end <> '0000-00-00' ";
+                            $temp .= " AND UNIX_TIMESTAMP(c.date_end) <= '" . time() . "' AND c.date_end IS NOT NULL ";
                             break;
                     }
                     $filter_conds .= $temp;
@@ -1481,13 +1487,13 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
             }
         }
 
-        $userlevelid = Docebo::user()->getUserLevelId();
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         $is_subadmin = false;
         $all_courses = false;
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $all_courses = false;
             if (isset($admin_courses['course'][0])) {
                 $all_courses = true;
@@ -1495,7 +1501,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
+                $user_catalogue = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if (count($user_catalogue) > 0) {
                     $courses = [0];
 
@@ -1541,7 +1547,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
             . " WHERE course_type = 'elearning' " . $filter_conds
             . (($is_subadmin && !$all_courses) ? (!empty($admin_courses['course']) ? (' AND c.idCourse IN (' . implode(',', $admin_courses['course']) . ')') : '') : '');
         $re_course = sql_query($query);
-        list($number) = sql_fetch_row($re_course);
+        [$number] = sql_fetch_row($re_course);
 
         return $number;
     }
@@ -1577,13 +1583,13 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                 . ' )';
         }
 
-        $userlevelid = Docebo::user()->getUserLevelId();
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         $is_subadmin = false;
         $all_courses = false;
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $all_courses = false;
             if (isset($admin_courses['course'][0])) {
                 $all_courses = true;
@@ -1591,7 +1597,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
+                $user_catalogue = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if (count($user_catalogue) > 0) {
                     $courses = [0];
 
@@ -1635,7 +1641,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
 
         $query .= (($is_subadmin && !$all_courses) ? (!empty($admin_courses['course']) ? (' AND c.idCourse IN (' . implode(',', $admin_courses['course']) . ')') : ' AND c.idCourse = 0') : '');
 
-        list($res) = sql_fetch_row(sql_query($query));
+        [$res] = sql_fetch_row(sql_query($query));
 
         return $res;
     }
@@ -1681,13 +1687,13 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                 . ' )';
         }
 
-        $userlevelid = Docebo::user()->getUserLevelId();
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         $is_subadmin = false;
         $all_courses = false;
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $all_courses = false;
             if (isset($admin_courses['course'][0])) {
                 $all_courses = true;
@@ -1695,7 +1701,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
+                $user_catalogue = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if (count($user_catalogue) > 0) {
                     $courses = [0];
 
@@ -1779,7 +1785,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
         $query = "SELECT idCourse FROM %lms_course WHERE name LIKE '" . $name . "'";
         $res = sql_query($query);
         if ($res && (sql_num_rows($res) > 0)) {
-            list($idCourse) = sql_fetch_row($res);
+            [$idCourse] = sql_fetch_row($res);
             $output = $idCourse;
         }
 
@@ -1931,7 +1937,7 @@ class Man_CourseUser
     public function countUserCourses($id_user)
     {
         $query = "SELECT COUNT(*) FROM %lms_courseuser WHERE idUser = $id_user";
-        list($count) = sql_fetch_row(sql_query($query));
+        [$count] = sql_fetch_row(sql_query($query));
 
         return (int) $count;
     }
@@ -2014,12 +2020,12 @@ class Man_CourseUser
      * Return the complete user list that have the requested level.
      *
      * @param int $id_user the idst of the user
-     * @param int $level   the level number
+     * @param int|array $level   the level number
      *
      * @return array the list of the course with the carachteristic of it array( id_course => array(
      *               idCourse, code, name, description
      */
-    public function getUserWithLevelFilter($level, $arr_user = false)
+    public static function getUserWithLevelFilter($level, $arr_user = false)
     {
         $users = [];
         $query_courses = '
@@ -2094,7 +2100,7 @@ class Man_CourseUser
 
         $subscriber = new CourseSubscribe_Management();
 
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $query_course = 'SELECT idCourse' .
             ' FROM %lms_course' .
@@ -2108,7 +2114,7 @@ class Man_CourseUser
             " WHERE autoregistration_code = '" . $code . "'"
             . " AND autoregistration_code <> ''"
             . " AND (                       
-                            (can_subscribe=2 AND (sub_end_date = '0000-00-00' OR sub_end_date >= '" . date('Y-m-d') . "') AND (sub_start_date = '0000-00-00' OR '" . date('Y-m-d') . "' >= sub_start_date)) OR
+                            (can_subscribe=2 AND (sub_end_date IS NULL OR sub_end_date >= '" . date('Y-m-d') . "') AND (sub_start_date IS NULL OR '" . date('Y-m-d') . "' >= sub_start_date)) OR
                             (can_subscribe=1)
                          ) ";
 
@@ -2185,11 +2191,12 @@ class Man_CourseUser
     }
 }
 
-class DoceboCourse
+class FormaCourse
 {
     public $idCourse;
 
     public $course_info;
+    public $id_course;
 
     public function _executeQuery($query_text)
     {
@@ -2208,7 +2215,7 @@ class DoceboCourse
         $this->course_info = sql_fetch_assoc($re_load);
     }
 
-    public function DoceboCourse($idCourse)
+    public function __construct($idCourse)
     {
         $this->id_course = $idCourse;
         $this->_load();
@@ -2221,7 +2228,7 @@ class DoceboCourse
 
     public function getValue($param)
     {
-        return $this->course_info[$param];
+        return is_array($this->course_info) ? $this->course_info[$param] : false;
     }
 
     public function setValues($arr_new_values)
@@ -2273,7 +2280,7 @@ class DoceboCourse
      */
     public function getSubscribed()
     {
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         /*
         $group_info = $acl_man->getGroup(FALSE, '/lms/course/'.$this->id_course.'/subscribed/alluser');
         $idst_group = $group_info[ACL_INFO_IDST];
@@ -2291,11 +2298,11 @@ class DoceboCourse
     public function getQuotaLimit()
     {
         $course_quota = $this->course_info['course_quota'];
-        if ($course_quota == COURSE_QUOTA_INHERIT) {
+        if ($course_quota == COURSE_QUOTA_INHERIT || $course_quota == '') {
             $course_quota = FormaLms\lib\Get::sett('course_quota');
         }
 
-        return $course_quota;
+        return (int)$course_quota;
     }
 
     public function getUsedSpace()
@@ -2347,7 +2354,7 @@ class DoceboCourse
 
         $map = [];
         $levels = $subscribe_man->getUserLevel(); //CourseLevel::getTranslatedLevels();
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         // find all the group created for this menu custom for permission management
         $arr_groupid = [];
@@ -2355,7 +2362,7 @@ class DoceboCourse
             $arr_groupid[$lv] = '/lms/course/' . $idCourse . '/subscribed/' . $lv;
         }
 
-        $arr_idst = Docebo::aclm()->getArrGroupST($arr_groupid);
+        $arr_idst = \FormaLms\lib\Forma::getAclManager()->getArrGroupST($arr_groupid);
 
         $map = [];
         $flip = array_flip($arr_groupid);
@@ -2374,13 +2381,13 @@ class DoceboCourse
      *
      * @return array [lv] => idst, [lv] => idst
      */
-    public function createCourseLevel($idCourse)
+    public static function createCourseLevel($idCourse)
     {
         require_once _lms_ . '/lib/lib.levels.php';
 
         $map = [];
         $levels = CourseLevel::getTranslatedLevels();
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $idst_main = $acl_man->registerGroup('/lms/course/' . $idCourse . '/group/alluser',
             'all the user of a course',
@@ -2412,7 +2419,7 @@ class DoceboCourse
  */
 function getSubscribed($idCourse, $subdived_for_level = false, $id_level = false, $exclude_waiting = false, $edition_id = 0)
 {
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     $id_users = [];
 
     $query_courseuser = "
@@ -2452,7 +2459,7 @@ function getSubscribed($idCourse, $subdived_for_level = false, $id_level = false
  */
 function getSubscribedInfo($idCourse, $subdived_for_level = false, $id_level = false, $exclude_waiting = false, $status = false, $edition_id = false, $sort = false, $user_filter = '', $group_all_members = false, $limit = false, $date_id = false)
 {
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     $id_users = [];
 
     $query_courseuser = '
@@ -2494,7 +2501,7 @@ function getSubscribedInfo($idCourse, $subdived_for_level = false, $id_level = f
             $query_courseuser .= ' AND c.idUser IN (-1)';
         }
     }
-    if ($user_filter !== '') {
+    if ($user_filter && $user_filter !== '') {
         $query_courseuser .= " AND (u.firstname LIKE '%" . $user_filter . "%' OR u.lastname LIKE '%" . $user_filter . "%' OR u.userid LIKE '%" . $user_filter . "%')";
     }
     if ($sort) {
@@ -2541,7 +2548,7 @@ function getSubscribedInfo($idCourse, $subdived_for_level = false, $id_level = f
  */
 function getSubscribedLevel($idCourse, $subdived_for_level = false, $id_level = false, $edition_id = 0)
 {
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     $id_users = [];
 
     $query_courseuser = "
@@ -2569,7 +2576,7 @@ function getSubscribedLevel($idCourse, $subdived_for_level = false, $id_level = 
 
 function getIDGroupAlluser($idCourse)
 {
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     $info = $acl_man->getGroup(false, '/lms/course/' . $idCourse . '/group/alluser');
 
     return $info[ACL_INFO_IDST];
@@ -2580,14 +2587,14 @@ function getIDGroupAlluser($idCourse)
  *
  * @return
  */
-function &fromIdstToUser($id_user)
+function fromIdstToUser($id_user)
 {
     $users = [];
     if (!is_array($id_user) || (count($id_user) == 0)) {
         return $users;
     }
 
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     foreach ($id_user as $id_u) {
         $user_info = $acl_man->getUser($id_u, false);
         if ($user_info[ACL_INFO_LASTNAME] . $user_info[ACL_INFO_FIRSTNAME] == '') {
@@ -2663,19 +2670,19 @@ function logIntoCourse($idCourse, $gotofirst_page = true)
     require_once _lms_ . '/lib/lib.track_user.php';
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     // Reset previous opened track session if any
-    if (!Docebo::user()->isAnonymous() && $session->has('idCourse')) {
-        TrackUser::setActionTrack(getLogUserId(), $session->get('idCourse'), '', '');
+    if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous() && $session->has('idCourse')) {
+        TrackUser::setActionTrack(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $session->get('idCourse'), '', '');
     }
     $session->remove('direct_play');
 
     $re_course = sql_query('
 	SELECT level, status, waiting
 	FROM %lms_courseuser
-	WHERE idCourse = ' . (int) $idCourse . ' AND idUser = ' . (int) Docebo::user()->getId() . '');
-    list($level_c, $status_user, $waiting_user) = sql_fetch_row($re_course);
+	WHERE idCourse = ' . (int) $idCourse . ' AND idUser = ' . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getId() . '');
+    [$level_c, $status_user, $waiting_user] = sql_fetch_row($re_course);
 
-    Docebo::setCourse($idCourse);
-    $course_info = Docebo::course()->getAllInfo();
+    \FormaLms\lib\Forma::setCourse($idCourse);
+    $course_info = \FormaLms\lib\Forma::course()->getAllInfo();
     $course_info['course_status'] = $course_info['status'];
     $course_info['user_status'] = $status_user;
     $course_info['waiting'] = $waiting_user;
@@ -2692,7 +2699,7 @@ function logIntoCourse($idCourse, $gotofirst_page = true)
     // If it's the first time we need to change the course status
     if ($course_info['user_status'] == _CUS_SUBSCRIBED) {
         require_once _lms_ . '/lib/lib.stats.php';
-        saveTrackStatusChange(getLogUserId(), $idCourse, _CUS_BEGIN);
+        saveTrackStatusChange(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $idCourse, _CUS_BEGIN);
     }
     // Setup some session data
     $session->set('timeEnter', date('Y-m-d H:i:s'));
@@ -2701,8 +2708,8 @@ function logIntoCourse($idCourse, $gotofirst_page = true)
 
     //we need to redo this
 
-    Docebo::user()->loadUserSectionST('/lms/course/private/' . $course_info['level'] . '/');
-    Docebo::user()->SaveInSession();
+    \FormaLms\lib\FormaUser::getCurrentUser()->loadUserSectionST('/lms/course/private/' . $course_info['level'] . '/');
+    \FormaLms\lib\FormaUser::getCurrentUser()->saveInSession();
 
     // Initialize the session into the course
     TrackUser::createSessionCourseTrack();
@@ -2731,7 +2738,7 @@ function logIntoCourse($idCourse, $gotofirst_page = true)
                     . ' LIMIT 0,1';
                 $res = sql_query($query);
                 if ($res && (sql_num_rows($res) > 0)) {
-                    list($id_org, $id_test) = sql_fetch_row($res);
+                    [$id_org, $id_test] = sql_fetch_row($res);
                     if ($id_test > 0) {
                         require_once _lms_ . '/lib/lib.test.php';
                         $tman = new TestManagement($id_test);
@@ -2757,8 +2764,8 @@ function logIntoCourse($idCourse, $gotofirst_page = true)
             } elseif (count($first_lo) >= 2) {
                 $obj = array_shift($first_lo);
                 // if we have more than an object we need to play the first one until it's completed
-                $query = 'SELECT status FROM %lms_commontrack WHERE idReference = ' . (int) $obj['id_org'] . ' AND idUser = ' . (int) Docebo::user()->getId();
-                list($status) = sql_fetch_row(sql_query($query));
+                $query = 'SELECT status FROM %lms_commontrack WHERE idReference = ' . (int) $obj['id_org'] . ' AND idUser = ' . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getId();
+                [$status] = sql_fetch_row(sql_query($query));
 
                 if ((($status == 'completed') || ($status == 'passed')) && $gotofirst_page) {
                     Util::jump_to($jumpurl);
@@ -2803,7 +2810,7 @@ function getModuleFromId($id_module)
  **/
 function firstPage($idMain = false)
 {
-    require_once _lms_ . '/lib/lib.permission.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.permission.php');
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
     $query_main = "

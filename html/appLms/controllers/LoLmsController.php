@@ -61,15 +61,16 @@ class LoLmsController extends LmsController
 
     public function show()
     {
-        if (Forma::errorsExists()) {
-            UIFeedback::error(Forma::getFormattedErrors(true));
+
+        if (\FormaLms\lib\Forma::errorsExists()) {
+            UIFeedback::error(\FormaLms\lib\Forma::getFormattedErrors(true));
         }
 
         $this->render('show', [
             'data' => [
                 'edit' => false,
                 'title' => Lang::t('_ORGROOTNAME', 'storage'),
-                'data' => $this->getFolders($this->idCourse, false),
+                'data' => [],//$this->getFolders($this->idCourse, false),
                 'type' => 'organization',
             ],
         ]);
@@ -77,13 +78,25 @@ class LoLmsController extends LmsController
 
     private function formatLoData($loData)
     {
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+
+        $directPlayEnabled = (bool)$session->get('direct_play', false);
+        $session->set('direct_play', false);
+        $session->save();
+
         $results = [];
-        foreach ($loData as $lo) {
+        foreach ($loData as $index => $lo) {
             $id = $lo['id'];
+
             $lo['image_type'] = LomanagerLmsController::getLearningObjectIcon($lo);
             $lo['actions'] = [];
             $lo['visible_actions'] = [];
             if (!$lo['is_folder']) {
+                if ($directPlayEnabled && $lo['autoplay']) {
+                    $lo['directPlay'] = $directPlayEnabled;
+                    $directPlayEnabled = false;
+                }
+
                 $lo['actions'][] = [
                     'name' => 'play',
                     'active' => true,
@@ -92,8 +105,10 @@ class LoLmsController extends LmsController
                     'showIcon' => false,
                     'icon' => 'icon-play',
                     'label' => 'Play',
+                    'directPlay' => $lo['directPlay'],
                 ];
                 if (array_key_exists('track_detail', $lo) && $lo['track_detail']) {
+
                     $lo['visible_actions'][] = [
                         'name' => 'tracking',
                         'active' => true,
@@ -102,6 +117,7 @@ class LoLmsController extends LmsController
                         'showIcon' => false,
                         'icon' => 'icon-chart',
                         'label' => 'Tracking',
+                        'directPlay' => $lo['directPlay'],
                     ];
                 }
             }

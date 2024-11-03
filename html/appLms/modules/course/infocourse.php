@@ -15,7 +15,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
-if (!Docebo::user()->isAnonymous()) {
+if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     define('_PATH_COURSE', '/appLms/' . FormaLms\lib\Get::sett('pathcourse'));
 
     require_once _lms_ . '/lib/lib.levels.php';
@@ -44,7 +44,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         require_once _base_ . '/lib/lib.table.php';
 
-        $lang = &DoceboLanguage::createInstance('course');
+        $lang = &FormaLanguage::createInstance('course');
 
         $re_file = sql_query('
 	SELECT id_file, title, path 
@@ -106,9 +106,9 @@ if (!Docebo::user()->isAnonymous()) {
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         //finding course information
         $mod_perm = checkPerm('mod', true);
-        $lang = &DoceboLanguage::createInstance('course');
+        $lang = &FormaLanguage::createInstance('course');
 
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $course = $GLOBALS['course_descriptor']->getAllInfo();
         $levels = CourseLevel::getTranslatedLevels();
 
@@ -235,14 +235,14 @@ if (!Docebo::user()->isAnonymous()) {
         checkPerm('mod');
 
         require_once _base_ . '/lib/lib.form.php';
-        $lang_c = &DoceboLanguage::createInstance('course');
-        $lang = &DoceboLanguage::createInstance('course');
+        $lang_c = &FormaLanguage::createInstance('course');
+        $lang = &FormaLanguage::createInstance('course');
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $out = &$GLOBALS['page'];
         $id_course = $session->get('idCourse');
         $form = new Form();
         $levels = CourseLevel::getTranslatedLevels();
-        $array_lang = Docebo::langManager()->getAllLangCode();
+        $array_lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $difficult_lang = [
             'veryeasy' => $lang->def('_DIFFICULT_VERYEASY'),
             'easy' => $lang->def('_DIFFICULT_EASY'),
@@ -265,146 +265,146 @@ if (!Docebo::user()->isAnonymous()) {
         $out->add(
             getTitleArea($lang_c->def('_INFO'), 'infocourse')
             . '<div class="std_block">'
-            . Form::openForm('course_modify', 'index.php?modname=course&amp;op=upcourseinfo')
-            . Form::openElementSpace()
+            . $form->openForm('course_modify', 'index.php?modname=course&amp;op=upcourseinfo')
+            . $form->openElementSpace()
 
-            . Form::getTextfield($lang->def('_CODE'), 'course_code', 'course_code', '50', $course['code'])
-            . Form::getTextfield($lang->def('_COURSE_NAME'), 'course_name', 'course_name', '255', $course['name'])
-            . Form::getDropdown($lang->def('_COURSE_LANG_METHOD'), 'course_lang', 'course_lang', $array_lang,
+            . $form->getTextfield($lang->def('_CODE'), 'course_code', 'course_code', '50', $course['code'])
+            . $form->getTextfield($lang->def('_COURSE_NAME'), 'course_name', 'course_name', '255', $course['name'])
+            . $form->getDropdown($lang->def('_COURSE_LANG_METHOD'), 'course_lang', 'course_lang', $array_lang,
                 $lang_code)
-            . Form::getDropdown($lang->def('_DIFFICULTY'), 'course_difficult', 'course_difficult', $difficult_lang,
+            . $form->getDropdown($lang->def('_DIFFICULTY'), 'course_difficult', 'course_difficult', $difficult_lang,
                 $course['difficult'])
-            . Form::getDropdown($lang->def('_STATUS'), 'course_status', 'course_status', [
+            . $form->getDropdown($lang->def('_STATUS'), 'course_status', 'course_status', [
                 CST_PREPARATION => Lang::t('_CST_PREPARATION', 'course'),
                 CST_AVAILABLE => Lang::t('_CST_AVAILABLE', 'course'),
                 CST_EFFECTIVE => Lang::t('_CST_CONFIRMED', 'course'),
                 CST_CONCLUDED => Lang::t('_CST_CONCLUDED', 'course'),
                 CST_CANCELLED => Lang::t('_CST_CANCELLED', 'course'),
             ], $course['status'])
-            . Form::getTextarea($lang->def('_DESCRIPTION'), 'course_descr', 'course_descr',
+            . $form->getTextarea($lang->def('_DESCRIPTION'), 'course_descr', 'course_descr',
                 $course['description'])
 
-            . Form::closeElementSpace()
+            . $form->closeElementSpace()
 
-            . Form::openButtonSpace()
-            . Form::getButton('upd_course', 'upd_course', $lang->def('_SAVE'))
-            . Form::getButton('course_undo', 'course_undo', $lang->def('_UNDO'))
-            . Form::closeButtonSpace()
-            . Form::openElementSpace());
+            . $form->openButtonSpace()
+            . $form->getButton('upd_course', 'upd_course', $lang->def('_SAVE'))
+            . $form->getButton('course_undo', 'course_undo', $lang->def('_UNDO'))
+            . $form->closeButtonSpace()
+            . $form->openElementSpace());
 
         //-display-mode----------------------------------------------------
         $out->add(
-            Form::getOpenFieldset($lang->def('_COURSE_DISPLAY_MODE'))
+            $form->getOpenFieldset($lang->def('_COURSE_DISPLAY_MODE'))
 
             //-list-of-user---------------------------------------------------
-            . Form::getOpenCombo($lang->def('_SHOW_USER_OF_LEVEL')));
+            . $form->getOpenCombo($lang->def('_SHOW_USER_OF_LEVEL')));
         foreach ($levels as $level => $level_name) {
-            $out->add(Form::getCheckbox($level_name, 'course_show_level_' . $level, 'course_show_level[' . $level . ']', $level,
+            $out->add($form->getCheckbox($level_name, 'course_show_level_' . $level, 'course_show_level[' . $level . ']', $level,
                 ($course['level_show_user'] & (1 << $level))));
         }
         $out->add(
-            Form::getCloseCombo()
+            $form->getCloseCombo()
 
             //-where-show-course----------------------------------------------
-            . Form::getOpenCombo($lang->def('_WHERE_SHOW_COURSE'))
-            . Form::getRadio($lang->def('_SC_EVERYWHERE'), 'course_show_rules_every', 'course_show_rules', '0',
+            . $form->getOpenCombo($lang->def('_WHERE_SHOW_COURSE'))
+            . $form->getRadio($lang->def('_SC_EVERYWHERE'), 'course_show_rules_every', 'course_show_rules', '0',
                 ($course['show_rules'] == 0))
-            . Form::getRadio($lang->def('_SC_ONLY_IN'), 'course_show_rules_only_in', 'course_show_rules', '1',
+            . $form->getRadio($lang->def('_SC_ONLY_IN'), 'course_show_rules_only_in', 'course_show_rules', '1',
                 ($course['show_rules'] == 1))
-            . Form::getRadio($lang->def('_SC_ONLYINSC_USER'), 'course_show_rules_onlyinsc_user', 'course_show_rules', '2',
+            . $form->getRadio($lang->def('_SC_ONLYINSC_USER'), 'course_show_rules_onlyinsc_user', 'course_show_rules', '2',
                 ($course['show_rules'] == 2))
-            . Form::getCloseCombo()
+            . $form->getCloseCombo()
 
             //-what-show------------------------------------------------------
-            . Form::getOpenCombo($lang->def('_WHAT_SHOW'))
-            . Form::getCheckbox($lang->def('_SHOW_PROGRESS'), 'course_progress', 'course_progress', '1',
+            . $form->getOpenCombo($lang->def('_WHAT_SHOW'))
+            . $form->getCheckbox($lang->def('_SHOW_PROGRESS'), 'course_progress', 'course_progress', '1',
                 $course['show_progress'])
-            . Form::getCheckbox($lang->def('_SHOW_TIME'), 'course_time', 'course_time', '1',
+            . $form->getCheckbox($lang->def('_SHOW_TIME'), 'course_time', 'course_time', '1',
                 $course['show_time'])
-            . Form::getCheckbox($lang->def('_SHOW_ADVANCED_INFO'), 'course_advanced', 'course_advanced', '1',
+            . $form->getCheckbox($lang->def('_SHOW_ADVANCED_INFO'), 'course_advanced', 'course_advanced', '1',
                 $course['show_extra_info'])
-            . Form::getCloseCombo()
-            . Form::getCloseFieldset());
+            . $form->getCloseCombo()
+            . $form->getCloseFieldset());
 
         //-user-interaction--------------------------------------------------
         $out->add(
-            Form::getOpenFieldset($lang->def('_USER_INTERACTION_OPTION'))
+            $form->getOpenFieldset($lang->def('_USER_INTERACTION_OPTION'))
             /*
             //-subscribe-method-----------------------------------------------
-            .Form::getOpenCombo($lang->def('_COURSE_SUBSRIBE'))
-            .Form::getRadio($lang->def('_COURSE_S_GODADMIN'), 'course_subs_godadmin', 'course_subs', '0',
+            .$form->getOpenCombo($lang->def('_COURSE_SUBSRIBE'))
+            .$form->getRadio($lang->def('_COURSE_S_GODADMIN'), 'course_subs_godadmin', 'course_subs', '0',
                 ($course['subscribe_method'] == 0) )
-            .Form::getRadio($lang->def('_COURSE_S_MODERATE'), 'course_subs_moderate', 'course_subs', '1',
+            .$form->getRadio($lang->def('_COURSE_S_MODERATE'), 'course_subs_moderate', 'course_subs', '1',
                 ($course['subscribe_method'] == 1))
-            .Form::getRadio($lang->def('_COURSE_S_FREE'), 'course_subs_free', 'course_subs', '2',
+            .$form->getRadio($lang->def('_COURSE_S_FREE'), 'course_subs_free', 'course_subs', '2',
                 ($course['subscribe_method'] == 2))
-            .Form::getCloseCombo()
+            .$form->getCloseCombo()
             */
             //mode for course end---------------------------------------------
-            . Form::getOpenCombo($lang->def('_COURSE_END_MODE'))
-            . Form::getRadio($lang->def('_COURSE_EM_TEACHER'), 'course_em_manual', 'course_em', '1',
+            . $form->getOpenCombo($lang->def('_COURSE_END_MODE'))
+            . $form->getRadio($lang->def('_COURSE_EM_TEACHER'), 'course_em_manual', 'course_em', '1',
                 $course['permCloseLO'])
-            . Form::getRadio($lang->def('_COURSE_EM_LO'), 'course_em_lo', 'course_em', '0',
+            . $form->getRadio($lang->def('_COURSE_EM_LO'), 'course_em_lo', 'course_em', '0',
                 !$course['permCloseLO'])
-            . Form::getCloseCombo()
+            . $form->getCloseCombo()
 
             //status that can enter------------------------------------------
-            . Form::getOpenCombo($lang->def('_COURSE_STATUS_CANNOT_ENTER'))
-            . Form::getCheckbox($lang->def('_USER_STATUS_SUBS'), 'user_status_0', 'user_status[0]', 0,
+            . $form->getOpenCombo($lang->def('_COURSE_STATUS_CANNOT_ENTER'))
+            . $form->getCheckbox($lang->def('_USER_STATUS_SUBS'), 'user_status_0', 'user_status[0]', 0,
                 statusNoEnter($course['userStatusOp'], _CUS_SUBSCRIBED))
-            . Form::getCheckbox($lang->def('_USER_STATUS_BEGIN'), 'user_status_1', 'user_status[1]', 1,
+            . $form->getCheckbox($lang->def('_USER_STATUS_BEGIN'), 'user_status_1', 'user_status[1]', 1,
                 statusNoEnter($course['userStatusOp'], _CUS_BEGIN))
-            . Form::getCheckbox($lang->def('_USER_STATUS_END'), 'user_status_2', 'user_status[2]', 2,
+            . $form->getCheckbox($lang->def('_USER_STATUS_END'), 'user_status_2', 'user_status[2]', 2,
                 statusNoEnter($course['userStatusOp'], _CUS_END))
-            . Form::getCheckbox($lang->def('_SUSPENDED'), 'user_status_3', 'user_status[3]', 3,
+            . $form->getCheckbox($lang->def('_SUSPENDED'), 'user_status_3', 'user_status[3]', 3,
                 statusNoEnter($course['userStatusOp'], _CUS_SUSPEND))
-            . Form::getCloseCombo()
+            . $form->getCloseCombo()
             /*
             // max number of user that can be subscribed
-            .Form::getTextfield($lang->def('_MAX_NUM_SUBSCRIBE'), 'max_num_subscribe', 'max_num_subscribe', 11, $course['max_num_subscribe'])
+            .$form->getTextfield($lang->def('_MAX_NUM_SUBSCRIBE'), 'max_num_subscribe', 'max_num_subscribe', 11, $course['max_num_subscribe'])
 
             // sms budget
-            .Form::getTextfield($lang->def('_MAX_SMS_BUDGET'), 'max_sms_budget', 'max_sms_budget', 11, $course['max_sms_budget'])
+            .$form->getTextfield($lang->def('_MAX_SMS_BUDGET'), 'max_sms_budget', 'max_sms_budget', 11, $course['max_sms_budget'])
             */
-            . Form::getCloseFieldset());
+            . $form->getCloseFieldset());
 
         //-expiration---------------------------------------------------------
 
         // BUG: LR, non registrava il tempo medio del corso
         $out->add(
-            Form::getOpenFieldset($lang->def('_COURSE_TIME_OPTION'))/*
-        .Form::getDatefield($lang->def('_DATE_BEGIN'), 'course_date_begin', 'course_date_begin',
+            $form->getOpenFieldset($lang->def('_COURSE_TIME_OPTION'))/*
+        .$form->getDatefield($lang->def('_DATE_BEGIN'), 'course_date_begin', 'course_date_begin',
             $course['date_begin'])
-        .Form::getDatefield($lang->def('_DATE_END'), 'course_date_end', 'course_date_end',
+        .$form->getDatefield($lang->def('_DATE_END'), 'course_date_end', 'course_date_end',
             $course['date_end'])
-        .Form::getTextfield($lang->def('_DAY_OF_VALIDITY'), 'course_day_of', 'course_day_of', '10',
+        .$form->getTextfield($lang->def('_DAY_OF_VALIDITY'), 'course_day_of', 'course_day_of', '10',
             $course['valid_time'])*/
-            . Form::getTextfield($lang->def('_MEDIUM_TIME'), 'course_medium_time', 'course_medium_time', '10', $course['mediumTime'])
-            . Form::getCloseFieldset());
+            . $form->getTextfield($lang->def('_MEDIUM_TIME'), 'course_medium_time', 'course_medium_time', '10', $course['mediumTime'])
+            . $form->getCloseFieldset());
 
         //sponsor-and-logo----------------------------------------------------
         /*
         $out->add(
-            Form::getTextfield($lang->def('_SPONSOR_LINK'), 'course_sponsor_link', 'course_sponsor_link', '255',
+            $form->getTextfield($lang->def('_SPONSOR_LINK'), 'course_sponsor_link', 'course_sponsor_link', '255',
                 $course['linkSponsor'])
-            .Form::getFilefield($lang->def('_SPONSOR_LOGO'), 'course_sponsor_logo', 'course_sponsor_logo')
-            .Form::getFilefield($lang->def('_COURSE_LOGO'), 'course_logo', 'course_logo'));
+            .$form->getFilefield($lang->def('_SPONSOR_LOGO'), 'course_sponsor_logo', 'course_sponsor_logo')
+            .$form->getFilefield($lang->def('_COURSE_LOGO'), 'course_logo', 'course_logo'));
         */
         $out->add(
-            Form::closeElementSpace()
-            . Form::openButtonSpace()
-            . Form::getButton('upd_course', 'upd_course', $lang->def('_SAVE'))
-            . Form::getButton('course_undo', 'course_undo', $lang->def('_UNDO'))
-            . Form::closeButtonSpace());
+            $form->closeElementSpace()
+            . $form->openButtonSpace()
+            . $form->getButton('upd_course', 'upd_course', $lang->def('_SAVE'))
+            . $form->getButton('course_undo', 'course_undo', $lang->def('_UNDO'))
+            . $form->closeButtonSpace());
 
-        $out->add(Form::closeForm()
+        $out->add($form->closeForm()
             . '</div>', 'content');
     }
 
     function upcourseinfo()
     {
         checkPerm('mod');
-        $array_lang = Docebo::langManager()->getAllLangCode();
+        $array_lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $user_status = 0;
         if (isset($_POST['user_status'])) {
@@ -442,23 +442,24 @@ if (!Docebo::user()->isAnonymous()) {
             $re = false;
         }
 
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         // send alert
         require_once _base_ . '/lib/lib.eventmanager.php';
-
-        $arr_subt = ['[url]' => FormaLms\lib\Get::site_url(),
-            '[course_code]' => $_POST['course_code'],
-            '[course]' => $_POST['course_name']];
 
         $msg_composer = new EventMessageComposer();
 
         $msg_composer->setSubjectLangText('email', '_ALERT_SUBJECT_MODCOURSE_INFO', false);
-        $msg_composer->setBodyLangText('email', '_ALERT_TEXT_MODCOURSE_INFO', $arr_subt);
+        $msg_composer->setBodyLangText('email', '_ALERT_TEXT_MODCOURSE_INFO', ['[url]' => FormaLms\lib\Get::site_url(),
+            '[course_code]' => $_POST['course_code'],
+            '[course]' => $_POST['course_name'], ]);
 
-        $msg_composer->setBodyLangText('sms', '_ALERT_TEXT_MODCOURSE_INFO_SMS', $arr_subt);
+        $msg_composer->setBodyLangText('sms', '_ALERT_TEXT_MODCOURSE_INFO_SMS', ['[url]' => FormaLms\lib\Get::site_url(),
+            '[course_code]' => $_POST['course_code'],
+            '[course]' => $_POST['course_name'], ]);
 
         require_once _lms_ . '/lib/lib.course.php';
-        $recipients = Man_Course::getIdUserOfLevel($session->get('idCourse'));
+        $course_man = new Man_Course();
+        $recipients = $course_man->getIdUserOfLevel($session->get('idCourse'));
 
         createNewAlert('CoursePorpModified',
             'course',
@@ -498,7 +499,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         require_once _base_ . '/lib/lib.form.php';
 
-        $lang = &DoceboLanguage::createInstance('course');
+        $lang = &FormaLanguage::createInstance('course');
 
         $GLOBALS['page']->add(
             getTitleArea(
@@ -523,7 +524,7 @@ if (!Docebo::user()->isAnonymous()) {
     function insfiles()
     {
         checkPerm('mod');
-        $lang = &DoceboLanguage::createInstance('course');
+        $lang = &FormaLanguage::createInstance('course');
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         require_once _base_ . '/lib/lib.upload.php';
 
@@ -581,7 +582,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         require_once _base_ . '/lib/lib.form.php';
 
-        $lang = &DoceboLanguage::createInstance('course');
+        $lang = &FormaLanguage::createInstance('course');
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $id_file = importVar('id_file', true, 0);
 
@@ -613,7 +614,7 @@ if (!Docebo::user()->isAnonymous()) {
     function upfiles()
     {
         checkPerm('mod');
-        $lang = &DoceboLanguage::createInstance('course');
+        $lang = &FormaLanguage::createInstance('course');
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         require_once _base_ . '/lib/lib.upload.php';
 
@@ -675,7 +676,7 @@ if (!Docebo::user()->isAnonymous()) {
     function remfiles()
     {
         checkPerm('mod');
-        $lang = &DoceboLanguage::createInstance('course');
+        $lang = &FormaLanguage::createInstance('course');
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         require_once _base_ . '/lib/lib.upload.php';
 
@@ -727,7 +728,7 @@ if (!Docebo::user()->isAnonymous()) {
     {
         checkPerm('view_info');
 
-        $lang = &DoceboLanguage::createInstance('course');
+        $lang = &FormaLanguage::createInstance('course');
         require_once _lms_ . '/lib/lib.lms_user_profile.php';
 
         $profile = new LmsUserProfile(importVar('id_user', true, 0));

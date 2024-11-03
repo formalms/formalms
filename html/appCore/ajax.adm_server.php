@@ -11,11 +11,11 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-define('CORE', true);
-define('IN_FORMA', true);
-define('IS_AJAX', true);
-define('_deeppath_', '../');
-require dirname(__DIR__) . '/base.php';
+const CORE = true;
+const IN_FORMA = true;
+const IS_AJAX = true;
+const _deeppath_ = '../';
+require __DIR__ . '/../base.php';
 
 // start buffer
 ob_start();
@@ -32,7 +32,7 @@ if (!function_exists('aout')) {
         $GLOBALS['operation_result'] .= $string;
     }
 }
-require_once _adm_ . '/lib/lib.permission.php';
+require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/lib.permission.php');
 
 $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
@@ -60,7 +60,7 @@ if (!empty($GLOBALS['req'])) {
         }
     }
 
-    include Forma::inc($aj_file);
+    include \FormaLms\lib\Forma::inc($aj_file);
 }
 
 // finalize

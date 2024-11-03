@@ -1,5 +1,8 @@
 <?php
 
+use FormaLms\lib\Mailer\FormaMailer;
+use FormaLms\lib\Domain\DomainHandler;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -33,15 +36,15 @@ function chelpCheckField($val)
 $op = FormaLms\lib\Get::req('op', DOTY_STRING, '');
 switch ($op) {
     case 'getdialog':
-            $idst = getLogUserId();
-            $acl_man = Docebo::user()->getAclManager();
+            $idst = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $user_info = $acl_man->getUser($idst, false);
             $user_email = $user_info[ACL_INFO_EMAIL];
 
             $body = '';
             $body .= '<div class="line_field">' . Lang::t('_README_HELP', 'customer_help') . '</div>'
                 . '<br />'
-                . '<div class="line_field"><b>' . Lang::t('_USERNAME', 'standard') . ':</b> ' . $acl_man->relativeId(Docebo::user()->getUserId()) . '</div>';
+                . '<div class="line_field"><b>' . Lang::t('_USERNAME', 'standard') . ':</b> ' . $acl_man->relativeId(\FormaLms\lib\FormaUser::getCurrentUser()->getUserId()) . '</div>';
             if (isset($GLOBALS['course_descriptor'])) {
                 $body .= '<div class="line_field"><b>' . Lang::t('_COURSE_NAME', 'admin_course_management') . ':</b> '
                     . $GLOBALS['course_descriptor']->getValue('name') . '</div>';
@@ -69,16 +72,17 @@ switch ($op) {
         break;
 
     case 'send':
-            $help_email = FormaLms\lib\Get::sett('customer_help_email', '');
-            $help_pfx = FormaLms\lib\Get::sett('customer_help_subj_pfx', '');
-            $help_name_from = FormaLms\lib\Get::sett('customer_help_name_from', false);
+
+            $help_email = DomainHandler::getInstance()->getMailerField('helper_desk_mail') ?? DomainHandler::getInstance()->getMailerField('sender_mail_system');
+            $help_name_from = DomainHandler::getInstance()->getMailerField('helper_desk_name') ?? DomainHandler::getInstance()->getMailerField('sender_name_system');
+            $help_pfx = DomainHandler::getInstance()->getMailerField('helper_desk_subject');
 
             $subject = (!empty($help_pfx) ? '[' . $help_pfx . '] ' : '');
             $subject .= chelpCheckField($_POST['help_req_subject']);
 
-            $idst = getLogUserId();
-            $acl_man = Docebo::user()->getAclManager();
-            $userid = Docebo::user()->getUserId();
+            $idst = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
+            $userid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserId();
             $user_info = $acl_man->getUser($idst, false);
 
             //$user_email =$user_info[ACL_INFO_EMAIL];

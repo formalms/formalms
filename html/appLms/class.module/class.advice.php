@@ -21,7 +21,7 @@ class Module_Advice extends LmsModule
         adviceDispatch($GLOBALS['op']);
     }
 
-    public function getAllToken()
+    public static function getAllToken()
     {
         return [
             'view' => ['code' => 'view',

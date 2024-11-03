@@ -26,7 +26,7 @@
 .test-question__show-more:before {
     content: '\f067';
     font-family: 'FontAwesome';
-    color: var(--color-2);
+    color: var(--color-primary);
     position: absolute;
 }
 
@@ -50,12 +50,12 @@
 }
 
 .test-question__bar {
-    background-color: var(--color-2);
+    background-color: var(--color-primary);
 }
 
 @media print {
     .test-question__bar {
-        border-top: 3px solid var(--color-2);
+        border-top: 3px solid var(--color-primary);
         background-color: #fff;
     }
 

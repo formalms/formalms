@@ -49,11 +49,11 @@ switch ($step) {
 
         // Check if the user admin has reached the max number of users he can create
         $reached_max_user_created = false;
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             $admin_pref = new AdminPreference();
-            $pref = $admin_pref->getAdminRules(Docebo::user()->getIdSt());
+            $pref = $admin_pref->getAdminRules(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
             if ($pref['admin_rules.limit_user_insert'] == 'on') {
-                $user_pref = new UserPreferences(Docebo::user()->getIdSt());
+                $user_pref = new UserPreferences(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if (($user_pref->getPreference('user_created_count') + $tot_row) > $pref['admin_rules.max_user_insert']) {
                     echo UIFeedback::perror(Lang::t('_USER_CREATED_MAX_REACHED', 'admin_directory'));
                     $reached_max_user_created = true;

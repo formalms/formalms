@@ -19,17 +19,17 @@ define('CUSTOMFIELDTYPETABLE', '_customfield_type');
 define('CUSTOMFIELDENTRYTABLE', '_customfield_entry');
 define('CUSTOMFIELDAREATABLE', '_customfield_area');
 
-define('FIELD_INFO_ID', 0);
-define('FIELD_INFO_TYPE', 1);
-define('FIELD_INFO_TRANSLATION', 2);
-define('FIELD_INFO_GROUPIDST', 3);
-define('FIELD_INFO_GROUPID', 4);
-define('FIELD_INFO_MANDATORY', 5);
-define('FIELD_INFO_USERACCESS', 6);
-define('FIELD_INFO_USERINHERIT', 7);
+if(!defined('FIELD_INFO_ID')) define('FIELD_INFO_ID', 0);
+if(!defined('FIELD_INFO_TYPE')) define('FIELD_INFO_TYPE', 1);
+if(!defined('FIELD_INFO_TRANSLATION')) define('FIELD_INFO_TRANSLATION', 2);
+if(!defined('FIELD_INFO_GROUPIDST')) define('FIELD_INFO_GROUPIDST', 3);
+if(!defined('FIELD_INFO_GROUPID')) define('FIELD_INFO_GROUPID', 4);
+if(!defined('FIELD_INFO_MANDATORY')) define('FIELD_INFO_MANDATORY', 5);
+if(!defined('FIELD_INFO_USERACCESS')) define('FIELD_INFO_USERACCESS', 6);
+if(!defined('FIELD_INFO_USERINHERIT')) define('FIELD_INFO_USERINHERIT', 7);
 
-define('FIELD_BASEINFO_FILE', 0);
-define('FIELD_BASEINFO_CLASS', 1);
+if(!defined('FIELD_BASEINFO_FILE')) define('FIELD_BASEINFO_FILE', 0);
+if(!defined('FIELD_BASEINFO_CLASS')) define('FIELD_BASEINFO_CLASS', 1);
 
 class CustomFieldList
 {
@@ -58,6 +58,17 @@ class CustomFieldList
 
     /** @var string the main definition field area */
     public $field_area = '';
+
+    public function __construct()
+    {
+        $prefix = '%adm';
+        $this->field_table = $prefix . CUSTOMFIELDTABLE;
+        $this->field_lang_table = $prefix . CUSTOMFIELDLANGTABLE;
+        $this->type_field_table = $prefix . CUSTOMFIELDTYPETABLE;
+        $this->field_entry_table = $prefix . CUSTOMFIELDENTRYTABLE;
+        $this->field_area_table = $prefix . CUSTOMFIELDAREATABLE;
+    }
+
 
     public function getFieldTable()
     {
@@ -129,17 +140,8 @@ class CustomFieldList
         $this->field_area = $field_area;
     }
 
-    public function CustomFieldList()
-    {
-        $prefix = '%adm';
-        $this->field_table = $prefix . CUSTOMFIELDTABLE;
-        $this->field_lang_table = $prefix . CUSTOMFIELDLANGTABLE;
-        $this->type_field_table = $prefix . CUSTOMFIELDTYPETABLE;
-        $this->field_entry_table = $prefix . CUSTOMFIELDENTRYTABLE;
-        $this->field_area_table = $prefix . CUSTOMFIELDAREATABLE;
-    }
 
-    public function &getFieldInstance($id_field, $type_file = false, $type_class = false)
+    public function getFieldInstance($id_field, $type_file = false, $type_class = false)
     {
         if ($type_file === false && $type_class === false) {
             $query = 'SELECT ft.id_field, tft.type_file, tft.type_class'
@@ -155,7 +157,7 @@ class CustomFieldList
         } else {
             $id_field = $id_field;
         }
-        require_once Forma::include(_adm_ . '/modules/field/', $type_file);
+        require_once \FormaLms\lib\Forma::include(_adm_ . '/modules/field/', $type_file);
         $quest_obj = new $type_class($id_field);
 
         return $quest_obj;
@@ -184,7 +186,7 @@ class CustomFieldList
         return $output;
     }
 
-    public function &getFieldInstanceFromString($id_field, $type_file, $type_class)
+    public function getFieldInstanceFromString($id_field, $type_file, $type_class)
     {
         $query = 'SELECT ft.id_field, tft.type_file, tft.type_class'
             . '  FROM ' . $this->getFieldTable() . ' AS ft'
@@ -197,7 +199,7 @@ class CustomFieldList
         }
 
         list($id_field, $type_file, $type_class) = sql_fetch_row($rs);
-        require_once Forma::include(_adm_ . '/modules/field/', $type_file);
+        require_once \FormaLms\lib\Forma::include(_adm_ . '/modules/field/', $type_file);
         $quest_obj = new $type_class($id_field);
 
         return $quest_obj;
@@ -233,7 +235,7 @@ class CustomFieldList
     {
         $query = 'SELECT id_field, type_field, translation'
             . '  FROM ' . $this->getFieldTable()
-            . " WHERE lang_code = '" . getLanguage() . "'";
+            . " WHERE lang_code = '" . Lang::getDefault() . "'";
         if ($type_field != false) {
             $query .= " AND type_field = '" . $type_field . "'";
         }
@@ -250,10 +252,10 @@ class CustomFieldList
 
     public function getFlatAllFields($platform = false, $type_field = false, $lang_code = false)
     {
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
 
         if ($lang_code === false) {
-            $lang_code = getLanguage();
+            $lang_code = Lang::get();
         }
         $query = 'SELECT id_field, type_field, translation'
             . ' FROM ' . $this->getFieldTable()
@@ -274,11 +276,11 @@ class CustomFieldList
 
     public function getCustomFields($area)
     {
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
 
         $query = 'SELECT %adm_customfield.id_field, type_field, code, translation '
             . ' FROM %adm_customfield, %adm_customfield_lang'
-            . " WHERE area_code = '" . $area . "' and %adm_customfield_lang.id_field=%adm_customfield.id_field and lang_code='" . getLanguage() . "' ORDER BY sequence";
+            . " WHERE area_code = '" . $area . "' and %adm_customfield_lang.id_field=%adm_customfield.id_field and lang_code='" . Lang::get() . "' ORDER BY sequence";
         $rs = $db->query($query);
         $result = [];
 
@@ -306,10 +308,10 @@ class CustomFieldList
 
     public function getAllFieldsInfo($lang_code = false)
     {
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
 
         if ($lang_code === false) {
-            $lang_code = getLanguage();
+            $lang_code = Lang::get();
         }
 
         $query = 'SELECT ft.id_field, ft.type_field, ft.translation, tft.type_file, tft.type_class '
@@ -349,7 +351,7 @@ class CustomFieldList
 
         $query = 'SELECT id_field, type_field, translation'
             . '  FROM ' . $this->getFieldTable()
-            . " WHERE lang_code = '" . getLanguage() . "' ";
+            . " WHERE lang_code = '" . Lang::get() . "' ";
 
         $query .= 'AND id_field IN (' . implode(',', $field_list_arr) . ') ';
 
@@ -379,7 +381,7 @@ class CustomFieldList
             . '  FROM ' . $this->getFieldTable() . ' AS ft'
             . '  JOIN ' . $this->getGroupFieldsTable() . ' AS gft'
             . ($use_group ? ('  JOIN %adm_group AS g') : '')
-            . " WHERE ft.lang_code = '" . getLanguage() . "'"
+            . " WHERE ft.lang_code = '" . Lang::get() . "'"
             . '   AND ft.id_field = gft.id_field'
             . ($use_group ? ('   AND gft.idst = g.idst') : '')
             . "   AND gft.idst IN ('" . implode("','", $arr_idst) . "')"
@@ -402,7 +404,7 @@ class CustomFieldList
      */
     public function getFieldsAndValueFromUser($id_user, $manual_id_field = false, $show_invisible_to_user = false, $filter_category = false)
     {
-        $acl = new DoceboACL();
+        $acl = new FormaACL();
         if ($manual_id_field === false) {
             $user_groups = $acl->getUserGroupsST($id_user);
         }
@@ -413,7 +415,7 @@ class CustomFieldList
             . ' 	JOIN ' . $this->getTypeFieldTable() . ' AS ftt '
             . 'WHERE ft.id_field = gft.id_field '
             . ' 	AND ft.type_field = ftt.type_field '
-            . " 	AND ft.lang_code = '" . getLanguage() . "'"
+            . " 	AND ft.lang_code = '" . Lang::get() . "'"
             . ($show_invisible_to_user === false
                 ? " AND gft.useraccess <> 'readwrite' "
                 : '')
@@ -441,7 +443,7 @@ class CustomFieldList
 
             $result[$id_field] = [
                 0 => $translation,
-                1 => (!$this->getUseMultiLang() ? $quest_obj->show($id_user) : $quest_obj->showInLang($id_user, getLanguage())),
+                1 => (!$this->getUseMultiLang() ? $quest_obj->show($id_user) : $quest_obj->showInLang($id_user, Lang::get())),
                 2 => $mandatory,
                 3 => $useraccess,
                 4 => $type_field,
@@ -773,7 +775,7 @@ class CustomFieldList
         if (!$this->getUseMultiLang()) {
             return $quest_obj->show($idst_user);
         } else {
-            return $quest_obj->showInLang($idst_user, getLanguage());
+            return $quest_obj->showInLang($idst_user, Lang::get());
         }
     }
 
@@ -785,10 +787,10 @@ class CustomFieldList
      **/
     public function showAllFieldForUser($idst_user, $arr_field = false)
     {
-        $acl = &Docebo::user()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
         $arr_idst = $acl->getUserGroupsST($idst_user);
 
-        $acl_man = &$acl->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $tmp = $acl_man->getGroup(false, '/oc_0');
         $arr_idst[] = $tmp[0];
         $tmp = $acl_man->getGroup(false, '/ocd_0');
@@ -798,7 +800,7 @@ class CustomFieldList
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
             . '  JOIN ' . $this->getTypeFieldTable() . ' AS tft )'
             . '  JOIN ' . $this->getGroupFieldsTable() . ' AS gft'
-            . " WHERE ft.lang_code = '" . getLanguage() . "'"
+            . " WHERE ft.lang_code = '" . Lang::get() . "'"
             . '	 AND ft.type_field = tft.type_field'
             . '   AND ft.id_field = gft.id_field'
             . "   AND gft.idst IN ('" . implode("','", $arr_idst) . "')"
@@ -827,7 +829,7 @@ class CustomFieldList
             if (!$this->getUseMultiLang()) {
                 $play_txt .= $quest_obj->show($idst_user);
             } else {
-                $play_txt .= $quest_obj->showInLang($idst_user, getLanguage());
+                $play_txt .= $quest_obj->showInLang($idst_user, Lang::get());
             }
         }
 
@@ -903,7 +905,7 @@ class CustomFieldList
 
             $quest_obj->setMainTable($this->getFieldTable());
 
-            $lang = getLanguage();
+            $lang = Lang::get();
             foreach ($idst_user_arr as $idst_user) {
                 if (!$this->getUseMultiLang()) {
                     $res[$idst_user][$id_field] = $quest_obj->show($idst_user);
@@ -954,7 +956,7 @@ class CustomFieldList
 
         $quest_obj->setMainTable($this->getFieldTable());
 
-        $lang = getLanguage();
+        $lang = Lang::get();
         foreach ($idst_user_arr as $idst_user) {
             if (!$this->getUseMultiLang()) {
                 $res[$idst_user] = $quest_obj->show($idst_user);
@@ -1013,12 +1015,12 @@ class CustomFieldList
      **/
     public function playFields($idst_obj = -1, $arr_idst = false, $freeze = false, $add_root = true, $useraccess = false, $separate_output = false, $check_precompiled = false)
     {
-        $acl = &Docebo::user()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
 
         $query = "SELECT ft.id_field, ft.type_field, tft.type_file, tft.type_class, 'false' as mandatory"
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
             . '  JOIN ' . $this->getTypeFieldTable() . ' AS tft JOIN ' . $this->getFieldLangTable() . ' AS flt )'
-            . " WHERE flt.lang_code = '" . getLanguage() . "'"
+            . " WHERE flt.lang_code = '" . Lang::get() . "'"
             . '	 AND ft.type_field = tft.type_field'
             . '	 AND ft.id_field = flt.id_field'
             . "   AND ft.area_code = '" . $this->getFieldArea() . "'";
@@ -1069,12 +1071,12 @@ class CustomFieldList
      **/
     public function playFieldsFlat($idst_obj = -1)
     {
-        $acl = &Docebo::user()->getACL();
-
+        $acl = \FormaLms\lib\Forma::getAcl();
+        $check_precompiled = 0;
         $query = 'SELECT ft.id_field, ft.code, ft.type_field, tft.type_file, tft.type_class, flt.translation as name'
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
             . '  JOIN ' . $this->getTypeFieldTable() . ' AS tft JOIN ' . $this->getFieldLangTable() . ' AS flt )'
-            . " WHERE flt.lang_code = '" . getLanguage() . "'"
+            . " WHERE flt.lang_code = '" . Lang::get() . "'"
             . '	 AND ft.type_field = tft.type_field'
             . '	 AND ft.id_field = flt.id_field'
             . "   AND ft.area_code = '" . $this->getFieldArea() . "'";
@@ -1091,7 +1093,7 @@ class CustomFieldList
         }
 
         if (!sql_num_rows($re_fields)) {
-            return '';
+            return [];
         }
 
         $ret = [];
@@ -1123,13 +1125,13 @@ class CustomFieldList
      **/
     public function hiddenFieldForUserArr($idst_user, $arr_idst = false, $freeze = false, $add_root = true, $useraccess = false)
     {
-        $acl = &Docebo::user()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
         if ($arr_idst === false) {
             $arr_idst = $acl->getUserGroupsST($idst_user);
         }
 
         if ($add_root) {
-            $acl_man = &$acl->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $tmp = $acl_man->getGroup(false, '/oc_0');
             $arr_idst[] = $tmp[0];
             $tmp = $acl_man->getGroup(false, '/ocd_0');
@@ -1140,7 +1142,7 @@ class CustomFieldList
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
             . '  JOIN ' . $this->getTypeFieldTable() . ' AS tft )'
             . '  JOIN ' . $this->getGroupFieldsTable() . ' AS gft'
-            . " WHERE ft.lang_code = '" . getLanguage() . "'"
+            . " WHERE ft.lang_code = '" . Lang::get() . "'"
             . '	 AND ft.type_field = tft.type_field'
             . '   AND ft.id_field = gft.id_field'
             . "   AND gft.idst IN ('" . implode("','", $arr_idst) . "')";
@@ -1191,11 +1193,11 @@ class CustomFieldList
      **/
     public function isFilledFieldsForUser($idst_user, $arr_idst = false)
     {
-        $acl = &Docebo::user()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
         if ($arr_idst === false) {
             $arr_idst = $acl->getUserGroupsST($idst_user);
         }
-        $acl_man = &$acl->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $tmp = $acl_man->getGroup(false, '/oc_0');
         $arr_idst[] = $tmp[0];
         $tmp = $acl_man->getGroup(false, '/ocd_0');
@@ -1205,7 +1207,7 @@ class CustomFieldList
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
             . '  JOIN ' . $this->getTypeFieldTable() . ' AS tft )'
             . '  JOIN ' . $this->getGroupFieldsTable() . ' AS gft'
-            . " WHERE ft.lang_code = '" . getLanguage() . "'"
+            . " WHERE ft.lang_code = '" . Lang::get() . "'"
             . '	 AND ft.type_field = tft.type_field'
             . '   AND ft.id_field = gft.id_field'
             . "   AND gft.idst IN ('" . implode("','", $arr_idst) . "')"
@@ -1264,7 +1266,7 @@ class CustomFieldList
         $query = "SELECT ft.id_field, ft.type_field, tft.type_file, tft.type_class, 'false' as mandatory"
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
             . '  JOIN ' . $this->getTypeFieldTable() . ' AS tft JOIN ' . $this->getFieldLangTable() . ' AS flt )'
-            . " WHERE flt.lang_code = '" . getLanguage() . "'"
+            . " WHERE flt.lang_code = '" . Lang::get() . "'"
             . ' AND ft.type_field = tft.type_field'
             . ' AND ft.id_field = flt.id_field'
             . " AND ft.area_code = '" . $this->getFieldArea() . "'"
@@ -1325,12 +1327,12 @@ class CustomFieldList
     {
         //return is_numeric($idst_user) && (int)$idst_user > 0 ? $this->storeDirectFieldsForUsers((int)$idst_user, $arr_fields, $is_id, $int_userid) : FALSE;
 
-        $acl = Docebo::user()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
 
         $query = 'SELECT ft.id_field, ft.type_field, tft.type_file, tft.type_class'
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
             . '  JOIN ' . $this->getTypeFieldTable() . ' AS tft )'
-            . " WHERE ft.lang_code = '" . getLanguage() . "'"
+            . " WHERE ft.lang_code = '" . Lang::get() . "'"
             . '	 AND ft.type_field = tft.type_field'
             . "   AND ft.id_field IN ('" . implode("','", array_keys($arr_fields)) . "')"
             . ' GROUP BY ft.id_field ';
@@ -1380,12 +1382,12 @@ class CustomFieldList
             return true;
         }
 
-        $acl = &Docebo::user()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
 
         $query = 'SELECT ft.id_field, ft.type_field, tft.type_file, tft.type_class'
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
             . '  JOIN ' . $this->getTypeFieldTable() . ' AS tft )'
-            . " WHERE ft.lang_code = '" . getLanguage() . "'"
+            . " WHERE ft.lang_code = '" . Lang::get() . "'"
             . '	 AND ft.type_field = tft.type_field'
             . "   AND ft.id_field IN ('" . implode("','", array_keys($arr_fields)) . "')"
             . ' GROUP BY ft.id_field ';
@@ -1422,13 +1424,13 @@ class CustomFieldList
      **/
     public function playSpecFields($arr_field, $custom_mandatory = false, $user_id = false)
     {
-        $acl = &Docebo::user()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
 
         $query = 'SELECT ft.id_field, ft.type_field, tft.type_file, tft.type_class'
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
             . '  JOIN ' . $this->getTypeFieldTable() . ' AS tft )'
             //				."  JOIN ".$this->getGroupFieldsTable(). " AS gft"
-            . " WHERE ft.lang_code = '" . getLanguage() . "'"
+            . " WHERE ft.lang_code = '" . Lang::get() . "'"
             . '	 AND ft.type_field = tft.type_field'
             //				."   AND ft.id_field = gft.id_field"
             . "   AND ft.id_field IN ('" . implode("','", $arr_field) . "')";
@@ -1484,7 +1486,7 @@ class CustomFieldList
         $query = 'SELECT ft.id_field, ft.type_field, tft.type_file, tft.type_class'
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
             . '  JOIN ' . $this->getTypeFieldTable() . ' AS tft )'
-            . " WHERE ft.lang_code = '" . getLanguage() . "'"
+            . " WHERE ft.lang_code = '" . Lang::get() . "'"
             . '	 AND ft.type_field = tft.type_field'
             . "   AND ft.id_field IN ('" . implode("','", $arr_field) . "')";
         $query .= ' GROUP BY ft.id_field ';
@@ -1517,7 +1519,7 @@ class CustomFieldList
         $query = 'SELECT ft.id_field, ft.type_field, tft.type_file, tft.type_class'
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
             . '  JOIN ' . $this->getTypeFieldTable() . ' AS tft )'
-            . " WHERE ft.lang_code = '" . getLanguage() . "'"
+            . " WHERE ft.lang_code = '" . Lang::get() . "'"
             . '	 AND ft.type_field = tft.type_field'
             . "   AND ft.id_field IN ('" . implode("','", $arr_field) . "')"
             . ' GROUP BY ft.id_field ';
@@ -1556,7 +1558,7 @@ class CustomFieldList
         $query = 'SELECT ft.id_field, ft.translation, ft.type_field, tft.type_file, tft.type_class'
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
             . '  JOIN ' . $this->getTypeFieldTable() . ' AS tft )'
-            . " WHERE ft.lang_code = '" . getLanguage() . "'"
+            . " WHERE ft.lang_code = '" . Lang::get() . "'"
             . '	 AND ft.type_field = tft.type_field'
             . "   AND ft.id_field IN ('" . implode("','", $arr_field) . "')"
             . ' GROUP BY ft.id_field ';
@@ -1677,7 +1679,7 @@ class CustomFieldList
         if ($arr_field !== false) {
             $to_remove = &$arr_field;
         } elseif ($id_group !== false) {
-            $acl = &Docebo::user()->getACL();
+            $acl = \FormaLms\lib\Forma::getAcl();
             $allgroup_idst = $acl->getUserGroupsST($idst_user);
             // Leave the passed group
             $inc_group = array_search($id_group, $allgroup_idst);
@@ -1711,7 +1713,7 @@ class CustomFieldList
             $query = 'SELECT ft.id_field, ft.type_field, tft.type_file, tft.type_class'
                 . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
                 . '  JOIN ' . $this->getTypeFieldTable() . ' AS tft )'
-                . " WHERE ft.lang_code = '" . getLanguage() . "'"
+                . " WHERE ft.lang_code = '" . Lang::get() . "'"
                 . '	 AND ft.type_field = tft.type_field'
                 . ' GROUP BY ft.id_field ';
         } else {	// remove specific fields
@@ -1719,7 +1721,7 @@ class CustomFieldList
                 . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
                 . '  JOIN ' . $this->getTypeFieldTable() . ' AS tft )'
                 . '  JOIN ' . $this->getGroupFieldsTable() . ' AS gft'
-                . " WHERE ft.lang_code = '" . getLanguage() . "'"
+                . " WHERE ft.lang_code = '" . Lang::get() . "'"
                 . '	 AND ft.type_field = tft.type_field'
                 . '   AND ft.id_field = gft.id_field'
                 . "   AND gft.idst IN ('" . implode("','", $to_remove) . "')"
@@ -1867,7 +1869,7 @@ class CustomFieldList
 
     public function getFieldTypesList()
     {
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
         $query = 'SELECT * FROM ' . $this->getTypeFieldTable();
 
         if (!$rs = $db->query($query)) {
@@ -1886,7 +1888,7 @@ class CustomFieldList
 
     public function getFieldTypeById($field_id)
     {
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
         $query = 'SELECT type_field FROM ' . $this->getFieldTable() . " WHERE id_field='$field_id'";
 
         if (!$rs = $db->query($query)) {
@@ -1907,8 +1909,8 @@ class CustomFieldList
     //----------------------------------------------------------------------------
     public function checkUserMandatoryFields($id_user = false, $only_accessible = false)
     {
-        $id_user = $id_user ? (int) $id_user : Docebo::user()->getIdSt();
-        $acl = new DoceboACL();
+        $id_user = $id_user ? (int) $id_user : \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
+        $acl = new FormaACL();
         $user_groups = $acl->getUserGroupsST($id_user);
         $output = true;
 
@@ -1921,7 +1923,7 @@ class CustomFieldList
             $query = 'SELECT ft.id_field, gft.useraccess, fet.user_entry '
                 . ' FROM (' . $this->getFieldTable() . ' AS ft '
                 . ' JOIN ' . $this->getGroupFieldsTable() . ' AS gft '
-                . " ON (ft.id_field = gft.id_field AND ft.lang_code = '" . getLanguage() . "')) "
+                . " ON (ft.id_field = gft.id_field AND ft.lang_code = '" . Lang::get() . "')) "
                 . ' LEFT JOIN ' . $this->getFieldEntryTable() . ' AS fet '
                 . ' ON (fet.id_field = ft.id_field AND fet.id_user = ' . (int) $id_user . ') '
                 . ' WHERE gft.mandatory = 1 '
@@ -1947,7 +1949,7 @@ class CustomFieldList
 
     public function getUserMandatoryFields($id_user)
     {
-        $acl = new DoceboACL();
+        $acl = new FormaACL();
         $user_groups = $acl->getUserGroupsST($id_user);
         $output = [];
 
@@ -1960,7 +1962,7 @@ class CustomFieldList
                 . ' FROM (' . $this->getFieldTable() . ' AS ft '
                 . ' JOIN ' . $this->getGroupFieldsTable() . ' AS gft '
                 . ' JOIN ' . $this->getTypeFieldTable() . ' AS ftt '
-                . " ON (ft.id_field = gft.id_field AND ft.lang_code = '" . getLanguage() . "' AND ft.type_field = ftt.type_field)) "
+                . " ON (ft.id_field = gft.id_field AND ft.lang_code = '" . Lang::get() . "' AND ft.type_field = ftt.type_field)) "
                 . ' LEFT JOIN ' . $this->getFieldEntryTable() . ' AS fet '
                 . ' ON (fet.id_field = ft.id_field AND fet.id_user = ' . (int) $id_user . ') '
                 . " WHERE gft.idst IN ('" . implode("','", $user_groups) . "') "
@@ -2041,7 +2043,7 @@ class CustomFieldList
         $query = "select %adm_customfield_entry.obj_entry, %adm_customfield.type_field, %adm_customfield_lang.id_field
                   from %adm_customfield_entry, %adm_customfield_lang, %adm_org_chart, %adm_customfield 
                   where
-                  %adm_customfield_lang.lang_code = '" . getLanguage() . "' and %adm_customfield_lang.translation = '" . $field_name . "' and
+                  %adm_customfield_lang.lang_code = '" . Lang::get() . "' and %adm_customfield_lang.translation = '" . $field_name . "' and
                   %adm_customfield_lang.id_field = %adm_customfield_entry.id_field and
                   %adm_org_chart.lang_code = 'italian' and %adm_org_chart.translation = '" . $node_name . "' and                   
                   %adm_customfield_entry.id_obj= %adm_org_chart.id_dir and
@@ -2087,7 +2089,7 @@ class CustomFieldList
     {
         $query = "Select  translation from %adm_customfield_son_lang, %adm_customfield_son
                 where 
-                lang_code='" . getLanguage() . "' 
+                lang_code='" . Lang::get() . "' 
                 and %adm_customfield_son_lang.id_field_son=%adm_customfield_son.id_field_son
                 and %adm_customfield_son.id_field=" . $id_field . ' and %adm_customfield_son_lang.id_field_son=' . $valueOption;
 

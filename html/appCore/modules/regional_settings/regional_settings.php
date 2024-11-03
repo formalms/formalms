@@ -27,7 +27,7 @@ function regional_settings()
     require_once _base_ . '/lib/lib.table.php';
 
     $out = &$GLOBALS['page'];
-    $lang = &DoceboLanguage::createInstance('admin_regset', 'framework');
+    $lang = &FormaLanguage::createInstance('admin_regset', 'framework');
     $regset = new RegionalSettingsManager();
 
     $out->setWorkingZone('content');
@@ -100,7 +100,7 @@ function regset_editregion($region_id = false)
     require_once _base_ . '/lib/lib.form.php';
 
     $out = &$GLOBALS['page'];
-    $lang = &DoceboLanguage::createInstance('admin_regset', 'framework');
+    $lang = &FormaLanguage::createInstance('admin_regset', 'framework');
     $form = new Form();
 
     $out->setWorkingZone('content');

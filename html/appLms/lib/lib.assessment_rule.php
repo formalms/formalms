@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Forma;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -19,7 +21,8 @@ class AssessmentRuleManager
     public function __construct($test_id)
     {
         $this->test_id = (int) $test_id;
-        $this->db = DbConn::getInstance();
+
+        $this->db = \FormaLms\db\DbConn::getInstance();
     }
 
     public function loadJs()
@@ -231,7 +234,7 @@ class AssessmentRuleManager
             //courses subscriptions - only students are affected
             if (!empty($course_arr) && $this->session->get('levelCourse') <= 3) {
                 $arr_courses = array_keys($course_arr);
-                $csm->multipleUserSubscribe(getLogUserId(), $arr_courses, 3);
+                $csm->multipleUserSubscribe(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $arr_courses, 3);
             }
 
             //competences assignment - only students are affected
@@ -240,15 +243,15 @@ class AssessmentRuleManager
                     if ($data['type'] == 'score') {
                         $score = (isset($data['score']) ? $data['score'] : 0);
                         if ($score > 0) {
-                            if (!$cmpman->userHasCompetence($c_id, Docebo::user()->getIdst())) {
-                                $cmpman->assignCompetenceUsers($c_id, [Docebo::user()->getIdst() => $score]);
+                            if (!$cmpman->userHasCompetence($c_id, \FormaLms\lib\FormaUser::getCurrentUser()->getIdst())) {
+                                $cmpman->assignCompetenceUsers($c_id, [\FormaLms\lib\FormaUser::getCurrentUser()->getIdst() => $score]);
                             } else {
-                                $cmpman->addScoreToUsers($c_id, [Docebo::user()->getIdst()], $score);
+                                $cmpman->addScoreToUsers($c_id, [\FormaLms\lib\FormaUser::getCurrentUser()->getIdst()], $score);
                             }
                         }
                     } else {
-                        if (!$cmpman->userHasCompetence($c_id, Docebo::user()->getIdst())) {
-                            $cmpman->assignCompetenceUsers($c_id, [Docebo::user()->getIdst() => 1]);
+                        if (!$cmpman->userHasCompetence($c_id, \FormaLms\lib\FormaUser::getCurrentUser()->getIdst())) {
+                            $cmpman->assignCompetenceUsers($c_id, [\FormaLms\lib\FormaUser::getCurrentUser()->getIdst() => 1]);
                         }
                     }
                 }

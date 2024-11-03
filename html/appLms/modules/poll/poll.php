@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Docebo::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit('You can\'t access');
 }
 
@@ -29,7 +29,7 @@ function savePollStatus($save_this)
     return $save_name;
 }
 
-function &loadPollStatus($save_name)
+function loadPollStatus($save_name)
 {
     require_once _adm_ . '/lib/lib.sessionsave.php';
     $save = new Session_Save();
@@ -42,9 +42,9 @@ function addpoll($object_poll)
 {
     checkPerm('view', false, 'storage');
 
-    $lang = &DoceboLanguage::createInstance('poll');
-    if (!is_a($object_poll, 'Learning_Poll')) {
-        Forma::addError($lang->def('_POLL_INCORRECTOBJECT'));
+    $lang = FormaLanguage::createInstance('poll');
+    if (!$object_poll instanceof \Learning_Poll) {
+        \FormaLms\lib\Forma::addError($lang->def('_POLL_INCORRECTOBJECT'));
         Util::jump_to('' . $object_poll->back_url . '&amp;create_result=0');
     }
 
@@ -77,7 +77,7 @@ function addpoll($object_poll)
 function inspoll()
 {
     checkPerm('view', false, 'storage');
-    $lang = &DoceboLanguage::createInstance('poll');
+    $lang = &FormaLanguage::createInstance('poll');
 
     if (trim($_POST['title']) == '') {
         $_POST['title'] = $lang->def('_NOTITLE');
@@ -87,14 +87,14 @@ function inspoll()
 	INSERT INTO ' . $GLOBALS['prefix_lms'] . "_poll 
 	( author, title, description )
 		VALUES 
-	( '" . (int) getLogUserId() . "', '" . $_POST['title'] . "', '" . $_POST['textof'] . "' )";
+	( '" . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "', '" . $_POST['title'] . "', '" . $_POST['textof'] . "' )";
 
     if (!sql_query($ins_query)) {
-        Forma::addError($lang->def('_POLL_ERR_INSERT'));
+        \FormaLms\lib\Forma::addError($lang->def('_POLL_ERR_INSERT'));
         Util::jump_to('' . urldecode($_POST['back_url']) . '&create_result=0');
     }
 
-    list($id_poll) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
+    [$id_poll] = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
     if ($id_poll > 0) {
         Util::jump_to('' . urldecode($_POST['back_url']) . '&id_lo=' . $id_poll . '&create_result=1');
     } else {
@@ -106,14 +106,14 @@ function inspoll()
 function modpoll()
 {
     checkPerm('view', false, 'storage');
-    $lang = &DoceboLanguage::createInstance('poll');
+    $lang = &FormaLanguage::createInstance('poll');
 
     require_once _base_ . '/lib/lib.form.php';
     $id_poll = importVar('id_poll', true, 0);
     $back_url = urldecode(importVar('back_url'));
     $url_encode = htmlentities(urlencode($back_url));
 
-    list($poll_title, $textof) = sql_fetch_row(sql_query('
+    [$poll_title, $textof] = sql_fetch_row(sql_query('
 	SELECT title, description
 	FROM ' . $GLOBALS['prefix_lms'] . "_poll
 	WHERE id_poll = '" . $id_poll . "'"));
@@ -145,7 +145,7 @@ function modpoll()
 function uppoll()
 {
     checkPerm('view', false, 'storage');
-    $lang = &DoceboLanguage::createInstance('poll');
+    $lang = FormaLanguage::createInstance('poll');
 
     if (trim($_POST['title']) == '') {
         $_POST['title'] = $lang->def('_NOTITLE');
@@ -178,10 +178,10 @@ function uppoll()
 function modpollgui($object_poll)
 {
     checkPerm('view', false, 'storage');
-    $lang = &DoceboLanguage::createInstance('poll');
+    $lang = FormaLanguage::createInstance('poll');
 
     if (!is_a($object_poll, 'Learning_Poll')) {
-        Forma::addError($lang->def('_POLL_INCORRECTOBJECT'));
+        \FormaLms\lib\Forma::addError($lang->def('_POLL_INCORRECTOBJECT'));
         Util::jump_to('' . $object_poll->back_url . '&amp;create_result=0');
     }
 
@@ -189,7 +189,7 @@ function modpollgui($object_poll)
     require_once _base_ . '/lib/lib.form.php';
     $url_encode = htmlentities(urlencode($object_poll->back_url));
 
-    list($poll_title) = sql_fetch_row(sql_query('
+    [$poll_title] = sql_fetch_row(sql_query('
 	SELECT title 
 	FROM ' . $GLOBALS['prefix_lms'] . "_poll 
 	WHERE id_poll = '" . $object_poll->getId() . "'"));
@@ -200,7 +200,7 @@ function modpollgui($object_poll)
 	ORDER BY sequence");
 
     $num_quest = sql_num_rows($re_quest);
-    list($num_page) = sql_fetch_row(sql_query('
+    [$num_page] = sql_fetch_row(sql_query('
 	SELECT MAX(page) 
 	FROM ' . $GLOBALS['prefix_lms'] . "_pollquest 
 	WHERE id_poll = '" . $object_poll->getId() . "'"));
@@ -345,13 +345,13 @@ function modpollgui($object_poll)
 function movequestion($direction)
 {
     checkPerm('view', false, 'storage');
-    $lang = &DoceboLanguage::createInstance('poll');
+    $lang = FormaLanguage::createInstance('poll');
 
     $id_quest = importVar('id_quest', true, 0);
     $back_url = urldecode(importVar('back_url'));
     $back_coded = htmlentities(urlencode($back_url));
 
-    list($seq, $id_poll) = sql_fetch_row(sql_query('
+    [$seq, $id_poll] = sql_fetch_row(sql_query('
 	SELECT sequence, id_poll 
 	FROM ' . $GLOBALS['prefix_lms'] . "_pollquest 
 	WHERE id_quest = '$id_quest'"));
@@ -384,7 +384,7 @@ function movequestion($direction)
 function movequest()
 {
     checkPerm('view', false, 'storage');
-    $lang = &DoceboLanguage::createInstance('poll');
+    $lang = FormaLanguage::createInstance('poll');
 
     $id_poll = importVar('id_poll', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -392,7 +392,7 @@ function movequest()
     $source_seq = importVar('source_quest', true, 0);
     $dest_seq = importVar('dest_quest', true, 0);
 
-    list($id_quest) = sql_fetch_row(sql_query('
+    [$id_quest] = sql_fetch_row(sql_query('
 	SELECT id_quest 
 	FROM ' . $GLOBALS['prefix_lms'] . "_pollquest 
 	WHERE id_poll = '$id_poll' AND sequence = '$source_seq'"));
@@ -425,9 +425,9 @@ function movequest()
 function fixPageSequence($id_poll)
 {
     checkPerm('view', false, 'storage');
-    $lang = &DoceboLanguage::createInstance('poll');
+    $lang = FormaLanguage::createInstance('poll');
 
-    list($tot_quest) = sql_fetch_row(sql_query('
+    [$tot_quest] = sql_fetch_row(sql_query('
 	SELECT COUNT(*) 
 	FROM ' . $GLOBALS['prefix_lms'] . "_pollquest 
 	WHERE id_poll = '" . $id_poll . "'"));
@@ -458,7 +458,7 @@ function fixPageSequence($id_poll)
 }
 
 // XXX: fixSequence
-function fixPollSequence($id_poll)
+function fixPollSequence()
 {
     checkPerm('view', false, 'storage');
 
@@ -482,10 +482,10 @@ function fixPollSequence($id_poll)
     Util::jump_to('index.php?modname=poll&op=modpollgui&id_poll=' . $id_poll . '&back_url=' . $back_coded);
 }
 
-function &istanceQuest($type_of_quest, $id)
+function istanceQuest($type_of_quest, $id)
 {
     checkPerm('view', false, 'storage');
-    $lang = &DoceboLanguage::createInstance('poll');
+    $lang = FormaLanguage::createInstance('poll');
 
     $re_quest = sql_query('
 	SELECT type_file, type_class 
@@ -494,7 +494,7 @@ function &istanceQuest($type_of_quest, $id)
     if (!sql_num_rows($re_quest)) {
         return;
     }
-    list($type_file, $type_class) = sql_fetch_row($re_quest);
+    [$type_file, $type_class] = sql_fetch_row($re_quest);
 
     require_once _lms_ . '/modules/question_poll/' . $type_file;
     $quest_obj = eval("return new $type_class ( $id );");
@@ -506,7 +506,7 @@ function &istanceQuest($type_of_quest, $id)
 function addquest()
 {
     checkPerm('view', false, 'storage');
-    $lang = &DoceboLanguage::createInstance('poll');
+    $lang = FormaLanguage::createInstance('poll');
 
     $id_poll = importVar('id_poll', true, 0);
 
@@ -538,11 +538,11 @@ function addquest()
 function modquest()
 {
     checkPerm('view', false, 'storage');
-    $lang = &DoceboLanguage::createInstance('poll');
+    $lang = FormaLanguage::createInstance('poll');
 
     $id_quest = importVar('id_quest', true, 0);
 
-    list($id_poll, $type_quest) = sql_fetch_row(sql_query('
+    [$id_poll, $type_quest] = sql_fetch_row(sql_query('
 	SELECT id_poll, type_quest 
 	FROM ' . $GLOBALS['prefix_lms'] . "_pollquest 
 	WHERE id_quest = '" . $id_quest . "'"));
@@ -575,13 +575,13 @@ function delquest()
 {
     checkPerm('view', false, 'storage');
 
-    $lang = &DoceboLanguage::createInstance('poll');
+    $lang = FormaLanguage::createInstance('poll');
 
     $id_quest = importVar('id_quest', true, 0);
     $back_url = urldecode(importVar('back_url'));
     $url_coded = htmlentities(urlencode($back_url));
 
-    list($id_poll, $title_quest, $type_quest, $seq) = sql_fetch_row(sql_query('
+    [$id_poll, $title_quest, $type_quest, $seq] = sql_fetch_row(sql_query('
 	SELECT id_poll, title_quest, type_quest, sequence 
 	FROM ' . $GLOBALS['prefix_lms'] . "_pollquest 
 	WHERE id_quest = '" . $id_quest . "'"));

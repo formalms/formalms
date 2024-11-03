@@ -18,8 +18,10 @@ class Module_Homerepo extends LmsModule
     public $treeView = null;
     public $repoDb = null;
     public $select_destination = false;
-
+    public $lang = false;
     //class constructor
+    public $select_destionation;
+
     public function __construct($module_name = '')
     {
         parent::__construct('homerepo');
@@ -39,7 +41,7 @@ class Module_Homerepo extends LmsModule
     {
         require_once _lms_ . '/modules/homerepo/homerepo.php';
         $ready = false;
-        $this->lang = &DoceboLanguage::createInstance('homerepo', 'lms');
+        $this->lang = FormaLanguage::createInstance('homerepo', 'lms');
         if (isset($_GET['shr']) && false) {
             // reload from previously saved session
             require_once _adm_ . '/lib/lib.sessionsave.php';
@@ -56,12 +58,12 @@ class Module_Homerepo extends LmsModule
         }
         if (!$ready) {
             // contruct and initialize TreeView to manage public repository
-            $this->repoDb = new HomerepoDirDb($GLOBALS['prefix_lms'] . '_homerepo', getLogUserId());
+            $this->repoDb = new HomerepoDirDb($GLOBALS['prefix_lms'] . '_homerepo', \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
             /* TODO: ACL
             if( !funAccess('pubrepoedit','MOD', TRUE, 'pubrepo' ) ) {
                 $repoDb->setFilterVisibility( TRUE );
-                $repoDb->setFilterAccess( getLogUserId() );
+                $repoDb->setFilterAccess( \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() );
             }*/
 
             $this->treeView = new RepoTreeView($this->repoDb, 'homerepo', Lang::t('_HOMEREPOROOTNAME', 'storage', 'lms'));
@@ -69,7 +71,7 @@ class Module_Homerepo extends LmsModule
 
             require_once _adm_ . '/lib/lib.sessionsave.php';
             $saveObj = new Session_Save();
-            $saveName = 'homerepo' . getLogUserId();
+            $saveName = 'homerepo' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
             if ($saveObj->nameExists($saveName)) {
                 $this->treeView->setState($saveObj->load($saveName));
                 $ready = true;
@@ -195,7 +197,7 @@ class Module_Homerepo extends LmsModule
                 // save state
                 require_once _adm_ . '/lib/lib.sessionsave.php';
                 $saveObj = new Session_Save();
-                $saveName = $saveObj->getName('homerepo' . getLogUserId(), true);
+                $saveName = $saveObj->getName('homerepo' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), true);
                 $saveObj->save($saveName, $this->treeView->getState());
 
                 $GLOBALS['page']->add(
@@ -208,7 +210,7 @@ class Module_Homerepo extends LmsModule
                 // save state
                 require_once _adm_ . '/lib/lib.sessionsave.php';
                 $saveObj = new Session_Save();
-                $saveName = $saveObj->getName('homerepo' . getLogUserId(), true);
+                $saveName = $saveObj->getName('homerepo' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), true);
                 $saveObj->save($saveName, $this->treeView->getState());
 
                 // start learning object creation
@@ -221,7 +223,7 @@ class Module_Homerepo extends LmsModule
                 // save state
                 require_once _adm_ . '/lib/lib.sessionsave.php';
                 $saveObj = new Session_Save();
-                $saveName = $saveObj->getName('homerepo' . getLogUserId(), true);
+                $saveName = $saveObj->getName('homerepo' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), true);
                 $saveObj->save($saveName, $this->treeView->getState());
 
                 $folder = $this->repoDb->getFolderById($this->treeView->getSelectedFolderId());
@@ -234,7 +236,7 @@ class Module_Homerepo extends LmsModule
                 // save state
                 require_once _adm_ . '/lib/lib.sessionsave.php';
                 $saveObj = new Session_Save();
-                $saveName = $saveObj->getName('homerepo' . getLogUserId(), true);
+                $saveName = $saveObj->getName('homerepo' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), true);
                 $saveObj->save($saveName, $this->treeView->getState());
 
                 $folder = $this->repoDb->getFolderById($this->treeView->getItemToPlay());

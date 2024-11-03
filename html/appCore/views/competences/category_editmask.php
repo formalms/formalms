@@ -30,12 +30,12 @@ $_tabview_titles = '<ul class="yui-nav">';
 $_tabview_contents = '<div class="yui-content">';
 
 //edit name and description in all languages
-$_langs = Docebo::langManager()->getAllLanguages(true);
+$_langs = \FormaLms\lib\Forma::langManager()->getAllLanguages(true);
 foreach ($_langs as $_lang_code => $_lang_data) {
     $_name = isset($category_langs[$_lang_code]) ? $category_langs[$_lang_code]['name'] : '';
     $_desc = isset($category_langs[$_lang_code]) ? $category_langs[$_lang_code]['description'] : '';
 
-    $_tabview_titles .= '<li' . ($_lang_code == getLanguage() ? ' class="selected"' : '') . '>'
+    $_tabview_titles .= '<li' . ($_lang_code == Lang::get() ? ' class="selected"' : '') . '>'
         . '<a href="#langs_tab_' . $_lang_code . '"><em>' . $_lang_code //$_lang_data['description']
         . ($_name == '' && !isset($id_parent) ? ' (*)' : '')
         . '</em></a></li>';

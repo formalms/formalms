@@ -55,8 +55,8 @@ class FilterInput
             //$_FILES = $this->clean_input_data($_FILES, true);
         }
 
-        $_SERVER['REQUEST_URI'] = html_entity_decode($this->clean_input_data(urldecode($_SERVER['REQUEST_URI'])));
-        $_SERVER['QUERY_STRING'] = html_entity_decode($this->clean_input_data(urldecode($_SERVER['QUERY_STRING'])));
+        $_SERVER['REQUEST_URI'] = array_key_exists('REQUEST_URI', $_SERVER) ? html_entity_decode($this->clean_input_data(urldecode($_SERVER['REQUEST_URI']))): '';
+        $_SERVER['QUERY_STRING'] = array_key_exists('QUERY_STRING', $_SERVER) ? html_entity_decode($this->clean_input_data(urldecode($_SERVER['QUERY_STRING']))): '';;
     }
 
     protected function loadTool()

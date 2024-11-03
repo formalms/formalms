@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
+require_once _base_ . '/lib/lib.user_profile.php';
 
 /**
  * @category library
@@ -23,7 +23,7 @@ class LmsUserProfile extends UserProfile
     /**
      * class constructor.
      */
-    public function LmsUserProfile($id_user, $edit_mode = false)
+    public function __construct($id_user, $edit_mode = false)
     {
         parent::__construct($id_user, $edit_mode);
     }
@@ -33,7 +33,7 @@ class LmsUserProfile extends UserProfile
     /**
      * instance the viewer class of the profile.
      */
-    public function initViewer($varname_action)
+    public function initViewer($varname_action, $platform = null)
     {
         $this->_up_viewer = new LmsUserProfileViewer($this, $varname_action);
     }
@@ -51,22 +51,9 @@ class LmsUserProfileViewer extends UserProfileViewer
     /**
      * class constructor.
      */
-    public function LmsUserProfileViewer(&$user_profile, $varname_action)
+    public function __construct(&$user_profile, $varname_action)
     {
-        parent::UserProfileViewer($user_profile, $varname_action);
-    }
-
-    /**
-     * print the title of the page.
-     *
-     * @param mixed  $text  the title of the area, or the array with zone path and name
-     * @param string $image the image to load before the title
-     *
-     * @return string the html code for space open
-     */
-    public function getTitleArea()
-    {
-        return '';
+        parent::__construct($user_profile, $varname_action);
     }
 
     /**
@@ -79,13 +66,4 @@ class LmsUserProfileViewer extends UserProfileViewer
         return '<div class="up_main">' . "\n";
     }
 
-    /**
-     * Print the footer of the module space.
-     *
-     * @return string the html code for space close
-     */
-    public function getFooter()
-    {
-        return '</div>' . "\n";
-    }
 }

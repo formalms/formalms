@@ -1172,7 +1172,7 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
     *                 All positions in the output decorations array are relative
     *                 to the larger source chunk.
     *      } }
-    * @param {Array.<string>} fileExtensions
+    * @param {Array.string} fileExtensions
     */
   function registerLangHandler(handler, fileExtensions) {
     for (var i = fileExtensions.length; --i >= 0;) {

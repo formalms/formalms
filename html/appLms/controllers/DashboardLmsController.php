@@ -23,7 +23,12 @@ class DashboardLmsController extends LmsController
     public $name = '';
 
     /** @var DashboardLms */
-    private $model;
+    public $model;
+    public Services_JSON $json;
+    /**
+     * @var array|true[]
+     */
+    public array $permissions;
 
     /**
      * DashboardLmsController constructor.
@@ -48,6 +53,7 @@ class DashboardLmsController extends LmsController
        
         $blocks = [];
         $blockPaths = [];
+        $defaultLayout = null;
 
         if (FormaLms\lib\Get::req('mycourses_tab', DOTY_STRING, null)) {
             $this->widget('lms_tab', [
@@ -59,7 +65,7 @@ class DashboardLmsController extends LmsController
         $layouts = $this->model->getLayouts();
         /** @var DashboardLayoutLms $layout */
         foreach ($layouts as $layout) {
-            if (!$layout->isDefault() && $layout->userCanAccess(Docebo::user())) {
+            if (!$layout->isDefault() && $layout->userCanAccess(\FormaLms\lib\FormaUser::getCurrentUser())) {
                 $defaultLayout = $layout;
                 break;
             }

@@ -49,7 +49,7 @@ class VideoconferenceLmsController extends LmsController
     {
         YuiLib::load('base,tabview');
         Lang::init('course');
-        $this->model = new VideoconferenceLms(Docebo::user()->getIdSt());
+        $this->model = new VideoconferenceLms(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
         $upd = new UpdatesLms();
         $this->info = $upd->videoconferenceCounterUpdates();
@@ -69,7 +69,7 @@ class VideoconferenceLmsController extends LmsController
 
     public function getActiveTable()
     {
-        require_once Forma::inc(_scs_ . '/lib/lib.conference.php');
+        require_once $GLOBALS['where_scs'] . '/lib/lib.conference.php';
         $conference_man = new Conference_Manager();
 
         $conference = $this->model->getActiveConference();

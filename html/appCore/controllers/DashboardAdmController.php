@@ -56,7 +56,6 @@ class DashboardAdmController extends AdmController
 
     public function show()
     {
-        //if (!checkPerm('view', true)) return;
 
         //YuiLib::load('tabview,charts');
         Util::get_js(FormaLms\lib\Get::rel_path('adm') . '/views/dashboard/dashboard.js', true, true);
@@ -71,11 +70,11 @@ class DashboardAdmController extends AdmController
         $php_conf = ini_get_all(); //this
         $problem = false;
 
-        if ($php_conf['register_globals']['local_value']) {
+        if (array_key_exists('register_globals', $php_conf) ? $php_conf['register_globals']['local_value'] : false) {
             $problem = true;
         }
 
-        if (version_compare(phpversion(), '5.2.0', '>')) {
+        if (version_compare(PHP_VERSION, '5.2.0', '>')) {
             if ($php_conf['allow_url_include']['local_value']) {
                 $problem = true;
             }
@@ -85,7 +84,8 @@ class DashboardAdmController extends AdmController
 
         //load date script for user creation and editing mask
         Form::loadDatefieldScript();
-
+     
+   
         //render view
         $this->render('show', [
             'diagnostic_problem' => $problem,
@@ -93,7 +93,10 @@ class DashboardAdmController extends AdmController
 
             'can_approve' => checkPerm('approve_waiting_user', true, 'directory', 'framework'),
             'version' => $this->model->getVersionExternalInfo(),
-
+            'file_version' => \FormaLms\lib\Version\VersionChecker::getFileVersion(),
+            'current_version' => \FormaLms\lib\Version\VersionChecker::getCurrentVersion(),
+            'installed_version' => \FormaLms\lib\Version\VersionChecker::getInstalledVersion(),
+            'upgrade_trigger' => (bool) \FormaLms\lib\Version\VersionChecker::compareVersions(false)['upgradeTrigger'],
             'user_stats' => $this->model->getUsersStats(),
 
             'course_stats' => $this->model->getCoursesStats(),
@@ -184,7 +187,7 @@ class DashboardAdmController extends AdmController
 
         require_once _lms_ . '/lib/lib.course.php';
         $man_course = new Man_Course();
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         if ($id_user <= 0) {
             $id_user = $acl_man->getUserST($c_userid);
@@ -206,7 +209,7 @@ class DashboardAdmController extends AdmController
             return;
         }
 
-        require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.certificate.php');
         $cert = new Certificate();
         $released = $cert->certificateStatus($id_user, $id_course);
         $print = [];

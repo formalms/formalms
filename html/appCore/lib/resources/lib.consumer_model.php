@@ -20,7 +20,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class ConsumerModel
 {
-    public function ConsumerModel()
+    public function __construct()
     {
     }
 }

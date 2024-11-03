@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Forma;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -65,10 +67,10 @@ class Man_Transaction
 
         $query = 'INSERT INTO ' . $this->table_transaction
                     . ' (id_transaction, id_user, date, price, method)'
-                    . ' VALUES (NULL, ' . getLogUserId() . ", '" . date('Y-m-d H:i:s') . "', '" . $tot_price . "', '" . $method . "')";
+                    . ' VALUES (NULL, ' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . ", '" . date('Y-m-d H:i:s') . "', '" . $tot_price . "', '" . $method . "')";
 
         if (sql_query($query)) {
-            list($id_t) = sql_fetch_row(sql_query('SELECT id_transaction FROM ' . $this->table_transaction . ' WHERE id_user = ' . getLogUserId() . ' ORDER BY `date` LIMIT 0,1'));
+            list($id_t) = sql_fetch_row(sql_query('SELECT id_transaction FROM ' . $this->table_transaction . ' WHERE id_user = ' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . ' ORDER BY `date` LIMIT 0,1'));
 
             $query_info = str_replace('[transaction_id]', $id_t, $query_info);
 
@@ -235,7 +237,7 @@ class Man_Transaction
 
         $subscribe_man = new CourseSubscribe_Management();
         $date_man = new DateManager();
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $query = 'SELECT idCourse'
                     . ' FROM ' . $this->table_courseuser
@@ -251,19 +253,19 @@ class Man_Transaction
         $dates = $date_man->getUserDates($id_user);
 
         foreach ($activations as $id_course => $details) {
-            $docebo_course = new DoceboCourse($id_course);
+            $formaCourse = new FormaCourse($id_course);
 
-            $level_idst = &$docebo_course->getCourseLevel($id_course);
+            $level_idst = &$formaCourse->getCourseLevel($id_course);
 
             if (count($level_idst) == 0) {
-                $level_idst = &$docebo_course->createCourseLevel($id_course);
+                $level_idst = FormaCourse::createCourseLevel($id_course);
             }
 
             if (is_array($details)) {
                 foreach ($details['dates'] as $id_date) {
                     if (array_search($id_course, $courses) !== false) {
                         if (array_search($id_date, $dates) === false) {
-                            if (!$date_man->addUserToDate($id_date, $id_user, getLogUserId())) {
+                            if (!$date_man->addUserToDate($id_date, $id_user, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
                                 return false;
                             } else {
                                 $query_up = 'UPDATE ' . $this->table_transaction_info
@@ -292,14 +294,14 @@ class Man_Transaction
 
                         $re = sql_query('INSERT INTO ' . $GLOBALS['prefix_lms'] . "_courseuser
 											(idUser, idCourse, edition_id, level, waiting, subscribed_by, date_inscr)
-											VALUES ('" . $id_user . "', '" . $id_course . "', '0', '3', '0', '" . getLogUserId() . "', '" . date('Y-m-d H:i:s') . "')");
+											VALUES ('" . $id_user . "', '" . $id_course . "', '0', '3', '0', '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "', '" . date('Y-m-d H:i:s') . "')");
 
                         if ($re) {
                             $courses[$id_course] = $id_course;
 
                             addUserToTimeTable($id_user, $id_course, 0);
 
-                            if (!$date_man->addUserToDate($id_date, $id_user, getLogUserId())) {
+                            if (!$date_man->addUserToDate($id_date, $id_user, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
                                 return false;
                             } else {
                                 $query_up = 'UPDATE ' . $this->table_transaction_info
@@ -333,7 +335,7 @@ class Man_Transaction
 
                     $re = sql_query('INSERT INTO ' . $GLOBALS['prefix_lms'] . "_courseuser
 										(idUser, idCourse, edition_id, level, waiting, subscribed_by, date_inscr)
-										VALUES ('" . $id_user . "', '" . $id_course . "', '0', '3', '0', '" . getLogUserId() . "', '" . date('Y-m-d H:i:s') . "')");
+										VALUES ('" . $id_user . "', '" . $id_course . "', '0', '3', '0', '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "', '" . date('Y-m-d H:i:s') . "')");
                     if ($re) {
                         $courses[$id_course] = $id_course;
 

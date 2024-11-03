@@ -2,7 +2,7 @@
     'index.php?r=adm/lang/show' => Lang::t('_LANGUAGE', 'admin_lang'),
     Lang::t('_TRANSLATELANG', 'admin_lang'),
 ]); ?>
-<?php include Forma::inc(_lib_ . '/formatable/include.php'); ?>
+<?php include \FormaLms\lib\Forma::inc(_lib_ . '/formatable/include.php'); ?>
 
 <div class="std_block">
 	<div class="container-back"><a href="index.php?r=adm/lang/show"><span><?php echo Lang::t('_BACK', 'standard'); ?></span></a></div>
@@ -105,13 +105,6 @@
 			YAHOO.util.Dom.get('la_text').value = '';
 			DataTable_lang_table.refresh();
 		});
-		YAHOO.util.Event.onDOMReady(function () {
-			YAHOO.util.Event.addListener(YAHOO.util.Selector.query("#lang_table_wrapper .dataTables_scrollHead input[type='text']"), "keydown", function(e) {
-				if ((e.ctrlKey || e.metaKey) && (e.keyCode == 65)) {
-					this.select();
-				}
-			});
-		});
 
 		var columns = [{
 				data: 'text_module',
@@ -166,7 +159,7 @@
 				searching: true,
 				columns,
 				dom: 'Bfrtip',
-				stateSave: false,
+				stateSave: true,
 				deferRender: true
 			});
 		});

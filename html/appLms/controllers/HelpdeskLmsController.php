@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Domain\DomainHandler;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -19,9 +21,9 @@ class HelpdeskLmsController extends LmsController
 {
     public function show()
     {
-        $sender = FormaLms\lib\Get::sett('sender_event', '');
-        $sender_name = FormaLms\lib\Get::sett('customer_help_name_from', false);
-        $prefix_subj = FormaLms\lib\Get::sett('customer_help_subj_pfx');
+        $sender = DomainHandler::getInstance()->getMailerField('sender_mail_system');
+        $sender_name = DomainHandler::getInstance()->getMailerField('helper_desk_name') ?? DomainHandler::getInstance()->getMailerField('sender_name_system');
+        $prefix_subj = DomainHandler::getInstance()->getMailerField('helper_desk_subject');
         $ccn = FormaLms\lib\Get::sett('send_ccn_for_system_emails');
         $sendto = $_POST['sendto'];
         $usermail = $_POST['email'];
@@ -29,11 +31,10 @@ class HelpdeskLmsController extends LmsController
         $telefono = $_POST['telefono'];
         $username = $_POST['username'];
         $oggetto = $_POST['oggetto'];
-        $copia = $_POST['copia'];
+        $copia = $_POST['send_cc'];
         $priorita = $_POST['priorita'];
 
         $help_req_resolution = $_POST['help_req_resolution'];
-        $help_req_flash_installed = $_POST['help_req_flash_installed'];
 
         $subject = $prefix_subj ? '[' . $prefix_subj . '] ' . $oggetto : $oggetto;
 
@@ -72,19 +73,14 @@ class HelpdeskLmsController extends LmsController
         }
 
         $msg .= $br_char . '---------- CLIENT INFO -----------' . $br_char;
-        // $msg .= "IP: " . $_SERVER['REMOTE_ADDR'] . $br_char;
         $msg .= 'USER AGENT: ' . $_SERVER['HTTP_USER_AGENT'] . $br_char;
-
-        // $msg .= "OS: " . $result['platform'] . $br_char;
-        // $msg .= "BROWSER: " .  $result['browser'] . " " . $result['version'] . $br_char;
-
         $msg .= 'RESOLUTION: ' . $help_req_resolution . $br_char;
-        $msg .= 'FLASH: ' . $help_req_flash_installed . $br_char;
 
-        $mailer = FormaMailer::getInstance();
+
+        $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
         $mailer->addReplyTo(strip_tags($usermail));
 
-        if ($mailer->SendMail($sender, [$sendto], $subject, $msg, [], [MAIL_HEADERS => $headers])) {
+        if ($mailer->SendMail([$sendto], $subject, $msg, $sender, [], [MAIL_HEADERS => $headers])) {
             echo 'true';
         } else {
             echo Lang::t('_NO_EMAIL_CONFIG', 'standard');

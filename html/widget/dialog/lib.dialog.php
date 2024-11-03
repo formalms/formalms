@@ -55,7 +55,7 @@ class DialogWidget extends Widget
     /**
      * Constructor.
      *
-     * @param <string> $config the properties of the table
+     * @param string $config the properties of the table
      */
     public function __construct()
     {
@@ -76,6 +76,7 @@ class DialogWidget extends Widget
         ];
 
         //validate parameters
+
 
         if ($this->dynamicContent) {
             $params['dynamicContent'] = true;
@@ -143,6 +144,7 @@ class DialogWidget extends Widget
         }
         $params['callEvents'] = $callEvents;
 
+    
         //choose a view by parameters specification
         if ($this->dynamicContent) {
             $view = 'dynamic';
@@ -150,6 +152,7 @@ class DialogWidget extends Widget
             $view = 'static';
         }
 
+      
         //render the view
         $this->render($view, $params);
     }

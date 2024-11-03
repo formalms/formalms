@@ -23,7 +23,7 @@ class Lms_BlockWidget_menu extends Widget
     /**
      * Constructor.
      *
-     * @param <string> $config
+     * @param string $config
      *        	the properties of the table
      */
     public function __construct()
@@ -105,12 +105,12 @@ class Lms_BlockWidget_menu extends Widget
             $openForm = $form->openForm('course_autoregistration', 'index.php?modname=course_autoregistration&amp;op=subscribe');
 
             $inputText = $form->getInputTextfield(Lang::t('_LBL_CODE', 'standard'), 'course_autoregistration_code', 'course_autoregistration_code', '', '', 30, ' size=30 placeholder="' . $str_code . '"');
-
+            $labelInput = $form->getlabel('course_autoregistration_code',Lang::t('_DIRECOTRY_SELFREGISTERED', 'admin_directory'),'screenreader');
             $submitButton = $form->getButton('subscribe_info', 'subscribe_info', Lang::t('_LBL_SEND', 'standard'), 'button btn btn-default');
             $closeForm = $form->closeForm();
 
             $html .= '<div class="input-group">
-                           ' . $openForm . $inputText . '
+                           ' . $openForm . $inputText . $labelInput. '
                            <div class="input-group-btn">
                            ' . $submitButton . '
                            </div>
@@ -131,11 +131,11 @@ class Lms_BlockWidget_menu extends Widget
         $count = 0;
 
         if ($ma->currentCanAccessObj('news')) {
-            $user_assigned = Docebo::user()->getArrSt();
+            $user_assigned = \FormaLms\lib\FormaUser::getCurrentUser()->getArrSt();
             $query_news = "
             SELECT idNews, publish_date, title, short_desc, important, viewer
             FROM %lms_news_internal
-            WHERE language = '" . getLanguage() . "'
+            WHERE language = '" . Lang::get() . "'
             OR language = 'all'
             ORDER BY important DESC, publish_date DESC ";
             $re_news = sql_query($query_news);
@@ -202,11 +202,13 @@ class Lms_BlockWidget_menu extends Widget
         require_once _lms_ . '/admin/models/LabelAlms.php';
         $label_model = new LabelAlms();
         $idCommonLabel = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('id_common_label');
-        echo '<h2 class="heading">' . Lang::t('_LABEL', 'catalogue') . '</h2>' . '<div class="content">' . Form::openForm('label_form', 'index.php?r=elearning/show') . Form::getDropdown(Lang::t('_LABELS', 'catalogue'), 'id_common_label_dd', 'id_common_label', $label_model->getDropdownLabelForUser(Docebo::user()->getId()), ($idCommonLabel == -1 ? -2 : $idCommonLabel)) . Form::closeForm() . '<script type="text/javascript">' . 'var dd = YAHOO.util.Dom.get(\'id_common_label_dd\');' . 'YAHOO.util.Event.onDOMReady(YAHOO.util.Event.addListener(dd, "change", function(e){var form = YAHOO.util.Dom.get(\'label_form\');form.submit();}));' . '</script>' . '</div>';
+        echo '<h2 class="heading">' . Lang::t('_LABEL', 'catalogue') . '</h2>' . '<div class="content">' . Form::openForm('label_form', 'index.php?r=elearning/show') . Form::getDropdown(Lang::t('_LABELS', 'catalogue'), 'id_common_label_dd', 'id_common_label', $label_model->getDropdownLabelForUser(\FormaLms\lib\FormaUser::getCurrentUser()->getId()), ($idCommonLabel == -1 ? -2 : $idCommonLabel)) . Form::closeForm() . '<script type="text/javascript">' . 'var dd = YAHOO.util.Dom.get(\'id_common_label_dd\');' . 'YAHOO.util.Event.onDOMReady(YAHOO.util.Event.addListener(dd, "change", function(e){var form = YAHOO.util.Dom.get(\'label_form\');form.submit();}));' . '</script>' . '</div>';
     }
 
     public function credits()
     {
+
+        require_once _lms_.'/lib/lib.course.php';
         //		$str = '<h2 class="heading">' . Lang::t ( '_CREDITS', 'catalogue' ) . '</h2>' . '<div class="content">';
         $str = '';
         Util::get_js(FormaLms\lib\Get::rel_path('base') . '/appLms/views/menu/js/lms_block_menu.js', true, true);
@@ -243,7 +245,7 @@ class Lms_BlockWidget_menu extends Widget
 
         // extract courses which have been completed in the considered period and the credits associated
         $course_type_trans = getCourseTypes();
-        $query = 'SELECT c.idCourse, c.name, c.course_type, c.credits, cu.status ' . ' FROM %lms_course as c ' . ' JOIN %lms_courseuser as cu ' . ' ON (cu.idCourse = c.idCourse) WHERE cu.idUser=' . (int) getLogUserId() . " AND c.course_type IN ('" . implode("', '", array_keys($course_type_trans)) . "') " . " AND cu.status = '" . _CUS_END . "' " . ($period_start != '' ? " AND cu.date_complete > '" . $period_start . "' " : '') . ($period_end != '' ? " AND cu.date_complete < '" . $period_end . "' " : '') . ' ORDER BY c.name';
+        $query = 'SELECT c.idCourse, c.name, c.course_type, c.credits, cu.status ' . ' FROM %lms_course as c ' . ' JOIN %lms_courseuser as cu ' . ' ON (cu.idCourse = c.idCourse) WHERE cu.idUser=' . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . " AND c.course_type IN ('" . implode("', '", array_keys($course_type_trans)) . "') " . " AND cu.status = '" . _CUS_END . "' " . ($period_start != '' ? " AND cu.date_complete > '" . $period_start . "' " : '') . ($period_end != '' ? " AND cu.date_complete < '" . $period_end . "' " : '') . ' ORDER BY c.name';
         $res = sql_query($query);
 
         $course_data = [];
@@ -329,16 +331,16 @@ class Lms_BlockWidget_menu extends Widget
 
     public function user_details_full($link)
     {
-        require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
-        $profile = new UserProfile(getLogUserId());
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.user_profile.php');
+        $profile = new UserProfile(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         $profile->init('profile', 'framework', 'index.php?r=' . $link, 'ap');
         echo $profile->homeUserProfile('normal', false, false);
     }
 
     public function user_details_short($link)
     {
-        require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
-        $profile = new UserProfile(getLogUserId());
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.user_profile.php');
+        $profile = new UserProfile(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         $profile->init('profile', 'framework', 'index.php?r=' . $link, 'ap');
         echo $profile->userIdMailProfile('normal', false, false);
     }

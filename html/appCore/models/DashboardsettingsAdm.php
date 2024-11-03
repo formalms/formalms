@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Interfaces\Accessible;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -16,19 +18,19 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 /**
  * Class DashboardsettingsAdm.
  */
-class DashboardsettingsAdm extends Model
+class DashboardsettingsAdm extends Model implements Accessible
 {
     protected $db;
 
-    protected $enabledBlocks;
+    protected $enabledBlocks = [];
 
     protected $installedBlocks;
 
-    protected $layouts;
+    protected $layouts = [];
 
     public function __construct()
     {
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         $this->loadLayouts();
         $this->loadInstalledBlocks();
         $this->loadEnabledBlocks();
@@ -37,10 +39,12 @@ class DashboardsettingsAdm extends Model
 
     public function loadLayouts()
     {
-        $query = 'SELECT `dashboard_layouts`.`id`, `name`, `caption`, `status`, `default`, `idst_list` FROM `dashboard_layouts` LEFT JOIN `dashboard_permission` ON `dashboard_layouts`.`id` =`dashboard_permission`.`id_dashboard` ORDER BY `default` DESC, `created_at` ASC';
+        $query = 'SELECT `dashboard_layouts`.`id`, `name`, `caption`, `status`, `default`, `idst_list` 
+                    FROM `dashboard_layouts` 
+                    LEFT JOIN `dashboard_permission` ON `dashboard_layouts`.`id` =`dashboard_permission`.`id_dashboard` 
+                    ORDER BY  `dashboard_layouts`.`default` DESC,  `dashboard_layouts`.`created_at` ASC';
 
-        $result = sql_query($query);
-        $this->layouts = [];
+        $result = sql_query($query) ?: [];
 
         foreach ($result as $layout) {
 
@@ -52,7 +56,9 @@ class DashboardsettingsAdm extends Model
             $layoutObj->setStatus($layout['status']);
             $layoutObj->setDefault($layout['default']);
 
-            $permissionList = unserialize($layout['idst_list'], ['allowed_classes' => ['array']]);
+            if (!empty($layout['idst_list'])) {
+                $permissionList = unserialize($layout['idst_list'], ['allowed_classes' => ['array']]);
+            }
             if (is_array($permissionList)) {
                 $layoutObj->setPermissionList($permissionList);
             }
@@ -83,10 +89,11 @@ class DashboardsettingsAdm extends Model
 
     public function getLayout($id)
     {
+
         return array_filter(
             $this->layouts,
             function ($e) use (&$id) {
-                return $e->id === $id;
+                return $e->getId() == $id;
             }
         );
     }
@@ -98,7 +105,7 @@ class DashboardsettingsAdm extends Model
         $result = $this->db->query($query_blocks);
 
         foreach ($result as $block) {
-            if (file_exists(Forma::inc(_lms_ . '/models/' . $block['block_class'] . '.php'))) {
+            if (file_exists(\FormaLms\lib\Forma::inc(_lms_ . '/models/' . $block['block_class'] . '.php'))) {
                 /** @var DashboardBlockLms $blockObj */
                 $blockObj = new $block['block_class']($block['block_config']);
                 $blockObj->setOrder($block['position']);
@@ -115,8 +122,8 @@ class DashboardsettingsAdm extends Model
         $result = $this->db->query($query_blocks);
 
         foreach ($result as $block) {
-            if (file_exists(Forma::inc(_lms_ . '/models/' . $block['block_class'] . '.php'))) {
-                require_once Forma::inc(_lms_ . '/models/' . $block['block_class'] . '.php');
+            if (file_exists(\FormaLms\lib\Forma::inc(_lms_ . '/models/' . $block['block_class'] . '.php'))) {
+                require_once \FormaLms\lib\Forma::inc(_lms_ . '/models/' . $block['block_class'] . '.php');
                 /** @var DashboardBlockLms $blockObj */
                 $blockObj = new $block['block_class']('');
 
@@ -174,6 +181,7 @@ class DashboardsettingsAdm extends Model
 
     public function saveLayout($layout)
     {
+
         $name = $layout['name'];
         $caption = $layout['caption'] ?: ' ';
         $status = $layout['status'];
@@ -230,8 +238,8 @@ class DashboardsettingsAdm extends Model
             'data' => $setting['data'],
         ];
         $insertQuery = sprintf("INSERT INTO `dashboard_block_config` ( `block_class`, `block_config`, `position`, `dashboard_id`, `created_at`) VALUES ( '%s' , '%s', '%s', '%s', CURRENT_TIMESTAMP)", $block, json_encode($config, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_APOS), $setting['position'], $dashboard);
-  
-      
+
+
         $this->db->query($insertQuery);
     }
 
@@ -280,13 +288,27 @@ class DashboardsettingsAdm extends Model
         return [];
     }
 
-    public function getDefaultLayout(){
-        /** @var DashboardLayoutLms $layout */
-        foreach ($this->layouts as $layout ) {
+    public function getDefaultLayout()
+    {
+        foreach ($this->layouts as $layout) {
             if ($layout->isDefault()) {
                 return $layout->getId();
             }
         }
         return 0;
     }
+
+    public function getAccessList($resourceId): array
+    {
+
+        return $this->getObjIdstList($resourceId);
+    }
+
+    public function setAccessList($resourceId, array $selection): bool
+    {
+
+        return (bool)$this->setObjIdstList((int)$resourceId, $selection);
+
+    }
+
 }

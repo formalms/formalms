@@ -15,7 +15,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class Module_Coursestats extends LmsModule
 {
-    public function getAllToken()
+    public static function getAllToken()
     {
         return ['view' => ['code' => 'view',
                                 'name' => '_VIEW',

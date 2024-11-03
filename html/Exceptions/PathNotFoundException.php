@@ -1,4 +1,5 @@
 <?php
+namespace FormaLms\Exceptions;
 
 /*
  * FORMA - The E-Learning Suite
@@ -11,7 +12,7 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-class PathNotFoundException extends Exception
+class PathNotFoundException extends \Exception
 {
     public function __construct()
     {

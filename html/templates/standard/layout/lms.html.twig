@@ -13,33 +13,6 @@
 
     <script type="text/javascript" src="{{ Get_relPath('base') }}/lib/js_utils.js?v={{ Template_getVersion() }}"></script>
 
-    <script>
-        $(function () {
-            $('div.menu-area a').bind('click', function (event) {
-                event.preventDefault();
-                id = $(this).attr('rel');
-                $('ul.float-left').hide();
-                $('ul#' + id).show();
-                $('div.menu-area').removeClass('menu-selected');
-                $(this).parent().addClass('menu-selected');
-            });
-
-            $("#accordion").accordion({
-                collapsible: true,
-                active: false,
-                icons: false
-            });
-
-            // feedback
-            $('#container-feedback').click(function () {
-                event.preventDefault();
-                $(this).fadeOut(500);
-            });
-
-        });
-    </script>
-
-
 {% endblock %}
 
 {% block content %}
@@ -48,7 +21,6 @@
     {{ Layout_getMeta() }}
 
     {{ Layout_getRtl() }}
-    {{ Layout_getAccessibility() }}
     <!-- blind nav -->
     {{ Layout_getZone('blind_navigation') }}
 
@@ -69,7 +41,7 @@
                         <div class="navbar-header">
                             {{ Layout_getZone('logo') }}
                             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                                <span class="glyphicon glyphicon-align-justify"></span>
+                                <span class="glyphicon glyphicon-align-justify"><span class="screenreader">{{ Lang_translate('_MAN_MENU') }}</span></span>
                             </button>
                         </div>
                         <div id="navbar" class="navbar-collapse collapse">

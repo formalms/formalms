@@ -15,7 +15,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class Man_Forum
 {
-    public function getCountUnreaded($id_user, $courses, $last_access)
+    public static function getCountUnreaded($id_user, $courses, $last_access)
     {
         /*
         //$time_start = getmicrotime();

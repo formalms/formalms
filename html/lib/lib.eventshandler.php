@@ -50,7 +50,7 @@ final class EventsHandler
      */
     public function trigger($eventName, $arguments = [])
     {
-        $event = $this->dispatcher->dispatch(new FormaEvent(null, $arguments), $eventName);
+        $event = $this->dispatcher->dispatch(new \Symfony\Component\EventDispatcher\GenericEvent(null, $arguments), $eventName);
 
         return $event->getArguments();
     }

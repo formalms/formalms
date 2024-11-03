@@ -14,61 +14,11 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 /**
- * Return the current charset of the page.
- *
- * @return string the charset
- *
- * @deprecated
- */
-function getUnicode()
-{
-    return Lang::charset();
-}
-
-/**
- * Return the current language.
- *
- * @return string
- *
- * @deprecated
- */
-function getLanguage()
-{
-    return Lang::get();
-}
-
-/**
- * Return the default language setted.
- *
- * @return string
- *
- * @deprecated
- */
-function getDefaultLanguage()
-{
-    return Lang::getDefault();
-}
-
-/**
- * Set the current language.
- *
- * @param string $lang_code the language that need to be setted
- *
- * @return string the language setted
- *
- * @deprecated
- */
-function setLanguage($lang_code)
-{
-    return Lang::set($lang_code);
-}
-
-/**
  * This class is a temporary abstractor for the old lang module.
  *
  * @deprecated
  */
-class DoceboLanguage
+class FormaLanguage
 {
     protected static $istances = [];
 
@@ -83,7 +33,7 @@ class DoceboLanguage
     {
         Lang::init($module);
         if (!isset(self::$istances[$module])) {
-            self::$istances[$module] = new DoceboLanguage($module);
+            self::$istances[$module] = new FormaLanguage($module);
         }
 
         return self::$istances[$module];
@@ -91,21 +41,17 @@ class DoceboLanguage
 
     public function def($key, $module = false, $platform = false, $lang_code = false)
     {
-        return Lang::t($key, ($module ? $module : $this->module), false, $lang_code);
+        return Lang::t($key, ($module ?: $this->module), false, $lang_code);
     }
 
     public function getLangText($key, $module = false, $platform = false, $lang_code = false)
     {
-        return Lang::t($key, ($module ? $module : $this->module), false, $lang_code);
+        return Lang::t($key, ($module ?: $this->module), false, $lang_code);
     }
 
     public function isDef($key, $module = false, $platform = false, $lang_code = false)
     {
-        return Lang::isDef($key, ($module ? $module : $this->module), $lang_code);
-    }
-
-    public function setGlobal()
-    {
+        return Lang::isDef($key, ($module ?: $this->module), $lang_code);
     }
 }
 
@@ -166,8 +112,8 @@ class Lang
     /**
      * Initialize the static information.
      *
-     * @param string $module   module to load
-     * @param bool   $override override default module
+     * @param string $module module to load
+     * @param bool $override override default module
      */
     public static function init($module, $override = true, $lang_code = false)
     {
@@ -191,7 +137,7 @@ class Lang
             self::$lang_code = $lang_code;
         }
         if (!self::$lang_code) {
-            self::$lang_code = getLanguage();
+            self::$lang_code = Lang::get();
         }
 
         return self::$lang_code;
@@ -200,7 +146,7 @@ class Lang
     /**
      * Load the module translations.
      *
-     * @param string $module    the module to load
+     * @param string $module the module to load
      * @param string $lang_code the lang code
      */
     public static function load_module($module, $lang_code = false, $includeDisabledPlugins = false)
@@ -225,8 +171,8 @@ class Lang
     /**
      * Return the status of a translation.
      *
-     * @param string $key       the language key
-     * @param string $module    the mdoule (if false, the last one will be used)
+     * @param string $key the language key
+     * @param string $module the mdoule (if false, the last one will be used)
      * @param string $lang_code the lang_code (if false the last one will be used)
      *
      * @return bool true if a translation is defined, false otherwise
@@ -257,12 +203,12 @@ class Lang
     }
 
     /**
-     * @param string $key          the language key
-     * @param string $module       the mdoule (if false, the last one will be used)
-     * @param array  $substitution an array of key => value of substitution that you need inside the translation
-     * @param string $lang_code    the lang_code (if false the last one will be used)
-     * @param string $lang_code    the lang_code (if false the last one will be used)
-     * @param string $default      the default value if a translation is not found
+     * @param string $key the language key
+     * @param string $module the mdoule (if false, the last one will be used)
+     * @param array $substitution an array of key => value of substitution that you need inside the translation
+     * @param string $lang_code the lang_code (if false the last one will be used)
+     * @param string $lang_code the lang_code (if false the last one will be used)
+     * @param string $default the default value if a translation is not found
      *
      * @return string
      */
@@ -284,7 +230,7 @@ class Lang
         self::load_module($module, $lang_code, $includeDisabledPlugins);
 
         $translation = '';
-        if (FormaLms\lib\Get::cfg('log_missing_translation_level', (int) 0) > 0) {
+        if (FormaLms\lib\Get::cfg('log_missing_translation_level', (int)0) > 0) {
             // LOG MISSING TRANSLATIONS -->
             $missing = false;
             $missing_in_module = false;
@@ -300,7 +246,7 @@ class Lang
         } elseif (isset(self::$translations[$lang_code]['standard'][$key])) {
             //translation found in the standard module
             $translation = self::$translations[$lang_code]['standard'][$key];
-            if (FormaLms\lib\Get::cfg('log_missing_translation_level', (int) 0) > 1) {
+            if (FormaLms\lib\Get::cfg('log_missing_translation_level', (int)0) > 1) {
                 // LOG MISSING TRANSLATIONS -->
                 if ($module !== 'standard') {
                     $missing_in_module = true;
@@ -311,30 +257,34 @@ class Lang
         } elseif ($default == false) {
             //translation not found
             self::undefinedKey($key, $module, $lang_code);
-            if (FormaLms\lib\Get::cfg('log_missing_translation_level', (int) 0) > 0) {
+            if (FormaLms\lib\Get::cfg('log_missing_translation_level', (int)0) > 0) {
                 // LOG MISSING TRANSLATIONS -->
                 $missing = true;
                 // <-- LOG MISSING TRANSLATIONS
             }
         }
 
-        if (FormaLms\lib\Get::cfg('log_missing_translation_level', (int) 0) == 1) {
+        if (FormaLms\lib\Get::cfg('log_missing_translation_level', (int)0) == 1) {
             // LOG MISSING TRANSLATIONS -->
             if ($missing) {
                 $_substitutions = json_encode($substitution ? $substitution : []);
                 $log = "KEY: '$key'\t- MODULE: '$module'\t- SUBTITUTIONS: $_substitutions\t \n";
                 $date = date('Y_m_d');
-                mkdir(_files_ . "/log/missing_translations/$lang_code/");
+                if (!@mkdir(_files_ . "/log/missing_translations/$lang_code/", 0777, true)) {
+                    echo "<script>console.log('Directory creato con successo');</script>";
+                }
                 file_put_contents(_files_ . "/log/missing_translations/$lang_code/$date.log", $log, FILE_APPEND);
             }
             // <-- LOG MISSING TRANSLATIONS
-        } elseif (FormaLms\lib\Get::cfg('log_missing_translation_level', (int) 0) == 2) {
+        } elseif (FormaLms\lib\Get::cfg('log_missing_translation_level', (int)0) == 2) {
             // LOG MISSING TRANSLATIONS -->
             if ($missing or $missing_in_module) {
                 $_substitutions = json_encode($substitution ? $substitution : []);
                 $log = "KEY: '$key'\t- MODULE: '$module'\t- SUBTITUTIONS: $_substitutions\t- FOUND IN STANDARD: $found_in_standard\n";
                 $date = date('Y_m_d');
-                mkdir(_files_ . "/log/missing_translations/$lang_code/");
+                if (!@mkdir(_files_ . "/log/missing_translations/$lang_code/", 0777, true)) {
+                    echo "<script>console.log('Directory creato con successo');</script>";
+                }
                 file_put_contents(_files_ . "/log/missing_translations/$lang_code/$date.log", $log, FILE_APPEND);
             }
             // <-- LOG MISSING TRANSLATIONS
@@ -348,7 +298,7 @@ class Lang
             }
         }
         if (empty($substitution) || !is_array($substitution)) {
-            return html_entity_decode($translation);
+            return $translation;
         }
 
         return str_replace(array_keys($substitution), array_values($substitution), $translation);
@@ -357,8 +307,8 @@ class Lang
     /**
      * This method will be used by the t() method when a translation is not found.
      *
-     * @param string $key       the language key
-     * @param string $module    the mdoule (if false, the last one will be used)
+     * @param string $key the language key
+     * @param string $module the mdoule (if false, the last one will be used)
      * @param string $lang_code the lang_code (if false the last one will be used)
      */
     public static function undefinedKey($key, $module, $lang_code)
@@ -393,6 +343,9 @@ class Lang
      */
     public static function get($reset = false)
     {
+        //retrocompatibilità perchè il domainconfighandler istanzia l'utente di sessione sul clientservice
+        /*************************************** */
+        /***************************************** */
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $currentLang = $session->get('current_lang');
         if ($reset && isset($currentLang)) {
@@ -401,10 +354,10 @@ class Lang
 
         if (!$currentLang) {
             $currentLang = self::getDefault();
-            // we if (!FormaLms\lib\Get::cfg('demo_mode', false) && !Docebo::user()->isAnonymous()) {don't know which language we need
-            if (!FormaLms\lib\Get::cfg('demo_mode', false) && !Docebo::user()->isAnonymous()) {
+            // we if (!FormaLms\lib\Get::cfg('demo_mode', false) && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {don't know which language we need
+            if (!FormaLms\lib\Get::cfg('demo_mode', false) && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 // load the language from the user setting
-                $currentLang = Docebo::user()->preference->getLanguage();
+				$currentLang = \FormaLms\lib\FormaUser::getCurrentUser()->getPreference('ui.language');
             } else {
                 // find the user language looking into the browser info
                 $langadm = new LangAdm();
@@ -413,7 +366,7 @@ class Lang
                 foreach ($browser_lang as $code) {
                     foreach ($all_language as $lang) {
                         if ($code) {
-                            if (strpos($lang->lang_browsercode, (string) $code) !== false) {
+                            if (strpos($lang->lang_browsercode, (string)$code) !== false) {
                                 $currentLang = $lang->lang_code;
                                 break 2;
                             }
@@ -424,7 +377,7 @@ class Lang
             $session->set('current_lang', $currentLang);
             $session->save();
         }
-        
+
         return $currentLang;
     }
 
@@ -446,14 +399,14 @@ class Lang
             return false;
         }
 
-        if (Docebo::user()->isAnonymous()) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             // if the user is anonymous we will remember it's forced selection and set up the selected language as
             // it's user preference when he login
             if ($force) {
                 $session->set('forced_lang', true);
             }
         } else {
-            Docebo::user()->preference->setLanguage($lang_code);
+            \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->setLanguage($lang_code);
         }
         $session->set('current_lang', $lang_code);
         $session->save();
@@ -485,14 +438,50 @@ class Lang
         }
         self::$_lang_cache[$lang_code] = self::$_lang->getLanguage($lang_code);
 
-        return self::$_lang_cache[$lang_code]->lang_direction;
+        return isset(self::$_lang_cache[$lang_code]->lang_direction) ?? null;
+    }
+
+    public static function getLangNameFromFile($file)
+    {
+        return ucwords(str_replace('_', ' ', str_replace('lang[', '', str_replace('].xml', '', $file))));
+    }
+
+    public static function getLangFileNameFromName($file)
+    {
+        return sprintf('lang[%s].xml', str_replace(' ', '_', strtolower($name)));
+    }
+
+    public static function getSelLang()
+    {
+        return \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('sel_lang') ?? 'english';
+    }
+
+    public static function getFileSystemCoreLanguages($arrayKey = null)
+    {
+        $langs = [];
+        $langs[''] = static::t('_SELECT_LANG', 'standard');
+        $files = scandir(_langs_);
+
+        foreach ($files as $file) {
+            if (strpos($file, '.xml') !== false) {
+
+                if($arrayKey) {
+                    $key = strtolower(static::getLangNameFromFile($file));
+                } else {
+                    $key = $file;
+                }
+                $langs[$key] = static::getLangNameFromFile($file);
+            }
+        }
+
+        return $langs;
     }
 }
 
 /**
  * This class is a "de-facto" model for the language db, but the "effective model" will be the LangAdm class.
  */
-class DoceboLangManager
+class FormaLangManager
 {
     public $globTranslation = null;
     public $globLangModule = null;
@@ -508,7 +497,7 @@ class DoceboLangManager
      *
      * @param string $key1 the first key
      * @param string $key2 the second key
-     * @param mixed  $key3 Optional. The third key or FALSE
+     * @param mixed $key3 Optional. The third key or FALSE
      *
      * @return string composed key
      **/
@@ -558,11 +547,11 @@ class DoceboLangManager
     }
 
     /**
-     * DoceboLangManager constructor.
+     * FormaLangManager constructor.
      *
-     * @param string   $param_prefix the prefix for the tables names
+     * @param string $param_prefix the prefix for the tables names
      *                               if not given global $prefix variable is used
-     * @param resource $dbconn       the connection to the database
+     * @param resource $dbconn the connection to the database
      *                               if not given last connection will be used
      */
     private function __construct($param_prefix = false, $dbconn = null)
@@ -577,7 +566,7 @@ class DoceboLangManager
     public static function getInstance()
     {
         if (self::$instance == false) {
-            self::$instance = new DoceboLangManager();
+            self::$instance = new FormaLangManager();
         }
 
         return self::$instance;
@@ -642,9 +631,9 @@ class DoceboLangManager
      * return the text translation for a given $lang_code, $key, $module, $platform.
      *
      * @param string $lang_code the lang code to get translation
-     * @param string $key       the key to search or the composed key if $module is FALSE
-     * @param mixed  $module    the module to search or FALSE if $key is composed key
-     * @param mixed  $platform  the platform to search or FALSE if $key or $module are composed key
+     * @param string $key the key to search or the composed key if $module is FALSE
+     * @param mixed $module the module to search or FALSE if $key is composed key
+     * @param mixed $platform the platform to search or FALSE if $key or $module are composed key
      *
      * @return mixed string with text translation or FALSE if not found
      */
@@ -676,10 +665,10 @@ class DoceboLangManager
      * return an array with all the translations for a given
      *    platform module lang_code triple.
      *
-     * @param string $platform       the platform
-     * @param mixed  $module         the module name
+     * @param string $platform the platform
+     * @param mixed $module the module name
      *                               if FALSE all modules will be returned
-     * @param string $lang_code      the code of the language
+     * @param string $lang_code the code of the language
      * @param string $trans_contains the text contains this string
      *
      * @return array with index numeric values are arrays with
@@ -691,7 +680,7 @@ class DoceboLangManager
      */
     public function getModuleLangTranslations($platform, $module, $lang_code, $trans_contains = '', $attributes = false, $order_by = false, $get_date = false, $text_items = null)
     {
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
         $part = [];
         if (!empty($attributes) && is_array($attributes)) {
             foreach ($attributes as $value) {
@@ -727,9 +716,9 @@ class DoceboLangManager
     /**
      * return a key description.
      *
-     * @param string $key      the key to search or the composed key if $module is FALSE
-     * @param mixed  $module   the module to search or FALSE if $key is composed key
-     * @param mixed  $platform the platform to search or FALSE if $key or $module are composed key
+     * @param string $key the key to search or the composed key if $module is FALSE
+     * @param mixed $module the module to search or FALSE if $key is composed key
+     * @param mixed $platform the platform to search or FALSE if $key or $module are composed key
      *
      * @return mixed
      *               - string description for given key module platform triple
@@ -743,9 +732,9 @@ class DoceboLangManager
     /**
      * return the key attributes.
      *
-     * @param string $key      the key to search or the composed key if $module is FALSE
-     * @param mixed  $module   the module to search or FALSE if $key is composed key
-     * @param mixed  $platform the platform to search or FALSE if $key or $module are composed key
+     * @param string $key the key to search or the composed key if $module is FALSE
+     * @param mixed $module the module to search or FALSE if $key is composed key
+     * @param mixed $platform the platform to search or FALSE if $key or $module are composed key
      *
      * @return mixed
      *               - string attributes for given key module platform triple
@@ -774,9 +763,9 @@ class DoceboLangManager
     /**
      * delete a key and all associated translations.
      *
-     * @param string $key      the key to search or the composed key if $module is FALSE
-     * @param mixed  $module   the module to search or FALSE if $key is composed key
-     * @param mixed  $platform the platform to search or FALSE if $key or $module are composed key
+     * @param string $key the key to search or the composed key if $module is FALSE
+     * @param mixed $module the module to search or FALSE if $key is composed key
+     * @param mixed $platform the platform to search or FALSE if $key or $module are composed key
      *
      * @return bool TRUE if success, FALSE otherwise
      */
@@ -811,11 +800,11 @@ class DoceboLangManager
     /**
      * update a key.
      *
-     * @param string $key         the key to search or the composed key if $module is FALSE
-     * @param mixed  $module      the module to search or FALSE if $key is composed key
-     * @param mixed  $platform    the platform to search or FALSE if $key or $module are composed key
-     * @param mixed  $description the description of the key of FALSE for skip
-     * @param mixed  $attributes  the attributes of key (accessibility,sms)
+     * @param string $key the key to search or the composed key if $module is FALSE
+     * @param mixed $module the module to search or FALSE if $key is composed key
+     * @param mixed $platform the platform to search or FALSE if $key or $module are composed key
+     * @param mixed $description the description of the key of FALSE for skip
+     * @param mixed $attributes the attributes of key (accessibility,sms)
      *
      * @return bool TRUE if success, FALSE otherwise
      */
@@ -1038,7 +1027,7 @@ class DoceboLangManager
     public function findLanguageFromBrowserCode()
     {
         if (!isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-            return getDefaultLanguage();
+            return Lang::getDefault();
         }
         $accept_language = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
         $al_arr = explode(',', $accept_language);
@@ -1061,7 +1050,7 @@ class DoceboLangManager
             }
         }
 
-        return getDefaultLanguage();
+        return Lang::getDefault();
     }
 
     public function setLanguage($lang_code, $lang_description = false, $lang_charset = false, $lang_brosercode = false, $lang_direction = false)
@@ -1082,10 +1071,10 @@ class DoceboLangManager
     /**
      * update a lang_code.
      *
-     * @param string $lang_code        code of lang to test
+     * @param string $lang_code code of lang to test
      * @param string $lang_description optional
-     * @param string $lang_charset     optional
-     * @param string $lang_brosercode  optional
+     * @param string $lang_charset optional
+     * @param string $lang_brosercode optional
      *
      * @return true if success, FALSE otherwise
      **/
@@ -1107,8 +1096,8 @@ class DoceboLangManager
      *
      * @param string $lang_code
      * @param string $lang_description
-     * @param string $lang_charset     optional
-     * @param string $lang_brosercode  optional
+     * @param string $lang_charset optional
+     * @param string $lang_brosercode optional
      *
      * @return bool TRUE if success, FALSE otherwise
      **/
@@ -1205,4 +1194,6 @@ class DoceboLangManager
 
         return $stats;
     }
+
+   
 }

@@ -94,7 +94,17 @@ if (!$id_date && !$id_edition) {
     <div class="nofloat"></div>
     <?php
 
-    $add_url = 'index.php?r=' . $this->link . '/add&amp;load=1&amp;id_course=' . $id_course . '&amp;id_edition=' . $id_edition . '&amp;id_date=' . $id_date . '';
+    $add_newurl = 'index.php?r=adm/userselector/show&amp;instance=coursesubscription&amp;id=' . $id_course ;
+
+    if($id_edition) {
+
+        $add_newurl .= '_edition@'.$id_edition;
+    }
+
+    if($id_date) {
+
+        $add_newurl .= '_date@'.$id_date;
+    }
     $mod_url = 'ajax.adm_server.php?r=' . $this->link . '/multimod_dialog&amp;id_course=' . $id_course . '&amp;id_edition=' . $id_edition . '&amp;id_date=' . $id_date . '';
     $del_url = 'ajax.adm_server.php?r=' . $this->link . '/multidel&amp;id_course=' . $id_course . '&amp;id_edition=' . $id_edition . '&amp;id_date=' . $id_date . '';
     $imp_csv = 'index.php?r=' . $this->link . '/import_csv&amp;id_course=' . $id_course . '&amp;id_edition=' . $id_edition . '&amp;id_date=' . $id_date . '';
@@ -103,7 +113,7 @@ if (!$id_date && !$id_edition) {
     $copy_course = 'index.php?r=' . $this->link . '/copy_course&amp;load=1&amp;id_course=' . $id_course . '&amp;id_edition=' . $id_edition . '&amp;id_date=' . $id_date . '';
     $move_course = 'index.php?r=' . $this->link . '/copy_course&amp;load=1&amp;move=1&amp;id_course=' . $id_course . '&amp;id_edition=' . $id_edition . '&amp;id_date=' . $id_date . '';
 
-    $rel_action = '<a class="ico-wt-sprite subs_add" href="' . $add_url . '"><span>' . Lang::t('_ADD', 'subscribe') . '</span></a>'
+    $rel_action = '<a class="ico-wt-sprite subs_add" href="' . $add_newurl . '"><span>' . Lang::t('_ADD', 'subscribe') . '</span></a>'
         . '<a class="ico-wt-sprite subs_mod" href="' . $mod_url . '"><span>' . Lang::t('_MOD_SELECTED', 'subscribe') . '</span></a>'
         . '<a class="ico-wt-sprite subs_del" href="' . $del_url . '"><span>' . Lang::t('_DEL_SELECTED', 'subscribe') . '</span></a>'
         . ($id_edition != 0 || $id_date != 0 ? '' : '<a class="ico-wt-sprite subs_dup" href="' . $imp_course . '"><span>' . Lang::t('_IMPORT_FROM_COURSE', 'subscribe') . '</span></a>')

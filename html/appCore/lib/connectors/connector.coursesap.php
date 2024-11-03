@@ -20,7 +20,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  * @author		Pirovano Fabio <fabio (@) docebo (.) com>
  **/
-require_once __DIR__ . '/lib.connector.php';
+require_once dirname(__FILE__) . '/lib.connector.php';
 
 /**
  * class for define user report connection.
@@ -29,7 +29,7 @@ require_once __DIR__ . '/lib.connector.php';
  *
  * @author		Pirovano Fabio <fabio (@) docebo (.) com>
  **/
-class DoceboConnector_CourseSap extends DoceboConnector
+class FormaConnector_CourseSap extends FormaConnector
 {
     public $name = '';
 
@@ -68,6 +68,8 @@ class DoceboConnector_CourseSap extends DoceboConnector
                                 'cid' => '',
                                 'cod_course' => '',
                                 'year' => '', ];
+    public string $last_error;
+    public array $_cid_list;
 
     /**
      * This constructor require the source file name.
@@ -77,7 +79,7 @@ class DoceboConnector_CourseSap extends DoceboConnector
      *                      - 'first_row_header' => bool TRUE if first row is header (Optional, default = TRUE )
      *                      - 'separator' => string a char with the fields separator (Optional, default = ,)
      **/
-    public function DoceboConnector_CourseSap($params)
+    public function __construct($params)
     {
         require_once _adm_ . '/lib/lib.directory.php';
         require_once _base_ . '/lib/lib.userselector.php';
@@ -108,7 +110,7 @@ class DoceboConnector_CourseSap extends DoceboConnector
 
     public function get_configUI()
     {
-        return new DoceboConnector_CourseSapUI($this);
+        return new FormaConnector_CourseSapUI($this);
     }
 
     /**
@@ -116,7 +118,7 @@ class DoceboConnector_CourseSap extends DoceboConnector
      **/
     public function connect()
     {
-        $this->lang = DoceboLanguage::createInstance('sap_report');
+        $this->lang = FormaLanguage::createInstance('sap_report');
 
         // perform the query for data retriving
 
@@ -205,27 +207,27 @@ class DoceboConnector_CourseSap extends DoceboConnector
 
     /**
      * @return array the array of columns descriptor
-     *               - DOCEBOIMPORT_COLNAME => string the name of the column
-     *               - DOCEBOIMPORT_COLID => string the id of the column (optional,
+     *               - FORMAIMPORT_COLNAME => string the name of the column
+     *               - FORMAIMPORT_COLID => string the id of the column (optional,
      *               same as COLNAME if not given)
-     *               - DOCEBOIMPORT_COLMANDATORY => bool TRUE if col is mandatory
-     *               - DOCEBOIMPORT_DATATYPE => the data type of the column
-     *               - DOCEBOIMPORT_DEFAULT => the default value for the column (Optional)
-     *               For readonly connectos only 	DOCEBOIMPORT_COLNAME and DOCEBOIMPORT_DATATYPE
+     *               - FORMAIMPORT_COLMANDATORY => bool TRUE if col is mandatory
+     *               - FORMAIMPORT_DATATYPE => the data type of the column
+     *               - FORMAIMPORT_DEFAULT => the default value for the column (Optional)
+     *               For readonly connectos only 	FORMAIMPORT_COLNAME and FORMAIMPORT_DATATYPE
      *               are required
      **/
     public function get_cols_descripor()
     {
-        $lang = DoceboLanguage::createInstance('userreport', 'lms');
+        $lang = FormaLanguage::createInstance('userreport', 'lms');
 
         $col_descriptor = [];
         foreach ($this->all_cols as $k => $col) {
             $col_descriptor[] = [
-                DOCEBOIMPORT_COLNAME => $lang->def('_' . strtoupper($col[0])),
-                DOCEBOIMPORT_COLID => $col[0],
-                DOCEBOIMPORT_COLMANDATORY => false,
-                DOCEBOIMPORT_DATATYPE => $col[1],
-                DOCEBOIMPORT_DEFAULT => (isset($this->default_cols[$col[0]]) ? $this->default_cols[$col[0]] : ''),
+                FORMAIMPORT_COLNAME => $lang->def('_' . strtoupper($col[0])),
+                FORMAIMPORT_COLID => $col[0],
+                FORMAIMPORT_COLMANDATORY => false,
+                FORMAIMPORT_DATATYPE => $col[1],
+                FORMAIMPORT_DEFAULT => (isset($this->default_cols[$col[0]]) ? $this->default_cols[$col[0]] : ''),
             ];
         }
 
@@ -328,7 +330,7 @@ class DoceboConnector_CourseSap extends DoceboConnector
  *
  * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
  **/
-class DoceboConnector_CourseSapUI extends DoceboConnectorUI
+class FormaConnector_CourseSapUI extends FormaConnectorUI
 {
     public $connector = null;
     public $post_params = null;
@@ -338,7 +340,7 @@ class DoceboConnector_CourseSapUI extends DoceboConnectorUI
     public $step_next = '';
     public $step_prev = '';
 
-    public function DoceboConnector_CourseSapUI(&$connector)
+    public function __construct(&$connector)
     {
         $this->connector = $connector;
     }
@@ -436,7 +438,7 @@ class DoceboConnector_CourseSapUI extends DoceboConnectorUI
         return '';
     }
 
-    public function get_html()
+    public function get_html($get = null, $post = null)
     {
         $out = '';
         switch ($this->post_params['step']) {
@@ -484,5 +486,5 @@ class DoceboConnector_CourseSapUI extends DoceboConnectorUI
 
 function coursesap_factory()
 {
-    return new DoceboConnector_CourseSap([]);
+    return new FormaConnector_CourseSap([]);
 }

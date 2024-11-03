@@ -32,7 +32,7 @@ class Conference_Manager
 {
     public $PluginConferenceAdm;
 
-    public function Conference_Manager()
+    public function __construct()
     {
         $this->creation_limit_per_user = FormaLms\lib\Get::sett('conference_creation_limit_per_user');
 
@@ -79,7 +79,7 @@ class Conference_Manager
         $parts[5] = substr($start_date, 14, 2);
         $parts[6] = substr($start_date, 17, 2);
 
-        $event = new DoceboCalEvent_lms();
+        $event = new FormaCalEvent_lms();
         $event->calEventClass = 'lms';
         $event->start_year = $parts[1];
         $event->start_month = $parts[2];
@@ -113,7 +113,7 @@ class Conference_Manager
 
         $event->_owner = $idSt;
         if (!$event->_owner) {
-            $event->_owner == Docebo::user()->getIdSt();
+            $event->_owner == \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
         }
 
         $event->category = 'b';
@@ -174,7 +174,7 @@ class Conference_Manager
         $parts[5] = substr($start_date, 14, 2);
         $parts[6] = substr($start_date, 17, 2);
 
-        $event = new DoceboCalEvent_lms();
+        $event = new FormaCalEvent_lms();
         $event->calEventClass = 'lms';
         $event->start_year = $parts[1];
         $event->start_month = $parts[2];
@@ -208,7 +208,7 @@ class Conference_Manager
 
         $event->_owner = $idSt;
         if (!$event->_owner) {
-            $event->_owner == Docebo::user()->getIdSt();
+            $event->_owner == \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
         }
 
         $event->category = 'b';
@@ -346,7 +346,7 @@ class Conference_Manager
 		WHERE id = '" . $room_id . "'";
         $re_room = $this->_query($room_del);
 
-        $event = new DoceboCalEvent_lms();
+        $event = new FormaCalEvent_lms();
         $event->id = $conference['idCal'];
         $event->del();
 

@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once __DIR__ . '/class.question.php';
+require_once dirname(__FILE__) . '/class.question.php';
 
 class ExtendedText_QuestionPoll extends QuestionPoll
 {
@@ -26,9 +26,9 @@ class ExtendedText_QuestionPoll extends QuestionPoll
      *
      * @return nothing
      */
-    public function ExtendedText_QuestionPoll($id)
+    public function __construct($id)
     {
-        parent::QuestionPoll($id);
+        parent::__construct($id);
     }
 
     /**
@@ -52,7 +52,7 @@ class ExtendedText_QuestionPoll extends QuestionPoll
      */
     public function create($id_poll, $back_poll)
     {
-        $lang = &DoceboLanguage::createInstance('poll');
+        $lang = FormaLanguage::createInstance('poll');
 
         require_once _base_ . '/lib/lib.form.php';
         $url_encode = htmlentities(urlencode($back_poll));
@@ -121,7 +121,7 @@ class ExtendedText_QuestionPoll extends QuestionPoll
 
     public function edit($back_poll)
     {
-        $lang = &DoceboLanguage::createInstance('poll');
+        $lang = FormaLanguage::createInstance('poll');
 
         require_once _base_ . '/lib/lib.form.php';
         $url_encode = htmlentities(urlencode($back_poll));
@@ -222,7 +222,7 @@ class ExtendedText_QuestionPoll extends QuestionPoll
      */
     public function play($num_quest, $shuffle_answer = false, $id_track = 0, $freeze = false)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = FormaLanguage::createInstance('test');
 
         list($id_poll, $title_quest) = sql_fetch_row(sql_query('
 		SELECT id_quest, title_quest 
@@ -306,7 +306,7 @@ class ExtendedText_QuestionPoll extends QuestionPoll
      *
      * @author Fabio Pirovano (fabio@docebo.com)
      */
-    public function updateAnswer($id_track, &$source)
+    public function updateAnswer($id_track, &$source, $numberTime = null)
     {
         if (!$this->deleteAnswer($id_track)) {
             return false;
@@ -364,7 +364,7 @@ class ExtendedText_QuestionPoll extends QuestionPoll
      */
     public function displayUserResult($id_track, $num_quest, $show_solution, $number_time = null)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = FormaLanguage::createInstance('test');
 
         $quest = '';
         $comment = '';
@@ -400,7 +400,7 @@ class ExtendedText_QuestionPoll extends QuestionPoll
     {
         $idItem = $num_quest;
         $html = '';
-        $lang = &DoceboLanguage::createInstance('stats', 'lms');
+        $lang = FormaLanguage::createInstance('stats', 'lms');
         require_once _base_ . '/lib/lib.table.php';
 
         $query_quest = 'SELECT id_quest, title_quest' .
@@ -449,7 +449,7 @@ class ExtendedText_QuestionPoll extends QuestionPoll
     {
         $idItem = $num_quest;
         $csv = '';
-        $lang = &DoceboLanguage::createInstance('poll', 'lms');
+        $lang = FormaLanguage::createInstance('poll', 'lms');
         require_once _base_ . '/lib/lib.table.php';
 
         $query_quest = 'SELECT id_quest, title_quest' .

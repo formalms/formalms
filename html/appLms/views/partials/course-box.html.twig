@@ -2,14 +2,7 @@
     <article class="course-box {{ courseBoxClasses|join(' ') }}" data-course-id="{{ course.idCourse }}">
 
         {% block courseBoxCover %}
-            {% if course.canEnter %}
-            <a href="index.php?modname=course&amp;op=aula&amp;idCourse={{ course.idCourse }}"
-                rel="{{ course.rel }}">
-            {% endif %}
-                <div class="course-box__cover" {% if course.use_logo_in_courselist %} style="background-image: url( {{ course.img_course }})"{% endif %}></div>
-            {% if course.canEnter %}
-            </a>
-            {% endif %}
+            <div class="course-box__cover" {% if course.use_logo_in_courselist %} style="background-image: url( {{ course.img_course }})"{% endif %}></div>
         {% endblock %}
 
         {% block courseBoxHeader %}
@@ -66,16 +59,7 @@
 
 
         {% block courseBoxTitle %}
-            <h3 class="course-box__title">
-                {% if course.canEnter %}
-                <a href="index.php?modname=course&amp;op=aula&amp;idCourse={{ course.idCourse }}"
-                    rel="{{ course.rel }}">
-                {% endif %}
-                    {{ course.name }}
-                {% if course.canEnter %}
-                </a>
-                {% endif %}
-            </h3>
+            <strong>{{ course.name }}</strong>
             {# <h3 class="course-box__title {{ course.tooltipClass }}">{{ course.name }}</h3>
                         <span class="twig-course-tooltipElement_raw">{{ course.tooltipElement|raw }}</span> #}
         {% endblock %}
@@ -100,7 +84,7 @@
                                     <div class="show-all-dates-popup" data-overlay="course-{{ course.idCourse }}">
                                         <div id="pop_up_container" class="yui-module yui-overlay yui-panel">
                                             <a class="container-close" href="javascript:;"
-                                               onclick="closeAllDatesPopup({{ course.idCourse }})"></a>
+                                               title="{{ Lang_translate('_CLOSE', 'standard') }}" onclick="closeAllDatesPopup({{ course.idCourse }})"></a>
                                             <div class="hd" id="pop_up_container_h">{{ course.name }}</div>
                                             <div class="bd">
                                                 <div class="edition_container">
@@ -167,9 +151,9 @@
                 {% block entercourse %}
                     {% if course.canEnter %}
 
-                        <a class="forma-button course-box__cta__button" title="{{ course.name }}"
-                           href="index.php?modname=course&amp;op=aula&amp;idCourse={{ course.idCourse }}"
-                           rel="{{ course.rel }}">
+                        <a class="forma-button course-box__cta__button no-border" title="{{ course.name }}"
+                           href="index.php?modname=course&amp;op=aula&amp;idCourse={{ course.idCourse }} "
+                           rel= {{ course.rel }}>
                             <span class="forma-button__label"> {{ Lang_translate('_USER_STATUS_ENTER', 'catalogue') }}</span>
                         </a>
 

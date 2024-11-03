@@ -32,7 +32,7 @@ class LmsAdminModule
 
     public $descr_long;
 
-    public function LmsAdminModule($module_name = '')
+    public function __construct($module_name = '')
     {
         if ($module_name == '') {
             $this->module_name = $GLOBALS['modname'];
@@ -42,10 +42,8 @@ class LmsAdminModule
 
         $this->version = '1.0';
 
-        $this->authors = ['Fabio Pirovano <fabio@docebo.it)',
-                                'Emanuele Sandri <esandri@tiscali.it>', ];
-        $this->mantainers = ['Fabio Pirovano <fabio@docebo.it)',
-                                    'Emanuele Sandri <esandri@tiscali.it>', ];
+        $this->authors = ['Forma LMS Association ', 'https://www.formalms.org'];
+        $this->mantainers = ['Forma LMS Association','https://www.formalms.org' ];
 
         $this->descr_short = 'General module : ' . $this->module_name;
         $this->descr_long = 'General module : ' . $this->module_name;
@@ -88,7 +86,7 @@ class LmsAdminModule
 
     public function getTitle()
     {
-        return 'Docebo 2.1 LMS - ' . $this->module_name;
+        return 'Forma 2.1 LMS - ' . $this->module_name;
     }
 
     public function loadHeader()
@@ -98,8 +96,8 @@ class LmsAdminModule
 
     public function loadBody()
     {
-        //include(__DIR__.'/../modules/'.$this->module_name.'/'.$this->module_name.'.php');
-        include Forma::inc(_lms_ . '/admin/modules/' . $this->module_name . '/' . $this->module_name . '.php');
+        //include(dirname(__FILE__).'/../modules/'.$this->module_name.'/'.$this->module_name.'.php');
+        include \FormaLms\lib\Forma::inc(_lms_ . '/admin/modules/' . $this->module_name . '/' . $this->module_name . '.php');
     }
 
     public function loadFooter()
@@ -135,8 +133,8 @@ class LmsAdminModule
 
     public function getPermissionUi($module_name, $modname, $op, $form_name, $perm, $all_perm_tokens)
     {
-        $lang = &DoceboLanguage::createInstance('manmenu');
-        $lang_perm = &DoceboLanguage::createInstance('permission');
+        $lang = &FormaLanguage::createInstance('manmenu');
+        $lang_perm = &FormaLanguage::createInstance('permission');
 
         $tokens = $this->getAllToken($op);
 

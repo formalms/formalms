@@ -17,7 +17,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 define("LMS", true);
 define("IN_FORMA", true);
 define("_deeppath_", '../../../');
-//require(__DIR__.'/../base.php');
+//require(dirname(__FILE__).'/../base.php');
 
 // start buffer
 ob_start();
@@ -26,10 +26,10 @@ ob_start();
 require_once(_base_.'/lib/lib.bootstrap.php');
 Boot::init(BOOT_TEMPLATE);
 */
-if (Docebo::user()->isLoggedIn()) {
-    require_once Forma::inc(_lms_ . '/modules/scorm/config.scorm.php');
-    require_once Forma::inc(_lms_ . '/modules/scorm/scorm_utils.php');
-    require_once Forma::inc(_lms_ . '/modules/scorm/scorm_items_track.php');
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isLoggedIn()) {
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/config.scorm.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/scorm_utils.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/scorm_items_track.php');
 
     $idReference = $GLOBALS['idReference'];
     $idResource = $GLOBALS['idResource'];
@@ -74,7 +74,7 @@ if (Docebo::user()->isLoggedIn()) {
         break;
 }
 
-    $idUser = (int) getLogUserId();
+    $idUser = (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
     /*Start database connection***********************************************/
 
@@ -94,8 +94,8 @@ if (Docebo::user()->isLoggedIn()) {
 
     $arrItemTrack = sql_fetch_assoc($rsItemTrack);
     // with id_item_track of organization|user|reference create an entry in commontrack table
-    require_once Forma::inc(_lms_ . '/class.module/track.object.php');
-    require_once Forma::inc(_lms_ . '/class.module/track.scorm.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/track.object.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/track.scorm.php');
     $track_so = new Track_ScormOrg($arrItemTrack['idscorm_item_track'], false, false, null, $environment);
     if ($track_so->idReference === null) {
         $track_so->createTrack($idReference, $arrItemTrack['idscorm_item_track'], $idUser, date('Y-m-d H:i:s'), 'ab-initio', 'scormorg');

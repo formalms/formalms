@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once __DIR__ . '/lib.connector.php';
+require_once dirname(__FILE__) . '/lib.connector.php';
 
 /**
  * class for define csv connection to data source.
@@ -22,7 +22,7 @@ require_once __DIR__ . '/lib.connector.php';
  *
  * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
  **/
-class DoceboConnectorXmlOrgChart extends DoceboConnector
+class FormaConnectorXmlOrgChart extends FormaConnector
 {
     public $curr_file = '';
     public $filename = '';
@@ -36,7 +36,7 @@ class DoceboConnectorXmlOrgChart extends DoceboConnector
     public $name = '';
     public $description = '';
 
-    public function DoceboConnectorXmlOrgChart($params)
+    public function __construct($params)
     {
         $this->set_config($params);
     }
@@ -67,7 +67,7 @@ class DoceboConnectorXmlOrgChart extends DoceboConnector
 
     public function get_configUI()
     {
-        return new DoceboConnectorXmlOrgChartUI($this);
+        return new FormaConnectorXmlOrgChartUI($this);
     }
 
     /**
@@ -78,21 +78,21 @@ class DoceboConnectorXmlOrgChart extends DoceboConnector
         $this->close();
         /* search for file with pattern */
         $pat = str_replace(['*', '?'], ['.*', '.{1}'], $this->filename);
-        $arr_files = $this->_preg_ls(DOCEBOIMPORT_BASEDIR, false, '/^' . $pat . '/');
+        $arr_files = $this->_preg_ls(FORMAIMPORT_BASEDIR, false, '/^' . $pat . '/');
         if (count($arr_files) == 0) {
-            //$this->last_error = 'file not found: '.DOCEBOIMPORT_BASEDIR.$this->filename;
-            return DOCEBO_IMPORT_NOTHINGTOPROCESS;
+            //$this->last_error = 'file not found: '.FORMAIMPORT_BASEDIR.$this->filename;
+            return FORMA_IMPORT_NOTHINGTOPROCESS;
         }
         $this->curr_file = $arr_files[0];
         require_once _base_ . '/lib/lib.domxml.php';
-        $this->dom_doc = new DoceboDOMDocument();
+        $this->dom_doc = new FormaDOMDocument();
         $this->dom_doc->loadXML(file_get_contents($this->curr_file));
-        //$this->dom_doc = DoceboDOMDocument::loadXML($this->curr_file);
+        //$this->dom_doc = FormaDOMDocument::loadXML($this->curr_file);
         //$error = '';
         //$this->dom_doc = domxml_open_file($this->curr_file,DOMXML_LOAD_VALIDATING ,$error);
 
         if ($this->dom_doc === null) {
-            $this->last_error = 'Error parsing xml org chart file: ' . DOCEBOIMPORT_BASEDIR . $this->curr_file;
+            $this->last_error = 'Error parsing xml org chart file: ' . FORMAIMPORT_BASEDIR . $this->curr_file;
 
             return false;
         }
@@ -109,7 +109,7 @@ class DoceboConnectorXmlOrgChart extends DoceboConnector
     {
         if ($this->dom_doc !== null) {
             $this->dom_doc = null;
-            rename($this->curr_file, DOCEBOIMPORT_BASEDIR . 'processed' . basename($this->curr_file));
+            rename($this->curr_file, FORMAIMPORT_BASEDIR . 'processed' . basename($this->curr_file));
         }
         $this->row_index = 0;
 
@@ -279,7 +279,7 @@ class DoceboConnectorXmlOrgChart extends DoceboConnector
         return 0;
     }
 
-    public function add_row($row)
+    public function add_row($row = null, $pk = null)
     {
         return false;
     }
@@ -331,7 +331,7 @@ class DoceboConnectorXmlOrgChart extends DoceboConnector
  *
  * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
  **/
-class DoceboConnectorXmlOrgChartUI extends DoceboConnectorUI
+class FormaConnectorXmlOrgChartUI extends FormaConnectorUI
 {
     public $connector = null;
     public $post_params = null;
@@ -341,7 +341,7 @@ class DoceboConnectorXmlOrgChartUI extends DoceboConnectorUI
     public $step_next = '';
     public $step_prev = '';
 
-    public function DoceboConnectorXmlOrgChartUI(&$connector)
+    public function __construct(&$connector)
     {
         $this->connector = $connector;
     }
@@ -442,7 +442,7 @@ class DoceboConnectorXmlOrgChartUI extends DoceboConnectorUI
         return '';
     }
 
-    public function get_html()
+    public function get_html($get = null, $post = null)
     {
         $out = '';
         switch ($this->post_params['step']) {
@@ -495,5 +495,5 @@ class DoceboConnectorXmlOrgChartUI extends DoceboConnectorUI
 
 function xmlorgchart_factory()
 {
-    return new DoceboConnectorXmlOrgChart([]);
+    return new FormaConnectorXmlOrgChart([]);
 }

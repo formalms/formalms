@@ -14,7 +14,7 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 /* absolute base path to the main directory of the docebo installation */
-const _base_ = __DIR__;
+define('_base_', __DIR__);
 
 /*
  * Subsystem folder
@@ -47,6 +47,7 @@ const _folder_files_app_ = 'appCore';
 const _folder_files_com_ = 'common';
 const _folder_plugins_ = 'plugins';
 const _folder_templates_ = 'templates';
+const _folder_legacy_ = 'UpgradeLegacy';
 
 /* absolute address to the addons folder */
 const _addons_ = _base_ . '/' . _folder_addons_;
@@ -61,11 +62,14 @@ const _files_lms_ = _files_ . '/' . _folder_files_lms_;
 const _files_app_ = _files_ . '/' . _folder_files_app_;
 const _files_com_ = _files_ . '/' . _folder_files_com_;
 const _templates_ = _base_ . '/' . _folder_templates_;
+const _legacy_ = _base_ . '/' . _folder_legacy_;
+const _legacy_adm_ = _legacy_ . '/' . _folder_adm_;
 
 const _plugins_ = _base_ . '/' . _folder_plugins_;
 
 /* other nice setting */
 const _homepage_base_ = 'adm/homepage';
+const _system_base_ = 'adm/system';
 const _homecatalog_base_ = 'lms/homecatalogue';
 
 const _homepage_ = _homepage_base_ . '/show';
@@ -79,3 +83,25 @@ const _newpwd_ = _homepage_base_ . '/newpwd';
 const _homewebpage_ = _homepage_base_ . '/webpage';
 const _sso_ = _homepage_base_ . '/sso';
 const _homecatalog_ = _homecatalog_base_ . '/show';
+const _install_ = _system_base_ . '/install';
+const _upgradeclass_ = 'upgrade_class';
+
+
+const BOOT_COMPOSER = 0;
+const BOOT_PHP = 1;
+const BOOT_CONFIG = 2;
+const BOOT_UTILITY = 3;
+const BOOT_SETTING = 4;
+const BOOT_REQUEST = 5;
+const BOOT_PLATFORM = 6;
+const BOOT_DOMAIN_AND_TEMPLATE = 7;
+const BOOT_PLUGINS = 8;
+const BOOT_USER = 9;
+const BOOT_SESSION_CHECK = 10;
+const BOOT_INPUT = 11;
+const BOOT_LANGUAGE = 12;
+const BOOT_HOOKS = 13;
+const BOOT_DATETIME = 14;
+const BOOT_TEMPLATE = 15;
+const BOOT_PAGE_WR = 16;
+const CHECK_SYSTEM_STATUS = 17;

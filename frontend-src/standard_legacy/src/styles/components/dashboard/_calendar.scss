@@ -1,0 +1,115 @@
+.d-calendar {
+  font-family: $font;
+
+  .fc-button{
+    background-color: var(--color-white)!important;
+    border: none!important;
+  }
+
+  .fc-today-button {
+    color: var(--color-black);
+  }
+  
+  .fc-day-top {
+    padding-top: 5px;
+  }
+
+  .fc-sun {
+    color: var(--color-primary);
+  }
+
+  .fc-left {
+    > h2 {
+      font-weight: $bold;
+      color: var(--color-secondary);
+    }
+  }
+
+  .fc-scroller {
+    overflow: visible!important;
+  }
+
+  .fc-row {
+    $var: 100;
+
+    @for $i from 1 through 7 {
+      &:nth-child(#{$i}) {
+        z-index: #{$var}!important;
+        $var: $var - 10;
+      }
+    }
+  }
+
+  .fc-event {
+    width: 65.48%;
+    height: 7px;
+    margin-left: auto!important;
+    position: relative;
+    cursor: pointer;
+    border-radius: 0!important;
+    
+    &.is-open {
+      &:before {
+        background-color: var(--color-secondary);
+      }
+    }
+    
+    &.is-closed {
+      &:before {
+        background-color: var(--color-primary);
+      }
+    }
+
+    &:before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      @include center-object(y, absolute);
+      left: -10px;
+
+      @include breakpoint($ipad) {
+        left: -11px;
+      }
+    }
+
+    @include breakpoint($ipad) {
+      width: 77.61%;
+      height: 10px;
+    }
+    
+    &:hover {
+      .d-popup {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+
+    .fc-time {
+      display: none;
+    }
+  }
+
+  .fc-title {
+    font-weight: $bold;
+    line-height: 9px;
+    display: none;
+
+    @include breakpoint($ipad) {
+      font-size: 9px;
+      display: block;
+    }
+  }
+
+  .fc-icon-chevron-left,
+  .fc-icon-chevron-right {
+    color: var(--color-primary);
+  }
+}
+
+.d-calendar__item  {
+  margin-top: 38px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+

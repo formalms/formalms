@@ -124,7 +124,7 @@ $columns[] = ['key' => 'last_assign_date', 'label' => Lang::t('_DATE_LAST_COMPLE
 $columns[] = ['key' => 'unassign', 'label' => $icon_del, 'formatter' => 'stdDelete', 'className' => 'img-cell'];
 
 $rel_actions = '<a class="ico-wt-sprite subs_add" title="' . Lang::t('_ASSIGN_USERS', 'standard') . '" '
-    . 'href="index.php?r=adm/competences/assign_users&id_competence=' . (int) $competence_info->id_competence . '">'
+    . 'href="index.php?r=adm/userselector/show&instance=competence&id=' . (int) $competence_info->id_competence . '&load=1">'
     . '<span>' . Lang::t('_ASSIGN_USERS', 'standard') . '</span></a>'
     . ($competence_info->type == 'score' && $count_users > 0
         ? '<a class="ico-wt-sprite subs_mod" title="' . Lang::t('_EDIT_SCORE', 'competences') . '" '

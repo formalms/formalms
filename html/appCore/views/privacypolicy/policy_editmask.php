@@ -31,7 +31,7 @@ $_tabview_titles = '<ul class="nav nav-tabs">';
 $_tabview_contents = '<div class="tab-content">';
 
 //edit policy content in all languages
-$_langs = Docebo::langManager()->getAllLanguages(true);
+$_langs = \FormaLms\lib\Forma::langManager()->getAllLanguages(true);
 foreach ($_langs as $_lang_code => $_lang_data) {
     $_translation = isset($id_policy) && isset($translations[$_lang_code]) ? $translations[$_lang_code] : '';
 

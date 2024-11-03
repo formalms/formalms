@@ -13,8 +13,8 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once Forma::inc(_lms_ . '/lib/lib.coursereport.php');
-require_once Forma::inc(_lms_ . '/lib/lib.test.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.coursereport.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.test.php');
 
 class CoursereportLms extends Model
 {
@@ -29,6 +29,8 @@ class CoursereportLms extends Model
     public const TEST_STATUS_PASSED = 'passed';
     public const TEST_STATUS_DOING = 'doing';
     public const TEST_STATUS_VALID = 'valid';
+
+    public const TEST_STATUS_VARIANZA = 'varianza';
 
     /**
      * @var int
@@ -122,15 +124,13 @@ class CoursereportLms extends Model
     private function grabCourseReports()
     {
         $report_man = new CourseReportManager($this->idCourse);
-        $org_tests = $report_man->getTest();
-
-        $report_man->removeDuplicatedReports($this->idCourse);
+        $org_tests = &$report_man->getTest();
 
         $query_final_tot_report = "SELECT COUNT(*) FROM %lms_coursereport WHERE id_course = '" . $this->idCourse . "' AND source_of = '" . self::SOURCE_OF_FINAL_VOTE . "'";
 
         [$final_score_report] = sql_fetch_row(sql_query($query_final_tot_report));
 
-        if ((int) $final_score_report === 0) {
+        if ((int)$final_score_report === 0) {
             $report_man->addFinalVoteToReport();
         }
 
@@ -138,22 +138,20 @@ class CoursereportLms extends Model
 
         [$tot_report] = sql_fetch_row(sql_query($query_tot_report));
 
-        if ((int) $tot_report === 1) {
-            if ((int) $final_score_report === 1) {
-                $query_remove_final_score = "DELETE FROM %lms_coursereport WHERE id_course = '" . $this->idCourse . "' AND source_of = '" . self::SOURCE_OF_FINAL_VOTE . "'";
+        if ((int)$tot_report === 1) {
+            if ((int)$final_score_report === 1) {
+                $query_remove_final_score = "DELETE FROM %lms_coursereport WHERE id_course = '" . $this->idCourse . "'";
 
                 sql_query($query_remove_final_score);
             }
 
-            $query_tot_report = 'SELECT COUNT(*) '
-                . ' FROM %lms_coursereport '
-                . " WHERE id_course = '" . $this->idCourse . "'";
-            [$tot_report] = sql_fetch_row(sql_query($query_tot_report));
+            $tot_report = 0;
         }
 
-        $query_tests = 'SELECT id_report, id_source '
-            . ' FROM %lms_coursereport '
-            . " WHERE id_course = '" . $this->idCourse . "' AND source_of = '" . self::SOURCE_OF_TEST . "' GROUP BY id_course, id_source";
+        $query_tests = 'SELECT cr.id_report, cr.id_source '
+            . ' FROM %lms_coursereport cr '
+            . ' RIGHT JOIN %lms_organization lo ON lo.idResource = cr.id_source AND lo.idCourse = ' . $this->idCourse
+            . ' WHERE cr.id_course = ' . $this->idCourse . ' AND cr. source_of = "' . self::SOURCE_OF_TEST . '"';
 
         $re_tests = sql_query($query_tests);
 
@@ -164,9 +162,10 @@ class CoursereportLms extends Model
         }
 
         // XXX: Update if needed
-        if ((int) $tot_report === 0) {
+        if ((int)$tot_report === 0) {
             $report_man->initializeCourseReport($org_tests);
         } else {
+
             if (is_array($included_test)) {
                 $test_to_add = array_diff($org_tests, $included_test);
             } else {
@@ -187,26 +186,40 @@ class CoursereportLms extends Model
 
         $report_man->updateTestReport($org_tests);
 
-        $query_report = "SELECT id_report FROM %lms_coursereport WHERE id_course = '" . $this->idCourse . "'";
+        $query_report = "SELECT tbl.* FROM ((SELECT cr.id_report, cr.sequence FROM %lms_coursereport cr 
+                        RIGHT JOIN %lms_organization lo ON lo.idResource = cr.id_source 
+                        AND lo.idCourse = '" . $this->idCourse . "' 
+                        WHERE cr.id_course = '" . $this->idCourse . "' AND (cr.source_of = '" . self::SOURCE_OF_TEST . "' OR cr.source_of = '" . self::SOURCE_OF_SCOITEM . "'))
+                        UNION 
+                        (SELECT cr.id_report, cr.sequence FROM %lms_coursereport cr  
+                        WHERE cr.id_course = '" . $this->idCourse . "'
+                        AND cr.source_of NOT IN ('" . self::SOURCE_OF_TEST . "','" . self::SOURCE_OF_SCOITEM . "'))) tbl";
 
+
+        if (!is_null($this->idReport) || !is_null($this->sourceOf) || !is_null($this->idSource)) {
+            $query_report .= " WHERE 1";
+        }
+        
         if (!is_null($this->idReport)) {
-            $query_report .= " AND id_report = '" . $this->idReport . "'";
+            $query_report .= " AND tbl.id_report = '" . $this->idReport . "'";
         }
 
         if (!is_null($this->sourceOf)) {
             if (is_array($this->sourceOf)) {
-                $query_report .= " AND source_of IN ('" . implode("','", $this->sourceOf) . "')";
+                $query_report .= " AND tbl.source_of IN ('" . implode("','", $this->sourceOf) . "')";
             } else {
-                $query_report .= " AND source_of = '" . $this->sourceOf . "'";
+                $query_report .= " AND tbl.source_of = '" . $this->sourceOf . "'";
             }
         }
 
         if (!is_null($this->idSource)) {
-            $query_report .= " AND id_source = '" . $this->idSource . "'";
+            $query_report .= " AND tbl.id_source = '" . $this->idSource . "'";
         }
 
-        $query_report .= ' GROUP BY id_course, id_source ORDER BY sequence ';
+        $query_report .= ' ORDER BY tbl.sequence ';
 
+
+        //echo($query_report); exit;
         $re_report = sql_query($query_report);
 
         foreach ($re_report as $infoReport) {
@@ -286,7 +299,7 @@ class CoursereportLms extends Model
 
         $re_report = sql_query($query_report);
 
-        while ($info_report = sql_fetch_assoc($re_report)) {
+        foreach ($re_report as $info_report) {
             $report = new ReportLms($info_report['id_report'], $info_report['title'], $info_report['max_score'], $info_report['required_score'], $info_report['weight'], $info_report['show_to_user'], $info_report['use_for_final'], $info_report['source_of'], $info_report['id_source']);
         }
 
@@ -320,5 +333,40 @@ class CoursereportLms extends Model
         }
 
         return $responseArray;
+    }
+
+    public static function getInsertQueryCourseReportAsForeignKey(array $params): string
+    {
+
+        //non potendo mettere chiavi esterne mettiamo la tabella dual che permette di estrarre da 
+        //una tabella non esistente sul db dove applicare la condizione exists
+        return 'INSERT IGNORE INTO %lms_coursereport 
+                        (id_course, 
+                        title,
+                        max_score, 
+                        required_score, 
+                        weight, 
+                        show_to_user, 
+                        use_for_final, 
+                        source_of, 
+                        id_source, 
+                        sequence)
+        SELECT "' . $params['idCourse'] . '",
+                "' . $params['title'] . '",
+                "' . $params['max_score'] . '",
+                "' . $params['required_score'] . '",
+                "' . $params['weight'] . '",
+                "' . $params['show_to_user'] . '",
+                "' . $params['use_for_final'] . '",
+                "' . $params['source_of'] . '",
+                "' . $params['idSource'] . '",
+                "' . $params['sequence'] . '"
+        FROM dual
+        WHERE EXISTS (
+            SELECT 1
+            FROM %lms_organization 
+            WHERE idResource = "' . $params['idSource'] . '"
+            AND idCourse = ' . $params['idCourse'] . '
+        )';
     }
 }

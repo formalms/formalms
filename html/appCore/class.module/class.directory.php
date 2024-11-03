@@ -14,7 +14,7 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 require_once __DIR__ . '/class.definition.php';
-require_once dirname(__DIR__) . '/lib/lib.directory.php';
+require_once __DIR__ . '/../lib/lib.directory.php';
 
 define('FILTER_FOLD', 'FILTER_FOLD');
 
@@ -54,8 +54,8 @@ class Module_Directory extends Module
     public function __construct()
     {
         parent::__construct();
-        $this->aclManager = new DoceboACLManager();
-        $this->lang = &DoceboLanguage::createInstance('admin_directory', 'framework');
+        $this->aclManager = new FormaACLManager();
+        $this->lang = &FormaLanguage::createInstance('admin_directory', 'framework');
 
         require_once _adm_ . '/lib/lib.selextend.php';
         $this->sel_extend = new ExtendSelector();
@@ -421,10 +421,10 @@ class Module_Directory extends Module
     {
         require_once _base_ . '/lib/lib.table.php';
 
-        $lang = &DoceboLanguage::createInstance('profile', 'framework');
+        $lang = &FormaLanguage::createInstance('profile', 'framework');
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $max_row = 10;
         $tb = new Table($max_row);
@@ -503,9 +503,9 @@ class Module_Directory extends Module
     public function org_manageuser()
     {
         checkPerm('view_org_chart', false, 'directory', 'framework');
-        require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
+        require_once _base_ . '/lib/lib.user_profile.php';
 
-        $lang = &DoceboLanguage::createInstance('profile', 'framework');
+        $lang = &FormaLanguage::createInstance('profile', 'framework');
 
         $profile = new UserProfile(importVar('id_user', true, 0));
         $profile->init('profile', 'framework', 'modname=directory&op=org_manageuser&id_user=' . importVar('id_user', true, 0), 'ap');
@@ -746,11 +746,11 @@ class Module_Directory extends Module
                     $data->setGroupFilter($idstGroup);
                 }
             } else {
-                $userlevelid = Docebo::user()->getUserLevelId();
+                $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
                 if ($userlevelid != ADMIN_GROUP_GODADMIN) {
                     require_once _adm_ . '/lib/lib.adminmanager.php';
                     $adminManager = new AdminManager();
-                    $data->intersectGroupFilter($adminManager->getAdminTree(Docebo::user()->getIdSt()));
+                    $data->intersectGroupFilter($adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()));
                 }
             }
             // print out the listview
@@ -809,7 +809,7 @@ class Module_Directory extends Module
         $arr_levels_id = array_flip($arr_levels_id);
         $arr_levels_translation = [];
         foreach ($arr_levels_id as $lev_idst => $lev_id) {
-            if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 if ($lev_id == ADMIN_GROUP_USER) {
                     $arr_levels_translation[$lev_idst] = $this->lang->def('_DIRECTORY_' . $lev_id);
                 }
@@ -917,7 +917,7 @@ class Module_Directory extends Module
         require_once _adm_ . '/lib/lib.field.php';
         $fields = new FieldList();
         if ($arr_idst_groups != false) {
-            $acl = &Docebo::user()->getACL();
+            $acl = \FormaLms\lib\Forma::getAcl();
             $arr_idst_all = $acl->getArrSTGroupsST(array_values($arr_idst_groups));
         } else {
             $arr_idst_all = false;
@@ -1115,7 +1115,7 @@ class Module_Directory extends Module
         require_once _base_ . '/lib/lib.form.php';
         require_once _base_ . '/lib/lib.table.php';
         require_once _adm_ . '/lib/lib.field.php';
-        $acl = &Docebo::user()->getAcl();
+        $acl = \FormaLms\lib\Forma::getAcl();;
         $groupLabel = $groupid;
         if ($groupid != '') {
             $arrGroup = $this->aclManager->getGroup(false, $groupid);
@@ -1232,7 +1232,6 @@ class Module_Directory extends Module
         $lv->aclManager = &$this->aclManager;
         $lv->parsePositionData($_POST);
         $GLOBALS['page']->add($lv->printOut(), 'content');
-        $this->selected = $lv->printedItems;
         if ($simple === false) {
             $GLOBALS['page']->add(Form::closeElementSpace(), 'content');
             $GLOBALS['page']->add(Form::getCloseFieldset(), 'content');
@@ -1255,7 +1254,7 @@ class Module_Directory extends Module
         }
         if (isset($_POST['okselector'])) {
             // aggiungere i selezionati al gruppo
-            require_once dirname(__DIR__) . '/modules/org_chart/tree.org_chart.php';
+            require_once dirname(__FILE__) . '/../modules/org_chart/tree.org_chart.php';
             $orgDb = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
             $arrGroup = $this->aclManager->getGroup(false, $groupid);
             if ($arrGroup !== false) {
@@ -1386,7 +1385,7 @@ class Module_Directory extends Module
         $dst = new ImportGroupUser(['dbconn' => $GLOBALS['dbConn']]);
         $src->connect();
         $dst->connect();
-        $importer = new DoceboImport();
+        $importer = new FormaImport();
         $importer->setSource($src);
         $importer->setDestination($dst);
 
@@ -1428,7 +1427,7 @@ class Module_Directory extends Module
         $dst = new ImportGroupUser(['dbconn' => $GLOBALS['dbConn']]);
         $src->connect();
         $dst->connect();
-        $importer = new DoceboImport();
+        $importer = new FormaImport();
         $importer->setSource($src);
         $importer->setDestination($dst);
 
@@ -1474,7 +1473,7 @@ class Module_Directory extends Module
 
     public function &getTreeView_OrgView()
     {
-        require_once dirname(__DIR__) . '/modules/org_chart/tree.org_chart.php';
+        require_once dirname(__FILE__) . '/../modules/org_chart/tree.org_chart.php';
         $orgDb = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
         $treeView = new TreeView_OrgView($orgDb, 'organization_chart', FormaLms\lib\Get::sett('title_organigram_chart'));
         $treeView->aclManager = &$this->aclManager;
@@ -1494,9 +1493,9 @@ class Module_Directory extends Module
 
     public function loadOrgChartView()
     {
-        require_once dirname(__DIR__) . '/modules/org_chart/tree.org_chart.php';
-        $lang = &DoceboLanguage::createInstance('organization_chart', 'framework');
-        $userlevelid = Docebo::user()->getUserLevelId();
+        require_once dirname(__FILE__) . '/../modules/org_chart/tree.org_chart.php';
+        $lang = &FormaLanguage::createInstance('organization_chart', 'framework');
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
 
         $repoDb = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
 
@@ -1507,7 +1506,7 @@ class Module_Directory extends Module
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             require_once _adm_ . '/lib/lib.adminmanager.php';
             $adminManager = new AdminManager();
-            $treeView->setFilterNodes($adminManager->getAdminTree(Docebo::user()->getIdSt()));
+            $treeView->setFilterNodes($adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()));
         }
 
         $treeView->loadState();
@@ -1685,7 +1684,7 @@ class Module_Directory extends Module
     {
         require_once _base_ . '/lib/lib.form.php';
         if (FormaLms\lib\Get::sett('register_deleted_user') == 'on') {
-            $lang = &DoceboLanguage::createInstance('profile', 'framework');
+            $lang = &FormaLanguage::createInstance('profile', 'framework');
             $GLOBALS['page']->add('<br />' . '<a href="index.php?modname=directory&amp;op=view_deleted_user">' . $lang->def('_DELETED_USER_LIST') . '</a>');
         }
         $data = &$treeView->lv_data;
@@ -1725,14 +1724,13 @@ class Module_Directory extends Module
         if ($groupid != '') {
             $data->setGroupFilter($idst, $lv->flat_mode);
         }
-        $userlevelid = Docebo::user()->getUserLevelId();
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             require_once _adm_ . '/lib/lib.adminmanager.php';
             $adminManager = new AdminManager();
-            $data->intersectGroupFilter($adminManager->getAdminTree(Docebo::user()->getIdSt()));
+            $data->intersectGroupFilter($adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()));
         }
         $GLOBALS['page']->add($lv->printOut(), 'content');
-        //$this->selected = $lv->printedItems;
     }
 
     public function addToTree($treeid)
@@ -1742,7 +1740,7 @@ class Module_Directory extends Module
             return;
         }
 
-        require_once dirname(__DIR__) . '/modules/org_chart/tree.org_chart.php';
+        require_once dirname(__FILE__) . '/../modules/org_chart/tree.org_chart.php';
         $repoDb = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
 
         if (isset($_POST['okselector'])) {
@@ -1772,7 +1770,7 @@ class Module_Directory extends Module
             $this->show_orgchart_selector = false;
             $this->hide_suspend = false;
             $this->loadSelector('index.php?modname=directory&amp;op=addtotree&amp;treeid=' . $treeid . '&amp;stayon=1',
-                $this->lang->def('_ADD') . ' ' . $arr_translations[getLanguage()],
+                $this->lang->def('_ADD') . ' ' . $arr_translations [Lang::get()],
                 $this->lang->def('_ADD'),
                 true);
         }
@@ -1811,7 +1809,7 @@ class Module_Directory extends Module
         if ($control_view && (FormaLms\lib\Get::sett('use_org_chart') == '1' || $GLOBALS['use_groups'] == '1')) {
             if (isset($_POST['okselector'])) {
                 // go to user creation with folders selected
-                require_once dirname(__DIR__) . '/modules/org_chart/tree.org_chart.php';
+                require_once dirname(__FILE__) . '/../modules/org_chart/tree.org_chart.php';
                 $repoDb = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
 
                 $arr_selection = $this->getSelection($_POST);
@@ -1829,7 +1827,7 @@ class Module_Directory extends Module
                         $treeid = (int) $_GET['treeid'];
                     }
                     if ($treeid != 0) {
-                        require_once dirname(__DIR__) . '/modules/org_chart/tree.org_chart.php';
+                        require_once dirname(__FILE__) . '/../modules/org_chart/tree.org_chart.php';
                         $repoDb = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
                         $idst = $repoDb->getGroupST($treeid);
                         $this->resetSelection([$idst]);
@@ -1852,12 +1850,12 @@ class Module_Directory extends Module
                     $this->show_orgchart_selector = false;
                 }
 
-                if (Docebo::user()->getUserLevelId() === '/framework/level/admin') {
+                if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() === '/framework/level/admin') {
                     require_once _adm_ . '/lib/lib.adminmanager.php';
 
                     $adminManager = new AdminManager();
 
-                    $this->setGroupFilter('group', $adminManager->getAdminTree(getLogUserId()));
+                    $this->setGroupFilter('group', $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()));
                 }
 
                 $this->loadSelector('index.php?modname=directory&amp;op=org_createuser&amp;stayon=1',
@@ -1879,7 +1877,7 @@ class Module_Directory extends Module
         require_once _base_ . '/lib/lib.form.php';
         require_once _adm_ . '/lib/lib.field.php';
         require_once _base_ . '/lib/lib.table.php';
-        require_once Forma::inc(_base_ . '/lib/lib.usermanager.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.usermanager.php');
 
         if (isset($_POST['ok_waiting'])) {
             $user_man = new UserManager();
@@ -1973,7 +1971,7 @@ class Module_Directory extends Module
 
                 $msg_composer2 = new EventMessageComposer('admin_directory', 'framework');
 
-                $msg_composer2->setSubjectLangText('email', '_APPROVED_USER_SBJ', $array_subst);
+                $msg_composer2->setSubjectLangText('email', '_APPROVED_USER_SBJ', false);
                 $msg_composer2->setBodyLangText('email', '_APPROVED_USER_TEXT', $array_subst);
 
                 $msg_composer2->setBodyLangText('sms', '_APPROVED_USER_TEXT_SMS', $array_subst);
@@ -2065,47 +2063,47 @@ class Module_Directory extends Module
     }
 
     // Function for permission managment
-    public function getAllToken($op)
+    public static function getAllToken($op)
     {
         switch ($op) {
             case 'org_chart':
                 return [
                     'view' => ['code' => 'view_org_chart',
                         'name' => '_VIEW_ORG_CHART',
-                        'image' => 'standard/view.png', ],
+                        'image' => 'standard/view.png',],
                     'add' => ['code' => 'createuser_org_chart',
                         'name' => '_NEW_USER',
-                        'image' => 'standard/add.png', ],
+                        'image' => 'standard/add.png',],
                     'mod' => ['code' => 'edituser_org_chart',
                         'name' => '_MOD',
-                        'image' => 'standard/edit.png', ],
+                        'image' => 'standard/edit.png',],
                     'del' => ['code' => 'deluser_org_chart',
                         'name' => '_DELUSER_ORG_CHART',
-                        'image' => 'standard/delete.png', ],
+                        'image' => 'standard/delete.png',],
                     'moderate' => ['code' => 'approve_waiting_user',
                         'name' => '_MODERATE',
-                        'image' => 'org_chart/waiting_identity.png', ],
+                        'image' => 'org_chart/waiting_identity.png',],
                 ];
-                break;
             case 'listgroup':
                 return [
                     'view' => ['code' => 'view_group',
                         'name' => '_VIEW',
-                        'image' => 'standard/view.png', ],
+                        'image' => 'standard/view.png',],
                     'add' => ['code' => 'creategroup',
                         'name' => '_ADD',
-                        'image' => 'standard/add.png', ],
+                        'image' => 'standard/add.png',],
                     'mod' => ['code' => 'editgroup',
                         'name' => '_MOD',
-                        'image' => 'standard/edit.png', ],
+                        'image' => 'standard/edit.png',],
                     'del' => ['code' => 'delgroup',
                         'name' => '_DEL',
-                        'image' => 'standard/delete.png', ],
+                        'image' => 'standard/delete.png',],
                     'associate' => ['code' => 'associate_group',
                         'name' => '_ASSOCIATEUSERTOGROUP',
-                        'image' => 'directory/addto.gif', ],
+                        'image' => 'directory/addto.gif',],
                 ];
-                break;
+            default:
+                return [];
         }
     }
 
@@ -2133,7 +2131,7 @@ class Module_Directory extends Module
 
         $form = new Form();
         $fl = new FieldList();
-        $acl = &Docebo::user()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
 
         $GLOBALS['page']->setWorkingZone('content');
         $GLOBALS['page']->add(getTitleArea($this->lang->def('_GROUPS')

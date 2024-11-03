@@ -78,8 +78,8 @@ switch ($op) {
 
 function canAccessPersonalMedia()
 {
-    $level_id = Docebo::user()->getUserLevelId();
-    if (Docebo::user()->isAnonymous()) {
+    $level_id = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
+    if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         return false;
     }
 
@@ -113,7 +113,7 @@ function show_personal_media(&$out, &$lang)
 
     $url = getPopupBaseUrl();
     $tab = new Table();
-    $user_id = (int) Docebo::user()->getIdSt();
+    $user_id = (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
     //if(FormaLms\lib\Get::sett('hteditor') == 'tinymce') {
 
@@ -259,7 +259,7 @@ function ins_personal_media()
     include_once _base_ . '/lib/lib.multimedia.php';
 
     $url = getPopupBaseUrl() . '&amp;op=personal';
-    $user_id = Docebo::user()->getIdSt();
+    $user_id = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
     $is_streaming = false;
     if ((isset($_FILES['file']['name'])) && (!empty($_FILES['file']['name']))) {
@@ -319,7 +319,7 @@ function del_personal_media(&$out, &$lang)
     } elseif (isset($_POST['conf_del'])) {
         $id = (int) $_POST['id'];
 
-        $user_id = Docebo::user()->getIdSt();
+        $user_id = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
         $qtxt = 'SELECT real_fname FROM ' . $GLOBALS['prefix_fw'] . '_user_file ';
         $qtxt .= "WHERE id='" . $id . "' AND user_idst='" . $user_id . "' AND type='image'";
@@ -341,7 +341,7 @@ function del_personal_media(&$out, &$lang)
     } else {
         //load info
         $id = (int) importVar('item_id');
-        $user_id = Docebo::user()->getIdSt();
+        $user_id = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
         list($fname) = sql_fetch_row(sql_query('
 		SELECT fname
 		FROM ' . $GLOBALS['prefix_fw'] . "_user_file
@@ -387,7 +387,7 @@ function select_media(&$out, &$lang)
                 exit("You can't access!");
             }
 
-            $user_id = Docebo::user()->getIdSt();
+            $user_id = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
             $path = _USER_FPATH_INTERNAL;
             $relative_path = _USER_FPATH;
             $preview_path = _USER_FPATH;

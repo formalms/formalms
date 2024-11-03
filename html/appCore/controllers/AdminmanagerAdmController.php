@@ -27,7 +27,7 @@ class AdminmanagerAdmController extends AdmController
 
         $this->model = new AdminmanagerAdm();
         $this->json = new Services_JSON();
-        $this->acl_man = &Docebo::user()->getAclManager();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();
         $this->permissions = [
             'view' => checkPerm('view', true, 'adminmanager'),
             'assign_profile' => checkPerm('mod', true, 'adminmanager'),
@@ -113,13 +113,14 @@ class AdminmanagerAdmController extends AdmController
         foreach ($array_group as $value) {
             $id_user = $value['id_user'];
 
-            $has_users = (isset($users_info[$id_user]) && count($users_info[$id_user]) > 0);
-            $has_courses = (isset($courses_info[$id_user]) && (
+  
+            $has_users = (is_array($users_info) && array_key_exists($id_user, $users_info) && $users_info[$id_user]);
+            $has_courses = (is_array($courses_info[$id_user]) && (
                 count($courses_info[$id_user]['course']) > 0 ||
                 count($courses_info[$id_user]['coursepath']) > 0 ||
                 count($courses_info[$id_user]['catalogue']) > 0 ||
                 count($courses_info[$id_user]['category']) > 0));
-            $has_classlocations = (isset($classlocations_info[$id_user]['classlocation']) && count($classlocations_info[$id_user]['classlocation']) > 0);
+            $has_classlocations = (is_array($classlocations_info[$id_user]['classlocation']) && count($classlocations_info[$id_user]['classlocation']) > 0);
 
             $userid = $this->acl_man->relativeId($value['userid']);
 
@@ -351,10 +352,6 @@ class AdminmanagerAdmController extends AdmController
         $dir = FormaLms\lib\Get::req('dir', DOTY_STRING, 'asc');
         $filter_text = FormaLms\lib\Get::req('filter_text', DOTY_STRING, '');
 
-        $searchFilter = [
-            'text' => $filter_text,
-        ];
-
         //instantiate model
         $lmodel = new LocationAlms();
 
@@ -372,7 +369,7 @@ class AdminmanagerAdmController extends AdmController
         $list = $lmodel->getLocationList($startIndex, $results, $sort, $dir, $filter_text);
 
         //prepare the data for sending
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $output_results = [];
         if (is_array($list) && count($list) > 0) {
             foreach ($list as $idst => $record) {

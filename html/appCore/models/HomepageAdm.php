@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Domain\DomainHandler;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -86,6 +88,7 @@ class HomepageAdm extends Model
     public function isSelfRegistrationActive()
     {
         $registration_type = $this->options->getOption('register_type');
+     
         $active_types = ['self', 'self_optin', 'moderate'];
 
         return in_array($registration_type, $active_types);
@@ -107,7 +110,7 @@ class HomepageAdm extends Model
                 . ' FROM %lms_webpages'
                 . " WHERE publish = '1'"
                 . "     AND in_home='0'"
-                . "     AND language = '" . getLanguage() . "'"
+                . "     AND language = '" . Lang::get() . "'"
                 . ' ORDER BY sequence ';
         $r = sql_query($query);
 
@@ -121,7 +124,7 @@ class HomepageAdm extends Model
 
     public function sendLostUserId($email)
     {
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $user_info = $acl_man->getUserByEmail($email);
 
         if (!$user_info) {
@@ -140,8 +143,7 @@ class HomepageAdm extends Model
             }
         }
 
-        $sender = $this->options->getOption('mail_sender');
-        $sender_name = $this->options->getOption('mail_sender_name_from');
+        $sender = DomainHandler::getInstance()->getMailerField('sender_mail_system');
         $recipients = $user_info[ACL_INFO_EMAIL];
         $subject = Lang::t('_LOST_USERID_TITLE', 'register', [], $acl_man->getSettingValueOfUsers('ui.language', [$user_info[ACL_INFO_IDST]])[$user_info[ACL_INFO_IDST]]);
         $body = Lang::t('_LOST_USERID_MAILTEXT', 'register', [
@@ -150,9 +152,9 @@ class HomepageAdm extends Model
             '[dynamic_link]' => getCurrentDomain($reg_code) ?: FormaLms\lib\Get::site_url(),
             '[userid]' => $acl_man->relativeId($user_info[ACL_INFO_USERID]),
         ], $acl_man->getSettingValueOfUsers('ui.language', [$user_info[ACL_INFO_IDST]])[$user_info[ACL_INFO_IDST]]);
-        $params = [MAIL_SENDER_ACLNAME => $sender_name];
-        $mailer = FormaMailer::getInstance();
-        if ($mailer->SendMail($sender, [$recipients], $subject, $body, [], $params)) {
+        $params = [MAIL_SENDER_ACLNAME => DomainHandler::getInstance()->getMailerField('sender_name_system')];
+        $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
+        if ($mailer->SendMail([$recipients], $subject, $body, $sender, [], $params)) {
             return SUCCESS_SEND_LOST_PWD;
         } else {
             return FAILURE_SEND_LOST_PWD;
@@ -161,7 +163,7 @@ class HomepageAdm extends Model
 
     public function sendLostPwd($userid)
     {
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $user_info = $acl_man->getUser(false, $acl_man->absoluteId($userid));
 
         if (!$user_info) {
@@ -196,8 +198,8 @@ class HomepageAdm extends Model
 
         $url = getCurrentDomain($reg_code) ?: FormaLms\lib\Get::site_url();
 
-        $sender = $this->options->getOption('mail_sender');
-        $sender_name = $this->options->getOption('mail_sender_name_from');
+        $sender = DomainHandler::getInstance()->getMailerField('sender_mail_system');
+        $sender_name = DomainHandler::getInstance()->getMailerField('sender_name_system');
         $recipients = $user_info[ACL_INFO_EMAIL];
         $subject = Lang::t('_LOST_PWD_TITLE', 'register', [], $acl_man->getSettingValueOfUsers('ui.language', [$user_info[ACL_INFO_IDST]])[$user_info[ACL_INFO_IDST]]);
         $body = Lang::t('_LOST_PWD_MAILTEXT', 'register', [
@@ -207,9 +209,9 @@ class HomepageAdm extends Model
         ], $acl_man->getSettingValueOfUsers('ui.language', [$user_info[ACL_INFO_IDST]])[$user_info[ACL_INFO_IDST]]);
         $params = [MAIL_SENDER_ACLNAME => $sender_name];
 
-        $mailer = FormaMailer::getInstance();
+        $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
 
-        if ($mailer->SendMail($sender, [$recipients], $subject, $body, [], $params)) {
+        if ($mailer->SendMail([$recipients], $subject, $body, $sender, [], $params)) {
             return SUCCESS_SEND_LOST_PWD;
         } else {
             return FAILURE_SEND_LOST_PWD;
@@ -219,7 +221,7 @@ class HomepageAdm extends Model
     public function checkCode($code)
     {
         if ($user = $this->user_manager->getPwdRandomCode(false, $code)) {
-            $acl_man = &Docebo::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $user_info = $acl_man->getUser($user['idst_user'], false);
 
             return $user_info;
@@ -253,7 +255,7 @@ class HomepageAdm extends Model
 
     public function setNewPwd($pwd, $user, $code)
     {
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         if (!$this->user_manager->deletePwdRandomCode($user, $code)) {
             return false;
@@ -282,7 +284,7 @@ class HomepageAdm extends Model
         $query = ' SELECT title, description'
                 . ' FROM %lms_webpages'
                 . " WHERE publish = '1'"
-                . "     AND language = '" . getLanguage() . "'"
+                . "     AND language = '" . Lang::get() . "'"
                 . '     AND ' . ($id_page ? 'idPages = ' . $id_page : "in_home = '1'");
 
         return sql_fetch_row(sql_query($query));

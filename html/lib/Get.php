@@ -14,6 +14,7 @@
 namespace FormaLms\lib;
 
 use FormaLms\appCore\Template\Services\ClientService;
+use FormaLms\lib\Serializer\FormaSerializer;
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
@@ -43,6 +44,14 @@ define('DOTY_URL', 11);
 
 class Get
 {
+
+    public const coreFolders = [
+        'appLms',
+        'appCore',
+        'appScs',
+        'api',
+    ];
+
     /**
      * Import var from GET and POST, if the var exists in POST and GET, the post value will be preferred.
      *
@@ -79,12 +88,15 @@ class Get
     }
 
     /**
-     * Data filtering.
+     * Filter the input value based on the specified type.
      *
-     * @param mixed $value the value to clean
-     * @param int $typeof the type of the variable
-     *
-     * @return mixede the cleaned value
+     * @param mixed $value The value to be filtered.
+     * @param int $typeof The type of filtering to be performed.
+     *                    Possible values: DOTY_INT, DOTY_DOUBLE, DOTY_FLOAT,
+     *                    DOTY_STRING, DOTY_ALPHANUM, DOTY_NUMLIST,
+     *                    DOTY_JSONDECODE, DOTY_JSONENCODE, DOTY_BOOL, DOTY_MVC,
+     *                    DOTY_URL, DOTY_MIXED.
+     * @return mixed The filtered value based on the specified type.
      */
     public static function filter($value, $typeof)
     {
@@ -97,7 +109,7 @@ class Get
                 $value = (float)$value;
                 break;
             case DOTY_STRING:
-                $value = (isset($value) ? strip_tags($value) : null);
+                $value = strip_tags($value ?? '');
                 break;
             case DOTY_ALPHANUM:
                 $value = preg_replace('/[^a-zA-Z0-9\-\_]+/', '', $value);
@@ -107,19 +119,10 @@ class Get
                 break;
 
             case DOTY_JSONDECODE:
-                if (!isset($GLOBALS['obj']['json_service'])) {
-                    require_once _base_ . '/lib/lib.json.php';
-                    $GLOBALS['obj']['json_service'] = new Services_JSON();
-                }
-                $value = $GLOBALS['obj']['json_service']->decode($value);
-
+                $value = FormaSerializer::getInstance()->decode($value, 'json');
                 break;
             case DOTY_JSONENCODE:
-                if (!isset($GLOBALS['obj']['json_service'])) {
-                    require_once _base_ . '/lib/lib.json.php';
-                    $GLOBALS['obj']['json_service'] = new Services_JSON();
-                }
-                $value = $GLOBALS['obj']['json_service']->encode($value);
+                $value = FormaSerializer::getInstance()->encode($value, 'json');
 
                 break;
             case DOTY_BOOL:
@@ -136,7 +139,7 @@ class Get
                 $value = preg_replace('/[\x00-\x1F\x7F]/', '', $value);
                 $value = preg_replace('/[<>\'\"\(\)\[\]]/', '', $value);
                 $value = str_replace(['<', '>', '\'', '\"', ')', '('], '', $value);
-    
+
                 break;
             case DOTY_MIXED:
             default:
@@ -146,13 +149,12 @@ class Get
     }
 
     /**
-     * calls the req method and forces the type to 'get'.
+     * Retrieves a value from the $_GET superglobal array.
      *
-     * @param string $var_name
-     * @param string $typeof
-     * @param string $default_value
-     *
-     * @return string
+     * @param string $var_name The name of the variable to retrieve from the $_GET array.
+     * @param int $typeof [optional] The type of the variable being retrieved. Defaults to DOTY_MIXED.
+     * @param mixed $default_value [optional] The default value to return if the variable is not found in the $_GET array. Defaults to an empty string.
+     * @return mixed The value of the variable specified by $var_name in the $_GET array, or $default_value if the variable is not found.
      */
     public static function gReq($var_name, $typeof = DOTY_MIXED, $default_value = '')
     {
@@ -160,13 +162,10 @@ class Get
     }
 
     /**
-     * calls the req method and forces the type to 'post'.
-     *
-     * @param string $var_name
-     * @param string $typeof
-     * @param string $default_value
-     *
-     * @return string
+     * @param string $var_name the name of the variable to retrieve from POST request
+     * @param int $typeof the data type of the variable (optional, default: DOTY_MIXED)
+     * @param mixed $default_value the default value to return if the variable is not found (optional, default: '')
+     * @return mixed the value of the variable if found, otherwise the default value
      */
     public static function pReq($var_name, $typeof = DOTY_MIXED, $default_value = '')
     {
@@ -183,13 +182,7 @@ class Get
      */
     public static function cfg($cfg_name, $default = false)
     {
-        if (getenv($cfg_name)) {
-            $value = getenv($cfg_name);
-        } elseif (!isset($GLOBALS['cfg'][$cfg_name])) {
-            $value = $default;
-        } else {
-            $value = $GLOBALS['cfg'][$cfg_name];
-        }
+        $value = $GLOBALS['cfg'][$cfg_name] ?? $default;
 
         return $value;
     }
@@ -205,42 +198,93 @@ class Get
      */
     public static function pcfg($plugin_name, $cfg_name, $default = false)
     {
-        if (getenv($plugin_name . '_' . $cfg_name)) {
-            $value = getenv($plugin_name . '_' . $cfg_name);
-        } elseif (!isset($GLOBALS['cfg'][$plugin_name][$cfg_name])) {
+        if (!isset($GLOBALS['cfg'][$plugin_name][$cfg_name])) {
             $value = $default;
-        } else {
-            $value = $GLOBALS['cfg'][$plugin_name][$cfg_name];
         }
+        $value = $GLOBALS['cfg'][$plugin_name][$cfg_name];
 
         return $value;
     }
 
     /**
-     * Return the value of a platform setting.
+     * Return the value of a pl atform setting.
      *
      * @param string $sett_name
      * @param string $default
      *
      * @return mixed the value of the setting or the default value
      */
-    public static function sett($sett_name, $default = false, $platform = 'framework')
+    public static function sett($sett_name, $fallback = false)
     {
-        if (getenv($platform . '_' . $sett_name)) {
-            $value = getenv($platform . '_' . $sett_name);
-        } elseif (!isset($GLOBALS[$platform][$sett_name])) {
-            $value = $default;
+        $result = $fallback;
+
+        $platform = 'framework';
+
+        if (array_key_exists($sett_name, $GLOBALS[$platform] ?? [])) {
+            $result = $GLOBALS[$platform][$sett_name];
         } else {
-            $value = $GLOBALS[$platform][$sett_name];
+            $notLoadedParams = static::_loadOption($GLOBALS[$platform] ?? []);
+            $result = array_key_exists($sett_name, (array)$notLoadedParams) ? $notLoadedParams[$sett_name] : $fallback;
         }
 
-        return $value;
+        $eventData = \Events::trigger('core.settings.read', ['key' => $sett_name]);
+
+        if (array_key_exists('value', $eventData)) {
+            $result = $eventData['value'];
+        }
+
+        return $result;
+    }
+
+    /**
+     * Loads the option values from the 'core_setting' table.
+     *
+     * @param array $exclusions An array of parameter names to exclude from the result
+     * @return array An associative array containing the loaded options
+     */
+    public static function _loadOption($exclusions = []): array
+    {
+        $result = [];
+        $basequery = '
+		SELECT param_name, param_value, value_type, max_size
+		FROM `core_setting` WHERE 1 ';
+
+        if (count($exclusions)) {
+            $basequery .= ' AND param_name NOT IN (' . sprintf("'%s'", implode("','", array_keys($exclusions))) . ') ';
+        }
+
+        $basequery .= 'ORDER BY sequence';
+        $reSetting = sql_query($basequery);
+
+        while (list($var_name, $var_value, $value_type) = sql_fetch_row($reSetting)) {
+            switch ($value_type) {
+                //if is int cast it
+                case 'int':
+                    $result[$var_name] = (int)$var_value;
+
+                    break;
+                //if is enum switch value to on or off
+                case 'enum':
+                    if ($var_value == 'on') {
+                        $result[$var_name] = 'on';
+                    } else {
+                        $result[$var_name] = 'off';
+                    }
+
+                    break;
+                //else simple assignament
+                default:
+                    $result[$var_name] = $var_value;
+            }
+        }
+
+        return $result;
     }
 
     /**
      * Return the current platform code.
      *
-     * @return <string> the platform path
+     * @return string the platform path
      */
     public static function cur_plat()
     {
@@ -256,12 +300,73 @@ class Get
         return 'framework';
     }
 
+
+    public static function getBaseUrl($onlyBasePath = false)
+    {
+
+        $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
+
+        $possiblePhpEndpoints = [];
+        $path = '';
+        $basePath = '/';
+        $requestUri = '';
+        try {
+            $basePath = $request->getSchemeAndHttpHost();
+            $requestUri = $request->getBaseUrl();
+        } catch (\Error $e) {
+            // non deve mai andare qui, ma ci passa se vengono chiamate shell exec come le migrate
+        }
+
+
+        if (!$onlyBasePath) {
+            preg_match('/\/(.*?).php/', $requestUri, $match);
+            if (!empty($match)) {
+                $explodedMatch = explode('/', $match[0]);
+                $possiblePhpEndpoint = '';
+                foreach ($explodedMatch as $item) {
+                    if (!empty($item) && str_contains($item, '.php')) {
+                        $possiblePhpEndpoint .= str_replace(self::coreFolders, '', $item);
+                    }
+                }
+
+                $possiblePhpEndpoints[] = $possiblePhpEndpoint;
+            }
+
+            $possiblePhpEndpoints[] = '/?';
+            $possiblePhpEndpoints[] = '/api';
+
+            $requestUriArray = [];
+
+            foreach ($possiblePhpEndpoints as $possiblePhpEndpoint) {
+                if (str_contains($requestUri, $possiblePhpEndpoint)) {
+                    $requestUriArray = explode($possiblePhpEndpoint, $requestUri);
+                    $requestUriArray = explode('/', $requestUriArray[0]);
+                    break;
+                }
+            }
+
+            if (empty($requestUriArray) && !empty($requestUri)) {
+                $requestUriArray = explode('/', $requestUri);
+            }
+
+            foreach ($requestUriArray as $requestUriItem) {
+                if (!empty($requestUriItem) && !in_array($requestUriItem, self::coreFolders, true)) {
+                    $path .= sprintf('/%s', $requestUriItem);
+                }
+            }
+
+            $path = $basePath . $path;
+        }
+
+        return $path != '' ? $path : $basePath;
+    }
+
     /**
      * Return the calculated relative path form the current zone (platform) to the requested one.
      *
-     * @param <string> $item (base, lms, ...)
+     * @param string $item (base, lms, ...)
      *
-     * @return <string> the relative path
+     * @return string the relative path
      */
     public static function rel_path($to = false)
     {
@@ -285,9 +390,9 @@ class Get
     /**
      * Return the absolute path of the platform.
      *
-     * @param <string> $item (base, lms, ...)
+     * @param string $item (base, lms, ...)
      *
-     * @return <string> the absolute path
+     * @return string the absolute path
      */
     public static function abs_path($to = false)
     {
@@ -322,9 +427,9 @@ class Get
     /**
      * Return the calculated relative path form the current zone (platform) to the requested one.
      *
-     * @param <string> $item (base, lms, ...)
+     * @param string $item (base, lms, ...)
      *
-     * @return <string> the relative path
+     * @return string the relative path
      */
     public static function tmpl_path($item = false)
     {
@@ -333,7 +438,7 @@ class Get
         } else {
             $platform = $item;
         }
-        $path = _deeppath_ . _folder_templates_ . '/' . getTemplate() . '/';
+        $path = $GLOBALS['where_templates_relative'] . '/' . getTemplate() . '/';
 
         return str_replace('/./', '/', $path);
     }
@@ -341,13 +446,13 @@ class Get
     /**
      * Return html code and resolved path for an image.
      *
-     * @param <string> $src the img[src] attribute, the path can be absolute or relative to the images/ folder of the current template
-     * @param <string> $alt the img[alt] attribute
-     * @param <string> $class_name the img[class] attribute
-     * @param <string> $extra some extra code that you need to add into the image
-     * @param <bool> $is_abspath if true the src is assumed absolute, if false the relative path is added to the src attr
+     * @param string $src the img[src] attribute, the path can be absolute or relative to the images/ folder of the current template
+     * @param string $alt the img[alt] attribute
+     * @param string $class_name the img[class] attribute
+     * @param string $extra some extra code that you need to add into the image
+     * @param bool $is_abspath if true the src is assumed absolute, if false the relative path is added to the src attr
      *
-     * @return <string> the html code (sample <img ... />)
+     * @return string the html code (sample <img ... />)
      */
     public static function img($src, $alt = false, $class_name = false, $extra = false, $is_abspath = false)
     {
@@ -357,8 +462,8 @@ class Get
         }
 
         return '<img src="' . $src . '" '
-            . 'alt="' . ($alt ? $alt : substr($src, 0, -4)) . '" '
-            . 'title="' . ($alt ? $alt : substr($src, 0, -4)) . '" '
+            . 'alt="' . ($alt ?: substr($src, 0, -4)) . '" '
+            . 'title="' . ($alt ?: substr($src, 0, -4)) . '" '
             . ($class_name != false ? 'class="' . $class_name . '" ' : '')
             . ($extra != false ? $extra . ' ' : '')
             . '/>';
@@ -393,40 +498,43 @@ class Get
     /**
      * Build an html for an image encapsulated into a link.
      *
-     * @param <string> $url the url for the a[href]
-     * @param <string> $title the title for the a[title]
-     * @param <string> $src the img[src]
-     * @param <string> $alt the img[alt]
+     * @param string $url the url for the a[href]
+     * @param string $title the title for the a[title]
+     * @param string $src the img[src]
+     * @param string $alt the img[alt]
      * @param <array> $extra the content of the 'link' key is used as extra in the a element if specified, the 'img' key content is used into the img element
      *
-     * @return <string> html code (sample: <a ...><img ...></a> )
+     * @return string html code (sample: <a ...><img ...></a> )
      */
-    public static function link_img($url, $title, $src, $alt, $extra = false)
+    public static function link_img($url, $title, $src, $alt, $extra = [])
     {
-        // where are we ?
-        $src = _deeppath_ . _folder_templates_ . '/standard/images/' . $src;
+        // Define base path in a variable for clarity
+        $templateBasePath = $GLOBALS['where_templates_relative'] . '/standard/images/';
+        $src = $templateBasePath . $src;
 
-        return '<a href="' . $url . '" title="' . $title . '"' .
-            (!empty($extra['link']) != false ? ' ' . $extra['link'] : '') .
-            '>' .
-            '<img src="' . $src . '" ' .
-            'alt="' . ($alt ? $alt : substr($src, 0, -4)) . '" ' .
-            'title="' . $title . '" ' .
-            (!empty($extra['img']) != false ? $extra . ' ' : '') .
-            '/>' .
-            '</a>' .
-            "\n";
+        // Simplify ternary operations
+        $linkExtra = $extra['link'] ?? '';
+        $imgExtra = $extra['img'] ?? '';
+
+        // Set default alt text if not provided
+        $altText = $alt ?? substr($src, 0, -4);
+
+        // Use string interpolation for better readability and performance
+        return "<a href=\"{$url}\" title=\"{$title}\" {$linkExtra}>
+              <img src=\"{$src}\" alt=\"{$altText}\" title=\"{$title}\" {$imgExtra}/>
+            </a>\n";
     }
+
 
     /**
      * This function try to evaluate the current site address.
      *
-     * @return <string> (i.e. http://localhost)
+     * @return string (i.e. http://localhost)
      */
     public static function site_url($disableUrlSetting = false)
     {
         if (!($url = self::sett('url')) || $disableUrlSetting) {
-            $url = ClientService::getInstance()->getBaseUrl();
+            $url = Get::getBaseUrl();
         }
 
         return rtrim($url, '/') . '/';
@@ -580,12 +688,6 @@ class Get
                     $GLOBALS['page']->add('<li><a href="#main_area_title">' . \Lang::t('_JUMP_TO', 'standard') . ' ' . $title . '</a></li>', 'blind_navigation');
                 }
 
-                if ($title) {
-                    if (!defined('IS_AJAX')) {
-                        $GLOBALS['page_title'] = self::sett('page_title', '') . ' &rsaquo; ' . $title;
-                    }
-                }
-
                 // Init navigation
                 if (count($text_array) > 1) {
                     $html .= '<ul class="navigation">';
@@ -615,31 +717,24 @@ class Get
     /**
      * Return the user ip, also check for proxy http header.
      *
-     * @return <string> ip (i.e. 127.0.0.1)
+     * @return string ip (i.e. 127.0.0.1)
      */
     public static function user_ip()
     {
-        if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            return $_SERVER['HTTP_X_FORWARDED_FOR'];
-        }
-        if (isset($_SERVER['HTTP_CLIENT_IP'])) {
-            return $_SERVER['HTTP_CLIENT_IP'];
-        }
-
-        return $_SERVER['REMOTE_ADDR'];
+        return $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['HTTP_CLIENT_IP'] ?? $_SERVER['REMOTE_ADDR'];
     }
 
     /**
      * This funciont try to find the user SO and return it, if the so isn't in the internal list return 'unknown'.
      *
-     * @return <string> (ie. windows)
+     * @return string (ie. windows)
      */
     public static function user_os()
     {
         $agent = strtolower($_SERVER['HTTP_USER_AGENT']);
         $known_os_arr = explode(' ', 'linux macos sunos bsd qnx solaris irix aix unix amiga os/2 beos windows');
         foreach ($known_os_arr as $os) {
-            if (strpos($agent, strval($os)) !== false) {
+            if (strpos($agent, (string)$os) !== false) {
                 return $os;
             }
         }
@@ -650,7 +745,7 @@ class Get
     /**
      * This funciont try to find the user browser and return it, if the browser isn't in the internal list return 'unknown'.
      *
-     * @return <string> (ie. firefox)
+     * @return string (ie. firefox)
      */
     public static function user_agent()
     {
@@ -695,11 +790,10 @@ class Get
     }
 
     /**
-     * Parse the HTTP_ACCEPT_LANGUAGE in order to have a more usable language selction.
+     * Retrieves the accepted languages from the HTTP_ACCEPT_LANGUAGE header.
      *
-     * @param <bool> $main_only true if you want only the main language from the browser, false if you wnat the entire list
-     *
-     * @return <mixed> string if $main_only = true (ie. en-EN), array if $main_only = false
+     * @param bool $main_only Determines whether to return only the main language or all accepted languages.
+     * @return array|string The array of accepted languages or the main language if $main_only is set to true.
      */
     public static function user_acceptlang($main_only = true)
     {
@@ -722,9 +816,9 @@ class Get
     }
 
     /**
-     * Check if the user is a bot.
+     * Determines if the user is a bot based on the user agent string.
      *
-     * @return <int> 1 if the user is a bot, 0 otherwise
+     * @return int Returns 1 if the user is a bot, and 0 otherwise.
      */
     public static function user_is_bot()
     {
@@ -760,11 +854,10 @@ class Get
     }
 
     /**
-     * Return the size in bytes of the specified file.
+     * Get the size of a file
      *
-     * @param <string> $file_path The target file
-     *
-     * @return <int> The size of the file in bytes
+     * @param string $file_path The path to the file
+     * @return int|false The size of the file in bytes, or false if an error occurred
      */
     public static function file_size($file_path)
     {
@@ -772,11 +865,10 @@ class Get
     }
 
     /**
-     * Return the size in bytes of the specified directory.
+     * Calculate the size of a directory recursively.
      *
-     * @param <string> $path The target dir
-     *
-     * @return <int> The size of the dir in bytes
+     * @param string $path The path to the directory.
+     * @return int The size of the directory in bytes.
      */
     public static function dir_size($path)
     {

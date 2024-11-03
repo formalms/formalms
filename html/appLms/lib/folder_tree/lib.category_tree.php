@@ -15,7 +15,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 function getNodeOptions($id_category, $is_leaf)
 {
-    $lang = &DoceboLanguage::CreateInstance('course', 'lms');
+    $lang = &FormaLanguage::CreateInstance('course', 'lms');
     $node_options = [];
 
     $node_options[] = [

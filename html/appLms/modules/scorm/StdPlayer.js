@@ -254,15 +254,17 @@ StdUIPlayer.prototype.showhidetree = function () {
 }
 
 StdUIPlayer.prototype.closePlayer = function () {
-    try {
-        this.scormPlayer.api.forceFinish();
-    } catch (e) {
-        console.log(e);
+    if (playerConfig.forceScormFinish == 'on') {
+        try {
+           this.scormPlayer.api.forceFinish();
+        } catch (e) {
+            console.log(e);
+        }
+        var _this = this;
+        setTimeout(function (_this) {
+            _this.scormPlayer.closePlayer();
+        }, 500);
     }
-    var _this = this;
-    setTimeout(function (_this) {
-        _this.scormPlayer.closePlayer();
-    }, 500);
 }
 
 /**

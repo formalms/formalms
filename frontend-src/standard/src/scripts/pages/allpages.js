@@ -4,7 +4,8 @@ require('../modules/slider-menu');
 require('../modules/text-editor');
 require('../modules/modal-accordion');
 require('../../plugins/select2totree/js/select2totree');
-
+// eslint-disable-next-line no-unused-vars
+import * as TwigExtensions from './../helpers/TwigHelpers';
 import {InfoCourse} from '../modules/InfoCourse';
 import {DashBoardCalendar} from '../modules/DashboardCalendar';
 import {DashboardVideo} from '../modules/DashboardVideo';
@@ -14,11 +15,21 @@ import StudentLearningObject from '../modules/StudentLearningObject';
 import Lang from '../helpers/Lang';
 // eslint-disable-next-line no-unused-vars
 import FormaDropZone from './../components/Dropzone';
+import FormaTable from './../components/FormaTable';
+import ModalElement from './../components/Modal';
 import Axios from 'axios';
 import Select2 from 'select2';
-import Chart from 'chart.js';
+import Moment from 'moment';
+// import Chart from 'chart.js';
+import { Chart as ChartJS, registerables  } from 'chart.js';
+ChartJS.register(...registerables);
+import FolderTree from '../components/FolderTree';
+import FolderTreeMultiUser from '../components/FolderTreeMultiUser';
+import { DrawRadialProgress } from '../modules/DrawRadialProgress';
+
 
 var Page = (function () {
+    
     window.frontend.modules = {};
     window.frontend.helpers = {};
     window.TeacherLearningObject = TeacherLearningObject;
@@ -26,12 +37,19 @@ var Page = (function () {
     window.frontend.modules.LearningObject = LearningObject;
     window.frontend.modules.TeacherLearningObject = TeacherLearningObject;
     window.frontend.modules.StudentLearningObject = StudentLearningObject;
+    window.frontend.modules.FolderTree = FolderTree;
+    window.frontend.modules.FolderTreeMultiUser = FolderTreeMultiUser;
     window.frontend.modules.FormaDropZone = FormaDropZone;
     window.frontend.modules.Select2 = Select2;
-    window.frontend.modules.Chart = Chart;
+    window.frontend.modules.Chart = ChartJS;
+    window.frontend.modules.FormaTable = FormaTable;
+    window.frontend.modules.Modal = ModalElement; 
+    window.frontend.modules.Moment = Moment;
+    window.frontend.modules.DrawRadialProgress = DrawRadialProgress;
     window.frontend.helpers.Lang = Lang;
-    window.frontend.helpers.Axios = Axios;
+
    
+    window.frontend.helpers.Axios = Axios;
 
     function setScroll(elem, action) {
         if (action === 'lock') {
@@ -156,8 +174,9 @@ var Page = (function () {
 
     Page.prototype.load = function () {
     };
+    // alert('Nessun errore bloccante');
 
     return new Page();
 })();
 
-module.exports = Page;
+export default Page;

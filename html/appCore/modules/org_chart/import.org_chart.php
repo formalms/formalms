@@ -21,7 +21,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 require_once _adm_ . '/lib/lib.import.php';
 require_once _lms_ . '/admin/models/EnrollrulesAlms.php';
 
-class ImportUser extends DoceboImport_Destination
+class ImportUser extends FormaImport_Destination
 {
     public $last_error = null;
     public $mandatory_cols = ['userid'];
@@ -47,6 +47,23 @@ class ImportUser extends DoceboImport_Destination
     public $set_password = 'from_file';
     public $manual_password = null;
     public $action_on_users = 'create_and_update';
+    public $idst_ocd;
+    public $idst_oc;
+    /**
+     * @var false|mixed
+     */
+    public $userlevel;
+    public array $arr_fields;
+    /**
+     * @var false|mixed
+     */
+    public $idst_desc;
+    /**
+     * @var false|mixed
+     */
+    public $idst_group;
+    public FieldList $fl;
+    public bool $send_alert;
 
     /**
      * constructor for forma users destination connection.
@@ -55,7 +72,7 @@ class ImportUser extends DoceboImport_Destination
      *                      - 'dbconn' => connection to database (required)
      *                      - 'tree' => The id of the destination folder on tree (required)
      **/
-    public function ImportUser($params)
+    public function __construct($params)
     {
         $this->dbconn = $params['dbconn'];
         $this->tree = (int) $params['tree'];
@@ -81,9 +98,9 @@ class ImportUser extends DoceboImport_Destination
         require_once _base_ . '/lib/lib.eventmanager.php';
 
         // Load language for fields names
-        $lang_dir = &DoceboLanguage::createInstance('admin_directory', 'framework');
-        $acl = &Docebo::user()->getACL();
-        $acl_manager = Docebo::user()->getAclManager();
+        $lang_dir = FormaLanguage::createInstance('admin_directory', 'framework');
+        $acl = \FormaLms\lib\Forma::getAcl();
+        $acl_manager = \FormaLms\lib\Forma::getAclManager();
 
         $this->fl = new FieldList();
         $this->idst_group = $acl_manager->getGroupST('oc_' . (int) $this->tree);
@@ -111,35 +128,35 @@ class ImportUser extends DoceboImport_Destination
                 if (isset($this->default_cols[$field_info['Field']])) {
                     $this->cols_descriptor[] =
                         [
-                            DOCEBOIMPORT_COLNAME => $lang_dir->def('_DIRECTORY_FILTER_' . $field_info['Field']),
-                            DOCEBOIMPORT_COLID => $field_info['Field'],
-                            DOCEBOIMPORT_COLMANDATORY => $mandatory,
-                            DOCEBOIMPORT_DATATYPE => $field_info['Type'],
-                            DOCEBOIMPORT_DEFAULT => $this->default_cols[$field_info['Field']],
+                            FORMAIMPORT_COLNAME => $lang_dir->def('_DIRECTORY_FILTER_' . $field_info['Field']),
+                            FORMAIMPORT_COLID => $field_info['Field'],
+                            FORMAIMPORT_COLMANDATORY => $mandatory,
+                            FORMAIMPORT_DATATYPE => $field_info['Type'],
+                            FORMAIMPORT_DEFAULT => $this->default_cols[$field_info['Field']],
                         ];
                 } else {
                     $this->cols_descriptor[] =
                         [
-                            DOCEBOIMPORT_COLNAME => $lang_dir->def('_DIRECTORY_FILTER_' . $field_info['Field']),
-                            DOCEBOIMPORT_COLID => $field_info['Field'],
-                            DOCEBOIMPORT_COLMANDATORY => $mandatory,
-                            DOCEBOIMPORT_DATATYPE => $field_info['Type'],
+                            FORMAIMPORT_COLNAME => $lang_dir->def('_DIRECTORY_FILTER_' . $field_info['Field']),
+                            FORMAIMPORT_COLID => $field_info['Field'],
+                            FORMAIMPORT_COLMANDATORY => $mandatory,
+                            FORMAIMPORT_DATATYPE => $field_info['Type'],
                         ];
                 }
             }
         }
         $this->cols_descriptor[] = [
-            DOCEBOIMPORT_COLNAME => Lang::t('_FOLDER_NAME', 'standard'),
-            DOCEBOIMPORT_COLID => 'tree_name',
-            DOCEBOIMPORT_COLMANDATORY => false,
-            DOCEBOIMPORT_DATATYPE => 'text',
+            FORMAIMPORT_COLNAME => Lang::t('_FOLDER_NAME', 'standard'),
+            FORMAIMPORT_COLID => 'tree_name',
+            FORMAIMPORT_COLMANDATORY => false,
+            FORMAIMPORT_DATATYPE => 'text',
         ];
 
         $this->cols_descriptor[] = [
-            DOCEBOIMPORT_COLNAME => Lang::t('_LANGUAGE', 'standard'),
-            DOCEBOIMPORT_COLID => 'language',
-            DOCEBOIMPORT_COLMANDATORY => false,
-            DOCEBOIMPORT_DATATYPE => 'text',
+            FORMAIMPORT_COLNAME => Lang::t('_LANGUAGE', 'standard'),
+            FORMAIMPORT_COLID => 'language',
+            FORMAIMPORT_COLMANDATORY => false,
+            FORMAIMPORT_DATATYPE => 'text',
         ];
 
         sql_free_result($rs);
@@ -148,11 +165,11 @@ class ImportUser extends DoceboImport_Destination
             if (in_array($field_info[FIELD_INFO_TYPE], $this->valid_filed_type)) {
                 $this->cols_descriptor[] =
                     [
-                        DOCEBOIMPORT_COLNAME => $field_info[FIELD_INFO_TRANSLATION],
-                        DOCEBOIMPORT_COLID => $field_id,
-                        DOCEBOIMPORT_COLMANDATORY => false,
-                        DOCEBOIMPORT_DATATYPE => 'text',
-                        DOCEBOIMPORT_DEFAULT => false,
+                        FORMAIMPORT_COLNAME => $field_info[FIELD_INFO_TRANSLATION],
+                        FORMAIMPORT_COLID => $field_id,
+                        FORMAIMPORT_COLMANDATORY => false,
+                        FORMAIMPORT_DATATYPE => 'text',
+                        FORMAIMPORT_DEFAULT => false,
                     ];
             }
         }
@@ -192,7 +209,7 @@ class ImportUser extends DoceboImport_Destination
     {
         $result = [];
         foreach ($this->cols_descriptor as $col) {
-            if ($col[DOCEBOIMPORT_COLMANDATORY]) {
+            if ($col[FORMAIMPORT_COLMANDATORY]) {
                 $result[] = $col;
             }
         }
@@ -215,13 +232,13 @@ class ImportUser extends DoceboImport_Destination
      *
      * @return true if the row was succesfully inserted, FALSE otherwise
      **/
-    public function add_row($row, $tocompare)
+    public function add_row($row, $tocompare = false)
     {
-        $acl = &Docebo::user()->getACL();
-        $acl_manager = Docebo::aclm();
+        $acl = \FormaLms\lib\Forma::getAcl();
+        $acl_manager = \FormaLms\lib\Forma::getAclManager();
 
         foreach ($row as $k => $v) {
-            if ($row[$k] !== false) {
+            if ($v !== false) {
                 $row[$k] = trim($v);
             }
         }
@@ -306,31 +323,11 @@ class ImportUser extends DoceboImport_Destination
         $is_an_update = false;
         $err = false;
         $idst = $acl_manager->getUserST($tocompare['userid']);
-        $sameuserid = false;
 
-        if ($idst !== false) {
-            $user_mng = new UsermanagementAdm();
-            $infouser = $user_mng->getProfileData($idst);
-            $fielduser = $this->fl->getUserFieldEntryData($idst);
-
-            foreach ($tocompare as $field_id => $field_value) {
-                if (isset($this->arr_fields[$field_id])) {
-                    if ($field_value != $fielduser[$field_id]) {
-                        $idst = false;
-                        $sameuserid = true;
-                    }
-                } else {
-                    if ($field_value != $infouser->$field_id && $field_id != 'pass') {
-                        // $idst = FALSE;
-                        $sameuserid = true;
-                    }
-                }
-            }
-        }
 
         switch ($this->action_on_users) {
             case 'create_and_update':
-                if ($idst === false && !$sameuserid) {
+                if ($idst === false) {
                     // create a new user
                     $idst = $acl_manager->registerUser(
                         $userid,
@@ -354,7 +351,7 @@ class ImportUser extends DoceboImport_Destination
                         $this->last_error = 'Error on insert user';
                         $err = true;
                     }
-                } elseif ($idst !== false) {	//   if ($sameuserid == TRUE) {
+                } else {
                     $result = $acl_manager->updateUser(
                         $acl_manager->getUserST($tocompare['userid']),
                         $userid,
@@ -378,39 +375,8 @@ class ImportUser extends DoceboImport_Destination
                         $this->last_error = 'Error on update user';
                         $err = true;
                     }
-                } else {
-                    $a = 1;
-                    $newuserid = $userid;
-                    while ($acl_manager->getUserST($newuserid)) {
-                        $newuserid = $userid . $a;
-                        ++$a;
-                    }
-                    $userid = $newuserid;
-
-                    // create a new user
-                    $idst = $acl_manager->registerUser(
-                        $userid,
-                        $firstname,
-                        $lastname,
-                        $pass ? $pass : '',
-                        $email,
-                        '',
-                        '',
-                        false,
-                        false,
-                        '',
-                        $force_change,
-                        false,
-                        false,
-                        false,
-                        false
-                    );
-
-                    if ($idst === false) {
-                        $this->last_error = 'Error on insert user';
-                        $err = true;
-                    }
-                }
+                } 
+    
                 break;
             case 'create_all':
                 $a = 1;
@@ -446,7 +412,7 @@ class ImportUser extends DoceboImport_Destination
                 }
                 break;
             case 'only_create':
-                if ($idst === false && !$sameuserid) {
+                if ($idst === false ) {
                     // create a new user
                     $idst = $acl_manager->registerUser(
                         $userid,
@@ -458,7 +424,6 @@ class ImportUser extends DoceboImport_Destination
                         '',
                         false,
                         false,
-                        '',
                         $force_change,
                         false,
                         false,
@@ -470,44 +435,13 @@ class ImportUser extends DoceboImport_Destination
                         $this->last_error = 'Error on insert user';
                         $err = true;
                     }
-                } elseif ($idst !== false || $sameuserid) {
+                } else {
                     $idst = false;
                     $this->last_error = Lang::t('_USER_ALREADY_EXISTS', 'standard') . ' --> ' . $userid . ' | ' . $firstname . ' | ' . $lastname . ' | ' . $pass . ' | ' . $email . ' |';
 
                     return false;
-                } else {
-                    $a = 1;
-                    $newuserid = $userid;
-                    while ($acl_manager->getUserST($newuserid)) {
-                        $newuserid = $userid . $a;
-                        ++$a;
-                    }
-                    $userid = $newuserid;
-
-                    // create a new user
-                    $idst = $acl_manager->registerUser(
-                        $userid,
-                        $firstname,
-                        $lastname,
-                        $pass ? $pass : '',
-                        $email,
-                        '',
-                        '',
-                        false,
-                        false,
-                        '',
-                        $force_change,
-                        false,
-                        false,
-                        false,
-                        false
-                    );
-
-                    if ($idst === false) {
-                        $this->last_error = 'Error on insert user';
-                        $err = true;
-                    }
-                }
+                } 
+                
                 break;
             case 'only_update':
                 if ($userid) {   //if($sameuserid !== false) {
@@ -538,10 +472,7 @@ class ImportUser extends DoceboImport_Destination
                 break;
         }
 
-        if ($idst !== false || $sameuserid == true) {
-            if ($idst == false && $sameuserid == true) {
-                $idst = $acl_manager->getUserST($tocompare['userid']);
-            }
+        if ($idst) {
 
             $result = true;
             $this->idst_imported[$idst] = $idst;
@@ -576,6 +507,20 @@ class ImportUser extends DoceboImport_Destination
                 $acl_manager->addToGroup($this->idst_desc, $idst);
             }
 
+
+            //-save extra field------------------------------------------
+
+            $arr_fields_toset = [];
+            foreach ($this->arr_fields as $field_id => $field_info) {
+                if (isset($row[$field_id]) && $row[$field_id] !== false) {
+                    $arr_fields_toset[$field_id] = $row[$field_id];
+                }
+            }
+
+            if (count($arr_fields_toset) > 0) {
+                $result = $this->fl->storeDirectFieldsForUser($idst, $arr_fields_toset);
+            }
+
             $array_subst = [
                 '[url]' => FormaLms\lib\Get::site_url(),
                 '[userid]' => $userid,
@@ -603,6 +548,7 @@ class ImportUser extends DoceboImport_Destination
                 if(isset($row[$field_id]) && $row[$field_id] !== false)
                     $arr_fields_toset[$field_id] = addslashes($this->_convert_char($row[$field_id]));
             */
+            $arr_fields_toset = [];
             foreach ($row as $field_id => $field_value) {
                 if (isset($this->arr_fields[$field_id])) {
                     $arr_fields_toset[$field_id] = addslashes($this->_convert_char($field_value));
@@ -643,7 +589,7 @@ class ImportUser extends DoceboImport_Destination
     }
 }
 
-class ImportGroupUser extends DoceboImport_Destination
+class ImportGroupUser extends FormaImport_Destination
 {
     public $last_error = null;
     public $cols_id = ['userid', 'groupid'];
@@ -666,10 +612,10 @@ class ImportGroupUser extends DoceboImport_Destination
      *                      - 'dbconn' => connection to database (required)
      *                      - 'tree' => The id of the destination folder on tree (required)
      **/
-    public function ImportGroupUser($params)
+    public function __construct($params)
     {
         $this->dbconn = $params['dbconn'];
-        $this->acl_man = &Docebo::user()->getAclManager();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();
     }
 
     public function connect()
@@ -680,18 +626,18 @@ class ImportGroupUser extends DoceboImport_Destination
 
             if (in_array($field_id, $this->cols_default)) {
                 $this->cols_descriptor[] = [
-                    DOCEBOIMPORT_COLNAME => Lang::t('_GROUPUSER_' . $field_id, 'organization_chart', 'framework'),
-                    DOCEBOIMPORT_COLID => $field_id,
-                    DOCEBOIMPORT_COLMANDATORY => in_array($field_id, $this->cols_mandatory),
-                    DOCEBOIMPORT_DATATYPE => $this->cols_type[$field_id],
-                    DOCEBOIMPORT_DEFAULT => $this->default_cols[$field_id],
+                    FORMAIMPORT_COLNAME => Lang::t('_GROUPUSER_' . $field_id, 'organization_chart', 'framework'),
+                    FORMAIMPORT_COLID => $field_id,
+                    FORMAIMPORT_COLMANDATORY => in_array($field_id, $this->cols_mandatory),
+                    FORMAIMPORT_DATATYPE => $this->cols_type[$field_id],
+                    FORMAIMPORT_DEFAULT => $this->default_cols[$field_id],
                 ];
             } else {
                 $this->cols_descriptor[] = [
-                    DOCEBOIMPORT_COLNAME => Lang::t('_GROUPUSER_' . $field_id, 'organization_chart', 'framework'),
-                    DOCEBOIMPORT_COLID => $field_id,
-                    DOCEBOIMPORT_COLMANDATORY => in_array($field_id, $this->cols_mandatory),
-                    DOCEBOIMPORT_DATATYPE => $this->cols_type[$field_id],
+                    FORMAIMPORT_COLNAME => Lang::t('_GROUPUSER_' . $field_id, 'organization_chart', 'framework'),
+                    FORMAIMPORT_COLID => $field_id,
+                    FORMAIMPORT_COLMANDATORY => in_array($field_id, $this->cols_mandatory),
+                    FORMAIMPORT_DATATYPE => $this->cols_type[$field_id],
                 ];
             }
         }
@@ -736,7 +682,7 @@ class ImportGroupUser extends DoceboImport_Destination
      *
      * @return true if the row was succesfully inserted, FALSE otherwise
      **/
-    public function add_row($row)
+    public function add_row($row, $tocompare = false)
     {
         foreach ($row as $k => $v) {
             $row[$k] = sql_escape_string($v);

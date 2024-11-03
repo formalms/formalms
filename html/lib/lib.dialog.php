@@ -157,7 +157,7 @@ function setupSimpleFormDialogBox(
 //------------------------------------------------------------------------------
 
 /*
- * Initializer for Dialog widget (Docebo 4.0).
+ * Initializer for Dialog widget (Forma 4.0).
  * It loads the js file for dialogs and the standard language constants
  */
 function initDialogs()

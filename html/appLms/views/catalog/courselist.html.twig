@@ -57,14 +57,12 @@
                 }
             )
                 .done(function (responseText) {
-                    if ('lms/' + op == '{{ data.endpoint }}/addToCart') {
+                       if ('lms/' + op == '{{ data.endpoint }}/addToCart') {
                         $('#menu_over').load(document.URL + '  #menu_over');
-                        if($('#cart_element').parent('li').hasClass('hidden')) {
-                            $('#cart_element').parent('li').removeClass('hidden');
+                         if($('#cart_element').parent('li').hasClass('hidden')) {
+                             $('#cart_element').parent('li').removeClass('hidden');   
                         }
-                        
-                    }
-
+                       }
                     $("#div_course").html(responseText);
                 })
                 .fail(function () {
@@ -95,7 +93,7 @@
 <div id="cbp-vm" class="" style="margin-top: 15px;">
     {% for course in data.courses %}
         <div class="col-xs-offset-1 col-xs-10 col-md-offset-0 col-md-4">
-            {% include 'catalog/partials/catalog-course-box.html.twig' with { 'course': course, 'catalogueType': data.catalogueType, 'endpoint' : data.endpoint, 'logged_in': data.logged_in } %}
+            {% include 'partials/catalog-course-box.html.twig' with { 'course': course, 'catalogueType': data.catalogueType, 'endpoint' : data.endpoint, 'logged_in': data.logged_in } %}
         </div>
     {% endfor %}
 </div>

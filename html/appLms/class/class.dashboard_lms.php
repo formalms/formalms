@@ -17,7 +17,7 @@ require_once _adm_ . '/class/class.dashboard.php';
 
 class Dashboard_Lms extends Dashboard
 {
-    public function Dashboard_Lms()
+    public function __construct()
     {
     }
 
@@ -34,7 +34,7 @@ class Dashboard_Lms extends Dashboard
         $course_man = new AdminCourseManagment();
         $course_stats = $course_man->getCoursesStats();
 
-        $lang = &DoceboLanguage::createInstance('dashboard', 'framework');
+        $lang = &FormaLanguage::createInstance('dashboard', 'framework');
         $html = [];
         $html[] = '<h2 class="inline">' . $lang->def('_COURSES_PANEL') . '</h2>'
             . '<p>'

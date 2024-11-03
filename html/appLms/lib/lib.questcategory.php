@@ -15,11 +15,11 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class Questcategory
 {
-    public function Questcategory()
+    public function __construct()
     {
     }
 
-    public function getCategory()
+    public static function getCategory()
     {
         //search query
         $query_quest_cat = '
@@ -35,7 +35,7 @@ class Questcategory
         return $categories;
     }
 
-    public function getTestQuestionsCategories($id_test)
+    public static function getTestQuestionsCategories($id_test)
     {
         if (!$id_test) {
             return false;
@@ -64,7 +64,7 @@ class Questcategory
         return $categories;
     }
 
-    public function getInfoAboutCategory($category)
+    public static function getInfoAboutCategory($category)
     {
         //search query
         $query_quest_cat = '

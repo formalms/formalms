@@ -16,6 +16,8 @@ DirectoryIndex index.php index.html index.htm
         # Redirect to the www version of the site
         #RewriteCond %{HTTP_HOST} !^www\. [NC]
         #RewriteRule ^ http://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+   
+        
 </IfModule>
 
 <FilesMatch "\.(htpasswd|ini|php|fla|psd|log|sh)$">
@@ -33,7 +35,7 @@ DirectoryIndex index.php index.html index.htm
         Deny from all
 </FilesMatch>
 
-<FilesMatch "(index\.php|ajax\..*\.php|paypal\.php|cron\.php|tasks\.php|tinymce\.gzip\.php|index_tiny\.php|scormXmlTree\.php|soaplms\.php|scorm_page_body\.php|keep_alive\.php|text\.php|users\.php|write\.php|check\.php)$">
+<FilesMatch "(index\.php|status\.php|ajax\..*\.php|paypal\.php|cron\.php|tasks\.php|tinymce\.gzip\.php|index_tiny\.php|scormXmlTree\.php|soaplms\.php|scorm_page_body\.php|keep_alive\.php|text\.php|users\.php|write\.php|check\.php)$">
         Order Allow,Deny
         Allow from all
 </FilesMatch>

@@ -41,10 +41,10 @@ function checkPerm($mode, $return_value = false, $use_mod_name = false, $is_publ
         . $mod_name . '/' . $suff;
     if (!$return_value && $idCourse) {
         require_once _lms_ . '/lib/lib.track_user.php';
-        TrackUser::setActionTrack(getLogUserId(), $idCourse, $mod_name, $suff);
+        TrackUser::setActionTrack(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $idCourse, $mod_name, $suff);
     }
 
-    if (Docebo::user()->matchUserRole($role)) {
+    if (\FormaLms\lib\FormaUser::getCurrentUser()->matchUserRole($role)) {
         return true;
     } elseif ($return_value) {
         return false;
@@ -76,10 +76,10 @@ function checkPermForCourse($mode, $id_course, $return_value = false, $use_mod_n
     $role = '/' . FormaLms\lib\Get::cur_plat() . '/course/private/' . $id_course . '/' . $mod_name . '/' . $suff;
 
     if (!$return_value && isset($id_course)) {
-        TrackUser::setActionTrack(getLogUserId(), $id_course, $mod_name, $suff);
+        TrackUser::setActionTrack(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_course, $mod_name, $suff);
     }
 
-    if (Docebo::user()->matchUserRole($role)) {
+    if (\FormaLms\lib\FormaUser::getCurrentUser()->matchUserRole($role)) {
         return true;
     } else {
         if ($return_value) {
@@ -92,7 +92,7 @@ function checkPermForCourse($mode, $id_course, $return_value = false, $use_mod_n
 
 function checkRole($roleid, $return_value = true)
 {
-    if (Docebo::user()->matchUserRole($roleid)) {
+    if (\FormaLms\lib\FormaUser::getCurrentUser()->matchUserRole($roleid)) {
         return true;
     }
     if ($return_value) {

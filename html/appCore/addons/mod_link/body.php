@@ -195,7 +195,7 @@ function showWikiSelect(&$out, &$lang)
 
     $wiki_lang = $cwp->getWikiLanguage();
 
-    // TODO: change getLanguage() with the current wiki language;
+    // TODO: change Lang::get() with the current wiki language;
     // try to pass arguments in a better way, like using GET.. [?]
     $wiki_page_db = new TreeDb_WikiDb($cwp->wikiManager->getWikiPageTable(), $cwp->wikiManager->getWikiPageInfoTable(), $wiki_id, $wiki_lang);
     $treeView = new TreeView_WikiView($wiki_page_db, 'wiki_tree');

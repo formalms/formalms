@@ -1,4 +1,4 @@
-<?php echo getTitleArea(Lang::t('_LANGUAGE', 'admin_lang')); ?>
+<?php FormaLms\lib\Get::title(Lang::t('_LANGUAGE', 'admin_lang')); ?>
 
 <table class="table table-bordered display" style="width:100%" id="langlist"></table>
 <br>
@@ -187,27 +187,27 @@
 			},
 			{
 				data: 'lang_translate',
-				title: '<span class="ico-sprite subs_elem" title="<?php echo Lang::t('_TRANSLATELANG', 'admin_lang'); ?>"><span><?php echo Lang::t('_TRANSLATELANG', 'admin_lang'); ?></span></span>',
+				title: '<span class="ico-sprite subs_elem"><span><?php echo Lang::t('_TRANSLATELANG', 'admin_lang'); ?></span></span>',
 				sortable: true
 			},
 			{
 				data: 'lang_diff',
-				title: '<span class="ico-sprite subs_diff" title="<?php echo Lang::t('_DIFF_LANG', 'admin_lang'); ?>"><span><?php echo Lang::t('_DIFF_LANG', 'admin_lang'); ?></span></span>',
+				title: '<span class="ico-sprite subs_diff"><span><?php echo Lang::t('_DIFF_LANG', 'admin_lang'); ?></span></span>',
 				sortable: true
 			},
 			{
 				data: 'lang_export',
-				title: '<span class="ico-sprite subs_download" title="<?php echo Lang::t('_EXPORT_XML', 'admin_lang'); ?>"><span><?php echo Lang::t('_EXPORT_XML', 'admin_lang'); ?></span></span>',
+				title: '<span class="ico-sprite subs_download"><span><?php echo Lang::t('_EXPORT_XML', 'admin_lang'); ?></span></span>',
 				sortable: true
 			},
 			{
 				data: 'lang_mod',
-				title: '<span class="ico-sprite subs_mod" title="<?php echo Lang::t('_MOD', 'admin_lang'); ?>"><span><?php echo Lang::t('_MOD', 'admin_lang'); ?></span></span>',
+				title: '<span class="ico-sprite subs_mod"><span><?php echo Lang::t('_MOD', 'admin_lang'); ?></span></span>',
 				sortable: true
 			},
 			{
 				data: 'lang_del',
-				title: '<span class="ico-sprite subs_del" title="<?php echo Lang::t('_DEL', 'admin_lang'); ?>"><span><?php echo Lang::t('_DEL', 'admin_lang'); ?></span></span>',
+				title: '<span class="ico-sprite subs_del"><span><?php echo Lang::t('_DEL', 'admin_lang'); ?></span></span>',
 				sortable: true
 			}
 

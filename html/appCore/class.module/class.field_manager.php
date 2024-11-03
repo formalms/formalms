@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once __DIR__ . '/class.definition.php';
+require_once dirname(__FILE__) . '/class.definition.php';
 
 class Module_Field_Manager extends Module
 {
@@ -22,7 +22,7 @@ class Module_Field_Manager extends Module
         require_once _adm_ . '/modules/' . $this->module_name . '/' . $this->module_name . '.php';
     }
 
-    public function getAllToken()
+    public static function getAllToken($op = null)
     {
         return [
             'view' => ['code' => 'view',

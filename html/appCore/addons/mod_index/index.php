@@ -17,11 +17,11 @@ define('CORE', true);
 define('POPUP', true);
 define('IN_FORMA', true);
 define('_deeppath_', '../../../');
-require __DIR__ . '/' . _deeppath_ . 'base.php';
+require dirname(__FILE__) . '/' . _deeppath_ . 'base.php';
 
 // Initialize
 require _base_ . '/lib/lib.bootstrap.php';
-Boot::init(BOOT_PAGE_WR);
+Boot::init(CHECK_SYSTEM_STATUS);
 
 // Utils and so on
 require_once _base_ . '/lib/lib.platform.php';
@@ -31,7 +31,7 @@ StdPageWriter::createInstance();
 
 // Popup content
 
-$lang = &DoceboLanguage::createInstance('popup_' . POPUP_MOD_NAME, 'framework');
+$lang = &FormaLanguage::createInstance('popup_' . POPUP_MOD_NAME, 'framework');
 $GLOBALS['page']->setWorkingZone('content');
 
 $GLOBALS['page']->add(

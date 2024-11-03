@@ -1,14 +1,14 @@
 <?php
 echo getTitleArea([
     'index.php?modname=coursepath&amp;op=pathlist&amp;of_platform=lms' => Lang::t('_COURSEPATH', 'coursepath'),
-    'index.php?r=' . $this->link . '/show_coursepath&id_path=' . (int) $id_path => Lang::t('_SUBSCRIBE', 'subscribe') . ' : ' . $path_name,
+    'index.php?r=alms/subscription/show_coursepath&id_path=' . (int) $id_path => Lang::t('_SUBSCRIBE', 'subscribe') . ' : ' . $path_name,
     Lang::t('_CHOOSE_EDITION', 'subscribe'),
 ]);
 ?>
 <div class="std_block">
 <?php
 
-echo Form::openForm('choose_level_editions_form', 'index.php?r=' . $this->link . '/choose_editions_coursepath_action');
+echo Form::openForm('choose_level_editions_form', 'index.php?r=alms/subscription/choose_editions_coursepath_action');
 
 echo Form::getHidden('courses_list', 'courses_list', implode(',', $courses_list));
 echo Form::getHidden('users_to_add', 'users_to_add', implode(',', $users_to_add));

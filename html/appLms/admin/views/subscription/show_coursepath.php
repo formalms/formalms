@@ -47,7 +47,7 @@ echo getTitleArea([
 <div class="nofloat"></div>
 <?php
 
-$add_url = 'index.php?r=' . $this->link . '/sel_users_coursepath&amp;id_path=' . (int) $id_path;
+$add_url = 'index.php?r=adm/userselector/show&amp;instance=coursepath&amp;id=' . (int) $id_path;
 $mod_url = 'ajax.adm_server.php?r=' . $this->link . '/multimod_dialog_coursepath&amp;id_path=' . (int) $id_path;
 $del_url = 'ajax.adm_server.php?r=' . $this->link . '/multidel_coursepath&amp;id_path=' . (int) $id_path;
 

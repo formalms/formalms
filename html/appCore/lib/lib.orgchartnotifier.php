@@ -16,15 +16,15 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 require_once _base_ . '/lib/lib.event.php';
 
 /**
- * This is the class for ClassEvents in Docebo.
+ * This is the class for ClassEvents in Forma.
  *
  * @version  $Id:$
  */
-class DoceboOrgchartNotifier extends DoceboEventConsumer
+class FormaOrgchartNotifier extends FormaEventConsumer
 {
     public function _getConsumerName()
     {
-        return 'DoceboOrgchartNotifier';
+        return 'FormaOrgchartNotifier';
     }
 
     public function actionEvent(&$event)
@@ -36,7 +36,7 @@ class DoceboOrgchartNotifier extends DoceboEventConsumer
             case 'UserDel':
                 $id_user = $event->getProperty('userdeleted');
                 // remove user from associated
-                $acl_man = &Docebo::user()->getAclmanager();
+                $acl_man = \FormaLms\lib\Forma::getAclManager();
                 $acl_man->removeFromAllGroup($id_user);
              break;
         }

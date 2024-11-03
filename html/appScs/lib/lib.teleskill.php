@@ -28,7 +28,7 @@ define('TELESKILL_CAPACITY', 7);
 
 class Teleskill_Management
 {
-    public function Teleskill_Management()
+    public function __construct()
     {
     }
 
@@ -153,7 +153,7 @@ class Teleskill_Management
             return ['errorcode' => -1, 'errormessage' => '', 'roomid' => ''];
         }
 
-        $dom_answer = new DoceboDOMDocument();
+        $dom_answer = new FormaDOMDocument();
         $dom_answer->loadXML(trim($xml_answer));
 
         $dlist_code = $dom_answer->getElementsByTagName('errorcode');
@@ -229,7 +229,7 @@ class Teleskill_Management
             return ['errorcode' => -1, 'errormessage' => '', 'roomid' => ''];
         }
 
-        $dom_answer = new DoceboDOMDocument();
+        $dom_answer = new FormaDOMDocument();
         $dom_answer->loadXML($xml_answer);
 
         $dlist_code = $dom_answer->getElementsByTagName('errorcode');
@@ -270,7 +270,7 @@ class Teleskill_Management
 
         addJs($GLOBALS['where_lms_relative'] . '/modules/conference/', 'ajax_conference.js');
 
-        $lang = &DoceboLanguage::createInstance('conference', 'lms');
+        $lang = &FormaLanguage::createInstance('conference', 'lms');
 
         cout(Form::openForm('create_conference', 'index.php?modname=conference&amp;op=modconf&id=' . $room_info['id'])
                 . Form::openElementSpace()
@@ -360,7 +360,7 @@ class Teleskill_Management
             return ['errorcode' => -1, 'errormessage' => '', 'roomid' => ''];
         }
 
-        $dom_answer = new DoceboDOMDocument();
+        $dom_answer = new FormaDOMDocument();
         $dom_answer->loadXML($xml_answer);
 
         $dlist_code = $dom_answer->getElementsByTagName('errorcode');
@@ -436,7 +436,7 @@ class Teleskill_Management
             return ['errorcode' => -1, 'errormessage' => '', 'url' => '', 'fullroom' => 0];
         }
 
-        $dom_answer = new DoceboDOMDocument();
+        $dom_answer = new FormaDOMDocument();
         $dom_answer->loadXML($xml_answer);
         $dlist_code = $dom_answer->getElementsByTagName('errorcode');
         $dlist_msg = $dom_answer->getElementsByTagName('errormessage');
@@ -486,7 +486,7 @@ class Teleskill_Management
             return ['errorcode' => -1, 'errormessage' => ''];
         }
 
-        $dom_answer = new DoceboDOMDocument();
+        $dom_answer = new FormaDOMDocument();
         $dom_answer->loadXML($xml_answer);
         $dlist_code = $dom_answer->getElementsByTagName('errorcode');
         $dlist_msg = $dom_answer->getElementsByTagName('errormessage');
@@ -585,7 +585,7 @@ class Teleskill_Management
 
     public function getUrl($idConference, $room_type)
     {
-        $lang = &DoceboLanguage::createInstance('conference', 'lms');
+        $lang = &FormaLanguage::createInstance('conference', 'lms');
 
         $conf = new Conference_Manager();
 
@@ -598,7 +598,7 @@ class Teleskill_Management
         $teleskill_room = $this->nextRow($re_room);
         $room_id = $teleskill_room['roomid'];
 
-        if (getLogUserId() == $conference['idSt']) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() == $conference['idSt']) {
             $role = 2;
         } else {
             $role = 1;
@@ -606,8 +606,8 @@ class Teleskill_Management
 
         $login_info = $this->loginIntoRoom($room_id,
                                         $role,
-                                        getLogUserId(),
-                                        Docebo::user()->getUserName());
+                                        \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(),
+                                        \FormaLms\lib\FormaUser::getCurrentUser()->getUserName());
 
         if ($login_info['errorcode']) {
             $url = $login_info['errormessage'];
@@ -679,7 +679,7 @@ class Teleskill_Management
                         .'</sessions>'
                         .'</ews>';*/
 
-        $dom_answer = new DoceboDOMDocument();
+        $dom_answer = new FormaDOMDocument();
         $dom_answer->loadXML(trim($xml_answer));
 
         $dlist_code = $dom_answer->getElementsByTagName('errorcode');

@@ -15,6 +15,9 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class PluginmanagerAdmController extends AdmController
 {
+    public Services_JSON $json;
+    public PluginmanagerAdm $model;
+
     public function init()
     {
         $this->model = new PluginmanagerAdm();
@@ -23,7 +26,7 @@ class PluginmanagerAdmController extends AdmController
 
     public function showTask()
     {
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             exit("You can't access");
         }
         
@@ -31,7 +34,7 @@ class PluginmanagerAdmController extends AdmController
         $feedback = '';
         switch ($res = FormaLms\lib\Get::req('result', DOTY_ALPHANUM, '')) {
             case 'ok': $feedback = Lang::t('_OPERATION_SUCCESSFUL', 'standard'); break;
-            case 'err': $feedback = Lang::t('_OPERATION_FAILURE', 'standard') . PHP_EOL . Forma::getFormattedErrors(true); break;
+            case 'err': $feedback = Lang::t('_OPERATION_FAILURE', 'standard') . PHP_EOL . \FormaLms\lib\Forma::getFormattedErrors(true); break;
             default:
         }
         $this->render('show', [
@@ -45,10 +48,10 @@ class PluginmanagerAdmController extends AdmController
     // nuova
     public function getTableData()
     {
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             exit("You can't access");
         }
-        
+
         $plugins = $this->model->getPlugins();
 
         echo $this->json->encode([
@@ -61,7 +64,7 @@ class PluginmanagerAdmController extends AdmController
 
     public function install()
     {
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             exit("You can't access");
         }
         
@@ -76,7 +79,7 @@ class PluginmanagerAdmController extends AdmController
 
     public function uninstall()
     {
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             exit("You can't access");
         }
         
@@ -91,7 +94,7 @@ class PluginmanagerAdmController extends AdmController
 
     public function update()
     {
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             exit("You can't access");
         }
         
@@ -107,7 +110,7 @@ class PluginmanagerAdmController extends AdmController
 
     public function activate()
     {
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             exit("You can't access");
         }
         
@@ -122,7 +125,7 @@ class PluginmanagerAdmController extends AdmController
 
     public function deactivate()
     {
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             exit("You can't access");
         }
         
@@ -137,7 +140,7 @@ class PluginmanagerAdmController extends AdmController
 
     public function set_priority()
     {
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             exit("You can't access");
         }
         
@@ -153,7 +156,7 @@ class PluginmanagerAdmController extends AdmController
 
     public function showSettings()
     {
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             exit("You can't access");
         }
         
@@ -171,7 +174,7 @@ class PluginmanagerAdmController extends AdmController
 
     public function upload()
     {
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             exit("You can't access");
         }
         
@@ -185,7 +188,7 @@ class PluginmanagerAdmController extends AdmController
 
     public function purge()
     {
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             exit("You can't access");
         }
         

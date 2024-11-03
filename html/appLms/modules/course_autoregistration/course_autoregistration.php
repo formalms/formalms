@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Forma;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -13,7 +15,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Docebo::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit("You can't access");
 }
 
@@ -31,13 +33,13 @@ function courseAutoregistration()
     $out->add(getTitleArea(Lang::t('_AUTOREGISTRATION', 'course_autoregistration'))
                 . '<div class="std_block">');
 
-    $out->add(Form::openForm('course_autoregistration', 'index.php?modname=course_autoregistration&amp;op=course_autoregistration')
-                . Form::openElementSpace()
-                . Form::getTextfield(Lang::t('_COURSE_AUTOREGISTRATION_CODE', 'course_autoregistration'), 'course_autoregistration_code', 'course_autoregistration_code', '255', '')
-                . Form::closeElementSpace()
-                . Form::openButtonSpace()
-                . Form::getButton('subscribe', 'subscribe', Lang::t('_SEND', 'course_autoregistration'))
-                . Form::closeButtonSpace());
+    $out->add($form->openForm('course_autoregistration', 'index.php?modname=course_autoregistration&amp;op=course_autoregistration')
+                . $form->openElementSpace()
+                . $form->getTextfield(Lang::t('_COURSE_AUTOREGISTRATION_CODE', 'course_autoregistration'), 'course_autoregistration_code', 'course_autoregistration_code', '255', '')
+                . $form->closeElementSpace()
+                . $form->openButtonSpace()
+                . $form->getButton('subscribe', 'subscribe', Lang::t('_SEND', 'course_autoregistration'))
+                . $form->closeButtonSpace());
 
     $out->add('</div>');
 }
@@ -67,7 +69,7 @@ function subscribe()
 
         $man_course_user = new Man_CourseUser();
 
-        $course_registration_result = $man_course_user->subscribeUserWithCode($code, getLogUserId());
+        $course_registration_result = $man_course_user->subscribeUserWithCode($code, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
         $out->add(getTitleArea(Lang::t('_AUTOREGISTRATION', 'course_autoregistration'))
                 . '<div class="std_block">');
@@ -79,23 +81,23 @@ function subscribe()
             if ($course_registration_result == -1) {
                 $out->add(getErrorUi(Lang::t('_CODE_ALREDY_USED', 'course_autoregistration')));
 
-                $out->add(Form::openForm('course_autoregistration', 'index.php?modname=course_autoregistration&amp;op=course_autoregistration')
-                            . Form::openElementSpace()
-                            . Form::getTextfield(Lang::t('_COURSE_AUTOREGISTRATION_CODE', 'course_autoregistration'), 'course_autoregistration_code', 'course_autoregistration_code', '255', '')
-                            . Form::closeElementSpace()
-                            . Form::openButtonSpace()
-                            . Form::getButton('subscribe', 'subscribe', Lang::t('_SEND', 'course_autoregistration'))
-                            . Form::closeButtonSpace());
+                $out->add($form->openForm('course_autoregistration', 'index.php?modname=course_autoregistration&amp;op=course_autoregistration')
+                            . $form->openElementSpace()
+                            . $form->getTextfield(Lang::t('_COURSE_AUTOREGISTRATION_CODE', 'course_autoregistration'), 'course_autoregistration_code', 'course_autoregistration_code', '255', '')
+                            . $form->closeElementSpace()
+                            . $form->openButtonSpace()
+                            . $form->getButton('subscribe', 'subscribe', Lang::t('_SEND', 'course_autoregistration'))
+                            . $form->closeButtonSpace());
             } elseif ($course_registration_result == -2) {
                 $out->add(getErrorUi(Lang::t('_SUBSCRIPTION_NOT_ALLOWED_YET', 'course_autoregistration')));
 
-                $out->add(Form::openForm('course_autoregistration', 'index.php?modname=course_autoregistration&amp;op=course_autoregistration')
-                            . Form::openElementSpace()
-                            . Form::getTextfield(Lang::t('_COURSE_AUTOREGISTRATION_CODE', 'course_autoregistration'), 'course_autoregistration_code', 'course_autoregistration_code', '255', '')
-                            . Form::closeElementSpace()
-                            . Form::openButtonSpace()
-                            . Form::getButton('subscribe', 'subscribe', Lang::t('_SEND', 'course_autoregistration'))
-                            . Form::closeButtonSpace());
+                $out->add($form->openForm('course_autoregistration', 'index.php?modname=course_autoregistration&amp;op=course_autoregistration')
+                            . $form->openElementSpace()
+                            . $form->getTextfield(Lang::t('_COURSE_AUTOREGISTRATION_CODE', 'course_autoregistration'), 'course_autoregistration_code', 'course_autoregistration_code', '255', '')
+                            . $form->closeElementSpace()
+                            . $form->openButtonSpace()
+                            . $form->getButton('subscribe', 'subscribe', Lang::t('_SEND', 'course_autoregistration'))
+                            . $form->closeButtonSpace());
             } else {
                 require_once _adm_ . '/lib/lib.code.php';
                 $code = $_POST['course_autoregistration_code'];
@@ -120,14 +122,14 @@ function subscribe()
                         $query_control = 'SELECT COUNT(*)'
                                             . ' FROM %lms_courseuser'
                                             . ' WHERE idCourse = ' . $id_course
-                                            . ' AND idUser = ' . getLogUserId();
+                                            . ' AND idUser = ' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
-                        list($control) = sql_fetch_row(sql_query($query_control));
+                        [$control] = sql_fetch_row(sql_query($query_control));
 
                         if ($control == 0) {
-                            $subscribe->subscribeUser(getLogUserId(), $id_course, '3');
+                            $subscribe->subscribeUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_course, '3');
 
-                            $course_info = $man_course->getCourseInfo($id_course);
+                            $course_info = Man_Course::getCourseInfo($id_course);
 
                             $array_course_name[$counter] = $course_info['name'];
 
@@ -136,7 +138,7 @@ function subscribe()
                     }
 
                     if ($counter > 0) {
-                        $code_manager->setCodeUsed($code, getLogUserId());
+                        $code_manager->setCodeUsed($code, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
                         $courses = implode(', ', $array_course_name);
 
@@ -148,19 +150,19 @@ function subscribe()
 
                         $out->add('<br/><a href="' . FormaLms\lib\Get::home_page_abs_path() . '">' . Lang::t('_BACK_TO_COURSE', 'course_autoregistration') . '</a>');
                     } else {
-                        if (sizeof($array_course) == 0) {
+                        if (count($array_course) == 0) {
                             $out->add(getErrorUi(Lang::t('_SUBSCRIPTION_NOT_ALLOWED_YET', 'course_autoregistration')));
                         } else {
                             $out->add(getErrorUi(Lang::t('_ALREADY_SUBSCRIBED', 'course_autoregistration')));
                         }
 
-                        $out->add(Form::openForm('course_autoregistration', 'index.php?modname=course_autoregistration&amp;op=course_autoregistration')
-                                    . Form::openElementSpace()
-                                    . Form::getTextfield(Lang::t('_COURSE_AUTOREGISTRATION_CODE', 'course_autoregistration'), 'course_autoregistration_code', 'course_autoregistration_code', '255', '')
-                                    . Form::closeElementSpace()
-                                    . Form::openButtonSpace()
-                                    . Form::getButton('subscribe', 'subscribe', Lang::t('_SEND', 'course_autoregistration'))
-                                    . Form::closeButtonSpace());
+                        $out->add($form->openForm('course_autoregistration', 'index.php?modname=course_autoregistration&amp;op=course_autoregistration')
+                                    . $form->openElementSpace()
+                                    . $form->getTextfield(Lang::t('_COURSE_AUTOREGISTRATION_CODE', 'course_autoregistration'), 'course_autoregistration_code', 'course_autoregistration_code', '255', '')
+                                    . $form->closeElementSpace()
+                                    . $form->openButtonSpace()
+                                    . $form->getButton('subscribe', 'subscribe', Lang::t('_SEND', 'course_autoregistration'))
+                                    . $form->closeButtonSpace());
                     }
                 } else {
                     if ($valid_code == 0) {
@@ -169,13 +171,13 @@ function subscribe()
                         $out->add(getErrorUi(Lang::t('_CODE_NOT_VALID', 'course_autoregistration')));
                     }
 
-                    $out->add(Form::openForm('course_autoregistration', 'index.php?modname=course_autoregistration&amp;op=course_autoregistration')
-                                . Form::openElementSpace()
-                                . Form::getTextfield(Lang::t('_COURSE_AUTOREGISTRATION_CODE', 'course_autoregistration'), 'course_autoregistration_code', 'course_autoregistration_code', '255', '')
-                                . Form::closeElementSpace()
-                                . Form::openButtonSpace()
-                                . Form::getButton('subscribe', 'subscribe', Lang::t('_SEND', 'course_autoregistration'))
-                                . Form::closeButtonSpace());
+                    $out->add($form->openForm('course_autoregistration', 'index.php?modname=course_autoregistration&amp;op=course_autoregistration')
+                                . $form->openElementSpace()
+                                . $form->getTextfield(Lang::t('_COURSE_AUTOREGISTRATION_CODE', 'course_autoregistration'), 'course_autoregistration_code', 'course_autoregistration_code', '255', '')
+                                . $form->closeElementSpace()
+                                . $form->openButtonSpace()
+                                . $form->getButton('subscribe', 'subscribe', Lang::t('_SEND', 'course_autoregistration'))
+                                . $form->closeButtonSpace());
                 }
             }
         }

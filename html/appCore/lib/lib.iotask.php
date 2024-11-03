@@ -14,7 +14,7 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 /*
- * This is the base library for import/export operations in Docebo.
+ * This is the base library for import/export operations in Forma.
  * You should import this library if you want to develop your own
  * source or destination connector. This file is also imported in
  * modules/ioTask.php
@@ -76,7 +76,7 @@ define('TASK_IMPORT_TYPE_INSERTREMOVE', '2');
  *
  * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
  **/
-class DoceboConnectionManager
+class FormaConnectionManager
 {
     public $rs_connection = false;
     public $rs_connector = false;
@@ -189,12 +189,12 @@ class DoceboConnectionManager
      * save a new connection or update an old connection.
      *
      * @param string          $old_name
-     * @param DoceboConnector $connection
+     * @param FormaConnector $connection
      **/
     public function save_connection($old_name, $connection)
     {
-        //		$name = Docebo::db()->escape($connection->get_name());
-        //		$description = Docebo::db()->escape($connection->get_description());
+        //		$name = \FormaLms\lib\Forma::db()->escape($connection->get_name());
+        //		$description = \FormaLms\lib\Forma::db()->escape($connection->get_description());
         $name = $connection->get_name();
         $description = $connection->get_description();
         $type = FormaLms\lib\Get::filter($connection->get_type_name(), DOTY_ALPHANUM);
@@ -312,7 +312,7 @@ class DoceboConnectionManager
     public function add_connector($file)
     {
         require_once _adm_ . '/lib/connectors/lib.connector.php';
-        $directory = _adm_ . '/lib/connectors';
+        $directory = $GLOBALS['where_framework'] . '/lib/connectors';
         $scanned_directory = array_diff(scandir($directory), ['..', '.', 'index.htm', 'lib.connector.php']);
         if (!in_array($file, $scanned_directory)) {
             echo "Specified connector doesn't exist";
@@ -352,7 +352,7 @@ class DoceboConnectionManager
      *
      * @param string $type the type of the required connector
      *
-     * @return DoceboConnector the requeste connector
+     * @return FormaConnector the requeste connector
      **/
     public function create_connector_bytype($type)
     {
@@ -361,7 +361,7 @@ class DoceboConnectionManager
             return false;
         }
         require_once _adm_ . '/lib/connectors/lib.connector.php';
-        require_once Forma::inc(_adm_ . '/lib/connectors/' . $arr_conn[CONNMGR_CONNTYPE_FILE]);
+        require_once \FormaLms\lib\Forma::inc($GLOBALS['where_framework'] . '/lib/connectors/' . $arr_conn[CONNMGR_CONNTYPE_FILE]);
 
         return eval('return new ' . $arr_conn[CONNMGR_CONNTYPE_CLASS] . '(NULL);');
     }
@@ -631,7 +631,7 @@ class DoceboConnectionManager
     {
         if (!isset($this->lang)) {
             //require_once(_i18n_.'/lib.lang.php');
-            $this->lang = &DoceboLanguage::createInstance('iotask', 'framework');
+            $this->lang = &FormaLanguage::createInstance('iotask', 'framework');
         }
 
         return $this->lang;
@@ -666,7 +666,7 @@ class DoceboConnectionManager
  *
  * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
  **/
-class DoceboImport
+class FormaImport
 {
     public $source = null;
     public $destination = null;
@@ -674,16 +674,16 @@ class DoceboImport
 
     public function execute_task($taskID)
     {
-        $connMgr = new DoceboConnectionManager();
+        $connMgr = new FormaConnectionManager();
         $params = $connMgr->get_task_byID($taskID);
         $source = &$connMgr->create_connection_byname($params[CONNMGR_TASK_SOURCE]);
         $destination = &$connMgr->create_connection_byname($params[CONNMGR_TASK_DESTINATION]);
-        $lang = &DoceboLanguage::createInstance('iotask', 'framework');
+        $lang = &FormaLanguage::createInstance('iotask', 'framework');
 
         $result = $source->connect();
         if ($result === false) {
             return $source->get_error();
-        } elseif ($result === DOCEBO_IMPORT_NOTHINGTOPROCESS) {
+        } elseif ($result === FORMA_IMPORT_NOTHINGTOPROCESS) {
             $connMgr->set_execution_time($name);
 
             return $lang->def('_IMPORT_NOTHINGTOPROCESS');
@@ -718,7 +718,7 @@ class DoceboImport
     {
         require_once _base_ . '/lib/lib.table.php';
         require_once _base_ . '/lib/lib.form.php';
-        $lang = &DoceboLanguage::createInstance('organization_chart', 'framework');
+        $lang = &FormaLanguage::createInstance('organization_chart', 'framework');
         $form = new Form();
         $table = new Table(FormaLms\lib\Get::sett('visuItem'), $lang->def('_IMPORT_MAP'), $lang->def('_IMPORT_MAP'));
 
@@ -727,14 +727,14 @@ class DoceboImport
 
         $combo_elements = [];
         foreach ($dst_cols as $col) {
-            if (isset($col[DOCEBOIMPORT_COLID])) {
-                $combo_elements[$col[DOCEBOIMPORT_COLID]] = $col[DOCEBOIMPORT_COLNAME];
+            if (isset($col[FORMAIMPORT_COLID])) {
+                $combo_elements[$col[FORMAIMPORT_COLID]] = $col[FORMAIMPORT_COLNAME];
             } else {
-                $combo_elements[$col[DOCEBOIMPORT_COLNAME]] = $col[DOCEBOIMPORT_COLNAME];
+                $combo_elements[$col[FORMAIMPORT_COLNAME]] = $col[FORMAIMPORT_COLNAME];
             }
         }
 
-        $combo_elements[DOCEBOIMPORT_IGNORE] = $lang->def('_IMPORT_IGNORE');
+        $combo_elements[FORMAIMPORT_IGNORE] = $lang->def('_IMPORT_IGNORE');
 
         $table_dst_labels = [];
         $table_src_labels = [];
@@ -747,14 +747,14 @@ class DoceboImport
                 $pk = isset($this->import_map[$count]['pk']) ? $this->import_map[$count]['pk'] : '0';
                 $map = isset($this->import_map[$count]['map']) ? $this->import_map[$count]['map'] : '';
             }
-            $table_src_labels[] = $col[DOCEBOIMPORT_COLNAME] .
-                Form::getInputCheckbox('import_map_' . $count . '_pk',
+            $table_src_labels[] = $col[FORMAIMPORT_COLNAME] .
+                $form->getInputCheckbox('import_map_' . $count . '_pk',
                     'import_map[' . $count . '][pk]',
                     '1',
                     ($pk == '1'),
                     '');
             $table_src_labels_type[] = '';
-            $table_dst_labels[] = Form::getInputDropdown('dropdown_nowh',
+            $table_dst_labels[] = $form->getInputDropdown('dropdown_nowh',
                 'import_map_' . $count . '_map',
                 'import_map[' . $count . '][map]',
                 $combo_elements,
@@ -827,7 +827,7 @@ class DoceboImport
                 // array( dst_colnameX => pk1, dst_colnameY => pk2 )
 
                 for ($index = 0; $index < count($this->import_map); ++$index) {
-                    if ($this->import_map[$index]['map'] != DOCEBOIMPORT_IGNORE) {
+                    if ($this->import_map[$index]['map'] != FORMAIMPORT_IGNORE) {
                         $insrow[$this->import_map[$index]['map']] = $row[$index];
                         if (isset($this->import_map[$index]['pk'])) {
                             if ($this->import_map[$index]['pk'] == '1') {
@@ -840,7 +840,7 @@ class DoceboImport
                     $arr_pk[] = $pk;
                 }
                 foreach ($dst_cols as $col) {
-                    $col_name = isset($col[DOCEBOIMPORT_COLID]) ? $col[DOCEBOIMPORT_COLID] : $col[DOCEBOIMPORT_COLNAME];
+                    $col_name = isset($col[FORMAIMPORT_COLID]) ? $col[FORMAIMPORT_COLID] : $col[FORMAIMPORT_COLNAME];
                     if (!isset($insrow[$col_name])) {
                         $insrow[$col_name] = null;
                     }

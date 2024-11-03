@@ -25,21 +25,21 @@ class DashboardAdm extends Model
 
     public function __construct()
     {
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
 
         $this->users_filter = false;
         $this->courses_filter = false;
 
-        $this->user_level = Docebo::user()->getUserLevelId();
+        $this->user_level = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         if ($this->user_level != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
 
             $adminManager = new AdminPreference();
-            $this->users_filter = $adminManager->getAdminUsers(Docebo::user()->getIdST());
+            $this->users_filter = $adminManager->getAdminUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
 
             $all_courses = false;
             $array_courses = [];
-            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             foreach ($admin_courses['course'] as $key => $id_course) {
                 if ($key > 0) {
                     $array_courses[$key] = $id_course;
@@ -50,7 +50,7 @@ class DashboardAdm extends Model
             } elseif (isset($admin_courses['course'][-1])) {
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
-                $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
+                $user_catalogue = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if (count($user_catalogue) > 0) {
                     $courses = [];
                     foreach ($user_catalogue as $id_cat) {
@@ -163,12 +163,12 @@ class DashboardAdm extends Model
     {
         $version = [
             'db_version' => FormaLms\lib\Get::sett('core_version'),
-            'file_version' => _file_version_,
+            'file_version' => \FormaLms\lib\Version\VersionChecker::getFileVersion(),
             'online_version' => '',
         ];
 
         // check for differences beetween files and database version
-        if (version_compare($version['file_version'], $version['db_version']) == 1) {
+        if (\FormaLms\lib\Version\VersionChecker::compareDbVersions($version['db_version']) == 1) {
             switch ($version['db_version']) {
                 // handling old docebo ce version
                 case '3.6.0.3':
@@ -216,7 +216,7 @@ class DashboardAdm extends Model
      */
     public function getUsersStats($stats_required = false, $arr_users = false)
     {
-        $aclManager = Docebo::user()->getACLManager();
+        $aclManager = \FormaLms\lib\Forma::getAclManager();;
         $users = [];
         if ($stats_required == false || empty($stats_required) || !is_array($stats_required)) {
             $stats_required = ['all', 'suspended', 'register_today', 'register_yesterday', 'register_7d',
@@ -235,7 +235,7 @@ class DashboardAdm extends Model
         }
         if (isset($stats_required['suspended'])) {
             $data->addFieldFilter('valid', 0);
-            $data->addFieldFilter('userid', 'Anonymous', '<>'); //or idst <> Docebo::user()->getAnonymousId() ...
+            $data->addFieldFilter('userid', 'Anonymous', '<>'); //or idst <> \FormaLms\lib\FormaUser::getCurrentUser()->getAnonymousId() ...
             $users['suspended'] = $data->getTotalRows();
         }
         if (isset($stats_required['register_today'])) {
@@ -270,7 +270,7 @@ class DashboardAdm extends Model
         if (isset($stats_required['inactive_30d'])) {
             $data->resetFieldFilter();
             $data->addFieldFilter('lastenter', date('Y-m-d', time() - 30 * 86400) . ' 00:00:00', '<');
-            $data->addFieldFilter('userid', 'Anonymous', '<>'); //or idst <> Docebo::user()->getAnonymousId() ...
+            $data->addFieldFilter('userid', 'Anonymous', '<>'); //or idst <> \FormaLms\lib\FormaUser::getCurrentUser()->getAnonymousId() ...
             $users['inactive_30d'] = $data->getTotalRows();
         }
         if (isset($stats_required['waiting'])) {
@@ -815,8 +815,8 @@ class DashboardAdm extends Model
     {
         $report_list = [];
         $where_cond = '';
-        $user_idst = Docebo::user()->getIdSt();
-        $user_level = Docebo::user()->getUserLevelId();
+        $user_idst = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
+        $user_level = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
 
         if ($user_level != ADMIN_GROUP_GODADMIN) {
             $where_cond .= "AND (author='" . $user_idst . "' OR is_public>0)";

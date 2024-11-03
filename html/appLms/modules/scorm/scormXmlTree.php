@@ -11,10 +11,9 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-define('LMS', true);
-define('IN_FORMA', true);
-//define("IS_AJAX", true);
-define('_deeppath_', '../../../');
+const LMS = true;
+const IN_FORMA = true;
+const _deeppath_ = '../../../';
 require __DIR__ . '/' . _deeppath_ . 'base.php';
 
 // start buffer
@@ -24,16 +23,16 @@ ob_start();
 require _base_ . '/lib/lib.bootstrap.php';
 Boot::init(BOOT_DATETIME);
 
-if (!Docebo::user()->isLoggedIn()) {
+if (!\FormaLms\lib\FormaUser::getCurrentUser()->isLoggedIn()) {
     exit('Malformed request');
 }
 
 $prefix = $GLOBALS['prefix_lms'];
-require_once Forma::inc(_lms_ . '/modules/scorm/config.scorm.php');
-require_once Forma::inc(_lms_ . '/modules/scorm/scorm_utils.php');
-require_once Forma::inc(_lms_ . '/modules/scorm/scorm_items_track.php');
-require_once Forma::inc(_lms_ . '/modules/scorm/CPManagerDb.php');
-require_once Forma::inc(_lms_ . '/modules/scorm/RendererXML.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/config.scorm.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/scorm_utils.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/scorm_items_track.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/CPManagerDb.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/RendererXML.php');
 
 $idscorm_organization = (int) $_GET['idscorm_organization'];
 $idReference = (int) $_GET['idReference'];
@@ -54,12 +53,12 @@ list($idscorm_package, $filepath, $organization, $scormVersion) = sql_fetch_row(
 ob_clean();
 $it = new Scorm_ItemsTrack($GLOBALS['dbConn'], $GLOBALS['prefix_lms']);
 $rb = new RendererXML();
-$rb->idUser = getLogUserId();
+$rb->idUser = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 $rb->itemtrack = $it;
 $cpm = new CPManagerDb();
 
-$filepath = dirname(__DIR__,2) . '/' . $filepath;
-//die("->Open( $idReference, $idscorm_package, {$GLOBALS['dbConn']}, {$GLOBALS['prefix_lms']} ");
+$filepath = __DIR__ . '/../../' . $filepath;
+
 
 $bError = false;
 if ($bError == false && !$cpm->Open($idReference, $idscorm_package, $GLOBALS['dbConn'], $GLOBALS['prefix_lms'])) {
@@ -79,14 +78,13 @@ if ($bError) {
     exit();
 }
 
-$idUser = (int) getLogUserId();
+$idUser = (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
 $rb->resBase = $filepath . '/';
 $cpm->RenderOrganization($organization, $rb);
 
 header('Content-Type: text/xml; charset=utf-8');
 echo '<?xml version="1.0" encoding="UTF-8"?>';
-
 echo $rb->getOut();
 
 if ($cpm->errCode != 0) {

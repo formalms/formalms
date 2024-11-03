@@ -48,7 +48,7 @@ function checkPerm($token, $return_value = false, $use_custom_name = false, $use
             . $suff;
 
     // we return true if the user is a godadmin requesting a permission in the framework platform
-    if ((Docebo::User()->getUserLevelId() == ADMIN_GROUP_GODADMIN) &&
+    if ((\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN) &&
         (strpos($role, '/admin/') !== false || $platform_name == 'framework')) {
         return true;
     }
@@ -64,7 +64,7 @@ function checkPerm($token, $return_value = false, $use_custom_name = false, $use
         }
     }
 
-    if (Docebo::user()->matchUserRole($role)) {
+    if (\FormaLms\lib\FormaUser::getCurrentUser()->matchUserRole($role)) {
         $GLOBALS['role_asked'][$role] = true;
 
         return true;
@@ -80,7 +80,7 @@ function checkPerm($token, $return_value = false, $use_custom_name = false, $use
 
 function checkRole($roleid, $return_value = true)
 {
-    if (Docebo::user()->matchUserRole($roleid)) {
+    if (\FormaLms\lib\FormaUser::getCurrentUser()->matchUserRole($roleid)) {
         return true;
     }
     if ($return_value) {

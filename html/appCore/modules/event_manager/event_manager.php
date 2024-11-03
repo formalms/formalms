@@ -25,14 +25,14 @@ require_once _base_ . '/lib/lib.eventmanager.php';
 function event_manager_view($op)
 {
     checkPerm('view_event_manager');
-    //DoceboEventManager::registerEventConsumer(array('UserNew','UserMod'), 'DoceboUserNotifier', _adm_.'/lib/lib.usernotifier.php');
+    //FormaEventManager::registerEventConsumer(array('UserNew','UserMod'), 'FormaUserNotifier', $GLOBALS['where_framework'].'/lib/lib.usernotifier.php');
 
     require_once _base_ . '/lib/lib.table.php';
     //require_once(_i18n_.'/lib.lang.php');
     require_once _base_ . '/lib/lib.form.php';
 
-    $lang = &DoceboLanguage::createInstance('event_manager', 'framework');
-    $out = &$GLOBALS['page'];
+    $lang = FormaLanguage::createInstance('event_manager', 'framework');
+    $out = $GLOBALS['page'];
     $form = new Form();
 
     $out->setWorkingZone('content');
@@ -129,7 +129,7 @@ function event_user_view($op)
     //require_once(_i18n_.'/lib.lang.php');
     require_once _base_ . '/lib/lib.form.php';
 
-    $lang = &DoceboLanguage::createInstance('event_manager', 'framework');
+    $lang = &FormaLanguage::createInstance('event_manager', 'framework');
     $out = &$GLOBALS['page'];
     $form = new Form();
 
@@ -149,18 +149,18 @@ function event_user_view($op)
                 $rs_test = sql_query('SELECT channel'
                                 . '  FROM ' . $GLOBALS['prefix_fw'] . '_event_user '
                                 . " WHERE idEventMgr = '" . $idEventMgr . "'"
-                                . "   AND idst = '" . Docebo::user()->getIdSt() . "'");
+                                . "   AND idst = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'");
 
                 $channels = isset($arr_channel[$idEventMgr]) ? (implode(',', $arr_channel[$idEventMgr])) : '';
                 if (sql_num_rows($rs_test) == 1) {
                     $query = 'UPDATE ' . $GLOBALS['prefix_fw'] . '_event_user '
                             . " SET channel='" . $channels . "'"
                             . " WHERE idEventMgr = '" . (int) $idEventMgr . "'"
-                            . "   AND idst = '" . Docebo::user()->getIdSt() . "'";
+                            . "   AND idst = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'";
                 } else {
                     $query = 'INSERT INTO ' . $GLOBALS['prefix_fw'] . '_event_user '
                             . ' (idEventMgr,idst,channel) VALUES'
-                            . " ('" . (int) $idEventMgr . "','" . Docebo::user()->getIdSt() . "','" . $channels . "' )";
+                            . " ('" . (int) $idEventMgr . "','" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "','" . $channels . "' )";
                 }
                 $result = sql_query($query);
                 sql_free_result($rs_test);
@@ -230,7 +230,7 @@ function event_user_view($op)
                 $query = 'SELECT channel '
                         . ' FROM ' . $GLOBALS['prefix_fw'] . '_event_user'
                         . " WHERE idEventMgr='" . $idEventMgr . "'"
-                        . "   AND idst='" . Docebo::user()->getIdSt() . "'";
+                        . "   AND idst='" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'";
                 $rs_user = sql_query($query);
                 if (sql_num_rows($rs_user) == 1) {
                     list($user_channel) = sql_fetch_row($rs_user);
@@ -281,7 +281,7 @@ function event_special_view($op)
     //require_once(_i18n_.'/lib.lang.php');
     require_once _base_ . '/lib/lib.form.php';
 
-    $lang = &DoceboLanguage::createInstance('event_manager', 'framework');
+    $lang = &FormaLanguage::createInstance('event_manager', 'framework');
     $out = &$GLOBALS['page'];
     $form = new Form();
 
@@ -307,7 +307,7 @@ function event_special_view($op)
                         break;
                     }
                     $idClass = sql_insert_id();
-                    DoceboEventManager::registerEventConsumer([$arr_class[$key]], 'DoceboUserNotifier', _adm_ . '/lib/lib.usernotifier.php');
+                    FormaEventManager::registerEventConsumer([$arr_class[$key]], 'FormaUserNotifier', $GLOBALS['where_framework'] . '/lib/lib.usernotifier.php');
 
                     $result1 = sql_query('INSERT INTO ' . $GLOBALS['prefix_fw'] . '_event_manager '
                                             . ' (idClass,recipients,show_level) VALUES '

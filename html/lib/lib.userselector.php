@@ -40,6 +40,11 @@ class UserSelector
     public $use_suspended = false;
     public $id_org = null;
     public $org_type = null;
+    /**
+     * @var true
+     */
+    public bool $multi_choice;
+    public $use_multi_sel;
 
     public function __construct()
     {
@@ -203,7 +208,7 @@ class UserSelectorUtil
 
     public function __construct()
     {
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
     }
 
     /**
@@ -281,7 +286,7 @@ class UserSelectorUtil
             }
         }
 
-        $acl_man = Docebo::user()->getACLManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();;
         $res = $acl_man->getArrGroupST($oc_id_arr);
 
         return $res;

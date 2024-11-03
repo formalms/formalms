@@ -1,5 +1,5 @@
 <?php
-
+require_once _lib_.'/Interfaces/Accessible.php';
 /*
  * FORMA - The E-Learning Suite
  *
@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-class Man_MiddleArea
+class Man_MiddleArea implements \FormaLms\lib\Interfaces\Accessible
 {
     public $_cache = null;
 
@@ -196,12 +196,12 @@ class Man_MiddleArea
         if (isset($this->_cache[$obj_index]) && ($this->_cache[$obj_index]['disabled'] == 1)) {
             return false;
         }
-        $user_level = Docebo::user()->getUserLevelId();
+        $user_level = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         if ($user_level == ADMIN_GROUP_GODADMIN) {
             return true;
         }
 
-        $user_assigned = Docebo::user()->getArrSt();
+        $user_assigned = \FormaLms\lib\FormaUser::getCurrentUser()->getArrSt();
         if (isset($this->_cache[$obj_index])) {
             if ($this->_cache[$obj_index]['list'] == '' || empty($this->_cache[$obj_index]['list'])) {
                 return true;
@@ -213,5 +213,16 @@ class Man_MiddleArea
         }
 
         return !empty($intersect);
+    }
+
+    public function getAccessList($resourceId) : array {
+
+        return $this->getObjIdstList($resourceId);
+    }
+
+    public function setAccessList($resourceId, array $selection) : bool {
+        
+        return (bool) $this->setObjIdstList($resourceId, $selection);
+     
     }
 }

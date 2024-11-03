@@ -13,22 +13,22 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (!Docebo::user()->isAnonymous()) {
+if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     function play($object_link, $id_param)
     {
         //-kb-play-// if(!checkPerm('view', true, 'organization') && !checkPerm('view', true, 'storage')) die("You can't access");
-        $lang = &DoceboLanguage::createInstance('link');
+        $lang = &FormaLanguage::createInstance('link');
 
         $idCategory = $object_link->getId();
         $mode = importVar('mode', false, 'link');
         $back_coded = htmlentities(urlencode($object_link->back_url));
 
-        require_once _lms_ . '/lib/lib.param.php';
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
         $idReference = getLOParam($id_param, 'idReference');
         // NOTE: Track only if $idReference is present
         if ($idReference !== false) {
             require_once _lms_ . '/class.module/track.link.php';
-            list($exist, $idTrack) = Track_Link::getIdTrack($idReference, getLogUserId(), $idCategory, true);
+            list($exist, $idTrack) = Track_Link::getIdTrack($idReference, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $idCategory, true);
             if ($exist) {
                 $ti = new Track_Link($idTrack);
                 $ti->setDate(date('Y-m-d H:i:s'));
@@ -36,7 +36,7 @@ if (!Docebo::user()->isAnonymous()) {
                 $ti->update();
             } else {
                 $ti = new Track_Link(false);
-                $ti->createTrack($idReference, $idTrack, getLogUserId(), date('Y-m-d H:i:s'), 'completed', 'link');
+                $ti->createTrack($idReference, $idTrack, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), date('Y-m-d H:i:s'), 'completed', 'link');
             }
         }
 
@@ -86,7 +86,7 @@ if (!Docebo::user()->isAnonymous()) {
     function displayAsList($idCategory)
     {
         //-kb-play-// if(!checkPerm('view', true, 'organization') && !checkPerm('view', true, 'storage')) die("You can't access");
-        $lang = &DoceboLanguage::createInstance('link');
+        $lang = &FormaLanguage::createInstance('link');
 
         $textQuery = '
 	SELECT title, link_address, description 
@@ -110,7 +110,7 @@ if (!Docebo::user()->isAnonymous()) {
         if (!checkPerm('view', true, 'organization') && !checkPerm('view', true, 'storage')) {
             exit("You can't access");
         }
-        $lang = &DoceboLanguage::createInstance('link');
+        $lang = &FormaLanguage::createInstance('link');
 
         $textQuery = '
 	SELECT keyword 

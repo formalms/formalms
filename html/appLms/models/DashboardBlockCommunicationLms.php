@@ -12,7 +12,7 @@
  */
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
-require_once _lms_ . '/admin/models/CommunicationAlms.php';
+require_once(_lms_.'/admin/models/CommunicationAlms.php');
 /**
  * Class DashboardBlockNewsLms.
  */
@@ -47,11 +47,12 @@ class DashboardBlockCommunicationLms extends DashboardBlockLms
     public function getViewData()
     {
         $data = $this->getCommonViewData();
-        $limit = $this->data['max_last_records'] ? (int) $this->data['max_last_records'] : self::DEFAULT_RECORDS;
+        $limit = !empty($this->data) && array_key_exists('max_last_records', $this->data) ? (int) $this->data['max_last_records'] : self::DEFAULT_RECORDS;
 
-        $onlyToRead = $this->data['showread'];
+        $onlyToRead = !empty($this->data) &&  array_key_exists('showread', $this->data) ? (int) $this->data['showread'] : false;
 
         $data['communication'] = $this->getCommunication($limit, $onlyToRead);
+
 
         return $data;
     }
@@ -100,8 +101,10 @@ class DashboardBlockCommunicationLms extends DashboardBlockLms
     {
         $communication = [];
 
-        $communication = $this->model->findAllUnread(0, $limit, 'publish_date', 'DESC', Docebo::user()->getId(), ['viewer' => Docebo::user()->getArrSt(), 'only_to_read' => (bool) $only_to_read]);
-
+        $communication = $this->model->findAllUnread(0, $limit, 'publish_date', 'DESC', \FormaLms\lib\FormaUser::getCurrentUser()->getId(), ['viewer' => \FormaLms\lib\FormaUser::getCurrentUser()->getArrSt(), 'only_to_read' => (bool) $only_to_read]);
+     
         return $communication;
     }
+
+    
 }

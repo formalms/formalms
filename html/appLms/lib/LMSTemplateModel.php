@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Domain\DomainHandler;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -19,19 +21,23 @@ class LMSTemplateModel
 
     public function __construct()
     {
-        $this->user = Docebo::user();
+        $this->user = \FormaLms\lib\FormaUser::getCurrentUser();
     }
 
     public function selectLayout()
     {
+
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-        if ($session->has('layoutToRender') && !empty($session->get('layoutToRender'))) {
-            return $session->get('layoutToRender');
-        } elseif ($session->has('idCourse') && !empty($session->get('idCourse'))) {
-            return 'lms';
-        } else {
-            return 'lms_user';
-        }
+        $layout = 'lms_user';
+        $result = [];
+
+        if ($session->has('idCourse') && !empty($session->get('idCourse'))) {
+            $layout = 'lms';
+        } 
+
+        $result = Events::trigger('lms.layout.selecting', ['layout' => $layout]);
+
+        return array_key_exists('layout', $result) ? $result['layout'] : $layout;
     }
 
     public function getLogo()
@@ -53,7 +59,7 @@ class LMSTemplateModel
 
     public function getUserDetails()
     {
-        return $this->user->getAclManager()->getUser($this->user->getIdst(), false);
+        return \FormaLms\lib\Forma::getAclManager()->getUser($this->user->getIdst(), false);
     }
 
     public function getLogoutUrl()
@@ -79,8 +85,8 @@ class LMSTemplateModel
 
         $profile = null;
         if ($ma->currentCanAccessObj('user_details_full')) {
-            require_once Forma::inc(_lib_ . '/lib.user_profile.php');
-            $profile = new UserProfile(getLogUserId());
+            require_once \FormaLms\lib\Forma::inc(_lib_ . '/lib.user_profile.php');
+            $profile = new UserProfile(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
             $profile->init('profile', 'framework', 'index.php?' . FormaLms\lib\Get::home_page_query(), 'ap');
         }
 
@@ -142,7 +148,9 @@ class LMSTemplateModel
 
     public function getHelpDeskEmail()
     {
-        return trim(FormaLms\lib\Get::sett('customer_help_email', ''));
+
+
+        return trim(DomainHandler::getInstance()->getMailerField('helper_desk_mail'));
     }
 
     public function getCurrentPage()

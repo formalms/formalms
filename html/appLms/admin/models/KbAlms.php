@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Forma;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -22,7 +24,7 @@ class KbAlms extends Model
     public function __construct()
     {
         require_once _base_ . '/lib/lib.json.php';
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         $this->json = new Services_JSON();
         parent::__construct();
     }
@@ -253,7 +255,7 @@ class KbAlms extends Model
 
             //languages
             $names = [];
-            $query = "SELECT id_dir, node_title FROM %lms_kb_tree_info WHERE lang_code='" . getLanguage() . "'";
+            $query = "SELECT id_dir, node_title FROM %lms_kb_tree_info WHERE lang_code='" . Lang::get() . "'";
             $res = $this->db->query($query);
             while (list($id_dir, $node_title) = $this->db->fetch_row($res)) {
                 $names[$id_dir] = $node_title;
@@ -290,7 +292,7 @@ class KbAlms extends Model
                     }
                 }*/
 
-        $lang_code = ($language == false ? getLanguage() : $language);
+        $lang_code = ($language == false ? Lang::get() : $language);
         $search_query = "SELECT	t1.node_id, t2.node_title, t1.iLeft, t1.iRight
 			FROM %lms_kb_tree AS t1 LEFT JOIN %lms_kb_tree_info AS t2
 				ON (t1.node_id = t2.id_dir AND t2.lang_code = '" . $lang_code . "' )
@@ -458,7 +460,7 @@ class KbAlms extends Model
             list($iLeft, $iRight) = $this->getFolderLimits($node_id);
             $qtxt = "SELECT tree.node_id, info.node_title FROM %lms_kb_tree as tree
 				LEFT JOIN %lms_kb_tree_info as info
-				ON (tree.node_id=info.id_dir AND info.lang_code='" . getLanguage() . "')
+				ON (tree.node_id=info.id_dir AND info.lang_code='" . Lang::get() . "')
 				WHERE (tree.iLeft < " . $iLeft . " AND tree.iRight > '" . $iRight . "')
 				OR tree.node_id=" . (int) $node_id . '
 				ORDER BY tree.iLeft DESC';
@@ -509,7 +511,7 @@ class KbAlms extends Model
             }
         }
 
-        $lang_code = ($language == false ? getLanguage() : $language);
+        $lang_code = ($language == false ? Lang::get() : $language);
         $search_query = "SELECT	t1.node_id, t1.parent_id, t1.lev, t1.iLeft, t1.iRight, t2.node_title
 			FROM %lms_kb_tree AS t1 LEFT JOIN	%lms_kb_tree_info AS t2
 			ON (t1.node_id = t2.id_dir AND t2.lang_code = '" . $lang_code . "' )
@@ -610,7 +612,7 @@ class KbAlms extends Model
     public function getFolderTranslation($node_id, $lang_code = false)
     {
         if (!$lang_code) {
-            $lang_code = getLanguage();
+            $lang_code = Lang::get();
         }
         $query = 'SELECT node_title FROM %lms_kb_tree_info WHERE id_dir=' . (int) $node_id . " AND lang_code='" . $lang_code . "'";
         $res = $this->db->query($query);
@@ -678,7 +680,7 @@ class KbAlms extends Model
      */
     public function deleteFolder($node_id, $onlyLeaf = false)
     {
-        $acl = &Docebo::user()->getACLManager();
+        $acl = \FormaLms\lib\Forma::getAclManager();;
         $folder = $this->getFolderById($node_id);
 
         if (!$folder) {
@@ -841,7 +843,7 @@ class KbAlms extends Model
     {
         require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
         $res = [];
-        $user_id = ($user_id > 0 ? $user_id : getLogUserId());
+        $user_id = ($user_id > 0 ? $user_id : \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
         $allowed_status = [
             _CUS_SUBSCRIBED,
@@ -869,9 +871,9 @@ class KbAlms extends Model
         $res = [];
 
         if (empty($user_id)) {
-            $arr_st = Docebo::user()->getArrst();
+            $arr_st = \FormaLms\lib\FormaUser::getCurrentUser()->getArrst();
         } else {
-            $acl = Docebo::user()->getACL();
+            $acl = \FormaLms\lib\Forma::getAcl();
             $arr_st = $acl->getUserAllST($user_id);
         }
         if (empty($arr_st)) {
@@ -896,12 +898,12 @@ class KbAlms extends Model
         $res = [];
 
         if (empty($user_id)) {
-            $arr_st = Docebo::user()->getArrst();
+            $arr_st = \FormaLms\lib\FormaUser::getCurrentUser()->getArrst();
         } else {
-            $acl = Docebo::user()->getACL();
+            $acl = \FormaLms\lib\Forma::getAcl();
             $arr_st = $acl->getUserAllST($user_id);
         }
-        $arr_st = Docebo::user()->getArrst();
+        $arr_st = \FormaLms\lib\FormaUser::getCurrentUser()->getArrst();
         if (empty($arr_st)) {
             $arr_st = [0];
         }
@@ -976,15 +978,15 @@ class KbAlms extends Model
 
     public function checkResourcePerm($res_id, $user_id = false, $course_filter = false)
     {
-        $user_id = (empty($user_id) ? Docebo::user()->getIdSt() : $user_id);
+        $user_id = (empty($user_id) ? \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() : $user_id);
 
         $filter = $this->getSearchFilter(false, false, $course_filter, $res_id);
 
         $fields = 'COUNT(*) as tot';
         $qtxt = 'SELECT ' . $fields . ' FROM %lms_kb_res as kr WHERE ' . $filter['where'];
 
-        $q = Docebo::db()->query($qtxt);
-        $row = Docebo::db()->fetch_assoc($q);
+        $q = \FormaLms\lib\Forma::db()->query($qtxt);
+        $row = \FormaLms\lib\Forma::db()->fetch_assoc($q);
 
         return $row['tot'] > 0 ? true : false;
     }

@@ -21,7 +21,7 @@ class Module_MyCompetences extends LmsModule
         mycompetencesDispatch($GLOBALS['op']);
     }
 
-    public function getAllToken()
+    public static function getAllToken()
     {
         return [
             'view' => ['code' => 'view',

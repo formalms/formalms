@@ -14,7 +14,7 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 /*
- * @package DoceboCore
+ * @package FormaCore
  * @subpackage user_management
  *
  * @author Fabio Pirovano
@@ -113,7 +113,7 @@ class MyFile
     /**
      * @param int $id_user the idst of the user
      */
-    public function MyFile($id_user)
+    public function __construct($id_user)
     {
         ksort($this->arr_field);
         reset($this->arr_field);
@@ -267,9 +267,8 @@ class MyFile
 
     public function insertFile($id_file, $area, $title, $description, $file_descriptor, $file_policy)
     {
-        require_once _base_ . '/lib/lib.user.php';
-       require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
-        $user_data = new DoceboUser(getLogUserId());
+        require_once _base_ . '/lib/lib.user_profile.php';
+        $user_data = \FormaLms\lib\FormaUser::getCurrentUser();
         $user_profile_data = new UserProfileData();
 
         $file_name = '';
@@ -281,8 +280,8 @@ class MyFile
         if (!$file_size) {
             $file_size = 0;
         }
-        $total_used_quota = $file_size + $user_profile_data->getUsedQuota(getLogUserId());
-        $max_quota = ($user_profile_data->getQuotaLimit(getLogUserId())) * 1024 * 1024;
+        $total_used_quota = $file_size + $user_profile_data->getUsedQuota(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
+        $max_quota = ($user_profile_data->getQuotaLimit(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) * 1024 * 1024;
         if ($total_used_quota <= $max_quota) {
             if (!$id_file) {
                 if ($file_name == '') {
@@ -335,8 +334,8 @@ class MyFile
     public function deleteFile($id_file)
     {
         require_once _base_ . '/lib/lib.upload.php';
-        require_once _base_ . '/lib/lib.user.php';
-        $user_data = new DoceboUser();
+
+        $user_data = new \FormaLms\lib\FormaUser();
 
         $file_info = $this->getFileInfo($id_file);
         sl_open_fileoperations();
@@ -365,8 +364,16 @@ class MyFilesPolicy extends MyFile
     public $_extra_filter_cahced = false;
 
     public $_file_number;
+    /**
+     * @var string|null
+     */
+    public string $_viewer_teacher;
+    /**
+     * @var string|null
+     */
+    public string $_viewer_friend;
 
-    public function MyFilesPolicy($id_user, $viewer, $is_friend = null, $is_teacher = null)
+    public function __construct($id_user, $viewer, $is_friend = null, $is_teacher = null)
     {
         $this->_id_user = $id_user;
         $this->_viewer = $viewer;
@@ -435,7 +442,7 @@ class MyFilesPolicy extends MyFile
         return sql_fetch_row($re_query);
     }
 
-    public function getFileList($area = false, $order_by = false, $from = false, $num_elem = false)
+    public function getFileList($area = false, $extra_filter = false, $order_by = false, $from = false, $num_elem = false)
     {
         $arr_policy = [MF_POLICY_FREE];
         if ($this->isViewerFriend() || $this->_viewer == $this->_id_user) {
@@ -578,7 +585,7 @@ class MyFileSelector
 {
     public $current_selection;
 
-    public function MyFileSelector()
+    public function __construct()
     {
         $this->current_selection = [];
     }
@@ -629,10 +636,10 @@ class MyFileSelector
         require_once _base_ . '/lib/lib.form.php';
         require_once _base_ . '/lib/lib.table.php';
 
-        $file_man = new MyFile(getLogUserId());
+        $file_man = new MyFile(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         $tab_man = new TabView('myfiles', '');
 
-        $lang = &DoceboLanguage::createInstance('myfiles');
+        $lang = &FormaLanguage::createInstance('myfiles');
 
         $areas = $file_man->getFilesAreas();
         foreach ($areas as $id_page => $area_name) {
@@ -690,7 +697,7 @@ class MyFileSelector
     {
         require_once _base_ . '/lib/lib.form.php';
 
-        $lang = &DoceboLanguage::createInstance('myfiles');
+        $lang = &FormaLanguage::createInstance('myfiles');
 
         $GLOBALS['page']->add(
             Form::openButtonSpace()

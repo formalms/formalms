@@ -1,0 +1,19 @@
+
+div.form_line_l p {
+	float: left;
+	width: 40%;
+	margin: 0px;
+}
+
+div.form_line_l {
+	float: none;
+	clear: both;
+	margin-top: 0.4em;
+	margin-bottom: 0.4em;
+}
+
+form {
+	margin-bottom: 1em;
+	float: none;
+	clear: both;
+}

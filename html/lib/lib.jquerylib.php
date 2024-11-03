@@ -26,7 +26,6 @@ class JQueryLib
     public static $array_js_addons = [
         'html5support',  //  HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries
         'helpdesk',
-        'fancybox',
         'swipe',
         'select',
         'datepicker',
@@ -40,7 +39,6 @@ class JQueryLib
 
     public static $array_css_addons = ['table',    //  media query for table formatting
         'helpdesk',
-        'fancybox',
         'swipe',
         'select',
         'datepicker',
@@ -56,7 +54,7 @@ class JQueryLib
         $local_link .= Util::get_js($jquery_core_lib);
         $local_link .= self::initJQueryAjax();
 
-        $lang = DoceboLangManager::getInstance()->getLanguageBrowsercode(Lang::get());
+        $lang = FormaLangManager::getInstance()->getLanguageBrowsercode(Lang::get());
         $jquery_core_lang = '/addons/' . self::_path . "/core/ui/js/i18n/datepicker-$lang.js";
         $local_link .= ($lang !== 'en') ? Util::get_js($jquery_core_lang) : '';
 
@@ -132,7 +130,7 @@ class JQueryLib
     // if locale does not exist or http header fails, default to en-us
     public static function loadCalenderLocal()
     {
-        $_lang = Docebo::user()->getPreference('ui.lang_code');
+        $_lang = \FormaLms\lib\FormaUser::getCurrentUser()->getPreference('ui.lang_code');
         $locale_calender_path = '/addons/' . self::_path . '/datepicker/locales/';
         if (!is_null($_lang)) {
             $local_js = $locale_calender_path . 'bootstrap-datepicker.' . $_lang . '.min.js';
@@ -147,7 +145,7 @@ class JQueryLib
 
     private static function select_file($which_path, $which_extension)
     {
-        $dircontents = scandir(dirname(__DIR__)  . $which_path);
+        $dircontents = scandir(dirname(__FILE__) . '/..' . $which_path);
         $ret_array = [];
         foreach ($dircontents as $file) {
             if (strpos($which_extension, 'min.') && strpos($file, 'min.')) {

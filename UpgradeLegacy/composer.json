@@ -1,0 +1,30 @@
+{
+    "name": "formalms/formalms",
+    "authors": [
+        {
+            "name": "forma.lms project",
+            "email": "info@formalms.org"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "symfony/http-foundation": "^5.4",
+        "symfony/property-access": "^5.4",
+        "symfony/serializer": "^5.4"
+    },
+    "config": {
+        "autoloader-suffix": "_formalms",
+        "bin-dir": "../bin",
+        "platform": {
+            "php": "7.4"
+        },
+        "vendor-dir": "vendor"
+    },
+    "autoload": {
+        "psr-4": {
+            "FormaLms\\": ""
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

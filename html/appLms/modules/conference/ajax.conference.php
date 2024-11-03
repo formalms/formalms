@@ -21,7 +21,7 @@ $path_to_root = '../..';
 
 // prepare refer ------------------------------------------------------------------
 
-require_once __DIR__ . '/' . $path_to_root . '/config.php';
+require_once dirname(__FILE__) . '/' . $path_to_root . '/config.php';
 require_once $GLOBALS['where_config'] . '/config.php';
 
 if ($GLOBALS['where_kms_relative'] != false) {
@@ -50,8 +50,8 @@ session_start();
 // load regional setting --------------------------------------------------------------
 
 // load current user from session -----------------------------------------------------
-require_once _base_ . '/lib/lib.user.php';
-$GLOBALS['current_user'] = &DoceboUser::createDoceboUserFromSession('public_area');
+
+\FormaLms\lib\FormaUser::loadUserFromSession();
 
 //require_once(_i18n_.'/lib.lang.php');
 require_once _base_ . '/lib/lib.template.php';

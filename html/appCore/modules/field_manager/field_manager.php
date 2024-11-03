@@ -31,8 +31,8 @@ function field_list()
     //require_once(_i18n_.'/lib.lang.php');
 
     $back_coded = htmlentities(urlencode('index.php?modname=field_manager&op=field_list'));
-    $std_lang = &DoceboLanguage::createInstance('standard', 'framework');
-    $lang = &DoceboLanguage::createInstance('field', 'framework');
+    $std_lang = &FormaLanguage::createInstance('standard', 'framework');
+    $lang = &FormaLanguage::createInstance('field', 'framework');
     $out = &$GLOBALS['page'];
     $filter = new Form();
 
@@ -90,7 +90,7 @@ function field_list()
     $query_field_display = '
 	SELECT id_common, type_field, translation
 	FROM ' . $GLOBALS['prefix_fw'] . "_field
-	WHERE lang_code = '" . getLanguage() . "'
+	WHERE lang_code = '" . Lang::get() . "'
 		" . (isset($_POST['filter_type_field']) && $_POST['filter_type_field'] != 'all_field' ?
             " AND type_field = '" . $field_av[$_POST['filter_type_field']] . "' " :
             '') . '
@@ -205,8 +205,8 @@ function field_del()
 {
     checkPerm('del');
     $back_coded = htmlentities(urlencode('index.php?modname=field_manager&op=field_list'));
-    $std_lang = &DoceboLanguage::createInstance('standard', 'framework');
-    $lang = &DoceboLanguage::createInstance('field', 'framework');
+    $std_lang = &FormaLanguage::createInstance('standard', 'framework');
+    $lang = &FormaLanguage::createInstance('field', 'framework');
     $out = &$GLOBALS['page'];
 
     $id_common = importVar('id_common', true, 0);
@@ -283,11 +283,11 @@ function movefield($direction)
         }
     }
 
-    require_once Forma::inc(_adm_ . '/modules/field/' . $type_file_1);
+    require_once \FormaLms\lib\Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file_1);
     $first_instance = eval("return new $type_class_1( $id_common );");
     $first_instance->movetoposition($next_seq);
 
-    require_once Forma::inc(_adm_ . '/modules/field/' . $type_file_2);
+    require_once \FormaLms\lib\Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file_2);
     $second_instance = eval("return new $type_class_2( $id_common_2 );");
     $second_instance->movetoposition($sequence);
 
@@ -307,7 +307,7 @@ function fixsequence($jump = true)
 
     $new_sequence = 1;
     while (list($type_file, $type_class, $id_common) = sql_fetch_row($re_field)) {
-        require_once Forma::inc(_adm_ . '/modules/field/' . $type_file);
+        require_once \FormaLms\lib\Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
         $first_instance = eval("return new $type_class( $id_common );");
         $first_instance->movetoposition($new_sequence++);
     }

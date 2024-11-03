@@ -30,7 +30,7 @@ class CoreMenu
         }
 
         $query =
-<<<SQL
+            <<<SQL
 SELECT  m.idMenu, m.idParent, m.sequence, m.name, m.image, m.is_active, mu.idUnder
       , mu.module_name, mu.default_op, mu.mvc_path, mu.associated_token, mu.of_platform, mu.sequence as menu_under_sequence
 FROM %adm_menu AS m
@@ -68,8 +68,8 @@ SQL;
     {
         $_menu = [];
         foreach ($menu as &$item) {
-            if ((int) $item->idParent === $parent) {
-                $item->submenu = self::buildMenuArray($menu, (int) $item->idMenu);
+            if ((int)$item->idParent === $parent) {
+                $item->submenu = self::buildMenuArray($menu, (int)$item->idMenu);
                 $item->role = self::role($item->of_platform, $item->module_name, $item->associated_token);
                 $item->url = self::url($item->of_platform, $item->mvc_path, $item->module_name, $item->default_op);
                 $_menu[] = $item;
@@ -154,7 +154,7 @@ SQL;
     public static function get($id)
     {
         $query =
-<<<SQL
+            <<<SQL
 SELECT  m.idMenu, m.idParent, m.sequence, m.name, m.image, m.is_active, mu.idUnder
       , mu.module_name, mu.default_op, mu.mvc_path, mu.associated_token, mu.of_platform
 FROM %adm_menu AS m
@@ -173,7 +173,7 @@ SQL;
     public static function getByMVC($mvc_path)
     {
         $query =
-<<<SQL
+            <<<SQL
 SELECT  m.idMenu, m.idParent, m.sequence, m.name, m.image, m.is_active, mu.idUnder
       , mu.module_name, mu.default_op, mu.mvc_path, mu.associated_token, mu.of_platform
 FROM %adm_menu AS m
@@ -182,10 +182,11 @@ WHERE 1 = 1
     AND mu.mvc_path = '$mvc_path'
 SQL;
 
-        $menu = sql_fetch_object(sql_query($query));
-        $menu->role = self::role($menu->of_platform, $menu->module_name, $menu->associated_token);
-        $menu->url = self::url($menu->of_platform, $menu->mvc_path, $menu->module_name, $menu->default_op);
-
+        $menu = (object) sql_fetch_object(sql_query($query));
+        if ($menu) {
+            $menu->role = self::role($menu->of_platform, $menu->module_name, $menu->associated_token);
+            $menu->url = self::url($menu->of_platform, $menu->mvc_path, $menu->module_name, $menu->default_op);
+        }
         return $menu;
     }
 
@@ -198,19 +199,19 @@ SQL;
         $sets = implode(', ', $sets);
 
         $query =
-<<<SQL
+            <<<SQL
 UPDATE %adm_menu
 SET $sets
 WHERE idMenu = $id
 SQL;
 
-        return (bool) sql_query($query);
+        return (bool)sql_query($query);
     }
 
     /**
      * Add new menu item and create the required role.
      *
-     * @param array      $menu
+     * @param array $menu
      *                                string $name
      *                                string|null $image
      *                                int|null $sequence
@@ -228,8 +229,8 @@ SQL;
      *                                string|null $classFile
      *                                string|null $className
      *                                string|null $mvcPath
-     * @param array      $roleMembers
-     * @param int|null   $idPlugin
+     * @param array $roleMembers
+     * @param int|null $idPlugin
      *
      * @return int|false
      */
@@ -309,7 +310,7 @@ SQL;
             }
 
             $role = self::role($menuUnder['ofPlatform'], $menuUnder['moduleName'], $menuUnder['associatedToken']);
-            $am = Docebo::user()->getACLManager();
+            $am = \FormaLms\lib\Forma::getAclManager();;
             $role_info = $am->getRole(false, $role);
             if (empty($role_info)) {
                 $idst = $am->registerRole($role, '', $idPlugin);
@@ -328,24 +329,24 @@ SQL;
     {
         $query = "DELETE FROM %adm_menu WHERE idMenu = $id";
 
-        return (bool) sql_query($query);
+        return (bool)sql_query($query);
     }
 
     /**
      * Add new menu item.
      *
-     * @deprecated
-     *
      * @param string $name
      * @param string $mvcPath
      * @param string $of_platform
      * @param string $under_of_platform
-     * @param bool   $parent
+     * @param bool $parent
      * @param string $icon
-     * @param bool   $is_active
-     * @param int    $idPlugin
+     * @param bool $is_active
+     * @param int $idPlugin
      *
      * @return void
+     * @deprecated
+     *
      */
     public static function addMenuChild($name, $mvcPath, $of_platform, $under_of_platform, $parent = false, $icon = '', $is_active = true, $idPlugin = null)
     {
@@ -354,7 +355,7 @@ SQL;
             return false;
         }
 
-        $idPlugin = (int) $idPlugin;
+        $idPlugin = (int)$idPlugin;
 
         $idParent = 'NULL';
 

@@ -19,7 +19,7 @@ class CertificateSubstitution
     public $id_course;
     public $id_meta;
 
-    public function CertificateSubstitution($id_user, $id_course, $id_meta = 0)
+    public function __construct($id_user, $id_course, $id_meta = 0)
     {
         $this->id_user = $id_user;
         $this->id_course = $id_course;

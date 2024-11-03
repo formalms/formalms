@@ -21,25 +21,30 @@
     $list_pl = $pl->get_all_plugins();
 
     foreach ($list_pl as $key) {
-        $plugin_name = strtolower($key['name']);
-        $tab['tb_' . $plugin_name] = Lang::t('_' . strtoupper($key['name']), 'middlearea');
+        if(array_key_exists('name', $key)) {
+            $plugin_name = strtolower($key['name']);
+            $tab['tb_' . $plugin_name] = Lang::t('_' . strtoupper($key['name']), 'middlearea'); 
+        }
     }
 
     $query_menu = "SELECT obj_index from %lms_middlearea where obj_index like 'tb_%' ORDER BY sequence";
     $re_tablist = sql_query($query_menu);
 
     $tablist_items = '';
-
+    $buttonIndex = 1;
     while (list($obj_index) = sql_fetch_row($re_tablist)) {
         $id = $obj_index;
+
+        if(!array_key_exists($id, $tab)) {
+            continue;
+        }
         $cid = substr($obj_index, 3);
         $name = $tab[$id];
         if ($this->isActive($cid)) {
             $tablist_items .= '<li ' . $this->selected($cid) . '>';
             if (!strpos($_GET['r'], 'catalog') && !isset($_GET['id_cat'])) {
-                $tablist_items .= '<a href="index.php?r=lms/mycourses/show&mycourses_tab=' . $obj_index . '&sop=unregistercourse">';
+                $tablist_items .= '<a id="myCourseButton'.($buttonIndex++).'" href="index.php?r=lms/mycourses/show&mycourses_tab=' . $obj_index . '&sop=unregistercourse">';
                 $tablist_items .= '<em>' . $name . '</em>';
-                // $tablist_items .= ( isset(${$name}) ? '<b>'.${$name}.'</b>' : '' );
                 $tablist_items .= '</a>';
             }
             $tablist_items .= '</li>';
@@ -48,10 +53,10 @@
     ?>
 
     <nav class="buttonsBar tabs-wrapper">
-        <ul class="nav nav-tabs slider-menu slider-menu--tabs">
+        <ul class="nav nav-tabs slider-menu--tabs">
             <?php echo $tablist_items; ?>
         </ul>
-    </nav>    
-        
+    </nav>
+
         
         

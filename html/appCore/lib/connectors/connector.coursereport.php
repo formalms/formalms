@@ -18,7 +18,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  * @author		Pirovano Fabio <fabio (@) docebo (.) com>
  **/
-require_once __DIR__ . '/lib.connector.php';
+require_once dirname(__FILE__) . '/lib.connector.php';
 
 /**
  * class for define user report connection.
@@ -27,7 +27,7 @@ require_once __DIR__ . '/lib.connector.php';
  *
  * @author		Pirovano Fabio <fabio (@) docebo (.) com>
  **/
-class DoceboConnectorCourseReport extends DoceboConnector
+class FormaConnectorCourseReport extends FormaConnector
 {
     public $name = '';
 
@@ -79,6 +79,7 @@ class DoceboConnectorCourseReport extends DoceboConnector
                                 'end_course' => '0',
                                 'end_course_perc' => '0%',
                                 'time_in_course' => '00:00:00', ];
+    public array $_first_row;
 
     /**
      * This constructor require the source file name.
@@ -88,7 +89,7 @@ class DoceboConnectorCourseReport extends DoceboConnector
      *                      - 'first_row_header' => bool TRUE if first row is header (Optional, default = TRUE )
      *                      - 'separator' => string a char with the fields separator (Optional, default = ,)
      **/
-    public function DoceboConnectorCourseReport($params)
+    public function __construct($params)
     {
         require_once _adm_ . '/lib/lib.directory.php';
         require_once _base_ . '/lib/lib.userselector.php';
@@ -115,7 +116,7 @@ class DoceboConnectorCourseReport extends DoceboConnector
 
     public function get_configUI()
     {
-        return new DoceboConnectorCourseReportUI($this);
+        return new FormaConnectorCourseReportUI($this);
     }
 
     /**
@@ -123,12 +124,12 @@ class DoceboConnectorCourseReport extends DoceboConnector
      **/
     public function connect()
     {
-        $this->lang = DoceboLanguage::createInstance('rg_report');
+        $this->lang = FormaLanguage::createInstance('rg_report');
 
         // perform the query for data retriving
 
         $course_man = new Man_Course();
-        $this->acl_man = new DoceboACLManager();
+        $this->acl_man = new FormaACLManager();
         $p_dr = new PeopleDataRetriever($GLOBALS['dbConn'], $GLOBALS['prefix_fw']);
         $re_people = $p_dr->getAllRowsIdst();
 
@@ -261,27 +262,27 @@ class DoceboConnectorCourseReport extends DoceboConnector
 
     /**
      * @return array the array of columns descriptor
-     *               - DOCEBOIMPORT_COLNAME => string the name of the column
-     *               - DOCEBOIMPORT_COLID => string the id of the column (optional,
+     *               - FORMAIMPORT_COLNAME => string the name of the column
+     *               - FORMAIMPORT_COLID => string the id of the column (optional,
      *               same as COLNAME if not given)
-     *               - DOCEBOIMPORT_COLMANDATORY => bool TRUE if col is mandatory
-     *               - DOCEBOIMPORT_DATATYPE => the data type of the column
-     *               - DOCEBOIMPORT_DEFAULT => the default value for the column (Optional)
-     *               For readonly connectos only 	DOCEBOIMPORT_COLNAME and DOCEBOIMPORT_DATATYPE
+     *               - FORMAIMPORT_COLMANDATORY => bool TRUE if col is mandatory
+     *               - FORMAIMPORT_DATATYPE => the data type of the column
+     *               - FORMAIMPORT_DEFAULT => the default value for the column (Optional)
+     *               For readonly connectos only 	FORMAIMPORT_COLNAME and FORMAIMPORT_DATATYPE
      *               are required
      **/
     public function get_cols_descripor()
     {
-        $lang = DoceboLanguage::createInstance('userreport', 'lms');
+        $lang = FormaLanguage::createInstance('userreport', 'lms');
 
         $col_descriptor = [];
         foreach ($this->all_cols as $k => $col) {
             $col_descriptor[] = [
-                DOCEBOIMPORT_COLNAME => $lang->def('_' . strtoupper($col[0])),
-                DOCEBOIMPORT_COLID => $col[0],
-                DOCEBOIMPORT_COLMANDATORY => false,
-                DOCEBOIMPORT_DATATYPE => $col[1],
-                DOCEBOIMPORT_DEFAULT => ($in = array_search($col[0], $this->default_cols) === false
+                FORMAIMPORT_COLNAME => $lang->def('_' . strtoupper($col[0])),
+                FORMAIMPORT_COLID => $col[0],
+                FORMAIMPORT_COLMANDATORY => false,
+                FORMAIMPORT_DATATYPE => $col[1],
+                FORMAIMPORT_DEFAULT => ($in = array_search($col[0], $this->default_cols) === false
                                                     ? ''
                                                     : $this->default_cols[$in]),
             ];
@@ -456,7 +457,7 @@ class DoceboConnectorCourseReport extends DoceboConnector
  *
  * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
  **/
-class DoceboConnectorCourseReportUI extends DoceboConnectorUI
+class FormaConnectorCourseReportUI extends FormaConnectorUI
 {
     public $connector = null;
     public $post_params = null;
@@ -466,7 +467,7 @@ class DoceboConnectorCourseReportUI extends DoceboConnectorUI
     public $step_next = '';
     public $step_prev = '';
 
-    public function DoceboConnectorCourseReportUI(&$connector)
+    public function __construct(&$connector)
     {
         $this->connector = $connector;
     }
@@ -561,7 +562,7 @@ class DoceboConnectorCourseReportUI extends DoceboConnectorUI
         return '';
     }
 
-    public function get_html()
+    public function get_html($get = null, $post = null)
     {
         $out = '';
         switch ($this->post_params['step']) {
@@ -599,5 +600,5 @@ class DoceboConnectorCourseReportUI extends DoceboConnectorUI
 
 function coursereport_factory()
 {
-    return new DoceboConnectorCourseReport([]);
+    return new FormaConnectorCourseReport([]);
 }

@@ -26,19 +26,22 @@ class Tags
     public $_private_tag_enabled = false;
 
     public $tags_founded = [];
+    public array $private_tags_founded;
+    public bool $_use_tag;
+    public int $_id_course;
 
-    public function Tags($resource_type, $viewer = false)
+    public function __construct($resource_type, $viewer = false)
     {
         $this->resource_type = $resource_type;
         $this->_tag_t = $GLOBALS['prefix_fw'] . '_tag';
         $this->_tagrel_t = $GLOBALS['prefix_fw'] . '_tag_relation';
         $this->_resource_t = $GLOBALS['prefix_fw'] . '_tag_resource';
-        $this->_id_course = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+        $this->_id_course = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse') ?? 0;
 
         $this->_use_tag = (FormaLms\lib\Get::sett('use_tag', 'off') == 'on');
 
         if ($viewer == false) {
-            $viewer = getLogUserId();
+            $viewer = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
         }
 
         $this->_private_tag_enabled = false;
@@ -46,10 +49,7 @@ class Tags
         if (!empty($courseLevel) && $courseLevel > 3) {
             $this->_private_tag_enabled = true;
         }
-        /*if(Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
 
-            $this->_private_tag_enabled = true;
-        }*/
     }
 
     public function setupJs($tags_id, $private_tags = '')
@@ -58,7 +58,7 @@ class Tags
             return '';
         }
 
-        $lang = &DoceboLanguage::createInstance('tags', 'framework');
+        $lang = &FormaLanguage::createInstance('tags', 'framework');
 
         $this->tags_id = $tags_id;
         YuiLib::load(['autocomplete' => 'autocomplete-min.js', 'selector' => 'selector-beta-min.js'],
@@ -74,7 +74,7 @@ class Tags
 			query:"' . $tags_id . '",
 			private_query:"' . $private_tags . '",
 			popular_tags: "' . addslashes(implode(', ', $this->getPopularTag())) . '",
-			user_tags: "' . addslashes(implode(', ', $this->getUserPopularTag(getLogUserId()))) . '", 
+			user_tags: "' . addslashes(implode(', ', $this->getUserPopularTag(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()))) . '", 
 			lang: { tags: "' . addslashes($lang->def('_TAGS')) . '",
 				tips: "' . addslashes($lang->def('_TAGS_TIPS')) . '",
 				popular_tags: "' . addslashes($lang->def('_POPULAR')) . '",
@@ -303,7 +303,7 @@ class Tags
             $arr_resources = [$arr_resources];
         }
         if ($id_user == false) {
-            $id_user = getLogUserId();
+            $id_user = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
         }
 
         // find all the resource's tags with the occurences

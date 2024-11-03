@@ -38,10 +38,11 @@ class CourseMenuLmsController extends LmsController
 
     public function show()
     {
+        
         // url accesso al corso http://forma/appLms/index.php?r=course/show&course_id=1
 
-        if (!Docebo::user()->isAnonymous() && $this->idCourse) {
-            $db = DbConn::getInstance();
+        if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous() && $this->idCourse) {
+            $db = \FormaLms\db\DbConn::getInstance();
 
             $query_course = 'SELECT name, img_course FROM %lms_course WHERE idCourse = ' . $this->idCourse . ' ';
             $course_data = $db->query($query_course);
@@ -92,8 +93,8 @@ class CourseMenuLmsController extends LmsController
 
             $user_stats = [];
             if (!$this->session->has('is_ghost') || $this->session->get('is_ghost') !== true) {
-                if (Docebo::course()->getValue('show_time') == 1) {
-                    $tot_time_sec = TrackUser::getUserPreviousSessionCourseTime(getLogUserId(), $this->session->get('idCourse'));
+                if (\FormaLms\lib\Forma::course()->getValue('show_time') == 1) {
+                    $tot_time_sec = TrackUser::getUserPreviousSessionCourseTime(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $this->session->get('idCourse'));
                     $partial_time_sec = TrackUser::getUserCurrentSessionCourseTime($this->session->get('idCourse'));
                     $tot_time_sec += $partial_time_sec;
 
@@ -126,7 +127,7 @@ class CourseMenuLmsController extends LmsController
             }
 
             // who is online ---------------------------------------------------------
-            $user_stats['who_is_online']['type'] = Docebo::course()->getValue('show_who_online');
+            $user_stats['who_is_online']['type'] = \FormaLms\lib\Forma::course()->getValue('show_who_online');
             $user_stats['who_is_online']['user_online_n'] = TrackUser::getWhoIsOnline($this->session->get('idCourse'));
 
             // print first pannel
@@ -160,16 +161,16 @@ class CourseMenuLmsController extends LmsController
             }
 
             // print progress bar -------------------------------------------------
-            if (Docebo::course()->getValue('show_progress') == 1) {
+            if (\FormaLms\lib\Forma::course()->getValue('show_progress') == 1) {
                 require_once _lms_ . '/lib/lib.stats.php';
                 $total = getNumCourseItems($this->session->get('idCourse'),
                     false,
-                    getLogUserId(),
+                    \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(),
                     false);
-                $tot_complete = getStatStatusCount(getLogUserId(),
+                $tot_complete = getStatStatusCount(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(),
                     $this->session->get('idCourse'),
                     ['completed', 'passed']);
-                $tot_failed = getStatStatusCount(getLogUserId(),
+                $tot_failed = getStatStatusCount(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(),
                     $this->session->get('idCourse'),
                     ['failed']);
 
@@ -211,7 +212,7 @@ class CourseMenuLmsController extends LmsController
                 cout('<div class="col-sm-3">' . $logo_panel . '</div>', 'menu_over');
 
                 cout('<div class="col-sm-9" >', 'menu_over');
-                cout('<div class="col-md-7"><div><h1>' . Docebo::course()->getValue('name') . '</h1></div></div>
+                cout('<div class="col-md-7"><div><h1>' . \FormaLms\lib\Forma::course()->getValue('name') . '</h1></div></div>
                         <div class="col-md-4"><div>' . $info_panel_progress . '</div></div>
                         <div class="col-md-1"><div><br> <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#formaModal"><span class="glyphicon glyphicon-stats"></span></button></div></div>
                         ', 'menu_over');
@@ -222,7 +223,7 @@ class CourseMenuLmsController extends LmsController
                 cout('<div class="col-sm-3">' . $logo_panel . '</div>', 'menu_over');
 
                 cout('<div class="col-sm-9" >', 'menu_over');
-                cout('<div class="col-md-7"><div><h1>' . Docebo::course()->getValue('name') . '</h1></div></div>', 'menu_over');
+                cout('<div class="col-md-7"><div><h1>' . \FormaLms\lib\Forma::course()->getValue('name') . '</h1></div></div>', 'menu_over');
 
                 cout('</div></div><br><br>&nbsp;', 'menu_over');
             }
@@ -246,7 +247,7 @@ class CourseMenuLmsController extends LmsController
             $conditions = "AND cp.path_name LIKE '%" . addslashes($filter_text) . "%'";
         }
 
-        $user_coursepath = $this->model->getAllCoursepath(Docebo::user()->getIdSt(), $conditions);
+        $user_coursepath = $this->model->getAllCoursepath(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $conditions);
         $coursepath_courses = $this->model->getCoursepathCourseDetails(array_keys($user_coursepath));
 
         if (count($user_coursepath) > 0) {

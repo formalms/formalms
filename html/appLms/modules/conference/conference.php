@@ -24,17 +24,17 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  * ( editor = Eclipse 3.2.0[phpeclipse,subclipse,WTP], tabwidth = 4 )
  */
-require_once Forma::inc(_scs_. '/lib/lib.conference.php');
+require_once $GLOBALS['where_scs'] . '/lib/lib.conference.php';
 
 function conference_list(&$url)
 {
     checkPerm('view');
     //$mod_perm = checkPerm('mod');
 
-    $lang = &DoceboLanguage::createInstance('conference', 'lms');
+    $lang = &FormaLanguage::createInstance('conference', 'lms');
 
     require_once _base_ . '/lib/lib.table.php';
-    require_once Forma::inc(_scs_. '/lib/lib.booking.php');
+    require_once $GLOBALS['where_scs'] . '/lib/lib.booking.php';
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
 
@@ -94,9 +94,9 @@ function conference_list(&$url)
         $tb->setColsStyle($type_h);
         $tb->addHead($cont_h);
 
-        $acl_manager = &Docebo::user()->getAclManager();
-        $display_name = Docebo::user()->getUserName();
-        $u_info = $acl_manager->getUser(getLogUserId(), false);
+        $acl_manager = \FormaLms\lib\Forma::getAclManager();
+        $display_name = \FormaLms\lib\FormaUser::getCurrentUser()->getUserName();
+        $u_info = $acl_manager->getUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), false);
         $user_email = $u_info[ACL_INFO_EMAIL];
 
         while ($room = $conference->nextRow($re_room)) {
@@ -112,8 +112,8 @@ function conference_list(&$url)
 
             /*$booking = new RoomBooking();
 
-            $user_booked = $booking->userIsBooked(getLogUserId(), $room["id"]);
-            $user_valid = $booking->userIsValid(getLogUserId(), $room["id"]);
+            $user_booked = $booking->userIsBooked(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $room["id"]);
+            $user_valid = $booking->userIsValid(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $room["id"]);
             $room_full = $booking->roomIsFull($room["id"]);
 
             if ($room["endtime"]>=$now && $room["starttime"]<=$now && $user_booked && $user_valid)
@@ -134,14 +134,14 @@ function conference_list(&$url)
 
             $cont[] = $conference->getUrl($room['id'], $room['room_type']);
             if (checkPerm('mod', true)) {
-                if (getLogUserId() == $room['idSt'] || Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
+                if (\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() == $room['idSt'] || \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
                     $cont[] = '<a href="index.php?modname=conference&amp;op=modconf&amp;id=' . $room['id'] . '">'
                                 . '<img src="' . getPathImage() . '/standard/edit.png' . '" /></a>';
                 } else {
                     $cont[] = '';
                 }
 
-                if (getLogUserId() == $room['idSt'] || Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
+                if (\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() == $room['idSt'] || \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
                     $cont[] = '<a href="index.php?modname=conference&amp;op=delconf&id=' . $room['id'] . '" '
                             . '"><img src="' . getPathImage() . '/standard/delete.png' . '" /></a>';
                 } else {
@@ -169,7 +169,7 @@ function conference_list(&$url)
           or
           (FormaLms\lib\Get::sett('ConferenceBBB_server') and FormaLms\lib\Get::sett('ConferenceBBB_user') and FormaLms\lib\Get::sett('ConferenceBBB_salt') and FormaLms\lib\Get::sett('ConferenceBBB_password_moderator') and FormaLms\lib\Get::sett('ConferenceBBB_password_viewer'))
           ) {
-            if ($conference->can_create_user_limit(getLogUserId(), $idCourse, time())) {
+            if ($conference->can_create_user_limit(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $idCourse, time())) {
                 cout('<a class="ico-wt-sprite subs_add" href="' . $url->getUrl('op=startnewconf') . '"><span>' . $lang->def('_CREATE') . '</span></a>', 'content');
             } else {
                 cout('<b>' . $lang->def('_NO_MORE_ROOM'), 'content');
@@ -192,7 +192,7 @@ function conference_startnewconf($url)
 
     require_once _base_ . '/lib/lib.form.php';
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-    $lang = &DoceboLanguage::createInstance('conference', 'lms');
+    $lang = &FormaLanguage::createInstance('conference', 'lms');
 
     if (isset($_POST['create_conf'])) {
         $conference = new Conference_Manager();
@@ -216,9 +216,9 @@ function conference_startnewconf($url)
         $idCourse = $session->get('idCourse');
         $room_type = $_POST['room_type'];
 
-        if ($conference->can_create_room_limit(getLogUserId(), $idCourse, $room_type, $start_timestamp, $end_timestamp) &&
-                $conference->can_create_user_limit(getLogUserId(), $idCourse, $start_timestamp)) {
-            $conference->insert_room($idCourse, getLogUserId(), $conference_name, $room_type, $start_timestamp, $end_timestamp, $meetinghours, $maxparticipants, (isset($_POST['bookable']) ? 1 : 0),
+        if ($conference->can_create_room_limit(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $idCourse, $room_type, $start_timestamp, $end_timestamp) &&
+                $conference->can_create_user_limit(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $idCourse, $start_timestamp)) {
+            $conference->insert_room($idCourse, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $conference_name, $room_type, $start_timestamp, $end_timestamp, $meetinghours, $maxparticipants, (isset($_POST['bookable']) ? 1 : 0),
                 $start_date,
                 (int) $_POST['start_time']['hour'],
                 (int) $_POST['start_time']['minute']
@@ -354,11 +354,11 @@ function conference_delconf()
 
     $room = $conference->roomInfo($id);
 
-    $lang = &DoceboLanguage::createInstance('conference', 'lms');
+    $lang = &FormaLanguage::createInstance('conference', 'lms');
     if (FormaLms\lib\Get::req('confirm', DOTY_INT, 0)) {
         $conference->deleteRoom($id);
 
-        require_once _scs_ . '/lib/lib.booking.php';
+        require_once $GLOBALS['where_scs'] . '/lib/lib.booking.php';
 
         $booking = new RoomBooking();
 
@@ -384,7 +384,7 @@ function conference_delconf()
 
 function conference_modconf($url = null)
 {
-    $lang = &DoceboLanguage::createInstance('conference', 'lms');
+    $lang = &FormaLanguage::createInstance('conference', 'lms');
 
     $id_room = FormaLms\lib\Get::req('id', DOTY_INT, 0);
 
@@ -431,7 +431,7 @@ function conference_modconf($url = null)
 
         require_once _base_ . '/lib/lib.form.php';
 
-        $lang = &DoceboLanguage::createInstance('conference', 'lms');
+        $lang = &FormaLanguage::createInstance('conference', 'lms');
 
         $conf_system = [];
         //$conf_system[""]="";
@@ -500,34 +500,34 @@ function conference_modconf($url = null)
 
 function booking()
 {
-    require_once _scs_ . '/lib/lib.booking.php';
+    require_once $GLOBALS['where_scs'] . '/lib/lib.booking.php';
 
-    $lang = &DoceboLanguage::createInstance('conference', 'lms');
+    $lang = &FormaLanguage::createInstance('conference', 'lms');
 
     $room_id = FormaLms\lib\Get::req('id', DOTY_INT, 0);
 
     $booking = new RoomBooking();
 
-    $result = $booking->bookRoom(getLogUserId(), $room_id);
+    $result = $booking->bookRoom(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $room_id);
 
     Util::jump_to('index.php?modname=conference&op=list&result=' . ($result ? 'ok' : 'err'));
 }
 
 function modBooking()
 {
-    require_once _scs_ . '/lib/lib.booking.php';
+    require_once $GLOBALS['where_scs'] . '/lib/lib.booking.php';
     require_once _base_ . '/lib/lib.form.php';
     require_once _base_ . '/lib/lib.table.php';
 
     YuiLib::load(['selector' => 'selector-beta-min.js']);
 
-    $lang = &DoceboLanguage::createInstance('conference', 'lms');
+    $lang = &FormaLanguage::createInstance('conference', 'lms');
 
     $room_id = FormaLms\lib\Get::req('id', DOTY_INT, 0);
 
     $booking = new RoomBooking();
 
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     $user_booked = $booking->getRoomSubscriptions($room_id);
 
@@ -640,7 +640,7 @@ function showHistory()
     require_once _base_ . '/lib/lib.form.php';
     require_once _base_ . '/lib/lib.table.php';
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-    $lang = &DoceboLanguage::createInstance('conference', 'lms');
+    $lang = &FormaLanguage::createInstance('conference', 'lms');
 
     $conference = new Conference_Manager();
 
@@ -743,7 +743,7 @@ function showLog()
     require_once _base_ . '/lib/lib.form.php';
     require_once _base_ . '/lib/lib.table.php';
 
-    $lang = &DoceboLanguage::createInstance('conference', 'lms');
+    $lang = &FormaLanguage::createInstance('conference', 'lms');
 
     $id = FormaLms\lib\Get::req('id', DOTY_INT, 0);
 
@@ -751,7 +751,7 @@ function showLog()
 
     $room_info = $conference->roomInfo($id);
 
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     cout(getTitleArea('')
             . '<div class="std_block">', 'content');
@@ -760,7 +760,7 @@ function showLog()
 
     switch ($room_info['room_type']) {
         case 'teleskill':
-            require_once _scs_ . '/lib/lib.teleskill.php';
+            require_once $GLOBALS['where_scs'] . '/lib/lib.teleskill.php';
 
             $teleskill = new Teleskill_Management();
 

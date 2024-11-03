@@ -21,7 +21,7 @@ class Module_Groups extends LmsModule
         groupDispatch($GLOBALS['op']);
     }
 
-    public function getAllToken()
+    public static function getAllToken()
     {
         return [
             'view' => ['code' => 'view',

@@ -49,11 +49,11 @@ function loadNews()
     $textQuery = '
 	SELECT idNews, publish_date, title, short_desc
 	FROM ' . $GLOBALS['prefix_lms'] . "_news
-	WHERE language = '" . getLanguage() . "'
+	WHERE language = '" . Lang::get() . "'
 	ORDER BY important DESC, publish_date DESC
 	LIMIT 0," . FormaLms\lib\Get::sett('visuNewsHomePage');
 
-    $lang = DoceboLanguage::createInstance('login');
+    $lang = FormaLanguage::createInstance('login');
 
     $GLOBALS['page']->add('<li><a href="#home_page">' . $lang->def('_JUMP_TO') . ' : ' . $lang->def('_NEWS') . '</a></li>', 'blind_navigation');
 
@@ -83,10 +83,10 @@ function news()
     $textQuery = '
 	SELECT idNews, publish_date, title, short_desc
 	FROM ' . $GLOBALS['prefix_lms'] . "_news
-	WHERE language = '" . getLanguage() . "'
+	WHERE language = '" . Lang::get() . "'
 	ORDER BY important DESC, publish_date DESC";
 
-    $lang = DoceboLanguage::createInstance('login');
+    $lang = FormaLanguage::createInstance('login');
 
     $GLOBALS['page']->add(
         getTitleArea($lang->def('_NEWS'), 'news', $lang->def('_NEWS'))
@@ -122,8 +122,8 @@ function readnews()
     $result = sql_query($textQuery);
     list($publish_date, $title, $long_desc) = sql_fetch_row($result);
 
-    $l_login = DoceboLanguage::createInstance('login');
-    $l_std = DoceboLanguage::createInstance('standard');
+    $l_login = FormaLanguage::createInstance('login');
+    $l_std = FormaLanguage::createInstance('standard');
 
     $GLOBALS['page']->add(
         getTitleArea($l_login->def('_NEWS'), 'news', $l_login->def('_NEWS'))
@@ -141,9 +141,9 @@ function readnews()
 // XXX: lostpwd
 function lostpwd()
 {
-    require_once Forma::inc(_base_ . '/lib/lib.usermanager.php');
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.usermanager.php');
 
-    $lang = DoceboLanguage::createInstance('login');
+    $lang = FormaLanguage::createInstance('login');
     $user_manager = new UserManager();
 
     $GLOBALS['page']->add(getTitleArea($lang->def('_LOGIN'), 'login')
@@ -163,8 +163,8 @@ function lostpwd()
 
 function register()
 {
-    require_once Forma::inc(_base_ . '/lib/lib.usermanager.php');
-    require_once Forma::inc(_base_ . '/lib/lib.form.php');
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.usermanager.php');
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
 
     $user_manager = new UserManager();
 
@@ -184,8 +184,8 @@ function register()
 
 function register_confirm()
 {
-    require_once Forma::inc(_base_ . '/lib/lib.usermanager.php');
-    require_once Forma::inc(_base_ . '/lib/lib.form.php');
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.usermanager.php');
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
 
     $user_manager = new UserManager();
 
@@ -221,7 +221,7 @@ function externalCourselist()
     require_once _lms_ . '/modules/coursecatalogue/lib.coursecatalogue.php';
 
     require_once _base_ . '/lib/lib.form.php';
-   require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
+    require_once _base_ . '/lib/lib.user_profile.php';
     require_once _base_ . '/lib/lib.navbar.php';
     require_once _lms_ . '/lib/lib.preassessment.php';
     require_once _lms_ . '/lib/lib.catalogue.php';
@@ -240,8 +240,8 @@ function externalCourselist()
 		<script type="text/javascript" src="' . $GLOBALS['where_framework_relative'] . '/lib/lib.pngfix.js"></script>
 	<![endif]-->', 'page_head');
 
-    $lang = &DoceboLanguage::createInstance('catalogue');
-    $lang_c = &DoceboLanguage::createInstance('course');
+    $lang = &FormaLanguage::createInstance('catalogue');
+    $lang_c = &FormaLanguage::createInstance('course');
 
     // list of tab ---------------------------------------------------------------------------
     $tab_list = [
@@ -312,12 +312,12 @@ function showdemo()
 {
     require_once _lms_ . '/lib/lib.course.php';
     require_once _base_ . '/lib/lib.multimedia.php';
-    $lang = DoceboLanguage::createInstance('course', 'lms');
+    $lang = FormaLanguage::createInstance('course', 'lms');
 
     $id_course = importVar('id_course', true, 0);
 
     $man_course = new Man_Course();
-    $course = $man_course->getCourseInfo($id_course);
+    $course = Man_Course::getCourseInfo($id_course);
 
     $back = importVar('back', false, '');
     if ($back == 'details') {
@@ -347,13 +347,13 @@ function donwloadmaterials()
 {
     require_once _lms_ . '/lib/lib.course.php';
     require_once _base_ . '/lib/lib.multimedia.php';
-    $lang = DoceboLanguage::createInstance('course', 'lms');
+    $lang = FormaLanguage::createInstance('course', 'lms');
 
     $id_course = importVar('id_course', true, 0);
     $edition_id = importVar('edition_id', true, 0);
 
     if ($id_course != 0) {
-        $man_course = new DoceboCourse($id_course);
+        $man_course = new FormaCourse($id_course);
         $file = $man_course->getValue('img_material');
     }
     if ($edition_id != 0) {
@@ -373,13 +373,13 @@ function showprofile()
     require_once _lms_ . '/lib/lib.course.php';
     require_once _lms_ . '/lib/lib.lms_user_profile.php';
 
-    $lang = &DoceboLanguage::createInstance('catalogue');
-    $lang = &DoceboLanguage::createInstance('course');
+    $lang = &FormaLanguage::createInstance('catalogue');
+    $lang = &FormaLanguage::createInstance('course');
 
     $id_user = importVar('id_user');
     $id_course = importVar('id_course');
     $man_course = new Man_Course();
-    $course = $man_course->getCourseInfo($id_course);
+    $course = Man_Course::getCourseInfo($id_course);
 
     $profile = new LmsUserProfile($id_user);
     $profile->init('profile', 'framework', 'modname=login&op=showprofile&id_course' . $id_course . '&id_user=' . $id_user, 'ap');
@@ -399,7 +399,7 @@ function showprofile()
                                             'id_parent')
             . ' &gt; ' . $course['name']
         . '</p>'
-        . $profile->getProfile(getLogUserId())
+        . $profile->getProfile(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())
         . '</div>', 'content');
 }
 

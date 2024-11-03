@@ -26,6 +26,7 @@ class ModalElement extends FormaPlugin {
       title: this.Title,
       content: this.Content
     }));
+
     dest.parentNode.insertBefore( modalDiv, dest.nextSibling );
     var exits = modalDiv.querySelectorAll('.modal-exit');
     exits.forEach(exit => {
@@ -62,4 +63,4 @@ class ModalElement extends FormaPlugin {
   
 }
 
-module.exports = ModalElement
+export default ModalElement

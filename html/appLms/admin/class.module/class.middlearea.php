@@ -18,13 +18,13 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  * @category Course managment
  */
-require_once __DIR__ . '/class.definition.php';
+require_once dirname(__FILE__) . '/class.definition.php';
 
 class Module_MiddleArea extends LmsAdminModule
 {
     public function loadBody()
     {
-        require_once Forma::inc(_lms_ . '/admin/modules/middlearea/middlearea.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/admin/modules/middlearea/middlearea.php');
         MiddleAreaDispatch($GLOBALS['op']);
     }
 

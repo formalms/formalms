@@ -24,7 +24,7 @@ class Module_Reservation extends LmsModule
         reservationDispatch($GLOBALS['op']);
     }
 
-    public function getAllToken()
+    public static function getAllToken()
     {
         return [
             'view' => ['code' => 'view',

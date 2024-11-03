@@ -21,14 +21,14 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  * @author Emanuele Sandri
  **/
 
-define('STRPOSTCONTENT', '_content');
+const STRPOSTCONTENT = '_content';
 
 function additem($object_item)
 {
     checkPerm( 'view', FALSE, 'storage' );
 
-    $lang = &DoceboLanguage::createInstance('scorm', 'lms');
-    require_once Forma::inc(_lib_ . '/lib.form.php');
+    $lang = FormaLanguage::createInstance('scorm', 'lms');
+    require_once \FormaLms\lib\Forma::inc(_lib_ . '/lib.form.php');
     $form = new Form();
 
     //area title
@@ -47,37 +47,37 @@ function additem($object_item)
     $GLOBALS['page']->add(Form::getFormHeader($lang->def('_SCORM_ADD_FORM')));
 
     $GLOBALS['page']->add(
-        Form::openForm('scormform',
+        $form->openForm('scormform',
             'index.php?modname=scorm&amp;op=insitem',
             false,
             false,
             'multipart/form-data')
     );
-    $GLOBALS['page']->add(Form::openElementSpace());
+    $GLOBALS['page']->add($form->openElementSpace());
 
-    $GLOBALS['page']->add(Form::getHidden('back_url', 'back_url', htmlentities(urlencode($object_item->back_url))));
-    $GLOBALS['page']->add(Form::getFilefield($lang->getLangText('_CONTENTPACKAGE'), 'attach', 'attach'));
+    $GLOBALS['page']->add($form->getHidden('back_url', 'back_url', htmlentities(urlencode($object_item->back_url))));
+    $GLOBALS['page']->add($form->getFilefield($lang->getLangText('_CONTENTPACKAGE'), 'attach', 'attach'));
 
-    $GLOBALS['page']->add(Form::getCheckbox($lang->getLangText('_SCORMIMPORTRESOURCES'),
+    $GLOBALS['page']->add($form->getCheckbox($lang->getLangText('_SCORMIMPORTRESOURCES'),
         'lesson_resources',
         'lesson_resources',
         'import'));
-    $GLOBALS['page']->add(Form::closeElementSpace());
-    $GLOBALS['page']->add(Form::openButtonSpace());
-    $GLOBALS['page']->add(Form::getButton('scorm_add_submit',
+    $GLOBALS['page']->add($form->closeElementSpace());
+    $GLOBALS['page']->add($form->openButtonSpace());
+    $GLOBALS['page']->add($form->getButton('scorm_add_submit',
         'scorm_add_submit',
         $lang->getLangText('_SCORMLOAD')));
-    $GLOBALS['page']->add(Form::closeButtonSpace());
-    $GLOBALS['page']->add(Form::closeForm() . '</div>');
+    $GLOBALS['page']->add($form->closeButtonSpace());
+    $GLOBALS['page']->add($form->closeForm() . '</div>');
 }
 
 function insitem()
 {
     checkPerm( 'view', FALSE, 'storage' );
 
-    require_once Forma::inc(_lib_ . '/lib.upload.php');
-    require_once Forma::inc(_lms_ . '/modules/scorm/RendererDb.php');
-    require_once Forma::inc(_lms_ . '/modules/scorm/CPManager.php');
+    require_once \FormaLms\lib\Forma::inc(_lib_ . '/lib.upload.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/RendererDb.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/CPManager.php');
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
@@ -86,22 +86,22 @@ function insitem()
 
     // there is a file?
     if ($_FILES['attach']['name'] == '') {
-        Forma::addError(Lang::t('_FILEUNSPECIFIED'));
+        \FormaLms\lib\Forma::addError(Lang::t('_FILEUNSPECIFIED'));
         Util::jump_to('' . $back_url . '&create_result=0');
     }
     $path = str_replace('\\', '/', '/' . _folder_lms_ . '/' . FormaLms\lib\Get::sett('pathscorm'));
-    $savefile = getLogUserId() . '_' . rand(0, 100) . '_' . time() . '_' . $_FILES['attach']['name'];
+    $savefile = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . '_' . rand(0, 100) . '_' . time() . '_' . $_FILES['attach']['name'];
     if (!file_exists(_files_ . $path . $savefile)) {
         sl_open_fileoperations();
         if (!sl_upload($_FILES['attach']['tmp_name'], $path . $savefile)) {
             //if( !move_uploaded_file($_FILES['attach']['tmp_name'], _files_.$path.$savefile ) ) {
             sl_close_fileoperations();
-            Forma::addError(Lang::get('_ERROR_UPLOAD'));
+            \FormaLms\lib\Forma::addError(Lang::get('_ERROR_UPLOAD'));
             Util::jump_to('' . $back_url . '&create_result=0');
         }
     } else {
         sl_close_fileoperations();
-        Forma::addError(Lang::get('_ERROR_UPLOAD'));
+        \FormaLms\lib\Forma::addError(Lang::get('_ERROR_UPLOAD'));
         Util::jump_to('' . $back_url . '&create_result=0');
     }
 
@@ -116,7 +116,7 @@ function insitem()
         $zip_extracted_size = 0;
         foreach ($zip_content as $file_info) {
             if (strpos($file_info['filename'], '../') !== false) {
-                Forma::addError(Lang::get('_ERROR_UPLOAD'));
+                \FormaLms\lib\Forma::addError(Lang::get('_ERROR_UPLOAD'));
 
                 Util::jump_to('' . $back_url . '&create_result=0');
             }
@@ -126,9 +126,9 @@ function insitem()
         $quota = $GLOBALS['course_descriptor']->getQuotaLimit();
         $used = $GLOBALS['course_descriptor']->getUsedSpace();
 
-        if (Util::exceed_quota(false, $quota, $used, $zip_extracted_size)) {
+        if (Util::exceed_quota(false, (int)$quota, (int)$used, (int)$zip_extracted_size)) {
             sl_unlink($path . $savefile);
-            Forma::addError(Lang::t('_QUOTA_EXCEDED'));
+            \FormaLms\lib\Forma::addError(Lang::t('_QUOTA_EXCEDED'));
             Util::jump_to('' . $back_url . '&create_result=0');
         }
         $GLOBALS['course_descriptor']->addFileToUsedSpace(false, $zip_extracted_size);
@@ -163,7 +163,7 @@ function insitem()
 
     if ($zip->errorCode() != PCLZIP_ERR_NO_ERROR && $zip->errorCode() != 1) {
         sl_unlink($path . $savefile);
-        Forma::addError(Lang::get('_ERROR_UPLOAD'));
+        \FormaLms\lib\Forma::addError(Lang::get('_ERROR_UPLOAD'));
         sl_close_fileoperations();
 
         Util::jump_to('' . $back_url . '&create_result=0');
@@ -176,12 +176,12 @@ function insitem()
     $cpm = new CPManager();
     // try to open content package
     if (!$cpm->Open(_files_ . $filepath)) {
-        Forma::addError('Error: ' . $cpm->errText . ' [' . $cpm->errCode . ']');
+        \FormaLms\lib\Forma::addError('Error: ' . $cpm->errText . ' [' . $cpm->errCode . ']');
         Util::jump_to('' . $back_url . '&create_result=0');
     }
     // and parse the manifest
     if (!$cpm->ParseManifest()) {
-        Forma::addError('Error: ' . $cpm->errText . ' [' . $cpm->errCode . ']');
+        \FormaLms\lib\Forma::addError('Error: ' . $cpm->errText . ' [' . $cpm->errCode . ']');
         Util::jump_to('' . $back_url . '&create_result=0');
     }
 
@@ -191,11 +191,11 @@ function insitem()
         . " ('" . addslashes($cpm->identifier)
         . "','0','" . str_replace("'", "\'", $savefile) . STRPOSTCONTENT
         . "','" . addslashes($cpm->defaultOrg)
-        . "','" . (int) getLogUserId()
+        . "','" . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()
         . "','" . $cpm->scorm_version
         . "')";
     if (!($result = sql_query($query))) {
-        Forma::addError(Lang::get('_OPERATION_FAILURE'));
+        \FormaLms\lib\Forma::addError(Lang::get('_OPERATION_FAILURE'));
         Util::jump_to('' . $back_url . '&create_result=0');
     }
 
@@ -213,10 +213,10 @@ function insitem()
         $result = sql_query($query);
 
         if (!$result) {
-            Forma::addError(Lang::get('_OPERATION_FAILURE'));
+            \FormaLms\lib\Forma::addError(Lang::get('_OPERATION_FAILURE'));
             Util::jump_to('' . $back_url . '&create_result=0');
         } elseif (sql_affected_rows() == 0) {
-            Forma::addError(Lang::get('_OPERATION_FAILURE'));
+            \FormaLms\lib\Forma::addError(Lang::get('_OPERATION_FAILURE'));
             Util::jump_to('' . $back_url . '&create_result=0');
         }
     }
@@ -236,7 +236,7 @@ function insitem()
 
     $so = new Scorm_Organization($cpm->defaultOrg, $idscorm_package, $GLOBALS['dbConn']);
     if ($so->err_code > 0) {
-        Forma::addError('Error: ' . $so->getErrorText() . ' [' . $so->getErrorCode() . ']');
+        \FormaLms\lib\Forma::addError('Error: ' . $so->getErrorText() . ' [' . $so->getErrorCode() . ']');
         Util::jump_to('' . $back_url . '&create_result=0');
     } else {
         //Util::jump_to( ''.$back_url.'&id_lo='.$so->idscorm_organization.'&create_result=1' );
@@ -248,7 +248,7 @@ function moditem($object_item)
 {
     checkPerm('view', false, 'storage');
 
-    $lang = &DoceboLanguage::createInstance('scorm', 'lms');
+    $lang = &FormaLanguage::createInstance('scorm', 'lms');
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
@@ -258,7 +258,7 @@ function moditem($object_item)
         ' WHERE idResource = ' . (int) $object_item->id . " AND objectType = 'scormorg' ";
     list($id_reference) = sql_fetch_row(sql_query($query));
 
-    require_once Forma::inc(_lib_ . '/lib.table.php');
+    require_once \FormaLms\lib\Forma::inc(_lib_ . '/lib.table.php');
     $tb = new Table();
     $h_type = ['', ''];
     $h_content = [
@@ -302,7 +302,7 @@ function play($aidResource, $aidReference, $aback_url, $aautoplay, $aplayertempl
     $GLOBALS['autoplay'] = $aautoplay;
     $GLOBALS['playertemplate'] = $aplayertemplate;
     $GLOBALS['environment'] = $environment;
-    require Forma::inc(_lms_ . '/modules/scorm/scorm_frameset.php');
+    require \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/scorm_frameset.php');
 }
 
 function _scorm_deleteitem($idscorm_package, $idscorm_organization, $erasetrackcontent = false)
@@ -342,7 +342,7 @@ function _scorm_deleteitem($idscorm_package, $idscorm_organization, $erasetrackc
             if (sql_num_rows($rs) == 1) {
                 $size = FormaLms\lib\Get::dir_size($scopath . $path);
 
-                require_once Forma::inc(_lms_ . '/modules/scorm/scorm_utils.php'); // for del tree
+                require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/scorm_utils.php'); // for del tree
                 delDirTree($scopath . $path);
 
                 if (isset($idCourse) && defined('LMS')) {
@@ -361,14 +361,14 @@ function _scorm_deleteitem($idscorm_package, $idscorm_organization, $erasetrackc
 
 function _scorm_copyitem($idscorm_package, $idscorm_organization)
 {
-    require_once Forma::inc(_lib_ . '/lib.upload.php');
-    require_once Forma::inc(_lms_ . '/modules/scorm/RendererDb.php');
-    require_once Forma::inc(_lms_ . '/modules/scorm/CPManager.php');
+    require_once \FormaLms\lib\Forma::inc(_lib_ . '/lib.upload.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/RendererDb.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/CPManager.php');
 
     if (($rs = sql_query('SELECT path FROM %lms_scorm_package '
             . "WHERE idscorm_package='"
             . (int) $idscorm_package . "'")) === false) {
-        Forma::addError(Lang::t('_OPERATION_FAILURE', 'standard') . ': ' . sql_error());
+        \FormaLms\lib\Forma::addError(Lang::t('_OPERATION_FAILURE', 'standard') . ': ' . sql_error());
 
         return false;
     }
@@ -377,7 +377,7 @@ function _scorm_copyitem($idscorm_package, $idscorm_organization)
     $scopath = str_replace('\\', '/', _files_ . '/appLms/' . FormaLms\lib\Get::sett('pathscorm'));
 
     /* copy package record */
-    $rs_package = sql_query('SELECT idpackage,idProg,"' . $path . '",defaultOrg,idUser,scormVersion '
+    $rs_package = sql_query("SELECT idpackage,idProg,\"" . $path . "\",defaultOrg,idUser,scormVersion "
         . ' FROM %lms_scorm_package '
         . " WHERE idscorm_package='" . (int) $idscorm_package . "'");
 
@@ -419,14 +419,14 @@ function _scorm_copyitem($idscorm_package, $idscorm_organization)
     $cpm = new CPManager();
     // try to open content package
     if (!$cpm->Open($scopath . $path)) {
-        Forma::addError('Error: ' . $cpm->errText . ' [' . $cpm->errCode . ']');
+        \FormaLms\lib\Forma::addError('Error: ' . $cpm->errText . ' [' . $cpm->errCode . ']');
 
         return false;
     }
 
     // and parse the manifest
     if (!$cpm->ParseManifest()) {
-        Forma::addError('Error: ' . $cpm->errText . ' [' . $cpm->errCode . ']');
+        \FormaLms\lib\Forma::addError('Error: ' . $cpm->errText . ' [' . $cpm->errCode . ']');
 
         return false;
     }
@@ -446,9 +446,9 @@ function _scorm_copyitem($idscorm_package, $idscorm_organization)
     // save flat organization with resources
     //$cpm->RenderOrganization( '-resource-', $rdb );
 
-    $so = new Scorm_Organization(addslashes($org_identifier), $new_idscorm_package, $GLOBALS['dbConn']);
+    $so = new Scorm_Organization($org_identifier, $new_idscorm_package, $GLOBALS['dbConn']);
     if ($so->err_code > 0) {
-        Forma::addError('Error: ' . $so->getErrorText() . ' [' . $so->getErrorCode() . ']');
+        \FormaLms\lib\Forma::addError('Error: ' . $so->getErrorText() . ' [' . $so->getErrorCode() . ']');
 
         return false;
     } else {
@@ -458,9 +458,6 @@ function _scorm_copyitem($idscorm_package, $idscorm_organization)
 
 if (isset($GLOBALS['op'])) {
     switch ($GLOBALS['op']) {
-        /*case "display": {
-            display();
-        }; break;*/
         case 'additem' :
                 additem();
 
@@ -490,19 +487,19 @@ if (isset($GLOBALS['op'])) {
 
             break;
         case 'tree':
-                require_once Forma::inc(_lms_ . '/modules/scorm/scorm_page_tree.php');
+                require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/scorm_page_tree.php');
 
             break;
         case 'head':
-                require_once Forma::inc(_lms_ . '/modules/scorm/scorm_page_head.php');
+                require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/scorm_page_head.php');
 
             break;
         case 'body':
-                require_once Forma::inc(_lms_ . '/modules/scorm/scorm_page_body.php');
+                require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/scorm_page_body.php');
 
             break;
         case 'scoload':
-                require_once Forma::inc(_lms_ . '/modules/scorm/soaplms.php');
+                require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/soaplms.php');
 
             break;
         default:

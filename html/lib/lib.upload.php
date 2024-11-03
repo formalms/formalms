@@ -114,7 +114,7 @@ function sl_upload($srcFile, $dstFile, $file_ext = '', $root = false)
             $file_mime_type = mime_content_type($srcFile);
         }
         if (!$valid_ext || !in_array($file_mime_type, $mimetype_arr)) {
-            Forma::addError(Lang::t('_UPLOAD_INVALID_MIMETYPE'));
+            \FormaLms\lib\Forma::addError(Lang::t('_UPLOAD_INVALID_MIMETYPE'));
 
             return false;
         }
@@ -216,7 +216,7 @@ function sl_upload_fs($srcFile, $dstFile, $root = _files_)
     }
     $re = move_uploaded_file($srcFile, $root . $dstFile);
     if (!$re) {
-        Forma::addError(Lang::t("Error on move_uploaded_file from: $srcFile to " . $dstFile));
+        \FormaLms\lib\Forma::addError(Lang::t("Error on move_uploaded_file from: $srcFile to " . $dstFile));
     }
 
     return $re;
@@ -348,7 +348,7 @@ function sl_fopen_ftp($file, $mode)
     $ftppath = FormaLms\lib\Get::cfg('ftppath') . _folder_files_;
     $ftpConn = $GLOBALS['ftpConn'];
     if (!file_exists(_files_ . $file)) {
-        if (!ftp_put($ftpConn, $ftppath . $file, __DIR__ . '/nullfile', FTP_BINARY)) {
+        if (!ftp_put($ftpConn, $ftppath . $file, dirname(__FILE__) . '/nullfile', FTP_BINARY)) {
             return false;
         } else {
             if (ftp_site($ftpConn, "CHMOD 0666 $ftppath" . "$file") === false) {

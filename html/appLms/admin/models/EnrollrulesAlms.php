@@ -11,9 +11,12 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
+use FormaLms\lib\Forma;
+use FormaLms\lib\Interfaces\Accessible;
+
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-class EnrollrulesAlms extends Model
+class EnrollrulesAlms extends Model implements Accessible
 {
     protected $sortable = ['title', 'lang_code', 'creation_date'];
 
@@ -24,7 +27,7 @@ class EnrollrulesAlms extends Model
     {
         parent::__construct();
         $this->json = new Services_JSON();
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         parent::__construct();
     }
 
@@ -122,7 +125,7 @@ class EnrollrulesAlms extends Model
 
     public function createRule($data)
     {
-        $languages = Docebo::langManager()->getAllLangCode();
+        $languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         array_unshift($languages, 'all');
 
         $query = 'INSERT INTO %adm_rules ( title, lang_code, rule_type, creation_date, rule_active )'
@@ -134,7 +137,7 @@ class EnrollrulesAlms extends Model
 
     public function updateRule($data)
     {
-        $languages = Docebo::langManager()->getAllLangCode();
+        $languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         array_unshift($languages, 'all');
 
         $query = 'UPDATE %adm_rules SET '
@@ -193,7 +196,7 @@ class EnrollrulesAlms extends Model
 
     public function getBaseEntityRule($id_rule, $id_entities = false, $only_existing = false)
     {
-        $entities = Docebo::langManager()->getAllLangCode();
+        $entities = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         array_unshift($entities, 'all');
 
         $entities_name = [];
@@ -246,7 +249,7 @@ class EnrollrulesAlms extends Model
                 $entities_name = $folders['idst'];
              break;
             case 'group':
-                $aclman = Docebo::aclm();
+                $aclman = \FormaLms\lib\Forma::getAclManager();
                 $names = $aclman->getGroups($id_entities);
                 if ($names) {
                     foreach ($names as $group) {
@@ -323,7 +326,7 @@ class EnrollrulesAlms extends Model
         $rules = [];
         $course_list = [];
         if (!$language) {
-            $language = getLanguage();
+            $language = Lang::get();
         }
         $query = 'SELECT re.id_rule, re.course_list '
             . 'FROM %adm_rules AS r JOIN %adm_rules_entity AS re '
@@ -381,7 +384,7 @@ class EnrollrulesAlms extends Model
         $rules = [];
         $course_list = [];
         if (!$language) {
-            $language = getLanguage();
+            $language = Lang::get();
         }
         $query = 'SELECT re.id_rule, re.id_entity, re.course_list '
             . 'FROM %adm_rules AS r JOIN %adm_rules_entity AS re '
@@ -438,7 +441,7 @@ class EnrollrulesAlms extends Model
         $ent = [];
 
         if ($id_org != 0) {
-            $acl_manager = Docebo::aclm();
+            $acl_manager = \FormaLms\lib\Forma::getAclManager();
             $oc_sn = $acl_manager->getGroupST('oc_' . $id_org);
 
             $um_adm = new UsermanagementAdm();
@@ -501,7 +504,7 @@ class EnrollrulesAlms extends Model
     {
         $ent = [];
         if ($id_org != false) {
-            $acl_man = Docebo::aclm();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $oc_sn = $acl_man->getGroupST('oc_' . $id_org);
 
             $um_adm = new UsermanagementAdm();
@@ -538,7 +541,7 @@ class EnrollrulesAlms extends Model
 
         $arr_users = [];
         $langs = [];
-        $default_lang = getDefaultLanguage();
+        $default_lang = Lang::getDefault();
         while (list($idst_user, $value) = $this->db->fetch_row($re_query)) {
             if ($value == '') {
                 $value = $default_lang;
@@ -657,5 +660,44 @@ class EnrollrulesAlms extends Model
         }
 
         return true;
+    }
+
+    public function getTab(string $ruleType) : string
+    {
+        $result = $ruleType;
+
+        if('orgchart' === $ruleType) {
+            $result = 'org';
+        }
+
+        if('fc_roles' === $ruleType) {
+            $result = 'role';
+        }
+
+        return $result;
+
+    }
+
+    public function getAccessList($resourceId) : array {
+
+        return array_keys($this->getEntityRule($resourceId));
+    }
+
+    public function setAccessList($resourceId, array $selection) : bool {
+        
+        $oldSelection = array_keys($this->getEntityRule($resourceId));
+
+        $toAdds = array_diff($selection, $oldSelection);
+        $toDeletes = array_diff($oldSelection, $selection);
+   
+        foreach ($toAdds as $id_entity) {
+            $result = $this->insertEntityRule($resourceId, $id_entity, []);
+        }
+        foreach ($toDeletes as $id_entity) {
+            $result = $this->deleteEntityRule($resourceId, $id_entity);
+        }
+
+        return (bool) $result;
+     
     }
 }

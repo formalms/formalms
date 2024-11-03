@@ -1,0 +1,66 @@
+  <div class="col-lg-12 page-title"><h1 class="text-uppercase">{{ Lang_translate( title , 'standard') }}</h1></div>
+<br/>
+
+
+<br/><br/>
+{% if message %}
+    <div id="container-feedback" class="container-feedback">
+        <span class="ico-sprite fd_info"><span>{{ Lang_translate('_DETAILS', 'standard') }}</span></span> {{ message }}
+    </div>
+{% endif %}
+
+<div class="std_block">
+ 
+	<div id="global_conf" class="tabs-wrapper">
+    {{ Form_openForm('upsert_settings', 'index.php?r=adm/domainconfig/save', false, 'post', 'multipart/form-data') }}
+
+    {% if id %}
+        {{ Form_getHidden('id', 'id', id) }}
+    {% endif %}
+    {% if parentId %}
+        {{ Form_getHidden('parentId', 'parentId', parentId) }}
+    {% endif %}
+       
+		<ul class="nav nav-tabs">
+            <li class="active">
+                <a data-toggle="tab" href="#tab_g_0" class="nav-link">
+                    <em>{{ Lang_translate('_DOMAIN_CONFIG', 'menu') }}</em>
+                </a>
+            </li>
+            
+           {% for additionalTab in additionalTabs %}
+                 {% include additionalTab.tab with { tags : additionalTab.tabParams.tags } %}
+            {% endfor %}
+		</ul>
+       {% if id %}
+            {{ Form_getHidden('id', 'id', id) }}
+        {% endif %}
+        {% if parentId %}
+            {{ Form_getHidden('parentId', 'parentId', parentId) }}
+        {% endif %}
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab_g_0">
+                <h2>{{ Lang_translate('_DOMAIN_CONFIG', 'menu') }}</h2>
+                {{ Form_getLineTextfield('form_line_l', 'floating', Lang_translate('_TITLE', 'domainconfig') , 'textfield', 'title', 'title',  item.title, '', 255, 'required', '', '') }}
+                {{ Form_getLineTextfield('form_line_l', 'floating', Lang_translate('_DOMAIN', 'domainconfig') , 'textfield', 'domain', 'domain',  item.domain, '', 255, 'required', '', '') }}
+                {{ Form_getDropdown(Lang_translate('_TEMPLATE', 'domainconfig'), 'template', 'template', templates, item.template) }}</td>
+                {{ Form_getDropdown(Lang_translate('_ORG', 'domainconfig'), 'orgId', 'orgId', orgs, item.orgId) }}</td>
+                {{ Form_getDropdown(Lang_translate('_MAIL_CONFIG', 'domainconfig'), 'mailConfigId', 'mailConfigId', mailConfigs, item.mailConfigId) }}</td>
+            </div>
+
+            {% for additionalTab in additionalTabs %}
+                 {% include additionalTab.tabContent with { rows : additionalTab.tabContentParams.rows, tabs :  additionalTab.tabContentParams.tabs} %}
+            {% endfor %}
+
+	</div>
+    	<div class="nofloat">&nbsp;</div>
+        {{ Form_openButtonSpace() }}
+            {{ Form_getButton('save', 'save', Lang_translate('_SAVE', 'admin_lang')) }}
+            {{ Form_getButton('undo', 'undo', Lang_translate('_UNDO', 'admin_lang')) }}
+        {{ Form_closeButtonSpace() }}
+    {{ Form_closeForm() }}
+</div>
+
+
+
+

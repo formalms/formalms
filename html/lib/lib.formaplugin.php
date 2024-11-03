@@ -13,24 +13,39 @@
 
 abstract class FormaPlugin
 {
-    public function install()
+    public static function install()
     {
         //code executed after install
     }
 
-    public function uninstall()
+    public static function uninstall()
     {
         //code executed after uninstall
     }
 
-    public function activate()
+    public static function activate()
     {
         //code executed after activation
     }
 
-    public function deactivate()
+    public static function deactivate()
     {
         //code executed after deactivation
+    }
+
+    public static function img($plugin_name)
+    {
+        return FormaLms\lib\Get::rel_path('plugins') . '/' . $plugin_name . '/images';
+    }
+
+    public static function css($plugin_name, $css_name)
+    {
+        Util::get_css(FormaLms\lib\Get::rel_path('plugins') . '/' . $plugin_name . '/style/' . $css_name, true, true);
+    }
+
+    public static function js($plugin_name, $js_name)
+    {
+        Util::get_js(FormaLms\lib\Get::rel_path('plugins') . '/' . $plugin_name . '/js/' . $js_name, true, true);
     }
 
     public static function getPath($file = '')
@@ -99,7 +114,7 @@ abstract class FormaPlugin
      */
     public static function addRole($role)
     {
-        $am = Docebo::user()->getACLManager();
+        $am = \FormaLms\lib\Forma::getAclManager();;
         if ($role_info = $am->getRole($role, false)) {
             $idst = $role_info[ACL_INFO_IDST];
         } else {

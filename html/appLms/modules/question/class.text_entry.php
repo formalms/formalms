@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once Forma::inc(_lms_ . '/modules/question/class.question.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/class.question.php');
 
 class TextEntry_Question extends Question
 {
@@ -31,7 +31,7 @@ class TextEntry_Question extends Question
      */
     public function create($idTest, $back_test)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = FormaLanguage::createInstance('test');
 
         require_once _base_ . '/lib/lib.form.php';
         $url_encode = htmlentities(urlencode($back_test));
@@ -124,7 +124,7 @@ class TextEntry_Question extends Question
             . '<tr class="line_answer">'
             . '<td rowspan="2" class="align_center">'
             //img si correct
-            . '<img src="' . getPathImage() . 'test/correct.gif" alt="' . $lang->def('_TEST_ISCORRECT') . '" />'
+            . '<img style="margin:auto; display:block;" src="' . getPathImage() . 'standard/publish.png" alt="' . $lang->def('_TEST_ISCORRECT') . '" />'
             . '</td>'
             . '<td rowspan="2">'
             //answer
@@ -171,7 +171,7 @@ class TextEntry_Question extends Question
      */
     public function edit($back_test)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = FormaLanguage::createInstance('test');
 
         require_once _base_ . '/lib/lib.form.php';
         $url_encode = htmlentities(urlencode($back_test));
@@ -265,7 +265,7 @@ class TextEntry_Question extends Question
             . '<tr class="line_answer">' . "\n"
             . '<td rowspan="2" class="align_center">'
             //img is correct
-            . '<img src="' . getPathImage() . 'test/correct.gif" alt="' . $lang->def('_TEST_ISCORRECT') . '" />'
+            . '<img style="margin:auto; display:block;" src="' . getPathImage() . 'standard/publish.png" alt="' . $lang->def('_TEST_ISCORRECT') . '" />'
             . '</td>'
             . '<td rowspan="2">'
             //answer
@@ -398,7 +398,7 @@ class TextEntry_Question extends Question
      */
     public function play($num_quest, $shuffle_answer = false, $id_track = 0, $freeze = false, $number_time = null)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = FormaLanguage::createInstance('test');
 
         [$id_quest, $title_quest] = sql_fetch_row(sql_query('
 		SELECT idQuest, title_quest 
@@ -507,7 +507,7 @@ class TextEntry_Question extends Question
      *
      * @author Fabio Pirovano (fabio@docebo.com)
      */
-    public function updateAnswer($id_track, &$source)
+    public function updateAnswer($id_track, &$source,$numberTime = null)
     {
         $re_answer = sql_query('
 		SELECT idAnswer, answer, score_correct, score_incorrect 
@@ -560,7 +560,7 @@ class TextEntry_Question extends Question
      */
     public function displayUserResult($id_track, $num_quest, $show_solution, $number_time = null)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = FormaLanguage::createInstance('test');
 
         $quest = '';
         $comment = '';

@@ -19,6 +19,7 @@ class CommunicationAlmsController extends AlmsController
     protected $model = null;
     protected $json = null;
     protected $permissions = null;
+    public $data;
 
     public function init()
     {
@@ -61,7 +62,9 @@ class CommunicationAlmsController extends AlmsController
     {
         $message = '';
         switch ($code) {
-            case 'no permission': $message = ''; break;
+            case 'no permission':
+                $message = '';
+                break;
         }
 
         return $message;
@@ -69,13 +72,15 @@ class CommunicationAlmsController extends AlmsController
 
     public function show()
     {
-        require_once Forma::inc(_lib_ . '/formatable/include.php');
+        require_once \FormaLms\lib\Forma::inc(_lib_ . '/formatable/include.php');
         if (isset($_GET['error'])) {
             UIFeedback::error(Lang::t('_OPERATION_FAILURE', 'communication'));
         }
         if (isset($_GET['success'])) {
             UIFeedback::info(Lang::t('_OPERATION_SUCCESSFUL', 'communication'));
         }
+
+        $sort = false;
 
         $startIndex = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
         $results = FormaLms\lib\Get::req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem', 100));
@@ -86,10 +91,10 @@ class CommunicationAlmsController extends AlmsController
 
         switch ($dir) {
             case 'desc':
-                    $dir = 'desc';
+                $dir = 'desc';
                 break;
             default:
-                    $dir = 'asc';
+                $dir = 'asc';
                 break;
         }
 
@@ -97,23 +102,23 @@ class CommunicationAlmsController extends AlmsController
 
         foreach ($communicationList as $i => $communication) {
             $communicationList[$i]['editUrl'] = 'index.php?r=alms/communication/edit&idComm=' . $communication['id_comm'];
-            $communicationList[$i]['usersUrl'] = 'index.php?r=alms/communication/mod_user&id_comm=' . $communication['id_comm'] . '&load=1';
+            $communicationList[$i]['usersUrl'] = 'index.php?r=adm/userselector/show&id=' . $communication['id_comm'] . '&instance=communication&load=1';
             $communicationList[$i]['deleteUrl'] = 'ajax.adm_server.php?r=alms/communication/delete&idComm=' . $communication['id_comm'];
             $communicationList[$i]['description'] = (strlen(strip_tags($communication['description'])) > 150) ? substr(strip_tags($communication['description']), 0, 150) . '...' : strip_tags($communication['description']);
         }
 
-        $langs = Docebo::langManager()->getAllLanguages(true);
-        $langCode = getLanguage();
+        $langs = \FormaLms\lib\Forma::langManager()->getAllLanguages(true);
+        $langCode = Lang::get();
 
         $categoryCount = $this->model->getCategoryTotal();
 
         $this->render('show', [
-                                'communicationList' => array_values($communicationList),
-                                'langs' => array_keys($langs),
-                                'langCode' => $langCode,
-                                'permissions' => $this->permissions,
-                                'categoryCount' => $categoryCount,
-                            ]);
+            'communicationList' => array_values($communicationList),
+            'langs' => array_keys($langs),
+            'langCode' => $langCode,
+            'permissions' => $this->permissions,
+            'categoryCount' => $categoryCount,
+        ]);
     }
 
     public function getlist()
@@ -134,7 +139,7 @@ class CommunicationAlmsController extends AlmsController
 
         $comm_id_arr = [];
         foreach ($array_comm as $key => $value) {
-            $type = $array_comm[$key]['type_of'];
+            $type = $value['type_of'];
             if ($type == 'file') {
                 $comm_id_arr[] = $value['id_comm'];
             }
@@ -212,8 +217,8 @@ class CommunicationAlmsController extends AlmsController
             return;
         }
 
-        $langs = Docebo::langManager()->getAllLanguages(true);
-        $langCode = getLanguage();
+        $langs = \FormaLms\lib\Forma::langManager()->getAllLanguages(true);
+        $langCode = Lang::get();
 
         $categoriesDropdownData = $this->model->getCategoryDropdown($langCode);
 
@@ -235,11 +240,13 @@ class CommunicationAlmsController extends AlmsController
             Lang::t('_LONAME_scormorg', 'storage') => 'scorm',
         ];
 
+        $authentic_request = Util::getSignature();
         $this->render('add', [
             'data' => $data,
             'langs' => array_keys($langs),
             'langCode' => $langCode,
             'course_name' => '',
+            'authentic_request' => $authentic_request,
             'categoriesDropdownData' => $categoriesDropdownData,
             'types' => $types,
         ]);
@@ -275,7 +282,7 @@ class CommunicationAlmsController extends AlmsController
         //validate inputs
         if (is_array($titles)) {
             //prepare langs array
-            $lang_codes = Docebo::langManager()->getAllLangcode();
+            $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangcode();
             foreach ($lang_codes as $lang_code) {
                 $data['langs'][$lang_code] = [
                     'title' => (isset($titles[$lang_code]) ? $titles[$lang_code] : ''),
@@ -311,23 +318,23 @@ class CommunicationAlmsController extends AlmsController
         $back_url = 'index.php?r=alms/communication/insert_obj&id_comm=' . $id_comm;
 
         switch ($data['type_of']) {
-            case 'file' :
+            case 'file':
                 require_once _lms_ . '/class.module/learning.item.php';
                 $l_obj = new Learning_Item();
                 $l_obj->create($back_url);
 
                 break;
-            case 'scorm' :
+            case 'scorm':
                 require_once _lms_ . '/class.module/learning.scorm.php';
                 $l_obj = new Learning_ScormOrg();
                 $l_obj->create($back_url);
 
                 break;
-            case 'none' :
+            case 'none':
             default:
                 Util::jump_to('index.php?r=alms/communication/show');
 
-            break;
+                break;
         }
     }
 
@@ -355,8 +362,12 @@ class CommunicationAlmsController extends AlmsController
                 if ($data['type_of'] == 'file' || $data['type_of'] == 'scorm') { // Save resource as uncategorized
                     require_once _lms_ . '/lib/lib.kbres.php';
                     $kbres = new KbRes();
-                    $kbres->saveUncategorizedResource($data['title'], $data['id_resource'],
-                        $data['type_of'], 'communication', $data['id_comm']
+                    $kbres->saveUncategorizedResource(
+                        $data['title'],
+                        $data['id_resource'],
+                        $data['type_of'],
+                        'communication',
+                        $data['id_comm']
                     );
                 }
                 Util::jump_to('index.php?r=alms/communication/show&success=1');
@@ -387,17 +398,22 @@ class CommunicationAlmsController extends AlmsController
 
         $course_model = new CourseAlms();
         $cinfo = $course_model->getCourseModDetails($data['id_course']);
-        $courseName = /*($cinfo['code'] ? "[".$cinfo['code']."] " : "").*/ $cinfo['name'];
+        $courseName = /*($cinfo['code'] ? "[".$cinfo['code']."] " : "").*/ is_array($cinfo) ? $cinfo['name'] : '';
         YuiLib::load('autocomplete');
-        $langs = Docebo::langManager()->getAllLanguages(true);
-        $langCode = getLanguage();
+        $langs = \FormaLms\lib\Forma::langManager()->getAllLanguages(true);
+        $langCode = Lang::get();
+
 
         $langsMapped = array_map(fn ($value): array => [$value['lang_code'] => [
             'title' => $value['title'],
             'description' => $value['description'],
         ]], $data['langs']);
 
-        $data['langs'] = array_merge(...$langsMapped);
+        if (PHP_VERSION_ID < 80000) {
+            $data['langs'] = call_user_func_array('array_merge', $langsMapped);
+        } else {
+            $data['langs'] = array_merge(...$langsMapped);
+        }
         //controllo che ci siano almeno un tile e una descrizione di fallback
         if (!count($data['langs']) || !in_array($langCode, array_keys($data['langs']))) {
             $tmpLang['title'] = $data['title'];
@@ -406,7 +422,7 @@ class CommunicationAlmsController extends AlmsController
         }
 
         $categoriesDropdownData = $this->model->getCategoryDropdown($langCode);
-
+        $authentic_request = Util::getSignature();
         $this->render('edit', [
             'data' => $data,
             'idCourse' => $data['id_course'],
@@ -415,6 +431,7 @@ class CommunicationAlmsController extends AlmsController
             'formUrl' => $data['type_of'] == 'none' ? 'index.php?r=alms/communication/update' : 'index.php?r=alms/communication/mod_obj&id_comm=' . $data['id_comm'],
             'langs' => array_keys($langs),
             'langCode' => $langCode,
+            'authentic_request' => $authentic_request,
             'categoriesDropdownData' => $categoriesDropdownData,
         ]);
     }
@@ -451,7 +468,7 @@ class CommunicationAlmsController extends AlmsController
         if (is_array($titles)) {
             $data['langs'] = [];
             //prepare langs array
-            $lang_codes = Docebo::langManager()->getAllLangcode();
+            $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangcode();
             foreach ($lang_codes as $lang_code) {
                 $data['langs'][$lang_code] = [
                     'title' => (isset($titles[$lang_code]) ? $titles[$lang_code] : ''),
@@ -491,7 +508,7 @@ class CommunicationAlmsController extends AlmsController
         if (is_array($titles)) {
             $data['langs'] = [];
             //prepare langs array
-            $lang_codes = Docebo::langManager()->getAllLangcode();
+            $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangcode();
             foreach ($lang_codes as $lang_code) {
                 $data['langs'][$lang_code] = [
                     'title' => (isset($titles[$lang_code]) ? $titles[$lang_code] : ''),
@@ -506,22 +523,22 @@ class CommunicationAlmsController extends AlmsController
             $back_url = 'index.php?r=alms/communication/update_obj&id_comm=' . $id_comm;
 
             switch ($data['type_of']) {
-                case 'file' :
+                case 'file':
                     require_once _lms_ . '/class.module/learning.item.php';
                     $l_obj = new Learning_Item();
                     $l_obj->edit($data['id_resource'], $back_url);
 
                     break;
-                case 'scorm' :
+                case 'scorm':
                     //cannot be modified
                     Util::jump_to('index.php?r=alms/communication/show');
 
                     break;
-                case 'none' :
+                case 'none':
                 default:
                     Util::jump_to('index.php?r=alms/communication/show');
 
-                break;
+                    break;
             }
         } else {
             Util::jump_to('index.php?r=alms/communication/show&error=1');
@@ -569,23 +586,23 @@ class CommunicationAlmsController extends AlmsController
 
         if ($data['id_resource']) {
             switch ($data['type_of']) {
-                case 'file' :
+                case 'file':
                     require_once _lms_ . '/class.module/learning.item.php';
                     $l_obj = new Learning_Item();
                     $re = $l_obj->del($data['id_resource']);
 
                     break;
-                case 'scorm' :
+                case 'scorm':
                     require_once _lms_ . '/class.module/learning.scorm.php';
                     $l_obj = new Learning_ScormOrg();
                     $re = $l_obj->del($data['id_resource']);
 
                     break;
-                case 'none' :
+                case 'none':
                 default:
                     $re = true;
 
-                break;
+                    break;
             }
         } else {
             $re = true;
@@ -699,16 +716,29 @@ class CommunicationAlmsController extends AlmsController
                 $param = FormaLms\lib\Get::req('r_param', DOTY_STRING, '');
                 $alt_desc = '';
                 $lang_id = FormaLms\lib\Get::req('r_lang', DOTY_INT, '');
-                $lang_arr = Docebo::langManager()->getAllLangCode();
+                $lang_arr = \FormaLms\lib\Forma::langManager()->getAllLangCode();
                 $lang = $lang_arr[$lang_id];
                 $force_visible = FormaLms\lib\Get::req('force_visible', DOTY_INT, 0);
                 $is_mobile = FormaLms\lib\Get::req('is_mobile', DOTY_INT, 0);
                 $folders = FormaLms\lib\Get::req('h_selected_folders', DOTY_STRING, '');
                 $json_tags = Util::strip_slashes(FormaLms\lib\Get::req('tag_list', DOTY_STRING, '[]'));
 
-                $res_id = $kbres->saveResource($res_id, $name, $original_name, $desc, $r_item_id,
-                    $type, $env, $env_parent_id, $param, $alt_desc, $lang, $force_visible,
-                    $is_mobile, $folders, $json_tags
+                $res_id = $kbres->saveResource(
+                    $res_id,
+                    $name,
+                    $original_name,
+                    $desc,
+                    $r_item_id,
+                    $type,
+                    $env,
+                    $env_parent_id,
+                    $param,
+                    $alt_desc,
+                    $lang,
+                    $force_visible,
+                    $is_mobile,
+                    $folders,
+                    $json_tags
                 );
 
                 Util::jump_to('index.php?r=alms/communication/show');
@@ -720,8 +750,7 @@ class CommunicationAlmsController extends AlmsController
                         $this->categorize_sco($id_comm, $data);
                     } /* else if ($data['type_of'] == 'scorm' && $r_data && $r_data['sub_categorize'] == -1) {
             $this->subcategorize_ask($id_comm, $data, $r_data);
-        } */
-                    else {
+        } */ else {
                         $data = $this->model->findByPk($id_comm);
                         $data['item_id'] = $id_comm;
 
@@ -819,7 +848,7 @@ class CommunicationAlmsController extends AlmsController
 
         //delete action
         if ($can_del) {
-            if ($node['is_leaf'] && $node['count_objects'] <= 0 && !$is_root) {
+            if (isset($node['is_leaf']) && $node['count_objects'] <= 0 && !$is_root) {
                 $actions[] = [
                     'id' => 'del_' . $id_action,
                     'command' => 'delete',
@@ -901,11 +930,11 @@ class CommunicationAlmsController extends AlmsController
                     ];
                 }
                 echo $this->json->encode($output);
-             break;
+                break;
 
             case 'set_selected_node':
                 $this->_setSessionValue('selected_node', FormaLms\lib\Get::req('node_id', DOTY_INT, 0));
-             break;
+                break;
 
             case 'delete':
                 //check permissions
@@ -922,7 +951,7 @@ class CommunicationAlmsController extends AlmsController
                     $output['success'] = $this->model->deleteCategory($id);
                 }
                 echo $this->json->encode($output);
-             break;
+                break;
 
             case 'movefolder':
                 //check permissions
@@ -934,7 +963,7 @@ class CommunicationAlmsController extends AlmsController
                 }
 
                 $this->move_categoryTask();
-             break;
+                break;
         }
     }
 
@@ -957,8 +986,8 @@ class CommunicationAlmsController extends AlmsController
         //retrieve category info (name and description
         $info = $this->model->getCategoryInfo($idCategory);
 
-        $langs = Docebo::langManager()->getAllLanguages(true);
-        $langCode = getLanguage();
+        $langs = \FormaLms\lib\Forma::langManager()->getAllLanguages(true);
+        $langCode = Lang::get();
 
         $categoriesDropdownData = $this->model->getCategoryDropdown($langCode, true);
 
@@ -993,7 +1022,7 @@ class CommunicationAlmsController extends AlmsController
         //validate inputs
         if (is_array($names)) {
             //prepare langs array
-            $lang_codes = Docebo::langManager()->getAllLangcode();
+            $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangcode();
             foreach ($lang_codes as $lang_code) {
                 $langs[$lang_code] = [
                     'name' => (isset($names[$lang_code]) ? $names[$lang_code] : ''),
@@ -1016,7 +1045,7 @@ class CommunicationAlmsController extends AlmsController
             //return node data to add in the treeview of the page
             $nodedata = [
                 'id' => $res,
-                'label' => $this->model->getCategoryName($res, getLanguage()),
+                'label' => $this->model->getCategoryName($res, Lang::get()),
                 'parentLabel' => $parentLabel,
                 'countObjects' => 0,
                 'filterUrl' => $filterUrl,
@@ -1064,7 +1093,7 @@ class CommunicationAlmsController extends AlmsController
         //validate inputs
         if (is_array($names)) {
             //prepare langs array
-            $lang_codes = Docebo::langManager()->getAllLangcode();
+            $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangcode();
             foreach ($lang_codes as $lang_code) {
                 $langs[$lang_code] = [
                     'name' => (isset($names[$lang_code]) ? $names[$lang_code] : ''),
@@ -1112,18 +1141,19 @@ class CommunicationAlmsController extends AlmsController
 
     public function showCategories()
     {
-        require_once Forma::inc(_lib_ . '/formatable/include.php');
+        require_once \FormaLms\lib\Forma::inc(_lib_ . '/formatable/include.php');
 
         $startIndex = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
         $results = FormaLms\lib\Get::req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem', 100));
         $dir = FormaLms\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $sort = FormaLms\lib\Get::req('sort', DOTY_STRING, 'id');
 
         switch ($dir) {
             case 'desc':
-                    $dir = 'desc';
+                $dir = 'desc';
                 break;
             default:
-                    $dir = 'asc';
+                $dir = 'asc';
                 break;
         }
 
@@ -1134,18 +1164,18 @@ class CommunicationAlmsController extends AlmsController
             $categoriesList[$i]['deleteUrl'] = 'ajax.adm_server.php?r=alms/communication/deleteCategory';
         }
 
-        $langs = Docebo::langManager()->getAllLanguages(true);
-        $langCode = getLanguage();
+        $langs = \FormaLms\lib\Forma::langManager()->getAllLanguages(true);
+        $langCode = Lang::get();
 
         $categoriesDropdownData = $this->model->getCategoryDropdown($langCode, true);
 
         $this->render('show_categories', [
-                                            'categoriesList' => array_values($categoriesList),
-                                            'langs' => array_keys($langs),
-                                            'langCode' => $langCode,
-                                            'categoriesDropdownData' => $categoriesDropdownData,
-                                            'permissions' => $this->permissions,
-                                        ]);
+            'categoriesList' => array_values($categoriesList),
+            'langs' => array_keys($langs),
+            'langCode' => $langCode,
+            'categoriesDropdownData' => $categoriesDropdownData,
+            'permissions' => $this->permissions,
+        ]);
     }
 
     public function deleteCategoryTask()

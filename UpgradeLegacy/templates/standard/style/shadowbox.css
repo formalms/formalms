@@ -1,0 +1,25 @@
+#shadowbox_overlay{visibility:hidden;position:absolute;display:block;margin:0;padding:0;top:0;left:0;z-index:998;background:#cdf;}
+#shadowbox_container{position:fixed;height:0;width:100%;margin:0;padding:0;top:0;left:0;z-index:999;text-align:center;}
+#shadowbox{display:none;visibility:hidden;margin:0 auto;position:relative;font-family:Arial,Verdana,Tahoma,sans-serif;text-align:left;}
+#shadowbox_title{height:25px;padding:0;overflow:hidden;}
+#shadowbox_title_inner{height:16px;font-size:115%;line-height:16px;white-space:nowrap;padding:5px 0 4px 18px;color:#fff;font-weight:bold;background:transparent;}
+#shadowbox_body{position:relative;overflow:hidden;margin:0;padding:0;border:2px solid #fff;background-color:#222;}
+#shadowbox_body_inner{position:relative;overflow:hidden;}
+#shadowbox_loading{position:absolute;top:0;left:0;width:100%;}
+#shadowbox_loading img{float:left;margin:10px 10px 0 10px;}
+#shadowbox_loading span{float:left;margin-top:16px;font-size:90%;}
+#shadowbox_loading span a,#shadowbox_loading span a:link,#shadowbox_loading span a:visited{color:#fff;}
+#shadowbox_content.html{height:100%;width:100%;overflow:auto;}
+#shadowbox_toolbar{height:1px;padding:0;overflow:show;position:absolute;top:0;right:0;}
+#shadowbox_toolbar_inner{height:16px;line-height:16px;white-space:nowrap;padding:5px 10px 4px 10px;}
+#shadowbox_toolbar_inner div{padding-top:4px;padding-bottom:2px;font-size:90%;height:10px;line-height:10px;}
+#shadowbox_toolbar_inner div span.shortcut{text-decoration:underline;font-weight:bold;}
+#shadowbox_toolbar_inner div a{text-decoration:none;color:#fff;}
+#shadowbox_nav_close,#shadowbox_nav_previous,#shadowbox_nav_next{float:right;padding-right:5px;}
+#shadowbox_nav_close a{background:url('../images/scorm/close_x.png') 0 0 no-repeat;*background:url('../images/scorm/close_x.gif') 0 0 no-repeat;heigth:14px;padding:4px 4px 4px 20px;display:block;}
+#shadowbox_counter{float:left;padding-left:10px;}
+#shadowbox_counter a{padding:0 4px 0 0;}
+#shadowbox_counter a.shadowbox_counter_current{text-decoration:underline;font-weight:bold;}
+div.shadowbox_message{text-align:center;padding:10px;}
+div.shadowbox_message a:link,div.shadowbox_message a:visited{text-decoration:none;color:#bed333;}
+div.shadowbox_message a:hover,div.shadowbox_message a:focus{text-decoration:underline;}

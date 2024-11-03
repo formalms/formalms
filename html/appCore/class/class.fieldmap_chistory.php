@@ -22,11 +22,11 @@ class FieldMapChistory extends FieldMap
     /**
      * class constructor.
      */
-    public function FieldMapChistory()
+    public function __construct()
     {
-        $this->lang = &DoceboLanguage::createInstance('company', 'crm');
+        $this->lang = &FormaLanguage::createInstance('company', 'crm');
 
-        parent::FieldMap();
+        parent::__construct();
     }
 
     public function _getMainTable()

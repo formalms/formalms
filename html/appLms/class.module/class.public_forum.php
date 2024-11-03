@@ -22,7 +22,7 @@ class Module_Public_Forum extends LmsModule
 
     public function loadExtraMenu()
     {
-        $lang = &DoceboLanguage::createInstance('forum');
+        $lang = &FormaLanguage::createInstance('forum');
         $line = '<div class="legend_line">';
         echo $line . '<img src="' . getPathImage() . 'standard/add.png" /> ' . $lang->def('_REPLY') . '</div>'
             . $line . '<img src="' . getPathImage() . 'standard/edit.png" /> ' . $lang->def('_MOD') . '</div>'
@@ -43,7 +43,7 @@ class Module_Public_Forum extends LmsModule
         forumDispatch($GLOBALS['op']);
     }
 
-    public function getAllToken($op)
+    public static function getAllToken()
     {
         return [
             'view' => ['code' => 'view',
@@ -66,10 +66,7 @@ class Module_Public_Forum extends LmsModule
                                 'image' => 'standard/delete.png', ],
             'moderate' => ['code' => 'moderate',
                                 'name' => '_MODERATE',
-                                'image' => 'forum/moderate.gif', ], /*,
-            'sema' => array(	'code' => 'sema',
-                                'name' => '_SEMA',
-                                'image' => 'forum/sema.gif')*/
+                                'image' => 'forum/moderate.gif', ],
         ];
     }
 }

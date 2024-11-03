@@ -19,10 +19,10 @@ class MenuManager
 
     public $acl_man;
 
-    public function MenuManager()
+    public function __construct()
     {
-        $this->acl = &Docebo::user()->getAcl();
-        $this->acl_man = &Docebo::user()->getAclManager();
+        $this->acl = \FormaLms\lib\Forma::getAclManager();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();
     }
 
     public function addPerm($groupid, $roleid)

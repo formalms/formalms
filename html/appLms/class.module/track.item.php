@@ -19,8 +19,6 @@ class Track_Item extends Track_Object
 {
     protected $lobj;
 
-
-
     public function __construct($lobj, $id_user = null, $objectType = 'item')
     {
         $this->lobj = $lobj;
@@ -54,11 +52,11 @@ class Track_Item extends Track_Object
      * @param <int> $id_reference
      * @param <int> $id_user
      * @param <int> $id_resource
-     * @param <bool> $createOnFail create a new entry if not found
+     * @param bool $createOnFail create a new entry if not found
      */
     public static function getIdTrack($id_reference, $id_user, $id_resource, $createOnFail = false)
     {
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
 
         $query = 'SELECT idTrack '
                 . 'FROM %lms_materials_track '

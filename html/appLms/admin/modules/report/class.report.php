@@ -52,12 +52,12 @@ class Report
         if ($report_name == false) {
             $this->_load();
         } else {
-            $this->lang = &DoceboLanguage::createInstance('report', 'framework');
+            $this->lang = FormaLanguage::createInstance('report', 'framework');
             $this->report_name = $this->lang->def($report_name);
             $this->report_descr = $this->lang->def($report_name);
         }
 
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     }
 
@@ -140,8 +140,6 @@ class Report
 
     public function show_results($cat = false, $report_data = null)
     {
-        ini_set('memory_limit',-1);
-        ini_set('max_execution_time',0);
         $reportTempData = $this->session->get(self::_REPORT_SESSION);
 
         if (!$cat) {
@@ -184,12 +182,12 @@ class Report
      */
     public function _load()
     {
-        $this->lang = &DoceboLanguage::createInstance('report', 'framework');
+        $this->lang = FormaLanguage::createInstance('report', 'framework');
 
         $query_report = '
 		SELECT report_name
-		FROM ' . $GLOBALS['prefix_lms'] . "_report
-		WHERE id_report = '" . $this->id_report . "'";
+		FROM %lms_report
+		WHERE id_report = "' . $this->id_report . '"';
         $re_report = sql_query($query_report);
         list($report_name) = sql_fetch_row($re_report);
 
@@ -201,16 +199,16 @@ class Report
     {
     }
 
-    public function &getAllUserIdst()
+    public function getAllUserIdst()
     {
         $p_dr = new PeopleDataRetriever($GLOBALS['dbConn'], $GLOBALS['prefix_fw']);
 
-        $userlevelid = Docebo::user()->getUserLevelId();
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
             $p_dr->intersectGroupFilter(
-                $adminManager->getAdminTree(Docebo::user()->getIdSt())
+                $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())
             );
         }
 
@@ -246,7 +244,7 @@ class ReportBox
 
     public $show_collapse_cmd = false;
 
-    public function ReportBox($id = '')
+    public function __construct($id = '')
     {
         $this->id = $id;
     }
@@ -332,7 +330,7 @@ class ReportSessionManager
         return $this->data[self::_RS_ID];
     }
 
-    public function setRowsFilter(&$data)
+    public function setRowsFilter($data)
     {
         $this->data[self::_RS_ROWS_FILTER] = $data;
     }
@@ -342,7 +340,7 @@ class ReportSessionManager
         return $this->data[self::_RS_ROWS_FILTER];
     }
 
-    public function setColsFilter(&$data)
+    public function setColsFilter($data)
     {
         $this->data[self::_RS_COLS_FILTER] = $data;
     }

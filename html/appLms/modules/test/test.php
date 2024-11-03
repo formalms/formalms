@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 require_once _adm_ . '/lib/lib.sessionsave.php';
-if (Docebo::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit("You can't access");
 }
 
@@ -28,7 +28,7 @@ function saveTestStatus($save_this)
     return $save_name;
 }
 
-function &loadTestStatus($save_name)
+function loadTestStatus($save_name)
 {
     $save = new Session_Save();
 
@@ -40,13 +40,13 @@ function addtest($object_test)
 {
     checkPerm('view', false, 'storage');
 
-    $lang = &DoceboLanguage::createInstance('test');
-    if (!is_a($object_test, 'Learning_Test')) {
-        Forma::addError($lang->def('_OPERATION_FAILURE'));
+    $lang = FormaLanguage::createInstance('test');
+    if (!$object_test instanceof \Learning_Test) {
+        \FormaLms\lib\Forma::addError($lang->def('_OPERATION_FAILURE'));
         Util::jump_to('' . $object_test->back_url . '&amp;create_result=0');
     }
 
-    require_once _base_ . '/lib/lib.form.php';
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
     $url_encode = htmlentities(urlencode($object_test->back_url));
 
     $GLOBALS['page']->add(getTitleArea($lang->def('_TEST_SECTION'), 'test')
@@ -75,9 +75,9 @@ function instest()
 {
     checkPerm('view', false, 'storage');
 
-    require_once Forma::inc(_lms_ . '/class.module/learning.test.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/learning.test.php');
 
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     if (trim($_REQUEST['title']) == '') {
         $_REQUEST['title'] = $lang->def('_NOTITLE');
@@ -87,10 +87,10 @@ function instest()
     INSERT INTO ' . $GLOBALS['prefix_lms'] . "_test
     ( author, title, description, obj_type)
         VALUES 
-    ( '" . (int) getLogUserId() . "', '" . addslashes($_REQUEST['title']) . "', '" . addslashes($_REQUEST['textof']) . "', '" . $_REQUEST['obj_type'] . "' )";
+    ( '" . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "', '" . addslashes($_REQUEST['title']) . "', '" . addslashes($_REQUEST['textof']) . "', '" . $_REQUEST['obj_type'] . "' )";
 
     if (!sql_query($ins_query)) {
-        Forma::addError($lang->def('_OPERATION_FAILURE'));
+        \FormaLms\lib\Forma::addError($lang->def('_OPERATION_FAILURE'));
         Util::jump_to('' . urldecode($_REQUEST['back_url']) . '&create_result=0');
     }
 
@@ -111,9 +111,9 @@ function instest()
 function modtest()
 {
     checkPerm('view', false, 'storage');
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
-    require_once _base_ . '/lib/lib.form.php';
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
     $id_test = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
     $url_encode = htmlentities(urlencode($back_url));
@@ -150,7 +150,7 @@ function modtest()
 function uptest(Learning_Test $obj_test = null)
 {
     checkPerm('view', false, 'storage');
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     $back_url = urldecode(importVar('back_url'));
     $url_encode = htmlentities(urlencode($back_url));
@@ -170,11 +170,11 @@ function uptest(Learning_Test $obj_test = null)
 
         if (!sql_query($mod_query)) {
             errorCommunication($lang->def('_OPERATION_FAILURE')
-                . getBackUi('index.php?modname=test&amp;op=modtest&amp;idTest=' . $id_test . '&amp;back_url=' . $url_encode));
+                . getBackUi('index.php?modname=test&amp;op=modtest&amp;idTest=' . $id_test . '&amp;back_url=' . $url_encode, Lang::t('_BACK','standard')));
 
             return;
         }
-        require_once _lms_ . '/class.module/track.object.php';
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/track.object.php');
         Track_Object::updateObjectTitle($id_test, $obj_test->getObjectType(), $_REQUEST['title']);
     }
 
@@ -190,22 +190,21 @@ function uptest(Learning_Test $obj_test = null)
 // XXX: modtestgui
 function modtestgui($object_test)
 {
-    
     checkPerm('view', false, 'storage');
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     YuiLib::load('table');
     Util::get_js(_lms_ . '/modules/quest_bank/ajax.quest_bank.js', true, true);
 
     // ----------------------------------------------------------------------------------------
 
-    if (!is_a($object_test, 'Learning_Test')) {
-        Forma::addError($lang->def('_OPERATION_FAILURE'));
+    if (!$object_test instanceof \Learning_Test) {
+        \FormaLms\lib\Forma::addError($lang->def('_OPERATION_FAILURE'));
         Util::jump_to('' . $object_test->back_url . '&amp;create_result=0');
     }
 
-    require_once _base_ . '/lib/lib.table.php';
-    require_once _base_ . '/lib/lib.form.php';
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.table.php');
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
     $url_encode = htmlentities(urlencode($object_test->back_url));
 
     [$test_title] = sql_fetch_row(sql_query('
@@ -296,7 +295,7 @@ function modtestgui($object_test)
     $first = true;
 
     // Customfields initialize
-    require_once _adm_ . '/lib/lib.customfield.php';
+    require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/lib.customfield.php');
     $fman = new CustomFieldList();
     $fman->setFieldArea('LO_TEST');
 
@@ -308,9 +307,12 @@ function modtestgui($object_test)
             $arrHead = [];
             array_push($arrHead, $lang->def('_QUEST'), $lang->def('_TYPE'), $lang->def('_CATEGORY'), $lang->def('_QUESTION'));
             // Customfields head
+
             foreach ($fields_mask as $field) {
                 array_push($arrHead, $field['name']);
             }
+
+
             array_push(
                 $arrHead,
                 $lang->def('_TEST_QUEST_ORDER'),
@@ -472,7 +474,7 @@ function modtestgui($object_test)
         );
     }
 
-    require_once _lms_ . '/lib/lib.quest_bank.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.quest_bank.php');
     $qb_man = new QuestBankMan();
     $supported_format = $qb_man->supported_format();
 
@@ -520,7 +522,7 @@ function modtestgui($object_test)
 function movequestion($direction)
 {
     checkPerm('view', false, 'storage');
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     $idQuest = importVar('idQuest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -559,7 +561,7 @@ function movequestion($direction)
 function movequest()
 {
     checkPerm('view', false, 'storage');
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -625,7 +627,7 @@ function fixQuestSequence()
 function fixPageSequence($id_test)
 {
     checkPerm('view', false, 'storage');
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     [$tot_quest] = sql_fetch_row(sql_query('
     SELECT COUNT(*) 
@@ -657,10 +659,10 @@ function fixPageSequence($id_test)
         sequence > '" . (int) $ini_seq . "' AND sequence <= '" . (int) $tot_quest . "'");
 }
 
-function &istanceQuest($type_of_quest, $id)
+function istanceQuest($type_of_quest, $id)
 {
     checkPerm('view', false, 'storage');
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     $re_quest = sql_query('
     SELECT type_file, type_class 
@@ -671,7 +673,7 @@ function &istanceQuest($type_of_quest, $id)
     }
     [$type_file, $type_class] = sql_fetch_row($re_quest);
 
-    require_once Forma::inc(_lms_ . '/modules/question/' . $type_file);
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/' . $type_file);
     $quest_obj = eval("return new $type_class ( $id );");
 
     return $quest_obj;
@@ -681,7 +683,7 @@ function &istanceQuest($type_of_quest, $id)
 function addquest()
 {
     checkPerm('view', false, 'storage');
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     $idTest = importVar('idTest', true, 0);
 
@@ -711,7 +713,7 @@ function addquest()
         $type_quest = $var_loaded['type_quest'];
     }
 
-    require_once \Forma::inc(_lms_ . '/modules/question/question.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/question.php');
 
     quest_create($type_quest, $idTest, 'index.php?modname=test&op=modtestgui&test_saved=' . $var_save);
 }
@@ -720,7 +722,7 @@ function addquest()
 function modquest()
 {
     checkPerm('view', false, 'storage');
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     $idQuest = importVar('idQuest', true, 0);
 
@@ -755,7 +757,7 @@ function modquest()
         $type_quest = $var_loaded['type_quest'];
     }
 
-    require_once \Forma::inc(_lms_ . '/modules/question/question.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/question.php');
 
     quest_edit($type_quest, $idQuest, 'index.php?modname=test&op=modtestgui&test_saved=' . $var_save);
 }
@@ -765,7 +767,7 @@ function delquest()
 {
     checkPerm('view', false, 'storage');
 
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     $idQuest = importVar('idQuest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -787,7 +789,7 @@ function delquest()
         sql_query('
         UPDATE ' . $GLOBALS['prefix_lms'] . "_testquest
         SET sequence = sequence -1 
-        WHERE sequence > '$seq'");
+        WHERE sequence > '$seq' and idTest=".$idTest);
         fixPageSequence($idTest);
 
         $max_score = _getTestMaxScore($idTest);
@@ -821,13 +823,13 @@ function defmodality()
 {
     checkPerm('view', false, 'storage');
 
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
-    require_once _base_ . '/lib/lib.form.php';
-    require_once _base_ . '/lib/lib.json.php';
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.json.php');
 
     $idTest = importVar('idTest', true, 0);
-    $db = DbConn::getInstance();
+    $db = \FormaLms\db\DbConn::getInstance();
     $res = $db->query("SELECT obj_type FROM %lms_test WHERE idTest = '" . (int) $idTest . "'");
     $test_type = sql_fetch_assoc($res);
     $object_test = createLO($test_type['obj_type'], $idTest);
@@ -844,12 +846,12 @@ function defmodality()
     FROM %lms_test
     WHERE idTest = '" . $idTest . "'"));
 
-    extract($result);
+    extract((array)$result);
 
     [$tot_quest] = sql_fetch_row(sql_query('
     SELECT COUNT(*) 
     FROM ' . $GLOBALS['prefix_lms'] . "_testquest
-    WHERE idTest = '" . (int)$idTest . "' AND type_quest <> 'title' AND type_quest <> 'break_page'"));
+    WHERE idTest = '" . (int) $idTest . "' AND type_quest <> 'title' AND type_quest <> 'break_page'"));
 
     $re_quest = sql_query('
     SELECT idQuest
@@ -880,7 +882,7 @@ function defmodality()
 
     $cat_info = [];
     if ($order_info != '') {
-        require_once _base_ . '/lib/lib.json.php';
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.json.php');
         $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
         $arr = $json->decode($order_info);
         if (is_array($arr)) {
@@ -901,11 +903,7 @@ function defmodality()
             if ($id_cat == 0) {
                 $name_cat = $lang->def('_NO_CATEGORY');
             }
-            if (isset($cat_info[$id_cat])) {
-                $selected = $cat_info[$id_cat];
-            } else {
-                $selected = '0';
-            }
+            $selected = $cat_info[$id_cat] ?? '0';
             $categories[$id_cat] = ['name' => $name_cat, 'total' => $num_quest, 'selected' => (int) $selected];
         }
     }
@@ -969,14 +967,14 @@ function defmodality()
     );
 
     //Tabella Categorie
-    require_once _adm_ . '/lib/lib.customfield.php';
+    require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/lib.customfield.php');
     $fman = new CustomFieldList();
     $fman->setFieldArea('LO_TEST');
     $fields_mask = $fman->playFieldsFlat();
 
     $cust_info = [];
     if ($cf_info != '') {
-        require_once _base_ . '/lib/lib.json.php';
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.json.php');
         $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
         $arr = $json->decode($cf_info);
         if (is_array($arr)) {
@@ -1181,9 +1179,9 @@ function updatemodality()
 {
     checkPerm('view', false, 'storage');
 
-    require_once _base_ . '/lib/lib.json.php';
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.json.php');
     $json = new Services_JSON();
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -1247,8 +1245,6 @@ function updatemodality()
         ' ,mandatory_answer = ' . FormaLms\lib\Get::req('mandatory_answer', DOTY_INT, 0) .
         " WHERE idTest = '$idTest'";
 
-   
-
     Events::trigger('lms.defmodality.updated', ['idTest' => $idTest, 'tutorComment' => $_REQUEST['tutor_comment'], 'showTutorComment' => $_REQUEST['show_tutor_comment']]);
 
     if (!sql_query($queryString)) {
@@ -1266,9 +1262,9 @@ function deftime()
 {
     checkPerm('view', false, 'storage');
 
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
-    require_once _base_ . '/lib/lib.form.php';
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -1426,7 +1422,7 @@ function deftime()
 // XXX: updatetime
 function updatetime()
 {
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -1462,10 +1458,10 @@ function modassigntime()
 {
     checkPerm('view', false, 'storage');
 
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
-    require_once _base_ . '/lib/lib.form.php';
-    require_once _base_ . '/lib/lib.table.php';
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.table.php');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -1474,16 +1470,17 @@ function modassigntime()
     //save new time -------------------------------------------------
     if (isset($_REQUEST['saveandexit'])) {
         $re = sql_query('
-        UPDATE ' . $GLOBALS['prefix_lms'] . "_test
-        SET display_type = '1'
-        WHERE idTest = '$idTest'");
+        UPDATE %lms_test
+        SET display_type = "1"
+        WHERE idTest = "'.$idTest.'"');
         if ($re) {
-            while (list($idQuest, $difficult) = each($_REQUEST['new_difficult_quest'])) {
-                $re &= sql_query('
-                UPDATE ' . $GLOBALS['prefix_lms'] . "_testquest
-                SET difficult = '" . $difficult . "', 
-                    time_assigned = '" . $_REQUEST['new_time_quest'][$idQuest] . "'
-                WHERE idTest = '$idTest' AND idQuest = '" . (int) $idQuest . "'");
+
+            foreach($_REQUEST['new_difficult_quest'] as $idQuest => $difficult) {
+                $re = sql_query('
+                UPDATE %lms_testquest
+                SET difficult = "' . $difficult . '", 
+                    time_assigned = "' . $_REQUEST['new_time_quest'][$idQuest] . '"
+                WHERE idTest = "' . $idTest. '" AND idQuest = "' . (int) $idQuest  . '"');
             }
         }
         Util::jump_to('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $url_coded . '&mod_operation=' . ($re ? 1 : 0));
@@ -1614,9 +1611,9 @@ function defpoint()
 {
     checkPerm('view', false, 'storage');
 
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
-    require_once _base_ . '/lib/lib.form.php';
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -1673,7 +1670,7 @@ function defpoint()
 
     $max_score = 0;
     while (list($idQuest, $type_quest, $type_file, $type_class, $title_quest, $difficult) = sql_fetch_row($re_quest)) {
-        require_once Forma::inc(_lms_ . '/modules/question/' . $type_file);
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/' . $type_file);
         $quest_obj = eval("return new $type_class( $idQuest );");
 
         $max_score += $quest_obj->getMaxScore();
@@ -1717,7 +1714,7 @@ function updatepoint()
 {
     checkPerm('view', false, 'storage');
 
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -1744,7 +1741,7 @@ function modassignpoint()
 {
     checkPerm('view', false, 'storage');
 
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     require_once _base_ . '/lib/lib.table.php';
     require_once _base_ . '/lib/lib.form.php';
@@ -1774,7 +1771,7 @@ function modassignpoint()
             SET difficult = '" . (int) $_REQUEST['new_difficult_quest'][$idQuest] . "'
             WHERE idTest = '" . $idTest . "' AND idQuest = '" . (int) $idQuest . "'");
 
-            require_once Forma::inc(_lms_ . '/modules/question/' . $type_file);
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/' . $type_file);
             $quest_obj = eval("return new $type_class( $idQuest );");
             $score_assign[$idQuest] = $quest_obj->setMaxScore($_REQUEST['new_score_quest'][$idQuest]);
         }
@@ -1822,7 +1819,7 @@ function modassignpoint()
     //table body--------------------------------------------------------
 
     while (list($idQuest, $type_quest, $type_file, $type_class, $title_quest, $difficult) = sql_fetch_row($re_quest)) {
-        require_once Forma::inc(_lms_ . '/modules/question/' . $type_file);
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/' . $type_file);
         $quest_obj = eval("return new $type_class( $idQuest );");
 
         if (isset($_REQUEST['new_score_quest'][$idQuest])) {
@@ -1949,16 +1946,16 @@ function modassignpoint()
 function importquest()
 {
     checkPerm('view', false, 'storage');
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
     $back_coded = htmlentities(urlencode($back_url));
 
-    require_once _base_ . '/lib/lib.form.php';
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
 
     $form = new Form();
-    require_once _lms_ . '/lib/lib.quest_bank.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.quest_bank.php');
     $qb_man = new QuestBankMan();
     $supported_format = $qb_man->supported_format();
 
@@ -1969,22 +1966,22 @@ function importquest()
         getTitleArea($title, 'quest_bank')
             . '<div class="std_block">'
 
-            . Form::openForm('import_form', 'index.php?modname=test&op=doimportquest', false, false, 'multipart/form-data')
+            . $form->openForm('import_form', 'index.php?modname=test&op=doimportquest', false, false, 'multipart/form-data')
 
-            . Form::openElementSpace()
+            . $form->openElementSpace()
             . '<input type="hidden" name="idTest" value="' . $idTest . '" />'
             . '<input type="hidden" name="back_url" value="' . $back_coded . '" />'
-            . Form::getFilefield($lang->def('_FILE'), 'import_file', 'import_file')
-            . Form::getRadioSet($lang->def('_TYPE'), 'file_format', 'file_format', array_flip($supported_format), 0)
-            . Form::getCheckboxSet(null, 'autocreate_categories', 'autocreate_categories', [$lang->def('_AUTOCREATE_CATEGORIES')], false)
-            . Form::getTextfield(Lang::t('_LANG_CHARSET', 'admin_lang'), 'file_encode', 'file_encode', 255, 'utf-8')
-            . Form::closeElementSpace()
+            . $form->getFilefield($lang->def('_FILE'), 'import_file', 'import_file')
+            . $form->getRadioSet($lang->def('_TYPE'), 'file_format', 'file_format', array_flip($supported_format), 0)
+            . $form->getCheckboxSet(null, 'autocreate_categories', 'autocreate_categories', [$lang->def('_AUTOCREATE_CATEGORIES')], false)
+            . $form->getTextfield(Lang::t('_LANG_CHARSET', 'admin_lang'), 'file_encode', 'file_encode', 255, 'utf-8')
+            . $form->closeElementSpace()
 
-            . Form::openButtonSpace()
-            . Form::getButton('save', 'save', $lang->def('_IMPORT'))
-            . Form::getButton('undo', 'undo', $lang->def('_UNDO'))
-            . Form::closeButtonSpace()
-            . Form::closeForm()
+            . $form->openButtonSpace()
+            . $form->getButton('save', 'save', $lang->def('_IMPORT'))
+            . $form->getButton('undo', 'undo', $lang->def('_UNDO'))
+            . $form->closeButtonSpace()
+            . $form->closeForm()
 
             . '</div>',
         'content'
@@ -1994,13 +1991,15 @@ function importquest()
 function doimportquest()
 {
     checkPerm('view', false, 'storage');
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
     $back_coded = htmlentities(urlencode($back_url));
-
-    require_once _lms_ . '/lib/lib.quest_bank.php';
+    if (isset($_REQUEST['undo'])) {
+        Util::jump_to('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $back_coded);
+    }
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.quest_bank.php');
 
     $qb_man = new QuestBankMan();
 
@@ -2042,13 +2041,13 @@ function doimportquest()
 function exportquest()
 {
     checkPerm('view', false, 'storage');
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
     $back_coded = htmlentities(urlencode($back_url));
 
-    require_once _lms_ . '/lib/lib.quest_bank.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.quest_bank.php');
     $qb_man = new QuestBankMan();
 
     $file_format = FormaLms\lib\Get::req('export_quest_select', DOTY_INT, 0);
@@ -2066,29 +2065,29 @@ function exportquest()
 
     $quest_export = $qb_man->export_quest($quests, $file_format);
 
-    require_once _base_ . '/lib/lib.download.php';
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.download.php');
     sendStrAsFile($quest_export, 'export_' . date('Y-m-d') . '.txt');
 }
 
 function exportquestqb()
 {
     checkPerm('view', false, 'storage');
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
     $back_coded = htmlentities(urlencode($back_url));
 
-    require_once _base_ . '/lib/lib.form.php';
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
 
     $form = new Form();
-    require_once _lms_ . '/lib/lib.quest_bank.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.quest_bank.php');
     $qb_man = new QuestBankMan();
     $supported_format = $qb_man->supported_format();
 
     unset($supported_format[-1]);
 
-    require_once _lms_ . '/lib/lib.questcategory.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.questcategory.php');
     $quest_categories = [
         0 => $lang->def('_NONE'),
     ];
@@ -2104,20 +2103,20 @@ function exportquestqb()
         getTitleArea($title, 'quest_bank')
             . '<div class="std_block">'
 
-            . Form::openForm('import_form', 'index.php?modname=test&op=doexportquestqb', false, false, 'multipart/form-data')
+            . $form->openForm('import_form', 'index.php?modname=test&op=doexportquestqb', false, false, 'multipart/form-data')
 
-            . Form::openElementSpace()
+            . $form->openElementSpace()
             . '<input type="hidden" name="idTest" value="' . $idTest . '" />'
             . '<input type="hidden" name="back_url" value="' . $back_coded . '" />'
             . $lang->def('_EXPORT_TO_QUESTION_BANK')
-            //.Form::getDropdown($lang->def('_QUEST_CATEGORY'), 'quest_category', 'quest_category', $quest_categories)
-            . Form::closeElementSpace()
+            //.$form->getDropdown($lang->def('_QUEST_CATEGORY'), 'quest_category', 'quest_category', $quest_categories)
+            . $form->closeElementSpace()
 
-            . Form::openButtonSpace()
-            . Form::getButton('save', 'save', $lang->def('_EXPORT'))
-            . Form::getButton('undo', 'undo', $lang->def('_UNDO'))
-            . Form::closeButtonSpace()
-            . Form::closeForm()
+            . $form->openButtonSpace()
+            . $form->getButton('save', 'save', $lang->def('_EXPORT'))
+            . $form->getButton('undo', 'undo', $lang->def('_UNDO'))
+            . $form->closeButtonSpace()
+            . $form->closeForm()
 
             . '</div>',
         'content'
@@ -2126,9 +2125,9 @@ function exportquestqb()
 
 function doexportquestqb()
 {
-    require_once _lms_ . '/lib/lib.quest_bank.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.quest_bank.php');
 
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
     $back_url = urldecode(importVar('back_url'));
     $back_coded = htmlentities(urlencode($back_url));
     $qb_man = new QuestBankMan();
@@ -2155,7 +2154,7 @@ function doexportquestqb()
                         WHERE q.idQuest IN (' . implode(',', $quest_selection) . ') AND q.type_quest = t.type_quest');
 
         while (list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest)) {
-            require_once Forma::inc(_lms_ . '/modules/question/' . $type_file);
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/' . $type_file);
             $quest_obj = new $type_class($idQuest);
             $new_id = $quest_obj->copy(0);
         }
@@ -2177,7 +2176,7 @@ function _getTestMaxScore($idTest)
 
     $max_score = 0;
     while (list($idQuest, $type_quest, $type_file, $type_class, $title_quest, $difficult) = sql_fetch_row($re_quest)) {
-        require_once Forma::inc(_lms_ . '/modules/question/' . $type_file);
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/' . $type_file);
         $quest_obj = eval("return new $type_class( $idQuest );");
         $max_score += $quest_obj->getMaxScore();
     }
@@ -2209,8 +2208,8 @@ function feedbackman()
     checkPerm('view', false, 'storage');
     $res = '';
 
-    require_once _lms_ . '/lib/lib.questcategory.php';
-    require_once _lms_ . '/lib/lib.assessment_rule.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.questcategory.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.assessment_rule.php');
 
     $id_test = FormaLms\lib\Get::gReq('idTest', DOTY_INT, 0);
     $back_url = urldecode(FormaLms\lib\Get::gReq('back_url', DOTY_STRING));
@@ -2288,7 +2287,7 @@ function feedbackman()
     $res .= getBackUi($back_link_url, Lang::t('_BACK'))
         . '</div>';
 
-    require_once _base_ . '/lib/lib.dialog.php';
+    require_once \FormaLms\lib\Forma::inc( _base_ . '/lib/lib.dialog.php');
     setupHrefDialogBox('a[id^=del_rule_]');
 
     $GLOBALS['page']->add($res, 'content');
@@ -2298,10 +2297,10 @@ function coursereportMan()
 {
     checkPerm('view', false, 'storage');
 
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
-    require_once _base_ . '/lib/lib.form.php';
-    require_once _base_ . '/lib/lib.json.php';
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.json.php');
 
     $idTest = importVar('idTest', true, 0);
 
@@ -2338,7 +2337,7 @@ function coursereportMan()
 
 function updatecoursereport()
 {
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -2358,8 +2357,8 @@ function addfbkrule()
     checkPerm('view', false, 'storage');
     $res = '';
 
-    require_once _lms_ . '/lib/lib.questcategory.php';
-    require_once _lms_ . '/lib/lib.assessment_rule.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.questcategory.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.assessment_rule.php');
 
     $id_test = FormaLms\lib\Get::gReq('idTest', DOTY_INT, 0);
     $cat_id = FormaLms\lib\Get::gReq('cat_id', DOTY_INT, 0);
@@ -2405,8 +2404,8 @@ function editfbkrule()
     checkPerm('view', false, 'storage');
     $res = '';
 
-    require_once _lms_ . '/lib/lib.questcategory.php';
-    require_once _lms_ . '/lib/lib.assessment_rule.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.questcategory.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.assessment_rule.php');
 
     $rule_id = FormaLms\lib\Get::gReq('item_id', DOTY_INT, 0);
     $id_test = FormaLms\lib\Get::gReq('idTest', DOTY_INT, 0);
@@ -2449,8 +2448,8 @@ function delfbkrule()
     checkPerm('view', false, 'storage');
     $res = '';
 
-    require_once _lms_ . '/lib/lib.questcategory.php';
-    require_once _lms_ . '/lib/lib.assessment_rule.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.questcategory.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.assessment_rule.php');
 
     $rule_id = FormaLms\lib\Get::gReq('item_id', DOTY_INT, 0);
     $id_test = FormaLms\lib\Get::gReq('idTest', DOTY_INT, 0);
@@ -2475,7 +2474,7 @@ if (isset($_REQUEST['import_quest'])) {
 if (isset($_REQUEST['export_quest'])) {
     $GLOBALS['op'] = 'exportquest';
 }
-if ($_REQUEST['export_quest_select'] == 5) {
+if (array_key_exists('export_quest_select', $_REQUEST) && $_REQUEST['export_quest_select'] == 5) {
     $GLOBALS['op'] = 'exportquestqb';
 }
 
@@ -2491,7 +2490,7 @@ switch ($GLOBALS['op']) {
         break;
     case 'uptest':
             $idTest = importVar('idTest', true, 0);
-            $db = DbConn::getInstance();
+            $db = \FormaLms\db\DbConn::getInstance();
             $res = $db->query("SELECT obj_type FROM %lms_test WHERE idTest = '" . (int) $idTest . "'");
             $test_type = $db->fetch_row($res);
             $object_test = createLO($test_type[0], $idTest);
@@ -2514,7 +2513,7 @@ switch ($GLOBALS['op']) {
                 $back_url = importVar('back_url');
             }
             $test_type = importVar('test_type', false, 'test');
-            $db = DbConn::getInstance();
+            $db = \FormaLms\db\DbConn::getInstance();
             $res = $db->query("SELECT obj_type FROM %lms_test WHERE idTest = '" . (int) $idTest . "'");
             $test_type = $db->fetch_row($res);
             $object_test = createLO($test_type[0], $idTest);

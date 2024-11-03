@@ -15,7 +15,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class Man_Advice
 {
-    public function getCountUnreaded($id_user, $courses, &$last_access)
+    public static function getCountUnreaded($id_user, $courses, &$last_access)
     {
         if (empty($courses)) {
             return [];
@@ -62,7 +62,7 @@ class Man_Advice
             return false;
         }
 
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
 
         $db->start_transaction();
 
@@ -78,7 +78,7 @@ class Man_Advice
         if (!empty($arr_id_advice)) {
             $query = 'DELETE FROM %lms_adviceuser WHERE idAdvice IN (' . implode(',', $arr_id_advice) . ')';
             $res = $db->query($query);
-            if (!res) {
+            if (!$res) {
                 $db->rollback();
 
                 return false;

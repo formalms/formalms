@@ -36,14 +36,14 @@ $rel_action_bottom = '';
 
 if ($permissions['mod']) {
     $rel_action_over = '<a id="sel_users_over" class="ico-wt-sprite subs_add" title="' . Lang::t('_ASSIGN_USERS', 'standard') . '" '
-        . 'href="index.php?r=adm/functionalroles/sel_users&id_fncrole=' . (int) $id_fncrole . '">'
+        . 'href="index.php?r=adm/userselector/show&instance=role&id=' . (int) $id_fncrole . '&tab_filters[]=user&tab_filters[]=org&tab_filters[]=group">'
         . '<span>' . Lang::t('_ASSIGN_USERS', 'standard') . '</span></a>'
         . '<a id="del_users_over" class="ico-wt-sprite subs_del" '
         . 'href="ajax.adm_server.php?r=adm/functionalroles/del_users&id_fncrole=' . (int) $id_fncrole . '">'
         . '<span>' . Lang::t('_DEL_SELECTED', 'admin_directory') . '</span></a>';
 
     $rel_action_bottom = '<a id="sel_users_bottom" class="ico-wt-sprite subs_add" title="' . Lang::t('_ASSIGN_USERS', 'standard') . '" '
-        . 'href="index.php?r=adm/functionalroles/sel_users&id_fncrole=' . (int) $id_fncrole . '">'
+        . 'href="index.php?r=adm/userselector/show&instance=role&id=' . (int) $id_fncrole . '&tab_filters[]=user&tab_filters[]=org&tab_filters[]=group">'
         . '<span>' . Lang::t('_ASSIGN_USERS', 'standard') . '</span></a>'
         . '<a id="del_users_bottom" class="ico-wt-sprite subs_del" '
         . 'href="ajax.adm_server.php?r=adm/functionalroles/del_users&id_fncrole=' . (int) $id_fncrole . '">'

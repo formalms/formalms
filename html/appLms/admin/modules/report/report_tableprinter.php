@@ -29,7 +29,7 @@ class ReportTablePrinter
     public $rowCounter;
     public $overflow;
 
-    public function ReportTablePrinter($type = _HTML, $overflow = false)
+    public function __construct($type = _HTML, $overflow = false)
     {
         $this->type = $type;
 
@@ -69,7 +69,7 @@ class ReportTablePrinter
 
     public function addReportHeader()
     {
-        $lang = &DoceboLanguage::createInstance('report', 'framework');
+        $lang = FormaLanguage::createInstance('report', 'framework');
         $date = date('d/m/Y h:i:s');
         $temp = $lang->def('_CREATION_DATE');
         $content_html = '<b>' . $temp . '</b>: ' . $date;

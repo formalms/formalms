@@ -109,3 +109,39 @@ copy and rename `/test/behat/behat_config.yml.dist` and change `base_url` to you
   * Dispatched before the user-selector widget is rendered.
   * Event object can contains JS scripts to prepend to the default one. Useful to introduce custom logic into the user-selector widget.
 
+
+# DOCTRINE MIGRATIONS
+### Command is available from the project root folder `html`
+
+#### `php bin/doctrine-migrations`
+
+* Available commands:
+  * `completion`                        Dump the shell completion script
+  * `help`                              Display help for a command
+  * `list`                              List commands
+* migrations
+  * `migrations:current`                [current] Outputs the current version
+  * `migrations:diff`                   [diff] Generate a migration by comparing your current database to your mapping information.
+  * `migrations:dump-schema`            [dump-schema] Dump the schema for your database to a migration.
+  * `migrations:execute`                [execute] Execute one or more migration versions up or down manually.
+  * `migrations:generate`               [generate] Generate a blank migration class.
+  * `migrations:latest`                 [latest] Outputs the latest version
+  * `migrations:list`                   [list-migrations] Display a list of all available migrations and their status.
+  * `migrations:migrate`                [migrate] Execute a migration to a specified version or the latest available version.
+  * `migrations:rollup`                 [rollup] Rollup migrations by deleting all tracked versions and insert the one version that exists.
+  * `migrations:status`                 [status] View the status of a set of migrations.
+  * `migrations:sync-metadata-storage`  [sync-metadata-storage] Ensures that the metadata storage is at the latest version.
+  * `migrations:up-to-date`             [up-to-date] Tells you if your schema is up-to-date.
+  * `migrations:version`                [version] Manually add and delete migration versions from the version table.
+
+
+
+
+# UPGRADE
+* in the up method of the migration before or after the queries insert
+* `\Events::trigger('platform.upgrade', [_upgradeclass_ => formatUpgradeClass(__CLASS__, "pre")]);`
+* `\Events::trigger('platform.upgrade', [_upgradeclass_ => formatUpgradeClass(__CLASS__, "post")]);`
+* To set params for the event
+* `\Events::trigger('platform.upgrade', [_upgradeclass_ => formatUpgradeClass(__CLASS__, "pre"), "params" =>["arg1"=> "val1",...."argN" => "valN"]]);`
+
+

@@ -26,7 +26,7 @@ class AdminrulesAdmController extends AdmController
 
         $this->model = new AdminrulesAdm();
         $this->json = new Services_JSON();
-        $this->acl_man = &Docebo::user()->getAclManager();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();
     }
 
     public function show()

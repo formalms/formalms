@@ -1,4 +1,3 @@
-
 // course-box scss variables
 $course-box-border: 2px;
 
@@ -18,17 +17,17 @@ $course-box-border: 2px;
   border-radius: $border-radius;
   font-family: $font;
   overflow: hidden;
-  border: solid $course-box-border var(--color-0-070);
+  border: solid $course-box-border var(--color-grey);
   transition:
     // transform 0.2s ease 0s,
-    box-shadow 0.3s ease 0s
-  ;
+    box-shadow 0.3s ease 0s;
   cursor: default;
   // @include breakpoint($tablet) {
   //   max-width: 404px;
   // }
 }
-:is(.course-box--disabled,.course-box--disabled *) {
+
+:is(.course-box--disabled, .course-box--disabled *) {
   filter: grayscale(100%);
   pointer-events: none;
   opacity: 0.8;
@@ -36,18 +35,19 @@ $course-box-border: 2px;
 }
 
 .course-box:hover {
-  box-shadow: var(--color-0-070) 5px 5px 0 0;
-  // transform: scale(1.01,1.01);
-  // border: $course-box-border solid var(--color-0-250);
-  // border-bottom: $course-box-border solid var(--color-1-550);
-  // border-right: $course-box-border solid var(--color-1-550);
+  box-shadow: var(--color-grey) 5px 5px 0 0;
+  // transform: scale(1.01, 1.01);
+  // border: $course-box-border solid var(--color-grey);
+  // border-bottom: $course-box-border solid var(--color-primary);
+  // border-right: $course-box-border solid var(--color-primary);
+
   .course-box__cover {
     background-position: 55% 55%;
     transition: background-position 300ms ease-in-out;
   }
 }
 
-.course-box > * {
+.course-box>* {
   width: 100%;
   overflow: hidden;
   position: relative;
@@ -64,15 +64,15 @@ $course-box-border: 2px;
   top: 4px;
   left: 4px;
   height: 25px;
-  background: rgba(255,255,255,0.2);
+  background: rgba(255, 255, 255, 0.2);
   border-radius: 100vh;
-  padding: 3px 0;
+  padding: 3px 2px;
 
   .course-box__icon {
     position: relative;
     flex: 0 0 auto;
     display: flex;
-    width: 24px;
+    width: 20px;
     height: auto;
     align-items: center;
     justify-content: center;
@@ -88,12 +88,16 @@ $course-box-border: 2px;
       height: 100%;
       left: 0;
       top: 0;
-      border-radius: 50%;
+      //border-radius: 50%;
+      background-color: var(--color-grey-04);
+      -webkit-mask-size: contain;
+      -webkit-mask-repeat: no-repeat;
+
       background: {
         position: center;
         repeat: no-repeat;
         size: contain;
-        // color: var(--color-0-000);
+        color: var(--color-white);
       }
     }
   }
@@ -111,21 +115,21 @@ $course-box-border: 2px;
 
   .course-box__options {
     margin: 0 !important;
-    
+
     .dropdown-toggle {
       $dropdownToggleSize: 19px;
       width: $dropdownToggleSize;
       height: $dropdownToggleSize;
       display: grid;
       place-content: center;
-      color: var(--color-0-400);
+      color: var(--color-grey-03);
       cursor: pointer;
       z-index: 1000;
       border: 1px solid red;
       border-radius: 50%;
       background: white;
       padding: 10px;
-      border: 1px solid var(--color-0-250);
+      border: 1px solid var(--color-grey);
 
       &:before {
         content: "";
@@ -134,15 +138,15 @@ $course-box-border: 2px;
         position: absolute;
         top: 0;
         left: 0;
-        // border: solid 1px var(--color-0-400);
+        // border: solid 1px var(--color-grey-03);
         // border-radius: 50%;
       }
 
       &:hover {
-        color: var(--color-3);
+        color: var(--color-primary);
 
         // &:before {
-        //   border-color: var(--color-3);
+        //   border-color: var(--color-primary);
         // }
       }
     }
@@ -151,7 +155,7 @@ $course-box-border: 2px;
       padding: 3px 0;
       top: calc(100% + 1px);
       right: 0;
-      border: solid 1px var(--color-0-250);
+      border: solid 1px var(--color-grey);
       box-shadow: none;
       z-index: 1000;
       border-radius: $border-radius;
@@ -159,13 +163,13 @@ $course-box-border: 2px;
       a {
         font-size: 10px;
         text-transform: uppercase;
-        color: var(--color-3);
+        color: var(--color-primary);
 
         &:hover,
         &:focus,
         &:active {
           background: transparent;
-          color: var(--color-1-550);
+          color: var(--color-primary);
         }
       }
     }
@@ -177,11 +181,12 @@ $course-box-border: 2px;
   padding: 4px 10px 3px;
   top: 116px;
   left: 5px;
-  background: rgba(255,255,255,0.8);
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--color-grey-04);
   border-radius: 100vh;
   font-weight: 600;
   text-transform: uppercase;
-  font-size: 9px;
+  font-size: 12px;
   line-height: 9px;
   width: max-content;
 }
@@ -189,13 +194,16 @@ $course-box-border: 2px;
 .course-box__cover {
   position: relative;
   height: 140px;
+
   background: {
     image: url(images/course-box/course-box-bg.png);
     repeat: no-repeat;
   }
+
   background-position: 50% 50%;
   background-size: cover;
   transition: background-position 300ms ease-in-out;
+
 }
 
 .course-box__title {
@@ -211,8 +219,8 @@ $course-box-border: 2px;
 
 .course-box__description {
   padding: 0 9px 0 9px;
-  color: var(--color-0-600);
-  font-size: 11px;
+  color: var(--color-grey-04);
+  font-size: 12px;
   line-height: 1.3em;
   overflow: hidden;
   height: 48px;
@@ -221,24 +229,26 @@ $course-box-border: 2px;
 
 .course-box__closingdate {
   width: 100%;
-  font-size: 9px;
+  font-size: 12px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   padding-left: 9px;
-  background-color: var(--color-0-050) !important;
+  background-color: var(--color-grey) !important;
 
- .course-box__closingdate__text {
-   display: block;
-   &:after {
-    content: ': ';
+  .course-box__closingdate__text {
+    display: block;
+
+    &:after {
+      content: ': ';
+    }
   }
- }
- .course-box__closingdate__value {
-   display: block;
-   font-weight: bold;
-   padding-right: 0.3rem;
- }
+
+  .course-box__closingdate__value {
+    display: block;
+    font-weight: bold;
+    padding-right: 0.3rem;
+  }
 }
 
 .course-box__extrainformation {
@@ -246,33 +256,41 @@ $course-box-border: 2px;
   // background: #eee;
   // min-height: 31px;
   // padding-left: 9px;
-  font-size: 9px;
+  font-size: 12px;
   // background-color: plum;
   display: flex;
   align-items: center;
-  & > * {
+
+  &>* {
     display: inline-block;
   }
+
   .course-box__next {
     flex: 1 0 61%;
     padding-left: 6px;
+
     .course-box__next__text {
       display: block;
+
       &::after {
         content: ': ';
       }
     }
+
     .course-box__next__value {
       display: block;
       font-weight: bold;
     }
   }
+
   .course-box__allDates {
     flex: 1 0 39%;
     padding-right: 1.4rem;
+
     a {
-      color: var(--color-1-550);
+      color: var(--color-primary);
       text-decoration: none;
+
       &:hover {
         text-decoration: underline;
       }
@@ -294,38 +312,43 @@ $course-box-border: 2px;
     // max-height: 100%;
     // line-height: 100%;
     // font-size: 14px;   
-    background: var(--color-3);
+    background: var(--color-primary);
     margin: auto 0 0 auto;
     position: relative;
     border-bottom-right-radius: 0;
+
     &::before {
       position: absolute;
       content: '';
-      left: -20px;
+      left: -21px;
       top: 0;
       bottom: 0;
       width: 21px;
-      background-color: var(--color-3);
+      height: 41px;
+      background-color: var(--color-primary);
       clip-path: polygon(100% 0, 105% 100%, 0 100%);
       transition: all 0.4s ease 0s;
+      border-width: 1px 0 1px 1px;
+      border-style: solid;
+      border-color: var(--color-primary);
     }
-    &:hover {
-      background: var(--color-1-550);
-      color: var(--color-0-000);
+
+    &:hover, &:focus-visible {
+      background: var(--color-primary) !important;
+      color: var(--color-white) !important;
+
       .forma-button__label:after {
         animation-duration: 400ms;
         animation-name: formaButtonLabelAfter;
         animation-iteration-count: infinite;
         animation-direction: alternate;
-      }
-      &::before {
-        background: var(--color-1-550);
-      }
+      } 
     }
 
-  .forma-button__label {
-    left: -1rem;
-  }
+
+    .forma-button__label {
+      left: -1rem;
+    }
 
 
     .course-box__modal__footer & {
@@ -333,7 +356,7 @@ $course-box-border: 2px;
       min-width: 140px;
       max-width: 100%;
       float: right;
-      background-color: var(--color-0-250);
+      background-color: var(--color-grey);
     }
 
     &.forma-button--disabled {
@@ -341,7 +364,7 @@ $course-box-border: 2px;
       font-size: .8em !important;
       font-style: italic;
     }
-  
+
   }
 }
 
@@ -360,9 +383,9 @@ div {
     padding-left: 40px;
     line-height: 50px;
     float: left;
-    color: var(--color-0-400);
+    color: var(--color-grey-03);
     font-size: 12px;
-    border: 1px solid var(--color-0-250);
+    border: 1px solid var(--color-grey);
     border-radius: 5px;
 
     &:before {
@@ -372,6 +395,7 @@ div {
       left: 9px;
       width: 20px;
       height: 20px;
+
       background: {
         position: center;
         repeat: no-repeat;
@@ -385,13 +409,13 @@ div {
   }
 
   .course-box__date-box--end {
-    color: var(--color-6);
-    border-color: var(--color-6-500);
+    color: var(--color-secondary);
+    border-color: var(--color-secondary);
   }
 
   .course-box__date-box--no-date {
-    color: var(--color-0-250);
-    border-color: var(--color-0-250);
+    color: var(--color-grey);
+    border-color: var(--color-grey);
 
     &:before {
       left: 50%;
@@ -399,16 +423,16 @@ div {
     }
   }
 
-  i + .course-box__date-box {
+  i+.course-box__date-box {
     margin-right: 0;
     margin-bottom: 20px;
   }
 
-  .course-box__date-box + i {
+  .course-box__date-box+i {
     float: left;
     margin: 0 6px;
     padding-top: 18px;
-    color: var(--color-0-400);
+    color: var(--color-grey-03);
   }
 
   .course-box__dl-course-supply,
@@ -416,7 +440,7 @@ div {
     margin-top: 5px;
     font-size: 10px;
     text-decoration: none;
-    color: var(--color-3);
+    color: var(--color-primary);
     cursor: pointer;
     transition: color 0.25s ease 0s;
 
@@ -427,7 +451,7 @@ div {
 
     &:hover {
       text-decoration: underline;
-      color: var(--color-1-550);
+      color: var(--color-primary);
     }
   }
 
@@ -443,9 +467,10 @@ div {
     top: 0;
     left: 0;
     z-index: -999;
-    background-color: var(--color-0-000);
+    background-color: var(--color-white);
     opacity: 0;
     visibility: hidden;
+
     transition: {
       property: z-index, opacity, visibility;
       duration: 0s, 0.25s;
@@ -460,7 +485,7 @@ div {
       top: 50%;
       left: calc(50% - 236px);
       transform: translateY(-50%);
-      border: solid 1px var(--color-0-400);
+      border: solid 1px var(--color-grey-03);
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
@@ -487,10 +512,10 @@ div {
   }
 
   .course-box__modal__entry {
-    border-top: solid 1px var(--color-0-250);
+    border-top: solid 1px var(--color-grey);
 
     &:first-child {
-      border-top-color: var(--color-3);
+      border-top-color: var(--color-primary);
     }
 
     &:nth-child(n + 2) {
@@ -500,14 +525,14 @@ div {
     &:last-child {
       padding-bottom: 35px;
       margin-bottom: 45px;
-      border-bottom: solid 1px var(--color-0-250);
+      border-bottom: solid 1px var(--color-grey);
     }
   }
 
   .course-box__modal__title {
     font-size: 18px;
     line-height: 20px;
-    color: var(--color-0-400);
+    color: var(--color-grey-03);
 
     .course-box__modal__header & {
       max-width: calc(100% - 90px);
@@ -521,7 +546,7 @@ div {
     }
 
     .course-box__modal__entry:first-child & {
-      color: var(--color-1-550);
+      color: var(--color-primary);
     }
   }
 
@@ -529,7 +554,7 @@ div {
     table-layout: fixed;
     width: 100%;
     font-size: 14px;
-    color: var(--color-0-400);
+    color: var(--color-grey-03);
 
     @include breakpoint(480px) {
       table-layout: auto;
@@ -577,20 +602,9 @@ div {
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.course-box > strong {
+  padding-left: 6px!important;
+}
 
 
 
@@ -763,6 +777,7 @@ div {
   //
   // Style guide: 3.2
 }
+
 .course-box--OLD-COMMENTED-CSS {
   display: none;
   // .course-box__item--half {

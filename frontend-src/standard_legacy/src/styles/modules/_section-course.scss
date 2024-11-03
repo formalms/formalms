@@ -1,0 +1,312 @@
+// Section Course
+//
+// These are the restyled course section<br />
+//
+// Style guide: 3
+
+// Course
+//
+// This is the restyled course section<br />
+// <strong>NB: The 'style' attributes are just for this representation only, when implementing
+// be sure to delete them.</strong><br />
+//
+// Markup:
+//  <div class="row section-coourse">
+//    <div class="section-coourse__header col-lg-12">
+//      <div class="row">
+//        <div class="col-sm-3 text-center">
+//          <div class="row">
+//            <img src="path/to/img" class="img-responsive section-coourse__img">
+//          </div>
+//        </div>
+//        <div class="col-sm-9">
+//        <h1 class="section-coourse__title">Lorem ipsum dolor sit amet</h1>
+//          <div class="section-coourse__progress-cotainer">
+//            <div class="progress section-coourse__progress">
+//              <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">60%</div>
+//      <span class="glyphicon glyphicon-signal pull-right" aria-hidden="true"></span>
+//        </div>
+//      </div>
+//    </div>
+//  </div>
+//</div>
+//  <div class="clearfix"></div>
+//  <div class="section-coourse__menu">
+//    <div class="col-sm-3 text-center">
+//      <div class="row">
+//        <div class="col-xs-12">
+//            <div class="btn-group btn-flex">
+//                <button type="button" class="btn btn-default">Menu</button>
+//                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+//                <span class="caret"></span>
+//                <span class="sr-only">Toggle Dropdown</span>
+//                </button>
+//              <ul class="dropdown-menu">
+//                <li><a href="#" data-id="menu_id"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span> <b>Lorem ipsum dolor</b></a></li>
+//              </ul>
+//            </div>
+//        </div>
+//    </div>
+//  </div>
+//
+//   <div class='col-md-9 section-coourse__menu-horizontal'>
+//    <div class="row">
+//      <div class="prv pull-left col-xs-1 text-center"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></div>
+//      <ul class="section-coourse__menu-slider col-xs-10">
+//        <li><a href="link">Lorem ipsum dolor sit amet</a></li>
+//        <li><a href="link">Lorem ipsum dolor sit amet</a></li>
+//      </ul>
+//        <div class="nxt pull-right col-xs-1 text-center"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></div>
+//        </div>
+//      </div>
+//     <div class="clearfix"></div>
+//    </div>
+//  </div>
+//
+// Style guide: 3.1
+
+.section-coourse__header,
+.section-coourse__menu {
+  padding: 0;
+
+  @include breakpoint($tablet) {
+    padding: 0 15px;
+  }
+}
+
+.section-coourse__header {
+  display: inline-block;
+
+  @include breakpoint($tablet) {
+    margin-top: 67px;
+  }
+}
+
+.section-coourse__img {
+  display: inline-block;
+  padding: 2px;
+  border: 1px solid var(--color-grey-03)04;
+
+  @include breakpoint($ipad) {
+    max-width: 70%;
+    margin: 5px 25px 25px 0;
+  }
+}
+
+.section-coourse__title {
+  padding-top: 30px;
+  color: var(--color-primary);
+  font-weight: bold;
+
+  @include breakpoint($tablet) {
+    padding-top: 0;
+  }
+}
+
+.section-coourse__menu {
+  overflow: visible;
+  border-bottom: none;
+  background-color: var(--color-grey);
+  ul li a {
+    padding: 2px;
+  }
+  ul li a:hover {
+    background-color: var(--color-grey);
+    color: var(--color-primary);
+  }
+  .prv,
+  .nxt {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    padding: 5px;
+  }
+  ul li a.active {
+    color: var(--color-primary);
+  }
+
+  @include breakpoint($tablet) {
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+  }
+}
+
+.section-coourse__dropdown {
+  padding: {
+    top: 20px;
+    bottom: 20px;
+  }
+
+  @include breakpoint($tablet) {
+    background-color: transparent;
+  }
+}
+
+.section-coourse__menu-slider {
+  float: left;
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  list-style: none;
+  white-space: nowrap;
+  padding: 0;
+  li {
+    vertical-align: top;
+    margin: 0 5px;
+    display: inline-block;
+    *display: inline;
+    /*IE7*/
+    zoom: 1;
+    a {
+      float: left;
+      font-size: 14px;
+      line-height: 26px;
+    }
+  }
+}
+
+.section-coourse__progress-container {
+  padding: 4px;
+  border: 1px solid var(--color-grey);
+  border-radius: 5px;
+  margin-top: 30px;
+
+  @include breakpoint($tablet) {
+    max-width: 250px;
+  }
+}
+
+
+.section-coourse__progress {
+  margin-bottom: 0;
+  height: 25px;
+  background: transparent;
+  box-shadow: none;
+
+  .progress-bar {
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 25px;
+    text-align: left;
+    color: inherit;
+
+    span {
+      padding-left: 10px;
+      color: var(--color-white);
+    }
+
+    &[aria-valuenow='0'] span {
+      color: inherit;
+    }
+
+  }
+  .glyphicon {
+    margin: 5px 8px 0 0;
+    cursor: pointer;
+  }
+}
+
+.progress-bar-warning {
+  background-image: -webkit-linear-gradient(top,var(--color-secondary) 0,var(--color-secondary) 100%);
+  background-image: -o-linear-gradient(top,var(--color-secondary) 0,var(--color-secondary) 100%);
+  background-image: -webkit-gradient(linear,left top,left bottom,from(var(--color-secondary)),to(var(--color-secondary)));
+  background-image: linear-gradient(to bottom,var(--color-secondary) 0,var(--color-secondary) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff0ad4e', endColorstr='#ffec971f', GradientType=0);
+  background-repeat: repeat-x;
+
+  span {
+    color: var(--color-secondary-text) !important;
+  }
+}
+
+.progress-bar-warning--black {
+  span {
+    color: var(--color-black) !important;
+  }
+}
+
+.section-coourse__menu-horizontal {
+  margin: 28px 0;
+}
+
+.section-coourse__aside {
+  padding: {
+    top: 20px;
+    bottom: 20px;
+  }
+  position: relative;
+  background-color: var(--color-grey);
+
+  &:before {
+    width: calc(100% - 60px);
+    height: 2px;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 30px;
+    background-color: var(--color-grey);
+  }
+}
+
+.slider-menu {
+  .section-coourse__menu-horizontal & {
+    border-bottom: solid 1px var(--color-grey);
+  }
+}
+
+.forma-dropdown__selected {
+  &:hover {
+    background-color: var(--color-primary);
+    color: var(--color-primary-text);
+    &:before {
+      background: var(--color-primary-text) !important;
+    }
+  }
+  &:before {
+    background: var(--color-grey-04) !important;
+  }
+}
+
+#course-info-boot + #yui-main-boot {
+  .page-header {
+    h1 {
+      color: var(--color-primary);
+      font-family: $font;
+      font-weight: bold;
+      font-size: 18px;
+      text-transform: uppercase;
+    }
+  }
+}
+
+.section-coourse {
+  .icon--coourse-menu-gestione {
+    display: none;
+
+    @include breakpoint($tablet) {
+      display: block;
+    }
+  }
+}
+
+
+/**
+ FIX PROVVISORIO COME RICHIESTO NEL TASK #16149
+ */
+
+#course-info-boot + #yui-main-boot {
+  font-family: $font;
+
+  @include breakpoint($ipad) {
+    padding: 0 30px;
+  }
+
+  .page-header {
+    margin-bottom: 0;
+    display: none;
+
+    @include breakpoint($tablet) {
+      display: block;
+    }
+  }
+}

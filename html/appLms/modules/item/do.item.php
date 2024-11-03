@@ -29,7 +29,7 @@ function env_play($lobj, $options)
 
     if ($lobj->id_reference != false) {
         require_once _lms_ . '/class.module/track.item.php';
-        $ti = new Track_Item($lobj, Docebo::user()->getIdSt()); // need id_resource, id_reference, type and environment
+        $ti = new Track_Item($lobj, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()); // need id_resource, id_reference, type and environment
         $ti->setDate(date('Y-m-d H:i:s'));
         $ti->status = 'completed';
         $ti->update();
@@ -41,7 +41,7 @@ function play($idResource, $idParams, $back_url)
 {
     //if(!checkPerm('view', true, 'organization') && !checkPerm('view', true, 'storage')) die("You can't access");
     //echo ("idResource = ".$idResource."; idParams = ".$idParams."; back_url = ".$back_url);
-    list($file_title, $file) = sql_fetch_row(sql_query('SELECT title, path'
+    list($file) = sql_fetch_row(sql_query('SELECT path'
                                             . ' FROM %lms_materials_lesson'
                                             . " WHERE idLesson = '" . $idResource . "'"));
 
@@ -49,20 +49,20 @@ function play($idResource, $idParams, $back_url)
     $expFileName = explode('.', $file);
     $totPart = count($expFileName) - 1;
 
-    require_once _lms_ . '/lib/lib.param.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
     $idReference = getLOParam($idParams, 'idReference');
     // NOTE: Track only if $idReference is present
     if ($idReference !== false) {
         require_once _lms_ . '/class.module/track.item.php';
-        list($exist, $idTrack) = Track_Item::getIdTrack($idReference, getLogUserId(), $idResource, true);
+        list($exist, $idTrack) = Track_Item::getIdTrack($idReference, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $idResource, true);
         if ($exist) {
-            $ti = new Track_Item((int) $idTrack, Docebo::user()->getIdSt());
+            $ti = new Track_Item((int) $idTrack, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
             $ti->setDate(date('Y-m-d H:i:s'));
             $ti->status = 'completed';
-            $ti->update($idReference,getLogUserId());
+            $ti->update($idReference,\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         } else {
-            $ti = new Track_Item(false, Docebo::user()->getIdSt());
-            $ti->createTrack($idReference, $idTrack, getLogUserId(), date('Y-m-d H:i:s'), 'completed', 'item');
+            $ti = new Track_Item(false, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
+            $ti->createTrack($idReference, $idTrack, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), date('Y-m-d H:i:s'), 'completed', 'item');
         }
     }
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
@@ -88,32 +88,6 @@ function play($idResource, $idParams, $back_url)
         $session->save();
     }
 
-    if(strtolower($expFileName[$totPart]) === 'pdf') {
-        $id_item = FormaLms\lib\Get::req('id_item', DOTY_INT, 0);
-
-        require_once _base_ . '/lib/lib.utils.php';
-        addJs('addons/pdfobject/', 'pdfobject.min.js');
-
-        require_once Forma::inc(_base_ . '/lib/pdf/lib.pdf.php');
-        $pdf = new PDF();
-        $pdf_dimensions = $pdf->getPdfDimensions(_files_ . '/appLms/' . FormaLms\lib\Get::sett('pathlesson') . $file);
-
-        $GLOBALS['page']->add('<div id="top" class="std_block">'
-            . getBackUi(str_replace('&', '&amp;', $back_url), Lang::t('_BACK'))
-            . '<div id="pdf-canvas"></div>'
-            . '<script type="text/javascript">'
-            . 'var options = {'
-            . '    title: "' . $file_title . '",'
-            . '    pdfOpenParams: { view: "Fit" },'
-            . '    height: "' . (isset($pdf_dimensions["height"]) ? $pdf_dimensions["height"].'pt' : '100vh') . '"'
-            . '};'
-            . 'PDFObject.embed(".?modname=organization&op=custom_playitem&id_item=' . $id_item . '&embedded=1", "#pdf-canvas", options);'
-            . '</script>'
-            . '<br /><br />'
-            . getBackUi(str_replace('&', '&amp;', $back_url), Lang::t('_BACK'))
-            . '</div>', 'content');
-    } else {
-        //send file
-        sendFile('/appLms/' . FormaLms\lib\Get::sett('pathlesson'), $file, $expFileName[$totPart]);
-    }
+    //send file
+    sendFile('/appLms/' . FormaLms\lib\Get::sett('pathlesson'), $file, $expFileName[$totPart]);
 }

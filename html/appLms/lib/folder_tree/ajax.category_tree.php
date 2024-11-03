@@ -29,7 +29,7 @@ require_once _lms_ . '/lib/folder_tree/lib.category_tree.php';
 $command = FormaLms\lib\Get::req('command', DOTY_STRING, false);
 switch ($command) {
     case 'expand':
-        $lang = &DoceboLanguage::CreateInstance('course', 'lms');
+        $lang = &FormaLanguage::CreateInstance('course', 'lms');
         $node_id = FormaLms\lib\Get::req('node_id', DOTY_INT, 0);
         $initial = FormaLms\lib\Get::req('initial', DOTY_INT, 0);
 

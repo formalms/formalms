@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once Forma::inc(_lms_ . '/modules/question/class.question.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/class.question.php');
 
 class ChoiceMultiple_Question extends Question
 {
@@ -40,7 +40,7 @@ class ChoiceMultiple_Question extends Question
      */
     public function _lineAnswer($i)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = FormaLanguage::createInstance('test');
         $GLOBALS['page']->add('<tr class="line_answer">'
             . '<td rowspan="2" class=" valign_top align_center">'
             . '<label for="is_correct_' . $i . '">' . $lang->def('_TEST_CORRECT') . '</label><br /><br />'
@@ -60,9 +60,7 @@ class ChoiceMultiple_Question extends Question
                             '',
                             true)
 
-            //.'<textarea class="test_area_answer" id="answer_'.$i.'" name="answer['.$i.']" cols="25" rows="3">'
-            //.( isset($_REQUEST['answer'][$i]) ? stripslashes($_REQUEST['answer'][$i]) : '')//$lang->def('_QUEST_ANSWER')
-            //.'</textarea>'
+        
             . '</td>'
             . '<td rowspan="2" class="image">'
             //comment
@@ -103,7 +101,7 @@ class ChoiceMultiple_Question extends Question
      */
     public function _lineModAnswer($i)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = FormaLanguage::createInstance('test');
         $GLOBALS['page']->add('<tr class="line_answer">'
             . '<td rowspan="2" class=" valign_top align_center">'
             . '<label for="is_correct_' . $i . '">' . $lang->def('_TEST_CORRECT') . '</label><br /><br />', 'content');
@@ -117,8 +115,7 @@ class ChoiceMultiple_Question extends Question
             //answer
             . '<label class="access-only" for="answer_' . $i . '">' . $lang->def('_TEST_TEXT_ANSWER') . '</label>'
 
-            //.Form::getTextarea('', 'answer_'.$i, 'answer['.$i.']', ( isset($_REQUEST['answer'][$i]) ? stripslashes($_REQUEST['answer'][$i]) : ''),false,'','form_line_l','floating','textarea',true)
-
+           
             . loadHtmlEditor('',
                             'answer_' . $i,
                             'answer[' . $i . ']',
@@ -127,9 +124,7 @@ class ChoiceMultiple_Question extends Question
                             '',
                             true)
 
-            //.'<textarea class="test_area_answer" id="answer_'.$i.'" name="answer['.$i.']" cols="25" rows="3">'
-            //.( isset($_REQUEST['answer'][$i]) ? stripslashes($_REQUEST['answer'][$i]) : '')
-            //.'</textarea>'
+          
             . '</td>'
             . '<td rowspan="2" class="image">'
             //comment
@@ -171,7 +166,7 @@ class ChoiceMultiple_Question extends Question
      */
     public function create($idTest, $back_test)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = FormaLanguage::createInstance('test');
 
         require_once _base_ . '/lib/lib.form.php';
         $url_encode = htmlentities(urlencode($back_test));
@@ -301,7 +296,7 @@ class ChoiceMultiple_Question extends Question
      */
     public function edit($back_test)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = FormaLanguage::createInstance('test');
 
         require_once _base_ . '/lib/lib.form.php';
         $url_encode = htmlentities(urlencode($back_test));
@@ -585,7 +580,7 @@ class ChoiceMultiple_Question extends Question
      */
     public function play($num_quest, $shuffle_answer = false, $id_track = 0, $freeze = false, $number_time = null)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = FormaLanguage::createInstance('test');
 
         list($id_quest, $title_quest, $shuffle) = sql_fetch_row(sql_query('
 		SELECT idQuest, title_quest, shuffle 
@@ -627,12 +622,7 @@ class ChoiceMultiple_Question extends Question
             . '<div class="title_question">' . $num_quest . ') ' . $title_quest . '</div>'
             . '<div class="answer_question">';
         while (list($id_answer, $answer) = sql_fetch_row($re_answer)) {
-            // $content .= '<input type="checkbox" id="quest_'.$id_quest.'_'.$id_answer.'" '
-            // 	.'name="quest['.$id_quest.']['.$id_answer.']" value="1"'
-            // 	.( ($find_prev && isset($answer_do[$id_answer])) ? ' checked="checked"' : '' )
-            // 	.( $find_prev && $freeze ? ' disabled="disabled"' : '' ).' /> '
-            // 	.'<label class="text_answer" for="quest_'.$id_quest.'_'.$id_answer.'">'.$answer.'</label><br />';
-
+         
             // wrapping checkbox: mod by Andrea Fiadone - 10/03/2016
             $content .= '<div class="answer-item"><div class="input-wrapper input-wrapper-checkbox">'
                 . '<input type="checkbox" id="quest_' . $id_quest . '_' . $id_answer . '" '
@@ -735,9 +725,9 @@ class ChoiceMultiple_Question extends Question
      *
      * @author Fabio Pirovano (fabio@docebo.com)
      */
-    public function _updateAnswer($id_track, &$source)
+    public function updateAnswer($id_track, &$source, $numberTime = null)
     {
-        if (!$this->deleteAnswer($id_track)) {
+        if (!$this->deleteAnswer($id_track,$numberTime)) {
             return false;
         } else {
             return $this->storeAnswer($id_track, $source, false);
@@ -775,7 +765,7 @@ class ChoiceMultiple_Question extends Question
      */
     public function displayUserResult($id_track, $num_quest, $show_solution, $number_time = null)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = FormaLanguage::createInstance('test');
 
         $quest = '';
         $comment = '';
@@ -808,7 +798,7 @@ class ChoiceMultiple_Question extends Question
         }
 
         //**  recorver status test ** #11961 - Errata visualizzazione risposte corrette nei test
-        $sql = 'select status from %lms_commontrack where idUser=' . Docebo::user()->getIdSt() . ' and idTrack=' . $id_track;
+        $sql = 'select status from %lms_commontrack where idUser=' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . ' and idTrack=' . $id_track;
         list($status_test) = sql_fetch_row(sql_query($sql));
 
         $re_answer_do = sql_query($recover_answer);
@@ -871,10 +861,7 @@ class ChoiceMultiple_Question extends Question
             $score = round($score + $score_assigned, 2);
         }
 
-        // i dont understand the logic of this check
-        /*if ($res = $this->userZeroScore($id_track, $number_time)) {
-            $score = 0;
-        }*/
+   
 
         return $score;
     }

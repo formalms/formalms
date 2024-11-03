@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Domain\DomainHandler;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -20,12 +22,23 @@ function newsletter()
     //access control
     //-TP// funAdminAccess('OP');
     checkPerm('view');
+    $linkAdd = '';
+    $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
+    $course = null;
+    $idMainMenu = $request->query->has('id_main_sel') ? (int) $request->query->get('id_main_sel') : 0;
 
+    if($idMainMenu) {
+        $courseService = new \FormaLms\lib\Services\Courses\CourseService();
+
+        $course = $courseService->getCourseFromMenu($idMainMenu);
+    }
+    
+    
     require_once _base_ . '/lib/lib.form.php';
 
-    $out = &$GLOBALS['page'];
+    $out = $GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('admin_newsletter', 'framework');
+    $lang = FormaLanguage::createInstance('admin_newsletter', 'framework');
 
     YuiLib::load();
     addJs($GLOBALS['where_framework_relative'] . '/modules/newsletter/', 'newsletter.js');
@@ -47,22 +60,26 @@ function newsletter()
 
     $out->add("<div class=\"std_block\">\n");
 
-    $acl_manager = Docebo::user()->getAclManager();
-    $user_info = $acl_manager->getUser(Docebo::user()->getIdSt(), false);
+    $acl_manager = \FormaLms\lib\Forma::getAclManager();
+    $user_info = $acl_manager->getUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), false);
     $myemail = $user_info[ACL_INFO_EMAIL];
 
     if ((isset($err)) && ($err != '')) {
         $out->add("<b><span class=\"fontRed\">$err</span><br />\n");
     }
 
-    $out->add($form->openForm('newsletter_form', 'index.php?modname=newsletter&amp;op=initsend', false, false, 'multipart/form-data'));
+    if(is_array($course)) {
+        $linkAdd = '&amp;id_course='.$course['idCourse'];
+    }
+
+    $out->add($form->openForm('newsletter_form', 'index.php?modname=newsletter&amp;op=initsend'.$linkAdd, false, false, 'multipart/form-data'));
     $out->add($form->openElementSpace());
 
     $out->add($form->getTextfield($lang->def('_SENDER'), 'fromemail', 'fromemail', 255, $myemail));
     $out->add($form->getTextfield($lang->def('_SUBJECT'), 'sub', 'sub', 255, ''));
     $out->add($form->getTextarea($lang->def('_DESCRIPTION'), 'msg', 'msg', ''));
 
-    $lang_list = Docebo::langManager()->getAllLangCode();
+    $lang_list = \FormaLms\lib\Forma::langManager()->getAllLangCode();
     //array_unshift($lang_list, $lang->def("_DEFAULT"), $lang->def("_ALL"));
     $lang_list = [_ANY_LANG_CODE => $lang->def('_ALL')] + $lang_list;
 
@@ -104,9 +121,9 @@ function send_newsletter($send_id)
 
     //@set_time_limit(60*15); // 15 minutes!
 
-    $out = &$GLOBALS['page'];
+    $out = $GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('admin_newsletter', 'framework');
+    $lang = FormaLanguage::createInstance('admin_newsletter', 'framework');
 
     $out->add(getTitleArea($lang->def('_NEWSLETTER'), 'newsletter'));
 
@@ -124,7 +141,7 @@ function send_newsletter($send_id)
     $msg = str_replace('{site_base_url}', getSiteBaseUrl(), $msg);
 
     $fromemail = $info['fromemail'];
-    $sender = FormaLms\lib\Get::sett('sender_event');
+    $sender = DomainHandler::getInstance()->getMailerField('sender_mail_system');
     $file_array = $json->decode($info['file']);
 
     $attach = [];
@@ -146,7 +163,7 @@ function send_newsletter($send_id)
 
     $limit = $cycle * $ipc . ', ' . $ipc;
     $arr_st = getSendToIdst($send_id, $limit);
-    $acl_manager = Docebo::user()->getAclManager();
+    $acl_manager = \FormaLms\lib\Forma::getAclManager();
     if ((!empty($sel_lang)) && ($sel_lang != _ANY_LANG_CODE)) {
         $user_info = $acl_manager->getUsersByLanguage($sel_lang, $arr_st);
     } else { // Send to all languages
@@ -168,9 +185,9 @@ function send_newsletter($send_id)
                     // ----------------------------------------------
                 }
 
-                $mailer = FormaMailer::getInstance();
+                $mailer = DomainHandler::getInstance()->getMailer();
 
-                $mailer->SendMail($sender, $tempemail, $sub, $msg, $attach,
+                $mailer->SendMail($tempemail, $sub, $msg, $sender, $attach,
                     [MAIL_REPLYTO => $fromemail, MAIL_SENDER_ACLNAME => false]);
 
             break;
@@ -180,7 +197,7 @@ function send_newsletter($send_id)
 
                 require_once _adm_ . '/lib/lib.field.php';
 
-                $acl_man = &Docebo::user()->getACLManager();
+                $acl_man = \FormaLms\lib\Forma::getAclManager();;
                 $field_man = new FieldList();
 
                 $arr_sms_recipients = [];
@@ -258,7 +275,7 @@ function nl_pause()
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('admin_newsletter', 'framework');
+    $lang = &FormaLanguage::createInstance('admin_newsletter', 'framework');
 
     $out->add(getTitleArea($lang->def('_NEWSLETTER'), 'newsletter'));
 
@@ -286,9 +303,9 @@ function nl_sendcomplete()
 
     //-TP// funAdminAccess('OP');
 
-    $out = &$GLOBALS['page'];
+    $out = $GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('admin_newsletter', 'framework');
+    $lang = FormaLanguage::createInstance('admin_newsletter', 'framework');
 
     $out->add(getTitleArea($lang->def('_NEWSLETTER'), 'newsletter'));
 
@@ -312,7 +329,8 @@ function init_send()
 
     require_once _base_ . '/lib/lib.upload.php';
     require_once _base_ . '/lib/lib.json.php';
-
+    $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
+    $instance = 'newsletter';
     $json = new Services_JSON();
 
     $savefile = '';
@@ -334,13 +352,13 @@ function init_send()
         }
     }
 
-    $lang_list = Docebo::langManager()->getAllLangCode();
+    $lang_list = \FormaLms\lib\Forma::langManager()->getAllLangCode();
 
     $sel_lang = importVar('sel_lang');
     if ($sel_lang > 0) {
         $lang_selected = $lang_list[$sel_lang];
     } elseif ($sel_lang === 0) { // Default language
-        $lang_selected = getLanguage();
+        $lang_selected = Lang::get();
     } else {
         $lang_selected = $sel_lang;
     }
@@ -354,26 +372,34 @@ function init_send()
     $send_type = $_POST['send_type'];
 
     // ..who said spring cleanings have to be done in spring??
-    $qtxt = 'DELETE FROM ' . $GLOBALS['prefix_fw'] . '_newsletter WHERE stime < (DATE_SUB(NOW(), INTERVAL 1 DAY))';
+    $qtxt = 'DELETE FROM %adm_newsletter WHERE stime < (DATE_SUB(NOW(), INTERVAL 1 DAY))';
     $q = sql_query($qtxt);
 
-    $qtxt = 'DELETE FROM ' . $GLOBALS['prefix_fw'] . '_newsletter_sendto WHERE stime < (DATE_SUB(NOW(), INTERVAL 1 DAY))';
+    $qtxt = 'DELETE FROM %adm_newsletter_sendto WHERE stime < (DATE_SUB(NOW(), INTERVAL 1 DAY))';
     $q = sql_query($qtxt);
 
-    $qtxt = 'INSERT INTO ' . $GLOBALS['prefix_fw'] . '_newsletter (sub, msg, fromemail, language, send_type, stime, file) ';
+    $qtxt = 'INSERT INTO %adm_newsletter (sub, msg, fromemail, language, send_type, stime, file) ';
     $qtxt .= "VALUES ('" . $sub . "', '" . $msg . "', '" . $fromemail . "', '" . $lang_selected . "', '" . $send_type . "', NOW(), '" . str_replace("'", "\'", $json->encode($savefile)) . "')";
     $q = sql_query($qtxt); //echo sql_error();
 
-    $qtxt = 'SELECT LAST_INSERT_ID() as last_id FROM ' . $GLOBALS['prefix_fw'] . '_newsletter';
+    $qtxt = 'SELECT LAST_INSERT_ID() as last_id FROM %adm_newsletter';
     $q = sql_query($qtxt);
 
     $row = sql_fetch_array($q);
     $last_id = $row['last_id'];
 
-    $qtxt = 'UPDATE ' . $GLOBALS['prefix_fw'] . "_newsletter SET id_send='" . $last_id . "' WHERE id='$last_id'";
+    $qtxt = 'UPDATE %adm_newsletter SET id_send="' . $last_id . '" WHERE id="' . $last_id . '"';
     $q = sql_query($qtxt);
 
-    $url = 'index.php?modname=newsletter&amp;op=selsendto&amp;id_send=' . $last_id . '&load=1';
+    $idCourse = $request->query->has('id_course') ? (int) $request->query->get('id_course') : 0;
+
+
+    if($idCourse) {
+        $instance = 'newslettercourse';
+    }
+
+    //$url = 'index.php?modname=newsletter&amp;op=selsendto&amp;id_send=' . $last_id . '&load=1';
+    $url = 'index.php?r=adm/userselector/show&amp;showSelectAll=true&amp;instance='.  $instance . '&amp;id=' . $last_id . '&load=1';
     Util::jump_to($url);
 }
 
@@ -433,63 +459,31 @@ function selSendTo()
         $mdir->show_fncrole_selector = false;
     }
 
-    if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+    if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
         require_once _base_ . '/lib/lib.preference.php';
         $adminManager = new AdminPreference();
-        $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
-        $admin_users = Docebo::aclm()->getAllUsersFromSelection($admin_tree);
+        $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
+        $admin_users = \FormaLms\lib\Forma::getAclManager()->getAllUsersFromSelection($admin_tree);
 
         $mdir->setUserFilter('user', $admin_users);
         $mdir->setUserFilter('group', $admin_tree);
     }
 
-    $out = &$GLOBALS['page'];
+    $out = $GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('admin_newsletter', 'framework');
+    $lang = FormaLanguage::createInstance('admin_newsletter', 'framework');
 
     $back_url = 'index.php?modname=newsletter&amp;op=selsendto&amp;id_send=' . $id_send;
 
     if (isset($_POST['okselector'])) {
         $arr_selection = $mdir->getSelection($_POST);
 
-        $send_to_idst = [];
+    
 
-        foreach ($arr_selection as $idstMember) {
-            $arr = Docebo::aclm()->getGroupAllUser($idstMember);
-            if ((is_array($arr)) && (count($arr) > 0)) {
-                $send_to_idst = array_merge($arr, $send_to_idst);
-                $send_to_idst = array_unique($send_to_idst);
-            } else {
-                $send_to_idst[] = $idstMember;
-            }
+        $newsletterService = new \FormaLms\lib\Services\Newsletters\NewsletterService(); 
 
-            if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-                $send_to_idst = array_intersect($send_to_idst, $admin_users);
-            }
-        }
+        $newsletterService->setaccessList($id_send, $arr_selection);
 
-        foreach ($send_to_idst as $key => $val) {
-            $qtxt = 'INSERT INTO ' . $GLOBALS['prefix_fw'] . '_newsletter_sendto (id_send, idst, stime) ';
-            $qtxt .= "VALUES ('" . (int) $id_send . "', '" . (int) $val . "', NOW())";
-            $q = sql_query($qtxt);
-        }
-
-        $qtxt = 'SELECT language FROM ' . $GLOBALS['prefix_fw'] . "_newsletter WHERE id='" . $id_send . "'";
-        $q = sql_query($qtxt);
-
-        list($lang) = sql_fetch_row($q);
-
-        if ($lang != _ANY_LANG_CODE) {
-            $tot = count(Docebo::aclm()->getUsersIdstByLanguage($lang, $send_to_idst));
-        } else {
-            $tot = count($send_to_idst);
-        }
-
-        $qtxt = 'UPDATE ' . $GLOBALS['prefix_fw'] . "_newsletter SET tot='" . $tot . "' WHERE id='$id_send'";
-        $q = sql_query($qtxt);
-
-        $back_url = 'index.php?modname=newsletter&amp;op=summary&amp;tot=' . $tot . '&amp;id_send=' . $id_send;
-        Util::jump_to(str_replace('&amp;', '&', $back_url));
     } elseif (isset($_POST['cancelselector'])) {
         $info = get_send_info($id_send);
 
@@ -518,7 +512,7 @@ function selSendTo()
         $mdir->show_orgchart_selector = true;
         $mdir->show_orgchart_simple_selector = false;
 
-        $acl_manager = &Docebo::user()->getAclManager();
+        $acl_manager = \FormaLms\lib\Forma::getAclManager();
         if (defined('IN_LMS')) {
             $id_course = (int) \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
             $arr_idstGroup = $acl_manager->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/subscribed/');
@@ -541,9 +535,9 @@ function newsletterSummary($id_send)
 
     require_once _base_ . '/lib/lib.form.php';
 
-    $out = &$GLOBALS['page'];
+    $out = $GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('admin_newsletter', 'framework');
+    $lang = FormaLanguage::createInstance('admin_newsletter', 'framework');
 
     $tot = (int) $_GET['tot'];
     $form = new Form();

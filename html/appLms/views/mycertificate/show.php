@@ -1,6 +1,6 @@
 <?php
 
-include Forma::inc(_lib_ . '/formatable/include.php');
+include \FormaLms\lib\Forma::inc(_lib_ . '/formatable/include.php');
 
 echo getTitleArea(Lang::t('_MY_CERTIFICATE', 'certificate'));
 

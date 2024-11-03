@@ -39,7 +39,7 @@ class DynamicUserFilter
     public function __construct($id)
     {
         $this->id = $id;
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         $this->json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
     }
 
@@ -55,7 +55,7 @@ class DynamicUserFilter
 
     private function getStandardFieldsList()
     {
-        $lang = &DoceboLanguage::createInstance('standard', 'framework');
+        $lang = FormaLanguage::createInstance('standard', 'framework');
 
         $fields = [
             ['id' => _STANDARD_FIELDS_PREFIX . '_0', 'name' => addslashes(Lang::t('_USERNAME', 'standard')),         'type' => _FIELD_TYPE_TEXT, 'standard' => true],
@@ -110,10 +110,11 @@ class DynamicUserFilter
 
         $temp = [];
         foreach ($types as $key => $val) {
-            require_once Forma::inc(_adm_ . '/modules/field/' . $val['type_file']);
-            $quest_obj = eval('return new ' . $val['type_class'] . '( NULL );');
+            require_once \FormaLms\lib\Forma::include(_adm_ . '/modules/field/' , $val['type_file']);
+            $quest_obj = new $val['type_class'](null);
             $temp[] = $quest_obj->getClientClassObject();
         }
+
 
         return '[' . implode(',', $temp) . ']';
     }
@@ -152,7 +153,7 @@ class DynamicUserFilter
 
     public function get($domready = true, $tags = true)
     {
-        $lang = &DoceboLanguage::createInstance('report', 'framework');
+        $lang = FormaLanguage::createInstance('report', 'framework');
         $output = [];
 
         $js_initsel = '';
@@ -164,6 +165,7 @@ class DynamicUserFilter
             $js_initsel = '[' . implode(',', $temp) . ']';
         }
 
+        //dd($this->getFieldsList(true), $this->getFieldTypesObjects());
         $js_function = 'YAHOO.namespace("dynFilter");'
             . 'YAHOO.dynFilter = new DynamicUserFilter("' . $this->id . '", {' . "\n"
             . '		id: "' . $this->id . '",' . "\n"
@@ -193,6 +195,8 @@ class DynamicUserFilter
                 . 'YAHOO.dynFilter.loadFieldTypes(YAHOO.otherFields.getFieldTypesList());';
         }
 
+        
+       
         if ($domready) {
             $js_temp = 'YAHOO.util.Event.onDOMReady(function(e) { ' . $js_function . ' });';
         } else {
@@ -218,7 +222,7 @@ class DynamicUserFilter
             return $output;
         }
 
-        $a_obj = Docebo::user()->getAclManager();
+        $a_obj = \FormaLms\lib\Forma::getAclManager();
         $fman = new FieldList();
 
         $filter = $this->json->decode(stripslashes($f_arr));
@@ -322,7 +326,7 @@ class DynamicUserFilter
 
         $output = [];
         $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
-        $a_obj = new DoceboACLManager();
+        $a_obj = new FormaACLManager();
         $fman = new FieldList();
 
         $user_to_check = FormaLms\lib\Get::req('user', DOTY_INT, false);

@@ -32,7 +32,7 @@ class Module_Conference extends LmsModule
         dispatchConference($GLOBALS['op']);
     }
 
-    public function getAllToken($op = '')
+    public static function getAllToken($op = '')
     {
         return [
             'view' => ['code' => 'view',

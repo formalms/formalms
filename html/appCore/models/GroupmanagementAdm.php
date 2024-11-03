@@ -13,17 +13,18 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
+use FormaLms\lib\Interfaces\Accessible;
 use FormaLms\lib\Session\SessionManager;
 
-class GroupmanagementAdm extends Model
+class GroupmanagementAdm extends Model implements Accessible
 {
     protected $db;
     protected $acl_man;
 
     public function __construct()
     {
-        $this->db = DbConn::getInstance();
-        $this->acl_man = Docebo::user()->getACLManager();
+        $this->db = \FormaLms\db\DbConn::getInstance();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();;
         parent::__construct();
     }
 
@@ -38,7 +39,7 @@ class GroupmanagementAdm extends Model
         ];
     }
 
-    public function getGroupsList($pagination = [], $filter = false, $learning_filter = 'none')
+    public function getGroupsList($pagination = [], $filter = false, $learning_filter = 'none', $columnsFilter = [])
     {
         if (!is_array($pagination)) {
             $pagination = [];
@@ -83,16 +84,25 @@ class GroupmanagementAdm extends Model
             . ' FROM %adm_group as g LEFT JOIN (%adm_group_members AS gm ) ON (gm.idst = g.idst) '
             . " WHERE g.hidden = 'false' " . ($learning_filter === 'none' ? "AND g.type <> 'course' " : '');
 
-        $ulevel = Docebo::user()->getUserLevelId();
+        $ulevel = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         if ($ulevel != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+            $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $query .= ' AND g.idst IN (' . implode(',', $admin_tree) . ') ';
         }
 
         if ($filter) {
             $query .= " AND (g.groupid LIKE '%" . $filter . "%' OR g.description LIKE '%" . $filter . "%') ";
+        }
+
+        if(count($columnsFilter) && !$filter) {
+            foreach($columnsFilter as $columnName => $columnValue) {
+                $query .= ' AND (
+                    g.' .$columnName . ' LIKE "%' . $columnValue . '%" 
+                )';
+            }
+
         }
         $session = SessionManager::getInstance()->getSession();
 
@@ -105,7 +115,7 @@ class GroupmanagementAdm extends Model
                 } else {
                     require_once _lms_ . '/lib/lib.course.php';
                     $course_man = new Man_Course();
-                    $all_courses = $course_man->getUserCourses(Docebo::user()->getIdSt());
+                    $all_courses = $course_man->getUserCourses(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                     $res = [];
                     foreach ($all_courses as $id_course => $name) {
                         $arr_idst_group = $this->acl_man->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/group/');
@@ -128,8 +138,127 @@ class GroupmanagementAdm extends Model
         $query .= ' ORDER BY ' . $sort . ' ' . $dir . ' ';
         $query .= 'LIMIT ' . $startIndex . ', ' . $results;
 
+
         $res = $this->db->query($query);
 
+        if ($res) {
+            $output = [];
+            $glist = [];
+            while ($obj = $this->db->fetch_obj($res)) {
+                $groupId = explode('/', $obj->groupid);
+                $obj->membercount = 0;
+                $obj->usercount = 0;
+                $obj->groupid = end($groupId);
+                $output[$obj->idst] = $obj;
+            }
+
+            $list_idst = array_keys($output);
+            $count_members = $this->countMembers($list_idst);
+            $count_users = $this->countUsers($list_idst);
+            if (!empty($count_members)) {
+                foreach ($count_members as $idst => $count) {
+                    $output[$idst]->membercount = $count;
+                }
+            }
+            if (!empty($count_users)) {
+                foreach ($count_users as $idst => $count) {
+                    $output[$idst]->usercount = $count;
+                }
+            }
+        } else {
+            return false;
+        }
+
+        return array_values($output);
+    }
+
+    public function getTotalGroups($filter = false, $learning_filter = 'none', $columnsFilter = [])
+    {
+        $query = 'SELECT COUNT(*) '
+            . " FROM %adm_group as g WHERE g.hidden = 'false' " . ($learning_filter === 'none' ? "AND g.type <> 'course' " : '');
+
+        switch ($learning_filter) {
+            case 'message':
+                $id_course = $this->session->get('message_filter');
+
+                if ($id_course != 0) {
+                    $res = $this->acl_man->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/group/');
+                } else {
+                    require_once _lms_ . '/lib/lib.course.php';
+                    $course_man = new Man_Course();
+                    $all_courses = $course_man->getUserCourses(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
+                    $res = [];
+                    foreach ($all_courses as $id_course => $name) {
+                        $arr_idst_group = $this->acl_man->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/group/');
+                        $res = array_merge($res, $arr_idst_group);
+                    }
+                }
+
+                $query .= ' g.idst IN (' . implode(',', $res) . ') ';
+                break;
+            case 'course':
+                $id_course = $this->session->get('idCourse');
+
+                $res = $this->acl_man->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/group/');
+
+                $query .= ' AND g.idst IN (' . implode(',', $res) . ') ';
+                break;
+            default:
+                break;
+        }
+
+        if ($filter) {
+            $query .= " AND (g.groupid LIKE '%" . $filter . "%' OR g.description LIKE '%" . $filter . "%') ";
+        }
+
+        if(count($columnsFilter) && !$filter) {
+            foreach($columnsFilter as $columnName => $columnValue) {
+                $query .= ' AND (
+                    g.' .$columnName . ' LIKE "%' . $columnValue . '%" 
+                )';
+            }
+
+        }
+
+        $res = $this->db->query($query);
+        list($count) = $this->db->fetch_row($res);
+
+        return $count;
+    }
+
+    public function getAllGroups($filter, $admin_filter = false, $columnsFilter = [])
+    {
+        $query = "SELECT idst FROM %adm_group as g WHERE g.hidden = 'false' AND g.type <> 'course' ";
+        if ($filter) {
+            $query .= " AND (g.groupid LIKE '%" . $filter . "%' OR g.description LIKE '%" . $filter . "%') ";
+        }
+
+        if(count($columnsFilter)) {
+            foreach($columnsFilter as $columnName => $columnValue) {
+                $query .= ' AND (
+                    g.' .$columnName . ' LIKE "%' . $columnValue . '%" 
+                )';
+            }
+
+        }
+        $res = $this->db->query($query);
+        $output = false;
+        if ($res) {
+            $output = [];
+            while (list($id_group) = $this->db->fetch_row($res)) {
+                $output[] = $id_group;
+            }
+        }
+
+        return $output;
+    }
+
+    public function getAllGroupDetails($ids = [])
+    {
+        $query = 'SELECT g.idst, g.groupid, g.description, COUNT(*) as usercount FROM %adm_group as g WHERE g.idst in (' . implode(',', $ids) . ')
+        GROUP BY g.idst';
+
+        $res = $this->db->query($query);
         if ($res) {
             $output = [];
             $glist = [];
@@ -158,69 +287,6 @@ class GroupmanagementAdm extends Model
         }
 
         return array_values($output);
-    }
-
-    public function getTotalGroups($filter = false, $learning_filter = 'none')
-    {
-        $query = 'SELECT COUNT(*) '
-            . " FROM %adm_group as g WHERE g.hidden = 'false' " . ($learning_filter === 'none' ? "AND g.type <> 'course' " : '');
-
-        switch ($learning_filter) {
-            case 'message':
-                $id_course = $this->session->get('message_filter');
-
-                if ($id_course != 0) {
-                    $res = $this->acl_man->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/group/');
-                } else {
-                    require_once _lms_ . '/lib/lib.course.php';
-                    $course_man = new Man_Course();
-                    $all_courses = $course_man->getUserCourses(Docebo::user()->getIdSt());
-                    $res = [];
-                    foreach ($all_courses as $id_course => $name) {
-                        $arr_idst_group = $this->acl_man->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/group/');
-                        $res = array_merge($res, $arr_idst_group);
-                    }
-                }
-
-                $query .= ' g.idst IN (' . implode(',', $res) . ') ';
-                break;
-            case 'course':
-                $id_course = $this->session->get('idCourse');
-
-                $res = $this->acl_man->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/group/');
-
-                $query .= ' AND g.idst IN (' . implode(',', $res) . ') ';
-                break;
-            default:
-                break;
-        }
-
-        if ($filter) {
-            $query .= " AND (g.groupid LIKE '%" . $filter . "%' OR g.description LIKE '%" . $filter . "%') ";
-        }
-
-        $res = $this->db->query($query);
-        list($count) = $this->db->fetch_row($res);
-
-        return $count;
-    }
-
-    public function getAllGroups($filter, $admin_filter = false)
-    {
-        $query = "SELECT idst FROM %adm_group as g WHERE g.hidden = 'false' AND g.type <> 'course' ";
-        if ($filter) {
-            $query .= " AND (g.groupid LIKE '%" . $filter . "%' OR g.description LIKE '%" . $filter . "%') ";
-        }
-        $res = $this->db->query($query);
-        $output = false;
-        if ($res) {
-            $output = [];
-            while (list($id_group) = $this->db->fetch_row($res)) {
-                $output[] = $id_group;
-            }
-        }
-
-        return $output;
     }
 
     public function deleteGroup($idst)
@@ -291,7 +357,7 @@ class GroupmanagementAdm extends Model
         if ($idst > 0 && (is_array($info) || is_object($info))) {
             $output = true;
             $conditions = [];
-            $acl = Docebo::user()->getAclManager();
+            $acl = \FormaLms\lib\Forma::getAclManager();
 
             if (is_array($info)) {
                 if (isset($info['groupid'])) {
@@ -365,7 +431,7 @@ class GroupmanagementAdm extends Model
             $output = true;
             $fields = ['idst'];
             $values = [$idst];
-            $acl = Docebo::user()->getAclManager();
+            $acl = \FormaLms\lib\Forma::getAcl()->getAclManager();
 
             if (is_array($info)) {
                 if (isset($info['groupid'])) {
@@ -410,7 +476,7 @@ class GroupmanagementAdm extends Model
                 $output = $this->db->query($query);
             }
 
-            $ulevel = Docebo::user()->getUserLevelId();
+            $ulevel = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
             if ($ulevel == ADMIN_GROUP_ADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $preference = new AdminPreference();
@@ -478,7 +544,7 @@ class GroupmanagementAdm extends Model
         //write new members
         if (count($members) > 0) {
             $insert_list = [];
-            foreach ($members as $member) {
+            foreach (array_unique($members) as $member) {
                 if (is_numeric($member) && $member > 0 && $member != $idst) {
                     $insert_list[] = '(' . (int) $idst . ', ' . (int) $member . ')';
                 }
@@ -525,11 +591,11 @@ class GroupmanagementAdm extends Model
 
         $_qfilter = '';
         if ($filter) {
-            $ulevel = Docebo::user()->getUserLevelId();
+            $ulevel = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
             if ($ulevel != ADMIN_GROUP_GODADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+                $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
                 //$admin_groups = $this->_extractGroupsFromMixedIdst($admin_tree);
                 $_qfilter .= ' AND idst IN (' . implode(',', $admin_tree) . ') ';
             }
@@ -557,7 +623,8 @@ class GroupmanagementAdm extends Model
         $res = $this->db->query($query);
         if ($res) {
             while ($obj = $this->db->fetch_obj($res)) {
-                $output[$obj->idst] = end(explode('/', $obj->groupid));
+                $arrayObj = explode('/', $obj->groupid);
+                $output[$obj->idst] = end($arrayObj);
             }
         }
 
@@ -589,12 +656,12 @@ class GroupmanagementAdm extends Model
         $users_idst = [];
         $query = "SELECT idst, LOWER(userid) as userid FROM %adm_user WHERE userid IN ('" . implode("','", $users_list) . "') ";
         $res = $this->db->query($query);
-        
+
         foreach ($res as $row){
             $users_idst[$this->acl_man->relativeId($row['userid'])] = (int) $row['idst'];
-           
+
         }
-        
+
         if (empty($users_idst)) {
             return $output;
         }
@@ -605,10 +672,10 @@ class GroupmanagementAdm extends Model
             . " AND idstMember in ('" . implode("','", $users_idst) . "') ";
         $res = $this->db->query($query);
 
-        foreach ($res as $row) { 
+        foreach ($res as $row) {
             $dup[] = $row['idstMember'];
         }
-        
+
         $query = 'INSERT INTO %adm_group_members (idst,idstMember) VALUES ';
 
         $counter = 0;
@@ -632,7 +699,7 @@ class GroupmanagementAdm extends Model
             return $output;
         }
 
-        
+
 
         $query .= implode(',', $insert_values);
         $res = $this->db->query($query);
@@ -642,7 +709,7 @@ class GroupmanagementAdm extends Model
             $output['not_inserted'] = $count_total - $counter;
             $output['duplicated'] = $dup_counter;
         }
-        
+
         return $output;
     }
 
@@ -882,5 +949,27 @@ class GroupmanagementAdm extends Model
         Events::trigger('core.group_member.unassigned', ['id_group' => $id_group, 'users' => $users]);
 
         return $output;
+    }
+
+
+    public function enrole($id, $members) : bool {
+        // apply rules
+        $enrollrules = new EnrollrulesAlms();
+        $enrollrules->applyRulesMultiLang('_LOG_USERS_TO_GROUP', $members, false, $id);
+
+        return true;
+    }
+
+    public function getAccessList($resourceId) : array {
+
+        return $this->getGroupMembers($resourceId);
+
+    }
+
+    public function setAccessList($resourceId, array $selection) : bool {
+
+        $res = $this->saveGroupMembers($resourceId, $selection);
+        $this->enrole($resourceId, $selection);
+        return $res;
     }
 }

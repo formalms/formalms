@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Forma;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -152,7 +154,7 @@ function duplicateCourse()
     {
         $map = [];
         $levels = CourseLevel::getTranslatedLevels();
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         // find all the group created for this menu custom for permission management
         foreach ($levels as $lv => $name_level) {
@@ -167,18 +169,18 @@ function duplicateCourse()
     require_once _lms_ . '/lib/lib.manmenu.php';
     require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
-    $docebo_course = new DoceboCourse($id_dupcourse);
+    $formaCourse = new FormaCourse($id_dupcourse);
     $subscribe_man = new CourseSubscribe_Manager();
 
-    $group_idst = $docebo_course->createCourseLevel($new_course_dup);
-    $group_of_from = $docebo_course->getCourseLevel($id_dupcourse);
+    $group_idst = FormaCourse::createCourseLevel($new_course_dup);
+    $group_of_from = $formaCourse->getCourseLevel($id_dupcourse);
     $perm_form = createPermForDuplicatedCourse($group_of_from, $new_course_dup, $id_dupcourse);
     $levels = $subscribe_man->getUserLevel();
 
     foreach ($levels as $lv => $name_level) {
         foreach ($perm_form[$lv] as $idrole => $v) {
             if ($group_idst[$lv] != 0 && $idrole != 0) {
-                $acl_man = &Docebo::user()->getAclManager();
+                $acl_man = \FormaLms\lib\Forma::getAclManager();
                 $acl_man->addToRole($idrole, $group_idst[$lv]);
             }
         }
@@ -198,7 +200,7 @@ function duplicateCourse()
     }
 
     require_once _lms_ . '/modules/organization/orglib.php';
-    require_once _lms_ . '/lib/lib.param.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
     require_once _lms_ . '/class.module/track.object.php';
     require_once _lms_ . '/class.module/learning.object.php';
 
@@ -346,14 +348,11 @@ function duplicateCourse()
         if (!isset($array_organization[$list_selmenun['id_source']]) or $array_organization[$list_selmenun['id_source']] == '') {
             $array_organization[$list_selmenun['id_source']] = 0;
         }
-        $query_dupmen = 'INSERT INTO
-		' . $GLOBALS['prefix_lms'] . "_coursereport
-		(id_course,title,max_score,required_score,weight,show_to_user,use_for_final,sequence,source_of,id_source)
-		VALUES
-		('" . $new_course_dup . "', '" . $list_selmenun['title'] . "', '" . $list_selmenun['max_score'] . "',
-		'" . $list_selmenun['required_score'] . "', '" . $list_selmenun['weight'] . "', '" . $list_selmenun['show_to_user'] . "', '" . $list_selmenun['use_for_final'] . "', '" . $list_selmenun['sequence'] . "', '" . $list_selmenun['source_of'] . "', '" . $array_organization[$list_selmenun['id_source']] . "')";
-        $sql2 = $query_dupmen;
-        $result_dupmen = sql_query($query_dupmen);
+        $list_selmenun['idCourse'] = $new_course_dup;
+        $list_selmenun['idSource'] = $array_organization[$list_selmenun['id_source']];
+        $query_dupmen = CoursereportLms::getInsertQueryCourseReportAsForeignKey($list_selmenun);
+
+        sql_query($query_dupmen);
     }
 
     $query_selmenun = 'SELECT *
@@ -390,12 +389,12 @@ switch ($op) {
 
         if ($filter != '') {
             $query_filter = '';
-            $userlevelid = Docebo::user()->getUserLevelId();
+            $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
             if ($userlevelid != ADMIN_GROUP_GODADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $acl_man = &Docebo::user()->getAclManager();
-                $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+                $acl_man = \FormaLms\lib\Forma::getAclManager();
+                $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
                 $query_filter .= ' AND idCourse IN (' . implode(',', $admin_courses['course']) . ') ';
             }
 

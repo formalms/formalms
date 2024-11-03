@@ -51,13 +51,13 @@ final class LMSTemplateController extends TemplateController
 
     private function notGeneratedCertificates()
     {
-        $id_user = Docebo::user()->getIdSt();
+        $id_user = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
         $model = new MycertificateLms($id_user);
         $availables = 0;
         $certificates = $model->loadMyCertificates(false, false);
 
         foreach ($certificates as $cert) {
-            if ($cert[0] == '0000-00-00' || $cert[0] == '') { // $cert['on_date']
+            if (!$cert[0] || $cert[0] == '') { // $cert['on_date']
                 ++$availables;
             }
         }
@@ -92,7 +92,7 @@ final class LMSTemplateController extends TemplateController
     {
         // Temporary solution before helpdesk refactoring.
         $this->render('helpdesk_modal', 'helpdesk', [
-            'user' => $this->model->getUser(), 'userDetails' => $this->model->getUserDetails(), 'email' => $this->model->getHelpDeskEmail(), 'currentPage' => $this->model->getCurrentPage(), 'helpDeskEmail' => $this->model->getUserDetails()[ACL_in],
+            'user' => $this->model->getUser(), 'userDetails' => $this->model->getUserDetails(), 'email' => $this->model->getHelpDeskEmail(), 'currentPage' => $this->model->getCurrentPage(), 'helpDeskEmail' => $this->model->getUserDetails()[ACL_INFO_EMAIL],
         ]);
     }
 }

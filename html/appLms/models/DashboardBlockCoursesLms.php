@@ -98,7 +98,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
         $courses = [];
 
         $limit = array_key_exists('max_courses_number', $this->data) ? $this->data['max_courses_number'] : 0;
-        $conditions = ['ID_USER' => 'cu.iduser =' . (int)Docebo::user()->getId()];
+        $conditions = ['ID_USER' => 'cu.iduser =' . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getId()];
         $conditions['COURSE_STATUS'] = '(c.status in  (1,2))'; // only available, confirmed
         $conditions['USER_ENROLLMENT_STATUS'] = '(cu.status in (0,1))'; // only enrolled and in progress
 
@@ -223,7 +223,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
         // exclude course belonging to pathcourse in which the user is enrolled as a student
         $exclude_pathcourse = '';
         if (FormaLms\lib\Get::sett('on_path_in_mycourses') == 'off') {
-            $id_user = (int)Docebo::user()->getId();
+            $id_user = (int) \FormaLms\lib\FormaUser::getCurrentUser()->getId();
             $learning_path_enroll = $this->getUserCoursePathCourses($id_user);
             if (count($learning_path_enroll) >= 1) {
                 $exclude_path_course = 'select idCourse from learning_courseuser where idUser=' . $id_user . ' and level <= 3 '
@@ -300,7 +300,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
             if ($startDate >= $now) {
                 $courseDateData['showStartDate'] = true;
             }
-            if ($endDate >= $now) {
+            if ($endDate >= $now && $startDate->format('Y-m-d') < $endDate->format('Y-m-d')) {
                 $courseDateData['showEndDate'] = true;
             }
 
@@ -327,11 +327,8 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
         if ($startDate >= $now) {
             $courseData['showStartDate'] = true;
         }
-        if ($endDate >= $now) {
+        if ($endDate >= $now && $startDate->format('Y-m-d') < $endDate->format('Y-m-d')) {
             $courseData['showEndDate'] = true;
-        }
-        if ($startDate = $endDate) {
-            $courseData['showEndDate'] = false;
         }
 
         $hours = '';

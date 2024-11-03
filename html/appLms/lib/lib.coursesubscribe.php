@@ -26,7 +26,7 @@ class CourseSubscribe
     // Subscribe info
     public $subscribe_info;
 
-    public function CourseSubscribe($prefix = false, $dbconn = null)
+    public function __construct($prefix = false, $dbconn = null)
     {
         $this->prefix = ($prefix !== false ? $prefix : $GLOBALS['prefix_lms']);
         $this->dbconn = $dbconn;

@@ -37,17 +37,17 @@ $_tabview_titles = '<ul class="nav nav-tabs">';
 $_tabview_contents = '<div class="tab-content">';
 
 //edit name and description in all languages
-$_langs = Docebo::langManager()->getAllLanguages(true);
+$_langs = \FormaLms\lib\Forma::langManager()->getAllLanguages(true);
 foreach ($_langs as $_lang_code => $_lang_data) {
     $_name = isset($fncrole_langs[$_lang_code]) ? $fncrole_langs[$_lang_code]['name'] : '';
     $_desc = isset($fncrole_langs[$_lang_code]) ? $fncrole_langs[$_lang_code]['description'] : '';
 
-    $_tabview_titles .= '<li' . ($_lang_code == getLanguage() ? ' class="active"' : '') . '>'
+    $_tabview_titles .= '<li' . ($_lang_code == Lang::get() ? ' class="active"' : '') . '>'
         . '<a data-toggle="tab" href="#langs_tab_' . $_lang_code . '"><em>' . $_lang_code //$_lang_data['description']
         . ($_name == '' && isset($id_group) ? ' (*)' : '')
         . '</em></a></li>';
 
-    $_tabview_contents .= '<div class="tab-pane' . ($_lang_code == getLanguage() ? ' active' : '') . '" id="langs_tab_' . $_lang_code . '">';
+    $_tabview_contents .= '<div class="tab-pane' . ($_lang_code == Lang::get() ? ' active' : '') . '" id="langs_tab_' . $_lang_code . '">';
 
     $_tabview_contents .= Form::getTextfield(
         Lang::t('_NAME', 'standard'),

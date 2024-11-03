@@ -13,14 +13,14 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-define('UP_FILE_LIMIT', 8); 	// when display shared file limit the number showed in the first page of the profile
-define('UP_FRIEND_LIMIT', 6); //*DEPRECATED*
+const UP_FILE_LIMIT = 8;    // when display shared file limit the number showed in the first page of the profile
+const UP_FRIEND_LIMIT = 6; //*DEPRECATED*
 
-define('PFL_POLICY_FREE', 0);
-define('PFL_POLICY_TEACHER', 1);
-define('PFL_POLICY_FRIENDS', 2); //*DEPRECATED*
-define('PFL_POLICY_NOONE', 3);
-define('PFL_POLICY_TEACHER_AND_FRIENDS', 4); //*DEPRECATED*
+const PFL_POLICY_FREE = 0;
+const PFL_POLICY_TEACHER = 1;
+const PFL_POLICY_FRIENDS = 2; //*DEPRECATED*
+const PFL_POLICY_NOONE = 3;
+const PFL_POLICY_TEACHER_AND_FRIENDS = 4; //*DEPRECATED*
 
 /**
  * @author Fabio Pirovano
@@ -68,7 +68,7 @@ class UserProfile
     public $_up_data_man;
 
     /**
-     * @var DoceboLanguage the instance of the language manager
+     * @var FormaLanguage the instance of the language manager
      */
     public $_lang;
 
@@ -105,8 +105,8 @@ class UserProfile
     /**
      * initialize the various class used by this one.
      *
-     * @param string      $std_query the std_query for the address
-     * @param resource_id $db_conn   the id of a db connection if different form the standard
+     * @param string $std_query the std_query for the address
+     * @param resource_id $db_conn the id of a db connection if different form the standard
      */
     public function init($module_name, $platform, $std_query, $varname_action = 'ap', $db_conn = null)
     {
@@ -115,7 +115,7 @@ class UserProfile
         $this->_std_query = $std_query;
         $this->_varname_action = $varname_action;
 
-        $this->_id_viewer = getLogUserId();
+        $this->_id_viewer = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
         $this->_varname_action = $varname_action;
 
@@ -161,7 +161,7 @@ class UserProfile
     {
         require_once _base_ . '/lib/lib.urlmanager.php';
 
-        $this->_url_man = &UrlManager::getInstance();
+        $this->_url_man = UrlManager::getInstance();
         $this->_url_man->setStdQuery($std_query);
     }
 
@@ -172,7 +172,7 @@ class UserProfile
      */
     public function initLang($module_name, $platform)
     {
-        $this->_lang = &DoceboLanguage::createInstance('profile', 'framework');
+        $this->_lang = FormaLanguage::createInstance('profile', 'framework');
     }
 
     /**
@@ -234,7 +234,7 @@ class UserProfile
      */
     public function setViewer($id_viewer)
     {
-        return $id_viewer === false ? $this->_id_viewer = getLogUserId() : $this->_id_viewer = $id_viewer;
+        return $id_viewer === false ? $this->_id_viewer = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() : $this->_id_viewer = $id_viewer;
     }
 
     /**
@@ -300,7 +300,7 @@ class UserProfile
     }
 
     /**
-     * @return DoceboLanguage the class used for lang
+     * @return FormaLanguage the class used for lang
      */
     public function &getLang()
     {
@@ -345,7 +345,7 @@ class UserProfile
     /**
      * print the title of the page.
      *
-     * @param mixed  $text  the title of the area, or the array with zone path and name
+     * @param mixed $text the title of the area, or the array with zone path and name
      * @param string $image the image to load before the title
      *
      * @return string the html code for space open
@@ -373,6 +373,11 @@ class UserProfile
     public function getFooter()
     {
         return $this->_up_viewer->getFooter();
+    }
+
+    public function getPrivacy()
+    {
+        return $this->_up_viewer->getPrivacy();
     }
 
     /**
@@ -415,34 +420,35 @@ class UserProfile
         }
         $ap = FormaLms\lib\Get::req($this->_varname_action, DOTY_MIXED, $start_action);
         if (isset($_POST['undo'])) {
-            $ap = 'profileview';
+            $ap = $start_action;
         }
+
 
         switch ($ap) {
             case 'goprofile':
                 $ext_prof = new UserProfile(FormaLms\lib\Get::req('id_user', DOTY_INT, 0), false);
                 $ext_prof->init($this->_module_name,
-                                    $this->_platform,
-                                    $this->_std_query,
-                                    $this->_varname_action);
+                    $this->_platform,
+                    $this->_std_query,
+                    $this->_varname_action);
 
                 return $ext_prof->getProfile();
 
-            break;
+                break;
             // display the mod info gui -------------------------------
             case 'mod_profile':
                 return $this->getModUser();
 
-            break;
+                break;
             case 'mod_password':
                 return $this->_up_viewer->getUserPwdModUi();
 
-            break;
+                break;
 
             case 'mod_policy':
                 return $this->_up_viewer->modUserPolicyGui();
 
-            break;
+                break;
             // save modified info of the user -------------------------
             case 'save_policy':
                 if ($this->_up_data_man->setFieldAccessList($this->_id_user, $this->_up_viewer->getFilledPolicy())) {
@@ -461,7 +467,7 @@ class UserProfile
                         . $this->_up_viewer->modUserPolicyGui();
                 }
 
-            break;
+                break;
             // save modified info of the user -------------------------
             case 'saveinfo':
                 if (!$this->checkUserInfo()) {
@@ -483,7 +489,7 @@ class UserProfile
                         require_once _lms_ . '/lib/lib.reservation.php';
                         $id_event = FormaLms\lib\Get::req('id_event', DOTY_INT, 0);
                         $man_res = new Man_Reservation();
-                        $result = $man_res->addSubscription(getLogUserId(), $id_event);
+                        $result = $man_res->addSubscription(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_event);
                         Util::jump_to('index.php?modname=reservation&op=reservation');
                     } else {
                         //TODO: EVT_OBJECT (§)
@@ -495,9 +501,9 @@ class UserProfile
                         //TODO: EVT_LAUNCH (&)
                         //\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementEditEvent::EVENT_NAME, $event);
 
-                        require_once Forma::inc(_base_ . '/lib/lib.eventmanager.php');
+                        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.eventmanager.php');
 
-                        $uinfo = Docebo::aclm()->getUser($this->_id_user, false);
+                        $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($this->_id_user, false);
 
                         $reg_code = null;
                         $uma = new UsermanagementAdm();
@@ -520,12 +526,12 @@ class UserProfile
                         // message to user that is odified
                         $msg_composer = new EventMessageComposer();
 
-                        $msg_composer->setSubjectLangText('email', '_EVENT_MOD_USER_SBJ', $array_subst);
+                        $msg_composer->setSubjectLangText('email', '_EVENT_MOD_USER_SBJ', false);
                         $msg_composer->setBodyLangText('email', '_EVENT_MOD_USER_TEXT', $array_subst);
 
                         $msg_composer->setBodyLangText('sms', '_EVENT_MOD_USER_TEXT_SMS', $array_subst);
 
-                        $acl_manager = \Docebo::user()->getAclManager();
+                        $acl_manager = \FormaLms\lib\Forma::getAclManager();
 
                         $permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
                         $permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
@@ -543,52 +549,27 @@ class UserProfile
                     return getErrorUi($this->_lang->def('_OPERATION_FAILURE'))
                         . $this->getModUser();
                 }
-             break;
+                break;
             // save password -----------------------------------------
             case 'savepwd':
-                $re = $this->_up_viewer->checkUserPwd();
-                if ($re !== true) {
-                    // some error in data filling --------------------
-                    return getErrorUi($re)
-                        . $this->_up_viewer->getUserPwdModUi();
-                }
-                if ($this->saveUserPwd()) {
-                    // all ok ----------------------------------------
-                    $this->_up_viewer->unloadUserData();
-
-                    // SET EDIT CHANGE PASSWORD EVENT
-                    //TODO: EVT_OBJECT (§)
-                    //$event = new \appCore\Events\Core\User\UsersManagementChangePasswordEvent();
-                    //$model = new UsermanagementAdm();
-                    //$event->setUser($model->getProfileData($this->_id_user));
-                    //$event->setFilledPwd($this->_up_viewer->getFilledPwd());
-                    //TODO: EVT_LAUNCH (&)
-                    //\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementChangePasswordEvent::EVENT_NAME, $event);
-
-                    if ($this->_end_url !== false) {
-                        Util::jump_to($this->_end_url);
-                    }
-
+                $user_manager = new UserManager();
+                $error = $user_manager->saveElapsedPassword();
+                if ($error['error'] == true) {
+                    return $this->_up_viewer->getUserPwdModUi($error['msg']);
+                } else {
                     $out = getResultUi($this->_lang->def('_OPERATION_SUCCESSFULPWD'));
-
-                    if (FormaLms\lib\Get::sett('profile_modify') == 'limit') {
-                        // maybe is better if we display only the confirmation message if all is ok, but if you
-                        // want something else add the code here
-                    } elseif (FormaLms\lib\Get::sett('profile_modify') == 'allow') {
+                    if ($start_action == 'mod_password') {
+                        $out = $this->_up_viewer->getUserPwdModUi();
+                    } else {
                         $out .= $this->getProfile();
                     }
-
                     return $out;
-                } else {
-                    // some error saving ----------------------------
-                    return getErrorUi($this->_lang->def('_OPERATION_FAILURE'))
-                        . $this->_up_viewer->getUserPwdModUi();
                 }
-             break;
+                break;
 
             case 'uploadavatar':
                 return $this->_up_viewer->modAvatarGui();
-             break;
+                break;
             case 'saveavatar':
                 if ($this->saveUserAvatar()) {
                     // all ok --------------------------------------
@@ -605,14 +586,14 @@ class UserProfile
                     return getErrorUi($this->_lang->def('_OPERATION_FAILURE'))
                         . $this->_up_viewer->modAvatarGui();
                 }
-             break;
+                break;
             // teacher curriculum
             case 'del_teach_curric':
                 return $this->_up_viewer->delTeacherCurriculumGui();
-             break;
+                break;
             case 'mod_teach_curric':
                 return $this->_up_viewer->modTeacherCurriculumGui();
-             break;
+                break;
             case 'save_teach_curric':
                 if ($this->_up_data_man->saveTeacherCurriculumAndPublication($this->_id_user, $this->_up_viewer->getFilledCurriculum(), false)) {
                     // all ok --------------------------------------
@@ -629,10 +610,10 @@ class UserProfile
                     return getErrorUi($this->_lang->def('_OPERATION_FAILURE'))
                         . $this->_up_viewer->modTeacherCurriculumGui();
                 }
-             break;
+                break;
             case 'mod_teach_publ':
                 return $this->_up_viewer->modTeacherPublicationsGui();
-             break;
+                break;
             case 'save_teach_publ':
                 if ($this->_up_data_man->saveTeacherCurriculumAndPublication($this->_id_user, false, $this->_up_viewer->getFilledPublications())) {
                     // all ok --------------------------------------
@@ -649,23 +630,23 @@ class UserProfile
                     return getErrorUi($this->_lang->def('_FAILSAVEPUBLICATIONS'))
                         . $this->_up_viewer->modTeacherPublicationsGui();
                 }
-             break;
+                break;
             // display the profile ------------------------------------
             case 'view_files':
-                $this->_id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, getLogUserId());
+                $this->_id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
                 return $this->_up_viewer->getViewUserFiles();
-             break;
+                break;
             case 'file_details':
-                $this->_id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, getLogUserId());
+                $this->_id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
                 return $this->_up_viewer->getViewUserFileDetail();
-             break;
+                break;
 
             case 'profileview':
             default:
                 return $this->getProfile();
-             break;
+                break;
         }
     }
 
@@ -703,12 +684,12 @@ class UserProfile
 
         // save the users view of the profile
         if ($this->_id_viewer != $this->_id_user) {
-            if ($this->_id_viewer == getLogUserId()) {
-                if (!Docebo::user()->isAnonymous()) {
+            if ($this->_id_viewer == \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()) {
+                if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                     $this->_up_data_man->addView($this->_id_user, $this->_id_viewer);
                 }
             } else {
-                $acl_man = &Docebo::user()->getAclManager();
+                $acl_man = \FormaLms\lib\Forma::getAclManager();
                 $id_anonymous = $acl_man->getAnonymousId();
                 if ($this->_id_viewer !== $id_anonymous) {
                     $this->_up_data_man->addView($this->_id_user, $this->_id_viewer);
@@ -728,8 +709,8 @@ class UserProfile
     /**
      * show a reduced version of the user profile.
      *
-     * @param int    $viewer_id the id of the user that has request the profile, it is used for the permission
-     * @param string $picture   the size of the picture, small, medium, big
+     * @param int $viewer_id the id of the user that has request the profile, it is used for the permission
+     * @param string $picture the size of the picture, small, medium, big
      */
     public function tinyUserInfo($viewer = false, $picture = false)
     {
@@ -743,8 +724,8 @@ class UserProfile
     /**
      * show only the essential info of a user.
      *
-     * @param int    $viewer_id the id of the user that has request the profile, it is used for the permission
-     * @param string $picture   the size of the picture, small, medium, big
+     * @param int $viewer_id the id of the user that has request the profile, it is used for the permission
+     * @param string $picture the size of the picture, small, medium, big
      */
     public function minimalUserInfo($viewer = false, $picture = false, $link_to = false)
     {
@@ -772,8 +753,8 @@ class UserProfile
     /**
      * show only username and avatar.
      *
-     * @param int    $viewer_id the id of the user that has request the profile, it is used for the permission
-     * @param string $picture   the size of the picture, small, medium [=default], big
+     * @param int $viewer_id the id of the user that has request the profile, it is used for the permission
+     * @param string $picture the size of the picture, small, medium [=default], big
      */
     public function getUserPanelData($viewer = false, $picture = false)
     {
@@ -832,18 +813,6 @@ class UserProfile
         $filled = $this->_up_viewer->getFilledData();
 
         return $this->_up_data_man->saveUserData($this->_id_user, $filled, true, true);
-    }
-
-    /**
-     * save the user password displaied by  the mod gui.
-     *
-     * @return bool true if all data was saved correctly, false in case of trouble
-     */
-    public function saveUserPwd()
-    {
-        $filled = $this->_up_viewer->getFilledPwd();
-
-        return $this->_up_data_man->saveUserPwd($this->_id_user, $filled);
     }
 
     public function getUserPhotoOrAvatar($dimension = 'medium')
@@ -995,7 +964,7 @@ class UserProfileViewer
     public $_url_man;
 
     /**
-     * @var DoceboLanguage the instance of the language manager
+     * @var FormaLanguage the instance of the language manager
      */
     public $_lang;
 
@@ -1025,10 +994,10 @@ class UserProfileViewer
     /**
      * class constructor.
      */
-    public function UserProfileViewer(&$user_profile, $varname_action = 'ap')
+    public function __construct(&$user_profile, $varname_action = 'ap')
     {
         $this->_user_profile = &$user_profile;
-        $this->acl_man = Docebo::user()->getAclManager();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $this->_lang = &$this->_user_profile->getLang();
 
@@ -1074,7 +1043,7 @@ class UserProfileViewer
     /**
      * print the title of the page.
      *
-     * @param mixed  $text  the title of the area, or the array with zone path and name
+     * @param mixed $text the title of the area, or the array with zone path and name
      * @param string $image the image to load before the title
      *
      * @return string the html code for space open
@@ -1244,23 +1213,23 @@ class UserProfileViewer
             case 'micro':
                 $class_picture = 'image_limit_micro';
                 $max_dim = '28';
-             break;
+                break;
             case 'small':
                 $class_picture = 'image_limit_small';
                 $max_dim = '50';
-             break;
+                break;
             case 'normal':
                 $class_picture = 'image_limit_normal';
                 $max_dim = '100';
-             break;
+                break;
             case 'medium':
                 $class_picture = 'image_limit_medium';
                 $max_dim = '150';
-             break;
+                break;
             case 'large':
                 $class_picture = 'image_limit_big';
                 $max_dim = '250';
-             break;
+                break;
         }
         if ($class_picture == false) {
             $class_picture = 'image_limit_medium';
@@ -1272,13 +1241,13 @@ class UserProfileViewer
 
     public function getAvailablePhotoAvatar($dimension = 'medium')
     {
-        list($class_picture, $this->max_dim_avatar) = $this->getPhotoLimit($dimension);
+        [$class_picture, $this->max_dim_avatar] = $this->getPhotoLimit($dimension);
 
         // avatar ------------------------------------------------------------------------------
         if ($this->user_info[ACL_INFO_AVATAR] != '') {
             return $this->getPASrc($this->user_info[ACL_INFO_AVATAR],
-                                    $this->_lang->def('_AVATAR'),
-                                    $class_picture);
+                $this->_lang->def('_AVATAR'),
+                $class_picture);
         }
 
         $img_size = getimagesize(getPathImage() . 'standard/user.png');
@@ -1308,23 +1277,23 @@ class UserProfileViewer
         //addJs($GLOBALS['where_framework_relative'].'/lib/', 'ajax.user_profile.js');
         Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/ajax.user_profile.js', true, true);
 
-        $lang = &DoceboLanguage::createInstance($this->_user_profile->_module_name, $this->_user_profile->_platform);
+        $lang = FormaLanguage::createInstance($this->_user_profile->_module_name, $this->_user_profile->_platform);
 
         $GLOBALS['page']->add('<script type="text/javascript">'
             . "	setup_user_profile('" . $GLOBALS['where_framework_relative'] . "/ajax.adm_server.php?file=user_profile', "
             . " '" . getPathImage('fw') . "' ); "
 
             . ' var user_profile_lang = {'
-                //."_TITLE_ASK_A_FRIEND : '"	.addslashes($lang->def('_TITLE_ASK_A_FRIEND'))."', "
-                //."_WRITE_ASK_A_FRIEND : '"	.addslashes($lang->def('_WRITE_ASK_A_FRIEND'))."', "
-                . "_SEND : '" . addslashes($lang->def('_SEND')) . "',  "
-                . "_UNDO : '" . addslashes($lang->def('_UNDO')) . "', "
-                . "_ASK_FRIEND_SEND : '" . addslashes($lang->def('_SEND')) . "', "
-                . "_ASK_FRIEND_FAIL : '" . addslashes($lang->def('failed')) . "',  "
-                . "_SUBJECT :  '" . addslashes($lang->def('_SUBJECT')) . "', "
-                . "_MESSAGE_TEXT : '" . addslashes($lang->def('_MESSAGE_TEXT')) . "',  "
-                . "_OPERATION_SUCCESSFUL : '" . addslashes($lang->def('_OPERATION_SUCCESSFUL')) . "',  "
-                . "_OPERATION_FAILURE : '" . addslashes($lang->def('_OPERATION_FAILURE')) . "' "
+            //."_TITLE_ASK_A_FRIEND : '"	.addslashes($lang->def('_TITLE_ASK_A_FRIEND'))."', "
+            //."_WRITE_ASK_A_FRIEND : '"	.addslashes($lang->def('_WRITE_ASK_A_FRIEND'))."', "
+            . "_SEND : '" . addslashes($lang->def('_SEND')) . "',  "
+            . "_UNDO : '" . addslashes($lang->def('_UNDO')) . "', "
+            . "_ASK_FRIEND_SEND : '" . addslashes($lang->def('_SEND')) . "', "
+            . "_ASK_FRIEND_FAIL : '" . addslashes($lang->def('failed')) . "',  "
+            . "_SUBJECT :  '" . addslashes($lang->def('_SUBJECT')) . "', "
+            . "_MESSAGE_TEXT : '" . addslashes($lang->def('_MESSAGE_TEXT')) . "',  "
+            . "_OPERATION_SUCCESSFUL : '" . addslashes($lang->def('_OPERATION_SUCCESSFUL')) . "',  "
+            . "_OPERATION_FAILURE : '" . addslashes($lang->def('_OPERATION_FAILURE')) . "' "
             . '};'
             . '</script>', 'page_head');
 
@@ -1376,8 +1345,8 @@ class UserProfileViewer
                 if ($files_info[$type]) {
                     $action[] = '<li>'
                         . '<a href="' . $this->_url_man->getUrl('id_user=' . $this->_id_user . '&' . $this->_varname_action . '=view_files&type=' . $type . '&idThread=' . $id_thread . '&from=' . $from) . '" title="' . $this->_lang->def('_VIEW_USER_' . strtoupper($type)) . '">'
-                            . '<img src="' . getPathImage('fw') . 'profile/' . $pre . $type . '.png" alt="' . $this->_lang->def('_EN_USER_' . strtoupper($type) . '_ALT') . '" />'
-                            . '</a>'
+                        . '<img src="' . getPathImage('fw') . 'profile/' . $pre . $type . '.png" alt="' . $this->_lang->def('_EN_USER_' . strtoupper($type) . '_ALT') . '" />'
+                        . '</a>'
                         . '</li>';
                 }
             } // end for
@@ -1391,7 +1360,7 @@ class UserProfileViewer
         } else /*if(!$reduced)*/ {
             $action[] = '<li>'
                 //.'<img src="'.getPathImage('fw').'standard/offline.png" alt="'.$this->_lang->def('_UP_OFFLINE').'" /> '
-            . '<span class="glyphicon glyphicon-record text-danger"></span>'
+                . '<span class="glyphicon glyphicon-record text-danger"></span>'
                 //.$this->_lang->def('_UP_OFFLINE')
                 . '</li>';
         }
@@ -1414,7 +1383,7 @@ class UserProfileViewer
     public function getUserInfo()
     {
         $viewer = $this->getViewer();
-
+        $stato_admin = '';
         $this->loadUserData($viewer);
         $user_field = $this->loadUserField();
         $user_contacts = $this->loadUserContact();
@@ -1446,8 +1415,8 @@ class UserProfileViewer
 
                 . (($this->user_info[ACL_INFO_AVATAR] != '')
                     ? $this->getPASrc($this->user_info[ACL_INFO_AVATAR],
-                                        $this->_lang->def('_AVATAR'),
-                                        $class_picture)
+                        $this->_lang->def('_AVATAR'),
+                        $class_picture)
                     : '<img src="' . getPathImage() . 'standard/user.png" alt="' . $this->_lang->def('_NOAVATAR') . '" />')
                 . '<br />'
                 . $this->_lang->def('_AVATAR')
@@ -1467,16 +1436,16 @@ class UserProfileViewer
 
         // user standard info -----------------------------------------------------------------
         $html .= '<table class="up_user_field" summary="' . $this->_lang->def('_USERPROFILE_SUMMARY') . '">'
-                . '<caption class="up_name">' . $this->resolveUsername() . '</caption>';
+            . '<caption class="up_name">' . $this->resolveUsername() . '</caption>';
 
         $html .= $this->getUIRowCode($this->_lang->def('_USERNAME'), $this->acl_man->relativeId($this->user_info[ACL_INFO_USERID]))
             . $this->getUIRowCode($this->_lang->def('_LASTNAME'), ($this->user_info[ACL_INFO_LASTNAME] !== false
-                    ? $this->user_info[ACL_INFO_LASTNAME]
-                    : $this->_lang->def('_HIDDEN')))
+                ? $this->user_info[ACL_INFO_LASTNAME]
+                : $this->_lang->def('_HIDDEN')))
 
             . $this->getUIRowCode($this->_lang->def('_FIRSTNAME'), ($this->user_info[ACL_INFO_FIRSTNAME] !== false
-                    ? $this->user_info[ACL_INFO_FIRSTNAME]
-                    : $this->_lang->def('_HIDDEN')));
+                ? $this->user_info[ACL_INFO_FIRSTNAME]
+                : $this->_lang->def('_HIDDEN')));
 
         // user extra field ------------------------------------------------------------------
 
@@ -1486,15 +1455,22 @@ class UserProfileViewer
             }
         }
 
-        $lv_lang = &DoceboLanguage::createInstance('admin_directory', 'framework');
+        $lv_lang = FormaLanguage::createInstance('admin_directory', 'framework');
         if ($this->_user_profile->godMode()) {
             // show user level
-            $acl_man = &Docebo::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             switch ($acl_man->getUserLevelId($this->_user_profile->getIdUser())) {
-                case ADMIN_GROUP_GODADMIN: $user_level_string = $lv_lang->def('_DIRECTORY_' . ADMIN_GROUP_GODADMIN); break;
-                case ADMIN_GROUP_ADMIN: $user_level_string = $lv_lang->def('_DIRECTORY_' . ADMIN_GROUP_ADMIN); break;
-                case ADMIN_GROUP_USER: $user_level_string = $lv_lang->def('_DIRECTORY_' . ADMIN_GROUP_USER); break;
-                default:$user_level_string = $acl_man->getUserLevelId($this->_user_profile->getIdUser());
+                case ADMIN_GROUP_GODADMIN:
+                    $user_level_string = $lv_lang->def('_DIRECTORY_' . ADMIN_GROUP_GODADMIN);
+                    break;
+                case ADMIN_GROUP_ADMIN:
+                    $user_level_string = $lv_lang->def('_DIRECTORY_' . ADMIN_GROUP_ADMIN);
+                    break;
+                case ADMIN_GROUP_USER:
+                    $user_level_string = $lv_lang->def('_DIRECTORY_' . ADMIN_GROUP_USER);
+                    break;
+                default:
+                    $user_level_string = $acl_man->getUserLevelId($this->_user_profile->getIdUser());
             }
 
             //# GRIFO - LRZ - add admin profile name
@@ -1502,8 +1478,8 @@ class UserProfileViewer
             $str_admin = ' ';
             $name_admin_profile = '';
             if (
-               $stato_admin == ADMIN_GROUP_GODADMIN ||
-               $stato_admin == ADMIN_GROUP_ADMIN
+                $stato_admin == ADMIN_GROUP_GODADMIN ||
+                $stato_admin == ADMIN_GROUP_ADMIN
             ) {
                 $name_admin_profile = $this->getRoleAdmin($this->_user_profile->getIdUser());
                 if ($name_admin_profile != '') {
@@ -1516,11 +1492,11 @@ class UserProfileViewer
 
         // Grifo: ticket #19467
         // view only admin profile CR: #19813
-        $level_current_user = Docebo::user()->user_level;
+        $level_current_user = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         if (
-               $level_current_user == ADMIN_GROUP_GODADMIN ||
-               $level_current_user == ADMIN_GROUP_ADMIN
-            ) {
+            $level_current_user == ADMIN_GROUP_GODADMIN ||
+            $level_current_user == ADMIN_GROUP_ADMIN
+        ) {
             $html .= '<tr><th scope="col" colspan="2" id="up_type2">'.$lv_lang->def('_MANAGED_BY').'</th></tr>';
             $str_manage_org_by = $this->getManagerOrgBy($this->_user_profile->getIdUser());
             $str_manage_group_by = $this->getManagerGroupBy($this->_user_profile->getIdUser());
@@ -1560,9 +1536,9 @@ class UserProfileViewer
                 . '<td>'
                 . '' . $actual_size . ' / ' . $max_quota . ' MB '
                 . ($max_quota == USER_QUOTA_UNLIMIT
-                            ? ' ' . $actual_size . ' MB / ' . $this->_lang->def('_UNLIMITED_QUOTA') . ' '
-                            : Util::draw_progress_bar($percent, true, 'progress_bar up_quota_bar', false, false)
-                        )
+                    ? ' ' . $actual_size . ' MB / ' . $this->_lang->def('_UNLIMITED_QUOTA') . ' '
+                    : Util::draw_progress_bar($percent, true, 'progress_bar up_quota_bar', false, false)
+                )
                 . '</td></tr>';
         }
 
@@ -1610,31 +1586,31 @@ class UserProfileViewer
 
         //signature --------------------------------------------------------------------------
         $html .= '<b id="up_signature_b">' . $this->_lang->def('_SIGNATURE') . ':</b>'
-                . '<div id="up_signature">' . $this->user_info[ACL_INFO_SIGNATURE] . '</div>';
+            . '<div id="up_signature">' . $this->user_info[ACL_INFO_SIGNATURE] . '</div>';
 
         // link to modify
         if ($edit_mode) {
             $html .= '<ul class="up_profile_action">';
             if ($this->_user_profile->policyMode()) {
                 $html .= '<li id="up_modify_policy">'
-                        . '<a href="' . $this->_url_man->getUrl($this->_varname_action . '=mod_policy') . '"
+                    . '<a href="' . $this->_url_man->getUrl($this->_varname_action . '=mod_policy') . '"
 							 title="' . $this->_lang->def('_VIEW_PERMISSION') . '">'
-                            . $this->_lang->def('_CHANGEPOLICY') . '</a>'
+                    . $this->_lang->def('_CHANGEPOLICY') . '</a>'
                     . '</li>';
             }
             if (!$this->_user_profile->godMode()) {
                 $html .= '<li id="up_modify_pwd">'
-                            . '<a href="' . $this->_url_man->getUrl($this->_varname_action . '=mod_password') . '"
+                    . '<a href="' . $this->_url_man->getUrl($this->_varname_action . '=mod_password') . '"
 								 title="' . $this->_lang->def('_CHANGEPASSWORD') . '">'
-                                . $this->_lang->def('_CHANGEPASSWORD') . '</a>'
-                        . '</li>';
+                    . $this->_lang->def('_CHANGEPASSWORD') . '</a>'
+                    . '</li>';
             }
             $html .= '<li id="up_modify_profile">'
-                        . '<a href="' . $this->_url_man->getUrl($this->_varname_action . '=mod_profile') . '"
+                . '<a href="' . $this->_url_man->getUrl($this->_varname_action . '=mod_profile') . '"
 							 title="' . $this->_lang->def('_MOD') . '">'
-                            . $this->_lang->def('_MOD') . '</a>'
-                    . '</li>'
-                    . '</ul>';
+                . $this->_lang->def('_MOD') . '</a>'
+                . '</li>'
+                . '</ul>';
         }
         $html .= '</div>';
 
@@ -1840,10 +1816,10 @@ class UserProfileViewer
         require_once _adm_ . '/lib/lib.myfiles.php';
 
         $user_file = new MyFilesPolicy($this->_user_profile->getIdUser(),
-                                        $this->getViewer(),
-                                        $this->_up_data_man->isFriend($this->_user_profile->getIdUser(), $this->getViewer()),
-                                        $this->_up_data_man->isTeacher($this->getViewer())
-                                    );
+            $this->getViewer(),
+            $this->_up_data_man->isFriend($this->_user_profile->getIdUser(), $this->getViewer()),
+            $this->_up_data_man->isTeacher($this->getViewer())
+        );
 
         $num_files = $user_file->getFileCount($type);
 
@@ -1851,7 +1827,7 @@ class UserProfileViewer
         $ini = $nav_bar->getSelectedElement();
         $nav_bar->setLink($this->_url_man->getUrl($this->_varname_action . '=view_files&type=' . $type . ''));
 
-        $re_files = $user_file->getFileList($type, false, $ini, UP_FILE_LIMIT);
+        $re_files = $user_file->getFileList($type, false, false, $ini, UP_FILE_LIMIT);
 
         switch ($type) {
             case 'image':
@@ -1872,13 +1848,13 @@ class UserProfileViewer
                             $class_limit = 'image_limit_height';
                         }
                         $html .= '<li>'
-                                . '<a href="' . $this->_url_man->getUrl($this->_varname_action . '=file_details&id_user=' . $this->_id_user . '&type=' . $type . '&id_file=' . $image[MYFILE_ID_FILE]) . '">'
-                                . '<img class="user_image ' . $class_limit . '" src="' . $GLOBALS['where_files_relative'] . $user_file->getFileAddress($image[MYFILE_FILE_NAME]) . '" '
-                                    . 'title="' . strip_tags($image[MYFILE_DESCRIPTION]) . '" alt="' . strip_tags($image[MYFILE_TITLE]) . '" />'
-                                . '<br/>'
-                                . $image[MYFILE_TITLE]
-                                . '</a>'
-                                . '</li>';
+                            . '<a href="' . $this->_url_man->getUrl($this->_varname_action . '=file_details&id_user=' . $this->_id_user . '&type=' . $type . '&id_file=' . $image[MYFILE_ID_FILE]) . '">'
+                            . '<img class="user_image ' . $class_limit . '" src="' . $GLOBALS['where_files_relative'] . $user_file->getFileAddress($image[MYFILE_FILE_NAME]) . '" '
+                            . 'title="' . strip_tags($image[MYFILE_DESCRIPTION]) . '" alt="' . strip_tags($image[MYFILE_TITLE]) . '" />'
+                            . '<br/>'
+                            . $image[MYFILE_TITLE]
+                            . '</a>'
+                            . '</li>';
                     }
                     $html .= '</ul>';
                 } else {
@@ -1887,7 +1863,7 @@ class UserProfileViewer
                 $html .= '<div class="nofloat"></div>'
                     . '</div>';
 
-             break;
+                break;
             case 'video':
                 $html .= '<h2 class="up_type1">' . $this->_lang->def('_USER_VIDEOS') . '</h2>'
 
@@ -1899,22 +1875,22 @@ class UserProfileViewer
                     $html .= '<ul class="video_list">';
                     while ($video = $user_file->fetch_row($re_files)) {
                         $play_code = getEmbedPlay($GLOBALS['where_files_relative'] . $user_file->getFilePath(),
-                                                $video[MYFILE_FILE_NAME],
-                                                false,
-                                                '250',
-                                                false,
-                                                false);
+                            $video[MYFILE_FILE_NAME],
+                            false,
+                            '250',
+                            false,
+                            false);
 
                         $class_limit = '';
                         $html .= '<li>'
-                                . ($play_code === false
-                                    ? implode('_', array_slice(explode('_', $video[MYFILE_FILE_NAME]), 3))
-                                    : $play_code)
-                                . '<br />'
-                                . '<a href="' . $this->_url_man->getUrl($this->_varname_action . '=file_details&id_user=' . $this->_id_user . '&type=' . $type . '&id_file=' . $video[MYFILE_ID_FILE]) . '">'
-                                . $video[MYFILE_TITLE] . ($play_code === false ? ' (' . $this->_lang->def('_DOWNLOAD') . ')' : '')
-                                . '</a>'
-                                . '</li>';
+                            . ($play_code === false
+                                ? implode('_', array_slice(explode('_', $video[MYFILE_FILE_NAME]), 3))
+                                : $play_code)
+                            . '<br />'
+                            . '<a href="' . $this->_url_man->getUrl($this->_varname_action . '=file_details&id_user=' . $this->_id_user . '&type=' . $type . '&id_file=' . $video[MYFILE_ID_FILE]) . '">'
+                            . $video[MYFILE_TITLE] . ($play_code === false ? ' (' . $this->_lang->def('_DOWNLOAD') . ')' : '')
+                            . '</a>'
+                            . '</li>';
                     }
                     $html .= '</ul>';
                 } else {
@@ -1923,7 +1899,7 @@ class UserProfileViewer
                 $html .= '<div class="nofloat"></div>'
                     . '</div>';
 
-             break;
+                break;
             case 'audio':
                 $html .= '<h2 class="up_type1">' . $this->_lang->def('_USER_AUDIO') . '</h2>'
 
@@ -1935,22 +1911,22 @@ class UserProfileViewer
                     $html .= '<ul class="video_list">';
                     while ($audio = $user_file->fetch_row($re_files)) {
                         $play_code = getEmbedPlay($GLOBALS['where_files_relative'] . $user_file->getFilePath(),
-                                                $audio[MYFILE_FILE_NAME],
-                                                false,
-                                                '250',
-                                                false,
-                                                false);
+                            $audio[MYFILE_FILE_NAME],
+                            false,
+                            '250',
+                            false,
+                            false);
 
                         $class_limit = '';
                         $html .= '<li>'
-                                . ($play_code === false
-                                    ? implode('_', array_slice(explode('_', $audio[MYFILE_FILE_NAME]), 3))
-                                    : $play_code)
-                                . '<br />'
-                                . '<a href="' . $this->_url_man->getUrl($this->_varname_action . '=file_details&id_user=' . $this->_id_user . '&type=' . $type . '&id_file=' . $audio[MYFILE_ID_FILE]) . '">'
-                                . $audio[MYFILE_TITLE] . ($play_code === false ? ' (' . $this->_lang->def('_DOWNLOAD') . ')' : '')
-                                . '</a>'
-                                . '</li>';
+                            . ($play_code === false
+                                ? implode('_', array_slice(explode('_', $audio[MYFILE_FILE_NAME]), 3))
+                                : $play_code)
+                            . '<br />'
+                            . '<a href="' . $this->_url_man->getUrl($this->_varname_action . '=file_details&id_user=' . $this->_id_user . '&type=' . $type . '&id_file=' . $audio[MYFILE_ID_FILE]) . '">'
+                            . $audio[MYFILE_TITLE] . ($play_code === false ? ' (' . $this->_lang->def('_DOWNLOAD') . ')' : '')
+                            . '</a>'
+                            . '</li>';
                     }
                     $html .= '</ul>';
                 } else {
@@ -1959,7 +1935,7 @@ class UserProfileViewer
                 $html .= '<div class="nofloat"></div>'
                     . '</div>';
 
-             break;
+                break;
             case 'other':
                 $html .= '<h2 class="up_type1">' . $this->_lang->def('_USER_OTHER') . '</h2>'
 
@@ -1972,13 +1948,13 @@ class UserProfileViewer
                     while ($other = $user_file->fetch_row($re_files)) {
                         $class_limit = '';
                         $html .= '<li>'
-                                . '<a href="' . $this->_url_man->getUrl($this->_varname_action . '=file_details&id_user=' . $this->_id_user . '&type=' . $type . '&id_file=' . $other[MYFILE_ID_FILE]) . '">'
-                                . '<img src="' . getPathImage('fw') . mimeDetect($user_file->getFilePath() . $other[MYFILE_FILE_NAME]) . '" alt="myme-type" />'
-                                . $other[MYFILE_TITLE]
-                                . '</a>'
-                                . '<br/>'
-                                . $other[MYFILE_DESCRIPTION]
-                                . '</li>';
+                            . '<a href="' . $this->_url_man->getUrl($this->_varname_action . '=file_details&id_user=' . $this->_id_user . '&type=' . $type . '&id_file=' . $other[MYFILE_ID_FILE]) . '">'
+                            . '<img src="' . getPathImage('fw') . mimeDetect($user_file->getFilePath() . $other[MYFILE_FILE_NAME]) . '" alt="myme-type" />'
+                            . $other[MYFILE_TITLE]
+                            . '</a>'
+                            . '<br/>'
+                            . $other[MYFILE_DESCRIPTION]
+                            . '</li>';
                     }
                     $html .= '</ul>';
                 } else {
@@ -1987,7 +1963,7 @@ class UserProfileViewer
                 $html .= '<div class="nofloat"></div>'
                     . '</div>';
 
-             break;
+                break;
         }
         $html .= $nav_bar->getNavBar($ini);
         $html .= '</div>';
@@ -2014,10 +1990,10 @@ class UserProfileViewer
         require_once _adm_ . '/lib/lib.myfiles.php';
 
         $user_file = new MyFilesPolicy($this->_user_profile->getIdUser(),
-                                        $this->getViewer(),
-                                        $this->_up_data_man->isFriend($this->_user_profile->getIdUser(), $this->getViewer()),
-                                        $this->_up_data_man->isTeacher($this->getViewer())
-                                    );
+            $this->getViewer(),
+            $this->_up_data_man->isFriend($this->_user_profile->getIdUser(), $this->getViewer()),
+            $this->_up_data_man->isTeacher($this->getViewer())
+        );
 
         $file = $user_file->getFileInfo($id_file);
 
@@ -2037,32 +2013,32 @@ class UserProfileViewer
         }
         $id_thread = FormaLms\lib\Get::req('idThread', DOTY_INT, 0);
         $html .= getBackUi($this->_url_man->getUrl('id_user=' . $this->_id_user . '&' . $this->_varname_action . '=view_files&type=' . $type . '&idThread=' . $id_thread . ''),
-                $this->_lang->def('_BACK'));
+            $this->_lang->def('_BACK'));
 
         $html .= '<div class="up_box_details">';
         $type = $file[MYFILE_AREA];
         switch ($type) {
             case 'image':
                 $html .= '<img src="' . $GLOBALS['where_files_relative'] . $user_file->getFileAddress($file[MYFILE_FILE_NAME]) . '" '
-                        . 'title="' . strip_tags($file[MYFILE_DESCRIPTION]) . '" alt="' . strip_tags($file[MYFILE_TITLE]) . '" />';
-             break;
+                    . 'title="' . strip_tags($file[MYFILE_DESCRIPTION]) . '" alt="' . strip_tags($file[MYFILE_TITLE]) . '" />';
+                break;
             case 'video':
                 require_once _base_ . '/lib/lib.multimedia.php';
                 $html .= getEmbedPlay($GLOBALS['where_files_relative'] . $user_file->getFilePath(), $file[MYFILE_FILE_NAME]);
-             break;
+                break;
             case 'audio':
                 require_once _base_ . '/lib/lib.multimedia.php';
                 $html .= getEmbedPlay($GLOBALS['where_files_relative'] . $user_file->getFilePath(), $file[MYFILE_FILE_NAME]);
-             break;
+                break;
             case 'other':
                 require_once _base_ . '/lib/lib.multimedia.php';
                 $html .= getEmbedPlay($user_file->getFilePath(), $file[MYFILE_FILE_NAME]);
-             break;
+                break;
         }
         $html .= '</div>';
         $id_thread = FormaLms\lib\Get::req('idThread', DOTY_INT, 0);
         $html .= getBackUi($this->_url_man->getUrl('id_user=' . $this->_id_user . '&' . $this->_varname_action . '=view_files&type=' . $type . '&idThread=' . $id_thread . ''),
-                $this->_lang->def('_BACK'));
+            $this->_lang->def('_BACK'));
 
         $html .= '</div>';
 
@@ -2079,7 +2055,7 @@ class UserProfileViewer
 
         $edit_mode = $this->_user_profile->editMode();
 
-        list($class_picture, $this->max_dim_avatar) = $this->getPhotoLimit($picture);
+        [$class_picture, $this->max_dim_avatar] = $this->getPhotoLimit($picture);
 
         // main container ---------------------------------------------------------------------
         $html = '<div class="up_user_info">';
@@ -2097,7 +2073,7 @@ class UserProfileViewer
 
         // user standard info -----------------------------------------------------------------
         $html .= '<table summary="' . $this->_lang->def('_USERPROFILE_SUMMARY') . '">'
-                . '<caption class="up_name">' . $this->resolveUsername(false) . '</caption>';
+            . '<caption class="up_name">' . $this->resolveUsername(false) . '</caption>';
 
         $html .= $this->getUIRowCode($this->_lang->def('_USERNAME'), $this->acl_man->relativeId($this->user_info[ACL_INFO_USERID]))
             . $this->getUIRowCode($this->_lang->def('_LASTNAME'), $this->user_info[ACL_INFO_LASTNAME])
@@ -2132,11 +2108,11 @@ class UserProfileViewer
         $this->loadUserData($this->getViewer());
         $is_online = $this->_up_data_man->isOnline($this->_user_profile->getIdUser());
         $online_status = ($is_online === 'unk'
-                            ? $this->_lang->def('_HIDDEN')
-                            : ($is_online ? $this->_lang->def('_USERONLINE') : $this->_lang->def('_USEROFFLINE'))
-                        );
+            ? $this->_lang->def('_HIDDEN')
+            : ($is_online ? $this->_lang->def('_USERONLINE') : $this->_lang->def('_USEROFFLINE'))
+        );
 
-        list($class_picture, $this->max_dim_avatar) = $this->getPhotoLimit($picture);
+        [$class_picture, $this->max_dim_avatar] = $this->getPhotoLimit($picture);
 
         // main container ---------------------------------------------------------------------
         $html = '<div style="width:95%;">';
@@ -2161,7 +2137,7 @@ class UserProfileViewer
         //require_once(_base_.'/lib/lib.urlmanager.php');
         $link = '<a href="' . $this->_url_man->getUrl('modname=profile&op=profile&id_user=' . $this->_id_user . '&back=1&ap=goprofile">');
         $html .= '<table summary="' . $this->_lang->def('_USERPROFILE_SUMMARY') . '">'
-                . '<caption class="up_name">' . $link . $this->resolveUsername(false) . '</a></caption>';
+            . '<caption class="up_name">' . $link . $this->resolveUsername(false) . '</a></caption>';
 
         $html .= $this->getUIRowCode($this->_lang->def('_USERNAME'), $this->acl_man->relativeId($this->user_info[ACL_INFO_USERID]))
             . $this->getUIRowCode($this->_lang->def('_LASTNAME'), $this->user_info[ACL_INFO_LASTNAME])
@@ -2170,7 +2146,7 @@ class UserProfileViewer
                 ? '<a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>'
                 : $this->_lang->def('_HIDDEN')));
         if ($this->getViewer() != $this->_id_user) {
-            if ($this->_up_data_man->isFriend($this->_id_user, getLogUserId())) {
+            if ($this->_up_data_man->isFriend($this->_id_user, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
                 $html .= $this->getUIRowCode($this->_lang->def('_IS_FRIEND'), $this->_lang->def('_YES'));
             } else {
                 $html .= $this->getUIRowCode($this->_lang->def('_IS_FRIEND'), $this->_lang->def('_NO'));
@@ -2197,15 +2173,15 @@ class UserProfileViewer
     public function homePhotoProfile($picture = false, $viewer = false, $intest = false)
     {
         $this->loadUserData($this->getViewer());
-        $acl_man = &Docebo::user()->getAclManager();
-        list($class_picture, $this->max_dim_avatar) = $this->getPhotoLimit($picture);
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
+        [$class_picture, $this->max_dim_avatar] = $this->getPhotoLimit($picture);
 
         $html = '';
 
         $html .= ''
-                . (($this->user_info[ACL_INFO_AVATAR] != '')
-                    ? $this->getPASrcHome($this->user_info[ACL_INFO_AVATAR], $this->_lang->def('_AVATAR'), 'boxed') . ''
-                    : '<img width="30px" width="30px"  class="avatar" src="' . getPathImage() . 'standard/user.png" alt="' . $this->_lang->def('_NOAVATAR') . '" /> ')
+            . (($this->user_info[ACL_INFO_AVATAR] != '')
+                ? $this->getPASrcHome($this->user_info[ACL_INFO_AVATAR], $this->_lang->def('_AVATAR'), 'boxed') . ''
+                : '<img width="30px" width="30px"  class="avatar" src="' . getPathImage() . 'standard/user.png" alt="' . $this->_lang->def('_NOAVATAR') . '" /> ')
             . '';
 
         return $html;
@@ -2214,9 +2190,10 @@ class UserProfileViewer
     public function homeUserProfile($picture = false, $viewer = false, $intest = false)
     { //crea la parte del profilo riguardante la foto e i certificati/messaggi
         $this->loadUserData($this->getViewer());
-
-        list($class_picture, $this->max_dim_avatar) = $this->getPhotoLimit($picture);
-
+        $unread_num = 0;
+        $perm_message = false;
+        [$class_picture, $this->max_dim_avatar] = $this->getPhotoLimit($picture);
+        $pendent = 0;
         //$html = ' <div class="container-fluid"> <div class="row">';
         $html = '<div class="row profile">';
 
@@ -2225,7 +2202,7 @@ class UserProfileViewer
             $perm_message = true;
             require_once _adm_ . '/lib/lib.message.php';
             $msg = new Man_Message();
-            $unread_num = $msg->getCountUnreaded(getLogUserId(), [], '', true);
+            $unread_num = $msg->getCountUnreaded(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), [], '', true);
         }
 
         if ($ma->currentCanAccessObj('mo_7')) {
@@ -2237,33 +2214,29 @@ class UserProfileViewer
         }
 
         $html .= '<div class="col-xs-5">'
-                    . (($this->user_info[ACL_INFO_AVATAR] != '') ? $this->getPASrc($this->user_info[ACL_INFO_AVATAR], $this->_lang->def('_AVATAR'), 'boxed') : '<div class="boxed" style="background-image: url(' . getPathRestylingImage() . ')images/icons/user-panel/icon--up-photo-placeholder.png"></div>')
-                . '</div>
+            . (($this->user_info[ACL_INFO_AVATAR] != '') ? $this->getPASrc($this->user_info[ACL_INFO_AVATAR], $this->_lang->def('_AVATAR'), 'boxed') : '<div class="boxed" style="background-image: url(' . getPathRestylingImage() . ')images/icons/user-panel/icon--up-photo-placeholder.png"></div>')
+            . '</div>
                    <div class="col-xs-7">';
 
         if (FormaLms\lib\Get::sett('profile_modify') == 'redirect' && FormaLms\lib\Get::sett('profile_modify_url')) {
             $html .= '<a href="' . FormaLms\lib\Get::sett('profile_modify_url') . '" target="_blank" title="' . Lang::t('_PROFILE', 'profile') . '">
                           <span class="glyphicon glyphicon-pencil">' . Lang::t('_PROFILE', 'profile') . '</span>
                       </a>
-                      <a href="' . FormaLms\lib\Get::sett('profile_modify_url') . '" target="_blank">'
-                      . $this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME])
-                      . '</a>
+                      <br><span><b>'.$this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME]).'</b></span>
                       <a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>
                    ';
         } elseif (FormaLms\lib\Get::sett('profile_modify') != 'disallow') {
             $html .= '<a href="index.php?r=lms/profile/show" title="' . Lang::t('_PROFILE', 'profile') . '">
                           <span class="glyphicon glyphicon-pencil">' . Lang::t('_PROFILE', 'profile') . '</span>
                       </a>
-                      <a href="index.php?r=lms/profile/show">'
-                      . $this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME])
-                      . '</a>
+                      <br><span><b>'.$this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME]).'</b></span>
                       <a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>
                    ';
         } else {
             $html .= '<a style="display:none;"></a>
    					<a href="index.php?r=lms/profile/show">'
-                      . $this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME])
-                      . '</a>
+                . $this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME])
+                . '</a>
                       <a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>
                    ';
         }
@@ -2288,6 +2261,10 @@ class UserProfileViewer
         if ($unread_num == 0 && $perm_message) {
             $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?r=message/show&sop=unregistercourse">' . Lang::t('_MESSAGES', 'standard') . '</a></div>';
         }
+
+        $buttonsHtml = Events::trigger('lms.profile.buttons', ['manager' => $ma, 'html' => $html]);
+
+        $html = $buttonsHtml['html'];
 
         $html .= '</div>'; //chiusura pulsanti certificati-messaggi
 
@@ -2334,7 +2311,7 @@ class UserProfileViewer
                 } //end foreach
             }
 
-            require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.certificate.php');
             $cert = new Certificate();
 
             $filter['id_user'] = $this->_id_user;
@@ -2368,15 +2345,15 @@ class UserProfileViewer
     {
         $this->loadUserData($this->getViewer());
 
-        list($class_picture, $this->max_dim_avatar) = $this->getPhotoLimit($picture);
+        [$class_picture, $this->max_dim_avatar] = $this->getPhotoLimit($picture);
 
         // main container ---------------------------------------------------------------------
         $data = [];
         $data['display_name'] = $this->resolveUsername();
 
         $data['avatar'] = (($this->user_info[ACL_INFO_AVATAR] != '')
-                ? $this->getPASrc($this->user_info[ACL_INFO_AVATAR], $this->_lang->def('_AVATAR'), $class_picture)
-                : '<img class="' . $class_picture . '" src="' . getPathImage() . 'standard/user.png" alt="' . $this->_lang->def('_NOAVATAR') . '" />');
+            ? $this->getPASrc($this->user_info[ACL_INFO_AVATAR], $this->_lang->def('_AVATAR'), $class_picture)
+            : '<img class="' . $class_picture . '" src="' . getPathImage() . 'standard/user.png" alt="' . $this->_lang->def('_NOAVATAR') . '" />');
 
         $data['actions'] = $this->getUserRelatedAction('', false, true);
 
@@ -2388,24 +2365,24 @@ class UserProfileViewer
     public function userIdMailProfile($picture = false, $viewer = false, $intest = true)
     {
         $this->loadUserData($this->getViewer());
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $html = '<div class="user_presentation">' . "\n"
 
             . '<div class="mini_block">' . "\n\t"
-                . '<p class="userinfo">' . "\n\t\t"
-                    . '<b>' . $this->_lang->def('_USERNAME') . ':</b> ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_USERID])
-                . '</p>' . "\n\t"
-                . '<p class="userinfo">' . "\n\t\t"
-                    . '<b>' . $this->_lang->def('_EMAIL') . ':</b> '
-                    . ($this->user_info[ACL_INFO_EMAIL] !== false
-                        ? '<a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>'
-                        : $this->_lang->def('_HIDDEN')
-                    ) . "\n\t"
-                . '</p>' . "\n\t"
+            . '<p class="userinfo">' . "\n\t\t"
+            . '<b>' . $this->_lang->def('_USERNAME') . ':</b> ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_USERID])
+            . '</p>' . "\n\t"
+            . '<p class="userinfo">' . "\n\t\t"
+            . '<b>' . $this->_lang->def('_EMAIL') . ':</b> '
+            . ($this->user_info[ACL_INFO_EMAIL] !== false
+                ? '<a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>'
+                : $this->_lang->def('_HIDDEN')
+            ) . "\n\t"
+            . '</p>' . "\n\t"
             . '</div>' . "\n"
 
-        . '</div>' . "\n";
+            . '</div>' . "\n";
 
         return $html;
     }
@@ -2423,34 +2400,34 @@ class UserProfileViewer
         $preference = new UserPreferences($this->_user_profile->getIdUser());
 
         $html = '<div class="up_user_info">'
-                . '<div class="up_name">' . $this->resolveUsername(false, $this->_user_profile->getIdUser()) . '</div>';
+            . '<div class="up_name">' . $this->resolveUsername(false, $this->_user_profile->getIdUser()) . '</div>';
         // user standard info -----------------------------------------------------------------
         $html .= Form::openForm('mod_up', $this->_url_man->getUrl($this->_varname_action . '=saveinfo'), false, false, 'multipart/form-data');
         if ($this->_user_profile->godMode()) {
             $html .= Form::getTextfield($this->_lang->def('_USERNAME'),
-                                        'up_userid',
-                                        'up_userid',
-                                        '255',
-                                        FormaLms\lib\Get::req('up_userid', DOTY_MIXED, $this->acl_man->relativeId($this->user_info[ACL_INFO_USERID]), true));
+                'up_userid',
+                'up_userid',
+                '255',
+                FormaLms\lib\Get::req('up_userid', DOTY_MIXED, $this->acl_man->relativeId($this->user_info[ACL_INFO_USERID]), true));
         } else {
             $html .= Form::getLineBox($this->_lang->def('_USERNAME'),
-                                        $this->acl_man->relativeId($this->user_info[ACL_INFO_USERID]));
+                $this->acl_man->relativeId($this->user_info[ACL_INFO_USERID]));
         }
         $html .= Form::getTextfield($this->_lang->def('_LASTNAME'),
-                                        'up_lastname',
-                                        'up_lastname',
-                                        '255',
-                                        FormaLms\lib\Get::req('up_lastname', DOTY_MIXED, $this->user_info[ACL_INFO_LASTNAME], true))
-                . Form::getTextfield($this->_lang->def('_FIRSTNAME'),
-                                        'up_firstname',
-                                        'up_firstname',
-                                        '255',
-                                        FormaLms\lib\Get::req('up_firstname', DOTY_MIXED, $this->user_info[ACL_INFO_FIRSTNAME], true))
-                . Form::getTextfield($this->_lang->def('_EMAIL'),
-                                        'up_email',
-                                        'up_email',
-                                        '255',
-                                        FormaLms\lib\Get::req('up_email', DOTY_MIXED, $this->user_info[ACL_INFO_EMAIL], true));
+                'up_lastname',
+                'up_lastname',
+                '255',
+                FormaLms\lib\Get::req('up_lastname', DOTY_MIXED, $this->user_info[ACL_INFO_LASTNAME], true))
+            . Form::getTextfield($this->_lang->def('_FIRSTNAME'),
+                'up_firstname',
+                'up_firstname',
+                '255',
+                FormaLms\lib\Get::req('up_firstname', DOTY_MIXED, $this->user_info[ACL_INFO_FIRSTNAME], true))
+            . Form::getTextfield($this->_lang->def('_EMAIL'),
+                'up_email',
+                'up_email',
+                '255',
+                FormaLms\lib\Get::req('up_email', DOTY_MIXED, $this->user_info[ACL_INFO_EMAIL], true));
         // user extra field ------------------------------------------------------------------
 
         $html .= $this->getPlayField();
@@ -2458,24 +2435,24 @@ class UserProfileViewer
         $html .= $preference->getModifyMask('ui.');
 
         if ($this->_user_profile->godMode()) {
-            $acl_man = &Docebo::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
 
             $html .= Form::getPassword(Lang::t('_NEW_PASSWORD', 'register'),
-                                    'up_new_pwd',
-                                    'up_new_pwd',
-                                    '255');
+                'up_new_pwd',
+                'up_new_pwd',
+                '255');
 
             $html .= Form::getPassword(Lang::t('_RETYPE_PASSWORD', 'register'),
-                                    'up_repeat_pwd',
-                                    'up_repeat_pwd',
-                                    '255');
+                'up_repeat_pwd',
+                'up_repeat_pwd',
+                '255');
 
-            if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN && FormaLms\lib\Get::cur_plat() === 'framework') {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN && FormaLms\lib\Get::cur_plat() === 'framework') {
                 $html .= Form::getCheckBox(Lang::t('_FORCE_PASSWORD_CHANGE', 'admin_directory'), 'force_changepwd', 'force_changepwd', 1, $this->user_info[ACL_INFO_FORCE_CHANGE]);
             }
 
-            $lv_lang = &DoceboLanguage::createInstance('admin_directory', 'framework');
-            if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
+            $lv_lang = FormaLanguage::createInstance('admin_directory', 'framework');
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
                 $level_list = [
                     ADMIN_GROUP_GODADMIN => $lv_lang->def('_DIRECTORY_' . ADMIN_GROUP_GODADMIN),
                     ADMIN_GROUP_ADMIN => $lv_lang->def('_DIRECTORY_' . ADMIN_GROUP_ADMIN),
@@ -2488,18 +2465,18 @@ class UserProfileViewer
             }
 
             $html .= Form::getDropdown($this->_lang->def('_LEVEL'),
-                                    'up_level',
-                                    'up_level',
-                                    $level_list,
-                                    $acl_man->getUserLevelId($this->_user_profile->getIdUser()));
+                'up_level',
+                'up_level',
+                $level_list,
+                $acl_man->getUserLevelId($this->_user_profile->getIdUser()));
         }
 
         //signature --------------------------------------------------------------------------
 
         $html .= Form::getTextarea($this->_lang->def('_SIGNATURE'),
-                                    'up_signature',
-                                    'up_signature',
-                                    FormaLms\lib\Get::req('up_signature', DOTY_MIXED, $this->user_info[ACL_INFO_SIGNATURE], true));
+            'up_signature',
+            'up_signature',
+            FormaLms\lib\Get::req('up_signature', DOTY_MIXED, $this->user_info[ACL_INFO_SIGNATURE], true));
 
         if (isset($_GET['modname']) && $_GET['modname'] == 'reservation') {
             $html .= Form::openButtonSpace()
@@ -2573,105 +2550,12 @@ class UserProfileViewer
     /**
      * gui for user info password.
      */
-    public function getUserPwdModUi()
+    public function getUserPwdModUi($error_array = false)
     {
-        require_once _base_ . '/lib/lib.form.php';
-
-        $html = '<div class="up_user_info">'
-                . '<div class="up_name">' . $this->resolveUsername(false, getLogUserId()) . '</div>';
-        // user standard info -----------------------------------------------------------------
-        $html .= Form::openForm('mod_pwd', $this->_url_man->getUrl($this->_varname_action . '=savepwd'));
-
-        if (!$this->_user_profile->godMode()) {
-            $html .= Form::getPassword($this->_lang->def('_OLD_PWD'),
-                                        'up_old_pwd',
-                                        'up_old_pwd',
-                                        '255');
-        }
-        $html .= Form::getPassword(Lang::t('_NEW_PASSWORD', 'register'),
-                                    'up_new_pwd',
-                                    'up_new_pwd',
-                                    '255')
-            . Form::getPassword(Lang::t('_RETYPE_PASSWORD', 'register'),
-                                    'up_repeat_pwd',
-                                    'up_repeat_pwd',
-                                    '255');
-
-        $html .= Form::openButtonSpace()
-                . Form::getButton('save', 'save', $this->_lang->def('_SAVE'));
-        if (FormaLms\lib\Get::sett('profile_modify') == 'allow') {
-            $html .= Form::getButton('undo', 'undo', $this->_lang->def('_UNDO'));
-        }
-        $html .= Form::closeButtonSpace();
-
-        $html .= Form::closeForm()
-                . '</div>';
-
+        $user_manager = new UserManager();
+        $q_string = $this->_varname_action . '=savepwd';
+        $html = $user_manager->getElapsedPassword($this->_url_man->getUrl($q_string), $error_array);
         return $html;
-    }
-
-    /**
-     * check the user password filled in the mod pwd gui.
-     *
-     * @return mixed boolean true if all is ok , else a text that describe the error
-     */
-    public function checkUserPwd()
-    {
-        $acl_man = &Docebo::user()->getAclManager();
-
-        $this->loadUserData(getLogUserId());
-        if (!$this->_user_profile->godMode()) {
-            if (!$acl_man->password_verify_update($_POST['up_old_pwd'], $this->user_info[ACL_INFO_PASS], getLogUserId())) {
-                return $this->_lang->def('_OLDPASSWRONG');
-            }
-            // control password
-            require_once \Forma::inc(_base_ . '/lib/lib.usermanager.php');
-            $options = new UserManagerOption();
-            $l_pass_min_char = $options->getOption('pass_min_char');
-            if (strlen($_POST['up_new_pwd']) < $l_pass_min_char) {
-                return $this->_lang->def('_PASSWORD_TOO_SHORT', 'register');
-            }
-            if (FormaLms\lib\Get::sett('pass_alfanumeric') == 'on') {
-                if (!preg_match('/[a-z]/i', $_POST['up_new_pwd']) || !preg_match('/[0-9]/', $_POST['up_new_pwd'])) {
-                    return $this->_lang->def('_ERR_PASSWORD_MUSTBE_ALPHA', 'register');
-                }
-            }
-            //check password history
-
-            if (FormaLms\lib\Get::sett('user_pwd_history_length', '0') != 0) {
-                $new_pwd = $acl_man->encrypt($_POST['up_new_pwd']);
-                if ($user_info[ACL_INFO_PASS] == $new_pwd) {
-                    return str_replace('[diff_pwd]', FormaLms\lib\Get::sett('user_pwd_history_length'), Lang::t('_REG_PASS_MUST_DIFF', 'profile'));
-                }
-                $re_pwd = sql_query('SELECT passw '
-                . ' FROM ' . $GLOBALS['prefix_fw'] . '_password_history'
-                . ' WHERE idst_user = ' . getLogUserId() . ''
-                . ' ORDER BY pwd_date DESC');
-
-                list($pwd_history) = sql_fetch_row($re_pwd);
-                for ($i = 0; $pwd_history && $i < FormaLms\lib\Get::sett('user_pwd_history_length'); ++$i) {
-                    if ($pwd_history == $new_pwd) {
-                        return str_replace('[diff_pwd]', FormaLms\lib\Get::sett('user_pwd_history_length'), Lang::t('_REG_PASS_MUST_DIFF', 'profile'));
-                    }
-                    list($pwd_history) = sql_fetch_row($re_pwd);
-                }
-            }
-        }
-        if ($_POST['up_new_pwd'] != $_POST['up_repeat_pwd']) {
-            return Lang::t('_ERR_PASSWORD_NO_MATCH', 'register');
-        }
-
-        return true;
-    }
-
-    /**
-     * return the password filled by the user in the mod gui.
-     *
-     * @return string the pwd filed by the user
-     */
-    public function getFilledPwd()
-    {
-        return FormaLms\lib\Get::req('up_new_pwd', DOTY_MIXED, '');
     }
 
     public function modAvatarGui()
@@ -2679,30 +2563,30 @@ class UserProfileViewer
         require_once _base_ . '/lib/lib.form.php';
         require_once _base_ . '/lib/lib.preference.php';
 
-        $this->loadUserData(getLogUserId());
+        $this->loadUserData(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
         $html = '<div class="up_user_info">'
-                . '<div class="up_name">' . $this->resolveUsername(false, getLogUserId()) . '</div>';
+            . '<div class="up_name">' . $this->resolveUsername(false, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()) . '</div>';
 
         // user standard info -----------------------------------------------------------------
         $html .= getInfoUi(str_replace('[max_px]', $this->max_dim_avatar, $this->_lang->def('_AVATAR_PHOTO_INSTRUCTION')));
         $html .= Form::openForm('mod_avatar', $this->_url_man->getUrl($this->_varname_action . '=saveavatar'), false, false, 'multipart/form-data');
 
         $html .= Form::getFilefield($this->_lang->def('_AVATAR'),
-                                        'up_avatar',
-                                        'up_avatar');
+            'up_avatar',
+            'up_avatar');
 
         if ($this->user_info[ACL_INFO_AVATAR] != '') {
             $html .= Form::getButton('delete_current', 'delete_current', $this->_lang->def('_DEL'), 'up_delete_current');
         }
 
         $html .= Form::openButtonSpace()
-                . Form::getButton('save', 'save', $this->_lang->def('_SAVE'))
-                . Form::getButton('undo', 'undo', $this->_lang->def('_UNDO'))
-                . Form::closeButtonSpace();
+            . Form::getButton('save', 'save', $this->_lang->def('_SAVE'))
+            . Form::getButton('undo', 'undo', $this->_lang->def('_UNDO'))
+            . Form::closeButtonSpace();
 
         $html .= Form::closeForm()
-                . '</div>';
+            . '</div>';
 
         return $html;
     }
@@ -2727,8 +2611,8 @@ class UserProfileViewer
         }
 
         return '<tr><th scope="row">' . $field_name . '</th>'
-                . '<td>' . $field_value . '</td>'
-                . '<td>' . $dropdown . '</td></tr>';
+            . '<td>' . $field_value . '</td>'
+            . '<td>' . $dropdown . '</td></tr>';
     }
 
     public function modUserPolicyGui()
@@ -2758,13 +2642,13 @@ class UserProfileViewer
         $html .= Form::openForm('mod_policy', $this->_url_man->getUrl($this->_varname_action . '=save_policy'));
 
         $html .= '<table class="mod_policy_table" summary="' . $this->_lang->def('_USERPROFILE_SUMMARY') . '">'
-                . '<caption class="up_name">' . $this->resolveUsername(false, $this->_id_user) . '</caption>';
+            . '<caption class="up_name">' . $this->resolveUsername(false, $this->_id_user) . '</caption>';
 
         $html .= '<thead><tr>'
-                . '<th scope="col">' . $this->_lang->def('_FIELD_NAME') . '</th>'
-                . '<th scope="col">' . $this->_lang->def('_FIELD_VALUE') . '</th>'
-                . '<th scope="col">' . $this->_lang->def('_POLICY_ASSIGNED') . '</th>'
-                . '</tr></thead>';
+            . '<th scope="col">' . $this->_lang->def('_FIELD_NAME') . '</th>'
+            . '<th scope="col">' . $this->_lang->def('_FIELD_VALUE') . '</th>'
+            . '<th scope="col">' . $this->_lang->def('_POLICY_ASSIGNED') . '</th>'
+            . '</tr></thead>';
 
         $html .= '<tbody>';
 
@@ -2773,15 +2657,15 @@ class UserProfileViewer
         if (!empty($user_field)) {
             foreach ($user_field as $id => $value) {
                 $html .= $this->getUIPolicyCode($value['name'],
-                                                $value['value'],
-                                                Form::getInputDropdown('dropdown_wh',
-                                                                        'policy_selected_' . $id,
-                                                                        'policy_selected[' . $id . ']',
-                                                                        $policy_arr,
-                                                                        (isset($field_policy[$id]) ? $field_policy[$id] : PFL_POLICY_NOONE),
-                                            ''
-                                                                    )
-                                            );
+                    $value['value'],
+                    Form::getInputDropdown('dropdown_wh',
+                        'policy_selected_' . $id,
+                        'policy_selected[' . $id . ']',
+                        $policy_arr,
+                        (isset($field_policy[$id]) ? $field_policy[$id] : PFL_POLICY_NOONE),
+                        ''
+                    )
+                );
             }
         }
 
@@ -2790,27 +2674,27 @@ class UserProfileViewer
         // end extra field -------------------------------------------------------------------
 
         $html .= $this->getUIPolicyCode($this->_lang->def('_EMAIL'),
-                                            $this->user_info[ACL_INFO_EMAIL],
-                                            Form::getInputDropdown('dropdown_wh',
-                                                'policy_selected_email',
-                                                'policy_selected[email]',
-                                                $policy_arr,
-                                                (isset($field_policy['email']) ? $field_policy['email'] : PFL_POLICY_NOONE),
-                                                ''
-                                            )
-                                        );
+            $this->user_info[ACL_INFO_EMAIL],
+            Form::getInputDropdown('dropdown_wh',
+                'policy_selected_email',
+                'policy_selected[email]',
+                $policy_arr,
+                (isset($field_policy['email']) ? $field_policy['email'] : PFL_POLICY_NOONE),
+                ''
+            )
+        );
         if (!empty($user_contacts)) {
             foreach ($user_field as $id => $value) {
                 $html .= $this->getUIPolicyCode($value['name'],
-                                                $value['value'],
-                                                Form::getInputDropdown('dropdown_wh',
-                                                                        'policy_selected_' . $id,
-                                                                        'policy_selected[' . $id . ']',
-                                                                        $policy_arr,
-                                                                        (isset($field_policy[$id]) ? $field_policy[$id] : PFL_POLICY_NOONE),
-                                                                        ''
-                                                                    )
-                                            );
+                    $value['value'],
+                    Form::getInputDropdown('dropdown_wh',
+                        'policy_selected_' . $id,
+                        'policy_selected[' . $id . ']',
+                        $policy_arr,
+                        (isset($field_policy[$id]) ? $field_policy[$id] : PFL_POLICY_NOONE),
+                        ''
+                    )
+                );
             }
         }
 
@@ -2819,35 +2703,35 @@ class UserProfileViewer
         $html .= '<tr><th scope="col" colspan="3" id="up_type2">' . $this->_lang->def('_OTHER_POLICY') . '</th></tr>';
 
         $html .= $this->getUIPolicyCode($this->_lang->def('_PRIVATE_MESSAGE_FROM'),
-                                            false,
-                                            Form::getInputDropdown('dropdown_wh',
-                                                'policy_selected_message_recipients',
-                                                'policy_selected[message_recipients]',
-                                                $reduced_policy_arr,
-                                                (isset($field_policy['message_recipients']) ? $field_policy['message_recipients'] : /*PFL_POLICY_TEACHER_AND_FRIENDS*/ PFL_POLICY_FREE),
-                                                ''
-                                            )
-                                        );
+            false,
+            Form::getInputDropdown('dropdown_wh',
+                'policy_selected_message_recipients',
+                'policy_selected[message_recipients]',
+                $reduced_policy_arr,
+                (isset($field_policy['message_recipients']) ? $field_policy['message_recipients'] : /*PFL_POLICY_TEACHER_AND_FRIENDS*/ PFL_POLICY_FREE),
+                ''
+            )
+        );
         $html .= $this->getUIPolicyCode($this->_lang->def('_SHOWME_ONLINE'),
-                                            false,
-                                            Form::getInputDropdown('dropdown_wh',
-                                                'policy_selected_online_satus',
-                                                'policy_selected[online_satus]',
-                                                $reduced_policy_arr,
-                                                (isset($field_policy['online_satus']) ? $field_policy['online_satus'] : /*PFL_POLICY_TEACHER_AND_FRIENDS*/ PFL_POLICY_FREE),
-                                                ''
-                                            )
-                                        );
+            false,
+            Form::getInputDropdown('dropdown_wh',
+                'policy_selected_online_satus',
+                'policy_selected[online_satus]',
+                $reduced_policy_arr,
+                (isset($field_policy['online_satus']) ? $field_policy['online_satus'] : /*PFL_POLICY_TEACHER_AND_FRIENDS*/ PFL_POLICY_FREE),
+                ''
+            )
+        );
 
         $html .= '</tbody></table>';
 
         $html .= Form::openButtonSpace()
-                . Form::getButton('save', 'save', $this->_lang->def('_SAVE'))
-                . Form::getButton('undo', 'undo', $this->_lang->def('_UNDO'))
-                . Form::closeButtonSpace();
+            . Form::getButton('save', 'save', $this->_lang->def('_SAVE'))
+            . Form::getButton('undo', 'undo', $this->_lang->def('_UNDO'))
+            . Form::closeButtonSpace();
 
         $html .= Form::closeForm()
-                . '</div>';
+            . '</div>';
 
         return $html;
     }
@@ -2868,25 +2752,25 @@ class UserProfileViewer
      */
     public function getCommunityInfo()
     {
-        $friend_list = &$this->_up_data_man->getUserFriend($this->_user_profile->getIdUser());
+        $friend_list = $this->_up_data_man->getUserFriend($this->_user_profile->getIdUser());
         $last_view = $this->_up_data_man->getUserProfileViewList($this->_user_profile->getIdUser(), 15);
         $user_stat = $this->_up_data_man->getUserStats($this->_user_profile->getIdUser());
 
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $html = '<h2 class="up_type1">' . $this->_lang->def('_COMMUNITY') . '</h2>';
 
         // some usefull statistic ---------------------------------------
         $html .= '<div class="up_left_block">'
             . '<h3>' . str_replace('[firstname]', $this->resolveUsername(true), $this->_lang->def('_ACTIVITY_OF')) . '</h3>'
-                . '<b>' . $this->_lang->def('_FORUM_MESSAGE') . ': </b>' . $user_stat['forum_post'] . '<br />'
-                . '<b>' . $this->_lang->def('_LOADED_FILE') . ': </b>' . $user_stat['loaded_file'] . '<br />'
-                . '<b>' . $this->_lang->def('_REGISTER_DATE') . ': </b>'
-                    . Format::date($this->user_info[ACL_INFO_REGISTER_DATE]) . Format::date($this->user_info[ACL_INFO_REGISTER_DATE], 'date')
+            . '<b>' . $this->_lang->def('_FORUM_MESSAGE') . ': </b>' . $user_stat['forum_post'] . '<br />'
+            . '<b>' . $this->_lang->def('_LOADED_FILE') . ': </b>' . $user_stat['loaded_file'] . '<br />'
+            . '<b>' . $this->_lang->def('_REGISTER_DATE') . ': </b>'
+            . Format::date($this->user_info[ACL_INFO_REGISTER_DATE], 'date')
             . '</div>';
         if (!empty($friend_list) && is_array($friend_list)) {
             $html .= '<div class="up_right_block">'
-                    . '<h3>' . str_replace('[firstname]', $this->resolveUsername(true), $this->_lang->def('_FRIENDS_OF')) . '</h3>';
+                . '<h3>' . str_replace('[firstname]', $this->resolveUsername(true), $this->_lang->def('_FRIENDS_OF')) . '</h3>';
             $html .= '<ul>';
             $i = 0;
             foreach ($friend_list as $id => $info) {
@@ -2895,15 +2779,15 @@ class UserProfileViewer
                 }
                 $friend_username = $acl_man->getConvertedUserName($info);
                 $html .= '<li>'
-                        . '<a href="' . $this->_url_man->getUrl($this->_varname_action . '=goprofile&id_user=' . $id) . '"'
-                            . ' title="' . str_replace('[firstname]', $friend_username, $this->_lang->def('_GO_TO_PROFILE')) . '">'
-                        . ($info[ACL_INFO_AVATAR] != ''
-                            ? $this->getPASrc($info[ACL_INFO_AVATAR],
-                                                $this->_lang->def('_AVATAR'),
-                                                'image_limit_small')
-                            : '<img class="image_limit_small" src="' . getPathImage() . 'standard/user.png" alt="' . $this->_lang->def('_NOAVATAR') . '" />')
-                        . $friend_username
-                        . '</a></li>';
+                    . '<a href="' . $this->_url_man->getUrl($this->_varname_action . '=goprofile&id_user=' . $id) . '"'
+                    . ' title="' . str_replace('[firstname]', $friend_username, $this->_lang->def('_GO_TO_PROFILE')) . '">'
+                    . ($info[ACL_INFO_AVATAR] != ''
+                        ? $this->getPASrc($info[ACL_INFO_AVATAR],
+                            $this->_lang->def('_AVATAR'),
+                            'image_limit_small')
+                        : '<img class="image_limit_small" src="' . getPathImage() . 'standard/user.png" alt="' . $this->_lang->def('_NOAVATAR') . '" />')
+                    . $friend_username
+                    . '</a></li>';
                 ++$i;
             }
             $html .= '</ul>';
@@ -2917,21 +2801,21 @@ class UserProfileViewer
         // some specific action ---------------------------------------
         if (!empty($friend_list) && is_array($friend_list)) {
             $html .= '<p class="up_middle_other_action">'
-                    /*.'<a id="up_goblog" href="'.$this->_url_man->getUrl($this->_varname_action.'=goblog').'" '
-                        .'title="'.$this->_lang->def('_GOTO_BLOG_TITLE').'">'
-                        .str_replace('[firstname]', $this->resolveUsername(true), $this->_lang->def('_GOTO_BLOG') )
-                    .'</a> '*/
-                    . '<a id="up_gofriend" href="' . $this->_url_man->getUrl($this->_varname_action . '=goblog') . '" title="'
-                        . $this->_lang->def('_OTHER_FRIENDS_TITLE') . '">'
-                        . str_replace('[firstname]', $this->resolveUsername(true), $this->_lang->def('_OTHER_FRIENDS'))
-                        . ' (' . (empty($friend_list) || !is_array($friend_list) ? 0 : count($friend_list)) . ')'
-                    . '</a> '
+                /*.'<a id="up_goblog" href="'.$this->_url_man->getUrl($this->_varname_action.'=goblog').'" '
+                    .'title="'.$this->_lang->def('_GOTO_BLOG_TITLE').'">'
+                    .str_replace('[firstname]', $this->resolveUsername(true), $this->_lang->def('_GOTO_BLOG') )
+                .'</a> '*/
+                . '<a id="up_gofriend" href="' . $this->_url_man->getUrl($this->_varname_action . '=goblog') . '" title="'
+                . $this->_lang->def('_OTHER_FRIENDS_TITLE') . '">'
+                . str_replace('[firstname]', $this->resolveUsername(true), $this->_lang->def('_OTHER_FRIENDS'))
+                . ' (' . (empty($friend_list) || !is_array($friend_list) ? 0 : count($friend_list)) . ')'
+                . '</a> '
                 . '</p>';
         }
 
         // last profile view -----------------------------------------
         $html .= '<p class="up_last_view">'
-                . '<b>' . $this->_lang->def('_LAST_PROFILE_VIEW') . ':</b> ';
+            . '<b>' . $this->_lang->def('_LAST_PROFILE_VIEW') . ':</b> ';
 
         if (!empty($last_view)) {
             $first = true;
@@ -2942,11 +2826,11 @@ class UserProfileViewer
                     $first = false;
                 }
                 $html .= '<a ' . ($info['days_ago'] <= 15 ? ' class="last_visit"' : '')
-                            . 'href="' . $this->_url_man->getUrl($this->_varname_action . '=goprofile&id_user=' . $id) . '"'
-                            . ' title="' . str_replace('[firstname]', $info['username'], $this->_lang->def('_GO_TO_PROFILE')) . ' '
-                            . ($info['days_ago'] <= 15 ? str_replace('[days]', '15', $this->_lang->def('_NEW_VISIT')) : '') . '">'
-                        . $info['username']
-                        . '</a>';
+                    . 'href="' . $this->_url_man->getUrl($this->_varname_action . '=goprofile&id_user=' . $id) . '"'
+                    . ' title="' . str_replace('[firstname]', $info['username'], $this->_lang->def('_GO_TO_PROFILE')) . ' '
+                    . ($info['days_ago'] <= 15 ? str_replace('[days]', '15', $this->_lang->def('_NEW_VISIT')) : '') . '">'
+                    . $info['username']
+                    . '</a>';
             }
         } else {
             $html .= '<i>' . $this->_lang->def('_NO_PROFILE_VIEW') . '</i>';
@@ -2956,143 +2840,6 @@ class UserProfileViewer
         return $html;
     }
 
-    /**
-     * the complete list of file of the user (audio, video, images, other).
-     */
-    public function getFileInfo()
-    {
-        return;
-        /*
-        require_once(_adm_.'/lib/lib.myfiles.php');
-
-        $user_file = new MyFilesPolicy(	$this->_user_profile->getIdUser(),
-                                        $this->getViewer(),
-                                        $this->_up_data_man->isFriend($this->_user_profile->getIdUser(), $this->getViewer()),
-                                        $this->_up_data_man->isTeacher($this->getViewer())
-                                    );
-
-        $re_images 	= $user_file->getFileList('image', false, UP_FILE_LIMIT);
-        $num_images = $user_file->getFileCount('image');
-
-        $re_video 	= $user_file->getFileList('video', false, UP_FILE_LIMIT);
-        $num_video 	= $user_file->getFileCount('video');
-
-        $re_audio 	= $user_file->getFileList('audio', false, UP_FILE_LIMIT);
-        $num_audio 	= $user_file->getFileCount('audio');
-
-        $re_other 	= $user_file->getFileList('other', false, UP_FILE_LIMIT);
-        $num_other 	= $user_file->getFileCount('other');
-
-        $html = '<h2 class="up_type1">'.$this->_lang->def('_SHARED_FILE').'</h2>';
-        // file of area image -----------------------------------------------------
-        $html .= '<div class="up_box_files">'
-                .'<h3 id="up_image">'.$this->_lang->def('_IMAGES').'</h3>';
-
-        if($re_images && $num_images > 0) {
-
-            $html .= '<ul>';
-            while($image = $user_file->fetch_row($re_images)) {
-
-                $html .= '<li>'
-                        .'<a href="'.$this->_url_man->getUrl($this->_varname_action.'=view_photo').'">'
-                        .'<img class="image_limit" src="'.$user_file->getFileAddress($image[MYFILE_FILE_NAME]).'" '
-                            .'title="'.strip_tags($image[MYFILE_DESCRIPTION]).'" alt="'.strip_tags($image[MYFILE_TITLE]).'" />'
-                        .'</a>'
-                        .'</li>';
-            }
-            $html .= '</ul>';
-            if($num_images > UP_FILE_LIMIT) {
-
-                $html .= '<a id="up_otherimg" href="'.$this->_url_man->getUrl($this->_varname_action.'=showallfile&area=image').'">'
-                        .$this->_lang->def('_OTHER_IMAGES').'</a>';
-            }
-        } else {
-
-            $html .= '<p>'.$this->_lang->def('_NO_IMAGE_FOUND').'</p>';
-        }
-        $html .= '</div>';
-        // end --------------------------------------------------------------------
-
-        // file of area video -----------------------------------------------------
-        $html .= '<div class="up_box_files">'
-                .'<h3 id="up_video">'.$this->_lang->def('_USER_VIDEO').'</h3>';
-
-        if($re_video && $num_video > 0) {
-
-            $html .= '<ul>';
-            while($video = $user_file->fetch_row($re_video)) {
-
-                $html .= '<li>'
-                        .$video[MYFILE_TITLE]
-                        .'</li>';
-            }
-            $html .= '</ul>';
-            if($num_images > UP_FILE_LIMIT) {
-
-                $html .= '<a id="up_othervideo" href="'.$this->_url_man->getUrl($this->_varname_action.'=showallfile&area=video').'">'
-                        .$this->_lang->def('_OTHER_VIDEO').'</a>';
-            }
-        } else {
-
-            $html .= '<p>'.$this->_lang->def('_NO_VIDEO_FOUND').'</p>';
-        }
-        $html .= '</div>';
-        // end --------------------------------------------------------------------
-
-        // file of area audio -----------------------------------------------------
-        $html .= '<div class="up_box_files_left">'
-                .'<h3 id="up_audio">'.$this->_lang->def('_USER_AUDIO').'</h3>';
-        if($re_audio && $num_audio > 0) {
-
-            $html .= '<ul>';
-            while($audio = $user_file->fetch_row($re_audio)) {
-
-                $html .= '<li>'
-                        .$audio[MYFILE_TITLE]
-                        .'</li>';
-            }
-            $html .= '</ul>';
-            if($num_audio > UP_FILE_LIMIT) {
-
-                $html .= '<a id="up_otheraudio" href="'.$this->_url_man->getUrl($this->_varname_action.'=showallfile&area=audio').'">'
-                        .$this->_lang->def('_OTHER_AUDIO').'</a>';
-            }
-        } else {
-
-            $html .= '<p>'.$this->_lang->def('_NO_AUDIO_FOUND').'</p>';
-        }
-        $html .= '</div>';
-        // end --------------------------------------------------------------------
-
-        // file of area other -----------------------------------------------------
-        $html .= '<div class="up_box_files_right">'
-                .'<h3 id="up_file">'.$this->_lang->def('_USER_OTHER').'</h3>';
-        if($re_other && $num_other > 0) {
-
-            $html .= '<ul>';
-            while($other = $user_file->fetch_row($re_other)) {
-
-                $html .= '<li>'
-                        .$other[MYFILE_TITLE]
-                        .'</li>';
-            }
-            $html .= '</ul>';
-            if($num_other > UP_FILE_LIMIT) {
-
-                $html .= '<a id="up_otherfile" href="'.$this->_url_man->getUrl($this->_varname_action.'=showallfile&area=other').'">'
-                        .$this->_lang->def('_OTHER_OTHER').'</a>';
-            }
-        } else {
-
-            $html .= '<p>'.$this->_lang->def('_NO_OTHER_FOUND').'</p>';
-        }
-        $html .= '</div>'
-                .'<div class="nofloat"></div>';
-        // end --------------------------------------------------------------------
-
-        return $html;
-        */
-    }
 
     //--------------------------------------------------------------------------------------//
     //- user statistics --------------------------------------------------------------------//
@@ -3119,8 +2866,8 @@ class UserProfileViewer
         // teacher course list
         if (!empty($teacher_course)) {
             $html .= '<div class="up_teacher_course">'
-                    . '<h3>' . $this->_lang->def('_COURSE_AS_TEACHER') . '</h3>'
-                    . '<ul>';
+                . '<h3>' . $this->_lang->def('_COURSE_AS_TEACHER') . '</h3>'
+                . '<ul>';
             foreach ($teacher_course as $id => $data) {
                 if ($this->userCourseSubscrived($id)) {
                     $html .= '<li><a href="' . FormaLms\lib\Get::rel_path('lms') . '/index.php?modname=course&amp;op=aula&amp;idCourse=' . $id . '">[' . $data['code'] . '] ' . $data['name'] . '</a></li>';
@@ -3134,8 +2881,8 @@ class UserProfileViewer
         // tutor course list
         if (!empty($tutor_list)) {
             $html .= '<div class="up_tutor_course">'
-                    . '<h3>' . $this->_lang->def('_COURSE_AS_TUTOR') . '</h3>'
-                    . '<ul>';
+                . '<h3>' . $this->_lang->def('_COURSE_AS_TUTOR') . '</h3>'
+                . '<ul>';
             foreach ($tutor_list as $id => $data) {
                 $html .= '<li>[' . $data['code'] . '] ' . $data['name'] . '</li>';
             }
@@ -3145,8 +2892,8 @@ class UserProfileViewer
         // menor course list
         if (!empty($mentor_list)) {
             $html .= '<div class="up_mentor_course">'
-                    . '<h3>' . $this->_lang->def('_COURSE_AS_MENTOR') . '</h3>'
-                    . '<ul>';
+                . '<h3>' . $this->_lang->def('_COURSE_AS_MENTOR') . '</h3>'
+                . '<ul>';
             foreach ($mentor_list as $id => $data) {
                 $html .= '<li>[' . $data['code'] . '] ' . $data['name'] . '</li>';
             }
@@ -3156,36 +2903,36 @@ class UserProfileViewer
         $html .= '<div class="nofloat"></div>';
         if ($curriculum != '') {
             $html .= '<div class="up_teacher_curriculum">'
-                    . '<h3>' . $this->_lang->def('_TEACHER_CURRICULUM') . '</h3>'
-                    . '<div class="up_teacher_curriculum_text">' . $curriculum . '</div>'
-                    . '</div>';
+                . '<h3>' . $this->_lang->def('_TEACHER_CURRICULUM') . '</h3>'
+                . '<div class="up_teacher_curriculum_text">' . $curriculum . '</div>'
+                . '</div>';
         }
         if ($publications != '') {
             $html .= '<div class="up_teacher_publications">'
-                    . '<h3>' . $this->_lang->def('_TEACHER_PUBLICATIONS') . '</h3>'
-                    . '<div class="up_teacher_publications_text">' . $publications . '</div>'
-                    . '</div>';
+                . '<h3>' . $this->_lang->def('_TEACHER_PUBLICATIONS') . '</h3>'
+                . '<div class="up_teacher_publications_text">' . $publications . '</div>'
+                . '</div>';
         }
         if ($this->_user_profile->editMode()) {
             $html .= '<ul class="up_profile_action">';
             if ($curriculum != '') {
                 $html .= '<li id="tp_del_curriculum">'
-                        . '<a href="' . $this->_url_man->getUrl($this->_varname_action . '=del_teach_curric') . '"
+                    . '<a href="' . $this->_url_man->getUrl($this->_varname_action . '=del_teach_curric') . '"
 							 title="' . $this->_lang->def('_DEL') . '">'
-                            . $this->_lang->def('_DEL') . ': ' . $this->_lang->def('_TEACHER_CURRICULUM') . '</a>'
+                    . $this->_lang->def('_DEL') . ': ' . $this->_lang->def('_TEACHER_CURRICULUM') . '</a>'
                     . '</li>';
             }
             $html .= '<li id="tp_mod_curriculum">'
-                        . '<a href="' . $this->_url_man->getUrl($this->_varname_action . '=mod_teach_curric') . '"
+                . '<a href="' . $this->_url_man->getUrl($this->_varname_action . '=mod_teach_curric') . '"
 							 title="' . $this->_lang->def('_MOD') . '">'
-                            . $this->_lang->def('_MOD') . ': ' . $this->_lang->def('_TEACHER_CURRICULUM') . '</a>'
-                    . '</li>'
-                    . '<li id="tp_mod_publications">'
-                        . '<a href="' . $this->_url_man->getUrl($this->_varname_action . '=mod_teach_publ') . '"
+                . $this->_lang->def('_MOD') . ': ' . $this->_lang->def('_TEACHER_CURRICULUM') . '</a>'
+                . '</li>'
+                . '<li id="tp_mod_publications">'
+                . '<a href="' . $this->_url_man->getUrl($this->_varname_action . '=mod_teach_publ') . '"
 							 title="' . $this->_lang->def('_MOD') . '">'
-                            . $this->_lang->def('_MOD') . ': ' . $this->_lang->def('_TEACHER_PUBLICATIONS') . '</a>'
-                    . '</li>'
-                    . '</ul>';
+                . $this->_lang->def('_MOD') . ': ' . $this->_lang->def('_TEACHER_PUBLICATIONS') . '</a>'
+                . '</li>'
+                . '</ul>';
         }
 
         return $html;
@@ -3194,9 +2941,9 @@ class UserProfileViewer
     public function userCourseSubscrived($id_course)
     {
         $query = 'SELECT COUNT(*)' .
-                ' FROM %lms_courseuser' .
-                " WHERE idCourse = '" . $id_course . "'" .
-                " AND idUser = '" . getLogUserId() . "'";
+            ' FROM %lms_courseuser' .
+            " WHERE idCourse = '" . $id_course . "'" .
+            " AND idUser = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'";
 
         $result = sql_fetch_row(sql_query($query));
 
@@ -3207,8 +2954,8 @@ class UserProfileViewer
     {
         if (isset($_GET['confirm'])) {
             $query = 'UPDATE %lms_teacher_profile' .
-                    " SET curriculum = ''" .
-                    " WHERE id_user = '" . getLogUserId() . "'";
+                " SET curriculum = ''" .
+                " WHERE id_user = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'";
 
             $result = sql_query($query);
 
@@ -3219,12 +2966,12 @@ class UserProfileViewer
             $html = '<div class="std_block">';
 
             $html .= getDeleteUi(
-                    $this->_lang->def('_AREYOUSURE'),
-                    $this->_lang->def('_NAME'),
-                    true,
-                    $this->_url_man->getUrl('ap=del_teach_curric&confirm=1'),//'index.php?modname=profile&op=profile&ap=del_teach_curric&confirm=1',
-                    $this->_url_man->getUrl()//'index.php?modname=profile&op=profile'
-                );
+                $this->_lang->def('_AREYOUSURE'),
+                $this->_lang->def('_NAME'),
+                true,
+                $this->_url_man->getUrl('ap=del_teach_curric&confirm=1'),//'index.php?modname=profile&op=profile&ap=del_teach_curric&confirm=1',
+                $this->_url_man->getUrl()//'index.php?modname=profile&op=profile'
+            );
             $html .= '</div>';
 
             return $html;
@@ -3236,23 +2983,23 @@ class UserProfileViewer
         require_once _base_ . '/lib/lib.form.php';
 
         $html = '<div class="up_user_info">'
-                . '<div class="up_name">' . $this->resolveUsername(false) . '</div>';
+            . '<div class="up_name">' . $this->resolveUsername(false) . '</div>';
 
         // user standard info -----------------------------------------------------------------
         $html .= Form::openForm('mod_curriculum', $this->_url_man->getUrl($this->_varname_action . '=save_teach_curric'));
 
         $html .= Form::getTextarea($this->_lang->def('_TEACHER_CURRICULUM'),
-                                        'tp_curriculum',
-                                        'tp_curriculum',
-                                        FormaLms\lib\Get::req('tp_curriculum', DOTY_MIXED, $this->_up_data_man->getTeacherCurriculum($this->_user_profile->getIdUser())));
+            'tp_curriculum',
+            'tp_curriculum',
+            FormaLms\lib\Get::req('tp_curriculum', DOTY_MIXED, $this->_up_data_man->getTeacherCurriculum($this->_user_profile->getIdUser())));
 
         $html .= Form::openButtonSpace()
-                . Form::getButton('save', 'save', $this->_lang->def('_SAVE'))
-                . Form::getButton('undo', 'undo', $this->_lang->def('_UNDO'))
-                . Form::closeButtonSpace();
+            . Form::getButton('save', 'save', $this->_lang->def('_SAVE'))
+            . Form::getButton('undo', 'undo', $this->_lang->def('_UNDO'))
+            . Form::closeButtonSpace();
 
         $html .= Form::closeForm()
-                . '</div>';
+            . '</div>';
 
         return $html;
     }
@@ -3267,23 +3014,23 @@ class UserProfileViewer
         require_once _base_ . '/lib/lib.form.php';
 
         $html = '<div class="up_user_info">'
-                . '<div class="up_name">' . $this->resolveUsername(false, getLogUserId()) . '</div>';
+            . '<div class="up_name">' . $this->resolveUsername(false, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()) . '</div>';
 
         // user standard info -----------------------------------------------------------------
         $html .= Form::openForm('mod_publications', $this->_url_man->getUrl($this->_varname_action . '=save_teach_publ'));
 
         $html .= Form::getTextarea($this->_lang->def('_TEACHER_PUBLICATIONS'),
-                                        'tp_publications',
-                                        'tp_publications',
-                                        FormaLms\lib\Get::req('tp_publications', DOTY_MIXED, $this->_up_data_man->getTeacherPublications($this->_user_profile->getIdUser())));
+            'tp_publications',
+            'tp_publications',
+            FormaLms\lib\Get::req('tp_publications', DOTY_MIXED, $this->_up_data_man->getTeacherPublications($this->_user_profile->getIdUser())));
 
         $html .= Form::openButtonSpace()
-                . Form::getButton('save', 'save', $this->_lang->def('_SAVE'))
-                . Form::getButton('undo', 'undo', $this->_lang->def('_UNDO'))
-                . Form::closeButtonSpace();
+            . Form::getButton('save', 'save', $this->_lang->def('_SAVE'))
+            . Form::getButton('undo', 'undo', $this->_lang->def('_UNDO'))
+            . Form::closeButtonSpace();
 
         $html .= Form::closeForm()
-                . '</div>';
+            . '</div>';
 
         return $html;
     }
@@ -3297,7 +3044,7 @@ class UserProfileViewer
 
     public function getUserCourseStatUi($stats_data)
     {
-        $lang_test = &DoceboLanguage::createInstance('test', 'lms');
+        $lang_test = FormaLanguage::createInstance('test', 'lms');
 
         $tb = new Table(0, $this->_lang->def('_USERCOURSE_CAPTION'), $this->_lang->def('_USERCOURSE_STATS_SUMMARY'));
         $tb->addHead([
@@ -3315,7 +3062,10 @@ class UserProfileViewer
             $this->_lang->def('_SCORE_FINAL'),
             str_replace(':', '', $lang_test->def('_TEST_TOTAL_SCORE')),
         ]);
+
+
         foreach ($stats_data as $id_c => $info) {
+
             $tb->addBody([
                 $info['course_code'],
                 $info['course_name'],
@@ -3326,10 +3076,10 @@ class UserProfileViewer
                 Format::date($info['date_complete']),
                 Format::date($info['access_last']),
                 (isset($info['access_count']) ? $info['access_count'] : ''),
-                (isset($info['access_time']) ?
-                            substr('0' . ((int) ($info['access_time'] / 3600)), -2) . 'h '
-                            . substr('0' . ((int) (($info['access_time'] % 3600) / 60)), -2) . 'm '
-                            . substr('0' . ((int) ($info['access_time'] % 60)), -2) . 's ' : ''),
+                (!empty($info['access_time']) ?
+                    substr('0' . ((int)($info['access_time'] / 3600)), -2) . 'h '
+                    . substr('0' . ((int)(($info['access_time'] % 3600) / 60)), -2) . 'm '
+                    . substr('0' . ((int)($info['access_time'] % 60)), -2) . 's ' : ''),
                 (isset($info['score_init']) ? $info['score_init'] : ''),
                 (isset($info['score_final']) ? $info['score_final'] : ''),
                 $info['point_do'],
@@ -3364,7 +3114,7 @@ class UserProfileViewer
         $_types = $cmodel->getCompetenceTypes();
         $_typologies = $cmodel->getCompetenceTypologies();
         $_categories = $cmodel->getCategoriesLangs();
-        $lang_code = getLanguage();
+        $lang_code = Lang::get();
 
         if (count($comp_data) > 0) {
             foreach ($comp_data as $id_competence => $value) {
@@ -3380,19 +3130,19 @@ class UserProfileViewer
                 switch ($value->type) {
                     case 'flag':
                         $_score = ($value->score > 0 ? $icon_flag_ok : $icon_flag_no);
-                     break;
+                        break;
                     case 'score':
-                        $_score = (int) $value->score;
-                     break;
+                        $_score = (int)$value->score;
+                        break;
                 }
 
                 $_gap = '';
                 if ($value->required !== false) {
                     if ($value->type == 'score') {
                         if ($value->gap < 0) {
-                            $_gap .= '<b class="red">' . (int) $value->gap . '</b>&nbsp;' . $icon_warn;
+                            $_gap .= '<b class="red">' . (int)$value->gap . '</b>&nbsp;' . $icon_warn;
                         } else {
-                            $_gap .= '<b class="green">' . (int) $value->gap . '</b>&nbsp;' . $icon_flag_ok;
+                            $_gap .= '<b class="green">' . (int)$value->gap . '</b>&nbsp;' . $icon_flag_ok;
                         }
                     } else {
                         if ($value->score > 0) {
@@ -3440,8 +3190,8 @@ class UserProfileViewer
 
         if (count($fncroles_data) > 0) {
             foreach ($fncroles_data as $id_fncrole => $value) {
-                $obt = (int) $value->competences_obtained;
-                $req = (int) $value->competences_required;
+                $obt = (int)$value->competences_obtained;
+                $req = (int)$value->competences_required;
 
                 $line = [];
                 $line[] = $value->name;
@@ -3473,22 +3223,22 @@ class UserProfileViewer
                 }
 
                 $array_style = [
-                'folders' => '',
+                    'folders' => '',
                 ];
 
                 $array_header = [
-                'folders' => Lang::t('_DIRECTORY_MEMBERTYPETREE', 'admin_directory'),
+                    'folders' => Lang::t('_DIRECTORY_MEMBERTYPETREE', 'admin_directory'),
                 ];
 
                 asort($array_content_1);
 
                 $output .= Util::widget('table', [
-                'id' => 'folders_table',
-                'styles' => $array_style,
-                'header' => $array_header,
-                'data' => $array_content_1,
-                //'summary'	=> Lang::t('_LEVELS', 'subscribe'),
-                'caption' => false, //Lang::t('_LEVELS', 'subscribe')
+                    'id' => 'folders_table',
+                    'styles' => $array_style,
+                    'header' => $array_header,
+                    'data' => $array_content_1,
+                    //'summary'	=> Lang::t('_LEVELS', 'subscribe'),
+                    'caption' => false, //Lang::t('_LEVELS', 'subscribe')
                 ], true);
             }
 
@@ -3501,22 +3251,22 @@ class UserProfileViewer
                 }
 
                 $array_style = [
-                'groups' => '',
+                    'groups' => '',
                 ];
 
                 $array_header = [
-                'groups' => Lang::t('_GROUPS', 'standard'),
+                    'groups' => Lang::t('_GROUPS', 'standard'),
                 ];
 
                 asort($array_content_2);
 
                 $output .= Util::widget('table', [
-                'id' => 'groups_table',
-                'styles' => $array_style,
-                'header' => $array_header,
-                'data' => $array_content_2,
-                //'summary'	=> Lang::t('_LEVELS', 'subscribe'),
-                'caption' => false, //Lang::t('_LEVELS', 'subscribe')
+                    'id' => 'groups_table',
+                    'styles' => $array_style,
+                    'header' => $array_header,
+                    'data' => $array_content_2,
+                    //'summary'	=> Lang::t('_LEVELS', 'subscribe'),
+                    'caption' => false, //Lang::t('_LEVELS', 'subscribe')
                 ], true);
             }
         }
@@ -3527,6 +3277,15 @@ class UserProfileViewer
 
         return $output;
     }
+
+    public function getPrivacy() {
+
+        $q= "SELECT accept_date FROM %adm_privacypolicy_user WHERE idst= ".\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();;
+        list($accept_data) = sql_fetch_row(sql_query($q));
+        return "<br><div class='up_main'><b>".Lang::t('_PRIVACY_ACCEPTED', 'privacypolocies')." ".$accept_data."</b></div>";
+
+    }
+
 }
 
 // ========================================================================================================== //
@@ -3597,15 +3356,14 @@ class UserProfileData
      */
     public function __construct($db_conn = null)
     {
-        require_once _base_ . '/lib/lib.user.php';
         require_once _base_ . '/lib/lib.preference.php';
         require_once _adm_ . '/lib/lib.myfriends.php';
         require_once _lms_ . '/lib/lib.course.php';
 
         $this->_db_conn = $db_conn;
 
-        $this->acl = Docebo::user()->getAcl();
-        $this->acl_man = Docebo::user()->getAclManager();
+        $this->acl = \FormaLms\lib\Forma::getAcl();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();
     }
 
     public function _query($query)
@@ -3691,15 +3449,21 @@ class UserProfileData
             return true;
         }
         switch ($rule) {
-            case PFL_POLICY_FREE: 							return true; break;
-            case PFL_POLICY_TEACHER: if ($is_teacher) {
+            case PFL_POLICY_FREE:
                 return true;
-            } break;
+                break;
+            case PFL_POLICY_TEACHER:
+                if ($is_teacher) {
+                    return true;
+                }
+                break;
             //case PFL_POLICY_FRIENDS : if($is_friend) 		return true; break;
             //case PFL_POLICY_TEACHER_AND_FRIENDS : if($is_teacher || $is_friend) return true; break;
-            case PFL_POLICY_NOONE: if ($id_user == $viewer) {
-                return true;
-            } break;
+            case PFL_POLICY_NOONE:
+                if ($id_user == $viewer) {
+                    return true;
+                }
+                break;
         }
 
         return false;
@@ -3828,27 +3592,35 @@ class UserProfileData
             $preference = new UserPreferences($id_user);
             $this->_field_access_list[$id_user] = unserialize(stripslashes($preference->getPreference('user_rules.field_policy')));
         }
-        // add default value to list if needed
-        if (!isset($this->_field_access_list[$id_user]['email'])) {
-            $this->_field_access_list[$id_user]['email'] = PFL_POLICY_NOONE;
-        }
-        if (!isset($this->_field_access_list[$id_user]['online_satus'])) {
-            $this->_field_access_list[$id_user]['online_satus'] = PFL_POLICY_TEACHER_AND_FRIENDS;
-        }
-        if (!isset($this->_field_access_list[$id_user]['message_recipients'])) {
-            $this->_field_access_list[$id_user]['message_recipients'] = PFL_POLICY_TEACHER_AND_FRIENDS;
-        }
+        if (is_array($this->_field_access_list)) {
+            // add default value to list if needed
 
-        return $this->_field_access_list[$id_user];
+            if(!$this->_field_access_list[$id_user]) {
+                $this->_field_access_list[$id_user]= [];
+            }
+            if (!isset($this->_field_access_list[$id_user]['email'])) {
+                
+                $this->_field_access_list[$id_user]['email'] = PFL_POLICY_NOONE;
+            }
+            if (!isset($this->_field_access_list[$id_user]['online_satus'])) {
+                $this->_field_access_list[$id_user]['online_satus'] = PFL_POLICY_TEACHER_AND_FRIENDS;
+            }
+            if (!isset($this->_field_access_list[$id_user]['message_recipients'])) {
+                $this->_field_access_list[$id_user]['message_recipients'] = PFL_POLICY_TEACHER_AND_FRIENDS;
+            }
+
+            return $this->_field_access_list[$id_user];
+        }
+        return [];
     }
 
     /**
      * return the list of user friends.
      */
-    public function &getUserFriend($id_user)
+    public function getUserFriend($id_user)
     {
         $my_fr = new MyFriends($id_user);
-        $users_info = &$my_fr->getFriendsInfo(false, UP_FRIEND_LIMIT);
+        $users_info = $my_fr->getFriendsInfo(false, UP_FRIEND_LIMIT);
 
         return $users_info;
     }
@@ -3919,10 +3691,14 @@ class UserProfileData
 
         $can_send = false;
         switch ($fal['message_recipients']) {
-            case PFL_POLICY_FREE: $can_send = true; break;
-            case PFL_POLICY_TEACHER_AND_FRIENDS: if ($is_teacher || $is_friend) {
+            case PFL_POLICY_FREE:
                 $can_send = true;
-            } break;
+                break;
+            case PFL_POLICY_TEACHER_AND_FRIENDS:
+                if ($is_teacher || $is_friend) {
+                    $can_send = true;
+                }
+                break;
         }
 
         return $can_send;
@@ -4022,12 +3798,12 @@ class UserProfileData
             if (isset($fal[$field_id])) {
                 if ($this->getVisibilityResponse($fal[$field_id], $id_user, $viewer, $is_teacher, $is_friend)) {
                     $field[$field_id] = ['name' => $value[0],
-                                                'value' => $value[1], ];
+                        'value' => $value[1],];
                 }
             } else {
-                if ($id_user === Docebo::user()->getIdSt()) {
+                if ($id_user === \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()) {
                     $field[$field_id] = ['name' => $value[0],
-                                            'value' => $value[1], ];
+                        'value' => $value[1],];
                 }
             }
         }
@@ -4048,7 +3824,7 @@ class UserProfileData
         $field = [];
         foreach ($field_founded as $field_id => $value) {
             $field[$field_id] = ['name' => $value[0],
-                                        'value' => $value[1], ];
+                'value' => $value[1],];
         }
 
         return $field;
@@ -4084,11 +3860,11 @@ class UserProfileData
             if ($showField) {
                 $ob = &$field_man->getFieldInstance($id, $arr_value[5], $arr_value[6]);
                 $field[$id] = ['name' => $arr_value[0],
-                                    'value' => $arr_value[1],
-                                    'href' => $ob->getIMBrowserHref($id_user, $arr_value[1]),
-                                    'image' => $ob->getIMBrowserImageSrc($id_user, $arr_value[1]),
-                                    'head' => $ob->getIMBrowserHead($id_user, $arr_value[1]),
-                                    'field_type' => $arr_value[4],
+                    'value' => $arr_value[1],
+                    'href' => $ob->getIMBrowserHref($id_user, $arr_value[1]),
+                    'image' => $ob->getIMBrowserImageSrc($id_user, $arr_value[1]),
+                    'head' => $ob->getIMBrowserHead($id_user, $arr_value[1]),
+                    'field_type' => $arr_value[4],
                 ];
             }
         }
@@ -4110,11 +3886,11 @@ class UserProfileData
         foreach ($field_founded as $id => $arr_value) {
             $ob = &$field_man->getFieldInstance($id, $arr_value[5], $arr_value[6]);
             $field[$id] = ['name' => $arr_value[0],
-                                    'value' => $arr_value[1],
-                                    'href' => $ob->getIMBrowserHref($id_user, $arr_value[1]),
-                                    'image' => $ob->getIMBrowserImageSrc($id_user, $arr_value[1]),
-                                    'head' => $ob->getIMBrowserHead($id_user, $arr_value[1]),
-                                    'field_type' => $arr_value[4],
+                'value' => $arr_value[1],
+                'href' => $ob->getIMBrowserHref($id_user, $arr_value[1]),
+                'image' => $ob->getIMBrowserImageSrc($id_user, $arr_value[1]),
+                'head' => $ob->getIMBrowserHead($id_user, $arr_value[1]),
+                'field_type' => $arr_value[4],
             ];
         }
 
@@ -4142,22 +3918,22 @@ class UserProfileData
     public function saveUserData($id_user, $data, $also_preference, $also_extra_field)
     {
         if (!$this->acl_man->updateUser($id_user,
-                                            (isset($data['userid']) ? $data['userid'] : false),
-                                            $data['firstname'],
-                                            $data['lastname'],
-                                            (isset($data['new_pwd']) && ($data['new_pwd'] != '') && ($data['new_pwd'] == $data['repeat_pwd'])
-                                                ? $data['new_pwd']
-                                                : false),
-                                            $data['email'],
-                                            false,
-                                            $data['signature'], false, false,
-                                            (isset($data['force_change']) ? $data['force_change'] : ''),
-                                            $data['facebook_id'], $data['twitter_id'], $data['linkedin_id'],
-                                            $data['google_id'])) {
+            (isset($data['userid']) ? $data['userid'] : false),
+            $data['firstname'],
+            $data['lastname'],
+            (isset($data['new_pwd']) && ($data['new_pwd'] != '') && ($data['new_pwd'] == $data['repeat_pwd'])
+                ? $data['new_pwd']
+                : false),
+            $data['email'],
+            false,
+            $data['signature'], false, false,
+            (isset($data['force_change']) ? $data['force_change'] : ''),
+            $data['facebook_id'], $data['twitter_id'], $data['linkedin_id'],
+            $data['google_id'])) {
             return false;
         }
         if (isset($data['level'])) {
-            $acl_man = &Docebo::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $current_level = $acl_man->getUserLevelId($id_user);
             if ($data['level'] != $current_level) {
                 $arr_levels = $acl_man->getAdminLevels();
@@ -4184,24 +3960,6 @@ class UserProfileData
         return true;
     }
 
-    /**
-     * save the user new password.
-     */
-    public function saveUserPwd($id_user, $new_pwd)
-    {
-        if (!$this->acl_man->updateUser($id_user,
-                                            false,
-                                            false,
-                                            false,
-                                            $new_pwd,
-                                            false,
-                                            false,
-                                            false)) {
-            return false;
-        }
-
-        return true;
-    }
 
     /**
      * save a new avatar for the user.
@@ -4232,24 +3990,24 @@ class UserProfileData
 
         sl_open_fileoperations();
         if (createImageFromTmp($file_descriptor['tmp_name'],
-                                $this->getPAPath() . $savefile,
-                                $file_descriptor['name'],
-                                $max_width,
-                                $max_height,
-                                true) != 0) {
+                $this->getPAPath() . $savefile,
+                $file_descriptor['name'],
+                $max_width,
+                $max_height,
+                true) != 0) {
             sl_close_fileoperations();
 
             return false;
         }
         sl_close_fileoperations();
         if (!$this->acl_man->updateUser($id_user,
-                                        false,
-                                        false,
-                                        false,
-                                        false,
-                                        false,
-                                        $savefile,
-                                        false)) {
+            false,
+            false,
+            false,
+            false,
+            false,
+            $savefile,
+            false)) {
             sl_unlink(substr($this->getPAPath(), 1) . $savefile);
 
             return false;
@@ -4271,13 +4029,13 @@ class UserProfileData
                 return false;
             }
             if (!$this->acl_man->updateUser($id_user,
-                                            false,
-                                            false,
-                                            false,
-                                            false,
-                                            false,
-                                            '',
-                                            false)) {
+                false,
+                false,
+                false,
+                false,
+                false,
+                '',
+                false)) {
                 return false;
             }
         }
@@ -4307,7 +4065,7 @@ class UserProfileData
             $id_list[$row[0]] = $row[0];
             $user_list[$row[0]]['id'] = $row[0];
             $user_list[$row[0]]['username'] = $row[0];
-            $user_list[$row[0]]['days_ago'] = (int) ((time() - fromDatetimeToTimestamp($row[1])) / (60 * 60 * 24));
+            $user_list[$row[0]]['days_ago'] = (int)((time() - fromDatetimeToTimestamp($row[1])) / (60 * 60 * 24));
         }
         $user_info = &$this->acl_man->getUsers($id_list);
         foreach ($id_list as $id) {
@@ -4332,15 +4090,15 @@ class UserProfileData
         $query = '
 		DELETE FROM ' . $this->_getTableProfileView() . "
 		WHERE date_view < '" . date('Y-m-d H:i:s', time() - 3600 * 24 * 31 * 6) . "' OR
-			( id_owner = " . (int) $id_user . ' AND id_viewer = ' . (int) $id_viewer . ' )';
+			( id_owner = " . (int)$id_user . ' AND id_viewer = ' . (int)$id_viewer . ' )';
         sql_query($query);
 
         // save the new profile view
         $query_ins = '
 		INSERT INTO ' . $this->_getTableProfileView() . '
 		( id_owner, id_viewer, date_view ) VALUES (
-			' . (int) $id_user . ',
-			' . (int) $id_viewer . ",
+			' . (int)$id_user . ',
+			' . (int)$id_viewer . ",
 			'" . date('Y-m-d H:i:s') . "'
 		)";
         sql_query($query_ins);
@@ -4357,9 +4115,9 @@ class UserProfileData
         $files_info = [];
         require_once _adm_ . '/lib/lib.myfiles.php';
         $user_file = new MyFilesPolicy($this->_user_profile->getIdUser(),
-                                            $this->getViewer(),
-                                            $is_friend,
-                                            $is_teacher);
+            $this->getViewer(),
+            $is_friend,
+            $is_teacher);
 
         $files_info['image'] = $user_file->getFileCount('image');
         $files_info['video'] = $user_file->getFileCount('video');
@@ -4415,7 +4173,7 @@ class UserProfileData
 
             return;
         }
-        list($this->_teacher_data[$id_user]['curriculum'], $this->_teacher_data[$id_user]['pubblications']) = sql_fetch_row($re);
+        [$this->_teacher_data[$id_user]['curriculum'], $this->_teacher_data[$id_user]['pubblications']] = sql_fetch_row($re);
     }
 
     /**
@@ -4458,7 +4216,7 @@ class UserProfileData
 		FROM ' . $GLOBALS['prefix_lms'] . "_teacher_profile
 		WHERE id_user = '" . $id_user . "'";
         $re = $this->_query($query);
-        list($num_of) = sql_fetch_row($re);
+        [$num_of] = sql_fetch_row($re);
         if ($num_of) {
             $query = '
 			UPDATE %lms_teacher_profile
@@ -4497,8 +4255,8 @@ class UserProfileData
 
         $stats = [];
 
-        $c_lang = &DoceboLanguage::CreateInstance('course', 'lms');
-        $lang = &DoceboLanguage::createInstance('course', 'lms');
+        $c_lang = FormaLanguage::CreateInstance('course', 'lms');
+        $lang = FormaLanguage::createInstance('course', 'lms');
 
         $id_courses = [];
         $query_course_user = '
@@ -4510,7 +4268,7 @@ class UserProfileData
 			AND cu.idUser = '" . $id_user . "'";
         $re_course_user = sql_query($query_course_user);
         while (list($id_c, $code, $name, $status,
-                $status_user, $date_inscr, $date_first_access, $date_complete) = sql_fetch_row($re_course_user)) {
+            $status_user, $date_inscr, $date_first_access, $date_complete) = sql_fetch_row($re_course_user)) {
             $id_courses[] = $id_c;
             $stats[$id_c]['course_name'] = $name;
             $stats[$id_c]['course_code'] = $code;
@@ -4544,23 +4302,26 @@ class UserProfileData
         $org_man = new OrganizationManagement(false);
 
         require_once _lms_ . '/lib/lib.coursereport.php';
-        $rep_man = new CourseReportManager(0); // no course id available
-        $score_course = $rep_man->getUserFinalScore([$id_user]);
+        foreach($id_courses as $idCourse) {
+            $rep_man = new CourseReportManager($idCourse);
+            $score_course[$idCourse] = $rep_man->getUserFinalScore([$id_user]);  
+        }
+        
 
         $score_start = $org_man->getStartObjectScore([$id_user], $id_courses);
         $score_final = $org_man->getFinalObjectScore([$id_user], $id_courses);
         foreach ($id_courses as $id_c) {
             if (isset($stats[$id_c])) {
                 $stats[$id_c]['score_init'] = (isset($score_start[$id_c][$id_user]) && $score_start[$id_c][$id_user]['max_score']
-                ? $score_start[$id_c][$id_user]['score'] . ' / ' . $score_start[$id_c][$id_user]['max_score']
-                : '');
+                    ? $score_start[$id_c][$id_user]['score'] . ' / ' . $score_start[$id_c][$id_user]['max_score']
+                    : '');
                 $stats[$id_c]['score_final'] = (isset($score_final[$id_c][$id_user]) && $score_final[$id_c][$id_user]['max_score']
-                ? $score_final[$id_c][$id_user]['score'] . ' / ' . $score_final[$id_c][$id_user]['max_score']
-                : '');
+                    ? $score_final[$id_c][$id_user]['score'] . ' / ' . $score_final[$id_c][$id_user]['max_score']
+                    : '');
             }
 
-            $point_do = (isset($score_course[$id_user][$id_c]) ? $score_course[$id_user][$id_c]['score'] : '');
-            $point_max = (isset($score_course[$id_user][$id_c]) ? $score_course[$id_user][$id_c]['max_score'] : '');
+            $point_do = (isset($score_course[$id_c][$id_user][$id_c]) ? $score_course[$id_c][$id_user][$id_c]['score'] : '');
+            $point_max = (isset($score_course[$id_c][$id_user][$id_c]) ? $score_course[$id_c][$id_user][$id_c]['max_score'] : '');
             $stats[$id_c]['point_do'] = ($point_do !== '' ? number_format($point_do, 2) . ' / ' . number_format($point_max, 2) : '');
         }
 
@@ -4594,7 +4355,7 @@ class UserProfileData
             $info = [];
         }
         $output = [];
-        $lang_code = getLanguage();
+        $lang_code = Lang::get();
 
         foreach ($info as $id_competence => $cdata) {
             $obj = new stdClass();
@@ -4605,7 +4366,7 @@ class UserProfileData
             $obj->type = $cdata->type;
             $obj->score = $scores[$id_competence]->score_got;
             $obj->required = property_exists($scores[$id_competence], 'required') && $scores[$id_competence]->required ? true : false;
-            $obj->gap = property_exists($scores[$id_competence], 'gap') ? (int) $scores[$id_competence]->gap : false;
+            $obj->gap = property_exists($scores[$id_competence], 'gap') ? (int)$scores[$id_competence]->gap : false;
 
             $output[$id_competence] = $obj;
         }
@@ -4626,7 +4387,7 @@ class UserProfileData
             $info = [];
         }
         $output = [];
-        $lang_code = getLanguage();
+        $lang_code = Lang::get();
 
         foreach ($info as $id_fncrole => $fdata) {
             $obj = new stdClass();
@@ -4656,4 +4417,5 @@ class UserProfileData
             'groups' => $umodel->getUserGroups($id_user),
         ];
     }
+
 }

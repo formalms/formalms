@@ -1,137 +1,44 @@
 :root {
+
+  // Statics
   --color-0: hsla(0, 0%, 40%, 1.0);
+  --color-transparent: transparent;
+  --color-white: hsla(0, 0%, 100%, 1.0);
+  --color-grey: hsla(0, 0%, 93%, 1.0);
+  --color-grey-02: hsla(0, 0%, 95%, 0.2);
+  --color-grey-03: hsla(0, 0%, 60%, 1.0);
+  --color-grey-04: hsla(0, 0%, 25%, 1.0);
+  --color-black: hsla(0, 0%, 0%, 1.0);
+  --color-disabled: hsla(0, 1%, 87%, 1); // FISSO
+  --color-disabled-text: hsla(0, 1%, 68%, 1); // FISSO
 
-  --color-0-000: hsla(0, 0%, 100%, 1.0);
-  --color-0-000-06: hsla(0, 0%, 100%, 0.6);
+  // Dynamics
+  --color-navbtn-bg: hsla(27, 96%, 80%, 1.0);
+  --color-navbtn-text: hsla(0, 0%, 100%, 1.0); // calcolato automaticamente questo dovrebbe essere uno dei due colori calcolati (di default grigio scuro)
+  --color-navbtn-bg-inter: hsla(27, 96%, 47%, 1.0);
+  --color-navbtn-text-inter: hsla(0, 0%, 100%, 1.0);
 
-  --color-0-005: hsla(0, 0%, 99.5%, 1.0);
-  --color-0-010: hsla(0, 0%, 99%, 1.0);
-  --color-0-020: hsla(0, 0%, 98%, 1.0);
-  --color-0-030: hsla(0, 0%, 97%, 1.0);
-  --color-0-040: hsla(0, 0%, 96%, 1.0);
+  --color-wrapper-bg: var(--color-grey); // rgb(242, 242, 242)
+  --color-wrapper-text: hsla(0, 0%, 24%, 1); // automatico
+  --color-wrapper-text-50: hsla(0, 0%, 18%, 0.057); // calcolato automaticamente, è una variante luminosità di --color-wrapper-text
 
-  --color-0-050: hsla(0, 0%, 95%, 1.0);
-  --color-0-050-02: hsla(0, 0%, 95%, 0.2);
+  --color-icon-bg:hsla(27, 96%, 80%, 1.0);
+  --color-icon-text: hsla(0, 0%, 20%, 1.0); // calcolato automaticamente
 
-  --color-0-070: hsla(0, 0%, 93%, 1.0);
-  --color-0-100: hsla(0, 0%, 90%, 1.0);
-  --color-0-150: hsla(0, 0%, 85%, 1.0);
-  --color-0-200: hsla(0, 0%, 80%, 1.0);
-  --color-0-250: hsla(0, 0%, 75%, 1.0);
-  --color-0-300: hsla(0, 0%, 70%, 1.0);
-  --color-0-350: hsla(0, 0%, 65%, 1.0);
-  --color-0-400: hsla(0, 0%, 60%, 1.0);
-  --color-0-450: hsla(0, 0%, 55%, 1.0);
-  --color-0-500: hsla(0, 0%, 50%, 1.0);
-  --color-0-600: hsla(0, 0%, 40%, 1.0);
-  --color-0-650: hsla(0, 0%, 35%, 1.0);
-  --color-0-700: hsla(0, 0%, 30%, 1.0);
-  --color-0-750: hsla(0, 0%, 25%, 1.0);
-  --color-0-800: hsla(0, 0%, 20%, 1.0);
-  --color-0-870: hsla(0, 0%, 13%, 1.0);
-  --color-0-900: hsla(0, 0%, 10%, 1.0);
-  --color-0-1000: hsla(0, 0%, 0%, 1.0);
+  --color-heading: hsla(0, 0%, 20%, 1.0); // calcolato automaticamente
 
-  --color-1: hsla(27, 96%, 47%, 1.0);
-  --color-1-020: hsla(27, 96%, 98%, 1.0);
-  --color-1-050: hsla(27, 96%, 95%, 1.0);
-  --color-1-100: hsla(27, 96%, 90%, 1.0);
-  --color-1-200: hsla(27, 96%, 80%, 1.0);
-  --color-1-300: hsla(27, 96%, 70%, 1.0);
-  --color-1-350: hsla(27, 96%, 65%, 1.0);
-  --color-1-400: hsla(27, 96%, 60%, 1.0);
-  --color-1-450: hsla(27, 96%, 53%, 1.0);
-  --color-1-500: hsla(27, 96%, 50%, 1.0);
-  --color-1-550: hsla(27, 96%, 45%, 1.0);
-  --color-1-600: hsla(27, 96%, 40%, 1.0);
-  --color-1-700: hsla(27, 96%, 30%, 1.0);
-  --color-1-800: hsla(27, 96%, 20%, 1.0);
-  --color-1-900: hsla(27, 96%, 10%, 1.0);
-
-  --color-2: hsla(10, 81%, 51%, 1.0);
-  --color-2-020: hsla(10, 81%, 98%, 1.0);
-  --color-2-050: hsla(10, 81%, 95%, 1.0);
-  --color-2-100: hsla(10, 81%, 90%, 1.0);
-  --color-2-200: hsla(10, 81%, 80%, 1.0);
-  --color-2-300: hsla(10, 81%, 70%, 1.0);
-  --color-2-350: hsla(10, 81%, 65%, 1.0);
-  --color-2-400: hsla(10, 81%, 60%, 1.0);
-  --color-2-450: hsla(10, 81%, 55%, 1.0);
-  --color-2-500: hsla(10, 81%, 50%, 1.0);
-  --color-2-550: hsla(10, 81%, 45%, 1.0);
-  --color-2-600: hsla(10, 81%, 40%, 1.0);
-  --color-2-700: hsla(10, 81%, 30%, 1.0);
-  --color-2-800: hsla(10, 81%, 20%, 1.0);
-  --color-2-900: hsla(10, 81%, 10%, 1.0);
-
-  --color-3: hsla(19, 100%, 39%, 1.0);
-  --color-3-020: hsla(19, 100%, 98%, 1.0);
-  --color-3-050: hsla(19, 100%, 95%, 1.0);
-  --color-3-100: hsla(19, 100%, 90%, 1.0);
-  --color-3-200: hsla(19, 100%, 80%, 1.0);
-  --color-3-300: hsla(19, 100%, 70%, 1.0);
-  --color-3-350: hsla(19, 100%, 65%, 1.0);
-  --color-3-400: hsla(19, 100%, 60%, 1.0);
-  --color-3-450: hsla(19, 100%, 55%, 1.0);
-  --color-3-500: hsla(19, 100%, 50%, 1.0);
-  --color-3-550: hsla(19, 100%, 45%, 1.0);
-  --color-3-600: hsla(19, 100%, 40%, 1.0);
-  --color-3-700: hsla(19, 100%, 30%, 1.0);
-  --color-3-800: hsla(19, 100%, 20%, 1.0);
-  --color-3-900: hsla(19, 100%, 10%, 1.0);
-
-  --color-4:hsla(0, 100%, 50%, 1.0);
-  --color-4-020: hsla(0, 100%, 98%, 1.0);
-  --color-4-050: hsla(0, 100%, 95%, 1.0);
-  --color-4-100: hsla(0, 100%, 90%, 1.0);
-  --color-4-200: hsla(0, 100%, 80%, 1.0);
-  --color-4-300: hsla(0, 100%, 70%, 1.0);
-  --color-4-350: hsla(0, 100%, 65%, 1.0);
-  --color-4-400: hsla(0, 100%, 60%, 1.0);
-  --color-4-450: hsla(0, 100%, 55%, 1.0);
-  --color-4-500: hsla(0, 100%, 50%, 1.0);
-  --color-4-550: hsla(0, 100%, 45%, 1.0);
-  --color-4-600: hsla(0, 100%, 40%, 1.0);
-  --color-4-700: hsla(0, 100%, 30%, 1.0);
-  --color-4-800: hsla(0, 100%, 20%, 1.0);
-  --color-4-900: hsla(0, 100%, 10%, 1.0);
-  
-  --color-5:hsla(37, 92%, 55%, 1.0);
-  --color-5-020: hsla(37, 92%, 98%, 1.0);
-  --color-5-050: hsla(37, 92%, 95%, 1.0);
-  --color-5-100: hsla(37, 92%, 90%, 1.0);
-  --color-5-200: hsla(37, 92%, 80%, 1.0);
-  --color-5-300: hsla(37, 92%, 70%, 1.0);
-  --color-5-350: hsla(37, 92%, 65%, 1.0);
-  --color-5-400: hsla(37, 92%, 60%, 1.0);
-  --color-5-450: hsla(37, 92%, 55%, 1.0);
-  --color-5-500: hsla(37, 92%, 50%, 1.0);
-  --color-5-550: hsla(37, 92%, 45%, 1.0);
-  --color-5-600: hsla(37, 92%, 40%, 1.0);
-  --color-5-700: hsla(37, 92%, 30%, 1.0);
-  --color-5-800: hsla(37, 92%, 20%, 1.0);
-  --color-5-900: hsla(37, 92%, 10%, 1.0);
-
-  --color-6: hsla(89, 100%, 42%, 1.0);
-  --color-6-020: hsla(89, 100%, 98%, 1.0);
-  --color-6-050: hsla(89, 100%, 95%, 1.0);
-  --color-6-100: hsla(89, 100%, 90%, 1.0);
-  --color-6-200: hsla(89, 100%, 80%, 1.0);
-  --color-6-300: hsla(89, 100%, 70%, 1.0);
-  --color-6-350: hsla(89, 100%, 65%, 1.0);
-  --color-6-400: hsla(89, 100%, 60%, 1.0);
-  --color-6-450: hsla(89, 100%, 55%, 1.0);
-  --color-6-500: hsla(89, 100%, 50%, 1.0);
-  --color-6-550: hsla(89, 100%, 45%, 1.0);
-  --color-6-600: hsla(89, 100%, 40%, 1.0);
-  --color-6-700: hsla(89, 100%, 30%, 1.0);
-  --color-6-800: hsla(89, 100%, 20%, 1.0);
-  --color-6-900: hsla(89, 100%, 10%, 1.0);
-
-  --color-learning: hsla(263, 73%, 69%, 1.0);
-  --color-classroom: hsla(203, 100%, 39%, 1.0);
-
-  --color-dashboard-popup-bg: hsla(0, 23%, 94%, 1.0);
-  --color-dashboard-popup-title: hsla(0, 0%, 50%, 1.0);
-  --color-dashboard-popup-desc: hsla(0, 0%, 42%, 1.0);
+  --color-primary: hsla(10, 81%, 51%, 1.0);
+  --color-primary-text: hsla(0, 0%, 100%, 1.0); // automatico
+  --color-secondary: hsla(27, 96%, 47%, 1.0);
+  --color-secondary-text: hsla(0, 0%, 100%, 1.0); // automatico
+  --color-info: hsla(196, 62%, 53%, 1.0);
+  --color-info-text: hsla(0, 0%, 16.5%, 1.0);// automatico
+  --color-warning: hsla(37, 90.7%, 57.6%, 1.0);
+  --color-warning-text: hsla(0, 0%, 22.4%, 1.0);; // automatico
+  --color-error: 	hsla(10, 81%, 51%, 1.0);
+  --color-error-text: hsla(0, 0%, 100%, 1.0); // automatico
+  --color-success: hsla(130, 81%, 51%, 1.0);
+  --color-success-text: hsla(0, 0%, 100%, 1.0); // automatico
+  --color-action-button: 	hsla(73, 56%, 56%, 1.0);
+  --color-action-button-text: hsla(0, 0%, 100%, 1.0); // automatico
 }

@@ -48,7 +48,7 @@ class Layout
     public static function lang_code()
     {
         if (!self::$_lang) {
-            self::$_lang = Docebo::langManager()->getLanguageInfo(Lang::get());
+            self::$_lang = \FormaLms\lib\Forma::langManager()->getLanguageInfo(Lang::get());
         }
         if (!isset(self::$_lang->lang_browsercode)) {
             return 'en';
@@ -63,13 +63,16 @@ class Layout
         return $browser_code;
     }
 
-    public static function title()
+    public static function title($customTitle = null)
     {
-        if (isset($GLOBALS['page_title'])) {
-            return $GLOBALS['page_title'];
+        if (!empty($customTitle)){
+            $pageName = $customTitle;
+        }
+        else {
+            $pageName = getPageName();
         }
 
-        return FormaLms\lib\Get::sett('page_title', 'No title');
+        return FormaLms\lib\Get::sett('page_title', 'No title') . ' > ' . $pageName;
     }
 
     public static function description()
@@ -100,7 +103,7 @@ class Layout
     {
         echo '<link rel="stylesheet" type="text/css" href="' . Layout::path() . 'style/reset-fonts-grids.css" />';
         if (!self::$_lang) {
-            self::$_lang = Docebo::langManager()->getLanguageInfo(Lang::get());
+            self::$_lang = \FormaLms\lib\Forma::langManager()->getLanguageInfo(Lang::get());
         }
         if (isset(self::$_lang->lang_direction) && self::$_lang->lang_direction == 'rtl') {
             echo '<link rel="stylesheet" type="text/css" href="' . Layout::path() . 'style/reset-fonts-grids-rtl.css" />';
@@ -111,7 +114,7 @@ class Layout
     {
         $retval = '<link rel="stylesheet" type="text/css" href="' . Layout::path() . 'style/reset-fonts-grids.css" />' . "\n";
         if (!self::$_lang) {
-            self::$_lang = Docebo::langManager()->getLanguageInfo(Lang::get());
+            self::$_lang = \FormaLms\lib\Forma::langManager()->getLanguageInfo(Lang::get());
         }
         if (isset(self::$_lang->lang_direction) && self::$_lang->lang_direction == 'rtl') {
             $retval .= '<link rel="stylesheet" type="text/css" href="' . Layout::path() . 'style/reset-fonts-grids-rtl.css" />' . "\n";
@@ -123,19 +126,37 @@ class Layout
     public static function rtl()
     {
         if (!self::$_lang) {
-            self::$_lang = Docebo::langManager()->getLanguageInfo(Lang::get());
+            self::$_lang = \FormaLms\lib\Forma::langManager()->getLanguageInfo(Lang::get());
         }
         if (isset(self::$_lang->lang_direction) && self::$_lang->lang_direction == 'rtl') {
             echo '<link rel="stylesheet" type="text/css" href="' . Layout::path() . 'style/base-rtl.css" />';
         }
     }
 
-    public static function accessibility()
+    public static function highContrast()
     {
-        if (getAccessibilityStatus() === false) {
-            return '<style type="text/css">' . "\n"
-                . '.access-only {display: none;}' . "\n"
-                . '</style>' . "\n";
+        $html = '';
+        if (getAccessibilityStatus() == true) {
+            $cookieName = "high_contrast";
+            if (isset($_COOKIE[$cookieName])) {
+                $cookieValue = 0;
+                $label = Lang::t('_DISABLE_HIGH_CONTRAST', 'screen_reader');
+            } else {
+                $cookieValue = 1;
+                $label = Lang::t('_ENABLE_HIGH_CONTRAST', 'screen_reader');
+            }
+            $html .= "<div class='pull-right'>
+                        <a href='index.php?r=adm/homepage/enableHighContrast&enabled=$cookieValue'>$label</a>
+                     </div>";
+        }
+        return $html;
+    }
+
+    public static function highContrastCss(){
+        if (getAccessibilityStatus() && isset($_COOKIE["high_contrast"]) ) {
+            return 'highcontrast.';
+        } else {
+            return '';
         }
     }
 
@@ -147,7 +168,7 @@ class Layout
     public static function lang_flag()
     {
         $lang_sel = Lang::get();
-        $langs_var = Docebo::langManager()->getAllLanguages();
+        $langs_var = \FormaLms\lib\Forma::langManager()->getAllLanguages();
         if (count($langs_var) <= 1) {
             return '';
         }
@@ -168,11 +189,10 @@ class Layout
     /**
      * Return the complete code for the lms cart.
      *
-     * @return <string>
+     * @return string
      */
     public static function cart()
     {
-        
         require_once _lms_ . '/lib/lib.cart.php';
         Learning_Cart::init();
 
@@ -186,7 +206,7 @@ class Layout
     /**
      * Build the restyled layout for lang selection.
      *
-     * @return <string>
+     * @return string
      */
     public static function buildLanguages()
     {
@@ -201,8 +221,7 @@ class Layout
             if ($pos == 0) {
                 $pos = 1;
             }
-            if ($server_query_string[
-                $pos - 1] === '&') {
+            if ($server_query_string[$pos - 1] === '&') {
                 $pos = $pos - 1;
             }
             $server_query_string = substr($server_query_string, 0, $pos);
@@ -210,8 +229,8 @@ class Layout
 
         $html = '<ul class="list-inline" id="language_selection">';
         foreach ($lang_list as $lang) {
-            $html .= '<li><a class="lang-sprite lang_' . strtolower(str_replace(' ', '_', $lang->lang_code)) . ($lang->lang_code == $lang_sel ? ' current' : '') . '"'
-                . 'href="' . (isset($args['redirect_on']) ? $args['redirect_on'] : 'index.php')
+            $html .= '<li><a aria-label="'.Lang::t('_DEFAULT_LANGUAGE').' '.$lang->lang_code.'" class="lang-sprite lang_' . strtolower(str_replace(' ', '_', $lang->lang_code)) . ($lang->lang_code == $lang_sel ? ' current' : '') . '"'
+                . ' href="' . (isset($args['redirect_on']) ? $args['redirect_on'] : 'index.php')
                 . '?' //.($r !== '' ? '?r='.$r.'&amp;' : '?')
                 . ($server_query_string !== '' ? str_replace('&', '&amp;', $server_query_string) . '&amp;' : '')
                 . 'special=changelang&new_lang=' . rawurlencode($lang->lang_code) . '" title="' . $lang->lang_description . '">'
@@ -225,7 +244,7 @@ class Layout
     /**
      * Return the complete code for change lang dropdown.
      *
-     * @return <string>
+     * @return string
      */
     public static function change_lang()
     {
@@ -256,7 +275,7 @@ class Layout
                 //			$href .= '?' . $server_query_string !== '' ? str_replace('&', '&amp;', $server_query_string).'&amp;' : '';
                 $href .= '?s&special=changelang&amp;new_lang=' . rawurlencode($lang->lang_code);
 
-                $options[] = '<a class="dropdown-item" href="' . $href . '" title="' . $lang->lang_description . '">' . $lang->lang_description . '</a>';
+                $options[] = '<a class="dropdown-item" href="' . $href .'">' . $lang->lang_description . '</a>';
             } else {
                 $html .= '<a id="change_language" class="dropdown-toggle" href="#" data-toggle="dropdown">' . $lang->lang_description . '<i class="fa fa-chevron-down"></i></a>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="change_language">';
@@ -279,14 +298,14 @@ class Layout
     /**
      * Return the code for the catalogue link.
      *
-     * @return <string>
+     * @return string
      */
     public static function get_catalogue()
     {
         $html = '';
         if (HomepageAdm::staticIsCatalogToShow()) {
             $eventResult = Events::trigger('lms.catalogue.external.showing', ['catalogueLink' => _homecatalog_]);
-            $html = '<a class="forma-button forma-button--orange" href="index.php?r=' . $eventResult['catalogueLink'] . '">' . Lang::t('_CATALOGUE', 'standard') . '</a>';
+            $html = '<a class="forma-button forma-button--primary" href="index.php?r=' . $eventResult['catalogueLink'] . '">' . Lang::t('_CATALOGUE', 'standard') . '</a>';
         }
 
         return $html;
@@ -295,7 +314,7 @@ class Layout
     public static function lang_dropdown()
     {
         $lang_sel = Lang::get();
-        $langs_var = Docebo::langManager()->getAllLanguages();
+        $langs_var = \FormaLms\lib\Forma::langManager()->getAllLanguages();
 
         $html = Form::openForm('language_selection', '?special=changelang')
             . '<select id="new_lang" name="new_lang" onchange="submit();">';
@@ -312,12 +331,13 @@ class Layout
 
     public static function render($layout, $dataForView = [])
     {
+
         $session = SessionManager::getInstance()->getSession();
 
-        if ($session->has('template') && $session->get('template') !== getTemplate() && Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN && CORE === true) {
+        if ($session->has('template') && $session->get('template') !== getTemplate() && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN && CORE === true) {
             $msgChangeTemplate = Lang::t('_MSG_CHANGE_TEMPLATE', 'standard');
             $msgChangeTemplate = str_replace('[template_name]', $session->get('template'), $msgChangeTemplate);
-            $msgChangeTemplate = str_replace('[template_min_version]', _template_min_version_, $msgChangeTemplate);
+            $msgChangeTemplate = str_replace('[template_min_version]', \FormaLms\lib\Version\VersionChecker::getMinimumTemplateVersion(), $msgChangeTemplate);
 
             UIFeedback::notice($msgChangeTemplate);
         }
@@ -336,9 +356,10 @@ class Layout
 
     public static function PrepareInclude($whichLayout)
     {
-        $minimized = ($GLOBALS['cfg']['do_debug'] ? '' : '.min');
+        $debug = $GLOBALS['cfg']['do_debug'] ?? false;
+        $minimized = ($debug ? '' : '.min');
         $retArray = [
-            'debug' => $GLOBALS['cfg']['do_debug'],
+            'debug' => $debug,
         ];
         // base.html.twig
         $retArray['jqueryLib'] = JQueryLib::loadJQuery($minimized);
@@ -407,8 +428,8 @@ class Layout
     public static function courseMenu()
     {
         $sessionIdCourse = SessionManager::getInstance()->getSession()->get('idCourse');
-        if (!Docebo::user()->isAnonymous() && $sessionIdCourse) {
-            $db = DbConn::getInstance();
+        if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous() && $sessionIdCourse) {
+            $db = \FormaLms\db\DbConn::getInstance();
 
             $query_course = 'SELECT name, img_course FROM %lms_course WHERE idCourse = ' . $sessionIdCourse . ' ';
             $course_data = $db->query($query_course);
@@ -484,37 +505,19 @@ class Layout
                 $dropdown_menu[0]['selected'] = true;
             }
             // horizontal menu
-            require_once _lms_ . '/lib/lib.stats.php';
-            $total = getNumCourseItems(
-                $sessionIdCourse,
-                false,
-                getLogUserId(),
-                false
-            );
-            $tot_complete = getStatStatusCount(
-                getLogUserId(),
-                $sessionIdCourse,
-                ['completed', 'passed']
-            );
-            $tot_failed = getStatStatusCount(
-                getLogUserId(),
-                $sessionIdCourse,
-                ['failed']
-            );
-
-            $perc_complete = round(($tot_complete / $total) * 100, 2);
-            $perc_failed = round(($tot_failed / $total) * 100, 2);
-
+            $courseAlms = new CourseAlms();
+            $courseStats = $courseAlms->getCourseCompletedPercentage($sessionIdCourse, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
+      
             $stats = [];
             if (SessionManager::getInstance()->getSession()->has('is_ghost') || SessionManager::getInstance()->getSession()->get('is_ghost') !== true) {
-                if (Docebo::course()->getValue('show_time') == 1) {
-                    $tot_time_sec = TrackUser::getUserPreviousSessionCourseTime(getLogUserId(), $sessionIdCourse);
+                if (\FormaLms\lib\Forma::course()->getValue('show_time') == 1) {
+                    $tot_time_sec = TrackUser::getUserPreviousSessionCourseTime(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $sessionIdCourse);
                     $partial_time_sec = TrackUser::getUserCurrentSessionCourseTime($sessionIdCourse);
                     $tot_time_sec += $partial_time_sec;
 
-                    $hours = (int) ($partial_time_sec / 3600);
-                    $minutes = (int) (($partial_time_sec % 3600) / 60);
-                    $seconds = (int) ($partial_time_sec % 60);
+                    $hours = (int)($partial_time_sec / 3600);
+                    $minutes = (int)(($partial_time_sec % 3600) / 60);
+                    $seconds = (int)($partial_time_sec % 60);
                     if ($minutes < 10) {
                         $minutes = '0' . $minutes;
                     }
@@ -523,9 +526,9 @@ class Layout
                     }
                     $partial_time = ($hours != 0 ? $hours . 'h ' : '') . $minutes . 'm '; //.$seconds.'s ';
 
-                    $hours = (int) ($tot_time_sec / 3600);
-                    $minutes = (int) (($tot_time_sec % 3600) / 60);
-                    $seconds = (int) ($tot_time_sec % 60);
+                    $hours = (int)($tot_time_sec / 3600);
+                    $minutes = (int)(($tot_time_sec % 3600) / 60);
+                    $seconds = (int)($tot_time_sec % 60);
                     if ($minutes < 10) {
                         $minutes = '0' . $minutes;
                     }
@@ -541,44 +544,47 @@ class Layout
             }
 
             // who is online ---------------------------------------------------------
-            $stats['user_stats']['who_is_online']['type'] = Docebo::course()->getValue('show_who_online');
+            $stats['user_stats']['who_is_online']['type'] = \FormaLms\lib\Forma::course()->getValue('show_who_online');
             $stats['user_stats']['who_is_online']['user_online'] = TrackUser::getWhoIsOnline($sessionIdCourse);
 
+            $total = getNumCourseItems(
+                $sessionIdCourse,
+                false,
+                \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(),
+                false
+            );
+            $tot_complete = getStatStatusCount(
+                \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(),
+                $sessionIdCourse,
+                ['completed', 'passed']
+            );
+
+            $tot_incomplete = $total - $tot_complete;
+
+            $tot_failed = getStatStatusCount(
+                \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(),
+                $sessionIdCourse,
+                ['failed']
+            );
             // print first pannel
 
             // print progress bar -------------------------------------------------
-            if (Docebo::course()->getValue('show_progress') == 1) {
+            if (\FormaLms\lib\Forma::course()->getValue('show_progress') == 1) {
                 $show_progress = true;
                 require_once _lms_ . '/lib/lib.stats.php';
-                $total = getNumCourseItems(
-                    $sessionIdCourse,
-                    false,
-                    getLogUserId(),
-                    false
-                );
-                $tot_complete = getStatStatusCount(
-                    getLogUserId(),
-                    $sessionIdCourse,
-                    ['completed', 'passed']
-                );
-
-                $tot_incomplete = $total - $tot_complete;
+          
 
                 $tot_passed = getStatStatusCount(
-                    getLogUserId(),
+                    \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(),
                     $sessionIdCourse,
                     ['passed']
                 );
-                $tot_failed = getStatStatusCount(
-                    getLogUserId(),
-                    $sessionIdCourse,
-                    ['failed']
-                );
+             
 
                 $stats['course_stats']['materials'] = $total;
                 $stats['course_stats']['materials_complete'] = $tot_complete;
                 $stats['course_stats']['materials_incomplete'] = $tot_incomplete;
-            //$stats['course_stats']['materials_passed'] = $tot_passed;
+                //$stats['course_stats']['materials_passed'] = $tot_passed;
                 //$stats['course_stats']['materials_failed'] = $tot_failed;
             } else {
                 $show_progress = false;
@@ -593,8 +599,8 @@ class Layout
                     'total' => $total,
                     'total_complete' => $tot_complete,
                     'total_failed' => $tot_failed,
-                    'perc_completed' => $perc_complete,
-                    'perc_failed' => $perc_failed,
+                    'perc_completed' => $courseStats['complete_percentage'],
+                    'perc_failed' => $courseStats['failed_percentage'],
                 ],
                 'modal_stats' => $stats,
             ];
@@ -621,11 +627,11 @@ class Layout
      * function highlight
      *    Highlight parts of text strings with HTML tags.
      *
-     * @param $string the text that will be checked for parts to highlight
-     * @param $key the text to be highlighted
-     * @param $classname class of the highlight <span> tag, "highlight" by default
+     * @param $string string text that will be checked for parts to highlight
+     * @param $key string text to be highlighted
+     * @param $classname string of the highlight <span> tag, "highlight" by default
      *
-     * @return the highlighted text
+     * @return string highlighted text
      **/
     public static function highlight($string, $key, $classname = 'highlight')
     {
@@ -642,4 +648,6 @@ class Layout
             return FormaLms\lib\Get::sett('google_stat_code');
         }
     }
+
 }
+

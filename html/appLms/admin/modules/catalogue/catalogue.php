@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (!Docebo::user()->isAnonymous()) {
+if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     /**
      * @version  $Id: catalogue.php 573 2006-08-23 09:38:54Z fabio $
      *
@@ -27,19 +27,19 @@ if (!Docebo::user()->isAnonymous()) {
 
         require_once _base_ . '/lib/lib.table.php';
 
-        $lang = &DoceboLanguage::createInstance('catalogue', 'lms');
+        $lang = FormaLanguage::createInstance('catalogue', 'lms');
         $out = &$GLOBALS['page'];
 
         $mod_perm = checkPerm('mod', true);
         $title_area = [$lang->def('_CATALOGUE')];
 
         // Retriving data
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             $all_courses = false;
 
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             if (isset($admin_courses['course'][0])) {
                 $all_courses = true;
             }
@@ -47,7 +47,7 @@ if (!Docebo::user()->isAnonymous()) {
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $admin_courses['catalogue'] = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
+                $admin_courses['catalogue'] = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
             }
 
             if ($all_courses) {
@@ -134,10 +134,18 @@ if (!Docebo::user()->isAnonymous()) {
             }
 
             if ($mod_perm) {
+
+                $cont[] = '<a href="index.php?r=adm/userselector/show&instance=catalogue&amp;load=1&amp;id=' . $id . '" '
+                    . 'title="' . $lang->def('_ASSIGN_USERS') . ' : ' . strip_tags($name) . '">'
+            . '<img src="' . getPathImage('fw') . 'standard/moduser.png" alt="' . $lang->def('_ASSIGN_USERS') . ' : '
+            . strip_tags($name) . '" /></a>';
+                /*
                 $cont[] = '<a href="index.php?modname=catalogue&amp;op=modcatalogueassoc&amp;load=1&amp;id_catalogue=' . $id . '" '
                         . 'title="' . $lang->def('_ASSIGN_USERS') . ' : ' . strip_tags($name) . '">'
                 . '<img src="' . getPathImage('fw') . 'standard/moduser.png" alt="' . $lang->def('_ASSIGN_USERS') . ' : '
                 . strip_tags($name) . '" /></a>';
+
+                */
 
                 //--- new: subscription action -------------------------------------------
                 $cont[] = '<a class="ico-sprite subs_plus" href="index.php?r=alms/subscription/cataloguesubscribeusers&amp;id_catalogue=' . $id . '" '
@@ -207,7 +215,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         require_once _base_ . '/lib/lib.form.php';
 
-        $lang = &DoceboLanguage::createInstance('catalogue', 'lms');
+        $lang = FormaLanguage::createInstance('catalogue', 'lms');
         $out = &$GLOBALS['page'];
 
         $title_area = [
@@ -263,11 +271,11 @@ if (!Docebo::user()->isAnonymous()) {
 		( name, description ) VALUES
 		( '" . $_POST['name'] . "', '" . $_POST['description'] . "' )";
             $re = sql_query($query_catalogue);
-            if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 list($id_cat) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $adminManager->addAdminCatalogue($id_cat, Docebo::user()->getIdSt());
+                $adminManager->addAdminCatalogue($id_cat, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
             }
         }
         Util::jump_to('index.php?modname=catalogue&op=catlist&result=' . ($re ? 'ok' : 'err'));
@@ -329,7 +337,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         $output = sql_fetch_row($re_entry);
 
-        return (int) $output[0];
+        return is_array($output) ? (int) $output[0] : 0;
     }
 
     function entrylist()
@@ -342,8 +350,8 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _lms_ . '/lib/lib.coursepath.php';
         require_once _lms_ . '/lib/lib.course.php';
 
-        $lang = &DoceboLanguage::createInstance('catalogue', 'lms');
-        $out = &$GLOBALS['page'];
+        $lang = FormaLanguage::createInstance('catalogue', 'lms');
+        $out = $GLOBALS['page'];
 
         $id_cat = FormaLms\lib\Get::req('id', DOTY_INT, 0);
         $cat_name = getCatalogueName($id_cat);
@@ -373,7 +381,7 @@ if (!Docebo::user()->isAnonymous()) {
         $coursepath_man = new CoursePath_Manager();
         $coursespath_name = &$coursepath_man->getNames($coursepath);
 
-        $course_name = &getCoursesInfo($courses);
+        $course_name = getCoursesInfo($courses);
 
         $cont_h = [$lang->def('_CODE'), $lang->def('_NAME'), $lang->def('_TYPE')];
         $type_h = ['', '', ''];
@@ -386,19 +394,19 @@ if (!Docebo::user()->isAnonymous()) {
 
         $all_courses = true;
 
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             $all_courses = false;
 
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             if (isset($admin_courses['course'][0])) {
                 $all_courses = true;
             } elseif (isset($admin_courses['course'][-1])) {
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
+                $user_catalogue = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if (count($user_catalogue) > 0) {
                     $courses = [0];
 
@@ -532,7 +540,7 @@ if (!Docebo::user()->isAnonymous()) {
         checkPerm('mod');
         require_once _lms_ . '/lib/lib.course_managment.php';
 
-        $lang = &DoceboLanguage::createInstance('catalogue', 'lms');
+        $lang = FormaLanguage::createInstance('catalogue', 'lms');
         $id_cat = importVar('id_cat', true, 0);
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
@@ -664,78 +672,7 @@ if (!Docebo::user()->isAnonymous()) {
         return $re;
     }
 
-    function modcatalogueassoc()
-    {
-        checkPerm('mod');
-
-        $lang = &DoceboLanguage::createInstance('catalogue', 'lms');
-        $acl_man = &Docebo::user()->getAclManager();
-
-        require_once _lms_ . '/lib/lib.course.php';
-        require_once _base_ . '/lib/lib.form.php';
-        require_once _base_ . '/lib/lib.userselector.php';
-
-        $id_catalogue = importVar('id_catalogue', true, 0);
-        $out = &$GLOBALS['page'];
-
-        $user_select = new UserSelector();
-        $user_select->show_user_selector = true;
-        $user_select->show_group_selector = true;
-        $user_select->show_orgchart_selector = true;
-        $user_select->show_orgchart_simple_selector = false;
-        $user_select->multi_choice = true;
-
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-            require_once _base_ . '/lib/lib.preference.php';
-            $adminManager = new AdminPreference();
-            $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
-            $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
-
-            $user_select->setUserFilter('user', $admin_users);
-            $user_select->setUserFilter('group', $admin_tree);
-        }
-
-        if (isset($_POST['okselector'])) {
-            $old_members = [];
-            $re_members = sql_query('
-		SELECT idst_member
-		FROM ' . $GLOBALS['prefix_lms'] . "_catalogue_member
-		WHERE idCatalogue = '" . $id_catalogue . "'");
-            while (list($id_members) = sql_fetch_row($re_members)) {
-                $old_members[$id_members] = $id_members;
-            }
-            $new_members = $user_select->getSelection($_POST);
-            $to_add = array_diff($new_members, $old_members);
-            $to_del = array_diff($old_members, $new_members);
-
-            $re = true;
-            $re &= addToCatologue($to_add, $id_catalogue);
-            $re &= removeFromCatologue($to_del, $id_catalogue);
-
-            Util::jump_to('index.php?modname=catalogue&op=catlist&result=' . ($re ? 'ok' : 'err'));
-        }
-
-        if (isset($_GET['load'])) {
-            $members = [];
-            $re_members = sql_query('
-		SELECT idst_member
-		FROM ' . $GLOBALS['prefix_lms'] . "_catalogue_member
-		WHERE idCatalogue = '" . $id_catalogue . "'");
-
-            while (list($id_members) = sql_fetch_row($re_members)) {
-                $members[$id_members] = $id_members;
-            }
-            $user_select->resetSelection($members);
-        }
-        $title_area = getTitleArea(
-        ['index.php?modname=catalogue&amp;op=catlist' => $lang->def('_CATALOGUE'), getCatalogueName($id_catalogue)],
-        'catalogue');
-        $user_select->setPageTitle($title_area);
-        $user_select->loadSelector('index.php?modname=catalogue&amp;op=modcatalogueassoc&amp;id_catalogue=' . $id_catalogue,
-            $lang->def('_CATALOGUE'),
-            $lang->def('_ASSIGN_USERS'),
-            true);
-    }
+   
 
     function catalogueDispatch($op)
     {

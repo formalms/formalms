@@ -14,7 +14,7 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 require_once _lms_ . '/lib/lib.course.php';
-require_once __DIR__ . '/class.report.php';
+require_once dirname(__FILE__) . '/class.report.php';
 
 define('_RA_CATEGORY_COURSES', 'courses');
 define('_RA_CATEGORY_COURSECATS', 'coursecategories');
@@ -32,9 +32,9 @@ class Report_Aggregate extends Report
 
     public function __construct($id_report, $report_name = false)
     {
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
 
-        $this->lang = &DoceboLanguage::createInstance('report', 'framework');
+        $this->lang = FormaLanguage::createInstance('report', 'framework');
         $this->_set_columns_category(_RA_CATEGORY_COURSES, Lang::t('_RU_CAT_COURSES', 'report'), 'get_courses_filter', 'show_report_courses', '_get_courses_query');
         $this->_set_columns_category(_RA_CATEGORY_COURSECATS, Lang::t('_RA_CAT_COURSECATS', 'report'), 'get_coursecategories_filter', 'show_report_coursecategories', '_get_coursecategories_query');
         $this->_set_columns_category(_RA_CATEGORY_TIME, Lang::t('_RA_CAT_TIME', 'report'), 'get_time_filter', 'show_report_time', '_get_time_query');
@@ -57,7 +57,7 @@ class Report_Aggregate extends Report
         require_once _lms_ . '/lib/lib.course.php';
         require_once _lms_ . '/lib/lib.course_managment.php';
 
-        $lang = &DoceboLanguage::createInstance('report', 'framework');
+        $lang = FormaLanguage::createInstance('report', 'framework');
 
         //update session
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
@@ -95,7 +95,7 @@ class Report_Aggregate extends Report
             case 'sel_data':
                 $type = FormaLms\lib\Get::req('selection_type', DOTY_ALPHANUM, 'users');
 
-                //$aclManager = new DoceboACLManager();
+                //$aclManager = new FormaACLManager();
                 $user_select = new UserSelector();
 
                 if (FormaLms\lib\Get::req('is_updating', DOTY_INT, 0) > 0) {
@@ -143,7 +143,7 @@ class Report_Aggregate extends Report
                 //$user_select->show_orgchart_simple_selector = FALSE;
                 //$user_select->multi_choice = TRUE;
 
-                if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
+                if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                     $user_select->addFormInfo(
                         ($type == 'users' ? Form::getCheckbox($lang->def('_REPORT_FOR_ALL'), 'select_all', 'select_all', 1, $reportTempData['rows_filter']['select_all']) : '') .
                         Form::getBreakRow() .
@@ -175,7 +175,7 @@ class Report_Aggregate extends Report
         require_once _lms_ . '/lib/lib.course.php';
         require_once _lms_ . '/lib/lib.course_managment.php';
 
-        $lang = &DoceboLanguage::createInstance('report', 'framework');
+        $lang = FormaLanguage::createInstance('report', 'framework');
 
         //$sel = new Course_Manager();
         //$sel->setLink('index.php?modname=report&op=report_rows_filter');
@@ -233,7 +233,7 @@ class Report_Aggregate extends Report
         $box->title = $this->lang->def('_COURSES_SELECTION_TITLE');
         $box->description = false;
 
-        $boxlang = &DoceboLanguage::createInstance('report', 'framework');
+        $boxlang = FormaLanguage::createInstance('report', 'framework');
         $box->body .= '<div class="fc_filter_line filter_corr">';
         $box->body .= '<input id="all_courses" name="all_courses" type="radio" value="1" ' . ($reportTempData['columns_filter']['all_courses'] ? 'checked="checked"' : '') . ' />';
         $box->body .= ' <label for="all_courses">' . $boxlang->def('_ALL_COURSES') . '</label>';
@@ -313,7 +313,7 @@ class Report_Aggregate extends Report
         $courses = $reportTempData['columns_filter']['selected_courses'];
         $cols = $reportTempData['columns_filter']['showed_columns'];
 
-        $acl = new DoceboACLManager();
+        $acl = new FormaACLManager();
         $html = '';
 
         $man = new Man_Course();
@@ -325,12 +325,12 @@ class Report_Aggregate extends Report
             }
         }
         /*
-                if(Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                if(\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
 
                     // if the usre is a subadmin with only few course assigned
                     require_once(_base_.'/lib/lib.preference.php');
                     $adminManager = new AdminPreference();
-                    $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+                    $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
                     $courses = array_intersect($courses, $admin_tree['courses']);
                 }
         */
@@ -349,27 +349,27 @@ class Report_Aggregate extends Report
         }
         /*
                 //admin users filter
-                $acl_man = Docebo::user()->getACLManager();
-                $userlevelid = Docebo::user()->getUserLevelId();
+                $acl_man = \FormaLms\lib\Forma::getAclManager();;
+                $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
                 if ( $userlevelid != ADMIN_GROUP_GODADMIN ) {
                     require_once(_base_.'/lib/lib.preference.php');
                     $adminManager = new AdminPreference();
-                    $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+                    $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
                     $admin_users = $acl_man->getAllUsersFromSelection($admin_tree);
                     $admin_users = array_unique($admin_users);
                 }*/
-        $userlevelid = Docebo::user()->getUserLevelId();
-        if ($userlevelid != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
+        if ($userlevelid != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             //filter users
             $alluser = false;
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_users = $adminManager->getAdminUsers(Docebo::user()->getIdST());
+            $admin_users = $adminManager->getAdminUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             //$user_selected = array_intersect($user_selected, $admin_users);
             //unset($admin_users);
 
             //filter courses
-            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             if ($all_courses) {
                 $all_courses = false;
                 $rs = sql_query('SELECT idCourse FROM %lms_course');
@@ -385,7 +385,7 @@ class Report_Aggregate extends Report
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
+                $user_catalogue = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if (count($user_catalogue) > 0) {
                     $courses = [0];
 
@@ -446,7 +446,7 @@ class Report_Aggregate extends Report
             case 'groups':
                 //retrieve all labels
                 $orgchart_labels = [];
-                $query = 'SELECT * FROM ' . $fw . "_org_chart WHERE lang_code='" . getLanguage() . "'";
+                $query = 'SELECT * FROM ' . $fw . "_org_chart WHERE lang_code='" . Lang::get() . "'";
                 $res = sql_query($query);
                 while ($row = sql_fetch_assoc($res)) {
                     $orgchart_labels[$row['id_dir']] = $row['translation'];
@@ -515,7 +515,7 @@ class Report_Aggregate extends Report
                 //for each group, retrieve label and user statistics
                 foreach ($selection as $dir_id => $group_id) {
                     $group_users = $acl->getGroupAllUser($group_id);
-                    if ($userlevelid != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
+                    if ($userlevelid != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                         $group_users = array_intersect($group_users, $admin_users);
                     }
                     $users_num = count($group_users);
@@ -679,10 +679,10 @@ class Report_Aggregate extends Report
                     require_once _base_ . '/lib/lib.userselector.php';
                     require_once _base_ . '/lib/lib.preference.php';
 
-                    $acl_man = new DoceboACLManager();
+                    $acl_man = new FormaACLManager();
                     $adminManager = new AdminPreference();
 
-                    $admin_users = $adminManager->getAdminUsers(Docebo::user()->getIdST());
+                    $admin_users = $adminManager->getAdminUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
                     $admin_users = $acl_man->getAllUsersFromSelection($admin_users);
                     $users = array_intersect($users, $admin_users);
                     unset($admin_users);
@@ -690,8 +690,8 @@ class Report_Aggregate extends Report
                 } else {
                     $temp = [];
                     // resolve the user selection
-                    $users = &$acl->getAllUsersFromIdst($selection);
-                    if ($userlevelid != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
+                    $users = $acl->getAllUsersFromIdst($selection);
+                    if ($userlevelid != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                         $users = array_intersect($users, $admin_users);
                     }
                     if (count($users) <= 0) {
@@ -928,7 +928,7 @@ class Report_Aggregate extends Report
         require_once _lms_ . '/lib/lib.course.php';
         require_once _lms_ . '/lib/category/lib.categorytree.php';
 
-        $lang = &DoceboLanguage::createInstance('report', 'framework');
+        $lang = &FormaLanguage::createInstance('report', 'framework');
 
         if (isset($_POST['undo_filter'])) {
             Util::jump_to($back_url);
@@ -986,7 +986,7 @@ class Report_Aggregate extends Report
         $box->title = $this->lang->def('_COURSES_SELECTION_TITLE');
         $box->description = false;
 
-        $boxlang = &DoceboLanguage::createInstance('report', 'framework');
+        $boxlang = &FormaLanguage::createInstance('report', 'framework');
         $box->body .= '<div class="">' . $output['html'] . '</div>';
         $box->body .= Form::getHidden('update_tempdata', 'update_tempdata', 1);
         $box->body .= Form::openButtonSpace();
@@ -1000,7 +1000,7 @@ class Report_Aggregate extends Report
     public function _get_coursecategories_query($type = 'html', $report_data = null, $other = '')
     {
         require_once _lms_ . '/lib/lib.course.php';
-        require_once __DIR__ . '/report_tableprinter.php';
+        require_once dirname(__FILE__) . '/report_tableprinter.php';
 
         if ($report_data == null) {
             $reportTempData = $this->session->get(self::_REPORT_SESSION);
@@ -1023,16 +1023,16 @@ class Report_Aggregate extends Report
             return;
         }
 
-        $acl = new DoceboACLManager();
+        $acl = new FormaACLManager();
         $acl->include_suspended = true;
         $html = '';
 
         //admin users filter
-        $userlevelid = Docebo::user()->getUserLevelId();
-        if ($userlevelid != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
+        if ($userlevelid != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+            $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $admin_users = $acl->getAllUsersFromIdst($admin_tree);
             $admin_users = array_unique($admin_users);
         }
@@ -1048,11 +1048,11 @@ class Report_Aggregate extends Report
         }
 
         $user_courses = false;
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             // if the usre is a subadmin with only few course assigned
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
 
             if (isset($admin_courses['course'][0])) {
                 $user_course = false;
@@ -1060,7 +1060,7 @@ class Report_Aggregate extends Report
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
+                $user_catalogue = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if (count($user_catalogue) > 0) {
                     $courses = [0];
 
@@ -1234,7 +1234,7 @@ class Report_Aggregate extends Report
 
                 //retrieve all labels
                 $orgchart_labels = [];
-                $query = 'SELECT * FROM ' . $fw . "_org_chart WHERE lang_code='" . getLanguage() . "'";
+                $query = 'SELECT * FROM ' . $fw . "_org_chart WHERE lang_code='" . Lang::get() . "'";
                 $res = sql_query($query);
                 while ($row = sql_fetch_assoc($res)) {
                     $orgchart_labels[$row['id_dir']] = $row['translation'];
@@ -1343,7 +1343,7 @@ class Report_Aggregate extends Report
 
                 foreach ($selection as $dir_id => $group_id) {
                     $group_users = $acl->getGroupAllUser($group_id);
-                    if ($userlevelid != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
+                    if ($userlevelid != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                         $group_users = array_intersect($group_users, $admin_users);
                     }
                     $users_num = count($group_users);
@@ -1405,7 +1405,7 @@ class Report_Aggregate extends Report
 
         require_once _base_ . '/lib/lib.form.php';
 
-        $lang = &DoceboLanguage::createInstance('report', 'framework');
+        $lang = &FormaLanguage::createInstance('report', 'framework');
 
         //$sel = new Course_Manager();
         //$sel->setLink('index.php?modname=report&op=report_rows_filter');
@@ -1470,7 +1470,7 @@ class Report_Aggregate extends Report
     public function _get_time_query($type = 'html', $report_data = null, $other = '')
     {
         require_once _lms_ . '/lib/lib.course.php';
-        require_once __DIR__ . '/report_tableprinter.php';
+        require_once dirname(__FILE__) . '/report_tableprinter.php';
 
         if ($report_data == null) {
             $reportTempData = $this->session->get(self::_REPORT_SESSION);
@@ -1485,8 +1485,8 @@ class Report_Aggregate extends Report
         $sel_type = $reportTempData['rows_filter']['selection_type'];
         $selection = $reportTempData['rows_filter']['selection'];
 
-        $timetype = $reportTempData['columns_filter']['timetype'];
-        $years = $reportTempData['columns_filter']['years'];
+        $timetype = array_key_exists('timetype', $reportTempData['columns_filter']) ? $reportTempData['columns_filter']['timetype'] : '';
+        $years = array_key_exists('years', $reportTempData['columns_filter']) ? $reportTempData['columns_filter']['years'] : 0;
 
         if (!$sel_all && count($selection) <= 0) {
             cout('<p>' . $this->lang->def('_EMPTY_SELECTION') . '</p>');
@@ -1494,15 +1494,15 @@ class Report_Aggregate extends Report
             return;
         }
 
-        $acl = new DoceboACLManager();
+        $acl = new FormaACLManager();
         $acl->include_suspended = true;
 
         //admin users filter
-        $userlevelid = Docebo::user()->getUserLevelId();
-        if ($userlevelid != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
+        if ($userlevelid != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+            $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $admin_users = $acl->getAllUsersFromIdst($admin_tree);
             $admin_users = array_unique($admin_users);
         }
@@ -1527,14 +1527,14 @@ class Report_Aggregate extends Report
 
                 $users_list = ($sel_all ? $acl->getAllUsersIdst() : $acl->getAllUsersFromIdst($selection));
                 $users_list = array_unique($users_list);
-                if ($userlevelid != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
+                if ($userlevelid != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                     $users_list = array_intersect($users_list, $admin_users);
                 }
 
                 $query = 'SELECT idUser, YEAR(date_complete) as yearComplete '
                     . ' FROM ' . $lms . '_courseuser '
                     . ' WHERE status=2 '
-                    . ($userlevelid != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous() ? ' AND idUser IN (' . implode(',', $users_list) . ') ' : '');
+                    . ($userlevelid != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous() ? ' AND idUser IN (' . implode(',', $users_list) . ') ' : '');
 
                 $res = sql_query($query);
                 while ($row = sql_fetch_assoc($res)) {
@@ -1625,7 +1625,7 @@ class Report_Aggregate extends Report
             case 'groups':
                 //retrieve all labels
                 $orgchart_labels = [];
-                $query = 'SELECT * FROM ' . $fw . "_org_chart WHERE lang_code='" . getLanguage() . "'";
+                $query = 'SELECT * FROM ' . $fw . "_org_chart WHERE lang_code='" . Lang::get() . "'";
                 $res = sql_query($query);
                 while ($row = sql_fetch_assoc($res)) {
                     $orgchart_labels[$row['id_dir']] = $row['translation'];
@@ -1707,7 +1707,7 @@ class Report_Aggregate extends Report
                 $buffer->openBody();
                 foreach ($selection as $group) {
                     $group_users = $acl->getGroupAllUser($group);
-                    if ($userlevelid != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
+                    if ($userlevelid != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                         $group_users = array_intersect($group_users, $admin_users);
                     }
                     $users_num = count($group_users);
@@ -1877,10 +1877,10 @@ class Report_Aggregate extends Report
         $end_date = isset($reportTempData['columns_filter']['comm_end_date']) ? substr($reportTempData['columns_filter']['comm_end_date'], 0, 10) : '';
 
         //check and validate time period dates
-        if (!preg_match('/^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$/', $start_date) || $start_date == '0000-00-00') {
+        if (!preg_match('/^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$/', $start_date) || is_null($start_date)) {
             $start_date = '';
         }
-        if (!preg_match('/^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$/', $end_date) || $end_date == '0000-00-00') {
+        if (!preg_match('/^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$/', $end_date) || is_null($end_date)) {
             $end_date = '';
         }
 
@@ -1898,7 +1898,7 @@ class Report_Aggregate extends Report
         }
 
         //instantiate an acl manager
-        $acl_man = new DoceboACLManager();
+        $acl_man = new FormaACLManager();
         $acl_man->include_suspended = true;
 
         //extract user idst from selection
@@ -1909,11 +1909,11 @@ class Report_Aggregate extends Report
         }
 
         //admin users filter
-        $userlevelid = Docebo::user()->getUserLevelId();
-        if ($userlevelid != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
+        if ($userlevelid != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+            $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
             $admin_users = array_unique($admin_users);
             //filter users selection by admin visible users
@@ -2042,7 +2042,7 @@ class Report_Aggregate extends Report
 
         /*
                 //user details buffer
-                $acl_man = Docebo::user()->getAclManager();
+                $acl_man = \FormaLms\lib\Forma::getAclManager();
                 $user_details = array();
                 $query = "SELECT idst, userid FROM %adm_user WHERE idst IN (".implode(",", $_all_users).")";
                 $res = $this->db->query($query);
@@ -2215,10 +2215,10 @@ class Report_Aggregate extends Report
         $end_date = substr($reportTempData['columns_filter']['comp_end_date'], 0, 10);
 
         //check and validate time period dates
-        if (!preg_match('/^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$/', $start_date) || $start_date == '0000-00-00') {
+        if (!preg_match('/^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$/', $start_date) || is_null($start_date)) {
             $start_date = '';
         }
-        if (!preg_match('/^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$/', $end_date) || $end_date == '0000-00-00') {
+        if (!preg_match('/^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$/', $end_date) || is_null($end_date)) {
             $end_date = '';
         }
 
@@ -2236,7 +2236,7 @@ class Report_Aggregate extends Report
         }
 
         //instantiate acl manager
-        $acl_man = new DoceboACLManager();
+        $acl_man = new FormaACLManager();
         $acl_man->include_suspended = true;
 
         //extract user idst from selection
@@ -2247,11 +2247,11 @@ class Report_Aggregate extends Report
         }
 
         //admin users filter
-        $userlevelid = Docebo::user()->getUserLevelId();
-        if ($userlevelid != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
+        if ($userlevelid != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+            $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
             $admin_users = array_unique($admin_users);
             //filter users selection by admin visible users
@@ -2382,7 +2382,7 @@ class Report_Aggregate extends Report
 
         /*
                 //user details buffer
-                $acl_man = Docebo::user()->getAclManager();
+                $acl_man = \FormaLms\lib\Forma::getAclManager();
                 $user_details = array();
                 $query = "SELECT idst, userid FROM %adm_user WHERE idst IN (".implode(",", $_all_users).")";
                 $res = $this->db->query($query);

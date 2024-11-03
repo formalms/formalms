@@ -32,15 +32,15 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 function createModule($module_name, $class_name = null)
 {
     $module_name = preg_replace('/[^a-zA-Z0-9\-\_]+/', '', $module_name);
-    $dirPath = dirname(__DIR__) . '/class.module/';
+    $dirPath = dirname(__DIR__, 1) . '/class.module/';
     $fileName = 'class.' . $module_name . '.php';
     if (file_exists($dirPath . $fileName)) {
-        include_once Forma::include($dirPath, $fileName);
+        include_once \FormaLms\lib\Forma::include($dirPath, $fileName);
         if ($class_name === null) {
             $class_name = 'Module_' . ucfirst($module_name);
         }
     } else {
-        include_once Forma::include(dirname(__DIR__) . '/class.module/', 'class.definition.php');
+        include_once \FormaLms\lib\Forma::include(dirname(__DIR__, 1) . '/class.module/', 'class.definition.php');
         $class_name = 'LmsModule';
     }
 
@@ -60,7 +60,7 @@ function createModule($module_name, $class_name = null)
 
 function checkIfPlugin($module_name)
 {
-    list($module_info) = sql_fetch_row(sql_query('SELECT module_info'
+    [$module_info] = sql_fetch_row(sql_query('SELECT module_info'
         . ' FROM learning_module'
         . " WHERE module_name = '" . $module_name . "'"));
 

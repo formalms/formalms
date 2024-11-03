@@ -25,13 +25,12 @@
   text-transform: uppercase;
   text-shadow: none;
   line-height: 40px;
-  color: var(--color-0-000);
-  background: var(--color-3);
-  // border: 2px solid var(--color-3);
+  color: var(--color-primary-text);
+  background: var(--color-primary);
+  border: 2px solid var(--color-primary);
   font-family: $font;
   font-size: 12px;
   border-radius: $border-radius;
-  outline: none;
   box-shadow: none;
   cursor: pointer;
   transition: all 0.4s ease 0s;
@@ -51,15 +50,10 @@
     font-size: 11px;
   }
 
-  &:hover {
-    text-decoration: none;
-    color: var(--color-0-000);
-  }
-
-  &:focus {
-    text-decoration: none;
-    background-color: var(--color-3-450);
-    color: var(--color-0-000);
+  &:hover, &:focus {
+    color: var(--color-primary);
+    background: var(--color-primary-text);
+    border: 2px solid var(--color-primary);
   }
 
   .user-panel & {
@@ -107,11 +101,21 @@
 // </a>
 //
 // Style guide: 2.1.1
-.forma-button--orange-hover {
+.forma-button--primary {
+  color: var(--color-primary-text);
+  background: var(--color-primary);
+  border: 2px solid var(--color-transparent);
   &:hover {
-    background: var(--color-1-550);
-    color: var(--color-0-000);
-    // border-color: var(--color-1-550);
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+    background: var(--color-primary-text);
+    // border-color: var(--color-primary);
+    .forma-button__label {
+      color: var(--color-primary) !important;
+      &:hover, &:focus {
+        color: #fff!important;
+      }
+    }
     .forma-button__label:after {
       animation-duration: 500ms;
       animation-name: formaButtonLabelAfter;
@@ -131,9 +135,9 @@
 // Style guide: 2.2
 .forma-button--disabled {
   pointer-events: none;
-  background: var(--color-0-000);
-  // border: 2px solid var(--color-0-250);
-  color: var(--color-0-250);
+  background: var(--color-disabled);
+  // border: 2px solid var(--color-grey);
+  color: var(--color-disabled-text);
   position: relative;
   &::before {
     position: absolute;
@@ -151,7 +155,7 @@
     &:before {
       content: '\f023';
       font-family: $icon;
-      color: var(--color-0-400);
+      color: var(--color-disabled-text);
       padding-right: 5px;
     }
 
@@ -174,8 +178,13 @@
 //
 // Style guide: 2.3
 .forma-button--green {
-  background: var(--color-6);
-  border: 2px solid var(--color-6);
+  background: var(--color-secondary);
+  border: 2px solid var(--color-secondary);
+}
+.forma-button--secondary {
+  background: var(--color-secondary);
+  color: var(--color-secondary-text);
+  border: 2px solid var(--color-secondary);
 }
 
 // Green Bordered Button
@@ -188,13 +197,13 @@
 // Style guide: 2.4
 .forma-button--green-border {
   background-color: transparent;
-  border: solid 2px var(--color-6);
-  color: var(--color-6);
+  border: solid 2px var(--color-secondary);
+  color: var(--color-secondary);
 
   &:hover {
-    background-color: var(--color-6);
-    border-color: var(--color-6);
-    color: var(--color-0-000);
+    background-color: var(--color-secondary);
+    border-color: var(--color-secondary);
+    color: var(--color-white);
   }
 }
 
@@ -208,8 +217,8 @@
 // Style guide: 2.5
 .forma-button--gray {
   pointer-events: none;
-  background: var(--color-0-250);
-  border: 2px solid var(--color-0-250);
+  background: var(--color-grey);
+  border: 2px solid var(--color-grey);
 }
 
 // Black Button
@@ -220,10 +229,11 @@
 // </a>
 //
 // Style guide: 2.6
-.forma-button--black {
-  background: var(--color-0-1000);
-  border: 2px solid var(--color-0-1000);
-
+// USATO
+.forma-button--info {
+  background: var(--color-info);
+  border: 2px solid var(--color-info-text);
+  color: var(--color-info-text);
   .forma-button__label {
     &:after {
       display: none;
@@ -238,6 +248,11 @@
   .homepage & {
     border: 0;
   }
+
+  &:hover {
+    background: var(--color-info-text);
+    color: var(--color-info);
+  }
 }
 
 // White Button
@@ -249,16 +264,12 @@
 //
 // Style guide: 2.7
 .forma-button--white {
-  background: var(--color-0-000);
-  color: var(--color-3);
-  border: 2px solid var(--color-0-000);
+  background: var(--color-white);
+  color: var(--color-primary);
+  border: 2px solid var(--color-white);
 
   &:hover {
-    color: var(--color-3);
-  }
-
-  &:focus {
-    color: var(--color-3);
+    color: var(--color-primary);
   }
 }
 
@@ -272,13 +283,13 @@
 // Style guide: 2.8
 .forma-button--border {
   background-color: transparent;
-  border: solid 2px var(--color-3);
-  color: var(--color-3);
+  border: solid 2px var(--color-primary);
+  color: var(--color-primary);
 
   &:hover {
-    background-color: var(--color-3);
-    border-color: var(--color-3);
-    color: var(--color-0-000);
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-white);
   }
 }
 
@@ -291,21 +302,13 @@
 //
 // Style guide: 2.9
 .forma-button--orange {
-  // border: solid 2px var(--color-1-550);
-  background: var(--color-0-000);
-  color: var(--color-1-550);
+  // border: solid 2px var(--color-primary);
+  background: var(--color-white);
+  color: var(--color-primary);
 
   &:hover {
-    background-color: var(--color-1-550);
-    color: var(--color-0-000);
-
-    &:focus {
-      color: var(--color-0-000);
-    }
-  }
-
-  &:focus {
-    color: var(--color-1-550);
+    background-color: var(--color-primary);
+    color: var(--color-white);
   }
 }
 
@@ -332,7 +335,7 @@
     // content: '\f061';
     font-family: $icon;
     font-size: inherit;
-    color: var(--color-0-000);
+    color: var(--color-white);
     margin-left: 6px;
 
     .d-courses &,
@@ -375,9 +378,9 @@
 input[type='submit'].btn.btn-default {
   .user-panel & {
     font-family: $font;
-    background-color: var(--color-0-750);
+    background-color: var(--color-grey-04);
     text-transform: uppercase;
-    color: var(--color-0-000);
+    color: var(--color-white);
     background-image: none;
     border: 0;
     border-radius: 5px !important;
@@ -402,15 +405,16 @@ a.btn.btn-default {
     font-family: $font;
     text-transform: uppercase;
     font-size: 12px;
-    background-color: var(--color-0-1000);
+    background-color: var(--color-primary);
     text-shadow: none;
-    color: var(--color-0-000);
+    color: var(--color-primary-text);
     border: 0;
     border-radius: 5px;
 
     &:hover {
-      background-color: var(--color-0-1000);
-      color: var(--color-0-000);
+      background-color: var(--color-primary-text);
+      color: var(--color-primary);
+      text-decoration: underline;
     }
   }
 }
@@ -432,7 +436,6 @@ a.btn.btn-default {
   background: transparent;
   border: none;
   border-radius: 0;
-  outline: 0;
   box-shadow: none;
   font-size: 0;
   cursor: pointer;
@@ -444,8 +447,8 @@ a.btn.btn-default {
   height: 30px;
   position: relative;
   vertical-align: middle;
-  background-color: var(--color-0-750);
-  color: var(--color-0-000);
+  background-color: var(--color-primary);
+  color: var(--color-primary-text);
   transition: background-color 0.25s ease 0s;
 
   &:before,
@@ -456,7 +459,7 @@ a.btn.btn-default {
     position: absolute;
     top: calc(50% - 1px);
     left: calc(50% - 10px);
-    background-color: var(--color-0-000);
+    background-color: var(--color-primary-text);
   }
 
   &:before {
@@ -468,7 +471,7 @@ a.btn.btn-default {
   }
 
   .close-button:hover & {
-    background-color: var(--color-1-550);
+    background-color: var(--color-primary-text);
   }
 }
 
@@ -478,18 +481,24 @@ a.btn.btn-default {
   margin-left: 10px;
   font-size: 12px;
   text-transform: uppercase;
-  color: var(--color-0-400);
+  color: var(--color-primary-text);
   transition: color 0.25s ease 0s;
 
   .close-button:hover & {
-    color: var(--color-1-550);
+    color: var(--color-primary-text);
   }
 }
 
 .create-object-button {
-  background: #B2CE4F !important;
-  color: white;
+  background: var(--color-action-button) !important;
+  color:  var(--color-action-button-text);
   font-weight: bold;
   text-shadow: 0 0 black;
   border-color: transparent !important;
+  &:hover {
+    color:  var(--color-action-button-text);
+  }
+  &:active {
+    color:  var(--color-action-button-text);
+  }
 }

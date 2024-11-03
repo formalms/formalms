@@ -29,6 +29,10 @@ class SessionConfig
     private ?string $user = null;
     private ?string $password = null;
     private array $options = [];
+    private string $cookieName;
+
+    public const SECUREFORMA = '__Secure-FORMALMS';
+    public const UNSECUREFORMA = 'FORMALMS';
 
     public function __construct()
     {
@@ -40,7 +44,7 @@ class SessionConfig
         return $this->config;
     }
 
-    public function setConfig(array $config): SessionConfig
+    public function setConfig(array $config): self
     {
         $this->config = $config;
 
@@ -52,7 +56,7 @@ class SessionConfig
         return $this->handler;
     }
 
-    public function setHandler(string $handler): SessionConfig
+    public function setHandler(string $handler): self
     {
         $this->handler = $handler;
 
@@ -64,7 +68,7 @@ class SessionConfig
         return $this->url;
     }
 
-    public function setUrl(?string $url): SessionConfig
+    public function setUrl(?string $url): self
     {
         $this->url = $url;
 
@@ -76,7 +80,7 @@ class SessionConfig
         return $this->host;
     }
 
-    public function setHost(?string $host): SessionConfig
+    public function setHost(?string $host): self
     {
         $this->host = $host;
 
@@ -88,7 +92,7 @@ class SessionConfig
         return $this->port;
     }
 
-    public function setPort(?int $port): SessionConfig
+    public function setPort(?int $port): self
     {
         $this->port = $port;
 
@@ -100,7 +104,7 @@ class SessionConfig
         return $this->timeout;
     }
 
-    public function setTimeout(float $timeout): SessionConfig
+    public function setTimeout(float $timeout): self
     {
         $this->timeout = $timeout;
 
@@ -112,7 +116,7 @@ class SessionConfig
         return $this->lifetime;
     }
 
-    public function setLifetime(int $lifetime): SessionConfig
+    public function setLifetime(int $lifetime): self
     {
         $this->lifetime = $lifetime;
 
@@ -124,7 +128,7 @@ class SessionConfig
         return $this->prefix;
     }
 
-    public function setPrefix(string $prefix): SessionConfig
+    public function setPrefix(string $prefix): self
     {
         $this->prefix = $prefix;
 
@@ -136,7 +140,7 @@ class SessionConfig
         return $this->name;
     }
 
-    public function setName(string $name): SessionConfig
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -148,7 +152,7 @@ class SessionConfig
         return $this->authentication;
     }
 
-    public function setAuthentication(bool $authentication): SessionConfig
+    public function setAuthentication(bool $authentication): self
     {
         $this->authentication = $authentication;
 
@@ -160,7 +164,7 @@ class SessionConfig
         return $this->user;
     }
 
-    public function setUser(?string $user): SessionConfig
+    public function setUser(?string $user): self
     {
         $this->user = $user;
 
@@ -172,7 +176,7 @@ class SessionConfig
         return $this->password;
     }
 
-    public function setPassword(?string $password): SessionConfig
+    public function setPassword(?string $password): self
     {
         $this->password = $password;
 
@@ -184,10 +188,21 @@ class SessionConfig
         return $this->options;
     }
 
-    public function setOptions(array $options): SessionConfig
+    public function setOptions(array $options): self
     {
         $this->options = $options;
 
+        return $this;
+    }
+
+    public function getCookieName(): string
+    {
+        return $this->cookieName;
+    }
+
+    public function setCookieName(string $cookieName): self
+    {
+        $this->cookieName = $cookieName;
         return $this;
     }
 }

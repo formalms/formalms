@@ -23,7 +23,7 @@ class Timetable
     public $prefix = null;
     public $dbconn = null;
 
-    public function Timetable($prefix = false, $dbconn = null)
+    public function __construct($prefix = false, $dbconn = null)
     {
         $this->prefix = ($prefix !== false ? $prefix : $GLOBALS['prefix_fw']);
         $this->dbconn = $dbconn;
@@ -385,7 +385,7 @@ class Timetable
     public function checkNullDate($date)
     {
         if ($date !== false) {
-            if ((empty($date)) || (substr($date, 0, 10) == '0000-00-00')) {
+            if ((empty($date)) || is_null($date)) {
                 $date = false;
             }
         }

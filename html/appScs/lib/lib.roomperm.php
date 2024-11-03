@@ -19,8 +19,9 @@ class RoomPermissions
     public $dbconn = null;
     public $room_id = '';
     public $module = '';
+    public string $platform;
 
-    public function RoomPermissions($room_id, $module, $prefix = false, $dbconn = null)
+    public function __construct($room_id, $module, $prefix = false, $dbconn = null)
     {
         $this->prefix = ($prefix !== false ? $prefix : $GLOBALS['prefix_scs']);
         $this->dbconn = $dbconn;

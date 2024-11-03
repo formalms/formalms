@@ -22,7 +22,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  */
 function createCourseMenuFromCustom($id_custom, $id_course, $group_idst)
 {
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     $menucustom_course_upquery = 'UPDATE %lms_course SET id_menucustom=' . $id_custom . ' WHERE idCourse=' . $id_course;
     sql_query($menucustom_course_upquery);
@@ -126,10 +126,10 @@ function getCustomMenuIdByName($name)
 		SELECT idCustom 
 		FROM %lms_menucustom
 		WHERE title='" . $name . "' LIMIT 0,1";
-    $re_custom = DbConn::getInstance()->query($query);
+    $re_custom = \FormaLms\db\DbConn::getInstance()->query($query);
 
-    if ($re_custom && DbConn::getInstance()->num_rows($re_custom)) {
-        list($res) = DbConn::getInstance()->fetch_row($re_custom);
+    if ($re_custom && \FormaLms\db\DbConn::getInstance()->num_rows($re_custom)) {
+        list($res) = \FormaLms\db\DbConn::getInstance()->fetch_row($re_custom);
     }
 
     return $res;
@@ -178,7 +178,7 @@ function &getCustomLevelSt($id_custom)
 {
     $map = [];
     $levels = CourseLevel::getTranslatedLevels();
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     // find all the group created for this menu custom for permission management
     foreach ($levels as $level => $levelName) {
@@ -203,7 +203,7 @@ function &getModuleRoleSt($module_name, $all_token, $flip = false)
 {
     $map = [];
     $levels = CourseLevel::getTranslatedLevels();
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     // find the idst of all the role of the selected module
     foreach ($all_token as $token) {
@@ -227,12 +227,12 @@ function &getModuleRoleSt($module_name, $all_token, $flip = false)
     return $map;
 }
 
-function &createPermForCourse($group_idst, $id_course)
+function createPermForCourse($group_idst, $id_course)
 {
     $basePerm = '/lms/course/private/';
     $map = [];
     $levels = CourseLevel::getTranslatedLevels();
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     $cut_at = strlen($basePerm);
 
     // find the idst of all the role of the selected module
@@ -266,7 +266,7 @@ function &createPermForCourse($group_idst, $id_course)
 function createModuleRoleForCourse($id_course, $module_name, $tokens)
 {
     $basePerm = '/lms/course/private/';
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     $role_and_id = [];
     if (!is_array($tokens)) {
@@ -296,11 +296,11 @@ function createModuleRoleForCourse($id_course, $module_name, $tokens)
  *
  * @return array [lv] => ( [idst] => 1, [idst] => 2, ...)
  */
-function &getAllModulesPermissionSt($group_idst, $idst_cast = false)
+function getAllModulesPermissionSt($group_idst, $idst_cast = false)
 {
     $old_perm = [];
     $levels = CourseLevel::getTranslatedLevels();
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     // find all the roles associated to the main groups
     foreach ($levels as $level => $levelName) {
@@ -380,7 +380,7 @@ function &fromStToToken(&$map_idst_roles, &$token)
      $basePerm = '/lms/course/private/' . $id_principale . '/';
      $map = [];
      $levels = CourseLevel::getTranslatedLevels();
-     $acl_man = Docebo::user()->getAclManager();
+     $acl_man = \FormaLms\lib\Forma::getAclManager();
      $cut_at = strlen($basePerm);
      // find the idst of all the role of the selected module
      foreach ($levels as $level => $levelName) {

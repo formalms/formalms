@@ -17,6 +17,9 @@ class UserselectorWidgetController extends Controller
 {
     protected $model = null;
     protected $json = null;
+    public FunctionalrolesAdm $fncrole_model;
+    public GroupmanagementAdm $group_model;
+    public UsermanagementAdm $user_model;
 
     public function init()
     {
@@ -81,7 +84,7 @@ class UserselectorWidgetController extends Controller
                 $this->_selectAllUsers();
 
                 return;
-             break;
+                break;
         }
 
         $idOrg = FormaLms\lib\Get::req('id_org', DOTY_INT, 0);
@@ -96,7 +99,7 @@ class UserselectorWidgetController extends Controller
         $var_fields = FormaLms\lib\Get::req('_dyn_field', DOTY_MIXED, []);
         if (stristr($sort, '_dyn_field_') !== false) {
             $index = str_replace('_dyn_field_', '', $sort);
-            $sort = $var_fields[(int) $index];
+            $sort = $var_fields[(int)$index];
         }
 
         $filter_text = FormaLms\lib\Get::req('filter_text', DOTY_STRING, '');
@@ -106,7 +109,7 @@ class UserselectorWidgetController extends Controller
             'suspended' => (FormaLms\lib\Get::req('suspended', DOTY_INT, 1) > 0 ? true : false),
         ];
 
-        $dyn_filter = $this->_getDynamicFilter(FormaLms\lib\Get::req('dyn_filter', DOTY_STRING, ''));
+        $dyn_filter = $this->_getDynamicFilter(FormaLms\lib\Get::req('dyn_filter', DOTY_ALPHANUM, ''));
         if ($dyn_filter !== false) {
             $searchFilter['dyn_filter'] = $dyn_filter;
         }
@@ -135,17 +138,17 @@ class UserselectorWidgetController extends Controller
         $fman = new FieldList();
         $date_fields = $fman->getFieldsByType('date');
 
-        $acl_man = Docebo::user()->getAclManager();
-        $idst_org = $acl_man->getGroupST('/oc_' . (int) $idOrg);
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
+        $idst_org = $acl_man->getGroupST('/oc_' . (int)$idOrg);
         $output_results = [];
         if (is_array($list) && count($list) > 0) {
             foreach ($list as $idst => $record) {
                 $query = 'SELECT params'
-                        . " FROM %lms_organization_access WHERE idOrgAccess = '" . $idOrg . "' AND kind='user' AND value='" . $record['idst'] . "'";
+                    . " FROM %lms_organization_access WHERE idOrgAccess = '" . $idOrg . "' AND kind='user' AND value='" . $record['idst'] . "'";
                 $relation = sql_fetch_row(sql_query($query));
 
                 $record_row = [
-                    'id' => (int) $record['idst'],
+                    'id' => (int)$record['idst'],
                     'userid' => Layout::highlight($acl_man->relativeId($record['userid']), $filter_text),
                     'firstname' => Layout::highlight($record['firstname'], $filter_text),
                     'lastname' => Layout::highlight($record['lastname'], $filter_text),
@@ -155,8 +158,8 @@ class UserselectorWidgetController extends Controller
                     'lastenter' => Format::date($record['lastenter'], 'datetime'),
                     'unassoc' => $idOrg > 0 ? ($record['is_descendant'] ? 0 : 1) : -1,
                     'valid' => $record['valid'],
-                    'mod' => 'ajax.adm_server.php?r=adm/usermanagement/moduser&id=' . (int) $idst,
-                    'del' => 'ajax.adm_server.php?r=adm/usermanagement/deluser&id=' . (int) $idst,
+                    'mod' => 'ajax.adm_server.php?r=adm/usermanagement/moduser&id=' . (int)$idst,
+                    'del' => 'ajax.adm_server.php?r=adm/usermanagement/deluser&id=' . (int)$idst,
                 ];
 
                 foreach ($var_fields as $i => $value) {
@@ -218,7 +221,7 @@ class UserselectorWidgetController extends Controller
                 $this->_selectAllGroups();
 
                 return;
-             break;
+                break;
         }
 
         $startIndex = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
@@ -240,7 +243,7 @@ class UserselectorWidgetController extends Controller
 
         //format models' data
         $records = [];
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         if (is_array($list)) {
             foreach ($list as $record) {
                 $_groupid = $acl_man->relativeId($record->groupid);
@@ -249,7 +252,7 @@ class UserselectorWidgetController extends Controller
                     $_description = substr($_description, 0, 97) . '...';
                 }
                 $records[] = [
-                    'id' => (int) $record->idst,
+                    'id' => (int)$record->idst,
                     'groupid' => highlightText($_groupid, $filter),
                     'description' => highlightText($_description, $filter),
                     'usercount' => $record->usercount,
@@ -286,12 +289,14 @@ class UserselectorWidgetController extends Controller
         if (!is_array($nodes)) {
             return;
         }
-        for ($i = 0; $i < count($nodes); ++$i) {
+        for ($i = 0; $i <= count($nodes); ++$i) {
             $index = $nodes[$i]['node']['id'];
-            $nodes[$i]['node']['id'] = $conversion_table[0][$index] . '_' . $conversion_table[1][$index];
-            $nodes[$i]['node']['options'] = $this->_getNodeActions($nodes[$i]['node']);
-            if (isset($nodes[$i]['children']) && count($nodes[$i]['children']) > 0) {
-                $this->_assignActions($nodes[$i]['children'], $conversion_table);
+            if (array_key_exists($index, $conversion_table[0]) && array_key_exists($index, $conversion_table[1])) {
+                $nodes[$i]['node']['id'] = $conversion_table[0][$index] . '_' . $conversion_table[1][$index];
+                $nodes[$i]['node']['options'] = $this->_getNodeActions($nodes[$i]['node']);
+                if (array_key_exists($i, $nodes) && isset($nodes[$i]['children']) && count($nodes[$i]['children']) > 0) {
+                    $this->_assignActions($nodes[$i]['children'], $conversion_table);
+                }
             }
         }
     }
@@ -309,10 +314,10 @@ class UserselectorWidgetController extends Controller
             return 0;
         }
         $arr = explode('_', $node_id);
-        $acl_man = Docebo::user()->getACLManager();
-        $groupid = $acl_man->getGroupId((int) $arr[0]);
+        $acl_man = \FormaLms\lib\Forma::getAclManager();;
+        $groupid = $acl_man->getGroupId((int)$arr[0]);
 
-        return (int) str_replace('/oc_', '', $groupid);
+        return (int)str_replace('/oc_', '', $groupid);
     }
 
     public function getorgcharttreedataTask()
@@ -359,13 +364,13 @@ class UserselectorWidgetController extends Controller
                     ];
                 }
                 echo $this->json->encode($output);
-             break;
+                break;
 
             case 'set_selected_node':
                 $node_id = FormaLms\lib\Get::req('node_id', DOTY_STRING, '');
                 $idOrg = $this->_getIdOrgByNodeId($node_id);
                 $this->_setSelectedNode($idOrg);
-             break;
+                break;
         }
         /*$node_id = FormaLms\lib\Get::req('id', DOTY_INT, -1);
         if ($node_id >= 0) {
@@ -391,7 +396,7 @@ class UserselectorWidgetController extends Controller
                 $this->_selectAllFncroles();
 
                 return;
-             break;
+                break;
         }
 
         $startIndex = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
@@ -412,7 +417,7 @@ class UserselectorWidgetController extends Controller
 
         //format models' data
         $records = [];
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         if (is_array($list)) {
             foreach ($list as $record) {
                 $_description = strip_tags($record->description);
@@ -420,7 +425,7 @@ class UserselectorWidgetController extends Controller
                     $_description = substr($_description, 0, 97) . '...';
                 }
                 $records[] = [
-                    'id' => (int) $record->id_fncrole,
+                    'id' => (int)$record->id_fncrole,
                     'name' => highlightText($record->name, $filter),
                     'group' => highlightText($record->group_name, $filter),
                     'description' => highlightText($_description, $filter),

@@ -24,7 +24,7 @@ require_once _adm_ . '/lib/lib.revision.php';
 
 class WikiRevisionManager extends RevisionManager
 {
-    public function WikiRevisionManager($default_keys_val = [], $prefix = false, $dbconn = null)
+    public function __construct($default_keys_val = [], $prefix = false, $dbconn = null)
     {
         $this->prefix = ($prefix !== false ? $prefix : $GLOBALS['prefix_fw']);
         $this->dbconn = $dbconn;
@@ -38,7 +38,7 @@ class WikiRevisionManager extends RevisionManager
             'content',
         ];
 
-        parent::RevisionManager($default_keys_val);
+        parent::__construct($default_keys_val);
     }
 
     public function _getRevisionTable()
@@ -107,7 +107,7 @@ class WikiRevisionManager extends RevisionManager
 
                 ++$data_info['data_tot'];
 
-                $acl_manager = Docebo::user()->getAclManager();
+                $acl_manager = \FormaLms\lib\Forma::getAclManager();
                 $user_info = $acl_manager->getUser($author);
                 $data_info['user'][$author] = $acl_manager->relativeId($user_info[$author][ACL_INFO_USERID]);
             }

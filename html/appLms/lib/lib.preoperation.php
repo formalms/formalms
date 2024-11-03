@@ -17,23 +17,23 @@ $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
 
 $session = $request->getSession();
 
+$eventData = Events::trigger('lms.index.preoperation');
+
 // access granted only if user is logged in
-if (Docebo::user()->isAnonymous()) { // !isset($_GET['no_redirect']) && !isset($_POST['no_redirect']) XXX: redirection???
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) { // !isset($_GET['no_redirect']) && !isset($_POST['no_redirect']) XXX: redirection???
     // save requested page in session to call it after login
-    $loginRedirect = $_SERVER[REQUEST_URI];
+    $loginRedirect = $_SERVER['REQUEST_URI'];
 
     // redirect to index
     Util::jump_to(FormaLms\lib\Get::rel_path('base') . '/index.php?login_redirect=' . $loginRedirect);
 }
 
 // get maintenence setting
-$query = ' SELECT param_value FROM %adm_setting'
-        . " WHERE param_name = 'maintenance'"
-        . ' ORDER BY pack, sequence';
-$maintenance = $db->fetch_row($db->query($query))[0];
+
+$maintenance = \FormaLms\lib\Get::sett('maintenance');
 
 // handling maintenece
-if ($maintenance == 'on' && Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+if ($maintenance == 'on' && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
     // only god admins can access maintenence - logout the user
     Util::jump_to(FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _logout_);
 }
@@ -41,8 +41,8 @@ if ($maintenance == 'on' && Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODA
 // handling access from multiple sessions
 if (FormaLms\lib\Get::sett('stop_concurrent_user') == 'on' && $session->has('idCourse')) {
     // two user logged at the same time
-    if (!TrackUser::checkSession(getLogUserId())) {
-        TrackUser::resetUserSession(getLogUserId());
+    if (!TrackUser::checkSession(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
+        TrackUser::resetUserSession(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         Util::jump_to(FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _stopconcurrency_);
     }
 }
@@ -59,7 +59,11 @@ if ($session->has('must_renew_pwd') && $session->get('must_renew_pwd') == 1) {
     $GLOBALS['modname'] = '';
     $GLOBALS['op'] = '';
     $GLOBALS['req'] = 'lms/precompile/show';
-} elseif ($GLOBALS['modname'] == '' && $GLOBALS['op'] == '' && $GLOBALS['req'] == '') {
+}
+
+$eventData = Events::trigger('lms.index.beforenavigation');
+
+if ($GLOBALS['modname'] == '' && $GLOBALS['op'] == '' && $GLOBALS['req'] == '') {
     // setting default action
 
     // if course is in session, enter the course
@@ -225,5 +229,5 @@ if ($sop) {
 // istance the course description class
 if ($session->has('idCourse') && !isset($GLOBALS['course_descriptor'])) {
     require_once _lms_ . '/lib/lib.course.php';
-    $GLOBALS['course_descriptor'] = new DoceboCourse($session->get('idCourse'));
+    $GLOBALS['course_descriptor'] = new FormaCourse($session->get('idCourse'));
 }

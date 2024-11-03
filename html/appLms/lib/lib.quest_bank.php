@@ -18,6 +18,11 @@ class QuestBankMan
     public $_table_category;
 
     public $last_error = '';
+    /**
+     * @var false|mixed|string
+     */
+    public string $user_language;
+    public string $_table_quest;
 
     public function _query($query)
     {
@@ -39,13 +44,13 @@ class QuestBankMan
         return sql_num_rows($re);
     }
 
-    public function QuestBankMan()
+    public function __construct()
     {
         $this->_table_category = $GLOBALS['prefix_lms'] . '_quest_category';
         $this->_table_quest = $GLOBALS['prefix_lms'] . '_testquest';
         ////require_once(_base_.'/lib/lib.preference.php');
         ////$userPreferencesDb = new UserPreferencesDb();
-        $this->user_language = Docebo::user()->getPreference('ui.language');
+        $this->user_language = \FormaLms\lib\FormaUser::getCurrentUser()->getPreference('ui.language');
     }
 
     public function getCategoryList($author = false)
@@ -206,7 +211,7 @@ class QuestBankMan
             list($type_file, $type_class) = sql_fetch_row($re_quest);
         }
 
-        require_once Forma::inc(_lms_ . '/modules/question/' . $type_file);
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/' . $type_file);
         $quest_obj = new $type_class($id_quest);
 
         return $quest_obj;
@@ -225,7 +230,7 @@ class QuestBankMan
         }
         list($type_file, $type_class) = sql_fetch_row($re_quest);
 
-        require_once Forma::inc(_lms_ . '/modules/question/' . $type_file);
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/' . $type_file);
         $quest_obj = new $type_class($id_quest);
 
         return $quest_obj;
@@ -256,7 +261,7 @@ class QuestBankMan
         $result = [];
         switch ($file_format) {
             case 0: 	// gift format -------------------
-                require_once Forma::inc(_lms_ . '/modules/question/format.gift.php');
+                require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/format.gift.php');
 
                 $qgift = new qformat_gift();
                 $formatted = $qgift->readquestions($file_lines, $autocreate_categories);
@@ -296,7 +301,7 @@ class QuestBankMan
         $quest_export = '';
         switch ($file_format) {
             case 0: 	// gift format -------------------
-                require_once Forma::inc(_lms_ . '/modules/question/format.gift.php');
+                require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/format.gift.php');
                 $qgift = new qformat_gift();
 
         foreach ($quest_list as $id_quest => $type_quest) {
@@ -331,13 +336,24 @@ class QuestBankMan
 
 class QuestBank_Selector
 {
-    public function QuestBank_Selector()
+    public int $item_per_page;
+    public string $selected_quest;
+    public $mod_action;
+    public $all_quest_type_long;
+    public array $all_quest_type;
+    public array $all_difficult;
+    public array $all_categories;
+    public array $all_category;
+    public QuestBankMan $qb_man;
+    public Form $form;
+
+    public function __construct()
     {
-        $this->lang = &DoceboLanguage::createInstance('test', 'lms');
+        $this->lang = &FormaLanguage::createInstance('test', 'lms');
         $this->form = new Form();
         $this->qb_man = new QuestBankMan();
 
-        $this->all_category = $this->qb_man->getCategoryList(getLogUserId());
+        $this->all_category = $this->qb_man->getCategoryList(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         //#2269 see it2.php.net/array_unshift#78238
         //array_unshift($this->all_category, $this->lang->def('_ALL_QUEST_CATEGORY'));
         $aany_cat = [0 => $this->lang->def('_ALL_QUEST_CATEGORY')];

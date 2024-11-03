@@ -15,6 +15,7 @@
     </p>
 </div>
 <div class="homepage__form homepage__form--lost-pwd">
+    <label for="lost_user_email"><span class="screenreader">{{ Lang_translate('_INPUT_FORGOT_USERNAME', 'screen_reader') }}</span></label>
     {{ lost_username.form|raw }}
 </div>
 <div class="homepage__row homepage__row--gray">
@@ -27,6 +28,7 @@
     </p>
 </div>
 <div class="homepage__form homepage__form--lost-pwd">
+    <label for="lost_pwd_userid"><span class="screenreader">{{ Lang_translate('_INPUT_FORGOT_PASSWORD', 'screen_reader') }}</span></label>
     {{ lost_pwd.form|raw }}
 </div>
 <br>

@@ -3,7 +3,7 @@
 Util::get_js(FormaLms\lib\Get::rel_path('lms') . '/admin/views/aggregatedcertificate/tabbedcontent.min.js', true, true);
 Util::get_css(FormaLms\lib\Get::rel_path('base') . '/addons/jquery/bootstrap-treeview/bootstrap-treeview.min.css', true, true);
 
-include Forma::inc(_lib_ . '/formatable/include.php');
+include \FormaLms\lib\Forma::inc(_lib_ . '/formatable/include.php');
 ?>
 
 <style>
@@ -30,9 +30,12 @@ cout(
 
 
 
-<?php cout(
+<?php 
+# 'index.php?r=adm/userselector/show&id=' . $id_association .'_' . $type_assoc . '&instance=aggregatedcertificate&load=1')
+#index.php?r=alms/aggregatedcertificate/associationUsers
+cout(
     Form::openForm('new_assign_step_2',
-        'index.php?r=alms/aggregatedcertificate/associationUsers')
+        'index.php?r=adm/userselector/show&id=' . $id_association .'_' . $type_assoc . '&instance=aggregatedcertificate&load=1&tab_filters[]=user&tab_filters[]=group&tab_filters[]=org')
 ); ?>
 
 <script>

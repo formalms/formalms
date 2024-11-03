@@ -25,7 +25,7 @@ class CourseLevel
 
     public static function getTranslatedLevels($op = '')
     {
-        $lang = &DoceboLanguage::createInstance('levels', 'lms');
+        $lang = FormaLanguage::createInstance('levels', 'lms');
 
         return [
             7 => $lang->def('_LEVEL_7'),		//'Admin'

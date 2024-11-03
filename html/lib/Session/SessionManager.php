@@ -13,11 +13,13 @@
 
 namespace FormaLms\lib\Session;
 
+use FormaLms\lib\Request\RequestManager;
 use FormaLms\lib\Serializer\FormaSerializer;
-use FormaLms\lib\Session\Handlers\FilesystemHandler;
-use FormaLms\lib\Session\Handlers\MemcachedHandler;
 use FormaLms\lib\Session\Handlers\PdoHandler;
 use FormaLms\lib\Session\Handlers\RedisHandler;
+use FormaLms\lib\Session\Handlers\MemcachedHandler;
+use FormaLms\lib\Session\Handlers\FilesystemHandler;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 
@@ -38,8 +40,13 @@ class SessionManager
     private ?Session $session = null;
 
     private $sessionHandler;
+    private const IPV4_LOCALHOST = '127.0.0.1';
+    private const IPV6_LOCALHOST = '::1';
 
-    public static function getInstance()
+    /**
+     * @return SessionManager
+     */
+    public static function getInstance(): SessionManager
     {
         if (self::$instance === null) {
             $c = __CLASS__;
@@ -51,13 +58,29 @@ class SessionManager
 
     public function initSession(array $sessionConfig)
     {
+        try {
+            $secureSession =  RequestManager::getInstance()->getRequest()->isSecure();
+        }
+        catch (\Throwable $e) {
+            $secureSession = false;
+        }
+
         if (!$this->session) {
             try {
+
+                if (empty($sessionConfig) || !array_key_exists('cookieName', $sessionConfig)) {
+                    // Se ho il config ma non ho le configurazioni della sessione
+                    // imposto secure se sono in https altrimenti no
+                    //get server request http|https
+                    
+                    $sessionConfig['cookieName'] = $secureSession ? SessionConfig::SECUREFORMA : SessionConfig::UNSECUREFORMA;
+                }
+
                 $config = FormaSerializer::getInstance()->denormalize($sessionConfig, SessionConfig::class);
             } catch (\Exception $exception) {
                 exit($exception->getMessage());
             }
-
+            
             $this->setConfig($config);
 
             $ttlSession = \FormaLms\lib\Get::sett('ttlSession', 0);
@@ -67,6 +90,8 @@ class SessionManager
             }
 
             ini_set('session.gc_maxlifetime', $this->config->getLifetime());
+            ini_set('session.cookie_httponly', 1);
+            ini_set('session.cookie_secure', $secureSession);
 
             switch ($this->config->getHandler()) {
                 case self::MEMCACHED:
@@ -83,7 +108,7 @@ class SessionManager
                         // the table could not be created for some reason
                     }
                     break;
-                /*case self::MONGO:
+                    /*case self::MONGO:
                     $this->sessionHandler = new MongoDbHandler($config);
                     break;*/
                 case self::FILESYSTEM:
@@ -94,6 +119,8 @@ class SessionManager
 
             $sessionStorage = new NativeSessionStorage([], $this->sessionHandler);
             $this->session = new Session($sessionStorage);
+            $this->session->setName($this->config->getCookieName());
+
             if (!$this->session->isStarted()) {
                 $this->session->start();
             }
@@ -111,9 +138,9 @@ class SessionManager
     }
 
     /**
-     * @return Session
+     * @return null|Session
      */
-    public function getSession()
+    public function getSession(): ?Session
     {
         return $this->session;
     }

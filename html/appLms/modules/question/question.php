@@ -25,7 +25,7 @@ function quest_create($type_quest, $idTest, $back_test)
     }
     list($type_file, $type_class) = sql_fetch_row($re_quest);
 
-    require_once Forma::inc(_lms_ . '/modules/question/' . $type_file);
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/' . $type_file);
 
     $quest_obj = new $type_class(0);
     $quest_obj->create($idTest, $back_test);
@@ -43,7 +43,7 @@ function quest_edit($type_quest, $idQuest, $back_test)
     }
     list($type_file, $type_class) = sql_fetch_row($re_quest);
 
-    require_once Forma::inc(_lms_ . '/modules/question/' . $type_file);
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/' . $type_file);
 
     $quest_obj = new $type_class($idQuest);
 
@@ -80,7 +80,7 @@ switch ($GLOBALS['op']) {
         }
         list($type_file, $type_class) = sql_fetch_row($re_quest);
 
-        require_once Forma::inc(_lms_ . '/modules/question/' . $type_file);
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/' . $type_file);
 
         $quest_obj = eval("return new $type_class( $id_quest );");
 

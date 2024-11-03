@@ -16,9 +16,11 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 /**
  * @version  $Id:$
  */
-class DoceboCalEvent_lms extends DoceboCalEvent_core
+class FormaCalEvent_lms extends FormaCalEvent_core
 {
     public $idCourse;
+    public mixed $owner;
+    public mixed $classroom;
 
     public function assignVar()
     {
@@ -47,7 +49,7 @@ class DoceboCalEvent_lms extends DoceboCalEvent_core
 
         $this->_owner = importVar('_owner');
         if (!$this->_owner) {
-            $this->_owner == Docebo::user()->getIdSt();
+            $this->_owner == \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
         }
 
         $this->category = importVar('category');
@@ -215,7 +217,7 @@ class DoceboCalEvent_lms extends DoceboCalEvent_core
         if ($permissions == 2) {
             return 1;
         }
-        if ($permissions == 1 and Docebo::user()->getIdSt() == $this->_owner) {
+        if ($permissions == 1 and \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() == $this->_owner) {
             return 1;
         }
 

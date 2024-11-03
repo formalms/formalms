@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Template\TemplateInfo;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -14,9 +16,9 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 /**
- * @author 		Fabio Pirovano <fabio@docebo.com>
+ * @author        Fabio Pirovano <fabio@docebo.com>
  *
- * @version 	$Id: lib.template.php 995 2007-03-09 14:15:07Z fabio $
+ * @version    $Id: lib.template.php 995 2007-03-09 14:15:07Z fabio $
  */
 
 /**
@@ -25,6 +27,8 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 function getTemplate()
 {
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+    $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
+
     // If saved in session use this one
     if ($session->has('template') && $session->get('template') != false) {
         if (!checkTemplateVersion($session->get('template'))) {
@@ -34,16 +38,9 @@ function getTemplate()
         return $session->get('template');
     }
 
-    // force_standard mode
-    if ((array_key_exists('notuse_template', $_REQUEST) && isset($_REQUEST['notuse_template'])) || (array_key_exists('notuse_template', $GLOBALS) && $GLOBALS['notuse_template'] == true)) {
-        $session->set('template', 'standard');
-        $session->save();
-
-        return $session->get('template');
-    }
-
     //search for a template associated to the current host
-    $plat_templ = parseTemplateDomain($_SERVER['HTTP_HOST']);
+    $plat_templ = parseTemplateDomain($request->server->get('HTTP_HOST'));
+
     if ($plat_templ != false) {
         $session->set('template', $plat_templ);
         $session->save();
@@ -53,20 +50,18 @@ function getTemplate()
 
         return $plat_templ;
     }
-
     // search template according to the org_chart_tree option
-    if (!Docebo::user()->isAnonymous()) {
+    if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         $qtxt = 'SELECT associated_template FROM
 			%adm_org_chart_tree
 			WHERE associated_template IS NOT NULL AND
-			idst_oc IN (' . implode(',', Docebo::user()->getArrSt()) . ')
+			idst_oc IN (' . implode(',', \FormaLms\lib\FormaUser::getCurrentUser()->getArrSt()) . ')
 			ORDER BY iLeft DESC
 			LIMIT 0,1';
 
         $re = sql_query($qtxt);
         if (sql_num_rows($re) > 0) {
             list($template_code) = sql_fetch_row($re);
-
             setTemplate($template_code);
             if (!checkTemplateVersion($session->get('template'))) {
                 return 'standard';
@@ -77,7 +72,7 @@ function getTemplate()
     }
 
     // search for the default template
-    $session->set('template', getDefaultTemplate());
+    setTemplate(getDefaultTemplate());
 
     return $session->get('template');
 }
@@ -91,15 +86,15 @@ function getTemplate()
  */
 function parseTemplateDomain($curr_domain = false)
 {
-    if (!$domains = FormaLms\lib\Get::sett('template_domain', false)) {
-        return false;
-    }
+    $queryTxt = 'SELECT domain, template FROM
+                %adm_domain_configs';
 
-    $domains = json_decode($domains, true) ?: [];
-
-    foreach ($domains as $item) {
-        if ($item['domain'] == $curr_domain) {
-            return $item['template'];
+    $result = sql_query($queryTxt);
+    if (sql_num_rows($result) > 0) {
+        while ($item = sql_fetch_assoc($result)) {
+            if ($item['domain'] == $curr_domain) {
+                return $item['template'];
+            }
         }
     }
 
@@ -109,15 +104,14 @@ function parseTemplateDomain($curr_domain = false)
 function getCurrentDomain($idOrg = null, $baseUrl = false)
 {
     $domain = FormaLms\lib\Get::site_url();
-    if (!($domains = FormaLms\lib\Get::sett('template_domain', false)) || $baseUrl) {
-        return $domain;
-    }
-
-    $domains_tmp = json_decode($domains, true) ?: [];
+    $queryTxt = 'SELECT * FROM
+    %adm_domain_configs';
     $domains = [];
-
-    foreach ($domains_tmp as $item) {
-        $domains[$item['node']] = $item;
+    $result = sql_query($queryTxt);
+    if (sql_num_rows($result) > 0) {
+        while ($item = sql_fetch_assoc($result)) {
+            $domains[$item['orgId']] = $item;
+        }
     }
 
     if ($idOrg && isset($domains[$idOrg]) && $domains[$idOrg]['domain']) {
@@ -137,15 +131,17 @@ function getCurrentDomain($idOrg = null, $baseUrl = false)
 /**
  * This function change the template used only in the session.
  *
- * @param string 	a valid template name
+ * @param string    a valid template name
  */
 function setTemplate($new_template)
 {
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     if (is_dir(_templates_ . '/' . $new_template)) {
         $session->set('template', $new_template);
+        $session->set('template_info', new TemplateInfo($new_template));
     } else {
         $session->set('template', getDefaultTemplate());
+        $session->set('template_info', new TemplateInfo(getDefaultTemplate()));
     }
     $session->save();
 }
@@ -157,28 +153,35 @@ function resetTemplate()
 {
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $session->remove('template');
+    $session->remove('template_info');
     $session->save();
     setTemplate(getTemplate());
 }
 
 function readTemplateManifest($template_name, $key = false)
 {
-    $template_file = _templates_ . '/' . $template_name . '/manifest.xml';
-    if (!file_exists($template_file)) {
-        return false;
-    }
-    if ($xml = simplexml_load_file($template_file)) {
-        $man_json = json_encode($xml);
-        $man_array = json_decode($man_json, true);
-        if (key_exists($key, $man_array)) {
-            return $man_array[$key];
-        }
-
-        return $man_array;
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+    if ($session->has('template_info') && $session->get('template_info') != false) {
+        return $session->get('template_info')->getVersion();
     } else {
-        return false;
+        $template_file = _templates_ . '/' . $template_name . '/manifest.xml';
+        if (!file_exists($template_file)) {
+            return false;
+        }
+        if ($xml = simplexml_load_file($template_file)) {
+            $man_json = json_encode($xml);
+            $man_array = json_decode($man_json, true);
+            if (key_exists($key, $man_array)) {
+                return $man_array[$key];
+            }
+
+            return $man_array;
+        } else {
+            return false;
+        }
     }
 }
+
 /**
  * Check the template version.
  *
@@ -186,22 +189,24 @@ function readTemplateManifest($template_name, $key = false)
  */
 function checkTemplateVersion($template_name)
 {
-    require_once Forma::inc(_adm_ . '/versions.php');
-    $template_forma_version = readTemplateManifest($template_name, 'forma_version');
-    $check = [];
-    if ($template_forma_version) {
-        if (version_compare(_template_min_version_, $template_forma_version) <= 0) {
-            return true;
-        }
-    }
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+    if ($session->has('template_info') && $session->get('template_info') != false) {
+        return $session->get('template_info')->getCheckVersion();
+    } else {
+        $template_forma_version = readTemplateManifest($template_name, 'forma_version');
+        $check = [];
+        if ($template_forma_version) {
 
-    return false;
+            return \FormaLms\lib\Version\VersionChecker::checkTemplateVersion($template_forma_version);
+
+        }
+
+        return false;
+    }
 }
 
 function getTemplateVersion($template_name)
 {
-    require_once Forma::inc(_adm_ . '/versions.php');
-
     return readTemplateManifest($template_name, 'forma_version');
 }
 
@@ -210,11 +215,24 @@ function getTemplateVersion($template_name)
  *
  * @return array an array with the existent templates
  */
-function getTemplateList($set_keys = false, $platform = false)
+function getTemplateList($set_keys = false, $addUndefined = false, $excludeNotCompliant = true)
 {
+    $templArray = [];
     $templ = dir(_templates_ . '/');
     while ($elem = $templ->read()) {
         if ((is_dir(_templates_ . '/' . $elem)) && ($elem != '.') && ($elem != '..') && ($elem != '.svn') && $elem[0] != '_' && checkTemplateVersion($elem)) {
+            if($addUndefined) {
+                $templArray[0] = Lang::t('_NOT_ASSIGNED');
+            }
+
+            $xml = simplexml_load_string(file_get_contents(_templates_ . '/' . $elem. '/manifest.xml'));
+
+            $compliance = version_compare((string)$xml->forma_version, \FormaLms\lib\Version\VersionChecker::getMinimumTemplateVersion());
+
+            if($excludeNotCompliant && ($compliance < 0)) {
+                continue;
+            }
+
             if (!$set_keys) {
                 $templArray[] = $elem;
             } else {
@@ -224,16 +242,18 @@ function getTemplateList($set_keys = false, $platform = false)
     }
     closedir($templ->handle);
 
-    if (!$set_keys) {
-        sort($templArray);
-    } else {
-        ksort($templArray);
+    if (is_array($templArray)) {
+        if (!$set_keys) {
+            sort($templArray);
+        } else {
+            ksort($templArray);
+        }
+        reset($templArray);
     }
-
-    reset($templArray);
 
     return $templArray;
 }
+
 /**
  * Search for the default template.
  *
@@ -241,13 +261,13 @@ function getTemplateList($set_keys = false, $platform = false)
  */
 function getDefaultTemplate($platform = false)
 {
-    $plat_templ = FormaLms\lib\Get::sett('defaultTemplate');
+    $plat_templ = FormaLms\lib\Get::sett('defaultTemplate') ?: 'standard';
     if (is_dir(_templates_ . '/' . $plat_templ)) {
         return $plat_templ;
     } else {
         $array = getTemplateList();
 
-        return array_pop($array);
+        return count($array) ? array_pop($array) : 'standard';
     }
 }
 
@@ -333,10 +353,10 @@ function getPathRestylingImage($platform = false)
 }
 
 /**
- * @param string $text        The title of the area
- * @param string $image       the name of the gif in tampltes/xxx/images/area_title/
- * @param string $alt_image   The alt for the image [deprecated, not used]
- * @param bool   $ignore_glob ignore global value of the title
+ * @param array|string $text The title of the area
+ * @param string $image the name of the gif in tampltes/xxx/images/area_title/
+ * @param string $alt_image The alt for the image [deprecated, not used]
+ * @param bool $ignore_glob ignore global value of the title
  *
  * @return string the code for a graceful title area
  */
@@ -364,10 +384,6 @@ function getTitleArea($text, $image = '', $alt_image = '', $ignore_glob = false)
                 . '</h1>' . "\n";
 
             $GLOBALS['page']->add('<li><a href="#main_area_title">' . Lang::t('_JUMP_TO', 'standard') . ' ' . $title . '</a></li>', 'blind_navigation');
-
-            if ($title) {
-                $GLOBALS['page_title'] = FormaLms\lib\Get::sett('page_title', '') . ' &rsaquo; ' . $title;
-            }
 
             // Init navigation
             if (count($text) > 1) {
@@ -397,8 +413,8 @@ function getTitleArea($text, $image = '', $alt_image = '', $ignore_glob = false)
 }
 
 /**
- * @param string $message    the error message
- * @param bool   $with_image add the standard error image or not
+ * @param string $message the error message
+ * @param bool $with_image add the standard error image or not
  *
  * @return string the code for a graceful error user interface
  */
@@ -468,15 +484,15 @@ function getBackUi($link, $name, $type = 'link')
 }
 
 /**
- * @param string $are_you_sure    the text to display in the title
- * @param string $central_text    the text in the central part
+ * @param string $are_you_sure the text to display in the title
+ * @param string $central_text the text in the central part
  * @param string $command_is_link if the undo and confirm command is link or button,
- * @param string $confirm_ref     if $command_is_link is true, this is the confirm link, else the button name and id
+ * @param string $confirm_ref if $command_is_link is true, this is the confirm link, else the button name and id
  *                                if the name contains "[" "]" they change it in this way "[" => "_", "]" => ""
- * @param string $undo_ref        if $command_is_link is true, this is the undo link, else the button name and id
+ * @param string $undo_ref if $command_is_link is true, this is the undo link, else the button name and id
  *                                if the name contains "[" "]" they change it in this way "[" => "_", "]" => ""
- * @param string $confirm_text    the text of the confirm action (optional)
- * @param string $undo_text       the text of the undo action (optional
+ * @param string $confirm_text the text of the confirm action (optional)
+ * @param string $undo_text the text of the undo action (optional
  *
  * @return string the html code for the requested interface
  */
@@ -488,17 +504,19 @@ function getDeleteUi(
     $undo_ref,
     $confirm_text = false,
     $undo_text = false
-) {
+)
+{
     require_once _base_ . '/lib/lib.form.php';
 
     $txt = '<h2>' . $are_you_sure . '</h2>'
+        . '<div class="clearfix"></div>'
         . '<p class="spacer">'
         . $central_text
         . '</p>'
-        . '<p>';
+        . '<p style="float:right;">';
     if ($command_is_link) {
         $txt .= '<a href="' . $confirm_ref . '">'
-            . '<img src="' . getPathImage() . 'standard/delete.png" alt="' . ($confirm_text == false ? Lang::t('_CONFIRM') : $confirm_text) . '" />'
+            . '<img src="' . getPathImage() . 'standard/publish.png" alt="' . ($confirm_text == false ? Lang::t('_CONFIRM') : $confirm_text) . '" />'
             . '&nbsp;' . ($confirm_text == false ? Lang::t('_CONFIRM') : $confirm_text) . '</a>&nbsp;&nbsp;'
             . '<a href="' . $undo_ref . '">'
             . '<img src="' . getPathImage() . 'standard/cancel.png" alt="' . ($undo_text == false ? Lang::t('_UNDO') : $undo_text) . '" />'
@@ -516,15 +534,15 @@ function getDeleteUi(
 }
 
 /**
- * @param string $are_you_sure    the text to display in the title
- * @param string $central_text    the text in the central part
+ * @param string $are_you_sure the text to display in the title
+ * @param string $central_text the text in the central part
  * @param string $command_is_link if the undo and confirm command is link or button,
- * @param string $confirm_ref     if $command_is_link is true, this is the confirm link, else the button name and id
+ * @param string $confirm_ref if $command_is_link is true, this is the confirm link, else the button name and id
  *                                if the name contains "[" "]" they change it in this way "[" => "_", "]" => ""
- * @param string $undo_ref        if $command_is_link is true, this is the undo link, else the button name and id
+ * @param string $undo_ref if $command_is_link is true, this is the undo link, else the button name and id
  *                                if the name contains "[" "]" they change it in this way "[" => "_", "]" => ""
- * @param string $confirm_text    the text of the confirm action (optional)
- * @param string $undo_text       the text of the undo action (optional
+ * @param string $confirm_text the text of the confirm action (optional)
+ * @param string $undo_text the text of the undo action (optional
  *
  * @return string the html code for the requested interface
  */
@@ -536,7 +554,8 @@ function getModifyUi(
     $undo_ref,
     $confirm_text = false,
     $undo_text = false
-) {
+)
+{
     require_once _base_ . '/lib/lib.form.php';
 
     $txt = '<h2>' . $are_you_sure . '</h2>'
@@ -608,11 +627,11 @@ function getLegenda()
     return $text;
 }
 
-function setAccessibilityStatus($new_status)
+function setAccessibilityStatus()
 {
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     if (FormaLms\lib\Get::sett('accessibility', 'off') !== 'off') {
-        $session->set('high_accessibility', $new_status);
+        $session->set('high_accessibility', true);
     } else {
         $session->set('high_accessibility', false);
     }
@@ -634,7 +653,37 @@ function getAccessibilityStatus()
 
 function getTemplateFromIdOrg(int $id_org)
 {
-    list($template_name) = sql_fetch_row(sql_query("select associated_template from core_org_chart_tree where idOrg=$id_org"));
+    [$template_name] = sql_fetch_row(sql_query("select associated_template from core_org_chart_tree where idOrg=$id_org"));
 
     return $template_name;
+}
+
+/*
+ * return the specific name for the current page for adding into the title html tag.
+ * Required for accessibility. Eache page have to describe the context
+ *
+ * @param string $page_ref e referring to the page
+ * @return string the page title
+ *
+ * */
+function getPageName()
+{
+    $pageRef = str_replace('/', '_','adm/homepage/show');
+
+    $request = FormaLms\lib\Get::req('r', DOTY_MIXED, '');
+    $modName = FormaLms\lib\Get::req('modname', DOTY_ALPHANUM, '');
+    $tab = FormaLms\lib\Get::req('mycourses_tab', DOTY_STRING, '');
+    if (!empty($request)) {
+        $pageRef = str_replace('/', '_', $request);
+    } elseif (!empty($modName)) {
+        $operation = FormaLms\lib\Get::req('op', DOTY_ALPHANUM, '');
+        $pageRef = sprintf('%s_%s', $modName, $operation);
+    }
+
+    if (!empty($tab)) {
+        $pageRef = $tab;
+    }
+    $a = Lang::t(strtoupper('_' . $pageRef), 'page_title');
+
+    return Lang::t(strtoupper('_' . $pageRef), 'page_title');
 }

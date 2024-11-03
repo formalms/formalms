@@ -21,25 +21,25 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 **/
 
 /* base directory for search io files **/
-define('DOCEBOIMPORT_BASEDIR', _files_ . '/common/iofiles/');
+define('FORMAIMPORT_BASEDIR', _files_ . '/common/iofiles/');
 
 /* Index for column name */
-define('DOCEBOIMPORT_COLNAME', 0);
+define('FORMAIMPORT_COLNAME', 0);
 /* Index for column id */
-define('DOCEBOIMPORT_COLID', 1);
+define('FORMAIMPORT_COLID', 1);
 /* Index for column data type */
-define('DOCEBOIMPORT_DATATYPE', 2);
+define('FORMAIMPORT_DATATYPE', 2);
 /* Index for column mandatory flag */
-define('DOCEBOIMPORT_COLMANDATORY', 3);
+define('FORMAIMPORT_COLMANDATORY', 3);
 /* Index for column default value */
-define('DOCEBOIMPORT_DEFAULT', 4);
+define('FORMAIMPORT_DEFAULT', 4);
 
 /* Unknown data type */
-define('DOCEBOIMPORT_DATATYPE_UNKNOWN', -1);
+define('FORMAIMPORT_DATATYPE_UNKNOWN', -1);
 /* This field should be ignored */
-define('DOCEBOIMPORT_IGNORE', 'ignorefield');
+define('FORMAIMPORT_IGNORE', 'ignorefield');
 /* Indicate that a connection don't have data to process **/
-define('DOCEBO_IMPORT_NOTHINGTOPROCESS', 1);
+define('FORMA_IMPORT_NOTHINGTOPROCESS', 1);
 
 /**
  * abstract class for define connection to data source.
@@ -48,7 +48,7 @@ define('DOCEBO_IMPORT_NOTHINGTOPROCESS', 1);
  *
  * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
  **/
-class DoceboConnector
+class FormaConnector
 {
     public $cache_inserted = false;
 
@@ -57,7 +57,7 @@ class DoceboConnector
      *
      * @param array params
      **/
-    public function DoceboConnector($params)
+    public function __construct($params)
     {
     }
 
@@ -82,7 +82,7 @@ class DoceboConnector
     /**
      * get configuration UI.
      *
-     * @return DoceboConnectorUI
+     * @return FormaConnectorUI
      **/
     public function get_configUI()
     {
@@ -168,13 +168,13 @@ class DoceboConnector
 
     /**
      * @return array the array of columns descriptor
-     *               - DOCEBOIMPORT_COLNAME => string the name of the column
-     *               - DOCEBOIMPORT_COLID => string the id of the column (optional,
+     *               - FORMAIMPORT_COLNAME => string the name of the column
+     *               - FORMAIMPORT_COLID => string the id of the column (optional,
      *               same as COLNAME if not given)
-     *               - DOCEBOIMPORT_COLMANDATORY => bool TRUE if col is mandatory
-     *               - DOCEBOIMPORT_DATATYPE => the data type of the column
-     *               - DOCEBOIMPORT_DEFAULT => the default value for the column (Optional)
-     *               For readonly connectos only 	DOCEBOIMPORT_COLNAME and DOCEBOIMPORT_DATATYPE
+     *               - FORMAIMPORT_COLMANDATORY => bool TRUE if col is mandatory
+     *               - FORMAIMPORT_DATATYPE => the data type of the column
+     *               - FORMAIMPORT_DEFAULT => the default value for the column (Optional)
+     *               For readonly connectos only 	FORMAIMPORT_COLNAME and FORMAIMPORT_DATATYPE
      *               are required
      **/
     public function get_cols_descripor()
@@ -292,7 +292,7 @@ class DoceboConnector
  *
  * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
  **/
-class DoceboConnectorUI
+class FormaConnectorUI
 {
     public $form = null;
     public $lang = null;
@@ -300,7 +300,7 @@ class DoceboConnectorUI
     /**
      * This method is to set the $lang object.
      *
-     * @param DoceboLang $lang
+     * @param FormaLang $lang
      **/
     public function set_lang(&$lang)
     {

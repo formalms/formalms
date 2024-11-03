@@ -26,7 +26,7 @@ class OrgChartManager
     public $tree_db = false;
     public $tree_view = false;
 
-    public function OrgChartManager()
+    public function __construct()
     {
         $this->tree_db = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
         $this->tree_view = new TreeView_OrgView($this->tree_db, 'organization_chart', FormaLms\lib\Get::sett('title_organigram_chart'));
@@ -34,7 +34,7 @@ class OrgChartManager
 
     public function getFolderFormIdst(&$arr_idst)
     {
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $groups_id = $acl_man->getGroupsId($arr_idst);
 
         $folder_name = $this->tree_db->getFoldersCurrTranslationDoubleCheck($groups_id);

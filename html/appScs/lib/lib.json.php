@@ -140,7 +140,7 @@ class Services_JSON
      *                                   bubble up with an error, so all return values
      *                                   from encode() should be checked with isError()
      */
-    public function Services_JSON($use = 0)
+    public function __construct($use = 0)
     {
         $this->use = $use;
     }
@@ -256,8 +256,7 @@ class Services_JSON
                 return (int) $var;
 
             case 'double':
-            case 'float':
-                return (float) $var;
+                return (double) $var;
 
             case 'string':
                 // STRINGS ARE EXPECTED TO BE IN ASCII OR UTF-8 FORMAT

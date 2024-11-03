@@ -57,7 +57,7 @@ class Field
     /**
      * class constructor.
      */
-    public function Field($id_field)
+    public function __construct($id_field)
     {
         $this->field_entry_table = $GLOBALS['prefix_fw'] . '_customfield_entry';
         $this->id_field = $id_field;
@@ -182,7 +182,7 @@ class Field
      *
      * @return string return the identifier of the field
      */
-    public function getFieldType()
+    public static function getFieldType()
     {
         return 'field';
     }
@@ -550,12 +550,11 @@ class Field
     /**
      * store the value inserted by a user into the database, if a entry exists it will be overwrite.
      *
-     * @param int $id_user      the user
-     * @param int $no_overwrite if a entry exists do not overwrite it
+     * @param int $id_obj      the object
      *
      * @return bool true if operation success false otherwise
      */
-    public function store($id_user, $no_overwrite, $int_userid = true)
+    public function store($id_obj)
     {
         return true;
     }
@@ -617,7 +616,7 @@ class Field
         $re_field = sql_query('
 		SELECT translation
 		FROM ' . $this->_getMainTable() . "
-		WHERE lang_code = '" . getLanguage() . "' AND id_field = '" . (int) $this->id_field . "' AND type_field = '" . $this->getFieldType() . "'");
+		WHERE lang_code = '" . Lang::get() . "' AND id_field = '" . (int) $this->id_field . "' AND type_field = '" . $this->getFieldType() . "'");
         list($translation) = sql_fetch_row($re_field);
 
         return $translation;
@@ -796,9 +795,9 @@ class ContactField extends Field
     /**
      * class constructor.
      */
-    public function ContactField($id_field)
+    public function __construct($id_field)
     {
-        parent::Field($id_field);
+        parent::__construct($id_field);
     }
 
     /**
@@ -806,7 +805,7 @@ class ContactField extends Field
      *
      * @return string return the identifier of the field
      */
-    public function getFieldType()
+    public static function getFieldType()
     {
         return 'contact_field';
     }

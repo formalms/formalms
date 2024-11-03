@@ -54,11 +54,11 @@ function getModuleNextSeq($id_main)
  *
  * @return array [lv] => idst, [lv] => idst
  */
-function &getCourseLevelSt($id_course)
+function getCourseLevelSt($id_course)
 {
     $map = [];
     $levels = CourseLevel::getTranslatedLevels();
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     // find all the group created for this menu custom for permission management
     foreach ($levels as $lv => $name_level) {
@@ -79,11 +79,11 @@ function &getCourseLevelSt($id_course)
  * @return array [token_code] => idst, [token_code] => idst			$flip = false
  *               [idst] => token_code, [idst] => token_code			$flip = true
  */
-function &getModuleRoleSt($module_name, $all_token, $flip = false)
+function getModuleRoleSt($module_name, $all_token, $flip = false)
 {
     $map = [];
     $levels = CourseLevel::getTranslatedLevels();
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     // find the idst of all the role of the selected module
     foreach ($all_token as $token) {
@@ -112,11 +112,11 @@ function &getModuleRoleSt($module_name, $all_token, $flip = false)
  *
  * @return array [lv] => ( [idst] => 1, [idst] => 2, ...)
  */
-function &getAllModulesPermissionSt($group_idst, $idst_cast = false)
+function getAllModulesPermissionSt($group_idst, $idst_cast = false)
 {
     $old_perm = [];
     $levels = CourseLevel::getTranslatedLevels();
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     // find all the roles associated to the main groups
     foreach ($levels as $lv => $name_level) {
@@ -146,7 +146,7 @@ function &getAllModulesPermissionSt($group_idst, $idst_cast = false)
  * @return array an array where the token_code of the first array is substituded with
  *               the idst indicated in the second array
  */
-function &fromTokenToSt(&$tokens, &$map_idst)
+function fromTokenToSt(&$tokens, &$map_idst)
 {
     $new_perm = [];
     $levels = CourseLevel::getTranslatedLevels();
@@ -171,7 +171,7 @@ function &fromTokenToSt(&$tokens, &$map_idst)
  * @return array an array where the idst of the first array is substituded with
  *               the token_code indicated in the second array
  */
-function &fromStToToken(&$map_idst_roles, &$token)
+function fromStToToken(&$map_idst_roles, &$token)
 {
     $convert = [];
     $levels = CourseLevel::getTranslatedLevels();

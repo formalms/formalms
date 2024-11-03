@@ -13,12 +13,12 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (!Docebo::user()->isAnonymous()) {
+if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     // XXX: mod glossary interface
     function modglossarygui($object_glos = null)
     {
         checkPerm('view', false, 'storage');
-        $lang = &DoceboLanguage::createInstance('glossary');
+        $lang = &FormaLanguage::createInstance('glossary');
 
         require_once _base_ . '/lib/lib.table.php';
 
@@ -47,7 +47,7 @@ if (!Docebo::user()->isAnonymous()) {
 	WHERE idGlossary = '" . $object_glos->getId() . "'"));
 
         if ($title == '') {
-            Forma::addError($lang->def('_FILEUNSPECIFIED'));
+            \FormaLms\lib\Forma::addError($lang->def('_FILEUNSPECIFIED'));
             Util::jump_to(Util::str_replace_once('&', '&amp;', $object_glos->back_url) . '&amp;create_result=0');
         }
 
@@ -101,7 +101,7 @@ if (!Docebo::user()->isAnonymous()) {
     {
         checkPerm('view', false, 'storage');
 
-        $lang = &DoceboLanguage::createInstance('glossary');
+        $lang = &FormaLanguage::createInstance('glossary');
         require_once _base_ . '/lib/lib.form.php';
 
         $GLOBALS['page']->add(getTitleArea($lang->def('_GLOSSARY'), 'glossary', $lang->def('_GLOSSARY'))
@@ -135,9 +135,9 @@ if (!Docebo::user()->isAnonymous()) {
 	INSERT INTO ' . $GLOBALS['prefix_lms'] . "_glossary 
 	SET title = '" . $_POST['title'] . "',
 		description = '" . $_POST['description'] . "',
-		author = '" . (int) getLogUserId() . "'";
+		author = '" . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'";
         if (!sql_query($queryIns)) {
-            Forma::addError(Lang::t('_OPERATION_FAILURE', 'glossary'));
+            \FormaLms\lib\Forma::addError(Lang::t('_OPERATION_FAILURE', 'glossary'));
             Util::jump_to(urldecode($_POST['back_url']) . '&create_result=0');
         }
         list($id) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
@@ -150,7 +150,7 @@ if (!Docebo::user()->isAnonymous()) {
     {
         checkPerm('view', false, 'storage');
 
-        $lang = &DoceboLanguage::createInstance('glossary');
+        $lang = &FormaLanguage::createInstance('glossary');
         require_once _base_ . '/lib/lib.form.php';
 
         $idGlossary = importVar('idGlossary', true, 0);
@@ -218,7 +218,7 @@ if (!Docebo::user()->isAnonymous()) {
     function addterm()
     {
         checkPerm('view', false, 'storage');
-        $lang = &DoceboLanguage::createInstance('glossary');
+        $lang = &FormaLanguage::createInstance('glossary');
 
         require_once _base_ . '/lib/lib.form.php';
 
@@ -248,7 +248,7 @@ if (!Docebo::user()->isAnonymous()) {
     function insterm()
     {
         checkPerm('view', false, 'storage');
-        $lang = &DoceboLanguage::createInstance('glossary');
+        $lang = &FormaLanguage::createInstance('glossary');
 
         $back_url = urldecode($_POST['back_url']);
         $back_coded = htmlentities(urlencode($back_url));
@@ -279,7 +279,7 @@ if (!Docebo::user()->isAnonymous()) {
     function modterm()
     {
         checkPerm('view', false, 'storage');
-        $lang = &DoceboLanguage::createInstance('glossary');
+        $lang = &FormaLanguage::createInstance('glossary');
 
         require_once _base_ . '/lib/lib.form.php';
 
@@ -314,7 +314,7 @@ if (!Docebo::user()->isAnonymous()) {
     function upterm()
     {
         checkPerm('view', false, 'storage');
-        $lang = &DoceboLanguage::createInstance('glossary');
+        $lang = &FormaLanguage::createInstance('glossary');
 
         $back_url = urldecode($_POST['back_url']);
         $back_coded = htmlentities(urlencode($back_url));
@@ -348,7 +348,7 @@ if (!Docebo::user()->isAnonymous()) {
     function delterm()
     {
         checkPerm('view', false, 'storage');
-        $lang = &DoceboLanguage::createInstance('glossary');
+        $lang = &FormaLanguage::createInstance('glossary');
 
         $back_url = urldecode($_GET['back_url']);
         $back_coded = htmlentities(urlencode($back_url));
@@ -441,7 +441,7 @@ if (!Docebo::user()->isAnonymous()) {
      break;
 
     case 'play':
-        require_once __DIR__ . '/do.glossary.php';
+        require_once dirname(__FILE__) . '/do.glossary.php';
 
         $idGlossary = importVar('idGlossary', true, 0);
         $idParams = importVar('idParams', true, 0);

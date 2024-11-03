@@ -36,25 +36,25 @@ class LomanagerLms extends Model
     public function setTdb($type = self::ORGDIRDB, $idCourse = false, $idUser = false)
     {
         if ($idUser === false) {
-            $idUser = getLogUserId();
+            $idUser = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
         }
 
         switch ($type) {
             case self::ORGDIRDB:
-                require_once Forma::inc(_lms_ . '/modules/organization/orglib.php');
-                require_once Forma::inc(_lms_ . '/class.module/class.organization.php');
+                require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/organization/orglib.php');
+                require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/class.organization.php');
                 $this->tdb = new OrgDirDb($idCourse);
                 $this->module = new Module_Organization();
                 break;
             case self::REPODIRDB:
-                require_once Forma::inc(_lms_ . '/lib/lib.repo.php');
-                require_once Forma::inc(_lms_ . '/class.module/class.pubrepo.php');
+                require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.repo.php');
+                require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/class.pubrepo.php');
                 $this->tdb = new RepoDirDb($GLOBALS['prefix_lms'] . '_repo', $idUser);
                 $this->module = new Module_Pubrepo();
                 break;
             case self::HOMEREPODIRDB:
-                require_once Forma::inc(_lms_ . '/modules/homerepo/homerepo.php');
-                require_once Forma::inc(_lms_ . '/class.module/class.homerepo.php');
+                require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/homerepo/homerepo.php');
+                require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/class.homerepo.php');
                 $this->tdb = new HomerepoDirDb($GLOBALS['prefix_lms'] . '_homerepo', $idUser);
                 $this->module = new Module_Homerepo();
                 break;
@@ -83,10 +83,10 @@ class LomanagerLms extends Model
         return $this->treeView->getChildrensDataById($rootId);
     }
 
-    public function getFolders($collection_id, $id = 0)
+    public function getFolders($collection_id, $id = 0, $folders = false)
     {
         $learning_objects = $this->getLearningObjects($id);
-        if (!isUserCourseSubcribed(getLogUserId(), $collection_id)) {
+        if (!isUserCourseSubcribed(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $collection_id)) {
             foreach ($learning_objects as $index => $lo) {
                 if (!$lo['isPublic']) {
                     $learning_objects[$index]['isPrerequisitesSatisfied'] = false;
@@ -135,7 +135,7 @@ class LomanagerLms extends Model
 
     public function deleteFolder($id)
     {
-        $folder = $this->tdb->getFolderById((string) $id);
+        $folder = $this->tdb->getFolderById((string)$id);
         $lo = createLO($folder->otherValues[REPOFIELDOBJECTTYPE]);
         if ($lo) {
             // delete categorized resource
@@ -155,22 +155,22 @@ class LomanagerLms extends Model
 
     public function renameFolder($id, $newName)
     {
-        $folder = $this->tdb->getFolderById((string) $id);
+        $folder = $this->tdb->getFolderById((string)$id);
 
         return $this->tdb->renameFolder($folder, $newName);
     }
 
     public function moveFolder($id, $newParentId)
     {
-        $folder = $this->tdb->getFolderById((string) $id);
-        $newParent = $this->tdb->getFolderById((string) $newParentId);
+        $folder = $this->tdb->getFolderById((string)$id);
+        $newParent = $this->tdb->getFolderById((string)$newParentId);
 
         return $folder->move($newParent);
     }
 
     public function reorder($idToMove, $newParent, $newOrder)
     {
-        $folder = $this->tdb->getFolderById((string) $idToMove);
+        $folder = $this->tdb->getFolderById((string)$idToMove);
 
         return $folder->reorder($newParent, $newOrder);
     }
@@ -180,7 +180,7 @@ class LomanagerLms extends Model
         require_once _adm_ . '/lib/lib.sessionsave.php';
         $saveObj = new Session_Save();
         $saveName = $saveObj->getName('crepo', true);
-        $folder = $this->tdb->getFolderById((string) $id);
+        $folder = $this->tdb->getFolderById((string)$id);
         $saveData = [
             'repo' => $fromType,
             'id' => $id,
@@ -202,7 +202,7 @@ class LomanagerLms extends Model
 
             if ($saveData['objectType']) {
                 $lo = createLO($saveData['objectType']);
-                $idResource = $lo->copy((int) $saveData['idResource']);
+                $idResource = $lo->copy((int)$saveData['idResource']);
                 if ($idResource != 0) {
                     $idReference = $this->tdb->addItem($folderId,
                         $saveData['name'],
@@ -210,7 +210,7 @@ class LomanagerLms extends Model
                         $idResource,
                         0, /* idCategory */
                         0, /* idUser */
-                        getLogUserId(), /* idAuthor */
+                        \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), /* idAuthor */
                         '1.0' /* version */,
                         '_DIFFICULT_MEDIUM', /* difficult */
                         '', /* description */
@@ -311,12 +311,22 @@ class LomanagerLms extends Model
                 $lo['actions'][] = [
                     'name' => 'access',
                     'active' => true,
-                    'type' => 'submit',
-                    'content' => "${type}[org_opaccess][$id]",
+                    'type' => 'link',
+                    'content' => "/appCore/index.php?r=adm/userselector/show&id=$id&instance=$type",
                     'showIcon' => true,
                     'icon' => 'icon-access',
                     'label' => 'Access',
                 ];
+
+                // $lo['actions'][] = [
+                //     'name' => 'access',
+                //     'active' => true,
+                //     'type' => 'submit',
+                //     'content' => "${type}[org_opaccess][$id]",
+                //     'showIcon' => true,
+                //     'icon' => 'icon-access',
+                //     'label' => 'Access',
+                // ];
 
                 if ($lo['canBeCategorized']) {
                     $lo['actions'][] = [

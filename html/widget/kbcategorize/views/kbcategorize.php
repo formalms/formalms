@@ -55,7 +55,7 @@ $this->widget('tree', [
 <div class="panel_right_big">
 <?php
 
-$all_languages = Docebo::langManager()->getAllLangCode();
+$all_languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
 $all_languages_id = array_flip($all_languages);
 $sel_lang = $all_languages_id[$data['r_lang']];
 

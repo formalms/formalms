@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\FormaUser;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -126,7 +128,7 @@ class DashboardLayoutLms extends Model
         return $this;
     }
 
-    public function userCanAccess(DoceboUser $user)
+    public function userCanAccess(FormaUser $user)
     {
         $canAccess = false;
 

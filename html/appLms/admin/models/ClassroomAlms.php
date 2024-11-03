@@ -31,10 +31,10 @@ class ClassroomAlms extends Model
 
         $this->id_course = $id_course;
         $this->id_date = $id_date;
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         $this->classroom_man = new DateManager();
         $this->course_man = new Man_Course();
-        $this->acl_man = &Docebo::user()->getAclManager();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();
         parent::__construct();
     }
 
@@ -302,9 +302,9 @@ class ClassroomAlms extends Model
         $sub_end_date = trim($date_info['sub_end_date']);
         $unsubscribe_date_limit = trim($date_info['unsubscribe_date_limit']);
 
-        $sub_start_date = (!empty($sub_start_date) ? Format::dateDb($sub_start_date, 'date') : '0000-00-00') . ' 00:00:00';
-        $sub_end_date = (!empty($sub_end_date) ? Format::dateDb($sub_end_date, 'date') : '0000-00-00') . ' 00:00:00';
-        $unsubscribe_date_limit = (!empty($unsubscribe_date_limit) ? Format::dateDb($unsubscribe_date_limit, 'date') : '0000-00-00') . ' 00:00:00';
+        $sub_start_date = (!empty($sub_start_date) ? Format::dateDb($sub_start_date, 'date') : '1970-01-01') . ' 00:00:00';
+        $sub_end_date = (!empty($sub_end_date) ? Format::dateDb($sub_end_date, 'date') : '1970-01-01') . ' 00:00:00';
+        $unsubscribe_date_limit = (!empty($unsubscribe_date_limit) ? Format::dateDb($unsubscribe_date_limit, 'date') : '1970-01-01') . ' 00:00:00';
 
         $id_date = $this->classroom_man->insDate($this->id_course, $date_info['code'], $date_info['name'], $date_info['description'], $date_info['mediumTime'], $date_info['max_par'], $date_info['price'], $date_info['overbooking'], $date_info['status'], $date_info['test'],
             $sub_start_date, $sub_end_date, $unsubscribe_date_limit);
@@ -326,7 +326,7 @@ class ClassroomAlms extends Model
         return false;
     }
 
-    public function getDateInfo()
+    public function getDateInfo() : array
     {
         if (isset($_POST['back'])) {
             $date_info = [];
@@ -510,18 +510,17 @@ class ClassroomAlms extends Model
                 . '<a href="javascript:;" onClick="unCheckAllUser(' . $id_user . ')">' . FormaLms\lib\Get::img('standard/uncheckall.png', Lang::t('_UNCHECK_ALL_USER', 'presence')) . '</a>';
 
             if ($test_type == _DATE_TEST_TYPE_PAPER) {
-                if (isset($user_presence[$id_user]['0000-00-00']) && $user_presence[$id_user]['0000-00-00']['presence'] == 1) {
+                if (isset($user_presence[$id_user]['1970-01-01']) && $user_presence[$id_user]['1970-01-01']['presence'] == 1) {
                     $passed = true;
                 } else {
                     $passed = false;
                 }
 
-                //$cont[] = Form::getTextfield('', 'score_'.$id_user, 'score_'.$id_user, 255, (isset($user_presence[$id_user]['0000-00-00']['score']) ? $user_presence[$id_user]['0000-00-00']['score'] : '0'));
-                $cont[] = Form::getInputTextfield('', 'score_' . $id_user, 'score_' . $id_user, (isset($user_presence[$id_user]['0000-00-00']['score']) ? $user_presence[$id_user]['0000-00-00']['score'] : '0'), Lang::t('_SCORE', 'course'), 255, '');
+                 $cont[] = Form::getInputTextfield('', 'score_' . $id_user, 'score_' . $id_user, (isset($user_presence[$id_user]['1970-01-01']['score']) ? $user_presence[$id_user]['1970-01-01']['score'] : '0'), Lang::t('_SCORE', 'course'), 255, '');
             }
 
-            //$cont[] = Form::getSimpleTextarea('', 'note_'.$id_user, 'note_'.$id_user, (isset($user_presence[$id_user]['0000-00-00']['note']) ? $user_presence[$id_user]['0000-00-00']['note'] : ''), false, false, false, 2);
-            $cont[] = Form::getInputTextarea('note_' . $id_user, 'note_' . $id_user, (isset($user_presence[$id_user]['0000-00-00']['note']) ? $user_presence[$id_user]['0000-00-00']['note'] : ''), '', 5, 22);
+
+            $cont[] = Form::getInputTextarea('note_' . $id_user, 'note_' . $id_user, (isset($user_presence[$id_user]['1970-01-01']['note']) ? $user_presence[$id_user]['1970-01-01']['note'] : ''), '', 5, 22);
             $tb->addBody($cont);
         }
 
@@ -616,9 +615,9 @@ class ClassroomAlms extends Model
 
         $users = $subscriptionModel->loadUser();
 
-        $calendarMailer = new CalendarMailer();
+        $calendarMailer = new \FormaLms\lib\Calendar\CalendarMailer();
         foreach ($users as $user) {
-            $user = Docebo::user()->getAclManager()->getUserMappedData(Docebo::user()->getAclManager()->getUser($user['id_user'], false));
+            $user = \FormaLms\lib\Forma::getAclManager()->getUserMappedData(\FormaLms\lib\Forma::getAclManager()->getUser($user['id_user'], false));
 
             $calendar = CalendarManager::getCalendarDataContainerForDateDays((int)$this->id_course, (int)$this->id_date, (int)$user['idst']);
 

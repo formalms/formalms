@@ -15,7 +15,7 @@ define('LMS', true);
 define('IN_FORMA', true);
 define('IS_AJAX', true);
 define('_deeppath_', '../');
-require dirname(__DIR__) . '/base.php';
+require __DIR__ . '/../base.php';
 
 // start buffer
 ob_start();
@@ -32,7 +32,7 @@ if (!function_exists('aout')) {
         $GLOBALS['operation_result'] .= $string;
     }
 }
-require_once _lms_ . '/lib/lib.permission.php';
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.permission.php');
 
 $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
@@ -59,8 +59,9 @@ if (!empty($GLOBALS['req'])) {
             $aj_file = $GLOBALS['where_' . $plf] . '/admin/modules/' . $mn . '/ajax.' . $mn . '.php';
         }
     }
+    include \FormaLms\lib\Forma::inc($aj_file);
 }
-include Forma::inc($aj_file);
+
 
 // finalize
 Boot::finalize();

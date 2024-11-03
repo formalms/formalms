@@ -1,5 +1,6 @@
 <?php
 
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -11,26 +12,26 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-define('CORE', true);
-define('IN_FORMA', true);
-define('_deeppath_', '../');
-require dirname(__DIR__) . '/base.php';
+const CORE = true;
+const IN_FORMA = true;
+const _deeppath_ = '../';
+require __DIR__ . '/../base.php';
 
-require_once _adm_ . '/versions.php';
+
 
 // start buffer
 ob_start();
 
 // initialize
 require _base_ . '/lib/lib.bootstrap.php';
-Boot::init(BOOT_PAGE_WR);
+Boot::init(CHECK_SYSTEM_STATUS);
 
 // connect to the database
-$db = &DbConn::getInstance();
+$db = \FormaLms\db\DbConn::getInstance();
 
 // some specific lib to load
 require_once _base_ . '/lib/lib.platform.php';
-require_once _adm_ . '/lib/lib.permission.php';
+require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/lib.permission.php');
 require_once _adm_ . '/lib/lib.istance.php';
 require_once _adm_ . '/class.module/class.definition.php';
 
@@ -44,7 +45,7 @@ $GLOBALS['op'] = FormaLms\lib\Get::req('op', DOTY_ALPHANUM, '');
 // create instance of StdPageWriter
 StdPageWriter::createInstance();
 
-require_once Forma::inc(_adm_ . '/lib/lib.preoperation.php');
+require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/lib.preoperation.php');
 
 if (empty($GLOBALS['modname']) && empty($GLOBALS['r'])) {
     $GLOBALS['req'] = (checkPerm('view', true, 'dashboard', 'framework') ? 'adm/dashboard/show' : '');
@@ -53,7 +54,7 @@ if (empty($GLOBALS['modname']) && empty($GLOBALS['r'])) {
 }
 
 if ($GLOBALS['modname'] != '') {
-    $module_cfg = &createModule($GLOBALS['modname']);
+    $module_cfg = createModule($GLOBALS['modname']);
 }
 
 // yui base lib loading
@@ -97,7 +98,3 @@ Boot::finalize();
 
 // flush buffer
 ob_end_flush();
-
-if (Forma::errorsExists()){
-    UIFeedback::error(Forma::getFormattedErrors());
-}

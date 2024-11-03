@@ -6,20 +6,23 @@
     <ul class="dropdown-menu" id="dropdownMenu_{{ tab.type }}" aria-labelledby="dropdownMenu_{{ tab.type }}">
         {% for el in lo_types %}
             <li id="type_{{ el.type }}" data-id="{{ el.type }}" class="folderView__li itemType">
-                <div class="folderView__el {% if el.type %}fv-is-{{ el.type }}{% else %}fv-is-folder{% endif %}">
-                    <span class="folderView__label">{{ el.title }}</span>
+                <div class="folderView__el {% if el.type %}bg-fv-is-{{ el.type }}{% else %}bg-fv-is-folder{% endif %}">
+                    <a href="#" class="folderView__label" title="{{ el.title }}">{{ el.title }}</a>
                 </div>
             </li>
         {% endfor %}
     </ul>
 
     <div class="row createFolderForm hidden">
-        <div class="col-lg-12">
+        <div class="col-lg-12 inputBtnContainer">
             <div class="createFolder__link ft-is-folder">
-                <input type="text" class="createFolder__input" placeholder="{{ Lang_translate('_ORGFOLDERNAME', 'storage') }}">
-                <button class="btn cancelCreateFolder__btn" type="reset"></button>
-                <button class="btn createFolder__btn" type="button"></button>
+                <input type="text" id="{{ tab.title }}" class="createFolder__input resizeInput" placeholder="{{ Lang_translate('_ORGFOLDERNAME', 'storage') }}"/>
+                <label class="screenreader" for="{{ tab.title }}">{{ Lang_translate('_ORGFOLDERNAME', 'storage') }}</label>
                 <input type="hidden" name="authentic_request" value="{{ Util_getSignature() }}" />
+            </div>
+            <div class="btnContainer">
+                <button class="btn cancelCreateFolder__btn noBorder" type="reset"><span class="screenreader">{{ Lang_translate('_CANCEL') }}</span></button>
+                <button class="btn createFolder__btn noBorder" type="button"><span class="screenreader">{{ Lang_translate('_CREATE_FOLDER', 'screen_reader') }}</span></button>
             </div>
             <div class="createFolder__input_err hidden"></div>
         </div>

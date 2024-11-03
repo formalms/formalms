@@ -11,8 +11,8 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-$languages = Docebo::langManager()->getAllLanguages(true);
-$std_lang = getLanguage();
+$languages = \FormaLms\lib\Forma::langManager()->getAllLanguages(true);
+$std_lang = Lang::get();
 $form_content = '';
 
 $form_content .= Form::openForm('addfolder_form', 'ajax.adm_server.php?r=alms/kb/createfolder');

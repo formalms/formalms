@@ -74,7 +74,7 @@ class TableWidget extends Widget
     /**
      * View that you want to use.
      *
-     * @var <string>
+     * @var string
      */
     public $show = 'static';
 
@@ -83,7 +83,7 @@ class TableWidget extends Widget
     /**
      * Constructor.
      *
-     * @param <string> $config the properties of the table
+     * @param string $config the properties of the table
      */
     public function __construct()
     {
@@ -129,7 +129,7 @@ class TableWidget extends Widget
         }
 
         if (!is_numeric($this->rowsPerPage) || $this->rowsPerPage <= 0) {
-            $this->rowsPerPage = FormaLms\lib\Get::sett('visu_item', 25);
+            $this->rowsPerPage = FormaLms\lib\Get::sett('visuitem', 25);
         }
 
         if (!is_numeric($this->startIndex)) {
@@ -149,7 +149,7 @@ class TableWidget extends Widget
         }
 
         if (!is_array($this->paginator)) {
-            $lang = &DoceboLanguage::CreateInstance('standard', 'framework');
+            $lang = FormaLanguage::CreateInstance('standard', 'framework');
             $this->paginator = [
                 'template' => '{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} '
                     . '{RangeRecords} ' . $lang->def('_OF') . ' <strong>{TotalRecords}</strong>'
@@ -314,7 +314,7 @@ class TableWidget extends Widget
      * Compile the js configuration for the yui datatable colum definition
      * based on the php array populated by the __construct.
      *
-     * @return <string>
+     * @return string
      */
     protected function _getColumns()
     {

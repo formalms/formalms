@@ -21,7 +21,7 @@ class Module_Htmlfront extends LmsModule
         htmlfrontDispatch($GLOBALS['op']);
     }
 
-    public function getAllToken()
+    public static function getAllToken()
     {
         return [
             'view' => ['code' => 'view',

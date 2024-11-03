@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once __DIR__ . '/certificate.base.php';
+require_once dirname(__FILE__) . '/certificate.base.php';
 
 class CertificateSubs_Course extends CertificateSubstitution
 {
@@ -50,7 +50,7 @@ class CertificateSubs_Course extends CertificateSubstitution
 
     public function getUserNameInv($idst_user = false, $user_id = false)
     {
-        $acl_manager = &Docebo::user()->getAclManager();
+        $acl_manager = \FormaLms\lib\Forma::getAclManager();
         $user_info = $acl_manager->getUser($idst_user, $user_id);
 
         return $user_info[ACL_INFO_LASTNAME] . $user_info[ACL_INFO_FIRSTNAME]
@@ -68,8 +68,8 @@ class CertificateSubs_Course extends CertificateSubstitution
         if ($this->id_meta == 0) {
             require_once _lms_ . '/lib/lib.course.php';
 
-            $acl_manager = &Docebo::user()->getAclManager();
-            $man_course = new DoceboCourse($this->id_course);
+            $acl_manager = \FormaLms\lib\Forma::getAclManager();
+            $man_course = new FormaCourse($this->id_course);
 
             $query = 'SELECT idUser'
                 . ' FROM %lms_courseuser'
@@ -164,7 +164,7 @@ class CertificateSubs_Course extends CertificateSubstitution
                  WHERE id_course = ' . $this->id_course . '
                  AND cdu.id_user = ' . $this->id_user . '
                  ORDER BY cd.id_date DESC LIMIT 1;';
-                // AND cdu.date_complete <> '0000-00-00 00:00:00'
+                // AND cdu.date_complete IS NOT NULL
                 list($id_date) = sql_fetch_row(sql_query($query));
 
                 if ($id_date) {

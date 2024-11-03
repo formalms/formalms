@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Docebo::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit("You can't access");
 }
 
@@ -27,10 +27,10 @@ function fileList(&$url)
     require_once _base_ . '/lib/lib.table.php';
     require_once _base_ . '/lib/lib.form.php';
 
-    $file_man = new MyFile(getLogUserId());
+    $file_man = new MyFile(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
     $tab_man = new TabView('myfiles', '');
 
-    $lang = &DoceboLanguage::createInstance('myfiles');
+    $lang = &FormaLanguage::createInstance('myfiles');
 
     $areas = $file_man->getFilesAreas();
     foreach ($areas  as $id_page => $area_name) {
@@ -93,11 +93,11 @@ function fileList(&$url)
         . $lang->def('_ADD_' . $active_tab) . '</a></p>');
     $tb->addActionAdd('<p>'
         . '<a href="'
-        . $url->getUrl('modname=profile&op=profile&id_user=' . getLogUserId() . '&ap=view_files&type=' . $active_tab . '&from=1') . '">'
+        . $url->getUrl('modname=profile&op=profile&id_user=' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . '&ap=view_files&type=' . $active_tab . '&from=1') . '">'
         . '<img src="' . getPathImage('fw') . 'myfiles/' . $active_tab . '.gif" title="' . $lang->def($active_tab) . '" alt="' . $lang->def('_VIEW_' . $active_tab) . '" />'
         . '</a>'
         . '<a href="'
-        . $url->getUrl('modname=profile&op=profile&id_user=' . getLogUserId() . '&ap=view_files&type=' . $active_tab . '&from=1') . '">'
+        . $url->getUrl('modname=profile&op=profile&id_user=' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . '&ap=view_files&type=' . $active_tab . '&from=1') . '">'
         . $lang->def('_VIEW_' . $active_tab) . '</a></p>');
 
     $GLOBALS['page']->add($tb->getTable(), 'content');
@@ -108,8 +108,8 @@ function modfiles(&$url)
     checkPerm('view');
 
     require_once _base_ . '/lib/lib.form.php';
-    $file_man = new MyFile(getLogUserId());
-    $lang = &DoceboLanguage::createInstance('myfiles');
+    $file_man = new MyFile(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
+    $lang = &FormaLanguage::createInstance('myfiles');
 
     $area = importVar('working_area', false, $file_man->getDefaultArea());
     $id_file = importVar('id_file', true, 0);
@@ -167,7 +167,7 @@ function savefiles(&$url)
 {
     checkPerm('view');
 
-    $file_man = new MyFile(getLogUserId());
+    $file_man = new MyFile(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
     $area = importVar('working_area', false, $file_man->getDefaultArea());
     $id_file = importVar('id_file', true, 0);
@@ -186,8 +186,8 @@ function delfiles(&$url)
 {
     checkPerm('view');
 
-    $file_man = new MyFile(getLogUserId());
-    $lang = &DoceboLanguage::createInstance('myfiles');
+    $file_man = new MyFile(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
+    $lang = &FormaLanguage::createInstance('myfiles');
 
     $area = importVar('working_area', false, $file_man->getDefaultArea());
     $id_file = importVar('id_file', true, 0);

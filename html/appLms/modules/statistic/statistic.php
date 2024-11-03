@@ -13,15 +13,15 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Docebo::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit("You can't access");
 }
 
-require_once Forma::inc(_lib_ . '/formatable/include.php');
+require_once \FormaLms\lib\Forma::inc(_lib_ . '/formatable/include.php');
 
 function outPageView($link)
 {
-    $lang = &DoceboLanguage::createInstance('statistic', 'lms');
+    $lang = FormaLanguage::createInstance('statistic', 'lms');
     $for = importVar('for', false, 'week');
     $times = ['day', 'week', 'month', 'year'];
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
@@ -107,21 +107,22 @@ function outPageView($link)
     }
 
     $view_all_perm = checkPerm('view_all', true);
+    $course_man = new Man_Course();
     $course_user = Man_Course::getIdUserOfLevel($idCourse);
 
     //apply sub admin filters, if needed
-    if (!$view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin') {
+    if (!$view_all_perm && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == '/framework/level/admin') {
         //filter users
         require_once _base_ . '/lib/lib.preference.php';
         $ctrlManager = new ControllerPreference();
-        $ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
+        $ctrl_users = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
         $course_user = array_intersect($course_user, $ctrl_users);
     }
 
     $query_stat = 'SELECT ' . $select . ', COUNT(*) as count 
 	FROM %lms_trackingeneral 
 	WHERE idCourse="' . $idCourse . '"';
-    if (!$view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin') {
+    if (!$view_all_perm && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == '/framework/level/admin') {
         $query_stat .= ' AND idUser IN (' . implode(',', $course_user) . ') ';
     }
     if ($_REQUEST['op'] == 'userdetails' && isset($_REQUEST['id'])) {
@@ -165,8 +166,8 @@ function outPageView($link)
     $chartString = '<script type="text/javascript">$(document).ready(function () {';
     $chartString .= '
     var dataset = ' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($dataset, 'json') . ";
-    var backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--color-2');
-    var borderColor = getComputedStyle(document.documentElement).getPropertyValue('--color-2-600');
+    var backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--color-primary');
+    var borderColor = getComputedStyle(document.documentElement).getPropertyValue('--color-primary');
         
         dataset.data.forEach(function(number) {
            dataset.backgroundColor.push(backgroundColor);
@@ -193,8 +194,8 @@ function outPageView($link)
     cout($chartString, 'content');
 
     cout('<div class="align-center">'
-        . '<ul class="link_list_inline">', 'content');
-    while (list(, $value) = each($times)) {
+        . '<ul class="link_list_inline">', 'content');    
+    foreach((Array) $times as $key => $value) {
         if ($for == $value) {
             $GLOBALS['page']->add('<li><span>' . $lang->def('_FOR_' . $value) . '</span></li>', 'content');
         } else {
@@ -217,20 +218,21 @@ function statistic()
 
     $view_all_perm = checkPerm('view_all', true);
 
-    $lang = &DoceboLanguage::createInstance('statistic', 'lms');
-    $acl_man = Docebo::user()->getAclManager();
+    $lang = FormaLanguage::createInstance('statistic', 'lms');
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
+    $course_man = new Man_Course();
     $course_user = Man_Course::getIdUserOfLevel($idCourse);
 
     //apply sub admin filters, if needed
-    if (!$view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin') {
+    if (!$view_all_perm && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == '/framework/level/admin') {
         //filter users
         require_once _base_ . '/lib/lib.preference.php';
         $ctrlManager = new ControllerPreference();
-        $ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
+        $ctrl_users = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
         $course_user = array_intersect($course_user, $ctrl_users);
     }
 
-    $users_list = &$acl_man->getUsers($course_user);
+    $users_list = $acl_man->getUsers($course_user);
     $GLOBALS['page']->add(getTitleArea(lang::t('_STAT', 'menu_course')), 'content');
 
     $GLOBALS['page']->add(
@@ -257,7 +259,7 @@ function statistic()
     ];
     $tb->setColsStyle($type_h);
     $tb->addHead($cont_h);
-    while (list(, $user_info) = each($users_list)) {
+    foreach ($users_list as $user_info ) {
         $cont = [
             '<a href="index.php?modname=statistic&amp;op=userdetails&amp;id=' . $user_info[ACL_INFO_IDST] . '" '
             . 'title="' . $lang->def('_DETAILS') . ' : ' . $acl_man->relativeId($user_info[ACL_INFO_USERID]) . '">'
@@ -331,8 +333,8 @@ function userdetails()
     $inv = importVar('inv', true, 0);
     $link = 'index.php?modname=statistic&amp;op=userdetails&amp;id=' . $idst_user . '';
 
-    $lang = &DoceboLanguage::createInstance('statistic', 'lms');
-    $acl_man = Docebo::user()->getAclManager();
+    $lang = &FormaLanguage::createInstance('statistic', 'lms');
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     $user_info = &$acl_man->getUser($idst_user, false);
 
     $page_title = [
@@ -480,8 +482,8 @@ function sessiondetails()
     $nav_bar->setLink($link . '&amp;p_ini=' . $p_ini);
     $ini = $nav_bar->getSelectedElement();
 
-    $lang = &DoceboLanguage::createInstance('statistic', 'lms');
-    $acl_man = Docebo::user()->getAclManager();
+    $lang = &FormaLanguage::createInstance('statistic', 'lms');
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     $user_info = &$acl_man->getUser($idst_user, false);
 
     $query_track = '

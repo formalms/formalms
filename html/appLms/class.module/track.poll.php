@@ -18,21 +18,34 @@ require_once _lms_ . '/class.module/track.object.php';
 class Track_Poll extends Track_Object
 {
     /**
+     * @var string|null
+     */
+    public $back_url;
+    /**
+     * @var int|null
+     */
+    public int $idParams;
+    /**
+     * @var int|null
+     */
+    public int $idResource;
+
+    /**
      * object constructor
      * Table : learning_commontrack
      * id_reference | idUser | id_track | objectType | date_attempt  | status |.
      **/
-    public function __construct($id_track, $idResource = false, $idParams = false, $back_url = null)
+    public function __construct($idTrack, $idResource = false, $idParams = false, $backUrl = null)
     {
         $this->objectType = 'poll';
-        parent::__construct($id_track);
+        parent::__construct($idTrack);
 
         $this->idResource = $idResource;
         $this->idParams = $idParams;
-        if ($back_url === null) {
+        if ($backUrl === null) {
             $this->back_url = [];
         } else {
-            $this->back_url = $back_url;
+            $this->back_url = $backUrl;
         }
     }
 
@@ -41,26 +54,25 @@ class Track_Poll extends Track_Object
      *
      * create a new row in the _testtrack table for tracking purpose
      *
-     * @param int $idUser      the id of the user that display the object
-     * @param int $idTest      the id of the test that is displayed
+     * @param int $idUser the id of the user that display the object
+     * @param int $idTest the id of the test that is displayed
      * @param int $idReference the idReference from the table of the lesson
      *
-     * @return int idTrack if the row is created correctly otherwise false
+     * @return int|false idTrack if the row is created correctly otherwise false
      **/
-    public function createNewTrack($id_user, $id_resource, $idReference)
+    public function createNewTrack($idUser, $idResource, $idReference)
     {
         if ($this->session->get('levelCourse') < 6) {
-            $query = '
-			INSERT INTO ' . $GLOBALS['prefix_lms'] . "_polltrack 
-			SET id_user = '" . (int) $id_user . "', 
-				id_poll = '" . (int) $id_resource . "', 
-				id_reference = '" . (int) $idReference . "', 
+            $query = "INSERT INTO %lms_polltrack 
+			SET id_user = '" . (int)$idUser . "', 
+				id_poll = '" . (int)$idResource . "', 
+				id_reference = '" . (int)$idReference . "', 
 				date_attempt = '" . date('Y-m-d H:i:s') . "'";
             if (!sql_query($query)) {
                 return false;
             }
 
-            list($idTrack) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
+            [$idTrack] = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
             if (!$idTrack) {
                 return false;
             } else {
@@ -72,33 +84,50 @@ class Track_Poll extends Track_Object
     }
 
     /**
-     * @return id_track if exists or false
+     * @return int|false if exists or false
      **/
-    public function getTrack($id_reference, $id_resource, $id_user)
+    public static function getTrack($idReference, $idResource, $idUser)
     {
-        $query = '
-		SELECT id_track 
-		FROM ' . $GLOBALS['prefix_lms'] . "_polltrack
-		WHERE id_reference='" . (int) $id_reference . "' AND id_poll='" . (int) $id_resource . "' AND id_user='" . (int) $id_user . "'";
+        self::fixDuplicatesAndSyncCommonTrack($idReference, $idResource, $idUser);
+        $query = "SELECT id_track FROM %lms_polltrack WHERE id_reference='" . (int)$idReference . "' AND id_poll='" . (int)$idResource . "' AND id_user='" . (int)$idUser . "'";
         $rs = sql_query($query)
-            or errorCommunication('Learning_Poll.existTrack');
+        or errorCommunication('Learning_Poll.existTrack');
 
         if (sql_num_rows($rs) > 0) {
-            list($id_track) = sql_fetch_row($rs);
+            [$idTrack] = sql_fetch_row($rs);
 
-            return $id_track;
+            return $idTrack;
         } else {
             return false;
         }
     }
 
-    public function getIdTrack($id_reference, $idUser, $idResource, $createOnFail = false)
+    public static function fixDuplicatesAndSyncCommonTrack($idReference, $idResource, $idUser)
     {
-        $rsTrack = $this->getTrack($id_reference, $idResource, $idUser);
+        $query = "SELECT id_track FROM %lms_polltrack WHERE id_reference='" . (int)$idReference . "' AND id_poll='" . (int)$idResource . "' AND id_user='" . (int)$idUser . "' order by id_track";
+        $rs = sql_query($query);
+        $idTrack = false;
+        foreach ($rs as $row) {
+            if ($idTrack) {
+                $query = 'DELETE from learning_polltrack WHERE id_track="' . (int)$row['id_track'] . '"';
+                sql_query($query);
+            } else {
+                $idTrack = $row['id_track'];
+            }
+        }
+        if ($idTrack) {
+            CoursestatsLms::fixUserTrackInfo($idReference, $idUser, $idResource, $idTrack, 'poll');
+        }
+    }
+
+
+    public function getIdTrack($idReference, $idUser, $idResource, $createOnFail = false)
+    {
+        $rsTrack = static::getTrack($idReference, $idResource, $idUser);
         if ($rsTrack !== false) {
             return [true, $rsTrack];
         } elseif ($createOnFail) {
-            $rsTrack = $this->createNewTrack($idUser, $idResource, $id_reference);
+            $rsTrack = $this->createNewTrack($idUser, $idResource, $idReference);
 
             return [false, $rsTrack];
         }
@@ -107,26 +136,25 @@ class Track_Poll extends Track_Object
     }
 
     /**
-     * @return id_track if create row else false
+     * @return int|false if create row else false
      **/
-    public function setTrack($id_reference, $id_resource, $id_user)
+    public function setTrack($idReference, $idResource, $idUser)
     {
-        $query = '
-		INSERT INTO ' . $GLOBALS['prefix_lms'] . "_polltrack
-		SET id_poll = '" . (int) $id_resource . "',
-			id_reference = '" . (int) $id_reference . "',
-			id_user = '" . (int) $id_user . "',
-			data_attempt = '" . date('Y-m-d H:i:s') . "'";
-        if (!sql_query($query)) {
-            return false;
-        }
+        $rsTrack = static::getTrack($idReference, $idResource, $idUser);
+        if ($rsTrack !== false) {
+            $query = "INSERT INTO %lms_polltrack SET id_poll = '" . (int)$idResource . "', id_reference = '" . (int)$idReference . "', id_user = '" . (int)$idUser . "', data_attempt = '" . date('Y-m-d H:i:s') . "'";
+            if (!sql_query($query)) {
+                return false;
+            }
 
-        list($id_track) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
-        if ($id_track) {
-            return $id_track;
-        } else {
-            return false;
+            [$idTrack] = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
+            if ($idTrack) {
+                return $idTrack;
+            } else {
+                return false;
+            }
         }
+        return $rsTrack;
     }
 
     /**
@@ -134,7 +162,7 @@ class Track_Poll extends Track_Object
      *
      * create a new row in the _testtrack table for tracking purpose
      *
-     * @param int   $idTrack  the track of the object
+     * @param int $idTrack the track of the object
      * @param array $new_info an array with the new information
      *
      * @return bool true if success false otherwise
@@ -145,16 +173,14 @@ class Track_Poll extends Track_Object
         if (!is_array($new_info)) {
             return true;
         }
-        $query = '
-		UPDATE %lms_polltrack 
-		SET ';
+        $query = 'UPDATE %lms_polltrack SET ';
         foreach ($new_info as $field_name => $field_value) {
             $query .= ($first ? '' : ', ') . $field_name . " = '" . $field_value . "'";
             if ($first) {
                 $first = false;
             }
         }
-        $query .= " WHERE id_track = '" . (int) $idTrack . "'";
+        $query .= " WHERE id_track = '" . (int)$idTrack . "'";
         if (!sql_query($query)) {
             return false;
         } else {

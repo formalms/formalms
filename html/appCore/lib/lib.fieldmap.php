@@ -27,7 +27,7 @@ class FieldMapManager
     public $field_map = false;
     public $map_extra_filter = false;
 
-    public function FieldMapManager($prefix = false, $dbconn = null)
+    public function __construct($prefix = false, $dbconn = null)
     {
         $this->prefix = ($prefix !== false ? $prefix : $GLOBALS['prefix_fw']);
         $this->dbconn = $dbconn;
@@ -92,7 +92,7 @@ class FieldMapManager
             if ((is_array($val)) && (isset($val['class_path']))) {
                 $class_path = $val['class_path'];
             } else {
-                $class_path = _adm_ . '/class/';
+                $class_path = $GLOBALS['where_framework'] . '/class/';
             }
 
             if ((is_array($val)) && (isset($val['class_file']))) {
@@ -271,7 +271,7 @@ class FieldMapManager
             } elseif ((!isset($field_map[$field_id])) && (!in_array($field_id, $map_custom_fields))) {
                 $resource = '_not_mapped';
                 $type = 'custom';
-                $res[$resource][$type][$field_id]['description'] = $field_info[$field_id][FIELD_INFO_TRANSLATION];
+                $res[$resource][$type][$field_id]['description'] = $info[FIELD_INFO_TRANSLATION];
                 $res[$resource][$type][$field_id]['value'] = $field_val[$field_id];
                 if (($debug) && (empty($field_val[$field_id]))) {
                     echo $field_id . ' :: ';

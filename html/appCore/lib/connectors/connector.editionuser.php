@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once __DIR__ . '/lib.connector.php';
+require_once dirname(__FILE__) . '/lib.connector.php';
 require_once _lms_ . '/lib/lib.course.php';
 require_once _lms_ . '/lib/lib.edition.php';
 require_once _base_ . '/lib/lib.eventmanager.php';
@@ -23,7 +23,7 @@ require_once _base_ . '/lib/lib.eventmanager.php';
  *
  * @version 	1.0
  **/
-class ConnectorEditionUser extends DoceboConnector
+class ConnectorEditionUser extends FormaConnector
 {
     public $last_error = '';
 
@@ -61,17 +61,27 @@ class ConnectorEditionUser extends DoceboConnector
     public $first_row_header = '1';
 
     public $cache = ['courses' => [], 'editions' => [], 'users' => []];
+    public bool $_readed_end;
+    public $first_row;
+    public array $all_data;
+    public $tot_row;
+    public int $position;
+    public $today;
+    /**
+     * @var FormaLanguage|mixed
+     */
+    public mixed $lang;
 
     /**
      * constructor.
      *
      * @param array params
      **/
-    public function ConnectorEditionUser($params)
+    public function __construct($params)
     {
         require_once _lms_ . '/lib/lib.edition.php';
 
-        $this->acl_man = new DoceboACLManager();
+        $this->acl_man = new FormaACLManager();
         $this->sub_man = new EditionManager();
 
         if ($params === null) {
@@ -121,7 +131,7 @@ class ConnectorEditionUser extends DoceboConnector
     /**
      * get configuration UI.
      *
-     * @return DoceboConnectorUI
+     * @return FormaConnectorUI
      **/
     public function get_configUI()
     {
@@ -133,7 +143,7 @@ class ConnectorEditionUser extends DoceboConnector
      **/
     public function connect()
     {
-        $this->lang = DoceboLanguage::createInstance('rg_report');
+        $this->lang = FormaLanguage::createInstance('rg_report');
 
         $this->_readed_end = false;
         $this->today = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
@@ -245,18 +255,18 @@ class ConnectorEditionUser extends DoceboConnector
 
     public function get_cols_descripor()
     {
-        $lang = DoceboLanguage::createInstance('subscribe', 'lms');
+        $lang = FormaLanguage::createInstance('subscribe', 'lms');
 
         $col_descriptor = [];
         foreach ($this->all_cols as $k => $col) {
             $col_descriptor[] = [
-                DOCEBOIMPORT_COLNAME => $lang->def('_' . strtoupper($col[0])),
-                DOCEBOIMPORT_COLID => $col[0],
-                DOCEBOIMPORT_COLMANDATORY => (array_search($col[0], $this->mandatory_cols) === false
+                FORMAIMPORT_COLNAME => $lang->def('_' . strtoupper($col[0])),
+                FORMAIMPORT_COLID => $col[0],
+                FORMAIMPORT_COLMANDATORY => (array_search($col[0], $this->mandatory_cols) === false
                                                     ? false
                                                     : true),
-                DOCEBOIMPORT_DATATYPE => $col[1],
-                DOCEBOIMPORT_DEFAULT => ($in = array_search($col[0], $this->default_cols) === false
+                FORMAIMPORT_DATATYPE => $col[1],
+                FORMAIMPORT_DEFAULT => ($in = array_search($col[0], $this->default_cols) === false
                                                     ? ''
                                                     : $this->default_cols[$in]),
             ];
@@ -405,7 +415,7 @@ class ConnectorEditionUser extends DoceboConnector
     }
 }
 
-class ConnectorUI_EditionUserUI extends DoceboConnectorUI
+class ConnectorUI_EditionUserUI extends FormaConnectorUI
 {
     public $connector = null;
     public $post_params = null;
@@ -415,7 +425,7 @@ class ConnectorUI_EditionUserUI extends DoceboConnectorUI
     public $step_next = '';
     public $step_prev = '';
 
-    public function ConnectorUI_EditionUserUI(&$connector)
+    public function __construct(&$connector)
     {
         $this->connector = $connector;
     }
@@ -506,7 +516,7 @@ class ConnectorUI_EditionUserUI extends DoceboConnectorUI
         return '';
     }
 
-    public function get_html()
+    public function get_html($get = null, $post = null)
     {
         $out = '';
         switch ($this->post_params['step']) {

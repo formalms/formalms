@@ -38,6 +38,7 @@ class SSLEncryption
 
     public static function encryptString($string)
     {
+       
         return openssl_encrypt($string, static::$ciphering, static::$encryption_key, static::$options, static::$encryption_iv);
     }
 

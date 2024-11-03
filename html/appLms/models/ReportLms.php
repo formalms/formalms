@@ -76,9 +76,8 @@ class ReportLms extends Model
     public function __construct($id_report = null, $title = '', $max_score = true, $required_score = true, $weight = true, $show_to_user = false, $use_for_final = false, $source_of = '', $id_source = 0, $show_in_detail = true)
     {
         if ($id_report !== null) {
-            $query_report = 'SELECT id_report,id_course, title, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source, show_in_detail
-                        FROM ' . $GLOBALS['prefix_lms'] . "_coursereport
-	                    WHERE id_report = '" . $id_report . "'";
+            $query_report = 'SELECT id_report,id_course, title, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source, show_in_detail FROM %lms_coursereport
+	                    WHERE id_report = \'' . $id_report . '\'';
 
             $res = sql_query($query_report);
             if ($res) {

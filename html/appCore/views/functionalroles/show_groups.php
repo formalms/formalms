@@ -9,7 +9,7 @@ echo getTitleArea([
 <script type="text/javascript">
 var Groups = {
 	filterText: "",
-	currentLanguage: "<?php echo getLanguage(); ?>",
+	currentLanguage: "<?php echo Lang::get(); ?>",
 
 	dialogRenderEvent: function() {},
 

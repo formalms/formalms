@@ -12,7 +12,7 @@
             {{ Form_getTextfield(Lang_translate('_COURSE_NAME', 'course') , 'course_name', 'course_name', 255, course.name ) }}
             {{ Form_getDropdown( Lang_translate('_COURSE_LANG_METHOD', 'course'), 'course_lang', 'course_lang', array_lang|raw, lang_code) }}
             {{ Form_getDropdown( Lang_translate('_DIFFICULTY', 'course'), 'course_difficult', 'course_difficult', difficult_lang|raw, course.difficult) }}
-            {{ Form_getDropdown( Lang_translate('_STATUS', 'course'), 'course_status', 'course_status', difficult_lang|raw, course.status) }}
+            {{ Form_getDropdown( Lang_translate('_STATUS', 'course'), 'course_status', 'course_status', status_lang|raw, course.status) }}
            {{ Form_getTextarea( Lang_translate('_DESCRIPTION', 'course'), 'course_descr', 'course_descr', course.description) }}
         {{ Form_closeElementSpace() }}
         {{ Form_openButtonSpace() }}

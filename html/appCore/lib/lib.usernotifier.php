@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Domain\DomainHandler;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -18,15 +20,15 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  * @author   Emanuele Sandri <esandri@docebo.com>
  *
- * This is the class for ClassEvents in Docebo
+ * This is the class for ClassEvents in Forma
  **/
 require_once _base_ . '/lib/lib.event.php';
 
-class DoceboUserNotifier extends DoceboEventConsumer
+class FormaUserNotifier extends FormaEventConsumer
 {
     public function _getConsumerName()
     {
-        return 'DoceboUserNotifier';
+        return 'FormaUserNotifier';
     }
 
     public function actionEvent(&$event)
@@ -36,7 +38,7 @@ class DoceboUserNotifier extends DoceboEventConsumer
         // initializing
         require_once _adm_ . '/lib/lib.field.php';
 
-        $acl_man = &Docebo::user()->getACLManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();;
         $field_man = new FieldList();
         $send_to_field = FormaLms\lib\Get::sett('sms_cell_num_field');
 
@@ -56,11 +58,11 @@ class DoceboUserNotifier extends DoceboEventConsumer
 
         // recover user info and convert to idst if required
         if (is_numeric($arr_recipients[0])) {
-            $idst_users = &$arr_recipients;
+            $idst_users = $arr_recipients;
         } else {
             $idst_users = $acl_man->fromUseridToIdst($arr_recipients);
         }
-        $users_info = &$acl_man->getUsers($idst_users);
+        $users_info = $acl_man->getUsers($idst_users);
 
         // recove setting
         $users_lang = $acl_man->getSettingValueOfUsers('ui.language', false, true);
@@ -79,7 +81,7 @@ class DoceboUserNotifier extends DoceboEventConsumer
 
                 $lang = (isset($users_lang[$idst_user]) && $users_lang[$idst_user] !== null
                     ? $users_lang[$idst_user]
-                    : getDefaultLanguage());
+                    : Lang::getDefault());
 
                 if (in_array('email', $media) || $force_email_send == 'true') {
                     if ($user_dett[ACL_INFO_EMAIL] != '') {
@@ -125,8 +127,8 @@ class DoceboUserNotifier extends DoceboEventConsumer
 
     public function _sendMail($subject, $body, $attachments, &$mail_recipients, &$users_info = false)
     {
-        $mailer = FormaMailer::getInstance();
-        $acl_man = Docebo::user()->getAclManager();
+        $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         foreach ($mail_recipients as $id => $mail) {
             $base_body = $body;
@@ -139,14 +141,14 @@ class DoceboUserNotifier extends DoceboEventConsumer
             }
 
             $mailer->SendMail(
-                FormaLms\lib\Get::sett('sender_event'),
                 [$mail],
                 $subject,
                 $base_body,
+                DomainHandler::getInstance()->getMailerField('sender_mail_system'),
                 $attachments,
                 [
-                    MAIL_REPLYTO => FormaLms\lib\Get::sett('sender_event'),
-                    MAIL_SENDER_ACLNAME => FormaLms\lib\Get::sett('use_sender_aclname'),
+                    MAIL_REPLYTO => DomainHandler::getInstance()->getMailerField('replyto_mail'),
+                    MAIL_SENDER_ACLNAME => DomainHandler::getInstance()->getMailerField('sender_name_system'),
                 ]
             );
         }
@@ -154,7 +156,7 @@ class DoceboUserNotifier extends DoceboEventConsumer
 
     public function _sendSms($body, &$sms_recipients, &$users_info = false)
     {
-        require_once Forma::inc(_adm_ . '/lib/Sms/SmsGatewayManager.php');
+        require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/Sms/SmsGatewayManager.php');
         SmsGatewayManager::send($sms_recipients, strip_tags($body));
     }
 }

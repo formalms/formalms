@@ -1,0 +1,67 @@
+/// assets path
+/// @type String
+/// @group path
+$assets: '';
+/// fontawesome path
+/// @type String
+/// @group path
+$fa-font-path: '#{$assets}fonts';
+/// fontawesome font
+/// @type String
+/// @group font
+$icon: 'FontAwesome';
+/// default font
+/// @type String
+/// @group font
+$font: 'Open-sans', Arial;
+/// font weight light
+/// @type Number
+/// @group font
+$light: 300;
+/// font weight regular
+/// @type Number
+/// @group font
+$regular: 400;
+/// font weight medium
+/// @type Number
+/// @group font
+$semi-bold: 600;
+/// font weight bold
+/// @type Number
+/// @group font
+$bold: 700;
+/// font weight heavy
+/// @type Number
+/// @group font
+$extra-bold: 800;
+/// forma mobile breakpoint (mobile first)
+/// @type Number + px
+/// @group breakpoint
+$forma-mobile: 450px;
+/// tablet breakpoint (mobile first)
+/// @type Number + px
+/// @group breakpoint
+$tablet: 768px;
+/// ipad breakpoint (mobile first)
+/// @type Number + px
+/// @group breakpoint
+$ipad: 1024px;
+/// small desktop breakpoint (mobile first)
+/// @type Number + px
+/// @group breakpoint
+$small-desktop: 1100px;
+/// desktop breakpoint (mobile first)
+/// @type Number + px
+/// @group breakpoint
+$desktop: 1280px;
+/// grid max width (mobile first)
+/// @type Number + px
+/// @group grid
+$grid-max-width: 1268px;
+/// transition base props
+/// @type Number
+/// @group transition
+
+$transition-base: all 110ms ease-in-out;
+
+$border-radius: 2px;

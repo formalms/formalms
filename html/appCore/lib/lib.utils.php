@@ -96,13 +96,13 @@ class Util
         }
     }
 
-    public static function jump_to($relative_url, $anchor = '')
+    public static function jump_to($relative_url, $anchor = '', $folder = false)
     {
         $relative_url = trim(str_replace('&amp;', '&', $relative_url));
 
         session_write_close();
 
-        $url = FormaLms\lib\Get::abs_path() . $relative_url . $anchor;
+        $url = FormaLms\lib\Get::abs_path($folder) . $relative_url . $anchor;
         header("Location: $url");
 
         ob_clean();
@@ -119,7 +119,7 @@ class Util
      *                         assumed that $filename is [number]_[number]_[time]_[filename]
      *                         the file sended will have the name [filename].$ext
      */
-    public function download($path, $filename, $ext = null, $sendname = null)
+    public static function download($path, $filename, $ext = null, $sendname = null)
     {
         //empty and close buffer
         if (!(_files_ == substr($path, 0, strlen(_files_)))) {
@@ -140,10 +140,10 @@ class Util
         }
 
         if (!file_exists($path . $filename)) {
-            Util::fatal(Lang::t('_DOWNLOAD_FILE_NOT_EXISTS'));
+            Util::fatal('Error: the file that you are searching for no longer exists on the server.<br/>Please contact the system administrator');
         }
 
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
         $db->close();
 
         ob_end_clean();
@@ -153,8 +153,7 @@ class Util
         //send file length info
         header('Content-Length:' . filesize($path . $filename));
         //content type forcing dowlad
-        require_once _base_ . '/lib/lib.mimetype.php';
-        header("Content-type: " . mimetype($ext) . "; charset=utf-8\n");
+        header("Content-type: application/download; charset=utf-8\n");
         //cache control
         header('Cache-control: private');
         //sending creation time
@@ -188,7 +187,7 @@ class Util
     /**
      * Return if the page was requested in POST by the client.
      *
-     * @return <bool>
+     * @return bool
      */
     public static function requestIsPost()
     {
@@ -253,7 +252,7 @@ class Util
     /**
      * Display a fatal app message.
      *
-     * @param <string> $msg  the errore message
+     * @param string $msg  the errore message
      */
     public static function fatal($msg)
     {
@@ -283,7 +282,7 @@ class Util
             return;
         }
 
-        $db = &DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
 
         $re_sett = $db->query('SELECT param_name, param_value, value_type ' .
         'FROM ' . $from_table . ' ' .
@@ -414,7 +413,7 @@ class Util
      *
      * @return string the converted string
      */
-    public function unhtmlentities($string)
+    public static function unhtmlentities($string)
     {
         // replace numeric entities
         $string = preg_replace('~&#x([0-9a-f]+);~ei', 'chr(hexdec("\\1"))', $string);
@@ -456,7 +455,7 @@ class Util
         return true;
     }
 
-    public function getIsAjaxRequest()
+    public static function getIsAjaxRequest()
     {
         return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
     }
@@ -856,7 +855,7 @@ function translateChr(&$text, &$translate_table, $reverse = false)
         return $text;
     }
     if (!isset($GLOBALS['is_utf'])) {
-        $GLOBALS['is_utf'] = (strpos(getUnicode(), 'utf-8') === false ? false : true);
+        $GLOBALS['is_utf'] = (strpos(Lang::charset(), 'utf-8') === false ? false : true);
     }
 
     if ($GLOBALS['is_utf'] === false) {

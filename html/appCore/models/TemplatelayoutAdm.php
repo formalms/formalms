@@ -23,8 +23,8 @@ class TemplatelayoutAdm extends Model
 
     public function __construct()
     {
-        $this->db = DbConn::getInstance();
-        $this->aclManager = Docebo::user()->getAclManager();
+        $this->db = \FormaLms\db\DbConn::getInstance();
+        $this->aclManager = \FormaLms\lib\Forma::getAclManager();
         $this->json = new Services_JSON();
         parent::__construct();
     }

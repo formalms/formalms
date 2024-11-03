@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once Forma::inc(_lms_ . '/modules/organization/orglib.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/organization/orglib.php');
 
 function organization(&$treeView)
 {
@@ -21,7 +21,7 @@ function organization(&$treeView)
     /*$orgDb = new OrgDirDb();
     if( !checkPerm('lesson') ) {
         $treeView->tdb->setFilterVisibility( TRUE );
-        $treeView->tdb->setFilterAccess( Docebo::user()-> );
+        $treeView->tdb->setFilterAccess( \FormaLms\lib\FormaUser::getCurrentUser()-> );
     }
 $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $treeView = new Org_TreeView($orgDb, $idCourse);
@@ -43,7 +43,7 @@ $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->g
         FormaLms\lib\Get::req('op', DOTY_STRING, '') == 'org_categorize_sco'
     ) {
         $treeView->op = FormaLms\lib\Get::req('op', DOTY_STRING, '');
-        require_once __DIR__ . '/orgcategorize.php';
+        require_once dirname(__FILE__) . '/orgcategorize.php';
     }
 
     //echo $treeView->op;
@@ -60,7 +60,7 @@ $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->g
         case 'org_categorize':
         case 'org_opcategorize':
             // organization_rules( $treeView, $treeView->opContextId );
-            require_once __DIR__ . '/orgcategorize.php';
+            require_once dirname(__FILE__) . '/orgcategorize.php';
             organization_categorize($treeView, $treeView->opContextId);
             break;
         case 'org_select_sco':
@@ -72,12 +72,12 @@ $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->g
         case 'org_properties':
         case 'org_opproperties':
             // organization_rules( $treeView, $treeView->opContextId );
-            require_once Forma::inc(_lms_ . '/modules/organization/orgprop.php');
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/organization/orgprop.php');
             organization_property($treeView, $treeView->opContextId);
             break;
         case 'org_opaccess':
         case 'org_access':
-            require_once Forma::inc(_lms_ . '/modules/organization/orgprop.php');
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/organization/orgprop.php');
             organization_access($treeView, $treeView->opContextId);
             break;
         case 'save':
@@ -147,7 +147,7 @@ function organization_opfolder(&$treeView, $op)
 
 function organization_import(&$treeView)
 {
-    $lang = &DoceboLanguage::createInstance('organization', 'lms');
+    $lang = &FormaLanguage::createInstance('organization', 'lms');
     global $modname, $op;
     require_once _lms_ . '/lib/lib.homerepo.php';
 
@@ -184,7 +184,7 @@ function organization_import(&$treeView)
 function organization_play(&$treeView, $idItem)
 {
     global $modname, $op;
-    require_once _lms_ . '/lib/lib.param.php';
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
     $tdb = $treeView->getTreeDb();
     $item = $tdb->getFolderById($idItem);
     $values = $item->otherValues;
@@ -223,7 +223,7 @@ function edit()
 
 function organization_showerror(&$treeView)
 {
-    $lang = &DoceboLanguage::createInstance('organization', 'lms');
+    $lang = &FormaLanguage::createInstance('organization', 'lms');
     global $modname, $op;
     $GLOBALS['page']->add('<form id="orgshow" method="post"'
         . ' action="index.php?modname=' . $modname . '&amp;op=organization"'

@@ -5,7 +5,7 @@ $regset = Format::instance();
 $date_format = $regset->date_token;
 $date_sep = $regset->date_sep;
 $date_format = str_replace(['%d', '%m', '%Y', '-'], ['dd', 'mm', 'yyyy', '-'], $date_format);
-$_lang = Docebo::user()->getPreference('ui.lang_code');
+$_lang = \FormaLms\lib\FormaUser::getCurrentUser()->getPreference('ui.lang_code');
 $date_picker_param = 'data-provide="datepicker" data-date-autoclose=true data-date-language="' . $_lang . '" data-date-format="' . $date_format . '"';
 
 ?>
@@ -261,7 +261,7 @@ $date_picker_param = 'data-provide="datepicker" data-date-autoclose=true data-da
                                 });
                                 edit_form.append('<input type="hidden" name="' + (options.edit.id || options.rowId || 'id') + '" value="' + datatable.row(cell.index().row).id() + '" />');
                                 edit_form.append('<input type="hidden" name="col" value="' + _thisColumn.name + '" />');
-                                edit_form.append('<input type="hidden" name="old_value" value="' + jQuery('').html(cell.data()).text() + '" />');
+                                edit_form.append('<input type="hidden" name="old_value" value="' + cell.data() + '" />');
                                 if (_thisColumn.edit.type === 'select') {
                                     var edit_form_select = $('<select name="new_value" value="' + cell.data() + '"></select>');
                                     $.each(_thisColumn.edit.options, function(value, label) {
@@ -635,10 +635,13 @@ $date_picker_param = 'data-provide="datepicker" data-date-autoclose=true data-da
         datatable.on('select', function(e, dt, type, indexes) {
             if (type === 'row') {
                 if (_thisObj._selection.all) {
+                    
                     _thisObj._selection.rows = $(_thisObj._selection.rows).not(datatable.rows(indexes).ids()).get();
+            
                 } else {
                     var _ids = $(datatable.rows(indexes).ids()).not(_thisObj._selection.rows).get();
                     _thisObj._selection.rows = $.merge(_thisObj._selection.rows, _ids);
+                    console.log(_thisObj._selection.rows);
                 }
             }
         });

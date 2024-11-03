@@ -100,7 +100,7 @@ class PluginManager
             $plugin_list = self::get_all_plugins(true);
             $this->load_lib();
             foreach ($plugin_list as $class_name) {
-                if (self::include_plugin_file($class_name['name'], 'Plugin.php')) {
+                if (array_key_exists('name', $class_name) && self::include_plugin_file($class_name['name'], 'Plugin.php')) {
                     if (self::include_plugin_file($class_name['name'], $category . '.php')) {
                         $namespace_class = 'Plugin\\' . $class_name['name'] . '\\' . $category;
                         if (method_exists($namespace_class, $method)) {
@@ -145,10 +145,9 @@ class PluginManager
     }
 
     public static function is_plugin_active($plugin)
-    {
-        $active_plugins = array_map(function ($element) {return $element['name']; }, self::get_all_plugins(true));
+    { 
 
-        return in_array($plugin, $active_plugins);
+        return in_array($plugin, array_keys(self::get_all_plugins(true)));
     }
 
     private static function include_plugin_file($plugin, $file)
@@ -173,10 +172,10 @@ class PluginManager
                 . "     AND r.app = '$mvc_app'"
                 . "     AND r.name = '$mvc_name'"
                 . '     AND p.active = 1'
-                . ' ORDER BY p.priority ASC LIMIT 1'; // TODO: valutare se usare invece funzione is_plugin_active"
+                . ' ORDER BY p.priority ASC'; // TODO: valutare se usare invece funzione is_plugin_active"
 
         $r = sql_query($query);
-        [$plugin, $controller, $model] = sql_fetch_row($r);
+        list($plugin, $controller, $model) = sql_fetch_row($r);
 
         return [$plugin, $controller, $model];
     }
@@ -232,7 +231,9 @@ class PluginManager
     {
         $plugin_list = self::get_all_plugins();
         foreach ($plugin_list as $plugin) {
-            self::include_plugin_file($plugin['name'], 'Event.php');
+            if(array_key_exists('name',$plugin)) {
+                self::include_plugin_file($plugin['name'], 'Event.php');
+            }
         }
     }
 
@@ -240,7 +241,10 @@ class PluginManager
     {
         $plugin_list = self::get_all_plugins();
         foreach ($plugin_list as $plugin) {
-            self::include_plugin_file($plugin['name'], $plugin['name'] . '.php');
+            if(array_key_exists('name',$plugin)) {
+                self::include_plugin_file($plugin['name'], $plugin['name'] . '.php');
+            }
+            
         }
     }
 }

@@ -123,13 +123,13 @@ class Selector_Catalogue
         if ($this->show_filter === true) {
             $form = new Form();
             /*$GLOBALS['page']->add(
-                Form::getOpenFieldset($lang->def('_SEARCH'))
+                $form->getOpenFieldset($lang->def('_SEARCH'))
                 .Form::getTextfield($lang->def('_NAME'), 'cat_filter_name', 'cat_filter_name', '255',
                     ( isset($_POST['cat_filter_name']) ? $_POST['cat_filter_name'] : '' ))
-                .Form::openButtonSpace()
-                .Form::getButton('catalogue_filter', 'catalogue_filter', $lang->def('_SEARCH'))
-                .Form::closeButtonSpace()
-                .Form::getCloseFieldset()
+                .$form->openButtonSpace()
+                .$form->getButton('catalogue_filter', 'catalogue_filter', $lang->def('_SEARCH'))
+                .$form->closeButtonSpace()
+                .$form->getCloseFieldset()
             , 'content');
             */
             cout('<div class="quick_search_form">'
@@ -152,12 +152,12 @@ class Selector_Catalogue
 		FROM %lms_catalogue AS c
 		WHERE 1';
         // Retriving data
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             $all_courses = false;
 
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             if (isset($admin_courses['course'][0])) {
                 $all_courses = true;
             }
@@ -165,7 +165,7 @@ class Selector_Catalogue
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $admin_courses['catalogue'] = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
+                $admin_courses['catalogue'] = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
                 if (count($admin_courses['catalogue']) == 0 && FormaLms\lib\Get::sett('on_catalogue_empty', 'off') == 'on') {
                     $all_courses = true;
@@ -244,7 +244,7 @@ class Catalogue_Manager
      */
     public function __construct()
     {
-        $this->acl = new DoceboACL();
+        $this->acl = new FormaACL();
         $this->aclManager = $this->acl->getACLManager();
     }
 
@@ -342,8 +342,8 @@ class Catalogue_Manager
     public function getAllCourseOfUser($id_user)
     {
         $courses = [];
-        if ($id_user == getLogUserId()) {
-            $user_groups = Docebo::user()->getArrSt();
+        if ($id_user == \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()) {
+            $user_groups = \FormaLms\lib\FormaUser::getCurrentUser()->getArrSt();
         } else {
             $user_groups = $this->acl->getSTGroupsST($id_user);
         }
@@ -440,7 +440,6 @@ class AdminCatalogue
      * @var the aclManager instance
      */
     public $aclManager;
-
 
 
     /**

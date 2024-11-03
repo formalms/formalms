@@ -16,9 +16,9 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 /**
  * @version  $Id:$
  */
-class DoceboCal_core
+class FormaCal_core
 {
-    public function getEvents($year = 0, $month = 0, $day = 0, $start_date = '', $end_date = '', $category = '', $type = '', $owner = '')
+    public function getEvents($year = 0, $month = 0, $day = 0, $start_date = '', $end_date = '', $classroom = '', $category = '', $type = '', $owner = '')
     {
         $where = '';
 
@@ -84,7 +84,7 @@ class DoceboCal_core
         $i = 0;
         while ($row = sql_fetch_array($result)) {
             /* you should call the constructor of the proper type of event class*/
-            $calevents[$i] = new DoceboCalEvent_core();
+            $calevents[$i] = new FormaCalEvent_core();
             $calevents[$i]->calEventClass = 'core';
 
             /* the following should be set according to the type of event class*/

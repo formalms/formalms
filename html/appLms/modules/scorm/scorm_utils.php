@@ -22,8 +22,8 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  * @copyright 2004
  **/
 
-//include_once( _lms_ . '/config.php' );
-require_once Forma::inc(_lms_ . '/modules/scorm/config.scorm.php');
+//include_once( $GLOBALS['where_lms'] . '/config.php' );
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/config.scorm.php');
 
 /*
  * Cerca tra gli elementi del nodo il primo elemento che ha tag $name
@@ -56,7 +56,7 @@ function todelete_getelementbynameattrib($node, $name, $attribname = '', $attrib
         soap__dbgOut("-getelementbynameattrib");
         return $elem;*/
     soap__dbgOut('+getelementbynameattrib node=' . print_r($node, true) . ", name=$name, attribname=" . print_r($attribname, true) . ", attribvalue=$attribvalue");
-    $xpath = new DoceboDOMXPath($node->ownerDocument);
+    $xpath = new FormaDOMXPath($node->ownerDocument);
     $result = $xpath->query('*', $node);
     $elem = null;
     for ($iResult = 0; $iResult < $result->length; ++$iResult) {
@@ -82,7 +82,7 @@ function todelete_getelementbynameattrib($node, $name, $attribname = '', $attrib
     return $elem;
     soap__dbgOut('-getelementbynameattrib');
 
-    /*$xpath = new DoceboDOMXPath($node->ownerDocument);
+    /*$xpath = new FormaDOMXPath($node->ownerDocument);
     $query = "child::".$name;
     if( $attribname != "" ) {
         $query .= '[@'.$attribname.' = "'.$attribvalue.'"]';
@@ -115,7 +115,7 @@ function getXmlDocTrackingTemplate($scormVersion)
     //$pathToFile = stripslashes(substr($pathToFile, 0, strrpos($pathToFile, '\\')+1));
     //$pathToFile = 'trackingdatamodel-1.2.xml';
     //$pathToFile = 'modules/scorm/trackingdatamodel-1.2.xml';
-    $pathToFile = Forma::inc(_lms_ . '/modules/scorm/trackingdatamodel-' . $scormVersion . '.xml');
+    $pathToFile = \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/trackingdatamodel-' . $scormVersion . '.xml');
     $xmldoc = new DDOMDocument();
     $xmldoc->loadXML(file_get_contents($pathToFile));
     /*or die("Error opening template file: $pathToFile<br/>"
@@ -393,7 +393,7 @@ function sumScormTime($t1, $t2)
             $t2_s[9] = 0;
         }
 
-        $tot['cent'] = $t1_s[15] + $t2_s[15];
+        $tot['cent'] = (int)$t1_s[15] + (int)$t2_s[15];
         if ($tot['cent'] >= 100) {
             $remainder = floor($tot['cent'] / 100);
             $tot['cent'] = floor($tot['cent'] % 100);
@@ -401,7 +401,7 @@ function sumScormTime($t1, $t2)
             $remainder = 0;
         }
 
-        $tot['second'] = $t1_s[13] + $t2_s[13] + $remainder;
+        $tot['second'] = (int)$t1_s[13] + (int)$t2_s[13] + (int)$remainder;
         if ($tot['second'] >= 60) {
             $remainder = floor($tot['second'] / 60);
             $tot['second'] = floor($tot['second'] % 60);
@@ -409,7 +409,7 @@ function sumScormTime($t1, $t2)
             $remainder = 0;
         }
 
-        $tot['minute'] = $t1_s[11] + $t2_s[11] + $remainder;
+        $tot['minute'] = (int)$t1_s[11] + (int)$t2_s[11] + (int)$remainder;
         if ($tot['minute'] >= 60) {
             $remainder = floor($tot['minute'] / 60);
             $tot['minute'] = floor($tot['minute'] % 60);
@@ -417,9 +417,9 @@ function sumScormTime($t1, $t2)
             $remainder = 0;
         }
 
-        $tot['hour'] = $t1_s[9] + $t2_s[9] + $remainder;
+        $tot['hour'] = (int)$t1_s[9] + (int)$t2_s[9] + (int)$remainder;
 
-        return sprintf('PT%04uH%02uM%02uS', $tot['hour'], $tot['minute'], $tot['second'], $tot['cent']);
+        return sprintf('PT%04uH%02uM%02uS', $tot['hour'], $tot['minute'], $tot['second']);
     }
 }
 
@@ -572,7 +572,7 @@ class SCORM12_Sequencing
     public $dbconn;
     public $prefix;
 
-    public function SCORM12_Sequencing($idReference, $idUser, $idscorm_organization, $dbconn, $prefix)
+    public function __construct($idReference, $idUser, $idscorm_organization, $dbconn, $prefix)
     {
         if ($idUser === false) {
             $this->idUser = sl_sal_getUserId();

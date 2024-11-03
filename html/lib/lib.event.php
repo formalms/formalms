@@ -27,9 +27,9 @@ define('PROPERTY_CASUALTIES', 50);
  *
  * @author   Emanuele Sandri <esandri@docebo.com>
  *
- * This is the class for ClassEvents in Docebo
+ * This is the class for ClassEvents in Forma
  **/
-class DoceboEventClass
+class FormaEventClass
 {
     /** @var int the unique id of the event class
      *	@internal
@@ -42,7 +42,7 @@ class DoceboEventClass
     public $class_name;
 
     /**
-     * DoceboEventClass constructor.
+     * FormaEventClass constructor.
      *
      * @param mixed $class_ref the reference to the class, the id or the name
      *                         - if is int $class_ref is used as class_id
@@ -52,10 +52,10 @@ class DoceboEventClass
     {
         if (is_int($class_ref)) {
             $this->class_id = $class_ref;
-            $this->class_name = $this->getClassName($class_ref);
+            $this->class_name = self::getClassName($class_ref);
         } else {
             $this->class_name = $class_ref;
-            $this->class_id = $this->getClassId($class_ref);
+            $this->class_id = self::getClassId($class_ref);
         }
     }
 
@@ -66,7 +66,7 @@ class DoceboEventClass
      * @param mixed the id of the class or FALSE if it's was not found
      * @static
      **/
-    public function getClassId($class_name)
+    public static function getClassId($class_name)
     {
         $query = 'SELECT idClass FROM ' . $GLOBALS['prefix_fw'] . '_event_class'
                 . " WHERE class = '" . $class_name . "'";
@@ -86,7 +86,7 @@ class DoceboEventClass
      * @param mixed the name of the class or FALSE if it's was not found
      * @static
      **/
-    public function getClassName($class_id)
+    public static function getClassName($class_id)
     {
         $query = 'SELECT class FROM ' . $GLOBALS['prefix_fw'] . '_event_class'
                 . " WHERE idClass = '" . $class_id . "'";
@@ -108,9 +108,9 @@ class DoceboEventClass
      * @param int    $priority    the priority of the event
      * @param string $description the description of the event
      *
-     * @return DoceboEvent $event the event object
+     * @return FormaEvent $event the event object
      **/
-    public function &createEvent($module, $section, $priority, $description)
+    public function createEvent($module, $section, $priority, $description)
     {
         $query = 'INSERT INTO ' . $GLOBALS['prefix_fw'] . '_event'
                 . ' (idClass,module,section,priority,description)'
@@ -123,7 +123,7 @@ class DoceboEventClass
                 . ')';
         $result = sql_query($query);
         if ($result) {
-            $event_istance = new DoceboEvent(sql_insert_id());
+            $event_istance = new FormaEvent(sql_insert_id());
 
             return $event_istance;
         } else {
@@ -141,9 +141,9 @@ class DoceboEventClass
  *
  * @author   Emanuele Sandri <esandri@docebo.com>
  *
- * This is the base class for Events in Docebo.
+ * This is the base class for Events in Forma.
  */
-class DoceboEvent
+class FormaEvent
 {
     /** @var int the unique id of the event
      **/
@@ -170,11 +170,11 @@ class DoceboEvent
     public $description = false;
 
     /**
-     * Constructor of DoceboEvent object.
+     * Constructor of FormaEvent object.
      *
      * @param int $event_id the unique id of the event
      **/
-    public function DoceboEvent($event_id)
+    public function __construct($event_id)
     {
         $this->event_id = $event_id;
 
@@ -216,7 +216,7 @@ class DoceboEvent
      **/
     public function getClassName()
     {
-        return DoceboEventClass::getClassName($this->class_id);
+        return FormaEventClass::getClassName($this->class_id);
     }
 
     /**
@@ -311,15 +311,18 @@ class DoceboEvent
      **/
     public function setProperty($prop_name, $prop_value)
     {
+
+        $propValues = is_array($prop_value) ? json_encode($prop_value) : $prop_value;
         if ($this->existProperty($prop_name)) {
-            $query = 'UPDATE ' . $GLOBALS['prefix_fw'] . '_event_property'
-                    . "   SET property_value = '" . $prop_value . "'"
+            $query = 'UPDATE %adm_event_property'
+                    . "   SET property_value = '" . $propValues . "'"
                     . " WHERE property_name = '" . $prop_name . "'"
                     . "   AND idEvent = '" . (int) $this->event_id . "'";
         } else {
-            $query = 'INSERT INTO ' . $GLOBALS['prefix_fw'] . '_event_property'
+
+            $query = 'INSERT INTO %adm_event_property'
                     . ' (idEvent, property_name, property_value, property_date) VALUES ('
-                    . "'" . (int) $this->event_id . "','" . $prop_name . "','" . $prop_value . "', '" . date('Y-m-d') . "')";
+                    . "'" . (int) $this->event_id . "','" . $prop_name . "','" . $propValues . "', '" . date('Y-m-d') . "')";
         }
         $result = sql_query($query);
 
@@ -328,7 +331,7 @@ class DoceboEvent
 
     public function deleteOldProperty($force = false)
     {
-        if (mt_rand(1, PROPERTY_CASUALTIES) == 1 || $force === true) {
+        if (random_int(1, PROPERTY_CASUALTIES) == 1 || $force === true) {
             $query = 'DELETE FROM ' . $GLOBALS['prefix_fw'] . '_event_property ' .
                     "WHERE property_date < '" . date('Y-m-d', time() - PROPERTY_LIFETIME * 3600) . "'";
             sql_query($query);
@@ -343,9 +346,9 @@ class DoceboEvent
  *
  * @author   Emanuele Sandri <esandri@docebo.com>
  *
- * This is the base class for Consumer Events in Docebo.
+ * This is the base class for Consumer Events in Forma.
  **/
-class DoceboEventConsumer
+class FormaEventConsumer
 {
     /** @var int the unique id of the consumer
      *	@internal
@@ -365,13 +368,13 @@ class DoceboEventConsumer
     public $consumer_file = false;
 
     /**
-     * DoceboEventConsumer constructor.
+     * FormaEventConsumer constructor.
      *
      * @param mixed $consumer_ref the reference to the consumer, the id or the name
      *                            - if is int $consumer_ref is used as consumer_id
      *                            - if is string is used as consumer_class
      **/
-    public function DoceboEventConsumer($class_ref)
+    public function __construct($class_ref)
     {
         $query = 'SELECT idConsumer, consumer_class, consumer_file '
                 . '  FROM ' . $GLOBALS['prefix_fw'] . '_event_consumer';
@@ -491,13 +494,13 @@ class DoceboEventConsumer
      **/
     public function _getCunsumerName()
     {
-        return 'DoceboEventConsumer';
+        return 'FormaEventConsumer';
     }
 
     /**
      * put an event to the consumer.
      *
-     * @param DoceboEvent &$event the event to be consumed
+     * @param FormaEvent &$event the event to be consumed
      *
      * @return true inform the events manager to continue the dispatch of this
      *              events to all others consumer

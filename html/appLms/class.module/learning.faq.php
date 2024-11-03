@@ -71,7 +71,7 @@ class Learning_Faq extends Learning_Object
     {
         $this->back_url = $back_url;
 
-        Forma::removeErrors();
+        \FormaLms\lib\Forma::removeErrors();
 
         require_once _lms_ . '/modules/faq/faq.php';
         addfaqcat($this);
@@ -91,7 +91,7 @@ class Learning_Faq extends Learning_Object
         $this->id = $id;
         $this->back_url = $back_url;
 
-        Forma::removeErrors();
+        \FormaLms\lib\Forma::removeErrors();
 
         require_once _lms_ . '/modules/faq/faq.php';
         modfaqgui($this);

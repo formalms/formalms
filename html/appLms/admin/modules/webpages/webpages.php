@@ -14,12 +14,12 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 /*
- * @package  DoceboLms
+ * @package  FormaLms
  * @version  $Id: webpages.php 793 2006-11-21 15:43:19Z fabio $
  * @author	 Fabio Pirovano <fabio [at] docebo [dot] com>
  */
 
-if (Docebo::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit("You can't access");
 }
 
@@ -31,7 +31,7 @@ function webpages()
 
     $mod_perm = checkPerm('mod', true);
 
-    $lang = &DoceboLanguage::createInstance('admin_webpages', 'lms');
+    $lang = &FormaLanguage::createInstance('admin_webpages', 'lms');
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
 
@@ -145,10 +145,10 @@ function editpages($load = false)
     checkPerm('mod');
     require_once _base_ . '/lib/lib.form.php';
 
-    $lang = &DoceboLanguage::createInstance('admin_webpages', 'lms');
+    $lang = &FormaLanguage::createInstance('admin_webpages', 'lms');
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $all_languages = Docebo::langManager()->getAllLangCode();
+    $all_languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
 
     $id_page = importVar('id_page', true, 0);
 
@@ -161,7 +161,7 @@ function editpages($load = false)
     } else {
         $title = $lang->def('_NOTITLE');
         $description = '';
-        $language = getLanguage();
+        $language = Lang::get();
         $publish = 0;
         $in_home = 0;
     }
@@ -203,8 +203,8 @@ function savepages()
 {
     checkPerm('mod');
 
-    $lang = &DoceboLanguage::createInstance('admin_webpages', 'lms');
-    $all_languages = Docebo::langManager()->getAllLangCode();
+    $lang = &FormaLanguage::createInstance('admin_webpages', 'lms');
+    $all_languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
 
     $id_page = importVar('id_page', true, 0);
 
@@ -255,7 +255,7 @@ function delpages()
     checkPerm('mod');
     require_once _base_ . '/lib/lib.form.php';
 
-    $lang = &DoceboLanguage::createInstance('admin_webpages', 'lms');
+    $lang = &FormaLanguage::createInstance('admin_webpages', 'lms');
     $id_page = importVar('id_page', true, 0);
 
     list($title, $seq) = sql_fetch_row(sql_query('
@@ -287,15 +287,15 @@ function delpages()
         $GLOBALS['page']->add(
             getTitleArea($page_title, 'admin_webpages')
             . '<div class="std_block">'
-            . Form::openForm('del_pages', 'index.php?modname=webpages&amp;op=delpages')
-            . Form::getHidden('of_platform', 'of_platform', 'lms')
-            . Form::getHidden('id_page', 'id_page', $id_page)
+            . $form->openForm('del_pages', 'index.php?modname=webpages&amp;op=delpages')
+            . $form->getHidden('of_platform', 'of_platform', 'lms')
+            . $form->getHidden('id_page', 'id_page', $id_page)
             . getDeleteUi($lang->def('_AREYOUSURE'),
                             '<span>' . $lang->def('_TITLE') . ' : </span>' . $title,
                             false,
                             'confirm',
                             'undo')
-            . Form::closeForm()
+            . $form->closeForm()
             . '</div>', 'content');
     }
 }

@@ -1,5 +1,8 @@
 <?php
 
+use FormaLms\lib\Forma;
+use FormaLms\lib\Domain\DomainHandler;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -100,8 +103,6 @@ class UserManager
      * simply execute a query.
      *
      * @param string $query  the query
-     * @param string $prefix specified a prefix
-     * @param mixed     the result of sql_query
      */
     public function _executeQuery($query)
     {
@@ -123,7 +124,7 @@ class UserManager
     public function _getLoginResult()
     {
         if (UserManagerRenderer::loginAttempt()) {
-            if (Docebo::user()->isAnonymous()) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 return false;
             } else {
                 return true;
@@ -328,6 +329,8 @@ class UserManager
             }
         }
 
+     
+
         return $this->_render->getLoginMask($this->_platform, $advice, $extra, $disable, $this->_option->getOption('register_type'), $jump_url);
     }
 
@@ -354,11 +357,12 @@ class UserManager
      */
     public function getRegister($opt_link)
     {
+
+      
         $options = [
             'lastfirst_mandatory' => $this->_option->getOption('lastfirst_mandatory'),
             'register_type' => $this->_option->getOption('register_type'),
             'use_advanced_form' => $this->_option->getOption('use_advanced_form'),
-            'use_email_as_userid' => $this->_option->getOption('use_email_as_userid'),
             'pass_alfanumeric' => $this->_option->getOption('pass_alfanumeric'),
             'pass_min_char' => $this->_option->getOption('pass_min_char'),
             'hour_request_limit' => $this->_option->getOption('hour_request_limit'),
@@ -394,14 +398,19 @@ class UserManager
         );
     }
 
-    public function getElapsedPassword($jump_link)
+    public function getElapsedPassword($jump_link, $error_array = false)
     {
         $option['pass_max_time_valid'] = $this->_option->getOption('pass_max_time_valid');
         $option['pass_min_char'] = $this->_option->getOption('pass_min_char');
         $option['pass_alfanumeric'] = $this->_option->getOption('pass_alfanumeric');
         $option['user_pwd_history_length'] = $this->_option->getOption('user_pwd_history_length');
+        $option['pass_min_uppercase'] = $this->_option->getOption('pass_min_uppercase');
+        $option['pass_min_lowercase'] = $this->_option->getOption('pass_min_lowercase');
+        $option['pass_min_digit'] = $this->_option->getOption('pass_min_digit');
+        $option['pass_special_char'] = $this->_option->getOption('pass_special_char');
 
-        return $this->_render->getElapsedPasswordMask($this->_platform, $option, $jump_link);
+
+        return $this->_render->getElapsedPasswordMask($this->_platform, $option, $jump_link, $error_array);
     }
 
     public function clickSaveElapsed()
@@ -411,11 +420,6 @@ class UserManager
 
     public function saveElapsedPassword()
     {
-        $option['pass_max_time_valid'] = $this->_option->getOption('pass_max_time_valid');
-        $option['pass_min_char'] = $this->_option->getOption('pass_min_char');
-        $option['pass_alfanumeric'] = $this->_option->getOption('pass_alfanumeric');
-        $option['user_pwd_history_length'] = $this->_option->getOption('user_pwd_history_length');
-
         return $this->_render->saveElapsedPassword($this->_platform, $option);
     }
 
@@ -508,7 +512,7 @@ class UserManager
 
         $form = new Form();
 
-        $lang = DoceboLanguage::createInstance('register');
+        $lang = FormaLanguage::createInstance('register');
 
         $random_code = FormaLms\lib\Get::req('code', DOTY_MIXED, '');
         $exist_code = $this->getPwdRandomCode(false, $random_code);
@@ -519,7 +523,7 @@ class UserManager
             }
         }
 
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $user_info = $acl_man->getUser($exist_code['idst_user'], false);
         if (isset($_POST['send'])) {
             if ($_POST['new_password'] === $_POST['retype_new_password']) {
@@ -599,7 +603,7 @@ class UserManager
      */
     public function performLostpwdAction($mail_url)
     {
-        $lang = DoceboLanguage::createInstance('register');
+        $lang = FormaLanguage::createInstance('register');
 
         //lost userid
         if ($this->_render->haveToLostuserAction()) {
@@ -608,7 +612,7 @@ class UserManager
                 exit("This isn't a good email address !");
             }
 
-            $acl_man = &Docebo::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $user_info = $acl_man->getUserByEmail($mail);
 
             if ($user_info !== false) {
@@ -625,12 +629,12 @@ class UserManager
                 }
 
                 //compose e-mail --------------------------------------------
-                $mail_sender = $this->_option->getOption('mail_sender');
-                $mail_sender_name_from = $this->_option->getOption('mail_sender_name_from');
+                $mail_sender = DomainHandler::getInstance()->getMailerField('sender_mail_system');
+                $mail_sender_name_from = DomainHandler::getInstance()->getMailerField('sender_name_system');
 
                 /*$from = "From: ".$mail_sender.$GLOBALS['mail_br'];
             $intestazione  = "MIME-Version: 1.0".$GLOBALS['mail_br'];
-            $intestazione .= "Content-type: text/html; charset=".getUnicode().$GLOBALS['mail_br'];
+            $intestazione .= "Content-type: text/html; charset=".Lang::charset().$GLOBALS['mail_br'];
 
             $intestazione .= "Return-Path: ".$mail_sender.$GLOBALS['mail_br'];
             $intestazione .= "Reply-To: ".$mail_sender.$GLOBALS['mail_br'];
@@ -642,15 +646,16 @@ class UserManager
 
                 //if(!@mail($user_info[ACL_INFO_EMAIL], $lang->def('_LOST_USERID_TITLE'), $mail_text, $from.$intestazione)) {
 
-                $mailer = FormaMailer::getInstance();
+                $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
                 $success = $mailer->SendMail(
-                    $mail_sender,
                     [$user_info[ACL_INFO_EMAIL]],
                     $lang->def('_LOST_USERID_TITLE'),
                     $mail_text,
+                    $mail_sender,
                     [],
                     [
-                        MAIL_SENDER_ACLNAME => $mail_sender_name_from,
+                        MAIL_REPLYTO => DomainHandler::getInstance()->getMailerField('replyto_mail'),
+                        MAIL_SENDER_ACLNAME => DomainHandler::getInstance()->getMailerField('sender_name_system'),
                     ]
                 );
 
@@ -667,17 +672,17 @@ class UserManager
         if ($this->_render->haveToLostpwdAction()) {
             $userid = $this->_render->getLostPwdParam();
 
-            $acl_man = &Docebo::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $user_info = $acl_man->getUser(false, $acl_man->absoluteId($userid));
 
             if ($user_info !== false) {
                 //compose e-mail --------------------------------------------
-                $mail_sender = $this->_option->getOption('mail_sender');
-                $mail_sender_name_from = $this->_option->getOption('mail_sender_name_from');
+                $mail_sender = DomainHandler::getInstance()->getMailerField('sender_mail_system');
+                $mail_sender_name_from = DomainHandler::getInstance()->getMailerField('sender_name_system');
 
                 /*$from = "From: ".$mail_sender.$GLOBALS['mail_br'];
             $intestazione  = "MIME-Version: 1.0".$GLOBALS['mail_br'];
-            $intestazione .= "Content-type: text/html; charset=".getUnicode().$GLOBALS['mail_br'];
+            $intestazione .= "Content-type: text/html; charset=".Lang::charset().$GLOBALS['mail_br'];
 
             $intestazione .= "Return-Path: ".$mail_sender.$GLOBALS['mail_br'];
             $intestazione .= "Reply-To: ".$mail_sender.$GLOBALS['mail_br'];
@@ -715,12 +720,14 @@ class UserManager
                 $dynamicLink = $dynamicUrl . $mail_url . '&amp;pwd=retrpwd&amp;code=' . $code;
                 $mail_text = str_replace(['[link]', '[dynamic_link]'], [$link, $dynamicLink], $lang->def('_LOST_PWD_MAILTEXT'));
 
-                $mailer = FormaMailer::getInstance();
+                $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
+
+
                 $success = $mailer->SendMail(
-                    $mail_sender,
                     [$user_info[ACL_INFO_EMAIL]],
                     $lang->def('_LOST_PWD_TITLE'),
                     $mail_text,
+                    $mail_sender,
                     [],
                     [
                         MAIL_SENDER_ACLNAME => $mail_sender_name_from,
@@ -828,7 +835,7 @@ class UserManager
 
     public function getProfile($id_user = false, $userid = false)
     {
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $user_info = &$acl_man->getUser($id_user, $userid);
         $user_info[ACL_INFO_USERID] = $acl_man->relativeId($user_info[ACL_INFO_USERID]);
@@ -861,8 +868,8 @@ class UserManager
                     break;
                 case 'tree_course':
                     //a mixed code, let's cut the tree part and go on with the tree_man and resolve here the course part
-                    $course_code = substr(str_replace('-', '', $reg_code), 10, 10);
-                    $reg_code = substr(str_replace('-', '', $reg_code), 0, 10);
+                    $course_code = $reg_code;
+                    //$reg_code = substr(str_replace('-', '', $reg_code), 0, 10);
 
                     //control course registration
                     require_once _lms_ . '/lib/lib.course.php';
@@ -914,7 +921,7 @@ class UserManager
                     $query = 'SELECT `translation`'
                         . ' FROM core_field_son'
                         . ' WHERE id_common_son = ' . (int) $_POST['field_dropdown'][$id_common_filed_1]
-                        . " AND lang_code = '" . getLanguage() . "'";
+                        . " AND lang_code = '" . Lang::get() . "'";
                     list($filed_1_translation) = sql_fetch_row(sql_query($query));
                     $code_part = substr($filed_1_translation, 1, 1);
                     $reg_code = strtoupper($code_part . '_' . $_POST['field_textfield'][$id_common_filed_2]);
@@ -968,6 +975,7 @@ class UserManagerRenderer
     public $_style_to_use;
     public $_show_accessibility_button;
     public $_show_language_selection;
+    public bool $error;
 
     public function __construct()
     {
@@ -1033,7 +1041,7 @@ class UserManagerRenderer
                 if ($_POST['login_lang'] == 'default') {
                     return '';
                 }
-                $all_languages = Docebo::langManager()->getAllLangCode();
+                $all_languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
 
                 return $all_languages[$_POST['login_lang']];
 
@@ -1057,9 +1065,9 @@ class UserManagerRenderer
             'password' => FormaLms\lib\Get::req('login_pwd', DOTY_STRING),
         ];
 
-        $all_languages = Docebo::langManager()->getAllLangCode();
+        $all_languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
 
-        $info['lang'] = FormaLms\lib\Get::req('login_lang', DOTY_STRING, false);
+        $info['lang'] = FormaLms\lib\Get::req('login_lang', DOTY_STRING, Lang::get());
         if ($info['lang'] === 'default') {
             $info['lang'] = false;
         } else {
@@ -1089,7 +1097,7 @@ class UserManagerRenderer
 
     public function setAccessibility()
     {
-        setAccessibilityStatus(isset($_POST['login_button_access']));
+        setAccessibilityStatus();
     }
 
     /**
@@ -1223,13 +1231,13 @@ class UserManagerRenderer
     {
         require_once _base_ . '/lib/lib.form.php';
 
-        $lang = DoceboLanguage::createInstance('login', $platform);
+        $lang = FormaLanguage::createInstance('login', $platform);
 
         if (!isset($GLOBALS['login_tabindex'])) {
             $GLOBALS['login_tabindex'] = 1;
         }
 
-        $all_languages = Docebo::langManager()->getAllLangCode();
+        $all_languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $all_languages = array_merge(['default' => $lang->def('_LANGUAGE')], $all_languages);
 
         if ($this->_style_to_use != false) {
@@ -1342,13 +1350,13 @@ class UserManagerRenderer
     {
         require_once _base_ . '/lib/lib.form.php';
 
-        $lang = DoceboLanguage::createInstance('login', $platform);
+        $lang = FormaLanguage::createInstance('login', $platform);
 
         if (!isset($GLOBALS['login_tabindex'])) {
             $GLOBALS['login_tabindex'] = 1;
         }
 
-        $all_languages = Docebo::langManager()->getAllLangCode();
+        $all_languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $all_languages = array_merge(['default' => $lang->def('_LANGUAGE')], $all_languages);
 
         $out = '';
@@ -1397,7 +1405,7 @@ class UserManagerRenderer
         require_once _base_ . '/lib/lib.table.php';
         require_once _adm_ . '/lib/lib.field.php';
 
-        $lang = &DoceboLanguage::createInstance('register', $platform);
+        $lang = FormaLanguage::createInstance('register', $platform);
 
         if ($options['register_type'] != 'self' && $options['register_type'] != 'self_optin' && $options['register_type'] != 'moderate') {
             return '<div class="register_noactive">' . Lang::t('_REG_NOT_ACTIVE', 'register', $platform) . '</div>';
@@ -1521,11 +1529,11 @@ class UserManagerRenderer
      *
      * @return array 'success'=>boolean, 'msg'=>string
      */
-    public function processRegistrationCode(&$acl_man, &$uma, $iduser, $reg_code, $registration_code_type)
+    public function processRegistrationCode($acl_man, $uma, $iduser, $reg_code, $registration_code_type)
     {
         $res = ['success' => true, 'msg' => ''];
 
-        $lang = &DoceboLanguage::createInstance('register', 'lms');
+        $lang = FormaLanguage::createInstance('register', 'lms');
         $code_is_mandatory = (FormaLms\lib\Get::sett('mandatory_code', 'off') == 'on');
 
         if ($reg_code != '') {
@@ -1536,8 +1544,8 @@ class UserManagerRenderer
                     break;
                 case 'tree_course':
                     //a mixed code, let's cut the tree part and go on with the tree_man and resolve here the course part
-                    $course_code = substr(str_replace('-', '', $reg_code), 10, 10);
-                    $reg_code = substr(str_replace('-', '', $reg_code), 0, 10);
+                    $course_code = $reg_code;
+                    //$reg_code = substr(str_replace('-', '', $reg_code), 0, 10);
 
                     //control course registration
                     require_once _lms_ . '/lib/lib.course.php';
@@ -1606,7 +1614,11 @@ class UserManagerRenderer
                 case 'tree_drop':
                     $query = sql_query("SELECT code FROM %adm_org_chart_tree WHERE idOrg = $reg_code LIMIT 1");
                     $reg_code = sql_fetch_array($query)['code'];
-                    $reg_code = substr(str_replace('-', '', $reg_code), 0, 10);
+                    //non permette codici più lunghi di 10 caratteri e 
+                    //se il controllo sostituisce anche i trattini con nulla di sbase non si dovrebbe poter scrivere 
+                    //un codice coi trattini
+                    //$reg_code = substr(str_replace('-', '', $reg_code), 0, 10); 
+                    
                     $array_course = $this->getCodeCourses($reg_code);
                     $array_folder = $uma->getFoldersFromCode($reg_code);
 
@@ -1621,7 +1633,7 @@ class UserManagerRenderer
                     $query = 'SELECT `translation`'
                         . ' FROM core_field_son'
                         . ' WHERE id_common_son = ' . (int) $_POST['field_dropdown'][$id_common_filed_1]
-                        . " AND lang_code = '" . getLanguage() . "'";
+                        . " AND lang_code = '" . Lang::get() . "'";
                     list($filed_1_translation) = sql_fetch_row(sql_query($query));
                     $code_part = substr($filed_1_translation, 1, 1);
                     $reg_code = strtoupper($code_part . '_' . $_POST['field_textfield'][$id_common_filed_2]);
@@ -1638,12 +1650,6 @@ class UserManagerRenderer
 
                     break;
             }
-        } elseif ($code_is_mandatory) {
-            //invalid code
-            $res['success'] = false;
-            $res['msg'] = $lang->def('_INVALID_CODE');
-
-            return $res;
         }
 
         // now in array_folder we have the associated folder for the users
@@ -1676,19 +1682,19 @@ class UserManagerRenderer
 
     public function _opt_in($options, $platform, $opt_link)
     {
-        $lang = &DoceboLanguage::createInstance('register', $platform);
+        $lang = FormaLanguage::createInstance('register', $platform);
 
         // Check for error
         $errors = [];
 
         // Insert temporary
-        $random_code = md5((($options['use_email_as_userid'] == 'on') ? $_POST['register']['email'] : $_POST['register']['userid']) . mt_rand() . mt_rand() . mt_rand());
+        $random_code = md5($_POST['register']['userid'] . mt_rand() . mt_rand() . mt_rand());
         // register as temporary user and send mail
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $iduser = '';
 
         $iduser = $acl_man->registerTempUser(
-            (($options['use_email_as_userid'] == 'on') ? $_POST['register']['email'] : $_POST['register']['userid']),
+            $_POST['register']['userid'],
             $_POST['register']['firstname'],
             $_POST['register']['lastname'],
             $_POST['register']['pwd'],
@@ -1758,8 +1764,8 @@ class UserManagerRenderer
         $precompileLms->setAcceptingPolicy($iduser, $policy_id, true);
 
         // Send mail
-        $admin_mail = $options['mail_sender'];
-        $sender_name = $options['mail_sender_name_from'];
+        $admin_mail = DomainHandler::getInstance()->getMailerField('sender_mail_system');
+        $sender_name = DomainHandler::getInstance()->getMailerField('sender_name_system');
 
         // FIX BUG 399
         $dynamicUrl = getCurrentDomain($reg_code) ?: FormaLms\lib\Get::site_url();
@@ -1769,14 +1775,14 @@ class UserManagerRenderer
         // END FIX BUG 399
 
         $text = $lang->def('_REG_MAIL_TEXT');
-        $text = str_replace(['[userid]', '[firstname]', '[lastname]', '[password]', '[link]', '[dynamic_link]', '[hour]'], [(($options['use_email_as_userid'] == 'on') ? $_POST['register']['email'] : $_POST['register']['userid']), $_POST['register']['firstname'], $_POST['register']['lastname'], $_POST['register']['pwd'], '' . $link . '', '' . $dynamicLink . '', $options['hour_request_limit']], $text);
+        $text = str_replace(['[userid]', '[firstname]', '[lastname]', '[password]', '[link]', '[dynamic_link]', '[hour]'], [$_POST['register']['userid'], $_POST['register']['firstname'], $_POST['register']['lastname'], $_POST['register']['pwd'], '' . $link . '', '' . $dynamicLink . '', $options['hour_request_limit']], $text);
         $text = stripslashes($text);
 
         //check register_type != self (include all previous cases except the new one "self without opt-in")
         if (strcmp($options['register_type'], 'self') != 0) {
-            $mailer = FormaMailer::getInstance();
+            $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
 
-            if (!$mailer->SendMail($admin_mail, [$_POST['register']['email']], Lang::t('_MAIL_OBJECT', 'register'), $text, [], [MAIL_REPLYTO => $admin_mail, MAIL_SENDER_ACLNAME => $sender_name])) {
+            if (!$mailer->SendMail([$_POST['register']['email']], Lang::t('_MAIL_OBJECT', 'register'), $text, $admin_mail, [], [MAIL_REPLYTO => $admin_mail, MAIL_SENDER_ACLNAME => $sender_name])) {
                 if ($registration_code_type == 'code_module') {
                     // ok, the registration has failed, let's remove the user association form the code
                     require_once _base_ . '/appCore/lib/lib.code.php';
@@ -1799,10 +1805,10 @@ class UserManagerRenderer
         //check register_type = self
         if (strcmp($options['register_type'], 'self') == 0) {
             $text_self = $lang->def('_REG_MAIL_TEXT_SELF');
-            $text_self = str_replace(['[userid]', '[firstname]', '[lastname]', '[password]', '[link]', '[dynamic_link]'], [(($options['use_email_as_userid'] == 'on') ? $_POST['register']['email'] : $_POST['register']['userid']), $_POST['register']['firstname'], $_POST['register']['lastname'], $_POST['register']['pwd'], '' . $link . '', '' . $dynamicLink . ''], $text_self);
+            $text_self = str_replace(['[userid]', '[firstname]', '[lastname]', '[password]', '[link]', '[dynamic_link]'], [$_POST['register']['userid'], $_POST['register']['firstname'], $_POST['register']['lastname'], $_POST['register']['pwd'], '' . $link . '', '' . $dynamicLink . ''], $text_self);
 
-            $mailer = FormaMailer::getInstance();
-            if (!$mailer->SendMail($admin_mail, [$_POST['register']['email']], Lang::t('_MAIL_OBJECT_SELF', 'register'), $text_self, [], [MAIL_REPLYTO => $admin_mail, MAIL_SENDER_ACLNAME => $sender_name])) {
+            $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
+            if (!$mailer->SendMail([$_POST['register']['email']], Lang::t('_MAIL_OBJECT_SELF', 'register'), $text_self, $admin_mail, [], [MAIL_REPLYTO => $admin_mail, MAIL_SENDER_ACLNAME => $sender_name])) {
                 $this->error = true;
                 $errors = ['registration' => false, 'error' => $this->error, 'msg' => $lang->def('_OPERATION_FAILURE')];
             } else {
@@ -1817,7 +1823,7 @@ class UserManagerRenderer
 
     public function _special_field($options, $platform, $opt_link, $errors)
     {
-        $lang = &DoceboLanguage::createInstance('register', $platform);
+        $lang = FormaLanguage::createInstance('register', $platform);
 
         // Check for error
         $out = '';
@@ -1843,7 +1849,7 @@ class UserManagerRenderer
                     break;
                 case 'tree_course':
                     //a mixed code, let's cut the tree part and go on with the tree_man
-                    $reg_code = substr(str_replace('-', '', $reg_code), 0, 10);
+                  //  $reg_code = substr(str_replace('-', '', $reg_code), 0, 10);
                 //procced with tree_man
                 // no break
                 case 'tree_man':
@@ -1878,7 +1884,7 @@ class UserManagerRenderer
                     $query = 'SELECT `translation`'
                         . ' FROM core_field_son'
                         . ' WHERE id_common_son = ' . (int) $_POST['field_dropdown'][$id_common_filed_1]
-                        . " AND lang_code = '" . getLanguage() . "'";
+                        . " AND lang_code = '" . Lang::get() . "'";
                     list($filed_1_translation) = sql_fetch_row(sql_query($query));
                     $code_part = substr($filed_1_translation, 1, 1);
                     $reg_code = strtoupper($code_part . '_' . $_POST['field_textfield'][$id_common_filed_2]);
@@ -1895,7 +1901,7 @@ class UserManagerRenderer
                 $folder_group = [];
             }
             foreach ($array_folder as $id_org_folder) {
-                $folder_group[] = Docebo::aclm()->getGroupST('/oc_' . $id_org_folder);
+                $folder_group[] = \FormaLms\lib\Forma::getAclManager()->getGroupST('/oc_' . $id_org_folder);
             }
         }
 
@@ -1904,11 +1910,9 @@ class UserManagerRenderer
 
         $play_field = $extra_field->playFieldsForUser(
             0,
-            (isset($_POST['group_sel'])
-                ? $_POST['group_sel']
-                : (isset($_POST['group_sel_implode'])
-                    ? explode(',', $_POST['group_sel_implode'])
-                    : $array_folder)),
+            ($_POST['group_sel'] ?? (isset($_POST['group_sel_implode'])
+                ? explode(',', $_POST['group_sel_implode'])
+                : $array_folder)),
             false,
             true,
             false,
@@ -1936,7 +1940,7 @@ class UserManagerRenderer
 
         $out .= Form::getHidden('next_step', 'next_step', 'opt_in')
 
-            . Form::getHidden('register_userid', 'register[userid]', (($options['use_email_as_userid'] == 'on') ? $_POST['register']['email'] : $_POST['register']['userid']))
+            . Form::getHidden('register_userid', 'register[userid]', $_POST['register']['userid'])
             . Form::getHidden('register_email', 'register[email]', $_POST['register']['email'])
             . Form::getHidden('register_firstname', 'register[firstname]', $_POST['register']['firstname'])
             . Form::getHidden('register_lastname', 'register[lastname]', $_POST['register']['lastname'])
@@ -1962,8 +1966,8 @@ class UserManagerRenderer
 
         $out .= '<div class="homepage__row">'
             . '<div class="col-xs-12 col-sm-6 col-sm-offset-3">'
-            //. '<button type="submit" class="forma-button forma-button--black">Registrati</button>'
-            . Form::getButton('reg_button', 'reg_button', $lang->def('_REGISTER'), ' forma-button forma-button--black ')
+            //. '<button type="submit" class="forma-button forma-button--info">Registrati</button>'
+            . Form::getButton('reg_button', 'reg_button', $lang->def('_REGISTER'), ' forma-button ')
             . '</div>'
             . '</div>';
 
@@ -1973,7 +1977,7 @@ class UserManagerRenderer
     private function _first_of_all($options, $platform, $errors = [])
     {
         $precompileLms = new PrecompileLms();
-        $lang = &DoceboLanguage::createInstance('register', $platform);
+        $lang = &FormaLanguage::createInstance('register', $platform);
 
         $out = '';
         if ($options['use_advanced_form'] == 'off') {
@@ -1994,9 +1998,9 @@ class UserManagerRenderer
 	                <p>' . $lang->def('_REG_NOTE') . '</p>
                 </div>';
 
-        $lang_sel = getLanguage();
+        $lang_sel = Lang::get();
         $full_langs = [];
-        $langs = Docebo::langManager()->getAllLangCode();
+        $langs = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $full_langs = [];
         foreach ($langs as $v) {
             $full_langs[$v] = ucfirst($v);
@@ -2006,35 +2010,28 @@ class UserManagerRenderer
         $out .= '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">';
 
         /** USER ID */
-        if ($options['use_email_as_userid'] == 'off') {
-            $error = (isset($errors) && $errors['userid']);
-            $errorMessage = $errors['userid']['msg'];
-            $out .= '<div class="col-xs-12 col-sm-6">'
-                . Form::getInputTextfield(
-                    'form-control ' . ($error ? 'has-error' : ''),
-                    'register_userid',
-                    'register[userid]',
-                    (isset($_POST['register']['userid']) ? stripslashes($_POST['register']['userid']) : ''),
-                    '',
-                    255,
-                    'placeholder="' . $lang->def('_USERNAME') . ' ' . $mand_symbol . '"'
-                );
+        $error = (isset($errors) && $errors['userid']);
+        $errorMessage = $errors['userid']['msg'];
+        $out .= '<div class="col-xs-12 col-sm-6">'
+            . Form::getInputTextfield(
+                'form-control ' . ($error ? 'has-error' : ''),
+                'register_userid',
+                'register[userid]',
+                (isset($_POST['register']['userid']) ? stripslashes($_POST['register']['userid']) : ''),
+                '',
+                255,
+                'placeholder="' . $lang->def('_USERNAME') . ' ' . $mand_symbol . '"'
+            );
 
-            if ($error) {
-                $out .= '<small class="form-text">* ' . $errorMessage . '</small>';
-            }
-            $out .= '</div>';
+        if ($error) {
+            $out .= '<small class="form-text">* ' . $errorMessage . '</small>';
         }
+        $out .= '</div>';
 
         /** EMAIL */
-        if ($options['use_email_as_userid'] == 'on') {
-            $error = (isset($errors) && ($errors['userid'] || $errors['email']));
-            $errorMessage = $errors['userid']['msg'] . $errors['email']['msg'];
-        } else {
-            $error = (isset($errors) && $errors['email']);
-            $errorMessage = $errors['email']['msg'];
-        }
-        $out .= '<div class="col-xs-12' . (($options['use_email_as_userid'] == 'off') ? ' col-sm-6' : '') . '">'
+        $error = (isset($errors) && $errors['email']);
+        $errorMessage = $errors['email']['msg'];
+        $out .= '<div class="col-xs-12 col-sm-6">'
             . Form::getInputTextfield(
                 'form-control ' . ($error ? 'has-error' : ''),
                 'register_email',
@@ -2229,7 +2226,7 @@ class UserManagerRenderer
 
             $out .= $extraFiledsOut;
         } elseif ($options['use_advanced_form'] == 'on') {
-            $acl_man = &Docebo::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $groups = &$acl_man->getAllGroupsId(['free', 'moderate']);
 
             if (!empty($groups)) {
@@ -2280,7 +2277,7 @@ class UserManagerRenderer
                     isset($_POST['register']['privacy']),
                     ''
                 )
-                . '<label class="checkbox-inline" for="register_privacy">' . $lang->def('_REG_PRIVACY_ACCEPT') . '</label>'
+                . '<label class="checkbox-inline">' . $lang->def('_REG_PRIVACY_ACCEPT') . '</label>'
                 . '</div>';
 
             if ($error) {
@@ -2291,8 +2288,8 @@ class UserManagerRenderer
 
         $out .= '<div class="homepage__row">'
             . '<div class="col-xs-12 col-sm-6 col-sm-offset-3">'
-            //. '<button type="submit" class="forma-button forma-button--black">Registrati</button>'
-            . Form::getButton('reg_button', 'reg_button', $lang->def('_REGISTER'), ' forma-button forma-button--black ')
+            //. '<button type="submit" class="forma-button forma-button--info">Registrati</button>'
+            . Form::getButton('reg_button', 'reg_button', $lang->def('_REGISTER'), ' forma-button')
             . '</div>'
             . '</div>';
 
@@ -2305,9 +2302,9 @@ class UserManagerRenderer
 
     public function confirmRegister($platform, $options)
     {
-        $lang = &DoceboLanguage::createInstance('register', $platform);
-        $acl_man = &Docebo::user()->getAclManager();
-        $acl = &Docebo::user()->getAcl();
+        $lang = FormaLanguage::createInstance('register', $platform);
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
+        $acl = \FormaLms\lib\Forma::getAcl();
 
         if (!isset($_GET['random_code'])) {
         }
@@ -2501,7 +2498,7 @@ class UserManagerRenderer
      */
     public function _checkField($source, $options, $platform, $control_extra_field = true)
     {
-        $lang = &DoceboLanguage::createInstance('register', $platform);
+        $lang = &FormaLanguage::createInstance('register', $platform);
 
         $errors = [];
 
@@ -2528,7 +2525,7 @@ class UserManagerRenderer
         $regCode = FormaLms\lib\Get::req('reg_code', DOTY_MIXED, '');
         $registrationCodeType = FormaLms\lib\Get::sett('registration_code_type', '0');
 
-        if ($codeIsMandatory) {
+        if ($codeIsMandatory && $registrationCodeType !== "0") {
             $codeIsValid = (new UserManager())->checkRegistrationCode($regCode, $registrationCodeType);
 
             if (!$codeIsValid) {
@@ -2542,7 +2539,7 @@ class UserManagerRenderer
         }
 
         // control mail is correct
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $source['register']['email'] = strtolower($source['register']['email']);
 
         if ($source['register']['email'] === '') {
@@ -2644,9 +2641,10 @@ class UserManagerRenderer
         }
 
         if ($control_extra_field) {
-            $selectedGroups = \FormaLms\lib\Get::pReq('group_sel_implode', DOTY_STRING, '');
-            if (empty($selectedGroups)) {
-                $selectedGroups = explode(',', $selectedGroups);
+            $selectedGroups = [];
+            $selectedGroupsRequest = \FormaLms\lib\Get::pReq('group_sel_implode', DOTY_STRING, '');
+            if (!empty($selectedGroupsRequest)) {
+                $selectedGroups = explode(',', $selectedGroupsRequest);
             }
             if (empty($selectedGroups)) {
                 $selectedGroups = \FormaLms\lib\Get::pReq('group_sel', DOTY_MIXED, []);
@@ -2681,7 +2679,7 @@ class UserManagerRenderer
      */
     public function getLostpwd($jump_url, $platform)
     {
-        $lang = &DoceboLanguage::createInstance('register', $platform);
+        $lang = &FormaLanguage::createInstance('register', $platform);
 
         require_once _base_ . '/lib/lib.form.php';
 
@@ -2770,7 +2768,7 @@ class UserManagerRenderer
     public function getRenderedProfile($user_info)
     {
         require_once _base_ . '/lib/lib.form.php';
-        $lang = &DoceboLanguage::createInstance('profile', 'framework');
+        $lang = &FormaLanguage::createInstance('profile', 'framework');
 
         $path = FormaLms\lib\Get::site_url() . $GLOBALS['where_files_relative'] . '/appCore/' . FormaLms\lib\Get::sett('pathphoto');
 
@@ -2799,44 +2797,160 @@ class UserManagerRenderer
         return $txt;
     }
 
-    public function getElapsedPasswordMask($platform, $options, $jump_link)
+    public function getElapsedPasswordMask($platform, $options, $jump_link, $error_array)
     {
         require_once _base_ . '/lib/lib.form.php';
-
-        $lang = &DoceboLanguage::createInstance('register', $platform);
-
-        $res = Docebo::user()->isPasswordElapsed();
-
-        $html = '<ul class="instruction_list">';
-
+        $res = \FormaLms\lib\FormaUser::getCurrentUser()->isPasswordElapsed();
         if ($res == 2) {
-            $html .= '<li>' . $lang->def('_FORCE_CHANGE') . '</li>';
+            $html = '<b>' . Lang::t('_FORCE_CHANGE', 'register') . '</b>';
+        } else if ($res == 1)  {
+            $html = '<b>' . Lang::t('_WHYCHANGEPWD', 'register') . '</b>';
         } else {
-            $html .= '<li>' . $lang->def('_WHYCHANGEPWD', 'register') . '</li>';
+            $html = '<b>' . Lang::t('_CHANGEPASSWORD', 'profile') . '</b>';
         }
+
+
+        $html .= '<br><br><ul class="instruction_list">';
 
         if ($options['pass_max_time_valid']) {
-            $html .= '<li>' . str_replace('[valid_for_day]', $options['pass_max_time_valid'], $lang->def('_NEWPWDVALID')) . '</li>';
-        }
-        if ($options['pass_min_char']) {
-            $html .= '<li>' . str_replace('[min_char]', $options['pass_min_char'], $lang->def('_REG_PASS_MIN_CHAR')) . '</li>';
+            $html .= '<li>' . Lang::t('_NEWPWDVALID', 'register', ['[pass_max_time_valid]' => $options['pass_max_time_valid'] ] ). '</li>';
         }
         if ($options['pass_alfanumeric'] == 'on') {
-            $html .= '<li>' . $lang->def('_REG_PASS_MUST_BE_ALPNUM') . '</li>';
+            $s = Lang::t('_REG_PASS_MUST_BE_ALPNUM', 'register');
+            if (is_array($error_array) && in_array($s,$error_array )) {
+                $html .= "<li style='font-weight: bold; color: red;'>$s</li>";
+            } else {
+                $html .= '<li>' . $s. '</li>';
+            }
         }
-        if ($options['user_pwd_history_length'] > 0) {
-            $html .= '<li>' . Lang::t('_REG_PASS_MUST_DIFF', 'register', ['[diff_pwd]' => $options['user_pwd_history_length']]) . '</li>';
+        if ($options['user_pwd_history_length'] > 1) {
+            $s = Lang::t('_REG_PASS_MUST_DIFF', 'register', ['[min_char]' => $options['user_pwd_history_length']]);
+            if (is_array($error_array) && in_array($s,$error_array )) {
+                $html .= "<li style='font-weight: bold; color: red;'>$s</li>";
+            } else {
+                $html .= '<li>' . $s. '</li>';
+            }
         }
+        if ($options['user_pwd_history_length'] == 1) {
+            $s = Lang::t('_REG_PASS_MUST_DIFF_1', 'register');
+            if (is_array($error_array) && in_array($s,$error_array )) {
+                $html .= "<li style='font-weight: bold; color: red;'>$s</li>";
+            } else {
+                $html .= '<li>' . $s. '</li>';
+            }
+        }
+        if ($options['pass_min_char'] > 1) {
+            $s = Lang::t('_REG_PASS_MIN_CHAR','register',['[min_char]'=>$options['pass_min_char']]);
+            if (is_array($error_array) && in_array($s,$error_array )) {
+                $html .= "<li style='font-weight: bold; color: red;'>$s</li>";
+            } else {
+                $html .= '<li>' . $s. '</li>';
+            }
+        }
+        if ($options['pass_min_digit'] > 1) {
+            $s = Lang::t('_REG_PASS_MIN_DIGITS','register',['[min_char]'=>$options['pass_min_digit']]).'</li>';
+            if (is_array($error_array) && in_array($s,$error_array )) {
+                $html .= "<li style='font-weight: bold; color: red;'>$s</li>";
+            } else {
+                $html .= '<li>' . $s. '</li>';
+            }
+        }
+        if ($options['pass_min_lowercase'] > 1) {
+            $s = Lang::t('_REG_PASS_MIN_LOWER','register',['[min_char]'=>$options['pass_min_lowercase']]);
+            if (is_array($error_array) && in_array($s,$error_array )) {
+                $html .= "<li style='font-weight: bold; color: red;'>$s</li>";
+            } else {
+                $html .= '<li>' . $s. '</li>';
+            }
+        }
+        if ($options['pass_min_uppercase'] > 1) {
+            $s = Lang::t('_REG_PASS_MIN_UPPER','register',['[min_char]'=>$options['pass_min_uppercase']]);
+            if (is_array($error_array) && in_array($s,$error_array )) {
+                $html .= "<li style='font-weight: bold; color: red;'>$s</li>";
+            } else {
+                $html .= '<li>' . $s. '</li>';
+            }
+        }
+        if ($options['pass_special_char'] > 1) {
+            $s = Lang::t('_REG_PASS_MIN_NONALPHANUM','register',['[min_char]'=>$options['pass_special_char']]);
+            if (is_array($error_array) && in_array($s,$error_array )) {
+                $html .= "<li style='font-weight: bold; color: red;'>$s</li>";
+            } else {
+                $html .= '<li>' . $s. '</li>';
+            }
+        }
+
+        if ($options['pass_min_char'] == 1) {
+            $s = Lang::t('_REG_PASS_MIN_CHAR_1','register',['[min_char]'=>$options['pass_min_char']]);
+            if (is_array($error_array) && in_array($s,$error_array )) {
+                $html .= "<li style='font-weight: bold; color: red;'>$s</li>";
+            } else {
+                $html .= '<li>' . $s. '</li>';
+            }
+        }
+        if ($options['pass_min_digit'] == 1) {
+            $s = Lang::t('_REG_PASS_MIN_DIGITS_1','register',['[min_char]'=>$options['pass_min_digit']]);
+            if (is_array($error_array) && in_array($s,$error_array )) {
+                $html .= "<li style='font-weight: bold; color: red;'>$s</li>";
+            } else {
+                $html .= '<li>' . $s. '</li>';
+            }
+        }
+        if ($options['pass_min_lowercase'] == 1) {
+            $s = Lang::t('_REG_PASS_MIN_LOWER_1','register',['[min_char]'=>$options['pass_min_lowercase']]);
+            if (is_array($error_array) && in_array($s,$error_array )) {
+                $html .= "<li style='font-weight: bold; color: red;'>$s</li>";
+            } else {
+                $html .= '<li>' . $s. '</li>';
+            }
+        }
+        if ($options['pass_min_uppercase'] == 1) {
+            $s = Lang::t('_REG_PASS_MIN_UPPER_1','register',['[min_char]'=>$options['pass_min_uppercase']]);
+            if (is_array($error_array) && in_array($s,$error_array )) {
+                $html .= "<li style='font-weight: bold; color: red;'>$s</li>";
+            } else {
+                $html .= '<li>' . $s. '</li>';
+            }
+        }
+        if ($options['pass_special_char'] == 1) {
+            $s = Lang::t('_REG_PASS_MIN_NONALPHANUM_1','register',['[min_char]'=>$options['pass_special_char']]);
+            if (is_array($error_array) && in_array($s,$error_array )) {
+                $html .= "<li style='font-weight: bold; color: red;'>$s</li>";
+            } else {
+                $html .= '<li>' . $s. '</li>';
+            }
+        }
+        $s = Lang::t('_PASS_DIFFERENT_USERNAME', 'register');
+        if (is_array($error_array) && in_array($s,$error_array )) {
+            $html .= "<li style='font-weight: bold; color: red;'>$s</li>";
+        } else {
+            $html .= '<li>' . $s. '</li>';
+        }
+
+        $s = Lang::t('_ERR_PWD_OLD', 'register');
+        if (is_array($error_array) && in_array($s,$error_array )) {
+            $html .= "<li style='font-weight: bold; color: red;'>$s</li>";
+        }
+
+        $s = Lang::t('_ERR_PASSWORD_NO_MATCH', 'register');
+        if (is_array($error_array) && in_array($s,$error_array )) {
+            $html .= "<li style='font-weight: bold; color: red;'>$s</li>";
+        }
+
+
+
+
 
         $html .= '</ul>' . "\n"
             . Form::openForm('update_password', $jump_link)
             . Form::openElementSpace()
-            . Form::getPassword($lang->def('_OLD_PWD'), 'oldpwd', 'oldpwd', '30')
-            . Form::getPassword($lang->def('_NEW_PASSWORD'), 'newpwd', 'newpwd', '30')
-            . Form::getPassword($lang->def('_RETYPE_PASSWORD'), 'repwd', 'repwd', '30')
+            . Form::getPassword(Lang::t('_OLD_PWD','register'), 'oldpwd', 'oldpwd', '30')
+            . Form::getPassword(Lang::t('_NEW_PASSWORD', 'register'), 'newpwd', 'newpwd', '30')
+            . Form::getPassword(Lang::t('_RETYPE_PASSWORD', 'register'), 'repwd', 'repwd', '30')
             . Form::closeElementSpace()
             . Form::openButtonSpace()
-            . Form::getButton('save_pwd', 'save_pwd', $lang->def('_SAVE'))
+            . Form::getButton('save_pwd', 'save_pwd', Lang::t('_SAVE'))
+            . Form::getButton('undo', 'undo', Lang::t('_UNDO'))
             . Form::closeButtonSpace()
             . Form::closeForm();
 
@@ -2850,74 +2964,39 @@ class UserManagerRenderer
 
     public function saveElapsedPassword($platform, $options)
     {
-        $lang = &DoceboLanguage::createInstance('register', $platform);
-
         $html = '';
 
-        $idst = getLogUserId();
-        $acl_man = &Docebo::user()->getAclManager();
+        $idst = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $user_info = $acl_man->getUser($idst, false);
 
-        $password = new Password($_POST['oldpwd']);
+        $old_passwd = FormaLms\lib\Get::req('oldpwd', DOTY_MIXED, '');
+        $new_passwd = FormaLms\lib\Get::req('newpwd', DOTY_MIXED, '');
+        $retype_passwd = FormaLms\lib\Get::req('repwd', DOTY_MIXED, '');
+
+        $password = new Password($old_passwd);
         if (!$password->verify($user_info[ACL_INFO_PASS])) {
             return [
                 'error' => true,
-                'msg' => getErrorUi($lang->def('_ERR_PWD_OLD')),
+                'msg' => [Lang::t('_ERR_PWD_OLD', 'register')],
             ];
         }
-        // control password
-        if (strlen($_POST['newpwd']) < $options['pass_min_char']) {
-            return [
-                'error' => true,
-                'msg' => getErrorUi($lang->def('_PASSWORD_TOO_SHORT')),
-            ];
-        }
-        if ($_POST['newpwd'] != $_POST['repwd']) {
-            return [
-                'error' => true,
-                'msg' => getErrorUi($lang->def('_ERR_PASSWORD_NO_MATCH')),
-            ];
-        }
-        if ($_POST['oldpwd'] == $_POST['newpwd']) {
-            return [
-                'error' => true,
-                'msg' => getErrorUi($lang->def('_ERR_PWD_SAME_OLD')),
-            ];
-        }
-        if ($options['pass_alfanumeric'] == 'on') {
-            if (!preg_match('/[a-z]/i', $_POST['newpwd']) || !preg_match('/[0-9]/', $_POST['newpwd'])) {
-                return [
-                    'error' => true,
-                    'msg' => getErrorUi($lang->def('_ERR_PASSWORD_MUSTBE_ALPHA')),
-                ];
-            }
-        }
-        //check password history
 
-        if (FormaLms\lib\Get::sett('user_pwd_history_length') != 0) {
-            $new_pwd = $acl_man->encrypt($_POST['newpwd']);
-            if ($user_info[ACL_INFO_PASS] == $new_pwd) {
-                return [
-                    'error' => true,
-                    'msg' => getErrorUi(str_replace('[diff_pwd]', FormaLms\lib\Get::sett('user_pwd_history_length'), $lang->def('_REG_PASS_MUST_DIFF'))),
-                ];
-            }
-            $re_pwd = sql_query('SELECT passw '
-                . ' FROM ' . $GLOBALS['prefix_fw'] . '_password_history'
-                . ' WHERE idst_user = ' . (int) $idst . ''
-                . ' ORDER BY pwd_date DESC');
-
-            list($pwd_history) = sql_fetch_row($re_pwd);
-            for ($i = 0; $pwd_history && $i < FormaLms\lib\Get::sett('user_pwd_history_length'); ++$i) {
-                if ($pwd_history == $new_pwd) {
-                    return [
-                        'error' => true,
-                        'msg' => getErrorUi(str_replace('[diff_pwd]', FormaLms\lib\Get::sett('user_pwd_history_length'), $lang->def('_REG_PASS_MUST_DIFF'))),
-                    ];
-                }
-                list($pwd_history) = sql_fetch_row($re_pwd);
-            }
+        if ($new_passwd != $retype_passwd) {
+            return [
+                'error' => true,
+                'msg' => [Lang::t('_ERR_PASSWORD_NO_MATCH', 'register')],
+            ];
         }
+
+        $chk_pswd = PasswordPolicies::check($new_passwd);
+        if (!$chk_pswd->valid()) {
+            return [
+                'error' => true,
+                'msg' => $chk_pswd->messages()
+            ];
+        }
+
 
         // save the password
         $re = $acl_man->updateUser(
@@ -2925,7 +3004,7 @@ class UserManagerRenderer
             false,
             false,
             false,
-            $_POST['newpwd'],
+            $new_passwd,
             false,
             false,
             false,
@@ -2969,53 +3048,8 @@ class UserManagerOption
         $this->_options = [];
     }
 
-    /**
-     * load option form database.
-     *
-     * @return nothing
-     */
-    public function _loadOption()
-    {
-        $reSetting = sql_query('
-		SELECT param_name, param_value, value_type, max_size
-		FROM ' . $this->_table . '
-		ORDER BY sequence');
-        while (list($var_name, $var_value, $value_type) = sql_fetch_row($reSetting)) {
-            switch ($value_type) {
-                //if is int cast it
-                case 'int':
-                    $this->_options[$var_name] = (int) $var_value;
+ 
 
-                    break;
-                //if is enum switch value to on or off
-                case 'enum':
-                    if ($var_value == 'on') {
-                        $this->_options[$var_name] = 'on';
-                    } else {
-                        $this->_options[$var_name] = 'off';
-                    }
-
-                    break;
-                //else simple assignament
-                default:
-                    $this->_options[$var_name] = $var_value;
-            }
-        }
-    }
-
-    /**
-     * get all the available option.
-     *
-     * @return array array(ption_name => option_value)
-     */
-    public function getAllOption()
-    {
-        if (empty($this->_options)) {
-            $this->_loadOption();
-        }
-
-        return $this->_options;
-    }
 
     /**
      * get the value of a aspecific option.
@@ -3026,11 +3060,7 @@ class UserManagerOption
      */
     public function getOption($option_name)
     {
-        if (empty($this->_options)) {
-            $this->_loadOption();
-        }
-
-        return isset($this->_options[$option_name]) ? $this->_options[$option_name] : false;
+        return  \FormaLms\lib\Get::sett($option_name);
     }
 
     /**
@@ -3060,7 +3090,7 @@ class UserManagerOption
 
         require_once _base_ . '/lib/lib.form.php';
 
-        $lang = &DoceboLanguage::createInstance('user_managment', 'framework');
+        $lang = FormaLanguage::createInstance('user_managment', 'framework');
 
         $reSetting = sql_query('
 		SELECT param_name, param_value, value_type, max_size

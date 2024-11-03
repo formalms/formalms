@@ -18,13 +18,13 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  * @category Category
  */
-require_once __DIR__ . '/class.definition.php';
+require_once dirname(__FILE__) . '/class.definition.php';
 
 class Module_Category extends LmsAdminModule
 {
     public function loadBody()
     {
-        require_once dirname(__DIR__) . '/modules/category/category.php';
+        require_once dirname(__FILE__) . '/../modules/category/category.php';
         categoryDispatch($GLOBALS['op']);
     }
 }

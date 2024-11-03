@@ -24,9 +24,9 @@ class ChoiceMultiple_QuestionPoll extends QuestionPoll
      *
      * @author Fabio Pirovano (fabio@docebo.com)
      */
-    public function ChoiceMultiple_QuestionPoll($id)
+    public function __construct($id)
     {
-        parent::QuestionPoll($id);
+        parent::__construct($id);
     }
 
     /**
@@ -52,7 +52,7 @@ class ChoiceMultiple_QuestionPoll extends QuestionPoll
      */
     public function _lineAnswer($i)
     {
-        $lang = &DoceboLanguage::createInstance('poll');
+        $lang = FormaLanguage::createInstance('poll');
         $GLOBALS['page']->add('<tr class="line_answer">'
             . '<td class="image">'
             //answer
@@ -75,7 +75,7 @@ class ChoiceMultiple_QuestionPoll extends QuestionPoll
      */
     public function _lineModAnswer($i)
     {
-        $lang = &DoceboLanguage::createInstance('poll');
+        $lang = FormaLanguage::createInstance('poll');
         $GLOBALS['page']->add('<tr class="line_answer">'
             . '<td class="image">', 'content');
         if (isset($_POST['answer_id'][$i])) {
@@ -103,7 +103,7 @@ class ChoiceMultiple_QuestionPoll extends QuestionPoll
      */
     public function create($id_poll, $back_poll)
     {
-        $lang = &DoceboLanguage::createInstance('poll');
+        $lang = FormaLanguage::createInstance('poll');
 
         require_once _base_ . '/lib/lib.form.php';
         $url_encode = htmlentities(urlencode($back_poll));
@@ -213,7 +213,7 @@ class ChoiceMultiple_QuestionPoll extends QuestionPoll
      */
     public function edit($back_poll)
     {
-        $lang = &DoceboLanguage::createInstance('poll');
+        $lang = FormaLanguage::createInstance('poll');
 
         require_once _base_ . '/lib/lib.form.php';
         $url_encode = htmlentities(urlencode($back_poll));
@@ -432,7 +432,7 @@ class ChoiceMultiple_QuestionPoll extends QuestionPoll
      */
     public function play($num_quest, $shuffle_answer = false, $id_track = 0, $freeze = false)
     {
-        $lang = &DoceboLanguage::createInstance('poll');
+        $lang = FormaLanguage::createInstance('poll');
 
         list($id_quest, $title_quest) = sql_fetch_row(sql_query('
 		SELECT id_quest, title_quest 
@@ -496,7 +496,7 @@ class ChoiceMultiple_QuestionPoll extends QuestionPoll
      */
     public function playReport($num_quest, $tot_answer, &$valid_track)
     {
-        $lang = &DoceboLanguage::createInstance('poll');
+        $lang = FormaLanguage::createInstance('poll');
 
         list($id_quest, $title_quest) = sql_fetch_row(sql_query('
 		SELECT id_quest, title_quest 
@@ -603,7 +603,7 @@ class ChoiceMultiple_QuestionPoll extends QuestionPoll
 
     public function export_CSV($num_quest, $tot_answer, &$valid_track)
     {
-        $lang = &DoceboLanguage::createInstance('poll');
+        $lang = FormaLanguage::createInstance('poll');
 
         list($id_quest, $title_quest) = sql_fetch_row(sql_query('
 		SELECT id_quest, title_quest 

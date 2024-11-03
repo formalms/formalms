@@ -48,7 +48,7 @@ class CategoryFolderTree extends ClientTree
             }
         }
 
-        $lang = &DoceboLanguage::CreateInstance('course', 'lms');
+        $lang = &FormaLanguage::CreateInstance('course', 'lms');
         //$this->setOption('langs', array('_ROOT'=>def('_CATEGORY', 'course', 'lms')));
         $this->addLangKey('_ROOT', $lang->def('_CATEGORY'));
         $this->addLangKey('_YES', $lang->def('_CONFIRM'));

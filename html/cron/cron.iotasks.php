@@ -14,7 +14,7 @@
 define('CORE', true);
 define('IN_FORMA', true);
 define('_deeppath_', '../');
-require dirname(__DIR__) . '/base.php';
+require dirname(__DIR__,1) . '/base.php';
 
 // start buffer
 ob_start();
@@ -24,7 +24,7 @@ require _base_ . '/lib/lib.bootstrap.php';
 Boot::init(BOOT_HOOKS);
 // some specific lib to load
 require_once _base_ . '/lib/lib.platform.php';
-require_once _adm_ . '/lib/lib.permission.php';
+require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/lib.permission.php');
 require_once _adm_ . '/lib/lib.istance.php';
 require_once _adm_ . '/class.module/class.definition.php';
 
@@ -39,6 +39,7 @@ $GLOBALS['operation_result'] = $module_cfg->doTasks();
 
 // finalize
 Boot::finalize();
+
 
 // remove all the echo
 ob_clean();

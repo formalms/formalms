@@ -38,7 +38,7 @@ class QuestionPoll
      *
      * @author Fabio Pirovano (fabio@docebo.com)
      */
-    public function QuestionPoll($id)
+    public function __construct($id)
     {
         $this->id = $id;
 
@@ -323,7 +323,7 @@ class QuestionPoll
      *
      * @author Fabio Pirovano (fabio@docebo.com)
      */
-    public function playReport($num_quest)
+    public function playReport($num_quest, $tot_tracks, &$valid_track)
     {
         return '';
     }
@@ -380,7 +380,7 @@ class QuestionPoll
      *
      * @author Fabio Pirovano (fabio@docebo.com)
      */
-    public function updateAnswer($id_track, &$source)
+    public function updateAnswer($id_track, &$source, $numberTime = null)
     {
         return true;
     }

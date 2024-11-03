@@ -53,6 +53,7 @@ class AssessmentList
         USER_ASSES_ID_USER => 'id_user',
         USER_ASSES_TYPE => 'type_of',
     ];
+    public Man_Course $man_course;
 
     public function tableUserAssessment()
     {
@@ -86,7 +87,7 @@ class AssessmentList
         return $re;
     }
 
-    public function AssessmentList()
+    public function __construct()
     {
         require_once _lms_ . '/lib/lib.course.php';
         $this->man_course = new Man_Course();
@@ -118,7 +119,7 @@ class AssessmentList
                 'code' => $assessment_data['code'],
                 'name' => $assessment_data['name'],
                 'description' => $assessment_data['description'],
-                'lang_code' => getLanguage(),
+                'lang_code' => Lang::get(),
                 'course_type' => $this->courseType(),
                 'show_rules' => 2,
                 'status' => 2,
@@ -128,7 +129,7 @@ class AssessmentList
             if ($id_course == false) {
                 return false;
             }
-            $level_idst = &DoceboCourse::createCourseLevel($id_course);
+            $level_idst = &FormaCourse::createCourseLevel($id_course);
             if ($level_idst == false) {
                 return false;
             }
@@ -158,7 +159,7 @@ class AssessmentList
             //after creating the assessment course, create directly the test LO
             if ($re) {
                 $query = 'INSERT INTO %lms_test ( author, title, description ) VALUES '
-                    . "( '" . Docebo::user()->getIdSt() . "', '" . $assessment_data['name'] . "', '' )";
+                    . "( '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "', '" . $assessment_data['name'] . "', '' )";
                 if (!sql_query($query)) {
                     //...
                     return false;
@@ -166,9 +167,9 @@ class AssessmentList
 
                 $id_test = sql_insert_id();
                 if ($id_test) {
-                    require_once Forma::inc(_lms_ . '/modules/organization/orglib.php');
+                    require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/organization/orglib.php');
                     $odb = new OrgDirDb($id_course);
-                    $odb->addItem(0, $assessment_data['name'], 'test', $id_test, '0', '0', getLogUserId(), '1.0', '_DIFFICULT_MEDIUM', '', '', '', '', date('Y-m-d H:i:s'));
+                    $odb->addItem(0, $assessment_data['name'], 'test', $id_test, '0', '0', \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), '1.0', '_DIFFICULT_MEDIUM', '', '', '', '', date('Y-m-d H:i:s'));
                 } else {
                     //...
                     return false;
@@ -306,13 +307,13 @@ class AssessmentList
     {
         require_once _lms_ . '/lib/lib.course.php';
         require_once _lms_ . '/admin/models/SubscriptionAlms.php';
-        $docebo_course = new DoceboCourse($id_assessment);
-        $acl_man = Docebo::user()->getAclManager();
+        $formaCourse = new FormaCourse($id_assessment);
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $subsciption_model = new SubscriptionAlms($id_assessment, 0, 0);
 
-        $level_idst = $docebo_course->getCourseLevel($id_assessment);
+        $level_idst = $formaCourse->getCourseLevel($id_assessment);
         if (count($level_idst) == 0 || $level_idst[1] == '') {
-            $level_idst = $docebo_course->createCourseLevel($id_assessment);
+            $level_idst = FormaCourse::createCourseLevel($id_assessment);
         }
 
         $level = 3;

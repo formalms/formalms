@@ -76,7 +76,7 @@
                 foreach ($standings as $row) {
                     $tb->addBody([
                         $i++,
-                        Docebo::aclm()->relativeID($row['userid']),
+                        \FormaLms\lib\Forma::getAclManager()->relativeID($row['userid']),
                         $row['lastname'] . ' ' . $row['firstname'],
                         $row['current_score'],
                         $row['max_score'],

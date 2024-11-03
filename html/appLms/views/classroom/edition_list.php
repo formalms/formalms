@@ -2,7 +2,7 @@
 <?php foreach ($info as $ed) { ?>
 
 <?php if (
-    $ed['unsubscribe_date_limit'] == '0000-00-00 00:00:00' ||
+    !$ed['unsubscribe_date_limit'] ||
     $ed['unsubscribe_date_limit'] == '' ||
     strcmp(date('Y-m-d H:i:S'), $ed['unsubscribe_date_limit']) <= 0
 ) { ?>
@@ -16,7 +16,7 @@
     ?>
 </div>
 
-<?php if ($smodel->isUserWaitingForSelfUnsubscribe(Docebo::user()->idst, $id_course, false, $ed['id_date'])) { ?>
+<?php if ($smodel->isUserWaitingForSelfUnsubscribe(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_course, false, $ed['id_date'])) { ?>
 
 <p style="padding:0.4em"><?php echo Lang::t('_UNSUBSCRIBE_REQUEST_WAITING_FOR_MODERATION', 'course'); ?></p>
 

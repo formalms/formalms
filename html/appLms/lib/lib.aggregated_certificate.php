@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Interfaces\Accessible;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -16,7 +18,8 @@ defined('IN_FORMA') or exit('Direct access is forbidden');
 //define('COURSE', 0);
 //define('COURSE_PATH', 1);
 
-class AggregatedCertificate
+class AggregatedCertificate implements Accessible
+
 {
     public const AGGREGATE_CERTIFICATE_TYPE_COURSE = 0;
     public const AGGREGATE_CERTIFICATE_TYPE_COURSE_PATH = 1;
@@ -28,10 +31,28 @@ class AggregatedCertificate
     private $_description;
     private $_idAssoc;
     private $_type_assoc;
+    public array $assocTypesArr;
+    public string $table_assign_agg_cert;
+    public string $table_cert_meta_association_coursepath;
+    public string $table_cert_meta_association_courses;
+    public string $table_cert_meta_association;
+    public string $table_cert_tags;
+    public string $table_cert;
+
+    protected $op = [
+        'del_released' => 'delReleased',
+        'del_association' => 'delAssociations',
+        'associationusers' => 'associationUsers',
+        'associationCourses' => 'associationCourses',
+        'saveAssignment' => 'saveAssignment',
+        'saveAssignmentUsers' => 'saveAssignmentUsers',
+        'view_details' => 'viewdetails',
+        'delmetacert' => 'delcertificate',
+    ];
 
     public function __construct()
     {
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         $this->table_cert = $GLOBALS['prefix_lms'] . '_certificate';  // TODO: remove, inserting appropriate libraries
         $this->table_cert_tags = $GLOBALS['prefix_lms'] . '_certificate_tags';
 
@@ -79,7 +100,7 @@ class AggregatedCertificate
         }
 
         $rs = sql_query($query_certificate);
-
+        $aggCertArr = [];
         $k = 0;
         while ($rows = sql_fetch_assoc($rs)) {
             $aggCertArr[$k]['id_certificate'] = (int) $rows['id_certificate'];
@@ -132,6 +153,7 @@ class AggregatedCertificate
      */
     public function getAssociationsMetadata($id_cert = 0, $id_association = 0, $ini = -1)
     {
+        $associationsArr = [];
         $query = 'SELECT idAssociation, title, description'
             . ' FROM ' . $this->table_cert_meta_association
             . ($id_cert != 0 ? ' WHERE idCertificate = ' . $id_cert : '')
@@ -263,6 +285,7 @@ class AggregatedCertificate
      */
     public function getAllUsersFromIdAssoc($id_assoc, $type_assoc)
     {
+        $id_users = [];
         switch ($type_assoc) {
             case self::AGGREGATE_CERTIFICATE_TYPE_COURSE:
                 $table = $this->table_cert_meta_association_courses;
@@ -419,6 +442,7 @@ class AggregatedCertificate
     // TODO: Generalize in lib.course.php
     public function getCoursesArrFromId($idsArr)
     {
+        $coursesList = [];
         $idsStr = implode(',', $idsArr);
 
         $q = "SELECT  %lms_course.code, %lms_course.name, if(%lms_category.path IS NULL, '/root/', path) as path
@@ -470,7 +494,7 @@ class AggregatedCertificate
             $courseRow['codeCourse'] = $rows['code'];
             $courseRow['nameCourse'] = $rows['name'];
             if ($idCategory !== 0) {
-                $courseRow['pathCourse'] = substr($rows['path'], 6);
+                $courseRow['pathCourse'] = array_key_exists('path', $rows) ? substr($rows['path'], 6) : '';
             } else {
                 $courseRow['pathCourse'] = Lang::t('_ALT_ROOT');
             }
@@ -1052,7 +1076,7 @@ class AggregatedCertificate
     public function releaseNewAggrCertCourses($params)
     {
         require_once _lms_ . '/lib/lib.course.php';
-        $man_courseuser = new Man_CourseUser(DbConn::getInstance());
+        $man_courseuser = new Man_CourseUser(\FormaLms\db\DbConn::getInstance());
         $associated_aggr_cert_courses = $this->getIdAssocForUserCourse($params['id_user'], $params['id_course']);
 
         foreach ($associated_aggr_cert_courses as $idcert => $associations) {
@@ -1089,9 +1113,159 @@ class AggregatedCertificate
         if ($rs) {
             $r = sql_fetch_row($rs);
 
-            return $r[0];
+            return is_array($r) ? $r[0] : false;
         }
 
         return '';
+    }
+
+
+    public function getAssociationView($params)
+    {
+        
+          // Loading necessary libraries
+          require_once _base_ . '/lib/lib.userselector.php';
+          require_once _lms_ . '/lib/lib.course.php';
+          require_once _lms_ . '/lib/lib.course_managment.php';
+          require_once _lms_ . '/lib/lib.coursepath.php';
+
+  
+          YuiLib::load();
+          Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
+  
+          $type_assoc = array_key_exists('type_assoc', $params) ? $params['type_assoc'] : -1;
+
+
+          $acl_man = \FormaLms\lib\Forma::getAclManager();
+          $aclManager = new FormaACLManager();
+          $userSelectionArr = array_map('intval', $params['selection']);
+          $userSelectionArr = $aclManager->getAllUsersFromIdst($userSelectionArr);
+          $array_user = $aclManager->getArrUserST($userSelectionArr);
+          $selected_course = array_key_exists('idsCourse', $params) ? explode(',', $params['idsCourse']) : [];
+          $idsCP_array = array_key_exists('idsCoursePath', $params) ?  explode(',', $params['idsCoursePath']) : [];
+          sort($idsCP_array);
+          $coursePath_man = new CoursePath_Manager();
+          $coursePathInfoArr = $coursePath_man->getCoursepathAllInfo($idsCP_array);
+  
+ 
+       
+  
+          $form = new Form();
+          $form_name = 'new_assign_step_3';
+  
+          $tb = new Table(0, Lang::t('_META_CERTIFICATE_NEW_ASSIGN_CAPTION', 'certificate'), Lang::t('_META_CERTIFICATE_NEW_ASSIGN_SUMMARY'));
+          $tb->setLink('index.php?r=alms/aggregatedcertificate/show');
+          $tb->setTableId('tb_AssocLinks');
+  
+          //  Table header
+          $type_h = ['', ''];
+          $cont_h = [Lang::t('_FULLNAME'), Lang::t('_USERNAME')];
+          $course_man = new Man_Course();
+          foreach ($selected_course as $id_course) {
+              $type_h[] = 'align_center';
+              $course_info = Man_Course::getCourseInfo($id_course);
+              $cont_h[] = $course_info['code'] . ' - ' . $course_info['name'];
+              $cont_footer[] = '<a href="javascript:;" onclick="checkall_meta(\'' . $form_name . '\', \'' . $id_course . '\', true); return false;">'
+                  . Lang::t('_SELECT_ALL')
+                  . '</a><br/>'
+                  . '<a href="javascript:;" onclick="checkall_meta(\'' . $form_name . '\', \'' . $id_course . '\', false); return false;">'
+                  . Lang::t('_UNSELECT_ALL')
+                  . '</a>';
+          }
+
+          foreach ($coursePathInfoArr as $coursePathInfo) {
+            $type_h[] = 'align_center';
+            $cont_h[] = $coursePathInfo[COURSEPATH_CODE] . ' - ' . $coursePathInfo[COURSEPATH_NAME];
+
+            $cont_footer[] = '<a href="javascript:;" onclick="checkall_meta(\'' . $form_name . '\', \'' . $coursePathInfo[COURSEPATH_ID] . '\', true); return false;">'
+                . Lang::t('_SELECT_ALL')
+                . '</a><br/>'
+                . '<a href="javascript:;" onclick="checkall_meta(\'' . $form_name . '\', \'' . $coursePathInfo[COURSEPATH_ID] . '\', false); return false;">'
+                . Lang::t('_UNSELECT_ALL')
+                . '</a>';
+        }
+          $type_h[] = 'image';
+          $cont_h[] = Lang::t('_SELECT_ALL');
+          $type_h[] = 'image';
+          $cont_h[] = Lang::t('_UNSELECT_ALL');
+  
+          $tb->setColsStyle($type_h);
+          $tb->addHead($cont_h);
+  
+          foreach ($array_user as $username => $id_user) {
+              $cont = [];
+              $user_info = $acl_man->getUser($id_user, false);
+              $cont[] = $user_info[ACL_INFO_LASTNAME] . ' ' . $user_info[ACL_INFO_FIRSTNAME];
+              $cont[] = $acl_man->relativeId($user_info[ACL_INFO_USERID]);
+              $check_assoc = $this->getAssociationLink($params['id_association'], $type_assoc, (int) $id_user);
+              foreach ($selected_course as $id_course) {
+                  $checked = in_array($id_course, $check_assoc);
+                  $cont[] = Form::getCheckbox('', '_' . $id_user . '_' . $id_course . '_', '_' . $id_user . '_' . $id_course . '_', 1, $checked);
+              }
+              $cont[] = '<a href="javascript:;" onclick="checkall_fromback_meta(\'' . $form_name . '\', \'' . $id_user . '\', true); return false;">'
+                  . Lang::t('_SELECT_ALL')
+                  . '</a>';
+              $cont[] = '<a href="javascript:;" onclick="checkall_fromback_meta(\'' . $form_name . '\', \'' . $id_user . '\', false); return false;">'
+                  . Lang::t('_UNSELECT_ALL')
+                  . '</a>';
+              $tb->addBody($cont);
+          }
+  
+          $cont = [];
+  
+          $cont[] = '';
+          $cont[] = '';
+  
+          foreach ($cont_footer as $footer) {
+              $cont[] = $footer;
+          }
+  
+          $cont[] = '';
+          $cont[] = '';
+  
+          $tb->addBody($cont);
+  
+          $viewParams = [
+              'form' => $form,
+              'id_certificate' => $params['id_certificate'],
+              'id_association' => $params['id_association'],
+              'type_assoc' => $type_assoc,
+              'title' => $params['title'],
+              'description' => $params['description'],
+              'selected_courses' => array_key_exists('idsCourse', $params) ? $params['idsCourse'] : '',
+              'selected_idsCoursePath' => array_key_exists('idsCoursePath', $params) ? $params['idsCoursePath'] : null,
+              'selected_users' => implode(',', $userSelectionArr),
+              'controllerName' => 'aggregatedcertificate',
+              'tb' => $tb,
+              'opsArr' => $this->op,
+              'cert_name' => $this->getAggrCertName($params['id_certificate']),
+          ];
+
+          return $viewParams;
+    }
+
+
+
+    public function getOps() :array{
+        return $this->op;
+    }
+
+
+    public function getAccessList($resourceId) : array {
+
+        
+        $arrayInstanceId = explode('_', $resourceId);
+        $idAssociation = $arrayInstanceId[0];
+        $typeAssoc = $arrayInstanceId[1];
+        $selection = $this->getAllUsersFromIdAssoc($idAssociation, $typeAssoc);
+
+        return $selection;
+    }
+
+    public function setAccessList($resourceId, array $selection) : bool {
+        
+        //handeld by session
+        return true;
+     
     }
 }

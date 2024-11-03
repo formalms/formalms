@@ -1,0 +1,30 @@
+<div style="width:50%; float:left;">
+    <h1>{{ serverInfo }}</h1>
+        <ul class="info">
+            <li>{{serverSw}} <span>{{serverSwInfo}}</span></li>
+            <li class="{{php}}">{{phpVersion}} <span>{{phpVersionInfo}}</span></li>
+            <li class="{{phpcli}}">{{phpCliVersion}} <span>{{phpCliVersionInfo}}</span></li>
+            <li class="{{mysqlClient}}">{{mysqlClientVersion}} <span>{{sqlClientVersion}}</span></li>
+            <li class="{{mysql}}">{{mysqlServerVersion}} <span>{{sqlServerVersion}}</span></li>
+            <li class="{{mbstring}}">{{mbstringLabel}} <span>{{mbstringData}}</span></li>
+            <li class="{{mimeCt}}">{{mimeCtLabel}} <span>{{mimeCtData}}</span></li>
+            <li class="{{fileInfo}}">{{fileInfoLabel}} <span>{{fileInfoData}}</span></li>
+            <li class="{{ldap}}">{{ldapLabel}} <span>{{ldapData}}</span></li>
+            <li class="{{openssl}}">{{openSslLabel}} <span>{{openSslData}}</span></li>
+            <li class="{{disableFunctions}}">{{disableFunctionsLabel}} <span>{{disableFunctionsData}}</span></li>
+            <li class="ok">{{phpTimezone}}: <span>{{phpTimezoneData}}</span></li>
+        </ul>
+    </div>
+    <div style="width:50%; float:left;">
+    <h1>{{phpInfo}}</h1>
+        <ul class="info">
+            <li>{{magicQuotesGpc}} {{magicQuotesGpcData}}</li>
+            <li>{{safeMode}} {{safeModeData }}</li>
+            <li>{{registerGlobals}} {{registerGlobalsData}}</li>
+            <li class="{{allowUrlFopen}}">{{allowUrlFopenLabel}} {{allowUrlFopenData}}</li>
+            <li>{{allowUrlIncludeLabel}} {{allowUrlIncludeData}}</li>
+            <li>{{uploadMaxFilesize}} {{uploadMaxFilesizeData}}</li>
+            <li>{{postMaxSize}} {{postMaxSizeData}}</li>
+            <li>{{maxExecutionTime}} {{maxExecutionTimeData}}</li>
+        </ul>
+</div>

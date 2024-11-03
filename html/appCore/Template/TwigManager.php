@@ -36,7 +36,7 @@ class TwigManager
     /**
      * Singleton class, the constructor is private.
      */
-    private function __construct()
+    private function __construct($templateName = null)
     {
         $loader = new \Twig\Loader\FilesystemLoader();
         $debug = \FormaLms\lib\Get::cfg('twig_debug', false);
@@ -44,7 +44,7 @@ class TwigManager
             'cache' => $debug ? false : _files_ . '/cache/twig',
             'debug' => $debug,
         ]);
-        $this->addDefaultPaths();
+        $this->addDefaultPaths($templateName);
         $this->twig->addExtension(new FormExtension());
         $this->twig->addExtension(new GetExtension());
         //$this->twig->addExtension(new IntlExtension());
@@ -61,7 +61,7 @@ class TwigManager
         $this->twig->addGlobal('config', ClientService::getInstance()->getConfig());
         $this->twig->addGlobal('clientConfig', addslashes(json_encode(ClientService::getInstance()->getConfig())));
         $this->twig->addGlobal('GLOBALS', $GLOBALS);
-        $this->twig->addGlobal('currentUser', \Docebo::user());
+        $this->twig->addGlobal('currentUser', \FormaLms\lib\FormaUser::getCurrentUser());
         if ($debug) {
             $this->twig->addExtension(new \Twig\Extension\DebugExtension());
         }
@@ -86,17 +86,20 @@ class TwigManager
         return self::$instance;
     }
 
-    private function addDefaultPaths()
+    private function addDefaultPaths($templateName)
     {
+        $templatePath = $templateName ?? getTemplate();
         $defaultPaths = [
             _adm_ . '/views',
             _lms_ . '/views',
             _lms_ . '/admin/views',
-            _templates_ . '/' . getTemplate() . '/layout',
+            _templates_ . '/' . $templatePath . '/layout',
         ];
 
         foreach ($defaultPaths as $path) {
-            $this->addPathInLoader($path);
+            if (file_exists($path)) {
+                $this->addPathInLoader($path);
+            }
         }
     }
 
@@ -126,6 +129,6 @@ class TwigManager
 
     public static function getCacheDir()
     {
-        return _files_ . '/cache/twig';
+        return _files_ . '/cache/twig/';
     }
 }

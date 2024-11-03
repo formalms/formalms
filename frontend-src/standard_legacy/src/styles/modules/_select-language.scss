@@ -1,0 +1,62 @@
+// Language selector
+//
+// Markup:
+//<div class="select-language">
+//	<span class="hidden-xs">Language: </span>
+//	<div class="dropdown">
+//		<a id="change_language" class="dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">Current language<i class="fa fa-chevron-down"></i></a>
+//		<div class="dropdown-menu" aria-labelledby="change_language">
+//			<a class="dropdown-item" href="#" title="Language 1">Language 1</a>
+//			<a class="dropdown-item" href="#" title="Language 2">Language 2</a>
+//			<a class="dropdown-item" href="#" title="Language 3">Language 3</a>
+//		</div>
+//	</div>
+//</div>
+//
+// Style guide: 12.2
+.select-language {
+  font-size: 16px;
+  text-align: right;
+}
+
+#change_language {
+  margin-left: 3px;
+  font-weight: bold;
+  text-decoration: none !important;
+  color: var(--color-black);
+}
+
+.fa {
+  #change_language & {
+    margin-left: 6px;
+    font-weight: normal;
+    color: var(--color-primary);
+  }
+}
+
+.dropdown {
+  .select-language & {
+    display: inline-block;
+  }
+}
+
+.dropdown-menu {
+  .select-language & {
+    left: auto;
+    right: 0;
+    text-align: center;
+  }
+}
+
+.dropdown-item {
+  .select-language & {
+    display: block;
+    padding: 0 8px;
+    text-decoration: none !important;
+    color: var(--color-black);
+
+    &:hover {
+      color: var(--color-primary);
+    }
+  }
+}

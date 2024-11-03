@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Forma;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -67,11 +69,11 @@ class ElearningLmsController extends LmsController
 
     public function fieldsTask()
     {
-        $level = Docebo::user()->getUserLevelId();
+        $level = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         if (FormaLms\lib\Get::sett('request_mandatory_fields_compilation', 'on') === 'on' && $level !== ADMIN_GROUP_GODADMIN) {
             require_once _adm_ . '/lib/lib.field.php';
             $fl = new FieldList();
-            $idst_user = Docebo::user()->getIdSt();
+            $idst_user = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
             $res = $fl->storeFieldsForUser($idst_user);
         }
         Util::jump_to('index.php?r=elearning/show');
@@ -88,10 +90,10 @@ class ElearningLmsController extends LmsController
             ];
 
             $params_t = [
-                ':id_user' => (int) Docebo::user()->getId(),
+                ':id_user' => (int) \FormaLms\lib\FormaUser::getCurrentUser()->getId(),
             ];
 
-            $cp_courses = $model->getUserCoursePathCourses(Docebo::user()->getIdst());
+            $cp_courses = $model->getUserCoursePathCourses(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst());
             if (!empty($cp_courses)) {
                 $conditions_t[] = 'cu.idCourse NOT IN (' . implode(',', $cp_courses) . ')';
             }
@@ -114,13 +116,26 @@ class ElearningLmsController extends LmsController
             $block_list['labels'] = true;
         }
 
+
+        $statusFilters = $model->getFilterStatusCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst());
+        $_select_category = Form::getInputDropdown('', 'course_search_filter_cat', 'filter_cat', $model->getListCategory(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst(), false), 0, 'title="'.Lang::t('_CATEGORY_SELECTED', 'course').'"');
+        $_select_category = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width="" multiple data-actions-box="true"', $_select_category);
+
+        $_select_course_type = Form::getInputDropdown('', 'course_search_filter_type', 'filter_type', $model->getFilterCourseType(), 'all', 'title="'.Lang::t('_COURSE_TYPE_SELECTION', 'course').'"');
+        $_select_course_type = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width="" data-actions-box="true"', $_select_course_type);
+
+        $_select_year = Form::getInputDropdown('', 'course_search_filter_year', 'filter_year', $model->getFilterYears(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst()), 0, 'title="'.Lang::t('_YEAR_SELECTION', 'simplesel').'"');
+        $_select_year = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width=""  data-actions-box="true"', $_select_year);
+
+
         if ($tb_label) {
             require_once _lms_ . '/admin/models/LabelAlms.php';
             $label_model = new LabelAlms();
-            $user_label = $label_model->getLabelForUser(Docebo::user()->getId());
+            $user_label = $label_model->getLabelForUser(\FormaLms\lib\FormaUser::getCurrentUser()->getId());
             $this->render('_tabs_block', ['block_list' => $block_list, 'use_label' => $tb_label, 'label' => $user_label, 'current_label' => $id_common_label]);
         } else {
-            $this->render('_tabs_block', ['block_list' => $block_list, 'use_label' => $tb_label]);
+            $this->render('_tabs_block', ['block_list' => $block_list, 'use_label' => $tb_label, 'statusFilters' => $statusFilters,
+                                                    '_select_category' => $_select_category, '_select_course_type' => $_select_course_type, '_select_year' => $_select_year]);
         }
 
         // add feedback:
@@ -158,7 +173,7 @@ class ElearningLmsController extends LmsController
         ];
 
         $params = [
-            ':id_user' => (int) Docebo::user()->getId(),
+            ':id_user' => (int) \FormaLms\lib\FormaUser::getCurrentUser()->getId(),
         ];
 
         if (!empty($filter_text)) {
@@ -202,6 +217,9 @@ class ElearningLmsController extends LmsController
                 INNER JOIN learning_course_date_user du ON dt.id_date = du.id_date
                 WHERE dt.id_course = c.idCourse AND status IN (1,2) AND du.id_user = ' . $params[':id_user'] . '
             ) ';
+            if (FormaLms\lib\Get::sett('exclude_completed_courses', 'off') == "on"){
+                $conditions[] = '(cu.status <> 2)';// NO completed courses
+            }
         }
 
         // course type: elearning, all, classroom
@@ -248,7 +266,7 @@ class ElearningLmsController extends LmsController
     {
         require_once _lms_ . '/admin/models/LabelAlms.php';
         $label_model = new LabelAlms();
-        $user_label = $label_model->getLabelForUser(Docebo::user()->getId());
+        $user_label = $label_model->getLabelForUser(\FormaLms\lib\FormaUser::getCurrentUser()->getId());
         $ret = '';
         foreach ($user_label as $id_common_label => $label_info) {
             $url = 'index.php?r=elearning/show&amp;id_common_label=' . $id_common_label;
@@ -274,14 +292,14 @@ class ElearningLmsController extends LmsController
      */
     public function suggested()
     {
-        $competence_needed = Docebo::user()->requiredCompetences();
+        $competence_needed = \FormaLms\lib\FormaUser::getCurrentUser()->requiredCompetences();
 
         $model = new ElearningLms();
         $courselist = $model->findAll([
             'cu.iduser = :id_user',
             'comp.id_competence IN (:competence_list)',
         ], [
-            ':id_user' => Docebo::user()->getId(),
+            ':id_user' => \FormaLms\lib\FormaUser::getCurrentUser()->getId(),
             ':competence_list' => $competence_needed,
         ], ['LEFT JOIN %lms_competence AS comp ON ( .... ) ']);
 
@@ -297,7 +315,7 @@ class ElearningLmsController extends LmsController
      */
     public function self_unsubscribe()
     {
-        $id_user = Docebo::user()->idst; //FormaLms\lib\Get::req('id_user', DOTY_INT, Docebo::user()->idst);
+        $id_user = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(); //FormaLms\lib\Get::req('id_user', DOTY_INT, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
         $id_edition = FormaLms\lib\Get::req('id_edition', DOTY_INT, 0);
         $id_date = FormaLms\lib\Get::req('id_date', DOTY_INT, 0);
@@ -323,7 +341,7 @@ class ElearningLmsController extends LmsController
         }
 
         $date_ok = true;
-        if ($cinfo['unsubscribe_date_limit'] !== '' && $cinfo['unsubscribe_date_limit'] !== '0000-00-00 00:00:00' && $cinfo['unsubscribe_date_limit'] !== null) {
+        if ($cinfo['unsubscribe_date_limit'] !== '' && $cinfo['unsubscribe_date_limit'] && $cinfo['unsubscribe_date_limit'] !== null) {
             if ($cinfo['unsubscribe_date_limit'] < date('Y-m-d H:i:s')) {
                 //self unsubscribing is no more allowed, go back to courselist page
                 Util::jump_to($jump_url . '&res=err_unsub');

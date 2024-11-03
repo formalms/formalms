@@ -28,7 +28,7 @@ class LangAdm extends Model
 
     public function __construct()
     {
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         parent::__construct();
     }
 
@@ -304,11 +304,11 @@ class LangAdm extends Model
     public function getAll($ini, $rows, $search = [], $text = false, $lang_code = false, $lang_code_diff = false, $only_empty = false, $sort = false, $dir = false, $plugin_id = false)
     {
         if (!$lang_code) {
-            $lang_code = getLanguage();
+            $lang_code = Lang::get();
         }
         /*
         // for a better display i need to know if the language is rtl or ltr
-        $langs = Docebo::langManager()->getAllLanguages(true);
+        $langs = \FormaLms\lib\Forma::langManager()->getAllLanguages(true);
         $main_dir = $langs[$lang_code]['direction'];
         if($lang_code_diff != false) $diff_dir = $langs[$lang_code_diff]['direction'];
         */
@@ -388,11 +388,11 @@ class LangAdm extends Model
 
         $data = [];
         $result = $this->db->query($qtxt);
-        foreach ($result as $obj){
+        while ($obj = $this->db->fetch_obj($result)) {
             //if($text != false) $obj->translation_text = Util::highlight($obj->translation_text, $text);
             //if($main_dir == 'rtl') $obj->translation_text = '<div style="direction:rtl;">'.$obj->translation_text.'</div>';
             //if($lang_code_diff != false && $diff_dir == 'rtl') $obj->translation_text_diff = '<div style="direction:rtl;">'.$obj->translation_text_diff.'</div>';
-            $obj['delete'] = 'ajax.adm_server.php?r=adm/lang/deleteKey&id_text=' . $obj['id'];
+            $obj->delete = 'ajax.adm_server.php?r=adm/lang/deleteKey&id_text=' . $obj->id;
             $data[] = $obj;
         }
 
@@ -523,7 +523,7 @@ class LangAdm extends Model
     public function getCount($search = [], $text = false, $lang_code = false, $only_empty = false)
     {
         if (!$lang_code) {
-            $lang_code = getLanguage();
+            $lang_code = Lang::get();
         }
         $qtxt = "
 		SELECT COUNT(*)
@@ -594,7 +594,7 @@ class LangAdm extends Model
     public function getTranslation($module, $lang_code = false, $includeDisabledPlugins = false)
     {
         if (!$lang_code) {
-            $lang_code = getLanguage();
+            $lang_code = Lang::get();
         }
 
         $qtxt = "
@@ -631,7 +631,7 @@ class LangAdm extends Model
     public function langTranslation($lang_code = false)
     {
         if (!$lang_code) {
-            $lang_code = getLanguage();
+            $lang_code = Lang::get();
         }
 
         $qtxt = "
@@ -809,9 +809,9 @@ class LangAdm extends Model
         $elemPlatform->setAttribute('id', 'all');
         $lang->appendChild($elemPlatform);
 
-        $arrModules = Docebo::langManager()->getAllModules();
+        $arrModules = \FormaLms\lib\Forma::langManager()->getAllModules();
         foreach ($arrModules as $module) {
-            $arrTranslations = Docebo::langManager()->getModuleLangTranslations('all', $module, $lang_code, '', false, false, true, $text_items);
+            $arrTranslations = \FormaLms\lib\Forma::langManager()->getModuleLangTranslations('all', $module, $lang_code, '', false, false, true, $text_items);
 
             if (count($arrTranslations) > 0) {
                 $elemModule = $doc->createElement('module');
@@ -820,7 +820,7 @@ class LangAdm extends Model
 
                 foreach ($arrTranslations as $tran) {
                     $elem = $doc->createElement('key');
-                    $elem->setAttribute('id', Docebo::langManager()->composeKey($tran[1], $module, 'all'));
+                    $elem->setAttribute('id', \FormaLms\lib\Forma::langManager()->composeKey($tran[1], $module, 'all'));
                     $elem->setAttribute('attributes', $tran[3]);
                     $elem->setAttribute('save_date', $tran[4]);
                     $elemText = $doc->createCDATASection($tran[2]);

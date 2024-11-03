@@ -14,13 +14,17 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 require_once _lms_ . '/class.module/track.object.php';
-require_once Forma::inc(_lms_ . '/class.module/learning.test.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/learning.test.php');
 
 class Track_Test extends Track_Object
 {
     protected $idTest;
 
     protected $number_of_attempt;
+    public $back_url;
+    public int $idParams;
+    public $idResource;
+    private $db;
 
     /**
      * object constructor
@@ -32,11 +36,11 @@ class Track_Test extends Track_Object
         $this->objectType = 'test';
         parent::__construct($idTrack);
 
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         if ($idTrack !== null) {
             $res = $this->db->query("SELECT idTest,idUser,idReference, number_of_attempt FROM %lms_testtrack WHERE idTrack = '" . (int) $idTrack . "'");
             if ($res && $this->db->num_rows($res) > 0) {
-                list($this->idTest, $this->idUser, $this->idReference, $this->number_of_attempt) = $this->db->fetch_row($res);
+                [$this->idTest, $this->idUser, $this->idReference, $this->number_of_attempt] = $this->db->fetch_row($res);
             }
         }
 
@@ -60,7 +64,7 @@ class Track_Test extends Track_Object
      *
      * @return int idTrack if the row is created correctly otherwise false
      **/
-    public function createNewTrack($idUser, $idTest, $idReference, $attempt_number = 0)
+    public static function createNewTrack($idUser, $idTest, $idReference, $attempt_number = 0)
     {
         $query = '
 		INSERT INTO ' . $GLOBALS['prefix_lms'] . "_testtrack 
@@ -84,7 +88,7 @@ class Track_Test extends Track_Object
         }
     }
 
-    public function getTrack($id_test, $id_user)
+    public static function getTrack($id_test, $id_user)
     {
         $query = '
 		SELECT idTrack
@@ -186,7 +190,6 @@ class Track_Test extends Track_Object
 			WHERE idUser = '" . (int) $idUser . "' AND
 				idTest = '" . (int) $idTest . "' AND
 				idReference = '" . (int) $idReference . "'";
-        $query.=' ORDER BY idTrack DESC';
         $re_track = sql_query($query);
 
         if (!sql_num_rows($re_track)) {
@@ -196,7 +199,7 @@ class Track_Test extends Track_Object
         }
     }
 
-    public function getTrackInfoById($idTrack)
+    public static function getTrackInfoById($idTrack)
     {
         $query = "
 			SELECT idTrack, date_attempt, date_end_attempt, last_page_seen, last_page_saved, score, number_of_save, number_of_attempt, attempts_for_suspension, suspended_until
@@ -221,7 +224,7 @@ class Track_Test extends Track_Object
      *
      * @return bool true if success false otherwise
      **/
-    public function updateTrack($idTrack, $new_info)
+    public static function updateTrack($idTrack, $new_info)
     {
         $first = true;
         if (!is_array($new_info)) {
@@ -232,7 +235,7 @@ class Track_Test extends Track_Object
 		SET ';
         foreach ($new_info as $field_name => $field_value) {
             $query .= ($first ? '' : ', ');
-            if ($field_value == null) {
+            if (is_null($field_value)) {
                 $query .= $field_name . ' = NULL ';
             } else {
                 $query .= $field_name . " = '" . $field_value . "'";
@@ -259,7 +262,7 @@ class Track_Test extends Track_Object
      **/
     public function loadReport($idUser = false, $mvc = false)
     {
-        require_once Forma::inc(_lms_ . '/modules/test/do.test.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/test/do.test.php');
         if ($idUser) {
             $output = user_report($idUser, $this->idResource, $this->idParams, false, $mvc);
             if ($mvc) {
@@ -305,10 +308,7 @@ class Track_Test extends Track_Object
         return $field;
     }
 
-    /**
-     * @return idTrack if exists or false
-     **/
-    public function deleteTrack($idTrack)
+    public static function deleteTrack($idTrack)
     {
         Events::trigger('lms.lo_user.deleting', [
             'id_track' => $idTrack,
@@ -342,7 +342,7 @@ class Track_Test extends Track_Object
 
     public function deleteTrackInfo($id_lo, $id_user)
     {
-        $query = 'SELECT idUser, idReference, idTrack FROM ' . $this->_table .
+        $query = 'SELECT idUser, idReference, idTrack FROM ' . self::$_table .
             ' WHERE idUser=' . (int) $id_user . ' AND idReference=' . (int) $id_lo .
             " AND objectType='test'";
         $res = sql_query($query);
@@ -369,7 +369,7 @@ class Track_Test extends Track_Object
                 return false;
             }
 
-            $re_update = $this->deleteTrack($id_track);
+            $re_update = self::deleteTrack($id_track);
             if ($re_update) {
                 $re_common = parent::deleteTrackInfo($id_lo, $id_user);
                 if ($re_common) {

@@ -14,12 +14,8 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 require_once _lms_ . '/class.module/track.object.php';
+define('_track_scorm_basepath', $GLOBALS['where_lms'] . '/modules/scorm/');
 
-//if( version_compare(phpversion(), "5.0.0") == -1 ) {
-    define('_track_scorm_basepath', _lms_ . '/modules/scorm/');
-//} else {
-//	define('_track_scorm_basepath',_lms_.'/modules/scorm5/');
-//}
 class Track_ScormOrg extends Track_Object
 {
     public $idTrack;
@@ -28,6 +24,18 @@ class Track_ScormOrg extends Track_Object
     public $dateAttempt;
     public $status;
     public $objectType;
+    /**
+     * @var string|null
+     */
+    public $back_url;
+    /**
+     * @var int|null
+     */
+    public int $idParams;
+    /**
+     * @var int|null
+     */
+    public int $idResource;
 
     /**
      * object constructor
@@ -39,8 +47,8 @@ class Track_ScormOrg extends Track_Object
         $this->objectType = 'scormorg';
         parent::__construct($idTrack, $environment);
 
-        $this->idResource = $idResource;
-        $this->idParams = $idParams;
+        $this->idResource = (int)$idResource;
+        $this->idParams = (int)$idParams;
         if ($back_url === null) {
             $this->back_url = [];
         } else {
@@ -54,7 +62,7 @@ class Track_ScormOrg extends Track_Object
     public function loadReport($idUser = false, $mvc = false)
     {
         require_once _track_scorm_basepath . 'scorm_stats.php';
-        require_once _lms_ . '/lib/lib.param.php';
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
         if ($idUser !== false) {
             $this->idReference = getLOParam($this->idParams, 'idReference');
 
@@ -65,7 +73,7 @@ class Track_ScormOrg extends Track_Object
     /**
      * print in standard output the details of a track.
      **/
-    public function loadReportDetail($idUser, $idItemDetail, $idItem)
+    public function loadReportDetail($idUser, $idItemDetail, $idItem = 0)
     {
         require_once _track_scorm_basepath . 'scorm_stats.php';
         if ($idUser !== false) {
@@ -87,9 +95,9 @@ class Track_ScormOrg extends Track_Object
     /**
      * @return idTrack if exists or false
      **/
-    public function deleteTrack($idTrack)
+    public static function deleteTrack($idTrack)
     {
-        $query = 'DELETE FROM ' . $this->_table . ' '
+        $query = 'DELETE FROM ' . self::$_table . ' '
                 . " WHERE idTrack='" . (int) $idTrack . "'"
                 . "   AND objectType='scormorg'";
         if (!sql_query($query)) {
@@ -105,7 +113,7 @@ class Track_ScormOrg extends Track_Object
     public function deleteTrackInfo($id_lo, $id_user)
     {
         //first of all: make sure the object is of the correct type 'scormorg'
-        $query = 'SELECT idUser, idReference, idTrack FROM ' . $this->_table . ' WHERE idUser=' . (int) $id_user . ' AND idReference=' . (int) $id_lo . " AND objectType='scormorg'";
+        $query = 'SELECT idUser, idReference, idTrack FROM ' . self::$_table . ' WHERE idUser=' . (int) $id_user . ' AND idReference=' . (int) $id_lo . " AND objectType='scormorg'";
         $res = sql_query($query);
         if ($res && sql_num_rows($res) > 0) {
             list($id_user, $id_lo, $idTrack) = sql_fetch_row($res);
@@ -133,7 +141,7 @@ class Track_ScormOrg extends Track_Object
             }
 
             if ($res1 && $res2 && $res3) {
-                return $this->deleteTrack($idTrack);
+                return self::deleteTrack($idTrack);
             }
         }
 

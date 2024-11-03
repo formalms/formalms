@@ -21,6 +21,7 @@ class EnrollrulesAlmsController extends AlmsController
     protected $acl_man;
 
     protected $data;
+    public EnrollrulesAlms $model;
 
     public function __construct($mvc_name)
     {
@@ -67,18 +68,18 @@ class EnrollrulesAlmsController extends AlmsController
         $i = 0;
         foreach ($rules as $id => $rule) {
             if ($i >= $start_index && $i < $start_index + $results) {
-                $rules[$id]->rule_type_text = $types[$rules[$id]->rule_type];
+                $rule->rule_type_text = $types[$rule->rule_type];
                 if ($rule->id_rule != 0) {
-                    $rules[$id]->mod_elem = '<a class="ico-sprite subs_elem" href="index.php?r=alms/enrollrules/modelem&amp;id_rule=' . $rule->id_rule . '" title="' . Lang::t('_MANAGE', 'enrollrules') . '">'
+                    $rule->mod_elem = '<a class="ico-sprite subs_elem" href="index.php?r=alms/enrollrules/modelem&amp;id_rule=' . $rule->id_rule . '" title="' . Lang::t('_MANAGE', 'enrollrules') . '">'
                         . '<span>' . Lang::t('_MANAGE', 'enrollrules') . '</span></a>';
-                    $rules[$id]->mod = '<a id="mod_rules_' . $rule->id_rule . '" class="ico-sprite subs_mod" href="ajax.adm_server.php?r=alms/enrollrules/mod&amp;id_rule=' . $rule->id_rule . '" title="' . Lang::t('_MOD', 'enrollrules') . '">'
+                    $rule->mod = '<a id="mod_rules_' . $rule->id_rule . '" class="ico-sprite subs_mod" href="ajax.adm_server.php?r=alms/enrollrules/mod&amp;id_rule=' . $rule->id_rule . '" title="' . Lang::t('_MOD', 'enrollrules') . '">'
                         . '<span>' . Lang::t('_MOD', 'enrollrules') . '</span></a>';
-                    $rules[$id]->del = 'ajax.adm_server.php?r=alms/enrollrules/del&amp;id_rule=' . $rule->id_rule . '';
+                    $rule->del = 'ajax.adm_server.php?r=alms/enrollrules/del&amp;id_rule=' . $rule->id_rule . '';
                 } else {
-                    $rules[$id]->mod_elem = '<a class="ico-sprite subs_elem" href="index.php?r=alms/enrollrules/modbaseelem&amp;id_rule=' . $rule->id_rule . '" title="' . Lang::t('_MANAGE', 'enrollrules') . '">'
+                    $rule->mod_elem = '<a class="ico-sprite subs_elem" href="index.php?r=alms/enrollrules/modbaseelem&amp;id_rule=' . $rule->id_rule . '" title="' . Lang::t('_MANAGE', 'enrollrules') . '">'
                         . '<span>' . Lang::t('_MANAGE', 'enrollrules') . '</span></a>';
-                    $rules[$id]->mod = '';
-                    $rules[$id]->del = '';
+                    $rule->mod = '';
+                    $rule->del = '';
                 }
             }
             ++$i;
@@ -194,7 +195,7 @@ class EnrollrulesAlmsController extends AlmsController
     protected function add()
     {
         checkPerm('view', true, 'enrollrules', 'lms');
-        $languages = Docebo::langManager()->getAllLangCode();
+        $languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         array_unshift($languages, Lang::t('_ALL', 'enrollrules'));
         $types = $this->model->ruleTypes();
         unset($types['base']);
@@ -231,7 +232,7 @@ class EnrollrulesAlmsController extends AlmsController
 
         $id_rule = FormaLms\lib\Get::req('id_rule', DOTY_INT, 0);
         $rule = $this->model->getRule($id_rule);
-        $languages = Docebo::langManager()->getAllLangCode();
+        $languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         array_unshift($languages, Lang::t('_ALL', 'enrollrules'));
         $this->render('mod', [
             'model' => $this->model,
@@ -280,6 +281,7 @@ class EnrollrulesAlmsController extends AlmsController
 
         $rule = $this->model->getRule($id_rule);
         $types = $this->model->ruleTypes();
+        $tab = $this->model->getTab($rule->rule_type);
         $rule->rule_type_text = $types[$rule->rule_type];
 
         $course_selection = $this->json->decode($rule->course_list);
@@ -307,6 +309,7 @@ class EnrollrulesAlmsController extends AlmsController
             'keys' => $keys,
             'columns' => $columns,
             'rule' => $rule,
+            'tab' => $tab
         ]);
     }
 
@@ -326,6 +329,7 @@ class EnrollrulesAlmsController extends AlmsController
         $rule = $this->model->getRule($id_rule);
         $course_selection = $this->json->decode($rule->course_list);
 
+      
         $courselist = [];
         if (isset($course_selection)) {
             foreach ($course_selection as $i => $idc) {
@@ -338,6 +342,7 @@ class EnrollrulesAlmsController extends AlmsController
         $entities = $this->model->getEntityRule($id_rule);
         $id_entities = array_keys($entities);
         $entities_name = $this->model->convertEntity($id_entities, $rule->rule_type);
+     
         foreach ($entities as $entity) {
             if ($i >= $start_index && $i < $start_index + $results) {
                 $rules[$i] = [
@@ -386,9 +391,9 @@ class EnrollrulesAlmsController extends AlmsController
             }
 
             if (isset($prev_entities[$id_entity])) {
-                $re &= $this->model->saveEntityRule($id_rule, $id_entity, $course_list);
+                $re = $this->model->saveEntityRule($id_rule, $id_entity, $course_list);
             } else {
-                $re &= $this->model->insertEntityRule($id_rule, $id_entity, $course_list);
+                $re = $this->model->insertEntityRule($id_rule, $id_entity, $course_list);
             }
         }
         Util::jump_to('index.php?r=alms/enrollrules/show&amp;result=' . ($re ? 'true' : 'false'));
@@ -459,10 +464,10 @@ class EnrollrulesAlmsController extends AlmsController
 
             $re = true;
             foreach ($to_add as $i => $id_entity) {
-                $re &= $this->model->insertEntityRule($id_rule, $id_entity, []);
+                $re = $this->model->insertEntityRule($id_rule, $id_entity, []);
             }
             foreach ($to_del as $i => $id_entity) {
-                $re &= $this->model->deleteEntityRule($id_rule, $id_entity);
+                $re = $this->model->deleteEntityRule($id_rule, $id_entity);
             }
             Util::jump_to('index.php?r=alms/enrollrules/modelem&amp;id_rule=' . $id_rule . '&amp;result=' . ($re ? 'true' : 'false'));
         }
@@ -600,9 +605,9 @@ class EnrollrulesAlmsController extends AlmsController
             }
 
             if (isset($prev_entities[$id_entity])) {
-                $re &= $this->model->saveEntityRule($id_rule, $id_entity, $course_list);
+                $re = $this->model->saveEntityRule($id_rule, $id_entity, $course_list);
             } else {
-                $re &= $this->model->insertEntityRule($id_rule, $id_entity, $course_list);
+                $re = $this->model->insertEntityRule($id_rule, $id_entity, $course_list);
             }
         }
         Util::jump_to('index.php?r=alms/enrollrules/show&amp;result=' . ($re ? 'true' : 'false'));

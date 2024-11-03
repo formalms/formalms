@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Forma;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -32,7 +34,7 @@ class EditionManager
         require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
         require_once _lms_ . '/lib/lib.course.php';
 
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
 
         $this->edition_table = $GLOBALS['prefix_lms'] . '_course_editions';
         $this->edition_user = $GLOBALS['prefix_lms'] . '_course_editions_user';
@@ -41,14 +43,14 @@ class EditionManager
         $this->courseuser_table = $GLOBALS['prefix_lms'] . '_courseuser';
         $this->user_table = $GLOBALS['prefix_fw'] . '_user';
 
-        $this->acl_man = $acl_man = &Docebo::user()->getAclManager();
+        $this->acl_man = $acl_man = \FormaLms\lib\Forma::getAclManager();
         $this->subscribe_man = new CourseSubscribe_Manager();
 
         $this->status_list = [CST_PREPARATION => Lang::t('_CST_PREPARATION', 'course'),
             CST_AVAILABLE => Lang::t('_CST_AVAILABLE', 'course'),
             CST_EFFECTIVE => Lang::t('_CST_CONFIRMED', 'course'),
             CST_CONCLUDED => Lang::t('_CST_CONCLUDED', 'course'),
-            CST_CANCELLED => Lang::t('_CST_CANCELLED', 'course'), ];
+            CST_CANCELLED => Lang::t('_CST_CANCELLED', 'course'),];
     }
 
     public function __destruct()
@@ -136,9 +138,9 @@ class EditionManager
                 'students' => $num_student,
                 'num_subscription' => $num_subscription,
                 'subscription' => '<a class="nounder" href="index.php?r=alms/subscription/show&amp;id_course=' . $id_course . '&amp;id_edition=' . $id_edition . '">'
-                    . $num_subscription . ' ' . FormaLms\lib\Get::sprite('subs_users', Lang::t('_SUBSCRIPTION', 'course')) . '</a>',
+                    . $num_subscription . ' ' . FormaLms\lib\Get::img('course/subscribe.png', Lang::t('_SUBSCRIPTION', 'course')) . '</a>',
                 'edit' => '<a href="index.php?r=alms/edition/edit&amp;id_course=' . $id_course . '&amp;id_edition=' . $id_edition . '">' . FormaLms\lib\Get::img('standard/edit.png', Lang::t('_MOD', 'course')) . '</a>',
-                'del' => 'ajax.adm_server.php?r=alms/edition/del&amp;id_course=' . $id_course . '&id_edition=' . $id_edition, ];
+                'del' => 'ajax.adm_server.php?r=alms/edition/del&amp;id_course=' . $id_course . '&id_edition=' . $id_edition,];
         }
 
         return $res;
@@ -177,7 +179,7 @@ class EditionManager
     {
         $query = 'SELECT *'
             . ' FROM ' . $this->edition_table
-            . ' WHERE id_edition = ' . (int) $id_edition;
+            . ' WHERE id_edition = ' . (int)$id_edition;
 
         $res = sql_fetch_assoc(sql_query($query));
 
@@ -274,7 +276,7 @@ class EditionManager
             . " can_subscribe = '" . $can_subscribe . "',"
             . " sub_date_begin = '" . $sub_date_begin . "',"
             . " sub_date_end = '" . $sub_date_end . "'"
-            . ' WHERE id_edition = ' . (int) $id_edition;
+            . ' WHERE id_edition = ' . (int)$id_edition;
 
         $ret = sql_query($query);
 
@@ -290,7 +292,7 @@ class EditionManager
     public function delEdition($id_edition)
     {
         $query = 'DELETE FROM ' . $this->edition_table
-            . ' WHERE id_edition = ' . (int) $id_edition;
+            . ' WHERE id_edition = ' . (int)$id_edition;
 
         $ret = sql_query($query);
 
@@ -314,10 +316,10 @@ class EditionManager
                 . ' JOIN ' . $this->user_table . ' AS u ON u.idst = eu.id_user'
                 . ' WHERE eu.id_edition IN (' . implode(',', $id_edition) . ')';
 
-            if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $query .= ' AND ' . $adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'eu.id_user');
+                $query .= ' AND ' . $adminManager->getAdminUsersQuery(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), 'eu.id_user');
             }
 
             if (is_array($filter)) {
@@ -341,8 +343,7 @@ class EditionManager
 
                 /*
                 if (isset($filter['date_valid']) && strlen($filter['date_valid']) >= 10) {
-                    $query .= " AND (s.date_begin_validity <= '".$filter['date_valid']."' OR s.date_begin_validity IS NULL OR s.date_begin_validity='0000-00-00 00:00:00') ";
-                    $query .= " AND (s.date_expire_validity >= '".$filter['date_valid']."' OR s.date_expire_validity IS NULL OR s.date_expire_validity='0000-00-00 00:00:00') ";
+                
                 }
                 */
             }
@@ -355,7 +356,7 @@ class EditionManager
                 if ($no_flat) {
                     $res[$id_edition][$id_user] = $id_user;
                 } else {
-                    $res[$id_user] = (int) $id_user;
+                    $res[$id_user] = (int)$id_user;
                 }
             }
             if (!$no_flat) {
@@ -405,7 +406,7 @@ class EditionManager
         $query = 'SELECT u.idst, u.userid, u.firstname, u.lastname, s.level, s.status, s.date_complete, s.date_begin_validity, s.date_expire_validity'
             . ' FROM ' . $this->courseuser_table . ' AS s'
             . ' JOIN ' . $this->user_table . ' AS u ON s.idUser = u.idst'
-            . ' WHERE s.idCourse = ' . (int) $id_course
+            . ' WHERE s.idCourse = ' . (int)$id_course
             . ' AND u.idst IN (' . implode(', ', $this->getEditionSubscribed($id_edition)) . ')';
 
         if (is_array($filter)) {
@@ -428,8 +429,8 @@ class EditionManager
             }
 
             if (isset($filter['date_valid']) && strlen($filter['date_valid']) >= 10) {
-                $query .= " AND (s.date_begin_validity <= '" . $filter['date_valid'] . "' OR s.date_begin_validity IS NULL OR s.date_begin_validity='0000-00-00 00:00:00') ";
-                $query .= " AND (s.date_expire_validity >= '" . $filter['date_valid'] . "' OR s.date_expire_validity IS NULL OR s.date_expire_validity='0000-00-00 00:00:00') ";
+                $query .= " AND (s.date_begin_validity <= '" . $filter['date_valid'] . "' OR s.date_begin_validity IS NULL)";
+                $query .= " AND (s.date_expire_validity >= '" . $filter['date_valid'] . "' OR s.date_expire_validity IS NULL)";
             }
 
             if (isset($filter['show'])) {
@@ -455,7 +456,7 @@ class EditionManager
 
                     case 3:
                         //not expired without expiring date
-                        $query .= " AND (s.date_expire_validity IS NULL OR s.date_expire_validity='' OR s.date_expire_validity='0000-00-00 00:00:00') ";
+                        $query .= " AND (s.date_expire_validity IS NULL OR s.date_expire_validity='') ";
 
                         break;
 
@@ -467,10 +468,10 @@ class EditionManager
             }
         }
 
-        if ($adminFilter && Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if ($adminFilter && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $query .= ' AND ' . $adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'idUser');
+            $query .= ' AND ' . $adminManager->getAdminUsersQuery(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), 'idUser');
         }
 
         switch ($sort) {
@@ -516,7 +517,7 @@ class EditionManager
                 'date_complete' => $date_complete,
                 'date_begin_validity' => $date_begin_validity,
                 'date_expire_validity' => $date_expire_validity,
-                'del' => 'ajax.adm_server.php?r=alms/subscription/delPopUp&id_course=' . $id_course . '&id_edition=' . $id_edition . '&id_user=' . $id_user, ];
+                'del' => 'ajax.adm_server.php?r=alms/subscription/delPopUp&id_course=' . $id_course . '&id_edition=' . $id_edition . '&id_user=' . $id_user,];
         }
 
         return $res;
@@ -531,7 +532,7 @@ class EditionManager
         $query = 'SELECT COUNT(*)'
             . ' FROM ' . $this->courseuser_table . ' AS s'
             . ' JOIN ' . $this->user_table . ' AS u ON s.idUser = u.idst'
-            . ' WHERE s.idCourse = ' . (int) $id_course
+            . ' WHERE s.idCourse = ' . (int)$id_course
             . ' AND u.idst IN (' . implode(', ', $subscribed) . ')';
 
         if (is_array($filter)) {
@@ -554,8 +555,8 @@ class EditionManager
             }
 
             if (isset($filter['date_valid']) && strlen($filter['date_valid']) >= 10) {
-                $query .= " AND (s.date_begin_validity <= '" . $filter['date_valid'] . "' OR s.date_begin_validity IS NULL OR s.date_begin_validity='0000-00-00 00:00:00') ";
-                $query .= " AND (s.date_expire_validity >= '" . $filter['date_valid'] . "' OR s.date_expire_validity IS NULL OR s.date_expire_validity='0000-00-00 00:00:00') ";
+                $query .= " AND (s.date_begin_validity <= '" . $filter['date_valid'] . "' OR s.date_begin_validity IS NULL)";
+                $query .= " AND (s.date_expire_validity >= '" . $filter['date_valid'] . "' OR s.date_expire_validity IS NULL)";
             }
 
             if (isset($filter['show'])) {
@@ -581,7 +582,7 @@ class EditionManager
 
                     case 3:
                         //not expired without expiring date
-                        $query .= " AND (s.date_expire IS NULL OR s.date_expire='' OR s.date_expire='0000-00-00 00:00:00') ";
+                        $query .= " AND (s.date_expire IS NULL OR s.date_expire='')";
 
                         break;
 
@@ -607,7 +608,7 @@ class EditionManager
         $query = 'SELECT COUNT(*)'
             . ' FROM ' . $this->courseuser_table . ' AS s'
             . ' JOIN ' . $this->user_table . ' AS u ON s.idUser = u.idst'
-            . ' WHERE s.idCourse = ' . (int) $id_course
+            . ' WHERE s.idCourse = ' . (int)$id_course
             . ' AND u.idst IN (' . implode(', ', $subscribed) . ')'
             . ' AND s.level = 3';
 
@@ -631,8 +632,8 @@ class EditionManager
             }
 
             if (isset($filter['date_valid']) && strlen($filter['date_valid']) >= 10) {
-                $query .= " AND (s.date_begin_validity <= '" . $filter['date_valid'] . "' OR s.date_begin_validity IS NULL OR s.date_begin_validity='0000-00-00 00:00:00') ";
-                $query .= " AND (s.date_expire_validity >= '" . $filter['date_valid'] . "' OR s.date_expire_validity IS NULL OR s.date_expire_validity='0000-00-00 00:00:00') ";
+                $query .= " AND (s.date_begin_validity <= '" . $filter['date_valid'] . "' OR s.date_begin_validity IS NULL)";
+                $query .= " AND (s.date_expire_validity >= '" . $filter['date_valid'] . "' OR s.date_expire_validity IS NULL)";
             }
 
             if (isset($filter['show'])) {
@@ -658,7 +659,7 @@ class EditionManager
 
                     case 3:
                         //not expired without expiring date
-                        $query .= " AND (s.date_expire IS NULL OR s.date_expire='' OR s.date_expire='0000-00-00 00:00:00') ";
+                        $query .= " AND (s.date_expire IS NULL OR s.date_expire='')";
 
                         break;
 
@@ -692,8 +693,8 @@ class EditionManager
     {
         $query = 'SELECT COUNT(*)'
             . ' FROM %lms_course_editions_user'
-            . ' WHERE id_user = ' . (int) $id_user
-            . ' AND id_editions = ' . (int) $id_edition;
+            . ' WHERE id_user = ' . (int)$id_user
+            . ' AND id_editions = ' . (int)$id_edition;
 
         list($control) = sql_fetch_row(sql_query($query));
 
@@ -716,7 +717,7 @@ class EditionManager
             $subscribe_man->updateForNewDateSubscribe($id_user, $id_course, $waiting);
         }
 
-        return $this->addUserToEdition($id_edition, $id_user, getLogUserId());
+        return $this->addUserToEdition($id_edition, $id_user, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
     }
 
     private function controlUserSubscriptions($id_user, $id_course)
@@ -763,8 +764,8 @@ class EditionManager
             $subscribe_man = new CourseSubscribe_Manager();
             $subscribe_man->delUserFromCourse($id_user, $id_course, null, $id_edition);
 
-            $docebo_course = new DoceboCourse($id_course);
-            $level_idst = &$docebo_course->getCourseLevel($id_course);
+            $formaCourse = new FormaCourse($id_course);
+            $level_idst = &$formaCourse->getCourseLevel($id_course);
             $this->acl_man->removeFromGroup($level_idst[$level], $id_user);
         }
 
@@ -789,12 +790,12 @@ class EditionManager
         $query = 'SELECT id_edition'
             . ' FROM ' . $this->edition_table
             . ' WHERE ('
-            . " date_begin = '0000-00-00'"
+            . " date_begin IS NULL"
             . " OR date_begin > '" . date('Y-m-d') . "')"
             . (count($user_edition) > 0 ? ' AND id_edition NOT IN (' . implode(',', $user_edition) . ')' : '')
             . (count($edition_full) > 0 ? ' AND id_edition NOT IN (' . implode(',', $edition_full) . ')' : '')
             . ' AND status NOT IN (' . CST_PREPARATION . ', ' . CST_CONCLUDED . ', ' . CST_CANCELLED . ')'
-            . ' AND id_course = ' . (int) $id_course;
+            . ' AND id_course = ' . (int)$id_course;
 
         $result = sql_query($query);
         $res = [];
@@ -811,9 +812,9 @@ class EditionManager
         $query = 'SELECT *'
             . ' FROM ' . $this->edition_table
             . ' WHERE ('
-            . " date_begin = '0000-00-00'"
+            . " date_begin IS NULL"
             . " OR date_begin > '" . date('Y-m-d') . "')"
-            . ' AND id_course = ' . (int) $id_course . ' '
+            . ' AND id_course = ' . (int)$id_course . ' '
             . ' AND status NOT IN (' . CST_PREPARATION . ', ' . CST_CONCLUDED . ', ' . CST_CANCELLED . ')';
 
         $result = sql_query($query);

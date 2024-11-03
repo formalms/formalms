@@ -26,9 +26,14 @@ class Folder
     public $level;
     public $ileft;
     public $iRight;
+    public $iLeft;
     public $otherValues;
     public $countChildrens;
     public $nested;
+    /**
+     * @var null
+     */
+    public $hasChildrens;
 
     public function __construct(&$tdb, $arrayValues, $childInfo = false, $nested = false)
     {
@@ -130,7 +135,7 @@ class Folder
 class TreeDb
 {
     // table name
-    public $table;
+    public $table = false;
     // associative array of field's names
     // id -> id of the record
     // idParent -> id of the parent
@@ -181,11 +186,11 @@ class TreeDb
         }
     }
 
-    public function _getBaseFieldId($tname = false)
-    {
+    public function _getBaseFieldId($tname = false) {
         if ($tname === false) {
             return $this->fields['id'];
-        } else {
+        }
+        else {
             return $tname . '.' . $this->fields['id'];
         }
     }
@@ -461,12 +466,12 @@ class TreeDb
         if ($arrayId === null) {
             $query .= $this->_getOrderBy('t1');
         } else {
-            $query .= !empty($arrayId) ? 'FIELD(' . $this->_getBaseFieldId('t1') . ', ' . implode(',', $arrayId) . ')' : $this->_getOrderBy('t1');
+            $query .=  !empty($arrayId) ? 'FIELD('.$this->_getBaseFieldId('t1').', ' . implode(',', $arrayId) . ')' : $this->_getOrderBy('t1') ;
         }
 
         $rs = $this->_executeQuery($query)
                 or $this->_printSQLError('getFoldersCollection: ' . $query);
-
+              
         $coll = new FoldersCollection($this, $rs, true);
 
         return $coll;
@@ -475,11 +480,11 @@ class TreeDb
     /**
      * Get folder by id.
      *
-     * @param $id int of the folder to retrieve
+     * @param $id id of the folder to retrieve
      *
      * @return Folder object or NULL if not found
      **/
-    public function &getFolderById($id)
+    public function getFolderById($id)
     {
         if ($id == 0) {
             $folder = &$this->getRootFolder();
@@ -493,9 +498,8 @@ class TreeDb
             $rs = $this->_executeQuery($query)
                     or $this->_printSQLError('getFolderById');
             if (sql_num_rows($rs) == 0) {
-                $false_var = null;
 
-                return $false_var;
+                return null;
             }
             $folder = new Folder($this, sql_fetch_row($rs));
         }
@@ -716,7 +720,7 @@ class TreeDb
 
     public function renameFolder(&$folder, $newName)
     {
-        $oldFolder = ((version_compare(phpversion(), '5.0') < 0) ? $folder : clone $folder);
+        $oldFolder = ((version_compare(PHP_VERSION, '5.0') < 0) ? $folder : clone $folder);
 
         $folder->path = $oldFolder->getParentPath() . '/' . $newName;
         $query = 'UPDATE ' . $this->table
@@ -753,7 +757,7 @@ class FoldersCollection
     public $childInfo;
     public $nested;
 
-    public function FoldersCollection(&$tdb, $rs, $childInfo = false, $nested = false)
+    public function __construct(&$tdb, $rs, $childInfo = false, $nested = false)
     {
         $this->tdb = $tdb;
         $this->rs = $rs;

@@ -48,6 +48,7 @@ class ListView
     public $lang = null;
     // the recordset
     public $rs = null;
+    public $id;
 
     public function _getOpShowItemId()
     {
@@ -244,14 +245,14 @@ class ListView
         }
     }
 
-    public function ListView($title, &$data, &$rend, $id)
+    public function __construct($title, &$data, &$rend, $id)
     {
         $this->title = $title;
         $this->data = &$data;
         $this->rend = $rend;
         $this->id = $id;
         $this->itemSelected = [];
-        $this->lang = &DoceboLanguage::createInstance('standard', 'framework');
+        $this->lang = &FormaLanguage::createInstance('standard', 'framework');
         $this->startRow = FormaLms\lib\Get::req('ini', DOTY_INT, 0);
     }
 
@@ -427,7 +428,7 @@ class ListView
 
         while ($values = $this->fetchRecord()) {
             foreach ($colInfo as $key => $fieldInfo) {
-                $colData[$key]['data'] = $values[$colInfo[$key]['data']];
+                $colData[$key]['data'] = $values[$fieldInfo['data']];
             }
             $out .= $this->rend->WriteRowCss($colData);
         }

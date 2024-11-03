@@ -172,15 +172,15 @@ class Form
      * @param string $name         name of the element
      * @param string $value        value to be displayed in the input element (format hh:mm)
      * @param string $alt_name     alt name for the field
-     * @param string $min_time     minimum value that can be selected (default 00:00)
-     * @param string $max_time     maximum value that can be selected (default 23:59)
      * @param string $other_param  other attributes for the tag
      * @param string $other_after  html code to show after the input element
      * @param string $other_before html code to show before the input element
+     * @param string $min_time     minimum value that can be selected (default 00:00)
+     * @param string $max_time     maximum value that can be selected (default 23:59)
      *
      * @return string with the html code produced
      */
-    public static function getLineTimeSelectorField($line_class, $label_class, $label_text, $input_class, $id, $name, $value, $alt_name, $min_time = '00:00', $max_time = '23:59', $other_param, $other_after, $other_before)
+    public static function getLineTimeSelectorField($line_class, $label_class, $label_text, $input_class, $id, $name, $value, $alt_name, $other_param, $other_after, $other_before, $min_time = '00:00', $max_time = '23:59')
     {
         return "<div class='$line_class'>"
             . $other_before
@@ -207,7 +207,7 @@ class Form
     {
         $search = ['"', '<', '>'];
         $replace = ['&quot;', '&lt;', '&gt;'];
-        $value = str_replace($search, $replace, $value);
+        $value = str_replace($search, $replace, (string) $value);
 
         return '<input type="text" '
         . "\n\t" . 'class="form-control ' . $css_text . '" '
@@ -267,9 +267,9 @@ class Form
      */
     public static function getLineTextfield($css_line, $css_label, $label_name, $css_text, $id, $name, $value, $alt_name, $maxlenght, $other_param, $other_after, $other_before)
     {
-        return '<div class="' . $css_line . '">'
+       return '<div class="' . $css_line . '">'
         . $other_before
-        . '<p><label class="' . $css_label . '" for="' . $id . '">' . $label_name . '</label></p>'
+        . ($label_name ? '<p><label class="' . $css_label . '" for="' . $id . '">' . $label_name . '</label></p>' : '')
         . Form::getInputTextfield($css_text, $id, $name, $value, $alt_name, $maxlenght, $other_param)
         . $other_after
         . '</div>';
@@ -291,7 +291,7 @@ class Form
      */
     public static function getTextfield($label_name, $id, $name, $maxlenght, $value = '', $alt_name = '', $other_after = '', $other_before = '')
     {
-        if ($alt_name == '') {
+        if ($alt_name == '' && !$label_name) {
             $alt_name = strip_tags($label_name);
         }
 
@@ -459,7 +459,7 @@ class Form
 
         $date = '';
         $iso = Format::dateDb($value, 'datetime');
-        if ($value != '' && $value != '0000-00-00 00:00:00') {
+        if ($value != '' && $value) {
             $datetime = new DateTime($iso);
             $timestamp = $datetime->format('U'); //mktime(0, 0, 0, (int)substr($iso, 5, 2), (int)substr($iso, 8, 2), (int)substr($iso, 0, 4));
             $date = date('m/d/Y h:m', $timestamp);
@@ -519,7 +519,7 @@ class Form
             $date_format = $regset->date_token;
         }
 
-        $_lang = Docebo::user()->getPreference('ui.lang_code');
+        $_lang = \FormaLms\lib\FormaUser::getCurrentUser()->getPreference('ui.lang_code');
         $date_format = str_replace(['%d', '%m', '%Y', '-'], ['dd', 'mm', 'yyyy', '-'], $date_format);
         $date_picker_other_param = ' data-provide="datepicker" 
     								 data-date-autoclose=true data-date-language="' . $_lang .
@@ -889,7 +889,7 @@ class Form
     {
         return '<div class="' . $css_line . '">'
             . $other_before
-            . '<p><label class="' . $css_label . '" for="' . $id . '">' . $label_name . '</label></p>'
+            . ($label_name ? '<p><label class="' . $css_label . '" for="' . $id . '">' . $label_name . '</label></p>' : '')
             // .'<label class="'.$css_label.'" for="'.$id.'">'.$label_name.'</label>'
             . Form::getInputDropdown($css_dropdown, $id, $name, $all_value, $selected, $other_param)
             . $other_after
@@ -902,7 +902,7 @@ class Form
      * @param string $label_name   text contained into the label
      * @param string $id           the id of the element
      * @param string $name         the name of the element
-     * @param array $all_value    all the possible value of the select element
+     * @param string $all_value    all the possible value of the select element
      * @param string $selected     the element selected
      * @param string $other_after  html code added after the select element
      * @param string $other_before html code added before the label element
@@ -1310,6 +1310,7 @@ class Form
             $css_text = 'textarea';
         }
         $maxlength_info = '';
+        $script = '';
         if ($maxlength) {
             $maxlength_info = '<small>(' . Lang::t('_MAX_LENGTH_TEXT_AREA', 'course') . ' <em>' . $maxlength . '</em>)</small> <br/><small>' . Lang::t('_TOTAL_CHARS', 'course') . ": <em class='charNum'> " . strlen($value) . '</em></small> ';
 

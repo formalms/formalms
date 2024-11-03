@@ -1,8 +1,11 @@
 {% if items.data.length > 0 %}
     <ul class="folderView__ul js-sortable-view">
         {% for el in items.data %}
-            <li data-id="{{ el.id }}" class="folderView__li is-droppable {% if el.description %}has-tooltip{% endif %} {% if el.type %}js-folderView-file{% else %}js-folderView-folder is-dropzone{% endif %} {% if el.locked %}fv-is-locked{% endif %}">
-                <div data-id="{{ el.id }}" class="folderView__el {% if el.type %}fv-is-{{ el.type }}{% else %}fv-is-folder{% endif %}" style="background-image:url('{{ Utils_getImage("folderView", "icon-" ~ el.image_type ~ ".svg", "icon-" ~ el.type ~ ".svg") }}')">   
+            <li data-id="{{ el.id }}"
+                class="folderView__li is-droppable {% if el.description %}has-tooltip{% endif %} {% if el.type %}js-folderView-file{% else %}js-folderView-folder is-dropzone{% endif %} {% if el.locked %}fv-is-locked{% endif %}" {% if not el.type %}tabIndex=0{% endif %}>
+                <div data-id="{{ el.id }}"
+                     class="folderView__el {% if el.type %}fv-is-{{ el.type }}{% else %}fv-is-folder{% endif %}"
+                     style="background-image:url('{{ Utils_getImage("folderView", "icon-" ~ el.image_type ~ ".svg", "icon-" ~ el.type ~ ".svg") }}')">
                     <span class="folderView__label">
                         {{ el.title }}
                         {% if el.description %}
@@ -15,20 +18,20 @@
                     {% if el.visible_actions | length %}
                         {% for action in el.visible_actions %}
                             {% if action.type == 'submit' %}
-                                <input type="submit"
+                                <button type="submit"
                                        id="{{ action.content }}"
                                        name="{{ action.content }}"
                                        class="folderView__action fv-is-{{ action.name }} js-fv-action"
-                                       title="{{ Lang_translate(action.label,'course') }}"
+                                       title="{{ action.label }}"
                                        value=""/>
                             {% elseif (action.type == 'link') %}
-                                <a href="{{ action.content }}" class="folderView__action {% if action.directPlay %}direct-play{% endif %} fv-is-{{ action.name }}" title="{{ Lang_translate(action.label,'course') }}">
+                                <a href="{{ action.content }}" class="folderView__action {% if action.directPlay %}direct-play{% endif %} fv-is-{{ action.name }}" title="{{ action.label }}">
                                 </a>
                             {% endif %}
                         {% endfor %}
                     {% endif %}
                     {% if el.status %}
-                        <div class="folderView__status fv-is-{{ el.status }}" title="{{ Lang_translate(el.status_label,'course') }}"></div>
+                        <a class="folderView__status fv-is-{{ el.status }}" title="{{ el.status_label }}"></a>
                     {% endif %}
                 </div>
                 </div>
@@ -43,23 +46,23 @@
                         {% for action in el.actions %}
                             {% if not isStudent %}
                                 {% if action.name == 'copy' %}
-                                    <button type="button" class="folderView__button fv-is-{{ action.name }} js-fv-open-overlay" title="{{ Lang_translate(action.label,'course') }}"></button>
+                                    <button type="button" class="folderView__button fv-is-{{ action.name }} js-fv-open-overlay" title="{{ action.label }}"></button>
                                 {% else %}
                                     {% if action.type == 'submit' %}
-                                        <input type="submit"
+                                        <button type="submit"
                                             id="{{ action.content }}"
                                             name="{{ action.content }}"
                                             class="folderView__action fv-is-{{ action.name }} js-fv-action"
-                                            title="{{ Lang_translate(action.label,'course') }}"
-                                            value=""/>
+                                            title="{{ action.label }}"
+                                            value=""></button>
                                     {% elseif (action.type == 'link') %}
-                                        <a href="{{ action.content }}" class="folderView__action fv-is-{{ action.name }}" title="{{ Lang_translate(action.label,'course') }}">
+                                        <a href="{{ action.content }}" class="folderView__action fv-is-{{ action.name }}" title="{{ action.label }}">
                                         </a>
                                     {% endif %}
                                 {% endif %}
                             {% else %}
                                 {% if action.name == 'play' and isStudent %}
-                                    <a href="{{ action.content }}" class="folderView__action fv-is-{{ action.name }}" title="{{ Lang_translate(action.label,'course') }}"></a>
+                                    <a href="{{ action.content }}" class="folderView__action fv-is-{{ action.name }}" title="{{ action.label }}"></a>
                                 {% endif %}
                             {% endif %}
                         {% endfor %}

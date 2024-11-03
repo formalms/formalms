@@ -46,6 +46,7 @@ class PageZone
     public $_endOut = [];
 
     public $print_if_empty;
+    public $name;
 
     public function __construct($name, $print_if_empty = false)
     {
@@ -201,6 +202,8 @@ class PageZone
 
 class PageZoneLang extends PageZone
 {
+    public $name;
+
     public function __construct($name, $print_if_empty = false)
     {
         $this->name = $name;
@@ -211,7 +214,7 @@ class PageZoneLang extends PageZone
     {
         $out = '';
 
-        if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_USER) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_USER) {
             return $out;
         }
 
@@ -303,7 +306,7 @@ class PageWriter
     /**
      * PageWriter constructor.
      */
-    public function _constructor()
+    public function __construct()
     {
     }
 
@@ -605,7 +608,7 @@ class onecolPageWriter extends PageWriter
         $this->addStart('<div id="feedback" class="container-feedback">', 'feedback');
         $this->addEnd('</div>' . "\n", 'feedback');
         /*
-        $browser_code = Docebo::langManager()->getLanguageBrowsercode(getLanguage());
+        $browser_code = \FormaLms\lib\Forma::langManager()->getLanguageBrowsercode(getLanguage());
         $pos = strpos($browser_code, ';');
         if($pos !== false) $browser_code = substr($browser_code, 0, $pos);
 
@@ -613,11 +616,11 @@ class onecolPageWriter extends PageWriter
         if($browser["browser"] !== 'msie') {
 
             // The world is not ready for this right now, all the xml not valid will not be interpretated form the serious borwsers
-            //header("Content-Type: application/xhtml+xml; charset=".getUnicode()."");
-            header("Content-Type: text/html; charset=".getUnicode()."");
-            $this->addStart('<?xml version="1.0" encoding="'.getUnicode().'"?'.'>'."\n", 'page_head' );
+            //header("Content-Type: application/xhtml+xml; charset=".Lang::charset()."");
+            header("Content-Type: text/html; charset=".Lang::charset()."");
+            $this->addStart('<?xml version="1.0" encoding="'.Lang::charset().'"?'.'>'."\n", 'page_head' );
         } else {
-            header("Content-Type: text/html; charset=".getUnicode()."");
+            header("Content-Type: text/html; charset=".Lang::charset()."");
         }
 
         $this->addStart( ''
@@ -627,7 +630,7 @@ class onecolPageWriter extends PageWriter
             .'<head>',
             'page_head' );
         $this->addContent( ''
-            .'	<meta http-equiv="Content-Type" content="text/html; charset='.getUnicode().'" />'."\n"
+            .'	<meta http-equiv="Content-Type" content="text/html; charset='.Lang::charset().'" />'."\n"
             .'	<meta name="Copyright" content="Forma srl" />'."\n"
             .'	<link rel="Copyright" href="http://www.formalms.org" title="Copyright Notice" />'."\n"
             .'	<link href="'.getPathTemplate().'images/favicon.ico" rel="shortcut icon" />'."\n",
@@ -738,8 +741,8 @@ class emptyPageWriter extends PageWriter
 /**
  * Quick alias of $GLOBALS['page']->add() static method.
  *
- * @param <string> $text the text to add in the page
- * @param <string> $zone the identifier of the platform (content selected by default)
+ * @param string $text the text to add in the page
+ * @param string $zone the identifier of the platform (content selected by default)
  */
 function cout($text, $zone = false)
 {

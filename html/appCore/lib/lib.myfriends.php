@@ -14,7 +14,7 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 /*
- * @package DoceboCore
+ * @package FormaCore
  * @subpackage user_management
  * @category library
  * @author Fabio Pirovano
@@ -38,6 +38,7 @@ class MyFriends
      * the main user.
      */
     public $_id_user;
+    public $id_user;
 
     public $arr_field = [
         MYFRIEND_ID_USER => 'id_user',
@@ -93,7 +94,7 @@ class MyFriends
     /**
      * class constructor.
      */
-    public function MyFriends($id_user)
+    public function __construct($id_user)
     {
         ksort($this->arr_field);
         reset($this->arr_field);
@@ -227,13 +228,13 @@ class MyFriends
     /**
      * return the userid/username of the user that are friends.
      */
-    public function &getFriendsInfo($arr_id_friends = false, $limit = false, $waiting = 0)
+    public function getFriendsInfo($arr_id_friends = false, $limit = false, $waiting = 0)
     {
         if ($arr_id_friends === false) {
             $arr_id_friends = $this->getFriendsList($limit, false, $waiting, true);
         }
 
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $users_info = &$acl_man->getUsers($arr_id_friends);
 

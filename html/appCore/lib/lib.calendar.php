@@ -16,7 +16,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 /**
  * @version  $Id:$
  */
-class DoceboCal
+class FormaCal
 {
     public $lastId;
 
@@ -204,7 +204,7 @@ class CalEvent
     public $_day;
     public $_owner;
 
-    public function CalEvent()
+    public function __construct()
     {
         $this->start = new evDate();
         $this->end = new evDate();

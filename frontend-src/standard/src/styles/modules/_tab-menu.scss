@@ -50,29 +50,30 @@
       width: 100%;
       height: 40px;
       padding: 12px 35px;
-      color: var(--color-0-400);
-      background-color: var(--color-0-050) !important;
+      color: var(--color-navbtn-text);
+      background-color: var(--color-navbtn-bg) !important;
       border-radius: 100vh !important;
       transition: color 0.2s ease 0s;
       text-transform: uppercase;
       display: block;
 
       &:hover {
-        background-color: var(--color-0-100) !important;
+        background-color: var(--color-navbtn-bg-inter) !important;
+        color: var(--color-navbtn-text-inter);
       }
 
       &:focus {
-        color: var(--color-0-400);
+        color: var(--color-navbtn-bg-inter);
       }
     }
 
     &.active > a {
       width: 100%;
-      background-color: var(--color-1-300) !important;
       border: none !important;
-      color: var(--color-1-020) !important;
+      color: var(--color-navbtn-text-inter);
+      background-color: var(--color-navbtn-bg-inter) !important;
       &:hover {
-        background-color: var(--color-1-400) !important;
+        background-color: var(--color-navbtn-bg-inter) !important;
       }
     }
   }
@@ -102,7 +103,7 @@
       text-align: left;
 
       &.active {
-        background-color: var(--color-0-400)04;
+        background-color: var(--color-grey-03)04;
       }
     }
 
@@ -128,306 +129,303 @@
 
 
 
+.tabs_filter {
+  top: 55px !important;
+  width: 100%;
 
-
-.html {
-  .tabs_filter {
-    top: 55px !important;
-    width: 100%;
-  
-    @include breakpoint($tablet) {
-      top: 45px !important;
-      width: auto;
-    }
-  }
-  
-  .nav.nav-tabs.visible-xs {
-    width: 100%;
-    border: none;
-  }
-  
-  
-  .nav.nav-tabs.visible-xs {
-    height: 46px;
-    padding: 0;
-    background-color: var(--color-3);
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-  
-    .dropdown {
-      width: 100%;
-      height: 100%;
-  
-      .dropdown-toggle {
-        width: calc(100% - 36px);
-        margin: 0 18px;
-        padding: 0;
-        line-height: 44px;
-        font-family: $font;
-        font-size: 16px;
-        text-transform: uppercase;
-        color: white;
-        border: 0;
-        border-bottom: 1px solid var(--color-0-250);
-  
-        &:hover,
-        &:focus {
-          background-color: var(--color-0-250);
-        }
-  
-        .caret {
-          float: right;
-          border: 0;
-          position: relative;
-  
-          &:before {
-            content: "\f107";
-            font-family: $icon;
-            color: var(--color-0-250);
-            font-size: 18px;
-            line-height: 46px;
-            position: absolute;
-            left: -11px;
-          }
-        }
-      }
-  
-      &.open {
-        .dropdown-toggle {
-          background-color: transparent;
-        }
-  
-        .dropdown-menu {
-          width: 100%;
-          padding: 0;
-          background-color: var(--color-0-070);
-          border: none;
-          box-shadow: none;
-  
-          li {
-            a {
-              padding: 0 18px;
-              color: var(--color-0-400);
-              font-family: $font;
-              line-height: 44px;
-              border-bottom: 1px solid var(--color-0-600);
-              text-transform: uppercase;
-            }
-  
-            &.active {
-              a {
-                background-image: none;
-                background-color: transparent;
-                color: var(--color-3);
-                font-weight: bold;
-              }
-            }
-  
-            &:last-child {
-              a {
-                border-bottom: none;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
-
-  #global_conf {
-    .tab-content .tab-pane {
-      h2 {
-        font-size: 24px;
-        font-weight: bold;
-        color: #666;
-        display: block;
-        margin-bottom: 20px;
-      }
-      h3 {
-        font-size: 20px;
-        font-weight: bold;
-        color: #666;
-        text-transform: capitalize;
-        margin-bottom: 20px;
-        display: block;
-        padding-bottom: 10px;
-        border-bottom: 1px solid #666;
-      }
-      select {
-        display: inline-block;
-        width: 28rem;
-        max-width: 100%;
-        margin-right: 0;
-      }
-    }
-  }
-  .HTML_COMMENTATO1 {
-    all: unset;
-    // Top-bar
-    //
-    // This is the top-bar of the site
-    //
-    // Style guide: 4
-    
-    // This is the top-bar of the site
-    //
-    // Markup:
-    // <ul class="nav nav-tabs hidden-xs">
-    //   <li class="active">
-    //     <a class="" href="#">Home</a>
-    //   </li>
-    //   <li class="">
-    //     <a class="" href="#">E-Learning</a>
-    //   </li>
-    //   <li class="">
-    //     <a class="" href="#">Catalogo</a>
-    //   </li>
-    // </ul>
-    // <ul class="nav nav-tabs visible-xs">
-    //   <script type="text/javascript">
-    //     (function ($) {
-      //       $(window).load(function () {
-        //         var dropdown_title = $('.tabs-dropdown').find('.active').text();
-        //         $('.dropdown-title').html(dropdown_title);
-        //       })
-        //     })(jQuery);
-        //   </script>
-        //   <li class="dropdown">
-        //     <a href="javascript:void(0)" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
-        //        aria-expanded="false">
-        //       <span class="dropdown-title">E-Learning</span> &nbsp;<span class="caret"></span>
-        //     </a>
-        //     <ul class="dropdown-menu dropdown-menu-left tabs-dropdown">
-        //       <li>
-        //         <a href="#">Home</a>
-        //       </li>
-        //       <li class="active">
-        //         <a href="#">E-Learning</a>
-        //       </li>
-        //       <li>
-        //         <a href="#">Percorsi formativi</a>
-        //       </li>
-        //       <li>
-        //         <a href="#">Libreria contenuti</a>
-        //       </li>
-        //       <li>
-        //         <a href="#">Comunicazioni</a>
-        //       </li>
-        //       <li>
-        //         <a href="#">Classe</a>
-        //       </li>
-        //       <li>
-        //         <a href="#">Catalogo Corsi</a>
-        //       </li>
-        //       <li>
-        //        <a href="#">Videoconferenza</a>
-        //       </li>
-        //     </ul>
-        //   </li>
-        // </ul>
-        // <ul class="nav nav-pills">
-        //   <li class="">
-        //     <a class="icon--all" href="#">Tutti i corsi aperti</a>
-        //   </li>
-        //   <li class="">
-        //     <a class=" icon--concluded" href="#">Conclusi</a>
-        //   </li>
-        //   <li class="">
-        //     <a class=" icon--active" href="#">In itinere</a>
-        //   </li>
-        // </ul>
-        //
-        // Style guide: 4.1
-        
-        // Default Tab
-        //
-        // Markup:
-        // <ul class="nav nav-tabs hidden-xs">
-        //   <li class="">
-        //     <a class="" href="#">Home</a>
-        //   </li>
-        // </ul>
-        //
-        // Style guide: 4.2
-  }
-  .HTML_COMMENTATO2 {
-    display: none;
-    // Active Tab
-    //
-    // Markup:
-    // <ul class="nav nav-tabs hidden-xs">
-    //   <li class="active">
-    //     <a class="" href="javascript:void(0);">Home</a>
-    //   </li>
-    // </ul>
-    //
-    // Style guide: 4.3
-  
-    // Filters (left)
-    //
-    // Markup:
-    // <ul class="nav nav-pills">
-    //   <li class="">
-    //     <a class="icon--all" href="#">Tutti i corsi aperti</a>
-    //   </li>
-    //   <li class="">
-    //     <a class="icon--concluded" href="#">Conclusi</a>
-    //   </li>
-    //   <li class="">
-    //     <a class="icon--active" href="#">In itinere</a>
-    //   </li>
-    // </ul>
-    //
-    // Style guide: 4.4
-  
-  
-    // This is the mobile top-bar
-    //
-    // <ul class="nav nav-tabs visible-xs">
-    //   <script type="text/javascript">
-    //     (function ($) {
-    //       $(window).load(function () {
-    //         var dropdown_title = $('.tabs-dropdown').find('.active').text();
-    //         $('.dropdown-title').html(dropdown_title);
-    //       })
-    //     })(jQuery);
-    //   </script>
-    //   <li class="dropdown">
-    //     <a href="javascript:void(0)" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
-    //        aria-expanded="false">
-    //       <span class="dropdown-title">E-Learning</span> &nbsp;<span class="caret"></span>
-    //     </a>
-    //     <ul class="dropdown-menu dropdown-menu-left tabs-dropdown">
-    //       <li>
-    //         <a href="#">Home</a>
-    //       </li>
-    //       <li class="active">
-    //         <a href="#">E-Learning</a>
-    //       </li>
-    //       <li>
-    //         <a href="#">Percorsi formativi</a>
-    //       </li>
-    //       <li>
-    //         <a href="#">Libreria contenuti</a>
-    //       </li>
-    //       <li>
-    //         <a href="#">Comunicazioni</a>
-    //       </li>
-    //       <li>
-    //         <a href="#">Classe</a>
-    //       </li>
-    //       <li>
-    //         <a href="#">Catalogo Corsi</a>
-    //       </li>
-    //       <li>
-    //        <a href="#">Videoconferenza</a>
-    //       </li>
-    //     </ul>
-    //   </li>
-    // </ul>
-    //
-    // Style guide: 4.5
+  @include breakpoint($tablet) {
+    top: 45px !important;
+    width: auto;
   }
 }
+
+.nav.nav-tabs.visible-xs {
+  width: 100%;
+  border: none;
+}
+
+
+.nav.nav-tabs.visible-xs {
+  height: 46px;
+  padding: 0;
+  background-color: var(--color-primary);
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+
+  .dropdown {
+    width: 100%;
+    height: 100%;
+
+    .dropdown-toggle {
+      width: calc(100% - 36px);
+      margin: 0 18px;
+      padding: 0;
+      line-height: 44px;
+      font-family: $font;
+      font-size: 16px;
+      text-transform: uppercase;
+      color: white;
+      border: 0;
+      border-bottom: 1px solid var(--color-grey);
+
+      &:hover,
+      &:focus {
+        background-color: var(--color-grey);
+      }
+
+      .caret {
+        float: right;
+        border: 0;
+        position: relative;
+
+        &:before {
+          content: "\f107";
+          font-family: $icon;
+          color: var(--color-grey);
+          font-size: 18px;
+          line-height: 46px;
+          position: absolute;
+          left: -11px;
+        }
+      }
+    }
+
+    &.open {
+      .dropdown-toggle {
+        background-color: transparent;
+      }
+
+      .dropdown-menu {
+        width: 100%;
+        padding: 0;
+        background-color: var(--color-grey);
+        border: none;
+        box-shadow: none;
+
+        li {
+          a {
+            padding: 0 18px;
+            color: var(--color-grey-03);
+            font-family: $font;
+            line-height: 44px;
+            border-bottom: 1px solid var(--color-grey-04);
+            text-transform: uppercase;
+          }
+
+          &.active {
+            a {
+              background-image: none;
+              background-color: transparent;
+              color: var(--color-primary);
+              font-weight: bold;
+            }
+          }
+
+          &:last-child {
+            a {
+              border-bottom: none;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+#global_conf {
+  .tab-content .tab-pane {
+    h2 {
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--color-secondary);
+      display: block;
+      margin-bottom: 20px;
+    }
+    h3 {
+      font-size: 20px;
+      font-weight: bold;
+      color: var(--color-secondary);
+      text-transform: capitalize;
+      margin-bottom: 20px;
+      display: block;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--color-grey);
+    }
+    select {
+      display: inline-block;
+      width: 28rem;
+      max-width: 100%;
+      margin-right: 0;
+    }
+  }
+}
+.HTML_COMMENTATO1 {
+  all: unset;
+  // Top-bar
+  //
+  // This is the top-bar of the site
+  //
+  // Style guide: 4
+  
+  // This is the top-bar of the site
+  //
+  // Markup:
+  // <ul class="nav nav-tabs hidden-xs">
+  //   <li class="active">
+  //     <a class="" href="#">Home</a>
+  //   </li>
+  //   <li class="">
+  //     <a class="" href="#">E-Learning</a>
+  //   </li>
+  //   <li class="">
+  //     <a class="" href="#">Catalogo</a>
+  //   </li>
+  // </ul>
+  // <ul class="nav nav-tabs visible-xs">
+  //   <script type="text/javascript">
+  //     (function ($) {
+    //       $(window).load(function () {
+      //         var dropdown_title = $('.tabs-dropdown').find('.active').text();
+      //         $('.dropdown-title').html(dropdown_title);
+      //       })
+      //     })(jQuery);
+      //   </script>
+      //   <li class="dropdown">
+      //     <a href="javascript:void(0)" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+      //        aria-expanded="false">
+      //       <span class="dropdown-title">E-Learning</span> &nbsp;<span class="caret"></span>
+      //     </a>
+      //     <ul class="dropdown-menu dropdown-menu-left tabs-dropdown">
+      //       <li>
+      //         <a href="#">Home</a>
+      //       </li>
+      //       <li class="active">
+      //         <a href="#">E-Learning</a>
+      //       </li>
+      //       <li>
+      //         <a href="#">Percorsi formativi</a>
+      //       </li>
+      //       <li>
+      //         <a href="#">Libreria contenuti</a>
+      //       </li>
+      //       <li>
+      //         <a href="#">Comunicazioni</a>
+      //       </li>
+      //       <li>
+      //         <a href="#">Classe</a>
+      //       </li>
+      //       <li>
+      //         <a href="#">Catalogo Corsi</a>
+      //       </li>
+      //       <li>
+      //        <a href="#">Videoconferenza</a>
+      //       </li>
+      //     </ul>
+      //   </li>
+      // </ul>
+      // <ul class="nav nav-pills">
+      //   <li class="">
+      //     <a class="icon--all" href="#">Tutti i corsi aperti</a>
+      //   </li>
+      //   <li class="">
+      //     <a class=" icon--concluded" href="#">Conclusi</a>
+      //   </li>
+      //   <li class="">
+      //     <a class=" icon--active" href="#">In itinere</a>
+      //   </li>
+      // </ul>
+      //
+      // Style guide: 4.1
+      
+      // Default Tab
+      //
+      // Markup:
+      // <ul class="nav nav-tabs hidden-xs">
+      //   <li class="">
+      //     <a class="" href="#">Home</a>
+      //   </li>
+      // </ul>
+      //
+      // Style guide: 4.2
+}
+.HTML_COMMENTATO2 {
+  display: none;
+  // Active Tab
+  //
+  // Markup:
+  // <ul class="nav nav-tabs hidden-xs">
+  //   <li class="active">
+  //     <a class="" href="javascript:void(0);">Home</a>
+  //   </li>
+  // </ul>
+  //
+  // Style guide: 4.3
+
+  // Filters (left)
+  //
+  // Markup:
+  // <ul class="nav nav-pills">
+  //   <li class="">
+  //     <a class="icon--all" href="#">Tutti i corsi aperti</a>
+  //   </li>
+  //   <li class="">
+  //     <a class="icon--concluded" href="#">Conclusi</a>
+  //   </li>
+  //   <li class="">
+  //     <a class="icon--active" href="#">In itinere</a>
+  //   </li>
+  // </ul>
+  //
+  // Style guide: 4.4
+
+
+  // This is the mobile top-bar
+  //
+  // <ul class="nav nav-tabs visible-xs">
+  //   <script type="text/javascript">
+  //     (function ($) {
+  //       $(window).load(function () {
+  //         var dropdown_title = $('.tabs-dropdown').find('.active').text();
+  //         $('.dropdown-title').html(dropdown_title);
+  //       })
+  //     })(jQuery);
+  //   </script>
+  //   <li class="dropdown">
+  //     <a href="javascript:void(0)" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+  //        aria-expanded="false">
+  //       <span class="dropdown-title">E-Learning</span> &nbsp;<span class="caret"></span>
+  //     </a>
+  //     <ul class="dropdown-menu dropdown-menu-left tabs-dropdown">
+  //       <li>
+  //         <a href="#">Home</a>
+  //       </li>
+  //       <li class="active">
+  //         <a href="#">E-Learning</a>
+  //       </li>
+  //       <li>
+  //         <a href="#">Percorsi formativi</a>
+  //       </li>
+  //       <li>
+  //         <a href="#">Libreria contenuti</a>
+  //       </li>
+  //       <li>
+  //         <a href="#">Comunicazioni</a>
+  //       </li>
+  //       <li>
+  //         <a href="#">Classe</a>
+  //       </li>
+  //       <li>
+  //         <a href="#">Catalogo Corsi</a>
+  //       </li>
+  //       <li>
+  //        <a href="#">Videoconferenza</a>
+  //       </li>
+  //     </ul>
+  //   </li>
+  // </ul>
+  //
+  // Style guide: 4.5
+}
+
 

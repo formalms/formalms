@@ -103,6 +103,9 @@
         transition: .2 all ease-in-out;
         text-align: right;
         border: 1px solid #000;
+        &:hover {
+          color: var(--color-action-button-text);
+        }
       }
     }
     .dropdown-menu {
@@ -121,7 +124,6 @@
 }
 
 .folderView__el {
-
   .folderTree__actions & {
     background-size: 18px auto;
   }
@@ -213,7 +215,7 @@
 }
 
 .ft-is-selected {
-  background-color: var(--color-1-100);
+  border-left: 2px solid var(--color-primary);
 }
 
 .folderTree__btn {

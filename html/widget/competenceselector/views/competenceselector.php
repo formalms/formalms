@@ -2,7 +2,7 @@
 YAHOO.util.Event.onDOMReady(function() {
 	CompetenceSelector.init({
 		id: "<?php echo $id; ?>",
-		currentLanguage: "<?php echo getLanguage(); ?>"
+		currentLanguage: "<?php echo Lang::get(); ?>"
 	});
 });
 </script>

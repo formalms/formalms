@@ -12,8 +12,7 @@
  */
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
-require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
-
+require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 /**
  * Class DashboardBlockAnnouncementsLms.
  */
@@ -22,24 +21,14 @@ class DashboardBlockCourseAttendanceGraphLms extends DashboardBlockLms
     protected CourseSubscribe_Manager $subscribeManager;
 
     public const COLORS = [
-        -2 => '--color-block__attendance_graph__status--2', //F0F8FF
-        -1 => '--color-block__attendance_graph__status--1', //'FAEBD7',
-        0 => '--color-block__attendance_graph__status-0', //'3CAAD1',
-        1 => '--color-block__attendance_graph__status-1', //'ED6D05',
-        2 => '--color-block__attendance_graph__status-2', //'60B567',
-        3 => '--color-block__attendance_graph__status-3', //'F5F5DC',
-        4 => '--color-block__attendance_graph__status-4', //'669900',
-    ];
-
-    public const VAR_COLORS = [
-        '--color-block__attendance_graph__status--2' => '#F0F8FF',
-        '--color-block__attendance_graph__status--1' => '#FAEBD7',
-        '--color-block__attendance_graph__status-0' => '#3CAAD1',
-        '--color-block__attendance_graph__status-1' => '#ED6D05',
-        '--color-block__attendance_graph__status-2' => '#60B567',
-        '--color-block__attendance_graph__status-3' => '#F5F5DC',
-        '--color-block__attendance_graph__status-4' => '#669900',
-    ];
+            -2 => 'F0F8FF',
+            -1 => 'FAEBD7',
+            0 => '3CAAD1',
+            1 => 'ED6D05',
+            2 => '60B567',
+            3 => 'F5F5DC',
+            4 => '669900',
+        ];
 
     public function __construct($jsonConfig)
     {
@@ -99,17 +88,16 @@ class DashboardBlockCourseAttendanceGraphLms extends DashboardBlockLms
 
         $query = 'SELECT cu.status, count(cu.idUser) as cnt'
             . ' FROM ' . $this->subscribeManager->getSubscribeUserTable() . ' cu'
-            . ' WHERE cu.iduser = ' . Docebo::user()->getId() . ' '
+            . ' WHERE cu.iduser = ' . \FormaLms\lib\FormaUser::getCurrentUser()->getId() . ' '
             . ' GROUP BY cu.status';
 
         $resultQuery = $this->db->query($query);
 
         foreach ($resultQuery as $data) {
-            $result['data'][] = (int)$data['cnt'];
+            $result['data'][] = (int) $data['cnt'];
             $result['labels'][] = $defaultLabels[$data['status']];
-            $result['colors'][] =  self::COLORS[$data['status']];
+            $result['colors'][] = '#' . self::COLORS[$data['status']];
         }
-        $result['var_colors'] = self::VAR_COLORS;
 
         return $result;
     }

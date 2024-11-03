@@ -32,6 +32,10 @@ class FSock
 
     public $_errno = 0;
     public $_errstr = '';
+    /**
+     * @var false|string
+     */
+    public string $_body;
 
     public function __construct($protocol = false, $version = false)
     {

@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once __DIR__ . '/lib.connector.php';
+require_once dirname(__FILE__) . '/lib.connector.php';
 require_once _lms_ . '/lib/lib.course.php';
 require_once _lms_ . '/lib/lib.edition.php';
 
@@ -22,7 +22,7 @@ require_once _lms_ . '/lib/lib.edition.php';
  *
  * @version 	1.0
  **/
-class ConnectorEditions extends DoceboConnector
+class ConnectorEditions extends FormaConnector
 {
     public $last_error = '';
 
@@ -93,7 +93,7 @@ class ConnectorEditions extends DoceboConnector
 
     public $tot_row;
 
-    public function ConnectorEditions($params)
+    public function __construct($params)
     {
         if ($params === null) {
             return;
@@ -137,7 +137,7 @@ class ConnectorEditions extends DoceboConnector
 
     public function connect()
     {
-        $this->lang = DoceboLanguage::createInstance('rg_report');
+        $this->lang = FormaLanguage::createInstance('rg_report');
 
         $this->_readed_end = false;
         $this->today = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
@@ -230,29 +230,29 @@ class ConnectorEditions extends DoceboConnector
 
     /**
      * @return array the array of columns descriptor
-     *               - DOCEBOIMPORT_COLNAME => string the name of the column
-     *               - DOCEBOIMPORT_COLID => string the id of the column (optional,
+     *               - FORMAIMPORT_COLNAME => string the name of the column
+     *               - FORMAIMPORT_COLID => string the id of the column (optional,
      *               same as COLNAME if not given)
-     *               - DOCEBOIMPORT_COLMANDATORY => bool TRUE if col is mandatory
-     *               - DOCEBOIMPORT_DATATYPE => the data type of the column
-     *               - DOCEBOIMPORT_DEFAULT => the default value for the column (Optional)
-     *               For readonly connectos only 	DOCEBOIMPORT_COLNAME and DOCEBOIMPORT_DATATYPE
+     *               - FORMAIMPORT_COLMANDATORY => bool TRUE if col is mandatory
+     *               - FORMAIMPORT_DATATYPE => the data type of the column
+     *               - FORMAIMPORT_DEFAULT => the default value for the column (Optional)
+     *               For readonly connectos only 	FORMAIMPORT_COLNAME and FORMAIMPORT_DATATYPE
      *               are required
      **/
     public function get_cols_descripor()
     {
-        $lang = DoceboLanguage::createInstance('course', 'lms');
+        $lang = FormaLanguage::createInstance('course', 'lms');
 
         $col_descriptor = [];
         foreach ($this->all_cols as $k => $col) {
             $col_descriptor[] = [
-                DOCEBOIMPORT_COLNAME => $lang->def('_' . strtoupper($col[0])),
-                DOCEBOIMPORT_COLID => $col[0],
-                DOCEBOIMPORT_COLMANDATORY => (array_search($col[0], $this->mandatory_cols) === false
+                FORMAIMPORT_COLNAME => $lang->def('_' . strtoupper($col[0])),
+                FORMAIMPORT_COLID => $col[0],
+                FORMAIMPORT_COLMANDATORY => (array_search($col[0], $this->mandatory_cols) === false
                                                     ? false
                                                     : true),
-                DOCEBOIMPORT_DATATYPE => $col[1],
-                DOCEBOIMPORT_DEFAULT => ($in = array_search($col[0], $this->default_cols) === false
+                FORMAIMPORT_DATATYPE => $col[1],
+                FORMAIMPORT_DEFAULT => ($in = array_search($col[0], $this->default_cols) === false
                                                     ? ''
                                                     : $this->default_cols[$in]),
             ];
@@ -397,7 +397,7 @@ class ConnectorEditions extends DoceboConnector
  *
  * @version 	1.0
  **/
-class ConnectorEditionsUI extends DoceboConnectorUI
+class ConnectorEditionsUI extends FormaConnectorUI
 {
     public $connector = null;
     public $post_params = null;
@@ -407,7 +407,7 @@ class ConnectorEditionsUI extends DoceboConnectorUI
     public $step_next = '';
     public $step_prev = '';
 
-    public function ConnectorEditionsUI(&$connector)
+    public function __construct(&$connector)
     {
         $this->connector = $connector;
     }
@@ -498,7 +498,7 @@ class ConnectorEditionsUI extends DoceboConnectorUI
         return '';
     }
 
-    public function get_html()
+    public function get_html($get = null, $post = null)
     {
         $out = '';
         switch ($this->post_params['step']) {

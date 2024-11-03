@@ -119,7 +119,7 @@ class TabElemDefault extends TabElem
      *	@param string $imgsrc
      *	@param string $className
      **/
-    public function TabElemDefault($id, $label, $imgsrc = false, $className = false)
+    public function __construct($id, $label, $imgsrc = false, $className = false)
     {
         $this->id = $id;
         $this->label = $label;
@@ -197,7 +197,7 @@ class TabView
     /** Constructor.
      *	@param string $id the unique id of the TabView object
      **/
-    public function TabView($id, $post_url)
+    public function __construct($id, $post_url)
     {
         $this->id = $id;
         $this->post_url = $post_url;

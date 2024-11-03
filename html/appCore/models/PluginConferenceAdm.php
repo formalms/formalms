@@ -17,6 +17,8 @@ include_once __DIR__ . '/PluginmanagerAdm.php';
 
 class PluginConferenceAdm extends PluginManagerAdm
 {
+    public string $CATEGORY;
+
     public function __construct()
     {
         parent::__construct();

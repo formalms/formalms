@@ -28,9 +28,9 @@ switch ($op) {
         $module_name = FormaLms\lib\Get::req('module_name', DOTY_ALPHANUM, '');
         $platform = FormaLms\lib\Get::req('platform', DOTY_ALPHANUM, '');
 
-        $lang = &DoceboLanguage::createInstance('standard', 'framework');
-        $lang->setGlobal();
-        $lang = &DoceboLanguage::createInstance($module_name, $platform);
+        $lang = &FormaLanguage::createInstance('standard', 'framework');
+        
+        $lang = &FormaLanguage::createInstance($module_name, $platform);
 
         $value = [
 //			'_TITLE_ASK_A_FRIEND' 	=> $lang->def('_TITLE_ASK_A_FRIEND'),
@@ -60,11 +60,11 @@ switch ($op) {
         $id_friend = importVar('id_friend');
         $message_request = importVar('message_request');
 
-        $lang = &DoceboLanguage::createInstance('standard', 'framework');
-        $lang->setGlobal();
-        $lang = &DoceboLanguage::createInstance($module_name, $platform);
+        $lang = &FormaLanguage::createInstance('standard', 'framework');
+        
+        $lang = &FormaLanguage::createInstance($module_name, $platform);
 
-        $my_fr = new MyFriends(getLogUserId());
+        $my_fr = new MyFriends(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         if ($my_fr->addFriend($id_friend, MF_WAITING, $message_request)) {
             $value = ['re' => true];
         } else {
@@ -86,11 +86,11 @@ switch ($op) {
         $message_subject = importVar('message_subject');
         $message_text = importVar('message_text');
 
-        $lang = &DoceboLanguage::createInstance('standard', 'framework');
-        $lang->setGlobal();
-        $lang = &DoceboLanguage::createInstance($module_name, $platform);
+        $lang = &FormaLanguage::createInstance('standard', 'framework');
+        
+        $lang = &FormaLanguage::createInstance($module_name, $platform);
 
-        if (MessageModule::quickSendMessage(getLogUserId(), $recipient, $message_subject, $message_text)) {
+        if (MessageModule::quickSendMessage(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $recipient, $message_subject, $message_text)) {
             $value = ['re' => true];
         } else {
             $value = ['re' => false];

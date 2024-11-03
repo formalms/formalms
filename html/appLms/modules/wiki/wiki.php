@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Docebo::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit('You can\'t access!');
 }
 
@@ -213,8 +213,8 @@ function doneWikiPerm()
 {
     checkPerm('edit');
 
-    Docebo::user()->loadUserSectionST('/lms/course/private/');
-    Docebo::user()->SaveInSession();
+    \FormaLms\lib\FormaUser::getCurrentUser()->loadUserSectionST('/lms/course/private/');
+    \FormaLms\lib\FormaUser::getCurrentUser()->saveInSession();
 
     $cwa = &cwaSetup();
     $um = &UrlManager::getInstance();
@@ -262,7 +262,7 @@ function showWiki()
     $can_mod = checkPerm('edit', true);
     $can_admin = checkPerm('admin', true);
 
-    $lang = &DoceboLanguage::createInstance('profile', 'framework');
+    $lang = &FormaLanguage::createInstance('profile', 'framework');
 
     if ((!isset($_GET['wiki_id'])) || ($_GET['wiki_id'] < 1)) {
         return false;

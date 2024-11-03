@@ -25,7 +25,7 @@ class MediagalleryAdmController extends AdmController
 
     public function show($type = null, $msg = null)
     {
-        require_once Forma::inc(_lib_ . '/formatable/include.php');
+        require_once \FormaLms\lib\Forma::inc(_lib_ . '/formatable/include.php');
 
         if (!$type) {
             $type = FormaLms\lib\Get::req('type', DOTY_STRING, null);
@@ -43,7 +43,7 @@ class MediagalleryAdmController extends AdmController
                 $accepted_mime = '*';
         }
 
-        if (Docebo::user()->isAnonymous()) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             exit("You can't access!");
         }
 
@@ -66,8 +66,8 @@ class MediagalleryAdmController extends AdmController
 
     private function canAccessPersonalMedia()
     {
-        $level_id = Docebo::user()->getUserLevelId();
-        if (Docebo::user()->isAnonymous()) {
+        $level_id = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             return false;
         }
 
@@ -90,7 +90,7 @@ class MediagalleryAdmController extends AdmController
         include_once _base_ . '/lib/lib.upload.php';
         include_once _base_ . '/lib/lib.multimedia.php';
 
-        $user_id = Docebo::user()->getIdSt();
+        $user_id = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
         $type = FormaLms\lib\Get::req('type', DOTY_STRING, null);
         $msg = $error = null;
 
@@ -148,7 +148,7 @@ class MediagalleryAdmController extends AdmController
 
     public function deleteTask()
     {
-        $user_id = (int) Docebo::user()->getIdSt();
+        $user_id = (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
         $id = FormaLms\lib\Get::req('id', DOTY_ALPHANUM, null);
 
         define('_USER_FPATH_INTERNAL', '/common/users/');
@@ -199,7 +199,7 @@ class MediagalleryAdmController extends AdmController
             exit("You can't access!");
         }
 
-        $user_id = (int) Docebo::user()->getIdSt();
+        $user_id = (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
         $queryString = 'SELECT * FROM %adm_user_file WHERE user_idst="' . $user_id . '" AND type = "' . $type . '"';
         $queryResults = sql_query($queryString);
 

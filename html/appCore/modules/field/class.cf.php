@@ -20,7 +20,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  * @author   Claudio Cherubino <claudio.cherubino@docebo.com>
  */
-require_once Forma::inc(_adm_ . '/modules/field/class.field.php');
+require_once \FormaLms\lib\Forma::inc(_adm_ . '/modules/field/class.field.php');
 
 class Field_Cf extends Field
 {
@@ -31,7 +31,7 @@ class Field_Cf extends Field
      *
      * @return string return the identifier of the field
      */
-    public function getFieldType()
+    public static function getFieldType()
     {
         return 'codicefiscale';
     }
@@ -48,18 +48,18 @@ class Field_Cf extends Field
         $back_coded = htmlentities(urlencode($back));
 
         $array_lang = [];
-        $std_lang = &DoceboLanguage::createInstance('standard');
-        $lang = &DoceboLanguage::createInstance('field');
-        $array_lang = Docebo::langManager()->getAllLangCode();
+        $std_lang = &FormaLanguage::createInstance('standard');
+        $lang = &FormaLanguage::createInstance('field');
+        $array_lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $out = &$GLOBALS['page'];
 
         if (isset($_POST['undo'])) {
             //undo action
             Util::jump_to($back . '&result=undo');
         }
-        if (isset($_POST['save_field_' . $this->getFieldType()])) {
+        if (isset($_POST['save_field_' . self::getFieldType()])) {
             //insert mandatory translation
-            $mand_lang = getLanguage();
+            $mand_lang = Lang::get();
             $show_on = '';
             if (isset($_POST['show_on_platform'])) {
                 foreach ($_POST['show_on_platform']  as $code) {
@@ -67,21 +67,21 @@ class Field_Cf extends Field
                 }
             }
             //control if all is ok
-            if (!isset($_POST['new_' . $this->getFieldType()][$mand_lang])) {
+            if (!isset($_POST['new_' . self::getFieldType()][$mand_lang])) {
                 $out->add(
                     getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_TRANSLATION'))
                     . getBackUi($this->getUrl() . '&amp;type_field='
-                        . $this->getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
+                        . self::getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
                     'content'
                 );
 
                 return;
             }
-            if ($_POST['new_' . $this->getFieldType()][$mand_lang] == $lang->def('_FIELD_NAME') || trim($_POST['new_' . $this->getFieldType()][$mand_lang]) == '') {
+            if ($_POST['new_' . self::getFieldType()][$mand_lang] == $lang->def('_FIELD_NAME') || trim($_POST['new_' . self::getFieldType()][$mand_lang]) == '') {
                 $out->add(
                     getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_TRANSLATION'))
                     . getBackUi($this->getUrl() . '&amp;type_field='
-                        . $this->getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
+                        . self::getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
                     'content'
                 );
 
@@ -92,7 +92,7 @@ class Field_Cf extends Field
             if (!sql_query('
 			INSERT INTO ' . $this->_getMainTable() . "
 			(type_field, lang_code, translation, show_on_platform, use_multilang) VALUES
-			('" . $this->getFieldType() . "', '" . $mand_lang . "', '" . $_POST['new_' . $this->getFieldType()][$mand_lang] . "', '" . $show_on . "', '" . $use_multilang . "') ")) {
+			('" . self::getFieldType() . "', '" . $mand_lang . "', '" . $_POST['new_' . self::getFieldType()][$mand_lang] . "', '" . $show_on . "', '" . $use_multilang . "') ")) {
                 Util::jump_to($back . '&result=fail');
             }
             list($id_common) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
@@ -104,12 +104,12 @@ class Field_Cf extends Field
             }
             $re = true;
             //insert other field
-            foreach ($_POST['new_' . $this->getFieldType()] as $lang_code => $translation) {
+            foreach ($_POST['new_' . self::getFieldType()] as $lang_code => $translation) {
                 if ($mand_lang != $lang_code && $translation != $lang->def('_FIELD_NAME') && trim($translation) != '') {
                     $re_ins = sql_query('
 					INSERT INTO ' . $this->_getMainTable() . "
 					(type_field, id_common, lang_code, translation, show_on_platform, use_multilang) VALUES
-					('" . $this->getFieldType() . "', '" . (int) $id_common . "', '" . $lang_code . "', '" . $translation . "', '" . $show_on . "', '" . $use_multilang . "') ");
+					('" . self::getFieldType() . "', '" . (int) $id_common . "', '" . $lang_code . "', '" . $translation . "', '" . $show_on . "', '" . $use_multilang . "') ");
                     $re = $re && $re_ins;
                 }
             }
@@ -124,17 +124,17 @@ class Field_Cf extends Field
         $out->add('<div class="std_block">');
         $out->add(
             $form->getFormHeader($lang->def('_NEW_TEXTFIELD'))
-            . $form->openForm('create_' . $this->getFieldType(), $this->getUrl())
+            . $form->openForm('create_' . self::getFieldType(), $this->getUrl())
             . $form->openElementSpace()
-            . $form->getHidden('type_field', 'type_field', $this->getFieldType())
+            . $form->getHidden('type_field', 'type_field', self::getFieldType())
             . $form->getHidden('back', 'back', $back_coded)
         );
-        $mand_lang = getLanguage();
+        $mand_lang = Lang::get();
         foreach ($array_lang as $k => $lang_code) {
             $out->add(
                 $form->getTextfield((($mand_lang == $lang_code) ? '<span class="mandatory">*</span>' : '') . $lang_code,
-                                    'new_' . $this->getFieldType() . '_' . $lang_code,
-                                    'new_' . $this->getFieldType() . '[' . $lang_code . ']',
+                                    'new_' . self::getFieldType() . '_' . $lang_code,
+                                    'new_' . self::getFieldType() . '[' . $lang_code . ']',
                                     255,
                                     '',
                                     $lang_code . ' ' . $lang->def('_FIELD_NAME'))
@@ -147,7 +147,7 @@ class Field_Cf extends Field
         $out->add(
             $form->closeElementSpace()
             . $form->openButtonSpace()
-            . $form->getButton('save_field', 'save_field_' . $this->getFieldType(), $std_lang->def('_CREATE', 'standard'))
+            . $form->getButton('save_field', 'save_field_' . self::getFieldType(), $std_lang->def('_CREATE', 'standard'))
             . $form->getButton('undo', 'undo', $std_lang->def('_UNDO', 'standard'))
             . $form->closeButtonSpace()
             . $form->closeForm()
@@ -167,35 +167,35 @@ class Field_Cf extends Field
         $back_coded = htmlentities(urlencode($back));
 
         $array_lang = [];
-        $std_lang = &DoceboLanguage::createInstance('standard');
-        $lang = &DoceboLanguage::createInstance('field');
-        $array_lang = Docebo::langManager()->getAllLangCode();
+        $std_lang = &FormaLanguage::createInstance('standard');
+        $lang = &FormaLanguage::createInstance('field');
+        $array_lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $out = &$GLOBALS['page'];
 
         if (isset($_POST['undo'])) {
             //undo action
             Util::jump_to($back . '&result=undo');
         }
-        if (isset($_POST['save_field_' . $this->getFieldType()])) {
+        if (isset($_POST['save_field_' . self::getFieldType()])) {
             //insert mandatory translation
-            $mand_lang = getLanguage();
+            $mand_lang = Lang::get();
 
             //control if all is ok
-            if (!isset($_POST['new_' . $this->getFieldType()][$mand_lang])) {
+            if (!isset($_POST['new_' . self::getFieldType()][$mand_lang])) {
                 $out->add(
                     getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_TRANSLATION'))
                     . getBackUi($this->getUrl() . '&amp;type_field='
-                        . $this->getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
+                        . self::getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
                     'content'
                 );
 
                 return;
             }
-            if ($_POST['new_' . $this->getFieldType()][$mand_lang] == $lang->def('_FIELD_NAME') || trim($_POST['new_' . $this->getFieldType()][$mand_lang]) == '') {
+            if ($_POST['new_' . self::getFieldType()][$mand_lang] == $lang->def('_FIELD_NAME') || trim($_POST['new_' . self::getFieldType()][$mand_lang]) == '') {
                 $out->add(
                     getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_TRANSLATION'))
                     . getBackUi($this->getUrl() . '&amp;type_field='
-                        . $this->getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
+                        . self::getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
                     'content'
                 );
 
@@ -221,7 +221,7 @@ class Field_Cf extends Field
                 }
             }
             //insert other field
-            foreach ($_POST['new_' . $this->getFieldType()] as $lang_code => $translation) {
+            foreach ($_POST['new_' . self::getFieldType()] as $lang_code => $translation) {
                 if (isset($existsing_translation[$lang_code])) {
                     if (!sql_query('
 					UPDATE ' . $this->_getMainTable() . "
@@ -235,7 +235,7 @@ class Field_Cf extends Field
                     if (!sql_query('
 					INSERT INTO ' . $this->_getMainTable() . "
 					(type_field, id_common, lang_code, translation, show_on_platform, use_multilang ) VALUES
-					('" . $this->getFieldType() . "', '" . (int) $this->id_common . "', '" . $lang_code . "', '" . $translation . "', '" . $show_on . "', '" . $use_multilang . "') ")) {
+					('" . self::getFieldType() . "', '" . (int) $this->id_common . "', '" . $lang_code . "', '" . $translation . "', '" . $show_on . "', '" . $use_multilang . "') ")) {
                         $re = false;
                     }
                 }
@@ -265,18 +265,18 @@ class Field_Cf extends Field
         $out->setWorkingZone('content');
         $out->add('<div class="std_block">');
         $out->add(
-            $form->openForm('create_' . $this->getFieldType(), $this->getUrl())
+            $form->openForm('create_' . self::getFieldType(), $this->getUrl())
             . $form->openElementSpace()
-            . $form->getHidden('type_field', 'type_field', $this->getFieldType())
+            . $form->getHidden('type_field', 'type_field', self::getFieldType())
             . $form->getHidden('id_common', 'id_common', $this->id_common)
             . $form->getHidden('back', 'back', $back_coded)
         );
-        $mand_lang = getLanguage();
+        $mand_lang = Lang::get();
         foreach ($array_lang as $k => $lang_code) {
             $out->add(
                 $form->getTextfield((($mand_lang == $lang_code) ? '<span class="mandatory">*</span>' : '') . $lang_code,
-                                    'new_' . $this->getFieldType() . '_' . $lang_code,
-                                    'new_' . $this->getFieldType() . '[' . $lang_code . ']',
+                                    'new_' . self::getFieldType() . '_' . $lang_code,
+                                    'new_' . self::getFieldType() . '[' . $lang_code . ']',
                                     255,
                                     (isset($translation[$lang_code]) ? $translation[$lang_code] : ''),
                                     $lang_code . ' ' . $lang->def('_FIELD_NAME'))
@@ -289,7 +289,7 @@ class Field_Cf extends Field
         $out->add(
             $form->closeElementSpace()
             . $form->openButtonSpace()
-            . $form->getButton('save_field', 'save_field_' . $this->getFieldType(), $std_lang->def('_SAVE', 'standard'))
+            . $form->getButton('save_field', 'save_field_' . self::getFieldType(), $std_lang->def('_SAVE', 'standard'))
             . $form->getButton('undo', 'undo', $std_lang->def('_UNDO', 'standard'))
             . $form->closeButtonSpace()
             . $form->closeForm()
@@ -329,9 +329,9 @@ class Field_Cf extends Field
     {
         require_once _base_ . '/lib/lib.form.php';
 
-        if (isset($_POST['field_' . $this->getFieldType()])
-            && isset($_POST['field_' . $this->getFieldType()][$this->id_common])) {
-            $user_entry = $_POST['field_' . $this->getFieldType()][$this->id_common];
+        if (isset($_POST['field_' . self::getFieldType()])
+            && isset($_POST['field_' . self::getFieldType()][$this->id_common])) {
+            $user_entry = $_POST['field_' . self::getFieldType()][$this->id_common];
         } else {
             list($user_entry) = sql_fetch_row(sql_query('
 			SELECT user_entry
@@ -344,7 +344,7 @@ class Field_Cf extends Field
         $re_field = sql_query('
 		SELECT translation
 		FROM ' . $this->_getMainTable() . "
-		WHERE lang_code = '" . getLanguage() . "' AND id_common = '" . (int) $this->id_common . "' AND type_field = '" . $this->getFieldType() . "'");
+		WHERE lang_code = '" . Lang::get() . "' AND id_common = '" . (int) $this->id_common . "' AND type_field = '" . self::getFieldType() . "'");
         list($translation) = sql_fetch_row($re_field);
 
         if ($registrationLayout) {
@@ -356,8 +356,8 @@ class Field_Cf extends Field
             $formField .= '<div class="col-xs-12 col-sm-6">';
             $formField .= Form::getInputTextfield(
                     'form-control ' . ($error ? 'has-error' : ''),
-                    'field_' . $this->getFieldType() . '_' . $this->id_common,
-                    'field_' . $this->getFieldType() . '[' . $this->id_common . ']',
+                    'field_' . self::getFieldType() . '_' . $this->id_common,
+                    'field_' . self::getFieldType() . '[' . $this->id_common . ']',
                     $user_entry,
                     '',
                     255,
@@ -383,8 +383,8 @@ class Field_Cf extends Field
         }
 
         return Form::getTextfield($translation . ($mandatory ? ' <span class="mandatory">*</span>' : ''),
-                                'field_' . $this->getFieldType() . '_' . $this->id_common,
-                                'field_' . $this->getFieldType() . '[' . $this->id_common . ']',
+                                'field_' . self::getFieldType() . '_' . $this->id_common,
+                                'field_' . self::getFieldType() . '[' . $this->id_common . ']',
                                 255,
                                 $user_entry,
                                 $translation);
@@ -440,12 +440,12 @@ class Field_Cf extends Field
      */
     public function isFilled($id_user)
     {
-        if (!isset($_POST['field_' . $this->getFieldType()][$this->id_common])) {
+        if (!isset($_POST['field_' . self::getFieldType()][$this->id_common])) {
             return false;
-        } elseif (trim($_POST['field_' . $this->getFieldType()][$this->id_common]) == '') {
+        } elseif (trim($_POST['field_' . self::getFieldType()][$this->id_common]) == '') {
             return false;
         } else {
-            return $this->checkCF(trim($_POST['field_' . $this->getFieldType()][$this->id_common]));
+            return $this->checkCF(trim($_POST['field_' . self::getFieldType()][$this->id_common]));
         }
     }
 
@@ -456,22 +456,22 @@ class Field_Cf extends Field
      */
     public function isValid($id_user)
     {
-        if (!isset($_POST['field_' . $this->getFieldType()][$this->id_common])) {
+        if (!isset($_POST['field_' . self::getFieldType()][$this->id_common])) {
             return true;
         }
-        if ($_POST['field_' . $this->getFieldType()][$this->id_common] == '') {
+        if ($_POST['field_' . self::getFieldType()][$this->id_common] == '') {
             return true;
         }
 
         // check format
-        if (!$this->checkCF(trim($_POST['field_' . $this->getFieldType()][$this->id_common]))) {
+        if (!$this->checkCF(trim($_POST['field_' . self::getFieldType()][$this->id_common]))) {
             return false;
         }
         // check unique
         $re_entry = sql_query('
 		SELECT id_user
 		FROM ' . $this->_getUserEntryTable() . "
-		WHERE user_entry = '" . trim($_POST['field_' . $this->getFieldType()][$this->id_common]) . "' AND
+		WHERE user_entry = '" . trim($_POST['field_' . self::getFieldType()][$this->id_common]) . "' AND
 			id_common = '" . (int) $this->id_common . "' AND
 			id_common_son = '0'
 			AND id_user != '" . $id_user . "'");
@@ -496,7 +496,7 @@ class Field_Cf extends Field
             $id_user = (int) $id_user;
         }
 
-        if (!isset($_POST['field_' . $this->getFieldType()][$this->id_common])) {
+        if (!isset($_POST['field_' . self::getFieldType()][$this->id_common])) {
             return true;
         }
         $re_entry = sql_query('
@@ -512,7 +512,7 @@ class Field_Cf extends Field
             }
             if (!sql_query('
 			UPDATE ' . $this->_getUserEntryTable() . "
-			SET user_entry = '" . $_POST['field_' . $this->getFieldType()][$this->id_common] . "'
+			SET user_entry = '" . $_POST['field_' . self::getFieldType()][$this->id_common] . "'
 			WHERE id_user = '" . $id_user . "' AND
 			id_common = '" . (int) $this->id_common . "' AND
 			id_common_son = '0'")) {
@@ -525,7 +525,7 @@ class Field_Cf extends Field
 			(	'" . $id_user . "',
 				'" . (int) $this->id_common . "',
 				'0',
-				'" . $_POST['field_' . $this->getFieldType()][$this->id_common] . "')")) {
+				'" . $_POST['field_' . self::getFieldType()][$this->id_common] . "')")) {
                 return false;
             }
         }

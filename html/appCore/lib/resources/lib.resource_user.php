@@ -22,10 +22,10 @@ require_once _adm_ . '/lib/resources/lib.resource_model.php';
 
 class ResourceUser extends ResourceModel
 {
-    public function ResourceUser($prefix = false, $dbconn = null)
+    public function __construct($prefix = false, $dbconn = null)
     {
         $this->setResourceCode('user');
-        parent::ResourceModel($prefix, $dbconn);
+        parent::__construct($prefix, $dbconn);
     }
 
     public function checkAvailability($resource_id, $start_date = false, $end_date = false)

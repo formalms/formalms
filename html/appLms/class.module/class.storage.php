@@ -44,7 +44,7 @@ class Module_Storage extends LmsModule
     {
     }
 
-    public function getAllToken()
+    public static function getAllToken()
     {
         return [
             'view' => ['code' => 'view',
@@ -72,14 +72,14 @@ class Module_Storage extends LmsModule
         ];
     }
 
-    public function getPermissionUi($form_name, $perm)
+    public static function getPermissionUi($form_name, $perm, $module_op = '')
     {
         require_once _base_ . '/lib/lib.table.php';
 
-        $lang = &DoceboLanguage::createInstance('manmenu');
-        $lang_perm = &DoceboLanguage::createInstance('permission');
+        $lang = FormaLanguage::createInstance('manmenu');
+        $lang_perm = FormaLanguage::createInstance('permission');
 
-        $tokens = $this->getAllToken();
+        $tokens = self::getAllToken();
         $levels = CourseLevel::getTranslatedLevels();
         $tb = new Table(0, $lang->def('_VIEW_PERMISSION'), $lang->def('_EDIT_SETTINGS'));
 
@@ -147,7 +147,7 @@ class Module_Storage extends LmsModule
         return $tb->getTable();
     }
 
-    public function getSelectedPermission()
+    public function getSelectedPermission($op = '')
     {
         $tokens = $this->getAllToken();
         $levels = CourseLevel::getTranslatedLevels();

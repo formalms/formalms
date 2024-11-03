@@ -18,16 +18,16 @@ class LoginLayout
     /**
      * Return the menu for the pre-login pages.
      *
-     * @return <string>
+     * @return string
      */
     public static function external_page()
     {
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
 
         $query = "
 		SELECT idPages, title
 		FROM %lms_webpages
-		WHERE publish = '1' AND in_home='0' AND language = '" . getLanguage() . "'
+		WHERE publish = '1' AND in_home='0' AND language = '" . Lang::get() . "'
 		ORDER BY sequence ";
         $result = $db->query($query);
 
@@ -78,7 +78,7 @@ class LoginLayout
         $textQuery = '
 		SELECT idNews, publish_date, title, short_desc
 		FROM ' . $GLOBALS['prefix_lms'] . "_news
-		WHERE language = '" . getLanguage() . "'
+		WHERE language = '" . Lang::get() . "'
 		ORDER BY important DESC, publish_date DESC
 		LIMIT 0," . FormaLms\lib\Get::sett('visuNewsHomePage');
 
@@ -117,6 +117,7 @@ class LoginLayout
             }
             if (isset($_GET['msg'])) {
                 $class = 'login_failed';
+                $msg = '';
                 switch ((int) $_GET['msg']) {
                     case 101:  // Security issue, the request seem invalid ! (failed checkSignature)
                         $msg = Lang::t('_INVALID_REQUEST', 'login');

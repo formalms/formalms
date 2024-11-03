@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once Forma::inc(_lms_ . '/modules/question/class.question.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/class.question.php');
 
 class InlineChoice_Question extends Question
 {
@@ -40,7 +40,7 @@ class InlineChoice_Question extends Question
      */
     public function _lineAnswer($i)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = FormaLanguage::createInstance('test');
         $GLOBALS['page']->add('<tr class="line_answer">'
             . '<td rowspan="2" class=" valign_top align_center">'
             . '<label for="is_correct_' . $i . '">' . $lang->def('_TEST_CORRECT') . '</label><br /><br />'
@@ -94,7 +94,7 @@ class InlineChoice_Question extends Question
      */
     public function _lineModAnswer($i)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = FormaLanguage::createInstance('test');
         $GLOBALS['page']->add('<tr class="line_answer">'
             . '<td rowspan="2" class=" valign_top align_center">'
             . '<label for="is_correct_' . $i . '">' . $lang->def('_TEST_CORRECT') . '</label><br /><br />', 'content');
@@ -152,7 +152,7 @@ class InlineChoice_Question extends Question
      */
     public function create($idTest, $back_test)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = FormaLanguage::createInstance('test');
 
         require_once _base_ . '/lib/lib.form.php';
         $url_encode = htmlentities(urlencode($back_test));
@@ -289,7 +289,7 @@ class InlineChoice_Question extends Question
      */
     public function edit($back_test)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = FormaLanguage::createInstance('test');
 
         require_once _base_ . '/lib/lib.form.php';
         $url_encode = htmlentities(urlencode($back_test));
@@ -579,7 +579,7 @@ class InlineChoice_Question extends Question
      */
     public function play($num_quest, $shuffle_answer = false, $id_track = 0, $freeze = false, $number_time = null)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = FormaLanguage::createInstance('test');
 
         list($id_quest, $title_quest, $shuffle) = sql_fetch_row(sql_query('
 		SELECT idQuest, title_quest, shuffle 
@@ -650,6 +650,7 @@ class InlineChoice_Question extends Question
     {
         $result = true;
 
+        $track_query = null;
         if ($this->userDoAnswer($trackTest->idTrack) && !$trackTest->getTestObj()->isRetainAnswersHistory()) {
             if (!$can_overwrite) {
                 return true;
@@ -669,15 +670,15 @@ class InlineChoice_Question extends Question
             if (isset($source['quest'][$this->id]) && ($source['quest'][$this->id] == $id_answer)) {
                 //answer checked by the user
                 $track_query = '
-				INSERT INTO ' . $GLOBALS['prefix_lms'] . "_testtrack_answer ( idTrack, idQuest, idAnswer, score_assigned, more_info, user_answer, number_time )
+				INSERT INTO %lms_testtrack_answer ( idTrack, idQuest, idAnswer, score_assigned, more_info, user_answer, number_time )
 				VALUES (
-					'" . (int) $trackTest->idTrack . "',
-					'" . (int) $this->id . "', 
-					'" . (int) $id_answer . "', 
-					'" . ($is_correct ? $score_corr : -$score_incorr) . "', 
-					'',
+					"' . (int) $trackTest->idTrack . '",
+					"' . (int) $this->id . '", 
+					"' . (int) $id_answer . '", 
+					"' . ($is_correct ? $score_corr : -$score_incorr) . '", 
+					"",
 					1,
-					'" . (int) ($trackTest->getNumberOfAttempt() + 1) . "')";
+					"' . (int) ($trackTest->getNumberOfAttempt() + 1) . '")';
             } elseif ($is_correct && ($score_incorr != 0)) {
                 //answer correct with penality but not checked by the user
                 $track_query = '
@@ -704,7 +705,10 @@ class InlineChoice_Question extends Question
 					'" . (int) ($trackTest->getNumberOfAttempt() + 1) . "')";
             }
 
-            $result &= sql_query($track_query);
+            if($track_query) {
+                $result = sql_query($track_query);
+            }
+            
         }
 
         return $result;
@@ -720,7 +724,7 @@ class InlineChoice_Question extends Question
      *
      * @author Fabio Pirovano (fabio@docebo.com)
      */
-    public function updateAnswer($id_track, &$source)
+    public function updateAnswer($id_track, &$source, $numberTime = null)
     {
         if (!$this->deleteAnswer($id_track)) {
             return false;
@@ -760,7 +764,7 @@ class InlineChoice_Question extends Question
      */
     public function displayUserResult($id_track, $num_quest, $show_solution, $number_time = null)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = FormaLanguage::createInstance('test');
 
         $quest = '';
         $comment = '';
@@ -791,7 +795,7 @@ class InlineChoice_Question extends Question
         list($id_answer_do) = sql_fetch_row(sql_query($recover_answer));
 
         //**  recorver status test ** #11961 - Errata visualizzazione risposte corrette nei test
-        $sql = 'select status from %lms_commontrack where idUser=' . Docebo::user()->getIdSt() . ' and idTrack=' . $id_track;
+        $sql = 'select status from %lms_commontrack where idUser=' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . ' and idTrack=' . $id_track;
         list($status_test) = sql_fetch_row(sql_query($sql));
 
         $select = (FormaLms\lib\Get::sett('no_answer_in_test') == 'on' ? '<span class="text_bold">' . $lang->def('_NO_ANSWER') . '</span>' : '');

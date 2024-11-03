@@ -7,14 +7,14 @@
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
- * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * from FORMA 4.0.5 CE 2008-2012 (c) FORMA
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 /*
- * This is the base library for import/export operations in Docebo.
+ * This is the base library for import/export operations in Forma.
  * You should import this library if you want to develop your own
  * source or destination connector. This file is also imported in
  * modules/ioTask.php
@@ -23,33 +23,33 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  * @subpackage io-operation
  * @version  $Id:$
  * @version 	$Id: lib.import.php 552 2006-08-02 16:02:38Z fabio $
- * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
+ * @author		Emanuele Sandri <emanuele (@) FORMA (.) com>
  **/
 
 /* Index for column name */
-define('DOCEBOIMPORT_COLNAME', 0);
+define('FORMAIMPORT_COLNAME', 0);
 /* Index for column id */
-define('DOCEBOIMPORT_COLID', 1);
+define('FORMAIMPORT_COLID', 1);
 /* Index for column data type */
-define('DOCEBOIMPORT_DATATYPE', 2);
+define('FORMAIMPORT_DATATYPE', 2);
 /* Index for column mandatory flag */
-define('DOCEBOIMPORT_COLMANDATORY', 3);
+define('FORMAIMPORT_COLMANDATORY', 3);
 /* Index for column default value */
-define('DOCEBOIMPORT_DEFAULT', 4);
+define('FORMAIMPORT_DEFAULT', 4);
 
 /* Unknown data type */
-define('DOCEBOIMPORT_DATATYPE_UNKNOWN', -1);
+define('FORMAIMPORT_DATATYPE_UNKNOWN', -1);
 /* This field should be ignored */
-define('DOCEBOIMPORT_IGNORE', 'ignorefield');
+define('FORMAIMPORT_IGNORE', 'ignorefield');
 
 /**
  * abstract class for define the source of an import.
  *
  * @version 	1.1
  *
- * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
+ * @author		Emanuele Sandri <emanuele (@) FORMA (.) com>
  **/
-class DoceboImport_Source
+class FormaImport_Source
 {
     /**
      * Return the number of columns.
@@ -76,8 +76,8 @@ class DoceboImport_Source
 
     /**
      * @return array the array of columns descriptor
-     *               DOCEBOIMPORT_COLNAME => string the name of the column
-     *               DOCEBOIMPORT_DATATYPE => the data type of the column
+     *               FORMAIMPORT_COLNAME => string the name of the column
+     *               FORMAIMPORT_DATATYPE => the data type of the column
      **/
     public function get_cols_descripor()
     {
@@ -124,9 +124,9 @@ class DoceboImport_Source
  *
  * @version 	1.1
  *
- * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
+ * @author		Emanuele Sandri <emanuele (@) FORMA (.) com>
  **/
-class DoceboImport_Destination
+class FormaImport_Destination
 {
     /**
      * execute the connection to source.
@@ -151,12 +151,12 @@ class DoceboImport_Destination
 
     /**
      * @return array the array of columns descriptor
-     *               - DOCEBOIMPORT_COLNAME => string the name of the column
-     *               - DOCEBOIMPORT_COLID => string the id of the column (optional,
+     *               - FORMAIMPORT_COLNAME => string the name of the column
+     *               - FORMAIMPORT_COLID => string the id of the column (optional,
      *               same as COLNAME if not given)
-     *               - DOCEBOIMPORT_COLMANDATORY => bool TRUE if col is mandatory
-     *               - DOCEBOIMPORT_DATATYPE => the data type of the column
-     *               - DOCEBOIMPORT_DEFAULT => the default value for the column (Optional)
+     *               - FORMAIMPORT_COLMANDATORY => bool TRUE if col is mandatory
+     *               - FORMAIMPORT_DATATYPE => the data type of the column
+     *               - FORMAIMPORT_DEFAULT => the default value for the column (Optional)
      **/
     public function get_cols_descripor()
     {
@@ -175,7 +175,7 @@ class DoceboImport_Destination
      *
      * @return true if the row was succesfully inserted, FALSE otherwise
      **/
-    public function add_row($row)
+    public function add_row($row, $tocompare = false)
     {
         $row = $row;
     }
@@ -202,9 +202,9 @@ class DoceboImport_Destination
  *
  * @version 	1.1
  *
- * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
+ * @author		Emanuele Sandri <emanuele (@) FORMA (.) com>
  **/
-class DoceboImport_DestinationMySQL extends DoceboImport_Destination
+class FormaImport_DestinationMySQL extends FormaImport_Destination
 {
     public $dbconn = null;
     public $table = null;
@@ -222,7 +222,7 @@ class DoceboImport_DestinationMySQL extends DoceboImport_Destination
      *                      if not given it's computed from table
      *                      fields definition
      **/
-    public function DoceboImport_DestinationMySQL($params)
+    public function __construct($params)
     {
         $this->dbconn = $params['dbconn'];
         $this->table = $params['table'];
@@ -263,9 +263,9 @@ class DoceboImport_DestinationMySQL extends DoceboImport_Destination
                 $mandatory = in_array($field_info['Field'], $this->mandatory_cols);
             }
             $this->cols_descriptor[] =
-                        [DOCEBOIMPORT_COLNAME => $field_info['Field'],
-                                DOCEBOIMPORT_COLMANDATORY => $mandatory,
-                                DOCEBOIMPORT_DATATYPE => $field_info['Type'], ];
+                        [FORMAIMPORT_COLNAME => $field_info['Field'],
+                                FORMAIMPORT_COLMANDATORY => $mandatory,
+                                FORMAIMPORT_DATATYPE => $field_info['Type'], ];
         }
         if ($this->mandatory_cols === null) {
             $this->mandatory_cols = $computed_mandatory_cols;
@@ -304,7 +304,7 @@ class DoceboImport_DestinationMySQL extends DoceboImport_Destination
         return count($this->mandatory_cols);
     }
 
-    public function add_row($row)
+    public function add_row($row, $compare = false)
     {
         if ($this->mandatory_cols === null) {
             return false;
@@ -342,9 +342,9 @@ class DoceboImport_DestinationMySQL extends DoceboImport_Destination
  *
  * @version 	1.1
  *
- * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
+ * @author		Emanuele Sandri <emanuele (@) FORMA (.) com>
  **/
-class DeceboImport_SourceCSV extends DoceboImport_Source
+class DeceboImport_SourceCSV extends FormaImport_Source
 {
     public $filename = null;
     public $filehandle = null;
@@ -362,7 +362,7 @@ class DeceboImport_SourceCSV extends DoceboImport_Source
      *                      - 'first_row_header' => bool TRUE if first row is header (Optional, default = TRUE )
      *                      - 'separator' => string a char with the fields separator (Optional, default = ,)
      **/
-    public function DeceboImport_SourceCSV($params)
+    public function __construct($params)
     {
         $this->filename = $params['filename'];
         if (isset($params['first_row_header'])) {
@@ -409,15 +409,15 @@ class DeceboImport_SourceCSV extends DoceboImport_Source
         $this->cols_descriptor = [];
         if ($this->first_row_header) {
             foreach ($row as $col_name) {
-                $this->cols_descriptor[] = [DOCEBOIMPORT_COLNAME => $col_name,
-                                            DOCEBOIMPORT_DATATYPE => DOCEBOIMPORT_DATATYPE_UNKNOWN, ];
+                $this->cols_descriptor[] = [FORMAIMPORT_COLNAME => $col_name,
+                                            FORMAIMPORT_DATATYPE => FORMAIMPORT_DATATYPE_UNKNOWN, ];
             }
             $this->row_index = 1;
         } else {
             // the column names will be the col number 0 ... n
             for ($name = 0; $name < count($row); ++$name) {
-                $this->cols_descriptor[] = [DOCEBOIMPORT_COLNAME => (string) $name,
-                                            DOCEBOIMPORT_DATATYPE => DOCEBOIMPORT_DATATYPE_UNKNOWN, ];
+                $this->cols_descriptor[] = [FORMAIMPORT_COLNAME => (string) $name,
+                                            FORMAIMPORT_DATATYPE => FORMAIMPORT_DATATYPE_UNKNOWN, ];
             }
         }
 
@@ -509,16 +509,16 @@ class DeceboImport_SourceCSV extends DoceboImport_Source
     }
 }
 
-define('DOCEBOIMPORT_TYPECSV', 0);
-define('DOCEBOIMPORT_TYPEMYSQL', 1);
+define('FORMAIMPORT_TYPECSV', 0);
+define('FORMAIMPORT_TYPEMYSQL', 1);
 /**
  * class to manage import.
  *
  * @version 	1.1
  *
- * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
+ * @author		Emanuele Sandri <emanuele (@) FORMA (.) com>
  **/
-class DoceboImport
+class FormaImport
 {
     public $source = null;
     public $destination = null;
@@ -530,16 +530,16 @@ class DoceboImport
      *
      * @static
      *
-     * @param int   $type   one of DOCEBOIMPORT_TYPEXXX constant
-     * @param array $params params for the DoceboImport_Source constructor
+     * @param int   $type   one of FORMAIMPORT_TYPEXXX constant
+     * @param array $params params for the FormaImport_Source constructor
      *
-     * @return DoceboImport_Source instance of DoceboImport_Source; NULL if method
+     * @return FormaImport_Source instance of FormaImport_Source; NULL if method
      *                             fail
      **/
     public function createImport_Source($type, $params)
     {
         switch ($type) {
-            case DOCEBOIMPORT_TYPECSV:
+            case FORMAIMPORT_TYPECSV:
                 return new DeceboImport_SourceCSV($params);
         }
 
@@ -551,17 +551,17 @@ class DoceboImport
      *
      * @static
      *
-     * @param int   $type   one of DOCEBOIMPORT_TYPEXXX constant
-     * @param array $params params for the DoceboImport_Destination constructor
+     * @param int   $type   one of FORMAIMPORT_TYPEXXX constant
+     * @param array $params params for the FormaImport_Destination constructor
      *
-     * @return DoceboImport_Destination instance of DoceboImport_Destination;
+     * @return FormaImport_Destination instance of FormaImport_Destination;
      *                                  NULL if method fail
      **/
     public function createImport_Destination($type, $params)
     {
         switch ($type) {
-            case DOCEBOIMPORT_MYSQL:
-                return new DoceboImport_DestinationMySQL($params);
+            case FORMAIMPORT_MYSQL:
+                return new FormaImport_DestinationMySQL($params);
         }
 
         return null;
@@ -585,7 +585,7 @@ class DoceboImport
     {
         require_once _base_ . '/lib/lib.table.php';
         require_once _base_ . '/lib/lib.form.php';
-        $lang = &DoceboLanguage::createInstance('organization_chart', 'framework');
+        $lang = FormaLanguage::createInstance('organization_chart', 'framework');
         $form = new Form();
         $table = new Table(FormaLms\lib\Get::sett('visuItem'), $lang->def('_IMPORT_MAP'), $lang->def('_IMPORT_MAP'));
 
@@ -593,13 +593,13 @@ class DoceboImport
         $dst_cols = $this->destination->get_cols_descripor();
 
         $combo_elements = [];
-        $combo_elements[DOCEBOIMPORT_IGNORE] = $lang->def('_IMPORT_IGNORE');
+        $combo_elements[FORMAIMPORT_IGNORE] = $lang->def('_IMPORT_IGNORE');
 
         foreach ($dst_cols as $col) {
-            if (isset($col[DOCEBOIMPORT_COLID])) {
-                $combo_elements[$col[DOCEBOIMPORT_COLID]] = $col[DOCEBOIMPORT_COLNAME];
+            if (isset($col[FORMAIMPORT_COLID])) {
+                $combo_elements[$col[FORMAIMPORT_COLID]] = $col[FORMAIMPORT_COLNAME];
             } else {
-                $combo_elements[$col[DOCEBOIMPORT_COLNAME]] = $col[DOCEBOIMPORT_COLNAME];
+                $combo_elements[$col[FORMAIMPORT_COLNAME]] = $col[FORMAIMPORT_COLNAME];
             }
         }
 
@@ -609,13 +609,13 @@ class DoceboImport
         $table_src_labels_type = [];
         $count = 0;
         foreach ($src_cols as $col) {
-            $table_src_labels[] = $col[DOCEBOIMPORT_COLNAME];
+            $table_src_labels[] = $col[FORMAIMPORT_COLNAME];
             $table_src_labels_type[] = '';
             $table_dst_labels[] = $form->getInputDropdown('dropdown_nowh',
                                                         'import_map_' . $count,
                                                         'import_map[' . $count . ']',
                                                         $combo_elements,
-                                                        DOCEBOIMPORT_IGNORE,
+                                                        FORMAIMPORT_IGNORE,
                                                         '');
             $table_dst_tocompare[] = $form->getHidden('import_tocompare_' . $count, 'import_tocompare[' . $count . ']', '', true);
             ++$count;
@@ -685,7 +685,7 @@ class DoceboImport
             $insrow = [];
             $tocompare = [];
             for ($index = 0; $index < count($this->import_map); ++$index) {
-                if ($this->import_map[$index] != DOCEBOIMPORT_IGNORE) {
+                if ($this->import_map[$index] != FORMAIMPORT_IGNORE) {
                     $insrow[$this->import_map[$index]] = $row[$index];
                     if (in_array($index, array_keys($this->import_tocompare))) {
                         $tocompare[$this->import_map[$index]] = $row[$index];
@@ -694,14 +694,14 @@ class DoceboImport
             }
 
             if ($i == 0) {
-                Docebo::db()->start_transaction();
+                \FormaLms\lib\Forma::db()->start_transaction();
                 $open_transaction = true;
             }
             /*
             foreach( $dst_cols as $col ) {
-                $col_name = isset($col[DOCEBOIMPORT_COLID])?$col[DOCEBOIMPORT_COLID]:$col[DOCEBOIMPORT_COLNAME];
+                $col_name = isset($col[FORMAIMPORT_COLID])?$col[FORMAIMPORT_COLID]:$col[FORMAIMPORT_COLNAME];
                 if( !isset($insrow[$col_name]) ) {
-                    $insrow[$col_name] = (isset($col[DOCEBOIMPORT_DEFAULT]) ? $col[DOCEBOIMPORT_DEFAULT] : '');
+                    $insrow[$col_name] = (isset($col[FORMAIMPORT_DEFAULT]) ? $col[FORMAIMPORT_DEFAULT] : '');
                 }
             }*/
             $this->destination->set_charset($this->source->get_charset());
@@ -712,7 +712,7 @@ class DoceboImport
 
             if ($i == 100) {
                 $i = 0;
-                Docebo::db()->commit();
+                \FormaLms\lib\Forma::db()->commit();
                 $open_transaction = false;
             } else {
                 ++$i;
@@ -720,11 +720,11 @@ class DoceboImport
             $row = $this->source->get_next_row();
 
             // Increment the counter for users created by this admin:
-            if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 $admin_pref = new AdminPreference();
-                $pref = $admin_pref->getAdminRules(Docebo::user()->getIdSt());
+                $pref = $admin_pref->getAdminRules(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if ($pref['admin_rules.limit_user_insert'] == 'on') {
-                    $user_pref = new UserPreferences(Docebo::user()->getIdSt());
+                    $user_pref = new UserPreferences(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                     $user_created_count = (int) $user_pref->getPreference('user_created_count');
                     ++$user_created_count;
                     $user_pref->setPreference('user_created_count', $user_created_count);
@@ -732,7 +732,7 @@ class DoceboImport
             }
         }
         if ($open_transaction) {
-            Docebo::db()->commit();
+            \FormaLms\lib\Forma::db()->commit();
         }
         $out[0] = ($this->source->first_row_header ? $this->source->get_row_index() - 1 : $this->source->get_row_index());
 

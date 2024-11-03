@@ -17,7 +17,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class TestCompletedEvent extends Event
 {
-    public const EVENT_NAME = lms.test.completed;
+    public const EVENT_NAME = 'lms.test.complete';
 
     /**
      * @var

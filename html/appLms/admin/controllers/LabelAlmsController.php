@@ -19,13 +19,14 @@ class LabelAlmsController extends AlmsController
     protected $acl_man;
     protected $model;
     protected $permissions;
+    public $data;
 
     public function init()
     {
         parent::init();
         require_once _base_ . '/lib/lib.json.php';
         $this->json = new Services_JSON();
-        $this->acl_man = &Docebo::user()->getAclManager();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();
         $this->model = new LabelAlms();
         $this->permissions = [
             'view' => checkPerm('view', true, 'label', 'lms'),
@@ -150,7 +151,7 @@ class LabelAlmsController extends AlmsController
             Util::jump_to('index.php?r=alms/label/show');
         }
 
-        $all_languages = Docebo::langManager()->getAllLangCode();
+        $all_languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
 
         $res = true;
 
@@ -220,7 +221,7 @@ class LabelAlmsController extends AlmsController
             Util::jump_to('index.php?r=alms/label/show');
         }
 
-        $all_languages = Docebo::langManager()->getAllLangCode();
+        $all_languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
 
         $res = true;
 

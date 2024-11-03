@@ -11,23 +11,26 @@
     size: cover;
     position: 50% 50%;
     repeat: no-repeat;
-    color: var(--color-0-000);
+    color: var(--color-white);
   }
 
   @include breakpoint($tablet) {
-    padding-top: 30px;
+    //padding-top: 30px;
+    display: flex;
+    align-items: center;
   }
 }
 
 .homepage__footer {
   padding: 0;
-  margin: 30px auto 0 auto;
-  padding-bottom: 30px;
+  margin: 25px auto 0 auto;
+  padding-bottom: 10px;
   text-align: center;
-  color: var(--color-0-000);
+  color: var(--color-white);
 
   a {
-    color: var(--color-0-000);
+    color: var(--color-grey-04);
+    padding: 0.5rem;
   }
 }
 
@@ -36,7 +39,7 @@
   max-width: 760px;
   position: relative;
   margin: 0 auto;
-  // background-color: var(--color-0-000);
+  // background-color: var(--color-white);
   box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.15);
   overflow: visible;
 
@@ -88,26 +91,30 @@ p {
 
 .homepage__row--header {
   height: auto;
-  padding-top: 15px;
-  padding-bottom: 15px;
+  //padding-top: 15px;
+  //padding-bottom: 15px;
+  width: 100%;
+  height: 10rem;
   overflow: visible;
-  background-color: var(--color-0-000);
-  border-bottom: solid 3px var(--color-3);
-  position: relative;
+  background-color: var(--color-white);
+  border-bottom: solid 3px var(--color-primary);
   text-align: left;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   @include breakpoint($tablet) {
-    padding-top: 38px;
-    padding-bottom: 34px;
+    //padding-top: 38px;
+    // padding-bottom: 34px;
     // margin-bottom: 12px;
     border: none;
   }
 }
 .pull-right {
   display: flex;
-  flex-direction: row-reverse;
+  // flex-direction: row-reverse;
   align-items: center;
-  margin-top: 1rem;
+  // margin-top: 1rem;
 }
 .select-language > .hidden-xs {
   visibility: hidden;
@@ -115,7 +122,7 @@ p {
 
 .homepage__row--login {
   padding-top: 14px;
-  padding-bottom: 47px;
+  padding-bottom: 25px;
   position: relative;
   backdrop-filter: blur(5px);
 
@@ -143,22 +150,22 @@ p {
 
 
 .homepage__row--login.homepage__row--gray {
-  background-color: var(--color-0-050-02);
+  background-color: var(--color-grey-02);
 }
 
 :is(.homepage__row--gray.homepage__back,.homepage__row--gray.homepage__back ~ .homepage__row--gray, .homepage__back ~ .homepage__form--lost-pwd,.homepage__back ~ .homepage__row) {
-  background-color: var(--color-0-000);
+  background-color: var(--color-white);
   margin-top: 0;
   margin-bottom: 0;
 }
 .homepage__row--footer {
-  background-color: var(--color-0-000);
+  background-color: var(--color-white);
 }
 .homepage__back ~ .row {
   margin: 0;
 }
 .homepage__row--login.homepage__row--gray ~ .homepage__row {
-  background-color: var(--color-0-000);
+  background-color: var(--color-white);
 }
 
 .homepage__row--login.homepage__row--gray + .homepage__row {
@@ -187,29 +194,13 @@ p {
     max-height: 70px;
     overflow: auto;
   }
-
-  .mCustomScrollbar::-webkit-scrollbar {
-    background-color: #f5f5f5;
-    border-radius: 10px;
-    width: 7px;
-    height: 2px;
-  }
-  .mCustomScrollbar::-webkit-scrollbar-thumb {
-      background-color: #000000;
-      border-radius: 10px;
-  }
 }
 
 .homepage__row--privacy {
   .has-error {
     padding: 6px 12px;
-    border: solid 2px var(--color-1-550);
+    border: solid 2px var(--color-primary);
     border-radius: 4px;
-  }
-
-  & > label.checkbox-inline {
-    margin-bottom: 4px;
-    padding-left: 4px;
   }
 }
 
@@ -230,7 +221,7 @@ p {
   }
 
   .fa {
-    color: #ff6c00;
+    color: var(--color-primary);
   }
 }
 
@@ -245,7 +236,7 @@ p {
     size: cover;
     position: 50% 50%;
     repeat: no-repeat;
-    color: var(--color-0-000);
+    color: var(--color-white);
   }
 }
 
@@ -267,6 +258,7 @@ p {
     font-size: 12px;
     text-decoration: none;
     color: #000;
+    padding: 0.2rem;
 
     &:hover {
       text-decoration: underline;
@@ -291,6 +283,7 @@ p {
 
     .homepage__row--login & {
       font-size: 14px;
+      padding: 0.5rem;
     }
 
     .homepage__row--footer & {
@@ -300,8 +293,8 @@ p {
   }
 
   .homepage__row--footer & {
-    padding: 10px 0 20px;
-    border-top: solid 2px var(--color-2);
+    padding: 5px 0 20px;
+    border-top: solid 2px var(--color-primary);
   }
 }
 
@@ -314,10 +307,12 @@ p {
 .left_logo {
   .homepage & {
     height: 30px;
+    margin: 0.5rem;
 
     @include breakpoint($tablet) {
       height: 54px;
-    }
+      margin: 0.5rem;
+    } 
   }
 }
 
@@ -357,16 +352,12 @@ p {
   }
 
   .homepage__row--login & {
-    margin-bottom: 15px;
+    margin-bottom: 26px;
   }
 
   &[type='submit'] {
-    &[id='reg_button'] {
-      margin-bottom: 15px;
-    }
-
     .homepage__row & {
-      margin-top: 15px;
+      margin-top: 26px;
     }
 
     .homepage__form--lost-pwd & {
@@ -382,13 +373,17 @@ p {
     height: 34px;
     margin-top: 0;
     line-height: 34px;
+    max-width: 420px;
+  }
+
+  .homepage__form--lost-pwd &.thin:hover {
+    border: solid 2px var(--color-primary);
   }
 }
 
 a.forma-button {
   .homepage__row & {
     width: auto;
-    margin-top: 15px;
   }
 }
 .homepage__row--header {
@@ -402,7 +397,7 @@ a.forma-button {
     transition: background-color 0.25s ease 0s;
 
     &:hover {
-      background-color: var(--color-1-550);
+      background-color: var(--color-primary);
     }
   }
 }
@@ -412,14 +407,13 @@ a.forma-button {
 .login_failed {
   .homepage__row--login & {
     display: block;
-    margin-top: 15px;
   }
 }
 
 .logout,
 .login_failed {
   .homepage__row--login & {
-    color: var(--color-3);
+    color: var(--color-primary);
     font-size: 1rem;
     background: white;
     padding: .3rem;
@@ -429,7 +423,7 @@ a.forma-button {
 
 .form-control.has-error {
   .homepage__row--form & {
-    border: solid 2px var(--color-1-550);
+    border: solid 2px var(--color-primary);
   }
 }
 
@@ -438,7 +432,7 @@ a.forma-button {
   .homepage__row--privacy & {
     display: none;
     margin-top: 4px;
-    color: var(--color-1-550);
+    color: var(--color-primary);
   }
 
   .has-error + & {
@@ -453,12 +447,12 @@ a.forma-button {
   .homepage & {
     margin: 20px auto;
     font-size: 54px;
-    color: var(--color-6);
+    color: var(--color-secondary);
   }
 }
 
 .homepage__text {
-  color: var(--color-0-750);
+  color: var(--color-grey-04);
   font-size: 16px;
 }
 
@@ -546,6 +540,9 @@ a.forma-button {
 .collapse-wrapper {
   .homepage__collapsed-text + & {
     height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     .icon {
       display: none;
@@ -578,8 +575,8 @@ a.forma-button {
     font-weight: 300;
   }
     &:hover {
-    background: var(--color-0-000);
-    color: var(--color-1-700);
+    background: var(--color-white);
+    color: var(--color-primary);
     border: 0;
 
   }
@@ -588,7 +585,7 @@ a.forma-button {
   display: none;
 }
 :is(.homepage #login_userid, .homepage #login_pwd) {
-  background: var(--color-0-000-06);
+  background: var(--color-grey);
 }
 // Template
 //

@@ -13,14 +13,14 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (!Docebo::user()->isAnonymous()) {
+if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     // XXX: addpage
     function addpage($object_page)
     {
         checkPerm('view', false, 'storage');
 
         require_once _base_ . '/lib/lib.form.php';
-        $lang = &DoceboLanguage::createInstance('htmlpage');
+        $lang = FormaLanguage::createInstance('htmlpage');
 
         $GLOBALS['page']->add(getTitleArea($lang->def('_SECT_PAGE'), 'htmlpage')
         . '<script>' . "\n"
@@ -72,11 +72,11 @@ if (!Docebo::user()->isAnonymous()) {
 
         $insert_query = '
 	INSERT INTO ' . $GLOBALS['prefix_lms'] . "_htmlpage
-	SET title = '" . ((trim(sql_escape_string($_REQUEST['title'])) == '') ? sql_escape_string(Lang::t('_NOTITLE', 'htmlpage', 'lms')) : sql_escape_string($_REQUEST['title'])) . "',
+	SET title = '" . ((trim(sql_escape_string($_REQUEST['title'])) == '') ? sql_escape_string(LanguageService::t('_NOTITLE', 'htmlpage', 'lms')) : sql_escape_string($_REQUEST['title'])) . "',
 		textof = '" . sql_escape_string($_REQUEST['textof']) . "',
-		author = '" . (int) getLogUserId() . "'";
+		author = '" . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'";
         if (!sql_query($insert_query)) {
-            Forma::addError(Lang::t('_OPERATION_FAILURE', 'htmlpage', 'lms'));
+            \FormaLms\lib\Forma::addError(Lang::t('_OPERATION_FAILURE', 'htmlpage', 'lms'));
             Util::jump_to($back_url . '&create_result=0');
         }
         list($idPage) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
@@ -102,7 +102,7 @@ if (!Docebo::user()->isAnonymous()) {
         checkPerm('view', false, 'storage');
 
         require_once _base_ . '/lib/lib.form.php';
-        $lang = &DoceboLanguage::createInstance('htmlpage');
+        $lang = &FormaLanguage::createInstance('htmlpage');
 
         //retriving info
         list($title, $textof) = sql_fetch_row(sql_query('
@@ -185,11 +185,11 @@ if (!Docebo::user()->isAnonymous()) {
 
         $insert_query = '
 	UPDATE ' . $GLOBALS['prefix_lms'] . "_htmlpage
-	SET title = '" . ((trim(sql_escape_string($_REQUEST['title'])) == '') ? sql_escape_string(Lang::t('_NOTITLE', 'htmlpage', 'lms')) : sql_escape_string($_REQUEST['title'])) . "',
+	SET title = '" . ((trim(sql_escape_string($_REQUEST['title'])) == '') ? sql_escape_string(LanguageService::t('_NOTITLE', 'htmlpage', 'lms')) : sql_escape_string($_REQUEST['title'])) . "',
 		textof = '" . sql_escape_string($_REQUEST['textof']) . "'
 	WHERE idPage = '" . (int) $_REQUEST['idPage'] . "'";
         if (!sql_query($insert_query)) {
-            Forma::addError(Lang::t('_OPERATION_FAILURE', 'htmlpage', 'lms'));
+            \FormaLms\lib\Forma::addError(Lang::t('_OPERATION_FAILURE', 'htmlpage', 'lms'));
             Util::jump_to($back_url . '&mod_result=0');
         }
 

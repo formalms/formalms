@@ -14,7 +14,7 @@
 define('IS_PAYPAL', true);
 define('IN_FORMA', true);
 define('_deeppath_', '../');
-require dirname(__DIR__) . '/base.php';
+require dirname(__FILE__) . '/../base.php';
 
 // start buffer
 ob_start();
@@ -23,7 +23,7 @@ $GLOBALS['orig_post'] = $_POST; // not filtered
 
 // initialize
 require _base_ . '/lib/lib.bootstrap.php';
-Boot::init(BOOT_PAGE_WR);
+Boot::init(CHECK_SYSTEM_STATUS);
 
 // -----------------------------------------------------------------------------
 

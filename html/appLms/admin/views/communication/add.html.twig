@@ -1,95 +1,93 @@
 {{ Get_title({
-	'index.php?r=alms/communication/show' : Lang_translate('_COMMUNICATION', 'communication'),
-	'':Lang_translate('_ADD', 'communication')
+    'index.php?r=alms/communication/show' : Lang_translate('_COMMUNICATION', 'communication'),
+    '':Lang_translate('_ADD', 'communication')
 },false) }}
 
 {{ Form_openForm('add_comm', 'index.php?r=alms/communication/insert', false, 'post', 'multipart/form-data') }}
     {{ Form_getDropdown(Lang_translate('_CATEGORY','communication'), 'category', 'id_category', []) }}
     {{ Form_getRadioSet(Lang_translate('_TYPE', 'communication'), 'type_of', 'type_of', types, 'none') }}
-    
 
-    <div id="translation_tab" style='margin-top:5%;'>
-        <ul class="nav nav-tabs">
-            {% for lang in langs %}
-                    <li {% if langCode == lang %} class='active' {% endif %}>
-                        <a data-toggle="tab" href="#langs_tab_{{ lang }}"><em>{{ lang }}</em></a>
-                    </li>
-            {% endfor %}
-        </ul>
-        <div class="tab-content">
+
+<div id="translation_tab" style='margin-top:5%;'>
+    <ul class="nav nav-tabs">
+        {% for lang in langs %}
+            <li {% if langCode == lang %} class='active' {% endif %}>
+                <a data-toggle="tab" href="#langs_tab_{{ lang }}"><em>{{ lang }}</em></a>
+            </li>
+        {% endfor %}
+    </ul>
+    <div class="tab-content">
         {% set textareaName = 'translation_' %}
         {% set labelName = 'title_' %}
-            {% for lang in langs %}
-                {% set name = 'title[' ~ lang ~ ']' %}
-                {% set description = 'description[' ~ lang ~ ']' %}
-                <div class="tab-pane {% if langCode == lang %} active {% endif %}" id="langs_tab_{{ lang }}">
-                    {{ Form_getTextfield(Lang_translate('_TITLE','communication'), labelName ~ lang, name, 255) }}
+        {% for lang in langs %}
+            {% set name = 'title[' ~ lang ~ ']' %}
+            {% set description = 'description[' ~ lang ~ ']' %}
+            <div class="tab-pane {% if langCode == lang %} active {% endif %}" id="langs_tab_{{ lang }}">
+                {{ Form_getTextfield(Lang_translate('_TITLE','communication'), labelName ~ lang, name, 255) }}
 
-                    {{ Form_getTextarea(Lang_translate('_DESCRIPTION','standard'), textareaName ~ lang , description) }}
-                </div>
-            {% endfor %}
-        </div>
-    {{ Form_getDatefield(Lang_translate('_DATE','communication'), 'publish_date', 'publish_date') }}
-
-   
+                {{ Form_getTextarea(Lang_translate('_DESCRIPTION','standard'), textareaName ~ lang , description) }}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+    <br>
+    {{ Form_getDatefield(Lang_translate('_DATE','communication'), 'publish_date', 'publish_date', data.publish_date) }}
     {{ Form_getDropdown(Lang_translate('_COURSE', 'course'), 'idCourse', 'idCourse', []) }}
     {{ Form_openButtonSpace() }}
-    {{ Form_getButton('save', 'save', Lang_translate('_SAVE', 'admin_lang')) }}
     {{ Form_getButton('undo', 'undo', Lang_translate('_UNDO', 'admin_lang')) }}
+    {{ Form_getButton('save', 'save', Lang_translate('_SAVE', 'admin_lang')) }}
     {{ Form_closeButtonSpace() }}
 {{ Form_closeForm() }}
 <script>
-  var data = {{ categoriesDropdownData | json_encode(constant('JSON_HEX_APOS')) | raw }};
+    var data = {{ categoriesDropdownData | json_encode(constant('JSON_HEX_APOS')) | raw }};
     var dropPlaceholder = '{{ Lang_translate('_OPTION','communication') }}';
-  
-    const categoryDropdown = new window.frontend.modules.Select2($("#category"),{
- 
-    data: data,
-    width:"100%",
-  //  minimumResultsForSearch: 3,
-     formatSelection: function(item) {
-      return item.id
-    },
-    formatResult: function(item) {
-      return item.text
-    },
-    templateResult: function(item) {
-         var $result = $('<span style="padding-left:' + (20 * item.level) + 'px;">' + item.text + '</span>');
-    return $result;
-    },
-    placeholder: dropPlaceholder,
 
-  });
+    const categoryDropdown = new window.frontend.modules.Select2($("#category"), {
 
-  const courseDropdown = new window.frontend.modules.Select2($("#idCourse"),{
- 
-    width:"100%",
-    ajax: {
-        url: 'ajax.adm_server.php?mn=course&plf=lms&op=course_autocomplete',
-        dataType: 'json',
-        formatSelection: function(item) {
+        data: data,
+        width: "100%",
+        //  minimumResultsForSearch: 3,
+        formatSelection: function (item) {
             return item.id
         },
-         data: function (params) {
-            var result = {
-                query: params.term,
-                authentic_request: $("#authentic_request_add_comm").val()
-            }
-
-        return result;
+        formatResult: function (item) {
+            return item.text
         },
-        processResults: function (data) {
-          
-            return {
-                 results: $.map(data.courses, function(obj, index) {
-                    return { id: obj.id_course, text: obj.name };
-                })
-            };
-        }
-    },
-    placeholder: dropPlaceholder,
+        templateResult: function (item) {
+            var $result = $('<span style="padding-left:' + (20 * item.level) + 'px;">' + item.text + '</span>');
+            return $result;
+        },
+        placeholder: dropPlaceholder,
 
-  });
+    });
 
+    const courseDropdown = new window.frontend.modules.Select2($("#idCourse"), {
 
+        width: "100%",
+        ajax: {
+            url: 'ajax.adm_server.php?mn=course&plf=lms&op=course_autocomplete',
+            dataType: 'json',
+            formatSelection: function (item) {
+                return item.id
+            },
+            data: function (params) {
+                var result = {
+                    query: params.term,
+                    authentic_request: '{{ authentic_request }}'
+                }
+
+                return result;
+            },
+            processResults: function (data) {
+
+                return {
+                    results: $.map(data.courses, function (obj, index) {
+                        return {id: obj.id_course, text: obj.name};
+                    })
+                };
+            }
+        },
+        placeholder: dropPlaceholder,
+
+    });
 </script>

@@ -16,17 +16,17 @@ use FormaLms\lib\Encryption\SSLEncryption;
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 require_once _base_ . '/api/lib/lib.api.php';
-require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
-require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
-require_once Forma::inc(_lms_ . '/lib/lib.manmenu.php');
-require_once Forma::inc(_base_ . '/lib/lib.upload.php');
-require_once Forma::inc(_lms_ . '/lib/lib.subscribe.php');
-require_once Forma::inc(_lms_ . '/lib/lib.date.php');
-require_once Forma::inc(_lms_ . '/lib/lib.edition.php');
-require_once Forma::inc(_adm_ . '/lib/lib.field.php');
-require_once Forma::inc(_base_ . '/lib/lib.eventmanager.php');
-require_once Forma::inc(_lms_ . '/lib/category/class.categorytree.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.certificate.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.manmenu.php');
+require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.upload.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.subscribe.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.date.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.edition.php');
+require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/lib.field.php');
+require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.eventmanager.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/category/class.categorytree.php');
 
 class Course_API extends API
 {
@@ -48,13 +48,13 @@ class Course_API extends API
      */
     private function getAndValidateIdDayFromParams($params)
     {
-        $idDay = is_numeric($params['id']) ? $params['id'] : '';
+        $idDay = is_numeric($params['id_day']) ? $params['id_day'] : '';
 
         $response['success'] = true;
         $response['data'] = $idDay;
         if (!is_numeric($idDay)) {
             $response['success'] = false;
-            $response['message'] = 'Missing or Wrong ID Day: ' . $params['id'];
+            $response['message'] = 'Missing or Wrong ID Day: ' . $params['id_day'];
         }
 
         return $response;
@@ -179,7 +179,7 @@ class Course_API extends API
                 $classroom_man = new DateManager();
                 $course_dates = $classroom_man->getCourseDate($course_info['idCourse']);
 
-                require_once Forma::include(_adm_ . '/lib/', 'lib.customfield.php');
+                require_once \FormaLms\lib\Forma::include(_adm_ . '/lib/', 'lib.customfield.php');
                 $courseCustomFields = [];
                 $fman = new CustomFieldList();
                 $fman->setFieldArea('COURSE_CLASSROOM');
@@ -248,7 +248,7 @@ class Course_API extends API
             return false;
         // return array('success'=>true, 'debug'=>print_r($params, true));
         } elseif (empty($courseId) && !empty($course_code)) { // grab course info by code:
-            $db = DbConn::getInstance();
+            $db = \FormaLms\db\DbConn::getInstance();
             $qtxt = "SELECT * FROM %lms_course
 					WHERE code='" . $course_code . "'
 					LIMIT 0,1";
@@ -305,7 +305,7 @@ class Course_API extends API
             return false;
         // return array('success'=>true, 'debug'=>print_r($params, true));
         } elseif (empty($courseId) && !empty($course_code)) { // grab course info by code:
-            $db = DbConn::getInstance();
+            $db = \FormaLms\db\DbConn::getInstance();
             $qtxt = "SELECT * FROM %lms_course
 					WHERE code='" . $course_code . "'
 					LIMIT 0,1";
@@ -489,9 +489,9 @@ class Course_API extends API
             $sendMailToUser = true;
         }
 
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $course_man = new Man_Course();
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
 
         $user_data = $this->aclManager->getUser($user_id, false);
 
@@ -521,10 +521,10 @@ class Course_API extends API
         // --------------- add user: -----------------------------------
 
         $model = new SubscriptionAlms($courseId, $edition_id, $classroom_id);
-        $docebo_course = new DoceboCourse($courseId);
-        $level_idst = $docebo_course->getCourseLevel($courseId);
+        $formaCourse = new FormaCourse($courseId);
+        $level_idst = $formaCourse->getCourseLevel($courseId);
         if (count($level_idst) == 0 || $level_idst[1] == '') {
-            $level_idst = $docebo_course->createCourseLevel($courseId);
+            $level_idst = FormaCourse::createCourseLevel($courseId);
         }
         $waiting = 0;
 
@@ -559,13 +559,13 @@ class Course_API extends API
                 '[course]' => $course_info['name'], ];
 
             $msg_composer = new EventMessageComposer();
-            $msg_composer->setSubjectLangText('email', '_APPROVED_SUBSCRIBED_SUBJECT', $array_subst);
+            $msg_composer->setSubjectLangText('email', '_APPROVED_SUBSCRIBED_SUBJECT', false);
             $msg_composer->setBodyLangText('email', '_APPROVED_SUBSCRIBED_TEXT', $array_subst);
 
             $recipients = [$user_id];
 
             if ($course_info['sendCalendar']) {
-                $uinfo = Docebo::aclm()->getUser($user_id, false);
+                $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($user_id, false);
                 $calendar = CalendarManager::getCalendarDataContainerForDateDays((int) $courseId, (int) $classroom_id, (int) $uinfo[ACL_INFO_IDST]);
                 $msg_composer->setAttachments([$calendar->getFile()]);
             }
@@ -601,9 +601,9 @@ class Course_API extends API
         $user_level = $this->getUserLevelId(isset($params['user_level']) ? $params['user_level'] : false);
         $user_status = $this->getUserStatusId(isset($params['user_status']) ? $params['user_status'] : false);
 
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $course_man = new Man_Course();
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
 
         $course_info = false;
         $edition_info = false;
@@ -618,10 +618,10 @@ class Course_API extends API
         // --------------- update user subscription: ------------------------
 
         $model = new SubscriptionAlms($courseId, $edition_id, $classroom_id);
-        $docebo_course = new DoceboCourse($courseId);
-        $level_idst = $docebo_course->getCourseLevel($courseId);
+        $formaCourse = new FormaCourse($courseId);
+        $level_idst = $formaCourse->getCourseLevel($courseId);
         if (count($level_idst) == 0 || $level_idst[1] == '') {
-            $level_idst = $docebo_course->createCourseLevel($courseId);
+            $level_idst = FormaCourse::createCourseLevel($courseId);
         }
 
         $update_ok = true;
@@ -651,11 +651,11 @@ class Course_API extends API
                     // $user = $userModel->getProfileData($user_id);
 
                     // require_once(_lms_ . '/lib/lib.course.php');
-                    // $docebo_course = new DoceboCourse($course_id);
+                    // $formaCourse = new FormaCourse($course_id);
 
                     // $event->setUser($user);
                     // $event->setStatus(['id' => $user_status, 'name' => $status_arr[$user_status]]);
-                    // $event->setCourse($docebo_course->course_info);
+                    // $event->setCourse($formaCourse->course_info);
                     // \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\Courses\CourseSubscriptionEditStatusEvent::EVENT_NAME, $event);
                 } else {
                     $update_ok = false;
@@ -695,9 +695,9 @@ class Course_API extends API
         $user_level = $this->getUserLevelId(isset($params['user_level']) ? $params['user_level'] : false);
         $user_status = $this->getUserStatusId(isset($params['user_status']) ? $params['user_status'] : false);
 
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $course_man = new Man_Course();
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
 
         $course_info = false;
         $edition_info = false;
@@ -712,8 +712,8 @@ class Course_API extends API
         // --------------- delete user subscription: ------------------------
 
         $model = new SubscriptionAlms($courseId, $edition_id, $classroom_id);
-        $docebo_course = new DoceboCourse($courseId);
-        $level_idst = $docebo_course->getCourseLevel($courseId);
+        $formaCourse = new FormaCourse($courseId);
+        $level_idst = $formaCourse->getCourseLevel($courseId);
 
         $old_level = $model->getUserLevel($user_id);
 
@@ -754,8 +754,8 @@ class Course_API extends API
             $list = [];
             foreach ($arrayUsers as $value) {
                 if (!$userFilterEnabled || in_array($value['id_user'], $idUsers)) {
-                    $is_valid_begin = $value['date_begin_validity'] && $value['date_begin_validity'] != '0000-00-00 00:00:00';
-                    $is_valid_expire = $value['date_expire_validity'] && $value['date_expire_validity'] != '0000-00-00 00:00:00';
+                    $is_valid_begin = $value['date_begin_validity'];
+                    $is_valid_expire = $value['date_expire_validity'];
 
                     $del_url = 'ajax.adm_server.php?r=' . $this->link . '/del&id_user=' . $value['id_user']
                         . '&id_course=' . $this->id_course . '&id_edition=' . $this->id_edition . '&id_date=' . $this->id_date;
@@ -861,7 +861,7 @@ class Course_API extends API
             $id_course = (int) $params['course_id'];
         }
 
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
         $qtxt = "SELECT idst, firstname, lastname  FROM core_user 
 				WHERE userid='/" . $username . "' ";
         $q = $db->query($qtxt);
@@ -923,7 +923,7 @@ class Course_API extends API
             $username = $params['username'];
         }
 
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
         $qtxt = 'SELECT idCourse, code, name, box_description  FROM learning_course 
 				WHERE idCourse=' . (int) $id_course;
         $q = $db->query($qtxt);
@@ -1003,7 +1003,7 @@ class Course_API extends API
 
     private function getInfoCourseAdd()
     {
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
         $qtxt = 'SELECT max(idCourse) as max_id  FROM learning_course ';
         $q = $db->query($qtxt);
         $course_info = $db->fetch_assoc($q);
@@ -1139,8 +1139,8 @@ class Course_API extends API
             $params['classroom_allow_overbooking'] ? $params['classroom_allow_overbooking'] : false,
             $params['classroom_status'] ? $params['classroom_status'] : 0,
             $params['classroom_test_type'] ? $params['classroom_test_type'] : 0,
-            $params['classroom_sub_start_date'] ? $params['classroom_sub_start_date'] : '0000-00-00 00:00:00',
-            $params['classroom_sub_end_date'] ? $params['classroom_sub_end_date'] : '0000-00-00 00:00:00',
+            $params['classroom_sub_start_date'] ? $params['classroom_sub_start_date'] : null,
+            $params['classroom_sub_end_date'] ? $params['classroom_sub_end_date'] : null,
             $params['classroom_unsubscribe_date_limit'] ? $params['classroom_unsubscribe_date_limit'] : false
         );
 
@@ -1157,7 +1157,7 @@ class Course_API extends API
 
     private function getMaxDateDay($idDate)
     {
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
         $query = 'select max(id_day) as max_id FROM learning_course_date_day '
             . ' WHERE    ID_DATE = ' . $idDate . ' AND deleted = 0';
         $q = $db->query($query);
@@ -1199,9 +1199,9 @@ class Course_API extends API
         $sub_end_date = trim($date_info['sub_end_date']);
         $unsubscribe_date_limit = trim($date_info['unsubscribe_date_limit']);
 
-        $sub_start_date = (!empty($sub_start_date) ? Format::dateDb($sub_start_date, 'date') : '0000-00-00') . ' 00:00:00';
-        $sub_end_date = (!empty($sub_end_date) ? Format::dateDb($sub_end_date, 'date') : '0000-00-00') . ' 00:00:00';
-        $unsubscribe_date_limit = (!empty($unsubscribe_date_limit) ? Format::dateDb($unsubscribe_date_limit, 'date') : '0000-00-00') . ' 00:00:00';
+        $sub_start_date = (!empty($sub_start_date) ? Format::dateDb($sub_start_date, 'date') : '1970-01-01') . ' 00:00:00';
+        $sub_end_date = (!empty($sub_end_date) ? Format::dateDb($sub_end_date, 'date') : '1970-01-01') . ' 00:00:00';
+        $unsubscribe_date_limit = (!empty($unsubscribe_date_limit) ? Format::dateDb($unsubscribe_date_limit, 'date') : '1970-01-01') . ' 00:00:00';
 
         $idDate = $date_info['id_date'];
 
@@ -1229,7 +1229,6 @@ class Course_API extends API
         }
 
         $response = $this->validateIdDateExistsInCourseFromParams($params);
-        $courseId = $response['data'];
         if (!$response['success']) {
             return $response;
         }
@@ -1347,7 +1346,9 @@ class Course_API extends API
 
         $arrayDays = $model->classroom_man->getDateDay($idDate);
 
-        $dayExists = array_key_exists($idDay, $arrayDays);
+        $dayExists = array_search($idDay, array_column($arrayDays, 'id'));
+
+       
         if ($dayExists) {
             //unset($arrayDays[$idDay]);
             $result = $model->classroom_man->removeDateDay($idDate, [
@@ -1355,6 +1356,8 @@ class Course_API extends API
                     'id' => $idDay,
                 ],
             ]);
+
+          
 
             /*sort($arrayDays);
 
@@ -1724,7 +1727,7 @@ class Course_API extends API
 
         $course_man = new Man_Course();
 
-        $course = new DoceboCourse($id_course);
+        $course = new FormaCourse($id_course);
         if (!$course->getAllInfo()) {
             return false;
         }
@@ -1735,11 +1738,11 @@ class Course_API extends API
 
         $levels = &$course_man->getCourseIdstGroupLevel($id_course);
         foreach ($levels as $lv => $idst) {
-            Docebo::aclm()->deleteGroup($idst);
+            \FormaLms\lib\Forma::getAclManager()->deleteGroup($idst);
         }
 
         $alluser = getIDGroupAlluser($id_course);
-        Docebo::aclm()->deleteGroup($alluser);
+        \FormaLms\lib\Forma::getAclManager()->deleteGroup($alluser);
         $course_man->removeCourseRole($id_course);
         $course_man->removeCourseMenu($id_course);
 
@@ -1787,7 +1790,7 @@ class Course_API extends API
 
         //--- delete classroom or editions -----------------------------------------
         if ($course_type == 'classroom') {
-            require_once _lms_ . '/admin/model/ClassroomAlms.php';
+            require_once _lms_ . '/admin/models/ClassroomAlms.php';
             $classroom_model = new ClassroomAlms($id_course);
 
             $classroom = $classroom_model->classroom_man->getDateIdForCourse($id_course);
@@ -1798,7 +1801,7 @@ class Course_API extends API
                 }
             }
         } elseif ($course_edition == 1) {
-            require_once _lms_ . '/admin/model/EditionAlms.php';
+            require_once _lms_ . '/admin/models/EditionAlms.php';
             $edition_model = new EditionAlms($id_course);
 
             $editions = $edition_model->classroom_man->getEditionIdFromCourse($id_course);
@@ -1814,7 +1817,7 @@ class Course_API extends API
         //--- clear LOs ------------------------------------------------------------
 
         require_once _lms_ . '/lib/lib.module.php';
-        require_once _lms_ . '/lib/lib.param.php';
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
         require_once _lms_ . '/class.module/track.object.php';
 
         $arr_lo_param = [];
@@ -2072,18 +2075,17 @@ class Course_API extends API
 
     public function authenticateUserById($idUser)
     {
-        require_once Forma::inc(_base_ . '/lib/lib.user.php');
-        $user_manager = new DoceboACLManager();
+        $user_manager = new FormaACLManager();
         $user_info = $user_manager->getUser($idUser, false);
 
         if ($user_info != false) {
             $username = $user_info[ACL_INFO_USERID];
-            $du = new DoceboUser($username, $prefix);
+            $du = new \FormaLms\lib\FormaUser($username, $prefix);
             $this->session->set('last_enter', $user_info[ACL_INFO_LASTENTER]);
             $du->setLastEnter(date('Y-m-d H:i:s'));
             $this->session->set('user_enter_mark', time());
             $du->loadUserSectionST();
-            $du->SaveInSession();
+            $du->saveInSession();
             $this->session->set('user', $du);
             $this->session->save();
 
@@ -2095,10 +2097,9 @@ class Course_API extends API
 
     public function deleteLearningObjects($params)
     {
-        define('LMS', true);
         require_once _lms_ . '/class.module/class.definition.php';
         require_once _lms_ . '/lib/lib.module.php';
-        require_once _lms_ . '/lib/lib.permission.php';
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.permission.php');
         $response = $this->validateDeleteParams($params);
 
         if ($response['success']) {
@@ -2315,7 +2316,7 @@ class Course_API extends API
         $idUsers = $params['id_user'] ? $params['id_user'] : $params['id_users'];
 
         // recupera TRACK della risposta del test
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
         $qtxt = 'SELECT lt.idTrack, lt.idTest, lt.date_end_attempt, lt.idUser, lo.idCourse
                 FROM learning_testtrack lt
                 JOIN learning_organization lo ON lo.idOrg = lt.idReference 
@@ -2426,7 +2427,7 @@ class Course_API extends API
 
     private function getTrackAnswer($idTrack, $idQuest)
     {
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
         $sql = 'select idAnswer, more_info from learning_testtrack_answer where idTrack=' . $idTrack . ' and idQuest=' . $idQuest;
 
         $result = $db->query($sql);
@@ -2444,7 +2445,7 @@ class Course_API extends API
 
     public function getAnswerQuest($idQuest, $idAnsw)
     {
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
         $out = [];
         $q_ans = 'select idAnswer, sequence, is_correct, answer, score_correct, score_incorrect from learning_testquestanswer where idQuest=' . $idQuest . ' order by sequence';
 
@@ -2570,25 +2571,25 @@ class Course_API extends API
 
             // find all the group created for this menu custom for permission management
             foreach ($levels as $lv => $name_level) {
-                $group_info = Docebo::aclm()->getGroup(false, '/lms/course/' . $id_course . '/subscribed/' . $lv);
+                $group_info = \FormaLms\lib\Forma::getAclManager()->getGroup(false, '/lms/course/' . $id_course . '/subscribed/' . $lv);
                 $map[$lv] = $group_info[ACL_INFO_IDST];
             }
 
             return $map;
         }
 
-        $docebo_course = new DoceboCourse($id_dupcourse);
+        $formaCourse = new FormaCourse($id_dupcourse);
         $subscribe_man = new CourseSubscribe_Manager();
 
-        $group_idst = $docebo_course->createCourseLevel($new_course_dup);
-        $group_of_from = $docebo_course->getCourseLevel($id_dupcourse);
+        $group_idst = FormaCourse::createCourseLevel($new_course_dup);
+        $group_of_from = $formaCourse->getCourseLevel($id_dupcourse);
         $perm_form = createPermForDuplicatedCourse($group_of_from, $new_course_dup, $id_dupcourse);
         $levels = $subscribe_man->getUserLevel();
 
         foreach ($levels as $lv => $name_level) {
             foreach ($perm_form[$lv] as $idrole => $v) {
                 if ($group_idst[$lv] != 0 && $idrole != 0) {
-                    Docebo::aclm()->addToRole($idrole, $group_idst[$lv]);
+                    \FormaLms\lib\Forma::getAclManager()->addToRole($idrole, $group_idst[$lv]);
                 }
             }
         }
@@ -2611,8 +2612,8 @@ class Course_API extends API
             }
         }
 
-        require_once Forma::inc(_lms_ . '/modules/organization/orglib.php');
-        require_once _lms_ . '/lib/lib.param.php';
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/organization/orglib.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
         require_once _lms_ . '/class.module/track.object.php';
         require_once _lms_ . '/class.module/learning.object.php';
 
@@ -2827,7 +2828,7 @@ class Course_API extends API
 
     public function addAssociationAggregateCertificates($params)
     {
-        require_once Forma::inc(_lms_ . '/lib/lib.aggregated_certificate.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.aggregated_certificate.php');
         $response = [];
         $response['success'] = true;
 

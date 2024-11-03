@@ -35,7 +35,7 @@ class Learning_Poll extends Learning_Object
         if ($id !== null) {
             $res = $this->db->query("SELECT author, title FROM %lms_poll WHERE id_poll = '" . (int) $id . "'");
             if ($res && $this->db->num_rows($res) > 0) {
-                list($this->idAuthor, $this->title) = $this->db->fetch_row($res);
+                [$this->idAuthor, $this->title] = $this->db->fetch_row($res);
                 $this->isPhysicalObject = true;
             }
         }
@@ -74,7 +74,7 @@ class Learning_Poll extends Learning_Object
     {
         $this->back_url = $back_url;
 
-        Forma::removeErrors();
+        \FormaLms\lib\Forma::removeErrors();
 
         require_once _lms_ . '/modules/poll/poll.php';
         addpoll($this);
@@ -94,7 +94,7 @@ class Learning_Poll extends Learning_Object
         $this->id = $id;
         $this->back_url = $back_url;
 
-        Forma::removeErrors();
+        \FormaLms\lib\Forma::removeErrors();
 
         require_once _lms_ . '/modules/poll/poll.php';
         modpollgui($this);
@@ -112,7 +112,7 @@ class Learning_Poll extends Learning_Object
     {
         checkPerm('view', false, 'storage');
 
-        Forma::removeErrors();
+        \FormaLms\lib\Forma::removeErrors();
 
         //finding quest
         $reQuest = sql_query('
@@ -128,23 +128,23 @@ class Learning_Poll extends Learning_Object
 
             $quest_obj = eval("return new $type_class( $id_quest );");
             if (!$quest_obj->del()) {
-                Forma::addError(Lang::t('_OPERATION_FAILURE'));
+                \FormaLms\lib\Forma::addError(Lang::t('_OPERATION_FAILURE'));
 
                 return false;
             }
         }
         if (!sql_query('DELETE FROM ' . $GLOBALS['prefix_lms'] . "_polltrack WHERE id_poll = '" . $id . "'")) {
-            Forma::addError(Lang::t('_OPERATION_FAILURE'));
+            \FormaLms\lib\Forma::addError(Lang::t('_OPERATION_FAILURE'));
 
             return false;
         }
         if (!sql_query('DELETE FROM ' . $GLOBALS['prefix_lms'] . "_pollquest WHERE id_poll = '" . $id . "'")) {
-            Forma::addError(Lang::t('_OPERATION_FAILURE'));
+            \FormaLms\lib\Forma::addError(Lang::t('_OPERATION_FAILURE'));
 
             return false;
         }
         if (!sql_query('DELETE FROM ' . $GLOBALS['prefix_lms'] . "_poll WHERE id_poll = '" . $id . "'")) {
-            Forma::addError(Lang::t('_OPERATION_FAILUREPOLL'));
+            \FormaLms\lib\Forma::addError(Lang::t('_OPERATION_FAILUREPOLL'));
 
             return false;
         }
@@ -177,7 +177,7 @@ class Learning_Poll extends Learning_Object
         if (!sql_query($ins_query)) {
             return false;
         }
-        list($id_new_poll) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
+        [$id_new_poll] = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
         if (!$id_new_poll) {
             return false;
         }
@@ -195,7 +195,7 @@ class Learning_Poll extends Learning_Object
             if (!$new_id) {
                 $this->del($id_new_poll);
 
-                Forma::addError(Lang::t('_POLL_ERR_COPY_QUEST') . ' : ' . $type_class . '( ' . $id_quest . ' )');
+                \FormaLms\lib\Forma::addError(Lang::t('_POLL_ERR_COPY_QUEST') . ' : ' . $type_class . '( ' . $id_quest . ' )');
 
                 return false;
             }

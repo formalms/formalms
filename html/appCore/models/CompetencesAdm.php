@@ -11,17 +11,27 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
+use FormaLms\lib\Interfaces\Accessible;
+
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-class CompetencesAdm extends Model
+class CompetencesAdm extends Model implements Accessible
 {
     protected $db;
+
+    protected string $responseAccessor = 'ok_assign';
+
+    protected string $infoType = '';
+
+    protected array $oldUsers = [];
+
+    protected array $newUsers = [];
 
     //--- init functions ---------------------------------------------------------
 
     public function __construct()
     {
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         parent::__construct();
     }
 
@@ -128,7 +138,7 @@ class CompetencesAdm extends Model
      */
     public function getCategories($id_parent, $language = false)
     {
-        $lang_code = ($language == false ? getLanguage() : $language);
+        $lang_code = ($language == false ? Lang::get() : $language);
         $query = 'SELECT	t1.id_category, t2.name, t1.level, t1.iLeft, t1.iRight '
             . ' FROM ' . $this->_getCategoriesTable() . ' AS t1 LEFT JOIN ' . $this->_getCategoriesLangTable() . ' AS t2 '
             . " ON (t1.id_category = t2.id_category AND t2.lang_code = '" . $lang_code . "' ) "
@@ -169,7 +179,7 @@ class CompetencesAdm extends Model
     {
         $folders = [0];
         if (!$language) {
-            $language = getLanguage();
+            $language = Lang::get();
         }
         if ($node_id <= 0) {
             return $folders;
@@ -231,7 +241,7 @@ class CompetencesAdm extends Model
 
     public function getCompetences($id_category)
     {
-        $lang_code = ($language == false ? getLanguage() : $language);
+        $lang_code = ($language == false ? Lang::get() : $language);
         $query = 'SELECT	t1.* '
             . ' FROM ' . $this->_getCompetencesTable() . ' AS t1 LEFT JOIN ' . $this->_getCompetencesLangTable() . ' AS t2 '
             . " ON (t1.id_competence = t2.id_competence AND t2.lang_code = '" . $lang_code . "' ) "
@@ -389,7 +399,7 @@ class CompetencesAdm extends Model
         }
 
         //validate language for name and description
-        $_language = (!empty($filter) && isset($filter['language']) ? $filter['language'] : getLanguage());
+        $_language = (!empty($filter) && isset($filter['language']) ? $filter['language'] : Lang::get());
 
         //mount query
         $query = 'SELECT t1.id_competence, t1.id_category, t1.typology, t1.type, '
@@ -461,7 +471,7 @@ class CompetencesAdm extends Model
         //$_filter .= " AND t2.name LIKE '%".$filter['text']."%' ";
 
         //validate language for name and description
-        $_language = (!empty($filter) && isset($filter['language']) ? $filter['language'] : getLanguage());
+        $_language = (!empty($filter) && isset($filter['language']) ? $filter['language'] : Lang::get());
 
         //mount query
         $query = 'SELECT COUNT(*) '
@@ -484,7 +494,7 @@ class CompetencesAdm extends Model
     public function getAllCategories($language = false, $keys = false)
     {
         $output = [];
-        $_language = (!$language ? getLanguage() : $language);
+        $_language = (!$language ? Lang::get() : $language);
         $query = 'SELECT c.id_category, c.id_parent, c.level, c.iLeft, c.iRight, cl.name, cl.description, cl.lang_code '
             . ' FROM ' . $this->_getCategoriesTable() . ' as c '
             . ' LEFT JOIN ' . $this->_getCategoriesLangTable() . ' as cl '
@@ -510,7 +520,7 @@ class CompetencesAdm extends Model
     public function getAllCompetences($language = false, $keys = false)
     {
         $output = [];
-        $_language = (!$language ? getLanguage() : $language);
+        $_language = (!$language ? Lang::get() : $language);
         $query = 'SELECT c.id_competence, c.id_category, c.typology, c.type, cl.name, cl.description '
             . ' FROM ' . $this->_getCompetencesTable() . ' as c '
             . ' LEFT JOIN ' . $this->_getCompetencesLangTable() . ' as cl '
@@ -539,7 +549,7 @@ class CompetencesAdm extends Model
         $output = $this->db->fetch_obj($res);
 
         //initialize languages array
-        $lang_codes = Docebo::langManager()->getAllLangCode();
+        $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $langs = [];
         for ($i = 0; $i < count($lang_codes); ++$i) {
             $langs[$lang_codes[$i]] = [
@@ -566,7 +576,7 @@ class CompetencesAdm extends Model
 
     public function getCategoryName($id_category, $language = false)
     {
-        $lang_code = (!$language ? getLanguage() : $language);
+        $lang_code = (!$language ? Lang::get() : $language);
         $output = '';
         $query = 'SELECT name FROM ' . $this->_getCategoriesLangTable() . ' '
             . ' WHERE id_category = ' . (int) $id_category . " AND lang_code = '" . $lang_code . "'";
@@ -588,7 +598,7 @@ class CompetencesAdm extends Model
         $output = $this->db->fetch_obj($res);
 
         //initialize languages array
-        $lang_codes = Docebo::langManager()->getAllLangCode();
+        $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $langs = [];
         for ($i = 0; $i < count($lang_codes); ++$i) {
             $langs[$lang_codes[$i]] = [
@@ -608,7 +618,10 @@ class CompetencesAdm extends Model
             }
         }
 
-        $output->langs = $langs;
+        if($output) {
+            $output->langs = $langs;
+        }
+        
 
         return $output;
     }
@@ -639,7 +652,7 @@ class CompetencesAdm extends Model
         }
 
         //initialize languages array
-        $lang_codes = Docebo::langManager()->getAllLangCode();
+        $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $_void_lang_arr = [];
         for ($i = 0; $i < count($lang_codes); ++$i) {
             $_void_lang_arr[$lang_codes[$i]] = [
@@ -924,7 +937,7 @@ class CompetencesAdm extends Model
         if ($output) {
             //insert languages in database
             if (property_exists($params, 'langs')) {
-                $langs = Docebo::langManager()->getAllLangcode();
+                $langs = \FormaLms\lib\Forma::langManager()->getAllLangcode();
                 $arr_langs = [];
                 foreach ($langs as $lang_code) {
                     if (isset($params->langs[$lang_code])) {
@@ -997,7 +1010,7 @@ class CompetencesAdm extends Model
 
     public function getCompetenceName($id_competence, $language = false)
     {
-        $lang_code = (!$language ? getLanguage() : $language);
+        $lang_code = (!$language ? Lang::get() : $language);
         $output = '';
         $query = 'SELECT name FROM ' . $this->_getCompetencesLangTable() . ' '
             . ' WHERE id_competence = ' . (int) $id_competence . " AND lang_code = '" . $lang_code . "'";
@@ -1043,7 +1056,7 @@ class CompetencesAdm extends Model
 
         //retrive users list from idst list
         if (count($list) > 0) {
-            $acl_man = Docebo::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $output = $acl_man->getAllUsersFromIdst($list);
         }
 
@@ -1202,7 +1215,7 @@ class CompetencesAdm extends Model
             $params = new stdClass();
             $params->operation = 'manual_assign'; //the type of operation (manual, course etc.)
             $params->id_course = 0; //the id of the course which has assigned the score
-            $params->assigned_by = Docebo::user()->getIdSt(); //user/administrator who has assigned the score to the user
+            $params->assigned_by = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(); //user/administrator who has assigned the score to the user
             $params->date_assignment = date('Y-m-d H:i:s'); //the date of the operation
             $params->score_assigned = $score; //the score assigned
             $params->score_total = $score;
@@ -1234,7 +1247,7 @@ class CompetencesAdm extends Model
         if (property_exists($params, 'score_got')) {
             $set .= 'score_got=' . $params->score_got;
         }
-        //if (property_exists($params, 'expire_date')) $set .= "expire_date=".($user->expire_date != "" ? $user->expire_date : "0000-00-00 00:00:00");
+  
         if ($set == '') {
             return true;
         }
@@ -1248,7 +1261,7 @@ class CompetencesAdm extends Model
             $_params = new stdClass();
             $_params->operation = 'manual_update'; //the type of operation (manual, course etc.)
             $_params->id_course = 0; //the id of the course which has assigned the score
-            $_params->assigned_by = Docebo::user()->getIdSt(); //user/administrator who has assigned the score to the user
+            $_params->assigned_by = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(); //user/administrator who has assigned the score to the user
             $_params->date_assignment = date('Y-m-d H:i:s'); //the date of the operation
             $_params->score_assigned = $params->score_got; //the score assigned
             $_params->score_total = $params->score_got;
@@ -1281,7 +1294,7 @@ class CompetencesAdm extends Model
             $params = new stdClass();
             $params->operation = 'manual_remove'; //the type of operation (manual, course etc.)
             $params->id_course = 0; //the id of the course which has assigned the score
-            $params->assigned_by = Docebo::user()->getIdSt(); //user/administrator who has assigned the score to the user
+            $params->assigned_by = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(); //user/administrator who has assigned the score to the user
             $params->date_assignment = date('Y-m-d H:i:s'); //the date of the operation
             $params->score_assigned = 0; //the score assigned
             $params->score_total = 0;
@@ -1342,7 +1355,7 @@ class CompetencesAdm extends Model
             $params = new stdClass();
             $params->operation = 'manual_addscore'; //the type of operation (manual, course etc.)
             $params->id_course = 0; //the id of the course which has assigned the score
-            $params->assigned_by = Docebo::user()->getIdSt(); //user/administrator who has assigned the score to the user
+            $params->assigned_by = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(); //user/administrator who has assigned the score to the user
             $params->date_assignment = date('Y-m-d H:i:s'); //the date of the operation
             $params->score_assigned = $score; //the score assigned
             $params->score_total = 0;
@@ -1390,7 +1403,7 @@ class CompetencesAdm extends Model
             }
         }
 
-        $_language = getLanguage();
+        $_language = Lang::get();
 
         //mount query
         $query = 'SELECT c.id_competence, cl.name, cl.description, c.typology, c.type, cc.score '
@@ -1428,7 +1441,7 @@ class CompetencesAdm extends Model
             }
         }
 
-        $_language = getLanguage();
+        $_language = Lang::get();
 
         //mount query
         $query = 'SELECT COUNT(*) '
@@ -1631,7 +1644,7 @@ class CompetencesAdm extends Model
     {
         //initialize output
         $output = [];
-        $lang_codes = Docebo::langManager()->getAllLangCode();
+        $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $_langs = [];
         for ($i = 0; $i < count($lang_codes); ++$i) {
             $_langs[$lang_codes[$i]] = [
@@ -1674,7 +1687,7 @@ class CompetencesAdm extends Model
 
         $query = 'SELECT c.id_competence, cl.name, c.type, c.typology '
             . ' FROM ' . $this->_getCompetencesTable() . ' as c LEFT JOIN ' . $this->_getCompetencesLangTable() . ' as cl '
-            . " ON (c.id_competence = cl.id_competence AND cl.lang_code='" . getLanguage() . "') "
+            . " ON (c.id_competence = cl.id_competence AND cl.lang_code='" . Lang::get() . "') "
             . " WHERE cl.name LIKE '%" . $query . "%' ORDER BY cl.name "
             . ((int) $limit > 0 ? ' LIMIT 0, ' . (int) $limit : '');
         $res = $this->db->query($query);
@@ -1807,7 +1820,7 @@ class CompetencesAdm extends Model
             return false;
         }
         if (!$lang_code) {
-            $lang_code = getLanguage();
+            $lang_code = Lang::get();
         }
 
         $query = 'UPDATE ' . $this->_getCompetencesLangTable() . ' '
@@ -1824,7 +1837,7 @@ class CompetencesAdm extends Model
             return false;
         }
         if (!$lang_code) {
-            $lang_code = getLanguage();
+            $lang_code = Lang::get();
         }
 
         $query = 'UPDATE ' . $this->_getCompetencesLangTable() . ' '
@@ -1939,5 +1952,154 @@ class CompetencesAdm extends Model
         }
 
         return $output;
+    }
+
+
+    public function getassociationView($id_competence, array $_new_users) : array{
+
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
+        $name = $this->getCompetenceName($id_competence);
+        $back_url = 'index.php?r=' . $this->base_link_competence . '/show_users&id=' . (int) $id_competence;
+        //page_title
+        $page_title_arr = [
+            $back_url => Lang::t('_COMPETENCES', 'competences'),
+            $name,
+            Lang::t('_ASSIGN_USERS', 'competences'),
+        ];
+
+        require_once _base_ . '/lib/lib.table.php';
+        $table = new Table();
+
+        $head_label = [];
+        $head_style = [];
+
+        $head_label[] = Lang::t('_USERNAME', 'standard');
+        $head_label[] = Lang::t('_NAME');
+        $head_label[] = Lang::t('_SCORE', 'competences');
+
+        $head_style[] = '';
+        $head_style[] = '';
+        $head_style[] = 'img-cell';
+
+        $table->addHead($head_label, $head_style);
+
+        $user_model = new UsermanagementAdm();
+        $_user_data = $user_model->getUsersDetails($_new_users, true, true);
+
+        $_std_score = 0;
+        foreach ($_new_users as $id_user) {
+            if (isset($_user_data[$id_user]) && is_object($_user_data[$id_user])) {
+                $line = [];
+
+                $line[] = $acl_man->relativeId($_user_data[$id_user]->userid);
+                $line[] = $_user_data[$id_user]->lastname . ' ' . $_user_data[$id_user]->firstname;
+                $line[] = Form::getInputTextfield('textfield', 'assign_score_' . $id_user, 'assign_score[' . $id_user . ']', $_std_score, '', 255, '');
+
+                $table->addBody($line);
+            }
+        }
+
+        $foot = [];
+        $foot[] = ['label' => '<b>' . Lang::t('_TOTAL', 'standard') . ': ' . count($_new_users) . '</b>', 'colspan' => 2];
+        $foot[] = Form::getInputTextfield('textfield', '_score_', '_score_', $_std_score, '', 255, '') . '<br />'
+            . Form::getButton('set_score', false, Lang::t('_SET', 'standard'))
+            . Form::getButton('reset_score', false, Lang::t('_RESET', 'standard'));
+
+        $table->addFoot($foot);
+
+        return  [
+            'id_competence' => $id_competence,
+            'title' => $page_title_arr,
+            'table' => $table,
+            'score_std_value' => $_std_score,
+       
+        ];
+        
+    }
+
+    public function getAccessList($resourceId) : array {
+
+        return $this->getCompetenceUsers($resourceId);
+        
+    }
+
+    public function setAccessList($resourceId, array $selection) : bool {
+        
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
+        $_new_users = [];
+        $result = true;
+        $users_selected = $acl_man->getAllUsersFromIdst($selection);
+        $competence_users = $this->getCompetenceUsers($resourceId, true);
+        $users_existent = array_keys($competence_users);
+        //retrieve newly selected users
+        $_common_users = array_intersect($users_existent, $users_selected);
+        $_new_users = array_diff($users_selected, $_common_users);
+        $_old_users = array_diff($users_existent, $_common_users);
+              
+        if(empty($_new_users)) {
+            $res = $this->removeCompetenceUsers($resourceId, $_old_users, true);
+            $this->setResponseForAccessor($res);
+            $result = false;
+        } else {
+            $result = true;
+            $this->setNewUsers($_new_users);
+            $this->setOldUsers($_old_users);
+            if ($this->getInfoType() != 'score') {
+                $data = [];
+                foreach ($_new_users as $id_user) {
+                    $data[$id_user] = 1;
+                }
+                $res1 = $this->assignCompetenceUsers($resourceId, $data, true);
+                $res2 = $this->removeCompetenceUsers($resourceId, $_old_users, true);
+
+                $response = $res1 && $res2 ? 'ok_assign' : 'err_assign';
+
+                $this->setResponseforAccessor($response);
+            }
+
+        }
+        
+        return $result;
+     
+    }
+
+    protected function setResponseforAccessor(string $response) {
+
+        $this->responseAccessor = $response;
+        return $this;
+    }
+
+    public function getResponseForAccessor() : string {
+        return $this->responseAccessor;
+    }
+
+    public function getInfoType() : string{
+        return $this->infoType;
+    }
+
+    public function setInfoType(string $infoType) {
+
+        $this->infoType = $infoType;
+        return $this;
+    }
+
+    public function getNewUsers() : array{
+        return $this->newUsers;
+    }
+
+    public function setNewUsers(array $newUsers) {
+
+        $this->newUsers = $newUsers;
+        return $this;
+    }
+
+    public function getOldUsers() : array{
+        return $this->oldUsers;
+    }
+
+    public function setOldUsers(array $oldUsers) {
+
+        $this->oldUsers = $oldUsers;
+        return $this;
     }
 }

@@ -21,9 +21,9 @@
  **/
 function scorm_userstat($idscorm_organization, $idUser, $idReference = null, $mvc = false)
 {
-    require_once Forma::inc(_lms_ . '/modules/scorm/scorm_items_track.php');
-    require_once Forma::inc(_lms_ . '/modules/scorm/CPManagerDb.php');
-    require_once Forma::inc(_lms_ . '/modules/scorm/RendererBase.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/scorm_items_track.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/CPManagerDb.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/RendererBase.php');
 
     // get idscorm_package
     $query = 'SELECT idscorm_package, org_identifier '
@@ -102,10 +102,10 @@ function decodeSessionTime($stime)
 // TODO: sourced from appLms/modules/organization/orgresults.php -- to be reviewed
 function getTrackingTable($id_user, $id_org, $idscorm_item, $idReference)
 {
-    require_once Forma::inc(_lib_ . '/lib.table.php');
+    require_once \FormaLms\lib\Forma::inc(_lib_ . '/lib.table.php');
     $tb = new Table(FormaLms\lib\Get::sett('visu_course'));
 
-    $lang = DoceboLanguage::CreateInstance('organization', 'lms');
+    $lang = FormaLanguage::CreateInstance('organization', 'lms');
 
     $h_type = ['', '', 'image', 'image', '', 'nowrap', 'image', 'image nowrap'];
     $h_content = [
@@ -156,10 +156,7 @@ function getTrackingTable($id_user, $id_org, $idscorm_item, $idReference)
         $line[] = Format::date($row['last_access']);
         $line[] = decodeSessionTime($row['total_time']);
         $line[] = $row['attempts'];
-        //$line[] = ($row['score_raw']!='' ? $interactions : '');
         $line[] = ($row['attempts'] > 1 ? $scorm_history : '');
-        //			.($row['score_raw']!='' ? '<br />'.$interactions : '');
-
         $tb->addBody($line);
     }
     cout($tb->getTable(), 'content');
@@ -168,10 +165,10 @@ function getTrackingTable($id_user, $id_org, $idscorm_item, $idReference)
 // TODO: sourced from appLms/modules/organization/orgresults.php -- to be reviewed
 function getHistoryTable($id_user, $id_org, $idscorm_item, $idReference)
 {
-    require_once Forma::inc(_lib_ . '/lib.table.php');
+    require_once \FormaLms\lib\Forma::inc(_lib_ . '/lib.table.php');
     $tb = new Table(FormaLms\lib\Get::sett('visu_course'));
 
-    $lang = DoceboLanguage::CreateInstance('organization', 'lms');
+    $lang = FormaLanguage::CreateInstance('organization', 'lms');
 
     $h_type = ['', '', '', '', ''];
     $h_content = [
@@ -217,86 +214,6 @@ function scorm_userstat_detailhist($idscorm_organization, $idUser, $idItem, $idR
 function scorm_userstat_detail($idscorm_organization, $idUser, $idItem, $idReference)
 {
     return getTrackingTable($idUser, $idscorm_organization, $idItem, $idReference);
-
-    /*** disabled ****  // XML SCORM results
-
-        require_once(_base_.'/lib/lib.domxml.php');
-        require_once(__DIR__ . '/scorm_tracking.php');
-
-        // get idscorm_package
-        $query = "SELECT idscorm_package"
-                ." FROM ".$GLOBALS['prefix_lms']."_scorm_organizations"
-                ." WHERE idscorm_organization = '".$idscorm_organization."'";
-        $rs = sql_query($query)
-                or communicationError( "3" );
-        list( $idscorm_package ) = sql_fetch_row($rs);
-
-
-        $track = new Scorm_Tracking( $idUser, NULL, $idItem, $idscorm_package, $GLOBALS['dbConn'], false, true );
-
-        $GLOBALS['page']->add("<br /><div class=\"std_block\">");
-        $xmldoc = $track->getXmlDoc();
-
-        $xpath = new DDOMXPath($xmldoc);
-
-        $stack = array( FALSE );
-
-        // status
-        $nodeset = $xpath->query('//cmi/core/lesson_status/text()');
-        for($i = 0; $i < $nodeset->getLength(); $i++ ) {
-            $GLOBALS['page']->add(render_node_row($nodeset->item($i),1,$stack,'Status'));
-        }
-
-        // total time
-        $nodeset = $xpath->query('//cmi/core/total_time/text()');
-        for($i = 0; $i < $nodeset->getLength(); $i++ )
-            $GLOBALS['page']->add(render_node_row($nodeset->item($i),1,$stack,'Total time'));
-
-        // score
-        $nodeset = $xpath->query('//cmi/core/score/raw/text()');
-        if( $nodeset->getLength() > 0 ) {
-            $GLOBALS['page']->add(render_half_row(1,$stack,'Score',FALSE));
-
-            $stack[1] = FALSE;
-
-            $nodeset = $xpath->query('//cmi/core/score/raw/text()');
-            for($i = 0; $i < $nodeset->getLength(); $i++ )
-                $GLOBALS['page']->add(render_node_row($nodeset->item($i),2,$stack,'Raw'));
-            $nodeset = $xpath->query('//cmi/core/score/min/text()');
-            for($i = 0; $i < $nodeset->getLength(); $i++ )
-                $GLOBALS['page']->add(render_node_row($nodeset->item($i),2,$stack,'Min'));
-            $nodeset = $xpath->query('//cmi/core/score/max/text()');
-            for($i = 0; $i < $nodeset->getLength(); $i++ )
-                $GLOBALS['page']->add(render_node_row($nodeset->item($i),2,$stack,'Max',TRUE));
-        }
-        $interactions = $xpath->query('//cmi/interactions');
-        for($ci = 0; $ci < $interactions->getLength(); $ci++ ) {
-            $ainteraction = $interactions->item($ci);
-            $indexInteraction = $ainteraction->getAttribute('index');
-            $GLOBALS['page']->add(render_half_row(1,$stack,'Interaction '.$indexInteraction,FALSE));
-
-            //$nodeset = $xpath->xpath_eval('//cmi/interactions[@index='.$indexInteraction.']/id/text()');
-            //foreach($nodeset->nodeset as $anode)
-            //	$GLOBALS['page']->add(render_node_row($anode,2,$stack,'Id',FALSE));
-
-            $nodeset = $xpath->query('//cmi/interactions[@index='.$indexInteraction.']/type/text()');
-            for($i = 0; $i < $nodeset->getLength(); $i++ )
-                $GLOBALS['page']->add(render_node_row($nodeset->item($i),2,$stack,'Type',FALSE));
-
-            $nodeset = $xpath->query('//cmi/interactions[@index='.$indexInteraction.']/weighting/text()');
-            for($i = 0; $i < $nodeset->getLength(); $i++ )
-                $GLOBALS['page']->add(render_node_row($nodeset->item($i),2,$stack,'Weighting',FALSE));
-
-            $nodeset = $xpath->query('//cmi/interactions[@index='.$indexInteraction.']/result/text()');
-            for($i = 0; $i < $nodeset->getLength(); $i++ )
-                $GLOBALS['page']->add(render_node_row($nodeset->item($i),2,$stack,'Result',TRUE));
-        }
-
-
-        //$GLOBALS['page']->add($xmldoc->dump_mem(true));
-        $GLOBALS['page']->add("</div>");
-
-    **** disabled ***/ // XML SCORM results
 }
 
 function render_node_row($node, $deep, $stack, $label = null, $isLast = false)
@@ -336,7 +253,7 @@ function render_half_row($deep, $stack, $label, $isLast = false)
 function scorm_stat_getImage($deep, $deepPos, $isLast, $isEnd)
 {
     $imgLabel = '';
-    require_once Forma::inc(_lms_ . '/modules/scorm/RendererBase.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/RendererBase.php');
     if ($deep == $deepPos) {
         // handle REND_TITLE
         $imgLabel = SCORMREND_TITLE;

@@ -447,7 +447,7 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;MAIN_SET_9" attributes="" save_date="2019-10-02 11:39:53"><![CDATA[LDAP]]></key>
         <key id="configuration&amp;PASSWORD_BCRYPT" attributes="" save_date="2020-05-31 16:28:19"><![CDATA[Bycrypt password]]></key>
         <key id="configuration&amp;PASSWORD_MD5" attributes="" save_date="2020-05-31 16:28:27"><![CDATA[MD5 Password]]></key>
-        <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Attiva tutte le feature per l'accessibilità]]></key>
+        <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Usa colori con alto contrasto]]></key>
         <key id="configuration&amp;_ALLOW_URL_FOPEN" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Configurazione di "allow_url_fopen"]]></key>
         <key id="configuration&amp;_ALLOW_URL_INCLUDE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Configurazione di "allow_url_include"]]></key>
         <key id="configuration&amp;_ALREADY_ASSIGNED" attributes="" save_date="2017-03-15 16:37:18"><![CDATA[già assegnato]]></key>
@@ -698,8 +698,18 @@ http://server/path/index.php?modname=login) \]]></key>
         <key id="configuration&amp;_USE_TAG" attributes="" save_date="2017-04-10 16:17:08"><![CDATA[Attiva l'uso dei tag nei forum]]></key>
         <key id="configuration&amp;_WARINNG_SOCIAL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Attenzione senza questi settaggi la login social non funzioner&agrave;]]></key>
         <key id="configuration&amp;_PURCHASE_USER" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Utente notifiche acquisti (Username o idst)]]></key>
+        <key id="configuration&amp;_FORCE_SCORM_FINISH" attributes="" save_date="2024-01-15 14:47:12"><![CDATA[Forza il finish nei corsi SCORM]]></key>
+        <key id="configuration&amp;_EXCLUDE_COMPLETED_COURSES" attributes="" save_date="2024-01-15 14:47:12"><![CDATA[Esclude i corsi completati dalla vista "Tutti i corsi aperti"]]></key>
+        <key id="configuration&amp;_PASS_SPECIAL_CHAR" attributes="" save_date="2024-01-15 14:47:12"><![CDATA[Numero minimo di caratteri speciali<br>( 0 = caratteri speciali non obbligatori )]]></key>
+        <key id="configuration&amp;_PASS_MIN_UPPERCASE" attributes="" save_date="2024-01-15 14:47:12"><![CDATA[Numero minimo di caratteri maiuscoli<br>( 0 = caratteri maiuscoli non obbligatori )]]></key>
+        <key id="configuration&amp;_PASS_MIN_LOWERCASE" attributes="" save_date="2024-01-15 14:47:12"><![CDATA[Numero minimo di caratteri minuscoli<br>( 0 = caratteri minuscoli non obbligatori )]]></key>
+        <key id="configuration&amp;_PASS_MIN_DIGIT" attributes="" save_date="2024-01-15 14:47:12"><![CDATA[Numero minimo di caratteri numerici<br>( 0 = caratteri numerici non obbligatori )]]></key>
+        <key id="configuration&amp;_PASS_SEND_REMIND" attributes="" save_date="2024-01-15 14:47:12"><![CDATA[<br>Invia email un giorno prima delle scadenza di validità della password<br>(abilitare il il cron job)]]></key>
+        <key id="configuration&amp;_PASS_ADMIN_RULE" attributes="" save_date="2024-01-15 14:47:12"><![CDATA[<br>Applica criteri di controllo sulle password<br>anche agli admin]]></key>
       </module>
       <module id="course">
+        <key id="course&amp;_YEAR_SELECTION" attributes="" save_date="2023-10-12 15:32:39"><![CDATA[Seleziona Anno]]></key>
+        <key id="course&amp;_COURSE_TYPE_SELECTION" attributes="" save_date="2023-10-12 15:32:39"><![CDATA[Seleziona tipo corso]]></key>
         <key id="course&amp;_ADDFILE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Aggiungi un file]]></key>
         <key id="course&amp;_ADDFILES" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Aggiungi un nuovo file]]></key>
         <key id="course&amp;_ADD_SUBSCRIBE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Iscrivi utenti a questo corso]]></key>
@@ -993,6 +1003,9 @@ Per poterlo fare devi loggarti nella piattaforma se sei un utente registarto, al
         <key id="course_selector&amp;_SEL_COURSE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Corsi]]></key>
       </module>
       <module id="customer_help">
+        <key id="customer_help&amp;_OBJ_MISSING" attributes="" save_date="2023-10-12 10:29:58"><![CDATA[Inserire un oggetto]]></key>
+        <key id="customer_help&amp;_MSG_MISSING" attributes="" save_date="2023-10-12 10:29:58"><![CDATA[Inserire il contenuto dell'email]]></key>
+        <key id="customer_help&amp;_NO_HELP_DESK" attributes="" save_date="2023-10-12 10:29:58"><![CDATA[Email per l'help desk non configurata]]></key>
         <key id="customer_help&amp; &#9; _CUSTOMER_HELP_DISCLAIMER_TITLE" attributes="" save_date="2018-07-20 10:31:26"><![CDATA[Disclaimer - assistenza utenti]]></key>
         <key id="customer_help&amp;_CUSTOMER_HELP" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Help Desk]]></key>
         <key id="customer_help&amp;_CUSTOMER_HELP_DISCLAIMER" attributes="" save_date="2018-07-20 10:29:58"><![CDATA[Autorizzo l'invio di informazioni tecniche all'assistenza utili per risolvere la mia richiesta]]></key>
@@ -1259,7 +1272,6 @@ sei stato disiscritto dal corso ([course_code]) - [course]]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserCourseInsertedModerators" attributes="" save_date="2020-09-24 11:53:20"><![CDATA[ Iscrizione di un utente ad un corso, viene inviata ai moderatori]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserCourseInsertModerate" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Utente da moderare in corso]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserCourseInsertOverbooking" attributes="" save_date="2021-08-02 13:19:09"><![CDATA[Utente overbooking in attesa di approvazione]]></key>
-        <key id="event_manager&amp;_EVENT_CLASS_PurchaseCourse" attributes="" save_date="2021-08-02 13:19:09"><![CDATA[Notifica acquisto corso]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserCourseLevelChanged" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Utente cambia livello in corso]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserCourseRemoved" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Utente disiscritto da un corso]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserCourseRemovedModerate" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Utente in attesa di rimozione dal corso]]></key>
@@ -1351,6 +1363,7 @@ sei stato disiscritto dal corso ([course_code]) - [course]]]></key>
         <key id="field&amp;_USE_MULTI_LANG_WHEN_AVAILABLE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Usa compilazione del campo multilingua se disponibile]]></key>
         <key id="field&amp;_YAHOO" attributes="" save_date="2017-06-23 15:02:39"><![CDATA[Account Yahoo]]></key>
         <key id="field&amp;_YESNO" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Campo si/no]]></key>
+        <key id="field&amp;_NOT_TRANSLATED_FIELD" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Campo non tradotto]]></key>
       </module>
       <module id="fncroles">
         <key id="fncroles&amp;_GAP_ANALYSIS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Gap analysis]]></key>
@@ -1673,6 +1686,8 @@ Nella conservazione dei dati verranno osservate accuratezza e precisione per gar
         <key id="menu&amp;_COMMUNICATION_MAN" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Comunicazioni]]></key>
         <key id="menu&amp;_MANAGEMENT_COMMUNICATION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Gestione Comunicazioni]]></key>
         <key id="menu&amp;_CATEGORIES" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Categorie]]></key>
+        <key id="menu&amp;_MAIL_CONFIG" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Impostazioni Mail]]></key>
+        <key id="menu&amp;_DOMAIN_CONFIG" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Impostazioni Domini]]></key>
         <key id="menu&amp;_CONFIGURATION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Configurazione]]></key>
         <key id="menu&amp;_CONFIG_ELEARNING" attributes="" save_date="2017-05-05 11:39:49"><![CDATA[Configurazione e-learning]]></key>
         <key id="menu&amp;_CONFIG_SYS" attributes="" save_date="2017-05-05 11:41:19"><![CDATA[Configurazione sistema]]></key>
@@ -1710,6 +1725,8 @@ Nella conservazione dei dati verranno osservate accuratezza e precisione per gar
         <key id="menu&amp;_WEBPAGES" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Pagine esterne]]></key>
       </module>
       <module id="menu_course">
+        <key id="menu_course&amp;_COURSE_SEARCH_BAR" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Barra di ricerca]]></key>
+        <key id="menu_course&amp;_SEARCH_COURSE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Cerca un corso]]></key>
         <key id="menu_course&amp;Area social" attributes="" save_date="2017-03-17 17:48:06"><![CDATA[Area social]]></key>
         <key id="menu_course&amp;Area studenti" attributes="" save_date="2017-03-17 17:45:44"><![CDATA[Area studenti]]></key>
         <key id="menu_course&amp;Collaborative Area" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Area Collaborativa]]></key>
@@ -2122,16 +2139,22 @@ Password : [password]<br />
         <key id="register&amp;_REG_MANDATORY" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Campi obbligatori [mandatory]]]></key>
         <key id="register&amp;_REG_NOTE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Da questa pagina ti puoi registrare alla piattaforma, segui le istruzioni qui sotto e riempi correttamente i campi per completare la registrazione.]]></key>
         <key id="register&amp;_REG_NOT_ACTIVE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[La registrazione non è attiva]]></key>
-        <key id="register&amp;_REG_PASS_ALFANUMERIC" attributes="" save_date="2020-09-28 10:28:55"><![CDATA[sia <b>caratteri</b> che <b>numeri]]></key>
-        <key id="register&amp;_REG_PASS_MIN_CHAR" attributes="" save_date="2020-09-28 10:39:36"><![CDATA[<b>[min_char]</b> caratteri]]></key>
-        <key id="register&amp;_REG_PASS_MIN_DIGITS" attributes="" save_date="2020-09-28 10:31:10"><![CDATA[<b>[min_char]</b> numeri]]></key>
-        <key id="register&amp;_REG_PASS_MIN_LOWER" attributes="" save_date="2020-09-28 10:30:53"><![CDATA[<b>[min_char]</b> lettere minuscole]]></key>
-        <key id="register&amp;_REG_PASS_MIN_NONALPHANUM" attributes="" save_date="2020-09-28 10:38:01"><![CDATA[<b>[min_char]</b> caratteri speciali]]></key>
-        <key id="register&amp;_REG_PASS_MIN_UPPER" attributes="" save_date="2020-09-28 10:37:24"><![CDATA[<b>[min_char]</b> lettere maiuscole]]></key>
+        <key id="register&amp;_REG_PASS_MIN_CHAR" attributes="" save_date="2020-09-28 10:39:36"><![CDATA[La password deve essere lunga almeno <b>[min_char]</b> caratteri]]></key>
+        <key id="register&amp;_REG_PASS_MIN_DIGITS" attributes="" save_date="2020-09-28 10:31:10"><![CDATA[La password deve contenere almeno <b>[min_char]</b> numeri]]></key>
+        <key id="register&amp;_REG_PASS_MIN_LOWER" attributes="" save_date="2020-09-28 10:30:53"><![CDATA[La password deve contenere almeno <b>[min_char]</b> lettere minuscole]]></key>
+        <key id="register&amp;_REG_PASS_MIN_NONALPHANUM" attributes="" save_date="2020-09-28 10:38:01"><![CDATA[La password deve contenere almeno <b>[min_char]</b> caratteri speciali]]></key>
+        <key id="register&amp;_REG_PASS_MIN_UPPER" attributes="" save_date="2020-09-28 10:37:24"><![CDATA[La password deve contenere almeno <b>[min_char]</b> lettere maiuscole]]></key>
         <key id="register&amp;_REG_PASS_MUST_BE_ALPNUM" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[La password deve contenere sia <b>caratteri</b> che <b>numeri</b>]]></key>
-        <key id="register&amp;_REG_PASS_MUST_DIFF" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[La nuova password deve essere differente]]></key>
+        <key id="register&amp;_REG_PASS_MUST_DIFF" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[La nuova password deve essere differente dalle ultime <b>[min_char]</b> usate]]></key>
+        <key id="register&amp;_PASS_DIFFERENT_USERNAME" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[La nuova password deve essere differente dalla propria username]]></key>
         <key id="register&amp;_REG_PRESONAL_CODE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Codice di attivazione]]></key>
         <key id="register&amp;_REG_PRIVACY_ACCEPT" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Avendo preso visione dell'informativa sopra menzionata, acconsento al trattamento dei dati personali.]]></key>
+        <key id="register&amp;_REG_PASS_MUST_DIFF_1" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[La nuova password deve essere differente dall'ultima usata]]></key>
+        <key id="register&amp;_REG_PASS_MIN_CHAR_1" attributes="" save_date="2020-09-28 10:39:36"><![CDATA[La password deve essere lunga almeno <b>[min_char]</b> carattere]]></key>
+        <key id="register&amp;_REG_PASS_MIN_DIGITS_1" attributes="" save_date="2020-09-28 10:31:10"><![CDATA[La password deve contenere almeno <b>[min_char]</b> numero]]></key>
+        <key id="register&amp;_REG_PASS_MIN_LOWER_1" attributes="" save_date="2020-09-28 10:30:53"><![CDATA[La password deve contenere almeno <b>[min_char]</b> lettera minuscola]]></key>
+        <key id="register&amp;_REG_PASS_MIN_NONALPHANUM_1" attributes="" save_date="2020-09-28 10:38:01"><![CDATA[La password deve contenere almeno <b>[min_char]</b> carattere speciale]]></key>
+        <key id="register&amp;_REG_PASS_MIN_UPPER_1" attributes="" save_date="2020-09-28 10:37:24"><![CDATA[La password deve contenere almeno <b>[min_char]</b> lettera maiuscola]]></key>
         <key id="register&amp;_REG_PRIVACY_POLICY" attributes="" save_date="2017-04-14 12:00:01"><![CDATA[Qualsiasi dato, da noi raccolto, che sia idoneo ad identificare una persona, sarà usato solo nel rispetto delle procedure e per lo scopo dichiarato alla persona interessata, ed a condizione che quest'ultima, nei casi previsti dalla legge, lo abbia espressamente autorizzato.
 
 - Login e accesso alle aree riservate
@@ -2815,6 +2838,17 @@ sei stato disiscritto dal corso ([course_code]) - [course]]]></key>
         <key id="standard&amp;_WIDTH" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Larghezza]]></key>
         <key id="standard&amp;_YEAR" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Anno]]></key>
         <key id="standard&amp;_YES" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Si]]></key>
+        <key id="standard&amp;_ACTIONS" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Azioni]]></key>
+        <key id="standard&amp;_DEFAULT" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Default]]></key>
+        <key id="standard&amp;_USER_TAB" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Utenti]]></key>
+        <key id="standard&amp;_ROLE_TAB" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Ruoli]]></key>
+        <key id="standard&amp;_ORG_TAB" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Organigramma]]></key>
+        <key id="standard&amp;_GROUP_TAB" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Gruppi]]></key>
+        <key id="standard&amp;_SHOW_INSTANCE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Mostra a:]]></key>
+        <key id="standard&amp;_SHOW_INSTANCE_ALL" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Tutti]]></key>
+        <key id="standard&amp;_SHOW_INSTANCE_ONLY" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Gli utenti selezionati]]></key>
+        <key id="standard&amp;_MULTIUSERSELECTOR_TITLE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Seleziona utenti da collegare:]]></key>
+        <key id="standard&amp;_SMTP_CONFIG_DISABLED" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Smtp disabled in config file]]></key>
       </module>
       <module id="statistic">
         <key id="statistic&amp;_AT_HOUR" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Alle ore]]></key>
@@ -3281,6 +3315,48 @@ La descrizione verrà mostrata agli studenti prima della somministrazione del te
         <key id="communication&amp;_CATEGORY_MISSING" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Devi impostare almeno una categoria]]></key>
         <key id="communication&amp;_MARK_AS_READ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Segna come letto]]></key>
         <key id="communication&amp;_MARK_AS_UNREAD" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Segna come non letto]]></key>
+      </module>
+      <module id="mailconfig">
+        <key id="mailconfig&amp;_AUTO_TLS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Auto Tls]]></key>
+        <key id="mailconfig&amp;_HOST" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Host]]></key>
+        <key id="mailconfig&amp;_PORT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Porta]]></key>
+        <key id="mailconfig&amp;_DEBUG" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Debug]]></key>
+        <key id="mailconfig&amp;_SECURE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Protocollo di connessione]]></key>
+        <key id="mailconfig&amp;_SENDER_MAIL_NOTIFICATION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mail mittente notifica]]></key>
+        <key id="mailconfig&amp;_SENDER_NAME_NOTIFICATION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Nome mittente notifica]]></key>
+        <key id="mailconfig&amp;_SENDER_MAIL_SYSTEM" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mail mittente di sistema]]></key>
+        <key id="mailconfig&amp;_SENDER_NAME_SYSTEM" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Nome mittente di sistema]]></key>
+        <key id="mailconfig&amp;_HELPER_DESK_MAIL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mail Help Desk]]></key>
+        <key id="mailconfig&amp;_HELPER_DESK_SUBJECT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Nome Help Desk]]></key>
+        <key id="mailconfig&amp;_HELPER_DESK_NAME" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Oggetto di default Help Desk]]></key>
+        <key id="mailconfig&amp;_REPLYTO_NAME" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Nome mittente Reply to]]></key>
+        <key id="mailconfig&amp;_REPLYTO_MAIL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mail mittente Reply to]]></key>
+        <key id="mailconfig&amp;_SENDER_CC_MAILS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mail CC]]></key>
+        <key id="mailconfig&amp;_SENDER_CCN_MAILS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mail CCN]]></key>
+        <key id="mailconfig&amp;_BLANK_FIELDS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[I campi: [fields] non possono essere lasciati vuoti]]></key>
+        <key id="mailconfig&amp;_MISSING_FIELDS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[I campi: [fields] sono richiesti]]></key>
+        <key id="mailconfig&amp;_TESTMAIL_OK" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Invio TEST avvenuto con successo]]></key>
+        <key id="mailconfig&amp;_TESTMAIL_KO" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Invio TEST fallito]]></key>
+        <key id="mailconfig&amp;_TESTMAIL_SUBJECT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mail di TEST]]></key>
+        <key id="mailconfig&amp;_TESTMAIL_BODY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Hai inviato una mail di test a questo indirizzo mail]]></key>
+        <key id="mailconfig&amp;_TEST" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Invia una mail di test]]></key>
+      </module>
+      <module id="domainconfig">
+        <key id="domainconfig&amp;_DOMAIN" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Dominio]]></key>
+        <key id="domainconfig&amp;_TEMPLATE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Template]]></key>
+        <key id="domainconfig&amp;_ORG" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Nodo organigramma]]></key>
+        <key id="domainconfig&amp;_MAIL_CONFIG" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Profilo Mail]]></key>
+        <key id="domainconfig&amp;_SUBS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Sottolivelli]]></key>
+      </module>
+      <module id="screen_reader">
+        <key id="screen_reader&amp;_INPUT_FORGOT_USERNAME" attributes="" save_date="2023-10-12 10:29:58"><![CDATA[Campo di input per recuperare la username]]></key>
+        <key id="screen_reader&amp;_INPUT_FORGOT_PASSWORD" attributes="" save_date="2023-10-12 10:29:58"><![CDATA[Campo di input per recuperare a password]]></key>
+        <key id="screen_reader&amp;_PROFILE" attributes="" save_date="2023-10-12 10:29:58"><![CDATA[Chiudi slider del profilo]]></key>
+        <key id="screen_reader&amp;_CREATE_FOLDER" attributes="" save_date="2023-10-12 10:29:58"><![CDATA[Crea una cartella]]></key>
+        <key id="screen_reader&amp;_RENAME_FOLDER_LABEL" attributes="" save_date="2023-10-12 10:29:58"><![CDATA[Rinomina una cartella]]></key>
+        <key id="screen_reader&amp;_RENAME_FOLDER_BUTTON" attributes="" save_date="2023-10-12 10:29:58"><![CDATA[Rinomina una cartella]]></key>
+        <key id="screen_reader&amp;_DISABLE_HIGH_CONTRAST" attributes="" save_date="2023-10-12 10:29:58"><![CDATA[Disabilita colori ad alto contrasto]]></key>
+        <key id="screen_reader&amp;_ENABLE_HIGH_CONTRAST" attributes="" save_date="2023-10-12 10:29:58"><![CDATA[Abilita colori ad alto contrasto]]></key>
       </module>
     </platform>
   </LANG>

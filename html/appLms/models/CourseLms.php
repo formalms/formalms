@@ -43,7 +43,7 @@ class CourseLms extends Model
      *                            we need a prefix for the course user rows and a prefix for the course table
      *                            array('u', 'c')
      *
-     * @return <string> the order to use in a ORDER BY clausole
+     * @return string the order to use in a ORDER BY clausole
      */
     protected function _resolveOrder($t_name = ['', ''])
     {
@@ -100,7 +100,7 @@ class CourseLms extends Model
     public function findAll($conditions, $params)
     {
         $commonLabel = $this->session->get('id_common_label');
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
         $queryResult = $db->query(
             'SELECT c.idCourse, c.course_type, c.idCategory, c.code, c.name, c.description, c.difficult, c.status AS course_status, c.course_edition, '
             . '	c.max_num_subscribe, c.create_date, '
@@ -159,7 +159,7 @@ class CourseLms extends Model
     {
         $path_course = $GLOBALS['where_files_relative'] . '/appLms/' . FormaLms\lib\Get::sett('pathcourse') . '/';
         $levels = CourseLevel::getTranslatedLevels();
-        $infoEnroll = self::getInfoEnroll($course['idCourse'], Docebo::user()->getIdSt());
+        $infoEnroll = self::getInfoEnroll($course['idCourse'], \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
         $parsedData = $course;
 
@@ -172,27 +172,31 @@ class CourseLms extends Model
             $parsedData['img_course'] = FormaLms\lib\Get::tmpl_path() . 'images/course/course_nologo.png';
         }
 
-        if (strlen($parsedData['nameCategory']) > 1) {
+        if (array_key_exists('nameCategory', $parsedData) && strlen($parsedData['nameCategory']) > 1) {
             $parsedData['nameCategory'] = substr($parsedData['nameCategory'], strripos($parsedData['nameCategory'], '/') + 1);
         }
 
-        $parsedData['level_icon'] = $parsedData['level'];
-        $parsedData['level_text'] = $levels[$parsedData['level']];
+        $parsedData['level_icon'] = array_key_exists('level', $parsedData) ? $parsedData['level'] : false;
+        if ($parsedData['level_icon']) {
+            $parsedData['level_text'] = array_key_exists($parsedData['level'], $parsedData) ? $levels[$parsedData['level']] : '';
 
-        //LRZ:  if validity day is setting
-        $date_first_access = fromDatetimeToTimestamp(self::getDateFirstAccess($course['idCourse'], Docebo::user()->getIdSt()));
-        if ($parsedData['valid_time'] > 0 && $date_first_access > 0) {
-            $time_expired = $date_first_access + ($parsedData['valid_time'] * 24 * 3600);
-            $parsedData['dateClosing_year'] = date('Y', $time_expired);
-            $parsedData['dateClosing_month'] = Lang::t('_MONTH_' . substr('0' . date('m', $time_expired), -2), 'standard');
-            $parsedData['dateClosing_day'] = date('d', $time_expired);
         }
 
-        $date_closing = getdate(strtotime(Format::date($parsedData['date_end'], 'date')));
-        if ($date_closing['year'] > 0) {
-            $parsedData['dateClosing_year'] = $date_closing['year'];
-            $parsedData['dateClosing_month'] = Lang::t('_MONTH_' . substr('0' . $date_closing['mon'], -2), 'standard');
-            $parsedData['dateClosing_day'] = $date_closing['mday'];
+        //LRZ:  if validity day is setting
+        //$date_first_access = fromDatetimeToTimestamp(self::getDateFirstAccess($course['idCourse'], \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()));
+        //if ($parsedData['valid_time'] > 0 && $date_first_access > 0) {
+        //    $time_expired = $date_first_access + ($parsedData['valid_time'] * 24 * 3600);
+        //    $parsedData['dateClosing_year'] = date('Y', $time_expired);
+        //    $parsedData['dateClosing_month'] = Lang::t('_MONTH_' . substr('0' . date('m', $time_expired), -2), 'standard');
+        //    $parsedData['dateClosing_day'] = date('d', $time_expired);
+        //}
+        if ($parsedData['date_end'] !== null) {
+            $date_closing = getdate(strtotime(Format::date($parsedData['date_end'], 'date')));
+            if ($date_closing['year'] > 0) {
+                $parsedData['dateClosing_year'] = $date_closing['year'];
+                $parsedData['dateClosing_month'] = Lang::t('_MONTH_' . substr('0' . $date_closing['mon'], -2), 'standard');
+                $parsedData['dateClosing_day'] = $date_closing['mday'];
+            }
         }
 
         $parsedData['is_enrolled'] = !empty($infoEnroll);
@@ -208,14 +212,14 @@ class CourseLms extends Model
         $parsedData['editions'] = false;
         $parsedData['course_full'] = false;
         $parsedData['in_cart'] = false;
-        $parsedData['waiting'] = ($infoEnroll['waiting'] || $infoEnroll['status'] == 4); // 4 = overbooked
+        $parsedData['waiting'] = array_key_exists('waiting', $infoEnroll) ? ($infoEnroll['waiting'] || $infoEnroll['status'] == 4) : false; // 4 = overbooked
         switch ($parsedData['course_type']) {
             case 'elearning':
                 if (!empty($infoEnroll)) {
                     $parsedData['level'] = $infoEnroll['level'];
                     if (!$infoEnroll['waiting'] && $parsedData['canEnter']) {
                         $learningObject = self::getInfoLastLearningObject($parsedData['idCourse']);
-                        if ($learningObject['obj_type'] === 'scormorg' && $parsedData['level'] <= 3 && $parsedData['direct_play'] === 1) {
+                        if (array_key_exists('objectType', $learningObject) && $learningObject['objectType'] === 'scormorg' && $parsedData['level'] <= 3 && $parsedData['direct_play'] === 1) {
                             $parsedData['useLightBox'] = true;
                         } else {
                             $parsedData['useLightBox'] = false;
@@ -244,7 +248,7 @@ class CourseLms extends Model
         $parsedData['userCanUnsubscribe'] = self::userCanUnsubscribe($parsedData);
 
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-        if (!$parsedData['course_full'] && $parsedData['selling']) {
+        if (!$parsedData['course_full'] && isset($parsedData['selling'])) {
             $parsedData['in_cart'] = ($session->has('lms_cart') && isset($session->get('lms_cart')[$parsedData['idCourse']]));
         }
 
@@ -256,7 +260,7 @@ class CourseLms extends Model
         return $parsedData;
     }
 
-    private function getDateFirstAccess($id_course, $id_user)
+    private static function getDateFirstAccess($id_course, $id_user)
     {
         $query = 'select date_first_access from learning_courseuser where idCourse=' . $id_course . ' and idUser=' . $id_user;
 
@@ -283,8 +287,8 @@ class CourseLms extends Model
                     $courseBoxEnabled = false;
                 }
             } else {
-                if ((int) $course['selling'] === 0) {
-                    switch ((int) $course['subscribe_method']) {
+                if ((int)$course['selling'] === 0) {
+                    switch ((int)$course['subscribe_method']) {
                         case 1:
                         case 2:
                             $courseBoxEnabled = true;
@@ -309,8 +313,8 @@ class CourseLms extends Model
             if ($course['is_enrolled']) {
                 $courseBoxEnabled = true;
             } else {
-                if ((int) $course['selling'] === 0) {
-                    switch ((int) $course['subscribe_method']) {
+                if ((int)$course['selling'] === 0) {
+                    switch ((int)$course['subscribe_method']) {
                         case 1:
                         case 2:
                             $courseBoxEnabled = true;
@@ -346,44 +350,47 @@ class CourseLms extends Model
         require_once _lms_ . '/lib/lib.date.php';
         $dm = new DateManager();
         $cl = new ClassroomLms();
-        $course_editions = $cl->getUserEditionsInfo(Docebo::user()->idst, $id_course);
+        $course_editions = $cl->getUserEditionsInfo(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_course);
         $out = [];
         $course_array['next_lesson'] = '-';
         $next_lesson_array = [];
         $currentDate = new DateTime();
 
-        // user can be enrolled in more than one edition (as a teacher or crazy student....)
-        foreach ($course_editions[$id_course] as $id_date => $obj_data) {
-            // skip if course if over or not available
-            try {
-                $end_course = new DateTime(Format::date($obj_data->date_max, 'datetime'));
-            } catch (Exception $e) {
-                $end_course = clone $currentDate;
-            }
-            if (((int) $obj_data->status === 0) && ($end_course > $currentDate)) {
-                $out[$id_date]['code'] = $obj_data->code;
-                $out[$id_date]['name'] = $obj_data->name;
-                $out[$id_date]['date_begin'] = $obj_data->date_min;
-                $out[$id_date]['date_end'] = $obj_data->date_max;
-                $out[$id_date]['unsubscribe_date_limit'] = $obj_data->unsubscribe_date_limit;
-                $array_day = $dm->getDateDayDateDetails($obj_data->id_date);
+        if (array_key_exists($id_course, $course_editions)) {
+            // user can be enrolled in more than one edition (as a teacher or crazy student....)
+            foreach ($course_editions[$id_course] as $id_date => $obj_data) {
+                // skip if course if over or not available
+                try {
+                    $end_course = new DateTime(Format::date($obj_data->date_max, 'datetime'));
+                } catch (Exception $e) {
+                    $end_course = clone $currentDate;
+                }
+                if (((int)$obj_data->status === 0) && ($end_course > $currentDate)) {
+                    $out[$id_date]['code'] = $obj_data->code;
+                    $out[$id_date]['name'] = $obj_data->name;
+                    $out[$id_date]['date_begin'] = $obj_data->date_min;
+                    $out[$id_date]['date_end'] = $obj_data->date_max;
+                    $out[$id_date]['unsubscribe_date_limit'] = $obj_data->unsubscribe_date_limit;
+                    $array_day = $dm->getDateDayDateDetails($obj_data->id_date);
 
-                foreach ($array_day as $id => $day) {
-                    $out[$id_date]['days'][$id]['classroom'] = $day['classroom'];
-                    $out[$id_date]['days'][$id]['day'] = Format::date($day['date_begin'], 'date');
-                    $out[$id_date]['days'][$id]['begin'] = Format::date($day['date_begin'], 'time');
-                    $out[$id_date]['days'][$id]['end'] = Format::date($day['date_end'], 'time');
-                    $out[$id_date]['days'][$id]['full_date'] = $day['date_begin'];
+                    foreach ($array_day as $id => $day) {
+                        $out[$id_date]['days'][$id]['classroom'] = $day['classroom'];
+                        $out[$id_date]['days'][$id]['day'] = Format::date($day['date_begin'], 'date');
+                        $out[$id_date]['days'][$id]['begin'] = Format::date($day['date_begin'], 'time');
+                        $out[$id_date]['days'][$id]['end'] = Format::date($day['date_end'], 'time');
+                        $out[$id_date]['days'][$id]['full_date'] = $day['date_begin'];
 
-                    try {
-                        $nextLesson = new DateTime(Format::date($day['date_begin'], 'datetime'));
-                    } catch (Exception $e) {
-                        $nextLesson = '';
+                        try {
+                            $nextLesson = new DateTime(Format::date($day['date_begin'], 'datetime'));
+                        } catch (Exception $e) {
+                            $nextLesson = '';
+                        }
+                        $next_lesson_array[$id_date . ',' . $id] = $nextLesson;
                     }
-                    $next_lesson_array[$id_date . ',' . $id] = $nextLesson;
                 }
             }
         }
+
 
         // calculating what's next lession will be; safe mode in case of more editions with different days
         if (count($next_lesson_array) > 0) {
@@ -404,7 +411,7 @@ class CourseLms extends Model
     {
         $query = 'SELECT name, selling, prize'
             . ' FROM %lms_course'
-            . ' WHERE idCourse = ' . (int) $id_course;
+            . ' WHERE idCourse = ' . (int)$id_course;
 
         list($course_name, $selling, $price) = sql_fetch_row(sql_query($query));
         $classrooms = $this->classroom_man->getCourseDate($id_course, false);
@@ -433,10 +440,10 @@ class CourseLms extends Model
             . ' FROM %lms_courseuser'
             . ' WHERE idCourse = ' . $idCourse
             . ' AND idUser = ' . $idUser;
-        $result = Docebo::db()->query($query);
+        $result = \FormaLms\lib\Forma::db()->query($query);
 
-        if (Docebo::db()->affected_rows() > 0) {
-            $responseData = Docebo::db()->fetch_assoc($result);
+        if (\FormaLms\lib\Forma::db()->affected_rows() > 0) {
+            $responseData = \FormaLms\lib\Forma::db()->fetch_assoc($result);
         }
 
         return $responseData;
@@ -448,10 +455,10 @@ class CourseLms extends Model
 
         $query = "SELECT idOrg, idCourse, objectType FROM learning_organization WHERE objectType != '' AND idCourse  = $idCourse ORDER BY path limit 1";
 
-        $result = Docebo::db()->query($query);
+        $result = \FormaLms\lib\Forma::db()->query($query);
 
-        if (Docebo::db()->affected_rows() > 0) {
-            $responseData = Docebo::db()->fetch_assoc($result);
+        if (\FormaLms\lib\Forma::db()->affected_rows() > 0) {
+            $responseData = \FormaLms\lib\Forma::db()->fetch_assoc($result);
         }
 
         return $responseData;
@@ -463,18 +470,18 @@ class CourseLms extends Model
         $defaultTrueDate = new DateTime('2999-01-01');
 
         if ($course['course_type'] == 'classroom') {
-            if ((int) $course['auto_unsubscribe'] === 2) {
+            if ((int)$course['auto_unsubscribe'] === 2) {
                 $editionKey = array_key_first($course['editions']);
 
-                if (($course['editions'][$editionKey]['unsubscribe_date_limit'] !== null)
-                    && ($course['editions'][$editionKey]['unsubscribe_date_limit'] !== '0000-00-00 00:00:00')) {
+                if (array_key_exists('unsubscribe_date_limit', $course['editions'][$editionKey])) {
                     $unsub_date_limit = $course['editions'][$editionKey]['unsubscribe_date_limit'];
                     $unsub_date_limit = DateTime::createFromFormat('Y-m-d H:i:s', $unsub_date_limit);
                 } else {
                     $unsub_date_limit = $defaultTrueDate;
                 }
                 $edition_not_started = true;
-                foreach ($course['editions'][$editionKey]['days'] as $k => $day) {
+                $days = array_key_exists('days', $course['editions'][$editionKey]) ? $course['editions'][$editionKey]['days'] : [];
+                foreach ($days as $k => $day) {
                     $next_day = $day['full_date'];
                     $next_day = DateTime::createFromFormat('Y-m-d H:i:s', $next_day);
                     $edition_not_started = $edition_not_started && ($now < $next_day);
@@ -489,13 +496,13 @@ class CourseLms extends Model
             }
         } else {
             // if course date end, cannot unenroll
-            $courseDateEnd = DateTime::createFromFormat('Y-m-d', $course['date_end']);
-            if ($course['date_end'] != null && $course['date_end'] != '0000-00-00' && $now > $courseDateEnd) {
+       
+            if ($course['date_end'] && $now > DateTime::createFromFormat('Y-m-d', $course['date_end'])) {
                 return false;
             }
 
             $courseUnsubscribeDateLimit = (null !== $course['unsubscribe_date_limit'] ? DateTime::createFromFormat('Y-m-d H:i:s', $course['unsubscribe_date_limit']) : $defaultTrueDate);
-            if (((int) $course['auto_unsubscribe'] === 2 || (int) $course['auto_unsubscribe'] === 1) && ($now < $courseUnsubscribeDateLimit)) {
+            if (((int)$course['auto_unsubscribe'] === 2 || (int)$course['auto_unsubscribe'] === 1) && ($now < $courseUnsubscribeDateLimit)) {
                 return true;
             }
 
@@ -514,7 +521,7 @@ class CourseLms extends Model
         $qres = sql_query($sql_exist);
         list($exist) = sql_fetch_row($qres);
 
-        if ((int) $exist === 1) {
+        if ((int)$exist === 1) {
             return true;
         }
 
@@ -529,10 +536,10 @@ class CourseLms extends Model
         $this->checkIdCourseOrThrow();
 
         $query = "SELECT textof FROM %lms_htmlfront WHERE id_course = '$this->idCourse'";
-        $result = Docebo::db()->query($query);
+        $result = \FormaLms\lib\Forma::db()->query($query);
 
-        foreach (Docebo::db()->fetch_assoc($result) as $item) {
-            return (string) $item['textof'];
+        foreach (\FormaLms\lib\Forma::db()->fetch_assoc($result) as $item) {
+            return (string)$item['textof'];
         }
 
         return '';
@@ -553,7 +560,7 @@ class CourseLms extends Model
             $query = "INSERT INTO %lms_htmlfront ( id_course, textof) VALUES ($this->idCourse,'" . addslashes($html) . "')";
         }
 
-        $result = Docebo::db()->query($query);
+        $result = \FormaLms\lib\Forma::db()->query($query);
 
         if ($result === false) {
             return false;
@@ -568,7 +575,7 @@ class CourseLms extends Model
 
         $query = "DELETE FROM %lms_htmlfront WHERE id_course = $this->idCourse";
 
-        $result = Docebo::db()->query($query);
+        $result = \FormaLms\lib\Forma::db()->query($query);
 
         if ($result === false) {
             return false;
@@ -585,7 +592,7 @@ class CourseLms extends Model
         $query = 'select course_type, level from 
             learning_course lc, learning_courseuser lcu
             where lc.idCourse=lcu.idCourse
-            and lc.idCourse=' . $idCourse . ' and idUser=' . Docebo::user()->idst;
+            and lc.idCourse=' . $idCourse . ' and idUser=' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
         list($course_type, $level) = sql_fetch_row(sql_query($query));
 
@@ -596,7 +603,7 @@ class CourseLms extends Model
         return $out;
     }
 
-    public function getIdUserOfLevelDate($id_course, $level, $id_date)
+    public static function getIdUserOfLevelDate($id_course, $level, $id_date)
     {
         $users = [];
 
@@ -622,7 +629,7 @@ class CourseLms extends Model
         return $users;
     }
 
-    public function getInfoDate($idDate)
+    public static function getInfoDate($idDate)
     {
         $query = 'select code, name from %lms_course_date where id_date=' . $idDate;
 
@@ -635,12 +642,12 @@ class CourseLms extends Model
         return $out;
     }
 
-    public function getMyDateCourse($idCourse)
+    public static function getMyDateCourse($idCourse)
     {
         $query = 'select lcd.id_date from %lms_course_date lcd, %lms_course_date_user lcdu
             where 
             lcd.id_date = lcdu.id_date
-            and id_user = ' . Docebo::user()->idst . ' and lcd.id_course=' . $idCourse;
+            and id_user = ' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . ' and lcd.id_course=' . $idCourse;
 
         list($id_date) = sql_fetch_row(sql_query($query));
 

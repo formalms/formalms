@@ -28,9 +28,9 @@ class LmsWikiAdmin extends CoreWikiAdmin
 {
     public $course_id = 0;
 
-    public function LmsWikiAdmin($source_platform = 'lms')
+    public function __construct($source_platform = 'lms')
     {
-        $this->lang = &DoceboLanguage::createInstance('wiki', 'framework');
+        $this->lang = &FormaLanguage::createInstance('wiki', 'framework');
         $this->source_platform = $source_platform;
         $this->wikiManager = new LmsWikiManager();
     }
@@ -167,7 +167,7 @@ class LmsWikiAdmin extends CoreWikiAdmin
             $tab->setColsStyle($head_type);
             $tab->addHead($head);
 
-            $course_list = Man_CourseUser::getUserCourseList(getLogUserId());
+            $course_list = Man_CourseUser::getUserCourseList(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
             $selectable_wiki = $this->wikiManager->getCourseWikiList($course_list);
 
             $wiki_list = $this->wikiManager->getCourseWikiList($course_id);
@@ -191,7 +191,7 @@ class LmsWikiAdmin extends CoreWikiAdmin
                 if ($checked) {
                     $field_id = 'db_sel_wiki_' . $id;
                     $field_name = 'db_sel_wiki[' . $id . ']';
-                    $check_cell .= Form::getHidden($field_id, $field_name, $id);
+                    $check_cell .= $form->getHidden($field_id, $field_name, $id);
 
                     $is_owner = ($wiki_list['data'][$id]['is_owner'] == 1 ? true : false);
 
@@ -200,26 +200,26 @@ class LmsWikiAdmin extends CoreWikiAdmin
 
                         $field_id = 'owned_wiki_' . $id;
                         $field_name = 'owned_wiki[' . $id . ']';
-                        $check_cell .= Form::getHidden($field_id, $field_name, $id);
+                        $check_cell .= $form->getHidden($field_id, $field_name, $id);
                     }
                 }
 
                 $chk_id = 'sel_wiki_' . $id;
                 $chk_name = 'sel_wiki[' . $id . ']';
-                $check_cell .= Form::getCheckbox('', $chk_id, $chk_name, $id, $checked, $disabled);
+                $check_cell .= $form->getCheckbox('', $chk_id, $chk_name, $id, $checked, $disabled);
                 $rowcnt[] = $check_cell;
 
                 $tab->addBody($rowcnt);
             }
 
             $url = $um->getUrl('op=selectwiki');
-            $res .= Form::openForm('main_form', $url);
+            $res .= $form->openForm('main_form', $url);
             $res .= $tab->getTable();
-            $res .= Form::openButtonSpace();
-            $res .= Form::getButton('save', 'save', $this->lang->def('_SAVE'));
-            $res .= Form::getButton('undo', 'undo', $this->lang->def('_UNDO'));
-            $res .= Form::closeButtonSpace();
-            $res .= Form::closeForm();
+            $res .= $form->openButtonSpace();
+            $res .= $form->getButton('save', 'save', $this->lang->def('_SAVE'));
+            $res .= $form->getButton('undo', 'undo', $this->lang->def('_UNDO'));
+            $res .= $form->closeButtonSpace();
+            $res .= $form->closeForm();
 
             return $res;
         }

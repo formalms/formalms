@@ -52,8 +52,8 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *					a m:1 relation with _organizations
  */
 
-require_once Forma::inc(_lms_ . '/modules/scorm/config.scorm.php');
-require_once Forma::inc(_lms_ . '/modules/scorm/scorm_utils.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/config.scorm.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/scorm_utils.php');
 
 class Scorm_ItemsTrack
 {
@@ -68,7 +68,7 @@ class Scorm_ItemsTrack
      * @param $connection connection to the database
      * @param $prefix the prefix to prepend to all tables names
      **/
-    public function Scorm_ItemsTrack($connection, $prefix)
+    public function __construct($connection, $prefix)
     {
         $this->dbconn = $connection;
         $this->prefix = $prefix;
@@ -115,14 +115,14 @@ class Scorm_ItemsTrack
      *  Return a recordset with the item_track record
      *	The entry is identified by idUser, idReference, (idscorm_item|idscorm_organization).
      *
-     *	@param $idUser user id of the record
-     *	@param $idReference id of the related item in lesson area
-     *	@param $idscorm_item id of the item of the record to retrieve
+     *	@param $idUser int|string id of the record
+     *	@param $idReference int|string of the related item in lesson area
+     *	@param $idscorm_item int|string of the item of the record to retrieve
      *						if is null we can search the entry of the
      *						scorm organization
-     *	@param $idscorm_organization id of the organization to get
+     *	@param $idscorm_organization int|string of the organization to get
      *
-     *	@return record set resource or FALSE
+     *	@return mixed set resource or FALSE
      **/
     public function getItemTrack($idUser, $idReference, $idscorm_item, $idscorm_organization = null)
     {
@@ -144,7 +144,7 @@ class Scorm_ItemsTrack
         }
         $rs = sql_query($query, $this->dbconn);
         if ($rs === false) {
-            exit("Scorm_ItemsTrack::getItemsTrack error in select [$query] " . sql_error($this->dbconn));
+            exit("Scorm_ItemsTrack::getItemTrack error in select [$query] " . sql_error($this->dbconn));
         }
         if (sql_num_rows($rs) == 0) {
             return false;
@@ -632,8 +632,8 @@ class Scorm_ItemsTrack
             //print_r($record);
             if (strcmp($status, 'completed') == 0 || strcmp($status, 'passed') == 0) {
                 soap__dbgOut('update commontrack');
-                require_once Forma::inc(_lms_ . '/class.module/track.object.php');
-                require_once Forma::inc(_lms_ . '/class.module/track.scorm.php');
+                require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/track.object.php');
+                require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/track.scorm.php');
                 soap__dbgOut('create Track_ScormOrg object');
                 $track_so = new Track_ScormOrg($record['idscorm_item_track'], false, false, null, $environment);
                 soap__dbgOut('idscorm_item_track' . $record['idscorm_item_track']);

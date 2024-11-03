@@ -93,3 +93,14 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0e387d', endC
 .toggle.btn{width: 80px!important; height: 12px;}
 
 
+.container.container_helpdesk {
+    width: 100% !important;
+}
+
+.inline_no_helpdesk {
+    display: none;
+    width: 100px;
+    height: 100px;
+}
+
+

@@ -14,6 +14,8 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 require_once _base_ . '/lib/lib.json.php';
+
+use FormaLms\lib\Forma;
 use FormaLms\lib\Session\SessionManager;
 
 class CoursestatsLmsController extends LmsController
@@ -137,7 +139,7 @@ class CoursestatsLmsController extends LmsController
     {
         $view_all_perm = checkPerm('view_all', true, 'coursestats');
 
-        if ((int) $this->idCourse <= 0) {
+        if ((int)$this->idCourse <= 0) {
             //...
             return;
         }
@@ -153,19 +155,18 @@ class CoursestatsLmsController extends LmsController
                 'dir' => 'asc',
             ];
 
-            $list = $this->model->getCourseStatsList($pagination, $this->idCourse, $filter);
+            $list = $this->model->getCourseStatsList($pagination, $this->idCourse);
 
             //filter users
             require_once _base_ . '/lib/lib.preference.php';
             $ctrlManager = new ControllerPreference();
-            $ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
-            $idx = 0;
-            foreach ($list as $record) {
-                if (!in_array($record->idst, $ctrl_users)) {
+            $ctrl_users = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
+
+            foreach ($list as $idx => $record) {
+                if (!in_array($record->idst, $ctrl_users) && array_key_exists($idx, $list)) {
                     // Elimino gli studenti non amministrati
                     unset($list[$idx]);
                 }
-                ++$idx;
             }
             $total_users = count($list);
         }
@@ -174,7 +175,7 @@ class CoursestatsLmsController extends LmsController
         $_arr_js = [];
         foreach ($lo_totals as $id_lo => $total_lo) {
             $_arr_js[] = '{id:"lo_totals_' . $id_lo . '", total:"' . $total_lo . ' / ' . $total_users . '", '
-                . 'percent:"' . number_format(($total_lo / $total_users), 2) . ' %"}';
+                . 'percent:"' . number_format($total_users > 0 ? ($total_lo / $total_users) : 0, 2) . ' %"}';
         }
         $lo_totals_js = implode(',', $_arr_js);
         //WARNING: lo_list and lo_totals must have the same keys order
@@ -193,7 +194,7 @@ class CoursestatsLmsController extends LmsController
             'is_active_advanced_filter' => false,
             'orgchart_list' => $umodel->getOrgChartDropdownList(),
             'groups_list' => $gmodel->getGroupsDropdownList(),
-            'total_users' => (int) $total_users,
+            'total_users' => (int)$total_users,
             'lo_totals_js' => $lo_totals_js,
             'status_list' => $this->_getJsArrayStatus(),
             'permissions' => $this->permissions,
@@ -206,11 +207,9 @@ class CoursestatsLmsController extends LmsController
     {
         $view_all_perm = checkPerm('view_all', true, 'coursestats');
 
-		$data = json_decode(file_get_contents('php://input'), true);
-
-		$startIndex = $data['start'];
-		$results = FormaLms\lib\Get::req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem'));
-		$rowsPerPage = $data['length'];
+        $startIndex = FormaLms\lib\Get::req('start', DOTY_INT, 0);
+        $results = FormaLms\lib\Get::req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem'));
+        $rowsPerPage = FormaLms\lib\Get::req('length', DOTY_INT, $results);
 
         $dir = FormaLms\lib\Get::req('dir', DOTY_STRING, 'asc');
 
@@ -222,12 +221,12 @@ class CoursestatsLmsController extends LmsController
             'dir' => $dir,
         ];
 
-		if ($order = $data['order']) {
+        if ($order = $_REQUEST['order']) {
             $pagination['order_column'] = $order[0]['column'];
             $pagination['order_dir'] = $order[0]['dir'];
         }
 
-		if ($search = $data['search']) {
+        if ($search = $_REQUEST['search']) {
             $pagination['search'] = $search['value'];
         } else {
             $pagination['search'] = null;
@@ -254,14 +253,14 @@ class CoursestatsLmsController extends LmsController
 
         //format models' data
         $records = [];
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         //apply sub admin filters, if needed
         if (!$view_all_perm) {
             //filter users
             require_once _base_ . '/lib/lib.preference.php';
             $ctrlManager = new ControllerPreference();
-            $ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
+            $ctrl_users = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $idx = 0;
             foreach ($list as $record) {
                 if (!in_array($record->idst, $ctrl_users)) {
@@ -279,7 +278,7 @@ class CoursestatsLmsController extends LmsController
                 $_userid = $acl_man->relativeId($record->userid);
                 $row = [
                     // 'id' => (int)$record->idst,
-                    'userid' => '<a href="./index.php?r=lms/coursestats/show_user&id_user=' . (int) $record->idst . '">' . Layout::highlight($_userid, $filter_text) . '</a>',
+                    'userid' => '<a href="./index.php?r=lms/coursestats/show_user&id_user=' . (int)$record->idst . '">' . Layout::highlight($_userid, $filter_text) . '</a>',
                     'firstname' => Layout::highlight($record->lastname, $filter_text) . ' ' . Layout::highlight($record->firstname, $filter_text),
                     'level' => isset($arr_level[$record->level]) ? $arr_level[$record->level] : '',
                     'status' => isset($arr_status[$record->status]) ? $arr_status[$record->status] : '',
@@ -323,7 +322,7 @@ class CoursestatsLmsController extends LmsController
 
     public function show_userTask()
     {
-        if ((int) $this->idCourse <= 0) {
+        if ((int)$this->idCourse <= 0) {
             //...
             return;
         }
@@ -337,7 +336,7 @@ class CoursestatsLmsController extends LmsController
         $smodel = new SubscriptionAlms();
         $arr_status = $smodel->getUserStatusList();
 
-        $acl_man = Docebo::user()->getACLManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();;
         $user_info = $acl_man->getUser($id_user, false);
         $course_info = $this->model->getUserCourseInfo($this->idCourse, $id_user);
         $info = new stdClass();
@@ -387,7 +386,7 @@ class CoursestatsLmsController extends LmsController
 
         //format models' data
         $records = [];
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         if (is_array($list)) {
             foreach ($list as $record) {
                 $path = str_replace('/root/', '', $record->path);
@@ -482,7 +481,7 @@ class CoursestatsLmsController extends LmsController
 
     public function show_user_objectTask()
     {
-        if ((int) $this->idCourse <= 0) {
+        if ((int)$this->idCourse <= 0) {
             //...
             return;
         }
@@ -510,7 +509,7 @@ class CoursestatsLmsController extends LmsController
                 break;
         }
 
-        $acl_man = Docebo::user()->getACLManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();;
         $user_info = $acl_man->getUser($id_user, false);
         $lo_info = $this->model->getLOInfo($id_lo);
         $course_info = $this->model->getUserCourseInfo($this->idCourse, $id_user);
@@ -564,7 +563,7 @@ class CoursestatsLmsController extends LmsController
 
     public function show_objectTask()
     {
-        if ((int) $this->idCourse <= 0) {
+        if ((int)$this->idCourse <= 0) {
             //...
             return;
         }
@@ -606,7 +605,7 @@ class CoursestatsLmsController extends LmsController
             return;
         }
 
-        if ((int) $this->idCourse <= 0) {
+        if ((int)$this->idCourse <= 0) {
             //...
             return;
         }
@@ -624,7 +623,7 @@ class CoursestatsLmsController extends LmsController
         }
 
         $res = $this->model->resetTrack($id_lo, $id_user);
-        Util::jump_to('index.php?r=lms/coursestats/show_user_object&id_user=' . (int) $id_user . '&id_lo=' . (int) $id_lo . '&res=' . ($res ? 'ok_reset' : 'err_reset'));
+        Util::jump_to('index.php?r=lms/coursestats/show_user_object&id_user=' . (int)$id_user . '&id_lo=' . (int)$id_lo . '&res=' . ($res ? 'ok_reset' : 'err_reset'));
     }
 
     public function inline_editorTask()
@@ -635,7 +634,7 @@ class CoursestatsLmsController extends LmsController
 
             return;
         }
-        if ((int) $this->idCourse <= 0) {
+        if ((int)$this->idCourse <= 0) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('invalid course')];
             echo $this->json->encode($output);
 
@@ -687,7 +686,7 @@ class CoursestatsLmsController extends LmsController
             return;
         }
 
-        if ((int) $this->idCourse <= 0) {
+        if ((int)$this->idCourse <= 0) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('invalid course')];
             echo $this->json->encode($output);
 
@@ -720,8 +719,8 @@ class CoursestatsLmsController extends LmsController
             return;
         }
 
-        require_once Forma::inc(_lms_ . '/modules/organization/orglib.php');
-        require_once _lms_ . '/lib/lib.param.php';
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/organization/orglib.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
 
         $repoDb = new OrgDirDb($this->idCourse);
         $folder = $repoDb->getFolderById($id_lo);
@@ -770,14 +769,14 @@ class CoursestatsLmsController extends LmsController
                 $query = "SELECT classNameTrack, fileNameTrack FROM %lms_lo_types WHERE objectType = '$object_type'";
                 $res = sql_query($query);
                 if ($row = sql_fetch_row($res)) {
-                    list($classNameTrack, $fileNameTrack) = $row;
-                    require_once Forma::inc(_lms_ . "/class.module/$fileNameTrack");
+                    [$classNameTrack, $fileNameTrack] = $row;
+                    require_once \FormaLms\lib\Forma::inc(_lms_ . "/class.module/$fileNameTrack");
                     $itemtrack = new $classNameTrack(null);
                 }
                 break;
         }
 
-        list($exist, $idTrack) = $itemtrack->getIdTrack($idReference, $id_user, $id_resource, true);
+        [$exist, $idTrack] = $itemtrack->getIdTrack($idReference, $id_user, $id_resource, true);
 
         if (!$exist) {
             require_once _lms_ . '/class.module/track.object.php';
@@ -853,7 +852,7 @@ class CoursestatsLmsController extends LmsController
 
         require_once _base_ . '/lib/lib.download.php';
 
-        if ((int) $this->idCourse <= 0) {
+        if ((int)$this->idCourse <= 0) {
             //...
             return;
         }
@@ -868,7 +867,8 @@ class CoursestatsLmsController extends LmsController
 
         $head = [];
         $head[] = $this->_formatCsvValue(Lang::t('_USERNAME', 'standard'), $delimiter);
-        $head[] = $this->_formatCsvValue(Lang::t('_FULLNAME', 'standard'), $delimiter);
+        $head[] = $this->_formatCsvValue(Lang::t('_NAME', 'standard'), $delimiter);
+        $head[] = $this->_formatCsvValue(Lang::t('_LASTNAME', 'standard'), $delimiter);
         $head[] = $this->_formatCsvValue(Lang::t('_LEVEL', 'standard'), $delimiter);
         $head[] = $this->_formatCsvValue(Lang::t('_STATUS', 'standard'), $delimiter);
         foreach ($lo_list as $id_lo => $lo_info) {
@@ -885,7 +885,7 @@ class CoursestatsLmsController extends LmsController
             //filter users
             require_once _base_ . '/lib/lib.preference.php';
             $ctrlManager = new ControllerPreference();
-            $ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
+            $ctrl_users = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $idx = 0;
             foreach ($records as $record) {
                 if (!in_array($record->idst, $ctrl_users)) {
@@ -897,7 +897,7 @@ class CoursestatsLmsController extends LmsController
         }
 
         if (!empty($records)) {
-            $acl_man = Docebo::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
 
             require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
             $cman = new CourseSubscribe_Manager();
@@ -908,7 +908,8 @@ class CoursestatsLmsController extends LmsController
                 foreach ($records as $record) {
                     $row = [];
                     $row[] = $acl_man->relativeId($record->userid);
-                    $row[] = $record->firstname . ' ' . $record->lastname;
+                    $row[] = $record->firstname;
+                    $row[] = $record->lastname;
                     $row[] = isset($arr_level[$record->level]) ? $arr_level[$record->level] : '';
                     $row[] = isset($arr_status[$record->status]) ? $arr_status[$record->status] : '';
                     $num_completed = 0;
@@ -943,7 +944,7 @@ class CoursestatsLmsController extends LmsController
 
         require_once _base_ . '/lib/lib.download.php';
 
-        if ((int) $this->idCourse <= 0) {
+        if ((int)$this->idCourse <= 0) {
             //...
             return;
         }
@@ -958,7 +959,7 @@ class CoursestatsLmsController extends LmsController
 
         $records = $this->model->getCourseStatsList(false, $this->idCourse, false);
         if (!empty($records)) {
-            $acl_man = Docebo::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
 
             require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
             $cman = new CourseSubscribe_Manager();
@@ -971,7 +972,8 @@ class CoursestatsLmsController extends LmsController
                     $rowa = [];
                     $rowa[] = Lang::t('_PARTICIPANT_DATA', 'standard') . ' :';
                     $rowa[] = Lang::t('_USERNAME', 'standard') . ' : ' . $acl_man->relativeId($record->userid);
-                    $rowa[] = Lang::t('_FULLNAME', 'standard') . ' : ' . $record->firstname . ' ' . $record->lastname;
+                    $rowa[] = Lang::t('_NAME', 'standard') . ' : ' . $record->firstname;
+                    $rowa[] = Lang::t('_LASTNAME', 'standard') . ' : ' . $record->lastname;
                     $rowa[] = Lang::t('_LEVEL', 'standard') . ' : ';
                     $rowa[] = isset($arr_level[$record->level]) ? $arr_level[$record->level] : '';
                     $rowa[] = Lang::t('_STATUS', 'standard') . ' : ';
@@ -1089,7 +1091,7 @@ class CoursestatsLmsController extends LmsController
 
         require_once _base_ . '/lib/lib.download.php';
 
-        if ((int) $this->idCourse <= 0) {
+        if ((int)$this->idCourse <= 0) {
             //...
             return;
         }
@@ -1100,7 +1102,7 @@ class CoursestatsLmsController extends LmsController
         $output = '<table border="1">';
         $records = $this->model->getCourseStatsList(false, $this->idCourse, false);
         if (!empty($records)) {
-            $acl_man = Docebo::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
 
             require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
             $cman = new CourseSubscribe_Manager();
@@ -1114,7 +1116,8 @@ class CoursestatsLmsController extends LmsController
                     $rowa = [];
                     $rowa[] = Lang::t('_PARTICIPANT_DATA', 'standard') . ' :';
                     $rowa[] = Lang::t('_USERNAME', 'standard') . ' : ' . $acl_man->relativeId($record->userid);
-                    $rowa[] = Lang::t('_FULLNAME', 'standard') . ' : ' . $record->firstname . ' ' . $record->lastname;
+                    $rowa[] = Lang::t('_NAME', 'standard') . ' : ' . $record->firstname;
+                    $rowa[] = Lang::t('_LASTNAME', 'standard') . ' : ' . $record->lastname;
                     $rowa[] = Lang::t('_LEVEL', 'standard') . ' : ';
                     $rowa[] = isset($arr_level[$record->level]) ? $arr_level[$record->level] : '';
                     $rowa[] = Lang::t('_STATUS', 'standard') . ' : ';
@@ -1168,7 +1171,7 @@ class CoursestatsLmsController extends LmsController
 
         $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, $this->idCourse);
         $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, 0);
-        if ((int) $this->idCourse <= 0) {
+        if ((int)$this->idCourse <= 0) {
             //...
             return;
         }
@@ -1176,7 +1179,7 @@ class CoursestatsLmsController extends LmsController
         $smodel = new SubscriptionAlms();
         $arr_status = $smodel->getUserStatusList();
 
-        $acl_man = Docebo::user()->getACLManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();;
         $user_info = $acl_man->getUser($id_user, false);
         $course_info = $this->model->getUserCourseInfo($id_course, $id_user);
         $info = new stdClass();
@@ -1194,7 +1197,8 @@ class CoursestatsLmsController extends LmsController
         $rowa = [];
         $rowa[] = Lang::t('_PARTICIPANT_DATA', 'standard');
         $rowa[] = Lang::t('_USERNAME', 'standard') . ' : ' . $acl_man->relativeId($info->userid);
-        $rowa[] = Lang::t('_FULLNAME', 'standard') . ' : ' . $info->firstname . ' ' . $info->lastname;
+        $rowa[] = Lang::t('_NAME', 'standard') . ' : ' . $info->firstname;
+        $rowa[] = Lang::t('_LASTNAME', 'standard') . ' : ' . $info->lastname;
         $rowa[] = '';
         $rowa[] = '';
         $rowa[] = Lang::t('_DATE_FIRST_ACCESS', 'standard') . ' : ' . $info->first_access;
@@ -1246,7 +1250,7 @@ class CoursestatsLmsController extends LmsController
 
         require_once _base_ . '/lib/lib.download.php';
 
-        if ((int) $this->idCourse <= 0) {
+        if ((int)$this->idCourse <= 0) {
             //...
             return;
         }
@@ -1261,7 +1265,7 @@ class CoursestatsLmsController extends LmsController
 
         $records = $this->model->getCourseStatsList(false, $this->idCourse, false);
         if (!empty($records)) {
-            $acl_man = Docebo::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
 
             require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
             $cman = new CourseSubscribe_Manager();
@@ -1274,7 +1278,8 @@ class CoursestatsLmsController extends LmsController
                     $rowa = [];
                     $rowa[] = Lang::t('_PARTICIPANT_DATA', 'standard') . ' :';
                     $rowa[] = Lang::t('_USERNAME', 'standard') . ' : ' . $acl_man->relativeId($record->userid);
-                    $rowa[] = Lang::t('_FULLNAME', 'standard') . ' : ' . $record->firstname . ' ' . $record->lastname;
+                    $rowa[] = Lang::t('_NAME', 'standard') . ' : ' . $record->firstname;
+                    $rowa[] = Lang::t('_LASTNAME', 'standard') . ' : ' . $record->lastname;
                     $rowa[] = Lang::t('_LEVEL', 'standard') . ' : ';
                     $rowa[] = isset($arr_level[$record->level]) ? $arr_level[$record->level] : '';
                     $rowa[] = Lang::t('_STATUS', 'standard') . ' : ';
@@ -1392,7 +1397,7 @@ class CoursestatsLmsController extends LmsController
 
         require_once _base_ . '/lib/lib.download.php';
 
-        if ((int) $this->idCourse <= 0) {
+        if ((int)$this->idCourse <= 0) {
             //...
             return;
         }
@@ -1424,7 +1429,7 @@ class CoursestatsLmsController extends LmsController
         $list = $this->model->getCourseUserStatsList2csv($pagination, $this->idCourse, $id_user);
 
         $records = [];
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         if (is_array($list)) {
             foreach ($list as $record) {
                 $row = [
@@ -1494,30 +1499,30 @@ class CoursestatsLmsController extends LmsController
 
     public function exportUsageStatistics()
     {
-        $acl_man = Docebo::user()->getAclManager();
-
-        $course_user = Man_Course::getIdUserOfLevel($this->idCourse);
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
+        $course_man = new Man_Course();
+        $course_user = $course_man->getIdUserOfLevel($this->idCourse);
 
         //apply sub admin filters, if needed
-        if (!$view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin') {
+        if (!$view_all_perm && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == '/framework/level/admin') {
             //filter users
             require_once _base_ . '/lib/lib.preference.php';
             $ctrlManager = new ControllerPreference();
-            $ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
+            $ctrl_users = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $course_user = array_intersect($course_user, $ctrl_users);
         }
 
         $usersList = &$acl_man->getUsers($course_user);
 
-        $queryTime = 'SELECT idUser, SUM((UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime))) as time FROM %lms_tracksession WHERE idCourse = ' . (int) $this->idCourse . ' GROUP BY idUser';
+        $queryTime = 'SELECT idUser, SUM((UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime))) as time FROM %lms_tracksession WHERE idCourse = ' . (int)$this->idCourse . ' GROUP BY idUser';
         $totalTimesResult = sql_query($queryTime);
 
         $totalTimes = [];
         foreach ($totalTimesResult as $totalTime) {
             $totTime = $totalTime['time'];
-            $hours = (int) ($totTime / 3600);
-            $minutes = (int) (($totTime % 3600) / 60);
-            $seconds = (int) ($totTime % 60);
+            $hours = (int)($totTime / 3600);
+            $minutes = (int)(($totTime % 3600) / 60);
+            $seconds = (int)($totTime % 60);
             if ($minutes < 10) {
                 $minutes = '0' . $minutes;
             }

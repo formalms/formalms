@@ -1,0 +1,283 @@
+@import '../../../node_modules/easycontext/src/index';
+
+.folderTreeView {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.folderTreeContent {
+  display: none;
+
+  @include breakpoint($ipad) {
+    display: block;
+  }
+}
+
+.folderTreeContent--one-third {
+  width: 25%;
+}
+
+.folderTree__ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.folderTree__li {
+  pointer-events: none;
+
+   > .folderTree__ul {
+     margin-left: 32px;
+     border-left: 1px solid #efefef;
+  }
+}
+
+.folderTree__rename, .createFolder__rename {
+  position: absolute;
+  top: 0;
+  left: 56px;
+  height: 100%;
+  width: calc(100% - 56px);
+  display: none;
+
+  &.is-show {
+    display: block;
+  }
+}
+
+.folderTree__rename__input, .createFolder__input {
+  border: 0;
+  padding: 0;
+  font-size: 16px;
+  width: 100%;
+  height: 100%;
+  padding-right: 48px;
+}
+
+.folderTree__rename__btn, .createFolder__btn, .cancelCreateFolder__btn {
+  background: transparent;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border: 1px solid #000;
+  border-radius: 50%;
+  cursor: pointer;
+  background: {
+    image: url('images/folderTree/icon-check.svg');
+    repeat: no-repeat;
+    position: center;
+    size: 18px;
+  };
+
+  &:hover {
+    background-color: #ff6c00;
+    border-color: #ff6c00;
+    transition: all .2s ease-in-out;
+  }
+}
+
+.cancelCreateFolder__btn {
+  right: 48px;
+  background: {
+    image: url('images/folderView/icon-delete.svg');
+  }
+}
+
+.folderTree__actions {
+  padding: 0px;
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+
+  .dropdown {
+    margin-bottom: 12px;
+    .btn {
+      &.dropdown-toggle {
+        display: block;
+        min-width: 240px;
+        background: none;
+        padding: 12px;
+        transition: .2 all ease-in-out;
+        text-align: right;
+        border: 1px solid #000;
+        &:hover {
+          color: var(--color-action-button-text);
+        }
+        &:focus {
+          color: var(--color-action-button-text);
+        }
+      }
+    }
+    .dropdown-menu {
+      width: 100%;
+      max-height: 270px;
+      overflow-y: auto;
+    }
+  }
+}
+
+.folderView__li {
+
+  .folderTree__actions & {
+    height: 48px;
+  }
+}
+
+.folderView__el {
+
+  .folderTree__actions & {
+    background-size: 18px auto;
+  }
+}
+
+.folderTree__link, .createFolder__link {
+  width: 100%;
+  text-align: left;
+  position: relative;
+  text-decoration: none;
+  color: #000;
+  padding: 16px 16px 16px 56px;
+  display: block;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 1px solid #efefef;
+  transition: all .2s ease-in-out;
+  background: transparent;
+  pointer-events: all;
+
+  span {
+    pointer-events: none;
+  }
+
+  &:hover:not(.ft-is-selected) {
+    background-color: #efefef;
+    transition: all .2s ease-in-out;
+  }
+
+  &.ft-is-selected {
+    font-weight: bold;
+  }
+}
+
+.createFolder__input_err {
+  color: red;
+}
+
+.ft-is-parent {
+  .arrow {
+    display: block;
+    position: absolute;
+    cursor: pointer;
+    margin-top: 25px;
+    margin-left: 10px;
+    transform: translateY(-50%);
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-left: 6px solid #000;
+    border-right: none;
+    transition: all .2s ease-in-out;
+    width: 0;
+    height: 0;
+    background: none;
+    z-index: 99;
+    pointer-events: all;
+    &.opened {
+      border-top: 6px solid #000;
+      border-bottom: none;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+    }
+  }
+}
+
+.ft-is-folder {
+  background: {
+    image: url('images/folderTree/icon-folder.svg');
+    repeat: no-repeat;
+    position: 24px center;
+    size: 24px;
+  };
+}
+
+.ft-is-folderOpen {
+  background-image: url('images/folderTree/icon-folder-open.svg');
+
+  &:after {
+    transform: translateY(-50%) rotate(90deg);
+    transition: all .2s ease-in-out;
+  }
+}
+
+.ft-is-disabled {
+  pointer-events: none;
+  background-color: #efefef;
+  opacity: .54;
+}
+
+.ft-is-selected {
+  border-left: 2px solid var(--color-primary);
+}
+
+.folderTree__btn {
+  box-shadow: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid #000000;
+  background-color: transparent;
+  transition: all .5s ease-in-out;
+  cursor: pointer;
+  margin-left: 8px;
+
+  &:hover {
+    background-color: #ff6c00;
+    border-color: #ff6c00;
+    transition: all .2s ease-in-out;
+  }
+}
+
+.folderTree__btn--new {
+  position: relative;
+
+  &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    right: 8px;
+    bottom: 8px;
+    background: {
+      image: url('images/folderTree/icon-plus.svg');
+      repeat: no-repeat;
+      position: center;
+      size: 16px;
+    };
+  }
+}
+
+.folderTree__newFolder {
+  background: {
+    image: url('images/folderTree/icon-folder.svg');
+    repeat: no-repeat;
+    position: center;
+    size: 24px;
+  };
+
+}
+
+.folderTree__newLO {
+  position: relative;
+  background: {
+    image: url('images/folderTree/icon-file.svg');
+    repeat: no-repeat;
+    position: center;
+    size: 24px;
+  };
+
+}
+

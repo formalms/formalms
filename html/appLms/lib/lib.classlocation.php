@@ -25,7 +25,7 @@ class ClassLocationManager
 
     public $status_info = [];
 
-    public function ClassLocationManager($prefix = 'learning', $dbconn = null)
+    public function __construct($prefix = 'learning', $dbconn = null)
     {
         $this->prefix = $prefix;
         $this->dbconn = $dbconn;
@@ -172,7 +172,7 @@ class ClassLocationManager
 
         if ($id == 0) {
             if (empty($location)) {
-                $lang = &DoceboLanguage::createInstance('classlocation', 'lms');
+                $lang = &FormaLanguage::createInstance('classlocation', 'lms');
                 $location = $lang->def('_UNAMED');
             }
 

@@ -51,12 +51,12 @@ class ReportPlugin
         if ($report_name == false) {
             $this->_load();
         } else {
-            $lang = &DoceboLanguage::createInstance('report', 'framework');
+            $lang = &FormaLanguage::createInstance('report', 'framework');
             $this->report_name = $lang->def($report_name);
             $this->report_descr = $lang->def($report_name);
         }
 
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     }
 
@@ -179,7 +179,7 @@ class ReportPlugin
      */
     public function _load()
     {
-        $lang = &DoceboLanguage::createInstance('report', 'framework');
+        $lang = &FormaLanguage::createInstance('report', 'framework');
 
         $query_report = '
 		SELECT report_name
@@ -200,12 +200,12 @@ class ReportPlugin
     {
         $p_dr = new PeopleDataRetriever($GLOBALS['dbConn'], $GLOBALS['prefix_fw']);
 
-        $userlevelid = Docebo::user()->getUserLevelId();
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
             $p_dr->intersectGroupFilter(
-                $adminManager->getAdminTree(Docebo::user()->getIdSt())
+                $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())
             );
         }
 
@@ -241,7 +241,7 @@ class ReportBox
 
     public $show_collapse_cmd = false;
 
-    public function ReportBox($id = '')
+    public function __construct($id = '')
     {
         $this->id = $id;
     }

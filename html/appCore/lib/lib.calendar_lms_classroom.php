@@ -19,11 +19,11 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 require_once _adm_ . '/lib/lib.calevent_lms.php';
 require_once _adm_ . '/lib/resources/lib.timetable.php';
 
-class DoceboCal_lms_classroom extends DoceboCal_core
+class FormaCal_lms_classroom extends FormaCal_core
 {
     public $calClass = 'lms_classroom';
 
-    public function getEvents($year = 0, $month = 0, $day = 0, $start_date = '', $end_date = '', $classroom = '')
+    public function getEvents($year = 0, $month = 0, $day = 0, $start_date = '', $end_date = '', $classroom = '', $category = '', $type = '', $owner = '')
     {
         $where = '';
 
@@ -78,7 +78,7 @@ class DoceboCal_lms_classroom extends DoceboCal_core
             $loaded[$row['consumer']][$i] = $row['resource_id'];
 
             /* you should call the constructor of the proper type of event class*/
-            $calevents[$i] = new DoceboCalEvent_lms();
+            $calevents[$i] = new FormaCalEvent_lms();
             $calevents[$i]->calEventClass = $this->calClass;
 
             /* the following should be set according to the type of event class*/
@@ -186,7 +186,7 @@ class DoceboCal_lms_classroom extends DoceboCal_core
         if (($q) && (sql_num_rows($q) > 0)) {
             while ($row = sql_fetch_assoc($q)) {
                 /* you should call the constructor of the proper type of event class*/
-                $calevents[$i] = new DoceboCalEvent_lms();
+                $calevents[$i] = new FormaCalEvent_lms();
                 $calevents[$i]->calEventClass = $this->calClass;
 
                 /* the following should be set according to the type of event class*/

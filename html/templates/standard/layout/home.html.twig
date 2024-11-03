@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{{ Layout_getLangCode() }}">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{{ Layout_getLangCode() }}" lang="{{ Layout_getLangCode() }}" >
 <head>
     <!--Fix funzionamento scorm su IE9-->
     <meta http-equiv="x-ua-compatible" content="IE=11"/>
@@ -24,8 +24,6 @@
     {{ Layout_getRtl() }}
     <!-- specific stylesheet -->
     {{ Yui_load('base') }}
-    <!-- printer stylesheet-->
-    {{ Layout_getAccessibility() }}
     <!-- Page Head area -->
     {{ Layout_getZone('page_head') }}
 
@@ -62,7 +60,7 @@
 
     <!-- Restyling -->
     <link rel="stylesheet" type="text/css"
-          href="{{ Layout_getPath() }}static/main.min.css?v={{ Template_getVersion() }}">
+          href="{{ Layout_getPath() }}static/main.{{ Layout_getHighContrastCss() }}min.css?v={{ Template_getVersion() }}">
     <!--
     To use or edit the not minified css uncomment this portion of code
     <link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}static/main.css">
@@ -74,30 +72,34 @@
 {% block homeContent %}
     <!-- content -->
     <main class="homepage__content content-margin">
+        {{ Layout_getHighContrast() }}
         <div class="homepage__row homepage__row--header">
-            <a href="index.php">
-                <img class="left_logo" src="{{ Layout_getPath() }}images/company_logo.png" alt="Left logo"/>
-            </a>
-            <div class="pull-right">
+            <div class="pull-left">
+                <h1 class="no_margin_padding"><span class="screenreader">{{ Lang_translate('_LOGIN_LEGEND', 'login') }}</span></h1>
+                <a href="index.php" class="image-link">
+                    <img class="left_logo" src="{{ Layout_getPath() }}images/company_logo.png" alt="{{ Lang_translate('_COMPANY_LOGO', 'standard') }}"/>
+                </a>
+            </div>
+            <div class="pull-right pull-right-size">
+                <div class="hidden-xs" style="margin: 0 1.5rem;">
+                    {{ Layout_getCatalogue() }}
+                </div>
                 {% if lang_number > 1 %}
-                    <div class="select-language">
+                    <div class="select-language" style="padding: 0 0.5rem">
                         <span class="hidden-xs">{{ Lang_translate('_CHANGELANG', 'register') }}: </span>{{ Layout_getChangeLang() }}
                     </div>
                 {% endif %}
-                <div class="hidden-xs">
-                    {{ Layout_getCatalogue() }}
-                </div>
             </div>
         </div>
         {{ Layout_getZone('content') }}
     </main>
 {% endblock %}
 {% block homeFooter %}
-    <!-- footer -->
+    <!--
     <footer class="homepage__footer">
         {{ Layout_getZone('footer') }}
         {{ Layout_getCopyright() }}
-    </footer>
+    </footer> footer -->
 {% endblock %}
 <!-- def lang -->
 {{ Layout_getZone('def_lang') }}
@@ -106,5 +108,6 @@
 <!-- end scripts -->
 {{ Layout_getZone('debug') }}
 {{ Layout_getAnalytics() }}
+
 </body>
 </html>

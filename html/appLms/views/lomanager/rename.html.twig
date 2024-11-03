@@ -1,6 +1,9 @@
 <div class="folderTree__rename">
-    <input type="text" value="" class="folderTree__rename__input"
+    <input type="text" id="folder_rename_input" value="" class="folderTree__rename__input"
             onfocus="this.value = null; this.value = value"
             onkeypress="return !(window.event && window.event.keyCode == 13);"/>
-    <button class="folderTree__rename__btn js-ft-rename-el" type="button"></button>
+    <label class="screenreader" for="folder_rename_input">{{ Lang_translate('_RENAME_FOLDER_LABEL', 'screen_reader') }}</label>
+    <button class="folderTree__rename__btn js-ft-rename-el" type="button">
+        <span class="screenreader">{{ Lang_translate('_RENAME_FOLDER_BUTTON', 'screen_reader') }}</span>
+    </button>
 </div>

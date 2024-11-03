@@ -41,7 +41,7 @@ class TableView
     /**
      * Constructor.
      *
-     * @param <string> $id the identifier of the table
+     * @param string $id the identifier of the table
      */
     public function __construct($id)
     {
@@ -93,7 +93,7 @@ class TableView
     /**
      * Set the url of the ajax server, used for ajax pagination and sorting.
      *
-     * @param <string> $url
+     * @param string $url
      *
      * @return <type>
      */
@@ -107,15 +107,15 @@ class TableView
      * populated in this way:
      *	'startIndex' => <int>,
      *	'results' => <int>,
-     *	'sort' => <string>,
-     *	'dir' => <string>,
+     *	'sort' => string,
+     *	'dir' => string,
      *	'pageSize' => <int>,
      *	'totalRecords' => <int>,
      *	'recordsReturned' => <array>.
      *
      * @param <array> $data
      *
-     * @return <bool>
+     * @return bool
      */
     public function setInitialData($data)
     {
@@ -131,7 +131,7 @@ class TableView
      * Compile the js configuration for the yui datatable colum definition
      * based on the php array populated by the __construct.
      *
-     * @return <string>
+     * @return string
      */
     protected function createColumnsData()
     {

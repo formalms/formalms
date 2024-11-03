@@ -1,14 +1,14 @@
 {% for item in menu %}
-    {# {{ dump(item) }} #}
+     {# {{ dump(item) }} #}
     {% if Util_checkRole(item.role) %} {# TODO: se sottomenù hanno permesso, visualizza comunque #}
         {% if item.submenu|length > 0 %}
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                   aria-expanded="false">{{ Lang_translate(item.name, 'menu_over') }}<span class="caret"></span></a>
+                   aria-expanded="false" >{{ Lang_translate(item.name, 'menu_over') }}<span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     {% for subitem in item.submenu %}
                         <li{% if subitem.active %} class="active"{% endif %}>
-                            <a href="{{ item.url }}" title="{{ Lang_translate(item.name, 'menu_over') }}">
+                            <a href="{{ item.url }}" title="{{ Lang_translate(item.name, 'menu_over') }}" ">
                                 {% if item.image %}{{ item.image|raw }}{% else %}{{ Lang_translate(item.name, 'menu_over') }}{% endif %}
                             </a>
                         </li>
@@ -16,9 +16,10 @@
                 </ul>
             </li>
         {% else %}
-            <li{% if ((currentPage.isMVC == true and item.mvc_path == currentPage.MVC) or (currentPage.isMVC == false and item.module_name == currentPage.modname and item.default_op == currentPage.op)) %} class="active"{% endif %}>
-                <a href="{{ item.url }}" title="{{ Lang_translate(item.name, 'menu_over') }}">
-                    {% if item.image %}{{ item.image|raw }}{% else %}{{ Lang_translate(item.name, 'menu_over') }}{% endif %}
+            <li{% if ((currentPage.isMVC == true and item.mvc_path == currentPage.MVC) or (currentPage.isMVC == false and item.module_name == currentPage.modname and item.default_op == currentPage.op)) %} class="active"{% endif %} >
+                <a href="{{ item.url }}" title="{{ Lang_translate(item.name, 'menu_over') }}" id="{{ item.name }}" name="{{ item.name }}"
+                        {% if item.image %}role="button" aria-label="{{ Lang_translate('_HELPDESK', 'menu_over')}}" {% endif %}>
+                        {% if item.image %}{{ item.image|raw }}{% else %}{{ Lang_translate(item.name, 'menu_over') }}{% endif %}
                 </a>
             </li>
         {% endif %}
@@ -45,3 +46,4 @@
         </a>
     </li>
 {% endif %}
+

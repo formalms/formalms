@@ -64,7 +64,7 @@ class AuthenticationManager
 
         Events::trigger('core.user.logging_in', ['user' => $user]);
 
-        if (!($user instanceof DoceboUser)) {
+        if (!($user instanceof \FormaLms\lib\FormaUser)) {
             return $user;
         }
 
@@ -80,7 +80,7 @@ class AuthenticationManager
         // TODO: controllo isAnonymous prima del richiamo della funzione
         // TODO: lingua
 
-        $user = Docebo::user();
+        $user = \FormaLms\lib\FormaUser::getCurrentUser();
 
         Events::trigger('core.user.logging_out', ['user' => $user]);
 
@@ -89,26 +89,22 @@ class AuthenticationManager
 
         \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->invalidate();
 
-        // recreate Anonymous user
-        $GLOBALS['current_user'] = &DoceboUser::createDoceboUserFromSession('public_area');
-
         Events::trigger('core.user.logged_out', ['user' => $user]);
     }
 
-    public function saveUser($user)
+    public function saveUser(\FormaLms\lib\FormaUser $user)
     {
-        //DoceboUser::setupUser($user); // TODO: secondo me meglio tenere la funzione qui ma valutare
+        //FormaUser::setupUser($user); // TODO: secondo me meglio tenere la funzione qui ma valutare
         //////////////////////////////////
         $user->loadUserSectionST();
-        $user->SaveInSession();
-        Docebo::setUser($user);
+        $user->saveInSession();
+        \FormaLms\lib\FormaUser::loadUserFromSession();
         resetTemplate();
 
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $session->set('logged_in', true);
         $session->set('last_enter', $user->getLastEnter());
         $session->set('user_enter_mark', time());
-        $session->set('user', $user);
         $user->setLastEnter(date('Y-m-d H:i:s'));
         //////////////////////////////////
 
@@ -129,7 +125,6 @@ class AuthenticationManager
             $this->plugin_manager->run_plugin($plugin, 'setSocial', ['id' => $id]);
         }
         $session->save();
-
         if (self::_checkMandatoryFields()) {
             return MANDATORY_FIELDS;
         }
@@ -142,7 +137,7 @@ class AuthenticationManager
 
     private static function _checkPwdElapsed()
     {
-        return Docebo::user()->isPasswordElapsed() > 0;
+        return \FormaLms\lib\FormaUser::getCurrentUser()->isPasswordElapsed() > 0;
     }
 
     private static function _checkMandatoryFields()

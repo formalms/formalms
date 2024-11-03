@@ -17,7 +17,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  * @version  $Id:  $
  */
 // ----------------------------------------------------------------------------
-if (Docebo::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit("You can't access");
 }
 
@@ -29,7 +29,7 @@ function classEventMain()
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('classevent', 'lms');
+    $lang = &FormaLanguage::createInstance('classevent', 'lms');
 
     $back_ui_url = 'index.php?modname=classevent&amp;op=main';
 
@@ -64,7 +64,7 @@ function classEventMain()
     $GLOBALS['page']->add('<script type="text/javascript">'
      //.' setup_url(\''.$GLOBALS['where_lms_relative'].'/modules/calendar/ajax.calendar.php?\',\'lms_classroom\',\'lms_classroom\'); '
      . ' setup_url(\'' . $GLOBALS['where_lms_relative'] . '/ajax.server.php?mn=calendar&\',\'lms_classroom\',\'lms_classroom\'); '
-     . ' setup_mode("edit",' . $permissions . ',"' . Docebo::user()->getUserId() . '"); '
+     . ' setup_mode("edit",' . $permissions . ',"' . \FormaLms\lib\FormaUser::getCurrentUser()->getUserId() . '"); '
      . '</script>', 'page_head');
 
     $width = '90%';
@@ -96,7 +96,7 @@ function addeditClassEvent($id = 0)
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('classevent', 'lms');
+    $lang = &FormaLanguage::createInstance('classevent', 'lms');
 
     require_once _base_ . '/lib/lib.form.php';
     $form = new Form();
@@ -106,13 +106,13 @@ function addeditClassEvent($id = 0)
     $url = 'index.php?modname=classevent';
 
     if ($id == 0) {
-        $form_code = Form::openForm('main_form', $url . '&amp;op=save');
+        $form_code = $form->openForm('main_form', $url . '&amp;op=save');
         $submit_lbl = $lang->def('_INSERT');
         $page_title = $lang->def('_ADD_ITEM');
 
         $location = '';
     } elseif ($id > 0) {
-        $form_code = Form::openForm('main_form', $url . '&amp;op=save');
+        $form_code = $form->openForm('main_form', $url . '&amp;op=save');
 
         require_once _lms_ . '/admin/modules/classevent/lib.classevent.php';
 
@@ -133,18 +133,18 @@ function addeditClassEvent($id = 0)
     $res .= "<div class=\"std_block\">\n";
     $res .= getBackUi($back_ui_url, $lang->def('_BACK'));
 
-    $res .= $form_code . Form::openElementSpace();
+    $res .= $form_code . $form->openElementSpace();
 
-    $res .= Form::getTextfield($lang->def('_LOCATION'), 'location', 'location', 255, $location);
+    $res .= $form->getTextfield($lang->def('_LOCATION'), 'location', 'location', 255, $location);
 
-    $res .= Form::getHidden('id', 'id', $id);
+    $res .= $form->getHidden('id', 'id', $id);
 
-    $res .= Form::closeElementSpace();
-    $res .= Form::openButtonSpace();
-    $res .= Form::getButton('save', 'save', $submit_lbl);
-    $res .= Form::getButton('undo', 'undo', $lang->def('_UNDO'));
-    $res .= Form::closeButtonSpace();
-    $res .= Form::closeForm();
+    $res .= $form->closeElementSpace();
+    $res .= $form->openButtonSpace();
+    $res .= $form->getButton('save', 'save', $submit_lbl);
+    $res .= $form->getButton('undo', 'undo', $lang->def('_UNDO'));
+    $res .= $form->closeButtonSpace();
+    $res .= $form->closeForm();
 
     $res .= getBackUi($back_ui_url, $lang->def('_BACK'));
     $res .= "</div>\n";
@@ -170,7 +170,7 @@ function deleteClassEvent()
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('classevent', 'lms');
+    $lang = &FormaLanguage::createInstance('classevent', 'lms');
     $clm = new ClassEventManager();
 
     $back_url = 'index.php?modname=classevent&op=main';
@@ -199,9 +199,9 @@ function deleteClassEvent()
 
         $url = 'index.php?modname=classevent&amp;op=del';
 
-        $res .= Form::openForm('main_form', $url);
+        $res .= $form->openForm('main_form', $url);
 
-        $res .= Form::getHidden('id', 'id', $id);
+        $res .= $form->getHidden('id', 'id', $id);
 
         $res .= getDeleteUi(
         $lang->def('_AREYOUSURE'),
@@ -210,7 +210,7 @@ function deleteClassEvent()
             'conf_del',
             'undo');
 
-        $res .= Form::closeForm();
+        $res .= $form->closeForm();
         $res .= "</div>\n";
         $out->add($res);
     }

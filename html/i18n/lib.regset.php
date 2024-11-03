@@ -23,7 +23,7 @@ class RegionalSettings
     /** RegionalSettingsManager object */
     public $regset_manager = null;
 
-    /** DoceboDate object */
+    /** FormaDate object */
     public $ddate = null;
 
     public $full_token = '';
@@ -44,7 +44,7 @@ class RegionalSettings
      */
     public function __construct($region_id = false, $param_prefix = false, $dbconn = null)
     {
-        $this->ddate = new DoceboDate();
+        $this->ddate = new FormaDate();
 
         $this->regset_manager = new RegionalSettingsManager($param_prefix, $dbconn);
 
@@ -56,23 +56,27 @@ class RegionalSettings
         $this->region_id = $this->regset_manager->checkRegion($region_id);
 
         $settings = $this->regset_manager->getRegionSettings($this->region_id);
-        $this->date_sep = $settings['date_sep'];
 
-        if ($settings['date_format'] != 'custom') {
-            $this->date_token = $this->getToken($settings['date_format'], $this->date_sep);
-        } else {
-            $this->date_token = $settings['custom_date_format'];
-        }
+        if($settings) {
+            $this->date_sep = $settings['date_sep'];
 
-        if ($settings['time_format'] != 'custom') {
-            $this->time_token = $this->getToken($settings['time_format'], $this->time_sep);
-        } else {
-            $this->time_token = $settings['custom_time_format'];
+            if ($settings['date_format'] != 'custom') {
+                $this->date_token = $this->getToken($settings['date_format'], $this->date_sep);
+            } else {
+                $this->date_token = $settings['custom_date_format'];
+            }
+    
+            if ($settings['time_format'] != 'custom') {
+                $this->time_token = $this->getToken($settings['time_format'], $this->time_sep);
+            } else {
+                $this->time_token = $settings['custom_time_format'];
+            }
+    
+            if ((isset($settings['time_offset'])) && (!empty($settings['time_offset']))) {
+                $this->time_offset = (int) $settings['time_offset'];
+            }
         }
-
-        if ((isset($settings['time_offset'])) && (!empty($settings['time_offset']))) {
-            $this->time_offset = (int) $settings['time_offset'];
-        }
+        
 
         $this->full_token = $this->date_token . ' ' . $this->time_token;
     }
@@ -103,7 +107,7 @@ class RegionalSettings
         $res = '';
         $from_arr = ['d', 'm', 'Y', 'y', 'H', 'h', 'i', 's', 'a', '_', '.'];
         $to_arr = ['%d', '%m', '%Y', '%y', '%H', '%I', '%M', '%S', '%P', $sep, ' '];
-        $res = str_replace($from_arr, $to_arr, $format_str);
+        $res = str_replace($from_arr, $to_arr, (string) $format_str);
 
         return $res;
     }
@@ -367,7 +371,7 @@ class RegionalSettings
      * @param string $date  the date in the regional format
      * @param string $token the token with the date format
      *
-     * This function will fill the DoceboDate object with the date elements
+     * This function will fill the FormaDate object with the date elements
      * decoded from the given date/token
      */
     public function _decodeDate($date, $token)
@@ -469,6 +473,10 @@ class RegionalSettingsManager
     public $region_info = [];
     public $region_settings = [];
     public $setting_list = [];
+    /**
+     * @var resource|null
+     */
+    public $dbConn;
 
     /**
      * RegionalSettingsManager constructor.
@@ -641,7 +649,7 @@ class RegionalSettingsManager
             $this->region_settings = $this->loadRegionSettings($region_id);
         }
 
-        return $this->region_settings[$region_id];
+        return array_key_exists($region_id, $this->region_settings) ? $this->region_settings[$region_id] : null;
     }
 
     /**
@@ -848,11 +856,11 @@ class RegionalSettingsManager
     }
 }
 
-class DoceboDate
+class FormaDate
 {
-    public $day = '00';
-    public $month = '00';
-    public $year = '0000';
+    public $day = '01';
+    public $month = '01';
+    public $year = '1970';
     public $hour = '00';
     public $min = '00';
     public $sec = '00';
@@ -1077,10 +1085,10 @@ class DoceboDate
         }
 
         if ($todo == 'add') {
-            $new_temp_val = $date_arr[$cur] + $offset;
+            $new_temp_val = (int) $date_arr[$cur] + $offset;
             $exceed = ($new_temp_val > $max ? true : false);
         } elseif ($todo == 'sub') {
-            $new_temp_val = $date_arr[$cur] - $offset;
+            $new_temp_val = (int) $date_arr[$cur] - $offset;
             //$new_temp_val=$date_arr[$cur]-($offset % $tot);
             $exceed = ($new_temp_val < $min ? true : false);
         }

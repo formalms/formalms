@@ -27,7 +27,7 @@
                                 var category = $('#course_search_filter_cat').selectpicker().val();
                                 var cyear = $("#course_search_filter_year").selectpicker().val();
                                 var json_status = $('.js-label-menu-filter.selected').attr('data-value');
-                                $("#div_course").html("<br><p align='center'><img src='{{ Layout_getPath() }}images/standard/loadbar.gif'></p>");
+                                $("#div_course").html("<br><p alt='loading' role='alert' align='center'><img src='{{ Layout_getPath() }}images/standard/loadbar.gif'></p>");
                                var posting = $.get('ajax.server.php?r=elearning/all&rnd={{ date().timestamp }}&filter_text=' + ft + '&filter_type=' + ctype + '&filter_cat=' + category + '&filter_status=' + json_status + '&filter_year=' + cyear, {});
                                 posting.done(function(responseText) {
                                     $("#div_course").html(responseText);
@@ -63,6 +63,7 @@
     function closeAllDatesPopup($id) {
         $('*[data-overlay="course-' + $id + '"]').fadeOut();
     }
+
 </script>
 
 
@@ -79,12 +80,10 @@
        {% endif %}
 
         {% for course in courselist %}
-
             <div class="col-xs-12 col-md-4 col-lg-3 mycourses-list">
-
                 {% include 'partials/elearning-course-box.html.twig' with { 'course': course } %}
             </div>
-       {% endfor%}
-            </div>
+        {% endfor%}
     </div>
 </div>
+

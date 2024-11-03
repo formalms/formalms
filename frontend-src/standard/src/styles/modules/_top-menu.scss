@@ -72,7 +72,7 @@ header.header {
   height: 73px;
   //padding: 0 36px 0 30px;
   padding: 0;
-  border-bottom: 2px solid var(--color-0-050);
+  border-bottom: 2px solid var(--color-grey);
   position: fixed;
 
   @include breakpoint($tablet) {
@@ -183,13 +183,13 @@ header.header {
         a {
           height: 14px;
           padding: 0;
-          color: var(--color-0-600);
+          color: var(--color-grey-04);
           transition: color 0.2s ease 0s;
           line-height: 1;
 
           &:hover {
             background-color: transparent;
-            color: var(--color-1-550);
+            color: var(--color-primary);
           }
 
           .title-with-icon {
@@ -206,7 +206,7 @@ header.header {
 
             &:hover {
               &:before {
-                border-color: var(--color-1-550);
+                border-color: var(--color-primary);
               }
             }
 
@@ -214,14 +214,14 @@ header.header {
               content: '';
               position: absolute;
               @include breakpoint($ipad) {
-                top: -11px;
+                top: -6px;
                 right: -48px;
               }
             
-              width: 35px;
-              height: 35px;
+              width: 26px;
+              height: 26px;
               display: inline-block;
-              // border: 1px solid var(--color-0-250);
+              // border: 1px solid var(--color-grey);
               border-radius: 50%;
               background-size: 20px;
               background-repeat: no-repeat;
@@ -251,12 +251,14 @@ header.header {
             &.glyphicon-cog {
               &:hover {
                 &:before {
-                  background-image: url('#{$assets}images/icons/top-menu/icon--admin-hover.svg');
+                  background-color: var(--color-primary);
                 }
               }
 
               &:before {
-                background-image: url('#{$assets}images/icons/top-menu/icon--admin.svg');
+                -webkit-mask-image: url('#{$assets}images/icons/top-menu/icon--admin.svg');
+                -webkit-mask-size: contain;
+                background-color: var(--color-grey-04);
               }
             }
 
@@ -287,7 +289,8 @@ header.header {
 
         &.active {
           a {
-            color: var(--color-1-550);
+            color: var(--color-primary);
+            font-weight: bold;
           }
         }
 
@@ -312,11 +315,11 @@ header.header {
 
               a {
                 .username {
-                  color: var(--color-1-550);
+                  color: var(--color-primary);
 
                   &:before {
                     background-image: url('#{$assets}images/icons/top-menu/icon--profile-hover.svg');
-                    border: 1px solid var(--color-1-550);
+                    border: 1px solid var(--color-primary);
                   }
                 }
               }
@@ -326,7 +329,7 @@ header.header {
             a {
               width: 100%;
               display: inline-block;
-              background-color: var(--color-0-000);
+              background-color: var(--color-white);
               line-height: 1;
               text-decoration: none;
               border-right: none !important;
@@ -353,7 +356,7 @@ header.header {
                 &:hover {
                   &:before {
                     background-image: url('#{$assets}images/icons/top-menu/icon--profile-hover.svg');
-                    border: 1px solid var(--color-1-550);
+                    border: 1px solid var(--color-primary);
                   }
                 }
 
@@ -365,7 +368,7 @@ header.header {
                   width: 35px;
                   height: 35px;
                   border-radius: $border-radius;
-                  border: 1px solid var(--color-0-250);
+                  border: 1px solid var(--color-grey);
                   background-position: center;
                   background-size: 13px;
                   background-repeat: no-repeat;
@@ -405,7 +408,7 @@ header.header {
         float: left;
         margin-top: 10px;
         padding: 20px;
-        background-color: var(--color-0-070);
+        background-color: var(--color-grey);
 
         @media (min-width: 768px) and (max-width: 1023px) {
           display: block !important;
@@ -422,7 +425,7 @@ header.header {
             height: 70px;
             margin-bottom: 10px;
             padding: 15px 20px;
-            background-color: var(--color-0-000);
+            background-color: var(--color-white);
             border-radius: 5px;
             font-weight: bold;
 
@@ -445,7 +448,7 @@ header.header {
               position: relative;
               line-height: 40px;
               margin-right: 40px;
-              border-right: 2px solid var(--color-0-070);
+              border-right: 2px solid var(--color-grey);
 
               &:before {
                 content: '\f105';
@@ -453,7 +456,7 @@ header.header {
                 right: -35px;
                 font-family: $icon;
                 font-size: 23px;
-                color: var(--color-3);
+                color: var(--color-primary);
               }
 
               .glyphicon {
@@ -507,7 +510,7 @@ header.header {
   margin-bottom: 6px;
   text-align: center;
   font-family: $font;
-  color: var(--color-0-400);
+  color: var(--color-grey-03);
   font-size: 16px;
 
   @include breakpoint($ipad) {
@@ -553,6 +556,7 @@ header.header {
 
 .navbar-nav {
   .badge {
-    background-color: var(--color-3-400);
+    background-color: var(--color-warning);
+    color: var(--color-warning-text);
   }
 }

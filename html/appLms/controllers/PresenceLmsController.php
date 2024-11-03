@@ -50,7 +50,7 @@ class PresenceLmsController extends LmsController
 
         YuiLib::load();
 
-        $user_date = $this->model->getUserDateForCourse(getLogUserId(), $this->session->get('idCourse'));
+        $user_date = $this->model->getUserDateForCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $this->session->get('idCourse'));
         $date_info = $this->model->getDateInfoForPublicPresence($user_date);
 
         if ($this->id_date == 0) {

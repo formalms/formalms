@@ -22,7 +22,7 @@ class RequestManager
 
     private Request $request;
 
-    public static function getInstance()
+    public static function getInstance(): RequestManager
     {
         if (self::$instance === null) {
             $c = __CLASS__;

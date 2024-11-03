@@ -96,14 +96,13 @@ class TreeView
         $this->selectedFolder = 0;
         $this->op = '';
         $this->rootname = $rootname;
-        $this->lang = &DoceboLanguage::createInstance('treeview', 'framework');
-        $this->aclManager = new DoceboACLManager();
+        $this->lang = FormaLanguage::createInstance('treeview', 'framework');
+        $this->aclManager = new FormaACLManager();
         $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     }
 
     public function setLanguage(&$lang)
     {
-        $this->lang->setGlobal();
         $this->lang = &$lang;
     }
 
@@ -114,7 +113,7 @@ class TreeView
 
     public function reRegisterLang()
     {
-        $this->lang = &DoceboLanguage::createInstance('treeview', 'framework');
+        $this->lang = &FormaLanguage::createInstance('treeview', 'framework');
     }
 
     public function _getStateId()
@@ -460,11 +459,14 @@ class TreeView
     //return the folder print name
     public function getFolderPrintName(&$folder)
     {
-        if ($folder->id == 0) {
-            return $this->rootname;
-        } else {
-            return str_replace('"', '&quot;', strip_tags($folder->getFolderName()));
-        }
+       
+            if ($folder && $folder->id == 0) {
+                return $this->rootname;
+            } else {
+                return str_replace('"', '&quot;', strip_tags($folder ? $folder->getFolderName() : ''));
+            }
+     
+        
     }
 
     public function getFolderPrintOther(&$folder)
@@ -550,7 +552,7 @@ class TreeView
             $this->itemToPlay = (int) $arrayState[$this->_getIdPlayItemId()];
         }
 
-        if (array_key_exists('treeview_opplayitem_' . $this->id, $arrayState[$this->id])) {
+        if (array_key_exists('treeview_opplayitem_' . $this->id, $arrayState)) {
             if (is_array($arrayState[$this->id]['treeview_opplayitem_' . $this->id])) {
                 $this->itemToPlay = (int) array_key_first($arrayState[$this->id]['treeview_opplayitem_' . $this->id]);
 
@@ -746,7 +748,7 @@ class TreeView
             if (count($this->compressList) > 0) {
                 $this->selectedFolder = current($this->compressList);
             } else {
-                $this->selectedFolder = $arrayState[$this->_getSelectedId()] ?? '0';
+                $this->selectedFolder = $arrayState[$this->_getSelectedId()] ?? '0' ;
             }
         }
     }
@@ -917,10 +919,12 @@ class TreeView
 
     public function printElement(&$stack, $level)
     {
+       
         // $tree = '<div class="TreeViewRowBase">';
         $tree = '<td>';
-        $id = ($stack[$level]['isExpanded']) ? ($this->_getCompressActionId()) : ($this->_getExpandActionId());
-        $id .= $stack[$level]['folder']->id;
+        $id = (array_key_exists($level, $stack) && $stack[$level]['isExpanded']) ? ($this->_getCompressActionId()) : ($this->_getExpandActionId());
+        $id .= array_key_exists($level, $stack) ? $stack[$level]['folder']->id : 0;
+       
         for ($i = 0; $i <= $level; ++$i) {
             list($classImg, $imgFileName, $imgAlt) = $this->getImage($stack, $i, $level);
             if ($i != ($level - 1) || $stack[$level]['isLeaf']) {
@@ -932,18 +936,19 @@ class TreeView
                     . '" name="' . $id . '" id="seq_' . $stack[$level]['idSeq'] . 'img" />';
             }
         }
-        if ($stack[$level]['folder']->id == $this->selectedFolder) {
+        if (array_key_exists($level, $stack) && $stack[$level]['folder']->id == $this->selectedFolder) {
             $this->selectedFolderData = $stack[$level];
             $classStyle = 'TreeItemSelected';
         } else {
             $classStyle = 'TreeItem';
         }
+
         $tree .= $this->getPreFolderName($stack[$level]['folder']);
         $tree .= '<input type="submit" class="' . $classStyle . '" value="'
             . $this->getFolderPrintName($stack[$level]['folder'])
             . '" name="'
-            . $this->_getSelectedId() . $stack[$level]['folder']->id
-            . '" id="seq_' . $stack[$level]['idSeq'] . '" '
+            . $this->_getSelectedId() . ($stack[$level]['folder']->id ?? '')
+            . '" id="seq_' . ((array_key_exists($level, $stack) && array_key_exists('idSeq', $stack[$level])) ? $stack[$level]['idSeq'] : '') . '" '
             . $this->getFolderPrintOther($stack[$level]['folder'])
             . ' />';
         // $tree .= '</div>';
@@ -959,7 +964,7 @@ class TreeView
         $tree = '';
         if ($this->canInlineDelete()) {
             if ((($stack[1]['folder']->tdb->table != 'learning_repo') && ($this->canInlineDeleteItem($stack, $level) && !FormaLms\lib\Get::cfg('demo_mode')))
-            || (($stack[1]['folder']->tdb->table == 'learning_repo') && ($stack[1]['folder']->otherValues[5] == $this->session->get('public_area_idst') || Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN))) {
+            || (($stack[1]['folder']->tdb->table == 'learning_repo') && ($stack[1]['folder']->otherValues[5] == $this->session->get('public_area_idst') || \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN))) {
                 $tree .= '<input type="image"'
                         . ' class="tree_view_image" '
                         . ' src="' . $this->_getDeleteImage() . '"'
@@ -976,7 +981,7 @@ class TreeView
         }
         if ($this->canInlineMove()) {
             if ((($stack[1]['folder']->tdb->table != 'learning_repo') && ($this->canInlineMoveItem($stack, $level) && !FormaLms\lib\Get::cfg('demo_mode')))
-            || (($stack[1]['folder']->tdb->table == 'learning_repo') && ($stack[1]['folder']->otherValues[5] == $this->session->get('public_area_idst') || Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN))) {
+            || (($stack[1]['folder']->tdb->table == 'learning_repo') && ($stack[1]['folder']->otherValues[5] == $this->session->get('public_area_idst') || \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN))) {
                 $tree .= '<input type="image"'
                         . ' class="tree_view_image" '
                         . ' src="' . $this->_getMoveImage() . '"'
@@ -993,7 +998,7 @@ class TreeView
         }
         if ($this->canInlineRename()) {
             if ((($stack[1]['folder']->tdb->table != 'learning_repo') && ($this->canInlineRenameItem($stack, $level) && !FormaLms\lib\Get::cfg('demo_mode')))
-            || (($stack[1]['folder']->tdb->table == 'learning_repo') && ($stack[1]['folder']->otherValues[5] == $this->session->get('public_area_idst') || Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN))) {
+            || (($stack[1]['folder']->tdb->table == 'learning_repo') && ($stack[1]['folder']->otherValues[5] == $this->session->get('public_area_idst') || \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN))) {
                 $tree .= '<input type="image"'
                         . ' class="tree_view_image" '
                         . ' src="' . $this->_getRenameImage() . '"'
@@ -1214,6 +1219,6 @@ class TreeView
 
     public function __wakeup()
     {
-        $this->lang = &DoceboLanguage::createInstance('treeview', 'framework');
+        $this->lang = &FormaLanguage::createInstance('treeview', 'framework');
     }
 }

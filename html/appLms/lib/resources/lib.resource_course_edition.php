@@ -22,10 +22,10 @@ require_once _adm_ . '/lib/resources/lib.resource_model.php';
 
 class ResourceCourse_edition extends ResourceModel
 {
-    public function ResourceCourse_edition($prefix = false, $dbconn = null)
+    public function __construct($prefix = false, $dbconn = null)
     {
         $this->setResourceCode('course_edition');
-        parent::ResourceModel($prefix, $dbconn);
+        parent::__construct($prefix, $dbconn);
     }
 
     public function checkAvailability($resource_id, $start_date = false, $end_date = false)

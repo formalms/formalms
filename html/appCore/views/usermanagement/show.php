@@ -39,19 +39,19 @@ if ($permissions['view_org']) {
     ];
 
     $tree_rel_action = ($permissions['add_org'] ?
-        '<a class="ico-wt-sprite subs_add" id="add_org_folder" href="' . ($this->model->isFolderEnabled($selected_orgchart, Docebo::user()->getIdSt()) ? 'ajax.adm_server.php?r=' . $this->link . '/addfolder_dialog&id=' . (int) $selected_orgchart . '" ' : '" style="visibility:hidden"')
+        '<a class="ico-wt-sprite subs_add" id="add_org_folder" href="' . ($this->model->isFolderEnabled($selected_orgchart, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()) ? 'ajax.adm_server.php?r=' . $this->link . '/addfolder_dialog&id=' . (int) $selected_orgchart . '" ' : '" style="visibility:hidden"')
         . ' title="' . Lang::t('_ORGCHART_ADDNODE', 'organization_chart') . '">'
         . '<span>' . Lang::t('_ORGCHART_ADDNODE', 'organization_chart') . '</span>'
         . '</a>' : '')
         . ($permissions['add_user'] ?
-        '<a class="ico-wt-sprite subs_import" id="import_users_action" href="' . ($this->model->isFolderEnabled($selected_orgchart, Docebo::user()->getIdSt()) ? 'index.php?r=' . $this->link . '/importusers&id=' . (int) $selected_orgchart . '" ' : '" style="visibility:hidden"')
+        '<a class="ico-wt-sprite subs_import" id="import_users_action" href="' . ($this->model->isFolderEnabled($selected_orgchart, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()) ? 'index.php?r=' . $this->link . '/importusers&id=' . (int) $selected_orgchart . '" ' : '" style="visibility:hidden"')
         . ' title="' . Lang::t('_ORG_CHART_IMPORT_USERS', 'organization_chart') . '">'
         . '<span>' . Lang::t('_ORG_CHART_IMPORT_USERS', 'organization_chart') . '</span>'
         . '</a>' : '');
 
     $this->widget('tree', [
         'id' => 'usertree',
-        'ajaxUrl' => 'ajax.adm_server.php?r=' . $this->link . '/gettreedata',
+        'ajaxUrl' => 'ajax.adm_server.php?r=' . $this->link . '/gettreedata&select_node=1',
         'treeClass' => 'OrgFolderTree',
         'treeFile' => FormaLms\lib\Get::rel_path('adm') . '/views/usermanagement/orgchartfoldertree.js',
         'languages' => $languages,
@@ -215,7 +215,7 @@ $dyn_labels = [];
     //render table
     $this->widget('table', [
     'id' => 'usertable',
-    'ajaxUrl' => 'ajax.adm_server.php?r=' . $this->link . '/gettabledata&select_node=1',
+    'ajaxUrl' => 'ajax.adm_server.php?r=' . $this->link . '/gettabledata',
     'sort' => 'userid',
     'columns' => $columns_arr,
     'fields' => $arr_fields,

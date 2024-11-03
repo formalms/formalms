@@ -11,9 +11,11 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
+use FormaLms\lib\Interfaces\Accessible;
+
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-class FunctionalrolesAdm extends Model
+class FunctionalrolesAdm extends Model implements Accessible
 {
     protected $db;
     protected $acl_man;
@@ -23,8 +25,8 @@ class FunctionalrolesAdm extends Model
 
     public function __construct()
     {
-        $this->db = DbConn::getInstance();
-        $this->acl_man = Docebo::user()->getACLManager();
+        $this->db = \FormaLms\db\DbConn::getInstance();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();;
         $this->_ugroups_cache = false;
         parent::__construct();
     }
@@ -84,7 +86,7 @@ class FunctionalrolesAdm extends Model
 
     //--- operative methods ------------------------------------------------------
 
-    public function getFunctionalRolesList($pagination, $filter = false)
+    public function getFunctionalRolesList($pagination, $filter = false, $columnsFilter = [])
     {
         //validate pagination data
         if (!is_array($pagination)) {
@@ -126,18 +128,33 @@ class FunctionalrolesAdm extends Model
         }
 
         //validate language for name and description
-        $_language = (!empty($filter) && isset($filter['language']) ? $filter['language'] : getLanguage());
+        $_language = (!empty($filter) && isset($filter['language']) ? $filter['language'] : Lang::get());
 
         //mount query
         $query = 'SELECT g.idst as id_fncrole, f.id_group, fl.name, fl.description, fgl.name as group_name '
             . ' FROM (%adm_group as g LEFT JOIN ' . $this->_getRolesTable() . ' as f ON (g.idst = f.id_fncrole)) '
             . ' LEFT JOIN ' . $this->_getRolesLangTable() . ' as fl '
-            . " ON (g.idst = fl.id_fncrole AND fl.lang_code = '" . $_language . "') "
+            . ' ON (g.idst = fl.id_fncrole AND fl.lang_code = "' . $_language . '") '
             . ' LEFT JOIN ' . $this->_getGroupsLangTable() . ' as fgl '
-            . " ON (f.id_group = fgl.id_group AND fgl.lang_code = '" . $_language . "')"
-            . " WHERE g.groupid LIKE '/fncroles/%' " . ($_filter != '' ? $_filter . ' ' : '')
-            . ' ORDER BY ' . $_sort . ' ' . $_dir . ' '
+            . ' ON (f.id_group = fgl.id_group AND fgl.lang_code = "' . $_language . '")'
+            . ' WHERE g.groupid LIKE "/fncroles/%" ';
+
+        if($_filter != '') {
+            $query .= $_filter;
+        }
+
+        if(count($columnsFilter) && !$_filter) {
+            foreach($columnsFilter as $columnName => $columnValue) {
+                $query .= ' AND (
+                    fl.' .$columnName . ' LIKE "%' . $columnValue . '%" 
+                )';
+            }
+            
+        }
+        $query .= ' ORDER BY ' . $_sort . ' ' . $_dir . ' '
             . ' LIMIT ' . (int) $_startIndex . ', ' . (int) $_results;
+
+    
         $res = $this->db->query($query);
 
         //extract records from database
@@ -180,7 +197,7 @@ class FunctionalrolesAdm extends Model
         return array_values($output);
     }
 
-    public function getFunctionalRolesTotal($filter = false)
+    public function getFunctionalRolesTotal($filter = false, $columnsFilter = [])
     {
         //validate filter data and adjust query
         $_filter = '';
@@ -196,7 +213,7 @@ class FunctionalrolesAdm extends Model
         }
 
         //validate language for name and description
-        $_language = (!empty($filter) && isset($filter['language']) ? $filter['language'] : getLanguage());
+        $_language = (!empty($filter) && isset($filter['language']) ? $filter['language'] : Lang::get());
 
         //mount query
         $query = 'SELECT COUNT(*) '
@@ -206,6 +223,15 @@ class FunctionalrolesAdm extends Model
             . ' LEFT JOIN ' . $this->_getGroupsLangTable() . ' as fgl '
             . " ON (f.id_group = fgl.id_group AND fgl.lang_code = '" . $_language . "')"
             . " WHERE g.groupid LIKE '/fncroles/%' " . ($_filter != '' ? $_filter . ' ' : '');
+
+        if(count($columnsFilter) && !$filter) {
+            foreach($columnsFilter as $columnName => $columnValue) {
+                $query .= ' AND (
+                    fl.' .$columnName . ' LIKE "%' . $columnValue . '%" 
+                )';
+            }
+            
+        }
         $res = $this->db->query($query);
 
         //extract total value database
@@ -218,7 +244,7 @@ class FunctionalrolesAdm extends Model
         return $output;
     }
 
-    public function selectAllFunctionalRoles($filter)
+    public function selectAllFunctionalRoles($filter, $columnsFilter = [])
     {
         //validate filter data and adjust query
         $_filter = '';
@@ -234,7 +260,7 @@ class FunctionalrolesAdm extends Model
         }
 
         //validate language for name and description
-        $_language = (!empty($filter) && isset($filter['language']) ? $filter['language'] : getLanguage());
+        $_language = (!empty($filter) && isset($filter['language']) ? $filter['language'] : Lang::get());
 
         //mount query
         $query = 'SELECT f.id_fncrole '
@@ -244,6 +270,15 @@ class FunctionalrolesAdm extends Model
             . ' LEFT JOIN ' . $this->_getGroupsLangTable() . ' as fgl '
             . " ON (f.id_group = fgl.id_group AND fgl.lang_code = '" . $_language . "')"
             . ($_filter != '' ? " WHERE  g.groupid LIKE '/fncroles/%' " . $_filter . ' ' : '');
+
+        if(count($columnsFilter)) {
+            foreach($columnsFilter as $columnName => $columnValue) {
+                $query .= ' AND (
+                    fl.' .$columnName . ' LIKE "%' . $columnValue . '%" 
+                )';
+            }
+            
+        }
         $res = $this->db->query($query);
 
         //extract records from database
@@ -255,6 +290,62 @@ class FunctionalrolesAdm extends Model
         }
 
         return $output;
+    }
+
+    public function getRoleInfoById($ids = []) {
+           //validate language for name and description
+           $_language = (!empty($filter) && isset($filter['language']) ? $filter['language'] : Lang::get());
+
+         //mount query
+         $query = 'SELECT g.idst as id_fncrole, f.id_group, fl.name, fl.description, fgl.name as group_name '
+            . ' FROM (%adm_group as g LEFT JOIN ' . $this->_getRolesTable() . ' as f ON (g.idst = f.id_fncrole)) '
+            . ' LEFT JOIN ' . $this->_getRolesLangTable() . ' as fl '
+            . ' ON (g.idst = fl.id_fncrole AND fl.lang_code = "' . $_language . '") '
+            . ' LEFT JOIN ' . $this->_getGroupsLangTable() . ' as fgl '
+            . ' ON (f.id_group = fgl.id_group AND fgl.lang_code = "' . $_language . '")'
+            . ' WHERE  f.id_fncrole in (' . implode(',', $ids) . ')';
+
+       
+         $res = $this->db->query($query);
+               //extract records from database
+        $output = [];
+        if ($res && $this->db->num_rows($res) > 0) {
+            while ($obj = $this->db->fetch_obj($res)) {
+                $output[$obj->id_fncrole] = $obj;
+            }
+
+            $_arr_fncroles = array_keys($output);
+
+            //insert values in output records
+            reset($output);
+            foreach ($output as $key => $value) {
+                //WARNING: extremely expansive; TO DO: optimize the users count
+                $count = count($this->getAllUsers($key));
+                $value->users = $count > 0 ? $count : 0;
+            }
+            unset($_arr_users);
+
+            //get competences count for every retrieved role
+            $_arr_competences = [];
+            $query = 'SELECT id_fncrole, COUNT(*) FROM ' . $this->_getRolesCompetencesTable() . ' '
+                . ' WHERE id_fncrole IN (' . implode(',', $_arr_fncroles) . ') '
+                . ' GROUP BY id_fncrole';
+            $res = $this->db->query($query);
+            if ($res) {
+                while (list($id_fncrole, $count) = $this->db->fetch_row($res)) {
+                    $_arr_competences[$id_fncrole] = $count;
+                }
+            }
+            //insert values in output records
+            reset($output);
+            foreach ($output as $key => $value) {
+                $value->competences = (isset($_arr_competences[$key]) ? (int) $_arr_competences[$key] : 0);
+            }
+            unset($_arr_competences);
+        }
+
+        return array_values($output);
+
     }
 
     public function getGroupsList($pagination, $filter = false)
@@ -291,7 +382,7 @@ class FunctionalrolesAdm extends Model
         }
 
         //validate language for name and description
-        $_language = (!empty($filter) && isset($filter['language']) ? $filter['language'] : getLanguage());
+        $_language = (!empty($filter) && isset($filter['language']) ? $filter['language'] : Lang::get());
 
         //mount query
         $query = 'SELECT fg.id_group, fgl.name, fgl.description '
@@ -327,7 +418,7 @@ class FunctionalrolesAdm extends Model
         }
 
         //validate language for name and description
-        $_language = (!empty($filter) && isset($filter['language']) ? $filter['language'] : getLanguage());
+        $_language = (!empty($filter) && isset($filter['language']) ? $filter['language'] : Lang::get());
 
         //mount query
         $query = 'SELECT COUNT(*) '
@@ -363,7 +454,7 @@ class FunctionalrolesAdm extends Model
         }
 
         //initialize languages array
-        $lang_codes = Docebo::langManager()->getAllLangCode();
+        $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $langs = [];
         for ($i = 0; $i < count($lang_codes); ++$i) {
             $langs[$lang_codes[$i]] = [
@@ -407,7 +498,7 @@ class FunctionalrolesAdm extends Model
         }
 
         //initialize languages array
-        $lang_codes = Docebo::langManager()->getAllLangCode();
+        $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $langs = [];
         for ($i = 0; $i < count($lang_codes); ++$i) {
             $langs[$lang_codes[$i]] = [
@@ -438,7 +529,7 @@ class FunctionalrolesAdm extends Model
         if ($id_fncrole <= 0) {
             return false;
         }
-        $_language = ($language ? $language : getLanguage());
+        $_language = ($language ? $language : Lang::get());
 
         $output = false;
         $query = 'SELECT name FROM ' . $this->_getRolesLangTable() . ' '
@@ -459,7 +550,7 @@ class FunctionalrolesAdm extends Model
     public function getGroupsDropdownList($language = false)
     {
         //validate language for name and description
-        $_language = ($language ? $language : getLanguage());
+        $_language = ($language ? $language : Lang::get());
 
         //initialize output
         $output = ['0' => Lang::t('_NONE', 'fncroles')];
@@ -601,7 +692,7 @@ class FunctionalrolesAdm extends Model
         if ($output) {
             //insert languages in database
             if (is_array($langs)) {
-                $_langs = Docebo::langManager()->getAllLangcode();
+                $_langs = \FormaLms\lib\Forma::langManager()->getAllLangcode();
                 $arr_langs = [];
                 foreach ($_langs as $lang_code) {
                     if (isset($langs[$lang_code])) {
@@ -654,7 +745,7 @@ class FunctionalrolesAdm extends Model
         }
 
         if (is_array($langs)) {
-            $langcodes = Docebo::langManager()->getAllLangcode();
+            $langcodes = \FormaLms\lib\Forma::langManager()->getAllLangcode();
             $arr_langs = [];
             foreach ($langcodes as $lang_code) {
                 if (isset($langs[$lang_code])) {
@@ -1069,7 +1160,7 @@ class FunctionalrolesAdm extends Model
         }
 
         $_cmodel = new CompetencesAdm();
-        $_language = getLanguage();
+        $_language = Lang::get();
 
         //mount query
         $query = 'SELECT c.id_competence, cl.name, cl.description, ctl.name as category, c.typology, c.type, fc.score, fc.expiration '
@@ -1109,7 +1200,7 @@ class FunctionalrolesAdm extends Model
         }
 
         $_cmodel = new CompetencesAdm();
-        $_language = getLanguage();
+        $_language = Lang::get();
 
         //mount query
         $query = 'SELECT COUNT(*) '
@@ -1272,7 +1363,7 @@ class FunctionalrolesAdm extends Model
             }
         }
 
-        $language = getLanguage();
+        $language = Lang::get();
 
         $comps_table = '%lms_competence';										//cmp
         $clang_table = '%lms_competence_lang';							//cml
@@ -1367,7 +1458,7 @@ class FunctionalrolesAdm extends Model
         //					case "dropdown": {
         //						if ($field_sons === false) {
         //							//retrieve translations for dropdowns fields
-        //							$query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '".getLanguage()."' ORDER BY idField, sequence";
+        //							$query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '".Lang::get()."' ORDER BY idField, sequence";
         //							$res_fields_sons = $this->db->query($query_fields_sons);
         //							$field_sons = array();
         //							while ($fsrow = $this->db->fetch_obj($res_fields_sons)) {
@@ -1475,7 +1566,7 @@ class FunctionalrolesAdm extends Model
             }
         }
 
-        $language = getLanguage();
+        $language = Lang::get();
 
         $comps_table = '%lms_competence';										//cmp
         $clang_table = '%lms_competence_lang';							//cml
@@ -1539,7 +1630,7 @@ class FunctionalrolesAdm extends Model
             . " ON (g.idst = f.id_fncrole) WHERE groupid LIKE '/fncroles/%'";
         $res = $this->db->query($query);
         if ($res) {
-            $lang_codes = Docebo::langManager()->getAllLangCode();
+            $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangCode();
             while ($obj = $this->db->fetch_obj($res)) {
                 $t_obj = new stdClass();
                 $t_obj->id_fncrole = $obj->idst;
@@ -1594,7 +1685,7 @@ class FunctionalrolesAdm extends Model
             . ' FROM %adm_group as r '
             . ' LEFT JOIN ' . $this->_getRolesLangTable() . ' as rl '
             . "	ON ( r.idst = rl.id_fncrole AND r.groupid LIKE '/fncroles/%') "
-            . " WHERE rl.lang_code = '" . getLanguage() . "' AND r.idst IN (" . implode(',', $arr_fncroles) . ')';
+            . " WHERE rl.lang_code = '" . Lang::get() . "' AND r.idst IN (" . implode(',', $arr_fncroles) . ')';
         $res = $this->db->query($query);
         if (!$res) {
             return $output;
@@ -1641,7 +1732,7 @@ class FunctionalrolesAdm extends Model
         }
 
         //initialize languages array
-        $lang_codes = Docebo::langManager()->getAllLangCode();
+        $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $_void_lang_arr = [];
         for ($i = 0; $i < count($lang_codes); ++$i) {
             $_void_lang_arr[$lang_codes[$i]] = [
@@ -1687,7 +1778,7 @@ class FunctionalrolesAdm extends Model
 
         //extract roles
         $roles = $this->getAllFunctionalRoles(true);
-        $language = getLanguage();
+        $language = Lang::get();
 
         //for each role:
         foreach ($roles as $id_fncrole => $rdata) {
@@ -1774,16 +1865,16 @@ class FunctionalrolesAdm extends Model
 
         $_qfilter = '';
         if ($filter) {
-            $ulevel = Docebo::user()->getUserLevelId();
+            $ulevel = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
             if ($ulevel != ADMIN_GROUP_GODADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+                $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
                 $_qfilter .= ' AND g.idst IN (' . implode(',', $admin_tree) . ') ';
             }
         }
 
-        $lang_code = $language ? $language : getLanguage();
+        $lang_code = $language ? $language : Lang::get();
         $query = 'SELECT g.idst as id_fncrole, l.name FROM %adm_group as g '
             . ' JOIN ' . $this->_getRolesLangTable() . " as l ON (g.idst = l.id_fncrole AND l.lang_code='" . $lang_code . "')"
             . " WHERE l.name LIKE '%" . $query . "%' " . $_qfilter . ' ORDER BY l.name '
@@ -1796,5 +1887,38 @@ class FunctionalrolesAdm extends Model
         }
 
         return $output;
+    }
+
+
+    public function enrole($roleId, $members) : bool{
+            // apply enroll rules
+            $enrollrules = new EnrollrulesAlms();
+            $enrollrules->applyRulesMultiLang('_LOG_USERS_TO_FNCROLE', $members, false, $roleId);
+
+            return true;
+
+    }
+
+    public function getAccessList($resourceId) : array {
+
+        return $this->getMembers($resourceId);
+        
+    }
+
+    public function setAccessList($resourceId, array $selection) : bool {
+
+        $members_existent = $this->getMembers($resourceId);
+
+        //retrieve newly selected users
+        $_common_members = array_intersect($members_existent, $selection);
+        $_new_members = array_diff($selection, $_common_members); //new users to add
+        $_old_members = array_diff($members_existent, $_common_members); //old users to delete
+
+        //insert newly selected users in database
+        $res1 = $this->assignMembers($resourceId, $_new_members);
+        $res2 = $this->deleteMembers($resourceId, $_old_members);
+
+        $this->enrole($resourceId, $_new_members);
+        return $res1 && $res2;
     }
 }

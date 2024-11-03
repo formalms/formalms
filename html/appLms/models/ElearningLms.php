@@ -30,7 +30,7 @@ class ElearningLms extends Model
      *                            we need a prefix for the course user rows and a prefix for the course table
      *                            array('u', 'c')
      *
-     * @return <string> the order to use in a ORDER BY clausole
+     * @return string the order to use in a ORDER BY clausole
      */
     protected function _resolveOrder($t_name = ['', ''])
     {
@@ -86,7 +86,7 @@ class ElearningLms extends Model
 
     public function findAll($conditions, $params)
     {
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
 
         // exclude course belonging to pathcourse in which the user is enrolled as a student
         $learning_path_enroll = $this->getUserCoursePathCourses($params[':id_user']);
@@ -123,6 +123,10 @@ class ElearningLms extends Model
             . ' ORDER BY ' . $this->_resolveOrder(['cu', 'c']);
 
         $rs = $db->query($query);
+        require_once _adm_ . '/lib/lib.customfield.php';
+        $cf = new CustomFieldList();
+        $cf->setFieldArea('COURSE');
+        $has_custom = ($cf->getNumberFieldbyArea() > 0);
 
         $result = [];
         $courses = [];
@@ -130,9 +134,10 @@ class ElearningLms extends Model
             $data['enrolled'] = 0;
             $data['numof_waiting'] = 0;
             $data['first_lo_type'] = false;
-
-            //** name category
-            $data['nameCategory'] = $this->getCategory($data['idCategory']); //$this->getCategory($data['idCategory']);
+            $data['nameCategory'] = $this->getCategory($data['idCategory']);
+            if ($has_custom) {
+                $data['custom_fields'] = $cf->playFieldsFlat($data['idCourse']);
+            }
 
             $courses[] = $data['idCourse'];
             $result[$data['idCourse']] = $data;
@@ -169,7 +174,7 @@ class ElearningLms extends Model
     public function getFilterYears($id_user)
     {
         $output = [0 => Lang::t('_ALL_YEARS', 'course')];
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
 
         $query = 'SELECT DISTINCT YEAR(cu.date_inscr) AS inscr_year '
             . ' FROM %lms_courseuser AS cu '
@@ -197,7 +202,7 @@ class ElearningLms extends Model
     {
         $output['all'] = Lang::t('_ALL_OPEN', 'course');
 
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
 
         $query = 'SELECT DISTINCT status AS status_course  FROM learning_courseuser WHERE learning_courseuser.idUser = ' . (int) $id_user;
 
@@ -225,7 +230,7 @@ class ElearningLms extends Model
     // LR: list category of subscription
     public function getListCategory($idUser, $completePath = true)
     {
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
 
         $query = 'select idCategory,path from %lms_category where idcategory in (
        						select distinct idCategory from %lms_course as c,%lms_courseuser as cu where cu.idUser=' . $idUser . ' and cu.idCourse=c.idCourse)
@@ -268,7 +273,7 @@ class ElearningLms extends Model
 
     private function getCategory($idCat)
     {
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
         $query = 'select path from %lms_category where idCategory=' . $idCat;
         $res = $db->query($query);
         $path = '';
@@ -277,5 +282,9 @@ class ElearningLms extends Model
         }
 
         return $path;
+    }
+    static public function getFilterCourseType(): array
+    {
+        return ['all'=>Lang::t('_ALL_COURSE_TYPE', 'course'), 'elearning'=>Lang::t('_COURSE_TYPE_ELEARNING', 'course'),  'classroom' => Lang::t('_CLASSROOM_COURSE', 'cart') ];
     }
 }

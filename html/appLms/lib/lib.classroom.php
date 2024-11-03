@@ -23,7 +23,7 @@ class ClassroomManager
     public $prefix = null;
     public $dbconn = null;
 
-    public function ClassroomManager($prefix = 'learning', $dbconn = null)
+    public function __construct($prefix = 'learning', $dbconn = null)
     {
         $this->prefix = $prefix;
         $this->dbconn = $dbconn;

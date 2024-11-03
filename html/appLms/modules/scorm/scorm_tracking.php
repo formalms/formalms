@@ -20,8 +20,8 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  * @copyright 2004
  */
-require_once Forma::inc(_lms_ . '/modules/scorm/config.scorm.php');
-require_once Forma::inc(_lms_ . '/modules/scorm/scorm_utils.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/config.scorm.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/scorm_utils.php');
 
 $direct_access_params['cmi.core.student_id'] = 'student_id';
 $direct_access_params['cmi.core.student_name'] = 'student_name';
@@ -64,20 +64,21 @@ class Scorm_Tracking
 
     public $tracktable = 'scorm_tracking';
     public $historytable = 'scorm_tracking_history';
+    public $idscorm_item;
 
     /**
      * Constructor of the Scorm_Tracking.
      *
-     * @param $idUser
-     * @param $idReference
-     * @param $id if $idUser is null => $idscorm_tracking,
+     * @param $idUser int|string
+     * @param $idReference int|string
+     * @param $id int|string if $idUser is null => $idscorm_tracking,
      * 			  if $id_isitemid is true => $idscorm_item, and $idRefrence is needed
      * 			  else idsco from manifest
      * @param $idscorm_package
      * @param $connection
      * @param $createonfile
      */
-    public function Scorm_Tracking($idUser, $idRefernce, $id, $idscorm_package, $connection, $createonfail = true, $id_isitemid = false)
+    public function __construct($idUser, $idRefernce, $id, $idscorm_package, $connection, $createonfail = true, $id_isitemid = false)
     {
         $this->idUser = $idUser;
         $this->idReference = $idRefernce;
@@ -237,7 +238,7 @@ class Scorm_Tracking
     }
 
     /*function readScormXMLTemplate( ) {
-        $filename = __DIR__ . '/scormItemTrackData-'.$this->scormVersion.'.xml';
+        $filename = dirname(__FILE__) . '/scormItemTrackData-'.$this->scormVersion.'.xml';
         $handle = @fopen($filename, 'r');
         if( $handle === FALSE ) {
             $this->setError( SPSCORM_E_FILENOTFOND, $filename );
@@ -250,7 +251,7 @@ class Scorm_Tracking
 
     public function precompileXmlDoc()
     {
-        require_once Forma::inc(_lms_ . '/modules/scorm/scorm-' . $this->scormVersion . '.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/scorm-' . $this->scormVersion . '.php');
         $root = $this->xmldoc->createElement('trackobj');
         $this->xmldoc->appendChild($root);
         $root->setAttribute('iduser', $this->idUser);
@@ -562,7 +563,7 @@ class Scorm_Tracking
 
     public function setParamXML($xmldoc)
     {
-        require_once Forma::inc(_lms_ . '/modules/scorm/scorm-' . $this->scormVersion . '.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/scorm-' . $this->scormVersion . '.php');
         $arrFields = [];
         $xpath = new DDomXPath($xmldoc);
         foreach ($GLOBALS['xpathwritedb'] as $fieldName => $xpathquery) {

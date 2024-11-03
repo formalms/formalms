@@ -1,0 +1,104 @@
+#path_course_description {
+    padding: 0.5% 1%;
+  }
+  
+  .coursepath-main-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .coursepath-main-description-and-percentage {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .coursepath-child-description {
+    border: 1px solid #ededed;
+    width: 70%;
+  }
+  
+  .coursepath-child-percentage {
+    border: 1px solid #ededed;
+    width: 27%;
+  }
+  
+  .coursepath-collapse-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: flex-start;
+    padding: 0.8% 0;
+  }
+  
+  .coursepath_percentage_title {
+    height: 3%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 2.5% 0.5%;
+  }
+  
+  #path_course_title {
+    font-weight: bold;
+    font-size: xx-large;
+    padding-left: 0.8%;
+    padding-top: 1%;
+    padding-bottom: 1.5%;
+  }
+  
+  div {
+    &.coursepath-container {
+      border-radius: 4px;
+    }
+  
+    &.coursepath-title-container {
+      width: 100% !important;
+    }
+  }
+  
+  #path_courses_progress_background {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .path_courses-progress-bar {
+    position: relative;
+    top: 0;
+    left: 0;
+    --background-color:#e0e0e0;
+    --foreground-color: var(--color-primary);
+  }
+  
+  div.percentage_cont {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .separator {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #FDC79B;
+    margin: 1em 0 4em 0;
+    padding: 0;
+  }
+  
+  .padding_current_activity {
+    padding-left: 24px;
+  }
+  
+  /** COLLAPSE SECTION **/
+  
+  .coursepath_details {
+    width: 100%;
+  }
+  

@@ -32,7 +32,7 @@ if (!$is_editing) {
     echo Form::getTextField(Lang::t('_EMAIL', 'standard'), 'email', 'email', 255, $info->email);
 
 if ($is_editing) {
-    echo Form::getPassword(Lang::t('_NEW_PASSWORD', 'register'), 'new_password', 'new_password', 255, '');
+    echo Form::getPassword(Lang::t('_NEW_PASSWORD', 'register'), 'newpwd', 'new_password', 255, '');
     echo Form::getPassword(Lang::t('_RETYPE_PASSWORD', 'register'), 'new_password_confirm', 'new_password_confirm', 255, '');
     echo Form::getCheckBox(Lang::t('_FORCE_PASSWORD_CHANGE', 'admin_directory'), 'force_changepwd', 'force_changepwd', 1, $info->force_change > 0);
 } else {
@@ -41,7 +41,7 @@ if ($is_editing) {
     echo Form::getCheckBox(Lang::t('_FORCE_PASSWORD_CHANGE', 'admin_directory'), 'force_changepwd', 'force_changepwd', 1, false);
 }
 
-if (Docebo::user()->user_level == ADMIN_GROUP_GODADMIN) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
     echo Form::getDropdown(Lang::t('_LEVEL', 'admin_directory'), 'level', 'level', $levels, $info->level);
 }
 

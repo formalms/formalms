@@ -32,7 +32,7 @@ class ScsAdminModule
 
     public $descr_long;
 
-    public function ScsAdminModule($module_name = '')
+    public function __construct($module_name = '')
     {
         if ($module_name == '') {
             $this->module_name = $GLOBALS['modname'];
@@ -88,7 +88,7 @@ class ScsAdminModule
 
     public function getTitle()
     {
-        return 'Docebo 3.0 SCS (Conference) - ' . $this->module_name;
+        return 'Forma 3.0 SCS (Conference) - ' . $this->module_name;
     }
 
     public function loadHeader()
@@ -100,7 +100,7 @@ class ScsAdminModule
     {
         //global $op, $modname, $prefix;
 
-        include dirname(__DIR__) . '/modules/' . $this->module_name . '/' . $this->module_name . '.php';
+        include dirname(__FILE__) . '/../modules/' . $this->module_name . '/' . $this->module_name . '.php';
     }
 
     public function loadFooter()
@@ -138,8 +138,8 @@ class ScsAdminModule
     {
         require_once _base_ . '/lib/lib.table.php';
 
-        $lang = &DoceboLanguage::createInstance('manmenu');
-        $lang_perm = &DoceboLanguage::createInstance('permission');
+        $lang = &FormaLanguage::createInstance('manmenu');
+        $lang_perm = &FormaLanguage::createInstance('permission');
 
         $tokens = $this->getAllToken($op);
         $tb = new Table(0, '', $lang->def('_EDIT_SETTINGS'));

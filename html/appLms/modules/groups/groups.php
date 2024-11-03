@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Docebo::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit("You can't access");
 }
 
@@ -22,8 +22,8 @@ function groups()
     checkPerm('view');
     require_once _base_ . '/lib/lib.table.php';
 
-    $lang = &DoceboLanguage::createInstance('groups', 'lms');
-    $acl_man = &Docebo::user()->getAclManager();
+    $lang = FormaLanguage::createInstance('groups', 'lms');
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     $mod_perm = checkPerm('mod', true);
     $subs_perm = checkPerm('subscribe', true);
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
@@ -63,7 +63,7 @@ function groups()
                 $cont = [$group_id,
                             $group[ACL_INFO_GROUPDESCRIPTION], ];
                 if ($subs_perm) {
-                    $cont[] = '<a href="index.php?modname=groups&amp;op=subscribe&amp;id_group=' . $id_group . '&amp;load=1" '
+                    $cont[] = '<a href="/appCore/index.php?r=adm/userselector/show&instance=learninggroup&amp;id='.$id_group .'&amp;load=1&amp;tab_filters[]=user"'
                             . 'title="' . $lang->def('_ASSIGN_USERS') . ' : ' . strip_tags($group_id) . '">'
                         . '<img src="' . getPathImage() . 'standard/moduser.png" alt="' . $lang->def('_ASSIGN_USERS') . '"  /></a>';
                 }
@@ -108,8 +108,8 @@ function editgroup()
 
     require_once _base_ . '/lib/lib.form.php';
 
-    $acl_man = &Docebo::user()->getAclManager();
-    $lang = &DoceboLanguage::createInstance('groups', 'lms');
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
+    $lang = &FormaLanguage::createInstance('groups', 'lms');
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     if (isset($_GET['id_group'])) {
         $acl_man->setContext('/lms/course/' . $idCourse . '/group');
@@ -149,7 +149,7 @@ function savegroup()
 {
     checkPerm('mod');
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     $acl_man->setContext('/lms/course/' . $idCourse . '/group');
     if (isset($_POST['id_group'])) {
         $groupoid = $_POST['group']['groupid'];
@@ -174,8 +174,8 @@ function delgroup()
 
     require_once _base_ . '/lib/lib.form.php';
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
-    $lang = &DoceboLanguage::createInstance('groups', 'lms');
-    $acl_man = &Docebo::user()->getAclManager();
+    $lang = &FormaLanguage::createInstance('groups', 'lms');
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     $acl_man->setContext('/lms/course/' . $idCourse . '/group');
     $id_group = importVar('id_group', true, 0);
 
@@ -197,14 +197,14 @@ function delgroup()
         $GLOBALS['page']->add(
             getTitleArea($page_title, 'groups')
             . '<div class="std_block">'
-            . Form::openForm('del_advice', 'index.php?modname=groups&amp;op=delgroup')
-            . Form::getHidden('id_group', 'id_group', $id_group)
+            . $form->openForm('del_advice', 'index.php?modname=groups&amp;op=delgroup')
+            . $form->getHidden('id_group', 'id_group', $id_group)
             . getDeleteUi($lang->def('_AREYOUSURE'),
                             '<span>' . $lang->def('_NAME') . ' : </span>' . $acl_man->relativeId($group[ACL_INFO_GROUPID]),
                             false,
                             'confirm',
                             'undo')
-            . Form::closeForm()
+            . $form->closeForm()
             . '</div>', 'content');
     }
 }
@@ -214,12 +214,12 @@ function subscribe()
     checkPerm('subscribe');
 
     require_once _base_ . '/lib/lib.userselector.php';
-    $lang = &DoceboLanguage::createInstance('groups', 'lms');
+    $lang = FormaLanguage::createInstance('groups', 'lms');
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
-    $out = &$GLOBALS['page'];
+    $out = $GLOBALS['page'];
     $id_group = importVar('id_group', true, 0);
 
-    $acl_man = new DoceboACLManager();
+    $acl_man = new FormaACLManager();
     $user_select = new UserSelector();
 
     $user_select->show_user_selector = true;
@@ -256,7 +256,7 @@ function savemembers()
 
     $id_group = importVar('id_group', true, 0);
 
-    $acl_man = new DoceboACLManager();
+    $acl_man = new FormaACLManager();
     $user_select = new UserSelector();
 
     $user_selected = $user_select->getSelection($_POST);

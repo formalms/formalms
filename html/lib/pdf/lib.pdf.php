@@ -28,7 +28,7 @@ class PDF extends TCPDF
     public $last_rc4_key_c;     //last RC4 computed key
     public $page_delimiter;
 
-    public function PDF($orientation = 'P', $unit = 'mm', $format = 'A4', $unicode = true, $encoding = 'UTF-8')
+    public function __construct($orientation = 'P', $unit = 'mm', $format = 'A4', $unicode = true, $encoding = 'UTF-8')
     {
         parent::__construct($orientation, $unit, $format, $unicode, $encoding);
 
@@ -112,125 +112,157 @@ class PDF extends TCPDF
     {
         @ob_end_clean();
 
-        $doc = new DOMDocument(null, $this->encoding);
-        $html = normalizer_normalize($html, Normalizer::FORM_C);
-        $doc->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', $this->encoding));
-        $xpath = new DOMXPath($doc);
-        $nodelist = $xpath->query('//img'); // "/images/image.jpg"
+        $doc = new DOMDocument('1.0', $this->encoding);
+        if (!empty($html)) {
 
-        foreach ($nodelist as $node) {
-            $value = $node->attributes->getNamedItem('src')->nodeValue;
-            $value = str_replace(' ', '%20', $value);
 
-            $pathExplode = explode('/files/', $value);
-            if ($pathExplode && count($pathExplode) > 1) {
-                $value = str_replace($pathExplode[0], '', $value);
-            }
-            $node->attributes->getNamedItem('src')->nodeValue = $value;
-        }
+            $doc->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', $this->encoding));
+            $xpath = new DOMXPath($doc);
+            $nodelist = $xpath->query('//img'); // "/images/image.jpg"
 
-        $html = $doc->saveHTML();
+            foreach ($nodelist as $node) {
+                $value = $node->attributes->getNamedItem('src')->nodeValue;
+                $value = str_replace(' ', '%20', $value);
 
-        $query = 'SELECT lang_browsercode, lang_direction'
-            . ' FROM %adm_lang_language'
-            . " WHERE lang_code = '" . getLanguage() . "'";
-        list($lang_code, $lang_direction) = sql_fetch_row(sql_query($query));
-
-        if (strpos($lang_code, ';') !== false) {
-            $lang_code = current(explode(';', $lang_code));
-        }
-        $lg = [];
-        $lg['a_meta_charset'] = $this->encoding;
-        $lg['a_meta_dir'] = $lang_direction;
-        $lg['a_meta_language'] = $lang_code;
-        $lg['w_page'] = 'page';
-        $this->setLanguageArray($lg);
-
-        /*
-         * Protection for the PDF
-         *
-         * print : Print the document;
-         * modify : Modify the contents of the document by operations other than those controlled by 'fill-forms', 'extract' and 'assemble';
-         * copy : Copy or otherwise extract text and graphics from the document;
-         * annot-forms : Add or modify text annotations, fill in interactive form fields, and, if 'modify' is also set, create or modify interactive form fields (including signature fields);
-         * fill-forms : Fill in existing interactive form fields (including signature fields), even if 'annot-forms' is not specified;
-         * extract : Extract text and graphics (in support of accessibility to users with disabilities or for other purposes);
-         * assemble : Assemble the document (insert, rotate, or delete pages and create bookmarks or thumbnail images), even if 'modify' is not set;
-         * print-high : Print the document to a representation from which a faithful digital copy of the PDF content could be generated. When this is not set, printing is limited to a low-level representation of the appearance, possibly of degraded quality.
-         * owner : (inverted logic - only for public-key) when set permits change of encryption and enables all other permissions.
-         */
-        if ($this->isEncrypted()) {
-            $this->SetProtection(['modify', 'copy', 'annot-forms', 'fill-forms', 'extract', 'assemble', 'print-high'], '', $this->getPassword());
-        }
-
-        $this->getAliasNbPages();
-
-        $this->AddPage();
-        // set JPEG quality
-        $this->setJPEGQuality(80);
-
-        if ($facs_simile) {
-            //Put watermark  Author: Ivan
-            $this->SetFont('dejavusans', '', 40);
-            $this->SetTextColor(240, 240, 240);
-            $this->RotatedText(15, 50, 'F a c - s i m i l e', 270);
-            $this->SetFont('dejavusans', '', 10);
-            $this->SetTextColor(0, 0, 0);
-        }
-        $this->setXY(0, 0);
-
-        // managing page break
-        $this->page_delimiter = '<!-- pagebreak -->';
-        $pages = explode($this->page_delimiter, $html);
-        $cnt = count($pages);
-        $index = 0;
-        foreach ($pages as $page) {
-            if ($img != '') {
-                $this->setXY(0, 0);
-                $this->Image($GLOBALS['where_files_relative'] . '/appLms/certificate/' . $img, 0, 0, ($this->CurOrientation == 'P' ? 210 : 298), 0, '', '', '', true);
-                $this->setPageMark();
-                $this->setXY(0, 0);
+                $pathExplode = explode('/files/', $value);
+                if ($pathExplode) {
+                    $value = str_replace($pathExplode[0], '', $value);
+                }
+                $node->attributes->getNamedItem('src')->nodeValue = $value;
             }
 
-            $this->writeHTML($this->page_delimiter . $page, true, 0, true, 0);
+            $html = $doc->saveHTML();
 
-            if ($index < $cnt - 1) {
-                $this->AddPage();
+            $query = 'SELECT lang_browsercode, lang_direction'
+                . ' FROM %adm_lang_language'
+                . " WHERE lang_code = '" . Lang::get() . "'";
+            [$lang_code, $lang_direction] = sql_fetch_row(sql_query($query));
+
+            if (strpos($lang_code, ';') !== false) {
+                $lang_code = current(explode(';', $lang_code));
             }
-            ++$index;
+            $lg = [];
+            $lg['a_meta_charset'] = $this->encoding;
+            $lg['a_meta_dir'] = $lang_direction;
+            $lg['a_meta_language'] = $lang_code;
+            $lg['w_page'] = 'page';
+            $this->setLanguageArray($lg);
+
+            /*
+             * Protection for the PDF
+             *
+             * print : Print the document;
+             * modify : Modify the contents of the document by operations other than those controlled by 'fill-forms', 'extract' and 'assemble';
+             * copy : Copy or otherwise extract text and graphics from the document;
+             * annot-forms : Add or modify text annotations, fill in interactive form fields, and, if 'modify' is also set, create or modify interactive form fields (including signature fields);
+             * fill-forms : Fill in existing interactive form fields (including signature fields), even if 'annot-forms' is not specified;
+             * extract : Extract text and graphics (in support of accessibility to users with disabilities or for other purposes);
+             * assemble : Assemble the document (insert, rotate, or delete pages and create bookmarks or thumbnail images), even if 'modify' is not set;
+             * print-high : Print the document to a representation from which a faithful digital copy of the PDF content could be generated. When this is not set, printing is limited to a low-level representation of the appearance, possibly of degraded quality.
+             * owner : (inverted logic - only for public-key) when set permits change of encryption and enables all other permissions.
+             */
+            if ($this->isEncrypted()) {
+                $this->SetProtection(['modify', 'copy', 'annot-forms', 'fill-forms', 'extract', 'assemble', 'print-high'], '', $this->getPassword());
+            }
+
+            $this->getAliasNbPages();
+
+            $this->AddPage();
+            // set JPEG quality
+            $this->setJPEGQuality(80);
+
+            if ($facs_simile) {
+                //Put watermark  Author: Ivan
+                $this->SetFont('dejavusans', '', 40);
+                $this->SetTextColor(240, 240, 240);
+                $this->RotatedText(15, 50, 'F a c - s i m i l e', 270);
+                $this->SetFont('dejavusans', '', 10);
+                $this->SetTextColor(0, 0, 0);
+            }
+            $this->setXY(0, 0);
+
+            // managing page break
+            $this->page_delimiter = '<!-- pagebreak -->';
+            $pages = explode($this->page_delimiter, $html);
+            $cnt = count($pages);
+            $index = 0;
+
+            $htmlFolderPath = dirname(__FILE__, 3);
+
+            $imagePath = $htmlFolderPath . '/' . _folder_files_ . '/appLms/certificate/' . $img;
+            $imageType = '';
+            if ($img != '' && file_exists($imagePath)) {
+                $mime_type = mime_content_type($imagePath);
+
+                // Mappa il MIME type in un formato accettato da TCPDF
+                switch ($mime_type) {
+                    case 'image/jpeg':
+                        $imageType = 'JPG';
+                        break;
+                    case 'image/png':
+                        $imageType = 'PNG';
+                        break;
+                    case 'image/gif':
+                        $imageType = 'GIF';
+                        break;
+                    case 'image/svg+xml':
+                        $imageType = 'SVG';
+                        break;
+                    case 'image/bmp':
+                        $imageType = 'BMP';
+                        break;
+                    default:
+                        throw new Exception("Formato immagine non supportato: " . $mime_type);
+                }
+            }
+
+            foreach ($pages as $page) {
+                if ($img != '' && file_exists($imagePath)) {
+                    $this->setXY(0, 0);
+                    $this->Image($imagePath, 0, 0, ($this->CurOrientation == 'P' ? 210 : 298), 0, $imageType, '', '', true);
+                    $this->setXY(0, 0);
+                }
+
+                $this->writeHTML($this->page_delimiter . $page, true, 0, true, 0);
+
+                if ($index < $cnt - 1) {
+                    $this->AddPage();
+                }
+                ++$index;
+            }
+            $this->lastPage();
+
+            $name = str_replace(
+                ['\\', '/', ':', '\'', '\*', '?', '"', '<', '>', '|'],
+                ['', '', '', '', '', '', '', '', '', ''],
+                $name
+            );
+
+            // maybe there is a way to understand why ie6 doesn't use correctly the 'D' option, but this work so....
+
+            if ($for_saving) {
+                return $this->Output(('"' . $name . '.pdf"'), 'S');
+            }
+
+            $pdf = $this->Output(('"' . $name . '.pdf"'), 'S');
+
+            //session_write_close();
+            //ini_set("output_buffering", 0);
+            //Download file
+            //send file length info
+            header('Content-Length:' . strlen($pdf));
+            //content type forcing dowlad
+            header("Content-type: application/download\n charset: utf-8\n");
+            //cache control
+            header('Cache-control: private');
+            //sending creation time
+            header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+            //content type
+            header('Content-Disposition: attachment; filename="' . $name . '.pdf"');
+
+            echo $pdf;
+            exit();
         }
-        $this->lastPage();
-
-        $name = str_replace(
-            ['\\', '/', ':', '\'', '\*', '?', '"', '<', '>', '|'],
-            ['', '', '', '', '', '', '', '', '', ''],
-            $name
-        );
-
-        // maybe there is a way to understand why ie6 doesn't use correctly the 'D' option, but this work so....
-
-        if ($for_saving) {
-            return $this->Output(('"' . $name . '.pdf"'), 'S');
-        }
-
-        $pdf = $this->Output(('"' . $name . '.pdf"'), 'S');
-
-        //session_write_close();
-        //ini_set("output_buffering", 0);
-        //Download file
-        //send file length info
-        header('Content-Length:' . strlen($pdf));
-        //content type forcing dowlad
-        header("Content-type: application/download\n charset: utf-8\n");
-        //cache control
-        header('Cache-control: private');
-        //sending creation time
-        header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-        //content type
-        header('Content-Disposition: attachment; filename="' . $name . '.pdf"');
-
-        echo $pdf;
-        exit();
     }
 
     /**
@@ -263,27 +295,5 @@ class PDF extends TCPDF
     public function setPassword($password)
     {
         $this->password = $password;
-    }
-
-    public function getPdfDimensions($filePath, $box="MediaBox") {
-        //$box can be set to BleedBox, CropBox or MediaBox 
-
-        $result = false;
-
-        $file = fopen($filePath, 'rb');
-        if (!$file) {
-            return $result; // Handle error
-        }
-    
-        $pdfContent = fread($file, filesize($filePath));
-        fclose($file);
-    
-        // Look for the /MediaBox in the PDF content
-        if (preg_match('/\/'.$box.'\s*\[(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\]/', $pdfContent, $matches)) {
-            $result["width"] = $matches[3]; // width in points
-            $result["height"] = $matches[4]; // height in points
-        }
-    
-        return $result; // Handle error if MediaBox not found
     }
 }

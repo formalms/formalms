@@ -15,7 +15,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
-if (!Docebo::user()->isAnonymous() && $session->get('idCourse')) {
+if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous() && $session->get('idCourse')) {
     $query = 'SELECT course_type'
                 . ' FROM %lms_course'
                 . ' WHERE idCourse = ' . (int) $session->get('idCourse');
@@ -23,7 +23,7 @@ if (!Docebo::user()->isAnonymous() && $session->get('idCourse')) {
     list($course_type) = sql_fetch_row(sql_query($query));
 
     YuiLib::load('base');
-    $db = DbConn::getInstance();
+    $db = \FormaLms\db\DbConn::getInstance();
 
     $id_main_sel = FormaLms\lib\Get::req('id_main_sel', DOTY_INT, 0);
     $id_module_sel = FormaLms\lib\Get::req('id_module_sel', DOTY_INT, 0);
@@ -87,9 +87,9 @@ if (!Docebo::user()->isAnonymous() && $session->get('idCourse')) {
     $logo_panel = '';
     if ($session->get('idCourse')) {
         $path = $GLOBALS['where_files_relative'] . '/appLms/' . FormaLms\lib\Get::sett('pathcourse');
-        $course_name = Docebo::course()->getValue('name');
-        if (Docebo::course()->getValue('use_logo_in_courselist')) {
-            $course_img = (Docebo::course()->getValue('img_course') == '' ? FormaLms\lib\Get::tmpl_path() . 'images/course/course_nologo.png' : $path . Docebo::course()->getValue('img_course'));
+        $course_name = \FormaLms\lib\Forma::course()->getValue('name');
+        if (\FormaLms\lib\Forma::course()->getValue('use_logo_in_courselist')) {
+            $course_img = (\FormaLms\lib\Forma::course()->getValue('img_course') == '' ? FormaLms\lib\Get::tmpl_path() . 'images/course/course_nologo.png' : $path . \FormaLms\lib\Forma::course()->getValue('img_course'));
         }
 
         $img_course = '';
@@ -196,7 +196,7 @@ if (!Docebo::user()->isAnonymous() && $session->get('idCourse')) {
     //**  horizontal menu **
     //
 
-    if ($course_type === 'assessment' && Docebo::user()->getUserLevelId() === ADMIN_GROUP_GODADMIN) {
+    if ($course_type === 'assessment' && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() === ADMIN_GROUP_GODADMIN) {
         cout('<li class="main-v">'
                 . '<a class="main-av" href="' . FormaLms\lib\Get::rel_path('adm') . '/index.php?modname=preassessment&op=assesmentlist&of_platform=lms">' . Lang::t('_BACK_TO_ADMINISTRATION', 'course') . '</a></li>', 'menu');
     }
@@ -210,15 +210,15 @@ if (!Docebo::user()->isAnonymous() && $session->get('idCourse')) {
         $path = $GLOBALS['where_files_relative'] . '/appLms/' . FormaLms\lib\Get::sett('pathcourse');
         $GLOBALS['page']->add('<li><a href="#your_info">' . Lang::t('_BLIND_YOUR_INFO', 'menu_over') . '</a></li>', 'blind_navigation');
 
-        $userid = Docebo::user()->getUserId();
-        $sponsor_link = Docebo::course()->getValue('linkSponsor');
-        $sponsor_img = Docebo::course()->getValue('imgSponsor');
+        $userid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserId();
+        $sponsor_link = \FormaLms\lib\Forma::course()->getValue('linkSponsor');
+        $sponsor_img = \FormaLms\lib\Forma::course()->getValue('imgSponsor');
         $info_panel .= '<div class="lmsmenu_block">' . "\n";
 
         $user_stats = ['head' => [], 'body' => []];
         if (!$session->get('is_ghost', false) !== true) {
-            if (Docebo::course()->getValue('show_time') == 1) {
-                $tot_time_sec = TrackUser::getUserPreviousSessionCourseTime(getLogUserId(), $session->get('idCourse'));
+            if (\FormaLms\lib\Forma::course()->getValue('show_time') == 1) {
+                $tot_time_sec = TrackUser::getUserPreviousSessionCourseTime(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $session->get('idCourse'));
                 $partial_time_sec = TrackUser::getUserCurrentSessionCourseTime($session->get('idCourse'));
                 $tot_time_sec += $partial_time_sec;
 
@@ -260,13 +260,13 @@ if (!Docebo::user()->isAnonymous() && $session->get('idCourse')) {
 
         // who is online ---------------------------------------------------------
 
-        if (Docebo::course()->getValue('show_who_online') == _SHOW_INSTMSG) {
+        if (\FormaLms\lib\Forma::course()->getValue('show_who_online') == _SHOW_INSTMSG) {
             addCss('instmsg');
             addJs($GLOBALS['where_lms_relative'] . '/modules/instmsg/', 'instmsg.js');
 
             $GLOBALS['page']->add(
                 '<script type="text/javascript">'
-                . " setup_instmsg( '" . Docebo::user()->getIdSt() . "', "
+                . " setup_instmsg( '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "', "
                 . "'" . $userid . "', "
                 . "'" . getPathImage('fw') . "' ); "
                 . '</script>' . "\n", 'page_head');
@@ -276,7 +276,7 @@ if (!Docebo::user()->isAnonymous() && $session->get('idCourse')) {
                 . '<a id="open_users_list" href="javascript:void(0)">'
                     . TrackUser::getWhoIsOnline($session->get('idCourse'))
                 . '</a></b>';
-        } elseif (Docebo::course()->getValue('show_who_online') == _SHOW_COUNT) {
+        } elseif (\FormaLms\lib\Forma::course()->getValue('show_who_online') == _SHOW_COUNT) {
             $user_stats['head'][2] = Lang::t('_WHOIS_ONLINE', 'course');
             $user_stats['body'][2] = '<b id="user_online_n">'
                     . TrackUser::getWhoIsOnline($session->get('idCourse'))
@@ -313,16 +313,16 @@ if (!Docebo::user()->isAnonymous() && $session->get('idCourse')) {
         }
 
         // print progress bar -------------------------------------------------
-        if (Docebo::course()->getValue('show_progress') == 1) {
+        if (\FormaLms\lib\Forma::course()->getValue('show_progress') == 1) {
             require_once _lms_ . '/lib/lib.stats.php';
             $total = getNumCourseItems($session->get('idCourse'),
                                         false,
-                                        getLogUserId(),
+                                        \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(),
                                         false);
-            $tot_complete = getStatStatusCount(getLogUserId(),
+            $tot_complete = getStatStatusCount(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(),
                 $session->get('idCourse'),
                                                 ['completed', 'passed']);
-            $tot_failed = getStatStatusCount(getLogUserId(),
+            $tot_failed = getStatStatusCount(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(),
                 $session->get('idCourse'),
                                                 ['failed']);
 
@@ -364,7 +364,7 @@ if (!Docebo::user()->isAnonymous() && $session->get('idCourse')) {
             cout('<div class="col-sm-3">' . $logo_panel . '</div>', 'menu_over');
 
             cout('<div class="col-sm-9" >', 'menu_over');
-            cout('<div class="col-md-7"><div><h1>' . Docebo::course()->getValue('name') . '</h1></div></div>
+            cout('<div class="col-md-7"><div><h1>' . \FormaLms\lib\Forma::course()->getValue('name') . '</h1></div></div>
                         <div class="col-md-4"><div>' . $info_panel_progress . '</div></div>
                         <div class="col-md-1"><div><br> <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#formaModal"><span class="glyphicon glyphicon-stats"></span></button></div></div>
                         ', 'menu_over');
@@ -375,7 +375,7 @@ if (!Docebo::user()->isAnonymous() && $session->get('idCourse')) {
             cout('<div class="col-sm-3">' . $logo_panel . '</div>', 'menu_over');
 
             cout('<div class="col-sm-9" >', 'menu_over');
-            cout('<div class="col-md-7"><div><h1>' . Docebo::course()->getValue('name') . '</h1></div></div>', 'menu_over');
+            cout('<div class="col-md-7"><div><h1>' . \FormaLms\lib\Forma::course()->getValue('name') . '</h1></div></div>', 'menu_over');
 
             cout('</div></div><br><br>&nbsp;', 'menu_over');
         }

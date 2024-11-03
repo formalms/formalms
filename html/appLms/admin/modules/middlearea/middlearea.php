@@ -19,8 +19,7 @@ function view_area()
 
     require_once _lms_ . '/lib/lib.middlearea.php';
 
-    $lang = &DoceboLanguage::createInstance('middlearea', 'lms');
-    $lc = &DoceboLanguage::createInstance('menu_course', 'lms');
+    $lang = FormaLanguage::createInstance('middlearea', 'lms');
 
     $query_menu = "SELECT mo.idModule, mo.default_name, module_name
     FROM %lms_module as mo WHERE mo.module_info IN ('all','user')
@@ -28,7 +27,7 @@ function view_area()
 
     $re_menu_voice = sql_query($query_menu);
 
-    $base_url = 'index.php?modname=middlearea&amp;op=select_permission&amp;load=1&amp;obj_index=';
+    $base_url = 'index.php?r=adm/userselector/show&id=';
     $second_url = 'index.php?modname=middlearea&amp;op=switch_active&amp;obj_index=';
     $third_url = 'index.php?modname=middlearea&amp;op=set_home&amp;obj_index=';
 
@@ -55,7 +54,7 @@ function view_area()
                 <<<HTML
 <li id="$item->idMenu">
     <span>$title</span>
-    <a class="ico-sprite subs_users" href="index.php?modname=middlearea&op=select_menu_permission&load=1&id=$item->idMenu"><span>$vp</span></a>
+    <a class="ico-sprite subs_users" href="index.php?r=adm/userselector/show&id=$item->idMenu&instance=lmsmenu&load=1&showSelectAll=true"><span>$vp</span></a>
     <a class="ico-sprite $activation_icon" href="index.php?modname=middlearea&op=switch_menu_active&id=$item->idMenu"><span>$ea</span></a>
 </li>
 HTML;
@@ -81,6 +80,9 @@ HTML;
     $list_pl = $pl->get_all_plugins();
 
     foreach ($list_pl as $key) {
+        if(!array_key_exists('name', $key)) {
+            continue;
+        }
         $plugin_name = strtolower($key['name']);
         $tab['tb_' . $plugin_name] = Lang::t('_' . strtoupper($key['name']), 'middlearea');
     }
@@ -90,12 +92,16 @@ HTML;
 
     while (list($obj_index, $is_home) = sql_fetch_row($re_tablist)) {
         $id = $obj_index;
+
+        if(!array_key_exists($id, $tab)) {
+            continue;
+        }
         $name = $tab[$id];
 
         $tab_list .= '<li id="' . $id . '">'
             . '<a class="ico-sprite subs_location' . ($is_home ? '_green' : '') . '" href="' . $third_url . $id . '"><span>' . Lang::t('_VIEW_PERMISSION', 'standard') . '</span></a>'
             . ' <span>' . $name . '</span>'
-            . ' <a class="ico-sprite subs_users" href="' . $base_url . $id . '"><span>' . Lang::t('_VIEW_PERMISSION', 'standard') . '</span></a>'
+            . ' <a class="ico-sprite subs_users" href="' . $base_url . $id . '&instance=lmstab"><span>' . Lang::t('_VIEW_PERMISSION', 'standard') . '</span></a>'
             . ' <a class="ico-sprite subs_' . (isset($disabled_list[$id]) ? 'noac' : 'actv') . '" href="' . ($is_home ? '' : $second_url . $id) . '"><span>' . Lang::t('_ENABLE_AREA', 'middlearea') . '</span></a>'
             . '</li>';
     }
@@ -112,11 +118,16 @@ HTML;
         'news' => Lang::t('_NEWS', 'middlearea'),
         'mo_message' => Lang::t('_MESSAGES', 'menu_over'),
     ];
+
+    $eventBlocks = Events::trigger('core.arealms.read', ['blocks' => $block]); 
+
+    $block = $eventBlocks['blocks'];
+
     $slider_options = array_merge($block, $menu_on_slider);
     foreach ($slider_options as $id => $name) {
         $block_list .= '<div class="direct_block">'
             . '<span>' . $name . '</span>'
-            . ' <a class="ico-sprite subs_users" href="' . $base_url . $id . '"><span>' . Lang::t('_VIEW_PERMISSION', 'standard') . '</span></a>'
+            . ' <a class="ico-sprite subs_users" href="' . $base_url . $id . '&instance=lmsblock"><span>' . Lang::t('_VIEW_PERMISSION', 'standard') . '</span></a>'
             . ' <a class="ico-sprite subs_' . (isset($disabled_list[$id]) ? 'noac' : 'actv') . '" href="' . $second_url . $id . '"><span>' . Lang::t('_ENABLE_AREA', 'middlearea') . '</span></a>'
             . '</div><br/>';
     }
@@ -230,7 +241,7 @@ function switch_active()
 
     $obj_index = importVar('obj_index', false, '');
 
-    $lang = &DoceboLanguage::createInstance('middlearea', 'lms');
+    $lang = &FormaLanguage::createInstance('middlearea', 'lms');
     $selected = $man_ma->getObjIdstList($obj_index);
     $man_ma->setObjIdstList($obj_index, $selected);
 
@@ -283,14 +294,14 @@ function select_permission()
     require_once _base_ . '/lib/lib.userselector.php';
     require_once _base_ . '/lib/lib.form.php';
 
-    $lang = &DoceboLanguage::createInstance('middlearea', 'lms');
+    $lang = &FormaLanguage::createInstance('middlearea', 'lms');
 
     $obj_index = importVar('obj_index', false, '');
 
     // first step load selector
 
     $man_ma = new Man_MiddleArea();
-    $acl_manager = new DoceboACLManager();
+    $acl_manager = new FormaACLManager();
     $user_select = new UserSelector();
 
     $user_select->show_user_selector = true;
@@ -326,7 +337,10 @@ function select_permission()
     cout('</div>');
 }
 
-function select_menu_permission()
+/**
+ * @deprecated
+ */
+function select_menu_permission() //DEPRECATED FOR MULTIUSERSELECTOR
 {
     checkPerm('view');
 
@@ -334,14 +348,14 @@ function select_menu_permission()
     require_once _base_ . '/lib/lib.userselector.php';
     require_once _base_ . '/lib/lib.form.php';
 
-    $lang = &DoceboLanguage::createInstance('middlearea', 'lms');
+    $lang = &FormaLanguage::createInstance('middlearea', 'lms');
 
     $id = FormaLms\lib\Get::req('id', DOTY_INT);
 
     // first step load selector
 
     $man_ma = new Man_MiddleArea();
-    $acl_manager = new DoceboACLManager();
+    $acl_manager = new FormaACLManager();
     $user_select = new UserSelector();
 
     $user_select->show_user_selector = true;
@@ -351,7 +365,7 @@ function select_menu_permission()
     //$user_select->multi_choice = TRUE;
 
     $menu = CoreMenu::get($id);
-    $am = Docebo::user()->getACLManager();
+    $am = \FormaLms\lib\Forma::getAclManager();;
     $role_idst = $am->getRole(false, $menu->role)[0];
 
     $members = $am->getRoleMembers($role_idst);

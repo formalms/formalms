@@ -27,27 +27,6 @@ class Module_Faq extends LmsModule
         return false;
     }
 
-    public function loadHeader()
-    {
-        //EFFECTS: write in standard output extra header information
-
-        switch ($GLOBALS['op']) {
-            case 'insfaqcat':
-            case 'newfaq':
-            case 'insfaq':
-            case 'modfaqcat':
-            case 'upfaqcat':
-            case 'modfaq':
-            case 'upfaq':
-                loadHeaderHTMLEditor();
-                break;
-            default:
-                break;
-        }
-
-        return;
-    }
-
     public function useExtraMenu()
     {
         return false;

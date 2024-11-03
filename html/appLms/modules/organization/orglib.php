@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Interfaces\Accessible;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -13,9 +15,10 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once _base_ . '/lib/lib.treedb.php';
-require_once _base_ . '/lib/lib.treeview.php';
-require_once _lms_ . '/lib/lib.repo.php';
+require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.treedb.php');
+require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.treeview.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.repo.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
 
 define('ORGFIELDIDCOURSE', 13);
 define('ORGFIELDPREREQUISITES', 14);
@@ -40,7 +43,7 @@ define('PF_TEACHER', '-2');
 define('PF_ATTENDANCE', '-1');
 
 // organization customization of TreeDb class
-class OrgDirDb extends RepoDirDb
+class OrgDirDb extends RepoDirDb implements Accessible
 {
     // these 3 variales are set in overloaded addFolderById
     // before call to parent addFolderById.
@@ -74,23 +77,24 @@ class OrgDirDb extends RepoDirDb
     // Constructor of OrgDirDb class
     // set idCourse to current idCourse or to
     // parameter $idCourse
-    public function OrgDirDb($idCourse = false)
+    /**
+     * @var mixed|string
+     */
+    public $org_objectType;
+    public $org_idObject;
+
+    public function __construct($idCourse = false)
     {
         if ($idCourse === false) {
             $this->idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         } else {
             $this->idCourse = $idCourse;
         }
-        parent::RepoDirDb($GLOBALS['prefix_lms'] . '_organization');
+        parent::__construct($GLOBALS['prefix_lms'] . '_organization');
         $this->fields = ['id' => 'idOrg', 'idParent' => 'idParent', 'path' => 'path', 'lev' => 'lev'];
     }
 
     // , '.$prefix.'_organization_access';
-    public function setFilterTypes($lotypes)
-    {
-        $this->filterTypes = $lotypes;
-    }
-
     public function setFilterVisibility($fv = true)
     {
         $this->filterVisibility = $fv;
@@ -108,7 +112,7 @@ class OrgDirDb extends RepoDirDb
         }
         $arrPre = explode(',', $prerequisistes);
         $arrResult = [];
-        while (list($key, $val) = each($arrPre)) {
+        foreach($arrPre as $val) {
             if (strncmp($val, $idItem, strlen($idItem)) != 0) {
                 $arrResult[] = $val;
             }
@@ -124,7 +128,7 @@ class OrgDirDb extends RepoDirDb
         }
         $result = '*';
         $arrPre = explode(',', $prerequisites);
-        while (list($key, $val) = each($arrPre)) {
+        foreach ($arrPre as $key=>$val) {
             if (strncmp($val, $idItem, strlen($idItem)) == 0) {
                 $arrSelf = explode('=', $val);
                 if (count($arrSelf) > 1) {
@@ -193,8 +197,8 @@ class OrgDirDb extends RepoDirDb
 
             . (int) $this->org_width . ', '
             . (int) $this->org_height . ', '
-            . ($this->org_publish_from == '' ? "''" : "'" . $this->org_publish_from . "'") . ', '
-            . ($this->org_publish_to == '' ? "''" : "'" . $this->org_publish_to . "'") . ', '
+            . (empty($this->org_publish_from) ? "NULL" : "'" . $this->org_publish_from . "'") . ', '
+            . (empty($this->org_publish_to) ? "NULL" : "'" . $this->org_publish_to . "'") . ', '
             . ($this->org_access == '' ? "''" : "'" . $this->org_access . "'") . ', '
             . ($this->org_publish_for == '' ? "''" : "'" . $this->org_publish_for . "'") . ', '
             . (int) $this->org_ignoreScore . ' ';
@@ -234,15 +238,6 @@ class OrgDirDb extends RepoDirDb
         }
     }
 
-    public function _getJoinFilter($tname = false)
-    {
-        return false;
-        /*if( $this->filterAccess !== FALSE ) {
-            return $tname.'.idOrg = '.$GLOBALS['prefix_lms'].'_organization_access.idOrgAccess';
-        } else
-            return FALSE;*/
-    }
-
     // overload.
     // filter organization on idCourse
     // filterTypes if they are.
@@ -257,7 +252,7 @@ class OrgDirDb extends RepoDirDb
             }
             if ($this->filterVisibility) {
                 $result .= " AND (visible = '1' )";
-                $result .= " AND (NOW() > publish_from OR publish_from = '0000-00-00 00:00:00' OR publish_from IS NULL)";
+                $result .= " AND (NOW() > publish_from OR publish_from IS NULL)";
             }
         } else {
             $result = ' AND (' . $tname . ".idCourse = '" . $this->idCourse . "')";
@@ -266,7 +261,7 @@ class OrgDirDb extends RepoDirDb
             }
             if ($this->filterVisibility) {
                 $result .= ' AND (' . $tname . ".visible = '1' )";
-                $result .= ' AND (NOW() > ' . $tname . '.publish_from OR ' . $tname . ".publish_from = '0000-00-00 00:00:00' OR " . $tname . '.publish_from IS NULL)';
+                $result .= ' AND (NOW() > ' . $tname . '.publish_from OR ' . $tname . '.publish_from IS NULL)';
             }
         }
         if ($this->filterAccess !== false) {
@@ -292,19 +287,14 @@ class OrgDirDb extends RepoDirDb
             . ' WHERE (' . $this->fields['idParent'] . " = '" . (int) $idFolder . "')"
             . $this->_getFilter();
         $rs = sql_query($query)
-        or exit("Error [$query] " . sql_error());
+            or exit("Error [$query] " . sql_error());
         if (sql_num_rows($rs) == 1) {
-            list($result) = sql_fetch_row($rs);
+            [$result] = sql_fetch_row($rs);
 
             return $result;
         } else {
             return '00000001';
         }
-    }
-
-    public function getNewPos($idFolder)
-    {
-        return substr('00000000' . ($this->getMaxChildPos($idFolder) + 1), -8);
     }
 
     public function moveUp($idFolder)
@@ -395,11 +385,11 @@ class OrgDirDb extends RepoDirDb
     }
 
     public function addItem($idParent, $title, $objectType, $idResource, $idCategory,
-                     $idUser, $idAuthor, $version, $difficult, $description,
-                     $language, $resource, $objective, $dateInsert,
-                     $otherData = null, $idCourse = false)
+        $idUser, $idAuthor, $version, $difficult, $description,
+        $language, $resource, $objective, $dateInsert,
+        $otherData = null, $idCourse = false)
     {
-        require_once _lms_ . '/lib/lib.param.php';
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
         $this->org_title = $title;
         $this->org_objectType = $objectType;
         $this->org_idResource = $idResource;
@@ -430,7 +420,7 @@ class OrgDirDb extends RepoDirDb
         if ($lo) { // Add object to the uncategorized resources
             require_once _lms_ . '/lib/lib.kbres.php';
             $kbres = new KbRes();
-            $lang = (isset($this->org_idCourse) && defined('LMS') ? Docebo::course()->getValue('lang_code') : false);
+            $lang = (isset($this->org_idCourse) && defined('LMS') ? \FormaLms\lib\Forma::course()->getValue('lang_code') : false);
             $kbres->saveUncategorizedResource($title, $idResource, $objectType, 'course_lo', $this->org_idCourse, false, $lang);
         }
 
@@ -456,11 +446,11 @@ class OrgDirDb extends RepoDirDb
 
     public function addItemById($idParent, $idObject, $idCourse = false)
     {
-        require_once _lms_ . '/lib/lib.param.php';
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
         $query = 'SELECT `title`, `objectType`, `idResource`'
             . ' FROM %lms_homerepo'
             . " WHERE idObject='" . (int) $idObject . "'";
-        list($title, $objectType, $idResource) = sql_fetch_row(sql_query($query));
+        [$title, $objectType, $idResource] = sql_fetch_row(sql_query($query));
         $this->org_idObject = $idObject;
         $this->org_title = $title;
         $this->org_objectType = $objectType;
@@ -576,15 +566,9 @@ class OrgDirDb extends RepoDirDb
         $this->org_title = isset($arrData['title'])
             ? $this->_strip($arrData['title'], $strips)
             : stripslashes($folder->otherValues[REPOFIELDTITLE]);
-        $this->org_idCategory = isset($arrData['idCategory'])
-            ? $arrData['idCategory']
-            : $folder->otherValues[REPOFIELDIDCATEGORY];
-        $this->org_version = isset($arrData['version'])
-            ? $arrData['version']
-            : $folder->otherValues[REPOFIELDVERSION];
-        $this->org_difficult = isset($arrData['difficult'])
-            ? $arrData['difficult']
-            : $folder->otherValues[REPOFIELDDIFFICULT];
+        $this->org_idCategory = $arrData['idCategory'] ?? $folder->otherValues[REPOFIELDIDCATEGORY];
+        $this->org_version = $arrData['version'] ?? $folder->otherValues[REPOFIELDVERSION];
+        $this->org_difficult = $arrData['difficult'] ?? $folder->otherValues[REPOFIELDDIFFICULT];
         $this->org_description = isset($arrData['description'])
             ? $this->_strip($arrData['description'], $strips)
             : $folder->otherValues[REPOFIELDDESCRIPTION];
@@ -604,18 +588,12 @@ class OrgDirDb extends RepoDirDb
             $this->org_prerequisites = $folder->otherValues[ORGFIELDPREREQUISITES];
         }
 
-        $this->org_isTerminator = isset($arrData['isTerminator'])
-            ? $arrData['isTerminator']
-            : $folder->otherValues[ORGFIELDISTERMINATOR];
+        $this->org_isTerminator = $arrData['isTerminator'] ?? $folder->otherValues[ORGFIELDISTERMINATOR];
 
-        $this->org_ignoreScore = isset($arrData['ignoreScore'])
-            ? $arrData['ignoreScore']
-            : $folder->otherValues[ORGFIELDIGNORESCORE];
+        $this->org_ignoreScore = $arrData['ignoreScore'] ?? $folder->otherValues[ORGFIELDIGNORESCORE];
 
         $this->org_idParam = $folder->otherValues[ORGFIELDIDPARAM];
-        $this->org_visible = isset($arrData['visibility'])
-            ? $arrData['visibility']
-            : $folder->otherValues[ORGFIELDVISIBLE];
+        $this->org_visible = $arrData['visibility'] ?? $folder->otherValues[ORGFIELDVISIBLE];
 
         if ($idCourse === false) {
             $this->org_idCourse = $this->idCourse;
@@ -634,13 +612,9 @@ class OrgDirDb extends RepoDirDb
             $this->org_milestone = $folder->otherValues[ORGFIELDMILESTONE];
         }
 
-        $this->org_width = isset($arrData['obj_width'])
-            ? $arrData['obj_width']
-            : $folder->otherValues[ORGFIELD_WIDTH];
+        $this->org_width = $arrData['obj_width'] ?? $folder->otherValues[ORGFIELD_WIDTH];
 
-        $this->org_height = isset($arrData['obj_height'])
-            ? $arrData['obj_height']
-            : $folder->otherValues[ORGFIELD_HEIGHT];
+        $this->org_height = $arrData['obj_height'] ?? $folder->otherValues[ORGFIELD_HEIGHT];
 
         $arrData['publish_from'] = Format::dateDb($arrData['publish_from'], 'date');
         $arrData['publish_to'] = Format::dateDb($arrData['publish_to'], 'date');
@@ -651,19 +625,13 @@ class OrgDirDb extends RepoDirDb
             $arrData['publish_to'] = $temp;
         }
 
-        $this->org_publish_from = isset($arrData['publish_from'])
-            ? $arrData['publish_from']
-            : $folder->otherValues[ORGFIELD_PUBLISHFROM];
+        $this->org_publish_from = $arrData['publish_from'] ?? $folder->otherValues[ORGFIELD_PUBLISHFROM];
 
-        $this->org_publish_to = isset($arrData['publish_to'])
-            ? $arrData['publish_to']
-            : $folder->otherValues[ORGFIELD_PUBLISHTO];
+        $this->org_publish_to = $arrData['publish_to'] ?? $folder->otherValues[ORGFIELD_PUBLISHTO];
 
         $this->org_access = $folder->otherValues[ORGFIELD_ACCESS];
 
-        $this->org_publish_for = isset($arrData['publish_for'])
-            ? $arrData['publish_for']
-            : $folder->otherValues[ORGFIELD_PUBLISHFOR];
+        $this->org_publish_for = $arrData['publish_for'] ?? $folder->otherValues[ORGFIELD_PUBLISHFOR];
 
         $this->changeOtherData($folder);
 
@@ -693,7 +661,7 @@ class OrgDirDb extends RepoDirDb
             $arrParamsInfo = $lo->getParamInfo();
 
             if ($arrParamsInfo !== false) {
-                require_once _lms_ . '/lib/lib.param.php';
+                require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
                 while ($param = current($arrParamsInfo)) {
                     if (isset($arrData[$param['param_name']])) {
                         setLOParam($this->org_idParam, $param['param_name'], $arrData[$param['param_name']]);
@@ -721,7 +689,7 @@ class OrgDirDb extends RepoDirDb
             . "   AND  idCourse = '" . (int) $idCourse . "'";
         $rs = sql_query($query);
         if (sql_num_rows($rs) == 1) {
-            list($idFolder) = sql_fetch_row($rs);
+            [$idFolder] = sql_fetch_row($rs);
             $folder = $this->getFolderById($idFolder);
 
             return $folder;
@@ -769,7 +737,7 @@ class OrgDirDb extends RepoDirDb
     public function deleteAllTree()
     {
         // loop on all items
-        require_once _lms_ . '/lib/lib.param.php';
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
         require_once _lms_ . '/class.module/track.object.php';
         $nullVal = null;
         $coll = $this->getFoldersCollection($nullVal);
@@ -929,7 +897,7 @@ class OrgDirDb extends RepoDirDb
         return true;
         $arrCurrId = $this->_getAccessUG($idOrgAccess, $kind);
 
-        while (list($currKey, $currId) = each($arrCurrId)) {
+        foreach((Array) $arrCurrId as $currKey => $currId){
             $pos = array_search($currId, $arrId);
             if ($pos === false) {
                 $this->_deleteAccessUG($idOrgAccess, $kind, $currId);
@@ -938,7 +906,7 @@ class OrgDirDb extends RepoDirDb
             }
         }
         // now in $arrId they are only $id to insert
-        while (list($newKey, $newId) = each($arrId)) {
+        foreach((Array) $arrId as $newKey => $newId){
             $this->_insertAccessUG($idOrgAccess, $kind, $newId);
         }
     }
@@ -1030,7 +998,7 @@ class OrgDirDb extends RepoDirDb
 
     public function __setAccess($idOrgAccess, $selection, $relation = '')
     {
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $id_groups = $acl_man->getAllGroupsFromSelection($selection);
 
@@ -1085,10 +1053,21 @@ class OrgDirDb extends RepoDirDb
 
     public function __deleteAccess($idOrgAccess)
     {
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
         $query = 'UPDATE ' . $GLOBALS['prefix_lms'] . "_organization SET access='' WHERE idOrg='" . $idOrgAccess . "'";
 
         return $res = $db->query($query);
+    }
+
+    public function getAccessList( $resourceId) : array {
+
+        return $this->__getAccess($resourceId);
+    }
+
+    public function setAccessList( $resourceId, array $selection) : bool {
+
+        $this->__setAccess($resourceId, $selection);
+        return true;
     }
 }
 
@@ -1096,11 +1075,7 @@ class Org_TreeView extends RepoTreeView
 {
     /** bool $playOnly if true show only play action */
     public $playOnly = false;
-
-    public function Org_TreeView($tdb, $id, $rootname = 'root')
-    {
-        parent::__construct($tdb, $id, $rootname);
-    }
+    private bool $user_presence;
 
     public function _getPropertiesId()
     {
@@ -1132,11 +1107,6 @@ class Org_TreeView extends RepoTreeView
         return '_showresults_';
     }
 
-    public function _getAddImage()
-    {
-        return getPathImage() . 'standard/folder_new.png';
-    }
-
     public function _getAddLabel()
     {
         return $this->lang->def('_NEW_FOLDER');
@@ -1160,11 +1130,6 @@ class Org_TreeView extends RepoTreeView
     public function _getCreateAlt()
     {
         return $this->lang->def('_NEW_FOLDER');
-    }
-
-    public function _getCreateImage()
-    {
-        return getPathImage() . 'standard/folder_new.png';
     }
 
     public function _getOpUpTitle()
@@ -1252,7 +1217,7 @@ class Org_TreeView extends RepoTreeView
         if ($this->playOnly) {
             return [];
         }
-        $langRepo = &DoceboLanguage::createInstance('storage', 'lms');
+        $langRepo = FormaLanguage::createInstance('storage', 'lms');
         if ($this->isFolderSelected()) {
             $stackData = $this->getSelectedFolderData();
             $arrData = $stackData['folder']->otherValues;
@@ -1266,20 +1231,6 @@ class Org_TreeView extends RepoTreeView
         }
 
         return [[$this->_getOpCreateLO(), $langRepo->def('_REPOCREATELO'), getPathImage() . 'standard/add.png']];
-    }
-
-    public function canMove()
-    {
-        return false;
-        /*if( $this->playOnly ) return FALSE;
-        return $this->isFolderSelected();*/
-    }
-
-    public function canRename()
-    {
-        return false;
-        /*if( $this->playOnly ) return FALSE;
-        return $this->isFolderSelected();*/
     }
 
     public function canAdd()
@@ -1317,43 +1268,9 @@ class Org_TreeView extends RepoTreeView
         return $this->withActions && !$this->playOnly;
     }
 
-    public function canInlineRename()
-    {
-        return false; /*$this->withActions && !$this->playOnly;*/
-    }
-
     public function canInlineDelete()
     {
         return $this->withActions && !$this->playOnly;
-    }
-
-    public function canInlineMoveItem(&$stack, $level)
-    {
-        if ($level == 0) {
-            return false;
-        }
-
-        return true;
-    }
-
-    public function canInlineRenameItem(&$stack, $level)
-    {
-        return false;
-        /*if( $level == 0 )
-            return FALSE;
-        return TRUE;*/
-    }
-
-    public function canInlineDeleteItem(&$stack, $level)
-    {
-        if ($level == 0) {
-            return false;
-        }
-        if ($stack[$level]['isLeaf'] === false) {
-            return false;
-        } else {
-            return true;
-        }
     }
 
     public function getFolderPrintName(&$folder)
@@ -1363,21 +1280,6 @@ class Org_TreeView extends RepoTreeView
         } else {
             return parent::getFolderPrintName($folder);
         }
-    }
-
-    public function expandPath($path)
-    {
-        $arrId = [];
-        $splitPath = explode('/', $path);
-        unset($splitPath[0]);
-        $path = '';
-        foreach ($splitPath as $tok) {
-            $path .= '/' . $tok;
-
-            $folder = $this->tdb->getFolderByPath($path);
-            $arrId[] = $folder->id;
-        }
-        $this->pathToExpand = array_flip($arrId);
     }
 
     public function extendedParsing($arrayState, $arrayExpand, $arrayCompress)
@@ -1469,7 +1371,7 @@ class Org_TreeView extends RepoTreeView
                                 require_once _lms_ . '/class.module/track.object.php';
                                 if (Track_Object::isPrerequisitesSatisfied(
                                     $folder->otherValues[ORGFIELDPREREQUISITES],
-                                    getLogUserId())) {
+                                    \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
                                     $this->op = 'playitem';
                                     $this->itemToPlay = $id;
                                 }
@@ -1488,7 +1390,7 @@ class Org_TreeView extends RepoTreeView
                         require_once _lms_ . '/class.module/track.object.php';
                         if (Track_Object::isPrerequisitesSatisfied(
                             $folder->otherValues[ORGFIELDPREREQUISITES],
-                            getLogUserId())) {
+                            \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
                             $this->op = 'playitem';
                             $this->itemToPlay = $id;
                         }
@@ -1531,7 +1433,7 @@ class Org_TreeView extends RepoTreeView
         $id = ($stack[$level]['isExpanded']) ? ($this->_getCompressActionId()) : ($this->_getExpandActionId());
         $id .= $stack[$level]['folder']->id;
         for ($i = 0; $i <= $level; ++$i) {
-            list($classImg, $imgFileName, $imgAlt) = $this->getImage($stack, $i, $level);
+            [$classImg, $imgFileName, $imgAlt] = $this->getImage($stack, $i, $level);
             if ($i != ($level - 1) || $stack[$level]['isLeaf']) {
                 $out .= '<img src="' . getPathImage() . $imgFileName . '" '
                     . 'class="' . $classImg . '" alt="' . $imgAlt . '" '
@@ -1557,8 +1459,7 @@ class Org_TreeView extends RepoTreeView
             $isFolder = true;
         }
 
-        $lo_type = $arrData[REPOFIELDOBJECTTYPE];
-        $lo_class = createLO($lo_type);
+        $lo_class = createLO($arrData[REPOFIELDOBJECTTYPE] ?? null);
 
         if (!is_object($lo_class) && !$isFolder) {
             return '';
@@ -1566,8 +1467,8 @@ class Org_TreeView extends RepoTreeView
 
         //check for void selection
         if (is_array($arrData) && isset($arrData[ORGFIELD_ACCESS]) && $this->playOnly) {
-            //if (!$this->userSelector->isUserInSelection(getLogUserId(), $arrData[ORGFIELD_ACCESS])) return false;
-            if (!empty($arrData[ORGFIELD_ACCESS]) && !in_array(Docebo::user()->getIdst(), $arrData[ORGFIELD_ACCESS])) {
+            //if (!$this->userSelector->isUserInSelection(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $arrData[ORGFIELD_ACCESS])) return false;
+            if (!empty($arrData[ORGFIELD_ACCESS]) && !in_array(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst(), $arrData[ORGFIELD_ACCESS])) {
                 return false;
             } //?!?
         }
@@ -1595,7 +1496,7 @@ class Org_TreeView extends RepoTreeView
         } else {
             $isPrerequisitesSatisfied = Track_Object::isPrerequisitesSatisfied(
                 $stack[$level]['folder']->otherValues[ORGFIELDPREREQUISITES],
-                getLogUserId());
+                \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
             $levelCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('levelCourse');
             if ($arrData[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $levelCourse <= 3) {
                 return false;
@@ -1726,12 +1627,12 @@ class Org_TreeView extends RepoTreeView
                             }
                         } else {
                             if (!$isFolder) {
-                                if ($arrData[ORGFIELD_PUBLISHFROM] != '' && $arrData[ORGFIELD_PUBLISHFROM] != '0000-00-00 00:00:00') {
+                                if ($arrData[ORGFIELD_PUBLISHFROM] != '' && $arrData[ORGFIELD_PUBLISHFROM]) {
                                     if ($arrData[ORGFIELD_PUBLISHFROM] > date('Y-m-d H:i:s')) {
                                         return false;
                                     }
                                 }
-                                if ($arrData[ORGFIELD_PUBLISHTO] != '' && $arrData[ORGFIELD_PUBLISHTO] != '0000-00-00 00:00:00') {
+                                if ($arrData[ORGFIELD_PUBLISHTO] != '' && $arrData[ORGFIELD_PUBLISHTO]) {
                                     if ($arrData[ORGFIELD_PUBLISHTO] < date('Y-m-d H:i:s')) {
                                         return false;
                                     }
@@ -1739,7 +1640,7 @@ class Org_TreeView extends RepoTreeView
 
                                 $status = Track_Object::getStatusFromId(
                                     $stack[$level]['folder']->id,
-                                    getLogUserId());
+                                    \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
                                 if ($arrData[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $levelCourse <= 3) {
                                     return false;
@@ -1755,7 +1656,7 @@ class Org_TreeView extends RepoTreeView
                                         $out .= '<a class="tree_view_image" '
                                             . 'id="' . $this->id . '_' . $this->_getShowResultsId() . '_' . $stack[$level]['folder']->id . '" '
                                             . 'name="' . $this->id . '[' . $this->_getShowResultsId() . '][' . $stack[$level]['folder']->id . ']" '
-                                            . 'href="index.php?modname=organization&amp;op=track_details&amp;type=' . $arrData[REPOFIELDOBJECTTYPE] . '&amp;id_user=' . getLogUserId() . '&amp;id_org=' . $arrData[REPOFIELDIDRESOURCE] . '" '
+                                            . 'href="index.php?modname=organization&amp;op=track_details&amp;type=' . $arrData[REPOFIELDOBJECTTYPE] . '&amp;id_user=' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . '&amp;id_org=' . $arrData[REPOFIELDIDRESOURCE] . '" '
                                             . 'title="' . $this->_getShowResultsTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '">'
                                             . '<img src="' . $this->_getShowResultsImg() . '"'
                                             . ' alt="' . $this->_getShowResultsTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" />'
@@ -1816,7 +1717,7 @@ class Org_TreeView extends RepoTreeView
             . ' WHERE idParent = ' . (int) $parentId . " AND objectType = '' ";
         $rs = sql_query($query);
         if (sql_num_rows($rs) == 1) {
-            list($count) = sql_fetch_row($rs);
+            [$count] = sql_fetch_row($rs);
 
             return $count;
         } else {
@@ -1874,9 +1775,10 @@ class Org_TreeView extends RepoTreeView
         foreach ($ids as $id) {
             if (in_array($id, $loToShow)) {
                 $folder = $this->tdb->getFolderById($id);
+                $repoFieldTitle = $folder->otherValues[REPOFIELDTITLE] ?? null;
                 $tree[$id] = [
                     'id' => $id,
-                    'name' => $folder->otherValues[REPOFIELDTITLE],
+                    'name' =>  $repoFieldTitle,
                     'children' => $this->tdb->getChildrensIdById($id, true),
                     'isPrerequisitesSatisfied' => $info[$id]['isPrerequisitesSatisfied'],
                     'active' => $info[$id]['active'],
@@ -1912,10 +1814,10 @@ class Org_TreeView extends RepoTreeView
     public function getLoData($idLoList)
     {
         $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
-        if ($GLOBALS['course_descriptor']->getValue('course_type') == 'classroom') {
+        if (array_key_exists('course_descriptor',$GLOBALS) && $GLOBALS['course_descriptor']->getValue('course_type') === 'classroom') {
             require_once _lms_ . '/lib/lib.date.php';
             $man_date = new DateManager();
-            $this->user_presence = $man_date->checkUserPresence(getLogUserId(), $idCourse);
+            $this->user_presence = $man_date->checkUserPresence(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $idCourse);
         }
 
         $idLoList = (array) $idLoList;
@@ -1924,48 +1826,24 @@ class Org_TreeView extends RepoTreeView
         require_once _lms_ . '/lib/lib.course.php';
 
         $res = [];
-        $idx = 0;
-
         foreach ($idLoList as $index => $idLo) {
             $node = [];
+            $node['play'] = false;
+            $node['canEdit'] = false;
 
             $folder = $this->tdb->getFolderById($idLo);
-            //dump($idLo);
-            // $event = new \appLms\Events\Lms\OrgPropertiesPrintEvent();
-
-            // $event->setElement($folder);
-
-            // $event->setDisplayable(true);
-
-            // $event->setAccessible(true);
-
-            // $event->setId($this->id);
-
-            // \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\OrgPropertiesPrintEvent::EVENT_NAME, $event);
-
-            // if (!$event->getDisplayable()) {
-            // 	continue;
-            // }
-
             $kbres = new KbRes();
-            $type = $folder->otherValues[REPOFIELDOBJECTTYPE];
-            if ($type === 'scormorg') {
-                $type = 'scorm';
-            }
-            $kbres_information = $kbres->getResourceFromItem($folder->otherValues[REPOFIELDIDRESOURCE], $type, 'course_lo');
-            if (isset($kbres_information)) {
+            $type = $folder->otherValues[REPOFIELDOBJECTTYPE] ?? null;
+
+            $repoFieldIdResource = $folder->otherValues[REPOFIELDIDRESOURCE] ?? null;
+            $kbres_information = $kbres->getResourceFromItem($repoFieldIdResource, $type, 'course_lo');
+            if (isset($kbres_information) && is_array($kbres_information)) {
                 $node['isPublic'] = $kbres_information['force_visible'];
             }
 
             $html = '';
-
-            // foreach ($event->getAction() as $action){
-            // $html .= $action;
-            // }
-
             $arrData = $folder->otherValues;
-            $lo_type = $arrData[REPOFIELDOBJECTTYPE];
-            $lo_class = createLO($lo_type);
+            $lo_class = createLO($folder->otherValues[REPOFIELDOBJECTTYPE] ?? null);
 
             $node['html'] = $html;
 
@@ -1973,8 +1851,8 @@ class Org_TreeView extends RepoTreeView
 
             $node['title'] = $this->getFolderPrintName($folder);
 
-            $idCourse = $folder->otherValues[ORGFIELDIDCOURSE];
-            $course = new DoceboCourse($idCourse);
+            $idCourse = $folder->otherValues[ORGFIELDIDCOURSE] ?? null;
+            $course = new FormaCourse($idCourse);
 
             $node['actions'] = [];
             $node['visible_actions'] = [];
@@ -1985,13 +1863,13 @@ class Org_TreeView extends RepoTreeView
             $node['courseType'] = $course->getValue('course_type');
             $node['courseTypeTranslation'] = Lang::t($course->getValue('course_type'), 's4b');
 
-            $isPrerequisitesSatisfied = Track_Object::isPrerequisitesSatisfied($folder->otherValues[ORGFIELDPREREQUISITES], getLogUserId());
+            $isPrerequisitesSatisfied = Track_Object::isPrerequisitesSatisfied($folder->otherValues[ORGFIELDPREREQUISITES] ?? null, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
             $node['isPrerequisitesSatisfied'] = $isPrerequisitesSatisfied; // && $event->getAccessible();
 
-            $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
             $levelCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('levelCourse');
-            if ($folder->otherValues[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $levelCourse <= 3) {
+            $orgFieldPublishFor = $folder->otherValues[ORGFIELD_PUBLISHFOR] ?? null;
+            if ($orgFieldPublishFor == PF_TEACHER && $levelCourse <= 3) {
                 break;
             }
 
@@ -2001,9 +1879,9 @@ class Org_TreeView extends RepoTreeView
 
             $node['id'] = $folder->id;
 
-            $node['resource'] = $folder->otherValues[REPOFIELDIDRESOURCE];
+            $node['resource'] = $repoFieldIdResource;
 
-            if ($folder->otherValues[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
+            if ($orgFieldPublishFor == PF_ATTENDANCE && !$this->presence()) {
                 $node['active'] = false;
             } elseif ($isPrerequisitesSatisfied) { // && $event->getAccessible()){
                 $node['active'] = true;
@@ -2014,29 +1892,32 @@ class Org_TreeView extends RepoTreeView
             } else {
                 $node['is_folder'] = true;
             }
-            //$node['is_folder']=count($this->tdb->getidLosIdById($folder->id)) != 0;
 
-            if (($folder->otherValues[ORGFIELD_PUBLISHFROM] != '' && $folder->otherValues[ORGFIELD_PUBLISHFROM] != '0000-00-00 00:00:00') && ($levelCourse <= 3)) {
-                if ($folder->otherValues[ORGFIELD_PUBLISHFROM] > date('Y-m-d H:i:s')) {
-                    continue;
-                }
-            }
-            if (($folder->otherValues[ORGFIELD_PUBLISHTO] != '' && $folder->otherValues[ORGFIELD_PUBLISHTO] != '0000-00-00 00:00:00') && ($levelCourse <= 3)) {
-                if ($folder->otherValues[ORGFIELD_PUBLISHTO] < date('Y-m-d H:i:s')) {
+            $orgFieldPublishFrom = $folder->otherValues[ORGFIELD_PUBLISHFROM] ?? null;
+
+            if (($orgFieldPublishFrom != '' && $orgFieldPublishFrom) && ($levelCourse <= 3)) {
+                if ($orgFieldPublishFrom > date('Y-m-d H:i:s')) {
                     continue;
                 }
             }
 
-            $status = Track_Object::getStatusFromId($folder->id, getLogUserId());
+            $orgFieldPublishTo = $folder->otherValues[ORGFIELD_PUBLISHTO] ?? null;
 
-            if ($folder->otherValues[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $levelCourse <= 3) {
+            if (($orgFieldPublishTo != '' && $orgFieldPublishTo != null && $orgFieldPublishTo ) && ($levelCourse <= 3)) {
+                if ($orgFieldPublishTo < date('Y-m-d H:i:s')) {
+                    continue;
+                }
+            }
+
+            $status = Track_Object::getStatusFromId($folder->id, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
+
+            if ($orgFieldPublishFor == PF_TEACHER && $levelCourse <= 3) {
                 continue;
-            } elseif ($folder->otherValues[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
+            } elseif ($orgFieldPublishFor == PF_ATTENDANCE && !$this->presence()) {
                 $node['locked'] = true;
             } elseif ($isPrerequisitesSatisfied) { // && $event->getAccessible() ) {
-                if (!$node['is_folder']) {
-                    $node['play'] = true;
-                }
+
+                $node['play'] = !$node['is_folder'];
 
                 $node['locked'] = false;
             } else {
@@ -2056,7 +1937,7 @@ class Org_TreeView extends RepoTreeView
                 }
             }
 
-            $node['status'] = $status;
+            $node['status'] = str_replace(' ', '-', $status);
 
             switch ($status) {
                 case 'not attempted':
@@ -2080,28 +1961,28 @@ class Org_TreeView extends RepoTreeView
             $node['status_logo'] = getPathImage() . 'lobject/' . $img;
             $node['status_label'] = $status;
 
-            $node['type'] = $folder->otherValues[1];
+            $node['type'] = $type;
 
-            if ($folder->otherValues[1] != '') {
-                $node['image_type'] = $folder->otherValues[1];
+            if ($type != '') {
+                $node['image_type'] = $type;
             }
 
             if (!array_key_exists('image_type', $node)) {
                 $node['image_type'] = 'folder';
             }
 
-            $node['properties'] = $folder->properties;
+            $node['properties'] = $folder->properties ?? null;
 
             $node['img_path'] = FormaLms\lib\Get::rel_path('files_lms') . '/lo/';
 
             if (!$node['is_folder']) {
-                if ($arrData[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
+                if (isset($arrData[ORGFIELD_PUBLISHFOR]) && $arrData[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
                     $node['locked'] = true;
                 } elseif ($isPrerequisitesSatisfied) { // && $event->getAccessible()) {
-                    if (method_exists($lo_class, 'trackDetails')) {
+                    if (is_object($lo_class) && method_exists($lo_class, 'trackDetails')) {
                         $node['track_detail'] = [
                             'type' => $arrData[REPOFIELDOBJECTTYPE],
-                            'is_user' => getLogUserId(),
+                            'is_user' => \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(),
                             'id_org' => $arrData[REPOFIELDIDRESOURCE],
                         ];
                     }
@@ -2112,8 +1993,9 @@ class Org_TreeView extends RepoTreeView
                 $node['childCount'] = (int) $this->countChildren($folder->id);
             }
 
+            $node['autoplay'] = (bool)getLOParam($folder->otherValues[ORGFIELDIDPARAM],'autoplay');
+
             $res[$idLo] = $node;
-            ++$idx;
         }
 
         return $res;
@@ -2127,7 +2009,7 @@ class Org_TreeView extends RepoTreeView
         if ($GLOBALS['course_descriptor']->getValue('course_type') == 'classroom') {
             require_once _lms_ . '/lib/lib.date.php';
             $man_date = new DateManager();
-            $this->user_presence = $man_date->checkUserPresence(getLogUserId(), $idCourse);
+            $this->user_presence = $man_date->checkUserPresence(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $idCourse);
         }
 
         $tree = $this->printState();
@@ -2162,7 +2044,8 @@ class Org_TreeView extends RepoTreeView
 
         if ($coll !== false) {
             while ($folder = $coll->getNext()) {
-                list($key, $val) = each($stack[$level - 1]['childs']);
+                $key = key($stack[$level - 1]['childs']);
+                $val = current($stack[$level - 1]['childs']);
                 $stack[$level] = [];
                 $stack[$level]['folder'] = $folder;
                 $stack[$level]['childs'] = $val;

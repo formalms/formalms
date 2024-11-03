@@ -19,7 +19,7 @@ class TransactionAlms extends Model
 
     public function __construct()
     {
-        $this->acl_man = &Docebo::user()->getAclManager();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();
         parent::__construct();
     }
 
@@ -147,15 +147,15 @@ class TransactionAlms extends Model
 
             sql_query($query);
 
-            $query = 'SELECT *'
-                        . ' FROM %adm_transaction_info'
+            $query = 'SELECT ti.*, t.id_user'
+                        . ' FROM %adm_transaction_info ti JOIN %adm_transaction t ON ti.id_trans = id_trans '
                         . ' WHERE id_trans = ' . (int) $id_trans
                         . ' ORDER BY code, name';
 
             $res = sql_query($query);
 
             while ($row = sql_fetch_assoc($res)) {
-                $query = 'UPDATE %lms_course_user'
+                $query = 'UPDATE %lms_courseuser'
                             . ' SET waiting = 1,'
                             . ' status = -2'
                             . ' WHERE idCourse = ' . (int) $row['id_course']
@@ -243,8 +243,8 @@ class TransactionAlms extends Model
                     $id_course = $prod['id_course'];
                     $edition_id = $prod['id_edition'];
 
-                    $docebo_course = new DoceboCourse($id_course);
-                    $group_levels = $docebo_course->getCourseLevel($id_course);
+                    $formaCourse = new FormaCourse($id_course);
+                    $group_levels = $formaCourse->getCourseLevel($id_course);
                     $waiting_users = $man_course->getWaitingSubscribed($id_course);
 
                     $level = $waiting_users['users_info'][$id_user]['level'];

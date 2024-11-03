@@ -1,5 +1,8 @@
 <?php
 
+use FormaLms\lib\Domain\DomainHandler;
+
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -58,11 +61,15 @@ class Report_User extends Report
 
     public $delay_columns;
     public $LO_columns;
+    /**
+     * @var array|array[]
+     */
+    public array $TESTSTAT_columns;
 
     public function __construct($id_report, $report_name = false)
     {
         parent::__construct($id_report, $report_name);
-        $this->lang = &DoceboLanguage::createInstance('report', 'framework');
+        $this->lang = FormaLanguage::createInstance('report', 'framework');
         $this->usestandardtitle_rows = false;
 
         $this->_set_columns_category(_RU_CATEGORY_COURSES, $this->lang->def('_RU_CAT_COURSES'), 'get_courses_filter', 'show_report_courses', '_get_courses_query');
@@ -223,23 +230,21 @@ class Report_User extends Report
         $jump_url = $this->jump_url;
         $next_url = $this->next_url;
 
-        require_once Forma::inc(_base_ . '/lib/lib.form.php');
-        require_once Forma::inc(_adm_ . '/lib/lib.directory.php');
-        require_once Forma::inc(_base_ . '/lib/lib.userselector.php');
-        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
+        require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/lib.directory.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.userselector.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
-        $lang = &DoceboLanguage::createInstance('report', 'framework');
+        $lang = FormaLanguage::createInstance('report', 'framework');
         $org_chart_subdivision = importVar('org_chart_subdivision', true, 0);
 
-        $aclManager = new DoceboACLManager();
         $user_select = new UserSelector();
         $user_select->use_suspended = true;
 
         if (isset($_POST['cancelselector'])) {
             Util::jump_to($back_url);
         } elseif (isset($_POST['okselector'])) {
-            $aclManager = new DoceboACLManager();
-
+         
             $temp = $user_select->getSelection($_POST);
 
             $reportTempData['rows_filter']['users'] = $temp;
@@ -261,12 +266,12 @@ class Report_User extends Report
             //$user_select->show_orgchart_simple_selector = FALSE;
             //$user_select->multi_choice = TRUE;
 
-            if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
-                $acl_man = new DoceboACLManager();
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
+                $acl_man = new FormaACLManager();
 
-                require_once Forma::inc(_base_ . '/lib/lib.preference.php');
+                require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.preference.php');
                 $adminManager = new AdminPreference();
-                $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+                $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
                 $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
 
                 $user_select->setUserFilter('user', $admin_users);
@@ -282,7 +287,7 @@ class Report_User extends Report
                 $user_select->resetSelection($reportTempData['rows_filter']['users']);
             }
 
-            if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 $user_select->addFormInfo(
                     Form::getCheckbox($lang->def('_REPORT_FOR_ALL'), 'all_users', 'all_users', 1, $reportTempData['rows_filter']['all_users']) .
                     Form::getBreakRow() .
@@ -303,17 +308,17 @@ class Report_User extends Report
     //filter functions
     public function get_courses_filter()
     {
-        $out = &$GLOBALS['page'];
+        $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
 
         $back_url = $this->back_url;
         $jump_url = $this->jump_url;
         $next_url = $this->next_url;
 
-        require_once Forma::inc(_base_ . '/lib/lib.form.php');
-        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
-        $lang = &DoceboLanguage::createInstance('report', 'framework');
+        $lang = FormaLanguage::createInstance('report', 'framework');
 
         YuiLib::load('datasource');
         Util::get_js(FormaLms\lib\Get::rel_path('lms') . '/admin/modules/report/courses_filter.js', true, true);
@@ -336,7 +341,7 @@ class Report_User extends Report
             //...
         }
 
-        require_once Forma::inc(_adm_ . '/lib/lib.field.php');
+        require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/lib.field.php');
         $fman = new FieldList();
         $fields = $fman->getFlatAllFields();
         $custom = [];
@@ -486,8 +491,8 @@ class Report_User extends Report
                         'id' => $val['id'],
                         'label' => $val['label'],
                         'selected' => $is_selected,
-                        'translation' => $val['translation'],
-                        'type_field' => $val['type_field'],
+                        'translation' => array_key_exists('translation' , $val) ? $val['translation'] : '',
+                        'type_field' => array_key_exists('type_field' , $val) ? $val['type_field'] : '',
                     ];
                 }
                 $reportTempData['columns_filter']['custom_fields_org'] = $t_arr;
@@ -513,8 +518,8 @@ class Report_User extends Report
                         'id' => $val['id'],
                         'label' => $val['label'],
                         'selected' => $is_selected,
-                        'translation' => $val['translation'],
-                        'type_field' => $val['type_field'],
+                        'translation' => array_key_exists('translation', $val) ? $val['translation'] : '',
+                        'type_field' => array_key_exists('type_field', $val) ? $val['type_field'] : '',
                     ];
                 }
                 $reportTempData['columns_filter']['custom_fields_course'] = $t_arr;
@@ -566,7 +571,7 @@ class Report_User extends Report
 
         //example selection options
 
-        require_once Forma::inc(_base_ . '/lib/lib.json.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.json.php');
 
         $seldata = $this->courses_filter_definition;
 
@@ -839,7 +844,7 @@ class Report_User extends Report
         $sort_dir_dropdown = Form::getInputDropdown('', 'order_dir', 'order_dir', $dir_list, $dir_selected, '');
         $box->body .= Form::getDropdown(Lang::t('_ORDER_BY', 'standard'), 'order_by', 'order_by', $sort_list, $sort_selected, $sort_dir_dropdown);
 
-        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool)$reportTempData['columns_filter']['show_suspended']);
+        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool) $reportTempData['columns_filter']['show_suspended']);
 
         cout($box->get());
     }
@@ -869,10 +874,10 @@ class Report_User extends Report
         $jump_url = $this->jump_url;
         $next_url = $this->next_url;
 
-        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
         $cmodel = new CompetencesAdm();
-        $lang = &DoceboLanguage::createInstance('report', 'framework');
+        $lang = FormaLanguage::createInstance('report', 'framework');
 
         YuiLib::load();
         Util::get_js(FormaLms\lib\Get::rel_path('lms') . '/admin/modules/report/competences_filter.js', true, true);
@@ -992,7 +997,7 @@ class Report_User extends Report
 
         checkPerm('view');
 
-        $lang = &DoceboLanguage::createInstance('report', 'framework');
+        $lang = FormaLanguage::createInstance('report', 'framework');
 
         if (isset($_POST['send_mail_confirm'])) {
             $op = 'send_mail_confirm';
@@ -1006,8 +1011,9 @@ class Report_User extends Report
             case 'send_mail_confirm':
                 $subject = FormaLms\lib\Get::req('mail_object', DOTY_STRING, '[' . $lang->def('_SUBJECT') . ']'); //'[No subject]');
                 $body = $_REQUEST['mail_body'] ?? '';
-                $acl_man = new DoceboACLManager();
-                $sender = FormaLms\lib\Get::sett('sender_event');
+                $acl_man = new FormaACLManager();
+                $sender = DomainHandler::getInstance()->getMailerField('sender_mail_system');
+                $params = [MAIL_SENDER_ACLNAME => DomainHandler::getInstance()->getMailerField('sender_name_system')];
                 $mail_recipients = Util::unserialize(urldecode(FormaLms\lib\Get::req('mail_recipients', DOTY_STRING, '')));
 
                 // send mail
@@ -1017,9 +1023,9 @@ class Report_User extends Report
                     //mail($rec_data[ACL_INFO_EMAIL] , $subject, $body, $from.$header."\r\n");
                     $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
                 }
-                $mailer = FormaMailer::getInstance();
-                $mailer->addReplyTo(FormaLms\lib\Get::sett('sender_event'));
-                $mailer->SendMail($sender, $arr_recipients, $subject, $body);
+                $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
+                $mailer->addReplyTo(DomainHandler::getInstance()->getMailerField('replyto_mail'));
+                $mailer->SendMail($arr_recipients, $subject, $body, $sender, [], $params);
 
                 $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
 
@@ -1028,7 +1034,7 @@ class Report_User extends Report
                 break;
 
             case 'send_mail':
-                require_once Forma::inc(_base_ . '/lib/lib.form.php');
+                require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
                 $mail_recipients = FormaLms\lib\Get::req('mail_recipients', DOTY_MIXED, []);
                 cout(''//Form::openForm('course_selection', Util::str_replace_once('&', '&amp;', $jump_url))
                     . Form::openElementSpace()
@@ -1053,8 +1059,8 @@ class Report_User extends Report
     /**
      * Return the output in the selected format for the report with the filters given.
      *
-     * @param string $type output type
-     * @param array $report_data a properly formatted list of rule to follow
+     * @param string $type        output type
+     * @param array  $report_data a properly formatted list of rule to follow
      * @param string $other
      *
      * @return string the properly formated report
@@ -1064,15 +1070,15 @@ class Report_User extends Report
         checkPerm('view');
         $view_all_perm = checkPerm('view_all', true);
 
-        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
         $output = '';
         $jump_url = '';
         $org_chart_subdivision = 0; // not implemented
         $elem_selected = [];
 
-        $lang = &DoceboLanguage::createInstance('report', 'framework');
-        $acl_man = new DoceboACLManager();
+        $lang = FormaLanguage::createInstance('report', 'framework');
+        $acl_man = new FormaACLManager();
         $acl_man->include_suspended = true;
         $course_man = new Man_Course();
 
@@ -1110,10 +1116,10 @@ class Report_User extends Report
         // retrive the user selected
         if ($alluser > 0) {
             // all the user selected (we can avoid this ? no we need to hide the suspended users)
-            $user_selected = &$acl_man->getAllUsersIdst();
+            $user_selected = $acl_man->getAllUsersIdst();
         } else {
             // resolve the user selection
-            $user_selected = &$acl_man->getAllUsersFromSelection($filter_userselection);
+            $user_selected = $acl_man->getAllUsersFromSelection($filter_userselection);
         }
 
         //apply sub admin filters, if needed
@@ -1122,14 +1128,14 @@ class Report_User extends Report
             $alluser = false;
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_users = $adminManager->getAdminUsers(Docebo::user()->getIdST());
+            $admin_users = $adminManager->getAdminUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $admin_users = $acl_man->getAllUsersFromSelection($admin_users);
             $user_selected = array_intersect($user_selected, $admin_users);
             unset($admin_users);
 
             //filter courses
             $admin_allcourses = false;
-            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             if (!$filter_allcourses) {
                 $rs = sql_query('SELECT idCourse FROM %lms_course');
                 $course_selected = [];
@@ -1145,12 +1151,12 @@ class Report_User extends Report
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
+                $user_catalogue = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if (count($user_catalogue) > 0) {
                     $courses = [0];
 
                     foreach ($user_catalogue as $id_cat) {
-                        $catalogue_course = &$cat_man->getCatalogueCourse($id_cat, true);
+                        $catalogue_course = $cat_man->getCatalogueCourse($id_cat, true);
 
                         $courses = array_merge($courses, $catalogue_course);
                     }
@@ -1182,14 +1188,14 @@ class Report_User extends Report
                 if (!empty($admin_courses['coursepath'])) {
                     require_once _lms_ . '/lib/lib.coursepath.php';
                     $path_man = new CoursePath_Manager();
-                    $coursepath_course = &$path_man->getAllCourses($admin_courses['coursepath']);
+                    $coursepath_course = $path_man->getAllCourses($admin_courses['coursepath']);
                     $array_courses = array_merge($array_courses, $coursepath_course);
                 }
                 if (!empty($admin_courses['catalogue'])) {
                     require_once _lms_ . '/lib/lib.catalogue.php';
                     $cat_man = new Catalogue_Manager();
                     foreach ($admin_courses['catalogue'] as $id_cat) {
-                        $catalogue_course = &$cat_man->getCatalogueCourse($id_cat, true);
+                        $catalogue_course = $cat_man->getCatalogueCourse($id_cat, true);
                         $array_courses = array_merge($array_courses, $catalogue_course);
                     }
                 }
@@ -1222,7 +1228,7 @@ class Report_User extends Report
             }
         }
 
-        $show_classrooms_editions = isset($filter_columns['show_classrooms_editions']) ? (bool)$filter_columns['show_classrooms_editions'] : false;
+        $show_classrooms_editions = isset($filter_columns['show_classrooms_editions']) ? (bool) $filter_columns['show_classrooms_editions'] : false;
 
         $classrooms_editions_info = [];
         if ($show_classrooms_editions) {
@@ -1252,10 +1258,10 @@ class Report_User extends Report
 
             $org_name = $org_man->getFolderFormIdst($elem_selected);
 
-            if ($userlevelid != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
+            if ($userlevelid != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+                $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
 
                 $org_name_temp = $org_name;
                 $org_name = [];
@@ -1316,7 +1322,7 @@ class Report_User extends Report
         $score_final = $org_man->getFinalObjectScore($user_selected, array_keys($id_courses));
 
         require_once _lms_ . '/lib/lib.coursereport.php';
-        $rep_man = new CourseReportManager($id_course);
+        $rep_man = new CourseReportManager(0);
 
         $score_course = $rep_man->getUserFinalScore($user_selected, array_keys($id_courses));
 
@@ -1555,7 +1561,7 @@ class Report_User extends Report
         }
         $buffer = new ReportTablePrinter($type);
 
-        $lang = &DoceboLanguage::createInstance('report', 'framework');
+        $lang = FormaLanguage::createInstance('report', 'framework');
         $cols = $filter_columns['showed_columns'];
         $output = '';
 
@@ -1600,13 +1606,13 @@ class Report_User extends Report
             ++$colspanuser;
         }
 
-        $aclManager = new DoceboACLManager();
+        $aclManager = new FormaACLManager();
         $aclManager->include_suspended = true;
         $_users = $aclManager->getAllUsersFromSelection($filter_rows);
 
         // custom field for user
         $field_values = [];
-        $customcols = &$filter_columns['custom_fields'];
+        $customcols = $filter_columns['custom_fields'];
         $custom_list = [];
         foreach ($customcols as $val) {
             if ($val['selected']) {
@@ -1624,7 +1630,7 @@ class Report_User extends Report
             ++$colspanuser;
             // org-chart custom fields
             $field_values_org = [];
-            $customcols_org = &$filter_columns['custom_fields_org'];
+            $customcols_org = $filter_columns['custom_fields_org'];
             foreach ($customcols_org as $val) {
                 if ($val['selected']) {
                     $th2[] = $val['label'];
@@ -1669,15 +1675,18 @@ class Report_User extends Report
         }
         //LRZ: custom field for course
         $field_values_course = [];
-        $customcols_course = &$filter_columns['custom_fields_course'];
+        $customcols_course = array_key_exists('custom_fields_course' , $filter_columns) ? $filter_columns['custom_fields_course'] : '';
         $custom_list_course = [];
 
-        foreach ($customcols_course as $val) {
-            if ($val['selected']) {
-                $th2[] = $val['label'];
-                ++$colspan1;
-            }
+        if(is_array($customcols_course)) {
+           foreach ($customcols_course as $val) {
+                if ($val['selected']) {
+                    $th2[] = $val['label'];
+                    ++$colspan1;
+                }
+            } 
         }
+        
         $colspan_classrooms_editions = 0;
         if ($show_classrooms_editions) {
             if (in_array('_TH_CLASSROOM_CODE', $cols)) {
@@ -1750,12 +1759,12 @@ class Report_User extends Report
         // Luca
         if (in_array('_TH_PERC_LO', $cols)) {
             $th2[] = $lang->def('_PERCENTAGE');
-            ++$colspanLO;
+            isset($colspanLO) ? ++$colspanLO : 1;
         }
 
         if (in_array('_TH_PERC_LO_GRAPH', $cols)) {
             $th2[] = $lang->def('_GRAPHIC_REPORT') . '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  ';
-            ++$colspanLO;
+            isset($colspanLO) ? ++$colspanLO : 1;
         }
 
         //checkbox for mail
@@ -1774,7 +1783,7 @@ class Report_User extends Report
         }
 
         // Luca
-        $th1[] = ['colspan' => $colspanLO, 'value' => $lang->def('_PROGRESS')];
+        $th1[] = ['colspan' => $colspanLO ?? null, 'value' => $lang->def('_PROGRESS')];
 
         $buffer->openHeader();
         $buffer->addHeader($th1);
@@ -1878,7 +1887,7 @@ class Report_User extends Report
                 require_once _adm_ . '/lib/lib.customfield.php';
                 $fman = new CustomFieldList();
                 $row = [];
-                $row[] = Docebo::aclm()->relativeId($userid);
+                $row[] = \FormaLms\lib\Forma::getAclManager()->relativeId($userid);
                 if (in_array('_TH_LASTNAME', $cols)) {
                     $row[] = $lastname;
                 }
@@ -1918,15 +1927,13 @@ class Report_User extends Report
 
                     if (count($folders) > 1) {
                         foreach ($customcols_org as $val) {
-                            $customColsValue = [];
+                            $v = [];
                             if ($val['selected']) {
                                 foreach ($folders as $folder_name) {
-                                    $customColsValue[] = $fman->getValueCustomOrg($val['label'], $folder_name);
+                                    $v[] = $fman->getValueCustomOrg($val['label'], $folder_name);
                                 }
                             }
-                            if (!empty($customColsValue)) {
-                                $row[] = implode('<hr>', $customColsValue);
-                            }
+                            $row[] = implode('<hr>', $v);
                         }
                     } else {
                         foreach ($customcols_org as $val) {
@@ -1953,7 +1960,7 @@ class Report_User extends Report
                     $course_label_id = $label_model->getCourseLabel($id_course);
                     if ($course_label_id > 0) {
                         $arr_course_label = $label_model->getLabelInfo($course_label_id);
-                        $row[] = $arr_course_label[getLanguage()][LABEL_TITLE];
+                        $row[] = $arr_course_label [Lang::get()][LABEL_TITLE];
                     } else {
                         $row[] = '';
                     }
@@ -1968,11 +1975,14 @@ class Report_User extends Report
                     $row[] = $credits;
                 }
 
-                foreach ($customcols_course as $val) {
-                    if ($val['selected']) {
-                        $row[] = '<i></i>' . $fman->getValueCustomCourse($id_course, $val['id']);
+                if(is_array($customcols_course)) {
+                    foreach ($customcols_course as $val) {
+                        if ($val['selected']) {
+                            $row[] = '<i></i>' . $fman->getValueCustomCourse($id_course, $val['id']);
+                        }
                     }
                 }
+                
                 if ($show_classrooms_editions) {
                     $e_code = $e_name = $date_1 = $date_2 = '';
                     if (isset($classrooms_editions_info['classrooms'][$id_date])) {
@@ -2039,9 +2049,9 @@ class Report_User extends Report
 
                 if (in_array('_TH_USER_ELAPSED_TIME', $cols)) {
                     $row[] = (isset($time_list[$id_user . '_' . $id_course]) ?
-                        substr('0' . ((int)($time_list[$id_user . '_' . $id_course] / 3600)), -2) . 'h '
-                        . substr('0' . ((int)(($time_list[$id_user . '_' . $id_course] % 3600) / 60)), -2) . 'm '
-                        . substr('0' . ((int)($time_list[$id_user . '_' . $id_course] % 60)), -2) . 's ' : '&nbsp;');
+                        substr('0' . ((int) ($time_list[$id_user . '_' . $id_course] / 3600)), -2) . 'h '
+                        . substr('0' . ((int) (($time_list[$id_user . '_' . $id_course] % 3600) / 60)), -2) . 'm '
+                        . substr('0' . ((int) ($time_list[$id_user . '_' . $id_course] % 60)), -2) . 's ' : '&nbsp;');
                 }
 
                 if (in_array('_TH_ESTIMATED_TIME', $cols)) {
@@ -2050,20 +2060,18 @@ class Report_User extends Report
 
                 // Luca
                 if (in_array('_TH_PERC_LO', $cols)) {
-                    $tot_lo = $this->getTotLO($id_user, $id_course);
-                    $tot_compl_sup = $this->getPercLO($id_user, $id_course);
-                    $per_compl = round(($tot_compl_sup / $tot_lo) * 100);
 
-                    $row[] = $per_compl . '%';
+                    $courseAlms = new CourseAlms();
+                    $courseStats = $courseAlms->getCourseCompletedPercentage($id_course, $id_user);
+
+                    $row[] = $courseStats['complete_percentage'] . '%';
                 }
 
                 if (in_array('_TH_PERC_LO_GRAPH', $cols)) {
-                    $tot_lo = $this->getTotLO($id_user, $id_course);
-                    $tot_compl_sup = $this->getPercLO($id_user, $id_course);
-                    $per_compl = round(($tot_compl_sup / $tot_lo) * 100);
-
+                    $courseAlms = new CourseAlms();
+                    $courseStats = $courseAlms->getCourseCompletedPercentage($id_course, $id_user);
                     $str_color_bar = 'warning';
-                    if ($per_compl == 100) {
+                    if ($courseStats['complete_percentage'] == 100) {
                         $str_color_bar = 'success';
                     }
 
@@ -2074,10 +2082,10 @@ class Report_User extends Report
                                  <div class="progress" style=" cursor: pointer;">
                                       <div class="progress-bar progress-bar-' . $str_color_bar . '"
                                            role="progressbar" 
-                                           aria-valuenow="' . $per_compl . '" 
+                                           aria-valuenow="' . $courseStats['complete_percentage'] . '" 
                                            aria-valuemin="0" 
                                            aria-valuemax="100" 
-                                           style="width: ' . $per_compl . '%;"                        
+                                           style="width: ' . $courseStats['complete_percentage'] . '%;"                        
                                             >
                                         <span class="sr-only" >&nbsp;</span>
                                       </div>
@@ -2132,7 +2140,7 @@ class Report_User extends Report
 
         //if ($this->use_mail) { $this->_loadEmailActions(); }
         if ($this->use_mail) {
-            $mlang = &DoceboLanguage::createInstance('report', 'framework');
+            $mlang = FormaLanguage::createInstance('report', 'framework');
             //$output .= Form::getHidden('no_show_repdownload', 'no_show_repdownload', 1);
             $output .= Form::openButtonSpace()
                 . Form::getHidden('no_show_repdownload', 'no_show_repdownload', 1)
@@ -2221,7 +2229,7 @@ class Report_User extends Report
 
         checkPerm('view');
 
-        $lang = &DoceboLanguage::createInstance('report', 'framework');
+        $lang = &FormaLanguage::createInstance('report', 'framework');
 
         if (isset($_POST['send_mail_confirm'])) {
             $op = 'send_mail_confirm';
@@ -2233,20 +2241,22 @@ class Report_User extends Report
 
         switch ($op) {
             case 'send_mail_confirm':
+
+                $senderMailSystem = DomainHandler::getInstance()->getMailerField('sender_mail_system');
                 $subject = importVar('mail_object', false, '[' . $lang->def('_SUBJECT') . ']'); //'[No subject]');
                 $body = importVar('mail_body', false, '');
-                $acl_man = new DoceboACLManager();
-                $sender = FormaLms\lib\Get::sett('sender_event');
+                $acl_man = new FormaACLManager();
+                $sender = $senderMailSystem;
                 $mail_recipients = Util::unserialize(urldecode(FormaLms\lib\Get::req('mail_recipients', DOTY_STRING, '')));
 
                 // prepare intestation for email
                 $from = 'From: ' . $sender . $GLOBALS['mail_br'];
                 $header = 'MIME-Version: 1.0' . $GLOBALS['mail_br']
-                    . 'Content-type: text/html; charset=' . getUnicode() . $GLOBALS['mail_br'];
-                $header .= 'Return-Path: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
-                //$header .= "Reply-To: ".FormaLms\lib\Get::sett('sender_event').$GLOBALS['mail_br'];
-                $header .= 'X-Sender: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
-                $header .= 'X-Mailer: PHP/' . phpversion() . $GLOBALS['mail_br'];
+                    . 'Content-type: text/html; charset=' . Lang::charset() . $GLOBALS['mail_br'];
+                $header .= 'Return-Path: ' . $senderMailSystem . $GLOBALS['mail_br'];
+   
+                $header .= 'X-Sender: ' . $senderMailSystem . $GLOBALS['mail_br'];
+                $header .= 'X-Mailer: PHP/' . PHP_VERSION . $GLOBALS['mail_br'];
 
                 // send mail
                 $arr_recipients = [];
@@ -2255,9 +2265,9 @@ class Report_User extends Report
                     //mail($rec_data[ACL_INFO_EMAIL] , $subject, $body, $from.$header."\r\n");
                     $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
                 }
-                $mailer = FormaMailer::getInstance();
-                $mailer->addReplyTo(FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br']);
-                $mailer->SendMail($sender, $arr_recipients, $subject, $body);
+                $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
+                $mailer->addReplyTo(DomainHandler::getInstance()->getMailerField('replyto_mail') . $GLOBALS['mail_br']);
+                $mailer->SendMail($arr_recipients, $subject, $body, $sender, [], [MAIL_SENDER_ACLNAME => DomainHandler::getInstance()->getMailerField('sender_name_system')]);
 
                 $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
 
@@ -2310,11 +2320,11 @@ class Report_User extends Report
         $users_selection = $reportTempData['rows_filter']['users'];
 
         //check admin permissions
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
-            $admin_users = Docebo::aclm()->getAllUsersFromIdst($admin_tree);
+            $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
+            $admin_users = \FormaLms\lib\Forma::getAclManager()->getAllUsersFromIdst($admin_tree);
             $all_users = false;
             $users_selection = array_intersect($users_selection, $admin_users);
             unset($admin_users); //free some memory
@@ -2342,8 +2352,8 @@ class Report_User extends Report
         $arr_data = [];
         $arr_userids = [];
         $arr_competences = [];
-        $language = getLanguage();
-        $acl_man = Docebo::user()->getACLManager();
+        $language = Lang::get();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();;
         $query = 'SELECT t1.id_competence, t2.name, t3.id_user, t4.userid, t3.score_got '
             . ' FROM (' . $table1 . ' as t1 LEFT JOIN ' . $table2 . ' as t2 ON (t1.id_competence = t2.id_competence '
             . " AND t2.lang_code='" . $language . "')) JOIN " . $table3 . ' as t3 ON (t1.id_competence = t3.id_competence) '
@@ -2527,7 +2537,7 @@ class Report_User extends Report
         $next_url = $this->next_url;
 
         require_once _base_ . '/lib/lib.form.php';
-        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
         //back to columns category selection
         if (isset($_POST['undo_filter'])) {
@@ -2711,7 +2721,7 @@ class Report_User extends Report
         $sort_dir_dropdown = Form::getInputDropdown('', 'order_dir', 'order_dir', $dir_list, $dir_selected, '');
         $box->body .= Form::getDropdown(Lang::t('_ORDER_BY', 'standard'), 'order_by', 'order_by', $sort_list, $sort_selected, $sort_dir_dropdown);
 
-        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool)$reportTempData['columns_filter']['show_suspended']);
+        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool) $reportTempData['columns_filter']['show_suspended']);
 
         cout($box->get());
     }
@@ -2724,7 +2734,7 @@ class Report_User extends Report
 
         checkPerm('view');
 
-        $lang = &DoceboLanguage::createInstance('report', 'framework');
+        $lang = FormaLanguage::createInstance('report', 'framework');
 
         if (isset($_POST['send_mail_confirm'])) {
             $op = 'send_mail_confirm';
@@ -2736,20 +2746,20 @@ class Report_User extends Report
 
         switch ($op) {
             case 'send_mail_confirm':
+                $senderMailSystem = DomainHandler::getInstance()->getMailerField('sender_mail_system');
                 $subject = importVar('mail_object', false, '[' . $lang->def('_SUBJECT') . ']'); //'[No subject]');
                 $body = importVar('mail_body', false, '');
-                $acl_man = new DoceboACLManager();
-                $sender = FormaLms\lib\Get::sett('sender_event');
+                $acl_man = new FormaACLManager();
+                $sender = $senderMailSystem;
                 $mail_recipients = Util::unserialize(urldecode(FormaLms\lib\Get::req('mail_recipients', DOTY_STRING, '')));
 
                 // prepare intestation for email
                 $from = 'From: ' . $sender . $GLOBALS['mail_br'];
                 $header = 'MIME-Version: 1.0' . $GLOBALS['mail_br']
-                    . 'Content-type: text/html; charset=' . getUnicode() . $GLOBALS['mail_br'];
-                $header .= 'Return-Path: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
-                //$header .= "Reply-To: ".FormaLms\lib\Get::sett('sender_event').$GLOBALS['mail_br'];
-                $header .= 'X-Sender: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
-                $header .= 'X-Mailer: PHP/' . phpversion() . $GLOBALS['mail_br'];
+                    . 'Content-type: text/html; charset=' . Lang::charset() . $GLOBALS['mail_br'];
+                $header .= 'Return-Path: ' . $senderMailSystem . $GLOBALS['mail_br'];
+                $header .= 'X-Sender: ' . $senderMailSystem . $GLOBALS['mail_br'];
+                $header .= 'X-Mailer: PHP/' . PHP_VERSION . $GLOBALS['mail_br'];
 
                 // send mail
                 $arr_recipients = [];
@@ -2758,9 +2768,9 @@ class Report_User extends Report
                     //mail($rec_data[ACL_INFO_EMAIL] , $subject, $body, $from.$header."\r\n");
                     $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
                 }
-                $mailer = FormaMailer::getInstance();
-                $mailer->addReplyTo(FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br']);
-                $mailer->SendMail($sender, $arr_recipients, $subject, $body);
+                $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
+                $mailer->addReplyTo(DomainHandler::getInstance()->getMailerField('replyto_mail') . $GLOBALS['mail_br']);
+                $mailer->SendMail($arr_recipients, $subject, $body, $sender, [], [MAIL_SENDER_ACLNAME => DomainHandler::getInstance()->getMailerField('sender_name_system')]);
 
                 $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
 
@@ -2805,7 +2815,7 @@ class Report_User extends Report
         $rdata = $reportTempData['rows_filter'];
         $cdata = $reportTempData['columns_filter'];
 
-        $acl_man = new DoceboACLManager();
+        $acl_man = new FormaACLManager();
         $acl_man->include_suspended = true;
         $course_man = new Man_Course();
 
@@ -2822,7 +2832,7 @@ class Report_User extends Report
 
         $order_by = (isset($cdata['order_by']) ? $cdata['order_by'] : 'userid');
         $order_dir = (isset($cdata['order_dir']) ? $cdata['order_dir'] : 'asc');
-        $show_suspended = (isset($cdata['show_suspended']) ? (bool)$cdata['show_suspended'] : false);
+        $show_suspended = (isset($cdata['show_suspended']) ? (bool) $cdata['show_suspended'] : false);
 
         if (!$alluser) {
             $user_selected = &$acl_man->getAllUsersFromIdst($rdata['users']);
@@ -2831,20 +2841,20 @@ class Report_User extends Report
         }
 
         //apply sub admin filters, if needed
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             //filter users
             $alluser = false;
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_users = $adminManager->getAdminUsers(Docebo::user()->getIdST());
+            $admin_users = $adminManager->getAdminUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $admin_users = $acl_man->getAllUsersFromSelection($admin_users);
             $user_selected = array_intersect($user_selected, $admin_users);
             unset($admin_users);
         }
 
-        $lang = &DoceboLanguage::createInstance('report', 'framework');
+        $lang = &FormaLanguage::createInstance('report', 'framework');
 
-        $lang_u = &DoceboLanguage::CreateInstance('stats', 'lms');
+        $lang_u = &FormaLanguage::CreateInstance('stats', 'lms');
 
         if (empty($user_selected)) {
             return $lang->def('_NULL_SELECTION');
@@ -3013,7 +3023,7 @@ class Report_User extends Report
                             'idCourseEdition' => $id_e,
                             'status' => $status,
                             'level' => $level,
-                            'userid' => Docebo::aclm()->relativeId($u_userid),
+                            'userid' => \FormaLms\lib\Forma::getAclManager()->relativeId($u_userid),
                             'firstname' => $u_firstname,
                             'lastname' => $u_lastname,
                             'mail' => $u_email,
@@ -3109,7 +3119,7 @@ class Report_User extends Report
                                 case 'date_first_access':
                                 case 'date_last_access':
                                 case 'date_complete':
-                                    if ($user_info[$index] == '0000-00-00 00:00:00' || $user_info[$index] == '') {
+                                    if (!$user_info[$index] || $user_info[$index] == '') {
                                         $line[] = '';
                                     } else {
                                         $line[] = ['style' => 'align-center', 'value' => Format::date($user_info[$index], 'datetime')];
@@ -3181,7 +3191,7 @@ class Report_User extends Report
         $next_url = $this->next_url;
 
         require_once _base_ . '/lib/lib.form.php';
-        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
         $reportTempData = $this->session->get(self::_REPORT_SESSION);
 
@@ -3407,7 +3417,7 @@ class Report_User extends Report
         $sort_dir_dropdown = Form::getInputDropdown('', 'order_dir', 'order_dir', $dir_list, $dir_selected, '');
         $box->body .= Form::getDropdown(Lang::t('_ORDER_BY', 'standard'), 'order_by', 'order_by', $sort_list, $sort_selected, $sort_dir_dropdown);
 
-        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool)$reportTempData['columns_filter']['show_suspended']);
+        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool) $reportTempData['columns_filter']['show_suspended']);
 
         cout($box->get(), 'content');
     }
@@ -3418,7 +3428,7 @@ class Report_User extends Report
 
         checkPerm('view');
 
-        $lang = &DoceboLanguage::createInstance('report', 'framework');
+        $lang = &FormaLanguage::createInstance('report', 'framework');
 
         if (isset($_POST['send_mail_confirm'])) {
             $op = 'send_mail_confirm';
@@ -3430,20 +3440,20 @@ class Report_User extends Report
 
         switch ($op) {
             case 'send_mail_confirm':
+                $senderMailSystem = DomainHandler::getInstance()->getMailerField('sender_mail_system');
                 $subject = importVar('mail_object', false, '[' . $lang->def('_SUBJECT') . ']'); //'[No subject]');
                 $body = importVar('mail_body', false, '');
-                $acl_man = new DoceboACLManager();
-                $sender = FormaLms\lib\Get::sett('sender_event');
+                $acl_man = new FormaACLManager();
+                $sender = $senderMailSystem;
                 $mail_recipients = Util::unserialize(urldecode(FormaLms\lib\Get::req('mail_recipients', DOTY_STRING, '')));
 
                 // prepare intestation for email
                 $from = 'From: ' . $sender . $GLOBALS['mail_br'];
                 $header = 'MIME-Version: 1.0' . $GLOBALS['mail_br']
-                    . 'Content-type: text/html; charset=' . getUnicode() . $GLOBALS['mail_br'];
-                $header .= 'Return-Path: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
-                //$header .= "Reply-To: ".FormaLms\lib\Get::sett('sender_event').$GLOBALS['mail_br'];
-                $header .= 'X-Sender: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
-                $header .= 'X-Mailer: PHP/' . phpversion() . $GLOBALS['mail_br'];
+                    . 'Content-type: text/html; charset=' . Lang::charset() . $GLOBALS['mail_br'];
+                $header .= 'Return-Path: ' .   $senderMailSystem . $GLOBALS['mail_br'];
+                $header .= 'X-Sender: ' .   $senderMailSystem  . $GLOBALS['mail_br'];
+                $header .= 'X-Mailer: PHP/' . PHP_VERSION . $GLOBALS['mail_br'];
 
                 // send mail
                 $arr_recipients = [];
@@ -3452,9 +3462,9 @@ class Report_User extends Report
                     //mail($rec_data[ACL_INFO_EMAIL] , $subject, $body, $from.$header."\r\n");
                     $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
                 }
-                $mailer = FormaMailer::getInstance();
-                $mailer->addReplyTo(FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br']);
-                $mailer->SendMail($sender, $arr_recipients, $subject, $body);
+                $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
+                $mailer->addReplyTo(DomainHandler::getInstance()->getMailerField('replyto_mail') . $GLOBALS['mail_br']);
+                $mailer->SendMail($arr_recipients, $subject, $body, $sender, [], [MAIL_SENDER_ACLNAME => DomainHandler::getInstance()->getMailerField('sender_name_system')]);
 
                 $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
 
@@ -3489,7 +3499,7 @@ class Report_User extends Report
     public function _convertDate($date)
     {
         $output = '';
-        if ($date != '0000-00-00 00:00:00') {
+        if ($date) {
             $output = Format::date($date);
         }
 
@@ -3511,7 +3521,7 @@ class Report_User extends Report
 
         $_rows = $reportTempData['rows_filter'];
         $_cols = $reportTempData['columns_filter'];
-        $acl_man = new DoceboACLManager();
+        $acl_man = new FormaACLManager();
         $acl_man->include_suspended = true;
 
         $all_users = $_rows['all_users']; //select root & descendants from orgchart instead
@@ -3523,7 +3533,7 @@ class Report_User extends Report
         $customcols = $_cols['custom_fields'];
         $order_by = isset($_cols['order_by']) ? $_cols['order_by'] : 'userid';
         $order_dir = isset($_cols['order_dir']) ? $_cols['order_dir'] : 'asc';
-        $suspended = isset($_cols['show_suspended']) ? (bool)$_cols['show_suspended'] : false;
+        $suspended = isset($_cols['show_suspended']) ? (bool) $_cols['show_suspended'] : false;
         if ($all_users) {
             $users = $acl_man->getAllUsersIdst();
         } else {
@@ -3536,7 +3546,7 @@ class Report_User extends Report
             $all_users = false;
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_users = $adminManager->getAdminUsers(Docebo::user()->getIdST());
+            $admin_users = $adminManager->getAdminUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $admin_users = $acl_man->getAllUsersFromSelection($admin_users);
             $users = array_intersect($users, $admin_users);
             unset($admin_users);
@@ -3599,7 +3609,7 @@ class Report_User extends Report
             if ($val['selected']) {
                 ++$colspans['user'];
                 $temp_head2[] = $val['label'];
-                $field_values[$val['id']] = $fman->fieldValue((int)$val['id'], $users);
+                $field_values[$val['id']] = $fman->fieldValue((int) $val['id'], $users);
             }
         }
 
@@ -4025,10 +4035,10 @@ class Report_User extends Report
         $end_date = isset($reportTempData['columns_filter']['comm_end_date']) ? substr($reportTempData['columns_filter']['comm_end_date'], 0, 10) : '';
 
         //check and validate time period dates
-        if (!preg_match('/^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$/', $start_date) || $start_date == '0000-00-00') {
+        if (!preg_match('/^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$/', $start_date) || is_null($start_date)) {
             $start_date = '';
         }
-        if (!preg_match('/^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$/', $end_date) || $end_date == '0000-00-00') {
+        if (!preg_match('/^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$/', $end_date) || is_null($end_date)) {
             $end_date = '';
         }
 
@@ -4046,13 +4056,13 @@ class Report_User extends Report
         }
 
         //some other checkings and validations
-        if (!$sel_all && count($selection) <= 0) {
+        if (!$sel_all && count($selection ?? []) <= 0) {
             cout('<p>' . $_ERR_NOUSER . '</p>');
 
             return;
         }
 
-        $acl_man = new DoceboACLManager();
+        $acl_man = new FormaACLManager();
         $acl_man->include_suspended = true;
 
         //extract user idst from selection
@@ -4072,11 +4082,11 @@ class Report_User extends Report
         }
 
         //admin users filter
-        $userlevelid = Docebo::user()->getUserLevelId();
-        if ($userlevelid != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
+        if ($userlevelid != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+            $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
             $admin_users = array_unique($admin_users);
             //filter users selection by admin visible users
@@ -4264,7 +4274,7 @@ class Report_User extends Report
 
     public function _get_games_query($type = 'html', $report_data = null, $other = '')
     {
-        require_once __DIR__ . '/report_tableprinter.php';
+        require_once dirname(__FILE__) . '/report_tableprinter.php';
 
         if ($report_data == null) {
             $reportTempData = $this->session->get(self::_REPORT_SESSION);
@@ -4290,10 +4300,10 @@ class Report_User extends Report
         $end_date = isset($reportTempData['columns_filter']['comp_end_date']) ? substr($reportTempData['columns_filter']['comp_end_date'], 0, 10) : '';
 
         //check and validate time period dates
-        if (!preg_match('/^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$/', $start_date) || $start_date == '0000-00-00') {
+        if (!preg_match('/^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$/', $start_date) || is_null($start_date)) {
             $start_date = '';
         }
-        if (!preg_match('/^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$/', $end_date) || $end_date == '0000-00-00') {
+        if (!preg_match('/^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$/', $end_date) || is_null($end_date)) {
             $end_date = '';
         }
 
@@ -4311,13 +4321,13 @@ class Report_User extends Report
         }
 
         //other checkings and validations
-        if (!$sel_all && count($selection) <= 0) {
+        if (!$sel_all && count($selection ?? []) <= 0) {
             cout('<p>' . $_ERR_NOUSER . '</p>');
 
             return;
         }
 
-        $acl_man = new DoceboACLManager();
+        $acl_man = new FormaACLManager();
         $acl_man->include_suspended = true;
 
         //extract user idst from selection
@@ -4337,11 +4347,11 @@ class Report_User extends Report
         }
 
         //admin users filter
-        $userlevelid = Docebo::user()->getUserLevelId();
-        if ($userlevelid != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
+        if ($userlevelid != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+            $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
             $admin_users = array_unique($admin_users);
             //filter users selection by admin visible users
@@ -4456,7 +4466,7 @@ class Report_User extends Report
     }
 
     // +++++++++++++++++++++++++++++++++
-    //     TEST STAT report functions
+//     TEST STAT report functions
     // +++++++++++++++++++++++++++++++++
     public function get_TESTSTAT_filter()
     {
@@ -4467,7 +4477,7 @@ class Report_User extends Report
         $next_url = $this->next_url;
 
         require_once _base_ . '/lib/lib.form.php';
-        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
         $reportTempData = $this->session->get(self::_REPORT_SESSION);
 
@@ -4483,6 +4493,7 @@ class Report_User extends Report
         $selector = new Selector_Course();
         $selector->parseForState($_POST);
         if (isset($_POST['update_tempdata'])) {
+
             $temp = [
                 //'org_chart_subdivision' 	=> (isset($_POST['org_chart_subdivision']) ? 1 : 0),
                 'all_courses' => ($_POST['all_courses'] == 1 ? true : false),
@@ -4667,18 +4678,17 @@ class Report_User extends Report
         $sort_dir_dropdown = Form::getInputDropdown('', 'order_dir', 'order_dir', $dir_list, $dir_selected, '');
         $box->body .= Form::getDropdown(Lang::t('_ORDER_BY', 'standard'), 'order_by', 'order_by', $sort_list, $sort_selected, $sort_dir_dropdown);
 
-        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool)$reportTempData['columns_filter']['show_suspended']);
+        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool) $reportTempData['columns_filter']['show_suspended']);
 
         cout($box->get(), 'content');
     }
 
     public function show_report_TESTSTAT($report_data = null, $other = '')
     {
-        $jump_url = ''; //show_report
 
         checkPerm('view');
 
-        $lang = &DoceboLanguage::createInstance('report', 'framework');
+        $lang = FormaLanguage::createInstance('report', 'framework');
 
         if (isset($_POST['send_mail_confirm'])) {
             $op = 'send_mail_confirm';
@@ -4690,20 +4700,21 @@ class Report_User extends Report
 
         switch ($op) {
             case 'send_mail_confirm':
+          
                 $subject = importVar('mail_object', false, '[' . $lang->def('_SUBJECT') . ']'); //'[No subject]');
                 $body = importVar('mail_body', false, '');
-                $acl_man = new DoceboACLManager();
-                $sender = FormaLms\lib\Get::sett('sender_event');
+                $acl_man = new FormaACLManager();
+                $sender = DomainHandler::getInstance()->getMailerField('sender_mail_system');
                 $mail_recipients = unserialize(urldecode(FormaLms\lib\Get::req('mail_recipients', DOTY_STRING, '')));
 
                 // prepare intestation for email
                 $from = 'From: ' . $sender . $GLOBALS['mail_br'];
                 $header = 'MIME-Version: 1.0' . $GLOBALS['mail_br']
-                    . 'Content-type: text/html; charset=' . getUnicode() . $GLOBALS['mail_br'];
-                $header .= 'Return-Path: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
-                //$header .= "Reply-To: ".FormaLms\lib\Get::sett('sender_event').$GLOBALS['mail_br'];
-                $header .= 'X-Sender: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
-                $header .= 'X-Mailer: PHP/' . phpversion() . $GLOBALS['mail_br'];
+                    . 'Content-type: text/html; charset=' . Lang::charset() . $GLOBALS['mail_br'];
+                $header .= 'Return-Path: ' . $sender . $GLOBALS['mail_br'];
+          
+                $header .= 'X-Sender: ' . $sender . $GLOBALS['mail_br'];
+                $header .= 'X-Mailer: PHP/' . PHP_VERSION . $GLOBALS['mail_br'];
 
                 // send mail
                 $arr_recipients = [];
@@ -4712,9 +4723,9 @@ class Report_User extends Report
                     //mail($rec_data[ACL_INFO_EMAIL] , $subject, $body, $from.$header."\r\n");
                     $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
                 }
-                $mailer = FormaMailer::getInstance();
-                $mailer->addReplyTo(FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br']);
-                $mailer->SendMail($sender, $arr_recipients, $subject, $body);
+                $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
+                $mailer->addReplyTo(DomainHandler::getInstance()->getMailerField('replyto_mail') . $GLOBALS['mail_br']);
+                $mailer->SendMail($arr_recipients, $subject, $body, $sender, [], [MAIL_SENDER_ACLNAME => DomainHandler::getInstance()->getMailerField('sender_name_system')]);
 
                 $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
 
@@ -4758,7 +4769,7 @@ class Report_User extends Report
 
         $_rows = $reportTempData['rows_filter'];
         $_cols = $reportTempData['columns_filter'];
-        $acl_man = new DoceboACLManager();
+        $acl_man = new FormaACLManager();
         $acl_man->include_suspended = true;
 
         $all_users = &$_rows['all_users']; //select root & descendants from orgchart instead
@@ -4770,7 +4781,7 @@ class Report_User extends Report
         $customcols = &$_cols['custom_fields'];
         $order_by = isset($_cols['order_by']) ? $_cols['order_by'] : 'userid';
         $order_dir = isset($_cols['order_dir']) ? $_cols['order_dir'] : 'asc';
-        $suspended = isset($_cols['show_suspended']) ? (bool)$_cols['show_suspended'] : false;
+        $suspended = isset($_cols['show_suspended']) ? (bool) $_cols['show_suspended'] : false;
         if ($all_users) {
             $users = $acl_man->getAllUsersIdst();
         } else {
@@ -4831,7 +4842,7 @@ class Report_User extends Report
             if ($val['selected']) {
                 ++$colspans['user'];
                 $temp_head2[] = $val['label'];
-                $field_values[$val['id']] = $fman->fieldValue((int)$val['id'], $users);
+                $field_values[$val['id']] = $fman->fieldValue((int) $val['id'], $users);
             }
         }
 
@@ -5098,4 +5109,9 @@ class Report_User extends Report
 
         return $output;
     }
+
+
+
+
+  
 }

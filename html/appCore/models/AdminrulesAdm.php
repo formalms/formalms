@@ -24,7 +24,7 @@ class AdminrulesAdm extends Model
     {
         require_once _base_ . '/lib/lib.preference.php';
         $this->preference = new AdminPreference();
-        $this->acl_man = &Docebo::user()->getAclManager();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();
         $this->rules_path = '/framework/adminrules/';
         $this->rules_cache = null;
         parent::__construct();
@@ -212,6 +212,8 @@ class AdminrulesAdm extends Model
 
     public function createPerm($id_menu, $name, $collapse, $module_name, $default_name, $class_file, $class_name, $mvc_path, $of_platform)
     {
+
+        $total_perm = [];
         if ($module_name && ($mvc_path !== '')) {
             $tmp = explode('/', $mvc_path);
             $platform_name = $tmp[0];
@@ -239,7 +241,7 @@ class AdminrulesAdm extends Model
             $perm_path = $perm_base . strtolower($mvc_name) . '/';
 
             $p = $folder_abspath . '/models/' . $mvc_name . 'Adm.php';
-            require_once Forma::inc($folder_abspath . '/models/' . $mvc_name . $suffix . '.php');
+            require_once \FormaLms\lib\Forma::inc($folder_abspath . '/models/' . $mvc_name . $suffix . '.php');
 
             $class_name = $mvc_name . $suffix;
             if (method_exists($class_name, 'getPerm')) {
@@ -286,7 +288,7 @@ class AdminrulesAdm extends Model
             }
 
             if (file_exists($folder_abspath . '/class.module/' . $class_file)) {
-                require_once Forma::inc($folder_abspath . '/class.module/' . $class_file);
+                require_once \FormaLms\lib\Forma::inc($folder_abspath . '/class.module/' . $class_file);
             } else {
                 $a = $a;
                 $a = $class_file;
@@ -316,7 +318,7 @@ class AdminrulesAdm extends Model
             }
         }
 
-        return [$total_perm, $module_perm];
+        return [$total_perm, $module_perm ?? []];
     }
 
     public function printTable($total_perm, $module_perm, $adm_old_perm, $tb, $th, $ts, $array_image, $id_menu, $name, $collapse, $module_name, $default_name, $class_file, $class_name, $mvc_path, $of_platform)

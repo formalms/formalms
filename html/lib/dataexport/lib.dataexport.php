@@ -34,9 +34,9 @@ class DataColumn
     protected $arguments;
 
     /**
-     * @param <string> $key the identifier for this colum
-     * @param <string> $label the label for the colum
-     * @param <string> $formatter the name of a function to be used in export for data formatting
+     * @param string $key the identifier for this colum
+     * @param string $label the label for the colum
+     * @param string $formatter the name of a function to be used in export for data formatting
      */
     public function __construct($key, $label = false, $formatter = false)
     {
@@ -58,7 +58,7 @@ class DataColumn
     /**
      * Setter for the key param.
      *
-     * @return <string>
+     * @return string
      */
     public function setKey($key)
     {
@@ -68,7 +68,7 @@ class DataColumn
     /**
      * Getter for the key param.
      *
-     * @return <string>
+     * @return string
      */
     public function getKey()
     {
@@ -78,7 +78,7 @@ class DataColumn
     /**
      * Setter for the label param.
      *
-     * @return <string>
+     * @return string
      */
     public function setLabel($label)
     {
@@ -88,7 +88,7 @@ class DataColumn
     /**
      * Getter for the label param.
      *
-     * @return <string>
+     * @return string
      */
     public function getLabel()
     {
@@ -98,7 +98,7 @@ class DataColumn
     /**
      * Getter for the type param.
      *
-     * @return <string>
+     * @return string
      */
     public function getType()
     {
@@ -108,7 +108,7 @@ class DataColumn
     /**
      * Setter for the type param.
      *
-     * @return <string>
+     * @return string
      */
     public function setType($type)
     {
@@ -123,7 +123,7 @@ class DataColumn
     /**
      * Setter for the formatter.
      *
-     * @return <string>
+     * @return string
      */
     public function setFormatter($formatter)
     {
@@ -133,7 +133,7 @@ class DataColumn
     /**
      * Getter for the formatter.
      *
-     * @return <string>
+     * @return string
      */
     public function getFormatter()
     {
@@ -143,7 +143,7 @@ class DataColumn
     /**
      * Setter for the formatter arguments.
      *
-     * @return <string>
+     * @return string
      */
     public function setFormatterArguments(&$args)
     {
@@ -154,7 +154,7 @@ class DataColumn
      * Return the data to be printed into the cell (formatter applied).
      *
      * @param <array> $record the line data
-     * @param <string> $data  the cell data
+     * @param string $data  the cell data
      *
      * @return <type>
      */
@@ -181,8 +181,8 @@ class DataColumnGroup
     /**
      * Constructor for the group.
      *
-     * @param <string> $key colum reference, can be blank
-     * @param <string> $label label for the colum
+     * @param string $key colum reference, can be blank
+     * @param string $label label for the colum
      * @param <array> $subcolumns an array od DataColumn or DataColumnGroup
      */
     public function __construct($key, $label, $subcolumns = false)
@@ -200,7 +200,7 @@ class DataColumnGroup
     /**
      * Getter for the key param.
      *
-     * @return <string>
+     * @return string
      */
     public function getKey()
     {
@@ -210,7 +210,7 @@ class DataColumnGroup
     /**
      * Setter for the label param.
      *
-     * @return <string>
+     * @return string
      */
     public function setLabel($label)
     {
@@ -220,7 +220,7 @@ class DataColumnGroup
     /**
      * Getter for the label param.
      *
-     * @return <string>
+     * @return string
      */
     public function getLabel()
     {
@@ -362,9 +362,9 @@ class DataSource
     /**
      * Set the row number.
      *
-     * @return <bool>
+     * @return bool
      */
-    public function setRowIndex()
+    public function setRowIndex($offset)
     {
         return true;
     }
@@ -372,7 +372,7 @@ class DataSource
     /**
      * Reset the data source.
      *
-     * @return <bool>
+     * @return bool
      */
     public function reset()
     {

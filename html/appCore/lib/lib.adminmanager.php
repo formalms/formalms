@@ -25,6 +25,20 @@ class AdminManager
     /** the tables prefix */
     public $prefix = false;
 
+    /**
+     * constructor.
+     *
+     * @param mixed $dbconn the connection to database or FALSE to use default connection
+     * @param mixed $prefix the prefix of the database or FLASE to use default prefix
+     */
+    public function __construct($dbconn = false, $prefix = false)
+    {
+        $this->db = \FormaLms\db\DbConn::getInstance();
+        $this->dbconn = ($dbconn === false) ? $GLOBALS['dbConn'] : $dbconn;
+        $this->prefix = ($prefix === false) ? $GLOBALS['prefix_fw'] : $prefix;
+    }
+
+
     public function getAdminTreeTable()
     {
         return '%adm_admin_tree';
@@ -59,18 +73,6 @@ class AdminManager
         }
     }
 
-    /**
-     * constructor.
-     *
-     * @param mixed $dbconn the connection to database or FALSE to use default connection
-     * @param mixed $prefix the prefix of the database or FLASE to use default prefix
-     */
-    public function AdminManager($dbconn = false, $prefix = false)
-    {
-        $this->db = DbConn::getInstance();
-        $this->dbconn = ($dbconn === false) ? $GLOBALS['dbConn'] : $dbconn;
-        $this->prefix = ($prefix === false) ? $GLOBALS['prefix_fw'] : $prefix;
-    }
 
     public function getAdminTree($adminidst)
     {
@@ -120,7 +122,7 @@ class AdminManager
 
     public function &getAdminPermission($adminidst)
     {
-        $acl_manager = &Docebo::user()->getAclManager();
+        $acl_manager = \FormaLms\lib\Forma::getAclManager();
         $permission = $acl_manager->getRolesContainer($adminidst, true);
 
         return $permission;
@@ -128,7 +130,7 @@ class AdminManager
 
     public function &fromRolePathToIdst($base_path, $module_tokens, $flip = false)
     {
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $map = [];
         foreach ($module_tokens as $k => $token) {
             $code = $token['code'];
@@ -162,7 +164,7 @@ class AdminManager
 
     public function &convertTokenToIdst($token_to_convert, $map_convert, $flip = false)
     {
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $map = [];
         foreach ($token_to_convert as $code => $v) {
             $id_role = $map_convert[$code];
@@ -178,7 +180,7 @@ class AdminManager
 
     public function addRoleToAdmin($token_to_add, $adminidst)
     {
-        $acl_manager = &Docebo::user()->getAclManager();
+        $acl_manager = \FormaLms\lib\Forma::getAclManager();
         $re = true;
         foreach ($token_to_add as $code => $idst_role) {
             $re &= $acl_manager->addToRole($idst_role, $adminidst);
@@ -189,7 +191,7 @@ class AdminManager
 
     public function delRoleToAdmin($token_to_remove, $adminidst)
     {
-        $acl_manager = &Docebo::user()->getAclManager();
+        $acl_manager = \FormaLms\lib\Forma::getAclManager();
         $re = true;
         foreach ($token_to_remove as $code => $idst_role) {
             $re &= $acl_manager->removeFromRole($idst_role, $adminidst);

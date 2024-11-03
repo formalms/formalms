@@ -7,37 +7,24 @@
                 ]);
 
                 $_model = new CoursepathLms();
-                $count = 0;
-                $statusFilters = $_model->getFilterStatusLearningPath(Docebo::user()->getIdst());
+                $statusFilters = $_model->getFilterStatusLearningPath(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst());
 
                 $html = '<ul class="nav nav-pills">';
+                $html .= '<li class="selected js-label-menu-filter" data-value="' . $key . '">';
 
                 foreach ($statusFilters as $key => $value) {
-                    $html_code .= '    <option value="' . $key . '"'
-                        . ((string) $key == (string) $selected ? ' selected="selected"' : '')
-                        . '>' . $value . '</option>' . "\n";
-
-                    if ($count === 0) {
-                        $html .= '<li class="selected js-label-menu-filter" data-value="' . $key . '">';
-                    } else {
-                        $html .= '<li class="js-label-menu-filter" data-value="' . $key . '">';
-                    }
-
+                    $html .= '<li class="js-label-menu-filter" data-value="' . $key . '">';
                     $html .= '<a class="icon--filter-' . $key . '" href="#" >' . $value . '</a>';
                     $html .= '</li>';
-                    ++$count;
                 }
 
                 $html .= '</ul>';
 
                 $inline_filters = $html;
 
-                $_auxiliary = Form::getInputDropdown('', 'coursepath_search_filter_year', 'filter_year', $_model->getFilterYears(Docebo::user()->getIdst()), 0, '');
-                $_auxiliary = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width=""  data-actions-box="true"', $_auxiliary);
 
                 $this->widget('tablefilter', [
                     'id' => 'coursepath_search',
-                    'auxiliary_filter' => $_auxiliary,
                     'filter_text' => '',
                     'js_callback_set' => 'coursepath_search_callback_set',
                     'js_callback_reset' => 'coursepath_search_callback_reset',
@@ -59,7 +46,7 @@
 
 <script type="text/javascript">
 
-    var this_user = '<?php echo Docebo::user()->idst; ?>';
+    var this_user = '<?php echo \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(); ?>';
     $(function(){
         v = getCookie(this_user+'.my_coursepath.year');
         if (v != '') {$("#coursepath_search_filter_year").selectpicker('val', v);}
@@ -73,14 +60,14 @@
     });
     
     function saveCurrentFilter(){
-        var this_user = '<?php echo Docebo::user()->idst; ?>'
+        var this_user = '<?php echo \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(); ?>'
         var cyear = $("#coursepath_search_filter_year").selectpicker().val();
         setCookie(this_user+'.my_coursepath.year',cyear,60,"/")        
         
     }
 
     function clearCurrentFilter(){
-        var this_user = '<?php echo Docebo::user()->idst; ?>'
+        var this_user = '<?php echo \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(); ?>'
         setCookie(this_user+'.my_coursepath.year',"",-3650,"/")
     }
     
@@ -118,7 +105,7 @@
 
         $("#courses_"+id_path).css("display", "block");
         
-        a = '<a class="no_decoration" href="javascript:;" onclick="collapseCourses(\'' + id_path + '\',\'' + type + '\');"><span class="expand_path_info"><?php echo Lang::t('_COLLAPSE', 'coursepath'); ?></span> <?php echo FormaLms\lib\Get::img('course/close.png', Lang::t('_COLLAPSE', 'coursepath')); ?></a>';
+        a = '<a class="no_decoration" href="javascript:;" onclick="collapseCourses(\'' + id_path + '\',\'' + type + '\');"><span class="expand_path_info"><STRONG><?php echo Lang::t('_COLLAPSE', 'coursepath'); ?></STRONG></span> <?php echo FormaLms\lib\Get::img('course/close.png', Lang::t('_COLLAPSE', 'coursepath')); ?></a>';
         
         $("#courses_link_" + type + "_" + id_path).html(a)
 
@@ -127,8 +114,8 @@
     
     function collapseCourses(id_path, type){
         $("#courses_"+id_path).css("display", "none");
-        
-        a = '<a class="no_decoration" href="javascript:;" onclick="expandCourses(\'' + id_path + '\',\'' + type + '\');"><span class="expand_path_info"><?php echo Lang::t('_EXPAND', 'coursepath'); ?></span> <?php echo FormaLms\lib\Get::img('course/expand.png', Lang::t('_EXPAND', 'coursepath')); ?></a>';
+
+        a = '<a class="no_decoration" href="javascript:;" onclick="expandCourses(\'' + id_path + '\',\'' + type + '\');"><span class="expand_path_info"><strong><?php echo Lang::t('_EXPAND', 'coursepath'); ?></strong></span> <?php echo FormaLms\lib\Get::img('course/expand.png', Lang::t('_EXPAND', 'coursepath')); ?></a>';
         
         $("#courses_link_" + type + "_" + id_path).html(a)
         

@@ -33,7 +33,7 @@ class Selector_CoursePath
     /**
      * Class constructor.
      */
-    public function Selector_CoursePath()
+    public function __construct()
     {
         $this->show_filter = true;
     }
@@ -120,7 +120,7 @@ class Selector_CoursePath
         require_once _base_ . '/lib/lib.table.php';
         require_once _base_ . '/lib/lib.form.php';
 
-        $lang = &DoceboLanguage::createInstance('coursepath', 'lms');
+        $lang = &FormaLanguage::createInstance('coursepath', 'lms');
         $output = '';
 
         // Filter
@@ -128,13 +128,13 @@ class Selector_CoursePath
         if ($this->show_filter === true) {
             /*
                 $form = new Form();
-                $output .= Form::getOpenFieldset($lang->def('_COURSEPATH_FILTER'))
+                $output .= $form->getOpenFieldset($lang->def('_COURSEPATH_FILTER'))
                     .Form::getTextfield($lang->def('_NAME'), 'coursepath_filter_name', 'coursepath_filter_name', '255',
                         ( isset($_POST['coursepath_filter_name']) ? $_POST['coursepath_filter_name'] : '' ))
-                    .Form::openButtonSpace()
-                    .Form::getButton('coursepath_filter', 'coursepath_filter', $lang->def('_SEARCH'))
-                    .Form::closeButtonSpace()
-                    .Form::getCloseFieldset();*/
+                    .$form->openButtonSpace()
+                    .$form->getButton('coursepath_filter', 'coursepath_filter', $lang->def('_SEARCH'))
+                    .$form->closeButtonSpace()
+                    .$form->getCloseFieldset();*/
 
             $output .= '<div class="quick_search_form">'
                 . '<div>'
@@ -155,12 +155,12 @@ class Selector_CoursePath
         $query_coursepath = '
 		FROM %lms_coursepath
 		WHERE 1 ';
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             $all_courses = false;
 
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             if (isset($admin_courses['course'][0])) {
                 $all_courses = true;
             }
@@ -293,7 +293,7 @@ class CoursePath_Manager
 
     public $filter_or_in_path = false;
 
-    public function CoursePath_Manager()
+    public function __construct()
     {
         ksort($this->_path_field);
         reset($this->_path_field);
@@ -304,7 +304,7 @@ class CoursePath_Manager
         ksort($this->_cp_slot_field);
         reset($this->_cp_slot_field);
 
-        $this->acl = new DoceboACL();
+        $this->acl = new FormaACL();
         $this->aclManager = $this->acl->getACLManager();
     }
 
@@ -388,25 +388,25 @@ class CoursePath_Manager
     }
 
     /**
-     * @param int $arr_id the id_path of a coursepath
+     * @param array $arr_id the id_path of a coursepath
      *
      * @return array an array with id => array( [id_path] [path_code] [path_name] [path_descr] [subscribe_method] )
      */
     public function getCoursepathAllInfo($arr_id)
     {
         $coursepath = [];
-        $select = '
-		SELECT ' . implode(',', $this->_path_field) . '
-		FROM ' . $this->_getPathTable() . '
-		WHERE ' . $this->_path_field[COURSEPATH_ID] . ' IN ( ' . implode(',', $arr_id) . ' )';
-        $re_select = $this->_query($select);
-        if (!$re_select) {
-            return $coursepath;
+        if (count($arr_id) != 0) {
+            $select = '
+            SELECT ' . implode(',', $this->_path_field) . '
+            FROM ' . $this->_getPathTable() . '
+            WHERE ' . $this->_path_field[COURSEPATH_ID] . ' IN ( ' . implode(',', $arr_id) . ' )';
+            $re_select = $this->_query($select);
+            if ($re_select) {
+                while ($row = sql_fetch_row($re_select)) {
+                    $coursepath[$row[COURSEPATH_ID]] = $row;
+                }
+            }
         }
-        while ($row = sql_fetch_row($re_select)) {
-            $coursepath[$row[COURSEPATH_ID]] = $row;
-        }
-
         return $coursepath;
     }
 
@@ -842,7 +842,7 @@ class CoursePath_Manager
             $insert_values = [];
             foreach ($users as $id_user) {
                 $course_completed = isset($completed[$id_user]) ? (int) $completed[$id_user] : 0;
-                $insert_values[] = '( ' . (int) $id_path . ', ' . (int) $id_user . ", '" . date('Y-m-d h:i:s') . "', '" . Docebo::user()->getIdst() . "', '" . $course_completed . "' )";
+                $insert_values[] = '( ' . (int) $id_path . ', ' . (int) $id_user . ", '" . date('Y-m-d h:i:s') . "', '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdst() . "', '" . $course_completed . "' )";
             }
             $query = 'INSERT INTO %lms_coursepath_user (id_path, idUser, date_assign, subscribed_by, course_completed ) VALUES ' . implode(', ', $insert_values);
             if (!sql_query($query)) {
@@ -913,7 +913,7 @@ class CoursePath_Manager
         }
 
         if (!empty($courseIdsFromPath)) {
-            $man_courseuser = new Man_CourseUser(DbConn::getInstance());
+            $man_courseuser = new Man_CourseUser(\FormaLms\db\DbConn::getInstance());
             $result = $man_courseuser->hasCompletedCourses($id_user, $courseIdsFromPath);
 
             return $result;
@@ -959,6 +959,7 @@ class CoursePath_Manager
         // path_courses containing course
         $q = ' SELECT id_path FROM %lms_coursepath_courses WHERE id_item = ' . (int) $id_course;
         $rs = sql_query($q);
+        $path_courses =  [];
         while ($r = sql_fetch_row($rs)) {
             $path_courses[] = $r[0];
         }
@@ -1041,7 +1042,7 @@ class CoursePath_Manager
 
     public function deleteCourseFromCoursePaths($id_course)
     {
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
 
         //retrieve all course's coursepaths
         $arr_coursepath = [];

@@ -1,0 +1,26 @@
+{%  block coursepath_details %}
+<div id="courses_{{ id_path }}" style="display:none;clear:both;" class="coursepath_details">
+    <table>
+        {% for id_course, course_info in coursepath_courses %}
+            <tr>
+                <td>
+                    <span class="ico-sprite {{ course_info['ico_style'] }}">
+                        <span>{{ course_info['ico_text'] }}</span>
+                    </span>
+                </td>
+                <td class="course_type">{{ course_info['course_type'] }}</td>
+                <td>
+                    {% if course_info['course_unlocked'] %}
+                        <a class="std_link" href="index.php?modname=course&amp;op=aula&amp;idCourse={{ course_info['idCourse'] }}">
+                            {{ course_info['name'] }}
+                        </a>
+                    {% else %}
+                        {{ course_info['name'] }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+<div class="nofloat"></div>
+{%  endblock %}

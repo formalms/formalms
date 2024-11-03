@@ -62,9 +62,9 @@ function sal_wrapper()
 }
 
 /************************ SpaghettiLearning custom abstraction layer *************/
-//require_once(dirname(__DIR__,2) . '/config.php' );
+//require_once(dirname(__FILE__) . '/../../config.php' );
 //require_once($GLOBALS['where_config'].'/config.php');
-require_once Forma::inc(_lms_ . '/modules/scorm/xmlwrapper.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/xmlwrapper.php');
 
 $scormws = 'modules/scorm/soaplms.php';
 $scormxmltree = 'modules/scorm/scormXmlTree.php';
@@ -72,13 +72,13 @@ $scormserviceid = 'urn:SOAPLMS';
 
 function sl_sal_getUserId()
 {
-    return getLogUserId();
+    return \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 }
 
 function sl_sal_getUserName()
 {
-    $aclManager = Docebo::user()->getACLManager();
-    $arr_result = $aclManager->getUser(Docebo::user()->getIdSt(), false);
+    $aclManager = \FormaLms\lib\Forma::getAclManager();;
+    $arr_result = $aclManager->getUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), false);
 
     return $arr_result[ACL_INFO_LASTNAME] . ',' . $arr_result[ACL_INFO_FIRSTNAME];
 }

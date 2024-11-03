@@ -350,7 +350,7 @@ tfoot.empty td {
     padding: 6px 12px;
     margin-left: -1px;
     line-height: 1.42857143;
-    color: var(--color-2);
+    color: var(--color-primary);
     text-decoration: none;
     background-color: #fff;
     border: 1px solid #ddd;
@@ -366,8 +366,8 @@ tfoot.empty td {
     z-index: 3;
     color: #fff;
     cursor: default;
-    background-color: var(--color-2);
-    border-color: var(--color-2);
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
 }
 
 .navbar--coursereport {

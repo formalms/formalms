@@ -11,8 +11,8 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-require_once Forma::inc(_lms_ . '/modules/scorm/config.scorm.php');
-require_once Forma::inc(_lms_ . '/modules/scorm/CPManager.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/config.scorm.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/CPManager.php');
 
 class Scorm_Item
 {
@@ -36,8 +36,9 @@ class Scorm_Item
     public $err_text = '';
 
     public $itemtable = 'scorm_items';
+    public $idscorm_resource;
 
-    public function Scorm_Item($item_identifier, $idscorm_organization, $idpackage, $connection, $createonfail = false, $idscorm_item = null)
+    public function __construct($item_identifier, $idscorm_organization, $idpackage, $connection, $createonfail = false, $idscorm_item = null)
     {
         $this->item_identifier = $item_identifier;
         $this->idscorm_organization = $idscorm_organization;

@@ -1,7 +1,7 @@
 <?php
 
 if (isset($id_competence)) {
-    $_text = Lang::t('_MOD', 'standard') . (isset($competence_langs[getLanguage()]) ? ': ' . $competence_langs[getLanguage()]['name'] : '');
+    $_text = Lang::t('_MOD', 'standard') . (isset($competence_langs [Lang::get()]) ? ': ' . $competence_langs [Lang::get()]['name'] : '');
 } else {
     $_text = Lang::t('_ADD_COMPETENCE', 'competences');
 }
@@ -50,19 +50,19 @@ echo '<div id="competence_langs_tab">';
 $_tabview_titles = '<ul class="nav nav-tabs">';
 $_tabview_contents = '<div class="tab-content">';
 
-$_langs = Docebo::langManager()->getAllLanguages(true);
+$_langs = \FormaLms\lib\Forma::langManager()->getAllLanguages(true);
 foreach ($_langs as $_lang_code => $_lang_data) {
     $_name = isset($competence_langs[$_lang_code]) ? $competence_langs[$_lang_code]['name'] : '';
     $_desc = isset($competence_langs[$_lang_code]) ? $competence_langs[$_lang_code]['description'] : '';
 
     //echo Form::getOpenFieldset($_lang_data['description']);
 
-    $_tabview_titles .= '<li' . ($_lang_code == getLanguage() ? ' class="active"' : '') . '>'
+    $_tabview_titles .= '<li' . ($_lang_code == Lang::get() ? ' class="active"' : '') . '>'
         . '<a data-toggle="tab" href="#langs_tab_' . $_lang_code . '"><em>' . $_lang_code //$_lang_data['description']
         . ($_name == '' && isset($id_competence) ? ' (*)' : '')
         . '</em></a></li>';
 
-    $_tabview_contents .= '<div class="tab-pane' . ($_lang_code == getLanguage() ? ' active' : '') . '" id="langs_tab_' . $_lang_code . '">';
+    $_tabview_contents .= '<div class="tab-pane' . ($_lang_code == Lang::get() ? ' active' : '') . '" id="langs_tab_' . $_lang_code . '">';
 
     $_tabview_contents .= Form::getTextfield(
         Lang::t('_NAME', 'standard'),

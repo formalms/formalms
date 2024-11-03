@@ -1,0 +1,46 @@
+{{ Get_title({
+	'index.php?r=adm/mailconfig/show' : Lang_translate('_MAIL_CONFIG', 'standard'),
+	'':title
+},false) }}
+
+{{ Form_openForm('upsert_settings', 'index.php?r=adm/mailconfig/upsert', false, 'post', 'multipart/form-data') }}
+
+{% if item %}
+    {{ Form_getHidden('id', 'id', id) }}
+
+{% endif %}
+{% for setting, type in settings %}
+
+    {% set translation =  '_' ~ setting|upper  %}
+    {% set choices =  type is iterable ? type : { '0': Lang_translate('_NO', 'standard'), '1': Lang_translate('_YES', 'standard')}  %}
+    {% set label =  Lang_translate(translation,'mailconfig') ~ (setting in required_fields|keys ? '*':'')  %}
+    {% set required = setting in required_fields|keys ? 'required':''  %}
+    {% if type == 'string' %}
+
+        {{ Form_getLineTextfield('form_line_l', 'floating', label , 'textfield', setting, setting,  item[setting], '', 255, required, '', '') }}
+
+    {% else %}
+
+        {{ Form_getDropdown(label, setting, setting, choices, item[setting]) }}
+   
+    {% endif %}
+
+{% endfor %}
+
+    {{ Form_openButtonSpace() }}
+        {{ Form_getButton('save', 'save', Lang_translate('_SAVE', 'admin_lang')) }}
+        {{ Form_getButton('undo', 'undo', Lang_translate('_UNDO', 'admin_lang')) }}
+    {{ Form_closeButtonSpace() }}
+{{ Form_closeForm() }}
+
+
+<script>
+$(document).ready(function() {
+    $("#undo").click(function(e) {
+        e.preventDefault();
+        history.back();
+    });
+
+     $("#password").prop("type", "password");
+});
+</script>

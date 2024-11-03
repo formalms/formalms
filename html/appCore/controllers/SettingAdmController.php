@@ -67,23 +67,11 @@ class SettingAdmController extends AdmController
 
         $this->rrmdir($twigCacheDir);
 
-        Util::jump_to('index.php?r=adm/setting/show&result=ok&active_tab=8');
+        Util::jump_to('index.php?r=adm/setting/show&result=ok');
     }
 
     public function rrmdir($dir)
     {
-        if (is_dir($dir)) {
-            $objects = scandir($dir);
-            foreach ($objects as $object) {
-                if ($object != '.' && $object != '..') {
-                    if (is_dir($dir . '/' . $object)) {
-                        $this->rrmdir($dir . '/' . $object);
-                    } else {
-                        unlink($dir . '/' . $object);
-                    }
-                }
-            }
-            rmdir($dir);
-        }
+        return recursiveRmdir($dir);
     }
 }

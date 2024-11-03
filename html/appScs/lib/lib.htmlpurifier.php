@@ -23,19 +23,19 @@ class DbPurifier extends HTMLPurifier
     /**
      * constructor, this is a singleton class please don't use this but make a call like this : $var =& DBPurifier::getInstance().
      */
-    public function DbPurifier()
+    public function __construct()
     {
         $config = HTMLPurifier_Config::createDefault();
         $config->set('Core', 'Encoding', 'UTF-8');
         $config->set('Core', 'XHTML', true);
         $config->set('Cache.SerializerPath', _files_ . '/cache/twig');
-        parent::HTMLPurifier($config);
+        parent::__construct($config);
     }
 
     /**
      * return the instance of the DbPurifier.
      */
-    public function &getInstance()
+    public static function &getInstance($prototype = null)
     {
         if (!isset($GLOBALS['html_purifier'])) {
             $GLOBALS['html_purifier'] = new DBPurifier();

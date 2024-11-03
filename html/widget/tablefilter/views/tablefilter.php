@@ -14,15 +14,17 @@
                     <?php if ($auxiliary_filter) { ?>
                     <?php echo $auxiliary_filter; ?>
                     <div class="input-group">
-                        <a href='#' id='<?php echo $id; ?>_filter_set1'>Applica filtro</a><br><br>
-                        <a href='#' id='<?php echo $id; ?>_filter_reset'>Azzera filtro</a>
+                        <a href='#' id='<?php echo $id; ?>_filter_set1'><?php echo Lang::t('_FILTER_APPLY', 'standard');?></a><br><br>
+                        <a href='#' id='<?php echo $id; ?>_filter_reset'><?php echo Lang::t('_FILTER_RESET', 'standard');?></a>
                     </div>
                     <?php } ?>                    
                     <div class="input-group">
                         <?php echo Form::getInputTextfield('form-control', $id . '_filter_text', 'filter_text', $filter_text, '', 255, 'equired data-toggle="popover" data-content="' . Lang::t('_INSERT', 'standard') . ' ' . strtolower(Lang::t('_COURSE_NAME', 'standard')) . '" placeholder=' . $str_search); ?>
+                        <label for="<?php echo $id.'_filter_text' ?>" class="screenreader"><?php echo Lang::t('SEARCH', 'standard') ?></label>
                         <div class="input-group-btn">
                             <button type="submit" class="btn btn-default" id="<?php echo $id . '_filter_set2'; ?>"
                                     name="filter_set" title="<?php echo Lang::t('_SEARCH', 'standard'); ?>">
+                                <span class="screenreader"><?php echo Lang::t('_SEARCH', 'standard'); ?></span>
                                 <span class="glyphicon glyphicon-search"></span>
                             </button>
                         </div>

@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Forma;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -50,20 +52,20 @@ class CourseReportManager
 
     public function getStudentId($onlyStudents = false)
     {
-        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
         $course_user = Man_Course::getIdUserOfLevel($this->idCourse, $onlyStudents ? 3 : false);
 
         return $course_user;
     }
 
-    public function getTest()
+    public function &getTest()
     {
-        require_once Forma::inc(_lms_ . '/lib/lib.orgchart.php');
-        require_once Forma::inc(_lms_ . '/class.module/learning.test.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.orgchart.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/learning.test.php');
 
         $org_man = new OrganizationManagement($this->idCourse);
-        $tests = $org_man->getAllLoAbsoluteIdWhereType(Learning_Test::getTestTypes());
+        $tests = &$org_man->getAllLoAbsoluteIdWhereType(Learning_Test::getTestTypes());
 
         return $tests;
     }
@@ -103,20 +105,21 @@ class CourseReportManager
         sql_query($query_seq);
 
         $test_info = $test_man->getTestInfo($id_tests);
+        $insertParams = [];
+        $insertParams['idCourse'] = $this->idCourse;
+
         foreach ($id_tests as $id_test => $title) {
-            $query_test = "
-			INSERT IGNORE INTO %lms_coursereport 
-			( id_course, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source, sequence ) VALUES (
-				'" . $this->idCourse . "',
-				'" . $test_man->getMaxScore($id_test) . "', 
-				'" . $test_man->getRequiredScore($id_test) . "',
-				'100',
-				'" . ($test_info[$id_test]['show_score'] == 1 || $test_info[$id_test]['show_score_cat'] == 1 ? 'true' : 'false') . "',
-				'true',
-				'test',
-				'" . $id_test . "',
-				'" . $from_sequence++ . "'
-			) ON DUPLICATE KEY UPDATE id_course=VALUES(id_course), id_source=VALUES(id_source)";
+            $insertParams['max_score'] = $test_man->getMaxScore($id_test);
+            $insertParams['title'] =  $test_info[$id_test]['title'];
+            $insertParams['required_score'] = $test_man->getRequiredScore($id_test);
+            $insertParams['weight'] = '100';
+            $insertParams['show_to_user'] = $test_info[$id_test]['show_score'] == 1 || $test_info[$id_test]['show_score_cat'] == 1 ? 'true' : 'false';
+            $insertParams['use_for_final'] = 'true';
+            $insertParams['source_of'] = 'test';
+            $insertParams['idSource'] = $id_test;
+            $insertParams['sequence'] = $from_sequence++;
+            $query_test = CoursereportLms::getInsertQueryCourseReportAsForeignKey($insertParams);
+     
             sql_query($query_test);
         }
     }
@@ -126,17 +129,6 @@ class CourseReportManager
         $report_man = new CourseReportManager($idCourse);
         $org_tests = &$report_man->getTest();
         foreach ($org_tests as $org_test) {
-            $reports = $this->getTestReports($this->idCourse, $org_test);
-            if (count($reports) > 1) {
-                array_shift($reports);
-                $idReports = array_map(function ($report) {
-                    return $report['id_report'];
-                }, $reports);
-                $reportsToDelete = array_merge($reportsToDelete, $idReports);
-            }
-        }
-        if (count($reportsToDelete) > 0) {
-            $this->delTestToReport($reportsToDelete);
         }
     }
 
@@ -147,9 +139,9 @@ class CourseReportManager
 
     public function getTestReports($idCourse, $idTest)
     {
-        $query = "SELECT * from %lms_coursereport WHERE id_course=${idCourse} AND id_source=${idTest} AND source_of='test' ORDER BY sequence";
+        $query = "SELECT * from %lms_coursereport WHERE id_course=${idCourse} AND id_source=${$idTest} AND source_of='test'";
 
-        $result = DbConn::getInstance()->query($query);
+        $result = \FormaLms\db\DbConn::getInstance()->query($query);
 
         $reports = [];
         foreach ($result as $item) {
@@ -494,6 +486,7 @@ class CourseReportManager
         $re = [];
         $query_scores = "
         SELECT s.id_user, r.id_course, r.max_score, COALESCE(s.score_status,'not_found') AS score_status
+        FROM %lms_coursereport AS r
         LEFT JOIN %lms_coursereport_score AS s ON s.score_status = 'valid' AND s.id_report = r.id_report 
         WHERE 
         r.source_of = 'final_vote' ";
@@ -548,56 +541,6 @@ class CourseReportManager
 
         return $re;
     }
-
-    /**
-     * @param int $id_course the id of the course to be deleted
-     *
-     * @return bool true if success false otherwise
-     */
-    public function deleteAllReports($id_course)
-    {
-        //validate input
-        if ((int)$id_course <= 0) {
-            return false;
-        }
-
-        $db = DbConn::getInstance();
-
-        $db->start_transaction();
-
-        //get all existing report for the course
-        $arr_id_report = [];
-        $query = 'SELECT id_report FROM %lms_coursereport_score WHERE id_course = ' . (int)$id_course;
-        $res = $db->query($query);
-        while (list($id_report) = $db->fetch_row($res)) {
-            $arr_id_report[] = $id_report;
-        }
-
-        //delete all reports scores
-        if (!empty($arr_id_report)) {
-            $query = 'DELETE FROM %lms_coursereport_score WHERE id_report IN (' . implode(',', $arr_id_report) . ')';
-            $res = $db->query($query);
-            if (!res) {
-                $db->rollback();
-
-                return false;
-            }
-        }
-
-        //delete course reports
-        $query = "DELETE FROM %lms_coursereport WHERE id_course = '" . (int)$id_course . "'";
-        $res = $db->query($query);
-        if (!$res) {
-            $db->rollback();
-
-            return false;
-        }
-
-        $db->commit();
-
-        return true;
-    }
-
 
     public function getCourseFinalScoreComputation($idCourse, $idUser = null) {
         $this->idCourse = $idCourse;
@@ -678,5 +621,55 @@ class CourseReportManager
             return $final_score[$id_user];
         }
         return $final_score;
+    }
+
+    /**
+     * @param int $id_course the id of the course to be deleted
+     *
+     * @return bool true if success false otherwise
+     */
+    public function deleteAllReports($id_course)
+    {
+        //validate input
+        if ((int)$id_course <= 0) {
+            return false;
+        }
+
+        $db = \FormaLms\db\DbConn::getInstance();
+
+        $db->start_transaction();
+
+        //get all existing report for the course
+        $arr_id_report = [];
+        $query = 'SELECT id_report FROM %lms_coursereport_score WHERE id_course = ' . (int)$id_course;
+        $res = $db->query($query) ?? [];
+        foreach ($res as $row) {
+            [$id_report] = array_values($row);
+            $arr_id_report[] = $id_report;
+        }
+
+        //delete all reports scores
+        if (!empty($arr_id_report)) {
+            $query = 'DELETE FROM %lms_coursereport_score WHERE id_report IN (' . implode(',', $arr_id_report) . ')';
+            $res = $db->query($query);
+            if (!$res) {
+                $db->rollback();
+
+                return false;
+            }
+        }
+
+        //delete course reports
+        $query = "DELETE FROM %lms_coursereport WHERE id_course = '" . (int)$id_course . "'";
+        $res = $db->query($query);
+        if (!$res) {
+            $db->rollback();
+
+            return false;
+        }
+
+        $db->commit();
+
+        return true;
     }
 }

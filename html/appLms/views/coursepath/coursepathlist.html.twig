@@ -1,0 +1,57 @@
+<script>
+    const canvasElements = document.querySelectorAll('[id^="path_courses-progress-bar"]');
+    canvasElements.forEach(canvas => {
+        window.frontend.modules.DrawRadialProgress(canvas);
+    });
+</script>
+
+{% for id_path, path_info in user_coursepath %}
+<div id="coursepath-main-container">
+    {% block coursepath_description %}
+    <div class="coursepath-main-description-and-percentage">
+        <div class="coursepath-child-description">
+            <div class="textof">
+                <div id="path_course_title">{{ path_info['path_name'] }}</div>
+                <p id="path_course_description">{{ path_info['path_descr'] }}</p>
+            </div>
+        </div>
+        <div class="coursepath-child-percentage">
+            <div class="yui-u first">
+                <span class="coursepath_percentage_title">{{ Lang_translate('_PROGRESS_COMPLETED','course') }} </span>
+                <div id="path_courses_progress_background">
+                    <canvas class="path_courses-progress-bar" id="path_courses-progress-bar-{{id_path}}" width="200"
+                        height="200" data-percentage_completed="{{ path_info['percentage'] }}"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+    {% block coursepath_container %}
+    <div class="coursepath-collapse-container">
+
+        <div id="courses_link_{{ type }}_{{ id_path }}" class="coursepath_action">
+            <a class="no_decoration" href="#" onclick="expandCourses({{id_path}}, '{{ type }}');">
+                <span class="expand_path_info"><strong>{{ Lang_translate('_EXPAND', 'coursepath') }}</strong></span>
+                <img src="{{ Get_pathImage() }}course/expand.png" alt="{{ Lang_translate('_EXPAND', 'course') }}"
+                    title="{{ Lang_translate('_EXPAND', 'course') }}" />
+            </a>
+        </div>
+        <div class="coursepath_action">
+            <span class="expand_path_info">
+                <strong class="padding_current_activity">{{ Lang_translate('_CURRENT_ACTIVITY','coursepath') }}</strong>
+            </span>
+            {% if starting_courses[id_path]['course_unlocked'] %}
+            <a class="std_link"
+                href="index.php?modname=course&amp;op=aula&amp;idCourse={{ starting_courses[id_path]['idCourse'] }}">
+                {{ starting_courses[id_path]['name'] }}
+            </a>
+            {% else %}
+            {{ starting_courses[id_path]['name'] }}
+            {% endif %}
+        </div>
+    </div>
+    {% endblock %}
+</div>
+{% include 'coursepathsingle.html.twig' with { 'coursepath_courses': coursepath_courses[id_path], 'id_path': id_path} %}
+<hr class="separator" />
+{% endfor %}

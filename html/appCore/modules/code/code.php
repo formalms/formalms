@@ -21,7 +21,7 @@ function groupCodeList()
     require_once _base_ . '/lib/lib.form.php';
     require_once _base_ . '/lib/lib.table.php';
 
-    $lang = &DoceboLanguage::createInstance('code');
+    $lang = &FormaLanguage::createInstance('code');
 
     $code_manager = new CodeManager();
 
@@ -128,7 +128,7 @@ function addGroupCode()
 {
     require_once _base_ . '/lib/lib.form.php';
 
-    $lang = &DoceboLanguage::createInstance('code');
+    $lang = &FormaLanguage::createInstance('code');
 
     $code_manager = new CodeManager();
 
@@ -162,7 +162,7 @@ function modGroupCode()
 {
     require_once _base_ . '/lib/lib.form.php';
 
-    $lang = &DoceboLanguage::createInstance('code');
+    $lang = &FormaLanguage::createInstance('code');
 
     $id_code_group = FormaLms\lib\Get::req('id_code_group', DOTY_INT, '0');
 
@@ -216,13 +216,13 @@ function codeList()
     require_once _base_ . '/lib/lib.form.php';
     require_once _base_ . '/lib/lib.table.php';
 
-    $lang = &DoceboLanguage::createInstance('code');
+    $lang = &FormaLanguage::createInstance('code');
 
     $id_code_group = FormaLms\lib\Get::req('id_code_group', DOTY_INT, '0');
 
     $code_manager = new CodeManager();
 
-    $acl_man = Docebo::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     cout(getTitleArea(['index.php?modname=code&amp;op=list' => $lang->def('_CODE'),
                 $lang->def('_CODE_LIST'), ])
@@ -353,7 +353,7 @@ function addCode()
 {
     require_once _base_ . '/lib/lib.form.php';
 
-    $lang = &DoceboLanguage::createInstance('code');
+    $lang = &FormaLanguage::createInstance('code');
 
     $code_manager = new CodeManager();
 
@@ -395,7 +395,7 @@ function modCode()
 {
     require_once _base_ . '/lib/lib.form.php';
 
-    $lang = &DoceboLanguage::createInstance('code');
+    $lang = &FormaLanguage::createInstance('code');
 
     $code_manager = new CodeManager();
 
@@ -457,7 +457,7 @@ function assignCourse()
     require_once _base_ . '/lib/lib.form.php';
     require_once _lms_ . '/lib/lib.course.php';
 
-    $lang = &DoceboLanguage::createInstance('code');
+    $lang = &FormaLanguage::createInstance('code');
 
     $code_manager = new CodeManager();
 
@@ -501,7 +501,7 @@ function assignTree()
     require_once _base_ . '/lib/lib.form.php';
     require_once _base_ . '/lib/lib.userselector.php';
 
-    $lang = &DoceboLanguage::createInstance('code');
+    $lang = &FormaLanguage::createInstance('code');
 
     $id_code_group = FormaLms\lib\Get::req('id_code_group', DOTY_INT, '0');
 
@@ -536,7 +536,7 @@ function importCode_step1()
 {
     require_once _base_ . '/lib/lib.form.php';
 
-    $lang = &DoceboLanguage::createInstance('code');
+    $lang = &FormaLanguage::createInstance('code');
 
     $id_code_group = FormaLms\lib\Get::req('id_code_group', DOTY_INT, '0');
 
@@ -544,7 +544,7 @@ function importCode_step1()
                 $lang->def('_IMPORT'), ])
             . '<div class="std_block">');
 
-    $lang = &DoceboLanguage::createInstance('admin_directory', 'framework');
+    $lang = &FormaLanguage::createInstance('admin_directory', 'framework');
 
     cout(Form::openForm('directory_importgroupuser',
                     'index.php?modname=code&amp;op=import_code_2',
@@ -595,7 +595,7 @@ function importCode_step2()
         }
     }
 
-    $lang = &DoceboLanguage::createInstance('code');
+    $lang = &FormaLanguage::createInstance('code');
 
     $code_manager = new CodeManager();
 
@@ -882,16 +882,12 @@ function export()
     $id_code_group = FormaLms\lib\Get::req('id_code_group', DOTY_INT, 0);
 
     if ($id_code_group <= 0) {
-        $this->render('invalid', [
-            'message' => Lang::t('_INVALID_ID_CODE_GROUP', 'code'),
-        ]);
-
-        return;
+        return Lang::t('_INVALID_ID_CODE_GROUP', 'code');
     }
 
     //retrieve data to export
     $code_manager = new CodeManager();
-    $acl_man = Docebo::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     $codeGroupInfo = $code_manager->getCodeGroupInfo($id_code_group);
     $array_code = $code_manager->getCodeList($id_code_group, 0, false);
 

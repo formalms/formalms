@@ -12,19 +12,15 @@
  */
 
 $body = '';
-$languages = Docebo::langManager()->getAllLanguages(true); //getAllLangCode();
-$std_lang = getLanguage();
+$languages = \FormaLms\lib\Forma::langManager()->getAllLanguages(true); //getAllLangCode();
+$std_lang = Lang::get();
 
 $body .= Form::openForm('addfolder_form', 'ajax.adm_server.php?r=' . $this->link . '/createfolder');
 
 $body .= Form::getHidden('addfolder_id_parent', 'id_parent', $id_parent);
 $body .= Form::getTextfield(Lang::t('_CODE', 'organization_chart'), 'org_code', 'org_code', 50);
-if ($mod_org) {
-    $body .= Form::getDropdown(Lang::t('_DEFAULTTEMPLATE', 'configuration'), 'associated_template', 'associated_template', $template_array, $default_template);
-} else {
-    //$template_array = [$default_template => $template_array[$default_template]];
-    $body .= Form::getDropdown(Lang::t('_DEFAULTTEMPLATE', 'configuration'), 'associated_template', 'associated_template', $template_array, $default_template);
-}
+$body .= Form::getDropdown(Lang::t('_DEFAULTTEMPLATE', 'configuration'), 'associated_template', 'associated_template', $template_array, $default_template);
+
 $body .= Form::getBreakRow();
 
 foreach ($languages as $language) {
@@ -37,7 +33,7 @@ $body .= '<hr>';
 
 // adding custom fields (if any)
 
-$vett_custom_org = $this->model->getCustomFieldOrg($id);
+$vett_custom_org = $this->model->getCustomFieldOrg(isset($id) ?? 0);
 foreach ($vett_custom_org as $key => $value) {
     $valueField = $this->model->getValueCustom($id, $value['id_field']);
     if ($value['type_field'] == 'dropdown') {

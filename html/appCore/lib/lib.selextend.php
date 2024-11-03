@@ -37,8 +37,9 @@ class ExtendSelector
     /**
      * ExtendSelector constructor.
      */
-    public function ExtendSelector()
+    public function __construct()
     {
+        
     }
 
     /**

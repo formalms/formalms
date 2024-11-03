@@ -1,0 +1,19 @@
+<div class="step2">
+    <form id="formstep2">
+    <h1>{{databaseInfoLabel}}</h1>
+    <div class="form_line_l">
+        <div id="database_data">
+
+        {{ Form_getLineTextfield('form_line_l', 'floating',dbHostLabel, 'textfield','db_host', 'dbHost', setValues.dbHost ?? dbConfig.dbHost, '',255,'autocomplete=off','','') }}
+        {{ Form_getLineTextfield('form_line_l', 'floating',dbNameLabel, 'textfield','db_name', 'dbName', setValues.dbName ?? dbConfig.dbName, '',255,'autocomplete=off','','') }}
+        {{ Form_getLineTextfield('form_line_l', 'floating',dbUsernameLabel, 'textfield','db_user', 'dbUser', setValues.dbUser ?? dbConfig.dbUser, '',255,'autocomplete=off','','') }}
+        {{ Form_getPassword(dbPassLabel, 'db_pass', 'dbPass', 255) }}
+        </div>
+     
+    </div>
+    </form>
+</div>
+
+
+
+

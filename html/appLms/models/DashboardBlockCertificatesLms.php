@@ -92,7 +92,7 @@ class DashboardBlockCertificatesLms extends DashboardBlockLms
 
     private function getCertificates()
     {
-        if (!$limit = (int) $this->data['max_last_records']) {
+        if (!$limit = !empty($this->data) && (int) array_key_exists('max_last_records', $this->data) ? $this->data['max_last_records'] : 0) {
             $limit = self::MAX_CERTIFICATES;
         }
 
@@ -101,7 +101,7 @@ class DashboardBlockCertificatesLms extends DashboardBlockLms
 
     private function getCertificatesForBlock($limit = 1)
     {
-        $id_user = Docebo::user()->idst;
+        $id_user = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
         $filter['id_user'] = $id_user;
         $pagination['startIndex'] = 0;

@@ -18,13 +18,13 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  * @category Configuration
  */
-require_once __DIR__ . '/class.definition.php';
+require_once dirname(__FILE__) . '/class.definition.php';
 
 class Module_Room extends ScsAdminModule
 {
     public function loadBody()
     {
-        require_once dirname(__DIR__) . '/modules/' . $this->module_name . '/' . $this->module_name . '.php';
+        require_once dirname(__FILE__) . '/../modules/' . $this->module_name . '/' . $this->module_name . '.php';
         roomDispatch($GLOBALS['op']);
     }
 

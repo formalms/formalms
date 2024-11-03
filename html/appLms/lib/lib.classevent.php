@@ -25,7 +25,7 @@ class ClassEventManager
 
     public $status_info = [];
 
-    public function ClassEventManager($prefix = 'learning', $dbconn = null)
+    public function __construct($prefix = 'learning', $dbconn = null)
     {
         $this->prefix = $prefix;
         $this->dbconn = $dbconn;
@@ -166,7 +166,7 @@ class ClassEventManager
 
         if ($id == 0) {
             if (empty($location)) {
-                $lang = &DoceboLanguage::createInstance('classevent', 'lms');
+                $lang = &FormaLanguage::createInstance('classevent', 'lms');
                 $location = $lang->def('_UNAMED');
             }
 

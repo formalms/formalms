@@ -13,12 +13,12 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (!Docebo::user()->isAnonymous()) {
+if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     // XXX: modlinkgui
     function modlinkgui($object_link)
     {
         checkPerm('view', false, 'storage');
-        $lang = &DoceboLanguage::createInstance('link');
+        $lang = FormaLanguage::createInstance('link');
 
         require_once _base_ . '/lib/lib.table.php';
         $del_perm = checkPerm('view', false, 'storage');
@@ -103,7 +103,7 @@ if (!Docebo::user()->isAnonymous()) {
     function addlinkcat($object_link)
     {
         checkPerm('view', false, 'storage');
-        $lang = &DoceboLanguage::createInstance('link');
+        $lang = FormaLanguage::createInstance('link');
         require_once _base_ . '/lib/lib.form.php';
         $GLOBALS['page']->add(getTitleArea($lang->def('_SECT_LINK'), 'link')
         . '<div class="std_block">'
@@ -125,7 +125,7 @@ if (!Docebo::user()->isAnonymous()) {
     function inslinkcat()
     {
         checkPerm('view', false, 'storage');
-        $lang = &DoceboLanguage::createInstance('link');
+        $lang = FormaLanguage::createInstance('link');
 
         $back_url = urldecode($_POST['back_url']);
 
@@ -133,9 +133,9 @@ if (!Docebo::user()->isAnonymous()) {
 	INSERT INTO ' . $GLOBALS['prefix_lms'] . "_link_cat
 	SET title = '" . ((trim($_POST['title']) == '') ? $lang->def('_NOTITLE') : $_POST['title']) . "',
 		description = '" . $_POST['description'] . "',
-		author = '" . (int) getLogUserId() . "'";
+		author = '" . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'";
         if (!sql_query($query_ins)) {
-            Forma::addError($lang->def('_OPERATION_FAILURE'));
+            \FormaLms\lib\Forma::addError($lang->def('_OPERATION_FAILURE'));
             Util::jump_to('' . $back_url . '&create_result=0');
         }
         list($idLink) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
@@ -146,7 +146,7 @@ if (!Docebo::user()->isAnonymous()) {
     function modlinkcat()
     {
         checkPerm('view', false, 'storage');
-        $lang = &DoceboLanguage::createInstance('link');
+        $lang = FormaLanguage::createInstance('link');
         require_once _base_ . '/lib/lib.form.php';
         $idCategory = importVar('idCategory', true, 0);
         $back_url = urldecode(importVar('back_url'));
@@ -181,7 +181,7 @@ if (!Docebo::user()->isAnonymous()) {
     function uplinkcat()
     {
         checkPerm('view', false, 'storage');
-        $lang = &DoceboLanguage::createInstance('link');
+        $lang = &FormaLanguage::createInstance('link');
 
         $back_url = urldecode(importVar('back_url'));
         $back_coded = htmlentities(urlencode($back_url));
@@ -273,7 +273,7 @@ if (!Docebo::user()->isAnonymous()) {
     function newlink()
     {
         checkPerm('view', false, 'storage');
-        $lang = &DoceboLanguage::createInstance('link');
+        $lang = FormaLanguage::createInstance('link');
 
         require_once _base_ . '/lib/lib.form.php';
 
@@ -307,7 +307,7 @@ if (!Docebo::user()->isAnonymous()) {
     function inslink()
     {
         checkPerm('view', false, 'storage');
-        $lang = &DoceboLanguage::createInstance('link');
+        $lang = FormaLanguage::createInstance('link');
 
         $idCategory = importVar('idCategory', true, 0);
         $back_url = urldecode(importVar('back_url'));
@@ -340,7 +340,7 @@ if (!Docebo::user()->isAnonymous()) {
     function modlink()
     {
         checkPerm('view', false, 'storage');
-        $lang = &DoceboLanguage::createInstance('link');
+        $lang = FormaLanguage::createInstance('link');
         require_once _base_ . '/lib/lib.form.php';
         $back_url = urldecode($_GET['back_url']);
         $back_coded = htmlentities(urlencode($back_url));
@@ -376,7 +376,7 @@ if (!Docebo::user()->isAnonymous()) {
     function uplink()
     {
         checkPerm('view', false, 'storage');
-        $lang = &DoceboLanguage::createInstance('link');
+        $lang = FormaLanguage::createInstance('link');
 
         $back_url = urldecode($_POST['back_url']);
         $back_coded = htmlentities(urlencode($back_url));
@@ -407,7 +407,7 @@ if (!Docebo::user()->isAnonymous()) {
     function dellink()
     {
         checkPerm('view', false, 'storage');
-        $lang = &DoceboLanguage::createInstance('link');
+        $lang = FormaLanguage::createInstance('link');
 
         $back_url = urldecode($_GET['back_url']);
         $back_coded = htmlentities(urlencode($back_url));

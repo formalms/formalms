@@ -24,13 +24,13 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  * ( editor = Eclipse 3.2.0[phpeclipse,subclipse,WTP], tabwidth = 4 )
  */
-require_once __DIR__ . '/class.definition.php';
+require_once dirname(__FILE__) . '/class.definition.php';
 
 class Module_PreAssessment extends LmsAdminModule
 {
     public function loadBody()
     {
-        require_once dirname(__DIR__) . '/modules/' . $this->module_name . '/' . $this->module_name . '.php';
+        require_once dirname(__FILE__) . '/../modules/' . $this->module_name . '/' . $this->module_name . '.php';
         preAssessmentDispatch($GLOBALS['op']);
     }
 

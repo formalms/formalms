@@ -94,7 +94,7 @@ class Module
 
     public function getTitle()
     {
-        return 'Docebo 2.1 LMS - ' . $this->module_name;
+        return 'Forma 2.1 LMS - ' . $this->module_name;
     }
 
     public function loadHeader()
@@ -108,10 +108,10 @@ class Module
 
         if (file_exists('modules/' . $this->module_name . '/' . $this->module_name . '.php')) {
             //include('modules/'.$this->module_name.'/'.$this->module_name.'.php');
-            include Forma::inc(_adm_ . '/modules/' . $this->module_name . '/' . $this->module_name . '.php');
+            include \FormaLms\lib\Forma::inc(_adm_ . '/modules/' . $this->module_name . '/' . $this->module_name . '.php');
         } else {
             //include('../appLms/admin/modules/'.$this->module_name.'/'.$this->module_name.'.php');
-            include Forma::inc(_lms_ . '/admin/modules/' . $this->module_name . '/' . $this->module_name . '.php');
+            include \FormaLms\lib\Forma::inc(_lms_ . '/admin/modules/' . $this->module_name . '/' . $this->module_name . '.php');
         }
     }
 
@@ -137,7 +137,7 @@ class Module
 
     // Function for permission managment
 
-    public function getAllToken($op)
+    public static function getAllToken($op)
     {
         return [
             'view' => ['code' => 'view',
@@ -148,8 +148,8 @@ class Module
 
     public function getPermissionUi($module_name, $modname, $op, $form_name, $perm, $all_perm_tokens)
     {
-        $lang = &DoceboLanguage::createInstance('manmenu');
-        $lang_perm = &DoceboLanguage::createInstance('permission');
+        $lang = &FormaLanguage::createInstance('manmenu');
+        $lang_perm = &FormaLanguage::createInstance('permission');
 
         $tokens = $this->getAllToken($op);
 

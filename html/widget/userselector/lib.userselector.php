@@ -208,7 +208,7 @@ class UserselectorWidget extends Widget
                 'level' => Lang::t('_LEVEL', 'standard'),
             ];
             $f_list = $f_list + $fields;
-            $f_selected = $this->json->decode(Docebo::user()->getPreference('ui.directory.custom_columns'));
+            $f_selected = $this->json->decode(\FormaLms\lib\FormaUser::getCurrentUser()->getPreference('ui.directory.custom_columns'));
             if ($f_selected == false) {
                 $f_selected = ['email', 'lastenter', 'register_date'];
             }
@@ -245,7 +245,7 @@ class UserselectorWidget extends Widget
         //--- ORGCHART SELECTOR PARAMETERS -----------------------------------------
 
         if ($this->show_orgchart_selector) {
-            $acl_man = Docebo::user()->getACLManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();;
             $arr_idst = $acl_man->getArrGroupST(['/oc_0', '/ocd_0']);
 
             $orgchart_config = new stdClass();

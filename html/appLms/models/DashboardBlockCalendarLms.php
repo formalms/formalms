@@ -115,17 +115,6 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
 
     private function findCourses($startDate = null, $endDate = null, $courseType, $showCourseWithoutDates = false)
     {
-        // exclude course belonging to pathcourse in which the user is enrolled as a student
-        $learning_path_enroll = $this->getUserCoursePathCourses(Docebo::user()->getId());
-        $exclude_pathcourse = '';
-        if (count($learning_path_enroll) > 1 && FormaLms\lib\Get::sett('on_path_in_mycourses') == 'off') {
-            $exclude_path_course = 'select idCourse from learning_courseuser where idUser=' . Docebo::user()->getId() . ' and level <= 3 and idCourse in (' . implode(',', $learning_path_enroll) . ')';
-            $rs = $this->db->query($exclude_path_course);
-            while ($d = $this->db->fetch_assoc($rs)) {
-                $excl[] = $d['idCourse'];
-            }
-            $exclude_pathcourse = ' and c.idCourse not in (' . implode(',', $excl) . ' )';
-        }
 
         switch ($courseType) {
             case self::COURSE_TYPE_CLASSROOM:
@@ -154,7 +143,7 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
                 break;
         }
 
-        $query .= ' WHERE cu.iduser = ' . Docebo::user()->getId()
+        $query .= ' WHERE cu.iduser = ' . \FormaLms\lib\FormaUser::getCurrentUser()->getId()
             . ' AND c.course_type = "' . $courseType . '"';
 
         if (($courseType == self::COURSE_TYPE_ELEARNING) && null !== $startDate && !empty($startDate) && null !== $endDate && !empty($endDate)) {
@@ -163,7 +152,7 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
         }
 
         if ($showCourseWithoutDates) {
-            $query .= ' OR c.date_begin = 0000-00-00 OR c.date_end = 0000-00-00';
+            $query .= ' OR c.date_begin IS NULL OR c.date_end IS NULL';
         } else {
             switch ($courseType) {
                 case self::COURSE_TYPE_CLASSROOM:
@@ -171,7 +160,7 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
                     break;
                 case self::COURSE_TYPE_ELEARNING:
                 default:
-                    $query .= ' AND c.date_begin != 0000-00-00 AND  c.date_end != 0000-00-00';
+                    $query .= ' AND c.date_begin IS NOT NULL AND  c.date_end IS NOT NULL';
                     break;
             }
         }
@@ -205,13 +194,13 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
 
     private function findReservations($startDate, $endDate, $showCourseWithoutDates = false)
     {
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
 
         // exclude course belonging to pathcourse in which the user is enrolled as a student
-        $learning_path_enroll = $this->getUserCoursePathCourses(Docebo::user()->getId());
+        $learning_path_enroll = $this->getUserCoursePathCourses(\FormaLms\lib\FormaUser::getCurrentUser()->getId());
         $exclude_pathcourse = '';
         if (count($learning_path_enroll) > 1 && FormaLms\lib\Get::sett('on_path_in_mycourses') == 'off') {
-            $exclude_path_course = 'select idCourse from learning_courseuser where idUser=' . Docebo::user()->getId() . ' and level <= 3 and idCourse in (' . implode(',', $learning_path_enroll) . ')';
+            $exclude_path_course = 'select idCourse from learning_courseuser where idUser=' . \FormaLms\lib\FormaUser::getCurrentUser()->getId() . ' and level <= 3 and idCourse in (' . implode(',', $learning_path_enroll) . ')';
             $rs = $this->db->query($exclude_path_course);
             while ($d = $this->db->fetch_assoc($rs)) {
                 $excl[] = $d['idCourse'];
@@ -226,13 +215,13 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
             . ' JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse) '
             . ' JOIN %lms_reservation_events AS re ON (c.idCourse = re.idCourse) '
             . ' JOIN %lms_reservation_subscribed AS rs ON (cu.iduser = rs.idstUser) '
-            . ' WHERE cu.iduser = ' . Docebo::user()->getId()
+            . ' WHERE cu.iduser = ' . \FormaLms\lib\FormaUser::getCurrentUser()->getId()
             . ' AND ( c.date_begin BETWEEN CAST("' . $startDate . '" AS DATE) AND CAST("' . $endDate . '" AS DATE)';
 
         if ($showCourseWithoutDates) {
-            $query .= ' OR c.date_begin = 0000-00-00 OR c.date_end = 0000-00-00';
+            $query .= ' OR c.date_begin IS NULL OR c.date_end IS NULL';
         } else {
-            $query .= ' AND c.date_begin != 0000-00-00 AND c.date_end != 0000-00-00';
+            $query .= ' AND c.date_begin IS NOT NULL AND c.date_end IS NOT NULL';
         }
 
         $query .= ')';
@@ -279,7 +268,7 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
                 LEFT JOIN %lms_classroom cr ON cdd.classroom = cr.idClassroom
                 LEFT JOIN %lms_class_location cl ON cr.location_id = cl.location_id
                 WHERE cd.id_course = ' . $course['course_id'] . '
-                AND cdu.id_user = ' . Docebo::user()->getId() . ' AND cdd.deleted = 0 ORDER BY cdd.date_begin';
+                AND cdu.id_user = ' . \FormaLms\lib\FormaUser::getCurrentUser()->getId() . ' AND cdd.deleted = 0 ORDER BY cdd.date_begin';
             $result = $this->db->query($query
             );
 

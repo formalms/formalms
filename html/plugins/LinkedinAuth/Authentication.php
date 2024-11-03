@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2023 (Forma)
+ * Copyright (c) 2013-2022 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -15,26 +15,27 @@ namespace Plugin\LinkedinAuth;
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-use Docebo;
+use Forma;
 use Form;
 use Lang;
 use OAuth\Common\Consumer\Credentials;
 use OAuth\Common\Storage\Session;
 use OAuth\OAuth2\Service\Linkedin;
+use FormaLms\lib\Get;
 
 class Authentication extends \PluginAuthentication implements \PluginAuthenticationWithRedirectInterface
 {
-    public static function getLoginGUI()
+    public static function getLoginGUI($redirect = '')
     {
         $form = '';
-        $session = self::$session;
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $social = $session->get('social');
         if (isset($social)) {
             if ($social['plugin'] == Plugin::getName()) {
-                $form = FormaLms\lib\Get::img('social/linkedin-24.png') . ' '
+                $form = Get::img('social/linkedin-24.png') . ' '
                         . Lang::t('_YOU_ARE_CONNECTING_SOCIAL_ACCOUNT', 'social')
                         . ' <b>' . $social['data']['firstName'] . ' ' . $social['data']['lastName'] . '</b>'
-                        . Form::openForm('cancel_social', FormaLms\lib\Get::rel_path('base'))
+                        . Form::openForm('cancel_social', Get::rel_path('base'))
                           . Form::openButtonSpace()
                               . Form::getButton('cancel', 'cancel_social', Lang::t('_CANCEL', 'standard'))
                           . Form::closeButtonSpace()
@@ -60,8 +61,10 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
 
     public static function getUserFromLogin()
     {
-        $error = FormaLms\lib\Get::req('error', DOTY_STRING, false);
-        $code = FormaLms\lib\Get::req('code', DOTY_STRING, false);
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+        
+        $error = Get::req('error', DOTY_STRING, false);
+        $code = Get::req('code', DOTY_STRING, false);
 
         if ($error || !$code) {
             return UNKNOWN_SOCIAL_ERROR;
@@ -80,13 +83,13 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
             return EMPTY_SOCIALID;
         }
 
-        $user = \DoceboUser::createDoceboUserFromField('linkedin_id', $user_info['id'], 'public_area');
+        $user = \FormaLms\lib\FormaUser::createFormaUserFromField('linkedin_id', $user_info['id'], 'public_area');
 
         if (!$user) {
-            (self::$session)->set('social', ['plugin' => Plugin::getName(),
+            ($session)->set('social', ['plugin' => Plugin::getName(),
                                             'data' => $user_info,
                 ]);
-            (self::$session)->save();
+            ($session)->save();
 
             return USER_NOT_FOUND;
         }
@@ -98,7 +101,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
     {
         $query = ' UPDATE %adm_user'
                 . " SET linkedin_id = '" . $id . "'"
-                . ' WHERE idst=' . Docebo::user()->getIdSt();
+                . ' WHERE idst=' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
         sql_query($query);
     }
@@ -110,9 +113,9 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
         $storage = new Session(false);
 
         $credentials = new Credentials(
-            FormaLms\lib\Get::sett('linkedin.oauth_key'),
-            FormaLms\lib\Get::sett('linkedin.oauth_secret'),
-            FormaLms\lib\Get::abs_path() . 'index.php?r=' . urlencode(_login_) . '&plugin=' . Plugin::getName()
+            Get::sett('linkedin.oauth_key'),
+            Get::sett('linkedin.oauth_secret'),
+            Get::abs_path() . 'index.php?r=' . urlencode(_login_) . '&plugin=' . Plugin::getName()
         );
 
         return $serviceFactory->createService('linkedin', $credentials, $storage, ['r_basicprofile']);

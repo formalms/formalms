@@ -10,7 +10,6 @@
  * from docebo 4.0.5 CE 2008-2012 (c) docebo
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
-
 define('IN_FORMA', true);
 define('_deeppath_', '');
 require __DIR__ . '/base.php';
@@ -32,27 +31,21 @@ if (isset($_REQUEST['notuse_template'])) {
     $GLOBALS['notuse_template'] = true;
 }
 
-Boot::init(BOOT_PAGE_WR);
+Boot::init(CHECK_SYSTEM_STATUS);
 
 // connect to the database
-$db = &DbConn::getInstance();
+$db = \FormaLms\db\DbConn::getInstance();
 
 // -----------------------------------------------------------------------------
 
 // get maintenence setting
-$query = ' SELECT param_value FROM %adm_setting'
-    . " WHERE param_name = 'maintenance'"
-    . ' ORDER BY pack, sequence';
-
-$maintenance = $db->fetch_row($db->query($query))[0];
+$maintenance = \FormaLms\lib\Get::sett('maintenance');
 
 if ($maintenance === 'on') {
     // get maintenence password
-    $query = ' SELECT param_value FROM %adm_setting'
-        . " WHERE param_name = 'maintenance_pw'"
-        . ' ORDER BY pack, sequence';
+   
 
-    $maintenancePassword = $db->fetch_row($db->query($query))[0];
+    $maintenancePassword = \FormaLms\lib\Get::sett('maintenance_pw');
 
     $password = FormaLms\lib\Get::req('passwd', DOTY_STRING, '');
 
@@ -68,13 +61,13 @@ if ($maintenance === 'on') {
 $sso = FormaLms\lib\Get::req('login_user', DOTY_MIXED, false) && FormaLms\lib\Get::req('time', DOTY_MIXED, false) && FormaLms\lib\Get::req('token', DOTY_MIXED, false);
 
 // get required action - default: homepage if not logged in, no action if logged in
-$req = FormaLms\lib\Get::req('r', DOTY_MIXED, ($sso ? _sso_ : (Docebo::user()->isAnonymous() ? _homepage_ : false)));
+$req = FormaLms\lib\Get::req('r', DOTY_MIXED, ($sso ? _sso_ : (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous() ? _homepage_ : false)));
 
 $req = preg_replace('/[^a-zA-Z0-9\-\_\/]+/', '', $req);
 
 $explodedRequest = (array) explode('/', $req);
 if (count($explodedRequest) < 3) {
-    if (Docebo::user()->isLoggedIn()) {
+    if (\FormaLms\lib\FormaUser::getCurrentUser()->isLoggedIn()) {
         Util::jump_to(FormaLms\lib\Get::rel_path('lms'));
     }
     Util::jump_to(FormaLms\lib\Get::rel_path('base'));
@@ -87,11 +80,13 @@ $requestedRoute = sprintf('%s/%s', $platform, $mvcName);
 $allowedControllers = [
     _homepage_base_,
     _homecatalog_base_,
+    _system_base_,
 ];
 
 $templatesToRender = [
     _homepage_base_ => 'home',
     _homecatalog_base_ => 'home_catalogue',
+    _system_base_ => 'system',
 ];
 
 if ($req) {
@@ -115,7 +110,6 @@ if ($req) {
     // execute requested task
     $controller = new $mvcClass($mvcName);
     $controller->request($task);
-
     // add content to page
     $GLOBALS['page']->add(ob_get_contents(), 'content');
     ob_clean();

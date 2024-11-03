@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once Forma::inc(_lms_ . '/modules/question/class.question.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/class.question.php');
 
 class Choice_Question extends Question
 {
@@ -40,7 +40,7 @@ class Choice_Question extends Question
      */
     public function _lineAnswer($i)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = FormaLanguage::createInstance('test');
 
         $GLOBALS['page']->add('<tr class="line_answer">'
             . '<td rowspan="2" class=" valign_top align_center">'
@@ -71,9 +71,16 @@ class Choice_Question extends Question
             . '<td rowspan="2" class="image">'
             //comment
             . '<label class="access-only" for="comment_' . $i . '">' . $lang->def('_COMMENTS') . '</label>'
-            . '<textarea class="test_comment" id="comment_' . $i . '" name="comment[' . $i . ']" rows="6">'
-            . (isset($_REQUEST['comment'][$i]) ? stripslashes($_REQUEST['comment'][$i]) : '')
-            . '</textarea>'
+			//.'<textarea class="test_comment" id="comment_'.$i.'" name="comment['.$i.']" rows="6">'
+			//.( isset($_REQUEST['comment'][$i]) ? stripslashes($_REQUEST['comment'][$i]) : '')
+			//.'</textarea>'
+			.loadHtmlEditor('',
+				'comment_'.$i,
+				'comment['.$i.']',
+				( isset($_REQUEST['comment'][$i]) ? stripslashes($_REQUEST['comment'][$i]) : ''),
+				false,
+				'rows="6"',
+				true)
             . '</td>'
             . '<td class="test_ifcorrect">'
             . '<label for="score_correct_' . $i . '">' . $lang->def('_TEST_IFCORRECT') . '</label>'
@@ -107,7 +114,7 @@ class Choice_Question extends Question
      */
     public function _lineModAnswer($i)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = FormaLanguage::createInstance('test');
 
         $GLOBALS['page']->add('<tr class="line_answer">'
             . '<td rowspan="2" class=" valign_top align_center">'
@@ -177,7 +184,7 @@ class Choice_Question extends Question
      */
     public function create($idTest, $back_test)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = FormaLanguage::createInstance('test');
 
         require_once _base_ . '/lib/lib.form.php';
         $url_encode = htmlentities(urlencode($back_test));
@@ -330,7 +337,7 @@ class Choice_Question extends Question
      */
     public function edit($back_test)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = FormaLanguage::createInstance('test');
 
         require_once _base_ . '/lib/lib.form.php';
         $url_encode = htmlentities(urlencode($back_test));
@@ -662,7 +669,7 @@ class Choice_Question extends Question
      */
     public function play($num_quest, $shuffle_answer = false, $id_track = 0, $freeze = false, $number_time = null)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = FormaLanguage::createInstance('test');
 
         list($id_quest, $title_quest, $shuffle) = sql_fetch_row(sql_query('
 		SELECT idQuest, title_quest, shuffle 
@@ -712,13 +719,6 @@ class Choice_Question extends Question
             . '<div class="title_question">' . $num_quest . ') ' . $title_quest . '</div>'
             . '<div class="answer_question">';
         while (list($id_answer, $answer) = sql_fetch_row($re_answer)) {
-            // $content .=  '<input type="radio" id="quest_'.$id_quest.'_'.$id_answer.'" '
-            // 	.'name="quest['.$id_quest.']" value="'.$id_answer.'"'
-            // 	.( ($find_prev && $id_answer == $id_answer_do) ? ' checked="checked"' : '' )
-            // 	.( $find_prev && $freeze ? ' disabled="disabled"' : '' ).' />'
-            // 	.'<label class="text_answer" for="quest_'.$id_quest.'_'.$id_answer.'">'.$answer.'</label><br />';
-
-            // wrapping radio button: mod by Andrea Fiadone - 10/03/2016
             $content .= '<div class="answer-item"><div class="input-wrapper input-wrapper-radio">'
                 . '<input type="radio" id="quest_' . $id_quest . '_' . $id_answer . '" '
                 . 'name="quest[' . $id_quest . ']" value="' . $id_answer . '"'
@@ -756,6 +756,7 @@ class Choice_Question extends Question
     {
         $result = true;
 
+        $track_query = null;
         if ($this->userDoAnswer($trackTest->idTrack) && !$trackTest->getTestObj()->isRetainAnswersHistory()) {
             if (!$can_overwrite) {
                 return true;
@@ -784,7 +785,7 @@ class Choice_Question extends Question
 					'',
 					1,
 					'" . (int) ($trackTest->getNumberOfAttempt() + 1) . "')";
-                $result &= sql_query($track_query);
+             
             } elseif ($is_correct && ($score_incorr != 0)) {
                 //answer correct with penality but not checked by the user
                 $track_query = '
@@ -797,7 +798,7 @@ class Choice_Question extends Question
 					'',
 					0,
 					'" . (int) ($trackTest->getNumberOfAttempt() + 1) . "')";
-                $result &= sql_query($track_query);
+             
             } elseif (!$is_correct && ($score_corr != 0)) {
                 //answer correct with penality but not checked by the user
                 $track_query = '
@@ -810,7 +811,11 @@ class Choice_Question extends Question
 					'',
 					0,
 					'" . (int) ($trackTest->getNumberOfAttempt() + 1) . "')";
-                $result &= sql_query($track_query);
+          
+            }
+
+            if($track_query) {
+                $result = sql_query($track_query);
             }
         }
 
@@ -827,7 +832,7 @@ class Choice_Question extends Question
      *
      * @author Fabio Pirovano (fabio@docebo.com)
      */
-    public function updateAnswer($id_track, &$source)
+    public function updateAnswer($id_track, &$source, $numberTime = null)
     {
         if (!$this->deleteAnswer($id_track)) {
             return false;
@@ -867,7 +872,7 @@ class Choice_Question extends Question
      */
     public function displayUserResult($id_track, $num_quest, $show_solution, $number_time = null)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = FormaLanguage::createInstance('test');
 
         $quest = '';
         $comment = '';
@@ -902,7 +907,7 @@ class Choice_Question extends Question
         list($id_answer_do) = sql_fetch_row(sql_query($recover_answer));
 
         //**  recorver status test ** #11961 - Errata visualizzazione risposte corrette nei test
-        $sql = 'select status from %lms_commontrack where idUser=' . Docebo::user()->getIdSt() . ' and idTrack=' . $id_track;
+        $sql = 'select status from %lms_commontrack where idUser=' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . ' and idTrack=' . $id_track;
         list($status_test) = sql_fetch_row(sql_query($sql));
 
         $quest = '';
@@ -1000,7 +1005,7 @@ class Choice_Question extends Question
             return $new_id_quest;
         }
 
-        reset($raw_quest->answers);
+        //reset($raw_quest->answers);
         foreach ($raw_quest->answers as $raw_answer) {
             if ($raw_answer->score_correct > 0 && $raw_answer->score_correct < 1 && $raw_answer->is_correct) {
                 // a littel bit tricky but needed in order tu full support

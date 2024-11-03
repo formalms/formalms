@@ -1,0 +1,96 @@
+// Social login
+//
+// Markup:
+//<div class="social-login">
+//  <p class="social-login__title">
+//  	<span>login with social</span>
+//  </p>
+//  <div class="social-login__list">
+//		<a href="#"><i class="fa fa-linkedin"></i></a>
+//		<a href="#"><i class="fa fa-google-plus"></i></a>
+//		<a href="#"><i class="fa fa-facebook"></i></a>
+//  </div>
+//</div>
+//
+// Style guide: 12.4
+.social-login {
+}
+
+.social-login__title {
+  display: block;
+  padding: 10px 25px;
+  position: relative;
+  margin-top: 15px;
+  text-align: center;
+  line-height: 14px;
+
+  &:before {
+    width: calc(100% - 50px);
+    height: 1px;
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 25px;
+    z-index: 0;
+    background-color: #666;
+  }
+
+  span {
+    display: inline-block;
+    padding: 0 10px;
+    position: relative;
+    z-index: 1;
+    background-color: #f6f6f6;
+    font-size: 14px;
+    font-style: italic;
+  }
+}
+
+.social-login__list {
+  margin: 16px 0 24px;
+  font-size: 12px;
+  text-align: center;
+
+  & > a {
+    display: inline-block;
+    margin: 0 8px;
+    text-decoration: none !important;
+  }
+
+  .fa {
+    display: block;
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 10px;
+    font-size: 24px;
+    line-height: 40px;
+    text-align: center;
+    color: #fff;
+  }
+
+  .fa-facebook {
+    background-color: #3b5998;
+  }
+
+  .fa-twitter {
+    background-color: #1da1f2;
+  }
+
+  .fa-google,
+  .fa-google-plus {
+    background-color: #d62d20;
+  }
+
+  .fa-linkedin {
+    background-color: #0077b5;
+  }
+
+  .form_elem_button {
+    text-align: center;
+    padding-right: 0;
+
+    input {
+      margin: 0 auto;
+    }
+  }
+}

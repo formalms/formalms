@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Domain\DomainHandler;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -19,7 +21,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  * @author Marco Valloni
  */
 
-if (!Docebo::user()->isAnonymous()) {
+if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     require_once _lms_ . '/lib/lib.reservation.php';
     require_once _lms_ . '/lib/lib.classroom.php';
 
@@ -34,8 +36,8 @@ if (!Docebo::user()->isAnonymous()) {
 
         $mod_perm = checkPerm('mod', true);
 
-        $lang = &DoceboLanguage::createInstance('reservation');
-        $um = &UrlManager::getInstance('reservation');
+        $lang = FormaLanguage::createInstance('reservation');
+        $um = UrlManager::getInstance('reservation');
 
         $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
@@ -115,7 +117,7 @@ if (!Docebo::user()->isAnonymous()) {
         $roomperm = new ReservationRoomPermissions();
         $perm = 'view';
 
-        $lang = &DoceboLanguage::createInstance('reservation');
+        $lang = FormaLanguage::createInstance('reservation');
 
         $order_by = importVar('order_by', false, 'c.name, e.title, e.date, e.deadLine');
 
@@ -129,8 +131,8 @@ if (!Docebo::user()->isAnonymous()) {
 
         $man_res = new Man_Reservation();
 
-        $acl = &Docebo::user()->getAcl();
-        $user_idst = getLogUserId();
+        $acl = \FormaLms\lib\Forma::getAcl();
+        $user_idst = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
         $events = [];
 
@@ -199,14 +201,14 @@ if (!Docebo::user()->isAnonymous()) {
                         $count[] = '0';
                     }
                     $count[] = Format::date($event[EVENT_DEADLINE], 'date');
-                    if ($man_res->controlUserSubscription(getLogUserId(), $event[EVENT_ID])) {
+                    if ($man_res->controlUserSubscription(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $event[EVENT_ID])) {
                         $count[] = '<a href="index.php?modname=reservation&amp;op=del_subscription&amp;id_event=' . $event[EVENT_ID] . '">' . $lang->def('_CANCEL_REGISTRATION') . '</a>';
                     } else {
                         if ($event[EVENT_AVAILABLE_PLACES] > 0) {
-                            if ($man_res->controlMaxSubscriptionForCategory($event[EVENT_ID_CATEGORY], getLogUserId())) {
+                            if ($man_res->controlMaxSubscriptionForCategory($event[EVENT_ID_CATEGORY], \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
                                 $count[] = '<a href="index.php?modname=reservation&amp;op=add_subscription&amp;id_event=' . $event[EVENT_ID] . '&amp;confirm=1&amp;ap=mod_profile&amp;from=2">' . $lang->def('_REGISTER') . '</a>';
                             } else {
-                                if ($man_res->controlSwitchPossibility($event[EVENT_ID_COURSE], $event[EVENT_ID_CATEGORY], getLogUserId())) {
+                                if ($man_res->controlSwitchPossibility($event[EVENT_ID_COURSE], $event[EVENT_ID_CATEGORY], \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
                                     $count[] = '<a href="index.php?modname=reservation&amp;op=switch_subscription&amp;id_event=' . $event[EVENT_ID] . '&amp;id_course=' . $id_course . '&amp;id_category=' . $event[EVENT_ID_CATEGORY] . '">' . $lang->def('_SWITCH_REGISTRATION') . '</a>';
                                 } else {
                                     $count[] = $lang->def('_ROOM_FULL');
@@ -238,7 +240,7 @@ if (!Docebo::user()->isAnonymous()) {
         $roomperm = new ReservationRoomPermissions();
         $perm = 'view';
 
-        $lang = &DoceboLanguage::createInstance('reservation');
+        $lang = FormaLanguage::createInstance('reservation');
 
         $mod_perm = checkPerm('mod', true);
 
@@ -252,12 +254,12 @@ if (!Docebo::user()->isAnonymous()) {
 
         $man_res = new Man_Reservation();
 
-        $acl = &Docebo::user()->getAcl();
-        $user_idst = getLogUserId();
+        $acl = \FormaLms\lib\Forma::getAcl();
+        $user_idst = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
         $events = [];
 
-        $events = $man_res->viewMyEvents($id_course, getLogUserId(), $order_by);
+        $events = $man_res->viewMyEvents($id_course, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $order_by);
 
         if ($events) {
             $cont_h =
@@ -344,7 +346,7 @@ if (!Docebo::user()->isAnonymous()) {
         $roomperm = new ReservationRoomPermissions();
         $perm = 'view';
 
-        $lang = &DoceboLanguage::createInstance('reservation');
+        $lang = FormaLanguage::createInstance('reservation');
 
         $mod_perm = checkPerm('mod', true);
 
@@ -358,12 +360,12 @@ if (!Docebo::user()->isAnonymous()) {
 
         $man_res = new Man_Reservation();
 
-        $acl = &Docebo::user()->getAcl();
-        $user_idst = getLogUserId();
+        $acl = \FormaLms\lib\Forma::getAcl();
+        $user_idst = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
         $events = [];
 
-        $events = $man_res->viewPastEvents($id_course, getLogUserId(), $order_by);
+        $events = $man_res->viewPastEvents($id_course, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $order_by);
 
         if ($events) {
             $cont_h =
@@ -435,7 +437,7 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _base_ . '/lib/lib.navbar.php';
         require_once _base_ . '/lib/lib.table.php';
 
-        $lang = &DoceboLanguage::createInstance('reservation');
+        $lang = FormaLanguage::createInstance('reservation');
 
         $mod_perm = checkPerm('mod', true);
 
@@ -449,8 +451,8 @@ if (!Docebo::user()->isAnonymous()) {
 
         $man_res = new Man_Reservation();
 
-        $acl = &Docebo::user()->getAcl();
-        $user_idst = getLogUserId();
+        $acl = \FormaLms\lib\Forma::getAcl();
+        $user_idst = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
         $events = [];
 
@@ -560,7 +562,7 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _base_ . '/lib/lib.table.php';
         require_once _base_ . '/lib/lib.form.php';
 
-        $lang = &DoceboLanguage::createInstance('reservation');
+        $lang = FormaLanguage::createInstance('reservation');
 
         $id_event = importVar('id_event', true, 0);
 
@@ -571,16 +573,13 @@ if (!Docebo::user()->isAnonymous()) {
 
         $man_res = new Man_Reservation();
 
-        $acl = &Docebo::user()->getAcl();
+        $acl = \FormaLms\lib\Forma::getAcl();
 
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
-        $user_idst = getLogUserId();
+        $user_idst = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
-        $user_subscribed = [];
         $user_sunscribed = $man_res->getSubscribedUserIdst($id_event);
-
-        $user_info = [];
 
         $user_info = &$acl_man->getUsers($user_sunscribed);
 
@@ -679,7 +678,7 @@ if (!Docebo::user()->isAnonymous()) {
     {
         checkPerm('view');
 
-        $lang = &DoceboLanguage::createInstance('reservation');
+        $lang = FormaLanguage::createInstance('reservation');
 
         $mod_perm = checkPerm('mod', true);
 
@@ -693,7 +692,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         $man_res = new Man_Reservation();
 
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         if (isset($_POST['send_mail'])) {
             $recipients = $man_res->getEventUserMail($id_event);
@@ -707,14 +706,11 @@ if (!Docebo::user()->isAnonymous()) {
             $subject = importVar('mail_object', false, '[Nessun Oggetto]');
             $body = importVar('mail_body', false, '');
 
-            $sender = FormaLms\lib\Get::sett('sender_event');
+            $sender = DomainHandler::getInstance()->getMailerField('sender_mail_system');
 
-            //sendMail($recipients, $subject, $body, $sender);
+            $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
+            $mailer->SendMail($re, $subject, $body, $sender, [], [MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false]);
 
-            $mailer = FormaMailer::getInstance();
-            $mailer->SendMail($sender, $re, $subject, $body, [], [MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false]);
-
-            //Util::jump_to('index.php?modname=reservation&op=reservation&active_tab=events');
             Util::jump_to('index.php?modname=reservation&op=view_user_event&id_event=' . $id_event);
         } else {
             require_once _base_ . '/lib/lib.form.php';
@@ -743,14 +739,14 @@ if (!Docebo::user()->isAnonymous()) {
     {
         require_once _adm_ . '/lib/lib.field.php';
 
-        $lang = &DoceboLanguage::createInstance('reservation');
+        $lang = FormaLanguage::createInstance('reservation');
 
         $id_event = importVar('id_event', true, 0);
 
         $man_res = new Man_Reservation();
         $field_man = new FieldList();
 
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $user_subscribed = [];
 
@@ -821,7 +817,7 @@ if (!Docebo::user()->isAnonymous()) {
                                         ." FROM core_field_son"
                                         ." WHERE idField = '".$field_id."'"
                                         ." AND idSon = '".$res."'"
-                                        ." AND lang_code = '".getLanguage()."'";
+                                        ." AND lang_code = '" .Lang::get()."'";
 
                             list($value) = sql_fetch_row(sql_query($query_value));
 
@@ -886,7 +882,7 @@ if (!Docebo::user()->isAnonymous()) {
         $action = importVar('action', true, 0);
         $id_event = importVar('id_event', true, 0);
 
-        $lang = &DoceboLanguage::createInstance('reservation');
+        $lang = FormaLanguage::createInstance('reservation');
 
         $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
@@ -901,8 +897,8 @@ if (!Docebo::user()->isAnonymous()) {
 
                 $out->add(getTitleArea('_RESERVATION_PROFILE_MODIFY') . '<div class="std_block">', 'content');
 
-                $profile = new LmsUserProfile(getLogUserId(), true);
-                $profile->init('subscription', 'lms', 'modname=reservation&op=add_subscription&id_event=' . $id_event . '&confirm=1&from=2&id_user=' . getLogUserId(), 'ap');
+                $profile = new LmsUserProfile(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), true);
+                $profile->init('subscription', 'lms', 'modname=reservation&op=add_subscription&id_event=' . $id_event . '&confirm=1&from=2&id_user=' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), 'ap');
                 $out->add(
                     $profile->getTitleArea()
                     . $profile->getHead()
@@ -921,8 +917,8 @@ if (!Docebo::user()->isAnonymous()) {
 
                 $out->add($lang->def('_CONFIRM_DATA') . '<br/>');
 
-                $profile = new LmsUserProfile(getLogUserId(), true);
-                $profile->init('subscription', 'lms', 'modname=reservation&op=add_subscription&id_event=' . $id_event . '&confirm=1&from=2&id_user=' . getLogUserId(), 'ap');
+                $profile = new LmsUserProfile(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), true);
+                $profile->init('subscription', 'lms', 'modname=reservation&op=add_subscription&id_event=' . $id_event . '&confirm=1&from=2&id_user=' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), 'ap');
                 //$profile->enableEditMode();
 
                 $out->add(
@@ -956,7 +952,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         $id_event = importVar('id_event', true, 0);
 
-        $lang = &DoceboLanguage::createInstance('reservation');
+        $lang = FormaLanguage::createInstance('reservation');
 
         $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
@@ -967,7 +963,7 @@ if (!Docebo::user()->isAnonymous()) {
             $confirm = importVar('confirm', true, 0);
 
             if ($confirm) {
-                $result = $man_res->delSubscription(getLogUserId(), $id_event);
+                $result = $man_res->delSubscription(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_event);
                 // invia mail agli amministratori
 
                 $query = 'SELECT u.email FROM core_user as u, learning_courseuser as cu, learning_reservation_events as re WHERE re.idEvent = "' . $id_event . '" AND cu. idCOurse = re.idCourse AND cu.idUser = u.idst AND cu.level > 3';
@@ -976,17 +972,14 @@ if (!Docebo::user()->isAnonymous()) {
                 while (list($subscribed) = sql_fetch_row($result)) {
                     $re[] = $subscribed;
                 }
-                $lang = &DoceboLanguage::createInstance('reservation');
+                $lang = FormaLanguage::createInstance('reservation');
 
                 $subject = $lang->def('_SUBJECT_DELSUBSCRIPTION');
                 $body = $lang->def('_BODY_DELSUBSCRIPTION');
+                $sender = DomainHandler::getInstance()->getMailerField('sender_mail_system');
 
-                $acl_man = &Docebo::user()->getAclManager();
-
-                $sender = FormaLms\lib\Get::sett('sender_event');
-
-                $mailer = FormaMailer::getInstance();
-                $mailer->SendMail($sender, $re, $subject, $body, [], [MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false]);
+                $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
+                $mailer->SendMail($re, $subject, $body, $sender, [], [MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false]);
 
                 // end invio mail
             }
@@ -1014,7 +1007,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         require_once _base_ . '/lib/lib.form.php';
 
-        $lang = &DoceboLanguage::createInstance('reservation');
+        $lang = FormaLanguage::createInstance('reservation');
 
         $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
@@ -1030,7 +1023,7 @@ if (!Docebo::user()->isAnonymous()) {
             $confirm = importVar('confirm', true, 0);
 
             if ($confirm && $id_event_del) {
-                $result = $man_res->switchSubscription(getLogUserId(), $id_event_del, $id_event);
+                $result = $man_res->switchSubscription(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_event_del, $id_event);
                 Util::jump_to('index.php?modname=reservation&op=reservation');
             }
             Util::jump_to('index.php?modname=reservation&op=reservation');
@@ -1046,7 +1039,7 @@ if (!Docebo::user()->isAnonymous()) {
         $out->add(
             Form::openForm('form_switch_subscription', 'index.php?modname=reservation&amp;op=switch_subscription&amp;confirm=1')
             . Form::openElementSpace()
-            . Form::getDropdown($lang->def('_DEL_EVENT_REGISTRATION'), 'id_event_del', 'id_event_del', $man_res->getEventDropDown($id_course, $id_category, getLogUserId()))
+            . Form::getDropdown($lang->def('_DEL_EVENT_REGISTRATION'), 'id_event_del', 'id_event_del', $man_res->getEventDropDown($id_course, $id_category, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()))
             . Form::getHidden('id_category', 'id_category', $id_category)
             . Form::getHidden('id_course', 'id_course', $id_course)
             . Form::getHidden('id_event', 'id_event', $id_event)
@@ -1074,15 +1067,14 @@ if (!Docebo::user()->isAnonymous()) {
         $id_event = importVar('id_event', true, 0);
 
         $man_res = new Man_Reservation();
-        $aclManager = new DoceboACLManager();
+        $aclManager = new FormaACLManager();
 
-        $subscribed = [];
         $subscribed = $man_res->getSubscribedUserIdst($id_event);
 
         $subscribed_empty = [];
 
-        $lang = &DoceboLanguage::CreateInstance('reservation');
-        $out = &$GLOBALS['page'];
+        $lang = FormaLanguage::CreateInstance('reservation');
+        $out = $GLOBALS['page'];
 
         $user_select = new UserSelector();
 
@@ -1101,10 +1093,10 @@ if (!Docebo::user()->isAnonymous()) {
             $user_select->resetSelection($subscribed_empty);
         }
 
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $arr_idstGroup = $aclManager->getGroupsIdstFromBasePath('/lms/course/' . (int) $id_course . '/subscribed/');
-        $me = [getLogUserId()];
+        $me = [\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()];
         $user_select->setUserFilter('group', $arr_idstGroup);
         $user_select->setGroupFilter('path', '/lms/course/' . $id_course . '/group');
 
@@ -1123,8 +1115,8 @@ if (!Docebo::user()->isAnonymous()) {
         $id_course = importVar('id_course', true, 0);
         $id_event = importVar('id_event', true, 0);
 
-        $lang = &DoceboLanguage::CreateInstance('reservation');
-        $out = &$GLOBALS['page'];
+        $lang = FormaLanguage::CreateInstance('reservation');
+        $out = $GLOBALS['page'];
 
         $man_res = new Man_Reservation();
 
@@ -1132,7 +1124,6 @@ if (!Docebo::user()->isAnonymous()) {
 
         $user_select = new UserSelector();
 
-        $user_subscribed = [];
         $user_subscribed = $man_res->getSubscribedUserIdst($id_event);
 
         $user_selected = [];
@@ -1174,7 +1165,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         require_once _base_ . '/lib/lib.form.php';
 
-        $lang = &DoceboLanguage::createInstance('reservation');
+        $lang = FormaLanguage::createInstance('reservation');
 
         $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
@@ -1278,7 +1269,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         $id_event = importVar('id_event', true, 0);
 
-        $lang = &DoceboLanguage::createInstance('reservation');
+        $lang = FormaLanguage::createInstance('reservation');
 
         $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
@@ -1393,7 +1384,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         $id_event = importVar('id_event', true, 0);
 
-        $lang = &DoceboLanguage::createInstance('reservation');
+        $lang = FormaLanguage::createInstance('reservation');
 
         $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
@@ -1433,7 +1424,7 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _base_ . '/lib/lib.form.php';
         require_once _base_ . '/lib/lib.table.php';
 
-        $lang = &DoceboLanguage::createInstance('reservation');
+        $lang = FormaLanguage::createInstance('reservation');
 
         $mod_perm = checkPerm('mod', true);
 
@@ -1510,7 +1501,7 @@ if (!Docebo::user()->isAnonymous()) {
                         . '<span>' . $lang->def('_ADD') . '</span></a>');
         }
         $out->add($tb->getTable()
-                . $tb->getNavBar($ini, count($category))
+                . $tb->getNavBar($ini, is_array($category) ? count($category) : 0)
                 . getBackUi('index.php?modname=reservation&amp;op=reservation&amp;active_tab=subscribed_user', $lang->def('_BACK'))
                 . '</div>'
             );
@@ -1522,7 +1513,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         require_once _base_ . '/lib/lib.form.php';
 
-        $lang = &DoceboLanguage::createInstance('reservation');
+        $lang = FormaLanguage::createInstance('reservation');
 
         $id_course = importVar('id_course', true, 0);
 
@@ -1594,7 +1585,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         $id_category = importVar('id_category', true, 0);
 
-        $lang = &DoceboLanguage::createInstance('reservation');
+        $lang = FormaLanguage::createInstance('reservation');
 
         $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
@@ -1664,7 +1655,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         $id_category = importVar('id_category', true, 0);
 
-        $lang = &DoceboLanguage::createInstance('reservation');
+        $lang = FormaLanguage::createInstance('reservation');
 
         $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
@@ -1706,7 +1697,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         $mod_perm = true;
         // create a language istance for module classroom
-        $lang = &DoceboLanguage::createInstance('classroom', 'lms');
+        $lang = FormaLanguage::createInstance('classroom', 'lms');
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $id_course = $session->get('idCourse');
         $out = &$GLOBALS['page'];
@@ -1793,13 +1784,13 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _base_ . '/lib/lib.form.php';
         require_once _lms_ . '/lib/lib.classlocation.php';
 
-        $lang = &DoceboLanguage::createInstance('classroom', 'lms');
+        $lang = FormaLanguage::createInstance('classroom', 'lms');
         $form = new Form();
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
 
         $idClassroom = importVar('idClassroom', true, 0);
-        $all_languages = Docebo::langManager()->getAllLangCode();
+        $all_languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
 
         if ($load) {
             $query_classroom = '
@@ -1813,7 +1804,7 @@ if (!Docebo::user()->isAnonymous()) {
             $name = $lang->def('_NO_NAME');
             $descr = '';
             $impo = 0;
-            $lang_sel = getLanguage();
+            $lang_sel = Lang::get();
 
             $location_id = false;
             $room = '';
@@ -1839,39 +1830,39 @@ if (!Docebo::user()->isAnonymous()) {
                 . '<div class="std_block">'
                 . getBackUi('index.php?modname=reservation&amp;op=classroom', $lang->def('_BACK'))
 
-                . Form::openForm('adviceform', 'index.php?modname=reservation&amp;op=saveclassroom')
+                . $form->openForm('adviceform', 'index.php?modname=reservation&amp;op=saveclassroom')
         );
         if ($load) {
-            $out->add(Form::getHidden('idClassroom', 'idClassroom', $idClassroom)
-                    . Form::getHidden('load', 'load', 1));
+            $out->add($form->getHidden('idClassroom', 'idClassroom', $idClassroom)
+                    . $form->getHidden('load', 'load', 1));
         }
 
         $clm = new ClassLocationManager();
         $location_arr = $clm->getClassLocationArray();
 
-        $out->add(Form::openElementSpace()
-                . Form::getTextfield($lang->def('_NAME'), 'name', 'name', 255, $name)
-                . Form::getTextarea($lang->def('_DESCRIPTION'), 'descr', 'descr', $descr)
-                . Form::getHidden('location_id', 'location_id', 0)
-                . Form::getTextfield($lang->def('_BUILDING_ROOM'), 'room', 'room', 255, $room)
-                . Form::getTextfield($lang->def('_CAPACITY'), 'capacity', 'capacity', 255, $capacity)
-                . Form::getTextfield($lang->def('_RESPONSABLE'), 'responsable', 'responsable', 255, $responsable)
-                . Form::getTextfield($lang->def('_STREET'), 'street', 'street', 255, $street)
-                . Form::getTextfield($lang->def('_CITY'), 'city', 'city', 255, $city)
-                . Form::getTextfield($lang->def('_STATE'), 'state', 'state', 255, $state)
-                . Form::getTextfield($lang->def('_ZIP_CODE'), 'zip_code', 'zip_code', 255, $zip_code)
-                . Form::getTextfield($lang->def('_PHONE'), 'phone', 'phone', 255, $phone)
-                . Form::getTextfield($lang->def('_FAX'), 'fax', 'fax', 255, $fax)
-                . Form::getTextarea($lang->def('_DISPOSITION'), 'disposition', 'disposition', $disposition)
-                . Form::getTextarea($lang->def('_INSTRUMENT'), 'instrument', 'instrument', $instrument)
-                . Form::getTextarea($lang->def('_AVAILABLE_INSTRUMENT'), 'available_instrument', 'available_instrument', $available_instrument)
-                . Form::getTextarea($lang->def('_NOTES'), 'note', 'note', $note)
-                . Form::closeElementSpace()
-                . Form::openButtonSpace()
-                . Form::getButton('classroom', 'classroom', ($load ? $lang->def('_SAVE') : $lang->def('_INSERT')))
-                . Form::getButton('undo', 'undo', $lang->def('_UNDO'))
-                . Form::closeButtonSpace()
-                . Form::closeForm()
+        $out->add($form->openElementSpace()
+                . $form->getTextfield($lang->def('_NAME'), 'name', 'name', 255, $name)
+                . $form->getTextarea($lang->def('_DESCRIPTION'), 'descr', 'descr', $descr)
+                . $form->getHidden('location_id', 'location_id', 0)
+                . $form->getTextfield($lang->def('_BUILDING_ROOM'), 'room', 'room', 255, $room)
+                . $form->getTextfield($lang->def('_CAPACITY'), 'capacity', 'capacity', 255, $capacity)
+                . $form->getTextfield($lang->def('_RESPONSABLE'), 'responsable', 'responsable', 255, $responsable)
+                . $form->getTextfield($lang->def('_STREET'), 'street', 'street', 255, $street)
+                . $form->getTextfield($lang->def('_CITY'), 'city', 'city', 255, $city)
+                . $form->getTextfield($lang->def('_STATE'), 'state', 'state', 255, $state)
+                . $form->getTextfield($lang->def('_ZIP_CODE'), 'zip_code', 'zip_code', 255, $zip_code)
+                . $form->getTextfield($lang->def('_PHONE'), 'phone', 'phone', 255, $phone)
+                . $form->getTextfield($lang->def('_FAX'), 'fax', 'fax', 255, $fax)
+                . $form->getTextarea($lang->def('_DISPOSITION'), 'disposition', 'disposition', $disposition)
+                . $form->getTextarea($lang->def('_INSTRUMENT'), 'instrument', 'instrument', $instrument)
+                . $form->getTextarea($lang->def('_AVAILABLE_INSTRUMENT'), 'available_instrument', 'available_instrument', $available_instrument)
+                . $form->getTextarea($lang->def('_NOTES'), 'note', 'note', $note)
+                . $form->closeElementSpace()
+                . $form->openButtonSpace()
+                . $form->getButton('classroom', 'classroom', ($load ? $lang->def('_SAVE') : $lang->def('_INSERT')))
+                . $form->getButton('undo', 'undo', $lang->def('_UNDO'))
+                . $form->closeButtonSpace()
+                . $form->closeForm()
                 . '</div>');
     }
 
@@ -1881,8 +1872,8 @@ if (!Docebo::user()->isAnonymous()) {
 
         $idClassroom = importVar('idClassroom', true, 0);
         $load = importVar('load', true, 0);
-        $all_languages = Docebo::langManager()->getAllLangCode();
-        $lang = &DoceboLanguage::createInstance('classroom', 'lms');
+        $all_languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
+        $lang = FormaLanguage::createInstance('classroom', 'lms');
 
         if ($_POST['title'] == '') {
             $_POST['title'] = $lang->def('_NOTITLE');
@@ -1950,7 +1941,7 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _base_ . '/lib/lib.form.php';
 
         $idClassroom = importVar('idClassroom', true, 0);
-        $lang = &DoceboLanguage::createInstance('classroom', 'lms');
+        $lang = FormaLanguage::createInstance('classroom', 'lms');
 
         if (isset($_POST['confirm'])) {
             $query_classroom = '
@@ -1975,15 +1966,15 @@ if (!Docebo::user()->isAnonymous()) {
             $GLOBALS['page']->add(
                 getTitleArea($page_title, 'classroom')
                 . '<div class="std_block">'
-                . Form::openForm('del_classroom', 'index.php?modname=reservation&amp;op=delclassroom')
-                . Form::getHidden('idClassroom', 'idClassroom', $idClassroom)
+                . $form->openForm('del_classroom', 'index.php?modname=reservation&amp;op=delclassroom')
+                . $form->getHidden('idClassroom', 'idClassroom', $idClassroom)
                 . getDeleteUi($lang->def('_AREYOUSURE'),
                                 '<span>' . $lang->def('_NAME') . ' : </span>' . $name . '<br />'
                                     . '<span>' . $lang->def('_DESCRIPTION') . ' : </span>' . $descr,
                                 false,
                                 'confirm',
                                 'undo')
-                . Form::closeForm()
+                . $form->closeForm()
                 . '</div>', 'content');
         }
     }
@@ -1999,9 +1990,9 @@ function setRoomViewPerm()
     require_once _base_ . '/lib/lib.userselector.php';
     $mdir = new UserSelector();
 
-    $out = &$GLOBALS['page'];
+    $out = $GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('reservation', 'lms');
+    $lang = FormaLanguage::createInstance('reservation', 'lms');
 
     $roomperm = new ReservationRoomPermissions();
 
@@ -2027,7 +2018,7 @@ function setRoomViewPerm()
             }
         }
 
-        $acl_manager = &Docebo::user()->getAclManager();
+        $acl_manager = \FormaLms\lib\Forma::getAclManager();
 
         $url = 'index.php?modname=reservation&amp;op=set_room_view_perm&amp;id_event=' . $id_event;
         $mdir->setNFields(0);
@@ -2038,7 +2029,7 @@ function setRoomViewPerm()
         $id_course = $session->get('idCourse');
 
         $arr_idstGroup = $acl_manager->getGroupsIdstFromBasePath('/lms/course/' . (int) $id_course . '/subscribed/');
-        $me = [getLogUserId()];
+        $me = [\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()];
         $mdir->setUserFilter('exclude', $me);
         $mdir->setUserFilter('group', $arr_idstGroup);
         $mdir->setGroupFilter('path', '/lms/course/' . $id_course . '/group');
@@ -2052,7 +2043,7 @@ function reservationSendMail()
 {
     checkPerm('view');
 
-    $lang = &DoceboLanguage::createInstance('reservation');
+    $lang = FormaLanguage::createInstance('reservation');
 
     $mod_perm = checkPerm('mod', true);
 
@@ -2065,7 +2056,7 @@ function reservationSendMail()
 
     $man_res = new Man_Reservation();
 
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     if (isset($_POST['send_mail'])) {
         $recipients = $man_res->getEventUserMail($id_event);
@@ -2073,12 +2064,12 @@ function reservationSendMail()
         $subject = importVar('mail_object', false, '[Nessun Oggetto]');
         $body = importVar('mail_body', false, '');
 
-        $sender = FormaLms\lib\Get::sett('sender_event');
+        $sender = DomainHandler::getInstance()->getMailerField('sender_mail_system');
 
         //sendMail($recipients, $subject, $body, $sender);
 
-        $mailer = FormaMailer::getInstance();
-        $mailer->SendMail($sender, [$recipients], Lang::t('_MAIL_OBJECT', 'register'), $body, [], [MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false]);
+        $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
+        $mailer->SendMail([$recipients], Lang::t('_MAIL_OBJECT', 'register'), $body, $sender, [], [MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false]);
 
         Util::jump_to('index.php?modname=reservation&op=reservation&active_tab=events');
     } else {
@@ -2110,7 +2101,7 @@ function infoLocation()
 
     checkPerm('view');
 
-    $lang = &DoceboLanguage::createInstance('classroom', 'lms');
+    $lang = FormaLanguage::createInstance('classroom', 'lms');
 
     $out = $GLOBALS['page'];
     $out->setWorkingZone('content');

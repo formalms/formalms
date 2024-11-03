@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Forma;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -36,7 +38,7 @@ function coursecatalogue($id_block, $title, $option = [])
 
         $man_subscribe = new CourseSubscribe_Management();
 
-        $man_subscribe->subscribeToCourse(getLogUserId(), $id_course);
+        $man_subscribe->subscribeToCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_course);
     }
 
     require_once _base_ . '/lib/lib.navbar.php';
@@ -46,7 +48,7 @@ function coursecatalogue($id_block, $title, $option = [])
     $css_path = FormaLms\lib\Get::tmpl_path('base') . 'yui-skin';
     cout(Util::get_css($css_path . '/tabview.css', true), 'page_head');
 
-    $lang = &DoceboLanguage::CreateInstance('catalogue', 'cms');
+    $lang = &FormaLanguage::CreateInstance('catalogue', 'cms');
 
     $man_cat = new Man_Catalog();
 
@@ -239,9 +241,9 @@ function controlCourse($course_info, $page, $id_catalogue, $id_category, $ini)
 {
     require_once _lms_ . '/lib/lib.course.php';
 
-    $acl_manger = Docebo::user()->getAclManager();
+    $acl_manger = \FormaLms\lib\Forma::getAclManager();
 
-    $lang = &DoceboLanguage::CreateInstance('catalogue', 'cms');
+    $lang = &FormaLanguage::CreateInstance('catalogue', 'cms');
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     if ($course_info['course_type'] !== 'elearning') {
         if (!isset($course_info['dates'])) {
@@ -253,7 +255,7 @@ function controlCourse($course_info, $page, $id_catalogue, $id_category, $ini)
         require_once _lms_ . '/lib/lib.date.php';
         $man_date = new DateManager();
 
-        $user_date = $man_date->getUserDates(getLogUserId());
+        $user_date = $man_date->getUserDates(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         $date_id = [];
         $date_full = $man_date->getFullDateForCourse($course_info['idCourse']);
         $date_not_confirmed = $man_date->getNotConfirmetDateForCourse($course_info['idCourse']);
@@ -271,7 +273,7 @@ function controlCourse($course_info, $page, $id_catalogue, $id_category, $ini)
         }
 
         if ($course_info['selling'] == 0) {
-            if (Docebo::user()->isAnonymous()) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 return '<p class="cannot_subscribe">' . $lang->def('_NEED_TO_LOGIN') . '</p>';
             } else {
                 return '<a href="javascript:;" onClick="datePrenotationPopUp(\'' . $course_info['idCourse'] . '\', \'' . $lang->def('_CHART_EDITION_FOR') . ' : ' . addslashes($course_info['name']) . '\')"><p class="can_subscribe">' . $lang->def('_CAN_SUBSCRIBE') . '</p></a>';
@@ -296,7 +298,7 @@ function controlCourse($course_info, $page, $id_catalogue, $id_category, $ini)
                         . ' ('
                         . ' SELECT id_transaction'
                         . ' FROM %lms_transaction'
-                        . ' WHERE id_user = ' . getLogUserId()
+                        . ' WHERE id_user = ' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()
                         . ' AND status = 0'
                         . ' )';
 
@@ -329,7 +331,7 @@ function controlCourse($course_info, $page, $id_catalogue, $id_category, $ini)
         $query = 'SELECT status, waiting'
                     . ' FROM %lms_courseuser'
                     . ' WHERE idCourse = ' . $course_info['idCourse']
-                    . ' AND idUser = ' . getLogUserId();
+                    . ' AND idUser = ' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
         $result = sql_query($query);
 
@@ -356,7 +358,7 @@ function controlCourse($course_info, $page, $id_catalogue, $id_category, $ini)
         }
 
         if ($course_info['selling'] == 0) {
-            if (Docebo::user()->isAnonymous()) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 return '<p class="cannot_subscribe">' . $lang->def('_NEED_TO_LOGIN') . '</p>';
             } else {
                 return '<a href="index.php?pag=' . $page . '&amp;id_catalogue=' . $id_catalogue . ($id_category != 0 ? '&amp;id_cat=' . $id_category : '') . '&amp;id_course=' . $course_info['idCourse'] . '&amp;ini=' . $ini . '&amp;action=subscribe"><p class="can_subscribe">' . $lang->def('_CAN_SUBSCRIBE') . '</p></a>';
@@ -370,7 +372,7 @@ function controlCourse($course_info, $page, $id_catalogue, $id_category, $ini)
                         . ' ('
                         . ' SELECT id_transaction'
                         . ' FROM %lms_transaction'
-                        . ' WHERE id_user = ' . getLogUserId()
+                        . ' WHERE id_user = ' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()
                         . ' AND status = 0'
                         . ' )';
 
@@ -394,7 +396,7 @@ function subscribeToCourse($id_user, $id_course, $id_date = 0)
 
     $subscribe_man = new CourseSubscribe_Management();
     $date_man = new DateManager();
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     $query = 'SELECT idCourse'
                 . ' FROM %adm_courseuser WHERE idUser = ' . $id_user;
@@ -408,12 +410,12 @@ function subscribeToCourse($id_user, $id_course, $id_date = 0)
 
     $dates = $date_man->getUserDates($id_user);
 
-    $docebo_course = new DoceboCourse($id_course);
+    $formaCourse = new FormaCourse($id_course);
 
-    $level_idst = &$docebo_course->getCourseLevel($id_course);
+    $level_idst = &$formaCourse->getCourseLevel($id_course);
 
     if (count($level_idst) == 0) {
-        $level_idst = &$docebo_course->createCourseLevel($id_course);
+        $level_idst = FormaCourse::createCourseLevel($id_course);
     }
 
     $waiting = 0;
@@ -424,7 +426,7 @@ function subscribeToCourse($id_user, $id_course, $id_date = 0)
     if ($id_date != 0) {
         if (array_search($id_course, $courses) !== false) {
             if (array_search($id_date, $dates) === false) {
-                if (!$date_man->addUserToDate($id_date, $id_user, getLogUserId())) {
+                if (!$date_man->addUserToDate($id_date, $id_user, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
                     return false;
                 }
             }
@@ -433,12 +435,12 @@ function subscribeToCourse($id_user, $id_course, $id_date = 0)
 
             $re = sql_query('INSERT INTO ' . $GLOBALS['prefix_lms'] . "_courseuser
 								(idUser, idCourse, edition_id, level, waiting, subscribed_by, date_inscr)
-								VALUES ('" . $id_user . "', '" . $id_course . "', '0', '3', '" . $waiting . "', '" . getLogUserId() . "', '" . date('Y-m-d H:i:s') . "')");
+								VALUES ('" . $id_user . "', '" . $id_course . "', '0', '3', '" . $waiting . "', '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "', '" . date('Y-m-d H:i:s') . "')");
 
             if ($re) {
                 addUserToTimeTable($id_user, $id_course, 0);
 
-                if (!$date_man->addUserToDate($id_date, $id_user, getLogUserId())) {
+                if (!$date_man->addUserToDate($id_date, $id_user, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
                     return false;
                 }
             }
@@ -449,7 +451,7 @@ function subscribeToCourse($id_user, $id_course, $id_date = 0)
 
             $re = sql_query('INSERT INTO ' . $GLOBALS['prefix_lms'] . "_courseuser
 								(idUser, idCourse, edition_id, level, waiting, subscribed_by, date_inscr)
-								VALUES ('" . $id_user . "', '" . $id_course . "', '0', '3', '" . $waiting . "', '" . getLogUserId() . "', '" . date('Y-m-d H:i:s') . "')");
+								VALUES ('" . $id_user . "', '" . $id_course . "', '0', '3', '" . $waiting . "', '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "', '" . date('Y-m-d H:i:s') . "')");
             if ($re) {
                 addUserToTimeTable($id_user, $id_course, 0);
             }

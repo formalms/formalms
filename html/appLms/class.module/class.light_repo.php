@@ -21,7 +21,7 @@ class Module_Light_repo extends LmsModule
         lightrepoDispatch($GLOBALS['op']);
     }
 
-    public function getAllToken()
+    public static function getAllToken()
     {
         return [
             'view' => ['code' => 'view',

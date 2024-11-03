@@ -37,13 +37,6 @@
                         {% endif %}
                     </a>
 
-                    <button class="btn btn-link" type="button" data-toggle="collapse"
-                            data-target="#collapse_{{ classroomInfo.id_date }}"
-                            aria-expanded="false"
-                            aria-controls="collapse_{{ classroomInfo.id_date }}">
-                        <a href='#'>{{ classroomInfo.name }}</a>
-                    </button>
-
                 {% elseif course.subscribe_method == 0 %}
                     <a class="forma-button course-box__cta__button" title="{{ course.name }}"
                        rel="{{ course.rel }}" href="javascript:void(0);">
@@ -52,11 +45,11 @@
                 {% endif %}
             {% else %}
                 {% if course.in_cart %}
-                    <a href="javascript:void(0);" class="forma-button forma-button--orange-hover">
+                    <a href="javascript:void(0);" class="forma-button forma-button--primary">
                         <p class="forma-button__label">{{ Lang_translate('_COURSE_IN_CART', 'catalogue') }}</p>
                     </a>
                 {% else %}
-                    <a class="forma-button forma-button--green forma-button--orange-hover" href="javascript:;"
+                    <a class="forma-button forma-button--secondary" href="javascript:;"
                        onclick ="chooseEdition({{ course.idCourse }})">
                         <span class="forma-button__label">{{ Lang_translate('_ADD_TO_CART', 'catalogue') }}</span>
                     </a>
@@ -72,10 +65,10 @@
                 <span class="forma-button__label">{{ Lang_translate('_USER_STATUS_ENTER', 'catalogue') }}</span>
             </a>
         {% else %}
-            <a class="forma-button forma-button--disabled" href="javascript:void(0);" title="{{ course.name }}">
-                        <span class="forma-button__label">
-                            {{ Lang_translate('_NO_AVAILABLE_EDITIONS', 'catalogue') }}
-                        </span>
+            <a class="forma-button course-box__cta__button forma-button--disabled" href="javascript:void(0);" title="{{ course.name }}">
+                <span class="forma-button__label">
+                    {{ Lang_translate('_NO_AVAILABLE_EDITIONS', 'catalogue') }}
+                </span>
             </a>
         {% endif %}
     {% endif %}

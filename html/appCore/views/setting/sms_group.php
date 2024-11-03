@@ -1,5 +1,5 @@
 <?php
-require_once Forma::inc(_adm_ . '/lib/Sms/SmsGatewayManager.php');
+require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/Sms/SmsGatewayManager.php');
 try {
     $credit = SmsGatewayManager::getCredit();
 } catch (SmsGatewayException $e) {
@@ -29,7 +29,7 @@ try {
     </p>
 
     <p>
-        <a href="http://www.skebby.it/"
+        <a href="https://www.skebby.it/"
            onclick="window.open(this.href); return false;"><?php echo Lang::t('_SMS_BUY_RECHARGE', 'configuration'); ?></a>
     </p>
 </div>

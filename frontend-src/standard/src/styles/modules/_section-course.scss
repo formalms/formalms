@@ -85,7 +85,7 @@
 .section-coourse__img {
   display: inline-block;
   padding: 2px;
-  border: 1px solid var(--color-0-400)04;
+  border: 1px solid var(--color-grey-03)04;
 
   @include breakpoint($ipad) {
     max-width: 70%;
@@ -95,7 +95,7 @@
 
 .section-coourse__title {
   padding-top: 30px;
-  color: #333;
+  color: var(--color-primary);
   font-weight: bold;
 
   @include breakpoint($tablet) {
@@ -106,9 +106,13 @@
 .section-coourse__menu {
   overflow: visible;
   border-bottom: none;
-  background-color: var(--color-0-050);
+  background-color: var(--color-grey);
+  ul li a {
+    padding: 2px;
+  }
   ul li a:hover {
-    color: var(--color-3);
+    background-color: var(--color-grey);
+    color: var(--color-primary);
   }
   .prv,
   .nxt {
@@ -118,7 +122,7 @@
     padding: 5px;
   }
   ul li a.active {
-    color: var(--color-3);
+    color: var(--color-primary);
   }
 
   @include breakpoint($tablet) {
@@ -134,7 +138,7 @@
   }
 
   @include breakpoint($tablet) {
-    background-color: var(--color-0-050);
+    background-color: transparent;
   }
 }
 
@@ -163,7 +167,7 @@
 
 .section-coourse__progress-container {
   padding: 4px;
-  border: 1px solid var(--color-0-250);
+  border: 1px solid var(--color-grey);
   border-radius: 5px;
   margin-top: 30px;
 
@@ -172,8 +176,10 @@
   }
 }
 
+
 .section-coourse__progress {
   margin-bottom: 0;
+  position: relative;
   height: 25px;
   background: transparent;
   box-shadow: none;
@@ -187,22 +193,38 @@
 
     span {
       padding-left: 10px;
-      color: var(--color-0-000);
+      color: var(--color-white);
     }
 
     &[aria-valuenow='0'] span {
       color: inherit;
     }
+
   }
   .glyphicon {
     margin: 5px 8px 0 0;
     cursor: pointer;
+    position: absolute;
+    right: 0;
+  }
+}
+
+.progress-bar-warning {
+  background-image: -webkit-linear-gradient(top,var(--color-secondary) 0,var(--color-secondary) 100%);
+  background-image: -o-linear-gradient(top,var(--color-secondary) 0,var(--color-secondary) 100%);
+  background-image: -webkit-gradient(linear,left top,left bottom,from(var(--color-secondary)),to(var(--color-secondary)));
+  background-image: linear-gradient(to bottom,var(--color-secondary) 0,var(--color-secondary) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff0ad4e', endColorstr='#ffec971f', GradientType=0);
+  background-repeat: repeat-x;
+
+  span {
+    color: var(--color-secondary-text) !important;
   }
 }
 
 .progress-bar-warning--black {
   span {
-    color: var(--color-0-1000) !important;
+    color: var(--color-black) !important;
   }
 }
 
@@ -216,7 +238,7 @@
     bottom: 20px;
   }
   position: relative;
-  background-color: var(--color-0-050);
+  background-color: var(--color-grey);
 
   &:before {
     width: calc(100% - 60px);
@@ -225,27 +247,33 @@
     position: absolute;
     top: 0;
     left: 30px;
-    background-color: var(--color-0-070);
+    background-color: var(--color-grey);
   }
 }
 
 .slider-menu {
   .section-coourse__menu-horizontal & {
-    border-bottom: solid 1px var(--color-0-070);
+    border-bottom: solid 1px var(--color-grey);
   }
 }
 
 .forma-dropdown__selected {
   &:hover {
-    background-color: var(--color-0-000);
-    color: var(--color-1-550);
+    background-color: var(--color-primary);
+    color: var(--color-primary-text)!important;
+    &:before {
+      background: var(--color-primary-text) !important;
+    }
+  }
+  &:before {
+    background: var(--color-grey-04) !important;
   }
 }
 
 #course-info-boot + #yui-main-boot {
   .page-header {
     h1 {
-      color: var(--color-1-550);
+      color: var(--color-primary);
       font-family: $font;
       font-weight: bold;
       font-size: 18px;

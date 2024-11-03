@@ -158,11 +158,11 @@ class KbLmsController extends LmsController
         $list = [];
         $parent_id = [];
         foreach ($array_comm as $key => $value) {
-            $id = $array_comm[$key]['res_id'];
-            $r_env = $array_comm[$key]['r_env'];
+            $id = $value['res_id'];
+            $r_env = $value['r_env'];
 
-            if (!empty($array_comm[$key]['r_env_parent_id'])) {
-                $parent_id[$r_env][$key] = $array_comm[$key]['r_env_parent_id'];
+            if (!empty($value['r_env_parent_id'])) {
+                $parent_id[$r_env][$key] = $value['r_env_parent_id'];
             } else {
                 $array_comm[$key]['r_env_parent'] = '';
             }

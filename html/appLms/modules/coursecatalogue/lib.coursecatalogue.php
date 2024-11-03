@@ -21,7 +21,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 function displayCourseList(&$url, $order_type)
 {
     require_once _base_ . '/lib/lib.form.php';
-   require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
+    require_once _base_ . '/lib/lib.user_profile.php';
     require_once _base_ . '/lib/lib.navbar.php';
     require_once _lms_ . '/lib/lib.preassessment.php';
     require_once _lms_ . '/lib/lib.catalogue.php';
@@ -35,8 +35,8 @@ function displayCourseList(&$url, $order_type)
     $classroom_man = new ClassroomManager();
     $classrooms = $classroom_man->getClassroomNameList();
 
-    $lang = &DoceboLanguage::createInstance('catalogue');
-    $lang_c = &DoceboLanguage::createInstance('course');
+    $lang = &FormaLanguage::createInstance('catalogue');
+    $lang_c = &FormaLanguage::createInstance('course');
 
     $nav_bar = new NavBar('ini', FormaLms\lib\Get::sett('visuItem'), 0);
     $man_course = new Man_Course();
@@ -47,7 +47,7 @@ function displayCourseList(&$url, $order_type)
     $nav_bar->setLink($nav_url);
     $ini = $nav_bar->getSelectedElement();
 
-    $profile = new UserProfile(getLogUserId());
+    $profile = new UserProfile(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
     $profile->init('profile', 'framework', '', 'ap');
     $profile->addStyleSheet('lms');
 
@@ -67,7 +67,7 @@ function displayCourseList(&$url, $order_type)
     $where_course = " c.status <> '" . CST_PREPARATION . "' ";
 
     if (FormaLms\lib\Get::sett('catalogue_hide_ended') == 'on') {
-        $where_course .= " AND ( c.date_end = '0000-00-00'"
+        $where_course .= " AND ( c.date_end IS NULL"
                             . " OR c.date_end > '" . date('Y-m-d') . "' ) ";
     }
 
@@ -81,7 +81,7 @@ function displayCourseList(&$url, $order_type)
     $limit_course = ' LIMIT ' . $ini . ', ' . FormaLms\lib\Get::sett('visuItem');
     $where_course .= " AND c.course_type <> 'assessment'";
 
-    if (Docebo::user()->isAnonymous()) {
+    if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         $where_course .= ' AND c.show_rules = 0';
     } else {
         $where_course .= ' AND c.show_rules  <> 2';
@@ -89,11 +89,11 @@ function displayCourseList(&$url, $order_type)
 
     // maybe a must apply some filter to remove from the list some courses --------------
     $cat_man = new Catalogue_Manager();
-    $catalogues = &$cat_man->getUserAllCatalogueId(getLogUserId());
+    $catalogues = &$cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
     // at least one catalogue is assigned to this user
     if (!empty($catalogues)) {
-        $cat_courses = $cat_man->getAllCourseOfUser(getLogUserId());
+        $cat_courses = $cat_man->getAllCourseOfUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         if (empty($cat_courses)) {
             $where_course .= ' AND 0 ';
         } else {
@@ -104,17 +104,18 @@ function displayCourseList(&$url, $order_type)
     }
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-    if (!Docebo::user()->isAnonymous()) {
+    if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
+
         if (!$session->has('cp_assessment_effect')) {
             $pa_man = new AssessmentList();
-            $arr_assessment = $pa_man->getUserAssessmentSubsription(Docebo::user()->getArrSt());
+            $arr_assessment = $pa_man->getUserAssessmentSubsription(\FormaLms\lib\FormaUser::getCurrentUser()->getArrSt());
 
             $report = new CourseReportManager(0); //no course id available
-            $user_result = $report->getAllUserFinalScore(getLogUserId(), $arr_assessment['course_list']);
+            $user_result = $report->getAllUserFinalScore(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $arr_assessment['course_list']);
 
             $rule_man = new AssessmentRule();
             $ass_elem = $rule_man->getCompleteEffectListForAssessmentWithUserResult($arr_assessment['course_list'], $user_result);
-            $session->set('cp_assessment_effect', urlencode(Util::serialize($ass_elem)));
+            $session->set('cp_assessment_effect',urlencode(Util::serialize($ass_elem)));
             $session->save();
         } else {
             $ass_elem = Util::unserialize(urldecode($session->get('cp_assessment_effect')));
@@ -139,7 +140,7 @@ function displayCourseList(&$url, $order_type)
         $filter_date_end = Format::dateDb($filter_date_end, 'date') . ' 00:00:00';
     }
 
-    $all_lang = Docebo::langManager()->getAllLangCode();
+    $all_lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
 
     if (must_search_filter()) {
         if (trim($s_searched) != '') {
@@ -174,7 +175,7 @@ function displayCourseList(&$url, $order_type)
     $from_edition = ' FROM %lms_course_edition AS e';
     $where_edition = " WHERE e.status <> '" . CST_PREPARATION . "' ";
 
-    $where_edition .= " AND (e.date_begin > '" . date('Y-m-d H:i:s') . "' OR e.date_begin = '0000-00-00 00:00:00')";
+    $where_edition .= " AND (e.date_begin > '" . date('Y-m-d H:i:s') . "' OR e.date_begin IS NULL')";
 
     $order_edition = ' ORDER BY date_begin ';
 
@@ -219,8 +220,8 @@ function displayCourseList(&$url, $order_type)
 
     // retrive course subscription -----------------------------------------------------
     $man_courseuser = new Man_CourseUser();
-    $usercourses = $man_courseuser->getUserSubscriptionsInfo(getLogUserId(), false);
-    $user_score = $man_courseuser->getUserCourseScored(getLogUserId());
+    $usercourses = $man_courseuser->getUserSubscriptionsInfo(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), false);
+    $user_score = $man_courseuser->getUserCourseScored(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
     require_once _lms_ . '/lib/lib.orgchart.php';
     $first_is_scorm = OrganizationManagement::objectFilter(array_keys($usercourses), 'scormorg');
@@ -345,7 +346,7 @@ function displayCourseList(&$url, $order_type)
 function displayCoursePathList(&$url, $selected_tab)
 {
     require_once _base_ . '/lib/lib.form.php';
-   require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
+    require_once _base_ . '/lib/lib.user_profile.php';
     require_once _base_ . '/lib/lib.navbar.php';
     require_once _lms_ . '/lib/lib.preassessment.php';
     require_once _lms_ . '/lib/lib.catalogue.php';
@@ -354,8 +355,8 @@ function displayCoursePathList(&$url, $selected_tab)
     require_once _lms_ . '/lib/lib.preassessment.php';
     require_once _lms_ . '/lib/lib.coursereport.php';
 
-    $lang = &DoceboLanguage::createInstance('catalogue');
-    $lang_c = &DoceboLanguage::createInstance('course');
+    $lang = &FormaLanguage::createInstance('catalogue');
+    $lang_c = &FormaLanguage::createInstance('course');
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $nav_bar = new NavBar('ini', FormaLms\lib\Get::sett('visuItem'), 0);
     $nav_bar->setLink($url->getUrl());
@@ -366,15 +367,15 @@ function displayCoursePathList(&$url, $selected_tab)
     $cat_man = new Catalogue_Manager();
     $man_courseuser = new Man_CourseUser();
 
-    $profile = new UserProfile(getLogUserId());
+    $profile = new UserProfile(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
     $profile->init('profile', 'framework', '', 'ap');
     $profile->addStyleSheet('lms');
 
-    $catalogues = &$cat_man->getUserAllCatalogueId(getLogUserId());
+    $catalogues = &$cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
     if (!empty($catalogues)) {
         // at least one catalogue is assigned to this user
-        $cat_path = &$cat_man->getAllCoursepathOfUser(getLogUserId());
+        $cat_path = &$cat_man->getAllCoursepathOfUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         if (!empty($cat_path)) {
             $path_man->filterInPath($cat_path);
         }
@@ -382,17 +383,17 @@ function displayCoursePathList(&$url, $selected_tab)
         $path_man->filterInPath([0]);
     }
 
-    if (!Docebo::user()->isAnonymous()) {
+    if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         if (!$session->has('cp_assessment_effect')) {
             $pa_man = new AssessmentList();
-            $arr_assessment = $pa_man->getUserAssessmentSubsription(Docebo::user()->getArrSt());
+            $arr_assessment = $pa_man->getUserAssessmentSubsription(\FormaLms\lib\FormaUser::getCurrentUser()->getArrSt());
 
             $report = new CourseReportManager(0); //no course id available
-            $user_result = $report->getAllUserFinalScore(getLogUserId(), $arr_assessment['course_list']);
+            $user_result = $report->getAllUserFinalScore(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $arr_assessment['course_list']);
 
             $rule_man = new AssessmentRule();
             $ass_elem = $rule_man->getCompleteEffectListForAssessmentWithUserResult($arr_assessment['course_list'], $user_result);
-            $session->set('cp_assessment_effect', urlencode(Util::serialize($ass_elem)));
+            $session->set('cp_assessment_effect',urlencode(Util::serialize($ass_elem)));
             $session->save();
         } else {
             $ass_elem = Util::unserialize(urldecode($session->get('cp_assessment_effect')));
@@ -417,8 +418,8 @@ function displayCoursePathList(&$url, $selected_tab)
     $path_slot = $path_man->getPathSlot(array_keys($coursepath));
 
     // fin user subscription needed ---------------------------------------------------
-    $user_paths = &$path_man->getUserSubscriptionsInfo(getLogUserId(), false);
-    $usercourses = &$man_courseuser->getUserSubscriptionsInfo(getLogUserId(), false);
+    $user_paths = &$path_man->getUserSubscriptionsInfo(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), false);
+    $usercourses = &$man_courseuser->getUserSubscriptionsInfo(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), false);
 
     // find course basilar information ------------------------------------------------
     $course_info = $course_man->getAllCourses(false, false, $courses['all_items'], true);
@@ -441,10 +442,10 @@ function displayCoursePathList(&$url, $selected_tab)
             }
         } else {
             switch ($path[COURSEPATH_METHOD]) {
-                case METHOD_WAIT:  $in_h .= $lang->def('_METHOD_WAIT'); break;
-                case METHOD_AUTO:  $in_h .= $lang->def('_METHOD_AUTO'); break;
+                case METHOD_WAIT:  $in_h .= $lang->def('_METHOD_WAIT'); ; break;
+                case METHOD_AUTO:  $in_h .= $lang->def('_METHOD_AUTO'); ; break;
                 case METHOD_MANUAL:
-                default:  $in_h .= $lang->def('_METHOD_MANUAL'); $can_subs = false; break;
+                default:  $in_h .= $lang->def('_METHOD_MANUAL'); $can_subs = false; ; break;
             }
         }
         $in_h .= '</span>';
@@ -543,7 +544,7 @@ function dashcourse(&$url, &$lang, &$cinfo, $uc_status, $index, $enable_actions 
     $action = relationWithCourse($cinfo['idCourse'], $cinfo, $uc_status, false);
     $there_material = [];
 
-    $lang_c = &DoceboLanguage::createInstance('course', 'lms');
+    $lang_c = &FormaLanguage::createInstance('course', 'lms');
 
     if (!defined('_ECOM_CURRENCY')) {
         $currency_label = getPLSetting('ecom', 'currency_label', '');
@@ -593,7 +594,7 @@ function dashcourse(&$url, &$lang, &$cinfo, $uc_status, $index, $enable_actions 
                             $lang->def('_COURSE_INTRO_WITH_MAX'));
 
             if ($cinfo['enrolled'] >= $cinfo['max_num_subscribe'] && $cinfo['allow_overbooking'] == '1') {
-                // limited number of subscription reached
+            // limited number of subscription reached
                 $html .= '<br/>' . $lang->def('_CAN_JOIN_WAITING_LIST');
             }
         }
@@ -649,10 +650,10 @@ function dashcourse(&$url, &$lang, &$cinfo, $uc_status, $index, $enable_actions 
 
             $html .= '<li><b class="course_title">[' . $ed_info['code'] . '] ' . $ed_info['name'] . '</b><p>';
 
-            if (($ed_info['date_begin'] != '0000-00-00' && $ed_info['date_end'] != '0000-00-00') || $ed_info['classrooms'] != '') {
+            if (($ed_info['date_begin'] && $ed_info['date_end']) || $ed_info['classrooms'] != '') {
                 $html .= $lang->def('_EDITIONS');
             }
-            if ($ed_info['date_begin'] != '0000-00-00' && $ed_info['date_end'] != '0000-00-00') {
+            if ($ed_info['date_begin'] && $ed_info['date_end']) {
                 $html .= ' ' . str_replace(['[date_begin]', '[date_end]'],
                                         [Format::date($ed_info['date_begin'], 'date'),
                                             Format::date($ed_info['date_end'], 'date'), ],
@@ -663,7 +664,7 @@ function dashcourse(&$url, &$lang, &$cinfo, $uc_status, $index, $enable_actions 
                                             [$ed_info['classrooms']['classroom'], $ed_info['classrooms']['location']],
                                             $lang->def('_IN_THE_CLASSROOM'));
             }
-            if (($ed_info['date_begin'] != '0000-00-00' && $ed_info['date_end'] != '0000-00-00') || $ed_info['classrooms'] != '') {
+            if (($ed_info['date_begin'] && $ed_info['date_end']) || $ed_info['classrooms'] != '') {
                 $html .= '<br />';
             }
             if ($ed_info['max_num_subscribe'] == 0) {
@@ -676,7 +677,7 @@ function dashcourse(&$url, &$lang, &$cinfo, $uc_status, $index, $enable_actions 
                                         $lang->def('_USER_EDITION_SUBSCRIBE')) . '</p>';
             }
 
-            if (($ed_info['user_count'] != '' && $ed_info['date_end'] != '0000-00-00') || $ed_info['classrooms'] != '') {
+            if (($ed_info['user_count'] != '' && $ed_info['date_end']) || $ed_info['classrooms'] != '') {
                 $html .= '<br />';
             }
 
@@ -795,7 +796,7 @@ function dashcourse(&$url, &$lang, &$cinfo, $uc_status, $index, $enable_actions 
         if ($has_edition) {
             list($edition_for_enter) = sql_fetch_row(sql_query('SELECT edition_id'
                                                                     . ' FROM %lms_courseuser'
-                                                                    . " WHERE idUser = '" . getLogUserId() . "'"
+                                                                    . " WHERE idUser = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'"
                                                                     . " AND idCourse = '" . $cinfo['idCourse'] . "'"
                                                                     . ' ORDER BY edition_id DESC'
                                                                     . ' LIMIT 0,1'));
@@ -833,7 +834,7 @@ function dashcourse(&$url, &$lang, &$cinfo, $uc_status, $index, $enable_actions 
                 );
         switch ($action[0]) {
             case 'can_buy':
-            case 'can_reserve':  $html .= $cinfo['prize'] . ' ' . _ECOM_CURRENCY; break;
+            case 'can_reserve':  $html .= $cinfo['prize'] . ' ' . _ECOM_CURRENCY; ; break;
         }
         $html .= ($action[2] != false ? '<img src="' . getPathImage() . 'coursecatalogue/' . $action[2] . '" '
                     . 'alt="' . $lang->def('_ALT_' . strtoupper($action[0])) . '"/>' : '')
@@ -879,8 +880,7 @@ function must_search_filter()
 {
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $courseCatalogue = $session->get('coursecatalogue');
-
-    return $courseCatalogue && isset($courseCatalogue['in_search']) && $courseCatalogue['in_search'] == true;
+    return  $courseCatalogue && isset($courseCatalogue['in_search']) && $courseCatalogue['in_search'] == true;
 }
 
 function get_searched($var, $default)
@@ -888,7 +888,7 @@ function get_searched($var, $default)
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $prefix = 'coursecatalogue';
     if (isset($_POST['do_search'])) {
-        $session->set($prefix, ['in_search' => true]);
+        $session->set($prefix,['in_search' => true]);
         $session->save();
     }
     if (isset($_POST['reset_search'])) {
@@ -905,14 +905,13 @@ function get_searched($var, $default)
 
         $sessionData[$var] = $_REQUEST[$var];
 
-        $session->set($prefix, $sessionData);
+        $session->set($prefix,$sessionData);
         $session->save();
 
         return $_REQUEST[$var];
     }
 
     $sessionData = $session->get($prefix);
-
     return $sessionData[$var] ?? $default;
 }
 
@@ -920,7 +919,7 @@ function searchForm(&$url, &$lang)
 {
     //$filter_type = get_searched('filter_type', array('free'=>1, 'editions'=>1, 'sale'=>1));
 
-    $langs = Docebo::langManager()->getAllLangCode();
+    $langs = \FormaLms\lib\Forma::langManager()->getAllLangCode();
     $all_lang = ['all' => $lang->def('_ALL_LANGUAGE')];
     $all_lang = array_merge($all_lang, $langs);
 
@@ -982,14 +981,14 @@ function searchForm(&$url, &$lang)
  */
 function relationWithCourse($id_course, &$course, $uc_details, $edition_id = false)
 {
-    // 	require_once($GLOBALS['where_ecom'].'/lib/lib.cart.php');
+// 	require_once($GLOBALS['where_ecom'].'/lib/lib.cart.php');
     // 	$cart =& Cart::createInstance();
 
     list($enrolled) = sql_fetch_row(sql_query('SELECT COUNT(*) FROM ' . $GLOBALS['prefix_lms'] . "_courseuser WHERE idCourse = '" . $id_course . "' AND edition_id = '0'"));
 
     $course['enrolled'] = $enrolled;
 
-    $base_link = 'index.php?modname=' . (Docebo::user()->isAnonymous() ? 'login' : 'coursecatalogue') . '&op=';
+    $base_link = 'index.php?modname=' . (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous() ? 'login' : 'coursecatalogue') . '&op=';
 
     $bought_items = &getEcomItems();
     $product_type = ($edition_id !== false ? 'course_edition' : 'course');
@@ -1004,7 +1003,7 @@ function relationWithCourse($id_course, &$course, $uc_details, $edition_id = fal
         }
     }
     switch ($course['can_subscribe']) {
-        case '0':  return ['impossible', false, false, 'subscribe_lock']; break;
+        case '0':  return ['impossible', false, false, 'subscribe_lock']; ; break;
         case '2':
             $today = date('Y-m-d H:i:s');
             if ($course['sub_start_date'] != 'NULL' && strcmp($course['sub_start_date'], $today) > 0) {
@@ -1013,7 +1012,7 @@ function relationWithCourse($id_course, &$course, $uc_details, $edition_id = fal
             if ($course['sub_end_date'] != 'NULL' && strcmp($course['sub_end_date'], $today) < 0) {
                 return ['impossible', false, false, 'date_range'];
             }
-         break;
+        ; break;
     }
     if ($course['subscribe_method'] > 0) {
         $pl_man = &PlatformManager::CreateInstance();
@@ -1122,8 +1121,8 @@ function getCourseEditionList($course_id)
 
     require_once _lms_ . '/lib/lib.course.php';
 
-    $lang_c = &DoceboLanguage::createInstance('catalogue');
-    $lang = &DoceboLanguage::createInstance('course');
+    $lang_c = &FormaLanguage::createInstance('catalogue');
+    $lang = &FormaLanguage::createInstance('course');
 
     $man_course = new Man_Course();
     $course = $man_course->getCourseInfo($course_id);
@@ -1140,7 +1139,7 @@ function getCourseEditionList($course_id)
     $qtxt .= "WHERE t1.idCourse='" . (int) $course_id . "'  ";
     $qtxt .= " AND t1.status <> '" . CST_PREPARATION . "' ";
 
-    $qtxt .= " AND (t1.date_begin > '" . date('Y-m-d H:i:s') . "' OR t1.date_begin = '0000-00-00 00:00:00')";
+    $qtxt .= " AND (t1.date_begin > '" . date('Y-m-d H:i:s') . "' OR t1.date_begin IS NULL)";
 
     $qtxt .= ' GROUP BY t1.idCourseEdition ';
     $qtxt .= 'ORDER BY t1.date_begin';
@@ -1152,10 +1151,10 @@ function getCourseEditionList($course_id)
     while ($ed_info = sql_fetch_assoc($q)) {
         $html .= '<li><b>[' . $ed_info['code'] . '] ' . $ed_info['name'] . '</b><br/><p>';
 
-        if (($ed_info['date_begin'] != '0000-00-00' && $ed_info['date_end'] != '0000-00-00') || $ed_info['classrooms'] != '') {
+        if (($ed_info['date_begin'] && $ed_info['date_end']) || $ed_info['classrooms'] != '') {
             $html .= $lang->def('_EDITIONS');
         }
-        if ($ed_info['date_begin'] != '0000-00-00' && $ed_info['date_end'] != '0000-00-00') {
+        if ($ed_info['date_begin'] && $ed_info['date_end']) {
             $html .= ' ' . str_replace(['[date_begin]', '[date_end]'],
                                     [Format::date($ed_info['date_begin'], 'date'),
                                         Format::date($ed_info['date_end'], 'date'), ],
@@ -1182,8 +1181,8 @@ function getCourseEditionTable($course_id)
     require_once _base_ . '/lib/lib.table.php';
     require_once _lms_ . '/lib/lib.course.php';
 
-    $lang_c = &DoceboLanguage::createInstance('catalogue');
-    $lang = &DoceboLanguage::createInstance('course');
+    $lang_c = &FormaLanguage::createInstance('catalogue');
+    $lang = &FormaLanguage::createInstance('course');
 
     /*
         $qtxt ="SELECT name FROM ".$GLOBALS["prefix_lms"]."_course ";
@@ -1271,7 +1270,7 @@ function getSubscribeActionLink($id_course, $course, &$lang, $edition_id = false
     $product_type = ($edition_id !== false ? 'course_edition' : 'course');
     $search_item = ($edition_id !== false ? $product_type . '_' . $edition_id : $product_type . '_' . $id_course);
 
-    if (isUserCourseSubcribed(getLogUserId(), $id_course, $edition_id)) {
+    if (isUserCourseSubcribed(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_course, $edition_id)) {
         $res .= $lang->def('_SUBSCRIBED_T');
     } elseif ($course['subscribe_method'] == 1 || $course['subscribe_method'] == 2 || $course['subscribe_method'] == 3) {
         $ecom_type = getPLSetting('ecom', 'ecom_type', 'none');
@@ -1325,7 +1324,7 @@ function loadEcomItems()
         require_once $GLOBALS['where_ecom'] . '/admin/modules/reservation/lib.reservation.php';
 
         $res = [];
-        $user_id = getLogUserId();
+        $user_id = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
         // --- Transactions:  ------------------------------------
 

@@ -49,7 +49,7 @@ class CatalogLms extends Model
             CST_CANCELLED => '_CST_CANCELLED',
         ];
 
-        $this->acl_man = &Docebo::user()->getAclManager();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();
         $this->show_all_category = FormaLms\lib\Get::sett('hide_empty_category') === 'off';
 
         $this->currentCatalogue = 0;
@@ -74,7 +74,7 @@ class CatalogLms extends Model
             . ' WHERE idCourse = ' . $idCourse
             . ' AND idUser = ' . $idUser;
 
-        return Docebo::db()->query($query);
+        return \FormaLms\lib\Forma::db()->query($query);
     }
 
     public function getInfoLO($idCourse)
@@ -83,25 +83,15 @@ class CatalogLms extends Model
               FROM %lms_organization AS o WHERE o.objectType != '' AND o.idCourse IN (" . $idCourse . ') ORDER BY o.path) as org 
               GROUP BY org.idCourse';
 
-        return Docebo::db()->query($query);
+        return \FormaLms\lib\Forma::db()->query($query);
     }
 
-    public function getCourseList($type = '', $page = 1, $id_catalog, $id_category)
+    public function getCourseList($type = '', $page = 1)
     {
         require_once _lms_ . '/lib/lib.catalogue.php';
         $cat_man = new Catalogue_Manager();
 
-        $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
-        $category_filter = ($id_category == 0 || $id_category == null ? '' : ' and idCategory=' . $id_category);
-        $cat_list_filter = '';
-        if ($id_catalog > 0) {
-            $q = 'select idEntry from learning_catalogue_entry where idCatalogue=' . $id_catalog . " and type_of_entry='course'";
-            $r = sql_query($q);
-            while (list($idcat) = sql_fetch_row($r)) {
-                $cat_array[] = $idcat;
-            }
-            $cat_list_filter = ' and idCourse in (' . implode(',', $cat_array) . ')';
-        }
+        $user_catalogue = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
         switch ($type) {
             case 'elearning':
@@ -135,7 +125,7 @@ class CatalogLms extends Model
                 }
                 break;
             case 'new':
-                $filter = " AND create_date >= '" . date('Y-m-d', mktime(0, 0, 0, date('m'), ((int) date('d') - 7), date('Y'))) . "'";
+                $filter = " AND create_date >= '" . date('Y-m-d', mktime(0, 0, 0, date('m'), ((int)date('d') - 7), date('Y'))) . "'";
                 $base_link = 'index.php?r=catalog/newCourse&amp;page=' . $page;
                 if (count($user_catalogue) > 0) {
                     $courses = [];
@@ -181,13 +171,11 @@ class CatalogLms extends Model
             . ' WHERE status NOT IN (' . CST_PREPARATION . ', ' . CST_CONCLUDED . ', ' . CST_CANCELLED . ')'
             . " AND course_type <> 'assessment'"
             . " AND (                       
-						(can_subscribe=2 AND (sub_end_date = '0000-00-00' OR sub_end_date >= '" . date('Y-m-d') . "') AND
-                         (sub_start_date = '0000-00-00' OR '" . date('Y-m-d') . "' >= sub_start_date)) OR
+						(can_subscribe=2 AND (sub_end_date IS NULL OR sub_end_date >= '" . date('Y-m-d') . "') AND
+                         (sub_start_date IS NULL OR '" . date('Y-m-d') . "' >= sub_start_date)) OR
                         (can_subscribe=1)
 					) "
             . $filter
-            . $category_filter
-            . $cat_list_filter
             . ' ORDER BY name';
 
         $result = sql_query($query);
@@ -200,16 +188,18 @@ class CatalogLms extends Model
         require_once _lms_ . '/lib/lib.catalogue.php';
         $cat_man = new Catalogue_Manager();
 
-        $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
+        $user_catalogue = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         $categoryFilter = (empty($idCategory) ? '' : ' and idCategory=' . $idCategory);
         $categoryListFilter = '';
         if ($idCatalog > 0) {
             $query = 'select idEntry from learning_catalogue_entry where idCatalogue=' . $idCatalog . " and type_of_entry='course'";
-            $result = Docebo::db()->query($query);
+            $result = \FormaLms\lib\Forma::db()->query($query);
             foreach ($result as $item) {
                 $cat_array[] = $item['idEntry'];
             }
-            $categoryListFilter = ' and idCourse in (' . implode(',', $cat_array) . ')';
+            if (is_array($cat_array) && count($cat_array) > 0) {
+                $categoryListFilter = ' and idCourse in (' . implode(',', $cat_array) . ')';
+            }
         }
         $courses = [];
         $filter = '';
@@ -219,7 +209,7 @@ class CatalogLms extends Model
                 $filter = " AND course_type = '" . $type . "'";
                 break;
             case 'new':
-                $filter = " AND create_date >= '" . date('Y-m-d', mktime(0, 0, 0, date('m'), ((int) date('d') - 7), date('Y'))) . "'";
+                $filter = " AND create_date >= '" . date('Y-m-d', mktime(0, 0, 0, date('m'), ((int)date('d') - 7), date('Y'))) . "'";
                 break;
             case 'catalogue':
                 $idCatalogue = FormaLms\lib\Get::req('id_cata', DOTY_INT, '0');
@@ -236,7 +226,7 @@ class CatalogLms extends Model
             }
         }
 
-        if (count($courses) > 0) {
+        if (is_array($courses) && count($courses) > 0) {
             $filter .= ' AND idCourse IN (' . implode(',', $courses) . ')';
         }
 
@@ -245,8 +235,8 @@ class CatalogLms extends Model
             . ' WHERE status NOT IN (' . CST_PREPARATION . ', ' . CST_CONCLUDED . ', ' . CST_CANCELLED . ')'
             . " AND course_type <> 'assessment'"
             . " AND (                       
-						(can_subscribe=2 AND (sub_end_date = '0000-00-00' OR sub_end_date >= '" . date('Y-m-d') . "') AND
-                         (sub_start_date = '0000-00-00' OR '" . date('Y-m-d') . "' >= sub_start_date)) OR
+						(can_subscribe=2 AND (sub_end_date IS NULL OR sub_end_date >= '" . date('Y-m-d') . "') AND
+                         (sub_start_date IS NULL OR '" . date('Y-m-d') . "' >= sub_start_date)) OR
                         (can_subscribe=1)
 					) "
             . $filter
@@ -254,7 +244,7 @@ class CatalogLms extends Model
             . $categoryListFilter
             . ' ORDER BY name';
 
-        return Docebo::db()->query($query);
+        return \FormaLms\lib\Forma::db()->query($query);
     }
 
     public function getCatalogCourseList($type, $page, $idCatalog, $idCategory)
@@ -282,7 +272,7 @@ class CatalogLms extends Model
         require_once _lms_ . '/lib/lib.catalogue.php';
         $cat_man = new Catalogue_Manager();
 
-        $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
+        $user_catalogue = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
         switch ($type) {
             case 'elearning':
@@ -328,12 +318,12 @@ class CatalogLms extends Model
                 }
                 break;
             case 'new':
-                $filter = " AND create_date >= '" . date('Y-m-d', mktime(0, 0, 0, date('m'), ((int) date('d') - 7), date('Y'))) . "'";
+                $filter = " AND create_date >= '" . date('Y-m-d', mktime(0, 0, 0, date('m'), ((int)date('d') - 7), date('Y'))) . "'";
                 if (count($user_catalogue) > 0) {
                     $courses = [];
 
                     foreach ($user_catalogue as $id_cat) {
-                        $catalogue_course = &$cat_man->getCatalogueCourse($id_cat);
+                        $catalogue_course = $cat_man->getCatalogueCourse($id_cat);
 
                         $courses = array_merge($courses, $catalogue_course);
                     }
@@ -375,11 +365,11 @@ class CatalogLms extends Model
             . ' WHERE status NOT IN (' . CST_PREPARATION . ', ' . CST_CONCLUDED . ', ' . CST_CANCELLED . ')'
             . " AND course_type <> 'assessment'"
             . ' AND ('
-            . " date_begin = '0000-00-00'"
+            . " date_begin IS NULL"
             . " OR date_begin > '" . date('Y-m-d') . "'"
             . ' )'
             . $filter
-            . ($id_cat > 0 ? ' AND idCategory = ' . (int) $id_cat : '')
+            . ($id_cat > 0 ? ' AND idCategory = ' . (int)$id_cat : '')
             . ' ORDER BY name';
 
         list($res) = sql_fetch_row(sql_query($query));
@@ -392,7 +382,7 @@ class CatalogLms extends Model
         require_once _lms_ . '/lib/lib.date.php';
         $dm = new DateManager();
         $cl = new ClassroomLms();
-        $course_editions = $cl->getUserEditionsInfo(Docebo::user()->idst, $id_course);
+        $course_editions = $cl->getUserEditionsInfo(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_course);
         $out = [];
         $course_array['next_lesson'] = '-';
         $next_lesson_array = [];
@@ -538,7 +528,7 @@ class CatalogLms extends Model
     {
         $query = 'SELECT name, selling, prize'
             . ' FROM %lms_course'
-            . ' WHERE idCourse = ' . (int) $id_course;
+            . ' WHERE idCourse = ' . (int)$id_course;
 
         list($course_name, $selling, $price) = sql_fetch_row(sql_query($query));
         $classrooms = $this->classroom_man->getCourseDate($id_course, false);
@@ -564,7 +554,7 @@ class CatalogLms extends Model
     {
         $query = 'SELECT *'
             . ' FROM %lms_course'
-            . ' WHERE idCourse = ' . (int) $id_course;
+            . ' WHERE idCourse = ' . (int)$id_course;
 
         $result = sql_query($query);
 
@@ -580,7 +570,7 @@ class CatalogLms extends Model
                 //Controllo che l'utente non sia iscritto a tutte le edizioni future
                 $date_id = [];
 
-                $user_classroom = $this->classroom_man->getUserDates(Docebo::user()->getIdSt());
+                $user_classroom = $this->classroom_man->getUserDates(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 $classroom_full = $this->classroom_man->getFullDateForCourse($row['idCourse']);
                 $classroom_not_confirmed = $this->classroom_man->getNotConfirmetDateForCourse($row['idCourse']);
 
@@ -617,7 +607,7 @@ class CatalogLms extends Model
         } elseif ($row['course_edition'] == 1) {
             $additional_info = '';
 
-            $editions = $this->edition_man->getEditionAvailableForCourse(Docebo::user()->getIdSt(), $row['idCourse']);
+            $editions = $this->edition_man->getEditionAvailableForCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $row['idCourse']);
 
             if (count($editions) == 0) {
                 return false;
@@ -679,7 +669,7 @@ class CatalogLms extends Model
     {
         if (($iright - $ileft > 1) && $this->CategoryHasChildrenCourses($idCat, $ileft, $iright, $showRulesValues)) {
             $q = 'SELECT idCategory, path, idParent, lev, iLeft, iRight  FROM %lms_category  
-                        WHERE iLeft > ' . (int) $ileft . ' AND iRight < ' . $iright . ' AND lev=' . $lev;
+                        WHERE iLeft > ' . (int)$ileft . ' AND iRight < ' . $iright . ' AND lev=' . $lev;
             $res = [];
             $records = sql_query($q);
             foreach ($records as $row) {
@@ -719,7 +709,7 @@ class CatalogLms extends Model
                        %lms_course.course_type <> 'assessment' and
                        %lms_course.status NOT IN (" . CST_PREPARATION . ', ' . CST_CONCLUDED . ', ' . CST_CANCELLED . ")
                        AND (                       
-                              (can_subscribe=2 AND (sub_end_date = '0000-00-00' OR sub_end_date >= '" . date('Y-m-d') . "') AND (sub_start_date = '0000-00-00' OR '" . date('Y-m-d') . "' >= sub_start_date)) OR
+                              (can_subscribe=2 AND (sub_end_date IS NULL OR sub_end_date >= '" . date('Y-m-d') . "') AND (sub_start_date IS NULL OR '" . date('Y-m-d') . "' >= sub_start_date)) OR
                               (can_subscribe=1)
                           )";
             } else {
@@ -730,10 +720,10 @@ class CatalogLms extends Model
                        %lms_course.course_type <> 'assessment' and
                        %lms_course.status NOT IN (" . CST_PREPARATION . ', ' . CST_CONCLUDED . ', ' . CST_CANCELLED . ")
                        AND (                       
-                              (can_subscribe=2 AND (sub_end_date = '0000-00-00' OR sub_end_date >= '" . date('Y-m-d') . "') AND (sub_start_date = '0000-00-00' OR '" . date('Y-m-d') . "' >= sub_start_date)) OR
+                              (can_subscribe=2 AND (sub_end_date IS NULL OR sub_end_date >= '" . date('Y-m-d') . "') AND (sub_start_date IS NULL OR '" . date('Y-m-d') . "' >= sub_start_date)) OR
                               (can_subscribe=1)
                           )
-                       AND idCatalogue = " . (int) $this->currentCatalogue .
+                       AND idCatalogue = " . (int)$this->currentCatalogue .
                     ' AND %lms_catalogue_entry.idEntry=%lms_course.idCourse';
             }
 

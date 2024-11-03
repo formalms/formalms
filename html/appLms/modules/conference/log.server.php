@@ -21,7 +21,7 @@ $path_to_root = '../..';
 
 // prepare refer ------------------------------------------------------------------
 
-require_once __DIR__ . '/' . $path_to_root . '/config.php';
+require_once dirname(__FILE__) . '/' . $path_to_root . '/config.php';
 require_once $GLOBALS['where_config'] . '/config.php';
 
 if ($GLOBALS['where_kms_relative'] != false) {
@@ -51,8 +51,7 @@ require_once _base_ . '/lib/lib.json.php';
 // load regional setting --------------------------------------------------------------
 
 // load current user from session -----------------------------------------------------
-require_once _base_ . '/lib/lib.user.php';
-$GLOBALS['current_user'] = &DoceboUser::createDoceboUserFromSession('public_area');
+\FormaLms\lib\FormaUser::loadUserFromSession();
 
 //require_once(_i18n_.'/lib.lang.php');
 require_once _base_ . '/lib/lib.template.php';
@@ -92,7 +91,7 @@ if ($xml_answer === false) {
     aout('<?xml version="1.0" encoding="UTF-8"?><ews><errorcode>1</errorcode><errormessage>No data found</errormessage></ews>');
 }
 
-$dom_answer = new DoceboDOMDocument();
+$dom_answer = new FormaDOMDocument();
 $dom_answer->loadXML(trim($xml_answer));
 
 $dlist_code = $dom_answer->getElementsByTagName('errorcode');
@@ -104,7 +103,7 @@ $e_code = $dnode_code->textContent;
 $e_msg = $dnode_msg->textContent;
 
 if ($e_code == 0) {
-    require_once _scs_ . '/lib/lib.teleskill.php';
+    require_once $GLOBALS['where_scs'] . '/lib/lib.teleskill.php';
 
     $teleskill = new Teleskill_Management();
 

@@ -14,12 +14,12 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 /*
- * @package  DoceboLms
+ * @package  FormaLms
  * @version  $Id: news.php 573 2006-08-23 09:38:54Z fabio $
  * @author     Fabio Pirovano <fabio [at] docebo [dot] com>
  */
 
-if (Docebo::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit("You can't access");
 }
 
@@ -32,7 +32,7 @@ function news()
     require_once _base_ . '/lib/lib.navbar.php';
 
     $mod_perm = checkPerm('mod', true);
-    $lang = &DoceboLanguage::createInstance('admin_news', 'lms');
+    $lang = &FormaLanguage::createInstance('admin_news', 'lms');
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
 
@@ -154,14 +154,14 @@ function editnews($load = false)
 
     require_once _base_ . '/lib/lib.form.php';
 
-    $lang = &DoceboLanguage::createInstance('admin_news', 'lms');
+    $lang = &FormaLanguage::createInstance('admin_news', 'lms');
     $form = new Form();
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
 
     $id_news = importVar('id_news', true, 0);
     $all_languages = ['-1' => Lang::t('_ALL', 'standard')];
-    $all_languages += Docebo::langManager()->getAllLangCode();
+    $all_languages += \FormaLms\lib\Forma::langManager()->getAllLangCode();
 
     if ($load) {
         $query_news = '
@@ -174,7 +174,7 @@ function editnews($load = false)
         $short_desc = '';
         $long_desc = '';
         $impo = 0;
-        $lang_sel = getLanguage();
+        $lang_sel = Lang::get();
     }
 
     $page_title = [
@@ -185,26 +185,26 @@ function editnews($load = false)
         . '<div class="std_block">'
         . getBackUi('index.php?modname=internal_news&amp;op=news', $lang->def('_BACK'))
 
-        . Form::openForm('adviceform', 'index.php?modname=internal_news&amp;op=savenews')
-        . Form::getHidden('of_platform', 'of_platform', 'lms')
+        . $form->openForm('adviceform', 'index.php?modname=internal_news&amp;op=savenews')
+        . $form->getHidden('of_platform', 'of_platform', 'lms')
     );
     if ($load) {
-        $out->add(Form::getHidden('id_news', 'id_news', $id_news)
-            . Form::getHidden('load', 'load', 1));
+        $out->add($form->getHidden('id_news', 'id_news', $id_news)
+            . $form->getHidden('load', 'load', 1));
     }
-    $out->add(Form::openElementSpace()
-        . Form::getTextfield($lang->def('_TITLE'), 'title', 'title', 255, $title)
-        . Form::getCheckbox($lang->def('_MARK_AS_IMPORTANT'), 'impo', 'impo', 1, $impo)
-        . Form::getDropdown($lang->def('_LANGUAGE'), 'language', 'language', $all_languages, ($lang_sel === 'all' ? -1 : array_search($lang_sel, $all_languages)))
+    $out->add($form->openElementSpace()
+        . $form->getTextfield($lang->def('_TITLE'), 'title', 'title', 255, $title)
+        . $form->getCheckbox($lang->def('_MARK_AS_IMPORTANT'), 'impo', 'impo', 1, $impo)
+        . $form->getDropdown($lang->def('_LANGUAGE'), 'language', 'language', $all_languages, ($lang_sel === 'all' ? -1 : array_search($lang_sel, $all_languages)))
 
-        . Form::getTextarea($lang->def('_SHORTDESC'), 'short_desc', 'short_desc', $short_desc)
+        . $form->getTextarea($lang->def('_SHORTDESC'), 'short_desc', 'short_desc', $short_desc)
 
-        . Form::closeElementSpace()
-        . Form::openButtonSpace()
-        . Form::getButton('news', 'news', ($load ? $lang->def('_SAVE') : $lang->def('_INSERT')))
-        . Form::getButton('undo', 'undo', $lang->def('_UNDO'))
-        . Form::closeButtonSpace()
-        . Form::closeForm()
+        . $form->closeElementSpace()
+        . $form->openButtonSpace()
+        . $form->getButton('news', 'news', ($load ? $lang->def('_SAVE') : $lang->def('_INSERT')))
+        . $form->getButton('undo', 'undo', $lang->def('_UNDO'))
+        . $form->closeButtonSpace()
+        . $form->closeForm()
         . '</div>');
 }
 
@@ -215,7 +215,7 @@ function editviewer()
     require_once _base_ . '/lib/lib.userselector.php';
     require_once _base_ . '/lib/lib.form.php';
 
-    $lang = &DoceboLanguage::createInstance('admin_news', 'lms');
+    $lang = &FormaLanguage::createInstance('admin_news', 'lms');
     $form = new Form();
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
@@ -226,7 +226,7 @@ function editviewer()
         'index.php?modname=internal_news&amp;op=news' => $lang->def('_NEWS'),
         $lang->def('_RECIPIENTS'),
     ];
-    $acl_manager = new DoceboACLManager();
+    $acl_manager = new FormaACLManager();
     $user_select = new UserSelector();
 
     $user_select->show_user_selector = true;
@@ -267,7 +267,7 @@ function editviewer()
     cout(getTitleArea($page_title, 'news')
         . '<div class="std_block">');
     $user_select->addFormInfo(
-        Form::getHidden('id_news', 'id_news', $id_news)
+        $form->getHidden('id_news', 'id_news', $id_news)
     );
     $user_select->loadSelector('index.php?modname=internal_news&amp;op=editviewer',
         false,
@@ -282,8 +282,8 @@ function savenews()
 
     $id_news = importVar('id_news', true, 0);
     $load = importVar('load', true, 0);
-    $all_languages = Docebo::langManager()->getAllLangCode();
-    $lang = &DoceboLanguage::createInstance('admin_news', 'lms');
+    $all_languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
+    $lang = &FormaLanguage::createInstance('admin_news', 'lms');
 
     if ($_POST['title'] == '') {
         $_POST['title'] = $lang->def('_NOTITLE');
@@ -326,7 +326,7 @@ function delnews()
     require_once _base_ . '/lib/lib.form.php';
 
     $id_news = FormaLms\lib\Get::req('id_news', DOTY_INT, 0);
-    $lang = &DoceboLanguage::createInstance('admin_news', 'lms');
+    $lang = &FormaLanguage::createInstance('admin_news', 'lms');
 
     if (FormaLms\lib\Get::req('confirm', DOTY_INT, 0) == 1) {
         $query_news = '
@@ -351,16 +351,16 @@ function delnews()
         $GLOBALS['page']->add(
             getTitleArea($page_title, 'admin_news')
             . '<div class="std_block">'
-            . Form::openForm('del_news', 'index.php?modname=internal_news&amp;op=delnews')
-            . Form::getHidden('of_platform', 'of_platform', 'lms')
-            . Form::getHidden('id_news', 'id_news', $id_news)
+            . $form->openForm('del_news', 'index.php?modname=internal_news&amp;op=delnews')
+            . $form->getHidden('of_platform', 'of_platform', 'lms')
+            . $form->getHidden('id_news', 'id_news', $id_news)
             . getDeleteUi($lang->def('_AREYOUSURE'),
                 '<span>' . $lang->def('_TITLE') . ' : </span>' . $title . '<br />'
                 . '<span>' . $lang->def('_SHORTDESC') . ' : </span>' . $short_desc,
                 false,
                 'confirm',
                 'undo')
-            . Form::closeForm()
+            . $form->closeForm()
             . '</div>', 'content');
     }
 }

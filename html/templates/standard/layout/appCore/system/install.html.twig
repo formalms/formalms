@@ -1,0 +1,37 @@
+
+{% set showTitle = install ? upgraderTitle : installerTitle %}
+{% set path = install ? 'upgrade' : 'install' %}
+{% set startStep = install ? 0 : setValues.step %}
+  <div class="installer-container">
+      <div class="installer-title">
+          {{ Get_title({
+          '#' : showTitle
+        },false) }}
+      </div>
+    <div id="installer-section">
+        {% for stepNumber,step in steps %}
+        <h3>{{ step }}</h3>
+        <section>
+            {% include 'partials/' ~ path ~'/step' ~ stepNumber ~'.html.twig' %}
+        </section>
+        {% endfor %}
+    </div>
+  </div>
+<input type='hidden' id='debug' value="{{ debug }}" />
+{% block scripts %}
+
+  <script type="text/javascript" src="{{ Layout_getPath() }}script/jquery.steps.min.js"></script>
+  <script>
+    let startIndex = {{startStep|json_encode|raw}};
+    let nextLabel = {{ next|json_encode|raw }};
+    let prevLabel = {{ back|json_encode|raw }};
+    let loading = {{ loading|json_encode|raw }};
+    let cancel = {{ cancel|json_encode|raw }};
+    let current = {{ current|json_encode|raw }};
+    let pagination = {{ pagination|json_encode|raw }};
+    let finish = {{ finish|json_encode|raw }};
+  </script>
+  <script type="text/javascript" src="{{ Layout_getPath() }}script/install/main.js"></script>
+
+
+{% endblock %}

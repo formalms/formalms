@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-include_once __DIR__ . '/lib.bbb.api.php';
+include_once dirname(__FILE__) . '/lib.bbb.api.php';
 
 // TODO : support for BBB is experimental - must be refined
 
@@ -27,8 +27,16 @@ class Bbb_Manager
     public $can_mod = false;
 
     protected $session;
+    /**
+     * @var false|mixed|string
+     */
+    public string $port;
+    /**
+     * @var false|mixed|string
+     */
+    public string $server;
 
-    public function Bbb_Manager()
+    public function __construct()
     {
         $this->server = FormaLms\lib\Get::sett('ConferenceBBB_server');
         $this->port = FormaLms\lib\Get::sett('ConferenceBBB_port');
@@ -164,15 +172,15 @@ class Bbb_Manager
 
     public function getUrl($idConference, $room_type)
     {
-        $lang = &DoceboLanguage::createInstance('conference', 'lms');
+        $lang = &FormaLanguage::createInstance('conference', 'lms');
 
         $conf = new Conference_Manager();
 
         $conference = $conf->roomInfo($idConference);
 
-        $acl_manager = &Docebo::user()->getAclManager();
-        $username = Docebo::user()->getUserName();
-        $u_info = $acl_manager->getUser(getLogUserId(), false);
+        $acl_manager = \FormaLms\lib\Forma::getAclManager();
+        $username = \FormaLms\lib\FormaUser::getCurrentUser()->getUserName();
+        $u_info = $acl_manager->getUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), false);
         $user_email = $u_info[ACL_INFO_EMAIL];
 
         $query2 = 'SELECT * FROM ' . $this->_getRoomTable() . " WHERE idConference = '" . $idConference . "'";

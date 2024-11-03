@@ -23,14 +23,24 @@
   margin-left: 3px;
   font-weight: bold;
   text-decoration: none !important;
-  color: var(--color-0-1000);
+  color: var(--color-black);
+  border: 1px solid transparent;
+
+  &:hover {
+    border: 1px solid transparent!important;
+  }
 }
 
 .fa {
   #change_language & {
     margin-left: 6px;
     font-weight: normal;
-    color: var(--color-1-550);
+    color: var(--color-primary);
+    border: 1px solid transparent;
+
+    &:hover {
+      border: 1px solid transparent;
+    }
   }
 }
 
@@ -53,10 +63,11 @@
     display: block;
     padding: 0 8px;
     text-decoration: none !important;
-    color: var(--color-0-1000);
+    color: var(--color-black);
 
     &:hover {
-      color: var(--color-1-550);
+      color: var(--color-primary);
+      padding: 0 8px;
     }
   }
 }

@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Domain\DomainHandler;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -11,16 +13,13 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-ob_start();
-
 const CORE = true;
 const IN_FORMA = true;
 const _deeppath_ = '../';
-require dirname(__DIR__) . '/base.php';
-ini_set('memory_limit',-1);
-ini_set('max_execution_time',0);
+require dirname(__DIR__,1) . '/base.php';
+
 // start buffer
-use FormaLms\appCore\Template\Services\ClientService;
+ob_start();
 
 // initialize
 require _base_ . '/lib/lib.bootstrap.php';
@@ -29,12 +28,14 @@ Boot::init(BOOT_HOOKS);
 if (!function_exists('report_log')) {
     function report_log($string)
     {
+        //ob_end_flush();
         $curtime = date('d-m-Y G:i:s');
-        echo "[$curtime] $string" . PHP_EOL . "\r\n" . "\n" . '<br>';
+        echo "[$curtime] $string" . PHP_EOL . "\r\n" . "\n". "<br>";
+        //ob_start();
     }
 }
 
-require_once _adm_ . '/lib/lib.permission.php';
+require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/lib.permission.php');
 require_once _base_ . '/lib/lib.pagewriter.php';
 require_once _base_ . '/lib/lib.template.php';
 
@@ -45,7 +46,7 @@ $GLOBALS['user_roles'][$roleid] = true;
 $roleid = '/admin/view_all';
 $GLOBALS['user_roles'][$roleid] = true;
 
-setLanguage(getDefaultLanguage());
+Lang::set('english');
 
 function getEmailForSchedule($schedule): array
 {
@@ -58,7 +59,7 @@ function getEmailForSchedule($schedule): array
         $recipients[] = $recipientItem['id_user']; //idst of the recipients
     }
 
-    $recipients = Docebo::aclm()->getAllUsersFromSelection($recipients);
+    $recipients = \FormaLms\lib\Forma::getAclManager()->getAllUsersFromSelection($recipients);
 
     if (!empty($recipients)) {
         $queryEmails = "SELECT u.email as email, su.value as lang FROM %adm_user AS u 
@@ -96,7 +97,15 @@ function getReportRecipients($id_rep)
         $emails = getEmailForSchedule($schedule);
 
         if (count($emails) > 0) {
-            array_push($output, ...$emails);
+
+            if (PHP_VERSION_ID < 80000) {
+                foreach ($emails as $email) {
+                    array_push($output, $email);
+                }
+            } else {
+                array_push($output, ...$emails);
+            }
+            
             $selected_schedules[] = [
                 'id_report_schedule' => $schedule['id_report_schedule'],
                 'period' => 'day',
@@ -117,7 +126,13 @@ function getReportRecipients($id_rep)
     foreach ($res as $schedule) {
         $emails = getEmailForSchedule($schedule);
         if (count($emails) > 0) {
-            array_push($output, ...$emails);
+            if (PHP_VERSION_ID < 80000) {
+                foreach ($emails as $email) {
+                    array_push($output, $email);
+                }
+            } else {
+                array_push($output, ...$emails);
+            }
             $selected_schedules[] = [
                 'id_report_schedule' => $schedule['id_report_schedule'],
                 'period' => 'day',
@@ -141,7 +156,13 @@ function getReportRecipients($id_rep)
     foreach ($res as $schedule) {
         $emails = getEmailForSchedule($schedule);
         if (count($emails) > 0) {
-            array_push($output, ...$emails);
+            if (PHP_VERSION_ID < 80000) {
+                foreach ($emails as $email) {
+                    array_push($output, $email);
+                }
+            } else {
+                array_push($output, ...$emails);
+            }
             $selected_schedules[] = [
                 'id_report_schedule' => $schedule['id_report_schedule'],
                 'period' => 'day',
@@ -175,7 +196,13 @@ function getReportRecipients($id_rep)
     foreach ($res as $schedule) {
         $emails = getEmailForSchedule($schedule);
         if (count($emails) > 0) {
-            array_push($output, ...$emails);
+            if (PHP_VERSION_ID < 80000) {
+                foreach ($emails as $email) {
+                    array_push($output, $email);
+                }
+            } else {
+                array_push($output, ...$emails);
+            }
             $selected_schedules[] = [
                 'id_report_schedule' => $schedule['id_report_schedule'],
                 'period' => 'day',
@@ -260,7 +287,7 @@ $base_url = preg_replace('/\/cron\//', '', $base_url);
 
 require_once _base_ . '/lib/lib.upload.php';
 
-$mailer = FormaMailer::getInstance();
+$mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
 
 require_once _base_ . '/lib/lib.json.php';
 $json = new Services_JSON();
@@ -304,7 +331,7 @@ if ($lock_stream) {
                     if (file_exists(_base_ . '/customscripts/' . _folder_lms_ . '/admin/modules/report/' . $file_name) && FormaLms\lib\Get::cfg('enable_customscripts', false) == true) {
                         require_once _base_ . '/customscripts/' . _folder_lms_ . '/admin/modules/report/' . $file_name;
                     } else {
-                        require_once Forma::inc(_lms_ . '/admin/modules/report/' . $file_name);
+                        require_once \FormaLms\lib\Forma::inc(_lms_ . '/admin/modules/report/' . $file_name);
                     }
                     $temp = new $class_name($data['id_report']);
                 } else {
@@ -375,29 +402,23 @@ if ($lock_stream) {
 
                     copy($path . $tmpfile, $async_report);
 
-                    $report_url = ClientService::getInstance()->getBaseUrl(true) . substr($report_url, 1);
-
                     //Sends an email containing the report link
                     foreach ($recipients as $recipient) {
                         //Sends an email containing the report link
 
                         $subject = str_replace('[name]', $row['filter_name'], Lang::t('_SCHEDULED_REPORT_SUBJECT_', 'email', [], $recipient['language']));
-
-                        $body = Lang::t('_SCHEDULED_REPORT_BODY_', 'email', [], $recipient['language']);
-                        if (preg_match('/\[report_url\]/', $body)) {
-                            $body = str_replace('[report_url]', $report_url, Lang::t('_SCHEDULED_REPORT_BODY_', 'email', [], $recipient['language']));
-                        } else {
-                            $body .= '<br />' . $report_url;
-                        }
-
+                        $body = str_replace('[report_url]', $report_url, Lang::t('_SCHEDULED_REPORT_BODY_', 'email', [], $recipient['language']));
                         $body = str_replace('[report_persistence_days]', $report_persistence_days, $body);
 
-                        $response = $mailer->SendMail(FormaLms\lib\Get::sett('sender_event'), //sender
-                            [$recipient['email']], //recipients
-                            $subject, //subject
-                            $body, //body
+                        $response = $mailer->SendMail([$recipient['email']], //sender
+                            $subject, //recipients
+                            $body, //subject
+                            DomainHandler::getInstance()->getMailerField('sender_mail_system'), //body,
                             [],
-                            ['is_html' => true]
+                            [
+                                MAIL_REPLYTO => DomainHandler::getInstance()->getMailerField('replyto_mail'),
+                                MAIL_SENDER_ACLNAME => DomainHandler::getInstance()->getMailerField('sender_name_system'),
+                            ]
                         );
 
                         if (!$response[$recipient['email']]) {
@@ -417,12 +438,15 @@ if ($lock_stream) {
                         $mailer->Subject = $subject;
                         $body = date('Y-m-d H:i:s');
 
-                        $response = $mailer->SendMail(FormaLms\lib\Get::sett('sender_event'), //sender
-                            [$recipient['email']], //recipients
-                            $subject, //subject
-                            $body, //body
+                        $response = $mailer->SendMail([$recipient['email']], //sender
+                            $subject, //recipients
+                            $body, //subject
+                            DomainHandler::getInstance()->getMailerField('sender_mail_system'), //body
                             [$path . $tmpfile, $row['filter_name'] . '.xls'],
-                            []    //params
+                            [
+                                MAIL_REPLYTO => DomainHandler::getInstance()->getMailerField('replyto_mail'),
+                                MAIL_SENDER_ACLNAME => DomainHandler::getInstance()->getMailerField('sender_name_system'),
+                            ]
                         );
 
                         if (!$response[$recipient['email']]) {
@@ -454,6 +478,6 @@ sl_close_fileoperations();
 Boot::finalize();
 
 //Removes lock file, if set
-if ($lock_stream) {
+if ($lock_stream && !is_bool($lock_stream)) {
     fclose($lock_stream);
 }
