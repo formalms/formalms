@@ -2507,7 +2507,6 @@ sei stato disiscritto dal corso ([course_code]) - [course]]]></key>
         <key id="standard&amp;_CURRENT_FILE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[File corrente]]></key>
         <key id="standard&amp;_DATE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Data]]></key>
         <key id="standard&amp;_DATE_BEGIN" attributes="" save_date="2020-11-18 12:53:52"><![CDATA[Data di inizio date_begin]]></key>
-        <key id="standard&amp;_DATE_DAYS" attributes="" save_date="2020-11-18 12:53:52"><![CDATA[Giornata dell'edizione]]></key>
         <key id="standard&amp;_DATE_END" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Data di completamento]]></key>
         <key id="standard&amp;_DATE_FIRST_ACCESS" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Primo accesso]]></key>
         <key id="standard&amp;_DATE_FORMAT" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Formato data]]></key>
@@ -2519,7 +2518,6 @@ sei stato disiscritto dal corso ([course_code]) - [course]]]></key>
         <key id="standard&amp;_DEFAULT_LANGUAGE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Lingua di default]]></key>
         <key id="standard&amp;_DEL" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Cancella]]></key>
         <key id="standard&amp;_DELETE_FILE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Cancella file]]></key>
-        <key id="standard&amp;_DELETE_PRESENCES" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Cancella presenze]]></key>
         <key id="standard&amp;_DEL_SELECTED" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Elimina selezionati]]></key>
         <key id="standard&amp;_DEMODERATE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Ripristina]]></key>
         <key id="standard&amp;_DENY" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Non approvare]]></key>
@@ -2566,7 +2564,6 @@ sei stato disiscritto dal corso ([course_code]) - [course]]]></key>
         <key id="standard&amp;_EXPORT_XML" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Esporta come XML]]></key>
         <key id="standard&amp;_FACEBOOK" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Facebook]]></key>
         <key id="standard&amp;_FIELD_NAME" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Nome campo]]></key>
-        <key id="standard&amp;_FILE_NOT_FOUND" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[File non trovato]]></key>
         <key id="standard&amp;_FILE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[File]]></key>
         <key id="standard&amp;_FILEMIME" attributes="" save_date="2022-03-10 11:47:19"><![CDATA[Tipo di file]]></key>
         <key id="standard&amp;_FILENAME" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Nome file]]></key>
@@ -2604,11 +2601,8 @@ sei stato disiscritto dal corso ([course_code]) - [course]]]></key>
         <key id="standard&amp;_IMPORT" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Importa]]></key>
         <key id="standard&amp;_IMPORTANT" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Importante]]></key>
         <key id="standard&amp;_IMPORT_FROM_XML" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Importa XML]]></key>
-        <key id="standard&amp;_INCORRECT_DELIMITER_IN_THE_CSV" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Molteplici separatori all'inteno del file]]></key>
-        <key id="standard&amp;_INCORRECTLY_FORMATTED_CSV" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[CSV formattato in maniera errata]]></key>
         <key id="standard&amp;_INHERIT" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Discendenti]]></key>
         <key id="standard&amp;_INSERT" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Inserisci]]></key>
-        <key id="standard&amp;_INSERT_PRESENCES" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Inserisci Presenze]]></key>
         <key id="standard&amp;_INSTRUCTION" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Istruzioni]]></key>
         <key id="standard&amp;_INVALID_EXTENSION" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Estensione non valida]]></key>
         <key id="standard&amp;_JUMP" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Salta a]]></key>

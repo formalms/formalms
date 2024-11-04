@@ -2513,7 +2513,6 @@ you have been unsubscribed from the course ([course_code]) - [course]]]></key>
         <key id="standard&amp;_CURRENT_FILE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Current file]]></key>
         <key id="standard&amp;_DATE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Date]]></key>
         <key id="standard&amp;_DATE_BEGIN" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Date begin]]></key>
-        <key id="standard&amp;_DATE_DAYS" attributes="" save_date="2020-11-18 12:53:52"><![CDATA[Day of date]]></key>
         <key id="standard&amp;_DATE_END" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Date end]]></key>
         <key id="standard&amp;_DATE_FIRST_ACCESS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[First access date]]></key>
         <key id="standard&amp;_DATE_FORMAT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Date format]]></key>
@@ -2525,7 +2524,6 @@ you have been unsubscribed from the course ([course_code]) - [course]]]></key>
         <key id="standard&amp;_DEFAULT_LANGUAGE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Default language]]></key>
         <key id="standard&amp;_DEL" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Delete]]></key>
         <key id="standard&amp;_DELETE_FILE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Delete file]]></key>
-        <key id="standard&amp;_DELETE_PRESENCES" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Delete presences]]></key>
         <key id="standard&amp;_DEL_SELECTED" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Delete selected]]></key>
         <key id="standard&amp;_DEMODERATE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Recover]]></key>
         <key id="standard&amp;_DENY" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Reject]]></key>
@@ -2572,7 +2570,6 @@ you have been unsubscribed from the course ([course_code]) - [course]]]></key>
         <key id="standard&amp;_EXPORT_XML" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Export as XML]]></key>
         <key id="standard&amp;_FACEBOOK" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Facebook]]></key>
         <key id="standard&amp;_FIELD_NAME" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Field name]]></key>
-        <key id="standard&amp;_FILE_NOT_FOUND" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[File not found]]></key>
         <key id="standard&amp;_FILE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[File]]></key>
         <key id="standard&amp;_FILEMIME" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[File type]]></key>
         <key id="standard&amp;_FILENAME" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[File name]]></key>
@@ -2610,11 +2607,8 @@ you have been unsubscribed from the course ([course_code]) - [course]]]></key>
         <key id="standard&amp;_IMPORT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Import]]></key>
         <key id="standard&amp;_IMPORTANT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Important]]></key>
         <key id="standard&amp;_IMPORT_FROM_XML" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Import XML]]></key>
-        <key id="standard&amp;_INCORRECT_DELIMITER_IN_THE_CSV" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Multiple delimiters within the file]]></key>
-        <key id="standard&amp;_INCORRECTLY_FORMATTED_CSV" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Incorrectly formatted CSV]]></key>
         <key id="standard&amp;_INHERIT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Descendants]]></key>
         <key id="standard&amp;_INSERT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Insert]]></key>
-        <key id="standard&amp;_INSERT_PRESENCES" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Insert Presences]]></key>
         <key id="standard&amp;_INSTRUCTION" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Instructions]]></key>
         <key id="standard&amp;_INVALID_EXTENSION" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Invalid extension]]></key>
         <key id="standard&amp;_JUMP" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Jump to]]></key>
