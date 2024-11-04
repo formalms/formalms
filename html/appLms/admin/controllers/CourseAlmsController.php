@@ -2,6 +2,7 @@
 
 use FormaLms\lib\Forma;
 
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -149,7 +150,8 @@ class CourseAlmsController extends AlmsController
             'waiting' => $waiting,
             'text' => $filter_text,
             'open' => $filter_open,
-            'id_category' => $this->_getSessionTreeData('id_category', 0), ];
+            'id_category' => $this->_getSessionTreeData('id_category', 0),
+        ];
 
         $courseFilter = $this->session->get('course_filter');
         $courseFilter['text'] = $filter_text;
@@ -260,12 +262,14 @@ class CourseAlmsController extends AlmsController
                     'id' => 'del_' . $id_category,
                     'command' => 'delete',
                     'icon' => 'standard/delete.png',
-                    'alt' => Lang::t('_DEL'), ];
+                    'alt' => Lang::t('_DEL'),
+                ];
             } else {
                 $node_options[] = [
                     'id' => 'del_' . $id_category,
                     'command' => false,
-                    'icon' => 'blank.png', ];
+                    'icon' => 'blank.png',
+                ];
             }
         }
 
@@ -314,7 +318,9 @@ class CourseAlmsController extends AlmsController
                                     'label' => end($labelArray),
                                     'is_leaf' => $is_leaf,
                                     'count_content' => (int) (($right - $left - 1) / 2),
-                                    'options' => $node_options, ], ];
+                                    'options' => $node_options,
+                                ],
+                            ];
                         }
                     }
                 } else { //not initial selection, just an opened folder
@@ -329,7 +335,8 @@ class CourseAlmsController extends AlmsController
                             'label' => end($pathArray),
                             'is_leaf' => $is_leaf,
                             'count_content' => (int) (($right - $left - 1) / 2),
-                            'options' => $node_options, ]; //change this
+                            'options' => $node_options,
+                        ]; //change this
                     }
                 }
 
@@ -394,7 +401,8 @@ class CourseAlmsController extends AlmsController
                             'label' => stripslashes($node_name),
                             'is_leaf' => true,
                             'count_content' => 0,
-                            'options' => $this->_getNodeActions($new_node_id, true), ];
+                            'options' => $this->_getNodeActions($new_node_id, true),
+                        ];
                     }
                 }
                 echo $this->json->encode($result);
@@ -443,7 +451,7 @@ class CourseAlmsController extends AlmsController
                 $result = ['success' => true, 'options' => $node_options, '_debug' => $count];
                 echo $this->json->encode($result);
                 break;
-            //invalid command
+                //invalid command
             default:
         }
     }
@@ -517,7 +525,7 @@ class CourseAlmsController extends AlmsController
                 'type' => Lang::t('_' . strtoupper($row['course_type'])),
                 'type_id' => $course_type,
                 'wait' => (/*$row['course_type'] !== 'classroom' && */
-                ($row['course_edition'] != 1 && $row['pending'] != 0) || $num_overbooking > 0
+                    ($row['course_edition'] != 1 && $row['pending'] != 0) || $num_overbooking > 0
                     ? '<a href="index.php?r=' . $this->base_link_subscription . '/waitinguser&id_course=' . $row['idCourse'] . '" title="' . Lang::t('_WAITING', 'course') . '">' . ($row['pending'] + $num_overbooking) . '</a>'
                     : ''),
                 'user' => ($row['course_type'] !== 'classroom' && $row['course_edition'] != 1
@@ -557,13 +565,15 @@ class CourseAlmsController extends AlmsController
             }
         }
 
-        $eventData = Events::trigger('core.course.data.listing',
+        $eventData = Events::trigger(
+            'core.course.data.listing',
             [
                 'coursesList' => $list,
                 'coursesResult' => $course_res,
                 'coursesWithCertificates' => $course_with_cert,
                 'coursesWithCompetences' => $course_with_competence,
-            ]);
+            ]
+        );
 
         $list = $eventData['coursesList'];
 
@@ -1201,21 +1211,25 @@ class CourseAlmsController extends AlmsController
                 $cont = [];
                 $cont[] = '<label for="certificate_assign_' . $id_cert . '">' . $cert[CERT_NAME] . '</label>';
                 $cont[] = (isset($languages[$cert[CERT_LANG]]) ? $languages[$cert[CERT_LANG]] : $cert[CERT_LANG]); //lang description?
-                $cont[] = Form::getInputDropdown('dropdown_nowh',
-                        'certificate_assign_' . $id_cert,
-                        'certificate_assign[' . $id_cert . ']',
-                        $possible_status,
-                        (isset($course_cert[$id_cert]['available_for_status']) ? $course_cert[$id_cert]['available_for_status'] : 0),
-                        '')
+                $cont[] = Form::getInputDropdown(
+                    'dropdown_nowh',
+                    'certificate_assign_' . $id_cert,
+                    'certificate_assign[' . $id_cert . ']',
+                    $possible_status,
+                    (isset($course_cert[$id_cert]['available_for_status']) ? $course_cert[$id_cert]['available_for_status'] : 0),
+                    ''
+                )
                     . '<br/>'
                     . Lang::t('_ASSIGN_FOR_AT_LEAST_MINUTES', 'course') . ' '
-                    . Form::getInputTextfield('dropdown_nowh',
+                    . Form::getInputTextfield(
+                        'dropdown_nowh',
                         'certificate_assign_minutes_' . $id_cert,
                         'certificate_assign_minutes[' . $id_cert . ']',
                         array_key_exists($id_cert, $course_cert) ? $course_cert[$id_cert]['minutes_required'] : 0,
                         '',
                         6,
-                        'style="width: 40px; text-align: right;"');
+                        'style="width: 40px; text-align: right;"'
+                    );
                 /*$cont[] = Form::getInputDropdown('dropdown_nowh',
                     'certificate_ex_assign_' . $id_cert,
                     'certificate_ex_assign[' . $id_cert . ']',
@@ -1231,13 +1245,15 @@ class CourseAlmsController extends AlmsController
             $course_name = ($course_info['code'] !== '' ? '[' . $course_info['code'] . '] ' : '') . $course_info['name'];
 
             $this->render(
-                'certificate', [
-                'id_course' => $id_course,
-                'tb' => $tb,
-                'point_required' => $point_required,
-                'base_link_course' => $this->base_link_course,
-                'course_name' => $course_name,
-            ]);
+                'certificate',
+                [
+                    'id_course' => $id_course,
+                    'tb' => $tb,
+                    'point_required' => $point_required,
+                    'base_link_course' => $this->base_link_course,
+                    'course_name' => $course_name,
+                ]
+            );
         }
     }
 
@@ -1449,14 +1465,16 @@ class CourseAlmsController extends AlmsController
             CST_AVAILABLE => Lang::t('_CST_AVAILABLE', 'course'),
             CST_EFFECTIVE => Lang::t('_CST_CONFIRMED', 'course'),
             CST_CONCLUDED => Lang::t('_CST_CONCLUDED', 'course'),
-            CST_CANCELLED => Lang::t('_CST_CANCELLED', 'course'), ];
+            CST_CANCELLED => Lang::t('_CST_CANCELLED', 'course'),
+        ];
         //difficult ------------------------------------------------------------
         $difficult_lang = [
             'veryeasy' => Lang::t('_DIFFICULT_VERYEASY', 'course'),
             'easy' => Lang::t('_DIFFICULT_EASY', 'course'),
             'medium' => Lang::t('_DIFFICULT_MEDIUM', 'course'),
             'difficult' => Lang::t('_DIFFICULT_DIFFICULT', 'course'),
-            'verydifficult' => Lang::t('_DIFFICULT_VERYDIFFICULT', 'course'), ];
+            'verydifficult' => Lang::t('_DIFFICULT_VERYDIFFICULT', 'course'),
+        ];
         //type of course -------------------------------------------------------
         $course_type = [
             'classroom' => Lang::t('_CLASSROOM', 'course'),
@@ -1467,11 +1485,36 @@ class CourseAlmsController extends AlmsController
         $show_who_online = [
             0 => Lang::t('_DONT_SHOW', 'course'),
             _SHOW_COUNT => Lang::t('_SHOW_COUNT', 'course'),
-            _SHOW_INSTMSG => Lang::t('_SHOW_INSTMSG', 'course'), ];
+            _SHOW_INSTMSG => Lang::t('_SHOW_INSTMSG', 'course'),
+        ];
 
-        $hours = ['-1' => '- -', '0' => '00', '01', '02', '03', '04', '05', '06', '07', '08', '09',
-            '10', '11', '12', '13', '14', '15', '16', '17', '18', '19',
-            '20', '21', '22', '23', ];
+        $hours = [
+            '-1' => '- -',
+            '0' => '00',
+            '01',
+            '02',
+            '03',
+            '04',
+            '05',
+            '06',
+            '07',
+            '08',
+            '09',
+            '10',
+            '11',
+            '12',
+            '13',
+            '14',
+            '15',
+            '16',
+            '17',
+            '18',
+            '19',
+            '20',
+            '21',
+            '22',
+            '23',
+        ];
         $quarter = ['-1' => '- -', '00' => '00', '15' => '15', '30' => '30', '45' => '45'];
 
         $params = [
@@ -1556,7 +1599,7 @@ class CourseAlmsController extends AlmsController
 
         require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/lib.field.php');
         $fman = new FieldList();
-        $custom_field_array = $fman->getFlatAllFields();
+        $custom_field_array = $fman->getFlatAllFields() ?? [];
 
         $data_certificate = $this->model->getListTototalUserCertificate($id_course, $id_certificate, $custom_field_array);
         // pushing empty element at the top of array
@@ -1581,26 +1624,34 @@ class CourseAlmsController extends AlmsController
 
         $hidden_fields_n = 6;
         $hidden_fields_array = [];
-        if ($custom_fields && is_countable($custom_fields)) {
-            foreach ($custom_fields as $key => $value) {
-                ++$hidden_fields_n;
-                $hidden_fields_array[] = $hidden_fields_n;
-                //echo "{data:'cf_$key', title:'" . addslashes($value) . "', sortable:true, visible: false}," . PHP_EOL;
-            }
+
+        foreach ($custom_field_array as $key => $value) {
+            ++$hidden_fields_n;
+            $hidden_fields_array[] = $hidden_fields_n;
+
+            $dynamicColumn = [
+                'data' => 'cf_' . $key,
+                'title' => addslashes($value),
+                'sortable' => true,
+                'visible' => false,
+            ];
+            $columns = \FormaLms\lib\Helpers\Util::putElementInArrayAfterIndex($columns, 'data', 'firstname', $dynamicColumn);
         }
+
         $this->render(
-            'list_certificate', [
-            'id_course' => $id_course,
-            'id_certificate' => $id_certificate,
-            'course_type' => $course_info['course_type'],
-            'course_name' => $course_info['name'],
-            'from' => $from,
-            'data_certificate' => $data_certificate,
-            'custom_fields' => $custom_field_array,
-            'op' => $op,
-            'url' => $url,
-            'columns' => $columns,
-        ]);
+            'list_certificate',
+            [
+                'id_course' => $id_course,
+                'id_certificate' => $id_certificate,
+                'course_type' => $course_info['course_type'],
+                'course_name' => $course_info['name'],
+                'from' => $from,
+                'data_certificate' => $data_certificate,
+                'op' => $op,
+                'url' => $url,
+                'columns' => $columns,
+            ]
+        );
     }
 
     public function _list_certificate()
@@ -1620,19 +1671,21 @@ class CourseAlmsController extends AlmsController
             array_unshift($data_certificate[$key], '');
         }
 
-     
+
         $course_info = $this->model->getCourseModDetails($id_course);
-   
+
         $this->render(
-            '_list_certificate', [
-            'id_course' => $id_course,
-            'id_certificate' => $id_certificate,
-            'course_type' => $course_info['course_type'],
-            'course_name' => $course_info['name'],
-            'from' => $from,
-            'data_certificate' => $data_certificate,
-            'custom_fields' => $custom_field_array,
-            'op' => $op,
-        ]);
+            '_list_certificate',
+            [
+                'id_course' => $id_course,
+                'id_certificate' => $id_certificate,
+                'course_type' => $course_info['course_type'],
+                'course_name' => $course_info['name'],
+                'from' => $from,
+                'data_certificate' => $data_certificate,
+                'custom_fields' => $custom_field_array,
+                'op' => $op,
+            ]
+        );
     }
 }

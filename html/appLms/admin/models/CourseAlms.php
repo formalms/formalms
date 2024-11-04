@@ -1733,10 +1733,11 @@ class CourseAlms extends Model
                 $cf[$i] = '';
             }
             $url = 'index.php?modname=certificate&amp;certificate_id=' . $id_certificate . '&amp;course_id=' . $id_course . '&amp;user_id=' . $id_user . '&amp;of_platform=lms';
+            $ajax_url = 'ajax.adm_server.php?modname=certificate&amp;certificate_id=' . $id_certificate . '&amp;course_id=' . $id_course . '&amp;user_id=' . $id_user . '&amp;plf=lms';
             if ($on_date != null) {
                 $operation_url = $url . '&amp;op=send_certificate';
                 $cell_down_gen = "<a href='" . $operation_url . "' class='ico-wt-sprite subs_pdf'>" . Lang::t('_DOWNLOAD', 'certificate') . '</a>';
-                $cell_del_cert = FormaLms\lib\Get::sprite_link('subs_del', $url . '&op=del_report_certificate&from=' . FormaLms\lib\Get::req('from'), Lang::t('_DEL', 'certificate'));
+                $cell_del_cert = FormaLms\lib\Get::sprite_link('subs_del delete_certificate', $ajax_url . '&op=del_report_certificate&from=' . FormaLms\lib\Get::req('from'), Lang::t('_DEL', 'certificate'));
             } else {
                 $operation_url = $url . '&amp;op=print_certificate';
                 $generate = 'javascript:print_certificate(' . $id_user . ',' . $id_course . ',' . $id_certificate . ')';

@@ -146,7 +146,7 @@ function do_printing(id_certificate, id_course, id_user, totnum)
             if (res.success)
             {
                 el.className = "green";
-                el.innerHTML += _SUCCESS;
+                el.innerHTML += '_SUCCESS';
                 successful_printed.push(res.printed);
             }
             else
@@ -181,10 +181,11 @@ function do_printing(id_certificate, id_course, id_user, totnum)
 
 function force_reload() {
     //window.location.href = reload_url;
+    console.log("premo");
     try {
         var tform = document.createElement("FORM");
         tform.method = "POST";
-        tform.action = reload_url;
+        tform.action = window.location.href;
 
         var authentic_request = document.createElement("INPUT");
         authentic_request.type = "hidden";
