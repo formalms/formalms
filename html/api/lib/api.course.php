@@ -2358,9 +2358,10 @@ class Course_API extends API
             }
 
             $q_test = 'select lta.idQuest, lta.idAnswer , title_quest, score_assigned  , lta.idTrack as idTrack
-                    from learning_testtrack_answer lta, learning_testquest ltq
+                    from learning_testtrack_answer as lta left join learning_testquest as ltq on lta.idQuest=ltq.idQuest
                     where lta.idTrack=' . $idTrack . ' 
-                    and lta.idQuest=ltq.idQuest and lta.user_answer=1';
+                    and lta.user_answer=1
+                    GROUP by lta.idAnswer, lta.idQuest';
 
             $response['success'] = true;
             $response['id_users'] = explode(',', $idUsers);
