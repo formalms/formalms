@@ -669,33 +669,10 @@ class ClassroomAlmsController extends AlmsController
         } elseif (isset($_POST['undo'])) {
             Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&id_course=' . $this->model->getIdCourse());
         }
-        $result_message = FormaLms\lib\Get::req('result', DOTY_MIXED, false);
-        switch ($result_message) {
-            case 'ok_ins':
-                UIFeedback::info(Lang::t('_OPERATION_SUCCESSFUL', 'standard'));
-                break;
-            case 'err_csv_not_found':
-                UIFeedback::error(Lang::t('_FILE_NOT_FOUND', 'csvpresence'));
-                break;
-            case 'err_csv_separator':
-                UIFeedback::error(Lang::t('_INCORRECT_DELIMITER_IN_THE_CSV', 'csvpresence'));
-                break;
-            case 'email_not_found':
-                UIFeedback::error(Lang::t('_INCORRECTLY_FORMATTED_CSV', 'csvpresence'));
-                break;
-        }
-
         $cmodel = new CourseAlms();
         $course_info = $cmodel->getInfo($this->idCourse, false, $this->idDate);
         $course_name = ($course_info['code'] !== '' ? '[' . $course_info['code'] . '] ' : '') . $course_info['name'];
 
-        $days = $this->model->getDateDay();
-        foreach ($days as $key => $value) {
-            $idDay = $value['id'];
-            $dateDays[$idDay] = $value['date'];
-
-        }
-        //Events::trigger('core.presence', ['days' => $dateDays, 'id_course' => $this->model->getIdCourse(), ]);
         $this->render('presence', [
             'model' => $this->model,
             'base_link_course' => $this->baseLinkCourse,
@@ -703,7 +680,6 @@ class ClassroomAlmsController extends AlmsController
             'course_name' => $course_name,
             'id_course' => $this->model->getIdCourse(),
             'id_date' => $this->model->getIdDate(),
-            'days' => $dateDays,
         ]);
     }
 
