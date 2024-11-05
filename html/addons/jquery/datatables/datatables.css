@@ -665,6 +665,13 @@ table.dataTable tr.selected th.select-checkbox:after {
   text-shadow: 1px 1px #B0BED9, -1px -1px #B0BED9, 1px -1px #B0BED9, -1px 1px #B0BED9;
 }
 
+.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody>table>thead>tr>th, 
+.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody>table>thead>tr>td, 
+.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody>table>tbody>tr>th, 
+.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody>table>tbody>tr>td {
+  text-align:left;
+}
+
 div.dataTables_wrapper span.select-info,
 div.dataTables_wrapper span.select-item {
   margin-left: 0.5em;

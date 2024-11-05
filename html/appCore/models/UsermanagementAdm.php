@@ -3521,10 +3521,18 @@ class UsermanagementAdm extends Model implements Accessible
             $type_field = $row['type_field'];
             if ($type_field == 'dropdown') {
                 $q = sprintf("SELECT translation FROM %%adm_field_son WHERE idField = %s AND id_common_son = %s AND lang_code = '%s'", $id_field, $user_entry, $currentLanguage);
+          
                 $res = sql_query($q);
                 [$translation] = sql_fetch_row($res);
                 $output[$id_field] = $translation;
-            } else {
+            } 
+            else if ($type_field == 'country') {
+                    $q = sprintf("SELECT name_country as translation FROM %%adm_country WHERE id_country = %s", $user_entry);
+              
+                    $res = sql_query($q);
+                    [$translation] = sql_fetch_row($res);
+                    $output[$id_field] = $translation;
+            }else {
                 $output[$id_field] = $user_entry;
             }
         }

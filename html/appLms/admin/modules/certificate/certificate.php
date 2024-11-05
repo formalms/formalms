@@ -612,6 +612,8 @@ function report_certificate()
     }
 }
 
+
+//DEPRECATED moved to certificateAdmController delete
 function del_report_certificate()
 {
     checkPerm('view');

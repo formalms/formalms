@@ -1021,6 +1021,16 @@ class Certificate
         return sql_query($query);
     }
 
+    public function delCertificateForUsersInCourse($id_certificate, $id_users, $id_course)
+    {
+        $query = 'DELETE FROM %lms_certificate_assign ' .
+            ' WHERE id_certificate = "' . $id_certificate . '"'.
+            ' AND id_course = "' . $id_course . '"' .
+            ' AND id_user IN (' . $id_users . ')';
+
+        return sql_query($query);
+    }
+
     public function getNumberOfCertificateForCourse($id_certificate, $id_course)
     {
         $query = 'SELECT COUNT(*)' .

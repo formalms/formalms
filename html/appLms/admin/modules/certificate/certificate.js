@@ -53,7 +53,7 @@ function send_print(e, args) {
                 modal: true,
                 close: false,
                 visible: false,
-                buttons: [ {id: 'dialog_print_certificate', text: _STOP, handler: handleStopEvent} ]
+                buttons: [ {id: 'dialog_print_certificate', text: 'STOP', handler: handleStopEvent} ]
             });
 
             glob_dialog.setHeader(res.head);

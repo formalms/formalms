@@ -1733,7 +1733,7 @@ class CourseAlms extends Model
                 $cf[$i] = '';
             }
             $url = 'index.php?modname=certificate&amp;certificate_id=' . $id_certificate . '&amp;course_id=' . $id_course . '&amp;user_id=' . $id_user . '&amp;of_platform=lms';
-            $ajax_url = 'ajax.adm_server.php?modname=certificate&amp;certificate_id=' . $id_certificate . '&amp;course_id=' . $id_course . '&amp;user_id=' . $id_user . '&amp;plf=lms';
+            $ajax_url = 'ajax.adm_server.php?r=adm/certificate/delete&amp;certificate_id=' . $id_certificate . '&amp;course_id=' . $id_course . '&amp;user_id=' . $id_user;
             if ($on_date != null) {
                 $operation_url = $url . '&amp;op=send_certificate';
                 $cell_down_gen = "<a href='" . $operation_url . "' class='ico-wt-sprite subs_pdf'>" . Lang::t('_DOWNLOAD', 'certificate') . '</a>';

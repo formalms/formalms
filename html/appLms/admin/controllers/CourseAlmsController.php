@@ -1638,6 +1638,7 @@ class CourseAlmsController extends AlmsController
             $columns = \FormaLms\lib\Helpers\Util::putElementInArrayAfterIndex($columns, 'data', 'firstname', $dynamicColumn);
         }
 
+    
         $this->render(
             'list_certificate',
             [
@@ -1650,6 +1651,7 @@ class CourseAlmsController extends AlmsController
                 'op' => $op,
                 'url' => $url,
                 'columns' => $columns,
+                'statuses' => Util::config('status.certificates'),
             ]
         );
     }

@@ -235,6 +235,7 @@ class FieldList
         }
         $query .= ' ORDER BY sequence';
         $rs = $db->query($query);
+
         $result = [];
 
         foreach ($rs as $row) {
