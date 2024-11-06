@@ -1129,7 +1129,7 @@ class Report_Courses extends Report
                 $effective_user = [];
 
                 $re_course_user = sql_query($query_course_user);
-                while (list($id_u, $id_c, $fisrt_access, $date_complete, $status) = sql_fetch_row($re_course_user)) {
+                while (list($id_u, $id_c, $first_access, $date_complete, $status) = sql_fetch_row($re_course_user)) {
                     if (isset($num_iscr[$id_c])) {
                         ++$num_iscr[$id_c];
                     } else {
@@ -2129,13 +2129,12 @@ class Report_Courses extends Report
                 //no begin course
                 if (in_array('_MUSTBEGIN', $filter_cols)) {
                     if (isset($num_nobegin[$index])) {
-                        $num_nobegin = $num_nobegin[$index] - $in_waiting;
+                        $nobegin = $num_nobegin[$index] - $in_waiting;
 
-                        $perc = (($num_nobegin / $num_iscr[$index]) * 100);
-                        $tot_nobegin += $num_nobegin;
-                        $tot_perc_nobegin += $perc;
+                        $perc = (($nobegin / $num_iscr[$index]) * 100);
+                        $tot_nobegin += $nobegin;
 
-                        $trow[] = ['style' => 'img-cell', 'value' => $num_nobegin];
+                        $trow[] = ['style' => 'img-cell', 'value' => $nobegin];
                         if ($show_percent) {
                             $trow[] = ['style' => 'img-cell', 'value' => number_format($perc, 2, '.', '') . '%'];
                         }
@@ -2152,7 +2151,6 @@ class Report_Courses extends Report
                     if (isset($num_itinere[$index])) {
                         $perc = (($num_itinere[$index] / $num_iscr[$index]) * 100);
                         $tot_itinere += $num_itinere[$index];
-                        $tot_perc_itinere += $perc;
 
                         $trow[] = ['style' => 'img-cell', 'value' => $num_itinere[$index]];
                         if ($show_percent) {
@@ -2171,7 +2169,6 @@ class Report_Courses extends Report
                     if (isset($num_end[$index])) {
                         $perc = (($num_end[$index] / $num_iscr[$index]) * 100);
                         $tot_comple += $num_end[$index];
-                        $tot_perc_comple += $perc;
 
                         $trow[] = ['style' => 'img-cell', 'value' => $num_end[$index]];
                         if ($show_percent) {
