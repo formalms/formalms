@@ -61,15 +61,15 @@
  * Date: 2023-08-28T13:37Z
  */
 
-/*! Buttons for DataTables 2.4.2
+/*! Buttons for DataTables 3.1.1
  * © SpryMedia Ltd - datatables.net/license
  */
 
-/*! DataTables 1.13.7
- * ©2008-2023 SpryMedia Ltd - datatables.net/license
+/*! DataTables 2.1.3
+ * © SpryMedia Ltd - datatables.net/license
  */
 
-/*! Select for DataTables 1.7.0
+/*! Select for DataTables 2.0.4
  * © SpryMedia Ltd - datatables.net/license/mit
  */
 

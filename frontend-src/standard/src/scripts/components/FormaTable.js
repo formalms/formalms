@@ -917,7 +917,7 @@ require('bootstrap-js-buttons/dist/bootstrap-js-buttons.min.js');
         if (this._selection.all) {
             return $(this.DataTable.rows({
                 search: 'applied'
-            }).ids()).not(this._selection.rows).get();
+            }).ids()).get();
         } else {
             return this._selection.rows;
         }

@@ -1622,12 +1622,7 @@ class CourseAlmsController extends AlmsController
 
         $columns = Util::config('tables.certificate_users.columns');
 
-        $hidden_fields_n = 6;
-        $hidden_fields_array = [];
-
         foreach ($custom_field_array as $key => $value) {
-            ++$hidden_fields_n;
-            $hidden_fields_array[] = $hidden_fields_n;
 
             $dynamicColumn = [
                 'data' => 'cf_' . $key,
@@ -1638,13 +1633,24 @@ class CourseAlmsController extends AlmsController
             $columns = \FormaLms\lib\Helpers\Util::putElementInArrayAfterIndex($columns, 'data', 'firstname', $dynamicColumn);
         }
 
-    
+
+        if ($course_info['course_type'] == 'classroom') {
+            $editionColumn = [
+                "data" => 'edition',
+                "title" => Lang::t('_EDITION', 'standard'),
+                "sortable" => true,
+                "visible" =>  true,
+            ];
+            $columns = \FormaLms\lib\Helpers\Util::putElementInArrayAfterIndex($columns, 'data', 'id_certificate', $editionColumn);
+      
+        }
+
+
         $this->render(
             'list_certificate',
             [
                 'id_course' => $id_course,
                 'id_certificate' => $id_certificate,
-                'course_type' => $course_info['course_type'],
                 'course_name' => $course_info['name'],
                 'from' => $from,
                 'data_certificate' => $data_certificate,
@@ -1656,38 +1662,5 @@ class CourseAlmsController extends AlmsController
         );
     }
 
-    public function _list_certificate()
-    {
-        $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
-        $id_certificate = FormaLms\lib\Get::req('id_certificate', DOTY_INT, 0);
-        $from = FormaLms\lib\Get::req('from');
-        $op = FormaLms\lib\Get::req('op');
 
-        require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/lib.field.php');
-        $fman = new FieldList();
-        $custom_field_array = $fman->getFlatAllFields();
-
-        $data_certificate = $this->model->getListTototalUserCertificate($id_course, $id_certificate, $custom_field_array);
-        // pushing empty element at the top of array
-        foreach ($data_certificate as $key => $value) {
-            array_unshift($data_certificate[$key], '');
-        }
-
-
-        $course_info = $this->model->getCourseModDetails($id_course);
-
-        $this->render(
-            '_list_certificate',
-            [
-                'id_course' => $id_course,
-                'id_certificate' => $id_certificate,
-                'course_type' => $course_info['course_type'],
-                'course_name' => $course_info['name'],
-                'from' => $from,
-                'data_certificate' => $data_certificate,
-                'custom_fields' => $custom_field_array,
-                'op' => $op,
-            ]
-        );
-    }
 }

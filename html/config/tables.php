@@ -75,12 +75,6 @@ return [
                 "searchable" => false,
             ],
             [
-                "data" => 'edition',
-                "title" => Lang::t('_EDITION', 'standard'),
-                "sortable" => true,
-                "visible" =>  false,
-            ],
-            [
                 "data" => 'username',
                 "title" => Lang::t('_USERNAME', 'standard'),
                 "sortable" => true,
