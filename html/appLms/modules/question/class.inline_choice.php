@@ -650,7 +650,7 @@ class InlineChoice_Question extends Question
     {
         $result = true;
 
-        $track_query = null;
+
         if ($this->userDoAnswer($trackTest->idTrack) && !$trackTest->getTestObj()->isRetainAnswersHistory()) {
             if (!$can_overwrite) {
                 return true;
@@ -667,6 +667,7 @@ class InlineChoice_Question extends Question
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquestanswer 
 		WHERE idQuest = '" . (int) $this->id . "'");
         while (list($id_answer, $is_correct, $score_corr, $score_incorr) = sql_fetch_row($re_answer)) {
+            $track_query = null;
             if (isset($source['quest'][$this->id]) && ($source['quest'][$this->id] == $id_answer)) {
                 //answer checked by the user
                 $track_query = '
