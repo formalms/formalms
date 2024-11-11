@@ -521,11 +521,11 @@ function getDeleteUi(
         . '<p style="float:right;">';
     if ($command_is_link) {
         $txt .= '<a href="' . $confirm_ref . '">'
-            . '<img src="' . getPathImage() . 'standard/publish.png" alt="' . ($confirm_text == false ? Lang::t('_CONFIRM') : $confirm_text) . '" />'
-            . '&nbsp;' . ($confirm_text == false ? Lang::t('_CONFIRM') : $confirm_text) . '</a>&nbsp;&nbsp;'
+            . '<img src="' . getPathImage() . 'standard/publish.png" alt="' . ($confirm_text == false ? Lang::t('_CONFIRM') : $confirm_text) . '" style="margin-right: 4px;" />'
+            . ($confirm_text == false ? Lang::t('_CONFIRM') : $confirm_text) . '</a>&nbsp;&nbsp;'
             . '<a href="' . $undo_ref . '">'
-            . '<img src="' . getPathImage() . 'standard/cancel.png" alt="' . ($undo_text == false ? Lang::t('_UNDO') : $undo_text) . '" />'
-            . '&nbsp;' . ($undo_text == false ? Lang::t('_UNDO') : $undo_text) . ' </a>';
+            . '<img src="' . getPathImage() . 'standard/cancel.png" alt="' . ($undo_text == false ? Lang::t('_UNDO') : $undo_text) . '" style="margin-right: 4px;" />'
+            . ($undo_text == false ? Lang::t('_UNDO') : $undo_text) . ' </a>';
     } else {
         $confirm_ref_id = str_replace(']', '', str_replace('[', '_', $confirm_ref));
         $undo_ref_id = str_replace(']', '', str_replace('[', '_', $undo_ref));

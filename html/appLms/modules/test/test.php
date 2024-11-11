@@ -52,10 +52,10 @@ function addtest($object_test)
     $GLOBALS['page']->add(getTitleArea($lang->def('_TEST_SECTION'), 'test')
         . '<div class="std_block">'
         . getBackUi(Util::str_replace_once('&', '&amp;', $object_test->back_url) . '&amp;create_result=0', $lang->def('_BACK'))
-        . Form::getFormHeader($lang->def('_TEST_ADD_FORM'))
         . Form::OpenForm('addtest_form', 'index.php?modname=test&amp;op=instest')
 
         . Form::openElementSpace()
+        . Form::getFormHeader($lang->def('_TEST_ADD_FORM'))
         . Form::getHidden('back_url', 'back_url', htmlentities(urlencode($object_test->back_url)))
         . Form::getHidden('obj_type', 'obj_type', $object_test->getObjectType())
         . Form::getTextfield($lang->def('_TITLE'), 'title', 'title', '255')

@@ -46,7 +46,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         . '<div class="mod_container">'
         . '<a href="index.php?modname=link&amp;op=modlinkcat&amp;idCategory=' . $object_link->getId()
             . '&amp;back_url=' . $back_coded . '" title="' . $lang->def('_MOD_TITLE') . '">'
-        . '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . '" /> ' . $lang->def('_MOD_TITLE') . '</a>'
+        . '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . '" style="margin-right: 4px;" />' . $lang->def('_MOD_TITLE') . '</a>'
         . '</div><br />', 'content');
         $tableCat = new Table(0, '', $lang->def('_SUMMARY_LINK'));
 
