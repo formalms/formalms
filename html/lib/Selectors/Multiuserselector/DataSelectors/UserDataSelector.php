@@ -9,6 +9,8 @@ class UserDataSelector extends DataSelector{
 
     const ADDITIONAL_COLS = ['valid'];
 
+    const DYNAMIC_COLUMNS = true;
+
     public function __construct() {
      
         $this->builder = new \UsermanagementAdm();
@@ -168,30 +170,11 @@ class UserDataSelector extends DataSelector{
                     'del' => 'ajax.adm_server.php?r=adm/usermanagement/deluser&id=' . (int) $idst,
                 ];
 
-                foreach ($var_fields as $i => $value) {
-                    if (is_numeric($value)) {
-                        $name = '_custom_' . $value;
-                    } else {
-                        $name = $value;
-                    }
+                $var_fields = array_filter($record, function($key) {
+                    return strpos($key, '_custom_') === 0;
+                }, ARRAY_FILTER_USE_KEY);
 
-                    //check if we must perform some post-format on retrieved field values
-                    $content = (isset($record[$name]) ? $record[$name] : '');
-                    if ($name == 'register_date') {
-                        $content = \Format::date($content, 'datetime');
-                    }
-                    if ($name == 'lastenter') {
-                        $content = \Format::date($content, 'datetime');
-                    }
-                    if ($name == 'level' && $content != '') {
-                        $content = Lang::t('_DIRECTORY_' . $content, 'admin_directory');
-                    }
-                    if (!empty($date_fields) && in_array($value, $date_fields)) {
-                        $content = \Format::date(substr($content, 0, 10), 'date');
-                    }
-
-                    $record_row['_dyn_field_' . $i] = $content;
-                }
+                $record_row = array_merge($record_row, $var_fields);
 
                 $output_results[] = $record_row;
             }
@@ -313,6 +296,25 @@ class UserDataSelector extends DataSelector{
         }
         
         return $hiddenColumns;
+    }
+
+    public function getDynamicColumns(array $columns) : array {
+        
+        require_once \FormaLms\lib\Forma::include(_adm_ . '/lib/','lib.field.php');
+        $fman = new \FieldList();
+        $custom_field_array = $fman->getFlatAllFields() ?? [];
+        foreach ($custom_field_array as $key => $value) {
+
+            $dynamicColumn = [
+                'data' => '_custom_' . $key,
+                'title' => addslashes($value),
+                'sortable' => true,
+                'visible' => false,
+            ];
+            $columns = \FormaLms\lib\Helpers\Util::putElementInArrayAfterIndex($columns, 'data', 'email', $dynamicColumn);
+        }
+
+        return $columns;
     }
 
 }

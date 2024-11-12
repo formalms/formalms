@@ -16,6 +16,8 @@ require_once _base_ . '/i18n/lib.lang.php';
 require_once _base_ . '/lib/layout/lib.layout.php';
 abstract class DataSelector implements DataSelectable { 
 
+    const DYNAMIC_COLUMNS = false;
+
     protected $name;
 
     protected $builder;
@@ -57,6 +59,10 @@ abstract class DataSelector implements DataSelectable {
     }
 
     public function getHiddenColumns(){
+    }
+
+    public function getDynamicColumns(array $columns) : array {
+        return [];
     }
 
     abstract protected function _selectAll($params = [], $columnsFilter = []);

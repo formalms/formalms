@@ -119,6 +119,11 @@ class UserselectorAdmController extends AdmController
                 $columns[$tabKey] = array_merge($columns[$tabKey], $hiddenColumns);
             }
 
+            if ($multiUserSelectorTab::DYNAMIC_COLUMNS) {
+                $columns[$tabKey] = $multiUserSelectorTab->getDynamicColumns($columns[$tabKey]);
+                
+            }
+
             if ($disableAjax) {
                 $requestParams['op'] = 'selectall';
                 $selectedData[$tabKey] = $multiUserSelectorTab->getData($requestParams);
