@@ -1945,3 +1945,8 @@ a:focus, a:hover {
   *:focus:not(:focus-visible) {
     outline: 0!important;
   }
+
+  .modal-presences-style > .modal-container {
+      width: 400px!important;
+      height: auto!important;
+  }

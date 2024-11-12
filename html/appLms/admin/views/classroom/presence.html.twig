@@ -40,20 +40,23 @@
 
 {% block scripts %}
     <script type="text/javascript">
+        const modal = new window.frontend.modules.Modal('modal-presences-style','#admcontainer');
+        modal.Content = window.frontend.config.lang.translations.course._MIN_SCORE_NOT_SET;
+        modal.Title =  window.frontend.config.lang.translations.standard._WARNING;
         var save = 0;
         function addSave(e){save = 1;}
         function toggleSave(e){save = 0;}
         function controlMinScore(e){
             var score = document.getElementById('score_min').value;
-            if(score == '' && save == 1){
+            if(score === '' && save === 1){
                 e.preventDefault();
-                alert("<?php Lang::t('_MIN_SCORE_NOT_SET', 'course'); ?>");
+                modal.Open();
             }
         }
 
         document.getElementById("presence_form").addEventListener("submit", controlMinScore);
-        document.getElementById("save-button").addEventListener("click", addSave);
-        document.getElementById("undo-button").addEventListener("click", toggleSave);
+        document.getElementById("save").addEventListener("click", addSave);
+        document.getElementById("undo").addEventListener("click", toggleSave);
 
         function checkAllDay(id_day)
         {
