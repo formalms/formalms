@@ -166,6 +166,15 @@ class DateManager
         if ($result) {
             $res = sql_insert_id();
 
+            if (isset($_POST['textfield']) && is_array($_POST['textfield'])) {
+                foreach ($_POST['textfield'] as $key => $value) {
+                    if (!empty($value)) {
+                        echo json_encode([$res,$key,$value]);
+                        $this->addCustomFieldValue($res, $key, $value);
+                    }
+                }
+            }
+
             return $res;
         }
 
@@ -186,7 +195,7 @@ class DateManager
             $query = 'INSERT INTO %adm_customfield_entry '
                 . '( id_field, id_obj, obj_entry)'
                 . ' VALUES '
-                . "( '" . ($id_field) . "' ," . intval($idDate) . " , '" . $value . "')";
+                . "( '" . ($id_field) . "' ," . (int)$idDate . " , '" . $value . "')";
             sql_query($query);
         }
 
