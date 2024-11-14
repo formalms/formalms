@@ -2864,194 +2864,199 @@ class Report_User extends Report
             return $lang->def('_NULL_COURSE_SELECTION');
         }
 
-        if (1 == 1) {//($org_chart_subdivision === 0)
-            $date_now = Format::date(date('Y-m-d H:i:s'));
+        $date_now = Format::date(date('Y-m-d H:i:s'));
 
-            //set query suspended users condition
-            $query_show_suspended = 'AND u.valid = 1'; //default condition
-            switch ($show_suspended) {
-                case 'all':
-                    $query_show_suspended = '';
-                    break;
-                case 'suspended_only':
-                    $query_show_suspended = ' AND u.valid = 0 ';
-                    break;
-                case 'active_only':
-                    $query_show_suspended = ' AND u.valid = 1 ';
-                    break;
-            }
+        //set query suspended users condition
+        $query_show_suspended = 'AND u.valid = 1'; //default condition
+        switch ($show_suspended) {
+            case 'all':
+                $query_show_suspended = '';
+                break;
+            case 'suspended_only':
+                $query_show_suspended = ' AND u.valid = 0 ';
+                break;
+            case 'active_only':
+                $query_show_suspended = ' AND u.valid = 1 ';
+                break;
+        }
 
-            //set query order by param
-            $_dir = 'ASC';
-            switch ($order_dir) {
-                case 'desc':
-                    $_dir = 'DESC';
-                    break;
-            }
-            $query_order_by = 'u.lastname, u.firstname, u.userid';
-            switch ($order_by) {
-                case 'firstname':
-                    $query_order_by = 'u.firstname ' . $_dir . ', u.userid ' . $_dir;
-                    break;
-                case 'lastname':
-                    $query_order_by = 'u.lastname ' . $_dir . ', u.userid ' . $_dir;
-                    break;
-                case 'email':
-                    $query_order_by = 'u.email ' . $_dir . ', u.userid ' . $_dir;
-                    break;
-                case 'status':
-                    $query_order_by = 'cu.status ' . $_dir . ', u.userid ' . $_dir . ', u.lastname ' . $_dir;
-                    break;
-                //case 'level': $query_order_by = "cu.level ".$_dir.", u.userid ".$_dir.", c.code ".$_dir.""; break;
-                case 'date_subscription':
-                    $query_order_by = 'cu.date_inscr ' . $_dir . ', u.userid ' . $_dir . ', u.lastname ' . $_dir;
-                    break;
-                case 'date_first_access':
-                    $query_order_by = 'cu.date_first_access ' . $_dir . ', u.userid ' . $_dir . ', u.lastname ' . $_dir;
-                    break;
-                case 'date_last_access':
-                    $query_order_by = 'cu.date_last_access ' . $_dir . ', u.userid ' . $_dir . ', u.lastname ' . $_dir;
-                    break;
-                case 'date_complete':
-                    $query_order_by = 'cu.date_complete ' . $_dir . ', u.userid ' . $_dir . ', u.lastname ' . $_dir;
-                    break;
-            }
+        //set query order by param
+        $_dir = 'ASC';
+        switch ($order_dir) {
+            case 'desc':
+                $_dir = 'DESC';
+                break;
+        }
+        $query_order_by = 'u.lastname, u.firstname, u.userid';
+        switch ($order_by) {
+            case 'firstname':
+                $query_order_by = 'u.firstname ' . $_dir . ', u.userid ' . $_dir;
+                break;
+            case 'lastname':
+                $query_order_by = 'u.lastname ' . $_dir . ', u.userid ' . $_dir;
+                break;
+            case 'email':
+                $query_order_by = 'u.email ' . $_dir . ', u.userid ' . $_dir;
+                break;
+            case 'status':
+                $query_order_by = 'cu.status ' . $_dir . ', u.userid ' . $_dir . ', u.lastname ' . $_dir;
+                break;
+            //case 'level': $query_order_by = "cu.level ".$_dir.", u.userid ".$_dir.", c.code ".$_dir.""; break;
+            case 'date_subscription':
+                $query_order_by = 'cu.date_inscr ' . $_dir . ', u.userid ' . $_dir . ', u.lastname ' . $_dir;
+                break;
+            case 'date_first_access':
+                $query_order_by = 'cu.date_first_access ' . $_dir . ', u.userid ' . $_dir . ', u.lastname ' . $_dir;
+                break;
+            case 'date_last_access':
+                $query_order_by = 'cu.date_last_access ' . $_dir . ', u.userid ' . $_dir . ', u.lastname ' . $_dir;
+                break;
+            case 'date_complete':
+                $query_order_by = 'cu.date_complete ' . $_dir . ', u.userid ' . $_dir . ', u.lastname ' . $_dir;
+                break;
+        }
 
-            $query_course_user = '
-				SELECT cu.idUser, cu.idCourse, cu.edition_id, cu.date_inscr, cu.date_first_access,
-				cu.date_complete, cu.status, cu.level,
-				u.userid, u.firstname, u.lastname, u.email, u.valid
-				FROM %lms_courseuser AS cu ' .
-                ' JOIN ' . $GLOBALS['prefix_fw'] . '_user as u ON cu.idUser = u.idst
-				WHERE cu.idCourse > 0 ' . $query_show_suspended .
-                ($alluser ? '' : ' AND cu.idUser IN ( ' . implode(',', $user_selected) . ' ) ') .
-                ($all_courses ? '' : ' AND cu.idCourse IN (' . implode(',', $course_selected) . ')')
-                . ' ORDER BY ' . $query_order_by;
+        $query_course_user = '
+            SELECT cu.idUser, cu.idCourse, cu.edition_id, cu.date_inscr, cu.date_first_access,
+            cu.date_complete, cu.status, cu.level,
+            u.userid, u.firstname, u.lastname, u.email, u.valid
+            FROM %lms_courseuser AS cu ' .
+            ' JOIN ' . $GLOBALS['prefix_fw'] . '_user as u ON cu.idUser = u.idst
+            WHERE cu.idCourse > 0 ' . $query_show_suspended .
+            ($alluser ? '' : ' AND cu.idUser IN ( ' . implode(',', $user_selected) . ' ) ') .
+            ($all_courses ? '' : ' AND cu.idCourse IN (' . implode(',', $course_selected) . ')')
+            . ' ORDER BY ' . $query_order_by;
 
-            $re_course_user = sql_query($query_course_user);
+        $re_course_user = sql_query($query_course_user);
 
-            $element_to_print = [];
-            $courses_codes = [];
+        $element_to_print = [];
+        $courses_codes = [];
 
-            while (list($id_u, $id_c, $id_e, $date_inscr, $date_first_access, $date_complete, $status, $level,
-                $u_userid, $u_firstname, $u_lastname, $u_email, $u_valid) = sql_fetch_row($re_course_user)) {
-                if ($level == '3') { //$report_type === 'course_started' && $level == '3') {
-                    $user_check = false;
-                    $now_timestamp = mktime('0', '0', '0', date('m'), date('d'), date('Y'));
+        while (list($id_u, $id_c, $id_e, $date_inscr, $date_first_access, $date_complete, $status, $level,
+            $u_userid, $u_firstname, $u_lastname, $u_email, $u_valid) = sql_fetch_row($re_course_user)) {
+            if ($level == '3') { //$report_type === 'course_started' && $level == '3') {
+                $user_check = false;
+                $now_timestamp = mktime('0', '0', '0', date('m'), date('d'), date('Y'));
 
-                    //check the condition on status (course started and/or completed)
-                    $status_condition = $status != _CUS_END; //&& $status != _CUS_SUSPEND;
-                    if ($report_type_completed && !$report_type_started) {
-                        $status_condition = $status_condition && ($status == _CUS_BEGIN);
+                //check the condition on status (course started and/or completed)
+                $status_condition = $status != _CUS_END; //&& $status != _CUS_SUSPEND;
+                if ($report_type_completed && !$report_type_started) {
+                    $status_condition = $status_condition && ($status == _CUS_BEGIN);
+                }
+                if ($report_type_started && !$report_type_completed) {
+                    $status_condition = $status_condition && ($status != _CUS_BEGIN);
+                }
+
+                if ($day_from_subscription) {
+                    if ($status_condition) {
+                        $user_timestamp = mktime('0', '0', '0', $date_inscr[5] . $date_inscr[6], ($date_inscr[8] . $date_inscr[9]) + $day_from_subscription, $date_inscr[0] . $date_inscr[1] . $date_inscr[2] . $date_inscr[3]);
+                        if ($user_timestamp < $now_timestamp) {
+                            $user_check = true;
+                        }
                     }
-                    if ($report_type_started && !$report_type_completed) {
-                        $status_condition = $status_condition && ($status != _CUS_BEGIN);
-                    }
+                }
 
-                    if ($day_from_subscription) {
-                        if ($status_condition) {
-                            $user_timestamp = mktime('0', '0', '0', $date_inscr[5] . $date_inscr[6], ($date_inscr[8] . $date_inscr[9]) + $day_from_subscription, $date_inscr[0] . $date_inscr[1] . $date_inscr[2] . $date_inscr[3]);
+                if ($day_until_course_end) {
+                    if ($status_condition) {
+                        if ($id_e > 0) {
+                            $query = 'SELECT date_end'
+                                . ' FROM %lms_course_edition'
+                                . " WHERE idCourseEdition = '" . $id_e . "'";
+                            [$date_end] = sql_fetch_row(sql_query($query));
+                            $user_timestamp = mktime('0', '0', '0', $date_end[5] . $date_end[6], ($date_end[8] . $date_end[9]) - $day_until_course_end, $date_end[0] . $date_end[1] . $date_end[2] . $date_end[3]);
+                            if ($user_timestamp < $now_timestamp) {
+                                $user_check = true;
+                            }
+                        } else {
+                            $query = 'SELECT date_end'
+                                . ' FROM %lms_course'
+                                . " WHERE idCourse = '" . $id_c . "'";
+                            [$date_end] = sql_fetch_row(sql_query($query));
+                            $user_timestamp = mktime('0', '0', '0', $date_end[5] . $date_end[6], ($date_end[8] . $date_end[9]) - $day_until_course_end, $date_end[0] . $date_end[1] . $date_end[2] . $date_end[3]);
                             if ($user_timestamp < $now_timestamp) {
                                 $user_check = true;
                             }
                         }
                     }
+                }
 
-                    if ($day_until_course_end) {
-                        if ($status_condition) {
-                            if ($id_e > 0) {
-                                $query = 'SELECT date_end'
-                                    . ' FROM %lms_course_edition'
-                                    . " WHERE idCourseEdition = '" . $id_e . "'";
-                                list($date_end) = sql_fetch_row(sql_query($query));
-                                $user_timestamp = mktime('0', '0', '0', $date_end[5] . $date_end[6], ($date_end[8] . $date_end[9]) - $day_until_course_end, $date_end[0] . $date_end[1] . $date_end[2] . $date_end[3]);
-                                if ($user_timestamp < $now_timestamp) {
-                                    $user_check = true;
-                                }
-                            } else {
-                                $query = 'SELECT date_end'
-                                    . ' FROM %lms_course'
-                                    . " WHERE idCourse = '" . $id_c . "'";
-                                list($date_end) = sql_fetch_row(sql_query($query));
-                                $user_timestamp = mktime('0', '0', '0', $date_end[5] . $date_end[6], ($date_end[8] . $date_end[9]) - $day_until_course_end, $date_end[0] . $date_end[1] . $date_end[2] . $date_end[3]);
-                                if ($user_timestamp < $now_timestamp) {
-                                    $user_check = true;
-                                }
+                if ($date_until_course_end) {
+                    if ($status_condition) {
+                        if ($id_e > 0) {
+                            $query = 'SELECT COUNT(*)'
+                                . ' FROM %lms_course_edition'
+                                . " WHERE idCourseEdition = '" . $id_e . "'"
+                                . " AND date_end < '" . Format::dateDb($date_until_course_end, 'date') . "'";
+                            [$control] = sql_fetch_row(sql_query($query));
+                            if ($control) {
+                                $user_check = true;
+                            }
+                        } else {
+                            $query = 'SELECT COUNT(*)'
+                                . ' FROM %lms_course'
+                                . " WHERE idCourse = '" . $id_c . "'"
+                                . " AND date_end < '" . Format::dateDb($date_until_course_end, 'date') . "'";
+                            [$control] = sql_fetch_row(sql_query($query));
+                            if ($control) {
+                                $user_check = true;
                             }
                         }
-                    }
-
-                    if ($date_until_course_end) {
-                        if ($status_condition) {
-                            if ($id_e > 0) {
-                                $query = 'SELECT COUNT(*)'
-                                    . ' FROM %lms_course_edition'
-                                    . " WHERE idCourseEdition = '" . $id_e . "'"
-                                    . " AND date_end < '" . Format::dateDb($date_until_course_end, 'date') . "'";
-                                list($control) = sql_fetch_row(sql_query($query));
-                                if ($control) {
-                                    $user_check = true;
-                                }
-                            } else {
-                                $query = 'SELECT COUNT(*)'
-                                    . ' FROM %lms_course'
-                                    . " WHERE idCourse = '" . $id_c . "'"
-                                    . " AND date_end < '" . Format::dateDb($date_until_course_end, 'date') . "'";
-                                list($control) = sql_fetch_row(sql_query($query));
-                                if ($control) {
-                                    $user_check = true;
-                                }
-                            }
-                        }
-                    }
-
-                    if (!$date_until_course_end && !$day_from_subscription && !$date_until_course_end) {
-                        if ($status_condition) {
-                            $user_check = true;
-                        }
-                    }
-
-                    if ($user_check) {
-                        $course_info = $course_man->getCourseInfo($id_c);
-                        //$user_detail = $acl_man->getUser($id_u, false);
-
-                        $element_to_print[$id_c]['name'] = $course_info['name'];
-                        $element_to_print[$id_c]['code'] = $course_info['code'];
-                        $element_to_print[$id_c]['data'][] = [
-                            'idUser' => $id_u,
-                            'idCourse' => $id_c,
-                            'idCourseEdition' => $id_e,
-                            'status' => $status,
-                            'level' => $level,
-                            'userid' => \FormaLms\lib\Forma::getAclManager()->relativeId($u_userid),
-                            'firstname' => $u_firstname,
-                            'lastname' => $u_lastname,
-                            'mail' => $u_email,
-                            'suspended' => $u_valid <= 0,
-                            'date_subscription' => $date_inscr,
-                            'date_first_access' => $date_first_access,
-                            'date_completed' => $date_complete,
-                            'date_last_access' => $date_last_access,
-                        ];
                     }
                 }
-            }
 
-            //backward compatibility
-            $showed_columns = [];
-            foreach ($cdata['showed_columns'] as $_column_key) {
-                $showed_columns[] = $this->_check_delay_column($_column_key);
-            }
+                if (!$date_until_course_end && !$day_from_subscription && !$date_until_course_end) {
+                    if ($status_condition) {
+                        $user_check = true;
+                    }
+                }
 
-            //print course table
-            // #19936  - INSERT RETURN
-            //$this->_printTable_delay($type, $element_to_print, $showed_columns);
-            return $this->_printTable_delay($type, $element_to_print, $showed_columns);
+                if (in_array('date_last_access', $cdata['showed_columns'])) {
+                   $query = "SELECT lastTime from %lms_tracksession WHERE idCourse = $id_c AND idUser = $id_u ORDER BY idEnter DESC LIMIT 1";
+                    [$control] = sql_fetch_row(sql_query($query));
+                    $date_last_access = $control ?: '';
+                }
 
-            if ($this->use_mail) {
-                $this->_loadEmailActions();
+                if ($user_check) {
+                    $course_info = $course_man->getCourseInfo($id_c);
+
+
+                    $element_to_print[$id_c]['name'] = $course_info['name'];
+                    $element_to_print[$id_c]['code'] = $course_info['code'];
+                    $element_to_print[$id_c]['data'][] = [
+                        'idUser' => $id_u,
+                        'idCourse' => $id_c,
+                        'idCourseEdition' => $id_e,
+                        'status' => $status,
+                        'level' => $level,
+                        'userid' => \FormaLms\lib\Forma::getAclManager()->relativeId($u_userid),
+                        'firstname' => $u_firstname,
+                        'lastname' => $u_lastname,
+                        'mail' => $u_email,
+                        'suspended' => $u_valid <= 0,
+                        'date_subscription' => $date_inscr,
+                        'date_first_access' => $date_first_access,
+                        'date_completed' => $date_complete,
+                        'date_last_access' => $date_last_access,
+                    ];
+                }
             }
         }
+
+        //backward compatibility
+        $showed_columns = [];
+        foreach ($cdata['showed_columns'] as $_column_key) {
+            $showed_columns[] = $this->_check_delay_column($_column_key);
+        }
+
+        //print course table
+        // #19936  - INSERT RETURN
+        //$this->_printTable_delay($type, $element_to_print, $showed_columns);
+        return $this->_printTable_delay($type, $element_to_print, $showed_columns);
+
+        if ($this->use_mail) {
+            $this->_loadEmailActions();
+        }
+
     }
 
     public function _printTable_delay($type, &$element_to_print, $showed_cols = [])
