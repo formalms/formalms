@@ -10,7 +10,7 @@
 
     {%if not fields_checked and request_mandatory_fields_compilation == 'on' %}
         {% for id_field,m_field in fieldlist.getUserMandatoryFields(id_user) %}
-            {{ fieldlist.playFieldForUser(id_user,id_field,false,true) }}
+            {{ fieldlist.playFieldForUser(id_user,id_field,false,true) | raw }}
         {% endfor %}
     {% endif %}
 
