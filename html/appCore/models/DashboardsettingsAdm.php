@@ -56,10 +56,12 @@ class DashboardsettingsAdm extends Model implements Accessible
             $layoutObj->setStatus($layout['status']);
             $layoutObj->setDefault($layout['default']);
 
+            $permissionList = [];
+
             if (!empty($layout['idst_list'])) {
                 $permissionList = unserialize($layout['idst_list'], ['allowed_classes' => ['array']]);
             }
-            if (is_array($permissionList)) {
+            if (!empty($permissionList)) {
                 $layoutObj->setPermissionList($permissionList);
             }
 
