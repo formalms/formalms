@@ -669,7 +669,6 @@ class ClassroomAlmsController extends AlmsController
         } elseif (isset($_POST['undo'])) {
             Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&id_course=' . $this->model->getIdCourse());
         }
-
         $cmodel = new CourseAlms();
         $course_info = $cmodel->getInfo($this->idCourse, false, $this->idDate);
         $course_name = ($course_info['code'] !== '' ? '[' . $course_info['code'] . '] ' : '') . $course_info['name'];
@@ -679,6 +678,8 @@ class ClassroomAlmsController extends AlmsController
             'base_link_course' => $this->baseLinkCourse,
             'base_link_classroom' => $this->baseLinkClassroom,
             'course_name' => $course_name,
+            'id_course' => $this->model->getIdCourse(),
+            'id_date' => $this->model->getIdDate(),
         ]);
     }
 
