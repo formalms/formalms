@@ -126,7 +126,7 @@ class UserselectorAdmController extends AdmController
         }
 
         if ($showSelectAll) {
-            if (in_array($this->multiUserSelector->getSelectedAllValue(), $accessSelection['org'])) {
+            if (in_array($this->multiUserSelector->getSelectedAllValue(), $accessSelection['org'] ??[])) {
                 $selectAllValue = $this->multiUserSelector->getSelectedAllValue();
             }
         }
