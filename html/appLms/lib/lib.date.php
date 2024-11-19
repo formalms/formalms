@@ -169,7 +169,6 @@ class DateManager
             if (isset($_POST['textfield']) && is_array($_POST['textfield'])) {
                 foreach ($_POST['textfield'] as $key => $value) {
                     if (!empty($value)) {
-                        echo json_encode([$res,$key,$value]);
                         $this->addCustomFieldValue($res, $key, $value);
                     }
                 }
