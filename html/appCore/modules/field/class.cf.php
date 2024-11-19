@@ -344,7 +344,7 @@ class Field_Cf extends Field
         $re_field = sql_query('
 		SELECT translation
 		FROM ' . $this->_getMainTable() . "
-		WHERE lang_code = '" . Lang::get() . "' AND id_common = '" . (int) $this->id_common . "' AND type_field = '" . self::getFieldType() . "'");
+		WHERE lang_code = '" . Lang::get() . "' AND id_common = '" . (int) $this->id_common . "' AND type_field = '" . static::getFieldType() . "'");
         list($translation) = sql_fetch_row($re_field);
 
         if ($registrationLayout) {

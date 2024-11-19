@@ -905,7 +905,9 @@ class FormaACLManager
         $new_userdata = $data['new_userdata'];
 
         $arrSET = [];
-        if (array_key_exists(ACL_INFO_USERID, $new_userdata)) {
+
+ 
+        if (array_key_exists(ACL_INFO_USERID, $new_userdata) && preg_replace('/\s+/', '', $new_userdata[ACL_INFO_USERID]) != preg_replace('/\s+/', '', $old_userdata[ACL_INFO_USERID])) {
             $arrSET['userid'] = $new_userdata[ACL_INFO_USERID];
         }
         if (array_key_exists(ACL_INFO_FIRSTNAME, $new_userdata)) {

@@ -32,6 +32,8 @@ class Field
      */
     public $id_common;
 
+    public $id_common_copy_ref;
+
     /** @var string the field entry table name */
     public $field_entry_table;
 
@@ -57,11 +59,11 @@ class Field
      */
     public function __construct($id_common)
     {
-        $this->field_entry_table = $GLOBALS['prefix_fw'] . '_field_userentry';
+        $this->field_entry_table = '%adm_field_userentry';
+        $this->field_son_table = '%adm_field_son';
+        $this->field_main_table = '%adm_field';
         $this->id_common = $id_common;
-
-        $this->field_son_table = $GLOBALS['prefix_fw'] . '_field_son';
-        $this->field_main_table = $GLOBALS['prefix_fw'] . '_field';
+        $this->id_common_copy_ref = (int) $id_common_copy_ref;
     }
 
     public function returnError($error_msg, $ret_value = false)

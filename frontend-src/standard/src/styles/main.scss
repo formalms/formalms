@@ -3,7 +3,7 @@
 //@import '../../node_modules/@fullcalendar/core/main.css';
 //@import '../../node_modules/@fullcalendar/daygrid/main.css';
 @import '../../node_modules/select2/src/scss/core.scss';
-@import '../../node_modules/datatables.net-dt/css/jquery.dataTables';
+//@import '../../node_modules/datatables.net-dt/css/jquery.dataTables';
 
 @import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap-sprockets.scss';
 @import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap.scss';
@@ -37,6 +37,7 @@
 @import 'components/tooltip';
 @import 'components/lightbox';
 @import 'components/dropzone';
+@import 'components/dropdown';
 @import 'components/formatable/style';
 @import './../scripts/components/FolderTreeMultiUser/style.scss';
 
