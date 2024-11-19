@@ -92,29 +92,33 @@ class CertificateAdmController extends AdmController
 
         $certificate = new Certificate();
 
-        $id_certificate = FormaLms\lib\Get::req('certificate_id', true, 0);
+        $id_certificates = FormaLms\lib\Get::req('certificate_id', DOTY_STRING, '');
         $id_course = FormaLms\lib\Get::req('course_id', true, 0);
         $id_users = FormaLms\lib\Get::req('user_id', DOTY_STRING, '');
     
 
         $certificate_info = [];
-        $certificate_info = $certificate->getCertificateInfo($id_certificate);
 
-        foreach(explode(',',$id_users) as $id_user) {
-            $c_infos = $certificate->getInfoForCourseCertificate($id_course, $id_certificate, $id_user);
-            $certificate_info = current($c_infos);
-    
-            FormaLms\lib\Get::sett('pathcourse');
-            $path = '/appLms/certificate/';
-            $deletion_result = true;
-            if ($certificate_info[CERT_NAME] != '') {
-                $deletion_result = sl_unlink($path . $certificate_info[ASSIGN_CERT_FILE]);
+        foreach(explode(',', $id_certificates) as $id_certificate) {
+
+            $certificate_info = $certificate->getCertificateInfo($id_certificate);
+
+            foreach(explode(',',$id_users) as $id_user) {
+                $c_infos = $certificate->getInfoForCourseCertificate($id_course, $id_certificate, $id_user);
+                $certificate_info = current($c_infos);
+        
+                FormaLms\lib\Get::sett('pathcourse');
+                $path = '/appLms/certificate/';
+                $deletion_result = true;
+                if ($certificate_info[CERT_NAME] != '') {
+                    $deletion_result = sl_unlink($path . $certificate_info[ASSIGN_CERT_FILE]);
+                }
             }
         }
         
 
-        if ($deletion_result && !empty($id_users)) {
-            $deletion_result = $certificate->delCertificateForUsersInCourse($id_certificate, $id_users, $id_course);
+        if ($deletion_result && !empty($id_users) && !empty($id_certificates)) {
+            $deletion_result = $certificate->delCertificateForUsersInCourse($id_certificates, $id_users, $id_course);
             if ($from == 'courselist') {
                 $id_certificate = 0;
             }
