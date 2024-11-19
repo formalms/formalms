@@ -1635,14 +1635,13 @@ class Course_API extends API
         if (!$response['success']) {
             return $response;
         }
+        $classroom_man = new DateManager();
 
         $params['classroom_sub_start_date'] = substr(Format::dateDb($params['classroom_sub_start_date'], 'date'), 0, 10);
         $params['classroom_sub_end_date'] = substr(Format::dateDb($params['classroom_sub_end_date'], 'date'), 0, 10);
         $params['classroom_unsubscribe_date_limit'] = substr(Format::dateDb($params['classroom_unsubscribe_date_limit'], 'date'), 0, 10);
 
-        $res = $this->updateDate(
-            $idDate,
-            !empty($params['classroom_code']) ? $params['classroom_code'] : false,
+        $res = $classroom_man->upDate($idDate,!empty($params['classroom_code']) ? $params['classroom_code'] : false,
             !empty($params['classroom_name']) ? $params['classroom_name'] : false,
             !empty($params['classroom_descr']) ? $params['classroom_descr'] : false,
             !empty($params['classroom_medium_time']) ? $params['classroom_medium_time'] : false,
@@ -1653,8 +1652,7 @@ class Course_API extends API
             !empty($params['classroom_test_type']) ? $params['classroom_test_type'] : 0,
             !empty($params['classroom_sub_start_date']) ? $params['classroom_sub_start_date'] : false,
             !empty($params['classroom_sub_end_date']) ? $params['classroom_sub_end_date'] : false,
-            !empty($params['classroom_unsubscribe_date_limit']) ? $params['classroom_unsubscribe_date_limit'] : false
-        );
+            !empty($params['classroom_unsubscribe_date_limit']) ? $params['classroom_unsubscribe_date_limit'] : false);
 
         if ($res) {
             $response['success'] = true;
@@ -1665,26 +1663,6 @@ class Course_API extends API
         }
 
         return $response;
-    }
-
-    private function updateDate($idDate, $code, $name, $description, $medium_time, $max_par, $price, $overbooking, $status, $test_type, $sub_start_date, $sub_end_date, $unsubscribe_date_limit)
-    {
-        $query = 'UPDATE %lms_course_date'
-            . " SET code = '" . $code . "',"
-            . " name = '" . $name . "',"
-            . " description = '" . $description . "',"
-            . " medium_time = '" . $medium_time . "',"
-            . " max_par = '" . $max_par . "',"
-            . " price = '" . $price . "',"
-            . ' overbooking = ' . $overbooking . ','
-            . ' test_type = ' . $test_type . ','
-            . ' status = ' . $status . ','
-            . " sub_start_date = '" . $sub_start_date . "',"
-            . " sub_end_date = '" . $sub_end_date . "',"
-            . " unsubscribe_date_limit = '" . $unsubscribe_date_limit . "'"
-            . ' WHERE id_date = ' . $idDate;
-
-        return sql_query($query);
     }
 
     public function deleteCourse($params)
