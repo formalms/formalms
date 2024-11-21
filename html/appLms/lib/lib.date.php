@@ -579,7 +579,17 @@ class DateManager
             . " unsubscribe_date_limit = '" . $unsubscribe_date_limit . "'"
             . ' WHERE id_date = ' . $id_date;
 
-        return sql_query($query);
+        $res = sql_query($query);
+        if ($res){
+            if (isset($_POST['textfield']) && is_array($_POST['textfield'])) {
+                foreach ($_POST['textfield'] as $key => $value) {
+                    if (!empty($value)) {
+                        $this->addCustomFieldValue($id_date, $key, $value);
+                    }
+                }
+            }
+        }
+        return $res;
     }
 
     public function generateCalendarIdForDate($idDate)
