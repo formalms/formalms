@@ -19,12 +19,8 @@ final class Version20241120151024 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-		$this->addSql("UPDATE learning_course
-    SET date_begin = NULL,
-    date_end = NULL
-    WHERE date_begin = '0000-00-00'
-    OR date_end = '0000-00-00'"
-    );
+        $this->addSql("UPDATE learning_course SET date_begin = NULL WHERE date_begin = '0000-00-00'");
+        $this->addSql("UPDATE learning_course SET date_end = NULL WHERE date_end = '0000-00-00'");
     }
 
     public function down(Schema $schema): void
