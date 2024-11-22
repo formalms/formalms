@@ -900,7 +900,7 @@ class Field_DropdownComplex extends Field_Dropdown
             );
         }
 
-        if (count($choicesDropdown) && !$countChosen) {
+        if (count($choicesDropdown ?? []) && !$countChosen) {
             $out->add(
                 $form->getDropdown(
                     $lang->def('_SON_AREA'),
@@ -1020,5 +1020,115 @@ class Field_DropdownComplex extends Field_Dropdown
         }
 
         $out->add('</div>');
+    }
+
+    public function _show_son()
+    {
+        $std_lang = &FormaLanguage::createInstance('standard');
+        $lang = &FormaLanguage::createInstance('field');
+        $out = &$GLOBALS['page'];
+
+        $out->setWorkingZone('content');
+
+        require_once _base_ . '/lib/lib.table.php';
+        require_once _base_ . '/lib/lib.form.php';
+
+        $counter = 0;
+        $img_up = '<img class="valing-middle" src="' . getPathImage() . 'standard/up.png" alt="' . $std_lang->def('_MOVE_UP') . '" />';
+        $img_down = '<img class="valing-middle" src="' . getPathImage() . 'standard/down.png" alt="' . $std_lang->def('_MOVE_DOWN') . '" />';
+
+        $id_son = FormaLms\lib\Get::req('idSon', DOTY_INT, 0);
+        $iop = FormaLms\lib\Get::req('iop', DOTY_STRING, '');
+
+        if ($iop == 'moveup') {
+            $this->_move_up($id_son);
+        } elseif ($iop == 'movedown') {
+            $this->_move_down($id_son);
+        } elseif ($iop == 'fixsequence') {
+            $this->_fix_sequence();
+        }
+
+        list($total_son) = sql_fetch_row(sql_query('
+		SELECT COUNT(*)
+		FROM ' . $this->_getElementTable() . "
+		WHERE idField = '" . $this->id_common . "' AND lang_code = '" . Lang::get() . "'"));
+
+        $re_main = sql_query('
+		SELECT translation
+		FROM ' . $this->_getMainTable() . "
+		WHERE id_common = '" . $this->id_common . "' AND lang_code = '" . Lang::get() . "'
+		ORDER BY sequence");
+        list($translation) = sql_fetch_row($re_main);
+
+        //find available son
+        $re_field = sql_query('
+		SELECT cfs.id_common_son, cfs.translation, coalesce(cff.translation, "'.    $lang->def('_NO_SELECTION').'") as father_translation
+		FROM ' . $this->_getElementTable() . ' cfs
+        LEFT JOIN ' . $this->_getElementTable() . ' cff ON cfs.belongs_to = cff.idSon AND cff.lang_code = "' . Lang::get() . '"
+		WHERE cfs.idField = "' . $this->id_common . '" AND cfs.lang_code = "' . Lang::get() . '"
+		ORDER BY cfs.sequence');
+
+
+        $base_path = $this->getUrl() . '&amp;id_common='
+                . $this->id_common . '&amp;type_field=' . static::getFieldType() . '&amp;back=' . $this->back_coded;
+
+        $out->add('<div class="std_block">'
+            . getBackUi($this->back, $std_lang->def('_BACK'))
+            . '<div class="title"><b>' . $lang->def('_TITLE') . ' :</b> '
+            . '<a class="ico-wt-sprite subs_mod" href="' . $base_path . '&amp;iop=modmain"><span>'
+            . $translation . '</span></a>'
+            . '</div><br />');
+
+        $tb_son = new Table(0, $lang->def('_DROPDOWN_SON_CAPTION'));
+        $content_h = [
+            $lang->def('_DROPDOWN_ELEMENT'),
+            $lang->def('_SON_AREA'),
+            $img_up,
+            $img_down,
+            '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $std_lang->def('_MOD') . '" />',
+            '<img src="' . getPathImage() . 'standard/delete.png" alt="' . $std_lang->def('_DEL') . '" />',
+        ];
+        $type_h = ['', '','image', 'image', 'image', 'image'];
+        $tb_son->addHead($content_h, $type_h);
+        while (list($idSon, $elem, $father_elem) = sql_fetch_row($re_field)) {
+            ++$counter;
+
+            $content = [];
+
+            $content[] = $elem;
+            $content[] = $father_elem;
+
+            if ($counter != 1 && $counter != $total_son) {
+                $content[] = '<a href="' . $base_path . '&amp;iop=moveup&amp;idSon=' . $idSon . '" title="' . $std_lang->def('_MOVE_UP') . '">' . $img_up . '</a>';
+                $content[] = '<a href="' . $base_path . '&amp;iop=movedown&amp;idSon=' . $idSon . '" title="' . $std_lang->def('_MOVE_DOWN') . '">' . $img_down . '</a>';
+            } elseif ($counter == 1) {
+                $content[] = '';
+                $content[] = '<a href="' . $base_path . '&amp;iop=movedown&amp;idSon=' . $idSon . '" title="' . $std_lang->def('_MOVE_DOWN') . '">' . $img_down . '</a>';
+            } else {
+                $content[] = '<a href="' . $base_path . '&amp;iop=moveup&amp;idSon=' . $idSon . '" title="' . $std_lang->def('_MOVE_UP') . '">' . $img_up . '</a>';
+                $content[] = '';
+            }
+
+            $content[] = '<a href="' . $base_path . '&amp;iop=mod&amp;idSon=' . $idSon . '" title="' . $std_lang->def('_MOD') . ' : ' . $elem . '">'
+                    . '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $std_lang->def('_MOD') . ' : ' . $elem . '" /></a>';
+
+            $content[] = '<a href="' . $base_path . '&amp;iop=del&amp;idSon=' . $idSon . '" title="' . $std_lang->def('_DEL') . ' : ' . $elem . '">'
+                    . '<img src="' . getPathImage() . 'standard/delete.png" alt="' . $std_lang->def('_DEL') . ' : ' . $elem . '" /></a>';
+
+            $tb_son->addBody($content);
+        }
+        $tb_son->addActionAdd(
+            '<a class="ico-wt-sprite subs_add" href="' . $this->getUrl()
+                . '&amp;id_common=' . $this->id_common
+                . '&amp;type_field=' . static::getFieldType()
+                . '&amp;back=' . $this->back_coded
+                . '&amp;iop=add"><span>'
+            . $lang->def('_DROPDOWN_SON_ADD') . '</span></a>'
+        );
+        $out->add($tb_son->getTable());
+        $out->add('<a href="' . $base_path . '&amp;iop=fixsequence"'
+                . ' title="' . $lang->def('_FIX_SEQUENCE') . '">' . $lang->def('_FIX_SEQUENCE') . '</a>');
+        $out->add(getBackUi($this->back, $std_lang->def('_BACK'))
+            . '</div>');
     }
 }
