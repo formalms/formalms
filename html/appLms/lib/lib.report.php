@@ -415,3 +415,14 @@ function checkReport($id_filter)
 
     return true;
 }
+
+function duplicateReport($id_filter){
+    $a = "INSERT INTO %lms_report_filter (id_report, author, creation_date, filter_name, filter_data, is_public, views) 
+                           SELECT id_report,".\FormaLms\lib\FormaUser::getCurrentUser()->getIdst().", NOW(), CONCAT('".Lang::t('_COPY_OF','standard')." ', filter_name), filter_data, is_public, 0 
+                           FROM %lms_report_filter WHERE id_filter=".$id_filter;
+
+    $q = sql_query($a);
+    return $q;
+
+
+}

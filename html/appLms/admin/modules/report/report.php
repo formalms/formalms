@@ -137,6 +137,7 @@ define('_REP_KEY_PUBLIC', 'public');
 define('_REP_KEY_OPEN', 'open');
 define('_REP_KEY_MOD', 'mod');
 define('_REP_KEY_SCHED', 'sched');
+define('_REP_KEY_DUP', 'dup');
 define('_REP_KEY_REM', 'rem');
 
 function get_report_table($url = '')
@@ -331,8 +332,11 @@ function get_report_table($url = '')
     if ($level == ADMIN_GROUP_GODADMIN || $can_mod) {
         $col_type[] = 'image';
         $col_type[] = 'image';
+        $col_type[] = 'image';
         $col_content[] = '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . '" title="' . $lang->def('_MOD') . '" />';
+        $col_content[] = '<img src="' . getPathImage() . 'standard/dup.png" alt="' . $lang->def('_MAKE_A_COPY') . '" title="' . $lang->def('_MAKE_A_COPY') . '" />';
         $col_content[] = '<img src="' . getPathImage() . 'standard/delete.png" alt="' . $lang->def('_DEL') . '" title="' . $lang->def('_DEL') . '" />';
+
     }
 
     $tb->setColsStyle($col_type);
@@ -355,6 +359,11 @@ function get_report_table($url = '')
                 '<a href="' . $url . '&amp;action=modify&amp;idrep=' . $id . '" ' .
                 ' title="' . $lang->def('_MOD') . '">' .
                 '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . '" />' .
+                '</a>';
+            $dup_link =
+                '<a href="' . $url . '&amp;action=duplicate&amp;idrep=' . $id . '" ' .
+                ' title="' . $lang->def('_MAKE_A_COPY') . '">' .
+                '<img src="' . getPathImage() . 'standard/dup.png" alt="' . $lang->def('_MAKE_A_COPY') . '" />' .
                 '</a>';
             $rem_link =
                 '<a href="' . $url . '&amp;action=delete&amp;idrep=' . $id . '" ' .
@@ -404,21 +413,17 @@ function get_report_table($url = '')
                     _REP_KEY_OPEN => $opn_link,
                     $background_execution_link,
                     $export_link_csv,
-                    $export_link_xls, /*,
-                    _REP_KEY_MOD    => $mod_link,
-                    _REP_KEY_REM    => $rem_link*/
+                    $export_link_xls,
                 ];
             } else {
                 $tb_content = [
                     _REP_KEY_NAME => $_name,
                     _REP_KEY_CREATOR => ($row['author'] == 0 ? '<div class="align_center">-</div>' : $acl_man->relativeId($row['userid'])),
                     _REP_KEY_CREATION => Format::date($row['creation_date']),
-                    _REP_KEY_PUBLIC => $public, //$row['report_name'],
+                    _REP_KEY_PUBLIC => $public,
                     _REP_KEY_OPEN => $opn_link,
                     $export_link_csv,
-                    $export_link_xls, /*,
-                    _REP_KEY_MOD    => $mod_link,
-                    _REP_KEY_REM    => $rem_link*/
+                    $export_link_xls,
                 ];
             }
 
@@ -429,9 +434,11 @@ function get_report_table($url = '')
             if ($level == ADMIN_GROUP_GODADMIN || $can_mod) {
                 if ($row['author'] == \FormaLms\lib\FormaUser::getCurrentUser()->getIdst() || $can_mod) {
                     $tb_content[_REP_KEY_MOD] = $mod_link;
+                    $tb_content[_REP_KEY_DUP] = $dup_link;
                     $tb_content[_REP_KEY_REM] = $rem_link;
                 } else {
                     $tb_content[_REP_KEY_MOD] = '&nbsp;';
+                    $tb_content[_REP_KEY_DUP] = '&nbsp;';
                     $tb_content[_REP_KEY_REM] = '&nbsp;';
                 }
             }
@@ -491,23 +498,19 @@ function reportlist()
     cout('<div class="std_block">');
     //cout(get_report_steplist($step_index));
 
-    switch (FormaLms\lib\Get::req('saverep', DOTY_STRING, false)) {
-        case 'true':
-            cout(getResultUi($lang->def('_SAVE_REPORT_OK')));
-            break;
-        case 'false':
-            cout(getErrorUi($lang->def('_SAVE_REPORT_FAIL')));
-            break;
+
+    if (isset($_GET['saverep']) ||  isset($_GET['modrep']) ||  isset($_GET['fdup']) ) {
+        $msg_ok=  FormaLms\lib\Get::req('saverep', DOTY_BOOL, false) ||
+            FormaLms\lib\Get::req('modrep', DOTY_BOOL, false) ||
+            FormaLms\lib\Get::req('fdup', DOTY_BOOL, false);
+        if ($msg_ok) {
+            cout(getResultUi($lang->def('_OPERATION_SUCCESSFUL')));
+        } else {
+            cout(getErrorUi($lang->def('_OPERATION_FAILURE')));
+        }
     }
 
-    switch (FormaLms\lib\Get::req('modrep', DOTY_STRING, false)) {
-        case 'true':
-            cout(getResultUi($lang->def('_OPERATION_SUCCESSFUL')));
-            break;
-        case 'false':
-            cout(getErrorUi($lang->def('_MOD_REPORT_FAIL')));
-            break;
-    }
+
 
     cout(get_report_table('index.php?modname=report&op=report_open_filter'));
 
@@ -930,12 +933,21 @@ function report_open_filter()
         case 'delete':
             //delete filter from list and DB, than reload page
             if (report_delete_filter($filter_id)) {
-                $success = '&fdel=1&idrep=' . $filter_id;
+                $success = '&modrep=1&idrep=' . $filter_id;
             } else {
-                $success = '&fdel=0&idrep=' . $filter_id;
+                $success = '&modrep=0&idrep=' . $filter_id;
             }
             Util::jump_to($url . $success);
 
+            break;
+
+        case 'duplicate':
+            if (duplicateReport($filter_id)) {
+                $success = '&fdup=1&idrep=' . $filter_id;
+            } else {
+                $success = '&fdup=0&idrep=' . $filter_id;
+            }
+            Util::jump_to($url . $success);
             break;
 
         default:
