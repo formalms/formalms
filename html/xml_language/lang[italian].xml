@@ -2862,6 +2862,9 @@ sei stato disiscritto dal corso ([course_code]) - [course]]]></key>
         <key id="standard&amp;_MULTIUSERSELECTOR_TITLE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Seleziona utenti da collegare:]]></key>
         <key id="standard&amp;_SMTP_CONFIG_DISABLED" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Smtp disabled in config file]]></key>
         <key id="standard&amp;_COPY_OF" attributes="" save_date="2024-11-21 15:12:40"><![CDATA[Copia di]]></key>
+		<key id="standard&amp;_SON_AREA" attributes="" save_date="2024-11-21 15:12:40"><![CDATA[Opzione padre collegata]]></key>				
+		<key id="standard&amp;_FATHER_AREA" attributes="" save_date="2024-11-21 15:12:40"><![CDATA[Gruppo opzioni collegato]]></key>
+		<key id="standard&amp;_EXISTING_CHOICE_CANNOT_PROCEED" attributes="" save_date="2024-11-21 15:12:40"><![CDATA[Scelta presente nei dati degli utenti, impossibile procedere]]></key>
       </module>
       <module id="statistic">
         <key id="statistic&amp;_AT_HOUR" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Alle ore]]></key>
