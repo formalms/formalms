@@ -2355,9 +2355,11 @@ class Course_API extends API
             }
 
             $q_test = 'select lta.idQuest, lta.idAnswer , title_quest, score_assigned  , lta.idTrack as idTrack
-                    from learning_testtrack_answer lta, learning_testquest ltq
+                    from learning_testtrack_answer as lta left join learning_testquest as ltq on lta.idQuest=ltq.idQuest
+                    join learning_testquestanswer as ltqa on lta.idQuest=ltqa.idQuest and lta.idAnswer=ltqa.idAnswer
                     where lta.idTrack=' . $idTrack . ' 
-                    and lta.idQuest=ltq.idQuest and lta.user_answer=1';
+                    and lta.user_answer=1
+                    GROUP by lta.idQuest';
 
             $response['success'] = true;
             $response['id_users'] = explode(',', $idUsers);
@@ -2404,7 +2406,7 @@ class Course_API extends API
                     'id_quest' => $row['idQuest'],
                     'title_quest' => $row['title_quest'],
                     'score_assigned' => $row['score_assigned'],
-                    'answer' => $this->getAnswerQuest($row['idQuest'], $row['idAnswer']),
+                    'answer' => $this->getAnswerQuest($row['idQuest']),
                     'response' => $this->getTrackAnswer($row['idTrack'], $row['idQuest']),
                     'esito' => $resEsito,
                 ];
@@ -2440,13 +2442,11 @@ class Course_API extends API
         return $response;
     }
 
-    public function getAnswerQuest($idQuest, $idAnsw)
+    public function getAnswerQuest($idQuest)
     {
         $db = \FormaLms\db\DbConn::getInstance();
         $out = [];
         $q_ans = 'select idAnswer, sequence, is_correct, answer, score_correct, score_incorrect from learning_testquestanswer where idQuest=' . $idQuest . ' order by sequence';
-
-        $vett_answer = [];
 
         $result = $db->query($q_ans);
 

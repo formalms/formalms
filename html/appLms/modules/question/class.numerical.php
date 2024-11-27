@@ -133,7 +133,7 @@ class Numerical_Question extends Question
     /**
      * this function create a new question.
      *
-     * @param int    $idTest    indicates the test selected
+     * @param int $idTest indicates the test selected
      * @param string $back_test indicates the return url
      *
      * @return nothing
@@ -162,12 +162,12 @@ class Numerical_Question extends Question
 			INSERT INTO ' . $GLOBALS['prefix_lms'] . "_testquest 
 			( idTest, idCategory, type_quest, title_quest, difficult, time_assigned, sequence, page ) VALUES 
 			( 	'" . $idTest . "', 
-				'" . (int) $_POST['idCategory'] . "', 
+				'" . (int)$_POST['idCategory'] . "', 
 				'" . $this->getQuestionType() . "', 
 				'" . addslashes($_POST['title_quest']) . "',
-				'" . (int) $_POST['difficult'] . "', 
-				'" . (int) $_POST['time_assigned'] . "', 
-				'" . (int) $this->_getNextSequence($idTest) . "', 
+				'" . (int)$_POST['difficult'] . "', 
+				'" . (int)$_POST['time_assigned'] . "', 
+				'" . (int)$this->_getNextSequence($idTest) . "', 
 				'" . $this->_getPageNumber($idTest) . "' ) ";
             if (!sql_query($ins_query)) {
                 errorCommunication($lang->def('_OPERATION_FAILURE')
@@ -297,13 +297,13 @@ class Numerical_Question extends Question
             //update question
             $ins_query = '
 			UPDATE ' . $GLOBALS['prefix_lms'] . "_testquest
-			SET idCategory = '" . (int) $_POST['idCategory'] . "', 
+			SET idCategory = '" . (int)$_POST['idCategory'] . "', 
 				type_quest = '" . $this->getQuestionType() . "', 
 				title_quest = '" . addslashes($_POST['title_quest']) . "', 
-				difficult = '" . (int) $_POST['difficult'] . "', 
-				time_assigned = '" . (int) $_POST['time_assigned'] . "',
+				difficult = '" . (int)$_POST['difficult'] . "', 
+				time_assigned = '" . (int)$_POST['time_assigned'] . "',
 				shuffle = '" . (isset($_POST['shuffle']) ? 1 : 0) . "'
-			WHERE idQuest = '" . (int) $this->id . "'";
+			WHERE idQuest = '" . (int)$this->id . "'";
             if (!sql_query($ins_query)) {
                 errorCommunication($lang->def('_OPERATION_FAILURE')
                     . getBackUi('index.php?modname=question&amp;op=edit&amp;type_quest='
@@ -318,7 +318,7 @@ class Numerical_Question extends Question
             $re_answer = sql_query('
 			SELECT idAnswer
 			FROM ' . $GLOBALS['prefix_lms'] . "_testquestanswer 
-			WHERE idQuest = '" . (int) $this->id . "'");
+			WHERE idQuest = '" . (int)$this->id . "'");
             while (list($id_a) = sql_fetch_row($re_answer)) {
                 $existent_answer[$id_a] = 1;
             }
@@ -341,7 +341,7 @@ class Numerical_Question extends Question
 						comment = '" . addslashes($_POST['comment'][$i]) . "',
 						score_correct = '" . $this->_checkScore($_POST['score_correct'][$i]) . "', 
 						score_incorrect = '0'
-					WHERE idAnswer = '" . (int) $idAnswer . "'";
+					WHERE idAnswer = '" . (int)$idAnswer . "'";
                     if (!sql_query($upd_ans_query)) {
                         errorCommunication($lang->def('_OPERATION_FAILURE') . getBackUi(Util::str_replace_once('&', '&amp;', $back_test), $lang->def('_BACK')));
                     }
@@ -368,7 +368,7 @@ class Numerical_Question extends Question
                 //i must delete these answer
                 $del_answer_query = '
 				DELETE FROM ' . $GLOBALS['prefix_lms'] . "_testquestanswer
-				WHERE idQuest = '" . (int) $this->id . "' AND idAnswer = '" . (int) $idA . "'";
+				WHERE idQuest = '" . (int)$this->id . "' AND idAnswer = '" . (int)$idA . "'";
                 if (!sql_query($del_answer_query)) {
                     errorCommunication($lang->def('_OPERATION_FAILURE') . getBackUi(Util::str_replace_once('&', '&amp;', $back_test), $lang->def('_BACK')));
                 }
@@ -388,12 +388,12 @@ class Numerical_Question extends Question
             list($sel_cat, $quest, $sel_diff, $sel_time, $shuffle) = sql_fetch_row(sql_query('
 			SELECT idCategory, title_quest, difficult, time_assigned, shuffle 
 			FROM ' . $GLOBALS['prefix_lms'] . "_testquest 
-			WHERE idQuest = '" . (int) $this->id . "'"));
+			WHERE idQuest = '" . (int)$this->id . "'"));
 
             $re_answer = sql_query('
 			SELECT idAnswer, is_correct, answer, comment, score_correct, score_incorrect 
 			FROM ' . $GLOBALS['prefix_lms'] . "_testquestanswer 
-			WHERE idQuest = '" . (int) $this->id . "'
+			WHERE idQuest = '" . (int)$this->id . "'
 			ORDER BY idAnswer");
 
             $i_load = 0;
@@ -519,21 +519,21 @@ class Numerical_Question extends Question
         list($sel_cat, $quest, $sel_diff, $time_ass, $sequence, $page, $shuffle) = sql_fetch_row(sql_query('
 		SELECT idCategory, title_quest, difficult, time_assigned, sequence, page, shuffle 
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquest 
-		WHERE idQuest = '" . (int) $this->id . "'"));
+		WHERE idQuest = '" . (int)$this->id . "'"));
 
         //insert question
         $ins_query = '
 		INSERT INTO ' . $GLOBALS['prefix_lms'] . "_testquest 
 		( idTest, idCategory, type_quest, title_quest, difficult, time_assigned, sequence, page, shuffle ) VALUES 
-		( 	'" . (int) $new_id_test . "', 
-			'" . (int) $sel_cat . "', 
+		( 	'" . (int)$new_id_test . "', 
+			'" . (int)$sel_cat . "', 
 			'" . $this->getQuestionType() . "', 
 			'" . sql_escape_string(addslashes($quest)) . "',
-			'" . (int) $sel_diff . "', 
+			'" . (int)$sel_diff . "', 
 			'" . $time_ass . "',
-			'" . (int) $sequence . "',
-			'" . (int) $page . "', 
-			'" . (int) $shuffle . "' ) ";
+			'" . (int)$sequence . "',
+			'" . (int)$page . "', 
+			'" . (int)$shuffle . "' ) ";
         if (!sql_query($ins_query)) {
             return false;
         }
@@ -547,15 +547,15 @@ class Numerical_Question extends Question
         $re_answer = sql_query('
 		SELECT idAnswer, is_correct, answer, comment, score_correct, score_incorrect 
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquestanswer 
-		WHERE idQuest = '" . (int) $this->id . "'
+		WHERE idQuest = '" . (int)$this->id . "'
 		ORDER BY idAnswer");
         while (list($idAnswer, $is_correct, $answer, $comment, $score_c, $score_inc) = sql_fetch_row($re_answer)) {
             //insert answer
             $ins_answer_query = '
 			INSERT INTO ' . $GLOBALS['prefix_lms'] . "_testquestanswer 
 			( idQuest, is_correct, answer, comment, score_correct, score_incorrect ) VALUES
-			( 	'" . (int) $new_id_quest . "', 
-				'" . (int) $is_correct . "', 
+			( 	'" . (int)$new_id_quest . "', 
+				'" . (int)$is_correct . "', 
 				'" . sql_escape_string(addslashes($answer)) . "', 
 				'" . sql_escape_string(addslashes($comment)) . "',
 				'" . $this->_checkScore($score_c) . "', 
@@ -571,10 +571,10 @@ class Numerical_Question extends Question
     /**
      * display the quest for play, if.
      *
-     * @param int  $num_quest      the number of the quest to display in front of the quest title
+     * @param int $num_quest the number of the quest to display in front of the quest title
      * @param bool $shuffle_answer randomize the answer display order
-     * @param int  $id_track       where find the answer, if find -> load
-     * @param bool $freeze         if true, when load disable the user interaction
+     * @param int $id_track where find the answer, if find -> load
+     * @param bool $freeze if true, when load disable the user interaction
      *
      * @return string of html question code
      *
@@ -592,7 +592,7 @@ class Numerical_Question extends Question
         $query_answer = '
 		SELECT idAnswer, answer 
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquestanswer 
-		WHERE idQuest = '" . (int) $this->id . "'";
+		WHERE idQuest = '" . (int)$this->id . "'";
         if ($shuffle_answer || $shuffle) {
             $query_answer .= ' ORDER BY RAND()';
         } else {
@@ -607,8 +607,8 @@ class Numerical_Question extends Question
             $recover_answer = '
 			SELECT more_info 
 			FROM ' . $GLOBALS['prefix_lms'] . "_testtrack_answer 
-			WHERE idQuest = '" . (int) $this->id . "' AND 
-				idTrack = '" . (int) $id_track . "' AND number_time =  " . $number_time;
+			WHERE idQuest = '" . (int)$this->id . "' AND 
+				idTrack = '" . (int)$id_track . "' AND number_time =  " . $number_time;
             $re_answer_do = sql_query($recover_answer);
             if (sql_num_rows($re_answer_do)) {
                 //find previous answer
@@ -634,9 +634,9 @@ class Numerical_Question extends Question
     /**
      * save the answer to the question in an proper format.
      *
-     * @param int   $id_track      the relative id_track
-     * @param array $source        source of the answer send by the user
-     * @param bool  $can_overwrite if the answer for this question exists and this is true, the old answer
+     * @param int $id_track the relative id_track
+     * @param array $source source of the answer send by the user
+     * @param bool $can_overwrite if the answer for this question exists and this is true, the old answer
      *                             is updated, else the old answer will be leaved
      *
      * @return bool true if success false otherwise
@@ -663,7 +663,7 @@ class Numerical_Question extends Question
         $re_answer = sql_query('
 		SELECT idAnswer, answer, score_correct, score_incorrect 
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquestanswer 
-		WHERE idQuest = '" . (int) $this->id . "'");
+		WHERE idQuest = '" . (int)$this->id . "'");
         while (list($id_answer, $coded_answer, $score_corr, $score_incorr) = sql_fetch_row($re_answer)) {
             $marker = strpos($coded_answer, ':');
             $answer = substr($coded_answer, 0, $marker);
@@ -677,12 +677,12 @@ class Numerical_Question extends Question
         $track_query = '
 		INSERT INTO ' . $GLOBALS['prefix_lms'] . "_testtrack_answer ( idTrack, idQuest, idAnswer, score_assigned, more_info, number_time )
 		VALUES (
-			'" . (int) $trackTest->idTrack . "',
-			'" . (int) $this->id . "', 
-			'" . (int) $id_answer . "', 
+			'" . (int)$trackTest->idTrack . "',
+			'" . (int)$this->id . "', 
+			'" . (int)$id_answer . "', 
 			'" . $score . "', 
 			'" . $source['quest'][$this->id] . "',
-			'" . (int) ($trackTest->getNumberOfAttempt() + 1) . "')";
+			'" . (int)($trackTest->getNumberOfAttempt() + 1) . "')";
 
         return sql_query($track_query);
     }
@@ -690,8 +690,8 @@ class Numerical_Question extends Question
     /**
      * save the answer to the question in an proper format overwriting the old entry.
      *
-     * @param int   $id_track the relative id_track
-     * @param array $source   source of the answer send by the user
+     * @param int $id_track the relative id_track
+     * @param array $source source of the answer send by the user
      *
      * @return bool true if success false otherwise
      *
@@ -724,8 +724,8 @@ class Numerical_Question extends Question
     /**
      * display the question with the result of a user.
      *
-     * @param int $id_track    the test relative to this question
-     * @param int $num_quest   the quest sequqnce number
+     * @param int $id_track the test relative to this question
+     * @param int $num_quest the quest sequqnce number
      * @param int $number_time the quest attempt number
      *
      * @return array return an array with xhtml code in this way
@@ -752,8 +752,8 @@ class Numerical_Question extends Question
         $recover_answer = '
 		SELECT more_info 
 		FROM ' . $GLOBALS['prefix_lms'] . "_testtrack_answer 
-		WHERE idQuest = '" . (int) $this->id . "' and
-            idTrack = '" . (int) $id_track . "'";
+		WHERE idQuest = '" . (int)$this->id . "' and
+            idTrack = '" . (int)$id_track . "'";
         if ($number_time != null) {
             $recover_answer .= ' and number_time = ' . $number_time;
         }
@@ -767,7 +767,7 @@ class Numerical_Question extends Question
         $re_answer = sql_query('
 		SELECT idAnswer, answer, comment, score_correct, score_incorrect 
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquestanswer 
-		WHERE idQuest = '" . (int) $this->id . "'");
+		WHERE idQuest = '" . (int)$this->id . "'");
         while (list($id_answer, $coded_answer, $comment, $score_corr, $score_incorr) = sql_fetch_row($re_answer)) {
             $marker = strpos($coded_answer, ':');
             $answer = substr($coded_answer, 0, $marker);
@@ -801,10 +801,10 @@ class Numerical_Question extends Question
 
         return ['quest' => $quest,
             'score' => $this->userScore($id_track, $number_time),
-            'comment' => $com . $com_is_correct, ];
+            'comment' => $com . $com_is_correct,];
     }
 
-    public function importFromRaw($raw_quest, $id_test = false)
+    public function importFromRaw($raw_quest, $id_test = false, $sequence = 1)
     {
         if ($id_test === false) {
             $id_test = 0;
@@ -815,13 +815,13 @@ class Numerical_Question extends Question
 		INSERT INTO ' . $GLOBALS['prefix_lms'] . "_testquest
             (idQuest, idTest, idCategory, type_quest, title_quest, difficult, time_assigned, sequence, page) VALUES
             (NULL,
-                '" . (int) $id_test . "',
-                '" . (int) $raw_quest->id_category . "',
+                '" . (int)$id_test . "',
+                '" . (int)$raw_quest->id_category . "',
                 '" . $this->getQuestionType() . "',
                 '" . $raw_quest->quest_text . "',
-                '" . (int) $raw_quest->difficult . "',
+                '" . (int)$raw_quest->difficult . "',
                 '" . $raw_quest->time_assigned . "',
-                '1',
+                '" . $sequence . "',
                 '1') ";
         if (!sql_query($ins_query)) {
             return false;
@@ -843,7 +843,7 @@ class Numerical_Question extends Question
             $ins_answer_query = '
 			INSERT INTO ' . $GLOBALS['prefix_lms'] . "_testquestanswer
             (idQuest, is_correct, answer, comment, score_correct, score_incorrect) VALUES
-            ('" . (int) $new_id_quest . "',
+            ('" . (int)$new_id_quest . "',
                 '0',
                 '" . $raw_answer->text . ':' . $raw_answer->tolerance . "',
                 '" . $raw_answer->comment . "',

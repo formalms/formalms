@@ -684,6 +684,7 @@ class qformat_gift
                 }
                 $expout .= $qtext_format;
                 $expout .= $this->repchar($question->quest_text);
+                $expout .= "\n";
              break;
             case 'extended_text' :
                 $expout .= '::' . $this->repchar($question->prompt) . '::';
