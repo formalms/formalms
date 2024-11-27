@@ -666,7 +666,7 @@ class Question
         ];
     }
 
-    public function importFromRaw($raw_quest, $id_test = false)
+    public function importFromRaw($raw_quest, $id_test = false, $sequence = 1)
     {
         if ($id_test === false) {
             $id_test = 0;
@@ -679,11 +679,11 @@ class Question
 		( 	NULL,
 			'" . (int)$id_test . "', 
 			'" . (int)$raw_quest->id_category . "', 
-			'" . $this->getQuestionType() . "', 
+			'" . $this->getQuestionType() . "',
 			'" . $raw_quest->quest_text . "',
 			'" . (int)$raw_quest->difficult . "', 
 			'" . $raw_quest->time_assigned . "',
-			'1',
+			'" . $sequence . "',
 			'1' ) ";
         if (!sql_query($ins_query)) {
             return false;

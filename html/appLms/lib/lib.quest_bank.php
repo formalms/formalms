@@ -266,13 +266,13 @@ class QuestBankMan
                 $qgift = new qformat_gift();
                 $formatted = $qgift->readquestions($file_lines, $autocreate_categories);
 
-                foreach ($formatted as $question) {
+                foreach ($formatted as $index => $question) {
                     if ((int) $id_category > 0 && is_object($question)) {
                         $question->id_category = (int) $id_category;
                     }
 
                     $oQuest = $this->instanceQuestType(0, $question->qtype);
-                    $re = $oQuest->importFromRaw($question, $id_test);
+                    $re = $oQuest->importFromRaw($question, $id_test, $index+1);
 
                     if ($re) {
                         if (isset($result[$question->qtype]['success'])) {
