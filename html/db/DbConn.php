@@ -10,6 +10,7 @@
  * from docebo 4.0.5 CE 2008-2012 (c) docebo
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
+
 namespace FormaLms\db;
 
 use FormaLms\db\drivers\Mysqli;
@@ -18,6 +19,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 
 require_once 'DbHelper.php';
+
 /**
  * This class follow the singleton design pattern, his purpose is to abstract
  * the normal function that interact with the database and add to them some
@@ -28,7 +30,9 @@ class DbConn
     /**
      * The static var that contain the class instance.
      */
-    private static $instance = null;
+    protected static $instance = null;
+
+    protected static $factory = null;
 
     /**
      * This var will contains the query logger.
@@ -40,58 +44,70 @@ class DbConn
      */
     public static $connected = false;
 
-    /**
-     * This function return the current instance for the class, if it's the first
-     * time that is called it will instance the class.
-     *
-     * @param $link
-     * @param array $connection_parameters
-     *
-     * @return DbConn
-     */
+    public static function setFactory($factory)
+    {
+        self::$factory = $factory;
+    }
+
     public static function getInstance($link = false, $connection_parameters = [])
     {
-
-        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-        $cfg = [];
-        if ($session && $session->has('setValues') && count($session->get('setValues'))) {
-
-            $values = $session->get('setValues');
-
-            $cfg['db_type'] = 'mysqli';
-            $cfg['db_user'] = array_key_exists('dbUser', $values) ? $values['dbUser'] : false;
-            $cfg['db_pass'] = array_key_exists('dbPass', $values) ? $values['dbPass'] : false;
-            $cfg['db_name'] = array_key_exists('dbName', $values) ? $values['dbName'] : false;
-            $cfg['db_host'] = array_key_exists('dbHost', $values) ? $values['dbHost'] : false;
-        }
-        $db_type = \FormaLms\lib\Get::cfg('db_type') ?: ($cfg['db_type'] ?? false);
-        $host = \FormaLms\lib\Get::cfg('db_host') ?: ($cfg['db_host'] ?? false);
-        $user = \FormaLms\lib\Get::cfg('db_user') ?: ($cfg['db_user'] ?? false);
-        $pass = \FormaLms\lib\Get::cfg('db_pass') ?: ($cfg['db_pass'] ?? false);
-        $name = \FormaLms\lib\Get::cfg('db_name') ?: ($cfg['db_name'] ?? false);
-    
-        if (isset($connection_parameters['db_type']) && isset($connection_parameters['db_host']) && isset($connection_parameters['db_user']) && isset($connection_parameters['db_pass'])) {
-            $db_type = $connection_parameters['db_type'];
-            $host = $connection_parameters['db_host'];
-            $user = $connection_parameters['db_user'];
-            $pass = $connection_parameters['db_pass'];
-            $name = $connection_parameters['db_name'];
-        }
-
-   
         if ($link) {
             return $link;
         }
-        if (self::$instance == null || self::$instance->conn == null) {
-            self::$instance = self::getConnection($db_type, $host, $user, $pass, $name);
 
+        // if connection is active returns connection instance
+        if (self::$instance !== null && self::$instance->conn !== null) {
+            return self::$instance;
+        }
 
-            if (self::$instance) {
-                self::$connected = true;
-            }
+        // get connection parameters
+        $config = self::getConnectionParameters($connection_parameters);
+
+        // Se esiste una factory personalizzata, la usiamo
+        if (self::$factory !== null) {
+            self::$instance = self::$factory->create($config);
+
+        } else {
+            self::$instance = self::getConnection(
+                $config['db_type'],
+                $config['db_host'],
+                $config['db_user'],
+                $config['db_pass'],
+                $config['db_name']
+            );
+        }
+
+        if (self::$instance) {
+            self::$connected = true;
         }
 
         return self::$instance;
+    }
+
+    protected static function getConnectionParameters($connection_parameters)
+    {
+        // Recupera i parametri dalla sessione
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+        $cfg = [];
+        if ($session && $session->has('setValues') && count($session->get('setValues'))) {
+            $values = $session->get('setValues');
+            $cfg['db_type'] = 'mysqli';
+            $cfg['db_user'] = $values['dbUser'] ?? false;
+            $cfg['db_pass'] = $values['dbPass'] ?? false;
+            $cfg['db_name'] = $values['dbName'] ?? false;
+            $cfg['db_host'] = $values['dbHost'] ?? false;
+        }
+
+        // Priorità: connection_parameters > Get::cfg > session values
+        $config = [
+            'db_type' => $connection_parameters['db_type'] ?? \FormaLms\lib\Get::cfg('db_type') ?: ($cfg['db_type'] ?? false),
+            'db_host' => $connection_parameters['db_host'] ?? \FormaLms\lib\Get::cfg('db_host') ?: ($cfg['db_host'] ?? false),
+            'db_user' => $connection_parameters['db_user'] ?? \FormaLms\lib\Get::cfg('db_user') ?: ($cfg['db_user'] ?? false),
+            'db_pass' => $connection_parameters['db_pass'] ?? \FormaLms\lib\Get::cfg('db_pass') ?: ($cfg['db_pass'] ?? false),
+            'db_name' => $connection_parameters['db_name'] ?? \FormaLms\lib\Get::cfg('db_name') ?: ($cfg['db_name'] ?? false),
+        ];
+
+        return $config;
     }
 
     public static function getConnection($dbType, $dbHost, $dbUser, $dbPassword, $dbName, $debug = null)
@@ -99,6 +115,7 @@ class DbConn
         if (empty($dbType)) {
             $dbType = function_exists('mysqli_connect') ? 'mysqli' : null;
         }
+
         switch ($dbType) {
             case 'mysqli':
                 $instance = new Mysqli();
@@ -114,8 +131,6 @@ class DbConn
                     $dbName);
 
                 return $instance;
-
-                break;
         }
         return false;
     }

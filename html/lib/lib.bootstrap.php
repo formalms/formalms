@@ -427,9 +427,17 @@ class Boot
             }
         }
 
-
         self::log('Load database funtion management library.');
 
+        $factoryClass = \FormaLms\lib\Get::cfg('db_factory_class');
+        if ($factoryClass && class_exists($factoryClass)) {
+            try {
+                \FormaLms\db\DbConn::setFactory(new $factoryClass());
+                self::log("Database factory loaded: $factoryClass");
+            } catch (\Exception $e) {
+                self::log("Failed to load database factory: " . $e->getMessage());
+            }
+        }
 
         // utf8 support
         self::log('Connect to database.');
