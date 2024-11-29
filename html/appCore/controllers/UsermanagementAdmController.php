@@ -70,14 +70,14 @@ class UsermanagementAdmController extends AdmController
     protected function _setSessionValue($index, $value)
     {
         $this->session->set($this->sessionPrefix . '_' . $index, $value);
-        $this->session->save();
+      //  $this->session->save(); //commented since it can randomly lose references, set is enough because session is treated as singleton
     }
 
     protected function _getSessionValue($index, $default = false)
     {
         if (!$this->session->has($this->sessionPrefix . '_' . $index)) {
             $this->session->set($this->sessionPrefix . '_' . $index, $default);
-            $this->session->save();
+            //$this->session->save(); //commented since it can randomly lose references, set is enough because session is treated as singleton
         }
 
         return $this->session->get($this->sessionPrefix . '_' . $index);
