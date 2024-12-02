@@ -687,8 +687,8 @@ class CourseAlms extends Model
 
             date_begin          = " . (!empty($date_begin) ? "'" . $date_begin . "'" : 'NULL') . ",
             date_end            = " . (!empty($date_end) ? "'" . $date_end . "'" : 'NULL') . ",
-            hour_begin          = '" . $hour_begin . "',
-            hour_end            = '" . $hour_end . "',
+            hour_begin          = '" . ($hour_begin == -1 ? '00:00' : $hour_begin) . "',
+            hour_end            = '" . ($hour_end == -1 ? '23:59' : $hour_end) . "',
 
             valid_time          = '" . (int)$data_params['course_day_of'] . "',
 
@@ -1062,8 +1062,8 @@ class CourseAlms extends Model
 
             date_begin          = " . (!empty($date_begin) ? "'" . $date_begin . "'" : 'NULL') . ",
             date_end            = " . (!empty($date_end) ? "'" . $date_end . "'" : 'NULL') . ",
-            hour_begin          = '" . $hour_begin . "',
-            hour_end            = '" . $hour_end . "',
+            hour_begin          = '" . ($hour_begin == -1 ? '00:00' : $hour_begin) . "',
+            hour_end            = '" . ($hour_end == -1 ? '23:59' : $hour_end) . "',
 
             valid_time          = '" . (int)$data_params['course_day_of'] . "',
 
