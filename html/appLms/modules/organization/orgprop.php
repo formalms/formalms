@@ -119,6 +119,7 @@ function organization_property_settings(&$treeView, $idItem, &$form, &$lang)
 {
     $folder = $treeView->tdb->getFolderById($idItem);
 
+
     $values = organization_property_common($treeView, $idItem, $form, $lang, $folder);
 
     $GLOBALS['page']->add($treeView->printState());
@@ -153,13 +154,14 @@ function organization_property_settings(&$treeView, $idItem, &$form, &$lang)
         } else {
             $GLOBALS['page']->add($form->getHidden('publish_for', 'publish_for', PF_ALL_USER));
         }
-        $GLOBALS['page']->add($form->getDatefield($lang->def('_PUBLISH_FROM'),
-                                            'publish_from',
-                                            'publish_from',
-                                            isset($values['publish_from']) ? $values['publish_from'] : '')
-                        );
 
-        $GLOBALS['page']->add($form->getDatefield($lang->def('_PUBLISH_TO'),
+       
+        $GLOBALS['page']->add($form->getDatetimeLocalfield($lang->def('_PUBLISH_FROM'),
+                        'publish_from',
+                        'publish_from',
+                        isset($values['publish_from']) ? $values['publish_from'] : ''));
+
+        $GLOBALS['page']->add($form->getDatetimeLocalfield($lang->def('_PUBLISH_TO'),
                                             'publish_to',
                                             'publish_to',
                                             isset($values['publish_to']) ? $values['publish_to'] : '')
@@ -480,8 +482,8 @@ function organization_property_common(&$treeView, $idItem, &$form, &$lang, &$fol
         $values['obj_width'] = $data[ORGFIELD_WIDTH];
         $values['obj_height'] = $data[ORGFIELD_HEIGHT];
         $values['publish_for'] = $data[ORGFIELD_PUBLISHFOR];
-        $values['publish_from'] = Format::date($data[ORGFIELD_PUBLISHFROM], 'date');
-        $values['publish_to'] = Format::date($data[ORGFIELD_PUBLISHTO], 'date');
+        $values['publish_from'] = $data[ORGFIELD_PUBLISHFROM];
+        $values['publish_to'] = $data[ORGFIELD_PUBLISHTO];
     }
 
     $GLOBALS['page']->add($form->getHidden('objectType', 'objectType', $values['objectType']));

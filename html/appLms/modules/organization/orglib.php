@@ -253,6 +253,7 @@ class OrgDirDb extends RepoDirDb implements Accessible
             if ($this->filterVisibility) {
                 $result .= " AND (visible = '1' )";
                 $result .= " AND (NOW() > publish_from OR publish_from IS NULL)";
+                $result .= ' AND (NOW() < publish_to OR publish_to IS NULL)';
             }
         } else {
             $result = ' AND (' . $tname . ".idCourse = '" . $this->idCourse . "')";
@@ -262,6 +263,7 @@ class OrgDirDb extends RepoDirDb implements Accessible
             if ($this->filterVisibility) {
                 $result .= ' AND (' . $tname . ".visible = '1' )";
                 $result .= ' AND (NOW() > ' . $tname . '.publish_from OR ' . $tname . '.publish_from IS NULL)';
+                $result .= ' AND (NOW() < ' . $tname . '.publish_to OR ' . $tname . '.publish_to IS NULL)';
             }
         }
         if ($this->filterAccess !== false) {
@@ -616,10 +618,16 @@ class OrgDirDb extends RepoDirDb implements Accessible
 
         $this->org_height = $arrData['obj_height'] ?? $folder->otherValues[ORGFIELD_HEIGHT];
 
-        $arrData['publish_from'] = Format::dateDb($arrData['publish_from'], 'date');
-        $arrData['publish_to'] = Format::dateDb($arrData['publish_to'], 'date');
-
-        if ($arrData['publish_from'] > $arrData['publish_to'] && $arrData['publish_to'] != '') {
+        $checkDates = -1;
+        if(!empty($arrData['publish_from'])) {
+            $arrData['publish_from'] = (new Datetime($arrData['publish_from']))->format('Y-m-d H:i:s');
+            $checkDates++;
+        }
+        if(!empty($arrData['publish_to'])) {
+            $arrData['publish_to'] = (new Datetime($arrData['publish_to']))->format('Y-m-d H:i:s');
+            $checkDates++;
+        }
+        if ($checkDates > 0 && $arrData['publish_from'] > $arrData['publish_to']) {
             $temp = $arrData['publish_from'];
             $arrData['publish_from'] = $arrData['publish_to'];
             $arrData['publish_to'] = $temp;

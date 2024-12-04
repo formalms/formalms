@@ -530,6 +530,22 @@ class Form
         return Form::getInputTextfield($css_field, $id, $name, Format::date($iso, 'date'), $alt_name, '30', $date_picker_other_param);
     }
 
+    public static function  getInputDatetimeLocalfield($css_field, $id, $name, $value = '', $date_format = false, $sel_time = false, $alt_name = '', $other_param = '')
+    {
+       
+        $value = (new Datetime($value))->format('Y-m-d\TH:i');
+        return '<input 
+        type="datetime-local" 
+        class="'.$css_field.'" 
+        id="'.$id.'" 
+        name="'.$name.'" 
+        value="'.$value.'" 
+        alt="'.$alt_name.'"';
+
+    }
+
+   
+
     /**
      * public static function getLineTextfield( $css_line, $css_label, $label_name, $css_text, $id, $name, $value, $alt_name, $maxlenght, $other_param, $other_after, $other_before ).
      *
@@ -557,6 +573,36 @@ class Form
         . $other_after
         . '</div>';
     }
+
+       /**
+     * public static function getLineDatetimeLocalfield( $css_line, $css_label, $label_name, $css_text, $id, $name, $value, $alt_name, $maxlenght, $other_param, $other_after, $other_before ).
+     *
+     * @param string $css_line     css for the line
+     * @param string $css_label    css for the label
+     * @param string $label_name   text contained into the label
+     * @param string $css_text     the css class for the input element
+     * @param string $id           the id of the element
+     * @param string $name         the name of the element
+     * @param string $value        the default value for the input field
+     * @param string $alt_name     the alt name for the field
+     * @param string $maxlenght    the max number of characters
+     * @param string $other_param  other element for the tag
+     * @param string $other_after  html code added after the input element
+     * @param string $other_before html code added before the label element
+     *
+     * @return string with the html code for a line with the input type="text" element
+     */
+    public static function getLineDatetimeLocalfield($css_line, $css_label, $label_name, $css_text, $id, $name, $value, $date_format, $alt_name, $other_param, $other_after, $other_before)
+    {
+        return '<div class="' . $css_line . '">'
+        . $other_before
+        . '<p><label class="' . $css_label . '" for="' . $id . '">' . $label_name . '</label></p>'
+        . Form::getInputDatetimeLocalfield($css_text, $id, $name, $value, $date_format, false, $alt_name, $other_param)
+        . $other_after
+        . '</div>';
+    }
+
+    
 
     /**
      * public static function getDatefield( $label_name, $id, $name, $value = '', $date_format = FALSE, $sel_time = FALSE, $alt_name = '', $other_after = '', $other_before = '' ).
@@ -588,6 +634,35 @@ class Form
         return Form::getLineDatefield('form_line_l', 'floating', $label_name, 'textfield',
                 $id, $name, $value, $date_format, $alt_name, $other_param, $other_after, $other_before);
     }
+
+
+      /**
+     * public static function getDatetimeLocalfield( $label_name, $id, $name, $value = '', $date_format = FALSE, $sel_time = FALSE, $alt_name = '', $other_after = '', $other_before = '' ).
+     *
+     * @param string $label_name   text contained into the label
+     * @param string $id           the id of the element
+     * @param string $name         the name of the element
+     * @param string $maxlenght    the max number of characters
+     * @param string $value        optional default value for the input field
+     * @param string $alt_name     the alt name for the field
+     * @param string $date_format  optional string with the date format selected
+     * @param string $alt_name     optional with the alt value
+     * @param string $other_after  optional html code added after the input element
+     * @param string $other_before optional html code added before the label element
+     *
+     * @return string with the html code for the input type="text" with a calendar
+     */
+    public static function getDatetimeLocalfield($label_name, $id, $name, $value = '', $date_format = 'Y-m-d H:i:s', $alt_name = '', $other_after = '', $other_before = '', $other_param = '')
+    {
+
+        if ($alt_name == '') {
+            $alt_name = strip_tags($label_name);
+        }
+
+        return Form::getLineDatetimeLocalfield('form_line_l', 'floating', $label_name, 'textfield',
+                $id, $name, $value, $date_format, $alt_name, $other_param, $other_after, $other_before);
+    }
+    
 
     /**
      * @param string $css_text    the css class for the input element
