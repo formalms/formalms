@@ -225,8 +225,11 @@ class CourseLms extends Model
                 $parsedData['dateClosing_month'] = Lang::t('_MONTH_' . substr('0' . $date_closing['mon'], -2), 'standard');
                 $parsedData['dateClosing_day'] = $date_closing['mday'];
             }
+
+            $hour_end = ($parsedData['hour_end'] == -1) ? '23:59' : $parsedData['hour_end'];
             
-            if(new DateTime($parsedData['date_end']) > new DateTime()) {
+           
+            if(new DateTime($parsedData['date_end'] . ' ' . $hour_end .':59') < new DateTime()) {
                 $parsedData['canEnter'] = false;
 
                 //anche nel caso di semplice iscrizione metto un flag fake per impedire iscrizione
