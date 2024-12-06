@@ -340,6 +340,7 @@ var initDataTable = function(oConfig) {
 						hideaftersubmit: false,
 						isDynamic: true,
 						ajaxUrl: this.href,
+						renderEvent:function() {window.frontend.functions.initDropdownComplex();},
 						callback: function() {
 							this.destroy();
 							oDt.refresh();

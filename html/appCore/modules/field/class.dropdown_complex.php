@@ -233,8 +233,7 @@ class Field_DropdownComplex extends Field_Dropdown
 
         if ($ajax !== true) {
             $js_new .= '<script type="text/javascript"> 
-                var registration_jayout = ' . ($registrationLayout ? 'true' : 'false') . ';
-                frontend.functions.initDropdownComplex();'
+                var registration_jayout = ' . ($registrationLayout ? 'true' : 'false') . ';'
                 . '</script>';
         }
 
@@ -612,7 +611,7 @@ class Field_DropdownComplex extends Field_Dropdown
         if (isset($_POST['save_field_' . static::getFieldType()])) {
             //insert mandatory translation
             $mand_lang = Lang::get();
-
+            $belongsToChanges = $_POST['belongs_to'];
             //control if all is ok
             if (!isset($_POST['new_dropdown_son'][$mand_lang])) {
                 $out->add(
@@ -651,8 +650,8 @@ class Field_DropdownComplex extends Field_Dropdown
             //insert mandatory field
             if (!sql_query('
 			INSERT INTO ' . $this->_getElementTable() . "
-			(idField, lang_code, translation, sequence) VALUES
-			('" . $this->id_common . "', '" . $mand_lang . "', '" . $_POST['new_dropdown_son'][$mand_lang] . "', '" . $sequence . "') ")) {
+			(idField, lang_code, translation, sequence, belongs_to) VALUES
+			('" . $this->id_common . "', '" . $mand_lang . "', '" . $_POST['new_dropdown_son'][$mand_lang] . "', '" . $sequence . "','". $belongsToChanges."') ")) {
                 Util::jump_to($this->getUrl() . '&id_common='
                     . $this->id_common . '&type_field=' . static::getFieldType() . '&back=' . $this->back_coded
                     . '&result=fail');
@@ -672,8 +671,8 @@ class Field_DropdownComplex extends Field_Dropdown
                 if ($mand_lang != $lang_code && $translation != $lang->def('_FIELD_NAME') && trim($translation) != '') {
                     $re_ins = sql_query('
 					INSERT INTO ' . $this->_getElementTable() . "
-					(idField, id_common_son, lang_code, translation, sequence) VALUES
-					('" . $this->id_common . "', '" . (int) $id_common_son . "', '" . $lang_code . "', '" . $translation . "', '" . $sequence . "') ");
+					(idField, id_common_son, lang_code, translation, sequence, belongs_to) VALUES
+					('" . $this->id_common . "', '" . (int) $id_common_son . "', '" . $lang_code . "', '" . $translation . "', '" . $sequence . "','". $belongsToChanges."') ");
                     $re = $re && $re_ins;
                 }
             }
@@ -693,11 +692,11 @@ class Field_DropdownComplex extends Field_Dropdown
 
         if ($father_id) {
             $choices =   sql_query('
-                SELECT idSon, translation
+                SELECT id_common_son, translation
                 FROM ' . $this->_getElementTable() .
                 ' WHERE idField = "' . $father_id . '" and lang_code = "' . Lang::get() . '"');
             foreach ($choices ?? [] as $choice) {
-                $choicesDropdown[$choice['idSon']] = $choice['translation'];
+                $choicesDropdown[$choice['id_common_son']] = $choice['translation'];
             }
         }
 
@@ -843,11 +842,11 @@ class Field_DropdownComplex extends Field_Dropdown
 
         if ($father_id) {
             $choices =   sql_query('
-                   SELECT idSon, translation
+                   SELECT id_common_son, translation
                    FROM ' . $this->_getElementTable() .
                 ' WHERE idField = "' . $father_id . '" and lang_code = "' . Lang::get() . '"');
             foreach ($choices ?? [] as $choice) {
-                $choicesDropdown[$choice['idSon']] = $choice['translation'];
+                $choicesDropdown[$choice['id_common_son']] = $choice['translation'];
             }
         }
 
@@ -1064,7 +1063,7 @@ class Field_DropdownComplex extends Field_Dropdown
         $re_field = sql_query('
 		SELECT cfs.id_common_son, cfs.translation, coalesce(cff.translation, "'.    $lang->def('_NO_SELECTION').'") as father_translation
 		FROM ' . $this->_getElementTable() . ' cfs
-        LEFT JOIN ' . $this->_getElementTable() . ' cff ON cfs.belongs_to = cff.idSon AND cff.lang_code = "' . Lang::get() . '"
+        LEFT JOIN ' . $this->_getElementTable() . ' cff ON cfs.belongs_to = cff.id_common_son AND cff.lang_code = "' . Lang::get() . '"
 		WHERE cfs.idField = "' . $this->id_common . '" AND cfs.lang_code = "' . Lang::get() . '"
 		ORDER BY cfs.sequence');
 

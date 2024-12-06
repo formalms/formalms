@@ -57,7 +57,7 @@ class Field
     /**
      * class constructor.
      */
-    public function __construct($id_common)
+    public function __construct($id_common, $id_common_copy_ref = null)
     {
         $this->field_entry_table = '%adm_field_userentry';
         $this->field_son_table = '%adm_field_son';
