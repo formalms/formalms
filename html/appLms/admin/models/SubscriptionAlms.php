@@ -1511,7 +1511,7 @@ class SubscriptionAlms extends Model implements Accessible
 
         $query = 'SELECT DISTINCT idUser '
               . ' FROM %lms_coursepath_user '
-              . ' WHERE p.id_path = ' . (int) $id_path ;
+              . ' WHERE id_path = ' . (int) $id_path ;
 
 
         if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
