@@ -1502,73 +1502,17 @@ class SubscriptionAlms extends Model implements Accessible
         return $res;
     }
 
-    public function getCoursePathSubscriptionsList($id_path, $filter = false)
+    public function getCoursePathSubscriptionsList($id_path)
     {
         require_once _lms_ . '/lib/lib.coursepath.php';
         $cman = new CoursePath_Manager();
 
         $courses = $cman->getAllCourses([$id_path]);
-        if (empty($courses)) {
-            //...
-        }
 
-        $query = 'SELECT DISTINCT s.idUser '
-            . ' FROM (%lms_courseuser as s JOIN %lms_coursepath_user as p '
-            . ' ON (s.idUser = p.idUser)) '
-            . ' JOIN %adm_user as u '
-            . ' ON (s.idUser = u.idst) '
-            . ' WHERE p.id_path = ' . (int) $id_path . ' AND s.idCourse IN (' . implode(',', array_values($courses)) . ') '
-            ; //." GROUP BY s.idUser";
+        $query = 'SELECT DISTINCT idUser '
+              . ' FROM %lms_coursepath_user '
+              . ' WHERE p.id_path = ' . (int) $id_path ;
 
-        if (is_array($filter)) {
-            if (isset($filter['text']) && $filter['text'] != '') {
-                $query .= " AND (u.userid LIKE '%" . $filter['text'] . "%' OR u.firstname LIKE '%" . $filter['text'] . "%' OR u.lastname LIKE '%" . $filter['text'] . "%') ";
-            }
-
-            $arr_idst = [];
-            if (isset($filter['orgchart']) && $filter['orgchart'] > 0) {
-                $umodel = new UsermanagementAdm();
-                $use_desc = (isset($filter['descendants']) && $filter['descendants']);
-                $ulist = $umodel->getFolderUsers($filter['orgchart'], $use_desc);
-                if (!empty($ulist)) {
-                    $arr_idst = $ulist;
-                }
-                unset($ulist);
-            }
-            if (!empty($arr_idst)) {
-                $conditions[] = ' AND u.idst IN (' . implode(',', $arr_idst) . ') ';
-            }
-
-            if (isset($filter['date_valid']) && strlen($filter['date_valid']) >= 10) {
-                $query .= " AND (s.date_begin_validity <= '" . $filter['date_valid'] . "' OR s.date_begin_validity IS NULL)";
-                $query .= " AND (s.date_expire_validity >= '" . $filter['date_valid'] . "' OR s.date_expire_validity IS NULL)";
-            }
-
-            if (isset($filter['show'])) {
-                //validate values
-                switch ($filter['show']) {
-                    case 0:  //all
-                        //no condition to check ...
-                     break;
-
-                    case 1:  //expired
-                        $query .= ' AND (s.date_expire_validity IS NOT NULL AND s.date_expire_validity < NOW())';
-                     break;
-
-                    case 2:  //not expired with expiring date
-                        $query .= ' AND (s.date_expire_validity IS NOT NULL AND s.date_expire_validity > NOW())';
-                     break;
-
-                    case 3:  //not expired without expiring date
-                        $query .= " AND (s.date_expire IS NULL OR s.date_expire='') ";
-                     break;
-
-                    default:
-                        //all ...
-                     break;
-                }
-            }
-        }
 
         if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';

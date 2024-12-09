@@ -3141,13 +3141,7 @@ class SubscriptionAlmsController extends AlmsController
 
     protected function _selectall_coursepath()
     {
-        $filter = [
-            'text' => FormaLms\lib\Get::req('filter_text', DOTY_STRING, ''),
-            'orgchart' => FormaLms\lib\Get::req('filter_orgchart', DOTY_INT, 0),
-            'descendants' => FormaLms\lib\Get::req('filter_descendants', DOTY_INT, 0),
-            'date_valid' => FormaLms\lib\Get::req('filter_date_valid', DOTY_STRING, ''),
-        ];
-        $output = array_values($this->model->getCoursePathSubscriptionsList($filter));
+        $output = array_values($this->model->getCoursePathSubscriptionsList(FormaLms\lib\Get::req('id_path', DOTY_INT, 0)));
         echo $this->json->encode($output);
     }
 
