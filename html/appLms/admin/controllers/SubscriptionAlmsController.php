@@ -3611,7 +3611,7 @@ class SubscriptionAlmsController extends AlmsController
 
         }
 
-        Util::jump_to('index.php?r=' . $this->link . '/show_coursepath&id_path=' . (int)$_POST['id_path'] . '&res=' . $res);
+        Util::jump_to('index.php?r=' . $this->link . '/show_coursepath&id_path=' . (int)$id_path . '&res=' . $res);
 
     }
 
