@@ -31,6 +31,8 @@ class MycertificateLmsController extends LmsController
 
     public function init()
     {
+
+     
         $this->id_user = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
         $this->json = new Services_JSON();
         $this->model = new MycertificateLms($this->id_user);
@@ -39,9 +41,11 @@ class MycertificateLmsController extends LmsController
 
     public function show()
     {
+        
         include \FormaLms\lib\Forma::include(_lib_ . '/formatable/','include.php');
         checkPerm('view', false, self::mod_name);
 
+       
         //TODO: EVT_OBJECT (§)
         //$event = new \appLms\Events\Lms\MyCertificateTabLoading();
         //TODO: EVT_LAUNCH (&)
@@ -49,14 +53,7 @@ class MycertificateLmsController extends LmsController
 
         $metaCertificates = $this->model->getMyMetaCertificates();
         $totalMetaCertificates = count($metaCertificates);
-        $cert_columns = [
-            ['key' => 'on_date', 'label' => Lang::t('_DATE'), 'className' => 'min-cell', 'sortable' => true],
-            ['key' => 'code', 'label' => Lang::t('_CODE')],
-            ['key' => 'course_name', 'label' => Lang::t('_COURSE', 'certificate')],
-            ['key' => 'cert_name', 'label' => Lang::t('_CERTIFICATE_NAME', 'course')],
-            ['key' => 'date_complete', 'label' => Lang::t('_DATE_COMPLETE', 'certificate')],
-            ['key' => 'download', 'label' => Lang::t('_TAKE_A_COPY', 'certificate'), 'className' => 'img-cell'],
-        ];
+        $cert_columns = Util::config('tables.mycert_columns');
         $selected_tab = FormaLms\lib\Get::req('current_tab', DOTY_STRING, 'cert');
         $this->render('show',
             [

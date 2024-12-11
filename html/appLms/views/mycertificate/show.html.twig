@@ -71,7 +71,7 @@
 
         var metacert_tb = $('#mymetacertificates').FormaTable({
             data: {{ metacertificates|raw }},
-            columns:{{ certa | raw }},
+            columns:{{ cert_columns | raw }},
             language: languageObj
         });
     });

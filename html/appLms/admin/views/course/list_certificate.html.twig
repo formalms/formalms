@@ -156,29 +156,43 @@ var glob_id_course = ' . (int)$id_course . ';
 
         });
 
-        document.querySelectorAll('.delete_certificate').forEach(element => {
-    
-            element.addEventListener('click', function(event) {
-                
-            event.preventDefault();
-            
-            modalDeletion.Title = '{{Lang_translate("_DELETE_CERTIFICATE", "standard")}}';
-            modalDeletion.Content = `<form class="single_certificate_deletion"  action="`+element.href+`">
-                <input type="hidden" id="authentic_request_popup_form" name="authentic_request" value="{{ Util_getSignature() }}">
-            
-                    <h2>{{ Lang_translate('_AREYOUSURE') }}</h2>
-                        <div class="alert" role="alert">
+        if(cert_table.DataTable != undefined) {
+       
+             addDeleteListener();
+        }
 
-                        </div>
-                        <input class="btn btn-danger" type="submit" value="{{ Lang_translate('_CONFIRM') }}">
-                    </form>`;
+    (cert_table.DataTable).on('draw.dt', function() {
 
-                runAjax();
-            
-            });
-        });
+
+           addDeleteListener();
+        
+         });
 
         
+
+        function addDeleteListener() {
+                document.querySelectorAll('.delete_certificate').forEach(element => {
+        
+                element.addEventListener('click', function(event) {
+                    
+                event.preventDefault();
+                
+                modalDeletion.Title = '{{Lang_translate("_DELETE_CERTIFICATE", "standard")}}';
+                modalDeletion.Content = `<form class="single_certificate_deletion"  action="`+element.href+`">
+                    <input type="hidden" id="authentic_request_popup_form" name="authentic_request" value="{{ Util_getSignature() }}">
+                
+                        <h2>{{ Lang_translate('_AREYOUSURE') }}</h2>
+                            <div class="alert" role="alert">
+
+                            </div>
+                            <input class="btn btn-danger" type="submit" value="{{ Lang_translate('_CONFIRM') }}">
+                        </form>`;
+
+                    runAjax();
+                
+                });
+            });
+        }
 
             
 

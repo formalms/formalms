@@ -126,5 +126,14 @@ return [
                 "searchable" => false,
             ]
         ],
+    ],
+    'mycert_columns' => [
+        ['key' => 'on_date', 'label' => Lang::t('_DATE'), 'className' => 'min-cell', 'sortable' => true],
+        ['key' => 'code', 'label' => Lang::t('_CODE')],
+        ['key' => 'course_name', 'label' => Lang::t('_COURSE', 'certificate')],
+        ['key' => 'cert_name', 'label' => Lang::t('_CERTIFICATE_NAME', 'course')],
+        ['key' => 'date_complete', 'label' => Lang::t('_DATE_COMPLETE', 'certificate')],
+        ['key' => 'download', 'label' => Lang::t('_TAKE_A_COPY', 'certificate'), 'className' => 'img-cell'],
+  
     ]
 ];
