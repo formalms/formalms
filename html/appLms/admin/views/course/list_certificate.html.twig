@@ -12,6 +12,10 @@
     .custom {
         background-color: yellow;
     }
+
+    .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody>table>tbody>tr>td{text-align:left;}
+
+
 </style>
 
 
@@ -90,7 +94,7 @@ var glob_id_course = ' . (int)$id_course . ';
             }
         });
 
-        var columns = {{ columns | json_encode(constant('JSON_HEX_APOS')) | raw }};
+        let columns = {{ columns | json_encode(constant('JSON_HEX_APOS')) | raw }};
         let statuses = {{ statuses | json_encode(constant('JSON_HEX_APOS')) | raw }}; 
 
         columns.forEach(function(column) {
@@ -129,7 +133,10 @@ var glob_id_course = ' . (int)$id_course . ';
                     text: '{{ Lang_translate("_CHANGEPOLICY", "profile") }}',
                      className: 'btn btn-default',
                         collectionLayout: 'dropdown-menu',
-                        columns: ':not(":first")',
+                        columns: function (idx, data, node) {
+                            
+                            return idx > 2 && idx < columns.length - 2;
+                        }
                 }
                 /*,
                 {
