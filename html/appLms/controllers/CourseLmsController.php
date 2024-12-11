@@ -106,7 +106,8 @@ class CourseLmsController extends LmsController
             $course['show_quota'] = true;
             $quota = [];
             $max_quota = $GLOBALS['course_descriptor']->getQuotaLimit();
-            $actual_space = $GLOBALS['course_descriptor']->getUsedSpace();
+            $actual_space = $GLOBALS['course_descriptor']->getUsedSpace() === '' ? 0 : $GLOBALS['course_descriptor']->getUsedSpace();
+
 
             $actual_space = number_format(($actual_space / (1024 * 1024)), '2');
 
