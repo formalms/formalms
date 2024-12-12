@@ -533,7 +533,7 @@ class Form
     public static function  getInputDatetimeLocalfield($css_field, $id, $name, $value = '', $date_format = false, $sel_time = false, $alt_name = '', $other_param = '')
     {
        
-        $value = (new Datetime($value))->format('Y-m-d\TH:i');
+        $value = !empty($value) ? (new Datetime($value))->format('Y-m-d\TH:i') : '';
         return '<input 
         type="datetime-local" 
         class="'.$css_field.'" 
