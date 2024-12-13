@@ -42,7 +42,7 @@ class CoursepathAccessProcessor extends AccessProcessor
             if (!empty($classroom) || !empty($edition)) {
                 $classroom_list = [];
                 if (!empty($classroom)) {
-                    require_once _lms_ . '/lib/lib.date.php';
+                    require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
                     $date_man = new \DateManager();
 
                     foreach ($classroom as $id_course => $info) {

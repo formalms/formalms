@@ -15,7 +15,7 @@ namespace Plugin\report_user;
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once _lms_ . '/lib/lib.course.php';
+require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
 define('_RU_CATEGORY_COURSES', 'courses');
 define('_RU_CATEGORY_GENERAL', 'general');
@@ -256,7 +256,7 @@ class Report extends \ReportPlugin
         require_once _base_ . '/lib/lib.form.php';
         require_once _adm_ . '/lib/lib.directory.php';
         require_once _base_ . '/lib/lib.userselector.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         $lang = &FormaLanguage::createInstance('report', 'framework');
         $org_chart_subdivision = importVar('org_chart_subdivision', true, 0);
@@ -337,7 +337,7 @@ class Report extends \ReportPlugin
         $next_url = $this->next_url;
 
         require_once _base_ . '/lib/lib.form.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         $lang = &FormaLanguage::createInstance('report', 'framework');
 
@@ -777,7 +777,7 @@ class Report extends \ReportPlugin
         $jump_url = $this->jump_url;
         $next_url = $this->next_url;
 
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         $cmodel = new CompetencesAdm();
         $lang = &FormaLanguage::createInstance('report', 'framework');
@@ -980,7 +980,7 @@ class Report extends \ReportPlugin
         checkPerm('view');
         $view_all_perm = checkPerm('view_all', true);
 
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         $output = '';
         $jump_url = '';
@@ -2310,7 +2310,7 @@ class Report extends \ReportPlugin
         $next_url = $this->next_url;
 
         require_once _base_ . '/lib/lib.form.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         //back to columns category selection
         if (isset($_POST['undo_filter'])) {
@@ -2955,7 +2955,7 @@ class Report extends \ReportPlugin
         $next_url = $this->next_url;
 
         require_once _base_ . '/lib/lib.form.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         $reportTempData = $this->session->get('report_tempdata');
         $ref = &$reportTempData['columns_filter'];
@@ -4263,7 +4263,7 @@ class Report extends \ReportPlugin
         $next_url = $this->next_url;
 
         require_once _base_ . '/lib/lib.form.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         $reportTempData = $this->session->get('report_tempdata');
         $ref = &$reportTempData['columns_filter'];

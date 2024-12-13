@@ -55,7 +55,7 @@ class CertificateSubs_UserStat extends CertificateSubstitution
         $subs = [];
 
         if ($this->id_meta != 0) {
-            require_once _lms_ . '/lib/lib.course.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
             require_once _lms_ . '/lib/lib.coursereport.php';
             require_once _lms_ . '/lib/lib.aggregated_certificate.php';
 
@@ -189,7 +189,7 @@ class CertificateSubs_UserStat extends CertificateSubstitution
             $meta = sql_fetch_object($q);
             $subs['[meta_assoc]'] = $meta->title;
         } else {
-            require_once _lms_ . '/lib/lib.course.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
             $courseuser = new Man_CourseUser();
             $course_stat = &$courseuser->getUserCourses($this->id_user, false, false, false, [$this->id_course]);

@@ -401,7 +401,7 @@ class MyFilesPolicy extends MyFile
             return $this->_viewer_teacher;
         }
 
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         $re = Man_CourseUser::getUserWithLevelFilter(['4', '5', '6', '7'], [$this->_viewer]);
         $this->_viewer_teacher = !empty($re);
 

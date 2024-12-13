@@ -86,7 +86,7 @@ class Report_Courses extends Report
         $next_url = $this->next_url;
 
         require_once _base_ . '/lib/lib.form.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once _lms_ . '/lib/lib.course_managment.php';
 
         $lang = FormaLanguage::createInstance('report', 'framework');
@@ -171,7 +171,7 @@ class Report_Courses extends Report
         require_once _base_ . '/lib/lib.form.php';
         require_once _adm_ . '/lib/lib.directory.php';
         require_once _adm_ . '/class.module/class.directory.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         //**** LRZ
         require_once _adm_ . '/lib/lib.customfield.php';
@@ -486,7 +486,7 @@ class Report_Courses extends Report
         require_once _base_ . '/lib/lib.form.php';
         require_once _adm_ . '/lib/lib.directory.php';
         require_once _adm_ . '/class.module/class.directory.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         $lang = FormaLanguage::createInstance('report', 'framework');
         $glang = FormaLanguage::createInstance('admin_course_managment', 'lms');
@@ -562,7 +562,7 @@ class Report_Courses extends Report
         require_once _base_ . '/lib/lib.form.php';
         require_once _adm_ . '/lib/lib.directory.php';
         require_once _adm_ . '/class.module/class.directory.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         $lang = FormaLanguage::createInstance('report', 'framework');
         $glang = FormaLanguage::createInstance('admin_course_managment', 'lms');
@@ -1611,7 +1611,7 @@ class Report_Courses extends Report
 
         $output = '';
 
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         $lang = FormaLanguage::createInstance('course', 'lms');
         $course_lang = FormaLanguage::createInstance('course', 'lms');

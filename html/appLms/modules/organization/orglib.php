@@ -1823,7 +1823,7 @@ class Org_TreeView extends RepoTreeView
     {
         $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         if (array_key_exists('course_descriptor',$GLOBALS) && $GLOBALS['course_descriptor']->getValue('course_type') === 'classroom') {
-            require_once _lms_ . '/lib/lib.date.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
             $man_date = new DateManager();
             $this->user_presence = $man_date->checkUserPresence(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $idCourse);
         }
@@ -1831,7 +1831,7 @@ class Org_TreeView extends RepoTreeView
         $idLoList = (array) $idLoList;
         require_once _lms_ . '/lib/lib.kbres.php';
         require_once _lms_ . '/class.module/track.object.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         $res = [];
         foreach ($idLoList as $index => $idLo) {
@@ -2015,7 +2015,7 @@ class Org_TreeView extends RepoTreeView
         $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         // check if the user attende the course
         if ($GLOBALS['course_descriptor']->getValue('course_type') == 'classroom') {
-            require_once _lms_ . '/lib/lib.date.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
             $man_date = new DateManager();
             $this->user_presence = $man_date->checkUserPresence(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $idCourse);
         }

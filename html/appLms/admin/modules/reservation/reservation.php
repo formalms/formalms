@@ -143,7 +143,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         checkPerm('view');
 
         require_once _base_ . '/lib/lib.form.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         $lang = FormaLanguage::createInstance('reservation');
 
@@ -926,7 +926,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     {
         checkperm('mod');
 
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once _base_ . '/lib/lib.form.php';
         require_once _base_ . '/lib/lib.userselector.php';
 

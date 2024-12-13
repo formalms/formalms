@@ -95,7 +95,7 @@ if ($next_action != false && FormaLms\lib\Get::sett('sco_direct_play', 'off') ==
         // if we have a id_course setted we will log the user into the course,
         // if no specific action are required we will redirect the user into the first page
         // otherwise we will continue to another option
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         logIntoCourse($id_course, ($next_action == false || $next_action == 'none' ? true : false));
 
         // specific action required
@@ -111,7 +111,7 @@ if ($next_action != false && FormaLms\lib\Get::sett('sco_direct_play', 'off') ==
 //operation that is needed before loading grafiphs element, menu and so on
 switch ($GLOBALS['op']) {
     case 'aula':
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         $idCourse = FormaLms\lib\Get::req('idCourse', DOTY_ALPHANUM);
         if (!logIntoCourse($idCourse, true)) {
             $session->set('current_main_menu', '1');
@@ -190,10 +190,10 @@ if ($sop) {
                 $session->remove('idCourse');
                 $session->remove('idEdition');
 
-                require_once _lms_ . '/lib/lib.course.php';
+                require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
                 logIntoCourse($id_c, false);
             } elseif (!$session->has('idCourse') || empty($session->get('idCourse'))) {
-                require_once _lms_ . '/lib/lib.course.php';
+                require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
                 logIntoCourse($id_c, false);
             }
             if ($session->has('cp_assessment_effect')) {
@@ -228,6 +228,6 @@ if ($sop) {
 
 // istance the course description class
 if ($session->has('idCourse') && !isset($GLOBALS['course_descriptor'])) {
-    require_once _lms_ . '/lib/lib.course.php';
+    require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
     $GLOBALS['course_descriptor'] = new FormaCourse($session->get('idCourse'));
 }

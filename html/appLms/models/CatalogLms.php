@@ -33,9 +33,9 @@ class CatalogLms extends Model
 
     public function __construct()
     {
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once _lms_ . '/lib/lib.edition.php';
-        require_once _lms_ . '/lib/lib.date.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
 
         $this->course_man = new Man_Course();
         $this->edition_man = new EditionManager();
@@ -379,7 +379,7 @@ class CatalogLms extends Model
 
     public function _getClassDisplayInfo($id_course, &$course_array)
     {
-        require_once _lms_ . '/lib/lib.date.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
         $dm = new DateManager();
         $cl = new ClassroomLms();
         $course_editions = $cl->getUserEditionsInfo(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_course);

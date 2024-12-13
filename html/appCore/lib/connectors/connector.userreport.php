@@ -89,7 +89,7 @@ class FormaConnectorUserReport extends FormaConnector
     {
         require_once _adm_ . '/lib/lib.directory.php';
         require_once _base_ . '/lib/lib.userselector.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         $this->set_config($params);
     }

@@ -52,7 +52,7 @@ function subscribe()
 
     $form = new Form();
     if (isset($_POST['course_autoregistration_code'])) {
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
@@ -109,7 +109,7 @@ function subscribe()
                 if ($valid_code == 1) {
                     $array_course = $code_manager->getAvailableCourseAssociateWithCode($code);
 
-                    require_once _lms_ . '/lib/lib.course.php';
+                    require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
                     $man_course = new Man_Course();
 
                     $array_course_name = [];

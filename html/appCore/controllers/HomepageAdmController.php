@@ -556,7 +556,7 @@ class HomepageAdmController extends AdmController
         if ($id_course) {
             define('LMS', true);
 
-            require_once _lms_ . '/lib/lib.course.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
             logIntoCourse($id_course, ($next_action == false || $next_action == 'none' ? true : false));
 
             $url = str_replace('act=', 'op=', $_SERVER['REQUEST_URI']);

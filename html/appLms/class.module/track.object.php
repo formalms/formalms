@@ -420,7 +420,7 @@ class Track_Object
             $isTerminator = isset($values[ORGFIELDISTERMINATOR]) && $values[ORGFIELDISTERMINATOR];
 
             if ($isTerminator) {
-                require_once _lms_ . '/lib/lib.course.php';
+                require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
                 require_once _lms_ . '/lib/lib.stats.php';
                 saveTrackStatusChange((int) $useridst, (int) $idCourse, _CUS_END);
             }

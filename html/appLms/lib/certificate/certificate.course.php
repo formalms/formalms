@@ -66,7 +66,7 @@ class CertificateSubs_Course extends CertificateSubstitution
         $subs = [];
 
         if ($this->id_meta == 0) {
-            require_once _lms_ . '/lib/lib.course.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
             $acl_manager = \FormaLms\lib\Forma::getAclManager();
             $man_course = new FormaCourse($this->id_course);

@@ -25,7 +25,7 @@ class EditionAlms extends Model
     public function __construct($id_course = 0, $id_edition = 0)
     {
         require_once _lms_ . '/lib/lib.edition.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         $this->edition_man = new EditionManager();
 

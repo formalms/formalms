@@ -872,7 +872,7 @@ class UserManager
                     //$reg_code = substr(str_replace('-', '', $reg_code), 0, 10);
 
                     //control course registration
-                    require_once _lms_ . '/lib/lib.course.php';
+                    require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
                     $man_course_user = new Man_CourseUser();
                     $jolly_code = FormaLms\lib\Get::sett('jolly_course_code', '');
                     if ($jolly_code == '' || $jolly_code != $course_code) {
@@ -1548,7 +1548,7 @@ class UserManagerRenderer
                     //$reg_code = substr(str_replace('-', '', $reg_code), 0, 10);
 
                     //control course registration
-                    require_once _lms_ . '/lib/lib.course.php';
+                    require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
                     $man_course_user = new Man_CourseUser();
                     $jolly_code = FormaLms\lib\Get::sett('jolly_course_code', '');
                     if ($jolly_code == '' || $jolly_code != $course_code) {

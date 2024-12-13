@@ -94,7 +94,7 @@ class SubscriptionAlms extends Model implements Accessible
 
             return $edition_man->getTotalUserSubscribed($this->id_course, $this->id_edition, $filter);
         } elseif ($this->id_date != 0) {
-            require_once _lms_ . '/lib/lib.date.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
 
             $date_man = new DateManager();
 
@@ -131,7 +131,7 @@ class SubscriptionAlms extends Model implements Accessible
 
             return $edition_man->getEditionSubscribed($this->id_edition);
         } elseif ($this->id_date != 0) {
-            require_once _lms_ . '/lib/lib.date.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
 
             $date_man = new DateManager();
 
@@ -176,7 +176,7 @@ class SubscriptionAlms extends Model implements Accessible
             $edition_man = new EditionManager();
             $output = $edition_man->getEditionSubscribed($this->id_edition, false, $filter);
         } elseif ($this->id_date != 0) {
-            require_once _lms_ . '/lib/lib.date.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
             $date_man = new DateManager();
             $output = $date_man->getDateSubscribed($this->id_date, $filter);
         } else {
@@ -196,7 +196,7 @@ class SubscriptionAlms extends Model implements Accessible
 
             $edition_info = $edition_man->getEditionInfo($this->id_edition);
 
-            require_once _lms_ . '/lib/lib.course.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
             $course_info = Man_Course::getCourseInfo($this->id_course);
 
@@ -212,13 +212,13 @@ class SubscriptionAlms extends Model implements Accessible
                 'sendCalendar' => $course_info['sendCalendar'],
             ];
         } elseif ($this->id_date != 0) {
-            require_once _lms_ . '/lib/lib.date.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
 
             $date_man = new DateManager();
 
             $date_info = $date_man->getDateInfo($this->id_date);
 
-            require_once _lms_ . '/lib/lib.course.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
             $course_info = Man_Course::getCourseInfo($this->id_course);
 
@@ -234,7 +234,7 @@ class SubscriptionAlms extends Model implements Accessible
                 'sendCalendar' => $course_info['sendCalendar'],
             ];
         } else {
-            require_once _lms_ . '/lib/lib.course.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
             $course_info = Man_Course::getCourseInfo($this->id_course);
 
@@ -287,7 +287,7 @@ class SubscriptionAlms extends Model implements Accessible
 
             $result = $edition_man->subscribeUserToEdition($id_user, $this->id_course, $this->id_edition, $level, $waiting, $date_begin_validity, $date_expire_validity);
         } elseif ($this->id_date != 0) { // classroom enrollment
-            require_once _lms_ . '/lib/lib.date.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
             $date_man = new DateManager();
 
             $result = $date_man->subscribeUserToDate($id_user, $this->id_course, $this->id_date, $level, $waiting, $date_begin_validity, $date_expire_validity);
@@ -321,7 +321,7 @@ class SubscriptionAlms extends Model implements Accessible
             $edition_man = new EditionManager();
             $ret = $edition_man->delUserFromEdition($id_user, $this->id_course, $this->id_edition);
         } elseif ($this->id_date != 0) {
-            require_once _lms_ . '/lib/lib.date.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
             $date_man = new DateManager();
             // managing overbooked user on course_date_user here
             $ret = $date_man->delUserFromDate($id_user, $this->id_course, $this->id_date);
@@ -345,7 +345,7 @@ class SubscriptionAlms extends Model implements Accessible
                 $sql_query_res = sql_query($query);
 
                 if ($sql_query_res) {
-                    require_once _lms_ . '/lib/lib.course.php';
+                    require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
                     require_once _lms_ . '/lib/lib.levels.php';
                     require_once _base_ . '/lib/lib.eventmanager.php';
 
@@ -561,7 +561,7 @@ class SubscriptionAlms extends Model implements Accessible
             require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
             $subscribe_man = new CourseSubscribe_Manager();
-            require_once _lms_ . '/lib/lib.date.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
 
             $date_man = new DateManager();
             if ($new_status == _CUS_END) {

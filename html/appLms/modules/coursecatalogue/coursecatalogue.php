@@ -239,7 +239,7 @@ function coursecatalogue($id_block, $title, $option = [])
 
 function controlCourse($course_info, $page, $id_catalogue, $id_category, $ini)
 {
-    require_once _lms_ . '/lib/lib.course.php';
+    require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
     $acl_manger = \FormaLms\lib\Forma::getAclManager();
 
@@ -252,7 +252,7 @@ function controlCourse($course_info, $page, $id_catalogue, $id_category, $ini)
             return '<p class="cannot_subscribe">' . $lang->def('_NO_EDITIONS') . '</p>';
         }
 
-        require_once _lms_ . '/lib/lib.date.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
         $man_date = new DateManager();
 
         $user_date = $man_date->getUserDates(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
@@ -391,8 +391,8 @@ function subscribeToCourse($id_user, $id_course, $id_date = 0)
 {
     require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
     //require_once (_lms_.'/admin/modules/subscribe/subscribe.php');
-    require_once _lms_ . '/lib/lib.date.php';
-    require_once _lms_ . '/lib/lib.course.php';
+    require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
+    require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
     $subscribe_man = new CourseSubscribe_Management();
     $date_man = new DateManager();

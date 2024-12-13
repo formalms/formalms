@@ -25,7 +25,7 @@ function displayCourseList(&$url, $order_type)
     require_once _base_ . '/lib/lib.navbar.php';
     require_once _lms_ . '/lib/lib.preassessment.php';
     require_once _lms_ . '/lib/lib.catalogue.php';
-    require_once _lms_ . '/lib/lib.course.php';
+    require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
     require_once _lms_ . '/lib/lib.coursereport.php';
     require_once _adm_ . '/lib/lib.ajax_comment.php';
 
@@ -351,7 +351,7 @@ function displayCoursePathList(&$url, $selected_tab)
     require_once _lms_ . '/lib/lib.preassessment.php';
     require_once _lms_ . '/lib/lib.catalogue.php';
     require_once _lms_ . '/lib/lib.coursepath.php';
-    require_once _lms_ . '/lib/lib.course.php';
+    require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
     require_once _lms_ . '/lib/lib.preassessment.php';
     require_once _lms_ . '/lib/lib.coursereport.php';
 
@@ -1119,7 +1119,7 @@ function getCourseEditionList($course_id)
 {
     $res = '';
 
-    require_once _lms_ . '/lib/lib.course.php';
+    require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
     $lang_c = &FormaLanguage::createInstance('catalogue');
     $lang = &FormaLanguage::createInstance('course');
@@ -1179,7 +1179,7 @@ function getCourseEditionTable($course_id)
     $res = '';
 
     require_once _base_ . '/lib/lib.table.php';
-    require_once _lms_ . '/lib/lib.course.php';
+    require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
     $lang_c = &FormaLanguage::createInstance('catalogue');
     $lang = &FormaLanguage::createInstance('course');

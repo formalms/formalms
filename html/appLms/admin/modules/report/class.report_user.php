@@ -16,7 +16,7 @@ use FormaLms\lib\Domain\DomainHandler;
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once _lms_ . '/lib/lib.course.php';
+require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 require_once __DIR__ . '/class.report.php';
 
 const _RU_CATEGORY_COURSES = 'courses';

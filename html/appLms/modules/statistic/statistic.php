@@ -212,7 +212,7 @@ function statistic()
     checkPerm('view');
 
     require_once _base_ . '/lib/lib.table.php';
-    require_once _lms_ . '/lib/lib.course.php';
+    require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
 
@@ -345,7 +345,7 @@ function userdetails()
     ];
 
     // Find modulename -> name int his course
-    require_once _lms_ . '/lib/lib.course.php';
+    require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
     $course_man = new Man_Course();
     $mods_names = &$course_man->getModulesName($idCourse);
 
@@ -503,7 +503,7 @@ function sessiondetails()
     $nav_bar->setElementTotal($tot_elem);
 
     // Find modulename -> name int his course
-    require_once _lms_ . '/lib/lib.course.php';
+    require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
     $course_man = new Man_Course();
     $mods_names = &$course_man->getModulesName($idCourse);
 

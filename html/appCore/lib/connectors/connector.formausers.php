@@ -808,7 +808,7 @@ class FormaConnectorFormaUsers extends FormaConnector
 
                 \FormaLms\lib\Forma::getAclManager()->removeFromGroup($idst, $idstMembers);
 
-                require_once _lms_ . '/lib/lib.course.php';
+                require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
                 $query = 'select idCourse from `%lms_courseuser` where `idUser` = ' . $idst;
 

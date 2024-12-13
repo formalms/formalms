@@ -39,7 +39,7 @@ class ElearningLmsController extends LmsController
             $this->session->save();
         }
 
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
         require_once _lms_ . '/lib/lib.levels.php';
 

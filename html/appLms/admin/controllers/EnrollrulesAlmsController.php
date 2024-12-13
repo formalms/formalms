@@ -289,7 +289,7 @@ class EnrollrulesAlmsController extends AlmsController
         $courselist = [];
         $coursepath = [];
 
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         $man_c = new Man_Course();
         if (isset($course_selection)) {
             $courselist = $man_c->arrCourseName($course_selection);
@@ -500,7 +500,7 @@ class EnrollrulesAlmsController extends AlmsController
         $courselist = [];
         $coursepath = [];
 
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         $man_c = new Man_Course();
         if (isset($course_selection)) {
             $courselist = $man_c->arrCourseName($course_selection);

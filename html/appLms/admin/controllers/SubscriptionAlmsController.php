@@ -818,12 +818,12 @@ class SubscriptionAlmsController extends AlmsController
             $userModel = new UsermanagementAdm();
             $user = $userModel->getProfileData($id_user);
 
-            require_once _lms_ . '/lib/lib.course.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
             $formaCourse = new FormaCourse($this->id_course);
 
             switch ($col) {
                 case 'level':
-                    require_once _lms_ . '/lib/lib.course.php';
+                    require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
                     $level_idst = &$formaCourse->getCourseLevel($this->id_course);
                     if (count($level_idst) == 0 || $level_idst[1] == '') {
@@ -1262,7 +1262,7 @@ class SubscriptionAlmsController extends AlmsController
                     foreach ($users_list as $user) {
                         switch ((int)$new_status) {
                             case _CUS_SUSPEND:
-                                require_once _lms_ . '/lib/lib.course.php';
+                                require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
                                 $formaCourse = new FormaCourse($this->id_course);
 
                                 require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.eventmanager.php');
@@ -2412,9 +2412,9 @@ class SubscriptionAlmsController extends AlmsController
     {
         require_once _adm_ . '/lib/lib.directory.php';
         require_once _adm_ . '/class.module/class.directory.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once _lms_ . '/lib/lib.edition.php';
-        require_once _lms_ . '/lib/lib.date.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
 
         $acl_man = \FormaLms\lib\Forma::getAclManager();
         $edition_man = new EditionManager();
@@ -2757,10 +2757,10 @@ class SubscriptionAlmsController extends AlmsController
 
     protected function _subscribeUsersToCatalogue($data)
     {
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
         require_once _lms_ . '/lib/lib.edition.php';
-        require_once _lms_ . '/lib/lib.date.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
 
         $subscribe_man = new CourseSubscribe_Manager();
         $edition_man = new EditionManager();
@@ -2957,7 +2957,7 @@ class SubscriptionAlmsController extends AlmsController
         $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, 0);
         $acl_man = new FormaACLManager();
 
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
         if ($id_user <= 0) {
@@ -3419,7 +3419,7 @@ class SubscriptionAlmsController extends AlmsController
         if (!empty($classroom) || !empty($edition)) {
             $classroom_list = [];
             if (!empty($classroom)) {
-                require_once _lms_ . '/lib/lib.date.php';
+                require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
                 $date_man = new DateManager();
 
                 foreach ($classroom as $id_course => $info) {
@@ -3776,7 +3776,7 @@ class SubscriptionAlmsController extends AlmsController
 
         $classroom_type = \FormaLms\lib\Get::req('is_classroom', DOTY_INT);
         if ($classroom_type) {
-            require_once _lms_ . '/lib/lib.date.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
             $date_man = new DateManager();
             $date_array = $date_man->getAvailableDate($id_course);
             foreach ($date_array as $k => $v) {
@@ -3812,7 +3812,7 @@ class SubscriptionAlmsController extends AlmsController
             $waiting_users = &$man_course->getWaitingSubscribed($id_course);
             $tot_deny = [];
 
-            require_once _lms_ . '/lib/lib.course.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
             //require_once (_lms_.'/admin/modules/subscribe/subscribe.php');
 
             $formaCourse = new FormaCourse($id_course);

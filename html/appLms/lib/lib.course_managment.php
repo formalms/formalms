@@ -93,7 +93,7 @@ class Course_Manager
     {
         require_once _base_ . '/lib/lib.tab.php';
 
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once _lms_ . '/lib/lib.coursepath.php';
         require_once _lms_ . '/lib/lib.catalogue.php';
 

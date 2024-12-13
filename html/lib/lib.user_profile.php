@@ -3358,7 +3358,7 @@ class UserProfileData
     {
         require_once _base_ . '/lib/lib.preference.php';
         require_once _adm_ . '/lib/lib.myfriends.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         $this->_db_conn = $db_conn;
 
@@ -4152,7 +4152,7 @@ class UserProfileData
 
     public function getCourseAtLevel($id_user, $lv)
     {
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         $man_courseuser = new Man_CourseUser();
         $course = $man_courseuser->getUserCoursesLevelFilter($id_user, $lv, true);
@@ -4251,7 +4251,7 @@ class UserProfileData
      */
     public function getUserCourseStat($id_user)
     {
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         $stats = [];
 

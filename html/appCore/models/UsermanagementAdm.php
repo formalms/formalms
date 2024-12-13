@@ -316,7 +316,7 @@ class UsermanagementAdm extends Model implements Accessible
                     $res = $this->aclManager->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/subscribed/');
                 } else {
                     if ($userlevelid !== ADMIN_GROUP_GODADMIN) {
-                        require_once _lms_ . '/lib/lib.course.php';
+                        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
                         $course_man = new Man_Course();
                         $all_courses = $course_man->getUserCourses(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                         $res = [];
@@ -814,7 +814,7 @@ class UsermanagementAdm extends Model implements Accessible
                     $res = $this->aclManager->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/subscribed/');
                 } else {
                     if ($userlevelid !== ADMIN_GROUP_GODADMIN) {
-                        require_once _lms_ . '/lib/lib.course.php';
+                        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
                         $course_man = new Man_Course();
                         $all_courses = $course_man->getUserCourses(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                         $res = [];

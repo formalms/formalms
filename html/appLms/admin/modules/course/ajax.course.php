@@ -165,7 +165,7 @@ function duplicateCourse()
         return $map;
     }
 
-    require_once _lms_ . '/lib/lib.course.php';
+    require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
     require_once _lms_ . '/lib/lib.manmenu.php';
     require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
@@ -373,7 +373,7 @@ function duplicateCourse()
 switch ($op) {
     case 'course_autocomplete':
         require_once _lms_ . '/lib/lib.edition.php';
-        require_once _lms_ . '/lib/lib.date.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
         require_once _base_ . '/lib/lib.json.php';
 
         $ed_man = new EditionManager();

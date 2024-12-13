@@ -45,7 +45,7 @@ class CoursepathLms extends Model
         }
 
         // for each selected path how many courses have been completed
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         $query = 'SELECT cp.id_path, COUNT(*) '
             . ' FROM %lms_coursepath AS cp JOIN %lms_coursepath_courses AS cpc '
             . ' JOIN %lms_coursepath_user AS cpu JOIN %lms_courseuser AS cu '

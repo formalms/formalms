@@ -277,7 +277,7 @@ class CourseLmsController extends LmsController
             '[course_code]' => $this->request->get('course_code'),
             '[course]' => $this->request->get('course_name'),]);
 
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         $course_man = new Man_Course();
         $recipients = $course_man->getIdUserOfLevel($session->get('idCourse'));
 

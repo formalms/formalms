@@ -383,7 +383,7 @@ class CourseLms extends Model
 
     public static function getAllClassDisplayInfo($id_course, &$course_array)
     {
-        require_once _lms_ . '/lib/lib.date.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
         $dm = new DateManager();
         $cl = new ClassroomLms();
         $course_editions = $cl->getUserEditionsInfo(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_course);

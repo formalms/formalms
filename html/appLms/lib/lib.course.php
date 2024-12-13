@@ -1648,7 +1648,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
 
     public function getClassrooms($start_index = false, $results = false, $sort = false, $dir = false, $categories = false, $filter_text = false, $filter_waiting = false)
     {
-        require_once _lms_ . '/lib/lib.date.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
 
         $date_man = new DateManager();
 
@@ -2490,7 +2490,7 @@ function getSubscribedInfo($idCourse, $subdived_for_level = false, $id_level = f
         }
     }
     if (($date_id !== false) && ($date_id > 0)) {
-        require_once _lms_ . '/lib/lib.date.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
         $date_man = new DateManager();
         $dt_users_arr = $date_man->getUserForPresence($date_id);
         $dt_users = array_keys($dt_users_arr);

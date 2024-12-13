@@ -32,7 +32,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         require_once _base_ . '/lib/lib.tab.php';
         require_once _base_ . '/lib/lib.urlmanager.php';
         require_once _base_ . '/lib/lib.form.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         $mod_perm = checkPerm('mod', true);
 
@@ -1058,7 +1058,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     {
         checkPerm('mod');
 
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once _base_ . '/lib/lib.form.php';
         require_once _base_ . '/lib/lib.userselector.php';
 

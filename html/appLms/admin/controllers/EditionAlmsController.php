@@ -124,7 +124,7 @@ class EditionAlmsController extends AlmsController
             return;
         }
 
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         //Course info
         $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);

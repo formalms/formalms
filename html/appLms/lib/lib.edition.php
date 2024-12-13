@@ -32,7 +32,7 @@ class EditionManager
     public function __construct()
     {
         require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         $this->db = \FormaLms\db\DbConn::getInstance();
 
@@ -759,7 +759,7 @@ class EditionManager
 
         if (!$this->controlUserSubscriptions($id_user, $id_course)) {
             require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
-            require_once _lms_ . '/lib/lib.course.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
             $subscribe_man = new CourseSubscribe_Manager();
             $subscribe_man->delUserFromCourse($id_user, $id_course, null, $id_edition);

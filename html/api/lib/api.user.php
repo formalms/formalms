@@ -628,7 +628,7 @@ class User_API extends API
 
     public function KbSearch($id_user, $params)
     {
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         $output = [];
 
         $output['success'] = true;

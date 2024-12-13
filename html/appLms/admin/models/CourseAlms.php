@@ -32,9 +32,9 @@ class CourseAlms extends Model
 
     public function __construct($id_course = 0, $id_date = 0, $id_edition = 0)
     {
-        require_once _lms_ . '/lib/lib.date.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
         require_once _lms_ . '/lib/lib.edition.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         $this->id_course = $id_course;
         $this->id_date = $id_date;
@@ -482,7 +482,7 @@ class CourseAlms extends Model
 
         require_once _base_ . '/lib/lib.upload.php';
         require_once _base_ . '/lib/lib.multimedia.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once _lms_ . '/lib/lib.manmenu.php';
 
         $array_lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
@@ -846,7 +846,7 @@ class CourseAlms extends Model
 
         require_once _base_ . '/lib/lib.upload.php';
         require_once _base_ . '/lib/lib.multimedia.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once _lms_ . '/lib/lib.manmenu.php';
 
         $array_lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
@@ -1276,7 +1276,7 @@ class CourseAlms extends Model
             return false;
         }
 
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once _base_ . '/lib/lib.upload.php';
 
         $course_man = new Man_Course();
