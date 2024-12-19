@@ -180,8 +180,6 @@ function do_printing(id_certificate, id_course, id_user, totnum)
 }
 
 function force_reload() {
-    //window.location.href = reload_url;
-    console.log("premo");
     try {
         var tform = document.createElement("FORM");
         tform.method = "POST";
@@ -190,15 +188,9 @@ function force_reload() {
         var authentic_request = document.createElement("INPUT");
         authentic_request.type = "hidden";
         authentic_request.name = "authentic_request";
-        //authentic_request.value = YAHOO.util.Dom.get("authentic_request_certificates_emission").value;
         authentic_request.value = signature;
-        
-
         tform.appendChild(authentic_request);
-
-
         document.body.appendChild(tform);
-
         tform.submit();
     } catch(e) { alert(e); }
 }

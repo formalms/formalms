@@ -1950,3 +1950,8 @@ a:focus, a:hover {
       width: 400px!important;
       height: auto!important;
   }
+
+div#easy-modal div.modal-container {
+    height: auto;
+    width: 45%;
+}
