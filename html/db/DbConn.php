@@ -56,7 +56,7 @@ class DbConn
         }
 
         // if connection is active returns connection instance
-        if (self::$instance !== null && self::$instance->conn !== null) {
+        if (self::$instance !== null && self::$instance->conn !== null && (self::$factory === null  || (self::$factory !== null && self::$instance instanceof self::$factory))) {
             return self::$instance;
         }
 
