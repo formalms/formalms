@@ -15,6 +15,10 @@
 
     .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody>table>tbody>tr>td{text-align:left;}
 
+    th.select-checkbox {
+    pointer-events: none;
+}
+
 
 </style>
 
@@ -210,13 +214,12 @@ var glob_id_course = ' . (int)$id_course . ';
 
         function generate_all_certificate() {
 
-            if (cert_table.getFlatSelection().length == 0) return
-            
-            $.each(cert_table.getFlatSelection(), function(index, value) {
+            if (cert_table.DataTable.rows('.selected').length == 0) return
 
-                var this_row = value.split("-");
-                push_arr_id_users(this_row[0]);
-                push_arr_id_certificates(this_row[1]);
+               $.each(cert_table.DataTable.rows('.selected').data(), function(index, value) {
+
+                push_arr_id_users(value.id_user);
+                push_arr_id_certificates(value.id_certificate);
                 push_arr_course_id(id_course);
 
             });
@@ -251,10 +254,11 @@ var glob_id_course = ' . (int)$id_course . ';
         function download_all_certificate() {
 
             var newarray = [];
-            $.each(cert_table.getFlatSelection(), function(index, value) {
-                var this_row = value.split("-");
-                var id_user = this_row[0];
-                var id_certificate = this_row[1];
+            $.each(cert_table.DataTable.rows('.selected').data(), function(index, value) {
+              
+                var id_user = value.id_user;
+                var id_certificate = value.id_certificate;
+             
                 newarray.push(id_user + "-" + id_certificate + "-" + id_course);
             });
             var strRows = newarray.join();
@@ -266,10 +270,11 @@ var glob_id_course = ' . (int)$id_course . ';
 
             var newarray = [];
             var arrayCerts = [];
-            $.each(cert_table.getFlatSelection(), function(index, value) {
-                 var this_row = value.split("-");
-                var id_user = this_row[0];
-                 var id_certificate = this_row[1];
+           
+            $.each(cert_table.DataTable.rows('.selected').data(), function(index, value) {
+             
+                var id_user = value.id_user;
+                var id_certificate = value.id_certificate;
                 newarray.push(id_user);
                 arrayCerts.push(id_certificate);
             });
