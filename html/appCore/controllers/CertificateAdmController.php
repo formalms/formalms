@@ -145,4 +145,51 @@ class CertificateAdmController extends AdmController
             exit('ERROR ON CERTIFICATE DELETION');
         }
     }
+
+    function downloadMass()
+    {
+        require_once _base_ . '/' . _folder_lms_ . '/lib/lib.certificate.php';
+        require_once _base_ . '/lib/lib.download.php';
+
+        $str_rows =  FormaLms\lib\Get::req('str_rows', DOTY_STRING, '');
+
+        $files = [];
+        $zipName = date('YmdHis') . '_certs.zip';
+
+        $filePath = _files_ . '/tmp/' . $zipName;
+
+        $zip = new PclZip($filePath);
+
+        $list_cert = explode(',', $str_rows);
+
+        foreach ($list_cert as $certRow) {
+            list($id_user, $id_certificate, $id_course) = explode('-', $certRow);
+
+            $certificate = new Certificate();
+
+            $report_info = $certificate->getInfoForCourseCertificate($id_course, $id_certificate, $id_user);
+
+            $info_report = current($report_info);
+
+            $file = $info_report[ASSIGN_CERT_FILE];
+            if ($file === null) {
+                continue;
+            }
+
+            $sendname = $info_report[ASSIGN_CERT_SENDNAME];
+            $copyResult = copy(_files_ . '/appLms/certificate/' . $file, _files_ . '/tmp/' . $sendname);
+            if ($copyResult) {
+                $files[] = _files_ . '/tmp/' . $sendname;
+            }
+        }
+        $zip->create($files, '', _files_ . '/tmp/');
+        foreach ($files as $fileToRemove) {
+            unlink($fileToRemove);
+        }
+        sendFile(_files_ . '/tmp/', $zipName);
+        unlink($filePath);
+    }
+
+
+
 }
