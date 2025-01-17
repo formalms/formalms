@@ -32,7 +32,7 @@ class CoreRequests
     /**
      * @var string
      *
-     * @ORM\Column(name="app", type="string", length=10, nullable=false)
+     * @ORM\Column(name="app", type="string", length=70, nullable=false)
      */
     private $app;
 

@@ -1,7 +1,6 @@
 <?php
 
 
-
 namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="core_field_userentry", indexes={
  *     @ORM\Index(name="id_common_idx", columns={"id_common"}),
  *     @ORM\Index(name="id_common_son_idx", columns={"id_common_son"}),
- *     @ORM\Index(name="id_user_idx", columns={"id_user"})
+ *     @ORM\Index(name="id_user_idx", columns={"id_user"}),
+ *     @ORM\Index(name="idUser_idCommon_idx", columns={"id_user", "id_common"}),
+ *
  * })
  * @ORM\Entity
  */
@@ -20,6 +21,7 @@ class CoreFieldUserentry
 {
 
     use Timestamps;
+
     /**
      * @var int
      *
@@ -33,7 +35,6 @@ class CoreFieldUserentry
      * @var int
      *
      * @ORM\Column(name="id_common", type="integer", nullable=false)
-     
      */
     private $idCommon = '0';
 
@@ -41,7 +42,6 @@ class CoreFieldUserentry
      * @var int
      *
      * @ORM\Column(name="id_common_son", type="integer", nullable=false)
-     
      */
     private $idCommonSon = '0';
 
@@ -49,7 +49,6 @@ class CoreFieldUserentry
      * @var int
      *
      * @ORM\Column(name="id_user", type="integer", nullable=false)
-     
      */
     private $idUser = '0';
 

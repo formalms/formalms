@@ -9,7 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CoreRoleMembers
  *
- * @ORM\Table(name="core_role_members", uniqueConstraints={@ORM\UniqueConstraint(name="idst", columns={"idst", "idstMember"})})
+ * @ORM\Table(name="core_role_members", uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="idst_idx", columns={"idst", "idstMember"})
+ * })
  * @ORM\Entity
  */
 class CoreRoleMembers

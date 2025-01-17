@@ -11,7 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="learning_organization_access", indexes={
  *      @ORM\Index(name="kind_idx", columns={"kind"}),
- *      @ORM\Index(name="value_idx", columns={"value"})
+ *      @ORM\Index(name="value_idx", columns={"value"}),
+ *      @ORM\Index( name="idx_loa_main", columns={"idOrgAccess", "kind", "value"})
  * })
  * @ORM\Entity
  */

@@ -53,5 +53,17 @@ class LearningCoursepath
      */
     private $subscribeMethod = '0';
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="img_coursepath", type="string", nullable=false)
+     */
+    private $imgCoursepath = '';
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="check_path_info", type="boolean", nullable=true)
+     */
+    private $checkPathInfo;
 }

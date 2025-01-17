@@ -10,7 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * LearningCourse
  *
  * @ORM\Table(name="learning_course", indexes={
- *     @ORM\Index(name="fk_menucustom", columns={"id_menucustom"})
+ *     @ORM\Index(name="fk_menucustom", columns={"id_menucustom"}),
+ *     @ORM\Index(name="status_course_type_idx", columns={"status","course_type"})
  * })
  * @ORM\Entity
  */

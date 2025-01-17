@@ -1,7 +1,6 @@
 <?php
 
 
-
 namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -9,13 +8,14 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CoreGroupMembers
  *
- * @ORM\Table(name="core_group_members", uniqueConstraints={@ORM\UniqueConstraint(name="unique_relation", columns={"idst", "idstMember"})})
+ * @ORM\Table(name="core_group_members", uniqueConstraints={@ORM\UniqueConstraint(name="unique_relation_idx", columns={"idst", "idstMember"})})
  * @ORM\Entity
  */
 class CoreGroupMembers
 {
 
     use Timestamps;
+
     /**
      * @var int
      *

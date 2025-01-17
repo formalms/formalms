@@ -12,7 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="learning_courseuser", indexes={
  *      @ORM\Index(name="edition_id_idx", columns={"edition_id"}),
  *      @ORM\Index(name="id_user_idx", columns={"idUser"}),
- *      @ORM\Index(name="id_course_idx", columns={"idCourse"})
+ *      @ORM\Index(name="id_course_idx", columns={"idCourse"}),
+ *      @ORM\Index(name="course_stats_idx", columns={"idUser", "idCourse", "status", "level"})
  * })
  * @ORM\Entity
  */

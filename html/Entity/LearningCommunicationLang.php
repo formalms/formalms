@@ -51,7 +51,7 @@ class LearningCommunicationLang
     /**
      * @var string|null
      *
-     * @ORM\Column(name="description", type="string", length=65536, nullable=true)
+     * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
 

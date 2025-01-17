@@ -9,7 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * LearningTrackingeneral
  *
- * @ORM\Table(name="learning_trackingeneral")
+ * @ORM\Table(name="learning_trackingeneral", indexes={
+ *      @ORM\Index(name="learning_trackingeneral_timeof_index", columns={"timeof"})
+ *   })
  * @ORM\Entity
  */
 class LearningTrackingeneral

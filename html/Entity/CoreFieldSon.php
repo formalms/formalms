@@ -1,7 +1,6 @@
 <?php
 
 
-
 namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -9,13 +8,16 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CoreFieldSon
  *
- * @ORM\Table(name="core_field_son")
+ * @ORM\Table(name="core_field_son", indexes={
+ *       @ORM\Index(name="idCommonSon_idFiled_langCode_idx", columns={"id_common_son","idField", "lang_code"})
+ *  })
  * @ORM\Entity
  */
 class CoreFieldSon
 {
 
     use Timestamps;
+
     /**
      * @var int
      *
