@@ -25,7 +25,7 @@ class MycertificateLms extends Model
 
     public function __construct($id_user)
     {
-        $this->id_user = (int) $id_user;
+        $this->id_user = (int)$id_user;
         $this->certificate = new Certificate();
         parent::__construct();
     }
@@ -112,8 +112,8 @@ class MycertificateLms extends Model
      */
     public function getMyMetaCertificates()
     {
-        $q = "SELECT 
-                c.id_certificate, 
+        $query = "SELECT 
+                c.id_certificate,
                 aca.idAssociation, 
                 c.code, 
                 c.name, 
@@ -125,24 +125,24 @@ class MycertificateLms extends Model
             INNER JOIN %lms_aggregated_cert_assign aca ON c.id_certificate = aca.idCertificate
             INNER JOIN %lms_aggregated_cert_coursepath acc ON aca.idAssociation = acc.idAssociation AND acc.idUser = acc.idUser
             INNER JOIN %lms_coursepath cp ON acc.idCoursePath = cp.id_path
-            WHERE aca.idUser = " . (int) $this->id_user;
+            WHERE aca.idUser = " . (int)$this->id_user. ' ORDER BY c.id_certificate ASC';
 
-        $rs = sql_query($q);
+        $result = sql_query($query);
         $currentIdCert = 0;
         $index = 0;
         $arrAggregatedCerts = [];
-        foreach ($rs as $row) {
-            if ($currentIdCert !== $row['id_certificate']) {
+        foreach ($result as $row) {
+            if ($currentIdCert !== (int)$row['idAssociation'] . $row['id_certificate']) {
                 $arrAggregatedCerts[$index] = $row;
                 ++$index;
             } else {
                 $arrAggregatedCerts[$index - 1]['path_name'] = $arrAggregatedCerts[$index - 1]['path_name'] . ' | ' . $row['path_name'];
             }
-            $currentIdCert = $row['id_certificate'];
+            $currentIdCert = (int)$row['idAssociation'] . $row['id_certificate'];
         }
 
-        $q = "SELECT 
-                cu.idUser > 0 AS completed,
+        $query = "SELECT 
+                cu.idUser is not null AS subscribed,
                 c.id_certificate, 
                 aca.idAssociation, 
                 c.code, 
@@ -156,20 +156,22 @@ class MycertificateLms extends Model
             INNER JOIN %lms_aggregated_cert_course acc ON aca.idAssociation = acc.idAssociation
             INNER JOIN %lms_course cc ON acc.idCourse = cc.idCourse AND acc.idUser = aca.idUser
             LEFT JOIN %lms_courseuser cu ON cu.idCourse = acc.idCourse AND cu.idUser = acc.idUser AND cu.status = 2 AND cu.date_complete IS NOT NULL
-            WHERE aca.idUser = " . (int) $this->id_user . ' ORDER BY completed, c.id_certificate ASC';
-        $rs = sql_query($q);
+            WHERE aca.idUser = " . (int)$this->id_user . ' ORDER BY subscribed, c.id_certificate ASC';
+
+        $result = sql_query($query);
+
         $currentIdCert = 0;
-        foreach ($rs as $row) {
-            if (!$row['completed'] && empty($row['cert_file'])) {
+        foreach ($result as $row) {
+            if (!$row['subscribed'] && empty($row['cert_file'])) {
                 continue;
             }
-            if ($currentIdCert != $row['id_certificate']) {
+            if ($currentIdCert != (int)$row['idAssociation'] . $row['id_certificate']) {
                 $arrAggregatedCerts[$index] = $row;
                 ++$index;
             } else {
                 $arrAggregatedCerts[$index - 1]['course_name'] = $arrAggregatedCerts[$index - 1]['course_name'] . ' | ' . $row['course_name'];
             }
-            $currentIdCert = $row['id_certificate'];
+            $currentIdCert = (int)$row['idAssociation'] . $row['id_certificate'];
         }
 
         return $arrAggregatedCerts;
@@ -177,26 +179,22 @@ class MycertificateLms extends Model
 
     public function countAggrCertsToRelease()
     {
-        $r = sql_fetch_row(
-            sql_query('SELECT count(*) as tot from %lms_aggregated_cert_assign where idUser =' . $this->id_user . ' AND cert_file = \'\'')
-        );
+        $result = sql_fetch_assoc(sql_query('SELECT count(*) as tot from %lms_aggregated_cert_assign where idUser =' . $this->id_user . ' AND cert_file = \'\''));
 
-        return $r[0];
+        return $result['tot'];
     }
 
     public function countMyMetaCertificates()
     {
-        $r = sql_fetch_row(sql_query('SELECT count(*) as tot from %lms_aggregated_cert_assign where idUser =' . $this->id_user));
+        $result = sql_fetch_assoc(sql_query('SELECT count(*) as tot from %lms_aggregated_cert_assign where idUser =' . $this->id_user));
 
-        return $r[0];
+        return $result['tot'];
     }
 
     public function countMyMetaCertsReleased()
     {
-        $r = sql_fetch_row(
-            sql_query('SELECT count(*) as tot from %lms_aggregated_cert_assign where idUser =' . $this->id_user . ' AND cert_file <> \'\'')
-        );
+        $result = sql_fetch_assoc(sql_query('SELECT count(*) as tot from %lms_aggregated_cert_assign where idUser =' . $this->id_user . ' AND cert_file <> \'\''));
 
-        return $r[0];
+        return $result['tot'];
     }
 }
