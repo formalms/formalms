@@ -988,6 +988,8 @@ class UsermanagementAdmController extends AdmController
                 //$event->setUser($user);
                 //TODO: EVT_LAUNCH (&)
                 //\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementSuspendEvent::EVENT_NAME, $event);
+                $data = Events::trigger('core.user.changestatus', ['user' => $user, 'status' => 'suspended', 'output' => $output]);
+                $output = $data["output"];
             } else {
                 $output['success'] = $this->model->unsuspendUsers($idst);
                 $output['message'] = UIFeedback::pinfo(Lang::t('_OPERATION_SUCCESSFUL', 'standard'));
@@ -998,6 +1000,8 @@ class UsermanagementAdmController extends AdmController
                 //$event->setUser($user);
                 //TODO: EVT_LAUNCH (&)
                 //\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementUnsuspendEvent::EVENT_NAME, $event);
+                $data = Events::trigger('core.user.changestatus', ['user' => $user, 'status' => 'active', 'output' => $output]);
+                $output = $data["output"];
             }
         } else {
             $output['success'] = false;
@@ -1078,6 +1082,8 @@ class UsermanagementAdmController extends AdmController
                 //$event->setUsers($users);
                 //TODO: EVT_LAUNCH (&)
                 //\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementSuspendEvent::EVENT_NAME, $event);
+                $data = Events::trigger('core.users.changestatus', ['users' => $users, 'status' => 'suspended', 'output' => $output]);
+                $output = $data["output"];
             } else {
                 $output['success'] = $this->model->unsuspendUsers($arr_users);
 
@@ -1086,6 +1092,8 @@ class UsermanagementAdmController extends AdmController
                 //$event = new \appCore\Events\Core\User\UsersManagementUnsuspendEvent();
                 //$event->setUsers($users);
                 //\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementUnsuspendEvent::EVENT_NAME, $event);
+                $data = Events::trigger('core.users.changestatus', ['users' => $users, 'status' => 'active', 'output' => $output]);
+                $output = $data["output"];
             }
         } else {
             $output['success'] = false;
