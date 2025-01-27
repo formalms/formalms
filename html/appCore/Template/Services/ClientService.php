@@ -46,7 +46,7 @@ class ClientService
         }
         $config['signature'] = \Util::getSignature();
 
-        $langCode = \Lang::getDefault();
+        $currentLang = \Lang::getDefault();
 
         $language = $this->langAdm->getLanguage(\Lang::get());
         if ($language) {
@@ -61,7 +61,7 @@ class ClientService
 
         $config['lang'] = [
             'enabledLanguages' => $this->langAdm->getLangList(),
-            'currentLanguage' => \Lang::getDefault(),
+            'currentLanguage' => $currentLang,
             'currentLangCode' => $langCode,
             'translations' => $this->langAdm->langTranslation(),
         ];
