@@ -58,5 +58,9 @@ class CoreLangTranslation
      */
     private $saveDate = null;
 
-
+    /**
+     * @ORM\ManyToOne(targetEntity="CoreLangLanguage")
+     * @ORM\JoinColumn(name="lang_code", referencedColumnName="lang_code")
+     */
+    private $language;
 }

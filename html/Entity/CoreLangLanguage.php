@@ -10,7 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * CoreLangLanguage
  *
  * @ORM\Table(name="core_lang_language", indexes={
- *     @ORM\Index(name="lang_code_idx", columns={"lang_code"})
+ *      @ORM\Index(name="lang_code_idx", columns={"lang_code"}),
+ *      @ORM\Index(name="idx_lang_code_stats", columns={"lang_code", "lang_description"})
  * })
  * @ORM\Entity
  */
