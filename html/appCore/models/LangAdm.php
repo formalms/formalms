@@ -25,10 +25,12 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 class LangAdm extends Model
 {
     protected $db;
+    private $cache;
 
     public function __construct()
     {
         $this->db = \FormaLms\db\DbConn::getInstance();
+        $this->cache = \FormaLms\lib\Cache\Lang\LangCache::getInstance();
         parent::__construct();
     }
 
@@ -40,6 +42,95 @@ class LangAdm extends Model
     public function getPerm()
     {
         return [];
+    }
+
+    /**
+     * Get all available modules from database
+     *
+     * @return array Array of modules
+     */
+    public function getAllModules()
+    {
+        $query = "SELECT DISTINCT text_module 
+                 FROM %adm_lang_text 
+                 WHERE text_module != ''
+                 ORDER BY text_module";
+
+        $result = $this->db->query($query);
+        $modules = [];
+
+        foreach ($result as $row) {
+            $modules[] = $row['text_module'];
+        }
+
+        return $modules;
+    }
+
+    /**
+     * Generate cache for all translations
+     *
+     * @param string|null $lang_code Specific language code or null for all languages
+     * @return array Statistics about the cache generation
+     */
+    public function generateFullCache($lang_code = null)
+    {
+        $stats = [
+            'modules_processed' => 0,
+            'languages_processed' => 0,
+            'translations_cached' => 0,
+            'errors' => []
+        ];
+
+        // Get all modules
+        $modules = $this->getAllModules();
+        $stats['total_modules'] = count($modules);
+
+        // Get all languages or specific language
+        if ($lang_code) {
+            $languages = [$lang_code];
+        } else {
+            $languages = $this->getLangListNoStat();
+            $languages = array_keys($languages);
+        }
+        $stats['total_languages'] = count($languages);
+
+        foreach ($languages as $lang) {
+            try {
+                $stats['languages_processed']++;
+
+                // Cache language info
+                $languageInfo = $this->getLanguage($lang);
+                if ($languageInfo) {
+                    $this->cache->set($lang, 'info', (array)$languageInfo, 'language');
+                }
+
+                foreach ($modules as $module) {
+                    try {
+                        $stats['modules_processed']++;
+
+                        // Get and cache translations for this module and language
+                        $translations = $this->getTranslation($module, $lang, true);
+                        if (!empty($translations)) {
+                            $this->cache->set($lang, $module, $translations, 'translation');
+                            $stats['translations_cached'] += count($translations);
+                        }
+                    } catch (\Exception $e) {
+                        $stats['errors'][] = "Error processing module $module for language $lang: " . $e->getMessage();
+                    }
+                }
+            } catch (\Exception $e) {
+                $stats['errors'][] = "Error processing language $lang: " . $e->getMessage();
+            }
+        }
+
+        // Cache the list of modules
+        $this->cache->set('all', 'modules', $modules, 'module_list');
+
+        // Cache the list of languages
+        $languagesList = $this->getLangListNoStat();
+        $this->cache->set('all', 'languages', $languagesList, 'language_list');
+
+        return $stats;
     }
 
     /**
@@ -79,10 +170,10 @@ class LangAdm extends Model
     /**
      * Return the list of all the current active languages with the relative infos.
      *
-     * @param int    $startIndex return the list starting from this index
-     * @param int    $results    return X results
-     * @param string $sort       sorted by this column
-     * @param string $dir        in this direction (asc,desc)
+     * @param int $startIndex return the list starting from this index
+     * @param int $results return X results
+     * @param string $sort sorted by this column
+     * @param string $dir in this direction (asc,desc)
      *
      * @return array an array of lang obj records
      */
@@ -102,7 +193,7 @@ class LangAdm extends Model
             $query .= " ORDER BY $sort $dir ";
         }
         if ($startIndex && $results) {
-            $query .= ' LIMIT ' . (int) $startIndex . ', ' . (int) $results;
+            $query .= ' LIMIT ' . (int)$startIndex . ', ' . (int)$results;
         }
         $rs = $this->db->query($query);
 
@@ -121,10 +212,10 @@ class LangAdm extends Model
     /**
      * Return the list of all the current active languages with the relative infos.
      *
-     * @param int    $startIndex return the list starting from this index
-     * @param int    $results    return X results
-     * @param string $sort       sorted by this column
-     * @param string $dir        in this direction (asc,desc)
+     * @param int $startIndex return the list starting from this index
+     * @param int $results return X results
+     * @param string $sort sorted by this column
+     * @param string $dir in this direction (asc,desc)
      *
      * @return array an array of lang obj records
      */
@@ -137,7 +228,7 @@ class LangAdm extends Model
             $query .= " ORDER BY $sort $dir ";
         }
         if ($startIndex && $results) {
-            $query .= ' LIMIT ' . (int) $startIndex . ', ' . (int) $results;
+            $query .= ' LIMIT ' . (int)$startIndex . ', ' . (int)$results;
         }
         $rs = $this->db->query($query);
 
@@ -291,13 +382,13 @@ class LangAdm extends Model
     /**
      * Return all the translation according to the passed filters.
      *
-     * @param int    $ini            extract all the records starting from this one
-     * @param int    $rows           numbers of record that must be extracted
-     * @param string $module         translations only for this module
-     * @param string $text           only translation that contains this words
-     * @param string $lang_code      return translation in this languages (default language will be used if not setted)
+     * @param int $ini extract all the records starting from this one
+     * @param int $rows numbers of record that must be extracted
+     * @param string $module translations only for this module
+     * @param string $text only translation that contains this words
+     * @param string $lang_code return translation in this languages (default language will be used if not setted)
      * @param string $lang_code_diff return also the translation in this language
-     * @param bool   $only_empty     return only untranslated words for the selected language
+     * @param bool $only_empty return only untranslated words for the selected language
      *
      * @return array
      */
@@ -358,7 +449,7 @@ class LangAdm extends Model
             $qtxt .= ' AND ta.translation_text IS NULL';
         }
         if ($plugin_id != false) {
-            $qtxt .= ' AND lt.plugin_id = ' . (int) $plugin_id;
+            $qtxt .= ' AND lt.plugin_id = ' . (int)$plugin_id;
         }
 
         $dir = $this->clean_dir($dir);
@@ -402,13 +493,13 @@ class LangAdm extends Model
     /**
      * Return all the translation according to the passed filters.
      *
-     * @param int    $ini            extract all the records starting from this one
-     * @param int    $rows           numbers of record that must be extracted
-     * @param string $module         translations only for this module
-     * @param string $text           only translation that contains this words
-     * @param string $lang_code      return translation in this languages (default language will be used if not setted)
+     * @param int $ini extract all the records starting from this one
+     * @param int $rows numbers of record that must be extracted
+     * @param string $module translations only for this module
+     * @param string $text only translation that contains this words
+     * @param string $lang_code return translation in this languages (default language will be used if not setted)
      * @param string $lang_code_diff return also the translation in this language
-     * @param bool   $only_empty     return only untranslated words for the selected language
+     * @param bool $only_empty return only untranslated words for the selected language
      *
      * @return array
      */
@@ -513,10 +604,10 @@ class LangAdm extends Model
     /**
      * Return the total numbers of record for the given search params.
      *
-     * @param string $module     translations only for this module
-     * @param string $text       only translation that contains this words
-     * @param string $lang_code  return translation in this languages (default language will be used if not setted)
-     * @param bool   $only_empty return only untranslated words for the selected language
+     * @param string $module translations only for this module
+     * @param string $text only translation that contains this words
+     * @param string $lang_code return translation in this languages (default language will be used if not setted)
+     * @param bool $only_empty return only untranslated words for the selected language
      *
      * @return array
      */
@@ -577,7 +668,7 @@ class LangAdm extends Model
         $data = [];
         $result = $this->db->query($qtxt);
         while ($obj = $this->db->fetch_obj($result)) {
-            $data[$obj->text_module][$obj->text_key][(int) $obj->plugin_id] = [$obj->id, $obj->translation_text, $obj->save_date];
+            $data[$obj->text_module][$obj->text_key][(int)$obj->plugin_id] = [$obj->id, $obj->translation_text, $obj->save_date];
         }
 
         return $data;
@@ -586,7 +677,7 @@ class LangAdm extends Model
     /**
      * Return all the translation according to the passed filters.
      *
-     * @param string $module    translations only for this module
+     * @param string $module translations only for this module
      * @param string $lang_code return translation in this languages (default language will be used if not setted)
      *
      * @return array
@@ -609,7 +700,7 @@ class LangAdm extends Model
         $data = [];
         $result = $this->db->query($qtxt);
         while ($obj = $this->db->fetch_obj($result)) {
-            if (key_exists($obj->text_key, $data)) {
+            if (array_key_exists($obj->text_key, $data)) {
                 if ($obj->priority == null) {
                     continue;
                 }
@@ -623,7 +714,7 @@ class LangAdm extends Model
     /**
      * Return all the translation according to the passed filters.
      *
-     * @param string $module    translations only for this module
+     * @param string $module translations only for this module
      * @param string $lang_code return translation in this languages (default language will be used if not setted)
      *
      * @return array
@@ -651,8 +742,8 @@ class LangAdm extends Model
     /**
      * Insert a new key for a module.
      *
-     * @param string $text_key        the key to add
-     * @param string $text_module     the module in which the key must be inserted
+     * @param string $text_key the key to add
+     * @param string $text_module the module in which the key must be inserted
      * @param strign $text_attributes the attributes for this key (mail, sms)
      *
      * @return bool
@@ -679,12 +770,12 @@ class LangAdm extends Model
      */
     public function deleteKey($id_text)
     {
-        $query = 'DELETE FROM %adm_lang_translation WHERE id_text = ' . (int) $id_text . ' ';
+        $query = 'DELETE FROM %adm_lang_translation WHERE id_text = ' . (int)$id_text . ' ';
         if (!$this->db->query($query)) {
             return false;
         }
 
-        $query = 'DELETE FROM %adm_lang_text WHERE id_text = ' . (int) $id_text . ' ';
+        $query = 'DELETE FROM %adm_lang_text WHERE id_text = ' . (int)$id_text . ' ';
         if (!$this->db->query($query)) {
             return false;
         }
@@ -695,7 +786,7 @@ class LangAdm extends Model
     /**
      * Check if a language string is translated into a specific language.
      *
-     * @param int    $id_text   the id of the index
+     * @param int $id_text the id of the index
      * @param string $lang_code the language code
      *
      * @return bool true if is translated
@@ -703,7 +794,7 @@ class LangAdm extends Model
     public function isTranslated($id_text, $lang_code)
     {
         $query = 'select * from %adm_lang_translation '
-            . 'WHERE id_text = ' . (int) $id_text . ' '
+            . 'WHERE id_text = ' . (int)$id_text . ' '
             . " AND lang_code = '" . $lang_code . "'";
         $re = $this->db->query($query);
 
@@ -713,7 +804,7 @@ class LangAdm extends Model
     /**
      * Save a new version of the translation.
      *
-     * @param int    $id_text
+     * @param int $id_text
      * @param string $lang_code
      * @param string $new_value
      *
@@ -738,7 +829,7 @@ class LangAdm extends Model
 
         $query = 'INSERT INTO %adm_lang_translation '
             . '( id_text, lang_code, translation_text, save_date ) VALUES ('
-            . ' ' . (int) $id_text . ',  '
+            . ' ' . (int)$id_text . ',  '
             . " '" . $lang_code . "', "
             . " '" . $new_value . "', "
             . ' ' . $dt . ' )';
@@ -757,7 +848,7 @@ class LangAdm extends Model
         $query = 'UPDATE %adm_lang_translation '
             . "SET translation_text = '" . $new_value . "', "
             . ' save_date = ' . $dt . ' '
-            . 'WHERE id_text = ' . (int) $id_text . ' '
+            . 'WHERE id_text = ' . (int)$id_text . ' '
             . " AND lang_code = '" . $lang_code . "'";
 
         return $this->db->query($query);
