@@ -39,6 +39,7 @@ class ClientService
         $config['signature'] = \Util::getSignature();
         $baseUrl = $this->getBaseUrl();
 
+        // URL configuration
         $config['url']['base'] = $baseUrl;
         $config['url']['template'] = $baseUrl . '/' . _folder_templates_ . '/' . getTemplate();
         foreach (Get::coreFolders as $coreFolder) {
@@ -46,25 +47,7 @@ class ClientService
         }
         $config['signature'] = \Util::getSignature();
 
-        $currentLang = \Lang::getDefault();
-
-        $language = $this->langAdm->getLanguage(\Lang::get());
-        if ($language) {
-            $langCode = $this->langAdm->getLanguage(\Lang::get())->lang_browsercode;
-
-            $langCode = explode(';', $langCode);
-
-            if (is_array($langCode)) {
-                $langCode = $langCode[0];
-            }
-        }
-
-        $config['lang'] = [
-            'enabledLanguages' => $this->langAdm->getLangList(),
-            'currentLanguage' => $currentLang,
-            'currentLangCode' => $langCode,
-            'translations' => $this->langAdm->langTranslation(),
-        ];
+        $config['lang'] = \Lang::getCurrentLanguageConfig();
 
         $config['uploadFileSize'] = ini_get('upload_max_filesize');
 

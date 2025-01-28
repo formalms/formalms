@@ -2,151 +2,316 @@
 
 namespace FormaLms\lib\Cache\Lang;
 
-class LangCache {
+class LangCache
+{
     private const CACHE_DIR = 'languages';
-    private const CACHE_EXTENSION = '.php';
-    private const CACHE_TTL = 3600; // 1 ora
+    private const CACHE_TTL = 86400; // 24 ora
+
+    private const FORMAT_PHP = 'php';
+    private const FORMAT_JSON = 'json';
+    private const FORMAT_MSGPACK = 'msgpack';
+    private const FORMAT_IGBINARY = 'igbinary';
 
     private $cachePath;
     private $namespace = 'FormaLms\\lib\\Cache\\Lang';
     private $memoryCache = [];
+    private $cacheFormat;
 
-    public function __construct() {
+    private static $instance = null;
+
+    public function __construct()
+    {
         $this->cachePath = _files_ . '/cache/' . self::CACHE_DIR . '/';
+        $this->cacheFormat = $this->determineFormat();
+        $this->ensureStructure();
+    }
+
+    private function __clone()
+    {
+    }
+
+    private function __wakeup()
+    {
+    }
+
+    public static function resetInstance(): void
+    {
+        self::$instance = null;
+    }
+
+    public static function getInstance(): self
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
+    private function determineFormat(): string
+    {
+        // Check environment variable
+        $envFormat = strtolower(getenv('CACHE_FORMAT') ?: self::FORMAT_JSON);
+
+        return match ($envFormat) {
+            'msgpack' => extension_loaded('msgpack') ? self::FORMAT_MSGPACK : self::FORMAT_JSON,
+            'igbinary' => extension_loaded('igbinary') ? self::FORMAT_IGBINARY : self::FORMAT_JSON,
+            'php' => self::FORMAT_PHP,
+            'json' => self::FORMAT_JSON,
+            default => self::FORMAT_JSON // Default to JSON if not specified
+        };
+    }
+
+    public function getCacheFormat(): string
+    {
+        return $this->cacheFormat;
     }
 
     /**
-     * Get cached data with type support
+     * Ensure cache directory structure exists
      */
-    public function get($key, $subKey, $type = 'translation') {
-        $cacheKey = $this->buildCacheKey($key, $subKey, $type);
+    private function ensureStructure(): void
+    {
+        $dirs = [
+            $this->cachePath . '/lists',
+        ];
+
+        foreach ($dirs as $dir) {
+            if (!is_dir($dir) && !mkdir($dir, 0755, true) && !is_dir($dir)) {
+                throw new \RuntimeException(sprintf('Directory "%s" was not created', $dir));
+            }
+        }
+    }
+
+    /**
+     * Get cached data with enhanced structure
+     */
+    public function get($lang_code, $key, $type = 'translation')
+    {
+        $cacheKey = $this->buildMemoryCacheKey($lang_code, $key, $type);
 
         // Check memory cache first
         if (isset($this->memoryCache[$cacheKey])) {
             return $this->memoryCache[$cacheKey];
         }
 
-        $className = $this->getClassName($key, $subKey, $type);
-        $fqcn = $this->namespace . '\\' . $className;
-
-        if (!class_exists($fqcn, false)) {
-            $file = $this->getCacheFile($key, $subKey, $type);
-            if (file_exists($file)) {
-                require_once $file;
-            }
-        }
-
-        if (class_exists($fqcn, false)) {
-            $this->memoryCache[$cacheKey] = $fqcn::$data;
-            return $fqcn::$data;
-        }
-
-        return null;
-    }
-
-    /**
-     * Set cache data with type support
-     */
-    public function set($key, $subKey, $data, $type = 'translation') {
-        $file = $this->getCacheFile($key, $subKey, $type);
-        $className = $this->getClassName($key, $subKey, $type);
-        $cacheKey = $this->buildCacheKey($key, $subKey, $type);
-
-        // Store in memory cache
-        $this->memoryCache[$cacheKey] = $data;
-
-        $code = "<?php\nnamespace {$this->namespace};\nclass {$className} {\n" .
-            "    public static \$data = " . var_export($data, true) . ";\n" .
-            "    public static \$timestamp = " . time() . ";\n" .
-            "}";
-
-        if (!is_dir(dirname($file))) {
-            if (!mkdir($concurrentDirectory = dirname($file), 0755, true) && !is_dir($concurrentDirectory)) {
-                throw new \RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
-            }
-        }
-
-        file_put_contents($file, $code);
-        if (function_exists('opcache_invalidate')) {
-            opcache_invalidate($file, true);
-            opcache_compile_file($file);
-        }
-    }
-
-    /**
-     * Check if cache is valid
-     */
-    public function isValid($key, $subKey, $type = 'translation') {
-        $className = $this->getClassName($key, $subKey, $type);
-        $fqcn = $this->namespace . '\\' . $className;
-
-        if (class_exists($fqcn, false)) {
-            return (time() - $fqcn::$timestamp) < self::CACHE_TTL;
-        }
-
-        $file = $this->getCacheFile($key, $subKey, $type);
+        $file = $this->getCacheFile($lang_code, $key, $type);
         if (!file_exists($file)) {
+            return null;
+        }
+
+        try {
+            $content = file_get_contents($file);
+            if ($content === false) {
+                return null;
+            }
+
+            $data = $this->unserialize($content);
+            if (!is_array($data) || !isset($data['timestamp']) || !isset($data['data'])) {
+                return null;
+            }
+
+            if ((time() - $data['timestamp']) > self::CACHE_TTL) {
+                @unlink($file);
+                return null;
+            }
+
+            $this->memoryCache[$cacheKey] = $data['data'];
+            return $data['data'];
+
+        } catch (\Throwable $e) {
+            error_log("Cache read error: " . $e->getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Set cache data with improved structure
+     */
+    public function set($lang_code, $key, $data, $type = 'translation'): bool
+    {
+        try {
+            $file = $this->getCacheFile($lang_code, $key, $type);
+            $cacheKey = $this->buildMemoryCacheKey($lang_code, $key, $type);
+
+            // Store in memory cache
+            $this->memoryCache[$cacheKey] = $data;
+
+            // Prepare directory
+            $dir = dirname($file);
+            if (!is_dir($dir) && !mkdir($dir, 0755, true) && !is_dir($dir)) {
+                throw new \RuntimeException(sprintf('Directory "%s" was not created', $dir));
+            }
+
+            // Prepare cache data
+            $cacheData = [
+                'timestamp' => time(),
+                'data' => $data
+            ];
+
+            // Serialize and write
+            $content = $this->serialize($cacheData);
+            if (file_put_contents($file, $content) === false) {
+                return false;
+            }
+
+            // Handle OpCache
+            if (function_exists('opcache_invalidate')) {
+                opcache_invalidate($file, true);
+                if ($this->cacheFormat === self::FORMAT_PHP) {
+                    opcache_compile_file($file);
+                }
+            }
+
+            return true;
+
+        } catch (\Throwable $e) {
+            error_log("Cache write error: " . $e->getMessage());
             return false;
         }
-
-        require_once $file;
-        return (time() - $fqcn::$timestamp) < self::CACHE_TTL;
     }
 
-    private function buildCacheKey($key, $subKey, $type): string {
-        return "{$type}_{$key}_{$subKey}";
+    /**
+     * Serialize data based on format
+     */
+    private function serialize($data): string
+    {
+        return match ($this->cacheFormat) {
+            self::FORMAT_PHP => sprintf("<?php\nreturn %s;", var_export($data, true)),
+            self::FORMAT_JSON => json_encode($data, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE),
+            self::FORMAT_MSGPACK => msgpack_pack($data),
+            self::FORMAT_IGBINARY => igbinary_serialize($data),
+            default => throw new \RuntimeException("Unsupported cache format: {$this->cacheFormat}")
+        };
     }
 
-    private function getClassName($key, $subKey, $type): string {
-        return 'Cache_' . preg_replace('/[^a-zA-Z0-9_]/', '_', $type . '_' . $key . '_' . $subKey);
+    /**
+     * Unserialize data based on format
+     */
+    private function unserialize($content)
+    {
+        return match ($this->cacheFormat) {
+            self::FORMAT_PHP => include $content,
+            self::FORMAT_JSON => json_decode($content, true, 512, JSON_THROW_ON_ERROR),
+            self::FORMAT_MSGPACK => msgpack_unpack($content),
+            self::FORMAT_IGBINARY => igbinary_unserialize($content),
+            default => throw new \RuntimeException("Unsupported cache format: {$this->cacheFormat}")
+        };
     }
 
-    private function getCacheFile($key, $subKey, $type): string {
-        return $this->cachePath . $type . '/' . $key . '/' . $subKey . self::CACHE_EXTENSION;
+    private function getCacheExtention()
+    {
+        return match ($this->cacheFormat) {
+            self::FORMAT_PHP => '.php',
+            self::FORMAT_JSON => '.json',
+            self::FORMAT_MSGPACK => '.msg',
+            self::FORMAT_IGBINARY => '.igb',
+            default => '.cache'
+        };
     }
 
-    public function clear($key = null, $subKey = null, $type = null): void {
+    private function getCacheFile($lang_code, $key, $type): string
+    {
+        switch ($type) {
+            case 'translation':
+                $cacheFile = $this->cachePath . '/' . $lang_code . '/translations/' . $key;
+                break;
+            case 'language':
+                $cacheFile = $this->cachePath . '/' . $lang_code . '/info';
+                break;
+            case 'language_list':
+                $cacheFile = $this->cachePath . '/lists/available';
+                break;
+            case 'module_list':
+                $cacheFile = $this->cachePath . '/lists/modules';
+                break;
+            default:
+                $cacheFile = $this->cachePath . '/' . $type . '/' . $lang_code . '/' . $key;
+        }
+
+        return $cacheFile . $this->getCacheExtention();
+    }
+
+
+    /**
+     * Build memory cache key
+     */
+    private function buildMemoryCacheKey($lang_code, $key, $type): string
+    {
+        return sprintf('%s_%s_%s', $type, $lang_code, $key);
+    }
+
+    /**
+     * Clear cache with improved structure handling
+     */
+    public function clear($lang_code = null, $key = null, $type = null): void
+    {
+        $extention = $this->getCacheExtention();
         // Clear memory cache
-        if ($key === null && $subKey === null && $type === null) {
+        if ($lang_code === null && $key === null && $type === null) {
             $this->memoryCache = [];
         } else {
+            $pattern = sprintf(
+                '%s%s%s',
+                $type === null ? '' : $type . '_',
+                $lang_code === null ? '' : $lang_code . '_',
+                $key ?? ''
+            );
+
             foreach ($this->memoryCache as $cacheKey => $value) {
-                if (($type === null || str_starts_with($cacheKey, $type . '_')) &&
-                    ($key === null || str_starts_with($cacheKey, $type . '_' . $key)) &&
-                    ($subKey === null || str_starts_with($cacheKey, $type . '_' . $key . '_' . $subKey))) {
+                if (str_starts_with($cacheKey, $pattern)) {
                     unset($this->memoryCache[$cacheKey]);
                 }
             }
         }
 
         // Clear file cache
-        if ($type === null) {
+        if ($lang_code === null && $key === null && $type === null) {
             $this->clearDirectory($this->cachePath);
+            $this->ensureStructure();
             return;
         }
 
-        $typePath = $this->cachePath . $type;
-        if ($key === null) {
-            $this->clearDirectory($typePath);
-            return;
-        }
-
-        $keyPath = $typePath . '/' . $key;
-        if ($subKey === null) {
-            $this->clearDirectory($keyPath);
-            return;
-        }
-
-        $file = $this->getCacheFile($key, $subKey, $type);
-        if (file_exists($file)) {
-            unlink($file);
-            if (function_exists('opcache_invalidate')) {
-                opcache_invalidate($file, true);
+        if ($type === 'translation' && $lang_code !== null) {
+            $dir = $this->cachePath . '/' . $lang_code . '/translations';
+            if ($key === null) {
+                $this->clearDirectory($dir);
+            } else {
+                $file = $dir . '/' . $key . $extention;
+                if (file_exists($file)) {
+                    unlink($file);
+                    if (function_exists('opcache_invalidate')) {
+                        opcache_invalidate($file, true);
+                    }
+                }
             }
+            return;
+        }
+
+        if ($type === 'language' && $lang_code !== null) {
+            $file = $this->cachePath . '/' . $lang_code . '/info' . $extention;
+            if (file_exists($file)) {
+                unlink($file);
+                if (function_exists('opcache_invalidate')) {
+                    opcache_invalidate($file, true);
+                }
+            }
+            return;
+        }
+
+        if ($type === 'language_list' || $type === 'module_list') {
+            $file = $this->cachePath . '/lists/' . ($type === 'language_list' ? 'available' : 'modules') . $extention;
+            if (file_exists($file)) {
+                unlink($file);
+                if (function_exists('opcache_invalidate')) {
+                    opcache_invalidate($file, true);
+                }
+            }
+            return;
         }
     }
 
-    private function clearDirectory($dir): void {
+    private function clearDirectory($dir): void
+    {
         if (!is_dir($dir)) return;
 
         $files = glob($dir . '/*');
