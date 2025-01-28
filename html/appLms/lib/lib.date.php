@@ -26,7 +26,6 @@ const _DATE_TEST_TYPE_NONE = 2;
 
 class DateManager
 {
-    public $lang;
     public $acl_man;
     public $subscribe_man;
 
@@ -34,7 +33,7 @@ class DateManager
     {
         require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
-        $this->lang = FormaLanguage::CreateInstance('admin_date', 'lms');
+
         $this->acl_man = \FormaLms\lib\Forma::getAclManager();
         $this->subscribe_man = new CourseSubscribe_Manager();
     }
@@ -120,7 +119,7 @@ class DateManager
     public function getClassroomForDropdown()
     {
         $res = [];
-        $res[0] = $this->lang->def('_NOT_ASSIGNED');
+        $res[0] = Lang::t('_NOT_ASSIGNED','admin_date');
 
         $query = 'SELECT idClassroom, location, name'
             . ' FROM %lms_class_location as loc JOIN %lms_classroom AS cl '
@@ -387,7 +386,7 @@ class DateManager
 
         if (isset($array_classroom[0])) {
             $first = false;
-            $res .= $this->lang->def('_NOT_ASSIGNED');
+            $res .= Lang::t('_NOT_ASSIGNED','admin_date');
         }
 
 
@@ -975,17 +974,17 @@ class DateManager
 
     public function getStatusForDropdown()
     {
-        return [_DATE_STATUS_PREPARATION => $this->lang->def('_CST_PREPARATION', 'course'),
-            _DATE_STATUS_ACTIVE => $this->lang->def('_CST_AVAILABLE', 'course'),
-            _DATE_STATUS_FINISHED => $this->lang->def('_CST_CONCLUDED', 'course'),
-            _DATE_STATUS_CANCELLED => $this->lang->def('_CST_CANCELLED', 'course'),];
+        return [_DATE_STATUS_PREPARATION => Lang::t('_CST_PREPARATION', 'course'),
+            _DATE_STATUS_ACTIVE => Lang::t('_CST_AVAILABLE', 'course'),
+            _DATE_STATUS_FINISHED => Lang::t('_CST_CONCLUDED', 'course'),
+            _DATE_STATUS_CANCELLED => Lang::t('_CST_CANCELLED', 'course'),];
     }
 
     public function getTestTypeForDropdown()
     {
-        return [_DATE_TEST_TYPE_WEB => $this->lang->def('_WEB_TEST'),
-            _DATE_TEST_TYPE_PAPER => $this->lang->def('_PAPER_TEST'),
-            _DATE_TEST_TYPE_NONE => $this->lang->def('_NONE'),];
+        return [_DATE_TEST_TYPE_WEB => Lang::t('_WEB_TEST','admin_date'),
+            _DATE_TEST_TYPE_PAPER => Lang::t('_PAPER_TEST','admin_date'),
+            _DATE_TEST_TYPE_NONE => Lang::t('_NONE','admin_date'),];
     }
 
     public function getHours()
@@ -1485,7 +1484,7 @@ class DateManager
 
         if (isset($array_classroom[0])) {
             $first = false;
-            $res .= $this->lang->def('_NOT_ASSIGNED');
+            $res .= Lang::t('_NOT_ASSIGNED','admin_date');
         }
 
         $query = 'SELECT *'

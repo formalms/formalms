@@ -45,28 +45,27 @@ class CourseSubscribe_Manager
 
         $this->db = \FormaLms\db\DbConn::getInstance();
         $this->acl_man = $acl_man = \FormaLms\lib\Forma::getAclManager();
-        $this->lang = FormaLanguage::CreateInstance('levels', 'lms');
-        $this->lang = FormaLanguage::CreateInstance('subscribe', 'lms');
+
 
         $this->array_user_status = [
-            //-4 => $this->lang->def('_USER_STATUS_CANCELLED'),
+            //-4 => Lang::t('_USER_STATUS_CANCELLED','subscribe'),
             //-3 => '',
-            _CUS_WAITING_LIST => $this->lang->def('_WAITING_USERS'),
-            _CUS_CONFIRMED => $this->lang->def('_USER_STATUS_CONFIRMED'),
-            _CUS_SUBSCRIBED => $this->lang->def('_USER_STATUS_SUBS'),
-            _CUS_BEGIN => $this->lang->def('_USER_STATUS_BEGIN'),
-            _CUS_END => $this->lang->def('_USER_STATUS_END'),
-            _CUS_SUSPEND => $this->lang->def('_USER_STATUS_SUSPEND'),
-            _CUS_OVERBOOKING => $this->lang->def('_USER_STATUS_OVERBOOKING'),
+            _CUS_WAITING_LIST => Lang::t('_WAITING_USERS','subscribe'),
+            _CUS_CONFIRMED => Lang::t('_USER_STATUS_CONFIRMED','subscribe'),
+            _CUS_SUBSCRIBED => Lang::t('_USER_STATUS_SUBS','subscribe'),
+            _CUS_BEGIN => Lang::t('_USER_STATUS_BEGIN','subscribe'),
+            _CUS_END => Lang::t('_USER_STATUS_END','subscribe'),
+            _CUS_SUSPEND => Lang::t('_USER_STATUS_SUSPEND','subscribe'),
+            _CUS_OVERBOOKING => Lang::t('_USER_STATUS_OVERBOOKING','subscribe'),
         ];
 
-        $this->array_user_level = [1 => $this->lang->def('_LEVEL_1', 'levels', 'lms'),
-            2 => $this->lang->def('_LEVEL_2', 'levels', 'lms'),
-            3 => $this->lang->def('_LEVEL_3', 'levels', 'lms'),
-            4 => $this->lang->def('_LEVEL_4', 'levels', 'lms'),
-            5 => $this->lang->def('_LEVEL_5', 'levels', 'lms'),
-            6 => $this->lang->def('_LEVEL_6', 'levels', 'lms'),
-            7 => $this->lang->def('_LEVEL_7', 'levels', 'lms'),];
+        $this->array_user_level = [1 => Lang::t('_LEVEL_1', 'levels'),
+            2 => Lang::t('_LEVEL_2', 'levels'),
+            3 => Lang::t('_LEVEL_3', 'levels'),
+            4 => Lang::t('_LEVEL_4', 'levels'),
+            5 => Lang::t('_LEVEL_5', 'levels'),
+            6 => Lang::t('_LEVEL_6', 'levels'),
+            7 => Lang::t('_LEVEL_7', 'levels'),];
     }
 
     /**

@@ -69,18 +69,18 @@ class Report_User extends Report
     public function __construct($id_report, $report_name = false)
     {
         parent::__construct($id_report, $report_name);
-        $this->lang = FormaLanguage::createInstance('report', 'framework');
+        
         $this->usestandardtitle_rows = false;
 
-        $this->_set_columns_category(_RU_CATEGORY_COURSES, $this->lang->def('_RU_CAT_COURSES'), 'get_courses_filter', 'show_report_courses', '_get_courses_query');
-        //$this->_set_columns_category(_RU_CATEGORY_GENERAL, $this->lang->def('_RU_CAT_GENERAL'), 'get_general_filter', 'show_report_general');
-        //$this->_set_columns_category(_RU_CATEGORY_COMPETENCES, $this->lang->def('_RU_CAT_COMPETENCES'), 'get_competences_filter', 'show_report_competences', '_get_competences_query');
-        $this->_set_columns_category(_RU_CATEGORY_DELAY, $this->lang->def('_RU_CAT_DELAY'), 'get_delay_filter', 'show_report_delay', '_get_delay_query');
-        $this->_set_columns_category(_RU_CATEGORY_LO, $this->lang->def('_RU_CAT_LO'), 'get_LO_filter', 'show_report_LO', '_get_LO_query');
-        $this->_set_columns_category(_RU_CATEGORY_TESTSTAT, $this->lang->def('_RU_CAT_TESTSTAT'), 'get_TESTSTAT_filter', 'show_report_TESTSTAT', '_get_TESTSTAT_query');
+        $this->_set_columns_category(_RU_CATEGORY_COURSES, Lang::t('_RU_CAT_COURSES','report'), 'get_courses_filter', 'show_report_courses', '_get_courses_query');
+        //$this->_set_columns_category(_RU_CATEGORY_GENERAL, Lang::t('_RU_CAT_GENERAL','report'), 'get_general_filter', 'show_report_general');
+        //$this->_set_columns_category(_RU_CATEGORY_COMPETENCES, Lang::t('_RU_CAT_COMPETENCES','report'), 'get_competences_filter', 'show_report_competences', '_get_competences_query');
+        $this->_set_columns_category(_RU_CATEGORY_DELAY, Lang::t('_RU_CAT_DELAY','report'), 'get_delay_filter', 'show_report_delay', '_get_delay_query');
+        $this->_set_columns_category(_RU_CATEGORY_LO, Lang::t('_RU_CAT_LO','report'), 'get_LO_filter', 'show_report_LO', '_get_LO_query');
+        $this->_set_columns_category(_RU_CATEGORY_TESTSTAT, Lang::t('_RU_CAT_TESTSTAT','report'), 'get_TESTSTAT_filter', 'show_report_TESTSTAT', '_get_TESTSTAT_query');
 
-        $this->_set_columns_category(_RU_CATEGORY_COMMUNICATIONS, $this->lang->def('_RU_CAT_COMMUNICATIONS'), 'get_communications_filter', 'show_report_communications', '_get_communications_query');
-        $this->_set_columns_category(_RU_CATEGORY_GAMES, $this->lang->def('_RU_CAT_GAMES'), 'get_games_filter', 'show_report_games', '_get_games_query');
+        $this->_set_columns_category(_RU_CATEGORY_COMMUNICATIONS, Lang::t('_RU_CAT_COMMUNICATIONS','report'), 'get_communications_filter', 'show_report_communications', '_get_communications_query');
+        $this->_set_columns_category(_RU_CATEGORY_GAMES, Lang::t('_RU_CAT_GAMES','report'), 'get_games_filter', 'show_report_games', '_get_games_query');
 
         $this->status_c = [
             CST_PREPARATION => Lang::t('_CST_PREPARATION', 'course'),
@@ -94,14 +94,14 @@ class Report_User extends Report
         $this->status_u = $csub->getUserStatus();
 
         $this->courses_filter_definition = [
-            ['key' => _COURSES_FILTER_SESSION_NUMBER, 'label' => $this->lang->def('_COURSES_FILTER_SESSION_NUMBER'), 'type' => _FILTER_INTEGER],
-            ['key' => _COURSES_FILTER_SCORE_INIT, 'label' => $this->lang->def('_COURSES_FILTER_SCORE_INIT'), 'type' => _FILTER_INTEGER],
-            ['key' => _COURSES_FILTER_SCORE_END, 'label' => $this->lang->def('_FINAL_SCORE'), 'type' => _FILTER_INTEGER],
-            ['key' => _COURSES_FILTER_SCORE_COURSE, 'label' => $this->lang->def('_COURSES_FILTER_SCORE_COURSE'), 'type' => _FILTER_INTEGER],
-            ['key' => _COURSES_FILTER_INSCRIPTION_DATE, 'label' => $this->lang->def('_COURSES_FILTER_INSCRIPTION_DATE'), 'type' => _FILTER_DATE],
-            ['key' => _COURSES_FILTER_FIRSTACCESS_DATE, 'label' => $this->lang->def('_DATE_FIRST_ACCESS'), 'type' => _FILTER_DATE],
-            ['key' => _COURSES_FILTER_END_DATE, 'label' => $this->lang->def('_COURSES_FILTER_END_DATE'), 'type' => _FILTER_DATE],
-            ['key' => _COURSES_FILTER_LASTACCESS_DATE, 'label' => $this->lang->def('_DATE_LAST_ACCESS'), 'type' => _FILTER_DATE],
+            ['key' => _COURSES_FILTER_SESSION_NUMBER, 'label' => Lang::t('_COURSES_FILTER_SESSION_NUMBER','report'), 'type' => _FILTER_INTEGER],
+            ['key' => _COURSES_FILTER_SCORE_INIT, 'label' => Lang::t('_COURSES_FILTER_SCORE_INIT','report'), 'type' => _FILTER_INTEGER],
+            ['key' => _COURSES_FILTER_SCORE_END, 'label' => Lang::t('_FINAL_SCORE','report'), 'type' => _FILTER_INTEGER],
+            ['key' => _COURSES_FILTER_SCORE_COURSE, 'label' => Lang::t('_COURSES_FILTER_SCORE_COURSE','report'), 'type' => _FILTER_INTEGER],
+            ['key' => _COURSES_FILTER_INSCRIPTION_DATE, 'label' => Lang::t('_COURSES_FILTER_INSCRIPTION_DATE','report'), 'type' => _FILTER_DATE],
+            ['key' => _COURSES_FILTER_FIRSTACCESS_DATE, 'label' => Lang::t('_DATE_FIRST_ACCESS','report'), 'type' => _FILTER_DATE],
+            ['key' => _COURSES_FILTER_END_DATE, 'label' => Lang::t('_COURSES_FILTER_END_DATE','report'), 'type' => _FILTER_DATE],
+            ['key' => _COURSES_FILTER_LASTACCESS_DATE, 'label' => Lang::t('_DATE_LAST_ACCESS','report'), 'type' => _FILTER_DATE],
         ];
 
         $this->LO_columns = [
@@ -110,17 +110,17 @@ class Report_User extends Report
             ['key' => 'email', 'select' => true, 'group' => 'user', 'label' => Lang::t('_EMAIL', 'standard')],
             ['key' => 'suspended', 'select' => true, 'group' => 'user', 'label' => Lang::t('_SUSPENDED', 'standard')],
             ['key' => '_CUSTOM_FIELDS_', 'select' => false, 'group' => 'user', 'label' => false],
-            ['key' => 'course_code', 'select' => false, 'group' => 'course', 'label' => $this->lang->def('_CODE')],
-            ['key' => 'course_name', 'select' => true, 'group' => 'course', 'label' => $this->lang->def('_COURSE_NAME')],
-            ['key' => 'course_status', 'select' => true, 'group' => 'course', 'label' => $this->lang->def('_STATUS')],
-            ['key' => 'lo_type', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_LO_COL_TYPE')],
-            ['key' => 'lo_name', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_TITLE')],
-            ['key' => 'lo_milestone', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_LO_COL_MILESTONE')],
-            ['key' => 'firstAttempt', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_LO_COL_FIRSTATT')],
-            ['key' => 'lastAttempt', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_LO_COL_LASTATT')],
-            ['key' => 'lo_status', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_STATUS')],
-            ['key' => 'lo_score', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_SCORE')],
-            ['key' => 'lo_total_time', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_TOTAL_TIME')],
+            ['key' => 'course_code', 'select' => false, 'group' => 'course', 'label' => Lang::t('_CODE','report')],
+            ['key' => 'course_name', 'select' => true, 'group' => 'course', 'label' => Lang::t('_COURSE_NAME','report')],
+            ['key' => 'course_status', 'select' => true, 'group' => 'course', 'label' => Lang::t('_STATUS','report')],
+            ['key' => 'lo_type', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_LO_COL_TYPE','report')],
+            ['key' => 'lo_name', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_TITLE','report')],
+            ['key' => 'lo_milestone', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_LO_COL_MILESTONE','report')],
+            ['key' => 'firstAttempt', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_LO_COL_FIRSTATT','report')],
+            ['key' => 'lastAttempt', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_LO_COL_LASTATT','report')],
+            ['key' => 'lo_status', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_STATUS','report')],
+            ['key' => 'lo_score', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_SCORE','report')],
+            ['key' => 'lo_total_time', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_TOTAL_TIME','report')],
         ];
 
         $this->TESTSTAT_columns = [
@@ -129,13 +129,13 @@ class Report_User extends Report
             ['key' => 'email', 'select' => true, 'group' => 'user', 'label' => Lang::t('_EMAIL', 'standard')],
             ['key' => 'suspended', 'select' => true, 'group' => 'user', 'label' => Lang::t('_SUSPENDED', 'standard')],
             ['key' => '_CUSTOM_FIELDS_', 'select' => false, 'group' => 'user', 'label' => false],
-            ['key' => 'course_code', 'select' => false, 'group' => 'course', 'label' => $this->lang->def('_CODE')],
-            ['key' => 'course_name', 'select' => true, 'group' => 'course', 'label' => $this->lang->def('_COURSE_NAME')],
-            ['key' => 'course_status', 'select' => true, 'group' => 'course', 'label' => $this->lang->def('_STATUS')],
-            ['key' => 'lo_name', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_TITLE')],
-            ['key' => 'lo_status', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_STATUS')],
-            ['key' => 'lo_score', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_SCORE')],
-            ['key' => 'lo_date', 'select' => true, 'group' => 'lo', 'label' => $this->lang->def('_DATE')],
+            ['key' => 'course_code', 'select' => false, 'group' => 'course', 'label' => Lang::t('_CODE','report')],
+            ['key' => 'course_name', 'select' => true, 'group' => 'course', 'label' => Lang::t('_COURSE_NAME','report')],
+            ['key' => 'course_status', 'select' => true, 'group' => 'course', 'label' => Lang::t('_STATUS','report')],
+            ['key' => 'lo_name', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_TITLE','report')],
+            ['key' => 'lo_status', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_STATUS','report')],
+            ['key' => 'lo_score', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_SCORE','report')],
+            ['key' => 'lo_date', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_DATE','report')],
         ];
 
         $this->delay_columns = [
@@ -959,8 +959,8 @@ class Report_User extends Report
         $selected = ' checked="checked"';
         $box = new ReportBox();
 
-        $box->title = $this->lang->def('_COMPETENCESFILTER_TITLE');
-        $box->description = $this->lang->def('_COMPETENCESFILTER_TITLE_DESC');
+        $box->title = Lang::t('_COMPETENCESFILTER_TITLE','report');
+        $box->description = Lang::t('_COMPETENCESFILTER_TITLE_DESC','report');
         $box->body = Form::getBreakRow()
             . Form::getHidden('is_updating', 'is_updating', 1)
 
@@ -3066,7 +3066,7 @@ class Report_User extends Report
         }
 
         if (empty($element_to_print)) {
-            cout($this->lang->def('_NO_USER_FOUND'), 'content');
+            cout(Lang::t('_NO_USER_FOUND','report'), 'content');
         } else {
             require_once _lms_ . '/admin/modules/report/report_tableprinter.php';
             $buffer = new ReportTablePrinter($type);

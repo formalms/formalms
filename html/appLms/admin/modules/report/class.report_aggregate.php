@@ -73,17 +73,17 @@ class Report_Aggregate extends Report
         $step = FormaLms\lib\Get::req('step', DOTY_ALPHANUM, 'sel_type');
         switch ($step) {
             case 'sel_type':
-                $values = ['users' => $this->lang->def('_USERS'), 'groups' => $this->lang->def('_GROUPS')];
+                $values = ['users' => Lang::t('_USERS','standard'), 'groups' => Lang::t('_GROUPS','standard')];
                 $sel_val = (isset($reportTempData['rows_filter']['selection_type']) ? $reportTempData['rows_filter']['selection_type'] : 'users');
 
                 $out = Form::openForm('selection_type_form', $jump_url);
 
-                $out .= Form::getRadioSet($this->lang->def('_AGGREGATE_ON'), 'selection_type', 'selection_type', array_flip($values), $sel_val)
+                $out .= Form::getRadioSet(Lang::t('_AGGREGATE_ON','report'), 'selection_type', 'selection_type', array_flip($values), $sel_val)
                     . '<div class="nofloat"></div>';
 
                 $out .= Form::openButtonSpace();
-                $out .= Form::getButton('ok_selection', 'ok_selection', $this->lang->def('_CONFIRM'));
-                $out .= Form::getButton('undo', 'undo', $this->lang->def('_UNDO'));
+                $out .= Form::getButton('ok_selection', 'ok_selection', Lang::t('_CONFIRM','standard'));
+                $out .= Form::getButton('undo', 'undo', Lang::t('_UNDO','standard'));
                 $out .= Form::closeButtonSpace();
                 $out .= Form::getHidden('step', 'step', 'sel_data');
 
@@ -156,7 +156,7 @@ class Report_Aggregate extends Report
                 $user_select->setPageTitle('');
                 $user_select->loadSelector(Util::str_replace_once('&', '&amp;', $jump_url),
                     false,
-                    $this->lang->def('_CHOOSE_USER_FOR_REPORT'),
+                    Lang::t('_CHOOSE_USER_FOR_REPORT','report'),
                     true);
 
                 break;
@@ -230,7 +230,7 @@ class Report_Aggregate extends Report
         $temp = count($reportTempData['columns_filter']['selected_courses']);
 
         $box = new ReportBox('courses_selector');
-        $box->title = $this->lang->def('_COURSES_SELECTION_TITLE');
+        $box->title = Lang::t('_COURSES_SELECTION_TITLE','report');
         $box->description = false;
 
         $boxlang = FormaLanguage::createInstance('report', 'framework');
@@ -266,10 +266,10 @@ class Report_Aggregate extends Report
 
         //columns selection
         $col_box = new ReportBox('columns_selection');
-        $col_box->title = $this->lang->def('_REPORT_SEL_COLUMNS');
-        $col_box->description = $this->lang->def('_SELECT_THE_DATA_COL_NEEDED');
+        $col_box->title = Lang::t('_REPORT_SEL_COLUMNS','report');
+        $col_box->description = Lang::t('_SELECT_THE_DATA_COL_NEEDED','report');
 
-        $col_box->body .= Form::getOpenFieldSet($this->lang->def('_STATUS'));
+        $col_box->body .= Form::getOpenFieldSet(Lang::t('_STATUS','report'));
         $col_box->body .= Form::getCheckBox(Lang::t('_USER_STATUS_SUBS', 'course'), 'cols_notstarted', 'cols_notstarted', 1, $reportTempData['columns_filter']['showed_columns']['notstarted']);
         $col_box->body .= Form::getCheckBox(Lang::t('_USER_STATUS_BEGIN', 'course'), 'cols_initinere', 'cols_initinere', 1, $reportTempData['columns_filter']['showed_columns']['initinere']);
         $col_box->body .= Form::getCheckBox(Lang::t('_USER_STATUS_END', 'course'), 'cols_completed', 'cols_completed', 1, $reportTempData['columns_filter']['showed_columns']['completed']);
@@ -469,8 +469,8 @@ class Report_Aggregate extends Report
                 }
 
                 $tot_size = 2;
-                $head1 = [['colspan' => 2, 'value' => $this->lang->def('_GROUPS')]];
-                $head2 = [$this->lang->def('_NAME'), $this->lang->def('_TOTAL')];
+                $head1 = [['colspan' => 2, 'value' => Lang::t('_GROUPS','standard')]];
+                $head2 = [Lang::t('_NAME','standard'), Lang::t('_TOTAL','standard')];
 
                 foreach ($courses as $course) {
                     $head1[] = [
@@ -480,19 +480,19 @@ class Report_Aggregate extends Report
                     ];
 
                     if ($cols['completed']) {
-                        $head2[] = $this->lang->def('_USER_STATUS_END');
+                        $head2[] = Lang::t('_USER_STATUS_END','standard');
                     }
                     if ($cols['completed'] && $cols['show_percentages']) {
                         $head2[] = _PERCENT_SIMBOL;
                     }
                     if ($cols['initinere']) {
-                        $head2[] = $this->lang->def('_USER_STATUS_BEGIN');
+                        $head2[] = Lang::t('_USER_STATUS_BEGIN','standard');
                     }
                     if ($cols['initinere'] && $cols['show_percentages']) {
                         $head2[] = _PERCENT_SIMBOL;
                     }
                     if ($cols['notstarted']) {
-                        $head2[] = $this->lang->def('_USER_STATUS_SUBS');
+                        $head2[] = Lang::t('_USER_STATUS_SUBS','standard');
                     }
                     if ($cols['notstarted'] && $cols['show_percentages']) {
                         $head2[] = _PERCENT_SIMBOL;
@@ -695,7 +695,7 @@ class Report_Aggregate extends Report
                         $users = array_intersect($users, $admin_users);
                     }
                     if (count($users) <= 0) {
-                        $html .= '<p>' . $this->lang->def('_EMPTY_SELECTION') . '</p>';
+                        $html .= '<p>' . Lang::t('_EMPTY_SELECTION','standard') . '</p>';
                         break;
                     }
                 }
@@ -733,8 +733,8 @@ class Report_Aggregate extends Report
 
                 //draw table
                 $tot_size = 1;
-                $head2 = [$this->lang->def('_USERNAME'), $this->lang->def('_FULLNAME')];
-                $head1 = [['colspan' => 2, 'value' => $this->lang->def('_USER')]];
+                $head2 = [Lang::t('_USERNAME','standard'), Lang::t('_FULLNAME','standard')];
+                $head1 = [['colspan' => 2, 'value' => Lang::t('_USER','standard')]];
                 foreach ($courses as $course) {
                     $head1[] = [
                         'value' => ($courses_codes[$course]['code'] ? '[' . $courses_codes[$course]['code'] . '] ' : '')
@@ -743,19 +743,19 @@ class Report_Aggregate extends Report
                     ];
 
                     if ($cols['completed']) {
-                        $head2[] = $this->lang->def('_USER_STATUS_END');
+                        $head2[] = Lang::t('_USER_STATUS_END','standard');
                     }
                     if ($cols['completed'] && $cols['show_percentages']) {
                         $head2[] = _PERCENT_SIMBOL;
                     }
                     if ($cols['initinere']) {
-                        $head2[] = $this->lang->def('_USER_STATUS_BEGIN');
+                        $head2[] = Lang::t('_USER_STATUS_BEGIN','standard');
                     }
                     if ($cols['initinere'] && $cols['show_percentages']) {
                         $head2[] = _PERCENT_SIMBOL;
                     }
                     if ($cols['notstarted']) {
-                        $head2[] = $this->lang->def('_USER_STATUS_SUBS');
+                        $head2[] = Lang::t('_USER_STATUS_SUBS','standard');
                     }
                     if ($cols['notstarted'] && $cols['show_percentages']) {
                         $head2[] = _PERCENT_SIMBOL;
@@ -983,10 +983,10 @@ class Report_Aggregate extends Report
         cout($output['js'], 'page_head');
 
         $box = new ReportBox('coursecategories_selector');
-        $box->title = $this->lang->def('_COURSES_SELECTION_TITLE');
+        $box->title = Lang::t('_COURSES_SELECTION_TITLE','report');
         $box->description = false;
 
-        $boxlang = &FormaLanguage::createInstance('report', 'framework');
+
         $box->body .= '<div class="">' . $output['html'] . '</div>';
         $box->body .= Form::getHidden('update_tempdata', 'update_tempdata', 1);
         $box->body .= Form::openButtonSpace();
@@ -1018,7 +1018,7 @@ class Report_Aggregate extends Report
         $categories = $reportTempData['columns_filter']['selected_categories'];
 
         if (!$sel_all && count($selection) <= 0) {
-            cout('<p>' . $this->lang->def('_EMPTY_SELECTION') . '</p>');
+            cout('<p>' . Lang::t('_EMPTY_SELECTION','standard') . '</p>');
 
             return;
         }
@@ -1110,15 +1110,15 @@ class Report_Aggregate extends Report
                 $data = [];
 
                 $head1 = [''];
-                $head2 = [$this->lang->def('_USER')];
+                $head2 = [Lang::t('_USER','standard')];
 
                 $totals = [];
 
                 foreach ($categories as $idcat) {
                     $index = (int) str_replace('d', '', $idcat);
                     $head1[] = ['colspan' => 2, 'value' => $categories_paths[$index]];
-                    $head2[] = $this->lang->def('_COMPLETED');
-                    $head2[] = $this->lang->def('incomplete');
+                    $head2[] = Lang::t('_COMPLETED','standard');
+                    $head2[] = Lang::t('_INCOMPLETE','standard');
 
                     $is_descendant = strpos($idcat, 'd');
                     if ($is_descendant === false) {
@@ -1271,14 +1271,14 @@ class Report_Aggregate extends Report
 
                 $tot_size = 2;
                 $totals = [];
-                $head1 = [['colspan' => 2, 'value' => $this->lang->def('_GROUPS')]];
-                $head2 = [$this->lang->def('_NAME'), $this->lang->def('_TOTAL')];
+                $head1 = [['colspan' => 2, 'value' => Lang::t('_GROUPS','standard')]];
+                $head2 = [Lang::t('_NAME','standard'), Lang::t('_TOTAL','standard')];
 
                 foreach ($categories as $idcat) {
                     $index = (int) str_replace('d', '', $idcat);
                     $head1[] = ['colspan' => 2, 'value' => $categories_paths[$index]];
-                    $head2[] = $this->lang->def('_COMPLETED');
-                    $head2[] = $this->lang->def('incomplete');
+                    $head2[] = Lang::t('_COMPLETED','standard');
+                    $head2[] = Lang::t('_INCOMPLETED','standard');
 
                     $is_descendant = strpos($idcat, 'd');
                     $condition = '';
@@ -1447,7 +1447,7 @@ class Report_Aggregate extends Report
         }
 
         $box = new ReportBox('choose_time');
-        $box->title = $this->lang->def('_CHOOSE_TIME');
+        $box->title = Lang::t('_CHOOSE_TIME','report');
         $box->description = false;
 
         $year = date('Y');
@@ -1461,7 +1461,7 @@ class Report_Aggregate extends Report
             7 => $year . ' - ' . ($year - 6),
         ];
         $box->body .= Form::getHidden('update_tempdata', 'update_tempdata', 1);
-        $box->body .= Form::getDropDown($this->lang->def('_RA_CAT_TIME'), 'years', 'years', $dropdownyears, $reportTempData['columns_filter']['years']);
+        $box->body .= Form::getDropDown(Lang::t('_RA_CAT_TIME','report'), 'years', 'years', $dropdownyears, $reportTempData['columns_filter']['years']);
 
         $html = $box->get();
         cout($html);
@@ -1489,7 +1489,7 @@ class Report_Aggregate extends Report
         $years = array_key_exists('years', $reportTempData['columns_filter']) ? $reportTempData['columns_filter']['years'] : 0;
 
         if (!$sel_all && count($selection) <= 0) {
-            cout('<p>' . $this->lang->def('_EMPTY_SELECTION') . '</p>');
+            cout('<p>' . Lang::t('_EMPTY_SELECTION','standard') . '</p>');
 
             return;
         }
@@ -1558,11 +1558,11 @@ class Report_Aggregate extends Report
                 $buffer = new ReportTablePrinter($type, true);
                 $buffer->openTable('', '');
 
-                $head = [$this->lang->def('_USER')];
+                $head = [Lang::t('_USER','standard')];
                 foreach ($times as $time) {
                     $head[] = $time;
                 }
-                $head[] = $this->lang->def('_TOTAL');
+                $head[] = Lang::t('_TOTAL','standard');
 
                 $buffer->openHeader();
                 $buffer->addHeader($head);
@@ -1692,11 +1692,11 @@ class Report_Aggregate extends Report
                 $buffer = new ReportTablePrinter($type, true);
                 $buffer->openTable('', '');
 
-                $head = [$this->lang->def('_GROUPS'), $this->lang->def('_USERS')];
+                $head = [Lang::t('_GROUPS','standard'), Lang::t('_USERS','standard')];
                 foreach ($times as $time) {
                     $head[] = $time;
                 }
-                $head[] = $this->lang->def('_TOTAL');
+                $head[] = Lang::t('_TOTAL','standard');
 
                 $buffer->openHeader();
                 $buffer->addHeader($head);

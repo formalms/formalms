@@ -29,8 +29,6 @@ class Report
     public $jump_url = '';
     public $next_url = '';
 
-    public $lang;
-
     public $usestandardtitle_rows = true;
     //var $usestandardtitle_cols = true;
 
@@ -52,9 +50,9 @@ class Report
         if ($report_name == false) {
             $this->_load();
         } else {
-            $this->lang = FormaLanguage::createInstance('report', 'framework');
-            $this->report_name = $this->lang->def($report_name);
-            $this->report_descr = $this->lang->def($report_name);
+
+            $this->report_name = Lang::t($report_name,'report');
+            $this->report_descr = Lang::t($report_name,'report');
         }
 
         $this->db = \FormaLms\db\DbConn::getInstance();
@@ -182,17 +180,16 @@ class Report
      */
     public function _load()
     {
-        $this->lang = FormaLanguage::createInstance('report', 'framework');
 
         $query_report = '
 		SELECT report_name
 		FROM %lms_report
 		WHERE id_report = "' . $this->id_report . '"';
         $re_report = sql_query($query_report);
-        list($report_name) = sql_fetch_row($re_report);
+        [$report_name] = sql_fetch_row($re_report);
 
-        $this->report_name = $this->lang->def($report_name);
-        $this->report_descr = $this->lang->def($report_name);
+        $this->report_name = Lang::t($report_name,'report');
+        $this->report_descr = Lang::t($report_name,'report');
     }
 
     public function play($jump_url, $back_url, $alluser, $org_chart_subdivision, $start_rime, $end_time)
