@@ -70,6 +70,13 @@ class LangAdmController extends AdmController
         $this->render('show', ['langList' => array_values($lang_list)]);
     }
 
+    public function clearCache()
+    {
+        \FormaLms\lib\Cache\Lang\LangCache::getInstance()->clear();
+
+        Util::jump_to('index.php?r=adm/lang/show');
+    }
+
     public function getlang()
     {
         $sortable = ['lang_code', 'lang_description', 'lang_direction', 'lang_stats'];
@@ -164,12 +171,13 @@ class LangAdmController extends AdmController
         $lang_direction = FormaLms\lib\Get::req('lang_direction', DOTY_STRING, 'ltr');
         $lang_browsercode = FormaLms\lib\Get::req('lang_browsercode', DOTY_STRING, '');
 
-        $answ = $this->model->updateLanguage($lang_code, $lang_description, $lang_direction, $lang_browsercode);
+        $re = $this->model->updateLanguage($lang_code, $lang_description, $lang_direction, $lang_browsercode);
 
         $result = [
-            'success' => $answ,
-            'message' => ($answ ? '' : Lang::t('_OPERATION_FAILED', 'standard')),
+            'success' => $re,
+            'message' => ($re ? '' : Lang::t('_OPERATION_FAILED', 'standard')),
         ];
+        
         echo $this->json->encode($result);
     }
 
@@ -219,6 +227,9 @@ class LangAdmController extends AdmController
             'success' => $re,
             'message' => ($re ? '' : Lang::t('_OPERATION_FAILED', 'standard')),
         ];
+        if ($re){
+            \FormaLms\lib\Cache\Lang\LangCache::getInstance()->clear();
+        }
         echo $this->json->encode($result);
     }
 
@@ -303,7 +314,7 @@ class LangAdmController extends AdmController
         }
 
         $re = $this->model->importTranslation($filePath, $overwrite, $noadd_miss);
-
+        \FormaLms\lib\Cache\Lang\LangCache::getInstance()->clear();
         Util::jump_to('index.php?r=adm/lang/show');
     }
 
@@ -331,6 +342,7 @@ class LangAdmController extends AdmController
                         $res = $this->model->saveTranslation($id_text, $language, $newValue);
                         $output = ['success' => $res ? true : false];
                         if ($res) {
+                            \FormaLms\lib\Cache\Lang\LangCache::getInstance()->clear();
                             $output['new_value'] = stripslashes($newValue);
                         }
                         echo $this->json->encode($output);
@@ -399,13 +411,13 @@ class LangAdmController extends AdmController
 
     private function removeSearchRegex($searchString)
     {
-        if (strpos($searchString, '^.*') !== false && strpos($searchString, '.*$') !== false) {
+        if (str_contains($searchString, '^.*') && str_contains($searchString, '.*$')) {
             $searchString = str_replace(['^.*', '.*$'], '%', $searchString);
         }
-        if (strpos($searchString, '^') !== false && strpos($searchString, '$') !== false) {
+        if (str_contains($searchString, '^') && str_contains($searchString, '$')) {
             $searchString = str_replace(['^', '$'], ['%', ''], $searchString);
         }
-        if (strpos($searchString, '^') !== false) {
+        if (str_contains($searchString, '^')) {
             $searchString = str_replace(['^'], [''], $searchString);
             $searchString .= '%';
         }
@@ -493,6 +505,9 @@ class LangAdmController extends AdmController
             'new_value' => $new_value,
             'old_value' => $old_value,
         ];
+        if ($re){
+            \FormaLms\lib\Cache\Lang\LangCache::getInstance()->clear();
+        }
 
         echo $this->json->encode($res);
     }
@@ -534,6 +549,9 @@ class LangAdmController extends AdmController
             'success' => ($re ? true : false),
             'message' => ($re ? Lang::t('_OPERATION_SUCCESSFUL', 'admin_lang') : Lang::t('_OPERATION_FAILURE', 'admin_lang')),
         ];
+        if ($re){
+            \FormaLms\lib\Cache\Lang\LangCache::getInstance()->clear();
+        }
         echo $this->json->encode($output);
     }
 
@@ -551,6 +569,9 @@ class LangAdmController extends AdmController
             'success' => ($re ? true : false),
             'message' => ($re ? Lang::t('_OPERATION_SUCCESSFUL', 'admin_lang') : Lang::t('_OPERATION_FAILURE', 'admin_lang')),
         ];
+        if ($re){
+            \FormaLms\lib\Cache\Lang\LangCache::getInstance()->clear();
+        }
         echo $this->json->encode($output);
     }
 
@@ -563,6 +584,9 @@ class LangAdmController extends AdmController
             'success' => $re,
             'message' => ($re ? Lang::t('_OPERATION_SUCCESSFUL', 'admin_lang') : Lang::t('_UNABLE_TO_DELETE', 'standard')),
         ];
+        if ($re){
+            \FormaLms\lib\Cache\Lang\LangCache::getInstance()->clear();
+        }
 
         echo $this->json->encode($res);
     }
