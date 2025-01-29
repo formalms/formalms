@@ -35,12 +35,12 @@ abstract class BaseCache
     /**
      * Prevent cloning of the instance
      */
-    private function __clone() {}
+    protected function __clone() {}
 
     /**
      * Prevent unserialize of the instance
      */
-    private function __wakeup() {}
+    protected function __wakeup() {}
 
     /**
      * Get singleton instance with specific configuration
