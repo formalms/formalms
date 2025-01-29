@@ -230,6 +230,34 @@ class CourseLms extends Model
         return $result;
     }
 
+
+    /**
+     * Helper function to safely create DateTime object
+     * @param string|null $date
+     * @param string|null $time
+     * @return DateTime|null
+     */
+    private static function parseDateTime($date, $time = null, $defaultTime = '00:00:00')
+    {
+        if (empty($date)) {
+            return null;
+        }
+
+        try {
+            if ($time !== null) {
+                // Ensure time format is valid (HH:mm)
+                if (!preg_match('/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/', $time)) {
+                    $time = $defaultTime;
+                }
+                return new DateTime($date . ' ' . $time);
+            }
+            return new DateTime($date);
+        } catch (Exception $e) {
+            return null;
+        }
+        return null;
+    }
+
     public static function getCourseParsedData($course)
     {
         $path_course = $GLOBALS['where_files_relative'] . '/appLms/' . FormaLms\lib\Get::sett('pathcourse') . '/';
@@ -265,7 +293,7 @@ class CourseLms extends Model
         //    $parsedData['dateClosing_month'] = Lang::t('_MONTH_' . substr('0' . date('m', $time_expired), -2), 'standard');
         //    $parsedData['dateClosing_day'] = date('d', $time_expired);
         //}
-    
+
 
         $parsedData['is_enrolled'] = !empty($infoEnroll);
         if ($parsedData['is_enrolled']) {
@@ -280,35 +308,36 @@ class CourseLms extends Model
 
 
         // se l'utente è in attesa dsi approvazione ne sovrascrivo i permessi derivati dalla sessione
-        if($infoEnroll['waiting']) {
+        if ($infoEnroll['waiting']) {
             $parsedData['canEnter'] = false;
         }
 
-        if ($parsedData['date_begin'] !== null) {
-            //se la data di inizio è superiore ad oggi
-            if(new DateTime($parsedData['date_begin']) > new DateTime()) {
-                $parsedData['canEnter'] = false;
+        $now = new DateTime();
 
+        if ($parsedData['date_begin'] !== null) {
+            try {
+                $dateBegin = self::parseDateTime($parsedData['date_begin'], $parsedData['hour_begin']);
+
+                if ($dateBegin && $dateBegin > $now) {
+                    $parsedData['canEnter'] = false;
+                }
+            } catch (Exception $e) {
             }
         }
 
-
         if ($parsedData['date_end'] !== null) {
-            $date_closing = getdate(strtotime(Format::date($parsedData['date_end'], 'date')));
-            if ($date_closing['year'] > 0) {
-                $parsedData['dateClosing_year'] = $date_closing['year'];
-                $parsedData['dateClosing_month'] = Lang::t('_MONTH_' . substr('0' . $date_closing['mon'], -2), 'standard');
-                $parsedData['dateClosing_day'] = $date_closing['mday'];
-            }
+            $dateEnd = self::parseDateTime($parsedData['date_end'], $parsedData['hour_end'], '23:59:59');
+            if ($dateEnd) {
+                $parsedData['dateClosing_year'] = $dateEnd->format('Y');
+                $parsedData['dateClosing_month'] = Lang::t('_MONTH_' . (int)$dateEnd->format('m'), 'standard');
+                $parsedData['dateClosing_day'] = $dateEnd->format('d');
 
-            $hour_end = ($parsedData['hour_end'] == -1) ? '23:59' : $parsedData['hour_end'];
-            
-           
-            if(new DateTime($parsedData['date_end'] . ' ' . $hour_end .':59') < new DateTime()) {
-                $parsedData['canEnter'] = false;
 
-                //anche nel caso di semplice iscrizione metto un flag fake per impedire iscrizione
-                $parsedData['subscribe_method'] = -1;
+                if ($dateEnd < $now) {
+                    $parsedData['canEnter'] = false;
+                    //anche nel caso di semplice iscrizione metto un flag fake per impedire iscrizione
+                    $parsedData['subscribe_method'] = -1;
+                }
             }
         }
 
@@ -451,14 +480,14 @@ class CourseLms extends Model
             . ' FROM %lms_courseuser'
             . " WHERE idCourse = '" . $idCourse . "'";
 
-        list($enrolled) = sql_fetch_row(sql_query($query));
+        [$enrolled] = sql_fetch_row(sql_query($query));
 
         return $enrolled;
     }
 
     public static function getAllClassDisplayInfo($id_course, &$course_array)
     {
-        require_once _lms_ . '/lib/lib.date.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
         $dm = new DateManager();
         $cl = new ClassroomLms();
         $course_editions = $cl->getUserEditionsInfo(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_course);
@@ -524,7 +553,7 @@ class CourseLms extends Model
             . ' FROM %lms_course'
             . ' WHERE idCourse = ' . (int)$id_course;
 
-        list($course_name, $selling, $price) = sql_fetch_row(sql_query($query));
+        [$course_name, $selling, $price] = sql_fetch_row(sql_query($query));
         $classrooms = $this->classroom_man->getCourseDate($id_course, false);
         $classroom_not_confirmed = $this->classroom_man->getNotConfirmetDateForCourse($id_course);
         // cutting not confirmed classrooms
@@ -630,7 +659,7 @@ class CourseLms extends Model
 
         $sql_exist = 'select count(id_course) as exist from learning_htmlfront where id_course=' . $this->idCourse;
         $qres = sql_query($sql_exist);
-        list($exist) = sql_fetch_row($qres);
+        [$exist] = sql_fetch_row($qres);
 
         if ((int)$exist === 1) {
             return true;
@@ -705,7 +734,7 @@ class CourseLms extends Model
             where lc.idCourse=lcu.idCourse
             and lc.idCourse=' . $idCourse . ' and idUser=' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
-        list($course_type, $level) = sql_fetch_row(sql_query($query));
+        [$course_type, $level] = sql_fetch_row(sql_query($query));
 
         $out = [];
         $out['course_type'] = $course_type;
@@ -744,7 +773,7 @@ class CourseLms extends Model
     {
         $query = 'select code, name from %lms_course_date where id_date=' . $idDate;
 
-        list($code, $name) = sql_fetch_row(sql_query($query));
+        [$code, $name] = sql_fetch_row(sql_query($query));
 
         $out = [];
         $out['code'] = $code;
@@ -760,7 +789,7 @@ class CourseLms extends Model
             lcd.id_date = lcdu.id_date
             and id_user = ' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . ' and lcd.id_course=' . $idCourse;
 
-        list($id_date) = sql_fetch_row(sql_query($query));
+        [$id_date] = sql_fetch_row(sql_query($query));
 
         return $id_date;
     }
