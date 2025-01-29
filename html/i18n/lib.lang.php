@@ -516,17 +516,29 @@ class Lang
     {
         $langadm = new LangAdm();
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-
         $cache = self::getCache();
+
+        // Prima verifica nella cache
         $all_language = $cache->get('all', 'languages', 'language_list');
 
+        // Se non è in cache, carica dal DB
         if ($all_language === null) {
             $all_language = $langadm->getLangListNoStat();
             $cache->set('all', 'languages', $all_language, 'language_list');
         }
 
+        // Se non è nella lista caricata, verifica direttamente nel DB
         if (!isset($all_language[$lang_code])) {
-            return false;
+            $language = $langadm->getLanguage($lang_code);
+
+            if ($language) {
+                // Aggiorna la cache con la nuova lingua
+                $all_language[$lang_code] = $language;
+                $cache->set('all', 'languages', $all_language, 'language_list');
+            } else {
+                // La lingua non esiste proprio nel sistema
+                return false;
+            }
         }
 
         if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
