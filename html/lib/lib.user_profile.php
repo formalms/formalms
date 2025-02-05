@@ -3585,12 +3585,15 @@ class UserProfileData
      */
     public function getFieldAccessList($id_user)
     {
-        if (isset($this->_field_access_list[$id_user])) {
+        if (isset($this->_field_access_list[$id_user]) && is_array($this->_field_access_list[$id_user])) {
             return $this->_field_access_list[$id_user];
         } else {
             // load from database the saved access list for the user
             $preference = new UserPreferences($id_user);
-            $this->_field_access_list[$id_user] = unserialize(stripslashes($preference->getPreference('user_rules.field_policy')));
+            $accessData = unserialize(stripslashes($preference->getPreference('user_rules.field_policy')));
+            if (is_array($accessData)) {
+                $this->_field_access_list[$id_user] = $accessData;
+            }
         }
         if (is_array($this->_field_access_list)) {
             // add default value to list if needed
@@ -3710,13 +3713,13 @@ class UserProfileData
     public function isOnline($id_user)
     {
         $u_info = $this->getUserDataNoRestriction($id_user);
-        $fal = $this->getFieldAccessList($id_user);
 
         $viewer = $this->getViewer();
 
         $is_teacher = $this->isTeacher($viewer);
         $is_friend = $this->isFriend($id_user, $viewer);
-
+        $fal = $this->getFieldAccessList($id_user);
+        
         switch ($fal['online_satus']) {
             case PFL_POLICY_FREE:
                 $online = (strcmp($u_info[ACL_INFO_LASTENTER], date('Y-m-d H:i:s', time() - REFRESH_LAST_ENTER)) >= 0);
@@ -4095,10 +4098,10 @@ class UserProfileData
 
         // save the new profile view
         $query_ins = '
-		INSERT INTO ' . $this->_getTableProfileView() . '
+		INSERT INTO ' . $this->_getTableProfileView() . "
 		( id_owner, id_viewer, date_view ) VALUES (
 			' . (int)$id_user . ',
-			' . (int)$id_viewer . ",
+			' . (int)$id_viewer . ',
 			'" . date('Y-m-d H:i:s') . "'
 		)";
         sql_query($query_ins);
