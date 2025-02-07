@@ -170,7 +170,7 @@ function getCountableCourseItems($idCourse, $countHidden = true, $idUser = false
  **/
 function getStatStatusCount($stat_idUser, $stat_idCourse, $arrStauts, $arrayFilter = [])
 {
-    $query = 'SELECT count(ct.idreference)'
+    $query = 'SELECT count(DISTINCT ct.idreference)'
         . ' FROM %lms_commontrack ct, %lms_organization org'
         . ' WHERE (ct.idReference = org.idOrg)'
         . "   AND (ct.idUser = '" . (int) $stat_idUser . "')"
