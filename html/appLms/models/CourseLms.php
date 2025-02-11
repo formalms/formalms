@@ -402,9 +402,8 @@ class CourseLms extends Model
             $dateEnd = self::parseDateTime($parsedData['date_end'], $parsedData['hour_end'], '23:59:59');
             if ($dateEnd) {
                 $parsedData['dateClosing_year'] = $dateEnd->format('Y');
-                $parsedData['dateClosing_month'] = Lang::t('_MONTH_' . (int)$dateEnd->format('m'), 'standard');
+                $parsedData['dateClosing_month'] = Lang::t('_MONTH_' . $dateEnd->format('m'), 'standard');
                 $parsedData['dateClosing_day'] = $dateEnd->format('d');
-
 
                 if ($dateEnd < $now) {
                     $parsedData['canEnter'] = false;
