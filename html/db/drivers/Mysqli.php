@@ -92,7 +92,7 @@ class Mysqli extends DbConn
         $this->query('SET SESSION group_concat_max_len = 70000', $this->conn);
 
         //TODO NO_Strict_MODE: to be confirmed
-        $this->query("SET SQL_MODE = 'NO_AUTO_CREATE_USER'", $this->conn);
+        $this->query("SET SQL_MODE = 'NO_ENGINE_SUBSTITUTION'", $this->conn);
 
         return true;
     }
