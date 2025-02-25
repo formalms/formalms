@@ -2977,29 +2977,12 @@ class UsermanagementAdm extends Model implements Accessible
                 $query .= ' AND idOrg in (' . implode(',', $orgGroups) . ')';
             }
         }
+        $query .= ' order by path';
+
         $res = $this->db->query($query);
-        $treeData = [];
         if ($res) {
             foreach ($res as $row) {
-                $treeData[$row['idOrg']] = $row;
-            }
-        }
-
-        // Order first level elements
-        uasort($treeData, function ($a, $b) {
-            return strcmp($a['translation'], $b['translation']);
-        });
-
-        // Create output with indentation (based on element level)
-        foreach ($treeData as $node) {
-            if ($node['lev'] == 1) {
-                $output[$node['idOrg']] = $node['translation'];
-                foreach ($treeData as $childNode) {
-                    if ($childNode['idParent'] == $node['idOrg']) {
-                        $indend = str_repeat('&nbsp;', $childNode['lev'] * 2);
-                        $output[$childNode['idOrg']] = $indend . $childNode['translation'];
-                    }
-                }
+                $output[$row['idOrg']] = str_repeat('&nbsp;', $row['lev'] * 2).$row['translation'];;
             }
         }
 
