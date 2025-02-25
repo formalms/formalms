@@ -9,7 +9,7 @@ class LangCache extends BaseCache
     private const CACHE_DIR = 'languages';
     private const CACHE_TTL = 86400;
 
-    public static function getInstance(?string $format = null, ?int $ttl = self::CACHE_TTL, ?string $namespace = null): static
+    public static function getInstance(?string $format = self::FORMAT_JSON, ?int $ttl = self::CACHE_TTL, ?string $namespace = null): static
     {
         return parent::getInstance($format, $ttl, $namespace);
     }

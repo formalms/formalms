@@ -4,10 +4,10 @@ namespace FormaLms\lib\Cache;
 
 abstract class BaseCache
 {
-    protected const FORMAT_PHP = 'php';
-    protected const FORMAT_JSON = 'json';
-    protected const FORMAT_MSGPACK = 'msgpack';
-    protected const FORMAT_IGBINARY = 'igbinary';
+    public const FORMAT_PHP = 'php';
+    public const FORMAT_JSON = 'json';
+    public const FORMAT_MSGPACK = 'msgpack';
+    public const FORMAT_IGBINARY = 'igbinary';
 
     protected string $cacheDir;
     protected string $namespace;
@@ -20,11 +20,12 @@ abstract class BaseCache
      * Protected constructor to prevent direct instantiation
      */
     protected function __construct(
-        string $subDir,
-        ?string $format = null,
-        ?int $ttl = null,
+        string  $subDir,
+        ?string $format = self::FORMAT_JSON,
+        ?int    $ttl = null,
         ?string $namespace = null
-    ) {
+    )
+    {
         $this->cacheDir = _files_ . '/cache/' . trim($subDir, '/') . '/';
         $this->namespace = $namespace ?? static::class;
         $this->cacheTTL = $ttl ?? 3600; // Default 1 hour
@@ -35,21 +36,26 @@ abstract class BaseCache
     /**
      * Prevent cloning of the instance
      */
-    protected function __clone() {}
+    protected function __clone()
+    {
+    }
 
     /**
      * Prevent unserialize of the instance
      */
-    protected function __wakeup() {}
+    protected function __wakeup()
+    {
+    }
 
     /**
      * Get singleton instance with specific configuration
      */
     public static function getInstance(
-        ?string $format = null,
-        ?int $ttl = null,
+        ?string $format = 'php',
+        ?int    $ttl = null,
         ?string $namespace = null
-    ): static {
+    ): static
+    {
         $class = static::class;
         $key = $class . '_' . ($format ?? 'default') . '_' . ($ttl ?? 'default');
 
@@ -96,9 +102,9 @@ abstract class BaseCache
     protected function determineFormat(?string $format = null): string
     {
         // Check passed format or environment variable
-        $selectedFormat = strtolower($format ?? getenv('CACHE_FORMAT') ?? '');
+        $selectedFormat = strtolower(\FormaLms\lib\Get::cfg('cache_format', $format));
 
-        return match($selectedFormat) {
+        return match ($selectedFormat) {
             'msgpack' => extension_loaded('msgpack') ? self::FORMAT_MSGPACK : self::FORMAT_JSON,
             'igbinary' => extension_loaded('igbinary') ? self::FORMAT_IGBINARY : self::FORMAT_JSON,
             'php' => self::FORMAT_PHP,
@@ -224,7 +230,7 @@ abstract class BaseCache
      */
     protected function serialize($data): string
     {
-        return match($this->cacheFormat) {
+        return match ($this->cacheFormat) {
             self::FORMAT_PHP => sprintf("<?php\nreturn %s;", var_export($data, true)),
             self::FORMAT_JSON => json_encode($data, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE),
             self::FORMAT_MSGPACK => msgpack_pack($data),
@@ -238,7 +244,7 @@ abstract class BaseCache
      */
     protected function unserialize($content)
     {
-        return match($this->cacheFormat) {
+        return match ($this->cacheFormat) {
             self::FORMAT_PHP => include $content,
             self::FORMAT_JSON => json_decode($content, true, 512, JSON_THROW_ON_ERROR),
             self::FORMAT_MSGPACK => msgpack_unpack($content),
@@ -252,7 +258,7 @@ abstract class BaseCache
      */
     protected function getCacheExtension(): string
     {
-        return match($this->cacheFormat) {
+        return match ($this->cacheFormat) {
             self::FORMAT_PHP => '.php',
             self::FORMAT_JSON => '.json',
             self::FORMAT_MSGPACK => '.msg',

@@ -79,6 +79,7 @@ $cfg['smtp_user'] = '';
 $cfg['smtp_pwd'] = '';
 $cfg['smtp_debug'] = 0;             // Options: debug level 0,1,2,3,...
 
+$cfg['cache_format'] = \FormaLms\lib\Cache\BaseCache::FORMAT_JSON;        // php|json|msgpack|igbinary
 /*
  * Other params
  * -------------------------------------------------------------------------
