@@ -36,14 +36,14 @@ abstract class BaseCache
     /**
      * Prevent cloning of the instance
      */
-    protected function __clone()
+    public function __clone()
     {
     }
 
     /**
      * Prevent unserialize of the instance
      */
-    protected function __wakeup()
+    public function __wakeup()
     {
     }
 
