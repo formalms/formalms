@@ -839,6 +839,9 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         Util::jump_to('index.php?modname=coursepath&op=pathelem&amp;id_path=' . $id_path . '&amp;result=' . ($re ? 'ok' : 'err'));
     }
 
+
+
+
     function delcoursepathelem()
     {
         checkPerm('mod');
@@ -861,6 +864,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 $users = $cpath_man->getSubscribed($id_path);
                 if (!empty($users)) {
                     $re &= $subs_man->unsubscribeUsers($users, $id_course);
+                    Events::trigger('lms.course.from.coursepath.deleting',['id_course' => $id_course, "id_path" => $id_path]);
                 }
             }
             Util::jump_to('index.php?modname=coursepath&op=pathelem&amp;id_path=' . $id_path . '&amp;result=' . ($re ? 'ok' : 'err'));
