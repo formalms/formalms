@@ -69,6 +69,7 @@ class ProfileLmsController extends LmsController
 
     public function showProfile($selected_tab = '_PROFILE', $error_array = false){
         $profile_data = $this->getUserProfileData();
+        $preference = new UserPreferences($profile_data['user']['idst']);
         $profile_data['tabs'] =  [
             '_PROFILE'=> ['translation'=>Lang::t('_PROFILE','profile'), 'enabled'=>true],
             '_PASSWORD'=>['translation'=>Lang::t('PASSWORD','standard'), 'enabled'=>(FormaLms\lib\Get::sett('profile_modify') != 'disallow')],
@@ -79,7 +80,7 @@ class ProfileLmsController extends LmsController
         $url_man = UrlManager::getInstance();
         $url_man->setStdQuery('r=lms/profile/show');
         $profile_data['modify_url'] = $url_man->getUrl('ap=mod_profile');
-
+        $profile_data['preference'] = $preference;
 
 
         if ($profile_data['tabs']['_PASSWORD']['enabled']) {
