@@ -50,7 +50,7 @@
           <div id="up_email"><a class="user-profile__namelink" href="mailto:{{user.email}}" target="_blank">{{user.email}}</a></div>
         </div>
         <br>
-        <div id="tempDiv">{{ preference.getModifyMask('ui.') | raw}}</div>
+        {{ preference.getModifyMask('ui.') | raw}}
         {% block message  %}
           {% if can_access_messages %}
               <a class="forma-button user-profile__cta" href="{{ route.message.url }}&idst={{ user.idst }}&signature={{ Util_getSignature() }}&sop=unregistercourse">
@@ -102,7 +102,25 @@
 
 <script>
 
-  document.getElementById('tempDiv').style.display = 'none';
+  document.querySelectorAll('.form_line_l').forEach(el => {el.classList.add('course-info__label'); el.id = 'language'} );
+  document.querySelectorAll('.form_line_l').forEach(el => el.classList.remove('form_line_l'));
+  document.querySelector('p').remove();
+
+
+  if(!document.getElementById('lableLanguage')){
+    const labelDiv = document.createElement("div");
+    labelDiv.id = 'lableLanguage';
+    labelDiv.className = "course-info__value text--gray"; // Aggiungi la classe
+    labelDiv.innerHTML = document.getElementById('language').innerHTML; // Aggiungi il testo
+
+    // Aggiungi il nuovo div al contenitore
+    const container = document.getElementById("language");
+    container.after(labelDiv);
+
+    document.getElementById('language').innerHTML = window.frontend.config.lang.translations.standard._LANGUAGE;
+    document.querySelector('select').style.width = '196px';
+  }
+
   document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("linkModifica").addEventListener("click", function() {
 
@@ -132,24 +150,6 @@
 
       });
 
-      document.getElementById('tempDiv').style.display = 'block';
-      document.querySelectorAll('.form_line_l').forEach(el => {el.classList.add('course-info__label'); el.id = 'up_language'} );
-      document.querySelectorAll('.form_line_l').forEach(el => el.classList.remove('form_line_l'));
-      document.querySelector('p').remove();
-
-
-        // Crea un nuovo div per la label
-        const labelDiv = document.createElement("div");
-        labelDiv.className = "course-info__value text--gray"; // Aggiungi la classe
-        labelDiv.innerHTML = document.getElementById('up_language').innerHTML; // Aggiungi il testo
-
-        // Aggiungi il nuovo div al contenitore
-        const container = document.getElementById("up_language");
-        container.after(labelDiv);
-
-        document.getElementById('up_language').innerHTML = window.frontend.config.lang.translations.standard._LANGUAGE;
-        document.querySelector('select').style.width = '196px';
-
     });
   });
 
@@ -158,7 +158,6 @@
     document.getElementById("undo").addEventListener("click", function() {
       // Nasconde il pulsante del form
       document.getElementById("formButton").style.display = "none";
-      document.getElementById('tempDiv').style.display = 'none';
       // Seleziona tutti gli input con ID contenente "_mod"
       let inputs = document.querySelectorAll("input[id*='up_'], input[id*='field_']");
 
