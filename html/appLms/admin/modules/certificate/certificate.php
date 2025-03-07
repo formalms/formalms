@@ -139,7 +139,7 @@ function certificate()
         . '<div class="quick_search_form">
             <div>
                 <div class="simple_search_box">'
-        . Form::getInputTextfield('search_t', 'filter_text', 'filter_text', FormaLms\lib\Get::req('filter_text', DOTY_MIXED, ''), '', 255, '')
+        . Form::getInputTextfield('search_t', 'filter_text', 'filter_text', FormaLms\lib\Get::req('filter_text', DOTY_MIXED, ''), 255, '')
         . Form::getButton('filter_set', 'filter_set', Lang::t('_SEARCH', 'standard'), 'search_b')
         . Form::getButton('filter_reset', 'filter_reset', Lang::t('_RESET', 'standard'), 'reset_b')
         . '</div>

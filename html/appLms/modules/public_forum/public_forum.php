@@ -294,11 +294,10 @@ function forum()
             . Form::openForm('search_forum', 'index.php?modname=public_forum&amp;op=search')
             . '<div class="quick_search_form">'
             . '<label for="search_arg">' . $lang->def('_SEARCH_LABEL') . '</label> '
-            . Form::getInputTextfield('search_t' ,
-                'search_arg' ,
-                'search_arg' ,
-                '',
-                $lang->def('_SEARCH'), 255, '')
+            . Form::getInputTextfield('search_t',
+                'search_arg',
+                'search_arg',
+                '', 255, '')
             . '<input class="search_b" type="submit" id="search_button" name="search_button" value="' . $lang->def('_SEARCH') . '" />'
             . '</div>'
             . Form::closeForm()
@@ -314,11 +313,10 @@ function forum()
             . Form::openForm('search_forum', 'index.php?modname=public_forum&amp;op=search')
             . '<div class="quick_search_form">'
             . '<label for="search_arg">' . $lang->def('_SEARCH_LABEL') . '</label> '
-            . Form::getInputTextfield('search_t' ,
-                'search_arg' ,
-                'search_arg' ,
-                '',
-                $lang->def('_SEARCH'), 255, '')
+            . Form::getInputTextfield('search_t',
+                'search_arg',
+                'search_arg',
+                '', 255, '')
             . '<input class="search_b" type="submit" id="search_button" name="search_button" value="' . $lang->def('_SEARCH') . '" />'
             . '</div>'
             . Form::closeForm(), 'content');
@@ -1248,11 +1246,10 @@ function thread()
         . Form::openForm('search_forum', 'index.php?modname=public_forum&amp;op=search&amp;idForum=' . $id_forum)
         . '<div class="quick_search_form">'
         . '<label for="search_arg">' . $lang->def('_SEARCH_LABEL') . '</label> '
-        . Form::getInputTextfield('search_t' ,
-            'search_arg' ,
-            'search_arg' ,
-            '',
-            $lang->def('_SEARCH'), 255, '')
+        . Form::getInputTextfield('search_t',
+            'search_arg',
+            'search_arg',
+            '', 255, '')
         . '<input class="search_b" type="submit" id="search_button" name="search_button" value="' . $lang->def('_SEARCH') . '" />'
         . '</div>'
         . Form::closeForm(), 'content');
@@ -2366,11 +2363,10 @@ function message()
         . Form::openForm('search_forum', 'index.php?modname=public_forum&amp;op=search&amp;idThread=' . $id_thread)
         . '<div class="quick_search_form">'
         . '<label for="search_arg">' . $lang->def('_SEARCH_LABEL') . '</label> '
-        . Form::getInputTextfield('search_t' ,
-            'search_arg' ,
-            'search_arg' ,
-            '',
-            $lang->def('_SEARCH'), 255, '')
+        . Form::getInputTextfield('search_t',
+            'search_arg',
+            'search_arg',
+            '', 255, '')
         . '<input class="search_b" type="submit" id="search_button" name="search_button" value="' . $lang->def('_SEARCH') . '" />'
         . '</div>'
         . Form::closeForm(), 'content');
@@ -3381,11 +3377,10 @@ function forumsearch()
         . Form::openForm('search_forum', 'index.php?modname=public_forum&amp;op=search')
         . '<div class="quick_search_form">'
         . '<label for="search_arg">' . $lang->def('_SEARCH_LABEL') . '</label> '
-        . Form::getInputTextfield('search_t' ,
-            'search_arg' ,
-            'search_arg' ,
-            '',
-            $lang->def('_SEARCH'), 255, '')
+        . Form::getInputTextfield('search_t',
+            'search_arg',
+            'search_arg',
+            '', 255, '')
         . '<input class="search_b" type="submit" id="search_button" name="search_button" value="' . $lang->def('_SEARCH') . '" />'
         . '</div>'
         . Form::closeForm(), 'content');
@@ -3739,11 +3734,10 @@ function forumsearchmessage()
         . Form::openForm('search_forum', 'index.php?modname=public_forum&amp;op=search&amp;idThread=' . $id_thread)
         . '<div class="quick_search_form">'
         . '<label for="search_arg">' . $lang->def('_SEARCH_LABEL') . '</label> '
-        . Form::getInputTextfield('search_t' ,
-            'search_arg' ,
-            'search_arg' ,
-            '',
-            $lang->def('_SEARCH'), 255, '')
+        . Form::getInputTextfield('search_t',
+            'search_arg',
+            'search_arg',
+            '', 255, '')
         . '<input class="search_b" type="submit" id="search_button" name="search_button" value="' . $lang->def('_SEARCH') . '" />'
         . '</div>'
         . Form::closeForm(), 'content');

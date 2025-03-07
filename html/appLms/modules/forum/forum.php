@@ -316,8 +316,7 @@ function forum()
             . Form::getInputTextfield('search_t',
                 'search_arg',
                 'search_arg',
-                '',
-                $lang->def('_SEARCH'), 255, '')
+                '', 255, '')
             . '<input class="search_b" type="submit" id="search_button" name="search_button" value="' . $lang->def('_SEARCH') . '" />'
             . '</div>'
             . Form::closeForm()
@@ -336,8 +335,7 @@ function forum()
             . Form::getInputTextfield('search_t',
                 'search_arg',
                 'search_arg',
-                '',
-                $lang->def('_SEARCH'), 255, '')
+                '', 255, '')
             . '<input class="search_b" type="submit" id="search_button" name="search_button" value="' . $lang->def('_SEARCH') . '" />'
             . '</div>'
             . Form::closeForm(), 'content');
@@ -1076,8 +1074,7 @@ $re_thread = sql_query($query_thread);
         . Form::getInputTextfield('search_t',
             'search_arg',
             'search_arg',
-            '',
-            $lang->def('_SEARCH'), 255, '')
+            '', 255, '')
         . '<input class="search_b" type="submit" id="search_button" name="search_button" value="' . $lang->def('_SEARCH') . '" />'
         . '</div>'
         . Form::closeForm(), 'content');
@@ -2222,8 +2219,7 @@ function message()
         . Form::getInputTextfield('search_t',
             'search_arg',
             'search_arg',
-            '',
-            $lang->def('_SEARCH'), 255, '')
+            '', 255, '')
         . '<input class="search_b" type="submit" id="search_button" name="search_button" value="' . $lang->def('_SEARCH') . '" />'
         . '</div>'
         . Form::closeForm(), 'content');
@@ -3195,8 +3191,7 @@ function forumsearch()
         . Form::getInputTextfield('search_t',
             'search_arg',
             'search_arg',
-            $search_arg,
-            $lang->def('_SEARCH'), 255, '')
+            $search_arg, 255, '')
         . '<input class="search_b" type="submit" id="search_button" name="search_button" value="' . $lang->def('_SEARCH') . '" />'
         . '</div>'
         . Form::closeForm(), 'content');
@@ -3536,8 +3531,7 @@ function forumsearchmessage()
         . Form::getInputTextfield('search_t',
             'search_arg',
             'search_arg',
-            $search_arg,
-            $lang->def('_SEARCH'), 255, '')
+            $search_arg, 255, '')
         . '<input class="search_b" type="submit" id="search_button" name="search_button" value="' . $lang->def('_SEARCH') . '" />'
         . '</div>'
         . Form::closeForm(), 'content');

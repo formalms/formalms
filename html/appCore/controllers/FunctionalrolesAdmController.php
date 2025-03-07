@@ -1195,9 +1195,9 @@ class FunctionalrolesAdmController extends AdmController
             $line[] = $value->typology;
             $line[] = $value->type;
             $line[] = $value->type == 'score'
-                ? Form::getInputTextfield('textfield', 'score_assigned_' . $key, 'properties[' . $key . '][score]', $properties[$key]->score, '', 255)
+                ? Form::getInputTextfield('textfield', 'score_assigned_' . $key, 'properties[' . $key . '][score]', $properties[$key]->score, 255)
                 : '-' . Form::getHidden('score_flag_' . $key, 'properties[' . $key . '][score]', 1);
-            $line[] = Form::getInputTextfield('textfield', 'expiration_' . $key, 'properties[' . $key . '][expiration]', $properties[$key]->expiration, '', 255);
+            $line[] = Form::getInputTextfield('textfield', 'expiration_' . $key, 'properties[' . $key . '][expiration]', $properties[$key]->expiration, 255);
 
             $table->addBody($line);
             if ($value->type == 'score') {
@@ -1210,12 +1210,12 @@ class FunctionalrolesAdmController extends AdmController
         ];
         if ($count_score > 0) {
             //set score to all competences
-            $foot[] = Form::getInputTextfield('textfield', 'score_value', false, $_std_score, '', 255) . '<br />'
+            $foot[] = Form::getInputTextfield('textfield', 'score_value', false, $_std_score, 255) . '<br />'
                 . Form::getButton('set_score', 'set_score', Lang::t('_SET', 'standard'), false, '', true, false)
                 . Form::getButton('reset_score', 'reset_score', Lang::t('_RESET', 'standard'), false, '', true, false);
         }
         //set expiration days to all competences
-        $foot[] = Form::getInputTextfield('textfield', 'expiration_value', false, $_std_expiration, '', 255) . '<br />'
+        $foot[] = Form::getInputTextfield('textfield', 'expiration_value', false, $_std_expiration, 255) . '<br />'
                 . Form::getButton('set_expiration', 'set_expiration', Lang::t('_SET', 'standard'), false, '', true, false)
                 . Form::getButton('reset_expiration', 'reset_expiration', Lang::t('_RESET', 'standard'), false, '', true, false);
 

@@ -2018,7 +2018,6 @@ class UserManagerRenderer
                 'register_userid',
                 'register[userid]',
                 (isset($_POST['register']['userid']) ? stripslashes($_POST['register']['userid']) : ''),
-                '',
                 255,
                 'placeholder="' . $lang->def('_USERNAME') . ' ' . $mand_symbol . '"'
             );
@@ -2037,7 +2036,6 @@ class UserManagerRenderer
                 'register_email',
                 'register[email]',
                 (isset($_POST['register']['email']) ? stripslashes($_POST['register']['email']) : ''),
-                '',
                 255,
                 'placeholder="' . $lang->def('_EMAIL') . ' ' . $mand_symbol . '"'
             );
@@ -2062,7 +2060,6 @@ class UserManagerRenderer
                 'register_firstname',
                 'register[firstname]',
                 (isset($_POST['register']['firstname']) ? stripslashes($_POST['register']['firstname']) : ''),
-                '',
                 255,
                 'placeholder="' . $lang->def('_FIRSTNAME') . ($options['lastfirst_mandatory'] == 'on' ? ' ' . $mand_symbol : '') . '"'
             );
@@ -2080,7 +2077,6 @@ class UserManagerRenderer
                 'register_lastname',
                 'register[lastname]',
                 (isset($_POST['register']['lastname']) ? stripslashes($_POST['register']['lastname']) : ''),
-                '',
                 255,
                 'placeholder="' . $lang->def('_LASTNAME') . ($options['lastfirst_mandatory'] == 'on' ? ' ' . $mand_symbol : '') . '"'
             );
@@ -2116,7 +2112,6 @@ class UserManagerRenderer
                 'form-control ' . ($error ? 'has-error' : ''),
                 'register_pwd',
                 'register[pwd]',
-                '',
                 255,
                 'placeholder="' . $lang->def('_PASSWORD') . ' ' . $mand_symbol . '"'
             );
@@ -2131,7 +2126,6 @@ class UserManagerRenderer
                 'form-control ' . ($error ? 'has-error' : ''),
                 'register_pwd_retype',
                 'register[pwd_retype]',
-                '',
                 255,
                 'placeholder="' . $lang->def('_RETYPE_PASSWORD') . ' ' . $mand_symbol . '"'
             );
@@ -2172,7 +2166,6 @@ class UserManagerRenderer
                     'reg_code',
                     'reg_code',
                     FormaLms\lib\Get::req('reg_code', DOTY_MIXED, ''),
-                    '',
                     24,
                     'placeholder="' . $lang->def('_CODE') . ($code_is_mandatory ? ' ' . $mand_symbol : '') . '"'
                 );
@@ -2695,7 +2688,7 @@ class UserManagerRenderer
                 . Form::openElementSpace('form_right')
                 . Form::getLabel('email', $lang->def('_EMAIL'), 'text_bold')
                 //$css_text, $id, $name, $value, $alt_name, $maxlenght, $other_param
-                . Form::getInputTextfield('textfield', 'email', 'email', '', strip_tags($lang->def('_EMAIL')), 255, '')
+                . Form::getInputTextfield('textfield', 'email', 'email', '', 255, '')
                 . Form::getButton('email_ins', 'email_ins', $lang->def('_SEND'), 'button_nowh')
                 . Form::closeElementSpace()
                 . Form::closeForm();
@@ -2711,7 +2704,7 @@ class UserManagerRenderer
             . Form::openElementSpace('form_right')
             . Form::getLabel('email', $lang->def('_USERNAME'), 'text_bold')
             //$css_text, $id, $name, $value, $alt_name, $maxlenght, $other_param
-            . Form::getInputTextfield('textfield', 'userid', 'userid', '', strip_tags($lang->def('_USERNAME')), 255, '')
+            . Form::getInputTextfield('textfield', 'userid', 'userid', '', 255, '')
             . Form::getButton('userid_ins', 'userid_ins', $lang->def('_SEND'), 'button_nowh')
             . Form::closeElementSpace()
             . Form::closeForm()

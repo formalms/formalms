@@ -194,7 +194,7 @@ function mycourses(&$url)
             . '<p>'
                 . Form::getLabel('search', $lang->def('_WORD'))
             . '</p>'
-            . Form::getInputTextfield('textfield_nowh', 'search', 'search', importVar('search'), $lang->def('_WORD'), '255', '') . '<br/>'
+            . Form::getInputTextfield('textfield_nowh', 'search', 'search', importVar('search'), '255', '') . '<br/>'
 
             . '<p>'
                 . Form::getLabel('year', $lang->def('_YEAR'))

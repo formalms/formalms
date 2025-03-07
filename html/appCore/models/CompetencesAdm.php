@@ -1993,7 +1993,7 @@ class CompetencesAdm extends Model implements Accessible
 
                 $line[] = $acl_man->relativeId($_user_data[$id_user]->userid);
                 $line[] = $_user_data[$id_user]->lastname . ' ' . $_user_data[$id_user]->firstname;
-                $line[] = Form::getInputTextfield('textfield', 'assign_score_' . $id_user, 'assign_score[' . $id_user . ']', $_std_score, '', 255, '');
+                $line[] = Form::getInputTextfield('textfield', 'assign_score_' . $id_user, 'assign_score[' . $id_user . ']', $_std_score, 255, '');
 
                 $table->addBody($line);
             }
@@ -2001,7 +2001,7 @@ class CompetencesAdm extends Model implements Accessible
 
         $foot = [];
         $foot[] = ['label' => '<b>' . Lang::t('_TOTAL', 'standard') . ': ' . count($_new_users) . '</b>', 'colspan' => 2];
-        $foot[] = Form::getInputTextfield('textfield', '_score_', '_score_', $_std_score, '', 255, '') . '<br />'
+        $foot[] = Form::getInputTextfield('textfield', '_score_', '_score_', $_std_score, 255, '') . '<br />'
             . Form::getButton('set_score', false, Lang::t('_SET', 'standard'))
             . Form::getButton('reset_score', false, Lang::t('_RESET', 'standard'));
 

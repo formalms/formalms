@@ -355,13 +355,12 @@ class Field_Cf extends Field
 
             $formField .= '<div class="col-xs-12 col-sm-6">';
             $formField .= Form::getInputTextfield(
-                    'form-control ' . ($error ? 'has-error' : ''),
-                    'field_' . self::getFieldType() . '_' . $this->id_common,
-                    'field_' . self::getFieldType() . '[' . $this->id_common . ']',
-                    $user_entry,
-                    '',
-                    255,
-                    'placeholder="' . $translation . ($mandatory ? ' *' : '') . '"'
+                'form-control ' . ($error ? 'has-error' : ''),
+                'field_' . self::getFieldType() . '_' . $this->id_common,
+                'field_' . self::getFieldType() . '[' . $this->id_common . ']',
+                $user_entry,
+                255,
+                'placeholder="' . $translation . ($mandatory ? ' *' : '') . '"'
                 );
 
             if ($error) {

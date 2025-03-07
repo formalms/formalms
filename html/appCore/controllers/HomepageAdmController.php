@@ -260,7 +260,6 @@ class HomepageAdmController extends AdmController
                 'lost_user_email',
                 'email',
                 '',
-                strip_tags(Lang::t('_EMAIL', 'register')),
                 255,
                 'placeholder="' . Lang::t('_EMAIL', 'register') . ' ' . $mand_symbol . '"'
             );
@@ -282,7 +281,6 @@ class HomepageAdmController extends AdmController
                 'lost_pwd_userid',
                 'userid',
                 '',
-                strip_tags(Lang::t('_USERNAME', 'register')),
                 255,
                 'placeholder="' . Lang::t('_USERNAME', 'register') . ' ' . $mand_symbol . '"'
             );

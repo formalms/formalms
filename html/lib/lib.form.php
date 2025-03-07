@@ -197,13 +197,12 @@ class Form
      * @param string $id          the id of the element
      * @param string $name        the name of the element
      * @param string $value       the default value for the input field
-     * @param string $alt_name    the alt name for the field
      * @param string $maxlenght   the max number of characters
      * @param string $other_param other element for the tag
      *
      * @return string with the html code for the input type="text" element
      */
-    public static function getInputTextfield($css_text, $id, $name, $value, $alt_name, $maxlenght, $other_param = '')
+    public static function getInputTextfield($css_text, $id, $name, $value, $maxlenght, $other_param = '')
     {
         $search = ['"', '<', '>'];
         $replace = ['&quot;', '&lt;', '&gt;'];
@@ -215,7 +214,7 @@ class Form
         . ($name !== false ? "\n\t" . 'name="' . $name . '" ' : '')
         . "\n\t" . 'value="' . $value . '" '
         . "\n\t" . 'maxlength="' . $maxlenght . '" '
-        . "\n\t" . 'alt="' . $alt_name . '"' . ($other_param != '' ? ' ' . $other_param : '') . ' />';
+        . "\n\t" . ($other_param != '' ? ' ' . $other_param : '') . ' />';
     }
 
     /**
@@ -270,7 +269,7 @@ class Form
        return '<div class="' . $css_line . '">'
         . $other_before
         . ($label_name ? '<p><label class="' . $css_label . '" for="' . $id . '">' . $label_name . '</label></p>' : '')
-        . Form::getInputTextfield($css_text, $id, $name, $value, $alt_name, $maxlenght, $other_param)
+        . Form::getInputTextfield($css_text, $id, $name, $value, $maxlenght, $other_param)
         . $other_after
         . '</div>';
     }
@@ -482,7 +481,7 @@ class Form
             cout($script, 'scripts'); //script in the scripts page section, this ensure to have it after the YAHOO.dateInput declaration
         }
 
-        return Form::getInputTextfield($css_field, $id, $name, Format::date($iso, 'datetime'), $alt_name, '30', '')/*.$other_after_b*/;
+        return Form::getInputTextfield($css_field, $id, $name, Format::date($iso, 'datetime'), '30', '')/*.$other_after_b*/;
     }
 
     public static function getLineDatetimefield($css_line, $css_label, $label_name, $css_text, $id, $name, $value, $date_format, $alt_name, $other_param, $other_after, $other_before)
@@ -527,7 +526,7 @@ class Form
 
         $iso = Format::dateDb($value, 'date');
 
-        return Form::getInputTextfield($css_field, $id, $name, Format::date($iso, 'date'), $alt_name, '30', $date_picker_other_param);
+        return Form::getInputTextfield($css_field, $id, $name, Format::date($iso, 'date'), '30', $date_picker_other_param);
     }
 
     public static function  getInputDatetimeLocalfield($css_field, $id, $name, $value = '', $date_format = false, $sel_time = false, $alt_name = '', $other_param = '')
@@ -668,13 +667,12 @@ class Form
      * @param string $css_text    the css class for the input element
      * @param string $id          the id of the element
      * @param string $name        the name of the element
-     * @param string $alt_name    the alt name for the field
      * @param string $maxlenght   the max number of characters
      * @param string $other_param other element for the tag
      *
      * @return string with the html code for the input type="password" element
      */
-    public static function getInputPassword($css_text, $id, $name, $alt_name, $maxlenght, $other_param, $value = '')
+    public static function getInputPassword($css_text, $id, $name, $maxlenght, $other_param, $value = '')
     {
         return '<input type="password" '
         . "\n\t" . 'class="form-control ' . $css_text . '" '
@@ -683,7 +681,7 @@ class Form
         . "\n\t" . 'maxlength="' . $maxlenght . '" '
         . "\n\t" . 'value="' . $value . '" '
         . "\n\t" . 'autocomplete="off" '
-        . "\n\t" . 'alt="' . $alt_name . '"' . ($other_param != '' ? ' ' . $other_param : '') . ' />';
+        . "\n\t" . ($other_param != '' ? ' ' . $other_param : '') . ' />';
     }
 
     /**
@@ -706,7 +704,7 @@ class Form
         return '<div class="' . $css_line . '">'
         . $other_before
         . '<p><label class="' . $css_label . '" for="' . $id . '">' . $label_name . '</label></p>'
-        . Form::getInputPassword($css_text, $id, $name, $alt_name, $maxlenght, $other_param, $value)
+        . Form::getInputPassword($css_text, $id, $name, $maxlenght, $other_param, $value)
         . $other_after
         . '</div>';
     }

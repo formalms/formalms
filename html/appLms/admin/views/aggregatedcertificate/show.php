@@ -20,7 +20,7 @@ cout(
         . '<div class="quick_search_form">
                 <div>
                     <div class="simple_search_box">'
-                        . Form::getInputTextfield('search_t', 'filter_text', 'filter_text', (isset($filter_text) ? $filter_text : ''), '', 255, '')
+                        . Form::getInputTextfield('search_t', 'filter_text', 'filter_text', (isset($filter_text) ? $filter_text : ''), 255, '')
                         . Form::getButton('filter', 'filter', Lang::t('_SEARCH', 'standard'), 'search_b')
                         . Form::getButton('toggle_filter', 'toggle_filter', Lang::t('_RESET', 'standard'), 'reset_b')
                     . '</div>

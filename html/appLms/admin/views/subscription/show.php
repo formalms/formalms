@@ -44,7 +44,7 @@ if (!$id_date && !$id_edition) {
         <div>
             <?php
             echo '<label for="fast_subscribe">' . Lang::t('_SUBSCRIBE', 'subscribe') . '</label>:&nbsp;';
-            echo Form::getInputTextfield('search_t', 'fast_subscribe', 'fast_subscribe', '', '', 255, '');
+            echo Form::getInputTextfield('search_t', 'fast_subscribe', 'fast_subscribe', '', 255, '');
             echo Form::getButton('fast_subscribe_b', 'fast_subscribe_b', Lang::t('_SUBSCRIBE', 'standard'), 'plus_b');
             echo '<div id="fast_subscribe_container"></div>';
             echo Form::getHidden('fast_subscribe_idst', 'fast_subscribe_idst', '0');
@@ -58,7 +58,7 @@ if (!$id_date && !$id_edition) {
     <div class="quick_search_form">
         <div>
             <?php
-            echo Form::getInputTextfield('search_t', 'filter_text', 'filter_text', $filter_text, '', 255, '');
+            echo Form::getInputTextfield('search_t', 'filter_text', 'filter_text', $filter_text, 255, '');
             echo Form::getButton('filter_set', 'filter_set', Lang::t('_SEARCH', 'standard'), 'search_b');
             echo Form::getButton('filter_reset', 'filter_reset', Lang::t('_RESET', 'standard'), 'reset_b');
             ?>

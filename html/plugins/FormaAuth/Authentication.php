@@ -29,9 +29,9 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
             'type' => self::AUTH_TYPE_BASE,
             'form' => Form::openForm('login_confirm', \FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _login_ . '&plugin=' . Plugin::getName() . $redirect, 'form-floating')
                 . ( getAccessibilityStatus() == true ? Form::getLabel('login_userid', Lang::t("_USERNAME", "login"),'input_label'): "<br>")
-                . Form::getInputTextfield('', 'login_userid', 'login_userid', '', '', 255, 'placeholder="' . Lang::t('_USERNAME', 'login') . '"')
+                . Form::getInputTextfield('', 'login_userid', 'login_userid', '', 255, 'autocomplete="' . Lang::t('_USERNAME', 'login') . '"')
                 . ( getAccessibilityStatus() == true ? Form::getLabel('login_pwd', Lang::t("_PASSWORD", "login"),'input_label input_label_margin'): "<br>")
-                . Form::getInputPassword('', 'login_pwd', 'login_pwd', '', 255, 'placeholder="' . Lang::t('_PASSWORD', 'login') . '"')
+                . Form::getInputPassword('', 'login_pwd', 'login_pwd', 255, 'placeholder="' . Lang::t('_PASSWORD', 'login') . '"')
                 . (isset($_REQUEST['notuse_plugin']) ? Form::getHidden('notuse_plugin', 'notuse_plugin', 'true') : '')
                 . (isset($_REQUEST['notuse_customscript']) ? Form::getHidden('notuse_customscript', 'notuse_customscript', 'true') : '')
                 . (isset($_REQUEST['notuse_template']) ? Form::getHidden('notuse_template', 'notuse_template', 'true') : '')

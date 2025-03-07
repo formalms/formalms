@@ -252,7 +252,7 @@ function get_report_table($url = '')
 				<div class="simple_search_box" id="report_searchbox_simple_filter_options" style="display: block;">'
             . Form::getInputDropdown('dropdown', 'report_searchbox_filter_author', 'filter_author', $authors, $reportAdminFilter['author'], $dropdown_onclick)
             . '&nbsp;&nbsp;&nbsp;'
-            . Form::getInputTextfield('search_t', 'report_searchbox_filter_name', 'filter_name', $reportAdminFilter['name'], '', 255, '')
+            . Form::getInputTextfield('search_t', 'report_searchbox_filter_name', 'filter_name', $reportAdminFilter['name'], 255, '')
             . Form::getButton('report_searchbox_filter_set', 'search', Lang::t('_SEARCH', 'standard'), 'search_b')
             . Form::getButton('report_searchbox_filter_reset', 'reset', Lang::t('_RESET', 'standard'), 'reset_b')
             . '</div>

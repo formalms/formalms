@@ -234,7 +234,7 @@ function codeList()
 
     cout('<div class="quick_search_form">'
             . Form::openForm('code_list_filter', 'index.php?modname=code&amp;op=code_list&amp;id_code_group=' . $id_code_group)
-            . Form::getInputTextfield('search_t', 'code_filter', 'code_filter', (isset($_POST['code_filter']) ? $_POST['code_filter'] : ''), '', 255, '')
+            . Form::getInputTextfield('search_t', 'code_filter', 'code_filter', (isset($_POST['code_filter']) ? $_POST['code_filter'] : ''), 255, '')
             . Form::getButton('filter', 'filter', Lang::t('_SEARCH', 'standard'), 'search_b')
             . Form::getButton('undo_filter', 'undo_filter', Lang::t('_RESET', 'standard'), 'reset_b')
             . Form::closeForm()

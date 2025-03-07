@@ -1657,6 +1657,7 @@ In handling this information, accuracy and precision shall be met to ensure the 
         <key id="login&amp;_UNKNOWNGOOGLERROR" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Unknown error during Google login]]></key>
         <key id="login&amp;_UNKNOWNSOCIALERROR" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Unknown error in social login]]></key>
         <key id="login&amp;_UNLOGGED" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[You are logged out]]></key>
+        <key id="login&amp;_READ_ALL_CONTENT" attributes="" save_date="2025-03-06 16:02:02"><![CDATA[Read the complete description of Forma LMS]]></key>
       </module>
       <module id="manmenu">
         <key id="manmenu&amp;_ADDCUSTOM" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Add new custom menu]]></key>

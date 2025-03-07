@@ -138,7 +138,7 @@ class Selector_CoursePath
 
             $output .= '<div class="quick_search_form">'
                 . '<div>'
-                . Form::getInputTextfield('search_t', 'coursepath_filter_name', 'coursepath_filter_name', FormaLms\lib\Get::req('coursepath_filter_name', DOTY_MIXED, ''), '', 255, '')
+                . Form::getInputTextfield('search_t', 'coursepath_filter_name', 'coursepath_filter_name', FormaLms\lib\Get::req('coursepath_filter_name', DOTY_MIXED, ''), 255, '')
                 . Form::getButton('coursepath_filter', 'coursepath_filter', Lang::t('_SEARCH', 'standard'), 'search_b')
                 . '</div>'
                 . '</div>';

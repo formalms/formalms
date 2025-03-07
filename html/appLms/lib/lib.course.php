@@ -173,7 +173,7 @@ class Selector_Course
                 . '&nbsp;&nbsp;&nbsp;&nbsp;'
                 . '</div>'
                 . '<div>'
-                . Form::getInputTextfield('search_t', 'c_filter_name', 'c_filter_name', FormaLms\lib\Get::req('c_filter_name', DOTY_ALPHANUM, ''), '', 255, '')
+                . Form::getInputTextfield('search_t', 'c_filter_name', 'c_filter_name', FormaLms\lib\Get::req('c_filter_name', DOTY_ALPHANUM, ''), 255, '')
                 . Form::getButton('c_filter_set', 'c_filter_set', Lang::t('_SEARCH', 'standard'), 'search_b')
                 . '</div>'
                 . '</div>';

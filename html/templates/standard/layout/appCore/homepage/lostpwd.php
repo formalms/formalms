@@ -10,7 +10,7 @@
                       . Form::openElementSpace('form_right')
                           . Form::getHidden('lost_user_action', 'action', 'lost_user')
                           . Form::getLabel('email', "<span style='float:left;'>" . $lost_user_msg . '</span>' . Lang::t('_EMAIL', 'register'), 'text_bold')
-                          . Form::getInputTextfield('textfield', 'lost_user_email', 'email', '', strip_tags(Lang::t('_EMAIL', 'register')), 255, '')
+                          . Form::getInputTextfield('textfield', 'lost_user_email', 'email', '', 255, '')
                           . Form::getButton('lost_user_send', 'send', Lang::t('_SEND', 'register'), 'button_nowh')
                       . Form::closeElementSpace()
                   . Form::closeForm();
@@ -24,7 +24,7 @@
                   . Form::openElementSpace('form_right')
                       . Form::getHidden('lost_pwd_action', 'action', 'lost_pwd')
                       . Form::getLabel('userid', "<span style='float:left;'>" . $lost_pwd_msg . '</span>' . Lang::t('_USERNAME', 'register'), 'text_bold')
-                      . Form::getInputTextfield('textfield', 'lost_pwd_userid', 'userid', '', strip_tags(Lang::t('_USERNAME', 'register')), 255, '')
+                      . Form::getInputTextfield('textfield', 'lost_pwd_userid', 'userid', '', 255, '')
                       . Form::getButton('lost_pwd_send', 'send', Lang::t('_SEND', 'register'), 'button_nowh')
                   . Form::closeElementSpace()
               . Form::closeForm();

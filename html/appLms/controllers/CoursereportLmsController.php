@@ -1465,7 +1465,6 @@ class CoursereportLmsController extends LmsController
                                 'user_score_' . $idstUser,
                                 'user_score[' . $idstUser . ']',
                                 $testsScore[$idTest][$idstUser]['score'],
-                                strip_tags($lang->def('_SCORE')),
                                 '8',
                                 ' tabindex="' . $i++ . '" '
                             );
@@ -1486,7 +1485,6 @@ class CoursereportLmsController extends LmsController
                             'user_score_' . $idstUser,
                             'user_score[' . $idstUser . ']',
                             $testsScore[$idTest][$idstUser]['score'],
-                            strip_tags($lang->def('_SCORE')),
                             '8',
                             ' tabindex="' . $i++ . '" '
                         );
@@ -1498,7 +1496,6 @@ class CoursereportLmsController extends LmsController
                             'user_score_' . $idstUser,
                             'user_score[' . $idstUser . ']',
                             $testsScore[$idTest][$idstUser]['score'],
-                            strip_tags($lang->def('_SCORE')),
                             '8',
                             ' tabindex="' . $i++ . '" '
                         );
@@ -1950,7 +1947,6 @@ class CoursereportLmsController extends LmsController
                 'user_score[' . $idstUser . ']',
                 (isset($report_score[$id_report][$idstUser]['score'])
                     ? $report_score[$id_report][$idstUser]['score'] : ''),
-                strip_tags($lang->def('_SCORE')),
                 '8',
                 ' tabindex="' . $i++ . '" '
             );
@@ -2623,7 +2619,6 @@ class CoursereportLmsController extends LmsController
                     (isset($report_score[$id_report][$idstUser]['score'])
                         ? $report_score[$id_report][$idstUser]['score']
                         : (isset($_POST['user_score'][$idstUser]) ? $_POST['user_score'][$idstUser] : '')),
-                    strip_tags($lang->def('_SCORE')),
                     '8',
                     ' tabindex="' . $i++ . '" '
                 );

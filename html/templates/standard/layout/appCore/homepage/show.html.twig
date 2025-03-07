@@ -12,12 +12,12 @@
                     {% endfor %}
                     {% if done != false %}
                         <div>
-                            <b class="logout">{{ done }}</b>
+                            <strong class="logout">{{ done }}</strong>
                         </div>
                     {% endif %}
                     {% if msg != false %}
                         <div id="service_msg">
-                            <b class="login_failed">{{ msg }}</b>
+                            <strong class="login_failed">{{ msg }}</strong>
                         </div>
                     {% endif %}
                 {% else %}
@@ -73,7 +73,7 @@
         <div style="line-height: 26px;">{{ intro_text_body|raw }}</div>
     </div>
     <div class="collapse-wrapper" data-toggle="collapse" data-target="#description">
-        <a class="forma-button forma-button--primary is-hidden js-show-collapsed-text btn-margin" href="#">
+        <a class="forma-button forma-button--primary is-hidden js-show-collapsed-text btn-margin" href="#" aria-label="{{ Lang_translate('_READ_ALL_CONTENT', 'login') }}">
             {{ read_all|raw }}
         </a>
         <span class="glyphicon glyphicon-remove icon icon--close">{{ close|raw }}</span>

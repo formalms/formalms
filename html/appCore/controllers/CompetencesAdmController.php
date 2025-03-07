@@ -1060,7 +1060,7 @@ class CompetencesAdmController extends AdmController
 
                         $line[] = $acl_man->relativeId($_user_data[$id_user]->userid);
                         $line[] = $_user_data[$id_user]->lastname . ' ' . $_user_data[$id_user]->firstname;
-                        $line[] = Form::getInputTextfield('textfield', 'assign_score_' . $id_user, 'assign_score[' . $id_user . ']', $_std_score, '', 255, '');
+                        $line[] = Form::getInputTextfield('textfield', 'assign_score_' . $id_user, 'assign_score[' . $id_user . ']', $_std_score, 255, '');
 
                         $table->addBody($line);
                     }
@@ -1068,7 +1068,7 @@ class CompetencesAdmController extends AdmController
 
                 $foot = [];
                 $foot[] = ['label' => '<b>' . Lang::t('_TOTAL', 'standard') . ': ' . count($_new_users) . '</b>', 'colspan' => 2];
-                $foot[] = Form::getInputTextfield('textfield', '_score_', '_score_', $_std_score, '', 255, '') . '<br />'
+                $foot[] = Form::getInputTextfield('textfield', '_score_', '_score_', $_std_score, 255, '') . '<br />'
                     . Form::getButton('set_score', false, Lang::t('_SET', 'standard'))
                     . Form::getButton('reset_score', false, Lang::t('_RESET', 'standard'));
 
@@ -1323,7 +1323,6 @@ class CompetencesAdmController extends AdmController
                     'assign_score_' . $id_user,
                     'assign_score[' . $id_user . ']',
                     $competence_users[$id_user]->score_got,
-                    '',
                     255,
                     ''
                 );
@@ -1333,7 +1332,7 @@ class CompetencesAdmController extends AdmController
 
             $foot = [];
             $foot[] = ['label' => '<b>' . Lang::t('_TOTAL', 'standard') . ': ' . count($users) . '</b>', 'colspan' => 2];
-            $foot[] = Form::getInputTextfield('textfield', '_score_', '_score_', $_std_score, '', 255, '') . '<br />'
+            $foot[] = Form::getInputTextfield('textfield', '_score_', '_score_', $_std_score, 255, '') . '<br />'
                 . Form::getButton('set_score', false, Lang::t('_SET', 'standard'))
                 . Form::getButton('reset_score', false, Lang::t('_RESET', 'standard'));
 
@@ -1558,7 +1557,7 @@ class CompetencesAdmController extends AdmController
                     $line[] = $competence->langs[$lang_code]['name'];
                     $line[] = $competence->langs[$lang_code]['description'];
                     $line[] = $competence->typology;
-                    $line[] = Form::getInputTextfield('textfield', 'score_assigned_' . $id, 'score_assigned[' . $id . ']', $std_value, '', 255, '');
+                    $line[] = Form::getInputTextfield('textfield', 'score_assigned_' . $id, 'score_assigned[' . $id . ']', $std_value, 255, '');
                     $table->addBody($line);
                 }
             }
@@ -1566,7 +1565,7 @@ class CompetencesAdmController extends AdmController
             if ($counter > 0) {
                 $foot = [
                     ['colspan' => 3, 'label' => ''],
-                    Form::getInputTextfield('textfield', 'score_assigned', false, $std_value, '', 255, '') . '<br />'
+                    Form::getInputTextfield('textfield', 'score_assigned', false, $std_value, 255, '') . '<br />'
                         . Form::getButton('set_score', 'set_score', Lang::t('_SET', 'standard'), false, '', true, false)
                         . Form::getButton('reset_score', 'reset_score', Lang::t('_RESET', 'standard'), false, '', true, false),
                 ];
@@ -1778,7 +1777,7 @@ class CompetencesAdmController extends AdmController
                 $line[] = $competence->langs[$lang_code]['name'];
                 $line[] = $competence->langs[$lang_code]['description'];
                 $line[] = $competence->typology;
-                $line[] = Form::getInputTextfield('textfield', 'score_assigned_' . $id, 'score_assigned[' . $id . ']', $std_value, '', 255, '');
+                $line[] = Form::getInputTextfield('textfield', 'score_assigned_' . $id, 'score_assigned[' . $id . ']', $std_value, 255, '');
                 $table->addBody($line);
             }
         }
@@ -1786,7 +1785,7 @@ class CompetencesAdmController extends AdmController
         if ($counter > 0) {
             $foot = [
                 ['colspan' => 3, 'label' => ''],
-                Form::getInputTextfield('textfield', 'score_assigned', false, $std_value, '', 255, '') . '<br />'
+                Form::getInputTextfield('textfield', 'score_assigned', false, $std_value, 255, '') . '<br />'
                     . Form::getButton('set_score', 'set_score', Lang::t('_SET', 'standard'), false, '', true, false)
                     . Form::getButton('reset_score', 'reset_score', Lang::t('_RESET', 'standard'), false, '', true, false),
             ];

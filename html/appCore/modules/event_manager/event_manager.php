@@ -363,88 +363,78 @@ function event_special_view($op)
     while (list($idClass, $class, $platform, $description, $idEventMgr, $recipients, $show_level) = sql_fetch_row($rs)) {
         $cont = [];
         $cont[] = $form->getInputTextfield('',
-                                            'platform_' . $idClass,
-                                            'platform[' . $idClass . ']',
-                                            $platform,
-                                            '',
-                                            50,
-                                            '');
+            'platform_' . $idClass,
+            'platform[' . $idClass . ']',
+            $platform,
+            50,
+            '');
 
         $cont[] = $form->getInputTextfield('',
-                                            'class_' . $idClass,
-                                            'class[' . $idClass . ']',
-                                            $class,
-                                            '',
-                                            50,
-                                            '');
+            'class_' . $idClass,
+            'class[' . $idClass . ']',
+            $class,
+            50,
+            '');
 
         $cont[] = $form->getInputTextfield('',
-                                            'description_' . $idClass,
-                                            'description[' . $idClass . ']',
-                                            $description,
-                                            '',
-                                            50,
-                                            '');
+            'description_' . $idClass,
+            'description[' . $idClass . ']',
+            $description,
+            50,
+            '');
 
         $cont[] = $form->getInputTextfield('',
-                                            'recipients_' . $idEventMgr,
-                                            'recipients[' . $idEventMgr . ']',
-                                            $recipients,
-                                            '',
-                                            50,
-                                            '');
+            'recipients_' . $idEventMgr,
+            'recipients[' . $idEventMgr . ']',
+            $recipients,
+            50,
+            '');
 
         $cont[] = $form->getInputTextfield('',
-                                            'show_level_' . $idEventMgr,
-                                            'show_level[' . $idEventMgr . ']',
-                                            $show_level,
-                                            '',
-                                            50,
-                                            '');
+            'show_level_' . $idEventMgr,
+            'show_level[' . $idEventMgr . ']',
+            $show_level,
+            50,
+            '');
 
         $tb_event_classes->addBody($cont);
     }
     $cont = [];
 
     $cont[] = $form->getInputTextfield('',
-                                        'platform_0',
-                                        'platform[0]',
-                                        '',
-                                        '',
-                                        50,
-                                        '');
+        'platform_0',
+        'platform[0]',
+        '',
+        50,
+        '');
 
     $cont[] = $form->getInputTextfield('',
-                                        'class_0',
-                                        'class[0]',
-                                        '',
-                                        '',
-                                        50,
-                                        '');
+        'class_0',
+        'class[0]',
+        '',
+        50,
+        '');
 
     $cont[] = $form->getInputTextfield('',
-                                        'description_0',
-                                        'description[0]',
-                                        '',
-                                        '',
-                                        50,
-                                        '');
+        'description_0',
+        'description[0]',
+        '',
+        50,
+        '');
 
     $cont[] = $form->getInputTextfield('',
-                                        'recipients_0',
-                                        'recipients[0]',
-                                        '',
-                                        '',
-                                        50,
-                                        '');
+        'recipients_0',
+        'recipients[0]',
+        '',
+        50,
+        '');
 
     $cont[] = $form->getInputTextfield('',
-                                        'show_level_0',
-                                        'show_level[0]',
-                                        '',
-                                        '',
-                                        50,
-                                        '');
+        'show_level_0',
+        'show_level[0]',
+        '',
+        50,
+        '');
 
     $tb_event_classes->addBody($cont);
 

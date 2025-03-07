@@ -1226,7 +1226,6 @@ class CourseAlmsController extends AlmsController
                         'certificate_assign_minutes_' . $id_cert,
                         'certificate_assign_minutes[' . $id_cert . ']',
                         array_key_exists($id_cert, $course_cert) ? $course_cert[$id_cert]['minutes_required'] : 0,
-                        '',
                         6,
                         'style="width: 40px; text-align: right;"'
                     );

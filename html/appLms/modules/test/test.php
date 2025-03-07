@@ -928,7 +928,7 @@ function defmodality()
         'content'
     );
     //-random question
-    $input_field = Form::getInputTextfield('textfield_nowh', 'question_random_number', 'question_random_number', $question_random_number, 4, '', '');
+    $input_field = Form::getInputTextfield('textfield_nowh', 'question_random_number', 'question_random_number', $question_random_number, '', '');
     $label = str_replace('[random_quest]', '</label>' . $input_field . '<label for="question_random_number">', $lang->def('_TEST_MM1_QUESTION_RANDOM_NUMBER'));
 
     $GLOBALS['page']->add(
@@ -947,7 +947,7 @@ function defmodality()
 
     $category_selector = '<ul id="category_list" style="display:' . ($order_type == 3 ? 'block' : 'none') . '">';
     foreach ($categories as $key => $value) {
-        $input_field = Form::getInputTextfield('textfield_nowh', 'question_random_category_' . $key, 'question_random_category[' . $key . ']', $value['selected'], 4, '', '');
+        $input_field = Form::getInputTextfield('textfield_nowh', 'question_random_category_' . $key, 'question_random_category[' . $key . ']', $value['selected'], '', '');
 
         $category_selector .= '<li><label for="question_random_category_' . $key . '">' . $value['name'] . ':</label> '
             . str_replace(['[random_quest]', '[tot_quest]'], [$input_field, $value['total']], $lang->def('_TEST_MM1_QUESTION_RANDOM_NUMBER'))
@@ -992,7 +992,7 @@ function defmodality()
         foreach ($field['value'] as $key => $value) {
             $tot_quest = $fman->getNumberOfObjFieldEntryData($field['id'], $key, $arr_id_quest);
             $sel_quest = $cust_info[$key];
-            $input_field = Form::getInputTextfield('textfield_nowh', 'question_random_customfield_' . $key, 'question_random_customfield[' . $key . ']', $sel_quest, $cust_order_type, '', '');
+            $input_field = Form::getInputTextfield('textfield_nowh', 'question_random_customfield_' . $key, 'question_random_customfield[' . $key . ']', $sel_quest, '', '');
             $category_selector .= '<li><label for="question_random_customfield_' . $key . '">' . $value . ':</label> '
                 . str_replace(['[random_quest]', '[tot_quest]'], [$input_field, $tot_quest], $lang->def('_TEST_MM1_QUESTION_RANDOM_NUMBER'))
                 . '</li>';

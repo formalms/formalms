@@ -516,7 +516,7 @@ class ClassroomAlms extends Model
                     $passed = false;
                 }
 
-                 $cont[] = Form::getInputTextfield('', 'score_' . $id_user, 'score_' . $id_user, (isset($user_presence[$id_user]['1970-01-01']['score']) ? $user_presence[$id_user]['1970-01-01']['score'] : '0'), Lang::t('_SCORE', 'course'), 255, '');
+                 $cont[] = Form::getInputTextfield('', 'score_' . $id_user, 'score_' . $id_user, (isset($user_presence[$id_user]['1970-01-01']['score']) ? $user_presence[$id_user]['1970-01-01']['score'] : '0'), 255, '');
             }
 
 

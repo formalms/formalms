@@ -23,7 +23,7 @@
             Lang::t('_AUTODETECT', 'standard') => 'auto',
             '<b>,</b>' => 'comma',
             '<b>;</b>' => 'dotcomma',
-            Lang::t('_MANUAL', 'standard') . ':&nbsp;' . Form::getInputTextfield('', 'import_separator_manual', 'import_separator_manual', '', '', 255) => 'manual',
+            Lang::t('_MANUAL', 'standard') . ':&nbsp;' . Form::getInputTextfield('', 'import_separator_manual', 'import_separator_manual', '', 255) => 'manual',
         ], 'auto');
         echo Form::getCheckbox(Lang::t('_GROUP_USER_IMPORT_HEADER', 'admin_directory'), 'import_first_row_header', 'import_first_row_header', 'true', true);
         echo Form::getTextfield(Lang::t('_GROUP_USER_IMPORT_CHARSET', 'admin_directory'), 'import_charset', 'import_charset', 20, 'UTF-8');

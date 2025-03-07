@@ -134,7 +134,7 @@ class Selector_Catalogue
             */
             cout('<div class="quick_search_form">'
                 . '<div>'
-                . Form::getInputTextfield('search_t', 'cat_filter_name', 'cat_filter_name', FormaLms\lib\Get::req('cat_filter_name', DOTY_MIXED, ''), '', 255, '')
+                . Form::getInputTextfield('search_t', 'cat_filter_name', 'cat_filter_name', FormaLms\lib\Get::req('cat_filter_name', DOTY_MIXED, ''), 255, '')
                 . Form::getButton('catalogue_filter', 'catalogue_filter', Lang::t('_SEARCH', 'standard'), 'search_b')
                 . '</div>'
                 . '</div>', 'content');

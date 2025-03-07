@@ -374,7 +374,6 @@ class Field_Textfield extends Field
                 'field_' . self::getFieldType() . '_' . $this->id_common,
                 'field_' . self::getFieldType() . '[' . $this->id_common . ']',
                 $user_entry,
-                '',
                 255,
                 'placeholder="' . $translation . ($mandatory ? ' *' : '') . '"'
             );
