@@ -414,7 +414,7 @@ class User_API extends API
 
         $userCount = count($id_user_list);
         // Recupera tutti gli utenti in una singola query
-        $users_data = $this->aclManager->getUsers($id_user_list);
+        $users_data = $this->aclManager->getUsersAssociative($id_user_list);
 
         // Recupera tutti i campi personalizzati in una singola query
         $field_man = new FieldList();
@@ -431,15 +431,15 @@ class User_API extends API
             } else {
                 $user_data = $users_data[(int)$id_user];
                 $user_details = [
-                    'idst' => $user_data[ACL_INFO_IDST],
-                    'userid' => $this->aclManager->relativeId($user_data[ACL_INFO_USERID]),
-                    'firstname' => $user_data[ACL_INFO_FIRSTNAME],
-                    'lastname' => $user_data[ACL_INFO_LASTNAME],
-                    'email' => $user_data[ACL_INFO_EMAIL],
-                    'valid' => $user_data[ACL_INFO_VALID],
-                    'pwd_expire_at' => $user_data[ACL_INFO_PWD_EXPIRE_AT],
-                    'register_date' => $user_data[ACL_INFO_REGISTER_DATE],
-                    'last_enter' => $user_data[ACL_INFO_LASTENTER],
+                    'idst' => $user_data['idst'],
+                    'userid' => $this->aclManager->relativeId($user_data['userid']),
+                    'firstname' => $user_data['firstname'],
+                    'lastname' => $user_data['lastname'],
+                    'email' => $user_data['email'],
+                    'valid' => $user_data['valid'],
+                    'pwd_expire_at' => $user_data['pwd_expire_at'],
+                    'register_date' => $user_data['register_date'],
+                    'last_enter' => $user_data['last_enter'],
                 ];
 
                 $fields = [];

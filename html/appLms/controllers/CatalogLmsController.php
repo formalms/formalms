@@ -386,7 +386,7 @@ class CatalogLmsController extends LmsController
         $id_category = FormaLms\lib\Get::req('id_category', DOTY_INT, 0);
         $res = $this->model->courseSelectionInfo($id_course);
         $this->render('edition-modal', ['id_course' => $id_course, 'available_classrooms' => $res['available_classrooms'], 'teachers' => $res['teachers'],
-            'course_name' => $res['course_name'], 'type_course' => $type_course, 'id_catalogue' => $id_catalogue, 'id_category' => $id_category, ]);
+            'course_name' => $res['course_name'], 'type_course' => $type_course, 'id_catalogue' => $id_catalogue, 'id_category' => $id_category,]);
     }
 
     //UG  select a user subscription level
@@ -464,27 +464,20 @@ class CatalogLmsController extends LmsController
             $acl = \FormaLms\lib\Forma::getAcl();
             $acl_man = &$this->acl_man;
 
-            $recipients = [];
-
-            // get all superadmins
-            // no mail to superadmin
-            /*
-                $idst_group_god_admin = $acl->getGroupST(ADMIN_GROUP_GODADMIN);
-               $recipients = $acl_man->getGroupMembers($idst_group_god_admin);
-            */
-
             // get all admins
             $idst_group_admin = $acl->getGroupST(ADMIN_GROUP_ADMIN);
             $idst_admin = $acl_man->getGroupMembers($idst_group_admin);
 
             require_once _adm_ . '/lib/lib.adminmanager.php';
 
-            foreach ($idst_admin as $id_user) {
+            foreach ($idst_admin as $id_admin_user) {
+                $adminRecipients = [];
+
                 $adminManager = new AdminManager();
                 $acl_manager = &$acl_man;
 
                 // st = organization, get all orgs related to the user
-                $idst_associated = $adminManager->getAdminTree($id_user);
+                $idst_associated = $adminManager->getAdminTree($id_admin_user);
 
                 $array_user = $acl_manager->getAllUsersFromIdst($idst_associated);
 
@@ -497,15 +490,15 @@ class CatalogLmsController extends LmsController
 
                 $query = 'SELECT COUNT(*)'
                     . ' FROM ' . FormaLms\lib\Get::cfg('prefix_fw') . '_admin_course'
-                    . " WHERE idst_user = '" . $id_user . "'"
+                    . " WHERE idst_user = '" . $id_admin_user . "'"
                     . " AND type_of_entry = 'course'"
                     . ' AND id_entry in (-1,0,' . $id_course . ')';
 
-                list($control_course) = sql_fetch_row(sql_query($query));
+                [$control_course] = sql_fetch_row(sql_query($query));
 
                 $query = 'SELECT COUNT(*)'
                     . ' FROM ' . FormaLms\lib\Get::cfg('prefix_fw') . '_admin_course'
-                    . " WHERE idst_user = '" . $id_user . "'"
+                    . " WHERE idst_user = '" . $id_admin_user . "'"
                     . " AND type_of_entry = 'coursepath'"
                     . ' AND id_entry IN'
                     . ' ('
@@ -514,11 +507,11 @@ class CatalogLmsController extends LmsController
                     . " WHERE id_item = '" . $id_course . "'"
                     . ' )';
 
-                list($control_coursepath) = sql_fetch_row(sql_query($query));
+                [$control_coursepath] = sql_fetch_row(sql_query($query));
 
                 $query = 'SELECT COUNT(*)'
                     . ' FROM ' . FormaLms\lib\Get::cfg('prefix_fw') . '_admin_course'
-                    . " WHERE idst_user = '" . $id_user . "'"
+                    . " WHERE idst_user = '" . $id_admin_user . "'"
                     . " AND type_of_entry = 'catalogue'"
                     . ' AND id_entry IN'
                     . ' ('
@@ -527,14 +520,12 @@ class CatalogLmsController extends LmsController
                     . " WHERE idEntry = '" . $id_course . "'"
                     . ' )';
 
-                list($control_catalogue) = sql_fetch_row(sql_query($query));
+                [$control_catalogue] = sql_fetch_row(sql_query($query));
 
                 if ($control_user && ($control_course || $control_coursepath || $control_catalogue)) {
-                    $recipients[] = $id_user;
+                    $adminRecipients[] = $id_admin_user;
                 }
             }
-
-            $recipients = array_unique($recipients);
 
             $array_subst = [
                 '[url]' => FormaLms\lib\Get::site_url(),
@@ -543,38 +534,41 @@ class CatalogLmsController extends LmsController
                 '[lastname]' => $userinfo[ACL_INFO_LASTNAME],
             ];
 
-            $msg_composer = new EventMessageComposer('subscribe', 'lms');
             if ($overbooking) {
+                $adminMessageComposer = new EventMessageComposer('subscribe', 'lms');
+
                 $subject_key = '_NEW_USER_OVERBOOKING_SUBSCRIBED_SUBJECT';
                 $body_key = '_NEW_USER_OVERBOOKING_SUBSCRIBED_TEXT';
 
-                $msg_composer->setSubjectLangText('email', $subject_key, false);
-                $msg_composer->setBodyLangText('email', $body_key, $array_subst);
+                $adminMessageComposer->setSubjectLangText('email', $subject_key, false);
+                $adminMessageComposer->setBodyLangText('email', $body_key, $array_subst);
 
-                $msg_composer->setSubjectLangText('sms', $subject_key . '_SMS', false);
-                $msg_composer->setBodyLangText('sms', $body_key . '_SMS', $array_subst);
-                createNewAlert('UserCourseInsertOverbooking', 'subscribe', 'insert', '1', 'User overbooked subscribed with moderation', $recipients, $msg_composer);
-            } else {
-                $description = 'User subscribed';
-                if ($waiting) {
-                    $description .= ' with moderation';
-                    $subject_key = '_NEW_USER_SUBS_WAITING_SUBJECT';
-                    $body_key = '_NEW_USER_SUBS_WAITING_TEXT';
-                    $myevent = 'UserCourseInsertModerate';
-                } else {
-                    $subject_key = '_NEW_USER_SUBSCRIBED_SUBJECT';
-                    $body_key = '_NEW_USER_SUBSCRIBED_TEXT_MODERATORS';
-                    $myevent = 'UserCourseInserted';
-                }
-
-                $msg_composer->setSubjectLangText('email', $subject_key, false);
-                $msg_composer->setBodyLangText('email', $body_key, $array_subst);
-
-                $msg_composer->setSubjectLangText('sms', '_TO_NEW_USER_TEXT_SMS', false);
-                $msg_composer->setBodyLangText('sms', '_TO_NEW_USER_TEXT_SMS', $array_subst);
-
-                createNewAlert($myevent, 'subscribe', 'insert', '1', $description, $recipients, $msg_composer);
+                $adminMessageComposer->setSubjectLangText('sms', $subject_key . '_SMS', false);
+                $adminMessageComposer->setBodyLangText('sms', $body_key . '_SMS', $array_subst);
+                createNewAlert('UserCourseInsertOverbooking', 'subscribe', 'insert', '1', 'User overbooked subscribed with moderation', $adminRecipients, $adminMessageComposer);
             }
+
+            $messageComposer = new EventMessageComposer('subscribe', 'lms');
+
+            $description = 'User subscribed';
+            if ($waiting) {
+                $description .= ' with moderation';
+                $subject_key = '_NEW_USER_SUBS_WAITING_SUBJECT';
+                $body_key = '_NEW_USER_SUBS_WAITING_TEXT';
+                $myevent = 'UserCourseInsertModerate';
+            } else {
+                $subject_key = '_NEW_USER_SUBSCRIBED_SUBJECT';
+                $body_key = '_NEW_USER_SUBSCRIBED_TEXT_MODERATORS';
+                $myevent = 'UserCourseInserted';
+            }
+
+            $messageComposer->setSubjectLangText('email', $subject_key, false);
+            $messageComposer->setBodyLangText('email', $body_key, $array_subst);
+
+            $messageComposer->setSubjectLangText('sms', '_TO_NEW_USER_TEXT_SMS', false);
+            $messageComposer->setBodyLangText('sms', '_TO_NEW_USER_TEXT_SMS', $array_subst);
+
+            createNewAlert($myevent, 'subscribe', 'insert', '1', $description, [$id_user], $messageComposer);
 
             $res['message'] = UIFeedback::info(Lang::t('_SUBSCRIPTION_CORRECT', 'catalogue'), true);
         } else {
@@ -598,7 +592,7 @@ class CatalogLmsController extends LmsController
         FROM ' . $GLOBALS['prefix_lms'] . "_coursepath
         WHERE id_path = '" . $id_path . "'
         ORDER BY path_name ";
-        list($path_name, $subscribe_method) = sql_fetch_row(sql_query($query_pathlist));
+        [$path_name, $subscribe_method] = sql_fetch_row(sql_query($query_pathlist));
 
         if ($subscribe_method == 1) {
             $waiting = 1;
@@ -637,7 +631,7 @@ class CatalogLmsController extends LmsController
             $res['new_status'] = '<p class="cannot_subscribe">' . Lang::t('_USER_STATUS_SUBS', 'catalogue') . '</p>';
         }
 
-       $res['message'] = UIFeedback::info(Lang::t('_SUBSCRIPTION_CORRECT', 'catalogue'), true);
+        $res['message'] = UIFeedback::info(Lang::t('_SUBSCRIPTION_CORRECT', 'catalogue'), true);
 
         echo $this->json->encode($res);
     }
@@ -691,7 +685,7 @@ class CatalogLmsController extends LmsController
         $qtxt = 'SELECT course_demo FROM %lms_course WHERE idCourse=' . $id;
 
         $q = $db->query($qtxt);
-        list($fname) = $db->fetch_row($q);
+        [$fname] = $db->fetch_row($q);
 
         if (!empty($fname)) {
             sendFile('/appLms/course/', $fname);

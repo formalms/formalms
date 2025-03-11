@@ -744,7 +744,7 @@ class FormaACLManager
             $query .= ' WHERE confirmed = 1';
         }
         $rs = $this->_executeQuery($query);
-        list($num) = sql_fetch_row($rs);
+        [$num] = sql_fetch_row($rs);
 
         return $num;
     }
@@ -906,7 +906,7 @@ class FormaACLManager
 
         $arrSET = [];
 
- 
+
         if (array_key_exists(ACL_INFO_USERID, $new_userdata) && preg_replace('/\s+/', '', $new_userdata[ACL_INFO_USERID]) != preg_replace('/\s+/', '', $old_userdata[ACL_INFO_USERID])) {
             $arrSET['userid'] = $new_userdata[ACL_INFO_USERID];
         }
@@ -1117,7 +1117,7 @@ class FormaACLManager
             " WHERE idst = '" . $idst_user . "'";
 
         $result = sql_query($query);
-        list($idst, $userid, $firstname, $lastname, $pass, $email, $avatar, $level, $lastenter, $valid, $pwd_expire_at, $register_date) = sql_fetch_row($result);
+        [$idst, $userid, $firstname, $lastname, $pass, $email, $avatar, $level, $lastenter, $valid, $pwd_expire_at, $register_date] = sql_fetch_row($result);
 
         $insert_query = 'INSERT INTO ' . $this->_getTableUserDeleted() . ' ' .
             ' (id_deletion, idst, userid, firstname, lastname, pass, email, avatar, level, lastenter, valid, pwd_expire_at, register_date, deletion_date, deleted_by)' .
@@ -1481,10 +1481,40 @@ class FormaACLManager
         return $users_info;
     }
 
+    public function getUsersAssociative($array_idst, $customField = false)
+    {
+        $users_info = [];
+
+        if (!is_array($array_idst)) {
+            $array_idst = [];
+        }
+
+        foreach ($array_idst as $index => $idst) {
+            if (!is_numeric($idst)) {
+                unset($array_idst[$index]);
+            }
+        }
+
+        $query = 'SELECT idst, userid, firstname, lastname, pass, email, avatar, '
+            . ' level, lastenter, valid, pwd_expire_at, register_date'
+            . ' FROM ' . $this->_getTableUser()
+            . ' WHERE idst IN (' . implode(',', $array_idst) . ') '
+            . ' ORDER BY lastname, firstname, userid';
+        $rs = $this->_executeQuery($query);
+
+        foreach ($rs as $row) {
+
+            $users_info[$row['idst']] = $row;
+        }
+
+
+        return $users_info;
+    }
+
     public function getUsersMappedData($array_idst)
     {
         $responseUsers = [];
-        $users = $this->getUsers($array_idst);
+        $users = $this->getUsersAssociative($array_idst);
 
         foreach ($users as $user) {
             $responseUsers[] = $this->getUserMappedData($user);
@@ -1499,15 +1529,17 @@ class FormaACLManager
 
         $acl_man = \FormaLms\lib\Forma::getAclManager();
 
-        $responseUser['idst'] = $user[ACL_INFO_IDST];
+        $responseUser['idst'] = $user['idst'];
         $responseUser['name'] = $acl_man->getConvertedUserName($user);
-        $responseUser['username'] = $user[ACL_INFO_USERID];
-        $responseUser['firstname'] = $user[ACL_INFO_FIRSTNAME];
-        $responseUser['lastname'] = $user[ACL_INFO_LASTNAME];
-        $responseUser['email'] = $user[ACL_INFO_EMAIL];
-        $responseUser['avatar'] = !empty($user[ACL_INFO_AVATAR]) ? $path . $user[ACL_INFO_AVATAR] : '';
-        $responseUser['profile'] = 'index.php?modname=course&amp;op=viewprofile&amp;id_user=' . $user[ACL_INFO_IDST];
-        $responseUser['registerDate'] = $user[ACL_INFO_REGISTER_DATE];
+        $responseUser['username'] = $user['userid'];
+        $responseUser['firstname'] = $user['firstname'];
+        $responseUser['lastname'] = $user['lastname'];
+        $responseUser['email'] = $user['email'];
+        $responseUser['avatar'] = !empty($user['avatar']) ? $path . $user['avatar'] : '';
+        $responseUser['profile'] = 'index.php?modname=course&amp;op=viewprofile&amp;id_user=' . $user['idst'];
+        $responseUser['registerDate'] = $user['register_date'];
+        $responseUser['lastenter'] = $user['lastenter'];
+        $responseUser['pwdExpireAt'] = $user['pwd_expire_at'];
 
         return $responseUser;
     }
@@ -1807,7 +1839,7 @@ class FormaACLManager
                 . ' FROM ' . $this->_getTableGroup()
                 . ' WHERE idst = ' . (int)$idst;
             $rs = $this->_executeQuery($query);
-            list($groupid) = sql_fetch_row($rs);
+            [$groupid] = sql_fetch_row($rs);
 
             return $groupid;
         } else {
@@ -1981,9 +2013,9 @@ class FormaACLManager
 		FROM ' . $this->_getTableUserOfGroupWaiting() . "
 		WHERE idst_user = '" . (int)$idst . "'";
         $rs = $this->_executeQuery($query);
-        $idst_user = [];
-        while (list($id) = sql_fetch_row($rs)) {
-            $idst_group[$id] = $id;
+        $idst_group = [];
+        foreach ($rs as $row){
+            $idst_group[$row['idst_group']] = $row['idst_group'];
         }
 
         return $idst_group;
@@ -2032,8 +2064,9 @@ class FormaACLManager
         if (sql_num_rows($rs) == 0) {
             return $role_list;
         }
-        while (list($idst, $roleid) = sql_fetch_row($rs)) {
-            $role_list[$idst] = $roleid;
+
+        foreach ($rs as $row) {
+            $role_list[$row['idst']] = $row['roleid'];
         }
 
         return $role_list;
@@ -2062,8 +2095,8 @@ class FormaACLManager
         if (sql_num_rows($rs) == 0) {
             return $role_list;
         }
-        while (list($idst, $roleid) = sql_fetch_row($rs)) {
-            $role_list[$idst] = $roleid;
+        foreach ($rs as $row) {
+            $role_list[$row['idst']] = $row['roleid'];
         }
 
         return $role_list;
@@ -2454,7 +2487,7 @@ class FormaACLManager
 
         $rs = $this->_executeQuery($query);
 
-        list($numer) = sql_fetch_row($rs);
+        [$numer] = sql_fetch_row($rs);
 
         return (int)$numer;
     }
@@ -2594,14 +2627,14 @@ class FormaACLManager
             . ' FROM %adm_group'
             . " WHERE groupid = '/oc_0'";
 
-        list($idst) = sql_fetch_row(sql_query($query));
+        [$idst] = sql_fetch_row(sql_query($query));
         $array_oc[$idst] = $idst;
 
         $query = 'SELECT idst'
             . ' FROM %adm_group'
             . " WHERE groupid = '/ocd_0'";
 
-        list($idst) = sql_fetch_row(sql_query($query));
+        [$idst] = sql_fetch_row(sql_query($query));
         $array_ocd[$idst] = $idst;
 
         $query = 'SELECT idst_oc, idst_ocd'
@@ -2625,7 +2658,7 @@ class FormaACLManager
                     . ' FROM %adm_org_chart_tree'
                     . ' WHERE idst_ocd = ' . (int)$id_group;
 
-                list($i_left, $i_right) = sql_fetch_row(sql_query($query));
+                [$i_left, $i_right] = sql_fetch_row(sql_query($query));
 
                 $query = 'SELECT idst_oc, idst_ocd'
                     . ' FROM %adm_org_chart_tree'
@@ -3133,7 +3166,7 @@ class FormaACLManager
         $q = $this->_executeQuery($qtxt);
 
         if ($q) {
-            list($tot) = sql_fetch_row($q);
+            [$tot] = sql_fetch_row($q);
             $res = $tot;
         }
 
@@ -3304,14 +3337,14 @@ class FormaACLManager
     {
         $pass = '';
         for ($a = 0; $a < 10; ++$a) {
-            $seed = mt_rand(0, 15);
+            $seed = random_int(0, 15);
 
             if ($seed > 10) {
-                $pass .= mt_rand(0, 9);
+                $pass .= random_int(0, 9);
             } elseif ($seed > 5) {
-                $pass .= chr(mt_rand(65, 90));
+                $pass .= chr(random_int(65, 90));
             } else {
-                $pass .= chr(mt_rand(97, 122));
+                $pass .= chr(random_int(97, 122));
             }
         }
 
@@ -3325,9 +3358,10 @@ class FormaACLManager
         return $this->_executeQuery($query);
     }
 
-    public function removeAdminFromCoreTree(int $idst) {
+    public function removeAdminFromCoreTree(int $idst)
+    {
 
-        return (bool) $this->_executeQuery('DELETE FROM %adm_admin_tree where idstAdmin = '.$idst);
+        return (bool)$this->_executeQuery('DELETE FROM %adm_admin_tree where idstAdmin = ' . $idst);
     }
 } //END ACLManagaer class
 
@@ -3343,7 +3377,7 @@ class PeopleDataRetriever extends DataRetriever
     public $field_filter = [];
     public $custom_join = [];
     public $custom_where = [];
-    public FormaACLManager $ACLManager;
+    public FormaACLManager $aclManager;
 
     public function __construct($dbconn = false, $prefix = false)
     {
@@ -3541,7 +3575,7 @@ class PeopleDataRetriever extends DataRetriever
         if ($rs === false) {
             return 0;
         }
-        list($count) = sql_fetch_row($rs);
+        [$count] = sql_fetch_row($rs);
 
         return $count;
     }
@@ -3642,7 +3676,7 @@ class GroupDataRetriever extends DataRetriever
         if ($rs === false) {
             return 0;
         }
-        list($count) = sql_fetch_row($rs);
+        [$count] = sql_fetch_row($rs);
 
         return $count;
     }
@@ -3673,11 +3707,8 @@ class GroupMembersDataRetriever extends DataRetriever
 {
     public $aclManager = null;
 
-    public $idstGroup;
-
-    public function __construct($idstGroup, $dbconn = false, $prefix = false)
+    public function __construct(public $idstGroup, $dbconn = false, $prefix = false)
     {
-        $this->idstGroup = $idstGroup;
         parent::__construct($dbconn, $prefix);
         $this->aclManager = new FormaACLManager($dbconn, $prefix);
     }
@@ -3729,12 +3760,10 @@ class GroupMembersDataRetriever extends DataRetriever
         if ($rs === false) {
             return 0;
         }
-        list($count) = sql_fetch_row($rs);
+        [$count] = sql_fetch_row($rs);
 
         return $count;
     }
 
-
-   
 
 }
