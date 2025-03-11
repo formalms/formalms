@@ -439,7 +439,7 @@ class User_API extends API
                     'valid' => $user_data['valid'],
                     'pwd_expire_at' => $user_data['pwd_expire_at'],
                     'register_date' => $user_data['register_date'],
-                    'last_enter' => $user_data['last_enter'],
+                    'last_enter' => $user_data['lastenter'],
                 ];
 
                 $fields = [];
