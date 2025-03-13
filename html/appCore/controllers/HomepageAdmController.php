@@ -260,6 +260,7 @@ class HomepageAdmController extends AdmController
                 'lost_user_email',
                 'email',
                 '',
+                strip_tags(Lang::t('_EMAIL', 'register')),
                 255,
                 'placeholder="' . Lang::t('_EMAIL', 'register') . ' ' . $mand_symbol . '"'
             );
@@ -281,6 +282,7 @@ class HomepageAdmController extends AdmController
                 'lost_pwd_userid',
                 'userid',
                 '',
+                strip_tags(Lang::t('_USERNAME', 'register')),
                 255,
                 'placeholder="' . Lang::t('_USERNAME', 'register') . ' ' . $mand_symbol . '"'
             );
@@ -301,7 +303,6 @@ class HomepageAdmController extends AdmController
         $params['lost_username'] = [
             'title' => Lang::t('_LOST_TITLE_USER', 'register'),
             'istruction' => Lang::t('_LOST_INSTRUCTION_USER', 'register'),
-            'ldap_title' => Lang::t('_LDAPACTIVE', 'register'),
             'form' => $lostUsernameForm,
         ];
 
@@ -316,13 +317,10 @@ class HomepageAdmController extends AdmController
 
     public function newpwd()
     {
-
         $code = FormaLms\lib\Get::req('code', DOTY_STRING, '');
 
         $params = [];
         $params['msg'] = '';
-        $params['error'] = [];
-
 
         $redirection = ['req' => _homepage_];
 
@@ -340,22 +338,20 @@ class HomepageAdmController extends AdmController
             if ($pswd_chk['error']) {
                 $params['error'] = $pswd_chk['msg'];
             } else {
-                if ($this->model->setNewPwd($newpwd, $user_info[ACL_INFO_IDST], $code)) {
-                    $redirection['query'] = [
-                        'done' => NEW_PWD,
-                    ];
-                    self::redirect($redirection);
-                } else {
-                    $params['msg'] = Lang::t('_OPERATION_FAILURE', 'register');
-                }
+                    if ($this->model->setNewPwd($newpwd, $user_info[ACL_INFO_IDST], $code)) {
+                        $redirection['query'] = [
+                            'done' => NEW_PWD,
+                        ];
+                        self::redirect($redirection);
+                    } else {
+                        $params['msg'] = Lang::t('_OPERATION_FAILURE', 'register');
+                    }
             }
         }
 
         $params['code'] = $code;
         $params['options'] = $this->model->getNewPwdOptions();
         $this->render('newpwd', $params);
-
-
     }
 
     public function signup()
@@ -471,10 +467,10 @@ class HomepageAdmController extends AdmController
     {
         $login_user = stripslashes(FormaLms\lib\Get::req('login_user', DOTY_MIXED, false));
         $login_idst = FormaLms\lib\Get::req('use_user_idst', DOTY_MIXED, false);
-       
+        $secret = FormaLms\lib\Get::sett('sso_secret', '');
         $redirection = [];
 
-        if (!$login_user) {
+        if (empty($secret) || FormaLms\lib\Get::sett('sso_token', 'off') != 'on' || !$login_user) {
             $redirection['req'] = _homepage_;
             $redirection['query'] = [
                 'msg' => ACCESS_FAILURE, // XXX: o SSO_FAILURE?
@@ -490,7 +486,7 @@ class HomepageAdmController extends AdmController
 
         $time = FormaLms\lib\Get::req('time', DOTY_MIXED, '');
         $token = strtoupper(FormaLms\lib\Get::req('token', DOTY_MIXED, ''));
-        $recalc_token = strtoupper(md5($login_user . ',' . $time ));
+        $recalc_token = strtoupper(md5($login_user . ',' . $time . ',' . $secret));
 
         $lifetime = FormaLms\lib\Get::sett('rest_auth_lifetime', 1);
 
@@ -548,7 +544,7 @@ class HomepageAdmController extends AdmController
         if ($id_course) {
             define('LMS', true);
 
-            require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
             logIntoCourse($id_course, ($next_action == false || $next_action == 'none' ? true : false));
 
             $url = str_replace('act=', 'op=', $_SERVER['REQUEST_URI']);
