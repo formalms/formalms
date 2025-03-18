@@ -603,50 +603,49 @@ class CourseLms extends Model
         return $responseData;
     }
 
-    public static function userCanUnsubscribe(&$course)
+    public static function userCanUnsubscribe($course)
     {
         $now = new DateTime();
-        $defaultTrueDate = new DateTime('2999-01-01');
-
-        if ($course['course_type'] == 'classroom') {
-            if ((int)$course['auto_unsubscribe'] === 2) {
-                $editionKey = array_key_first($course['editions']);
-
-                if (array_key_exists('unsubscribe_date_limit', $course['editions'][$editionKey])) {
-                    $unsub_date_limit = $course['editions'][$editionKey]['unsubscribe_date_limit'];
-                    $unsub_date_limit = DateTime::createFromFormat('Y-m-d H:i:s', $unsub_date_limit);
-                } else {
-                    $unsub_date_limit = $defaultTrueDate;
+        $canUnsubscribe = false;
+        $autoUnsubscribeEnabled = false;
+        $courseUnsubscribeDateLimit = null;
+        switch ($course['course_type']) {
+            case 'classroom':
+                if ((int)$course['auto_unsubscribe'] === 2) {
+                    $autoUnsubscribeEnabled = true;
                 }
-                $edition_not_started = true;
-                $days = array_key_exists('days', $course['editions'][$editionKey]) ? $course['editions'][$editionKey]['days'] : [];
-                foreach ($days as $k => $day) {
-                    $next_day = $day['full_date'];
-                    $next_day = DateTime::createFromFormat('Y-m-d H:i:s', $next_day);
-                    $edition_not_started = $edition_not_started && ($now < $next_day);
-                    if (!$edition_not_started) {
-                        break;
+                $editionKey = array_key_first($course['editions']);
+                if ($editionKey) {
+                    $days = array_key_exists('days', $course['editions'][$editionKey]) ? $course['editions'][$editionKey]['days'] : [];
+                    foreach ($days as $day) {
+                        $fullDate = DateTime::createFromFormat('Y-m-d H:i:s', $day['full_date']);
+                        $editionStarted = ($now < $fullDate);
+                        if ($editionStarted) {
+                            if (array_key_exists('unsubscribe_date_limit', $course['editions'][$editionKey]) && !empty($course['editions'][$editionKey]['unsubscribe_date_limit'])) {
+                                $courseUnsubscribeDateLimit = DateTime::createFromFormat('Y-m-d H:i:s', $course['editions'][$editionKey]['unsubscribe_date_limit']);
+                                break;
+                            };
+                        }
                     }
                 }
-
-                return $now < $unsub_date_limit && $edition_not_started;
-            } else {
-                return false;
-            }
-        } else {
-            // if course date end, cannot unenroll
-
-            if ($course['date_end'] && $now > DateTime::createFromFormat('Y-m-d', $course['date_end'])) {
-                return false;
-            }
-
-            $courseUnsubscribeDateLimit = (null !== $course['unsubscribe_date_limit'] ? DateTime::createFromFormat('Y-m-d H:i:s', $course['unsubscribe_date_limit']) : $defaultTrueDate);
-            if (((int)$course['auto_unsubscribe'] === 2 || (int)$course['auto_unsubscribe'] === 1) && ($now < $courseUnsubscribeDateLimit)) {
-                return true;
-            }
-
-            return false;
+                break;
+            case 'elearning':
+                if ((int)$course['auto_unsubscribe'] === 2 || (int)$course['auto_unsubscribe'] === 1) {
+                    $autoUnsubscribeEnabled = true;
+                    if (array_key_exists('unsubscribe_date_limit', $course) && !empty($course['unsubscribe_date_limit'])) {
+                        $courseUnsubscribeDateLimit = DateTime::createFromFormat('Y-m-d H:i:s', $course['unsubscribe_date_limit']);
+                    }
+                }
+                break;
+            default:
+                break;
         }
+
+        if ($autoUnsubscribeEnabled && $courseUnsubscribeDateLimit) {
+            $canUnsubscribe = $now < $courseUnsubscribeDateLimit;
+        }
+
+        return $canUnsubscribe;
     }
 
     /**
