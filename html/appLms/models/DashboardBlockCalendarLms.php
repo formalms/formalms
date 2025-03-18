@@ -132,11 +132,12 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
 
         switch ($courseType) {
             case self::COURSE_TYPE_CLASSROOM:
-                $query .= ' JOIN %lms_course_date AS cd ON (c.idCourse = cd.id_course) 
-                            JOIN %lms_course_date_day cdd ON cdd.id_date = cd.id_date ';
-                            if (null !== $startDate && !empty($startDate) && null !== $endDate && !empty($endDate)) {
-                                $query .= 'AND cdd.date_begin BETWEEN CAST( "' . $startDate . '" AS DATE ) AND CAST( "' . $endDate . '" AS DATE )';
-                            }
+                $query .= ' JOIN learning_course_date AS cd ON (c.idCourse = cd.id_course)
+                            JOIN learning_course_date_user as cddu on cddu.id_date = cd.id_date
+                            JOIN learning_course_date_day cdd ON cdd.id_date = cd.id_date ';
+                if (null !== $startDate && !empty($startDate) && null !== $endDate && !empty($endDate)) {
+                    $query .= 'AND cdd.date_begin BETWEEN CAST( "' . $startDate . '" AS DATE ) AND CAST( "' . $endDate . '" AS DATE )';
+                }
                 break;
             case self::COURSE_TYPE_ELEARNING:
             default:
@@ -145,6 +146,11 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
 
         $query .= ' WHERE cu.iduser = ' . \FormaLms\lib\FormaUser::getCurrentUser()->getId()
             . ' AND c.course_type = "' . $courseType . '"';
+
+        switch ($courseType) {
+            case self::COURSE_TYPE_CLASSROOM:
+                $query .= ' AND cddu.id_user = ' . \FormaLms\lib\FormaUser::getCurrentUser()->getId();
+        }
 
         if (($courseType == self::COURSE_TYPE_ELEARNING) && null !== $startDate && !empty($startDate) && null !== $endDate && !empty($endDate)) {
             $query .= ' AND (( c.date_end BETWEEN CAST( "' . $startDate . '" AS DATE ) AND CAST( "' . $endDate . '" AS DATE ) ) 
@@ -165,7 +171,6 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
             }
         }
 
-        $query .= $exclude_pathcourse;
         $query .= '	GROUP BY course_id'; //serve per evitare duplicati nei risultati (x es calendario)
 
         switch ($courseType) {
