@@ -1657,6 +1657,7 @@ In handling this information, accuracy and precision shall be met to ensure the 
         <key id="login&amp;_UNKNOWNGOOGLERROR" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Unknown error during Google login]]></key>
         <key id="login&amp;_UNKNOWNSOCIALERROR" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Unknown error in social login]]></key>
         <key id="login&amp;_UNLOGGED" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[You are logged out]]></key>
+        <key id="login&amp;_READ_ALL_CONTENT" attributes="" save_date="2025-03-06 16:02:02"><![CDATA[Read the complete description of Forma LMS]]></key>
       </module>
       <module id="manmenu">
         <key id="manmenu&amp;_ADDCUSTOM" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Add new custom menu]]></key>
@@ -2313,6 +2314,10 @@ You have to confirm your account before using it.]]></key>
         <key id="report&amp;_TOTAL_SESSION" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Time]]></key>
         <key id="report&amp;_USER_CUSTOM_FIELDS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Show users fields]]></key>
         <key id="report&amp;_WARNING_REPORT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Beware, users will see the report as well as the user who generated it]]></key>
+        <key id="report&amp;_CUSTOM_ORG" attributes="" save_date="2025-03-17 12:00:00"><![CDATA[Organizational chart node fields]]></key>
+        <key id="report&amp;_GRAPHIC_REPORT" attributes="" save_date="2025-03-17 12:00:00"><![CDATA[Graphic]]></key>
+        <key id="report&amp;_CLASSROOM_FIELDS" attributes="" save_date="2025-03-17 12:00:00"><![CDATA[Date fields]]></key>
+        <key id="report&amp;_ACTIVATE_CLASSROOM_FIELDS" attributes="" save_date="2025-03-17 12:00:00"><![CDATA[Activate edition fields]]></key>
       </module>
       <module id="reservation">
         <key id="reservation&amp;_ADD_USER" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Add users]]></key>
@@ -2903,6 +2908,7 @@ you have been unsubscribed from the course ([course_code]) - [course]]]></key>
         <key id="statistic&amp;_WEEK_DAY_4_SHORT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Thu]]></key>
         <key id="statistic&amp;_WEEK_DAY_5_SHORT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Fri]]></key>
         <key id="statistic&amp;_WEEK_DAY_6_SHORT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Sat]]></key>
+        <key id="standard&amp;_COPY_OF" attributes="" save_date="2024-11-21 15:12:40"><![CDATA[Copy of]]></key>
       </module>
       <module id="stats">
         <key id="stats&amp;_FILTEREDITIONSELECTONEOPTION" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Choose one option]]></key>
