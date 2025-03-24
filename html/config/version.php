@@ -23,7 +23,7 @@ return [
 |
 */
 
-'file_version' => '4.0.18',
+'file_version' => '4.0.19',
 
 
 /*

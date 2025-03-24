@@ -531,10 +531,10 @@ class Get
      *
      * @return string (i.e. http://localhost)
      */
-    public static function site_url($disableUrlSetting = false)
+    public static function site_url($disableUrlSetting = true, $onlyBaseUrl = false)
     {
         if (!($url = self::sett('url')) || $disableUrlSetting) {
-            $url = Get::getBaseUrl();
+            $url = Get::getBaseUrl($onlyBaseUrl);
         }
 
         return rtrim($url, '/') . '/';
