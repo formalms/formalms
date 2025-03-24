@@ -95,9 +95,8 @@ function parseTemplateDomain($curr_domain = false)
 
 function getCurrentDomain($idOrg = null, $baseUrl = false)
 {
-    $domain = FormaLms\lib\Get::site_url();
-    $queryTxt = 'SELECT * FROM
-    %adm_domain_configs';
+    $domain = \FormaLms\lib\Get::site_url(true, $baseUrl);
+    $queryTxt = 'SELECT orgId FROM %adm_domain_configs';
     $domains = [];
     $result = sql_query($queryTxt);
     if ($result) {
@@ -113,7 +112,7 @@ function getCurrentDomain($idOrg = null, $baseUrl = false)
         $query = sql_query($sql);
         $node = sql_fetch_object($query);
         if ($node && $node->idParent) {
-            return getCurrentDomain($node->idParent);
+            return getCurrentDomain($node->idParent, $baseUrl);
         }
     }
 

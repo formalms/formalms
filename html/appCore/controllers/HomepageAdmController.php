@@ -200,7 +200,7 @@ class HomepageAdmController extends AdmController
         $params = [];
         $res = null;
 
-       
+
 
         $mand_symbol = '*';
 
@@ -560,7 +560,7 @@ class HomepageAdmController extends AdmController
             $this->session->set('login_redirect', $loginRedirect);
             switch ($next_action) {
                 case 'custom_playitem':
-                    $loginRedirect += '&collapse_menu=1';
+                    $loginRedirect .= '&collapse_menu=1';
                     $this->session->set('login_redirect', $loginRedirect);
                     break;
             }
