@@ -2014,7 +2014,7 @@ class SubscriptionAlmsController extends AlmsController
                 require_once _base_ . '/lib/lib.table.php';
 
                 $type_h = ['align_center', 'align_center', 'align_center', 'align_center'];
-                $cont_h = [Lang::t('_USERNAME', 'subscribe'), Lang::t('_LASTNAME', 'subscribe'), Lang::t('_FIRSTNAME', 'subscribe'), Lang::t('_INSER_STATUS', 'subscribe')];
+                $cont_h = [Lang::t('_USERNAME', 'subscribe'), Lang::t('_FIRSTNAME', 'subscribe'), Lang::t('_LASTNAME', 'subscribe'), Lang::t('_INSER_STATUS', 'subscribe')];
 
                 $tb = new Table(false, Lang::t('_USER_SUBSCRIBED', 'subscribe'), Lang::t('_USER_SUBSCRIBED', 'subscribe'));
                 $tb->addHead($cont_h, $type_h);
