@@ -360,7 +360,6 @@ class ImportUser extends FormaImport_Destination
                         false,
                         false,
                         false,
-                        true,
                         $force_change != '' ? $force_change : false,
                         false,
                         false,
