@@ -234,6 +234,108 @@ class Course_API extends API
         return $response;
     }
 
+    public function getCourse($params)
+    {
+        $response = ['success' => true, 'course' => []];
+
+        $idCourse = isset($params['idCourse']) ? (int)$params['idCourse'] : false;
+
+        $idDate = isset($params['idDate']) ? (int)$params['idDate'] : false;
+
+        $idEdition = isset($params['idEdition']) ? (int)$params['idEdition'] : false;
+
+        $courseCode = isset($params['code']) ? (int)$params['code'] : false;
+        if ($courseCode) {
+
+            $qtxt = "SELECT idCourse FROM %lms_course
+					WHERE code='" . $courseCode . "'
+					LIMIT 0,1";
+
+            $q = sql_query($qtxt);
+            $courseData = sql_fetch_assoc($q);
+
+            $idCourse = $courseData['idCourse'] ?? false;
+
+            $idDate = false;
+            $idEdition = false;
+        }
+
+        if (empty($idCourse)) {
+            $response['success'] = false;
+            $response['message'] = 'Missing or Wrong Course ID' . $params['course_id'];
+        }
+
+
+        $course_info = (new CourseAlms())->getInfo($idCourse, $idEdition, $idDate);
+
+        if (empty($course_info)) {
+            $response['success'] = false;
+            $response['message'] = 'Course not found:' . $params['course_id'];
+        } else {
+
+
+            $courseData = [
+                'course_id' => $course_info['idCourse'],
+                'code' => str_replace('&', '&amp;', $course_info['code']),
+                'course_name' => str_replace('&', '&amp;', $course_info['name']),
+                'course_description' => str_replace('&', '&amp;', $course_info['description']),
+                'course_box_description' => str_replace('&', '&amp;', $course_info['box_description']),
+                'status' => $course_info['status'],
+                'selling' => $course_info['selling'],
+                'price' => $course_info['prize'],
+                'subscribe_method' => $course_info['subscribe_method'],
+                'course_edition' => $course_info['course_edition'],
+                'course_type' => $course_info['course_type'],
+                'can_subscribe' => $course_info['can_subscribe'],
+                'sub_start_date' => $course_info['sub_start_date'],
+                'sub_end_date' => $course_info['sub_end_date'],
+                'date_begin' => $course_info['date_begin'],
+                'date_end' => $course_info['date_end'],
+                'course_link' => FormaLms\lib\Get::site_url(true, true) . _folder_lms_ . "/index.php?modname=course&amp;op=aula&amp;idCourse={$course_info['idCourse']}",
+                'img_course' => $course_info['img_course'] ? FormaLms\lib\Get::site_url(true, true) . _folder_files_ . '/' . _folder_lms_ . '/' . FormaLms\lib\Get::sett('pathcourse') . $course_info['img_course'] : '',
+                'category_id' => $course_info['idCategory'],
+            ];
+            if ($course_info['course_type'] === 'classroom') {
+                $classroom_man = new DateManager();
+                $course_dates = $classroom_man->getCourseDate($course_info['idCourse']);
+
+                require_once \FormaLms\lib\Forma::include(_adm_ . '/lib/', 'lib.customfield.php');
+                $courseCustomFields = [];
+                $fman = new CustomFieldList();
+                $fman->setFieldArea('COURSE_CLASSROOM');
+
+                if ($fman->getNumberFieldbyArea() > 0) {
+                    $courseCustomFields = $fman->playFieldsFlat($course_info['idCourse']);
+                }
+
+                foreach ($course_dates as $key => $course_date) {
+
+                    $classroomModel = new ClassroomAlms($course_info['idCourse'], $course_date['id_date']);
+                    unset($course_dates[$key]['id_course']);
+                    $course_dates[$key]['days'] = array_values($classroom_man->getAllDateDay($course_date['id_date'], ['id_day', 'id_date']));
+
+                    $customFields = $courseCustomFields;
+                    foreach ($customFields as $customFieldKey => $customField) {
+                        if ($customField['type_field'] === 'dropdown') {
+                            $customFields[$customFieldKey]['elems'] = $fman->getDropdownElems($customField['id']);
+                        }
+                        $customFields[$customFieldKey]['entry'] = $classroomModel->getCustomFieldsValue($course_date['id_date'], $customField['id']);
+                    }
+
+                    $course_dates[$key]['custom_fields'] = array_values($customFields);
+
+                    $course_info['dates'] = array_values($course_dates);
+                }
+
+                $courseData['dates'] = $course_info['dates'];
+            }
+
+            $response['course'] = $courseData;
+        }
+
+        return $response;
+    }
+
     //e-learning editions
     public function getEditions($params)
     {
@@ -1230,6 +1332,7 @@ class Course_API extends API
         }
 
         $response = $this->validateIdDateExistsInCourseFromParams($params);
+        $courseId = $response['course_id'];
         if (!$response['success']) {
             return $response;
         }
@@ -1641,7 +1744,7 @@ class Course_API extends API
         $params['classroom_sub_end_date'] = substr(Format::dateDb($params['classroom_sub_end_date'], 'date'), 0, 10);
         $params['classroom_unsubscribe_date_limit'] = substr(Format::dateDb($params['classroom_unsubscribe_date_limit'], 'date'), 0, 10);
 
-        $res = $classroom_man->upDate($idDate,!empty($params['classroom_code']) ? $params['classroom_code'] : false,
+        $res = $classroom_man->upDate($idDate, !empty($params['classroom_code']) ? $params['classroom_code'] : false,
             !empty($params['classroom_name']) ? $params['classroom_name'] : false,
             !empty($params['classroom_descr']) ? $params['classroom_descr'] : false,
             !empty($params['classroom_medium_time']) ? $params['classroom_medium_time'] : false,
@@ -3196,6 +3299,11 @@ class Course_API extends API
         }
 
         switch ($name) {
+            case 'course':
+            case 'courseDetail':
+                $response = $this->getCourse($params);
+
+                break;
             case 'listCourses':
             case 'courses':
                 $response = $this->getCourses($params);
