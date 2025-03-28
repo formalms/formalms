@@ -260,9 +260,9 @@ class Course_API extends API
             $idEdition = false;
         }
 
-        if (empty($idCourse)) {
+        if (!$idCourse) {
             $response['success'] = false;
-            $response['message'] = 'Missing or Wrong Course ID' . $params['course_id'];
+            $response['message'] = 'Missing or Wrong Course ID' . $idCourse;
         }
 
 
@@ -270,7 +270,7 @@ class Course_API extends API
 
         if (empty($course_info)) {
             $response['success'] = false;
-            $response['message'] = 'Course not found:' . $params['course_id'];
+            $response['message'] = 'Course not found:' . $idCourse;
         } else {
 
 
