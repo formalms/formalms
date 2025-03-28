@@ -244,7 +244,8 @@ class Course_API extends API
 
         $idEdition = isset($params['idEdition']) ? (int)$params['idEdition'] : false;
 
-        $courseCode = isset($params['code']) ? (int)$params['code'] : false;
+        $courseCode = isset($params['code']) ? (string)$params['code'] : false;
+        
         if ($courseCode) {
 
             $qtxt = "SELECT idCourse FROM %lms_course
