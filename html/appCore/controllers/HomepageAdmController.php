@@ -348,6 +348,9 @@ class HomepageAdmController extends AdmController
                     }
             }
         }
+        if (!isset($params['error']) || !is_array($params['error'])) {
+            $params['error'] = [];
+        }
 
         $params['code'] = $code;
         $params['options'] = $this->model->getNewPwdOptions();
