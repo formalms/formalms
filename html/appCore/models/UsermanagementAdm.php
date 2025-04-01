@@ -22,6 +22,9 @@ class UsermanagementAdm extends Model implements Accessible
     protected $json;
     protected $sessionPrefix;
 
+
+    protected string $redirectLink;
+
     protected $orgUser;
     protected $orgCache;
 
@@ -34,6 +37,7 @@ class UsermanagementAdm extends Model implements Accessible
         $this->orgUser = false;
         $this->orgCache = false;
         $this->sessionPrefix = 'usermanagement';
+        $this->redirectLink = '';
         parent::__construct();
     }
 
@@ -1314,7 +1318,7 @@ class UsermanagementAdm extends Model implements Accessible
 
                     //se il vecchio livello è admin o super admin e lo cambio a utente devo togliere 
                     //tutti i riferimenti di admin nel core admin tree
-                    if($old_level != ADMIN_GROUP_USER && $level == ADMIN_GROUP_USER) {
+                    if ($old_level != ADMIN_GROUP_USER && $level == ADMIN_GROUP_USER) {
                         $acl_man->removeAdminFromCoreTree($idst);
                     }
 
@@ -2099,7 +2103,7 @@ class UsermanagementAdm extends Model implements Accessible
                 $tmp = explode('/', $path ?? '');
                 $folder_index = (int)end($tmp) + 1;
             } else {
-                    $folder_index = 1; //start with first folder index
+                $folder_index = 1; //start with first folder index
             }
 
             //calculate new folder parameters in org_chart_tree table
@@ -2503,6 +2507,22 @@ class UsermanagementAdm extends Model implements Accessible
      */
     public function assignUsers($idOrg, $users)
     {
+
+        if (FormaLms\lib\Get::sett('orgchart_singlenode', 'off') == 'on') {
+            require_once _adm_ . '/modules/org_chart/tree.org_chart.php';
+            $treedborgdb = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
+            $alreadyassigned = [];
+            foreach ($users as $sel_user) {
+                $user_org = $this->getUserFolders($sel_user);
+                $folder_id = $treedborgdb->getFoldersIdFromIdst(array_keys($user_org));
+                if (count($folder_id) && (count($folder_id) > 1 || $idOrg != reset($folder_id))) {
+                    $alreadyassigned[] = $sel_user;
+                }
+            }
+            if (count($alreadyassigned)) {
+                return ['success' => false, 'count_assigned' => count($alreadyassigned), 'already_assigned' => $alreadyassigned[0]];
+            }
+        }
         $acl = \FormaLms\lib\Forma::getAclManager();;
         $acl->include_suspended = true;
         $groupidst = $acl->getGroupSt('/oc_' . (int)$idOrg); //get group idst from group table
@@ -2967,7 +2987,7 @@ class UsermanagementAdm extends Model implements Accessible
         }
 
         // Main query to build data tree with level, idParent and translation for actual language
-        $query = 'SELECT t.idOrg, t.lev, t.idParent, c.translation FROM %adm_org_chart_tree as t JOIN %adm_org_chart as c ON c.id_dir = t.idOrg WHERE c.lang_code = "' . Lang::get() .'"';
+        $query = 'SELECT t.idOrg, t.lev, t.idParent, c.translation FROM %adm_org_chart_tree as t JOIN %adm_org_chart as c ON c.id_dir = t.idOrg WHERE c.lang_code = "' . Lang::get() . '"';
         if ($idstUser != null) {
             $orgGroups = $this->_getAdminOrgTree($idstUser);
             if (!empty($orgGroups)) {
@@ -2979,7 +2999,7 @@ class UsermanagementAdm extends Model implements Accessible
         $res = $this->db->query($query);
         if ($res) {
             foreach ($res as $row) {
-                $output[$row['idOrg']] = str_repeat('&nbsp;', $row['lev'] * 2).$row['translation'];;
+                $output[$row['idOrg']] = str_repeat('&nbsp;', $row['lev'] * 2) . $row['translation'];;
             }
         }
         return $output;
@@ -3401,7 +3421,7 @@ class UsermanagementAdm extends Model implements Accessible
                 where %adm_customfield_lang.id_field = %adm_customfield.id_field  and
                  %adm_customfield_lang.lang_code = \'' . Lang::get() . '\' and area_code="ORG_CHART"';
         $rs = sql_query($query) or
-        errorCommunication('getCustomFieldOrg');
+            errorCommunication('getCustomFieldOrg');
         $result = [];
         while (list($id_field, $translation, $type_field) = sql_fetch_row($rs)) {
             $arr = [
@@ -3421,7 +3441,7 @@ class UsermanagementAdm extends Model implements Accessible
             %adm_customfield_son_lang  , %adm_customfield_son
             where %adm_customfield_son_lang.id_field_son=%adm_customfield_son.id_field_son and id_field=' . $id_field . ' order by sequence ';
         $rs = sql_query($query) or
-        errorCommunication('getLO_Custom_Value_Array');
+            errorCommunication('getLO_Custom_Value_Array');
         $result = [];
         while (list($id_field_son, $translation) = sql_fetch_row($rs)) {
             $result[$id_field_son] = $translation;
@@ -3434,7 +3454,7 @@ class UsermanagementAdm extends Model implements Accessible
     {
         $query = 'select * from %adm_customfield_entry where id_obj=' . $idOrg . ' and id_field=' . $id_field;
         $rs = sql_query($query) or
-        errorCommunication('countCustomForItem');
+            errorCommunication('countCustomForItem');
         if (sql_num_rows($rs) > 0) {
             return true;
         } else {
@@ -3468,7 +3488,7 @@ class UsermanagementAdm extends Model implements Accessible
     {
         $query = "select id_field from %adm_customfield where area_code = 'ORG_CHART'";
         $rs = sql_query($query) or
-        errorCommunication('getCustomOrg');
+            errorCommunication('getCustomOrg');
         $result = [];
         while (list($id_field, $translation) = sql_fetch_row($rs)) {
             $result[$id_field] = $id_field;
@@ -3483,7 +3503,7 @@ class UsermanagementAdm extends Model implements Accessible
             . "WHERE id_field = '" . $idField . "'"
             . '  AND id_obj = ' . $idOrg;
         $rs = sql_query($query) or
-        errorCommunication('getValueCustom');
+            errorCommunication('getValueCustom');
         if (sql_num_rows($rs) == 1) {
             [$obj_entry] = sql_fetch_row($rs);
 
@@ -3521,18 +3541,17 @@ class UsermanagementAdm extends Model implements Accessible
             $type_field = $row['type_field'];
             if ($type_field == 'dropdown') {
                 $q = sprintf("SELECT translation FROM %%adm_field_son WHERE idField = %s AND id_common_son = %s AND lang_code = '%s'", $id_field, $user_entry, $currentLanguage);
-          
+
                 $res = sql_query($q);
                 [$translation] = sql_fetch_row($res);
                 $output[$id_field] = $translation;
-            } 
-            else if ($type_field == 'country') {
-                    $q = sprintf("SELECT name_country as translation FROM %%adm_country WHERE id_country = %s", $user_entry);
-              
-                    $res = sql_query($q);
-                    [$translation] = sql_fetch_row($res);
-                    $output[$id_field] = $translation;
-            }else {
+            } else if ($type_field == 'country') {
+                $q = sprintf("SELECT name_country as translation FROM %%adm_country WHERE id_country = %s", $user_entry);
+
+                $res = sql_query($q);
+                [$translation] = sql_fetch_row($res);
+                $output[$id_field] = $translation;
+            } else {
                 $output[$id_field] = $user_entry;
             }
         }
@@ -3550,6 +3569,20 @@ class UsermanagementAdm extends Model implements Accessible
     public function setAccessList($resourceId, array $selection): bool
     {
 
-        return $this->assignUsers($resourceId, $selection);
+        $res = $this->assignUsers($resourceId, $selection);
+        if (is_array($res) && !$res['success']) {
+            $this->setRedirectLink('index.php?r=adm/usermanagement/show&res=err_alreadyassigned&count=' . $res['count_assigned'] . '&id_first=' . $res['already_assigned']);
+            $res = false;
+        } 
+        return $res;
+    }
+
+    private function setRedirectLink($link) {
+        $this->redirectLink = $link;
+        return $this;
+    }
+
+    public function getRedirectLink() {
+        return $this->redirectLink;
     }
 }

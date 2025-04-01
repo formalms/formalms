@@ -1697,24 +1697,13 @@ class UsermanagementAdmController extends AdmController
                 $selection = $selector->getSelection($_POST);
 
                 require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.user_profile.php');
-                require_once _adm_ . '/modules/org_chart/tree.org_chart.php';
-                $treedborgdb = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
 
-                if (FormaLms\lib\Get::sett('orgchart_singlenode', 'off') == 'on') {
-                    $alreadyassigned = [];
-                    foreach ($selection as $sel_user) {
-                        $user_org = $this->model->getUserFolders($sel_user);
-                        $folder_id = $treedborgdb->getFoldersIdFromIdst(array_keys($user_org));
-                        if (count($folder_id) && (count($folder_id) > 1 || $id != reset($folder_id))) {
-                            $alreadyassigned[] = $sel_user;
-                        }
-                    }
-                    if (count($alreadyassigned)) {
-                        Util::jump_to($next_url . '&res=err_alreadyassigned&count=' . count($alreadyassigned) . '&id_first=' . $alreadyassigned[0]);
-                    }
-                }
 
                 $res = $this->model->assignUsers($id, $selection);
+
+                if(is_array($res) && !$res['success']) {
+                    Util::jump_to($next_url . '&res=err_alreadyassigned&count=' . $res['count_assigned'] . '&id_first=' . $res['already_assigned']);
+                }
 
                 $model = new UsermanagementAdm();
                 $users = [];
