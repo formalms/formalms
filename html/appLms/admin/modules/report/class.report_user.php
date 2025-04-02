@@ -150,10 +150,13 @@ class Report_User extends Report
             ['key' => 'date_last_access', 'label' => Lang::t('_DATE_LAST_ACCESS', 'standard'), 'select' => true],
             ['key' => 'date_complete', 'label' => Lang::t('_DATE_END', 'standard'), 'select' => true],
         ];
+
+
     }
 
     public function getLOTypesTranslations()
     {
+        
         if (!is_array($this->LO_types)) {
             $this->LO_types = [];
             $res = sql_query('SELECT objectType FROM %lms_lo_types');
@@ -1493,6 +1496,7 @@ class Report_User extends Report
             }
         }
 
+   
         return $output;
     }
 

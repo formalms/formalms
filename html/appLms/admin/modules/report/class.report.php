@@ -38,6 +38,8 @@ class Report
 
     protected $session;
 
+    protected $lang;
+
     public const _REPORT_SESSION = 'report_tempdata';
     public const _RS_ID = 'id_report';
     public const _RS_ROWS_FILTER = 'rows_filter';
@@ -54,6 +56,8 @@ class Report
             $this->report_name = Lang::t($report_name,'report');
             $this->report_descr = Lang::t($report_name,'report');
         }
+
+        $this->lang = FormaLanguage::createInstance('report', 'framework');
 
         $this->db = \FormaLms\db\DbConn::getInstance();
         $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
