@@ -24,7 +24,7 @@ final class Version20241023141625 extends AbstractMigration
 
         $this->addSql('DELETE FROM `core_menu` WHERE `name` IN ("_LABEL","_CONTEST","_NEWS_INTERNAL")');
 
-        $this->addSql('DELETE FROM `core_setting` WHERE `param_name` IN ("use_course_label") OR `param_name` LIKE "ldap%" OR `param_name` LIKE "sso%"');
+        $this->addSql('DELETE FROM `core_setting` WHERE `param_name` IN ("use_course_label") OR `param_name` LIKE "ldap%"');
 
         $this->addSql('DELETE FROM `learning_middlearea` WHERE `obj_index` IN ("tb_games", "news")');
 
