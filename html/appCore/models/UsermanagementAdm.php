@@ -396,7 +396,7 @@ class UsermanagementAdm extends Model implements Accessible
 					)";
                 }
 
-                if (count($columnsFilter) && !$searchFilter) {
+                if ($columnsFilter) {
                     foreach ($columnsFilter as $columnName => $columnValue) {
                         $query .= ' AND (
                                 u.' . $columnName . ' LIKE "%' . $columnValue . '%" 
