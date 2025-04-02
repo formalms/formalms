@@ -46,7 +46,7 @@ $GLOBALS['user_roles'][$roleid] = true;
 $roleid = '/admin/view_all';
 $GLOBALS['user_roles'][$roleid] = true;
 
-Lang::set('english');
+Lang::set(Lang::getDefault());
 
 function getEmailForSchedule($schedule): array
 {
