@@ -83,7 +83,7 @@
             scrollX: true,
             paging: true,
             pageLength: 25,
-            searchDelay: 800,
+            searchDelay: 1000,
             searching: true,
             dom: 'Blfrtip',
             // stateSave: true,
@@ -209,7 +209,7 @@
 
                         cell.append(getInputSearchField(item.search_field));
 
-                        cell.find('input').add(searchInput.find('input')).on('keyup clear', function (e) {
+                        cell.find('input').on('keyup clear', function (e) {
 
                             if (table.column(i + 1).search() !== this.value) {
 

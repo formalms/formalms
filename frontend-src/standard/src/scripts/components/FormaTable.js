@@ -67,7 +67,7 @@ require('bootstrap-js-buttons/dist/bootstrap-js-buttons.min.js');
 
         this.addSearchBar();
 
-        //this.searchBar.init();
+        // this.searchBar.init();
     }
 
     callAjax(ajaxUrl, ajaxData, dt) {
@@ -84,9 +84,6 @@ require('bootstrap-js-buttons/dist/bootstrap-js-buttons.min.js');
         /**
          * Options.
          */
-        this._options.search = {
-            return: true
-        }
 
         if (options.rowId !== undefined) {
             this._options.rowId = options.rowId;
