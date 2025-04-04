@@ -3354,6 +3354,12 @@ class Course_API extends API
             $conditions[] = "show_to_user = " . $showToUser;
         }
 
+        if (empty($conditions)) {
+            $response['success'] = false;
+            $response['message'] = 'Report found';
+            return $response;
+        }
+
         // Build the query
         $query = 'SELECT * FROM learning_coursereport';
 
