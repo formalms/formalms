@@ -3289,6 +3289,191 @@ class Course_API extends API
         return $response;
     }
 
+    public function getCourseReport($params)
+    {
+
+        (new CoursereportLms($params['course_id']))->getCourseReports();
+        $response = ['success' => true];
+
+        // Initialize an empty array to store conditions
+        $conditions = [];
+
+        // Get potential parameters from POST request
+        $idCourse = isset($params['id_course']) ? (int)$params['id_course'] : false;
+        $idReport = isset($params['id_report']) ? (int)$params['id_report'] : false;
+        $showInDetail = isset($params['show_in_detail']) ? (int)$params['show_in_detail'] : null;
+        $idSource = isset($params['id_source']) ? (int)$params['id_source'] : null;
+        $sourceOf = $params['source_of'] ?? null;
+        $useForFinal = isset($params['use_for_final']) ? (int)$params['use_for_final'] : null;
+        $showToUser = isset($params['show_to_user']) ? (int)$params['show_to_user'] : null;
+
+
+        $courseCode = isset($params['code']) ? (string)$params['code'] : false;
+
+        if ($courseCode && !$idCourse) {
+
+            $qtxt = "SELECT idCourse FROM %lms_course
+					WHERE code='" . $courseCode . "'
+					LIMIT 0,1";
+
+            $q = sql_query($qtxt);
+            $courseData = sql_fetch_assoc($q);
+
+            $idCourse = $courseData['idCourse'] ?? false;
+
+            $idDate = false;
+            $idEdition = false;
+        }
+
+        // Add conditions based on provided parameters
+        if ($idCourse !== false) {
+            $conditions[] = "id_course = " . $idCourse;
+        }
+
+        if ($idReport !== false) {
+            $conditions[] = "id_report = " . $idReport;
+        }
+
+        if ($showInDetail !== null) {
+            $conditions[] = "show_in_detail = " . $showInDetail;
+        }
+
+        if ($idSource !== null) {
+            $conditions[] = "id_source = " . $idSource;
+        }
+
+        if ($sourceOf !== null) {
+            $conditions[] = "source_of = '" . $sourceOf ."'";
+        }
+
+        if ($useForFinal !== null) {
+            $conditions[] = "use_for_final = " . $useForFinal;
+        }
+
+        if ($showToUser !== null) {
+            $conditions[] = "show_to_user = " . $showToUser;
+        }
+
+        // Build the query
+        $query = 'SELECT * FROM learning_coursereport';
+
+        // Add WHERE clause if we have conditions
+        if (!empty($conditions)) {
+            $query .= ' WHERE ' . implode(' AND ', $conditions);
+        }
+
+        // Add ORDER BY clause
+        $query .= ' ORDER BY id_report';
+
+        // Execute the query
+        $result = sql_query($query);
+
+        $reports = [];
+        if ($result && sql_num_rows($result) > 0) {
+            foreach ($result as $row) {
+                $reports[] = $row;
+            }
+        }
+
+        $response['reports'] = $reports;
+        return $response;
+    }
+
+    public function addOrUpdateScoreToReport($params)
+    {
+        $response = ['success' => true];
+
+        // Get parameters from params array
+        $userId = isset($params['user_id']) ? (int)$params['user_id'] : false;
+        $idReport = isset($params['id_report']) ? (int)$params['id_report'] : false;
+        $dateAttempt = $params['date_attempt'] ?? '';
+        $score = $params['score'] ?? '';
+        $scoreStatus = $params['score_status'] ?? '';
+        $comment = $params['comment'] ?? '';
+
+        // Validate required parameters
+        if (!$userId) {
+            $response['success'] = false;
+            $response['message'] = 'Missing user_id parameter';
+            return $response;
+        }
+
+        if (!$idReport) {
+            $response['success'] = false;
+            $response['message'] = 'Missing or could not determine id_report';
+            return $response;
+        }
+
+        // Check if record exists first
+        $checkQuery = 'SELECT id_report FROM learning_coursereport_score WHERE id_report = ' . $idReport . ' AND id_user = ' . $userId;
+        $checkResult = sql_query($checkQuery);
+        $exists = sql_num_rows($checkResult) > 0;
+
+        if ($exists) {
+            // Update existing record
+            $query = 'UPDATE learning_coursereport_score SET ';
+            $updateFields = [];
+
+            if ($score !== '') {
+                $updateFields[] = "score = '" . sql_escape_string($score) . "'";
+            }
+
+            if ($dateAttempt !== '') {
+                $updateFields[] = "date_attempt = '" . sql_escape_string($dateAttempt) . "'";
+            }
+
+            if ($scoreStatus !== '') {
+                $updateFields[] = "score_status = '" . sql_escape_string($scoreStatus) . "'";
+            }
+
+            if ($comment !== '') {
+                $updateFields[] = "comment = '" . sql_escape_string($comment) . "'";
+            }
+
+            if (empty($updateFields)) {
+                $response['success'] = false;
+                $response['message'] = 'No fields to update';
+                return $response;
+            }
+
+            $query .= implode(', ', $updateFields);
+            $query .= ' WHERE id_report = ' . $idReport . ' AND id_user = ' . $userId;
+
+            $res = sql_query($query);
+
+            if (!$res) {
+                $response['success'] = false;
+                $response['message'] = 'Failed to update report score';
+            } else {
+                $response['message'] = 'Report score updated successfully';
+            }
+        } else {
+            // Insert new record
+            $query = 'INSERT INTO learning_coursereport_score (id_report, id_user, score, date_attempt, score_status, comment) VALUES (';
+            $query .= $idReport . ', ';
+            $query .= $userId . ', ';
+            $query .= "'" . sql_escape_string($score) . "', ";
+            $query .= "'" . sql_escape_string($dateAttempt) . "', ";
+            $query .= "'" . sql_escape_string($scoreStatus) . "', ";
+            $query .= "'" . sql_escape_string($comment) . "'";
+            $query .= ')';
+
+            $res = sql_query($query);
+
+            if (!$res) {
+                $response['success'] = false;
+                $response['message'] = 'Failed to insert report score';
+            } else {
+                $response['message'] = 'Report score added successfully';
+            }
+        }
+
+        $response['id_report'] = $idReport;
+        $response['user_id'] = $userId;
+
+        return $response;
+    }
+
     // ---------------------------------------------------------------------------
 
     public function call($name, $params)
@@ -3530,6 +3715,15 @@ class Course_API extends API
             case 'getCalendar':
             case 'getcalendar':
                 $response = $this->getCalendar($params);
+
+                break;
+            case 'courseReport':
+            case 'getCourseReport':
+                $response = $this->getCourseReport($params);
+
+                break;
+            case 'addOrUpdateScoreToReport':
+                $response = $this->addOrUpdateScoreToReport($params);
 
                 break;
             default:
