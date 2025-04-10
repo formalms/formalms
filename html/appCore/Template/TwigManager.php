@@ -124,6 +124,16 @@ class TwigManager
             $this->twig->getLoader()->addPath($view_path);
         }
 
+        $eventResult = \Events::trigger('template.render',['loader'=>$this->twig->getLoader(), 'view_name' => $view_name, 'data_for_view' => $data_for_view]);
+
+        if(array_key_exists('view_name', $eventResult)) {
+            $view_name = $eventResult['view_name'];
+        }
+
+        if(array_key_exists('data_for_view', $eventResult)) {
+            $data_for_view = $eventResult['data_for_view'];
+        }
+
         return $this->twig->render($view_name, $data_for_view);
     }
 
