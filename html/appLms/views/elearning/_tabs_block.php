@@ -73,7 +73,7 @@
     function course_search_callback_set() {
 
         var ft = $("#course_search_filter_text").val();
-
+        let maxHeight = 0;
         var ctype = $("#course_search_filter_type").selectpicker().val();
         var category = $('#course_search_filter_cat').selectpicker().val();
         var cyear = $("#course_search_filter_year").selectpicker().val();
@@ -86,6 +86,17 @@
 
         posting.done(function(responseText){
             $("#div_course").html(responseText);
+        
+
+                $('article.course-box').each(function () {
+                    const height = $(this).outerHeight();
+                    if (height > maxHeight) {
+                        maxHeight = height;
+                    }
+                });
+
+                $('article.course-box').css('height', maxHeight + 'px');
+              
         });
     }
 
