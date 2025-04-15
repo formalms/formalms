@@ -81,7 +81,7 @@ class HelperTool
     public static function dropIndexIfExistsQueryBuilder() : string{
 
         return HelperTool::dropProcedure('drop_index_if_exists') . '
-        CREATE PROCEDURE drop_index_if_exists ( IN theIndexName VARCHAR ( 128 ), IN theTable VARCHAR ( 128 ) ) 
+        CREATE PROCEDURE drop_index_if_exists ( IN theIndexName VARCHAR ( 128 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci, IN theTable VARCHAR ( 128 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ) 
             BEGIN
                 DECLARE existing INT;
         SELECT
@@ -105,7 +105,7 @@ class HelperTool
     public static function dropColumnIfExistsQueryBuilder() : string{
 
         return HelperTool::dropProcedure('drop_column_if_exists') . '
-    CREATE PROCEDURE drop_column_if_exists ( IN theTableName VARCHAR ( 128 ), IN theColumnName VARCHAR ( 128 ) ) 
+    CREATE PROCEDURE drop_column_if_exists ( IN theTableName VARCHAR ( 128 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci, IN theColumnName VARCHAR ( 128 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ) 
         BEGIN
             DECLARE column_exists INT DEFAULT 0;
             
