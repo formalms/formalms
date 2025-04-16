@@ -53,7 +53,7 @@ class CourseLevel
 
     public function isTeacher($level)
     {
-        $res = ((int) $level === 6 ? true : false);
+        $res = ((int) $level === self::COURSE_LEVEL_TEACHER ? true : false);
 
         return $res;
     }

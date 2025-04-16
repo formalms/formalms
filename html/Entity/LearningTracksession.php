@@ -10,7 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="learning_tracksession",
  *  indexes={
- *     @ORM\Index(name="idUser_active_idx", columns={"idUser","active"})
+ *     @ORM\Index(name="idUser_active_idx", columns={"idUser","active"}),
+ *     @ORM\Index(name="idUser_act_last_idx", columns={"idUser","active","lastTime"})
  *  }
  * )
  * @ORM\Entity

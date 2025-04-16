@@ -9,7 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * LearningCategory
  *
- * @ORM\Table(name="learning_category")
+ * @ORM\Table(name="learning_category", indexes={
+ *      @ORM\Index(name="idx_category_id", columns={"idCategory"}),
+ *      @ORM\Index(name="idx_category_path", columns={"path"}, options={"lengths": {255}})
+ *  })
  * @ORM\Entity
  */
 class LearningCategory

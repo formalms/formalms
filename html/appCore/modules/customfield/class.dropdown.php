@@ -66,12 +66,12 @@ class Field_Dropdown extends Field
             //undo action
             Util::jump_to($back . '&result=undo');
         }
-        if (isset($_POST['save_field_' . $this->getFieldType()])) {
+        if (isset($_POST['save_field_' . static::getFieldType()])) {
             //insert mandatory translation
             $mand_lang = Lang::get();
             $show_on = '';
             if (isset($_POST['show_on_platform'])) {
-                foreach ($_POST['show_on_platform']  as $code) {
+                foreach ($_POST['show_on_platform'] as $code) {
                     $show_on .= $code . ',';
                 }
             }
@@ -80,7 +80,7 @@ class Field_Dropdown extends Field
                 $out->add(
                     getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_TRANSLATION'))
                     . getBackUi($this->getUrl() . '&amp;type_field='
-                        . $this->getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
+                        . static::getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
                     'content'
                 );
 
@@ -90,7 +90,7 @@ class Field_Dropdown extends Field
                 $out->add(
                     getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_TRANSLATION'))
                     . getBackUi($this->getUrl() . '&amp;type_field='
-                        . $this->getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
+                        . static::getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
                     'content'
                 );
 
@@ -105,11 +105,11 @@ class Field_Dropdown extends Field
             if (!sql_query('
 			INSERT INTO ' . $this->_getMainTable() . "
 			(type_field, show_on_platform, use_multilang, area_code, code) VALUES
-			('" . $this->getFieldType() . "', '" . $show_on . "', '" . $use_multilang . "', '" . $filter_area_field . "', '" . $code . "') ")) {
+			('" . static::getFieldType() . "', '" . $show_on . "', '" . $use_multilang . "', '" . $filter_area_field . "', '" . $code . "') ")) {
                 Util::jump_to($back . '&result=fail');
             }
 
-            list($id_field) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
+            [$id_field] = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
 
             if (!sql_query('
 			INSERT INTO ' . $this->_getMainLangTable() . "
@@ -125,7 +125,7 @@ class Field_Dropdown extends Field
                     $re_ins = sql_query('
 					INSERT INTO ' . $this->_getMainLangTable() . "
 					(id_field, lang_code, translation) VALUES
-					('" . (int) $id_field . "', '" . $lang_code . "', '" . $translation . "') ");
+					('" . (int)$id_field . "', '" . $lang_code . "', '" . $translation . "') ");
                     $re = $re && $re_ins;
                 }
             }
@@ -140,33 +140,33 @@ class Field_Dropdown extends Field
         $out->setWorkingZone('content');
         $out->add('<div class="std_block">');
         $out->add(
-            $form->getFormHeader($lang->def('_NEW_DROPDOWN'))
-            . $form->openForm('create_' . $this->getFieldType(), $this->getUrl())
-            . $form->openElementSpace()
-            . $form->getHidden('type_field', 'type_field', $this->getFieldType())
-            . $form->getHidden('back', 'back', $back_coded)
+            $form::getFormHeader($lang->def('_NEW_DROPDOWN'))
+            . $form::openForm('create_' . static::getFieldType(), $this->getUrl())
+            . $form::openElementSpace()
+            . $form::getHidden('type_field', 'type_field', static::getFieldType())
+            . $form::getHidden('back', 'back', $back_coded)
         );
         $mand_lang = Lang::get();
         foreach ($array_lang as $k => $lang_code) {
             $out->add(
-                $form->getTextfield((($mand_lang == $lang_code) ? '<span class="mandatory">*</span>' : '') . $lang_code,
-                                    'new_dropdown_' . $lang_code,
-                                    'new_dropdown[' . $lang_code . ']',
-                                    255,
-                                    '',
-                                    $lang_code . ' ' . $lang->def('_FIELD_NAME'))
+                $form::getTextfield((($mand_lang == $lang_code) ? '<span class="mandatory">*</span>' : '') . $lang_code,
+                    'new_dropdown_' . $lang_code,
+                    'new_dropdown[' . $lang_code . ']',
+                    255,
+                    '',
+                    $lang_code . ' ' . $lang->def('_FIELD_NAME'))
             );
         }
 
         $out->add(
-                        $form->getTextfield($lang->def('_CODE'), 'code', 'code', 255, '')
-                );
+            $form::getTextfield($lang->def('_CODE'), 'code', 'code', 255, '')
+        );
 
         // Combo Box Con Area del campo
         $re_field = sql_query('
                     SELECT area_code, area_name FROM '
-                    . $GLOBALS['prefix_fw']
-                    . '_customfield_area ORDER BY area_name');
+            . $GLOBALS['prefix_fw']
+            . '_customfield_area ORDER BY area_name');
         $field_av = [];
         $field_select = ['' => ''];
         while (list($area_code, $area_name) = sql_fetch_row($re_field)) {
@@ -174,20 +174,20 @@ class Field_Dropdown extends Field
         }
 
         $out->add(
-            $form->getDropdown($lang->def('_FIELD_AREA'), 'filter_area_field', 'filter_area_field',
-            $field_select, $filter_area_field)
-                );
+            $form::getDropdown($lang->def('_FIELD_AREA'), 'filter_area_field', 'filter_area_field',
+                $field_select, $filter_area_field)
+        );
 
         $GLOBALS['page']->add($this->getMultiLangCheck(), 'content');
         $GLOBALS['page']->add($this->getShowOnPlatformFieldset(), 'content');
 
         $out->add(
-            $form->closeElementSpace()
-            . $form->openButtonSpace()
-            . $form->getButton('save_field', 'save_field_' . $this->getFieldType(), $std_lang->def('_CREATE', 'standard'))
-            . $form->getButton('undo', 'undo', $std_lang->def('_UNDO', 'standard'))
-            . $form->closeButtonSpace()
-            . $form->closeForm()
+            $form::closeElementSpace()
+            . $form::openButtonSpace()
+            . $form::getButton('save_field', 'save_field_' . static::getFieldType(), $std_lang->def('_CREATE', 'standard'))
+            . $form::getButton('undo', 'undo', $std_lang->def('_UNDO', 'standard'))
+            . $form::closeButtonSpace()
+            . $form::closeForm()
         );
         $out->add('</div>');
     }
@@ -206,11 +206,20 @@ class Field_Dropdown extends Field
         $internal_op = importVar('iop');
 
         switch ($internal_op) {
-            case 'add': $this->_add_son(); break;
-            case 'mod': $this->_mod_son(); break;
-            case 'del': $this->_del_son(); break;
-            case 'modmain': $this->_edit_field(); break;
-            default: $this->_show_son();
+            case 'add':
+                $this->_add_son();
+                break;
+            case 'mod':
+                $this->_mod_son();
+                break;
+            case 'del':
+                $this->_del_son();
+                break;
+            case 'modmain':
+                $this->_edit_field();
+                break;
+            default:
+                $this->_show_son();
         }
     }
 
@@ -225,7 +234,7 @@ class Field_Dropdown extends Field
     {
         $query_del = '
 		DELETE FROM ' . $this->_getUserEntryTable() . "
-		WHERE id_field = '" . (int) $this->id_field . "'";
+		WHERE id_field = '" . (int)$this->id_field . "'";
         $re = sql_query($query_del);
         if (!$re) {
             Util::jump_to($back . '&result=fail');
@@ -233,7 +242,7 @@ class Field_Dropdown extends Field
 
         $query_sel = '
 		SELECT id_field_son FROM ' . $this->_getElementTable() . "
-		WHERE id_field = '" . (int) $this->id_field . "'";
+		WHERE id_field = '" . (int)$this->id_field . "'";
         $re_field_element = sql_query($query_sel);
         $arr_field_son = [];
         while (list($id_field_son) = sql_fetch_row($re_field_element)) {
@@ -252,7 +261,7 @@ class Field_Dropdown extends Field
 
         $query_del = '
 		DELETE FROM ' . $this->_getElementTable() . "
-		WHERE id_field = '" . (int) $this->id_field . "'";
+		WHERE id_field = '" . (int)$this->id_field . "'";
         $re = sql_query($query_del);
         if (!$re) {
             Util::jump_to($back . '&result=fail');
@@ -260,7 +269,7 @@ class Field_Dropdown extends Field
 
         $query_del = '
 		DELETE FROM ' . $this->_getMainLangTable() . "
-		WHERE id_field = '" . (int) $this->id_field . "'";
+		WHERE id_field = '" . (int)$this->id_field . "'";
         $re = sql_query($query_del);
         if (!$re) {
             Util::jump_to($back . '&result=fail');
@@ -268,7 +277,7 @@ class Field_Dropdown extends Field
 
         $query_del = '
 		DELETE FROM ' . $this->_getMainTable() . "
-		WHERE id_field = '" . (int) $this->id_field . "'";
+		WHERE id_field = '" . (int)$this->id_field . "'";
         $re = sql_query($query_del);
 
         Util::jump_to($back . '&result=' . ($re ? 'success' : 'fail'));
@@ -283,25 +292,25 @@ class Field_Dropdown extends Field
      */
     public function show($id_obj)
     {
-        list($user_entry) = sql_fetch_row(sql_query('
+        [$user_entry] = sql_fetch_row(sql_query('
 		SELECT obj_entry
 		FROM ' . $this->_getUserEntryTable() . "
-		WHERE id_obj = '" . (int) $id_obj . "' 
-                AND id_field = '" . (int) $this->id_field . "'"));
+		WHERE id_obj = '" . (int)$id_obj . "' 
+                AND id_field = '" . (int)$this->id_field . "'"));
 
-        $user_entry = (int) $user_entry;
+        $user_entry = (int)$user_entry;
 
         $re_field_element = sql_query('
 		SELECT id_field_son, translation
 		FROM ' . $this->_getElementTable() . "
-		WHERE id_field = '" . (int) $this->id_field . "' AND lang_code = '" . Lang::get() . "'
+		WHERE id_field = '" . (int)$this->id_field . "' AND lang_code = '" . Lang::get() . "'
 		ORDER BY sequence");
         $option = [];
         $option[0] = '';
         while (list($id_field_son, $element) = sql_fetch_row($re_field_element)) {
             $option[$id_field_son] = $element;
         }
-        $user_entry = (int) $user_entry;
+        $user_entry = (int)$user_entry;
 
         return isset($option[$user_entry]) ? $option[$user_entry] : '';
     }
@@ -311,10 +320,10 @@ class Field_Dropdown extends Field
         $re_field = sql_query('
 		SELECT translation
 		FROM ' . $this->_getMainTable() . "
-		WHERE id_field = '" . (int) $this->id_field . "' AND
-			type_field = '" . $this->getFieldType() . "' AND
+		WHERE id_field = '" . (int)$this->id_field . "' AND
+			type_field = '" . static::getFieldType() . "' AND
 			lang_code = '" . Lang::get() . "'");
-        list($translation) = sql_fetch_row($re_field);
+        [$translation] = sql_fetch_row($re_field);
 
         return $translation;
     }
@@ -322,9 +331,9 @@ class Field_Dropdown extends Field
     /**
      * display the field for interaction.
      *
-     * @param int  $id_user           if alredy exists a entry for the user load as default value
-     * @param bool $freeze            if true, disable the user interaction
-     * @param bool $mandatory         if true, the field is considered mandatory
+     * @param int $id_user if alredy exists a entry for the user load as default value
+     * @param bool $freeze if true, disable the user interaction
+     * @param bool $mandatory if true, the field is considered mandatory
      * @param bool $do_not_show_label if true, do not show the label in freeze mode
      *
      * @return string of field xhtml code
@@ -333,32 +342,32 @@ class Field_Dropdown extends Field
     {
         require_once _base_ . '/lib/lib.form.php';
 
-        if (isset($_POST['field_' . $this->getFieldType()])
-            && isset($_POST['field_' . $this->getFieldType()][$this->id_field])) {
-            $obj_entry = $_POST['field_' . $this->getFieldType()][$this->id_field];
+        if (isset($_POST['field_' . static::getFieldType()])
+            && isset($_POST['field_' . static::getFieldType()][$this->id_field])) {
+            $obj_entry = $_POST['field_' . static::getFieldType()][$this->id_field];
         } else {
-            list($obj_entry) = sql_fetch_row(sql_query('
+            [$obj_entry] = sql_fetch_row(sql_query('
 			SELECT obj_entry
 			FROM ' . $this->_getUserEntryTable() . "
-			WHERE id_obj = '" . (int) $id_obj . "' 
-                        AND id_field = '" . (int) $this->id_field . "'"));
+			WHERE id_obj = '" . (int)$id_obj . "' 
+                        AND id_field = '" . (int)$this->id_field . "'"));
         }
-        $obj_entry = (int) $obj_entry;
+        $obj_entry = (int)$obj_entry;
 
         $re_field = sql_query('
 		SELECT cl.translation
 		FROM ' . $this->_getMainTable() . ' AS c, ' . $this->_getMainLangTable() . " AS cl
 		WHERE c.id_field = cl.id_field
-                AND c.id_field = '" . (int) $this->id_field . "' 
-                AND c.type_field = '" . $this->getFieldType() . "' 
+                AND c.id_field = '" . (int)$this->id_field . "' 
+                AND c.type_field = '" . static::getFieldType() . "' 
                 AND cl.lang_code = '" . Lang::get() . "'");
-        list($translation) = sql_fetch_row($re_field);
+        [$translation] = sql_fetch_row($re_field);
 
         $re_field_element = sql_query('
 		SELECT cs.id_field_son, csl.translation
 		FROM ' . $this->_getElementTable() . ' AS cs, ' . $this->_getElementLangTable() . " AS csl
 		WHERE cs.id_field_son = csl.id_field_son
-                AND cs.id_field = '" . (int) $this->id_field . "' AND csl.lang_code = '" . Lang::get() . "'
+                AND cs.id_field = '" . (int)$this->id_field . "' AND csl.lang_code = '" . Lang::get() . "'
 		ORDER BY cs.sequence");
 
         $option = [];
@@ -368,47 +377,51 @@ class Field_Dropdown extends Field
         }
 
         if ($value !== null) {
-            $obj_entry = (int) $value;
+            $obj_entry = (int)$value;
         }
         if ($freeze) {
             return '<p>' . ($do_not_show_label ? '' : '<b>' . $translation . '</b> : ') . $option[$obj_entry] . '</p>';
         }
 
         return Form::getDropdown($translation . ($mandatory ? ' <span class="mandatory">*</span>' : ''),
-                                'field_' . $this->getFieldType() . '_' . $this->id_field,
-                                'field_' . $this->getFieldType() . '[' . $this->id_field . ']',
-                                $option,
-                                (int) $obj_entry,
-                                '',
-                                '');
+            'field_' . static::getFieldType() . '_' . $this->id_field,
+            'field_' . static::getFieldType() . '[' . $this->id_field . ']',
+            $option,
+            (int)$obj_entry,
+            '',
+            '');
     }
 
-    public function playFlat($id_obj, $ret_code = false)
+    public function playFlat($id_obj, $ret_code = false, $both = false)
     {
         require_once _base_ . '/lib/lib.form.php';
 
         if ($id_obj != -1) {
             // restituisce il valore
-            list($obj_entry) = sql_fetch_row(sql_query('
+            [$obj_entry] = sql_fetch_row(sql_query('
                     SELECT obj_entry
                     FROM ' . $this->_getObjEntryTable() . "
-                    WHERE id_obj = '" . (int) $id_obj . "' 
-                    AND id_field = '" . (int) $this->id_field . "'"));
+                    WHERE id_obj = '" . (int)$id_obj . "' 
+                    AND id_field = '" . (int)$this->id_field . "'"));
 
-            $obj_entry = (int) $obj_entry;
+            $obj_entry = (int)$obj_entry;
 
             $re_field_element = sql_query('
                     SELECT csl.translation, cs.code
                     FROM ' . $this->_getElementTable() . ' AS cs, ' . $this->_getElementLangTable() . " AS csl
                     WHERE cs.id_field_son = csl.id_field_son
-                    AND cs.id_field = '" . (int) $this->id_field . "' AND cs.id_field_son = '" . $obj_entry . "' AND csl.lang_code = '" . Lang::get() . "' ");
+                    AND cs.id_field = '" . (int)$this->id_field . "' AND cs.id_field_son = '" . $obj_entry . "' AND csl.lang_code = '" . Lang::get() . "' ");
 
-            list($translation, $code) = sql_fetch_row($re_field_element);
+            [$translation, $code] = sql_fetch_row($re_field_element);
 
-            if ($ret_code == true) {
-                return $code;
+            if ($both) {
+                return ['translation' => $translation, 'code' => $code];
             } else {
-                return $translation;
+                if ($ret_code == true) {
+                    return $code;
+                } else {
+                    return $translation;
+                }
             }
         } else {
             // restituisce tutti i valori
@@ -416,15 +429,23 @@ class Field_Dropdown extends Field
                     SELECT cs.id_field_son, csl.translation, cs.code
                     FROM ' . $this->_getElementTable() . ' AS cs, ' . $this->_getElementLangTable() . " AS csl
                     WHERE cs.id_field_son = csl.id_field_son
-                    AND cs.id_field = '" . (int) $this->id_field . "' AND csl.lang_code = '" . Lang::get() . "'
+                    AND cs.id_field = '" . (int)$this->id_field . "' AND csl.lang_code = '" . Lang::get() . "'
                     ORDER BY cs.sequence");
             $option = [];
-            // $option[0] = Lang::t('_DROPDOWN_NOVALUE', 'field', 'framework');
-            while (list($id_field_son, $element, $code) = sql_fetch_row($re_field_element)) {
-                if ($ret_code == true) {
-                    $option[$id_field_son] = $code;
+
+            foreach ($re_field_element as $element) {
+                $id_field_son = $element['id_field_son'];
+                $translation = $element['translation'];
+                $code = $element['code'];
+
+                if ($both) {
+                    $option[$id_field_son] = ['translation' => $translation, 'code' => $code];
                 } else {
-                    $option[$id_field_son] = $element;
+                    if ($ret_code == true) {
+                        $option[$id_field_son] = $code;
+                    } else {
+                        $option[$id_field_son] = $translation;
+                    }
                 }
             }
 
@@ -435,17 +456,17 @@ class Field_Dropdown extends Field
     /**
      * display the field for filters.
      *
-     * @param string $field_id      the id of the field used for id/name
-     * @param mixed  $value         (optional) the value to put in the field
+     * @param string $field_id the id of the field used for id/name
+     * @param mixed $value (optional) the value to put in the field
      *                              retrieved from $_POST if not given
-     * @param string $label         (optional) the label to use if not given the
+     * @param string $label (optional) the label to use if not given the
      *                              value will be retrieved from custom field
      *                              $id_field
-     * @param string $field_prefix  (optional) the prefix to give to
+     * @param string $field_prefix (optional) the prefix to give to
      *                              the field id/name
-     * @param string $other_after   optional html code added after the input element
-     * @param string $other_before  optional html code added before the label element
-     * @param mixed  $field_special (optional) if is an array the elements are
+     * @param string $other_after optional html code added after the input element
+     * @param string $other_before optional html code added before the label element
+     * @param mixed $field_special (optional) if is an array the elements are
      *                              the options of dropdown, if is numeric is trated
      *                              as a field id and used to retrieve options
      *                              if not given the elements will be retrieved from
@@ -471,7 +492,7 @@ class Field_Dropdown extends Field
             $re_field_element = sql_query('
 			SELECT id_field_son, translation
 			FROM ' . Field_Dropdown::_getElementTable() . "
-			WHERE id_field = '" . (int) (($field_special !== false) ? $field_special : $id_field) . "'
+			WHERE id_field = '" . (int)(($field_special !== false) ? $field_special : $id_field) . "'
 				AND lang_code = '" . Lang::get() . "'
 			ORDER BY sequence");
             while (list($id_field_son, $element) = sql_fetch_row($re_field_element)) {
@@ -483,18 +504,18 @@ class Field_Dropdown extends Field
             $re_field = sql_query('
 			SELECT translation
 			FROM ' . Field::_getMainTable() . "
-			WHERE id_field = '" . (int) $id_field . "'
+			WHERE id_field = '" . (int)$id_field . "'
 				AND type_field = '" . Field_Dropdown::getFieldType() . "'");
-            list($label) = sql_fetch_row($re_field);
+            [$label] = sql_fetch_row($re_field);
         }
 
         return Form::getDropdown($label,
-                                Field::getFieldId_Filter($id_field, $field_prefix),
-                                Field::getFieldName_Filter($id_field, $field_prefix),
-                                $option,
-                                $value,
-                                $other_after,
-                                $other_before);
+            Field::getFieldId_Filter($id_field, $field_prefix),
+            Field::getFieldName_Filter($id_field, $field_prefix),
+            $option,
+            $value,
+            $other_after,
+            $other_before);
     }
 
     /**
@@ -504,9 +525,9 @@ class Field_Dropdown extends Field
      */
     public function isFilled($id_user)
     {
-        if (!isset($_POST['field_' . $this->getFieldType()][$this->id_field])) {
+        if (!isset($_POST['field_' . static::getFieldType()][$this->id_field])) {
             return false;
-        } elseif ($_POST['field_' . $this->getFieldType()][$this->id_field] == '0') {
+        } elseif ($_POST['field_' . static::getFieldType()][$this->id_field] == '0') {
             return false;
         } else {
             return true;
@@ -516,9 +537,9 @@ class Field_Dropdown extends Field
     /**
      * return the filled value of the selected field.
      *
-     * @param mixed $grab_from    (optional) the array to retrieve the value from
+     * @param mixed $grab_from (optional) the array to retrieve the value from
      *                            ($_POST will be used as default)
-     * @param bool  $dropdown_val (optional). If true will get the value of a dropdown item instead of its id.
+     * @param bool $dropdown_val (optional). If true will get the value of a dropdown item instead of its id.
      *
      * @return bool true if operation success false otherwise
      */
@@ -528,15 +549,15 @@ class Field_Dropdown extends Field
             $grab_from = $_POST;
         }
 
-        if ((!$dropdown_val) && (isset($grab_from['field_' . $this->getFieldType()][$this->id_field]))) {
-            return $grab_from['field_' . $this->getFieldType()][$this->id_field];
-        } elseif (($dropdown_val) && (isset($grab_from['field_' . $this->getFieldType()][$this->id_field]))) {
+        if ((!$dropdown_val) && (isset($grab_from['field_' . static::getFieldType()][$this->id_field]))) {
+            return $grab_from['field_' . static::getFieldType()][$this->id_field];
+        } elseif (($dropdown_val) && (isset($grab_from['field_' . static::getFieldType()][$this->id_field]))) {
             $re_field = sql_query('
 			SELECT translation
 			FROM ' . $this->_getElementTable() . "
 			WHERE id_field = '" . $this->id_field . "' AND lang_code = '" . Lang::get() . "'
-				AND id_field_son='" . $grab_from['field_' . $this->getFieldType()][$this->id_field] . "'");
-            list($translation) = sql_fetch_row($re_field);
+				AND id_field_son='" . $grab_from['field_' . static::getFieldType()][$this->id_field] . "'");
+            [$translation] = sql_fetch_row($re_field);
 
             return $translation;
         } else {
@@ -547,30 +568,30 @@ class Field_Dropdown extends Field
     /**
      * store the value inserted by a user into the database, if a entry exists it will be overwrite.
      *
-     * @param int $id_user      the user
+     * @param int $id_user the user
      * @param int $no_overwrite if a entry exists do not overwrite it
      *
      * @return bool true if operation success false otherwise
      */
     public function store($id_obj)
     {
-        $id_obj = (int) $id_obj;
+        $id_obj = (int)$id_obj;
 
-        if (!isset($_POST['field_' . $this->getFieldType()][$this->id_field])) {
+        if (!isset($_POST['field_' . static::getFieldType()][$this->id_field])) {
             return true;
         }
         $re_entry = sql_query('
 		SELECT obj_entry
 		FROM ' . $this->_getObjEntryTable() . "
 		WHERE id_obj = '" . $id_obj . "' AND
-			id_field = '" . (int) $this->id_field . "'");
+			id_field = '" . (int)$this->id_field . "'");
         $some_entry = sql_num_rows($re_entry);
         if ($some_entry) {
             if (!sql_query('
 			UPDATE ' . $this->_getObjEntryTable() . "
-			SET obj_entry = '" . $_POST['field_' . $this->getFieldType()][$this->id_field] . "'
+			SET obj_entry = '" . $_POST['field_' . static::getFieldType()][$this->id_field] . "'
 			WHERE id_obj = '" . $id_obj . "' AND
-			id_field = '" . (int) $this->id_field . "'")) {
+			id_field = '" . (int)$this->id_field . "'")) {
                 return false;
             }
         } else {
@@ -578,8 +599,8 @@ class Field_Dropdown extends Field
 			INSERT INTO ' . $this->_getObjEntryTable() . "
 			( id_obj, id_field, obj_entry ) VALUES
 			(	'" . $id_obj . "',
-				'" . (int) $this->id_field . "',
-				'" . $_POST['field_' . $this->getFieldType()][$this->id_field] . "')")) {
+				'" . (int)$this->id_field . "',
+				'" . $_POST['field_' . static::getFieldType()][$this->id_field] . "')")) {
                 return false;
             }
         }
@@ -590,10 +611,10 @@ class Field_Dropdown extends Field
     /**
      * store the value passed into the database, if a entry exists it will be overwrite.
      *
-     * @param int  $id_user      the user
-     * @param int  $value        the value of the field
-     * @param bool $is_id        if false the param must be reconverted
-     * @param int  $no_overwrite if a entry exists do not overwrite it
+     * @param int $id_user the user
+     * @param int $value the value of the field
+     * @param bool $is_id if false the param must be reconverted
+     * @param int $no_overwrite if a entry exists do not overwrite it
      *
      * @return bool true if success false otherwise
      */
@@ -601,14 +622,14 @@ class Field_Dropdown extends Field
     {
         $value = stripslashes(strtolower($value));
         if (($int_userid) || (empty($id_user))) {
-            $id_user = (int) $id_user;
+            $id_user = (int)$id_user;
         }
 
         $re_entry = sql_query('
 		SELECT user_entry
 		FROM ' . $this->_getUserEntryTable() . "
 		WHERE id_obj = '" . $id_obj . "' 
-                AND id_field = '" . (int) $this->id_field . "'");
+                AND id_field = '" . (int)$this->id_field . "'");
         $some_entry = sql_num_rows($re_entry);
         if ($some_entry && $no_overwrite) {
             return true;
@@ -651,7 +672,7 @@ class Field_Dropdown extends Field
 			UPDATE ' . $this->_getUserEntryTable() . "
 			SET obj_entry = '" . $id_value . "'
 			WHERE id_obj = '" . $id_obj . "' 
-                        AND id_field = '" . (int) $this->id_field . "'")) {
+                        AND id_field = '" . (int)$this->id_field . "'")) {
                 return false;
             }
         } else {
@@ -659,7 +680,7 @@ class Field_Dropdown extends Field
 			INSERT INTO ' . $this->_getUserEntryTable() . "
 			( id_user, id_field, user_entry ) VALUES
 			(	'" . $id_user . "',
-				'" . (int) $this->id_field . "',
+				'" . (int)$this->id_field . "',
 				'" . $id_value . "')")) {
                 return false;
             }
@@ -685,7 +706,7 @@ class Field_Dropdown extends Field
 
         $query = 'SELECT id_user, user_entry FROM ' . $this->_getUserEntryTable() . ' '
             . ' WHERE id_user IN (' . implode(',', $idst_users) . ') '
-            . " AND id_field = '" . (int) $this->id_field . "'";
+            . " AND id_field = '" . (int)$this->id_field . "'";
         $res = sql_query($query);
         if ($res) {
             if (sql_num_rows($res) > 0) {
@@ -701,14 +722,14 @@ class Field_Dropdown extends Field
                 }
                 $query = 'UPDATE ' . $this->_getUserEntryTable() . " SET user_entry = '" . $value . "' "
                     . ' WHERE id_user IN (' . implode(',', $arr_existent) . ') '
-                    . " AND id_field = '" . (int) $this->id_field . "'";
+                    . " AND id_field = '" . (int)$this->id_field . "'";
                 $res1 = sql_query($query);
             }
 
             if (!empty($arr_new)) {
                 $insert_values = [];
                 foreach ($arr_new as $idst) {
-                    $insert_values[] = "(	'" . (int) $idst . "', '" . (int) $this->id_field . "', '" . $value . "')";
+                    $insert_values[] = "(	'" . (int)$idst . "', '" . (int)$this->id_field . "', '" . $value . "')";
                 }
                 $query = 'INSERT INTO ' . $this->_getUserEntryTable() . ' '
                     . '( id_user, id_field, user_entry ) VALUES '
@@ -725,26 +746,26 @@ class Field_Dropdown extends Field
     public function _move_up($id_son)
     {
         $query = 'SELECT sequence, id_field_son'
-                    . ' FROM ' . $this->_getElementTable() . ''
-                    . " WHERE id_field = '" . $this->id_field . "'"
-                    . " AND lang_code = '" . Lang::get() . "'"
-                    . " AND idSon = '" . $id_son . "'";
+            . ' FROM ' . $this->_getElementTable() . ''
+            . " WHERE id_field = '" . $this->id_field . "'"
+            . " AND lang_code = '" . Lang::get() . "'"
+            . " AND idSon = '" . $id_son . "'";
 
-        list($sequence, $id_field_son) = sql_fetch_row(sql_query($query));
+        [$sequence, $id_field_son] = sql_fetch_row(sql_query($query));
 
         $up_sequence = $sequence - 1;
 
         $query = 'UPDATE ' . $this->_getElementTable() . ''
-                    . " SET sequence = '" . $sequence . "'"
-                    . " WHERE id_field = '" . $this->id_field . "'"
-                    . " AND sequence = '" . $up_sequence . "'";
+            . " SET sequence = '" . $sequence . "'"
+            . " WHERE id_field = '" . $this->id_field . "'"
+            . " AND sequence = '" . $up_sequence . "'";
 
         $result = sql_query($query);
 
         $query = 'UPDATE ' . $this->_getElementTable() . ''
-                    . " SET sequence = '" . $up_sequence . "'"
-                    . " WHERE id_field = '" . $this->id_field . "'"
-                    . " AND id_field_son = '" . $id_field_son . "'";
+            . " SET sequence = '" . $up_sequence . "'"
+            . " WHERE id_field = '" . $this->id_field . "'"
+            . " AND id_field_son = '" . $id_field_son . "'";
 
         $result = sql_query($query);
     }
@@ -752,26 +773,26 @@ class Field_Dropdown extends Field
     public function _move_down($id_son)
     {
         $query = 'SELECT sequence, id_field_son'
-                    . ' FROM ' . $this->_getElementTable() . ''
-                    . " WHERE id_field = '" . $this->id_field . "'"
-                    . " AND lang_code = '" . Lang::get() . "'"
-                    . " AND idSon = '" . $id_son . "'";
+            . ' FROM ' . $this->_getElementTable() . ''
+            . " WHERE id_field = '" . $this->id_field . "'"
+            . " AND lang_code = '" . Lang::get() . "'"
+            . " AND idSon = '" . $id_son . "'";
 
-        list($sequence, $id_field_son) = sql_fetch_row(sql_query($query));
+        [$sequence, $id_field_son] = sql_fetch_row(sql_query($query));
 
         $up_sequence = $sequence + 1;
 
         $query = 'UPDATE ' . $this->_getElementTable() . ''
-                    . " SET sequence = '" . $sequence . "'"
-                    . " WHERE id_field = '" . $this->id_field . "'"
-                    . " AND sequence = '" . $up_sequence . "'";
+            . " SET sequence = '" . $sequence . "'"
+            . " WHERE id_field = '" . $this->id_field . "'"
+            . " AND sequence = '" . $up_sequence . "'";
 
         $result = sql_query($query);
 
         $query = 'UPDATE ' . $this->_getElementTable() . ''
-                    . " SET sequence = '" . $up_sequence . "'"
-                    . " WHERE id_field = '" . $this->id_field . "'"
-                    . " AND id_field_son = '" . $id_field_son . "'";
+            . " SET sequence = '" . $up_sequence . "'"
+            . " WHERE id_field = '" . $this->id_field . "'"
+            . " AND id_field_son = '" . $id_field_son . "'";
 
         $result = sql_query($query);
     }
@@ -781,17 +802,17 @@ class Field_Dropdown extends Field
         $new_sequence = 1;
 
         $query = 'SELECT id_field_son'
-                    . ' FROM ' . $this->_getElementTable() . ''
-                    . " WHERE id_field = '" . $this->id_field . "'"
-                    . " AND lang_code = '" . Lang::get() . "'";
+            . ' FROM ' . $this->_getElementTable() . ''
+            . " WHERE id_field = '" . $this->id_field . "'"
+            . " AND lang_code = '" . Lang::get() . "'";
 
         $result = sql_query($query);
 
         while (list($id_field) = sql_fetch_row($result)) {
             $query = 'UPDATE ' . $this->_getElementTable() . ''
-                        . " SET sequence = '" . $new_sequence . "'"
-                        . " WHERE id_field = '" . $this->id_field . "'"
-                        . " AND id_field_son = '" . $id_field . "'";
+                . " SET sequence = '" . $new_sequence . "'"
+                . " WHERE id_field = '" . $this->id_field . "'"
+                . " AND id_field_son = '" . $id_field . "'";
 
             sql_query($query);
 
@@ -825,7 +846,7 @@ class Field_Dropdown extends Field
             $this->_fix_sequence();
         }
 
-        list($total_son) = sql_fetch_row(sql_query('
+        [$total_son] = sql_fetch_row(sql_query('
 		SELECT COUNT(*)
 		FROM ' . $this->_getElementTable() . "
 		WHERE id_field = '" . $this->id_field . "'"));
@@ -836,7 +857,7 @@ class Field_Dropdown extends Field
 		WHERE c.id_field = cl.id_field 
                 AND cl.id_field = '" . $this->id_field . "' AND cl.lang_code = '" . Lang::get() . "'
 		ORDER BY c.sequence");
-        list($translation) = sql_fetch_row($re_main);
+        [$translation] = sql_fetch_row($re_main);
 
         //find available son
         $re_field = sql_query('
@@ -847,7 +868,7 @@ class Field_Dropdown extends Field
 		ORDER BY cs.sequence");
 
         $base_path = $this->getUrl() . '&amp;id_field='
-                . $this->id_field . '&amp;type_field=' . $this->getFieldType() . '&amp;back=' . $this->back_coded;
+            . $this->id_field . '&amp;type_field=' . static::getFieldType() . '&amp;back=' . $this->back_coded;
 
         $out->add('<div class="std_block">'
             . getBackUi($this->back, $std_lang->def('_BACK'))
@@ -888,24 +909,24 @@ class Field_Dropdown extends Field
             }
 
             $content[] = '<a href="' . $base_path . '&amp;iop=mod&amp;idSon=' . $idSon . '" title="' . $std_lang->def('_MOD') . ' : ' . $elem . '">'
-                    . '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $std_lang->def('_MOD') . ' : ' . $elem . '" /></a>';
+                . '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $std_lang->def('_MOD') . ' : ' . $elem . '" /></a>';
 
             $content[] = '<a href="' . $base_path . '&amp;iop=del&amp;idSon=' . $idSon . '" title="' . $std_lang->def('_DEL') . ' : ' . $elem . '">'
-                    . '<img src="' . getPathImage() . 'standard/delete.png" alt="' . $std_lang->def('_DEL') . ' : ' . $elem . '" /></a>';
+                . '<img src="' . getPathImage() . 'standard/delete.png" alt="' . $std_lang->def('_DEL') . ' : ' . $elem . '" /></a>';
 
             $tb_son->addBody($content);
         }
         $tb_son->addActionAdd(
             '<a class="ico-wt-sprite subs_add" href="' . $this->getUrl()
-                . '&amp;id_field=' . $this->id_field
-                . '&amp;type_field=' . $this->getFieldType()
-                . '&amp;back=' . $this->back_coded
-                . '&amp;iop=add"><span>'
+            . '&amp;id_field=' . $this->id_field
+            . '&amp;type_field=' . static::getFieldType()
+            . '&amp;back=' . $this->back_coded
+            . '&amp;iop=add"><span>'
             . $lang->def('_DROPDOWN_SON_ADD') . '</span></a>'
         );
         $out->add($tb_son->getTable());
         $out->add('<a href="' . $base_path . '&amp;iop=fixsequence"'
-                . ' title="' . $lang->def('_FIX_SEQUENCE') . '">' . $lang->def('_FIX_SEQUENCE') . '</a>');
+            . ' title="' . $lang->def('_FIX_SEQUENCE') . '">' . $lang->def('_FIX_SEQUENCE') . '</a>');
         $out->add(getBackUi($this->back, $std_lang->def('_BACK'))
             . '</div>');
     }
@@ -921,14 +942,14 @@ class Field_Dropdown extends Field
         if (isset($_POST['undo'])) {
             //undo action
             Util::jump_to($this->getUrl() . '&id_field='
-                . $this->id_field . '&type_field=' . $this->getFieldType() . '&back=' . $this->back_coded);
+                . $this->id_field . '&type_field=' . static::getFieldType() . '&back=' . $this->back_coded);
         }
-        if (isset($_POST['save_field_' . $this->getFieldType()])) {
+        if (isset($_POST['save_field_' . static::getFieldType()])) {
             //insert mandatory translation
             $mand_lang = Lang::get();
             $show_on = '';
             if (isset($_POST['show_on_platform'])) {
-                foreach ($_POST['show_on_platform']  as $code) {
+                foreach ($_POST['show_on_platform'] as $code) {
                     $show_on .= $code . ',';
                 }
             }
@@ -937,7 +958,7 @@ class Field_Dropdown extends Field
                 $out->add(
                     getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_TRANSLATION'))
                     . getBackUi($this->getUrl() . '&amp;type_field='
-                        . $this->getFieldType() . '&amp;back=' . $this->back_coded, $std_lang->def('_BACK')),
+                        . static::getFieldType() . '&amp;back=' . $this->back_coded, $std_lang->def('_BACK')),
                     'content'
                 );
 
@@ -947,7 +968,7 @@ class Field_Dropdown extends Field
                 $out->add(
                     getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_TRANSLATION'))
                     . getBackUi($this->getUrl() . '&amp;type_field='
-                        . $this->getFieldType() . '&amp;back=' . $this->back_coded, $std_lang->def('_BACK')),
+                        . static::getFieldType() . '&amp;back=' . $this->back_coded, $std_lang->def('_BACK')),
                     'content'
                 );
 
@@ -979,14 +1000,14 @@ class Field_Dropdown extends Field
 						use_multilang = '" . $use_multilang . "',
                                                 area_code = '" . $filter_area_field . "',
                                                 code = '" . $code . "'
-					WHERE id_field = '" . (int) $this->id_field . "'")) {
+					WHERE id_field = '" . (int)$this->id_field . "'")) {
                         $re = false;
                     }
 
                     if (!sql_query('
 					UPDATE ' . $this->_getMainLangTable() . "
 					SET translation = '" . $translation . "'
-					WHERE id_field = '" . (int) $this->id_field . "' AND lang_code = '" . $lang_code . "'")) {
+					WHERE id_field = '" . (int)$this->id_field . "' AND lang_code = '" . $lang_code . "'")) {
                         $re = false;
                     }
                 } else {
@@ -996,20 +1017,20 @@ class Field_Dropdown extends Field
 						use_multilang = '" . $use_multilang . "',
                                                 area_code = '" . $filter_area_field . "',
                                                 code = '" . $code . "'
-					WHERE id_field = '" . (int) $this->id_field . "'")) {
+					WHERE id_field = '" . (int)$this->id_field . "'")) {
                         $re = false;
                     }
 
                     if (!sql_query('
 					INSERT INTO ' . $this->_getMainLangTable() . "
 					(id_field, lang_code, translation) VALUES
-					('" . (int) $this->id_field . "', '" . $lang_code . "', '" . $translation . "') ")) {
+					('" . (int)$this->id_field . "', '" . $lang_code . "', '" . $translation . "') ")) {
                         $re = false;
                     }
                 }
             }
             Util::jump_to($this->getUrl() . '&id_field='
-                . $this->id_field . '&type_field=' . $this->getFieldType() . '&back=' . $this->back_coded
+                . $this->id_field . '&type_field=' . static::getFieldType() . '&back=' . $this->back_coded
                 . '&result=' . ($re ? 'success' : 'fail'));
         }
 
@@ -1038,34 +1059,34 @@ class Field_Dropdown extends Field
         $out->setWorkingZone('content');
         $out->add('<div class="std_block">');
         $out->add(
-            $form->openForm('create_' . $this->getFieldType(), $this->getUrl())
-            . $form->openElementSpace()
-            . $form->getHidden('type_field', 'type_field', $this->getFieldType())
-            . $form->getHidden('id_field', 'id_field', $this->id_field)
-            . $form->getHidden('back', 'back', $this->back_coded)
-            . $form->getHidden('iop', 'iop', 'modmain')
+            $form::openForm('create_' . static::getFieldType(), $this->getUrl())
+            . $form::openElementSpace()
+            . $form::getHidden('type_field', 'type_field', static::getFieldType())
+            . $form::getHidden('id_field', 'id_field', $this->id_field)
+            . $form::getHidden('back', 'back', $this->back_coded)
+            . $form::getHidden('iop', 'iop', 'modmain')
         );
         $mand_lang = Lang::get();
         foreach ($array_lang as $k => $lang_code) {
             $out->add(
-                $form->getTextfield((($mand_lang == $lang_code) ? '<span class="mandatory">*</span>' : '') . $lang_code,
-                                    'new_textfield_' . $lang_code,
-                                    'new_textfield[' . $lang_code . ']',
-                                    255,
-                                    (isset($translation[$lang_code]) ? $translation[$lang_code] : ''),
-                                    $lang_code . ' ' . $lang->def('_FIELD_NAME'))
+                $form::getTextfield((($mand_lang == $lang_code) ? '<span class="mandatory">*</span>' : '') . $lang_code,
+                    'new_textfield_' . $lang_code,
+                    'new_textfield[' . $lang_code . ']',
+                    255,
+                    (isset($translation[$lang_code]) ? $translation[$lang_code] : ''),
+                    $lang_code . ' ' . $lang->def('_FIELD_NAME'))
             );
         }
 
         $out->add(
-                        $form->getTextfield($lang->def('_CODE'), 'code', 'code', 255, $code)
-                );
+            $form::getTextfield($lang->def('_CODE'), 'code', 'code', 255, $code)
+        );
 
         // Combo Box Con Area del campo
         $re_field = sql_query('
                     SELECT area_code, area_name FROM '
-                    . $GLOBALS['prefix_fw']
-                    . '_customfield_area ORDER BY area_name');
+            . $GLOBALS['prefix_fw']
+            . '_customfield_area ORDER BY area_name');
         $field_av = [];
         $field_select = ['' => ''];
         while (list($area_code, $area_name) = sql_fetch_row($re_field)) {
@@ -1073,20 +1094,20 @@ class Field_Dropdown extends Field
         }
 
         $out->add(
-            $form->getDropdown($lang->def('_FIELD_AREA'), 'filter_area_field', 'filter_area_field',
-            $field_select, $filter_area_field)
-                );
+            $form::getDropdown($lang->def('_FIELD_AREA'), 'filter_area_field', 'filter_area_field',
+                $field_select, $filter_area_field)
+        );
 
         $GLOBALS['page']->add($this->getMultiLangCheck($use_multilang), 'content');
         $GLOBALS['page']->add($this->getShowOnPlatformFieldset($show_on_platform), 'content');
 
         $out->add(
-            $form->closeElementSpace()
-            . $form->openButtonSpace()
-            . $form->getButton('save_field', 'save_field_' . $this->getFieldType(), $std_lang->def('_SAVE', 'standard'))
-            . $form->getButton('undo', 'undo', $std_lang->def('_UNDO', 'standard'))
-            . $form->closeButtonSpace()
-            . $form->closeForm()
+            $form::closeElementSpace()
+            . $form::openButtonSpace()
+            . $form::getButton('save_field', 'save_field_' . static::getFieldType(), $std_lang->def('_SAVE', 'standard'))
+            . $form::getButton('undo', 'undo', $std_lang->def('_UNDO', 'standard'))
+            . $form::closeButtonSpace()
+            . $form::closeForm()
         );
         $out->add('</div>');
     }
@@ -1102,9 +1123,9 @@ class Field_Dropdown extends Field
         if (isset($_POST['undo'])) {
             //undo action
             Util::jump_to($this->getUrl() . '&id_field='
-                . $this->id_field . '&type_field=' . $this->getFieldType() . '&back=' . $this->back_coded);
+                . $this->id_field . '&type_field=' . static::getFieldType() . '&back=' . $this->back_coded);
         }
-        if (isset($_POST['save_field_' . $this->getFieldType()])) {
+        if (isset($_POST['save_field_' . static::getFieldType()])) {
             //insert mandatory translation
             $mand_lang = Lang::get();
 
@@ -1113,7 +1134,7 @@ class Field_Dropdown extends Field
                 $out->add(
                     getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_TRANSLATION'))
                     . getBackUi($this->getUrl() . '&amp;id_field='
-                        . $this->id_field . '&amp;type_field=' . $this->getFieldType() . '&amp;back=' . $this->back_coded,
+                        . $this->id_field . '&amp;type_field=' . static::getFieldType() . '&amp;back=' . $this->back_coded,
                         $std_lang->def('_BACK')),
                     'content'
                 );
@@ -1124,7 +1145,7 @@ class Field_Dropdown extends Field
                 $out->add(
                     getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_TRANSLATION'))
                     . getBackUi($this->getUrl() . '&amp;id_field='
-                        . $this->id_field . '&type_field=' . $this->getFieldType() . '&back=' . $this->back_coded,
+                        . $this->id_field . '&type_field=' . static::getFieldType() . '&back=' . $this->back_coded,
                         $std_lang->def('_BACK')),
                     'content'
                 );
@@ -1134,7 +1155,7 @@ class Field_Dropdown extends Field
 
             $code = importVar('code', false, '');
 
-            list($sequence) = sql_fetch_row(sql_query('
+            [$sequence] = sql_fetch_row(sql_query('
 			SELECT COUNT(*)
 			FROM ' . $this->_getElementTable() . ' AS cs, ' . $this->_getElementLangTable() . " AS csl
 			WHERE cs.id_field_son = csl.id_field_son
@@ -1148,18 +1169,18 @@ class Field_Dropdown extends Field
 			(id_field, sequence, code) VALUES
 			('" . $this->id_field . "', '" . $sequence . "', '" . $code . "') ")) {
                 Util::jump_to($this->getUrl() . '&id_field='
-                . $this->id_field . '&type_field=' . $this->getFieldType() . '&back=' . $this->back_coded
-                . '&result=fail');
+                    . $this->id_field . '&type_field=' . static::getFieldType() . '&back=' . $this->back_coded
+                    . '&result=fail');
             }
-            list($id_field_son) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
+            [$id_field_son] = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
 
             if (!sql_query('
 			INSERT INTO ' . $this->_getElementLangTable() . "
 			(id_field_son, lang_code, translation) VALUES
 			('" . $id_field_son . "', '" . $mand_lang . "', '" . $_POST['new_dropdown_son'][$mand_lang] . "' ) ")) {
                 Util::jump_to($this->getUrl() . '&id_field='
-                . $this->id_field . '&type_field=' . $this->getFieldType() . '&back=' . $this->back_coded
-                . '&result=fail');
+                    . $this->id_field . '&type_field=' . static::getFieldType() . '&back=' . $this->back_coded
+                    . '&result=fail');
             }
 
             $re = true;
@@ -1169,12 +1190,12 @@ class Field_Dropdown extends Field
                     $re_ins = sql_query('
 					INSERT INTO ' . $this->_getElementLangTable() . "
 					(id_field_son, lang_code, translation) VALUES
-					('" . (int) $id_field_son . "', '" . $lang_code . "', '" . $translation . "')");
+					('" . (int)$id_field_son . "', '" . $lang_code . "', '" . $translation . "')");
                     $re = $re && $re_ins;
                 }
             }
             Util::jump_to($this->getUrl() . '&id_field='
-                . $this->id_field . '&type_field=' . $this->getFieldType() . '&back=' . $this->back_coded
+                . $this->id_field . '&type_field=' . static::getFieldType() . '&back=' . $this->back_coded
                 . '&result=' . ($re ? 'success' : 'fail'));
         }
 
@@ -1185,37 +1206,37 @@ class Field_Dropdown extends Field
         $out->setWorkingZone('content');
         $out->add('<div class="std_block">');
         $out->add(
-            $form->getFormHeader($lang->def('_DROPDOWN_SON_NEW'))
-            . $form->openForm('create_' . $this->getFieldType(), $this->getUrl())
-            . $form->openElementSpace()
-            . $form->getHidden('type_field', 'type_field', $this->getFieldType())
-            . $form->getHidden('id_field', 'id_field', $this->id_field)
-            . $form->getHidden('back', 'back', $this->back_coded)
-            . $form->getHidden('iop', 'iop', 'add')
+            $form::getFormHeader($lang->def('_DROPDOWN_SON_NEW'))
+            . $form::openForm('create_' . static::getFieldType(), $this->getUrl())
+            . $form::openElementSpace()
+            . $form::getHidden('type_field', 'type_field', static::getFieldType())
+            . $form::getHidden('id_field', 'id_field', $this->id_field)
+            . $form::getHidden('back', 'back', $this->back_coded)
+            . $form::getHidden('iop', 'iop', 'add')
         );
         $mand_lang = Lang::get();
         foreach ($array_lang as $k => $lang_code) {
             $out->add(
-                $form->getTextfield((($mand_lang == $lang_code) ? '<span class="mandatory">*</span>' : '') . $lang_code,
-                                    'new_dropdown_son_' . $lang_code,
-                                    'new_dropdown_son[' . $lang_code . ']',
-                                    255,
-                                    '',
-                                    $lang_code . ' ' . $lang->def('_FIELD_NAME'))
+                $form::getTextfield((($mand_lang == $lang_code) ? '<span class="mandatory">*</span>' : '') . $lang_code,
+                    'new_dropdown_son_' . $lang_code,
+                    'new_dropdown_son[' . $lang_code . ']',
+                    255,
+                    '',
+                    $lang_code . ' ' . $lang->def('_FIELD_NAME'))
             );
         }
 
         $out->add(
-                        $form->getTextfield($lang->def('_CODE'), 'code', 'code', 255, $code)
-                );
+            $form::getTextfield($lang->def('_CODE'), 'code', 'code', 255, $code)
+        );
 
         $out->add(
-            $form->closeElementSpace()
-            . $form->openButtonSpace()
-            . $form->getButton('save_field', 'save_field_' . $this->getFieldType(), $std_lang->def('_CREATE', 'standard'))
-            . $form->getButton('undo', 'undo', $std_lang->def('_UNDO', 'standard'))
-            . $form->closeButtonSpace()
-            . $form->closeForm()
+            $form::closeElementSpace()
+            . $form::openButtonSpace()
+            . $form::getButton('save_field', 'save_field_' . static::getFieldType(), $std_lang->def('_CREATE', 'standard'))
+            . $form::getButton('undo', 'undo', $std_lang->def('_UNDO', 'standard'))
+            . $form::closeButtonSpace()
+            . $form::closeForm()
         );
         $out->add('</div>');
     }
@@ -1231,9 +1252,9 @@ class Field_Dropdown extends Field
 
         if (isset($_POST['undo'])) {
             Util::jump_to($this->getUrl() . '&id_field='
-                . $this->id_field . '&type_field=' . $this->getFieldType() . '&back=' . $this->back_coded);
+                . $this->id_field . '&type_field=' . static::getFieldType() . '&back=' . $this->back_coded);
         }
-        if (isset($_POST['save_field_' . $this->getFieldType()])) {
+        if (isset($_POST['save_field_' . static::getFieldType()])) {
             //insert mandatory translation
             $mand_lang = Lang::get();
 
@@ -1242,7 +1263,7 @@ class Field_Dropdown extends Field
                 $out->add(
                     getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_TRANSLATION'))
                     . getBackUi($this->getUrl() . '&amp;type_field='
-                        . $this->getFieldType() . '&amp;back=' . $this->back_coded, $std_lang->def('_BACK')),
+                        . static::getFieldType() . '&amp;back=' . $this->back_coded, $std_lang->def('_BACK')),
                     'content'
                 );
 
@@ -1252,7 +1273,7 @@ class Field_Dropdown extends Field
                 $out->add(
                     getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_TRANSLATION'))
                     . getBackUi($this->getUrl() . '&amp;type_field='
-                        . $this->getFieldType() . '&amp;back=' . $this->back_coded, $std_lang->def('_BACK')),
+                        . static::getFieldType() . '&amp;back=' . $this->back_coded, $std_lang->def('_BACK')),
                     'content'
                 );
 
@@ -1264,8 +1285,8 @@ class Field_Dropdown extends Field
 			SELECT csl.lang_code
 			FROM ' . $this->_getElementTable() . ' AS cs, ' . $this->_getElementLangTable() . " AS csl
 			WHERE cs.id_field_son = csl.id_field_son
-                        AND csl.id_field_son = '" . (int) $idSon . "' 
-                        AND cs.id_field = '" . (int) $this->id_field . "'");
+                        AND csl.id_field_son = '" . (int)$idSon . "' 
+                        AND cs.id_field = '" . (int)$this->id_field . "'");
             while (list($l_code) = sql_fetch_row($re_trans)) {
                 $existsing_translation[$l_code] = 1;
             }
@@ -1279,7 +1300,7 @@ class Field_Dropdown extends Field
                     if (!sql_query('
 					UPDATE ' . $this->_getElementLangTable() . "
 					SET translation = '" . $translation . "'
-					WHERE id_field_son = '" . (int) $idSon . "' 
+					WHERE id_field_son = '" . (int)$idSon . "' 
                                         AND lang_code = '" . $lang_code . "'")) {
                         $re = false;
                     }
@@ -1287,11 +1308,11 @@ class Field_Dropdown extends Field
                     if (!sql_query('
 					UPDATE ' . $this->_getElementTable() . "
 					SET code = '" . $code . "'
-					WHERE id_field_son = '" . (int) $idSon . "'")) {
+					WHERE id_field_son = '" . (int)$idSon . "'")) {
                         $re = false;
                     }
                 } else {
-                    list($tot_son) = sql_fetch_row(sql_query('
+                    [$tot_son] = sql_fetch_row(sql_query('
                                     SELECT COUNT(*)
                                     FROM ' . $this->_getElementTable() . "
                                     WHERE id_field = '" . $this->id_field . "' AND id_field_son = '" . $idSon . "'"));
@@ -1299,7 +1320,7 @@ class Field_Dropdown extends Field
                         if (!sql_query('
 					INSERT INTO ' . $this->_getElementTable() . "
 					(id_field, id_field_son, code) VALUES
-					('" . (int) $this->id_field . "', '" . (int) $idSon . "', $code) ")) {
+					('" . (int)$this->id_field . "', '" . (int)$idSon . "', $code) ")) {
                             $re = false;
                         }
                     }
@@ -1307,13 +1328,13 @@ class Field_Dropdown extends Field
                     if (!sql_query('
 					INSERT INTO ' . $this->_getElementLangTable() . "
 					(id_field_son, lang_code, translation) VALUES
-					('" . (int) $idSon . "', '" . $lang_code . "', '" . $translation . "') ")) {
+					('" . (int)$idSon . "', '" . $lang_code . "', '" . $translation . "') ")) {
                         $re = false;
                     }
                 }
             }
             Util::jump_to($this->getUrl() . '&id_field='
-                . $this->id_field . '&type_field=' . $this->getFieldType() . '&back=' . $this->back_coded
+                . $this->id_field . '&type_field=' . static::getFieldType() . '&back=' . $this->back_coded
                 . '&result=' . ($re ? 'success' : 'fail'));
         }
 
@@ -1322,7 +1343,7 @@ class Field_Dropdown extends Field
 		SELECT csl.lang_code, csl.translation, cs.code
 		FROM ' . $this->_getElementTable() . ' AS cs, ' . $this->_getElementLangTable() . " AS csl
 		WHERE cs.id_field_son = csl.id_field_son
-                AND cs.id_field_son = '" . $idSon . "' AND cs.id_field = '" . (int) $this->id_field . "'");
+                AND cs.id_field_son = '" . $idSon . "' AND cs.id_field = '" . (int)$this->id_field . "'");
         while (list($l_code, $trans, $code_field_son) = sql_fetch_row($re_trans)) {
             $translation[$l_code] = $trans;
             $code = $code_field_son;
@@ -1335,37 +1356,37 @@ class Field_Dropdown extends Field
         $out->setWorkingZone('content');
         $out->add('<div class="std_block">');
         $out->add(
-            $form->openForm('del_' . $this->getFieldType(), $this->getUrl())
-            . $form->openElementSpace()
-            . $form->getHidden('type_field', 'type_field', $this->getFieldType())
-            . $form->getHidden('id_field', 'id_field', $this->id_field)
-            . $form->getHidden('idSon', 'idSon', $idSon)
-            . $form->getHidden('back', 'back', $this->back_coded)
-            . $form->getHidden('iop', 'iop', 'mod')
+            $form::openForm('del_' . static::getFieldType(), $this->getUrl())
+            . $form::openElementSpace()
+            . $form::getHidden('type_field', 'type_field', static::getFieldType())
+            . $form::getHidden('id_field', 'id_field', $this->id_field)
+            . $form::getHidden('idSon', 'idSon', $idSon)
+            . $form::getHidden('back', 'back', $this->back_coded)
+            . $form::getHidden('iop', 'iop', 'mod')
         );
         $mand_lang = Lang::get();
         foreach ($array_lang as $k => $lang_code) {
             $out->add(
-                $form->getTextfield((($mand_lang == $lang_code) ? '<span class="mandatory">*</span>' : '') . $lang_code,
-                                    'mod_dropdown_son_' . $lang_code,
-                                    'mod_dropdown_son[' . $lang_code . ']',
-                                    255,
-                                    (isset($translation[$lang_code]) ? $translation[$lang_code] : ''),
-                                    $lang_code . ' ' . $lang->def('_FIELD_NAME'))
+                $form::getTextfield((($mand_lang == $lang_code) ? '<span class="mandatory">*</span>' : '') . $lang_code,
+                    'mod_dropdown_son_' . $lang_code,
+                    'mod_dropdown_son[' . $lang_code . ']',
+                    255,
+                    (isset($translation[$lang_code]) ? $translation[$lang_code] : ''),
+                    $lang_code . ' ' . $lang->def('_FIELD_NAME'))
             );
         }
 
         $out->add(
-                        $form->getTextfield($lang->def('_CODE'), 'code', 'code', 255, $code)
-                );
+            $form::getTextfield($lang->def('_CODE'), 'code', 'code', 255, $code)
+        );
 
         $out->add(
-            $form->closeElementSpace()
-            . $form->openButtonSpace()
-            . $form->getButton('save_field', 'save_field_' . $this->getFieldType(), $std_lang->def('_SAVE', 'standard'))
-            . $form->getButton('undo', 'undo', $std_lang->def('_UNDO', 'standard'))
-            . $form->closeButtonSpace()
-            . $form->closeForm()
+            $form::closeElementSpace()
+            . $form::openButtonSpace()
+            . $form::getButton('save_field', 'save_field_' . static::getFieldType(), $std_lang->def('_SAVE', 'standard'))
+            . $form::getButton('undo', 'undo', $std_lang->def('_UNDO', 'standard'))
+            . $form::closeButtonSpace()
+            . $form::closeForm()
         );
         $out->add('</div>');
     }
@@ -1383,36 +1404,36 @@ class Field_Dropdown extends Field
 
         if (isset($_POST['undo'])) {
             Util::jump_to($this->getUrl() . '&id_field='
-                . $this->id_field . '&type_field=' . $this->getFieldType() . '&back=' . $this->back_coded);
+                . $this->id_field . '&type_field=' . static::getFieldType() . '&back=' . $this->back_coded);
         }
         if (isset($_POST['confirm'])) {
             $query_del = '
 			DELETE FROM ' . $this->_getUserEntryTable() . "
 			WHERE obj_entry = '" . $idSon . "'
-			AND id_field = " . (int) $this->id_field;
+			AND id_field = " . (int)$this->id_field;
             $re = sql_query($query_del);
             if (!$re) {
                 Util::jump_to($this->getUrl() . '&id_field='
-                . $this->id_field . '&type_field=' . $this->getFieldType() . '&back=' . $this->back_coded . '&amp;result=fail');
+                    . $this->id_field . '&type_field=' . static::getFieldType() . '&back=' . $this->back_coded . '&amp;result=fail');
             }
 
             $query_del = '
 			DELETE FROM ' . $this->_getElementTable() . "
-			WHERE id_field = '" . (int) $this->id_field . "' 
-                        AND id_field_son = '" . (int) $idSon . "'";
+			WHERE id_field = '" . (int)$this->id_field . "' 
+                        AND id_field_son = '" . (int)$idSon . "'";
             $re = sql_query($query_del);
             if (!$re) {
                 Util::jump_to($this->getUrl() . '&id_field='
-                . $this->id_field . '&type_field=' . $this->getFieldType() . '&back=' . $this->back_coded . '&amp;result=fail');
+                    . $this->id_field . '&type_field=' . static::getFieldType() . '&back=' . $this->back_coded . '&amp;result=fail');
             }
 
             $query_del = '
 			DELETE FROM ' . $this->_getElementLangTable() . "
-			WHERE  id_field_son = '" . (int) $idSon . "'";
+			WHERE  id_field_son = '" . (int)$idSon . "'";
             $re = sql_query($query_del);
 
             Util::jump_to($this->getUrl() . '&id_field='
-                . $this->id_field . '&type_field=' . $this->getFieldType() . '&back=' . $this->back_coded
+                . $this->id_field . '&type_field=' . static::getFieldType() . '&back=' . $this->back_coded
                 . '&amp;result=' . ($re ? 'success' : 'fail'));
         }
 
@@ -1422,31 +1443,31 @@ class Field_Dropdown extends Field
 		WHERE cs.id_field_son = csl.id_field_son
                 AND cs.id_field_son = '" . $idSon . "' AND csl.lang_code = '" . Lang::get() . "'
 		ORDER BY cs.sequence");
-        list($translation) = sql_fetch_row($re_main);
+        [$translation] = sql_fetch_row($re_main);
 
         $out->setWorkingZone('content');
         $out->add('<div class="std_block">');
         $out->add(
-            $form->openForm('del_' . $this->getFieldType(), $this->getUrl())
-            . $form->getHidden('type_field', 'type_field', $this->getFieldType())
-            . $form->getHidden('id_field', 'id_field', $this->id_field)
-            . $form->getHidden('idSon', 'idSon', $idSon)
-            . $form->getHidden('back', 'back', $this->back_coded)
-            . $form->getHidden('iop', 'iop', 'del')
+            $form::openForm('del_' . static::getFieldType(), $this->getUrl())
+            . $form::getHidden('type_field', 'type_field', static::getFieldType())
+            . $form::getHidden('id_field', 'id_field', $this->id_field)
+            . $form::getHidden('idSon', 'idSon', $idSon)
+            . $form::getHidden('back', 'back', $this->back_coded)
+            . $form::getHidden('iop', 'iop', 'del')
             . '<div class="boxinfo_title">'
-                . $lang->def('_AREYOUSURE')
+            . $lang->def('_AREYOUSURE')
             . '</div>'
 
             . '<div class="boxinfo_container">'
-                . $lang->def('_DROPDOWN_ELEMENT') . ' : ' . $translation
+            . $lang->def('_DROPDOWN_ELEMENT') . ' : ' . $translation
             . '</div>'
 
             . '<div class="del_container">'
-            . $form->getButton('confirm', 'confirm', $std_lang->def('_CONFIRM', 'standard'), 'transparent_del_button') . '&nbsp;'
-            . $form->getButton('undo', 'undo', $std_lang->def('_UNDO', 'standard'), 'transparent_undo_button')
+            . $form::getButton('confirm', 'confirm', $std_lang->def('_CONFIRM', 'standard'), 'transparent_del_button') . '&nbsp;'
+            . $form::getButton('undo', 'undo', $std_lang->def('_UNDO', 'standard'), 'transparent_undo_button')
             . '</div>'
 
-            . $form->closeForm()
+            . $form::closeForm()
         );
         $out->add('</div>');
     }
@@ -1525,7 +1546,7 @@ class Field_Dropdown extends Field
         }
         $js_sons = '{' . implode(',', $temp) . '}';
 
-        return 'YAHOO.dynamicFilter.renderTypes.get("' . $this->getFieldType() . '", ' . $js_sons . ')';
+        return 'YAHOO.dynamicFilter.renderTypes.get("' . static::getFieldType() . '", ' . $js_sons . ')';
     }
 
     public function checkUserField($value, $filter)
@@ -1541,7 +1562,7 @@ class Field_Dropdown extends Field
 
         $output = 'SELECT id_user as idst ' .
             'FROM  ' . $this->_getUserEntryTable() . ' ' .
-            "WHERE id_field = '" . $this->id_field . "' AND user_entry = " . (int) $filter;
+            "WHERE id_field = '" . $this->id_field . "' AND user_entry = " . (int)$filter;
 
         return $output;
     }

@@ -9,7 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * LearningCourseDate
  *
- * @ORM\Table(name="learning_course_date", indexes={@ORM\Index(name="id_course", columns={"id_course"})})
+ * @ORM\Table(name="learning_course_date", indexes={
+ *      @ORM\Index(name="id_course", columns={"id_course"}),
+ *      @ORM\Index(name="idx_course_date_unsubscribe", columns={"unsubscribe_date_limit"})
+ *  })
  * @ORM\Entity
  */
 class LearningCourseDate

@@ -64,12 +64,12 @@ class Field_Textfield extends Field
             //undo action
             Util::jump_to($back . '&result=undo');
         }
-        if (isset($_POST['save_field_' . $this->getFieldType()])) {
+        if (isset($_POST['save_field_' . static::getFieldType()])) {
             //insert mandatory translation
             $mand_lang = Lang::get();
             $show_on = '';
             if (isset($_POST['show_on_platform'])) {
-                foreach ($_POST['show_on_platform']  as $code) {
+                foreach ($_POST['show_on_platform'] as $code) {
                     $show_on .= $code . ',';
                 }
             }
@@ -78,7 +78,7 @@ class Field_Textfield extends Field
                 $out->add(
                     getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_TRANSLATION'))
                     . getBackUi($this->getUrl() . '&amp;type_field='
-                        . $this->getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
+                        . static::getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
                     'content'
                 );
 
@@ -88,7 +88,7 @@ class Field_Textfield extends Field
                 $out->add(
                     getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_TRANSLATION'))
                     . getBackUi($this->getUrl() . '&amp;type_field='
-                        . $this->getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
+                        . static::getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
                     'content'
                 );
 
@@ -99,7 +99,7 @@ class Field_Textfield extends Field
                 $out->add(
                     getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_AREACODE'))
                     . getBackUi($this->getUrl() . '&amp;type_field='
-                        . $this->getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
+                        . static::getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
                     'content'
                 );
 
@@ -109,7 +109,7 @@ class Field_Textfield extends Field
                 $out->add(
                     getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_AREACODE'))
                     . getBackUi($this->getUrl() . '&amp;type_field='
-                        . $this->getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
+                        . static::getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
                     'content'
                 );
 
@@ -124,11 +124,11 @@ class Field_Textfield extends Field
             if (!sql_query('
 			INSERT INTO ' . $this->_getMainTable() . "
 			(type_field, show_on_platform, use_multilang, area_code, code) VALUES
-			('" . $this->getFieldType() . "', '" . $show_on . "', '" . $use_multilang . "', '" . $filter_area_field . "', '" . $code . "') ")) {
+			('" . static::getFieldType() . "', '" . $show_on . "', '" . $use_multilang . "', '" . $filter_area_field . "', '" . $code . "') ")) {
                 Util::jump_to($back . '&result=fail');
             }
 
-            list($id_field) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
+            [$id_field] = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
 
             if (!sql_query('
 			INSERT INTO ' . $this->_getMainLangTable() . "
@@ -143,7 +143,7 @@ class Field_Textfield extends Field
                     $re_ins = sql_query('
 					INSERT INTO ' . $this->_getMainLangTable() . "
 					(id_field, lang_code, translation) VALUES
-					('" . (int) $id_field . "', '" . $lang_code . "', '" . $translation . "') ");
+					('" . (int)$id_field . "', '" . $lang_code . "', '" . $translation . "') ");
                     $re = $re && $re_ins;
                 }
             }
@@ -158,27 +158,27 @@ class Field_Textfield extends Field
         $out->setWorkingZone('content');
         $out->add('<div class="std_block">');
         $out->add(
-            $form->getFormHeader($lang->def('_NEW_TEXTFIELD'))
-            . $form->openForm('create_' . $this->getFieldType(), $this->getUrl())
-            . $form->openElementSpace()
-            . $form->getHidden('type_field', 'type_field', $this->getFieldType())
-            . $form->getHidden('back', 'back', $back_coded)
+            $form::getFormHeader($lang->def('_NEW_TEXTFIELD'))
+            . $form::openForm('create_' . static::getFieldType(), $this->getUrl())
+            . $form::openElementSpace()
+            . $form::getHidden('type_field', 'type_field', static::getFieldType())
+            . $form::getHidden('back', 'back', $back_coded)
         );
         $mand_lang = Lang::get();
         foreach ($array_lang as $k => $lang_code) {
             $out->add(
-                $form->getTextfield((($mand_lang == $lang_code) ? '<span class="mandatory">*</span>' : '') . $lang_code,
-                                    'new_textfield_' . $lang_code,
-                                    'new_textfield[' . $lang_code . ']',
-                                    255,
-                                    '',
-                                    $lang_code . ' ' . $lang->def('_FIELD_NAME'))
+                $form::getTextfield((($mand_lang == $lang_code) ? '<span class="mandatory">*</span>' : '') . $lang_code,
+                    'new_textfield_' . $lang_code,
+                    'new_textfield[' . $lang_code . ']',
+                    255,
+                    '',
+                    $lang_code . ' ' . $lang->def('_FIELD_NAME'))
             );
         }
 
         $out->add(
-                        $form->getTextfield($lang->def('_CODE'), 'code', 'code', 255, '')
-                );
+            $form::getTextfield($lang->def('_CODE'), 'code', 'code', 255, '')
+        );
 
         // Combo Box Con Area del campo
         $re_field = sql_query('
@@ -191,20 +191,20 @@ class Field_Textfield extends Field
         }
 
         $out->add(
-            $form->getDropdown('<span class="mandatory">*</span>'. $lang->def('_FIELD_AREA'), 'filter_area_field', 'filter_area_field',
-            $field_select, $filter_area_field)
-                );
+            $form::getDropdown('<span class="mandatory">*</span>' . $lang->def('_FIELD_AREA'), 'filter_area_field', 'filter_area_field',
+                $field_select, $filter_area_field)
+        );
 
         $GLOBALS['page']->add($this->getMultiLangCheck(), 'content');
         $GLOBALS['page']->add($this->getShowOnPlatformFieldset(), 'content');
 
         $out->add(
-            $form->closeElementSpace()
-            . $form->openButtonSpace()
-            . $form->getButton('save_field', 'save_field_' . $this->getFieldType(), $std_lang->def('_CREATE', 'standard'))
-            . $form->getButton('undo', 'undo', $std_lang->def('_UNDO', 'standard'))
-            . $form->closeButtonSpace()
-            . $form->closeForm()
+            $form::closeElementSpace()
+            . $form::openButtonSpace()
+            . $form::getButton('save_field', 'save_field_' . static::getFieldType(), $std_lang->def('_CREATE', 'standard'))
+            . $form::getButton('undo', 'undo', $std_lang->def('_UNDO', 'standard'))
+            . $form::closeButtonSpace()
+            . $form::closeForm()
         );
         $out->add('</div>');
     }
@@ -233,12 +233,12 @@ class Field_Textfield extends Field
 
             Util::jump_to($back);
         }
-        if (isset($_POST['save_field_' . $this->getFieldType()])) {
+        if (isset($_POST['save_field_' . static::getFieldType()])) {
             //insert mandatory translation
             $mand_lang = Lang::get();
             $show_on = '';
             if (isset($_POST['show_on_platform'])) {
-                foreach ($_POST['show_on_platform']  as $code) {
+                foreach ($_POST['show_on_platform'] as $code) {
                     $show_on .= $code . ',';
                 }
             }
@@ -247,7 +247,7 @@ class Field_Textfield extends Field
                 $out->add(
                     getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_TRANSLATION'))
                     . getBackUi($this->getUrl() . '&amp;type_field='
-                        . $this->getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
+                        . static::getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
                     'content'
                 );
 
@@ -257,7 +257,7 @@ class Field_Textfield extends Field
                 $out->add(
                     getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_TRANSLATION'))
                     . getBackUi($this->getUrl() . '&amp;type_field='
-                        . $this->getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
+                        . static::getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
                     'content'
                 );
 
@@ -289,14 +289,14 @@ class Field_Textfield extends Field
 						use_multilang = '" . $use_multilang . "',
                                                 area_code = '" . $filter_area_field . "',
                                                 code = '" . $code . "'
-					WHERE id_field = '" . (int) $this->id_field . "'")) {
+					WHERE id_field = '" . (int)$this->id_field . "'")) {
                         $re = false;
                     }
 
                     if (!sql_query('
 					UPDATE ' . $this->_getMainLangTable() . "
 					SET translation = '" . $translation . "'
-					WHERE id_field = '" . (int) $this->id_field . "' AND lang_code = '" . $lang_code . "'")) {
+					WHERE id_field = '" . (int)$this->id_field . "' AND lang_code = '" . $lang_code . "'")) {
                         $re = false;
                     }
                 } else {
@@ -306,14 +306,14 @@ class Field_Textfield extends Field
 						use_multilang = '" . $use_multilang . "',
                                                 area_code = '" . $filter_area_field . "',
                                                 code = '" . $code . "'
-					WHERE id_field = '" . (int) $this->id_field . "'")) {
+					WHERE id_field = '" . (int)$this->id_field . "'")) {
                         $re = false;
                     }
 
                     if (!sql_query('
 					INSERT INTO ' . $this->_getMainLangTable() . "
 					(id_field, lang_code, translation) VALUES
-					('" . (int) $this->id_field . "', '" . $lang_code . "', '" . $translation . "') ")) {
+					('" . (int)$this->id_field . "', '" . $lang_code . "', '" . $translation . "') ")) {
                         $re = false;
                     }
                 }
@@ -350,34 +350,34 @@ class Field_Textfield extends Field
         $out->setWorkingZone('content');
         $out->add('<div class="std_block">');
         $out->add(
-            $form->openForm('create_' . $this->getFieldType(), $this->getUrl())
-            . $form->openElementSpace()
-            . $form->getHidden('type_field', 'type_field', $this->getFieldType())
-            . $form->getHidden('id_field', 'id_field', $this->id_field)
-            . $form->getHidden('back', 'back', $back_coded)
-            . $form->getHidden('iop', 'iop', 'modmain')
+            $form::openForm('create_' . static::getFieldType(), $this->getUrl())
+            . $form::openElementSpace()
+            . $form::getHidden('type_field', 'type_field', static::getFieldType())
+            . $form::getHidden('id_field', 'id_field', $this->id_field)
+            . $form::getHidden('back', 'back', $back_coded)
+            . $form::getHidden('iop', 'iop', 'modmain')
         );
         $mand_lang = Lang::get();
         foreach ($array_lang as $k => $lang_code) {
             $out->add(
-                $form->getTextfield((($mand_lang == $lang_code) ? '<span class="mandatory">*</span>' : '') . $lang_code,
-                                    'new_textfield_' . $lang_code,
-                                    'new_textfield[' . $lang_code . ']',
-                                    255,
-                                    (isset($translation[$lang_code]) ? $translation[$lang_code] : ''),
-                                    $lang_code . ' ' . $lang->def('_FIELD_NAME'))
+                $form::getTextfield((($mand_lang == $lang_code) ? '<span class="mandatory">*</span>' : '') . $lang_code,
+                    'new_textfield_' . $lang_code,
+                    'new_textfield[' . $lang_code . ']',
+                    255,
+                    (isset($translation[$lang_code]) ? $translation[$lang_code] : ''),
+                    $lang_code . ' ' . $lang->def('_FIELD_NAME'))
             );
         }
 
         $out->add(
-                        $form->getTextfield($lang->def('_CODE'), 'code', 'code', 255, $code)
-                );
+            $form::getTextfield($lang->def('_CODE'), 'code', 'code', 255, $code)
+        );
 
         // Combo Box Con Area del campo
         $re_field = sql_query('
                     SELECT area_code, area_name FROM '
-                    . $GLOBALS['prefix_fw']
-                    . '_customfield_area ORDER BY area_name');
+            . $GLOBALS['prefix_fw']
+            . '_customfield_area ORDER BY area_name');
         $field_av = [];
         $field_select = ['' => ''];
         while (list($area_code, $area_name) = sql_fetch_row($re_field)) {
@@ -385,20 +385,20 @@ class Field_Textfield extends Field
         }
 
         $out->add(
-            $form->getDropdown($lang->def('_FIELD_AREA'), 'filter_area_field', 'filter_area_field',
-            $field_select, $filter_area_field)
-                );
+            $form::getDropdown($lang->def('_FIELD_AREA'), 'filter_area_field', 'filter_area_field',
+                $field_select, $filter_area_field)
+        );
 
         $GLOBALS['page']->add($this->getMultiLangCheck($use_multilang), 'content');
         $GLOBALS['page']->add($this->getShowOnPlatformFieldset($show_on_platform), 'content');
 
         $out->add(
-            $form->closeElementSpace()
-            . $form->openButtonSpace()
-            . $form->getButton('save_field', 'save_field_' . $this->getFieldType(), $std_lang->def('_SAVE', 'standard'))
-            . $form->getButton('undo', 'undo', $std_lang->def('_UNDO', 'standard'))
-            . $form->closeButtonSpace()
-            . $form->closeForm()
+            $form::closeElementSpace()
+            . $form::openButtonSpace()
+            . $form::getButton('save_field', 'save_field_' . static::getFieldType(), $std_lang->def('_SAVE', 'standard'))
+            . $form::getButton('undo', 'undo', $std_lang->def('_UNDO', 'standard'))
+            . $form::closeButtonSpace()
+            . $form::closeForm()
         );
         $out->add('</div>');
     }
@@ -414,7 +414,7 @@ class Field_Textfield extends Field
     {
         $query_del = '
 		DELETE FROM ' . $this->_getUserEntryTable() . "
-		WHERE id_field = '" . (int) $this->id_field . "'";
+		WHERE id_field = '" . (int)$this->id_field . "'";
         $re = sql_query($query_del);
         if (!$re) {
             Util::jump_to($back . '&result=fail');
@@ -422,7 +422,7 @@ class Field_Textfield extends Field
 
         $query_sel = '
 		SELECT id_field_son FROM ' . $this->_getElementTable() . "
-		WHERE id_field = '" . (int) $this->id_field . "'";
+		WHERE id_field = '" . (int)$this->id_field . "'";
         $re_field_element = sql_query($query_sel);
         $arr_field_son = [];
         while (list($id_field_son) = sql_fetch_row($re_field_element)) {
@@ -441,7 +441,7 @@ class Field_Textfield extends Field
 
         $query_del = '
 		DELETE FROM ' . $this->_getElementTable() . "
-		WHERE id_field = '" . (int) $this->id_field . "'";
+		WHERE id_field = '" . (int)$this->id_field . "'";
         $re = sql_query($query_del);
         if (!$re) {
             Util::jump_to($back . '&result=fail');
@@ -449,7 +449,7 @@ class Field_Textfield extends Field
 
         $query_del = '
 		DELETE FROM ' . $this->_getMainLangTable() . "
-		WHERE id_field = '" . (int) $this->id_field . "'";
+		WHERE id_field = '" . (int)$this->id_field . "'";
         $re = sql_query($query_del);
         if (!$re) {
             Util::jump_to($back . '&result=fail');
@@ -457,7 +457,7 @@ class Field_Textfield extends Field
 
         $query_del = '
 		DELETE FROM ' . $this->_getMainTable() . "
-		WHERE id_field = '" . (int) $this->id_field . "'";
+		WHERE id_field = '" . (int)$this->id_field . "'";
         $re = sql_query($query_del);
 
         Util::jump_to($back . '&result=' . ($re ? 'success' : 'fail'));
@@ -472,11 +472,11 @@ class Field_Textfield extends Field
      */
     public function show($id_user)
     {
-        list($user_entry) = sql_fetch_row(sql_query('
+        [$user_entry] = sql_fetch_row(sql_query('
 		SELECT user_entry
 		FROM ' . $this->_getUserEntryTable() . "
-		WHERE id_user = '" . (int) $id_user . "' AND
-			id_common = '" . (int) $this->id_common . "' AND
+		WHERE id_user = '" . (int)$id_user . "' AND
+			id_common = '" . (int)$this->id_common . "' AND
 			id_common_son = '0'"));
 
         return $user_entry;
@@ -484,11 +484,11 @@ class Field_Textfield extends Field
 
     public function showInLang($id_user, $lang)
     {
-        list($user_entry) = sql_fetch_row(sql_query('
+        [$user_entry] = sql_fetch_row(sql_query('
 		SELECT user_entry
 		FROM ' . $this->_getUserEntryTable() . "
-		WHERE id_user = '" . (int) $id_user . "' AND
-			id_common = '" . (int) $this->id_common . "' AND
+		WHERE id_user = '" . (int)$id_user . "' AND
+			id_common = '" . (int)$this->id_common . "' AND
 			id_common_son = '0' AND language='" . $lang . "'"));
 
         return $user_entry;
@@ -497,8 +497,8 @@ class Field_Textfield extends Field
     /**
      * display the field for interaction.
      *
-     * @param int  $id_user   if alredy exists a entry for the user load as default value
-     * @param bool $freeze    if true, disable the user interaction
+     * @param int $id_user if alredy exists a entry for the user load as default value
+     * @param bool $freeze if true, disable the user interaction
      * @param bool $mandatory if true, the field is considered mandatory
      *
      * @return string of field xhtml code
@@ -507,15 +507,15 @@ class Field_Textfield extends Field
     {
         require_once _base_ . '/lib/lib.form.php';
 
-        if (isset($_POST['field_' . $this->getFieldType()])
-            && isset($_POST['field_' . $this->getFieldType()][$this->id_field])) {
-            $obj_entry = $_POST['field_' . $this->getFieldType()][$this->id_field];
+        if (isset($_POST['field_' . static::getFieldType()])
+            && isset($_POST['field_' . static::getFieldType()][$this->id_field])) {
+            $obj_entry = $_POST['field_' . static::getFieldType()][$this->id_field];
         } else {
-            list($obj_entry) = sql_fetch_row(sql_query('
+            [$obj_entry] = sql_fetch_row(sql_query('
 			SELECT obj_entry
 			FROM ' . $this->_getUserEntryTable() . "
-			WHERE id_obj = '" . (int) $id_obj . "' 
-                        AND id_field = '" . (int) $this->id_field . "'"));
+			WHERE id_obj = '" . (int)$id_obj . "' 
+                        AND id_field = '" . (int)$this->id_field . "'"));
         }
         $obj_entry = $obj_entry;
 
@@ -523,10 +523,10 @@ class Field_Textfield extends Field
 		SELECT cl.translation
 		FROM ' . $this->_getMainTable() . ' AS c, ' . $this->_getMainLangTable() . " AS cl
 		WHERE c.id_field = cl.id_field
-                AND c.id_field = '" . (int) $this->id_field . "' 
-                AND c.type_field = '" . $this->getFieldType() . "' 
+                AND c.id_field = '" . (int)$this->id_field . "' 
+                AND c.type_field = '" . static::getFieldType() . "' 
                 AND cl.lang_code = '" . Lang::get() . "'");
-        list($translation) = sql_fetch_row($re_field);
+        [$translation] = sql_fetch_row($re_field);
 
         if ($value !== null) {
             $obj_entry = '' . $value;
@@ -536,24 +536,24 @@ class Field_Textfield extends Field
         }
 
         return Form::getTextfield($translation . ($mandatory ? ' <span class="mandatory">*</span>' : ''),
-                                'field_' . $this->getFieldType() . '_' . $this->id_field,
-                                'field_' . $this->getFieldType() . '[' . $this->id_field . ']',
-                                255,
-                                $obj_entry,
-                                $translation);
+            'field_' . static::getFieldType() . '_' . $this->id_field,
+            'field_' . static::getFieldType() . '[' . $this->id_field . ']',
+            255,
+            $obj_entry,
+            $translation);
     }
 
-    public function playFlat($id_obj)
+    public function playFlat($id_obj, $ret_code = false, $both = false)
     {
         require_once _base_ . '/lib/lib.form.php';
 
-        list($obj_entry) = sql_fetch_row(sql_query('
+        [$obj_entry] = sql_fetch_row(sql_query('
                 SELECT obj_entry
                 FROM ' . $this->_getUserEntryTable() . "
-                WHERE id_obj = '" . (int) $id_obj . "' 
-                AND id_field = '" . (int) $this->id_field . "'"));
+                WHERE id_obj = '" . (int)$id_obj . "' 
+                AND id_field = '" . (int)$this->id_field . "'"));
 
-        return $obj_entry;
+        return ['code' => '', 'translation' => $obj_entry];
     }
 
     public function multiLangPlay($id_user, $freeze, $mandatory = false, $value = null, $registrationLayout = false)
@@ -564,25 +564,24 @@ class Field_Textfield extends Field
         $found_in_post = false;
         $larr = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         foreach ($larr as $lang) {
-            if (isset($_POST['field_' . $this->getFieldType()]) &&
-                   isset($_POST['field_' . $this->getFieldType()][$this->id_common][$lang])) {
+            if (isset($_POST['field_' . static::getFieldType()]) &&
+                isset($_POST['field_' . static::getFieldType()][$this->id_common][$lang])) {
                 $found_in_post = true;
-                $user_entry[$lang] = $_POST['field_' . $this->getFieldType()][$this->id_common][$lang];
+                $user_entry[$lang] = $_POST['field_' . static::getFieldType()][$this->id_common][$lang];
             }
         }
 
         if (!$found_in_post) {
             $qtxt = 'SELECT user_entry,language FROM ' . $this->_getUserEntryTable() . ' ';
-            $qtxt .= "WHERE id_user = '" . (int) $id_user . "' AND ";
-            $qtxt .= "id_common = '" . (int) $this->id_common . "' AND ";
+            $qtxt .= "WHERE id_user = '" . (int)$id_user . "' AND ";
+            $qtxt .= "id_common = '" . (int)$this->id_common . "' AND ";
             $qtxt .= "id_common_son = '0'";
 
-            $q = sql_query($qtxt);
+            $result = sql_query($qtxt);
 
-            if (($q) && (sql_num_rows($q) > 0)) {
-                while ($row = sql_fetch_assoc($q)) {
-                    $lang = $row['language'];
-                    $user_entry[$lang] = $row['user_entry'];
+            if (($result) && (sql_num_rows($result) > 0)) {
+                foreach ($result as $row) {
+                    $user_entry[$row['language']] = $row['user_entry'];
                 }
             }
         }
@@ -590,14 +589,14 @@ class Field_Textfield extends Field
         $re_field = sql_query('
 		SELECT translation
 		FROM ' . $this->_getMainTable() . "
-		WHERE lang_code = '" . Lang::get() . "' AND id_common = '" . (int) $this->id_common . "' AND type_field = '" . $this->getFieldType() . "'");
-        list($translation) = sql_fetch_row($re_field);
+		WHERE lang_code = '" . Lang::get() . "' AND id_common = '" . (int)$this->id_common . "' AND type_field = '" . static::getFieldType() . "'");
+        [$translation] = sql_fetch_row($re_field);
 
         foreach ($larr as $lang) {
             $label = $translation . ' (' . $lang . ')' . ($mandatory ? ' <span class="mandatory">*</span>' : '');
-            $field_id = 'field_' . $this->getFieldType() . '_' . $this->id_common . '_' . $lang;
-            $field_name = 'field_' . $this->getFieldType() . '[' . $this->id_common . '][' . $lang . ']';
-            $field_val = (isset($user_entry[$lang]) ? $user_entry[$lang] : '');
+            $field_id = 'field_' . static::getFieldType() . '_' . $this->id_common . '_' . $lang;
+            $field_name = 'field_' . static::getFieldType() . '[' . $this->id_common . '][' . $lang . ']';
+            $field_val = ($user_entry[$lang] ?? '');
             $res .= Form::getTextfield($label, $field_id, $field_name, 255, $field_val);
         }
 
@@ -607,17 +606,17 @@ class Field_Textfield extends Field
     /**
      * display the field for filters.
      *
-     * @param string $field_id      the id of the field used for id/name
-     * @param mixed  $value         (optional) the value to put in the field
+     * @param string $field_id the id of the field used for id/name
+     * @param mixed $value (optional) the value to put in the field
      *                              retrieved from $_POST if not given
-     * @param string $label         (optional) the label to use if not given the
+     * @param string $label (optional) the label to use if not given the
      *                              value will be retrieved from custom field
      *                              $id_field
-     * @param string $field_prefix  (optional) the prefix to give to
+     * @param string $field_prefix (optional) the prefix to give to
      *                              the field id/name
-     * @param string $other_after   optional html code added after the input element
-     * @param string $other_before  optional html code added before the label element
-     * @param mixed  $field_special (optional) not used
+     * @param string $other_after optional html code added after the input element
+     * @param string $other_before optional html code added before the label element
+     * @param mixed $field_special (optional) not used
      *
      * @return string of field xhtml code
      */
@@ -633,18 +632,18 @@ class Field_Textfield extends Field
             $re_field = sql_query('
 			SELECT translation
 			FROM ' . Field::_getMainTable() . "
-			WHERE id_common = '" . (int) $id_field . "' AND type_field = '" . Field_Textfield::getFieldType() . "'");
-            list($label) = sql_fetch_row($re_field);
+			WHERE id_common = '" . (int)$id_field . "' AND type_field = '" . Field_Textfield::getFieldType() . "'");
+            [$label] = sql_fetch_row($re_field);
         }
 
         return Form::getTextfield($label,
-                                Field::getFieldId_Filter($id_field, $field_prefix),
-                                Field::getFieldName_Filter($id_field, $field_prefix),
-                                255,
-                                $value,
-                                $label,
-                                $other_after,
-                                $other_before);
+            Field::getFieldId_Filter($id_field, $field_prefix),
+            Field::getFieldName_Filter($id_field, $field_prefix),
+            255,
+            $value,
+            $label,
+            $other_after,
+            $other_before);
     }
 
     /**
@@ -654,9 +653,9 @@ class Field_Textfield extends Field
      */
     public function isFilled($id_user)
     {
-        if (!isset($_POST['field_' . $this->getFieldType()][$this->id_common])) {
+        if (!isset($_POST['field_' . static::getFieldType()][$this->id_common])) {
             return false;
-        } elseif (trim($_POST['field_' . $this->getFieldType()][$this->id_common]) == '') {
+        } elseif (trim($_POST['field_' . static::getFieldType()][$this->id_common]) == '') {
             return false;
         } else {
             return true;
@@ -666,30 +665,30 @@ class Field_Textfield extends Field
     /**
      * store the value inserted by a user into the database, if a entry exists it will be overwrite.
      *
-     * @param int $id_user      the user
+     * @param int $id_user the user
      * @param int $no_overwrite if a entry exists do not overwrite it
      *
      * @return bool true if operation success false otherwise
      */
     public function store($id_obj)
     {
-        $id_obj = (int) $id_obj;
+        $id_obj = (int)$id_obj;
 
-        if (!isset($_POST['field_' . $this->getFieldType()][$this->id_field])) {
+        if (!isset($_POST['field_' . static::getFieldType()][$this->id_field])) {
             return true;
         }
         $re_entry = sql_query('
 		SELECT obj_entry
 		FROM ' . $this->_getObjEntryTable() . "
 		WHERE id_obj = '" . $id_obj . "' AND
-			id_field = '" . (int) $this->id_field . "'");
+			id_field = '" . (int)$this->id_field . "'");
         $some_entry = sql_num_rows($re_entry);
         if ($some_entry) {
             if (!sql_query('
 			UPDATE ' . $this->_getObjEntryTable() . "
-			SET obj_entry = '" . $_POST['field_' . $this->getFieldType()][$this->id_field] . "'
+			SET obj_entry = '" . $_POST['field_' . static::getFieldType()][$this->id_field] . "'
 			WHERE id_obj = '" . $id_obj . "' AND
-			id_field = '" . (int) $this->id_field . "'")) {
+			id_field = '" . (int)$this->id_field . "'")) {
                 return false;
             }
         } else {
@@ -697,8 +696,8 @@ class Field_Textfield extends Field
 			INSERT INTO ' . $this->_getObjEntryTable() . "
 			( id_obj, id_field, obj_entry ) VALUES
 			(	'" . $id_obj . "',
-				'" . (int) $this->id_field . "',
-				'" . $_POST['field_' . $this->getFieldType()][$this->id_field] . "')")) {
+				'" . (int)$this->id_field . "',
+				'" . $_POST['field_' . static::getFieldType()][$this->id_field] . "')")) {
                 return false;
             }
         }
@@ -711,14 +710,14 @@ class Field_Textfield extends Field
         $res = true;
 
         if (($int_userid) || (empty($id_user))) {
-            $id_user = (int) $id_user;
+            $id_user = (int)$id_user;
         }
 
         $q = sql_query('
 		SELECT user_entry, language
 		FROM ' . $this->_getUserEntryTable() . "
 		WHERE id_user = '" . $id_user . "' AND
-			id_common = '" . (int) $this->id_common . "' AND
+			id_common = '" . (int)$this->id_common . "' AND
 			id_common_son = '0'");
 
         $lang_with_entry = [];
@@ -738,8 +737,8 @@ class Field_Textfield extends Field
 
             $larr = \FormaLms\lib\Forma::langManager()->getAllLangCode();
             foreach ($larr as $lang) {
-                if (isset($_POST['field_' . $this->getFieldType()][$this->id_common][$lang])) {
-                    $user_entry = $_POST['field_' . $this->getFieldType()][$this->id_common][$lang];
+                if (isset($_POST['field_' . static::getFieldType()][$this->id_common][$lang])) {
+                    $user_entry = $_POST['field_' . static::getFieldType()][$this->id_common][$lang];
                 } else {
                     $user_entry = '';
                 }
@@ -748,12 +747,12 @@ class Field_Textfield extends Field
                     $qtxt = 'UPDATE ' . $this->_getUserEntryTable() . ' ';
                     $qtxt .= "SET user_entry = '" . $user_entry . "' ";
                     $qtxt .= "WHERE id_user = '" . $id_user . "' AND ";
-                    $qtxt .= "id_common = '" . (int) $this->id_common . "' AND ";
+                    $qtxt .= "id_common = '" . (int)$this->id_common . "' AND ";
                     $qtxt .= "id_common_son = '0' AND language='" . $lang . "'";
                 } else {
                     $qtxt = 'INSERT INTO ' . $this->_getUserEntryTable() . ' ';
                     $qtxt .= '(id_user, id_common, id_common_son, language, user_entry) VALUES ';
-                    $qtxt .= "(	'" . $id_user . "', '" . (int) $this->id_common . "', '0', '" . $lang . "', ";
+                    $qtxt .= "(	'" . $id_user . "', '" . (int)$this->id_common . "', '0', '" . $lang . "', ";
                     $qtxt .= "'" . $user_entry . "')";
                 }
 
@@ -770,9 +769,9 @@ class Field_Textfield extends Field
 
             $larr = \FormaLms\lib\Forma::langManager()->getAllLangCode();
             foreach ($larr as $lang) {
-                if (isset($_POST['field_' . $this->getFieldType()][$this->id_common][$lang])) {
-                    $ins_line = "(	'" . $id_user . "', '" . (int) $this->id_common . "', '0', '" . $lang . "', ";
-                    $ins_line .= "'" . $_POST['field_' . $this->getFieldType()][$this->id_common][$lang] . "')";
+                if (isset($_POST['field_' . static::getFieldType()][$this->id_common][$lang])) {
+                    $ins_line = "(	'" . $id_user . "', '" . (int)$this->id_common . "', '0', '" . $lang . "', ";
+                    $ins_line .= "'" . $_POST['field_' . static::getFieldType()][$this->id_common][$lang] . "')";
                     $ins_arr[] = $ins_line;
                 }
             }
@@ -790,17 +789,17 @@ class Field_Textfield extends Field
     /**
      * store the value passed into the database, if a entry exists it will be overwrite.
      *
-     * @param int  $id_user      the user
-     * @param int  $value        the value of the field
-     * @param bool $is_id        if false the param must be reconverted
-     * @param int  $no_overwrite if a entry exists do not overwrite it
+     * @param int $id_user the user
+     * @param int $value the value of the field
+     * @param bool $is_id if false the param must be reconverted
+     * @param int $no_overwrite if a entry exists do not overwrite it
      *
      * @return bool true if success false otherwise
      */
     public function storeDirect($id_user, $value, $is_id, $no_overwrite, $int_userid = true)
     {
         if (($int_userid) || (empty($id_user))) {
-            $id_user = (int) $id_user;
+            $id_user = (int)$id_user;
         }
 
         $value = addslashes(stripslashes($value));
@@ -809,7 +808,7 @@ class Field_Textfield extends Field
 		SELECT user_entry
 		FROM ' . $this->_getUserEntryTable() . "
 		WHERE id_user = '" . $id_user . "' AND
-			id_common = '" . (int) $this->id_common . "' AND
+			id_common = '" . (int)$this->id_common . "' AND
 			id_common_son = '0'");
         $some_entry = sql_num_rows($re_entry);
         if ($some_entry) {
@@ -820,7 +819,7 @@ class Field_Textfield extends Field
 			UPDATE ' . $this->_getUserEntryTable() . "
 			SET user_entry = '" . $value . "'
 			WHERE id_user = '" . $id_user . "' AND
-				id_common = '" . (int) $this->id_common . "' AND
+				id_common = '" . (int)$this->id_common . "' AND
 				id_common_son = '0'")) {
                 return false;
             }
@@ -829,7 +828,7 @@ class Field_Textfield extends Field
 			INSERT INTO ' . $this->_getUserEntryTable() . "
 			( id_user, id_common, id_common_son, user_entry ) VALUES
 			(	'" . $id_user . "',
-				'" . (int) $this->id_common . "',
+				'" . (int)$this->id_common . "',
 				'0',
 				'" . $value . "')")) {
                 return false;
@@ -858,7 +857,7 @@ class Field_Textfield extends Field
 
         $query = 'SELECT id_user, user_entry FROM ' . $this->_getUserEntryTable() . ' '
             . ' WHERE id_user IN (' . implode(',', $idst_users) . ') '
-            . " AND id_common = '" . (int) $this->id_common . "' AND id_common_son = '0'";
+            . " AND id_common = '" . (int)$this->id_common . "' AND id_common_son = '0'";
         $res = sql_query($query);
         if ($res) {
             if (sql_num_rows($res) > 0) {
@@ -874,14 +873,14 @@ class Field_Textfield extends Field
                 }
                 $query = 'UPDATE ' . $this->_getUserEntryTable() . " SET user_entry = '" . $value . "' "
                     . ' WHERE id_user IN (' . implode(',', $arr_existent) . ') '
-                    . " AND id_common = '" . (int) $this->id_common . "' AND id_common_son = '0'";
+                    . " AND id_common = '" . (int)$this->id_common . "' AND id_common_son = '0'";
                 $res1 = sql_query($query);
             }
 
             if (!empty($arr_new)) {
                 $insert_values = [];
                 foreach ($arr_new as $idst) {
-                    $insert_values[] = "(	'" . (int) $idst . "', '" . (int) $this->id_common . "', '0', '" . $value . "')";
+                    $insert_values[] = "(	'" . (int)$idst . "', '" . (int)$this->id_common . "', '0', '" . $value . "')";
                 }
                 $query = 'INSERT INTO ' . $this->_getUserEntryTable() . ' '
                     . '( id_user, id_common, id_common_son, user_entry ) VALUES '
@@ -898,14 +897,14 @@ class Field_Textfield extends Field
         $res = true;
 
         if (($int_userid) || (empty($id_user))) {
-            $id_user = (int) $id_user;
+            $id_user = (int)$id_user;
         }
 
         $q = sql_query('
 		SELECT user_entry, language
 		FROM ' . $this->_getUserEntryTable() . "
 		WHERE id_user = '" . $id_user . "' AND
-			id_common = '" . (int) $this->id_common . "' AND
+			id_common = '" . (int)$this->id_common . "' AND
 			id_common_son = '0'");
 
         $lang_with_entry = [];
@@ -936,12 +935,12 @@ class Field_Textfield extends Field
                     $qtxt = 'UPDATE ' . $this->_getUserEntryTable() . ' ';
                     $qtxt .= "SET user_entry = '" . $user_entry . "' ";
                     $qtxt .= "WHERE id_user = '" . $id_user . "' AND ";
-                    $qtxt .= "id_common = '" . (int) $this->id_common . "' AND ";
+                    $qtxt .= "id_common = '" . (int)$this->id_common . "' AND ";
                     $qtxt .= "id_common_son = '0' AND language='" . $lang . "'";
                 } else {
                     $qtxt = 'INSERT INTO ' . $this->_getUserEntryTable() . ' ';
                     $qtxt .= '(id_user, id_common, id_common_son, language, user_entry) VALUES ';
-                    $qtxt .= "(	'" . $id_user . "', '" . (int) $this->id_common . "', '0', '" . $lang . "', ";
+                    $qtxt .= "(	'" . $id_user . "', '" . (int)$this->id_common . "', '0', '" . $lang . "', ";
                     $qtxt .= "'" . $user_entry . "')";
                 }
 
@@ -959,7 +958,7 @@ class Field_Textfield extends Field
             $larr = \FormaLms\lib\Forma::langManager()->getAllLangCode();
             foreach ($larr as $lang) {
                 if (isset($value[$lang])) {
-                    $ins_line = "(	'" . $id_user . "', '" . (int) $this->id_common . "', '0', '" . $lang . "', ";
+                    $ins_line = "(	'" . $id_user . "', '" . (int)$this->id_common . "', '0', '" . $lang . "', ";
                     $ins_line .= "'" . addslashes(stripslashes($value[$lang])) . "')";
                     $ins_arr[] = $ins_line;
                 }

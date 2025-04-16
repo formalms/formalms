@@ -1,7 +1,6 @@
 <?php
 
 
-
 namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -9,7 +8,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * LearningKbRes
  *
- * @ORM\Table(name="learning_kb_res")
+ * @ORM\Table(name="learning_kb_res",indexes={
+ *        @ORM\Index(name="learning_kb_res_", columns={"r_item_id","r_type","r_env"})
+ * })
  * @ORM\Entity
  */
 class LearningKbRes

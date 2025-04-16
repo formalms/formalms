@@ -12,6 +12,7 @@
  */
 namespace FormaLms\lib;
 
+use CourseLevel;
 use FormaLms\lib\Serializer\FormaSerializer;
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
@@ -183,6 +184,36 @@ class FormaUser
             }
         }
         return $userCourses;
+    }
+
+
+    /**
+     * @param $courseId
+     * @param $roles
+     * @return bool
+     */
+    public function hasRoleInCourse($courseId, $roles)
+    {
+        $userCourses = $this->getUserCourses();
+        if (isset($userCourses[$courseId])) {
+            $userCourse = $userCourses[$courseId];
+            return in_array($userCourse['level'], $roles);
+        }
+        return false;
+    }
+
+    /**
+     * @param $courseId
+     * @return int|null
+     */
+    public function getRoleInCourse($courseId)
+    {
+        $userCourses = $this->getUserCourses();
+        if (isset($userCourses[$courseId])) {
+            $userCourse = $userCourses[$courseId];
+            return $userCourse['level'];
+        }
+        return null;
     }
 
     public function reloadUserCourses()

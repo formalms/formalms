@@ -1,7 +1,6 @@
 <?php
 
 
-
 namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -9,13 +8,22 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CoreUser
  *
- * @ORM\Table(name="core_user", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="linkedin_id", columns={"linkedin_id"}),
- *     @ORM\UniqueConstraint(name="facebook_id", columns={"facebook_id"}),
- *     @ORM\UniqueConstraint(name="google_id", columns={"google_id"}),
- *     @ORM\UniqueConstraint(name="twitter_id", columns={"twitter_id"}),
- *     @ORM\UniqueConstraint(name="userid", columns={"userid"})
- * })
+ * @ORM\Table(name="core_user",
+ *     uniqueConstraints={
+ *          @ORM\UniqueConstraint(name="linkedin_id", columns={"linkedin_id"}),
+ *          @ORM\UniqueConstraint(name="facebook_id", columns={"facebook_id"}),
+ *          @ORM\UniqueConstraint(name="google_id", columns={"google_id"}),
+ *          @ORM\UniqueConstraint(name="twitter_id", columns={"twitter_id"}),
+ *          @ORM\UniqueConstraint(name="userid", columns={"userid"})
+ *     },
+ *     indexes={
+ *          @ORM\Index(name="core_user_valid_idx", columns={"valid"}),
+ *          @ORM\Index(name="core_user_userid_idx", columns={"userid"}),
+ *          @ORM\Index(name="core_user_name_idx", columns={"firstname", "lastname"}),
+ *          @ORM\Index(name="core_user_email_idx", columns={"email"}),
+ *          @ORM\Index(name="core_user_idx", columns={"userid","email","firstname","lastname"}, options={"lengths": {240, 240, 145, 145}})
+ *     }
+ * )
  * @ORM\Entity
  */
 class CoreUser

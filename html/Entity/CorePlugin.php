@@ -13,7 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
  *          @ORM\UniqueConstraint(name="name", columns={"name"})
  *      },
  *      indexes={
- *          @ORM\Index(name="active_idx", columns={"active"})
+ *          @ORM\Index(name="active_idx", columns={"active"}),
+ *          @ORM\Index(name="active_core_idx", columns={"core","active"})
  *      }
  *   )
  * )

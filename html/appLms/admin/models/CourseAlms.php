@@ -83,7 +83,7 @@ class CourseAlms extends Model
             . " WHERE c.course_type <> 'assessment' and cu.status=4 and cu.waiting = 0";
 
         $res = sql_query($query);
-        list($num_overbooking) = sql_fetch_row($res);
+        [$num_overbooking] = sql_fetch_row($res);
 
         return $num_overbooking;
     }
@@ -96,7 +96,7 @@ class CourseAlms extends Model
             . ' ORDER BY date_inscr ASC LIMIT 1';
 
         $res = sql_query($query);
-        list($overbooked_user) = sql_fetch_row($res);
+        [$overbooked_user] = sql_fetch_row($res);
 
         return $overbooked_user;
     }
@@ -124,7 +124,7 @@ class CourseAlms extends Model
             . " WHERE c.course_type <> 'assessment' and cu.status=-2 ";
 
         $res = sql_query($query);
-        list($num_waiting) = sql_fetch_row($res);
+        [$num_waiting] = sql_fetch_row($res);
 
         return $num_waiting;
     }
@@ -152,7 +152,7 @@ class CourseAlms extends Model
             . " WHERE c.course_type <> 'assessment' ";
 
         $res = sql_query($query);
-        list($num_overbooking) = sql_fetch_row($res);
+        [$num_overbooking] = sql_fetch_row($res);
 
         return $num_overbooking;
     }
@@ -260,7 +260,7 @@ class CourseAlms extends Model
             }
         }
 
-        list($res) = sql_fetch_row(sql_query($query));
+        [$res] = sql_fetch_row(sql_query($query));
 
         return $res;
     }
@@ -272,7 +272,7 @@ class CourseAlms extends Model
         if ($id_category != 0) {
             $query = 'SELECT iLeft, iRight FROM %lms_category WHERE idCategory=' . (int)$id_category;
             $res = sql_query($query);
-            list($left, $right) = sql_fetch_row($res);
+            [$left, $right] = sql_fetch_row($res);
 
             $query = 'SELECT idCategory FROM %lms_category WHERE iLeft>=' . $left . ' AND iRight<=' . $right;
             $res = sql_query($query);
@@ -735,7 +735,7 @@ class CourseAlms extends Model
                     " WHERE autoregistration_code = '" . $str . "'";
 
                 $control_result = sql_query($control_query);
-                list($result) = sql_fetch_row($control_result);
+                [$result] = sql_fetch_row($control_result);
                 $control = $result;
             }
 
@@ -766,7 +766,7 @@ class CourseAlms extends Model
         }
 
         // recover the id of the course inserted --------------------------------------------
-        list($id_course) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
+        [$id_course] = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
 
         require_once _lms_ . '/admin/models/LabelAlms.php';
         $label_model = new LabelAlms();
@@ -1113,7 +1113,7 @@ class CourseAlms extends Model
                     " AND idCourse <> '" . $id_course . "'";
 
                 $control_result = sql_query($control_query);
-                list($result) = sql_fetch_row($control_result);
+                [$result] = sql_fetch_row($control_result);
                 $control = $result;
             }
 
@@ -1312,7 +1312,7 @@ class CourseAlms extends Model
             FROM %lms_course
             WHERE idCourse = '" . (int)$id_course . "'";
         $qres = sql_query($query_course);
-        list($file_sponsor, $file_logo, $file_material, $file_othermaterial, $file_demo, $course_type, $course_edition) = sql_fetch_row($qres);
+        [$file_sponsor, $file_logo, $file_material, $file_othermaterial, $file_demo, $course_type, $course_edition] = sql_fetch_row($qres);
 
         require_once _base_ . '/lib/lib.upload.php';
 
@@ -1538,7 +1538,7 @@ class CourseAlms extends Model
             . ' FROM %lms_category'
             . ' WHERE idCategory = ' . (int)$id_category;
 
-        list($path) = sql_fetch_row(sql_query($query));
+        [$path] = sql_fetch_row(sql_query($query));
 
         return end(explode('/', $path));
     }

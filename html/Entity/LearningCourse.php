@@ -10,9 +10,15 @@ use Doctrine\ORM\Mapping as ORM;
  * LearningCourse
  *
  * @ORM\Table(name="learning_course", indexes={
- *     @ORM\Index(name="fk_menucustom", columns={"id_menucustom"}),
- *     @ORM\Index(name="status_course_type_idx", columns={"status","course_type"})
- * })
+ *      @ORM\Index(name="fk_menucustom", columns={"id_menucustom"}),
+ *      @ORM\Index(name="status_course_type_idx", columns={"status","course_type"}),
+ *      @ORM\Index(name="idx_course_category", columns={"idCategory"}),
+ *      @ORM\Index(name="idx_course_name", columns={"name"}),
+ *      @ORM\Index(name="idx_course_code", columns={"code"}),
+ *      @ORM\Index(name="idx_course_dates", columns={"date_begin", "date_end"}),
+ *      @ORM\Index(name="idx_course_sub_dates", columns={"sub_start_date", "sub_end_date"}),
+ *      @ORM\Index(name="idx_course_create_date", columns={"create_date"})
+ *  })
  * @ORM\Entity
  */
 class LearningCourse

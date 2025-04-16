@@ -9,7 +9,16 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CoreGroup
  *
- * @ORM\Table(name="core_group", uniqueConstraints={@ORM\UniqueConstraint(name="groupid", columns={"groupid"})})
+ * @ORM\Table(name="core_group",
+ *      uniqueConstraints={
+ *          @ORM\UniqueConstraint(name="groupid", columns={"groupid"})
+ *      },
+ *      indexes={
+ *          @ORM\Index(name="core_group_hidden_type_idx", columns={"hidden","type"}),
+ *          @ORM\Index(name="core_group_idst_idx", columns={"idst"}),
+ *          @ORM\Index(name="core_group_groupid_idx", columns={"groupid"})
+ *      }
+ * )
  * @ORM\Entity
  */
 class CoreGroup

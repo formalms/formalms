@@ -49,7 +49,7 @@ function checkPerm($token, $return_value = false, $use_custom_name = false, $use
 
     // we return true if the user is a godadmin requesting a permission in the framework platform
     if ((\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN) &&
-        (strpos($role, '/admin/') !== false || $platform_name == 'framework')) {
+        (str_contains($role, '/admin/') || $platform_name == 'framework')) {
         return true;
     }
 

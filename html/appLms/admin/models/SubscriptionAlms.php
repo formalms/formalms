@@ -283,12 +283,12 @@ class SubscriptionAlms extends Model implements Accessible
         ]);
 
         if ($this->id_edition != 0) {
-            require_once _lms_ . '/lib/lib.edition.php';
+            require_once Forma::include(_lms_ . '/lib/', 'lib.edition.php');
             $edition_man = new EditionManager();
 
             $result = $edition_man->subscribeUserToEdition($id_user, $this->id_course, $this->id_edition, $level, $waiting, $date_begin_validity, $date_expire_validity);
         } elseif ($this->id_date != 0) { // classroom enrollment
-            require_once _lms_ . '/lib/lib.date.php';
+            require_once Forma::include(_lms_ . '/lib/', 'lib.date.php');
             $date_man = new DateManager();
 
             $result = $date_man->subscribeUserToDate($id_user, $this->id_course, $this->id_date, $level, $waiting, $date_begin_validity, $date_expire_validity);
