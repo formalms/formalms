@@ -105,6 +105,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
         $queries = [];
         switch ($this->data['course_type']) {
             case self::COURSE_TYPE_CLASSROOM:
+                $conditions = ['CLASSROOM_ID_USER' => 'cdu.id_user =' . (int)\FormaLms\lib\FormaUser::getCurrentUser()->getId()];
                 $conditions['COUSE_TYPE'] = "(c.course_type = '" . self::COURSE_TYPE_CLASSROOM . "')";
                 $queries[] = $this->geClassroomQuery($conditions, $limit);
                 break;
@@ -118,6 +119,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
                 $queries[] = $this->getElearningQuery($conditions, $limit);
 
                 $conditions['COUSE_TYPE'] = "(c.course_type = '" . self::COURSE_TYPE_CLASSROOM . "')";
+                $conditions = ['CLASSROOM_ID_USER' => 'cdu.id_user =' . (int)\FormaLms\lib\FormaUser::getCurrentUser()->getId()];
                 $queries[] = $this->geClassroomQuery($conditions, $limit);
                 break;
         }
