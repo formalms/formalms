@@ -1,13 +1,14 @@
 <?php
 
+// Importa EventDispatcher
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Contracts\EventDispatcher\Event;
+
 /*
  * FORMA - The E-Learning Suite
  *
  * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
- * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
- *
- * from docebo 4.0.5 CE 2008-2012 (c) docebo
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
@@ -29,7 +30,28 @@ final class Events
     private static $handler;
 
     /**
-     * Get the handler instance.
+     * Symfony Event Dispatcher.
+     *
+     * @var EventDispatcher
+     */
+    private static $dispatcher;
+
+    /**
+     * Get the Symfony EventDispatcher instance.
+     *
+     * @return EventDispatcher
+     */
+    private static function getDispatcher(): EventDispatcher
+    {
+        if (!self::$dispatcher) {
+            self::$dispatcher = new EventDispatcher();
+        }
+
+        return self::$dispatcher;
+    }
+
+    /**
+     * Get the handler instance (EventsHandler).
      *
      * @return EventsHandler
      */
@@ -43,16 +65,55 @@ final class Events
     }
 
     /**
-     * Trigger an event.
+     * Trigger an event using the Symfony EventDispatcher.
      *
      * @param string $eventName
      * @param array  $arguments
      *
-     * @return array
+     * @return void
      */
     public static function trigger($eventName, $arguments = [])
     {
-        return self::getHandler()->trigger($eventName, $arguments);
+        // Crea un nuovo evento con il payload
+        // Se l'argomento è già un Event Symfony, lo passo diretto
+        if (is_object($arguments)) {
+            return self::getHandler()->trigger($eventName, $arguments);
+        }
+
+        // Altrimenti wrappo in una classe che si comporta come un array
+        return self::getHandler()->trigger($eventName, new class($arguments) extends Symfony\Contracts\EventDispatcher\Event implements ArrayAccess {
+            private $arguments = [];
+
+            public function __construct(array $arguments = [])
+            {
+                $this->arguments = $arguments;
+            }
+
+            public function offsetExists($offset): bool
+            {
+                return isset($this->arguments[$offset]);
+            }
+
+            public function offsetGet($offset) : mixed
+            {
+                return $this->arguments[$offset] ?? null;
+            }
+
+            public function offsetSet($offset, $value): void
+            {
+                $this->arguments[$offset] = $value;
+            }
+
+            public function offsetUnset($offset): void
+            {
+                unset($this->arguments[$offset]);
+            }
+
+            public function getArguments(): array
+            {
+                return $this->arguments;
+            }
+        });
     }
 
     /**
@@ -79,6 +140,10 @@ final class Events
      */
     public static function listen($eventName, $listener, $priority = self::PRIORITY_DEFAULT)
     {
-        return self::getHandler()->listen($eventName, $listener, $priority);
+        // Aggiungi il listener al dispatcher Symfony
+        self::getDispatcher()->addListener($eventName, $listener);
+
+        // Aggiungi anche al handler legacy se necessario
+        self::getHandler()->listen($eventName, $listener, $priority);
     }
 }

@@ -592,7 +592,7 @@ class UserPreferences
     public function getUploadedFileSize(){
         $q = "SELECT SUM(size) as tot FROM %adm_user_file WHERE user_idst=".$this->id_user;
         $ret = sql_fetch_row(sql_query($q));
-        return $ret[0];
+        return is_countable($ret) ? $ret[0] : false;
     }
 
     /**
