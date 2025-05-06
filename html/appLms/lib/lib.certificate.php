@@ -243,6 +243,7 @@ class Certificate
         }
 
         $assigned = [];
+  
         $res = sql_query($query);
         while ($row = sql_fetch_assoc($res)) {
             $assigned[] = $row;
@@ -324,7 +325,14 @@ class Certificate
         }
 
         $assignable = [];
+
+        $eventData = Events::trigger('lms.assignable_certificates.reading', ['query' => $query, 'filters' => $filter]);
+
+        extract($eventData);
+
+
         $res = sql_query($query);
+    
         if($res) {
             foreach ($res as $row) {
                 if ($this->certificateAvailableForUser($row['id_certificate'], $row['id_course'], $row['id_user'])) {
@@ -992,6 +1000,18 @@ class Certificate
         return $info;
     }
 
+    public function fetchAssignedCertificates(array $ids) {
+        $info = [];
+        $query = 'SELECT * from %lms_certificate_assign WHERE id in ('.implode(',',$ids).')';
+        $results = sql_query($query);
+
+        foreach($results ?? [] as $result) {
+            $info[$result['id']] = $result;
+        }
+
+        return $info;
+    }
+
     public function getCertificateInfo($id_certificate)
     {
         $info = [];
@@ -1018,17 +1038,20 @@ class Certificate
             " AND id_course = '" . $id_course . "'" .
             " AND id_user = '" . $id_user . "'";
 
+        $eventData = Events::trigger('core.certificate.deleting', ['query' => $query, 'id_certificate' => $id_certificate, 'id_user' => $id_user, 'id_course' => $id_course]);
+
+        extract($eventData ?? []);
         return sql_query($query);
     }
 
-    public function delCertificateForUsersInCourse($id_certificates, $id_users, $id_course)
+    public function deleteAssignedCertificates($ids)
     {
         $query = 'DELETE FROM %lms_certificate_assign ' .
-            ' WHERE id_certificate IN (' . $id_certificates . ')'.
-            ' AND id_course = "' . $id_course . '"' .
-            ' AND id_user IN (' . $id_users . ')';
+            ' WHERE id IN (' . $ids . ')';
 
-           
+        Events::trigger('core.certificate.mass_deleting', ['query' => $query, 'id_certificate' => $id_certificates, 'id_user' => $id_users, 'id_course' => $id_course]);
+
+        $eventData = extract($eventData ?? []);
         return sql_query($query);
     }
 

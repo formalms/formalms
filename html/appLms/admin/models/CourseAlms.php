@@ -1695,7 +1695,7 @@ class CourseAlms extends Model
 
         $usersFilterIds = $this->getAdminRelatedUserIds();
 
-        $query = "SELECT u.idst, u.userid, u.firstname, u.lastname,
+        $query = "SELECT ca.id as idRecord,u.idst, u.userid, u.firstname, u.lastname,
                          DATE_FORMAT(cu.date_complete,'" . $date_format . "') as dateComplete, DATE_FORMAT(ca.on_date,'" . $date_format . "') onDate, cu.idUser as id_user,
                          cu.status , cu.idCourse, cc.id_certificate,
                          c.name as name_certificate"
@@ -1712,6 +1712,7 @@ class CourseAlms extends Model
         if (count($usersFilterIds)) {
             $query .= 'AND u.idst in (' . implode(',', $usersFilterIds) . ')';
         }
+
 
         $res = sql_query($query);
 
@@ -1732,7 +1733,7 @@ class CourseAlms extends Model
                 $cf[$i] = '';
             }
             $url = 'index.php?modname=certificate&amp;certificate_id=' . $id_certificate . '&amp;course_id=' . $id_course . '&amp;user_id=' . $id_user . '&amp;of_platform=lms';
-            $ajax_url = 'ajax.adm_server.php?r=adm/certificate/delete&amp;certificate_id=' . $id_certificate . '&amp;course_id=' . $id_course . '&amp;user_id=' . $id_user;
+            $ajax_url = 'ajax.adm_server.php?r=adm/certificate/deleteMass&amp;id=' . $row['idRecord'];
             if ($on_date != null) {
                 $operation_url = $url . '&amp;op=send_certificate';
                 $cell_down_gen = "<a href='" . $operation_url . "' class='ico-wt-sprite subs_pdf'>" . Lang::t('_DOWNLOAD', 'certificate') . '</a>';

@@ -114,7 +114,8 @@
             margin: '0 auto',
             scrollX: true,
             rowId: function(row) {
-                return row.id_user + '-' + row.id_certificate;
+                                return row.id_user + '-' + row.id_certificate;
+
             },
             deferRender: true,
             data: {{ data_certificate | json_encode(constant('JSON_HEX_APOS')) | raw }},
@@ -240,31 +241,28 @@
         function delete_all_certificates() {
 
             var newarray = [];
-            var arrayCerts = [];
+
             $.each(cert_table.DataTable.rows('.selected').data(), function(index, value) {
 
-                var id_user = value.id_user;
-                var id_certificate = value.id_certificate;
-                newarray.push(id_user);
-                arrayCerts.push(id_certificate);
+                console.log(value);
+                var idRow = value.idRecord;
+          
+                newarray.push(idRow);
+             
             });
             var strRows = newarray.join();
-            var uniqueCerts = [...new Set(arrayCerts)]; // Remove duplicates
-            var strCerts = uniqueCerts.join();
 
             if (strRows == "") return
             modalDeletion.Title = '{{Lang_translate("_DELETE_CERTIFICATE", "standard")}}';
-            modalDeletion.Content = deleteForm(strCerts, strRows)
+            modalDeletion.Content = deleteForm(strRows)
             runAjax();
 
         }
 
-        function deleteForm(certificate_id, user_id) {
+        function deleteForm(idRows) {
             return `<form class="single_certificate_deletion" action="ajax.adm_server.php?r=adm/certificate/deleteMass" method="POST">
                 <input type="hidden" id="authentic_request_popup_form" name="authentic_request" value="{{ Util_getSignature() }}">
-                <input type="hidden" name="course_id" value="{{ id_course }}">
-                <input type="hidden" name="certificate_id" value="${certificate_id}">
-                <input type="hidden" name="user_id" value="${user_id}">
+                <input type="hidden" name="id" value="${idRows}">
                 <h2>{{ Lang_translate('_AREYOUSURE') }}</h2>
                 <div class="alert" role="alert"></div>
                 <input class="btn btn-danger" type="submit" value="{{ Lang_translate('_CONFIRM') }}">
