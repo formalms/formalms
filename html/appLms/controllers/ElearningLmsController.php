@@ -132,7 +132,8 @@ class ElearningLmsController extends LmsController
             require_once _lms_ . '/admin/models/LabelAlms.php';
             $label_model = new LabelAlms();
             $user_label = $label_model->getLabelForUser(\FormaLms\lib\FormaUser::getCurrentUser()->getId());
-            $this->render('_tabs_block', ['block_list' => $block_list, 'use_label' => $tb_label, 'label' => $user_label, 'current_label' => $id_common_label]);
+            $this->render('_tabs_block', ['block_list' => $block_list, 'use_label' => $tb_label, 'label' => $user_label, 'current_label' => $id_common_label, 'statusFilters' => $statusFilters,
+                                                    '_select_category' => $_select_category, '_select_course_type' => $_select_course_type, '_select_year' => $_select_year]);
         } else {
             $this->render('_tabs_block', ['block_list' => $block_list, 'use_label' => $tb_label, 'statusFilters' => $statusFilters,
                                                     '_select_category' => $_select_category, '_select_course_type' => $_select_course_type, '_select_year' => $_select_year]);
