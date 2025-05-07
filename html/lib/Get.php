@@ -721,7 +721,13 @@ class Get
      */
     public static function user_ip()
     {
-        return $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['HTTP_CLIENT_IP'] ?? $_SERVER['REMOTE_ADDR'];
+        $fallbackIp = array_key_exists('REMOTE_ADDR', $_SERVER) ? $_SERVER['REMOTE_ADDR'] : '::1';
+        $ip = (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER) && $_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $fallbackIp;
+        if (strpos($ip, ',') !== false) {
+            $ip = substr($ip, 0, strpos($ip, ','));
+        }
+
+        return $ip;
     }
 
     /**
