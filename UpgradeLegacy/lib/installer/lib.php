@@ -97,7 +97,9 @@ function importSqlFile($fn, $allowed_err_codes = [])
     $res = ['ok' => true, 'log' => ''];
 
     $handle = fopen($fn, 'r');
+    if (filesize($fn) > 0) {
     $content = fread($handle, filesize($fn));
+    }
     fclose($handle);
 
     // This two regexp works fine; don't edit them! :)
