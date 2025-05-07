@@ -79,46 +79,51 @@ function sendFileFromFS($path, $filename, $ext, $sendname)
             $sendname .= '.' . $ext;
         }
 
-        \FormaLms\db\DbConn::getInstance()->close();
+        if ( file_exists($path . $filename) ) { // check file exists to avoid blank page
 
-        ob_end_clean();
-        ob_start();
-        session_write_close();
-        header('Content-type: application/download; charset=utf-8');
-        //ini_set("output_buffering", 0);
-        //Download file
-        //send file length info
-        header('Content-Length:' . filesize($path . $filename));
-        //content type forcing dowlad
-
-        //cache control
-        header('Cache-control: private');
-        //sending creation time
-        header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-        //content type
-        if (FormaLms\lib\Get::scheme() === 'https') {
-            header('Pragma: private');
-        }
-        header('Content-Disposition: attachment; filename="' . $sendname . '"');
-        //sending file
-        $file = fopen($path . $filename, 'rb');
-        $i = 0;
-        if (!$file) {
-            return false;
-        }
-        while (!feof($file)) {
-            $buffer = fread($file, 4096);
-            echo $buffer;
-            if ($i % 100 == 0) {
-                $i = 0;
-                @ob_end_flush();
+            \FormaLms\db\DbConn::getInstance()->close();
+    
+            ob_end_clean();
+            ob_start();
+            session_write_close();
+    
+            header('Content-type: application/download; charset=utf-8');
+            //ini_set("output_buffering", 0);
+            //Download file
+            //send file length info
+            header('Content-Length:' . @filesize($path . $filename));
+            //content type forcing download
+    
+            //cache control
+            header('Cache-control: private');
+            //sending creation time
+            header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+            //content type
+            if (FormaLms\lib\Get::scheme() === 'https') {
+                header('Pragma: private');
             }
-            ++$i;
+            header('Content-Disposition: attachment; filename="' . $sendname . '"');
+            //sending file
+            $file = fopen($path . $filename, 'rb');
+            $i = 0;
+            if (!$file) {
+                return false;
+            }
+            while (!feof($file)) {
+                $buffer = fread($file, 4096);
+                echo $buffer;
+                if ($i % 100 == 0) {
+                    $i = 0;
+                    @ob_end_flush();
+                }
+                ++$i;
+            }
+            fclose($file);
+            //and now exit
+            exit();
+        } else {    // file not exists
+            return(false);
         }
-        fclose($file);
-
-        //and now exit
-        exit();
     }
 }
 
