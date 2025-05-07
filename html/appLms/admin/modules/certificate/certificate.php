@@ -719,6 +719,12 @@ function send_certificate()
     $id_course = importVar('course_id', true, 0);
     $id_user = importVar('user_id', true, 0);
 
+    $idRecord = importVar('id', true, 0);
+    if($idRecord) {
+        Util::jump_to('index.php?r=mycertificate/downloadCert&id='.$idRecord,'','lms');
+        exit;
+    }
+
     $certificate = new Certificate();
 
     $report_info = [];

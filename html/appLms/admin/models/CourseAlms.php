@@ -1735,6 +1735,7 @@ class CourseAlms extends Model
             $url = 'index.php?modname=certificate&amp;certificate_id=' . $id_certificate . '&amp;course_id=' . $id_course . '&amp;user_id=' . $id_user . '&amp;of_platform=lms';
             $ajax_url = 'ajax.adm_server.php?r=adm/certificate/deleteMass&amp;id=' . $row['idRecord'];
             if ($on_date != null) {
+                $url = 'index.php?modname=certificate&amp;id='. $row['idRecord'] .'&amp;of_platform=lms';
                 $operation_url = $url . '&amp;op=send_certificate';
                 $cell_down_gen = "<a href='" . $operation_url . "' class='ico-wt-sprite subs_pdf'>" . Lang::t('_DOWNLOAD', 'certificate') . '</a>';
                 $cell_del_cert = FormaLms\lib\Get::sprite_link('subs_del delete_certificate', $ajax_url . '&op=del_report_certificate&from=' . FormaLms\lib\Get::req('from'), Lang::t('_DEL', 'certificate'));

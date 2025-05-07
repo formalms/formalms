@@ -214,7 +214,7 @@ class DashboardAdmController extends AdmController
         $released = $cert->certificateStatus($id_user, $id_course);
         $print = [];
         foreach ($released as $id_cert => $name) {
-            $print[] = '<a class="ico-wt-sprite subs_pdf" href="index.php?modname=certificate&certificate_id=' . $id_cert . '&course_id=' . $id_course . '&user_id=' . $id_user . '&op=send_certificate&of_platform=lms">'
+            $print[] = '<a class="ico-wt-sprite subs_pdf" href="index.php?modname=certificate&id=' . $id_cert . '&op=send_certificate&of_platform=lms">'
                 . '<span>' . $name . '</span>'
                 . '</a>';
         }

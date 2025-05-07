@@ -177,7 +177,7 @@ class Certificate
 
     public function getAssigned($filter)
     {
-        $query = 'SELECT ca.id_certificate, ca.id_course,'
+        $query = 'SELECT ca.id as idRecord, ca.id_certificate, ca.id_course,'
             . '	ca.id_user, SUBSTRING(u.userid, 2) AS username,'
             . '	u.lastname, u.firstname, co.code, cc.available_for_status,'
             . '  co.name AS course_name, ce.name AS cert_name,'
@@ -325,11 +325,6 @@ class Certificate
         }
 
         $assignable = [];
-
-        $eventData = Events::trigger('lms.assignable_certificates.reading', ['query' => $query, 'filters' => $filter]);
-
-        extract($eventData);
-
 
         $res = sql_query($query);
     
@@ -557,7 +552,7 @@ class Certificate
     public function certificateStatus($id_user, $id_course)
     {
         $query_certificate = '
-		SELECT ca.id_course, c.id_certificate, c.name
+		SELECT ca.id as idRecord, ca.id_course, c.id_certificate, c.name
 		FROM %lms_certificate AS c
 			JOIN %lms_certificate_assign AS ca
 			ON (c.id_certificate = ca.id_certificate)
@@ -569,8 +564,8 @@ class Certificate
         }
 
         $list_of = [];
-        while (list($id_course, $id_cert, $name) = sql_fetch_row($re)) {
-            $list_of[$id_cert] = $name;
+        while (list($idRecord, $id_course, $id_cert, $name) = sql_fetch_row($re)) {
+            $list_of[$idRecord] = $name;
         }
 
         return $list_of;
@@ -818,6 +813,7 @@ class Certificate
     public function send_certificate($id_certificate, $id_user, $id_course, $array_substituton = false, $download = true, $from_multi = false, $id_association = 0)
     {
         $isAggregatedCert = FormaLms\lib\Get::req('aggCert', DOTY_INT, 0);
+        $idRecord = FormaLms\lib\Get::req('id', DOTY_INT, 0);
         if ($isAggregatedCert) {
             require_once \FormaLms\lib\Forma::inc(_lms_ . '/' . _folder_lib_ . '/lib.aggregated_certificate.php');
             $aggCertLib = new AggregatedCertificate();
@@ -831,6 +827,13 @@ class Certificate
 			WHERE id_certificate = '" . $id_certificate . "'
 				 AND id_course = '" . $id_course . "'
 				 AND id_user = '" . $id_user . "' ";
+
+                 if($idRecord) {
+                    $query_certificate = '
+                    SELECT cert_file
+                    FROM %lms_certificate_assign
+                    WHERE id = "' . $idRecord . '"' ;
+                }
         } else {
             $query_certificate = 'SELECT cert_file'
                 . ' FROM ' . $aggCertLib->table_assign_agg_cert

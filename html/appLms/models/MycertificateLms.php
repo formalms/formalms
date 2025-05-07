@@ -48,7 +48,7 @@ class MycertificateLms extends Model
         foreach ($myCertificates as $cert) {
             if ($this->certificate->certificateAvailableForUser($cert['id_certificate'], $cert['id_course'], $this->id_user)) {
                 $download = '<a class="ico-wt-sprite subs_pdf" id="pdf_download" href="?r=mycertificate/'
-                    . 'downloadCert&id_certificate=' . $cert['id_certificate'] . '&id_course=' . $cert['id_course'] . '" '
+                    . 'downloadCert&id=' . $cert['idRecord'] . '" '
                     . ' title="' . (isset($cert['on_date']) ? Lang::t('_DOWNLOAD', 'certificate') : Lang::t('_GENERATE', 'certificate')) . '"><span>'
                     . (isset($cert['on_date']) ? Lang::t('_DOWNLOAD', 'certificate') : Lang::t('_GENERATE', 'certificate')) . '</span></a>';
 
