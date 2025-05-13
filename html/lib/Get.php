@@ -368,9 +368,8 @@ class Get
      *
      * @return string the relative path
      */
-    public static function rel_path($to = false)
+    public static function rel_path($to = false, $trailingSlash = false)
     {
-        // where are we ?
         if ($to === false) {
             if (defined('CORE')) {
                 $to = 'adm';
@@ -384,8 +383,17 @@ class Get
         $path = _deeppath_
             . str_replace(_base_, '.', constant('_' . $to . '_'));
 
-        return str_replace(['//', '\\/', '/./'], '/', $path);
+        $path = str_replace(['//', '\\/', '/./'], '/', $path);
+
+        if ($trailingSlash) {
+            $path = rtrim($path, '/') . '/';
+        } else {
+            $path = rtrim($path, '/');
+        }
+
+        return $path;
     }
+
 
     /**
      * Return the absolute path of the platform.

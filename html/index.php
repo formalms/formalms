@@ -68,9 +68,9 @@ $req = preg_replace('/[^a-zA-Z0-9\-\_\/]+/', '', $req);
 $explodedRequest = (array) explode('/', $req);
 if (count($explodedRequest) < 3) {
     if (\FormaLms\lib\FormaUser::getCurrentUser()->isLoggedIn()) {
-        Util::jump_to(FormaLms\lib\Get::rel_path('lms'));
+        Util::jump_to(FormaLms\lib\Get::rel_path('lms',true));
     }
-    Util::jump_to(FormaLms\lib\Get::rel_path('base'));
+    Util::jump_to(FormaLms\lib\Get::rel_path('base',true));
 }
 
 [$platform, $mvcName, $task] = $explodedRequest;
@@ -96,7 +96,7 @@ if ($req) {
     $templatesToRender = $eventData['templatesToRender'];
     if (!in_array($requestedRoute, $allowedControllers, true)) {
         // reload
-        Util::jump_to(FormaLms\lib\Get::rel_path('base'));
+        Util::jump_to(FormaLms\lib\Get::rel_path('base',true));
     }
 
     // instance page writer
