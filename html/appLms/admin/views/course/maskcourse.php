@@ -26,7 +26,11 @@ $htmlData = '';
         . Form::getTextfield(Lang::t('_CODE', 'course'), 'course_code', 'course_code', '50', $course['code'])
         . Form::getTextfield(Lang::t('_COURSE_NAME', 'course'), 'course_name', 'course_name', '255', $course['name']));
 
-    if ($course['course_type'] == 'classroom' && $has_editions_or_classrooms) {
+    if ($id_course === false) {
+        // New course: remove 'edition' from available types
+        unset($course_type['edition']);
+        $htmlData .= Form::getDropdown(Lang::t('_COURSE_TYPE', 'course'), 'course_type', 'course_type', $course_type, 'elearning');
+    } elseif ($course['course_type'] == 'classroom' && $has_editions_or_classrooms) {
         //this is a classroom course with editions
         $htmlData .= (Form::getLineBox(Lang::t('_COURSE_TYPE', 'course'), $course_type['classroom'])
             . Form::getHidden('course_type', 'course_type', 'classroom'));
@@ -34,15 +38,17 @@ $htmlData = '';
         //this is an edition course with editions
         $htmlData .= (Form::getLineBox(Lang::t('_COURSE_TYPE', 'course'), $course_type['edition'])
             . Form::getHidden('course_type', 'course_type', 'edition'));
-    } elseif ($id_course !== false && $has_enrolled_users) {
+    } elseif ($has_enrolled_users) {
         //course has enrolled users, block type change
         $current_type_key = $course['course_edition'] > 0 ? 'edition' : $course['course_type'];
         $htmlData .= (Form::getLineBox(Lang::t('_COURSE_TYPE', 'course'), $course_type[$current_type_key])
             . Form::getHidden('course_type', 'course_type', $current_type_key));
     } else {
-        $htmlData .= (Form::getDropdown(Lang::t('_COURSE_TYPE', 'course'), 'course_type', 'course_type', $course_type, $id_course === false ? 'elearning' : $course['course_type']));
+        // Existing course with no restrictions: dropdown without 'edition'
+        unset($course_type['edition']);
+        $htmlData .= Form::getDropdown(Lang::t('_COURSE_TYPE', 'course'), 'course_type', 'course_type', $course_type, $course['course_type']);
     }
-    $htmlData .= (Form::getDropdown(Lang::t('_STATUS', 'course'), 'course_status', 'course_status', $status, $course['status'])
+        $htmlData .= (Form::getDropdown(Lang::t('_STATUS', 'course'), 'course_status', 'course_status', $status, $course['status'])
         . Form::getCheckbox(Lang::t('_DIRECT_PLAY', 'course'), 'direct_play', 'direct_play', '1', $course['direct_play'] == 1)
         // hiding the "show results" option - is not used (missing functions)
         //. Form::getCheckbox(Lang::t('_SHOW_RESULTS', 'course'), 'show_result', 'show_result', '1', $course['show_result'] == 1)
