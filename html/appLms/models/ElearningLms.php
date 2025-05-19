@@ -141,14 +141,13 @@ class ElearningLms extends Model
         $cf->setFieldArea('COURSE');
         $has_custom = ($cf->getNumberFieldbyArea() > 0);
 
-        if ($has_custom) {
+        if ($has_custom && !empty($idCourses)) {
+            $custom_fields = $cf->playFieldsFlat($idCourses);
 
-            $customFields = $cf->playFieldsFlat();
-
-            if ($has_custom) {
-                $custom_fields = $cf->playFieldsFlat($idCourses);
-
-                $result = array_merge($result, $custom_fields);
+            foreach ($custom_fields as $idCourse => $values) {
+                if (isset($result[$idCourse])) {
+                    $result[$idCourse]['custom_fields'] = $values;
+                }
             }
         }
 
