@@ -15,16 +15,18 @@
     {% endif %}
 
     {{ Form_getBreakRow() }}
-    <div class="boxed">
-        <p class="privacy_policy">
-            {{ policy_text | raw }}
-        </p>
-        {{ Form_getBreakRow() }}
-        <div class="align-center">
-            {{ Form_getHidden('policy_id', 'policy_id', policy_id) | raw }}
-            {{ Form_getCheckbox(Lang_translate('_ACCEPT', 'register'), 'accept_policy', 'accept_policy', 1, false) | raw }}
+    {% if not policy_checked %}
+        <div class="boxed">
+            <p class="privacy_policy">
+                {{ policy_text | raw }}
+            </p>
+            {{ Form_getBreakRow() }}
+            <div class="align-center">
+                {{ Form_getHidden('policy_id', 'policy_id', policy_id) | raw }}
+                {{ Form_getCheckbox(Lang_translate('_ACCEPT', 'register'), 'accept_policy', 'accept_policy', 1, false) | raw }}
+            </div>
         </div>
-    </div>
+    {% endif %}
     {{ Form_openButtonSpace() | raw }}
     {{ Form_getButton('save', 'save', Lang_translate('_SAVE', 'standard')) | raw }}
     {{ Form_closeButtonSpace() | raw }}
