@@ -19,7 +19,7 @@ div.calendar{position:relative; border:1px solid #808080;}
 .calendar tbody .rowhilite td{background:#eeeeee none repeat scroll 0%;}
 .calendar tbody .rowhilite td.wn{background:#EEEEFF none repeat scroll 0%;}
 .calendar tbody .addEvent{font-weight:normal;visibility:hidden;}
-a.addEventLink{margin-left:3px;float:right;display:block;width:22px;height:22px;background:url('../images/standard/edit.png') 0 0 no-repeat;}
+a.addEventLink{margin-left:3px;float:right;display:block;width:22px;height:22px;background:url('../images/standard/add.png') 0 0 no-repeat;}
 a.addEventLink span{display:none;}
 .clear{clear:both;}
 .calendar tbody td.hilite{background:#B3D4FF none repeat scroll 0%;border:1px solid #426FD9;padding:1px 3px 1px 1px;}

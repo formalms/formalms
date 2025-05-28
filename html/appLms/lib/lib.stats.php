@@ -154,7 +154,7 @@ function getCountableCourseItems($idCourse, $countHidden = true, $idUser = false
         [$list] = sql_fetch_row($rs);
         sql_free_result($rs);
 
-        return explode("," , $list);
+        return !is_null($list) ? explode("," , $list) : [];
     }
 }
 

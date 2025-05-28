@@ -269,8 +269,6 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         $srcPath = $_FILES['coursepath_logo']['tmp_name']; // Assicurati che $srcPath sia il percorso completo al file sul server
         $time = time();
 
-
-
         $query_select = 'SELECT img_coursepath FROM %lms_coursepath WHERE id_path ='. (int) $_POST['id_path'];
         $res = sql_query($query_select);
         list($imgLogo) = sql_fetch_row($res);
@@ -838,9 +836,6 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 
         Util::jump_to('index.php?modname=coursepath&op=pathelem&amp;id_path=' . $id_path . '&amp;result=' . ($re ? 'ok' : 'err'));
     }
-
-
-
 
     function delcoursepathelem()
     {

@@ -2115,7 +2115,7 @@ class Report_User extends Report
 
         $output .= $buffer->get();
 
-        YuiLib::load(['selector' => 'selector-beta-min.js']);
+        YuiLib::load('selector');
 
         if ($this->use_mail) {
             cout('<script type="text/javascript">

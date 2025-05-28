@@ -65,7 +65,7 @@ class LomanagerhomerepoLmsController extends LomanagerLmsController
                     'content' => "homerepo[treeview_opplayitem_homerepo][$id]",
                     'showIcon' => true,
                     'icon' => 'icon-play',
-                    'label' => 'Play',
+                    'label' => Lang::t('_PLAY', 'standard'),
                 ];
             }
             if ($lo['canEdit']) {
@@ -77,7 +77,7 @@ class LomanagerhomerepoLmsController extends LomanagerLmsController
                         'content' => "index.php?r=lms/lomanagerhomerepo/edit&id=$id&type=$type",
                         'showIcon' => true,
                         'icon' => 'icon-edit',
-                        'label' => 'Edit',
+                        'label' => Lang::t('_EDIT', 'course'),
                     ];
                 }
 
@@ -89,7 +89,7 @@ class LomanagerhomerepoLmsController extends LomanagerLmsController
                         'content' => "index.php?r=lms/lomanagerhomerepo/copy&id=$id&type=$type&newType=",
                         'showIcon' => true,
                         'icon' => 'icon-copy',
-                        'label' => 'Copy',
+                        'label' => Lang::t('_COPY', 'learning_object_context_menu'),
                     ];
                 }
 
@@ -100,7 +100,7 @@ class LomanagerhomerepoLmsController extends LomanagerLmsController
                     'content' => "index.php?r=lms/lomanagerhomerepo/delete&id=$id&type=$type",
                     'showIcon' => true,
                     'icon' => 'icon-delete',
-                    'label' => 'Delete',
+                    'label' => Lang::t('_DELETE', 'learning_object_context_menu'),
                 ];
             }
             $results[] = $lo;

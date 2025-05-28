@@ -429,9 +429,9 @@ class UsermanagementAdmController extends AdmController
         if ($this->_issetSessionValue('selected_node') && $this->_getSessionValue('selected_node') != 0 && !$is_editing) {
             $arr_idst = [];
             $tmp = $acl_man->getGroup(false, '/oc_' . $this->session->get('usermanagement_selected_node'));
-            $arr_idst[] = $tmp[0];
+            $arr_idst[] = $tmp[0] ?? [];
             $tmp = $acl_man->getGroup(false, '/ocd_' . $this->session->get('usermanagement_selected_node'));
-            $arr_idst[] = $tmp[0];
+            $arr_idst[] = $tmp[0] ?? [];
             $acl = \FormaLms\lib\Forma::getAcl();
             $arr_idst = $acl->getArrSTGroupsST($arr_idst);
         }

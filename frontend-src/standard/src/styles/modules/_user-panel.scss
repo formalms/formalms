@@ -279,6 +279,7 @@
               @include breakpoint($tablet) {
                 background-color: var(--color-primary)
               }
+              background-image: url("#{$assets}images/icons/user-panel/icon--up-close-hover.png");
             }
           }
 
@@ -309,8 +310,10 @@
           width: auto;
 
           &:hover {
+            color: var(--color-primary);
+            text-decoration: underline;
             &:before {
-              background-color: var(--color-primary);
+              background-image: url("#{$assets}images/icons/user-panel/icon--up-logout-hover.png");
             }
           }
 

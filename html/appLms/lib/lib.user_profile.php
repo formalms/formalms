@@ -2591,11 +2591,11 @@ class UserProfileViewer
 
         $acl_man = \FormaLms\lib\Forma::getAclManager();
 
-        $html = '<h2 class="up_type1">' . $this->_lang->def('_COMMUNITY') . '</h2>';
+        $html = '<div style="width: 95%;">';
 
         // some usefull statistic ---------------------------------------
         $html .= '<div class="up_left_block">'
-            . '<h3>' . str_replace('[firstname]', $this->resolveUsername(true), $this->_lang->def('_ACTIVITY_OF')) . '</h3>'
+            . '<h3>' . str_replace('[firstname]', $this->resolveUsername(true), $this->_lang->def('_ACTIVITY_OF')) . '</h3><br />'
                 . '<b>' . $this->_lang->def('_FORUM_MESSAGE') . ': </b>' . $user_stat['forum_post'] . '<br />'
                 . '<b>' . $this->_lang->def('_LOADED_FILE') . ': </b>' . $user_stat['loaded_file'] . '<br />'
                 . '<b>' . $this->_lang->def('_REGISTER_DATE') . ': </b>'
@@ -2648,8 +2648,11 @@ class UserProfileViewer
         }
 
         // last profile view -----------------------------------------
-        $html .= '<p class="up_last_view">'
-                . '<b>' . $this->_lang->def('_LAST_PROFILE_VIEW') . ':</b> ';
+        $html .= '<div class="up_last_view">';
+
+        $html .= '<h2 class="up_type1">' . $this->_lang->def('_COMMUNITY') . '</h2>'
+            . '<p>'
+            . '<b>' . $this->_lang->def('_LAST_PROFILE_VIEW') . ':</b> ';
 
         if (!empty($last_view)) {
             $first = true;
@@ -2670,6 +2673,9 @@ class UserProfileViewer
             $html .= '<i>' . $this->_lang->def('_NO_PROFILE_VIEW') . '</i>';
         }
         $html .= '</p>';
+        $html .= '</div>';
+
+        $html .= '</div>';
 
         return $html;
     }

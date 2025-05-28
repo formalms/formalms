@@ -440,5 +440,14 @@
         document.body.removeChild(a);
         setTimeout(function() { URL.revokeObjectURL(a.href); }, 1500);
     }
+
+    $('#confirmModal').on('shown.bs.modal', function() {
+        var modalSelector = '#confirmModal';
+        let modal = $(modalSelector);
+
+        setTimeout(function(){ 
+            modal.find("*[data-val=no]").focus();
+        }, 150);
+    });
 </script>
 </div>

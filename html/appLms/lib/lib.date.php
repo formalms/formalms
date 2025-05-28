@@ -1621,11 +1621,11 @@ class DateManager
                 'num_subscribe' => $user_subscribed,
                 'subscription' => '<a href="index.php?r=alms/subscription/show&id_course=' . $id_course . '&amp;id_date=' . $id_date . '" title="' . Lang::t('_SUBSCRIPTION', 'course') . '">'
                     . ($user_subscribed ? $user_subscribed : 0)
-                    . ' <span class="ico-sprite subs_' . ($user_subscribed > 0 ? 'users' : 'notice') . '"><span>' . Lang::t('_USER_STATUS_SUBS') . '</span></span></a>',
+                    . '<span class="ico-sprite subs_' . ($user_subscribed > 0 ? 'users' : 'notice') . '"><span>' . Lang::t('_USER_STATUS_SUBS') . '</span></span></a>',
                 'presence' => '<a href="index.php?r=alms/classroom/presence&id_course=' . $id_course . '&amp;id_date=' . $id_date . '">' . Lang::t('_ATTENDANCE', 'course') . '</a>',
                 'num_day' => $num_day,
                 'user_subscribed' => $user_subscribed,
-                'mod' => '<a href="index.php?r=alms/classroom/updateClassroom&id_course=' . $id_course . '&amp;id_date=' . $id_date . '">' . FormaLms\lib\Get::img('standard/edit.png', Lang::t('_MOD', 'course')) . '</a>',
+                'mod' => '<a href="index.php?r=alms/classroom/updateClassroom&id_course=' . $id_course . '&amp;id_date=' . $id_date . '">' . FormaLms\lib\Get::sprite('subs_mod', Lang::t('_MOD', 'course')) . '</a>',
                 'del' => 'ajax.adm_server.php?r=alms/classroom/delclassroom&id_course=' . $id_course . '&amp;id_date=' . $id_date,
                 'unsubscribe_date_limit' => $unsubscribe_date_limit,
                 'registro' => '<a href="index.php?r=alms/classroom/classroomDateDays&id_course=' . $id_course . '&amp;id_date=' . $id_date . '">' . FormaLms\lib\Get::img('standard/date.png', Lang::t('_DAYS', 'course')) . '</a>',

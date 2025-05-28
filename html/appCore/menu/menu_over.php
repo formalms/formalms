@@ -20,7 +20,7 @@ function GetAdminPanel()
 {
     $ret_str = '
         <li data-sm-reverse="true" style="float:right">
-            <a href="#"><i class="fa fa-user"></i>&nbsp;<b>' . \FormaLms\lib\FormaUser::getCurrentUser()->getUserName() . '</b></a>
+            <a href="#"><i class="fa fa-user"></i><b>' . \FormaLms\lib\FormaUser::getCurrentUser()->getUserName() . '</b></a>
             <ul> ';
 
     if (FormaLms\lib\Get::sett('profile_modify', 'allow') != 'disallow') {
@@ -30,7 +30,7 @@ function GetAdminPanel()
     }
     $ret_str .= '<li> 
             <a id="logout"  href="' . FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _logout_ . '">                
-                <i class="fa fa-power-off" aria-hidden="true"></i>&nbsp;' . Lang::t('_LOGOUT', 'standard') . '</span>
+                <i class="fa fa-power-off" aria-hidden="true"></i>' . Lang::t('_LOGOUT', 'standard') . '</span>
             </a>
           </li>
     </ul>
@@ -54,7 +54,7 @@ function BackToLms()
     $lang = FormaLanguage::createInstance('menu', 'framework');
 
     return '<li data-sm-reverse="true" style="float:right">
-                <a href="' . $GLOBALS['where_lms_relative'] . '"><i class="fa fa-home" aria-hidden="true"></i>&nbsp;' .
+                <a href="' . $GLOBALS['where_lms_relative'] . '"><i class="fa fa-home" aria-hidden="true"></i>' .
                     $lang->def('_LMS', 'platform') .
                 '</a>
             </li>';
@@ -85,9 +85,9 @@ function AdminBar()
             }
         }
         if ($menu_1_html) {
-            $menu_html .= "<li><a href='#'>$menu_0->image&nbsp;" . Lang::t($menu_0->name, 'menu') . "</a><ul>$menu_1_html</ul></li>";
+            $menu_html .= "<li><a href='#'>$menu_0->image" . Lang::t($menu_0->name, 'menu') . "</a><ul>$menu_1_html</ul></li>";
         } elseif (checkRole($menu_0->role)) {
-            $menu_html .= "<li><a href='$menu_0->url'>$menu_0->image&nbsp;" . Lang::t($menu_0->name, 'menu') . '</a></li>';
+            $menu_html .= "<li><a href='$menu_0->url'>$menu_0->image" . Lang::t($menu_0->name, 'menu') . '</a></li>';
         }
     }
 

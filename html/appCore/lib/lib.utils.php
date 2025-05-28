@@ -475,7 +475,7 @@ class UIFeedback
 {
     public static function info($message_text, $return = false)
     {
-        $result = '<a href="#"><div id="container-feedback" class="container-feedback"><span class="ico-sprite fd_info"><span>' . Lang::t('_DETAILS') . '</span></span>&nbsp;' . $message_text . '</div></a>';
+        $result = '<a href="#"><div id="container-feedback" class="container-feedback"><span class="ico-sprite fd_info"><span>' . Lang::t('_DETAILS') . '</span></span>' . $message_text . '</div></a>';
         if ($return) {
             return $result;
         }
@@ -484,7 +484,7 @@ class UIFeedback
 
     public static function notice($message_text, $return = false)
     {
-        $result = '<a href="#"><div id="container-feedback" class="container-feedback"><span class="ico-sprite fd_notice"><span>' . Lang::t('_NOTICE') . '</span></span>&nbsp;' . $message_text . '</div></a>';
+        $result = '<a href="#"><div id="container-feedback" class="container-feedback"><span class="ico-sprite fd_notice"><span>' . Lang::t('_NOTICE') . '</span></span>' . $message_text . '</div></a>';
         if ($return) {
             return $result;
         }
@@ -493,7 +493,7 @@ class UIFeedback
 
     public static function error($message_text, $return = false)
     {
-        $result = '<a href="#"><div id="container-feedback" class="container-feedback"><span class="ico-sprite fd_notice"><span>' . Lang::t('_OPERATION_FAILURE') . '</span></span>&nbsp;' . $message_text . '</div></a>';
+        $result = '<a href="#"><div id="container-feedback" class="container-feedback"><span class="ico-sprite fd_notice"><span>' . Lang::t('_OPERATION_FAILURE') . '</span></span>' . $message_text . '</div></a>';
         if ($return) {
             return $result;
         }
@@ -502,21 +502,21 @@ class UIFeedback
 
     public static function pinfo($message_text)
     {
-        $result = '<p class="pcontainer-feedback"><span class="ico-sprite fd_info"><span>' . Lang::t('_DETAILS') . '</span></span> ' . $message_text . '</p>';
+        $result = '<p class="pcontainer-feedback"><span class="ico-sprite fd_info"><span>' . Lang::t('_DETAILS') . '</span></span>' . $message_text . '</p>';
 
         return $result;
     }
 
     public static function pnotice($message_text)
     {
-        $result = '<p class="pcontainer-feedback"><span class="ico-sprite fd_notice"><span>' . Lang::t('_NOTICE') . '</span></span>&nbsp;' . $message_text . '</p>';
+        $result = '<p class="pcontainer-feedback"><span class="ico-sprite fd_notice"><span>' . Lang::t('_NOTICE') . '</span></span>' . $message_text . '</p>';
 
         return $result;
     }
 
     public static function perror($message_text)
     {
-        $result = '<p class="pcontainer-feedback"><span class="ico-sprite fd_notice"><span>' . Lang::t('_OPERATION_FAILURE') . '</span></span>&nbsp;' . $message_text . '</p>';
+        $result = '<p class="pcontainer-feedback"><span class="ico-sprite fd_notice"><span>' . Lang::t('_OPERATION_FAILURE') . '</span></span>' . $message_text . '</p>';
 
         return $result;
     }

@@ -61,8 +61,7 @@ class Tags
         $lang = &FormaLanguage::createInstance('tags', 'framework');
 
         $this->tags_id = $tags_id;
-        YuiLib::load(['autocomplete' => 'autocomplete-min.js', 'selector' => 'selector-beta-min.js'],
-            ['assets/skins/sam' => 'autocomplete.css']);
+        YuiLib::load('autocomplete,selector');
         Util::get_js(FormaLms\lib\Get::rel_path('adm') . '/lib/lib.tags.js', true, true);
 
         // setup some thing that we need in the tag editor

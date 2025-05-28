@@ -152,7 +152,7 @@ function forum()
 	WHERE f.idCourse = '" . (int) PUBLIC_FORUM_COURSE_ID . "'");
     while (list($idF_p, $idT_p, $posted, $title_p, $id_a) = sql_fetch_row($re_last_post)) {
         if ($posted !== null) {
-            $last_post[$idF_p]['info'] = Format::date($posted) . '<br />' . substr(strip_tags($title_p), 0, 15) . ' ...';
+            $last_post[$idF_p]['info'] = '<span class="last_post_date">' . Format::date($posted) . '</span> <span class="last_post_timezone">UTC</span><br />' . substr(strip_tags($title_p), 0, 15) . ' ...';
             $last_post[$idF_p]['author'] = $id_a;
             $last_authors[] = $id_a;
         }
@@ -426,6 +426,7 @@ function forum()
                 . '</span></a>'
                 . '</div>', 'content');
         }
+        $GLOBALS['page']->add(formatUTCdatesasLocal(), 'content');
         $GLOBALS['page']->add(
             $tb->getNavBar($ini, $tot_forum)
             . '</div>', 'content');
@@ -451,8 +452,8 @@ function addforum()
         . getBackUi('index.php?modname=public_forum&amp;op=forum', Lang::t('_BACK'))
         . Form::openForm('addforumform', 'index.php?modname=public_forum&amp;op=insforum')
         . Form::openElementSpace()
-        . Form::getTextfield(Lang::t('_TITLE'), 'title', 'title', 255, Lang::t('_NOTITLE'))
-        . Form::getTextarea(Lang::t('_DESCRIPTION'), 'description', 'description', Lang::t('_DESCRIPTION'))
+        . Form::getTextfield(Lang::t('_TITLE'), 'title', 'title', 255, '')
+        . Form::getTextarea(Lang::t('_DESCRIPTION'), 'description', 'description', '')
         . Form::openFormLine()
 
         //.Form::getLabel('emoticons', $lang->def('_EMOTICONS'))
@@ -509,7 +510,7 @@ function insforum()
     checkPerm('add');
 
     $undo = FormaLms\lib\Get::pReq('undo', DOTY_MIXED, false);
-    $title = FormaLms\lib\Get::pReq('title', DOTY_STRING, Lang::t('_NOTITLE'));
+    $title = FormaLms\lib\Get::pReq('title', DOTY_STRING, '');
     $description = FormaLms\lib\Get::pReq('description', DOTY_MIXED, '');
     $emoticons = FormaLms\lib\Get::pReq('emoticons', DOTY_MIXED, '');
     $maxThreads = FormaLms\lib\Get::pReq('max_threads_per_user', DOTY_INT, 0);
@@ -517,6 +518,10 @@ function insforum()
 
     if ($undo !== false) {
         Util::jump_to('index.php?modname=public_forum&op=forum');
+    }
+
+    if ($title == '') {
+        $title = Lang::t('_NOTITLE');
     }
 
     // finding sequence
@@ -681,7 +686,7 @@ function upforum()
 
     $idForum = FormaLms\lib\Get::pReq('idForum', DOTY_INT, 0);
     $undo = FormaLms\lib\Get::pReq('undo', DOTY_MIXED, false);
-    $title = FormaLms\lib\Get::pReq('title', DOTY_STRING, Lang::t('_NOTITLE'));
+    $title = FormaLms\lib\Get::pReq('title', DOTY_STRING, '');
     $description = FormaLms\lib\Get::pReq('description', DOTY_MIXED, '');
     $emoticons = FormaLms\lib\Get::pReq('emoticons', DOTY_MIXED, '');
     $maxThreads = FormaLms\lib\Get::pReq('max_threads_per_user', DOTY_INT, 0);
@@ -689,6 +694,10 @@ function upforum()
 
     if ($undo !== false) {
         Util::jump_to('index.php?modname=public_forum&op=forum');
+    }
+
+    if ($title == '') {
+        $title = Lang::t('_NOTITLE');
     }
 
     $ins_query = '
@@ -1113,7 +1122,7 @@ function loadForumSavedPerm($idForum)
 function thread()
 {
     if (!checkPublicForumPerm('view', (int) $_GET['idForum'])) {
-        exit("You can't access'");
+        exit(Lang::t('_CANNOTENTER', 'forum'));
     }
 
     $idForum = FormaLms\lib\Get::gReq('idForum', DOTY_INT, 0);
@@ -1228,7 +1237,7 @@ function thread()
     while (list($idT_p, $id_ta, $posted, $title_p, $id_a, $is_gener) = sql_fetch_row($re_last_post)) {
         $last_authors[$id_ta] = $id_ta;
         if ($posted !== null) {
-            $last_post[$idT_p]['info'] = Format::date($posted) . '<br />' . substr(strip_tags($title_p), 0, 15) . ' ...';
+            $last_post[$idT_p]['info'] = '<span class="last_post_date">' . Format::date($posted) . '</span> <span class="last_post_timezone">UTC</span><br />' . substr(strip_tags($title_p), 0, 15) . ' ...';
             $last_post[$idT_p]['author'] = $id_a;
             $last_authors[$id_a] = $id_a;
         }
@@ -1271,7 +1280,7 @@ function thread()
         '<a href="' . $jump_url . '&amp;ord=' . ($ord == 'post' ? 'posti' : 'post') . '" title="' . $lang->def('_ORDER_BY') . '">'
         . ($ord == 'post' ? $img_up : ($ord == 'posti' ? $img_down : '')) . $lang->def('_LASTPOST') . '</a>',
     ];
-    $type_h = ['image', '', 'align_center', 'align_center', 'image',
+    $type_h = ['image', '', 'align_center', 'align_center', 'align_center',
         //'align_center',
         'align_center', ];
     if ($mod_perm || $moderate) {
@@ -1370,7 +1379,7 @@ function thread()
                 $status = '<img src="' . getPathImage() . 'standard/msg_unread.png" alt="' . $lang->def('_UNREAD') . '" />';
                 $c_css = ' class="text_bold"';
             } else {
-                $status = '<img src="' . getPathImage() . 'standard/msg_read.png" alt="' . $lang->def('_FREE') . '" />';
+                $status = '<img src="' . getPathImage() . 'standard/msg_read.png" alt="' . $lang->def('_TITLE_READ', 'message') . '" />';
             }
             $content = [$status];
             //'<img src="'.getPathImage().'standard/important.png" alt="'.$lang->def('_IMPORTANT').'" />'
@@ -1420,6 +1429,7 @@ function thread()
             }
             $tb->addBody($content);
         }
+        $GLOBALS['page']->add(formatUTCdatesasLocal(), 'content');
     }
 
     // NOTE: If notify request register it
@@ -1783,7 +1793,7 @@ function modthread()
     $moderate = checkPublicForumPerm('moderate', $id_forum);
 
     if (!$moderate && !$mod_perm && ($author != \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
-        exit("You can't access");
+        exit($lang->def('_CANNOTENTER', 'forum'));
     }
 
     $forum_query = '
@@ -1861,7 +1871,7 @@ function upthread()
     }
 
     if (!$moderate && !$mod_perm && ($author != \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
-        exit("You can't access");
+        exit($lang->def('_CANNOTENTER', 'forum'));
     }
 
     list($id_forum, $locked_t, $erased_t) = sql_fetch_row(sql_query('
@@ -2064,19 +2074,31 @@ function loadDistance($date)
     $distance = (int) ($distance / 60);
     //< 1 hour print minutes
     if (($distance >= 0) && ($distance < 60)) {
-        return $distance . ' ' . Lang::t('_MINUTES');
+        return $distance . ' ' . (($distance > 1) ? Lang::t('_MINUTES') : Lang::t('_MINUTE'));
     }
 
     //minutes -> hour
     $distance = (int) ($distance / 60);
-    if (($distance >= 0) && ($distance < 60)) {
-        return $distance . ' ' . Lang::t('_HOURS');
+    if (($distance >= 0) && ($distance < 24)) {
+        return $distance . ' ' . (($distance > 1) ? Lang::t('_HOURS') : Lang::t('_HOUR'));
     }
 
     //hour -> day
     $distance = (int) ($distance / 24);
     if (($distance >= 0) && ($distance < 30)) {
-        return $distance . ' ' . Lang::t('_DAYS');
+        return $distance . ' ' . (($distance > 1) ? Lang::t('_DAYS') : Lang::t('_DAY'));
+    }
+
+    //day -> month
+    $distance = (int) ($distance / 30);
+    if (($distance >= 0) && ($distance < 12)) {
+        return $distance . ' ' . (($distance > 1) ? Lang::t('_MONTHS') : Lang::t('_MONTH'));
+    }
+
+    //month -> year
+    $distance = (int) ($distance / 12);
+    if (($distance >= 0)) {
+        return $distance . ' ' . (($distance > 1) ? Lang::t('_YEARS') : Lang::t('_YEAR'));
     }
 
     //echo > 1 month
@@ -2283,8 +2305,15 @@ function message()
             $msgtext .= '<div class="forum_post_posted">';
         }
 
-        $msgtext .= $lang->def('_DATE') . ' : ' . Format::date($message_info['posted'])
-            . ' ( ' . loadDistance($message_info['posted']) . ' )'
+        if ($message_info['attach'] != '') {
+            $msgtext .= '<div class="forum_post_attach">'
+                . '<a href="index.php?modname=public_forum&amp;op=download&amp;id=' . $id_message . '">'
+                . $lang->def('_ATTACHMENT') . ' : '
+                . '<img src="' . getPathImage('fw') . mimeDetect($message_info['attach']) . '" alt="' . $lang->def('_ATTACHMENT') . '" /></a>'
+                . '</div>';
+        }
+        $msgtext .= $lang->def('_DATE') . ' : <span class="forum_post_date">' . Format::date($message_info['posted'])
+            . '</span> <span class="forum_post_timezone">UTC</span> ( ' . loadDistance($message_info['posted']) . ' )'
             . '</div>';
         if ($message_info['locked']) {
             $msgtext .= '<div class="forum_post_locked">' . $lang->def('_LOCKEDMESS') . '</div>';
@@ -2312,7 +2341,7 @@ function message()
                         : $lang->def('_UNKNOWN_AUTHOR')
                     )
                     . ' ' . $lang->def('_ON') . ' : '
-                    . Format::date($message_info['modified_by_on'])
+                    . '<span class="forum_post_modified_date">' . Format::date($message_info['modified_by_on'] . '</span> <span class="forum_post_modified_timezone">UTC</span>')
                     . '</div>';
             }
         }
@@ -2437,6 +2466,7 @@ function message()
     $GLOBALS['page']->add($tb->getNavBar($ini, $tot_message), 'content');
     $GLOBALS['page']->add($tb->getTable(), 'content');
 
+    $GLOBALS['page']->add(formatUTCdatesasLocal(), 'content');
     $GLOBALS['page']->add(
         $tb->getNavBar($ini, $tot_message)
         . '</div>', 'content');
@@ -2458,7 +2488,7 @@ function moderatemessage()
     list($id_forum) = sql_fetch_row(sql_query($query_id_forum));
 
     if (!checkPublicForumPerm('moderate', $id_forum) && !checkPerm('mod', true)) {
-        exit("You can't access");
+        exit(Lang::t('_CANNOTENTER', 'forum'));
     }
 
     if ($lock == 1) {
@@ -2486,7 +2516,7 @@ function modstatusthread()
     list($id_forum) = sql_fetch_row(sql_query($query_id_forum));
 
     if (!checkPublicForumPerm('moderate', $id_forum) && !checkPerm('mod', true)) {
-        exit("You can't access");
+        exit(Lang::t('_CANNOTENTER', 'forum'));
     }
 
     list($idF, $lock) = sql_fetch_row(sql_query('
@@ -2519,7 +2549,7 @@ function changeerase()
     list($id_forum) = sql_fetch_row(sql_query($query_id_forum));
 
     if (!checkPublicForumPerm('moderate', $id_forum) && !checkPerm('mod', true)) {
-        exit("You can't access");
+        exit(Lang::t('_CANNOTENTER', 'forum'));
     }
 
     list($idF, $erased) = sql_fetch_row(sql_query('
@@ -2622,8 +2652,8 @@ function showMessageForAdd($id_thread, $how_much)
         $msgtext = '';
 
         $msgtext .= '<div class="forum_post_posted">'
-            . $lang->def('_DATE') . ' : ' . Format::date($message_info['posted'])
-            . ' ( ' . loadDistance($message_info['posted']) . ' )'
+            . $lang->def('_DATE') . ' : <span class="forum_post_date">' . Format::date($message_info['posted'])
+            . '</span> <span class="forum_post_timezone">UTC</span> ( ' . loadDistance($message_info['posted']) . ' )'
             . '</div>';
         if ($message_info['locked']) {
             $msgtext .= '<div class="forum_post_locked">' . $lang->def('_LOCKEDMESS') . '</div>';
@@ -2649,6 +2679,7 @@ function showMessageForAdd($id_thread, $how_much)
         $content = [$sender, $msgtext];
         $tb->addBody($content);
     }
+    $GLOBALS['page']->add(formatUTCdatesasLocal(), 'content');
     $GLOBALS['page']->add($tb->getTable(), 'content');
 }
 
@@ -2910,14 +2941,14 @@ function modmessage()
     list($id_forum) = sql_fetch_row(sql_query($query_id_forum));
 
     if (!checkPublicForumPerm('view', $id_forum)) {
-        exit("You can't access!'");
+        exit($lang->def('_CANNOTENTER', 'forum'));
     }
 
     $moderate = checkPublicForumPerm('moderate', $id_forum);
     $mod_perm = checkPerm('mod', true);
 
     if (!$moderate && !$mod_perm && ($author != \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
-        exit("You can't access");
+        exit($lang->def('_CANNOTENTER', 'forum'));
     }
 
     // Some info about forum and thread
@@ -3001,14 +3032,14 @@ function upmessage()
 	WHERE idThread = '" . $id_thread . "'"));
 
     if (!checkPublicForumPerm('view', $id_forum)) {
-        exit("You can't access!'");
+        exit($lang->def('_CANNOTENTER', 'forum'));
     }
 
     $moderate = checkPublicForumPerm('moderate', $id_forum);
     $mod_perm = checkPerm('mod', true);
 
     if (!$moderate && !$mod_perm && ($author != \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
-        exit("You can't access");
+        exit($lang->def('_CANNOTENTER', 'forum'));
     }
 
     if ($locked_t || $erased_t && (!$mod_perm && !$moderate)) {
@@ -3071,14 +3102,14 @@ function delmessage()
     list($id_forum, $thread_title, $num_post, $last_post) = sql_fetch_row(sql_query($thread_query));
 
     if (!checkPublicForumPerm('view', $id_forum)) {
-        exit("You can't access");
+        exit($lang->def('_CANNOTENTER', 'forum'));
     }
 
     $moderate = checkPublicForumPerm('moderate', $id_forum);
     $mod_perm = checkPerm('mod', true);
 
     if (!$moderate && !$mod_perm && ($author != \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
-        exit("You can't access");
+        exit($lang->def('_CANNOTENTER', 'forum'));
     }
 
     $forum_query = '
@@ -3200,7 +3231,7 @@ function viewprofile()
     list($id_forum) = sql_fetch_row(sql_query($query_id_forum));
 
     if (!checkPublicForumPerm('view', $id_forum)) {
-        exit("You can't access");
+        exit($lang->def('_CANNOTENTER', 'forum'));
     }
 
     require_once _lms_ . '/lib/lib.lms_user_profile.php';
@@ -3358,7 +3389,7 @@ function forumsearch()
     while (list($idT_p, $id_ta, $posted, $title_p, $id_a, $is_gener) = sql_fetch_row($re_last_post)) {
         $last_authors[$id_ta] = $id_ta;
         if ($posted !== null) {
-            $last_post[$idT_p]['info'] = Format::date($posted) . '<br />' . substr(strip_tags($title_p), 0, 15) . ' ...';
+            $last_post[$idT_p]['info'] = '<span class="last_post_date">' . Format::date($posted) . '</span> <span class="last_post_timezone">UTC</span><br />' . substr(strip_tags($title_p), 0, 15) . ' ...';
             $last_post[$idT_p]['author'] = $id_a;
             $last_authors[$id_a] = $id_a;
         }
@@ -3402,7 +3433,7 @@ function forumsearch()
         '<a href="' . $jump_url . '&amp;ord=' . ($ord == 'post' ? 'posti' : 'post') . '" title="' . $lang->def('_ORDER_BY') . '">'
         . ($ord == 'post' ? $img_up : ($ord == 'posti' ? $img_down : '')) . $lang->def('_LASTPOST') . '</a>',
     ];
-    $type_h = ['image', '', 'align_center', 'align_center', 'image',
+    $type_h = ['image', '', 'align_center', 'align_center', 'align_center',
         //'align_center',
         'align_center', ];
     if ($mod_perm) {
@@ -3444,7 +3475,7 @@ function forumsearch()
             $status = '<img src="' . getPathImage() . 'standard/msg_unread.png" alt="' . $lang->def('_UNREAD') . '" />';
             $c_css = ' class="text_bold"';
         } else {
-            $status = '<img src="' . getPathImage() . 'standard/msg_read.png" alt="' . $lang->def('_FREE') . '" />';
+            $status = '<img src="' . getPathImage() . 'standard/msg_read.png" alt="' . $lang->def('_TITLE_READ', 'message') . '" />';
         }
         $content = [$status];
         $content[] = ($erased && !$mod_perm ?
@@ -3498,7 +3529,7 @@ function forumsearchmessage()
     list($id_forum) = sql_fetch_row(sql_query($query_id_forum));
 
     if (!checkPublicForumPerm('view', $id_forum)) {
-        exit("You can't access");
+        exit($lang->def('_CANNOTENTER', 'forum'));
     }
 
     $sema_perm = checkPerm('sema', true);
@@ -3633,8 +3664,8 @@ function forumsearchmessage()
         $msgtext = '';
 
         $msgtext .= '<div class="forum_post_posted">'
-            . $lang->def('_DATE') . ' : ' . Format::date($message_info['posted'])
-            . ' ( ' . loadDistance($message_info['posted']) . ' )'
+            . $lang->def('_DATE') . ' : <span class="forum_post_date">' . Format::date($message_info['posted'])
+            . '</span> <span class="forum_post_timezone">UTC</span> ( ' . loadDistance($message_info['posted']) . ' )'
             . '</div>';
         if ($message_info['locked']) {
             $msgtext .= '<div class="forum_post_locked">' . $lang->def('_LOCKEDMESS') . '</div>';
@@ -3670,7 +3701,7 @@ function forumsearchmessage()
                         : $lang->def('_UNKNOWN_AUTHOR')
                     )
                     . ' ' . $lang->def('_ON') . ' : '
-                    . Format::date($message_info['modified_by_on'])
+                    . '<span class="forum_post_modified_date">' . Format::date($message_info['modified_by_on']) . '</span> <span class="forum_post_modified_timezone">UTC</span>'
                     . '</div>';
             }
         }
@@ -3775,6 +3806,7 @@ function forumsearchmessage()
             . '</a>'
             . '</div>', 'content');
     }
+    $GLOBALS['page']->add(formatUTCdatesasLocal(), 'content');
     $GLOBALS['page']->add(
         $tb->getNavBar($ini, $tot_message)
         . '</div>', 'content');
@@ -4482,4 +4514,37 @@ function forumDispatch($op)
             break;
         //-----------------------------------------------//
     }
+}
+
+function formatUTCdatesasLocal()
+{
+    return '
+    <script type="text/javascript">
+        $( document ).ready(function() {
+            $(".last_post_date").each(function(index) {
+                var localText = new window.frontend.modules.Moment.utc($(this).text(), "DD-MM-YYYY hh:mm").local();
+                $(this).text(localText.format("DD-MM-YYYY hh:mm"));
+            });
+            $(".last_post_timezone").each(function(index) {
+                $(this).text("");
+            });
+
+            $(".forum_post_date").each(function(index) {
+                var localText = new window.frontend.modules.Moment.utc($(this).text(), "DD-MM-YYYY hh:mm").local();
+                $(this).text(localText.format("DD-MM-YYYY hh:mm"));
+            });
+            $(".forum_post_timezone").each(function(index) {
+                $(this).text("");
+            });
+
+            $(".forum_post_modified_date").each(function(index) {
+                var localText = new window.frontend.modules.Moment.utc($(this).text(), "DD-MM-YYYY hh:mm").local();
+                $(this).text(localText.format("DD-MM-YYYY hh:mm"));
+            });
+            $(".forum_post_modified_timezone").each(function(index) {
+                $(this).text("");
+            });
+        });
+    </script>
+    ';
 }

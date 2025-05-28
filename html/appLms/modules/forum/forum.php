@@ -91,12 +91,12 @@ function getIdCourse()
 {
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
-    
+
     $idCourses = [];
 
     if(empty($idCourse)){
         $idCourse = FormaLms\lib\Request\RequestManager::getInstance()->getRequest()->get(key :'idCourse', default: 0);
-        
+
     }
     return $idCourse;
 }
@@ -115,7 +115,7 @@ function forum()
     $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     $idCourse = getIdCourse();
-    
+
     $unreadedForum = $session->get('unreaded_forum');
     // Find and set unreaded message
     loadUnreaded();
@@ -169,7 +169,7 @@ function forum()
 	WHERE f.idCourse = '" . (int) $idCourse . "'");
     while (list($idF_p, $idT_p, $posted, $title_p, $id_a) = sql_fetch_row($re_last_post)) {
         if ($posted !== null) {
-            $last_post[$idF_p]['info'] = Format::date($posted) . '<br />' . substr(strip_tags($title_p), 0, 15) . ' ...';
+            $last_post[$idF_p]['info'] = '<span class="last_post_date">' . Format::date($posted) . '</span> <span class="last_post_timezone">UTC</span><br />' . substr(strip_tags($title_p), 0, 15) . ' ...';
             $last_post[$idF_p]['author'] = $id_a;
             $last_authors[] = $id_a;
         }
@@ -447,6 +447,7 @@ function forum()
                 . '</span></a>'
                 . '</div>', 'content');
         }
+        $GLOBALS['page']->add(formatUTCdatesasLocal(), 'content');
         $GLOBALS['page']->add(
             $tb->getNavBar($ini, $tot_forum)
             . '</div>', 'content');
@@ -471,8 +472,8 @@ function addforum()
         . getBackUi('index.php?modname=forum&amp;op=forum', $lang->def('_BACK'))
         . Form::openForm('addforumform', 'index.php?modname=forum&amp;op=insforum')
         . Form::openElementSpace()
-        . Form::getTextfield($lang->def('_TITLE'), 'title', 'title', 255, $lang->def('_NOTITLE'))
-        . Form::getTextarea($lang->def('_DESCRIPTION'), 'description', 'description', $lang->def('_DESCRIPTION'))
+        . Form::getTextfield($lang->def('_TITLE'), 'title', 'title', 255, '')
+        . Form::getTextarea($lang->def('_DESCRIPTION'), 'description', 'description', '')
         . Form::openFormLine()
         //.Form::getLabel('emoticons', $lang->def('_EMOTICONS'))
         //.'<select class="dropdown" id="emoticons" name="emoticons" '.$onchange.'>'
@@ -525,7 +526,6 @@ function addforum()
 
 function insforum()
 {
-    
     checkPerm('mod');
 
     $lang = &FormaLanguage::createInstance('forum');
@@ -533,7 +533,7 @@ function insforum()
     $idCourse = getIdCourse();
 
     $undo = FormaLms\lib\Get::pReq('undo', DOTY_MIXED, false);
-    $title = FormaLms\lib\Get::pReq('title', DOTY_STRING, Lang::t('_NOTITLE'));
+    $title = FormaLms\lib\Get::pReq('title', DOTY_STRING, '');
     $description = FormaLms\lib\Get::pReq('description', DOTY_MIXED, '');
     $emoticons = FormaLms\lib\Get::pReq('emoticons', DOTY_MIXED, '');
     $maxThreads = FormaLms\lib\Get::pReq('max_threads_per_user', DOTY_INT, 0);
@@ -542,7 +542,11 @@ function insforum()
     if ($undo !== false) {
         Util::jump_to('index.php?modname=forum&op=forum');
     }
-   
+
+    if ($title == '') {
+        $title = Lang::t('_NOTITLE', 'standard');
+    }
+
     // finding sequence
     [$seq] = sql_fetch_row(sql_query("
 	SELECT MAX(sequence) + 1
@@ -563,11 +567,14 @@ function insforum()
         Util::jump_to('index.php?modname=forum&op=forum&result=err');
     }
 
-   
-   
+    if (!isset($GLOBALS['course_descriptor'])) {
+        require_once _lms_ . '/lib/lib.course.php';
+        $GLOBALS['course_descriptor'] = new FormaCourse($idCourse);
+    }
+
 	if($idCourse == 0){
-	
-    $recipients = '';
+
+        $recipients = '';
 	}else{
         $recipients = $GLOBALS['course_descriptor']->getSubscribed();
     }
@@ -687,6 +694,10 @@ function upforum()
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     if ($undo !== false) {
         Util::jump_to('index.php?modname=forum&op=forum');
+    }
+
+    if ($title == '') {
+        $title = Lang::t('_NOTITLE', 'standard');
     }
 
     $ins_query = "
@@ -996,7 +1007,7 @@ function thread()
     $ini_page = $nav_bar->getSelectedPage();
     $nav_bar->setLink($jump_url . '&amp;ord=' . $ord);
     $user_levelCurrent = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
-   
+
     [$thread_author, $privateThread] = sql_fetch_row(sql_query("
 	SELECT t.author AS thread_author, t.privateThread
 	FROM %lms_forumthread AS t LEFT JOIN
@@ -1004,8 +1015,8 @@ function thread()
 	WHERE t.idForum = '".$id_forum."'"));
 
     $currentUserId = \FormaLms\lib\FormaUser::getCurrentUser()->getId();
-    
-       
+
+
     $query_thread = "
 	SELECT t.idThread, t.author AS thread_author, t.posted, t.title, t.num_post, t.num_view, t.locked, t.erased, t.rilevantForum, t.privateThread
 	FROM %lms_forumthread AS t LEFT JOIN
@@ -1042,7 +1053,7 @@ function thread()
             break;
     }
     $query_thread .= " LIMIT $ini, " . FormaLms\lib\Get::sett('visuItem');
- 
+
 
 $re_thread = sql_query($query_thread);
     $re_last_post = sql_query("
@@ -1053,7 +1064,7 @@ $re_thread = sql_query($query_thread);
     while (list($idT_p, $id_ta, $posted, $title_p, $id_a, $is_gener) = sql_fetch_row($re_last_post)) {
         $last_authors[$id_ta] = $id_ta;
         if ($posted !== null) {
-            $last_post[$idT_p]['info'] = Format::date($posted) . '<br />' . substr(strip_tags($title_p), 0, 15) . ' ...';
+            $last_post[$idT_p]['info'] = '<span class="last_post_date">' . Format::date($posted) . '</span> <span class="last_post_timezone">UTC</span><br />' . substr(strip_tags($title_p), 0, 15) . ' ...';
             $last_post[$idT_p]['author'] = $id_a;
             $last_authors[$id_a] = $id_a;
         }
@@ -1096,7 +1107,7 @@ $re_thread = sql_query($query_thread);
         '<a href="' . $jump_url . '&amp;ord=' . ($ord == 'post' ? 'posti' : 'post') . '" title="' . $lang->def('_ORDER_BY') . '">'
         . ($ord == 'post' ? $img_up : ($ord == 'posti' ? $img_down : '')) . $lang->def('_LASTPOST') . '</a>',
     ];
-    $type_h = ['image', '', 'align_center', 'align_center', 'image',
+    $type_h = ['image', '', 'align_center', 'align_center', 'align_center',
         //'align_center',
         'align_center', ];
     if ($mod_perm) {
@@ -1138,8 +1149,8 @@ $re_thread = sql_query($query_thread);
         }
 
         $authorIsAdmin = ($user_level === ADMIN_GROUP_GODADMIN || $user_level === ADMIN_GROUP_ADMIN);
-        
-      
+
+
 
 
         if ((int) $isPrivate === 0 || ((int) $isPrivate === 1 && ($t_author === $currentUserId || $authorIsAdmin) || $moderate)) {
@@ -1198,7 +1209,7 @@ $re_thread = sql_query($query_thread);
                 $status = '<img src="' . getPathImage() . 'standard/msg_unread.png" alt="' . $lang->def('_UNREAD') . '" />';
                 $c_css = ' class="text_bold"';
             } else {
-                $status = '<img src="' . getPathImage() . 'standard/msg_read.png" alt="' . $lang->def('_FREE') . '" />';
+                $status = '<img src="' . getPathImage() . 'standard/msg_read.png" alt="' . $lang->def('_TITLE_READ', 'message') . '" />';
             }
             $content = [$status];
             $content_temp = ($erased && !$mod_perm ?
@@ -1248,6 +1259,7 @@ $re_thread = sql_query($query_thread);
             }
             $tb->addBody($content);
         }
+        $GLOBALS['page']->add(formatUTCdatesasLocal(), 'content');
     }
 
     // NOTE: If notify request register it
@@ -1504,7 +1516,7 @@ function insthread()
     }
 
     // Fix Vulnerability CVE-2023-46693
-    $_POST['title'] = FormaLms\lib\Get::filter($_POST['title'], DOTY_ALPHANUM);
+    $_POST['title'] = FormaLms\lib\Get::filter($_POST['title'], DOTY_STRING);
 
     $now = date('Y-m-d H:i:s');
     $important = importVar('important', true, '0');
@@ -1570,7 +1582,7 @@ function insthread()
  }else{
     $course_name = PUBLIC_FORUM_COURSE_NAME;
  }
-   
+
 
     addUnreadNotice($id_forum);
 
@@ -1578,20 +1590,20 @@ function insthread()
     require_once _base_ . '/lib/lib.eventmanager.php';
 
     $msg_composer = new EventMessageComposer();
-   
+
     $msg_composer->setSubjectLangText('email', '_SUBJECT_NOTIFY_THREAD', false);
     $msg_composer->setBodyLangText('email', '_NEW_THREAD_INSERT_IN_FORUM', ['[url]' => FormaLms\lib\Get::site_url(),
         '[course]' => $course_name,
         '[forum_title]' => $forum_title,
         '[thread_title]' => $_POST['title'], ]);
-      
+
     $msg_composer->setBodyLangText('sms', '_NEW_THREAD_INSERT_IN_FORUM_SMS', ['[url]' => FormaLms\lib\Get::site_url(),
         '[course]' => $course_name,
         '[forum_title]' => $forum_title,
         '[thread_title]' => $_POST['title'], ]);
-     
+
     launchNotify('forum', $id_forum, $lang->def('_NEW_THREAD'), $msg_composer);
-    
+
     Util::jump_to('index.php?modname=forum&op=message&idThread=' . $id_thread);
 }
 
@@ -1618,7 +1630,7 @@ function modthread()
     [$id_message, $title, $textof, $author] = sql_fetch_row(sql_query($mess_query));
 
     if (!$moderate && !$mod_perm && ($author != \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
-        exit("You can't access");
+        exit($lang->def('_CANNOTENTER', 'forum'));
     }
 
     // Some info about forum and thread
@@ -1698,7 +1710,7 @@ function upthread()
     }
 
     if (!$moderate && !$mod_perm && ($author != \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
-        exit("You can't access");
+        exit($lang->def('_CANNOTENTER', 'forum'));
     }
 
     [$id_forum, $locked_t, $erased_t] = sql_fetch_row(sql_query("
@@ -1902,19 +1914,31 @@ function loadDistance($date)
     $distance = (int) ($distance / 60);
     //< 1 hour print minutes
     if (($distance >= 0) && ($distance < 60)) {
-        return $distance . ' ' . Lang::t('_MINUTES');
+        return $distance . ' ' . (($distance > 1) ? Lang::t('_MINUTES') : Lang::t('_MINUTE'));
     }
 
     //minutes -> hour
     $distance = (int) ($distance / 60);
-    if (($distance >= 0) && ($distance < 60)) {
-        return $distance . ' ' . Lang::t('_HOURS');
+    if (($distance >= 0) && ($distance < 24)) {
+        return $distance . ' ' . (($distance > 1) ? Lang::t('_HOURS') : Lang::t('_HOUR'));
     }
 
     //hour -> day
     $distance = (int) ($distance / 24);
     if (($distance >= 0) && ($distance < 30)) {
-        return $distance . ' ' . Lang::t('_DAYS');
+        return $distance . ' ' . (($distance > 1) ? Lang::t('_DAYS') : Lang::t('_DAY'));
+    }
+
+    //day -> month
+    $distance = (int) ($distance / 30);
+    if (($distance >= 0) && ($distance < 12)) {
+        return $distance . ' ' . (($distance > 1) ? Lang::t('_MONTHS') : Lang::t('_MONTH'));
+    }
+
+    //month -> year
+    $distance = (int) ($distance / 12);
+    if (($distance >= 0)) {
+        return $distance . ' ' . (($distance > 1) ? Lang::t('_YEARS') : Lang::t('_YEAR'));
     }
 
     //echo > 1 month
@@ -2122,20 +2146,34 @@ function message()
 
         $msgtext .= '<a id="' . $id_message . '" name="' . $id_message . '"></a>';
 
-        $msgtext .= $lang->def('_DATE') . ' : ' . Format::date($message_info['posted'])
-            . ' ( ' . loadDistance($message_info['posted']) . ' )'
+        $strip_text = strip_tags($message_info['textof']);
+
+        if ($message_info['attach'] != '') {
+            $msgtext .= '<div class="forum_post_attach">'
+                . '<a href="index.php?modname=forum&amp;op=download&amp;id=' . $id_message . '">'
+                . $lang->def('_ATTACHMENT') . ' : '
+                . '<img src="' . getPathImage() . mimeDetect($message_info['attach']) . '" alt="' . $lang->def('_ATTACHMENT') . '" /></a>'
+                . '</div>';
+        }
+        $msgtext .= $lang->def('_DATE') . ' : <span class="forum_post_date">' . Format::date($message_info['posted'])
+            . '</span> <span class="forum_post_timezone">UTC</span> ( ' . loadDistance($message_info['posted']) . ' )'
             . '</div>';
         if ($message_info['locked']) {
             $msgtext .= '<div class="forum_post_locked">' . $lang->def('_LOCKEDMESS') . '</div>';
         } else {
-            if ($message_info['attach'] != '') {
-                $msgtext .= '<div class="forum_post_attach">'
-                    . '<a href="index.php?modname=forum&amp;op=download&amp;id=' . $id_message . '">'
-                    . $lang->def('_ATTACHMENT') . ' : '
-                    . '<img src="' . getPathImage() . mimeDetect($message_info['attach']) . '" alt="' . $lang->def('_ATTACHMENT') . '" /></a>'
-                    . '</div>';
-            }
-            $msgtext .= '<div class="forum_post_title">' . $lang->def('_SUBJECT') . ' : ' . $message_info['title'] . '</div>';
+            $msgtext .= '<div class="forum_post_title">' . $lang->def('_SUBJECT') . ' : ' . $message_info['title'];
+
+            $strip_text = strip_tags($message_info['textof']);
+            $msgtext .= '<div class="tags align-right">'
+                . $tags->showTags($id_message,
+                    'tags-',
+                    $message_info['title'],
+                    substr($strip_text, 0, 200) . (strlen($strip_text) > 200 ? '...' : ''),
+                    'index.php?modname=forum&op=message&idThread=' . $id_thread . '&ini=' . $ini_page . '#' . $id_message)
+                . '</div>';
+
+            $msgtext .= '</div>';
+
             $msgtext .= '<div class="forum_post_text">'
                 . str_replace('[quote]', '<blockquote class="forum_quote">', str_replace('[/quote]', '</blockquote>', $message_info['textof']))
                 . '</div>';
@@ -2151,18 +2189,9 @@ function message()
                         : $lang->def('_UNKNOWN_AUTHOR')
                     )
                     . ' ' . $lang->def('_ON') . ' : '
-                    . Format::date($message_info['modified_by_on'])
+                    . '<span class="forum_post_modified_date">' . Format::date($message_info['modified_by_on']) . '</span> <span class="forum_post_modified_timezone">UTC</span>'
                     . '</div>';
             }
-
-            $strip_text = strip_tags($message_info['textof']);
-            /*$msgtext .= '<div class="tags align-right">'
-                . $tags->showTags($id_message,
-                    'tags-',
-                    $message_info['title'],
-                    substr($strip_text, 0, 200) . (strlen($strip_text) > 200 ? '...' : ''),
-                    'index.php?modname=forum&op=message&idThread=' . $id_thread . '&ini=' . $ini_page . '#' . $id_message)
-                . '</div>';*/
         }
         $content = [$sender, $msgtext];
         $tb->addBody($content);
@@ -2207,6 +2236,7 @@ function message()
                 . $lang->def('_DEL') . '</a> ';
         }
         $tb->addBodyExpanded($action, 'forum_action');
+        $GLOBALS['page']->add(formatUTCdatesasLocal(), 'content');
     }
 
     $GLOBALS['page']->add(
@@ -2301,7 +2331,7 @@ function message()
 function moderatemessage()
 {
     if (!checkPerm('moderate', true) && !checkPerm('mod', true)) {
-        exit("You can't access");
+        exit(Lang::t('_CANNOTENTER', 'forum'));
     }
 
     [$id_thread, $lock] = sql_fetch_row(sql_query("
@@ -2326,7 +2356,7 @@ function moderatemessage()
 function modstatusthread()
 {
     if (!checkPerm('moderate', true) && !checkPerm('mod', true)) {
-        exit("You can't access");
+        exit(Lang::t('_CANNOTENTER', 'forum'));
     }
 
     $id_thread = importVar('idThread', true, 0);
@@ -2353,7 +2383,7 @@ function modstatusthread()
 function changeerase()
 {
     if (!checkPerm('moderate', true) && !checkPerm('mod', true)) {
-        exit("You can't access");
+        exit(Lang::t('_CANNOTENTER', 'forum'));
     }
 
     $id_thread = importVar('idThread', true, 0);
@@ -2460,8 +2490,8 @@ function showMessageForAdd($id_thread, $how_much)
         $msgtext = '';
 
         $msgtext .= '<div class="forum_post_posted">'
-            . $lang->def('_DATE') . ' : ' . Format::date($message_info['posted'])
-            . ' ( ' . loadDistance($message_info['posted']) . ' )'
+            . $lang->def('_DATE') . ' : <span class="forum_post_date">' . Format::date($message_info['posted'])
+            . '</span> <span class="forum_post_timezone">UTC</span> ( ' . loadDistance($message_info['posted']) . ' )'
             . '</div>';
         if ($message_info['locked']) {
             $msgtext .= '<div class="forum_post_locked">' . $lang->def('_LOCKEDMESS') . '</div>';
@@ -2487,6 +2517,7 @@ function showMessageForAdd($id_thread, $how_much)
         $content = [$sender, $msgtext];
         $tb->addBody($content);
     }
+    $GLOBALS['page']->add(formatUTCdatesasLocal(), 'content');
     $GLOBALS['page']->add($tb->getTable(), 'content');
 }
 
@@ -2581,7 +2612,7 @@ function addmessage()
 function insmessage()
 {
     checkPerm('write');
-   
+
     $id_thread = importVar('idThread', true, 0);
     $id_message = importVar('idMessage', true, 0);
     $ini = importVar('ini');
@@ -2594,7 +2625,7 @@ function insmessage()
     }
 
     $lang = &FormaLanguage::createInstance('forum');
-   
+
     // Some info about forum and thread
     [$id_forum, $thread_title, $locked_t, $erased_t] = sql_fetch_row(sql_query("
 	SELECT idForum, title, locked, erased
@@ -2605,7 +2636,7 @@ function insmessage()
 	FROM %lms_forum
 	WHERE idForum = '" . $id_forum . "'";
     [$forum_title] = sql_fetch_row(sql_query($forum_query));
-    
+
     $locked_f = false;
     if (!checkPerm('moderate', true)) {
         $query_view_forum = "
@@ -2642,7 +2673,7 @@ function insmessage()
     if ($locked_f || $locked_t || $erased_t && (!$mod_perm && !$moderate)) {
         Util::jump_to('index.php?modname=forum&op=message&idThread=' . $id_thread . '&amp;ini=' . $ini . '&amp;result=err_lock');
     }
-    
+
     if ($_POST['title'] == '') {
         if ($_POST['textof'] != '') {
             $_POST['title'] = substr(strip_tags($_POST['textof']), 0, 50) . (count($_POST['textof']) > 50 ? '...' : '');
@@ -2652,7 +2683,7 @@ function insmessage()
     }
 
     $now = date('Y-m-d H:i:s');
-    
+
     //save attachment
     $name_file = '';
     if ($_FILES['attach']['name'] != '' && checkPerm('upload', true)) {
@@ -2685,7 +2716,7 @@ function insmessage()
     [$new_id_message] = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
 
     addUnreadNotice($id_forum);
-    
+
     sql_query("
 	UPDATE %lms_forum
 	SET num_post = num_post + 1,
@@ -2705,7 +2736,7 @@ function insmessage()
     }else{
         $course_name = PUBLIC_FORUM_COURSE_NAME;
     }
-    
+
     $msg_composer = new EventMessageComposer();
 
     $msg_composer->setSubjectLangText('email', '_SUBJECT_NOTIFY_MESSAGE', false);
@@ -2713,7 +2744,7 @@ function insmessage()
         '[course]' => $course_name,
         '[forum_title]' => $forum_title,
         '[thread_title]' => $_POST['title'], ]);
-        
+
     $msg_composer->setBodyLangText('sms', '_NEW_MESSAGE_INSERT_IN_THREAD_SMS', ['[url]' => FormaLms\lib\Get::site_url(),
         '[course]' => $course_name,
         '[forum_title]' => $forum_title,
@@ -2747,7 +2778,7 @@ function modmessage()
     [$id_thread, $title, $textof, $author] = sql_fetch_row(sql_query($mess_query));
 
     if (!$moderate && !$mod_perm && ($author != \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
-        exit("You can't access");
+        exit($lang->def('_CANNOTENTER', 'forum'));
     }
 
     // Some info about forum and thread
@@ -2830,7 +2861,7 @@ function upmessage()
     }
 
     if (!$moderate && !$mod_perm && ($author != \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
-        exit("You can't access");
+        exit($lang->def('_CANNOTENTER', 'forum'));
     }
 
     [$id_forum, $locked_t, $erased_t] = sql_fetch_row(sql_query("
@@ -2898,7 +2929,7 @@ function delmessage()
     [$id_thread, $title, $textof, $author, $file, $answer_tree] = sql_fetch_row(sql_query($mess_query));
 
     if (!$moderate && !$mod_perm && ($author != \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
-        exit("You can't access");
+        exit($lang->def('_CANNOTENTER', 'forum'));
     }
 
     $thread_query = "
@@ -2916,7 +2947,7 @@ function delmessage()
     if (isset($_POST['undo'])) {
         Util::jump_to('index.php?modname=forum&op=message&idThread=' . $id_thread . '&amp;ini=' . $ini);
     }
-    if (isset($_GET['confirm'])) {
+    if (isset($_POST['confirm'])) {
         $new_answer_tree = substr($answer_tree, 0, -21);
         if (!sql_query("
 		UPDATE %lms_forummessage
@@ -2975,7 +3006,11 @@ function delmessage()
         $tags = new Tags('lms_forum');
         $tags->deleteResource($id_message, 'lms_forum');
 
-        Util::jump_to('index.php?modname=forum&op=message&idThread=' . $id_thread . '&amp;result=ok');
+        if($num_post == 0) {
+            Util::jump_to('index.php?modname=forum&op=thread&idForum=' . $id_forum . '&amp;result=ok');
+        } else {
+            Util::jump_to('index.php?modname=forum&op=message&idThread=' . $id_thread . '&amp;result=ok');
+        }
     } else {
         $page_title = [
             'index.php?modname=forum&amp;op=forum' => $lang->def('_FORUM'),
@@ -3169,7 +3204,7 @@ function forumsearch()
     while (list($idT_p, $id_ta, $posted, $title_p, $id_a, $is_gener) = sql_fetch_row($re_last_post)) {
         $last_authors[$id_ta] = $id_ta;
         if ($posted !== null) {
-            $last_post[$idT_p]['info'] = Format::date($posted) . '<br />' . substr(strip_tags($title_p), 0, 15) . ' ...';
+            $last_post[$idT_p]['info'] = '<span class="last_post_date">' . Format::date($posted) . '</span> <span class="last_post_timezone">UTC</span><br />' . substr(strip_tags($title_p), 0, 15) . ' ...';
             $last_post[$idT_p]['author'] = $id_a;
             $last_authors[$id_a] = $id_a;
         }
@@ -3213,7 +3248,7 @@ function forumsearch()
         '<a href="' . $jump_url . '&amp;ord=' . ($ord == 'post' ? 'posti' : 'post') . '" title="' . $lang->def('_ORDER_BY') . '">'
         . ($ord == 'post' ? $img_up : ($ord == 'posti' ? $img_down : '')) . $lang->def('_LASTPOST') . '</a>',
     ];
-    $type_h = ['image', '', 'align_center', 'align_center', 'image',
+    $type_h = ['image', '', 'align_center', 'align_center', 'align_center',
         //'align_center',
         'align_center', ];
     if ($mod_perm) {
@@ -3257,7 +3292,7 @@ function forumsearch()
             $status = '<img src="' . getPathImage() . 'standard/msg_unread.png" alt="' . $lang->def('_UNREAD') . '" />';
             $c_css = ' class="text_bold"';
         } else {
-            $status = '<img src="' . getPathImage() . 'standard/msg_read.png" alt="' . $lang->def('_FREE') . '" />';
+            $status = '<img src="' . getPathImage() . 'standard/msg_read.png" alt="' . $lang->def('_TITLE_READ') . '" />';
         }
         $content = [$status];
 
@@ -3287,6 +3322,7 @@ function forumsearch()
     }
     $GLOBALS['page']->add($tb->getTable(), 'content');
 
+    $GLOBALS['page']->add(formatUTCdatesasLocal(), 'content');
     $GLOBALS['page']->add(
         $nav_bar->getNavBar($ini)
         . '</div>', 'content');
@@ -3390,10 +3426,10 @@ function forumsearchmessage()
 
     // Retriving level and number of post of th authors
     $re_num_post = sql_query("
-	SELECT u.idUser, u.level, COUNT(*)
+        SELECT u.idUser, u.level, COUNT(*)
 	FROM %lms_forummessage AS m, %lms_courseuser AS u
-	WHERE u.idCourse = '" . (int) $idCourse . "' AND m.author = u.idUser AND m.author IN ( " . implode(',', $authors) . ' )
-	GROUP BY u.idUser, u.level');
+		WHERE u.idCourse = '" . (int) $idCourse . "' AND m.author = u.idUser AND m.author IN ( " . implode(',', $authors) . ' )
+		GROUP BY u.idUser, u.level');
     while (list($id_u, $level_u, $num_post_a) = sql_fetch_row($re_num_post)) {
         $authors_info[$id_u] = ['num_post' => $num_post_a, 'level' => $level_name[$level_u]];
     }
@@ -3437,8 +3473,8 @@ function forumsearchmessage()
         $msgtext = '';
 
         $msgtext .= '<div class="forum_post_posted">'
-            . $lang->def('_DATE') . ' : ' . Format::date($message_info['posted'])
-            . ' ( ' . loadDistance($message_info['posted']) . ' )'
+            . $lang->def('_DATE') . ' : <span class="forum_post_date">' . Format::date($message_info['posted'])
+            . '</span> <span class="forum_post_timezone">UTC</span> ( ' . loadDistance($message_info['posted']) . ' )'
             . '</div>';
         if ($message_info['locked']) {
             $msgtext .= '<div class="forum_post_locked">' . $lang->def('_LOCKEDMESS') . '</div>';
@@ -3474,7 +3510,7 @@ function forumsearchmessage()
                         : $lang->def('_UNKNOWN_AUTHOR')
                     )
                     . ' ' . $lang->def('_ON') . ' : '
-                    . Format::date($message_info['modified_by_on'])
+                    . '<span class="forum_post_modified_date">' . Format::date($message_info['modified_by_on']) . '</span> <span class="forum_post_modified_timezone">UTC</span>'
                     . '</div>';
             }
 
@@ -3569,6 +3605,7 @@ function forumsearchmessage()
             . '</a>'
             . '</div>', 'content');
     }
+    $GLOBALS['page']->add(formatUTCdatesasLocal(), 'content');
     $GLOBALS['page']->add(
         $tb->getNavBar($ini, $tot_message)
         . '</div>', 'content');
@@ -4241,4 +4278,37 @@ function forumDispatch($op)
             break;
         //-----------------------------------------------//
     }
+}
+
+function formatUTCdatesasLocal()
+{
+    return '
+    <script type="text/javascript">
+        $( document ).ready(function() {
+            $(".last_post_date").each(function(index) {
+                var localText = new window.frontend.modules.Moment.utc($(this).text(), "DD-MM-YYYY hh:mm").local();
+                $(this).text(localText.format("DD-MM-YYYY hh:mm"));
+            });
+            $(".last_post_timezone").each(function(index) {
+                $(this).text("");
+            });
+
+            $(".forum_post_date").each(function(index) {
+                var localText = new window.frontend.modules.Moment.utc($(this).text(), "DD-MM-YYYY hh:mm").local();
+                $(this).text(localText.format("DD-MM-YYYY hh:mm"));
+            });
+            $(".forum_post_timezone").each(function(index) {
+                $(this).text("");
+            });
+
+            $(".forum_post_modified_date").each(function(index) {
+                var localText = new window.frontend.modules.Moment.utc($(this).text(), "DD-MM-YYYY hh:mm").local();
+                $(this).text(localText.format("DD-MM-YYYY hh:mm"));
+            });
+            $(".forum_post_modified_timezone").each(function(index) {
+                $(this).text("");
+            });
+        });
+    </script>
+    ';
 }

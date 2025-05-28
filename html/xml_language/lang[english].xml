@@ -2314,6 +2314,10 @@ You have to confirm your account before using it.]]></key>
         <key id="report&amp;_TOTAL_SESSION" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Time]]></key>
         <key id="report&amp;_USER_CUSTOM_FIELDS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Show users fields]]></key>
         <key id="report&amp;_WARNING_REPORT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Beware, users will see the report as well as the user who generated it]]></key>
+        <key id="report&amp;_CUSTOM_ORG" attributes="" save_date="2025-03-17 12:00:00"><![CDATA[Organizational chart node fields]]></key>
+        <key id="report&amp;_GRAPHIC_REPORT" attributes="" save_date="2025-03-17 12:00:00"><![CDATA[Graphic]]></key>
+        <key id="report&amp;_CLASSROOM_FIELDS" attributes="" save_date="2025-03-17 12:00:00"><![CDATA[Date fields]]></key>
+        <key id="report&amp;_ACTIVATE_CLASSROOM_FIELDS" attributes="" save_date="2025-03-17 12:00:00"><![CDATA[Activate edition fields]]></key>
       </module>
       <module id="reservation">
         <key id="reservation&amp;_ADD_USER" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Add users]]></key>

@@ -237,13 +237,15 @@ function ioTask_UIConnectionsList(&$module)
     }
     $tb_connections->hide_over = true;
     $tb_connections->addActionAdd(
-        '<label for="type_connection">'
+        '<div class="form_line_l">'
+        . '<label for="type_connection">'
         . '<img class="valing-middle" src="' . getPathImage() . 'standard/add.png" alt="' . $lang->def('_ADD') . '" />'
         . ' ' . $lang->def('_ADD_NEW_CONNECTION') . '</label> '
-        . '<select id="type_connection" name="type_connection">'
+        . '<select id="type_connection" name="type_connection" class="form-control dropdown">'
         . $options
         . '</select> '
-        . $form->getButton('new_connection', 'action[new_connection]', $lang->def('_CREATE'), 'button_nowh')
+        . $form->getButton('new_connection', 'action[new_connection]', $lang->def('_CREATE'), 'button_nowh', (empty($options) ? 'disabled' : ''))
+        . '</div>'
     );
 
     $out->add($tb_connections->getTable());

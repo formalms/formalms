@@ -546,7 +546,7 @@ class Form
    
 
     /**
-     * public static function getLineTextfield( $css_line, $css_label, $label_name, $css_text, $id, $name, $value, $alt_name, $maxlenght, $other_param, $other_after, $other_before ).
+     * public static function getLineDatefield( $css_line, $css_label, $label_name, $css_text, $id, $name, $value, $alt_name, $maxlenght, $other_param, $other_after, $other_before ).
      *
      * @param string $css_line     css for the line
      * @param string $css_label    css for the label

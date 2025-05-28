@@ -137,7 +137,7 @@ class FunctionalrolesAdmController extends AdmController
                 }
 
                 $group_name = $record->id_group <= 0
-                    ? '<i>(' . Lang::t('NONE', 'fncroles') . ')</i>'
+                    ? '<i>(' . Lang::t('_NONE', 'fncroles') . ')</i>'
                     : Layout::highlight($record->group_name, $filter_text);
 
                 //prepare output record

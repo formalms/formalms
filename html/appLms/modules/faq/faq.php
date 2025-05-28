@@ -119,8 +119,8 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         . Form::openElementSpace()
         . Form::getHidden('back_url', 'back_url', htmlentities(urlencode($object_faq->back_url)))
 
-        . Form::getTextfield($lang->def('_TITLE'), 'title', 'title', 255, $lang->def('_TITLE'))
-        . Form::getTextarea($lang->def('_DESCRIPTION'), 'description', 'description', $lang->def('_DESCRIPTION'))
+        . Form::getTextfield($lang->def('_TITLE'), 'title', 'title', 255, '')
+        . Form::getTextarea($lang->def('_DESCRIPTION'), 'description', 'description', '')
         . Form::closeElementSpace()
         . Form::openButtonSpace()
         . Form::getButton('addfaq', 'addfaq', $lang->def('_INSERT'))

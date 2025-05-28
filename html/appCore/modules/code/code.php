@@ -34,8 +34,8 @@ function groupCodeList()
 
     if (isset($_GET['activation'])) {
         $query = 'UPDATE ' . $GLOBALS['prefix_fw'] . '_setting'
-                . " SET param_value = 'on'"
-                . " WHERE param_name = 'use_code_module'";
+            . " SET param_value = 'on'"
+            . " WHERE param_name = 'use_code_module'";
 
         if (sql_query($query)) {
             Util::jump_to('index.php?modname=code&amp;op=list&result=ok');
@@ -69,10 +69,10 @@ function groupCodeList()
             FormaLms\lib\Get::sprite('subs_csv', Lang::t('_CODE', 'course')),
             FormaLms\lib\Get::sprite('subs_add', Lang::t('_GENERATE_CODE', 'course')),
             FormaLms\lib\Get::sprite('subs_import', Lang::t('_IMPORT', 'course')),
-            FormaLms\lib\Get::sprite('subs_elem', Lang::t('_COURSES', 'course')),
+            FormaLms\lib\Get::sprite('subs_elem', Lang::t('_ASSIGN_COURSES', 'course')),
             FormaLms\lib\Get::sprite('subs_users', Lang::t('_ASSIGN_USERS', 'course')),
             FormaLms\lib\Get::sprite('subs_mod', Lang::t('_MOD', 'course')),
-            FormaLms\lib\Get::sprite('subs_del', Lang::t('_DEL', 'course')), ];
+            FormaLms\lib\Get::sprite('subs_del', Lang::t('_DEL', 'course')),];
 
         $type_h = ['', '', 'min-cell', 'image', 'image', 'image', 'image', 'image', 'image', 'image'];
 
@@ -96,7 +96,7 @@ function groupCodeList()
 
             $cont[] = '<a href="index.php?modname=code&amp;op=import_code&amp;id_code_group=' . $group_code_info['id_code_group'] . '">' . FormaLms\lib\Get::sprite('subs_import', Lang::t('_IMPORT', 'course')) . '</a>';
 
-            $cont[] = '<a href="index.php?modname=code&amp;op=assign_course&amp;id_code_group=' . $group_code_info['id_code_group'] . '">' . FormaLms\lib\Get::sprite('subs_elem' . ($group_code_info['course_associated'] ? '' : '_grey'), Lang::t('_COURSES', 'course')) . '</a>';
+            $cont[] = '<a href="index.php?modname=code&amp;op=assign_course&amp;id_code_group=' . $group_code_info['id_code_group'] . '">' . FormaLms\lib\Get::sprite('subs_elem' . ($group_code_info['course_associated'] ? '' : '_grey'), Lang::t('_ASSIGN_COURSES', 'course')) . '</a>';
 
             $cont[] = '<a href="index.php?modname=code&amp;op=assign_tree&amp;id_code_group=' . $group_code_info['id_code_group'] . '">' . FormaLms\lib\Get::sprite('subs_users' . ($group_code_info['folder_associated'] ? '' : '_grey'), Lang::t('_ASSIGN_USERS', 'course')) . '</a>';
 
@@ -107,18 +107,18 @@ function groupCodeList()
             $tb->addBody($cont);
         }
 
-        $tb->addActionAdd('<a href="index.php?modname=code&amp;op=add_group_code">'
-                . '<img src="' . getPathImage() . 'standard/add.png" alt="' . $lang->def('_ADD') . '" />' . $lang->def('_ADD') . '</a>');
+        $tb->addActionAdd('<a class="ico-wt-sprite subs_add" title="' . $lang->def('_ADD') . '" href="index.php?modname=code&amp;op=add_group_code">'
+            . '<span>' . $lang->def('_ADD') . '</span></a>');
 
         cout($tb->getTable()
-                . $tb->getNavBar($ini, $tot_group_code));
+            . $tb->getNavBar($ini, $tot_group_code));
 
         setupHrefDialogBox('a[href*=del_group_code]');
     } else {
         cout($lang->def('_NO_CONTENT')
-                . '<br/>'
-                . '<a href="index.php?modname=code&amp;op=add_group_code">'
-                . '<img src="' . getPathImage() . 'standard/add.png" alt="' . $lang->def('_ADD') . '" />' . $lang->def('_ADD') . '</a>');
+            . '<br/>'
+            . '<a class="ico-wt-sprite subs_add" title="' . $lang->def('_ADD') . '" href="index.php?modname=code&amp;op=add_group_code">'
+            . '<span>' . $lang->def('_ADD') . '</span></a>');
     }
 
     cout('</div>');
@@ -133,8 +133,8 @@ function addGroupCode()
     $code_manager = new CodeManager();
 
     cout(getTitleArea(['index.php?modname=code&amp;op=list' => $lang->def('_CODE'),
-                $lang->def('_ADD'), ])
-            . '<div class="std_block">');
+            $lang->def('_ADD'),])
+        . '<div class="std_block">');
 
     if (FormaLms\lib\Get::req('confirm', DOTY_MIXED, '')) {
         $title = addslashes(FormaLms\lib\Get::req('title', DOTY_MIXED, ''));
@@ -147,15 +147,15 @@ function addGroupCode()
     }
 
     cout(Form::openForm('add_group_code_form', 'index.php?modname=code&amp;op=add_group_code')
-            . Form::openElementSpace()
-            . Form::getTextField($lang->def('_TITLE'), 'title', 'title', '255')
-            . Form::getSimpleTextarea($lang->def('_DESCRIPTION'), 'description', 'description')
-            . Form::closeElementSPace()
-            . Form::openButtonSpace()
-            . Form::getButton('confirm', 'confirm', $lang->def('_INSERT'))
-            . Form::getButton('undo_group', 'undo_group', $lang->def('_UNDO'))
-            . Form::closeButtonSpace()
-            . '</div>');
+        . Form::openElementSpace()
+        . Form::getTextField($lang->def('_TITLE'), 'title', 'title', '255')
+        . Form::getSimpleTextarea($lang->def('_DESCRIPTION'), 'description', 'description')
+        . Form::closeElementSPace()
+        . Form::openButtonSpace()
+        . Form::getButton('confirm', 'confirm', $lang->def('_INSERT'))
+        . Form::getButton('undo_group', 'undo_group', $lang->def('_UNDO'))
+        . Form::closeButtonSpace()
+        . '</div>');
 }
 
 function modGroupCode()
@@ -169,8 +169,8 @@ function modGroupCode()
     $code_manager = new CodeManager();
 
     cout(getTitleArea(['index.php?modname=code&amp;op=list' => $lang->def('_CODE'),
-                $lang->def('_MOD'), ])
-            . '<div class="std_block">');
+            $lang->def('_MOD'),])
+        . '<div class="std_block">');
 
     if (FormaLms\lib\Get::req('confirm', DOTY_MIXED, '')) {
         $title = addslashes(FormaLms\lib\Get::req('title', DOTY_MIXED, ''));
@@ -185,16 +185,16 @@ function modGroupCode()
     $group_code_info = $code_manager->getCodeGroupInfo($id_code_group);
 
     cout(Form::openForm('mod_group_code_form', 'index.php?modname=code&amp;op=mod_group_code')
-            . Form::openElementSpace()
-            . Form::getTextField($lang->def('_TITLE'), 'title', 'title', '255', $group_code_info['title'])
-            . Form::getSimpleTextarea($lang->def('_DESCRIPTION'), 'description', 'description', $group_code_info['description'])
-            . Form::getHidden('id_code_group', 'id_code_group', $id_code_group)
-            . Form::closeElementSPace()
-            . Form::openButtonSpace()
-            . Form::getButton('confirm', 'confirm', $lang->def('_MOD'))
-            . Form::getButton('undo_group', 'undo_group', $lang->def('_UNDO'))
-            . Form::closeButtonSpace()
-            . '</div>');
+        . Form::openElementSpace()
+        . Form::getTextField($lang->def('_TITLE'), 'title', 'title', '255', $group_code_info['title'])
+        . Form::getSimpleTextarea($lang->def('_DESCRIPTION'), 'description', 'description', $group_code_info['description'])
+        . Form::getHidden('id_code_group', 'id_code_group', $id_code_group)
+        . Form::closeElementSPace()
+        . Form::openButtonSpace()
+        . Form::getButton('confirm', 'confirm', $lang->def('_MOD'))
+        . Form::getButton('undo_group', 'undo_group', $lang->def('_UNDO'))
+        . Form::closeButtonSpace()
+        . '</div>');
 }
 
 function delGroupCode()
@@ -225,20 +225,20 @@ function codeList()
     $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     cout(getTitleArea(['index.php?modname=code&amp;op=list' => $lang->def('_CODE'),
-                $lang->def('_CODE_LIST'), ])
-            . '<div class="std_block">');
+            $lang->def('_CODE_LIST'),])
+        . '<div class="std_block">');
 
     if (isset($_POST['undo_filter'])) {
         unset($_POST['code_filter']);
     }
 
     cout('<div class="quick_search_form">'
-            . Form::openForm('code_list_filter', 'index.php?modname=code&amp;op=code_list&amp;id_code_group=' . $id_code_group)
-            . Form::getInputTextfield('search_t', 'code_filter', 'code_filter', (isset($_POST['code_filter']) ? $_POST['code_filter'] : ''), 255, '')
-            . Form::getButton('filter', 'filter', Lang::t('_SEARCH', 'standard'), 'search_b')
-            . Form::getButton('undo_filter', 'undo_filter', Lang::t('_RESET', 'standard'), 'reset_b')
-            . Form::closeForm()
-            . '</div>');
+        . Form::openForm('code_list_filter', 'index.php?modname=code&amp;op=code_list&amp;id_code_group=' . $id_code_group)
+        . Form::getInputTextfield('search_t', 'code_filter', 'code_filter', (isset($_POST['code_filter']) ? $_POST['code_filter'] : ''), '', 255, 'placeholder="' . Lang::t('_SEARCH', 'standard') . '"')
+        . Form::getButton('filter', 'filter', Lang::t('_SEARCH', 'standard'), 'search_b')
+        . Form::getButton('undo_filter', 'undo_filter', Lang::t('_RESET', 'standard'), 'reset_b')
+        . Form::closeForm()
+        . '</div>');
     $result = FormaLms\lib\Get::req('result', DOTY_STRING, '');
 
     switch ($result) {
@@ -252,6 +252,10 @@ function codeList()
 
         case 'err_dup':
             UIFeedback::error($lang->def('_DUPLICATED_CODE'));
+            break;
+
+        case 'err_empty':
+            UIFeedback::error($lang->def('_EMPTY_CODE'));
             break;
     }
 
@@ -269,7 +273,7 @@ function codeList()
             $lang->def('_USERNAME'),
             $lang->def('_UNLIMITED_USE'),
             '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . '" />',
-            '<img src="' . getPathImage() . 'standard/delete.png" alt="' . $lang->def('_DEL') . '" />', ];
+            '<img src="' . getPathImage() . 'standard/delete.png" alt="' . $lang->def('_DEL') . '" />',];
 
         $type_h = ['', 'image', '', 'image', 'image', 'image'];
 
@@ -313,40 +317,40 @@ function codeList()
                 }
 
                 $cont[] = '<a href="index.php?modname=code&amp;op=mod_code&amp;id_code_group=' . $id_code_group . '&amp;code=' . $code_info['code'] . '">'
-                        . '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . '" />';
+                    . '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . '" />';
             }
 
             $cont[] = '<a href="index.php?modname=code&amp;op=del_code&amp;id_code_group=' . $id_code_group . '&amp;code=' . $code_info['code'] . '">'
-                    . '<img src="' . getPathImage() . 'standard/delete.png" alt="' . $lang->def('_DEL') . '" />';
+                . '<img src="' . getPathImage() . 'standard/delete.png" alt="' . $lang->def('_DEL') . '" />';
 
             $tb->addBody($cont);
         }
 
-        $tb->addActionAdd('<a href="index.php?modname=code&amp;op=add_code&amp;id_code_group=' . $id_code_group . '">'
-                . '<img src="' . getPathImage() . 'standard/add.png" alt="' . $lang->def('_ADD') . '" />' . $lang->def('_ADD') . '</a>');
+        $tb->addActionAdd('<a class="ico-wt-sprite subs_add" title="' . $lang->def('_ADD') . '" href="index.php?modname=code&amp;op=add_code&amp;id_code_group=' . $id_code_group . '">'
+            . '<span>' . $lang->def('_ADD') . '</span></a>');
 
         $tb->addActionAdd('<a class="ico-wt-sprite subs_xls" title="' . Lang::t('_EXPORT_XLS', 'report') . '" '
-                . 'href="index.php?modname=code&amp;op=export&amp;id_code_group=' . $id_code_group . '&amp;format=xls">'
-                . '<span>' . Lang::t('_EXPORT_XLS', 'report') . '</span></a>');
+            . 'href="index.php?modname=code&amp;op=export&amp;id_code_group=' . $id_code_group . '&amp;format=xls">'
+            . '<span>' . Lang::t('_EXPORT_XLS', 'report') . '</span></a>');
 
         $tb->addActionAdd('<a class="ico-wt-sprite subs_csv" title="' . Lang::t('_EXPORT_CSV', 'report') . '" '
-                . 'href="index.php?modname=code&amp;op=export&amp;id_code_group=' . $id_code_group . '&amp;format=csv">'
-                . '<span>' . Lang::t('_EXPORT_CSV', 'report') . '</span></a>');
+            . 'href="index.php?modname=code&amp;op=export&amp;id_code_group=' . $id_code_group . '&amp;format=csv">'
+            . '<span>' . Lang::t('_EXPORT_CSV', 'report') . '</span></a>');
 
         cout($tb->getTable()
-                . $tb->getNavBar($ini, $tot_code));
+            . $tb->getNavBar($ini, $tot_code));
 
         setupHrefDialogBox('a[href*=del_code]');
     } else {
         cout($lang->def('_NO_CODE_FOUND')
-                . '<br/>'
-                . '<a href="index.php?modname=code&amp;op=add_code&amp;id_code_group=' . $id_code_group . '">'
-                . '<img src="' . getPathImage() . 'standard/add.png" alt="' . $lang->def('_ADD') . '" />' . $lang->def('_ADD') . '</a>');
+            . '<br/>'
+            . '<a class="ico-wt-sprite subs_add" title="' . $lang->def('_ADD') . '" href="index.php?modname=code&amp;op=add_code&amp;id_code_group=' . $id_code_group . '">'
+            . '<span>' . $lang->def('_ADD') . '</span></a>');
     }
 
     cout('<br/><br/>'
-            . getBackUi('index.php?modname=code&amp;op=list', $lang->def('_BACK'))
-            . '</div>');
+        . getBackUi('index.php?modname=code&amp;op=list', $lang->def('_BACK'))
+        . '</div>');
 }
 
 function addCode()
@@ -360,9 +364,9 @@ function addCode()
     $id_code_group = FormaLms\lib\Get::req('id_code_group', DOTY_INT, '0');
 
     cout(getTitleArea(['index.php?modname=code&amp;op=list' => $lang->def('_CODE'),
-                'index.php?modname=code&amp;op=code_list&amp;id_code_group=' . $id_code_group => $lang->def('_CODE_LIST'),
-                $lang->def('_ADD'), ])
-            . '<div class="std_block">');
+            'index.php?modname=code&amp;op=code_list&amp;id_code_group=' . $id_code_group => $lang->def('_CODE_LIST'),
+            $lang->def('_ADD'),])
+        . '<div class="std_block">');
 
     if (FormaLms\lib\Get::req('confirm', DOTY_MIXED, '')) {
         $code = addslashes(FormaLms\lib\Get::req('code', DOTY_MIXED, ''));
@@ -370,25 +374,34 @@ function addCode()
 
         $result = $code_manager->addCode($code, $id_code_group, $unlimited_use);
 
-        if ($result && $result !== 'dup') {
-            Util::jump_to('index.php?modname=code&amp;op=code_list&id_code_group=' . $id_code_group . '&result=ok');
-        } elseif ($result === 'dup') {
-            Util::jump_to('index.php?modname=code&amp;op=code_list&id_code_group=' . $id_code_group . '&result=err_dup');
+        $resultString = 'err';
+        if ($result) {
+            switch ($result) {
+                case 'dup':
+                    $resultString = 'err_dup';
+                    break;
+                case 'empty':
+                    $resultString = 'err_empty';
+                    break;
+                default:
+                    $resultString = 'ok';
+                    break;
+            }
         }
-        Util::jump_to('index.php?modname=code&amp;op=code_list&id_code_group=' . $id_code_group . '&result=err');
+        Util::jump_to('index.php?modname=code&amp;op=code_list&id_code_group=' . $id_code_group . '&result=' . $resultString);
     }
 
     cout(Form::openForm('add_group_code_form', 'index.php?modname=code&amp;op=add_code')
-            . Form::openElementSpace()
-            . Form::getTextField($lang->def('_CODE'), 'code', 'code', '255')
-            . Form::getCheckbox($lang->def('_UNLIMITED_USE'), 'unlimited_use', 'unlimited_use', true)
-            . Form::getHidden('id_code_group', 'id_code_group', $id_code_group)
-            . Form::closeElementSPace()
-            . Form::openButtonSpace()
-            . Form::getButton('confirm', 'confirm', $lang->def('_INSERT'))
-            . Form::getButton('undo_code', 'undo_code', $lang->def('_UNDO'))
-            . Form::closeButtonSpace()
-            . '</div>');
+        . Form::openElementSpace()
+        . Form::getTextField($lang->def('_CODE'), 'code', 'code', '255')
+        . Form::getCheckbox($lang->def('_UNLIMITED_USE'), 'unlimited_use', 'unlimited_use', true)
+        . Form::getHidden('id_code_group', 'id_code_group', $id_code_group)
+        . Form::closeElementSPace()
+        . Form::openButtonSpace()
+        . Form::getButton('confirm', 'confirm', $lang->def('_INSERT'))
+        . Form::getButton('undo_code', 'undo_code', $lang->def('_UNDO'))
+        . Form::closeButtonSpace()
+        . '</div>');
 }
 
 function modCode()
@@ -404,9 +417,9 @@ function modCode()
     $is_unlimited = $code_manager->codeIsUnlimited($code);
 
     cout(getTitleArea(['index.php?modname=code&amp;op=list' => $lang->def('_CODE'),
-                'index.php?modname=code&amp;op=code_list&amp;id_code_group=' . $id_code_group => $lang->def('_CODE_LIST'),
-                $lang->def('_MOD'), ])
-            . '<div class="std_block">');
+            'index.php?modname=code&amp;op=code_list&amp;id_code_group=' . $id_code_group => $lang->def('_CODE_LIST'),
+            $lang->def('_MOD'),])
+        . '<div class="std_block">');
 
     if (FormaLms\lib\Get::req('confirm', DOTY_MIXED, '')) {
         $code = addslashes(FormaLms\lib\Get::req('code', DOTY_MIXED, ''));
@@ -424,17 +437,17 @@ function modCode()
     }
 
     cout(Form::openForm('add_group_code_form', 'index.php?modname=code&amp;op=mod_code')
-            . Form::openElementSpace()
-            . Form::getTextField($lang->def('_CODE'), 'code', 'code', '255', $code)
-            . Form::getCheckbox($lang->def('_UNLIMITED_USE'), 'unlimited_use', 'unlimited_use', true, $is_unlimited)
-            . Form::getHidden('old_code', 'old_code', $code)
-            . Form::getHidden('id_code_group', 'id_code_group', $id_code_group)
-            . Form::closeElementSPace()
-            . Form::openButtonSpace()
-            . Form::getButton('confirm', 'confirm', $lang->def('_MOD'))
-            . Form::getButton('undo_code', 'undo_code', $lang->def('_UNDO'))
-            . Form::closeButtonSpace()
-            . '</div>');
+        . Form::openElementSpace()
+        . Form::getTextField($lang->def('_CODE'), 'code', 'code', '255', $code)
+        . Form::getCheckbox($lang->def('_UNLIMITED_USE'), 'unlimited_use', 'unlimited_use', true, $is_unlimited)
+        . Form::getHidden('old_code', 'old_code', $code)
+        . Form::getHidden('id_code_group', 'id_code_group', $id_code_group)
+        . Form::closeElementSPace()
+        . Form::openButtonSpace()
+        . Form::getButton('confirm', 'confirm', $lang->def('_MOD'))
+        . Form::getButton('undo_code', 'undo_code', $lang->def('_UNDO'))
+        . Form::closeButtonSpace()
+        . '</div>');
 }
 
 function delCode()
@@ -480,18 +493,18 @@ function assignCourse()
     $selector->resetSelection($array_course_associated);
 
     cout(getTitleArea(['index.php?modname=code&amp;op=list' => $lang->def('_CODE'),
-                $lang->def('_COURSES'), ])
-            . '<div class="std_block">');
+            $lang->def('_COURSES'),])
+        . '<div class="std_block">');
 
     $selector->parseForState($_POST);
 
     cout(Form::openForm('add_group_code_form', 'index.php?modname=code&amp;op=assign_course&amp;id_code_group=' . $id_code_group)
-            . $selector->loadCourseSelector(true));
+        . $selector->loadCourseSelector(true));
 
     cout(Form::openButtonSpace()
-            . Form::getButton('confirm', 'confirm', $lang->def('_INSERT'))
-            . Form::getButton('undo_group', 'undo_group', $lang->def('_UNDO'))
-            . Form::closeButtonSpace());
+        . Form::getButton('confirm', 'confirm', $lang->def('_INSERT'))
+        . Form::getButton('undo_group', 'undo_group', $lang->def('_UNDO'))
+        . Form::closeButtonSpace());
 
     cout('</div>');
 }
@@ -541,28 +554,28 @@ function importCode_step1()
     $id_code_group = FormaLms\lib\Get::req('id_code_group', DOTY_INT, '0');
 
     cout(getTitleArea(['index.php?modname=code&amp;op=list' => $lang->def('_CODE'),
-                $lang->def('_IMPORT'), ])
-            . '<div class="std_block">');
+            $lang->def('_IMPORT'),])
+        . '<div class="std_block">');
 
     $lang = &FormaLanguage::createInstance('admin_directory', 'framework');
 
     cout(Form::openForm('directory_importgroupuser',
-                    'index.php?modname=code&amp;op=import_code_2',
-                    false,
-                    false,
-                    'multipart/form-data'));
+        'index.php?modname=code&amp;op=import_code_2',
+        false,
+        false,
+        'multipart/form-data'));
 
     cout(Form::getFilefield($lang->def('_GROUP_USER_IMPORT_FILE'), 'file_import', 'file_import')
-            //.Form::getTextfield($lang->def('_GROUP_USER_IMPORT_SEPARATOR'), 'import_separator', 'import_separator', 1, ',')
-            . Form::getCheckbox($lang->def('_GROUP_USER_IMPORT_HEADER'), 'import_first_row_header', 'import_first_row_header', 'true')
-            . Form::getTextfield($lang->def('_GROUP_USER_IMPORT_CHARSET'), 'import_charset', 'import_charset', 20, 'UTF-8')
-            . Form::getHidden('id_code_group', 'id_code_group', $id_code_group)
-            . Form::closeElementSpace()
-            . Form::openButtonSpace()
-            . Form::getButton('import_code_2', 'import_code_2', $lang->def('_IMPORT'))
-            . Form::getButton('undo_group', 'undo_group', $lang->def('_UNDO'))
-            . Form::closeButtonSpace()
-            . Form::closeForm());
+        //.Form::getTextfield($lang->def('_GROUP_USER_IMPORT_SEPARATOR'), 'import_separator', 'import_separator', 1, ',')
+        . Form::getCheckbox($lang->def('_GROUP_USER_IMPORT_HEADER'), 'import_first_row_header', 'import_first_row_header', 'true')
+        . Form::getTextfield($lang->def('_GROUP_USER_IMPORT_CHARSET'), 'import_charset', 'import_charset', 20, 'UTF-8')
+        . Form::getHidden('id_code_group', 'id_code_group', $id_code_group)
+        . Form::closeElementSpace()
+        . Form::openButtonSpace()
+        . Form::getButton('import_code_2', 'import_code_2', $lang->def('_IMPORT'))
+        . Form::getButton('undo_group', 'undo_group', $lang->def('_UNDO'))
+        . Form::closeButtonSpace()
+        . Form::closeForm());
 
     cout('</div>');
 }
@@ -602,7 +615,7 @@ function importCode_step2()
     $id_code_group = FormaLms\lib\Get::req('id_code_group', DOTY_INT, '0');
 
     cout(getTitleArea($lang->def('_CODE'))
-            . '<div class="std_block">');
+        . '<div class="std_block">');
 
     $separator = FormaLms\lib\Get::req('import_separator', DOTY_MIXED, ',');
     $first_row_header = isset($_POST['import_first_row_header']) ? ($_POST['import_first_row_header'] == 'true') : false;
@@ -612,9 +625,9 @@ function importCode_step2()
     }
 
     $src = new DeceboImport_SourceCSV(['filename' => _files_ . $path . $savefile,
-                'separator' => $separator,
-                'first_row_header' => $first_row_header,
-                'import_charset' => $import_charset, ]);
+        'separator' => $separator,
+        'first_row_header' => $first_row_header,
+        'import_charset' => $import_charset,]);
 
     $src->connect();
 
@@ -660,13 +673,13 @@ function importCode_step2()
     sl_close_fileoperations();
 
     cout(getBackUi('index.php?modname=code&amp;op=list', $lang->def('_BACK'))
-            . '<br/>'
-            . $lang->def('_CODE_ADDED') . ' : ' . count($code_added)
-            . '<br/>'
-            . $lang->def('_CODE_PRESENT') . ' : ' . count($code_present)
-            . '<br/>'
-            . $lang->def('_CODE_ERROR') . ' : ' . count($code_error)
-            . '<br/>');
+        . '<br/>'
+        . $lang->def('_CODE_ADDED') . ' : ' . count($code_added)
+        . '<br/>'
+        . $lang->def('_CODE_PRESENT') . ' : ' . count($code_present)
+        . '<br/>'
+        . $lang->def('_CODE_ERROR') . ' : ' . count($code_error)
+        . '<br/>');
 
     if (count($code_present)) {
         $tb = new Table(false, $lang->def('_CODE_PRESENT'), $lang->def('_CODE_PRESENT'));
@@ -709,7 +722,7 @@ function importCode_step2()
     }
 
     cout(getBackUi('index.php?modname=code&amp;op=list', $lang->def('_BACK'))
-            . '</div>');
+        . '</div>');
 }
 
 function generateCode()
@@ -720,25 +733,25 @@ function generateCode()
     $id_code_group = FormaLms\lib\Get::req('id_code_group', DOTY_INT, 0);
 
     cout(getTitleArea(Lang::t('_CODE', 'code'))
-            . '<div class="std_block">');
+        . '<div class="std_block">');
 
     switch ($step) {
         case 1:
             cout(Form::openForm('code_generation_step_1', 'index.php?modname=code&amp;op=generate_code&amp;step=2')
-                    . Form::getHidden('id_code_group', 'id_code_group', $id_code_group)
-                    . Form::openElementSpace()
-                    . Form::getTextfield(Lang::t('_HOW_MANY', 'code'), 'code_number', 'code_number', 255, '')
-                    . Form::getCheckbox(Lang::t('_UNLIMITED_USE', 'code'), 'unlimited_use', 'unlimited_use', '1')
-                    . '<br />'
-                    . Form::getCheckbox('0-9', 'use_number', 'use_number', '1', true)
-                    . Form::getCheckbox('a-z', 'use_low_letter', 'use_low_letter', '1', true)
-                    . Form::getCheckbox('A-Z', 'use_high_letter', 'use_high_letter', '1', true)
-                    . Form::closeElementSpace()
-                    . Form::openButtonSpace()
-                    . Form::getButton('generate', 'generate', Lang::t('_GENERATE', 'code'))
-                    . Form::getButton('undo_group', 'undo_group', Lang::t('_UNDO', 'code'))
-                    . Form::closeButtonSpace()
-                    . Form::closeForm());
+                . Form::getHidden('id_code_group', 'id_code_group', $id_code_group)
+                . Form::openElementSpace()
+                . Form::getTextfield(Lang::t('_HOW_MANY', 'code'), 'code_number', 'code_number', 255, '')
+                . Form::getCheckbox(Lang::t('_UNLIMITED_USE', 'code'), 'unlimited_use', 'unlimited_use', '1')
+                . '<br />'
+                . Form::getCheckbox('0-9', 'use_number', 'use_number', '1', true)
+                . Form::getCheckbox('a-z', 'use_low_letter', 'use_low_letter', '1', true)
+                . Form::getCheckbox('A-Z', 'use_high_letter', 'use_high_letter', '1', true)
+                . Form::closeElementSpace()
+                . Form::openButtonSpace()
+                . Form::getButton('generate', 'generate', Lang::t('_GENERATE', 'code'))
+                . Form::getButton('undo_group', 'undo_group', Lang::t('_UNDO', 'code'))
+                . Form::closeButtonSpace()
+                . Form::closeForm());
             break;
 
         case 2:

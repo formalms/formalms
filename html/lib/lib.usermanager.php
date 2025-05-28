@@ -1065,13 +1065,9 @@ class UserManagerRenderer
             'password' => FormaLms\lib\Get::req('login_pwd', DOTY_STRING),
         ];
 
-        $all_languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
-
         $info['lang'] = FormaLms\lib\Get::req('login_lang', DOTY_STRING, Lang::get());
         if ($info['lang'] === 'default') {
             $info['lang'] = false;
-        } else {
-            $info['lang'] = $all_languages[$info['lang']];
         }
 
         /*if (!isset($_POST['login_lang'])) $info['lang'] = false;
@@ -2309,7 +2305,7 @@ class UserManagerRenderer
         $request = $acl_man->getTempUserInfo(false, $random_code);
 
         if (time() > (fromDatetimeToTimestamp($request['request_on']) + (3600 * (int) $options['hour_request_limit']))) {
-            $out = '<div class="reg_err_data">' . $lang->def('_REG_ELAPSEDREQUEST', 'register') . '</div>';
+            $out = '<div class="reg_err_data"><p>' . $lang->def('_REG_ELAPSEDREQUEST', 'register') . '</p></div>';
             $time_limit = time() - 3600 * ((int) $options['hour_request_limit']);
 
             if (FormaLms\lib\Get::sett('registration_code_type', '0') == 'code_module') {
@@ -2397,11 +2393,11 @@ class UserManagerRenderer
                 }
                 // end
 
-                $out = '<div class="reg_success">' . $lang->def('_REG_YOUR_ABI_TO_ACCESS', 'register') . '</div>';
+                $out = '<div class="reg_success"><p>' . $lang->def('_REG_YOUR_ABI_TO_ACCESS', 'register') . '</p></div>';
 
                 return $out;
             } else {
-                $out = '<div class="reg_err_data">' . $lang->def('_REG_CONFIRM_FAILED', 'register') . '</div>';
+                $out = '<div class="reg_err_data"><p>' . $lang->def('_REG_CONFIRM_FAILED', 'register') . '</p></div>';
 
                 return $out;
             }
@@ -2444,7 +2440,7 @@ class UserManagerRenderer
                     }
                 }
 
-                $out = '<div class="reg_success">' . Lang::t('_REG_WAIT_FOR_ADMIN_OK', 'register') . '</div>';
+                $out = '<div class="reg_success"><p>' . Lang::t('_REG_WAIT_FOR_ADMIN_OK', 'register') . '</p></div>';
                 // send alert to admin that can approve
                 require_once _base_ . '/lib/lib.eventmanager.php';
 
@@ -2473,7 +2469,7 @@ class UserManagerRenderer
 
                 return $out;
             } else {
-                $out = '<div class="reg_err_data">' . $lang->def('_REG_CONFIRM_FAILED', 'register') . '</div>';
+                $out = '<div class="reg_err_data"><p>' . $lang->def('_REG_CONFIRM_FAILED', 'register') . '</p></div>';
 
                 return $out;
             }

@@ -46,7 +46,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         . '<div class="mod_container">'
         . '<a href="index.php?modname=link&amp;op=modlinkcat&amp;idCategory=' . $object_link->getId()
             . '&amp;back_url=' . $back_coded . '" title="' . $lang->def('_MOD_TITLE') . '">'
-        . '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . '" /> ' . $lang->def('_MOD_TITLE') . '</a>'
+        . '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . '" style="margin-right: 4px;" />' . $lang->def('_MOD_TITLE') . '</a>'
         . '</div><br />', 'content');
         $tableCat = new Table(0, '', $lang->def('_SUMMARY_LINK'));
 
@@ -89,7 +89,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 
         $tableCat->addActionAdd('<a href="index.php?modname=link&amp;op=newlink&amp;idCategory='
             . $object_link->getId() . '&amp;back_url=' . $back_coded . '" title="' . $lang->def('_ADDLINKT') . '">'
-            . '<img src="' . getPathImage() . 'standard/add.png" alt="' . $lang->def('_ADD') . '" /> ' . $lang->def('_ADDLINK') . '</a>');
+            . '<img src="' . getPathImage() . 'standard/add.png" alt="' . $lang->def('_ADD') . '" />' . $lang->def('_ADDLINK') . '</a>');
 
         $GLOBALS['page']->add($tableCat->getTable()
         . '<span class="text_bold text_little">[ '
@@ -111,8 +111,8 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         . Form::openElementSpace()
         . Form::getHidden('back_url', 'back_url', htmlentities(urlencode($object_link->back_url)))
 
-        . Form::getTextfield($lang->def('_TITLE'), 'title', 'title', 255, $lang->def('_TITLE'))
-        . Form::getTextarea($lang->def('_DESCRIPTION'), 'description', 'description', $lang->def('_DESCRIPTION'))
+        . Form::getTextfield($lang->def('_TITLE'), 'title', 'title', 255, '')
+        . Form::getTextarea($lang->def('_DESCRIPTION'), 'description', 'description', '')
         . Form::closeElementSpace()
         . Form::openButtonSpace()
         . Form::getButton('addlinkcat', 'addlinkcat', $lang->def('_INSERT'))
@@ -291,10 +291,10 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         . Form::getHidden('idCategory', 'idCategory', $idCategory)
         . Form::getHidden('back_url', 'back_url', $back_coded)
 
-        . Form::getTextfield($lang->def('_TITLE'), 'title', 'title', 255, $lang->def('_TITLE'))
+        . Form::getTextfield($lang->def('_TITLE'), 'title', 'title', 255, '')
         . Form::getTextfield($lang->def('_LINK_ADDRESS'), 'link_a', 'link_a', 255, 'http://')
-        . Form::getSimpleTextarea($lang->def('_KEYWORD'), 'keyword', 'keyword', $lang->def('_KEYWORD'))
-        . Form::getTextarea($lang->def('_DESCRIPTION'), 'description', 'description', $lang->def('_DESCRIPTION'))
+        . Form::getSimpleTextarea($lang->def('_KEYWORD'), 'keyword', 'keyword', '')
+        . Form::getTextarea($lang->def('_DESCRIPTION'), 'description', 'description', '')
         . Form::closeElementSpace()
         . Form::openButtonSpace()
         . Form::getButton('addlink', 'addlink', $lang->def('_INSERT'))
@@ -321,7 +321,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         $query_ins = '
 	INSERT INTO ' . $GLOBALS['prefix_lms'] . "_link
 	SET idCategory = '" . $idCategory . "',
-		title = '" . $_POST['title'] . "',
+		title = '" . ((trim($_POST['title']) == '') ? $lang->def('_NOTITLE') : $_POST['title']) . "',
 		link_address = '" . $_POST['link_a'] . "',
 		keyword = '" . $_POST['keyword'] . "',
 		description = '" . $_POST['description'] . "',
@@ -388,7 +388,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 
         $query_ins = '
 	UPDATE ' . $GLOBALS['prefix_lms'] . "_link
-	SET title = '" . $_POST['title'] . "',
+	SET title = '" . ((trim($_POST['title']) == '') ? $lang->def('_NOTITLE') : $_POST['title']) . "',
 		link_address = '" . $_POST['link_a'] . "',
 		keyword = '" . $_POST['keyword'] . "',
 		description = '" . $_POST['description'] . "'

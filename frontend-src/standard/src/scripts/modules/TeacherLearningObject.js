@@ -55,7 +55,7 @@ class TeacherLearningObject extends LearningObject {
         const activeTab = document.querySelector('.tab-content > .active');
         _this.copyItem.setCurrentType(activeTab.getAttribute('data-container'));
         _this.contextMenu = new ContextMenu(this.getBaseApiUrl(controller));
-        _this.contextMenu.set('.folderTree__link:not(.ft-is-root), .folderView__li');
+        _this.contextMenu.set('.folderTree__link:not(.ft-is-root), .folderView__li:not(.itemType)');
 
         document.addEventListener('contextmenu', (event) => {
             if (event.target.classList.contains('folderTree__rename__input') || event.target.classList.contains('folderTree__rename__btn')) {

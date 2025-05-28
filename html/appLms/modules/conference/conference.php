@@ -519,7 +519,7 @@ function modBooking()
     require_once _base_ . '/lib/lib.form.php';
     require_once _base_ . '/lib/lib.table.php';
 
-    YuiLib::load(['selector' => 'selector-beta-min.js']);
+    YuiLib::load('selector');
 
     $lang = &FormaLanguage::createInstance('conference', 'lms');
 

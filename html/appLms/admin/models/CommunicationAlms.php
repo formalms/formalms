@@ -731,7 +731,7 @@ class CommunicationAlms extends Model implements Accessible
                     $name = $translation['name'];
                     $description = $translation['description'];
                     //$description = $translation['description'];
-                    $conditions[] = '(' . (int) $id . ", '" . $lang_code . "', '" . $name . "', '" . $description . "')"; //, '".$description."')";
+                    $conditions[] = '(' . (int) $id . ", '" . $lang_code . "', '" . (!empty($name) ? $name : Lang::t('_NOTITLE', 'standard', false, $lang_code)) . "', '" . $description . "')"; //, '".$description."')";
                 }
                 $query = 'INSERT INTO %lms_communication_category_lang (id_category, lang_code, translation, description) '
                     . ' VALUES ' . implode(',', $conditions);
@@ -770,13 +770,13 @@ class CommunicationAlms extends Model implements Accessible
 
                 if (isset($prev_lang[$lang_code])) {
                     $query = 'UPDATE %lms_communication_category_lang '
-                        . ' SET translation = "' . $name . '" , description = "' . $description . '" '
+                        . ' SET translation = "' . (!empty($name) ? $name : Lang::t('_NOTITLE', 'standard', false, $lang_code)) . '" , description = "' . $description . '" '
                         . ' WHERE id_category = ' . (int) $idCategory . " AND lang_code = '" . $lang_code . "'";
                     $res = $this->db->query($query);
                 } else {
                     $query = 'INSERT INTO %lms_communication_category_lang '
                         . ' (id_category, lang_code, translation, description) VALUES '
-                        . ' (' . (int) $idCategory . ", '" . $lang_code . "', '" . $name . "', , '" . $description . "') ";
+                        . ' (' . (int) $idCategory . ", '" . $lang_code . "', '" . (!empty($name) ? $name : Lang::t('_NOTITLE', 'standard', false, $lang_code)) . "', , '" . $description . "') ";
                     $res = $this->db->query($query);
                 }
             }

@@ -297,6 +297,25 @@ header.header {
         .o-wrapper {
           line-height: 1;
 
+          .header__profile__picture img:nth-child(2) {
+            display: none;
+          }
+
+          &:hover {
+            .header__profile__name {
+              color: var(--color-primary);
+            }
+
+            .header__profile__picture img {
+              &:nth-child(2) {
+                display: block;
+              }
+              &:nth-child(1) {
+                display: none;
+              }
+            }
+          }
+
           .c-button {
             width: calc(100% - 40px);
             margin: 0 40px 0 0;

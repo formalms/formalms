@@ -294,7 +294,7 @@ class RepoDirDb extends TreeDb
         $this->org_idUser = 0;
         $this->org_idAuthor = 0;
         $this->org_version = '';
-        $this->org_difficult = null;
+        $this->org_difficult = '';
         $this->org_description = '';
         $this->org_language = '';
         $this->org_resource = '';

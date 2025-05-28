@@ -44,6 +44,13 @@ class FolderView extends LearningView {
 
         _this.emptySelectedItems();
 
+        document.addEventListener('click', (e) => {
+            // Click outside folderView
+            if(!e.target.closest('div.folderView')) {
+                _this.emptySelectedItems();
+            }
+        });
+
         _this.container.addEventListener('createTreeItem', (e) => {
             if (_this.isReady) {
                 _this.refresh(e.detail.selectedId);
@@ -65,7 +72,7 @@ class FolderView extends LearningView {
         });
 		
        _this.container.addEventListener('keydown', (e) => {
-			if (event.keyCode === 13) {
+			if (e.key === 'Enter') {
 				_this.triggerDblClick(e);
 			}	
 		});					
@@ -149,6 +156,8 @@ class FolderView extends LearningView {
                 fallbackOnBody: true,
                 invertSwap: true,
                 swapThreshold: 0.13,
+                filter: '.folderTree__rename__input',
+                preventOnFilter: false,
                 onUpdate: function (evt) {
                     const currentElement = evt.item;
                     const currentElementId = currentElement.getAttribute('data-id');
@@ -179,6 +188,12 @@ class FolderView extends LearningView {
                         newParent: parentElementId,
                         newOrder: childElementArray
                     }));
+                },
+                setData: function (dataTransfer, el) {
+                    if (el) el.style.cursor = 'grabbing';
+                },
+                onEnd: function (e) {
+                    if (e.item) e.item.style.cursor = 'pointer';
                 }
             });
         }
@@ -274,19 +289,10 @@ class FolderView extends LearningView {
 
             if (el.classList.contains('fv-is-delete')) {
                 e.preventDefault();
-                const deleteElement = Lang.Translation('_DELETE_ELEMENT_FOLDERVIEW', 'learningObjectContextMenu');
+                const deleteElement = Lang.Translation('_DELETE_ELEMENT_FOLDERVIEW', 'learning_object_context_menu');
                 if (confirm(deleteElement)) {
                     const deleteLoData = _this.getApiUrl('delete', {id: elId});
                     axios.get(deleteLoData).then(() => {
-                        const elTree = _this.container.querySelector('.folderTree__li[data-id="' + elId + '"]');
-                        if (elTree) {
-                            elTree.remove();
-                        }
-                        const el = _this.container.querySelector('.folderView__li[data-id="' + elId + '"]');
-                        if (el) {
-                            el.remove();
-                        }
-
                         // dispatch deletedItem event
                         _this.container.dispatchEvent(new CustomEvent('deleteTreeItem', {
                             detail: {selectedId: elId,}
@@ -298,6 +304,9 @@ class FolderView extends LearningView {
             }
             if (el.classList.contains('fv-is-copy')) {
                 li.classList.add('is-ready-for-copy');
+            }
+            if (el.classList.contains('fv-is-menu-close')) {
+                li.classList.remove('fv-is-selected');
             }
         }
     }

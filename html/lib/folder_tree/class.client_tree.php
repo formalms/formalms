@@ -45,7 +45,7 @@ class ClientTree
             'yahoo-dom-event' => 'yahoo-dom-event.js',
             'connection' => 'connection-min.js',
             'dragdrop' => 'dragdrop-min.js',
-            'element' => 'element-beta-min.js',
+            'element' => 'element-min.js',
             'animation' => 'animation-min.js',
             'json' => 'json-min.js',
             'container' => 'container_core-min.js', //menu
@@ -54,8 +54,8 @@ class ClientTree
             'container' => 'container-min.js', //dialog
             'button' => 'button-min.js', //dialog
             'treeview' => 'treeview-min.js',
-            'resize' => 'resize-beta-min.js',
-            'selector' => 'selector-beta-min.js', ],
+            'resize' => 'resize-min.js',
+            'selector' => 'selector-min.js', ],
                 [
             'assets/skins/sam' => 'skin.css',
                 ]

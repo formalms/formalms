@@ -1316,7 +1316,7 @@ class UsermanagementAdm extends Model implements Accessible
                     //remove user to old group
                     $old_level = $this->getUserLevel($idst);
 
-                    //se il vecchio livello è admin o super admin e lo cambio a utente devo togliere 
+                    //se il vecchio livello è admin o super admin e lo cambio a utente devo togliere
                     //tutti i riferimenti di admin nel core admin tree
                     if ($old_level != ADMIN_GROUP_USER && $level == ADMIN_GROUP_USER) {
                         $acl_man->removeAdminFromCoreTree($idst);
@@ -3421,7 +3421,7 @@ class UsermanagementAdm extends Model implements Accessible
                 where %adm_customfield_lang.id_field = %adm_customfield.id_field  and
                  %adm_customfield_lang.lang_code = \'' . Lang::get() . '\' and area_code="ORG_CHART"';
         $rs = sql_query($query) or
-            errorCommunication('getCustomFieldOrg');
+        errorCommunication('getCustomFieldOrg');
         $result = [];
         while (list($id_field, $translation, $type_field) = sql_fetch_row($rs)) {
             $arr = [
@@ -3441,7 +3441,7 @@ class UsermanagementAdm extends Model implements Accessible
             %adm_customfield_son_lang  , %adm_customfield_son
             where %adm_customfield_son_lang.id_field_son=%adm_customfield_son.id_field_son and id_field=' . $id_field . ' order by sequence ';
         $rs = sql_query($query) or
-            errorCommunication('getLO_Custom_Value_Array');
+        errorCommunication('getLO_Custom_Value_Array');
         $result = [];
         while (list($id_field_son, $translation) = sql_fetch_row($rs)) {
             $result[$id_field_son] = $translation;
@@ -3454,7 +3454,7 @@ class UsermanagementAdm extends Model implements Accessible
     {
         $query = 'select * from %adm_customfield_entry where id_obj=' . $idOrg . ' and id_field=' . $id_field;
         $rs = sql_query($query) or
-            errorCommunication('countCustomForItem');
+        errorCommunication('countCustomForItem');
         if (sql_num_rows($rs) > 0) {
             return true;
         } else {
@@ -3488,7 +3488,7 @@ class UsermanagementAdm extends Model implements Accessible
     {
         $query = "select id_field from %adm_customfield where area_code = 'ORG_CHART'";
         $rs = sql_query($query) or
-            errorCommunication('getCustomOrg');
+        errorCommunication('getCustomOrg');
         $result = [];
         while (list($id_field, $translation) = sql_fetch_row($rs)) {
             $result[$id_field] = $id_field;
@@ -3503,7 +3503,7 @@ class UsermanagementAdm extends Model implements Accessible
             . "WHERE id_field = '" . $idField . "'"
             . '  AND id_obj = ' . $idOrg;
         $rs = sql_query($query) or
-            errorCommunication('getValueCustom');
+        errorCommunication('getValueCustom');
         if (sql_num_rows($rs) == 1) {
             [$obj_entry] = sql_fetch_row($rs);
 
@@ -3573,16 +3573,18 @@ class UsermanagementAdm extends Model implements Accessible
         if (is_array($res) && !$res['success']) {
             $this->setRedirectLink('index.php?r=adm/usermanagement/show&res=err_alreadyassigned&count=' . $res['count_assigned'] . '&id_first=' . $res['already_assigned']);
             $res = false;
-        } 
+        }
         return $res;
     }
 
-    private function setRedirectLink($link) {
+    private function setRedirectLink($link)
+    {
         $this->redirectLink = $link;
         return $this;
     }
 
-    public function getRedirectLink() {
+    public function getRedirectLink()
+    {
         return $this->redirectLink;
     }
 }

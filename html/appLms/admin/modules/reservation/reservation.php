@@ -120,9 +120,9 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 setupHrefDialogBox('a[href*=del_event]');
             }
             if ($mod_perm) {
-                $tb->addActionAdd('<a href="index.php?modname=reservation&amp;op=add_event">
-					<img src="' . getPathImage() . 'standard/add.png" title="' . $lang->def('_NEW_EVENT') . '" alt="' . $lang->def('_NEW_EVENT') . '" /> '
-                    . $lang->def('_NEW_EVENT') . '</a>');
+                $tb->addActionAdd('<a class="ico-wt-sprite subs_add" href="index.php?modname=reservation&amp;op=add_event">
+					<span>' . $lang->def('_NEW_EVENT') . '</span>
+                    </a>');
             }
             $out->add($tb->getTable()
                 . $tb->getNavBar($ini, count($events))
@@ -753,9 +753,9 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 }
             }
             if ($mod_perm) {
-                $tb->addActionAdd('<a href="index.php?modname=reservation&amp;op=add_event">
-					<img src="' . getPathImage() . 'standard/add.png" title="' . $lang->def('_NEW_EVENT') . '" alt="' . $lang->def('_NEW_EVENT') . '" /> '
-                    . $lang->def('_NEW_EVENT') . '</a>');
+                $tb->addActionAdd('<a class="ico-wt-sprite subs_add" href="index.php?modname=reservation&amp;op=add_event">
+					<span>' . $lang->def('_NEW_EVENT') . '</span>
+                    </a>');
             }
             $out->add($tb->getTable()
                 . $tb->getNavBar($ini, count($events))
@@ -857,9 +857,9 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 }
             }
             if ($mod_perm) {
-                $tb->addActionAdd('<a href="index.php?modname=reservation&amp;op=add_event">
-					<img src="' . getPathImage() . 'standard/add.png" title="' . $lang->def('_NEW_EVENT') . '" alt="' . $lang->def('_NEW_EVENT') . '" /> '
-                    . $lang->def('_NEW_EVENT') . '</a>');
+                $tb->addActionAdd('<a class="ico-wt-sprite subs_add" href="index.php?modname=reservation&amp;op=add_event">
+					<span>' . $lang->def('_NEW_EVENT') . '</span>
+                    </a>');
             }
             $out->add($tb->getTable()
                 . $tb->getNavBar($ini, count($user_info))

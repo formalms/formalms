@@ -53,7 +53,7 @@ class MycertificateLms extends Model
                     . (isset($cert['on_date']) ? Lang::t('_DOWNLOAD', 'certificate') : Lang::t('_GENERATE', 'certificate')) . '</span></a>';
 
                 $data[] = [
-                    'on_date' => substr($cert['on_date'], 0, 10),
+                    'on_date' => !empty($cert['on_date']) ? substr($cert['on_date'], 0, 10) : '',
                     'code' => $cert['code'],
                     'course_name' => $cert['course_name'],
                     'cert_name' => $cert['cert_name'],

@@ -53,15 +53,15 @@ class CourseTableView extends TableView
         }
 
         if (checkPerm('add', true, 'course', 'lms')) {
-            $array_columns[] = ['key' => 'dup', 'label' => FormaLms\lib\Get::img('standard/dup.png', Lang::t('_MAKE_A_COPY', 'course', 'lms')), 'className' => 'img-cell'];
+            $array_columns[] = ['key' => 'dup', 'label' => FormaLms\lib\Get::sprite('subs_dup', Lang::t('_MAKE_A_COPY', 'course', 'lms')), 'className' => 'img-cell'];
         }
 
         if (checkPerm('mod', true, 'course', 'lms')) {
-            $array_columns[] = ['key' => 'mod', 'label' => FormaLms\lib\Get::img('standard/edit.png', Lang::t('_MOD', 'course', 'lms')), 'className' => 'img-cell', 'formatter' => $this->getCellFormatter('mod')];
+            $array_columns[] = ['key' => 'mod', 'label' => FormaLms\lib\Get::sprite('subs_mod', Lang::t('_MOD', 'course', 'lms')), 'className' => 'img-cell', 'formatter' => $this->getCellFormatter('mod')];
         }
 
         if (checkPerm('del', true, 'course', 'lms')) {
-            $array_columns[] = ['key' => 'del', 'label' => FormaLms\lib\Get::img('standard/delete.png', Lang::t('_DEL', 'course', 'lms')), 'className' => 'img-cell', 'formatter' => $this->getCellFormatter('delete')];
+            $array_columns[] = ['key' => 'del', 'label' => FormaLms\lib\Get::sprite('subs_del', Lang::t('_DEL', 'course', 'lms')), 'className' => 'img-cell', 'formatter' => $this->getCellFormatter('delete')];
         }
 
         $this->columns = $array_columns;
@@ -77,7 +77,7 @@ class CourseTableView extends TableView
             '_NEXT' => Lang::t('_NEXT', 'course', 'lms'),
             '_END' => Lang::t('_END', 'course', 'lms'),
             '_OF' => Lang::t('_OF', 'course', 'lms'),
-            'MSG_EMPTY' => Lang::t('_EMPTY', 'course', 'lms'),
+            'MSG_EMPTY' => Lang::t('_EMPTY_TABLE', 'formatable'),
             'MSG_ERROR' => Lang::t('_SERVER_CONNECTION_ERROR', 'course', 'lms'),
             'MSG_LOADING' => Lang::t('_LOADING', 'course', 'lms'),
             '_YES' => Lang::t('_CONFIRM', 'course', 'lms'),

@@ -139,7 +139,7 @@ function certificate()
         . '<div class="quick_search_form">
             <div>
                 <div class="simple_search_box">'
-        . Form::getInputTextfield('search_t', 'filter_text', 'filter_text', FormaLms\lib\Get::req('filter_text', DOTY_MIXED, ''), 255, '')
+        . Form::getInputTextfield('search_t', 'filter_text', 'filter_text', FormaLms\lib\Get::req('filter_text', DOTY_MIXED, ''), '', 255, 'placeholder="' . Lang::t('_SEARCH', 'standard') . '"')
         . Form::getButton('filter_set', 'filter_set', Lang::t('_SEARCH', 'standard'), 'search_b')
         . Form::getButton('filter_reset', 'filter_reset', Lang::t('_RESET', 'standard'), 'reset_b')
         . '</div>
@@ -769,6 +769,53 @@ function preview()
     $cert->send_preview_certificate($id_certificate, []);
 }
 
+/**
+ * @TODO refactor using new autoincrement id
+ */
+function gen_zip_cert()
+{
+    require_once _base_ . '/' . _folder_lms_ . '/lib/lib.certificate.php';
+    require_once _base_ . '/lib/lib.download.php';
+
+    $str_rows = importVar('str_rows');
+
+    $files = [];
+    $zipName = date('YmdHis') . '_certs.zip';
+
+    $filePath = _files_ . '/tmp/' . $zipName;
+
+    $zip = new PclZip($filePath);
+
+    $list_cert = explode(',', $str_rows);
+
+    foreach ($list_cert as $certRow) {
+        list($id_user, $id_certificate, $id_course) = explode('-', $certRow);
+
+        $certificate = new Certificate();
+
+        $report_info = $certificate->getInfoForCourseCertificate($id_course, $id_certificate, $id_user);
+
+        $info_report = current($report_info);
+
+        $file = $info_report[ASSIGN_CERT_FILE];
+        if ($file === null) {
+            continue;
+        }
+
+        $sendname = $info_report[ASSIGN_CERT_SENDNAME];
+        $copyResult = copy(_files_ . '/appLms/certificate/' . $file, _files_ . '/tmp/' . $sendname);
+        if ($copyResult) {
+            $files[] = _files_ . '/tmp/' . $sendname;
+        }
+    }
+    $zip->create($files, '', _files_ . '/tmp/');
+    foreach ($files as $fileToRemove) {
+        unlink($fileToRemove);
+    }
+    sendFile(_files_ . '/tmp/', $zipName);
+    unlink($filePath);
+}
+
 function certificateDispatch($op)
 {
     if (isset($_POST['undo'])) {
@@ -781,6 +828,10 @@ function certificateDispatch($op)
         $op = 'report_certificate';
     }
     switch ($op) {
+        case 'download_all':
+            gen_zip_cert();
+            break;
+
         case 'certificate':
             certificate();
             break;

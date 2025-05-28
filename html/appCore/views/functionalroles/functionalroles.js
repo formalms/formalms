@@ -29,14 +29,14 @@ var FunctionalRoles = {
 	usersFormatter: function(elLiner, oRecord, oColumn, oData) {
 		var url = 'index.php?r=adm/functionalroles/man_users&id=' + oRecord.getData("id");
 		elLiner.innerHTML = '<a href="' + url +'" title="'+FunctionalRoles.oLangs.get('_USERS')+'">' + oData +
-			'&nbsp;<span class="ico-sprite subs_users">' +
+			'<span class="ico-sprite subs_users">' +
 			'<span>'+FunctionalRoles.oLangs.get('_USERS')+'</span></span></a>';
 	},
 
 	competencesFormatter: function(elLiner, oRecord, oColumn, oData) {
 		var url = 'index.php?r=adm/functionalroles/man_competences&id=' + oRecord.getData("id");
 		elLiner.innerHTML = '<a href="' + url +'" title="'+FunctionalRoles.oLangs.get('_COMPETENCES')+'">' + oData +
-			'&nbsp;<span class="ico-sprite subs_competence">' +
+			'<span class="ico-sprite subs_competence">' +
 			'<span>'+FunctionalRoles.oLangs.get('_COMPETENCES')+'</span></span></a>';
 	},
 

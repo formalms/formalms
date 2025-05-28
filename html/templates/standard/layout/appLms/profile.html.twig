@@ -39,6 +39,7 @@
                         <img src="..{{ user.getAvatar() }}" alt="{{ user.getUserName() }}">
                     {% else %}
                         <img src="{{ Get_getTemplatePath() }}static/images/icons/top-menu/icon--profile.svg" alt="{{ user.getUserName() }}">
+                        <img src="{{ Get_getTemplatePath() }}static/images/icons/top-menu/icon--profile-hover.svg" alt="{{ user.getUserName() }}">
                     {% endif %}
                 </picture>
         </button>

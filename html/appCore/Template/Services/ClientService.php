@@ -14,6 +14,7 @@
 namespace FormaLms\appCore\Template\Services;
 
 use FormaLms\lib\Get;
+use FormaLms\lib\Session\SessionManager;
 
 class ClientService
 {
@@ -50,6 +51,11 @@ class ClientService
         $config['lang'] = \Lang::getCurrentLanguageConfig();
 
         $config['uploadFileSize'] = ini_get('upload_max_filesize');
+
+        $session = SessionManager::getInstance()->getSession();
+        if ($session->has('idCourse') && $session->get('idCourse')) {
+            $config['idCourse'] = $session->get('idCourse');
+        }
 
         return $config;
     }

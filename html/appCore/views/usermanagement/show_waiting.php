@@ -6,7 +6,7 @@ WaitingManagement.init({
 		_CONFIRM: "<?php echo Lang::t('_CONFIRM', 'admin_directory'); ?>",
         _LINK_NOT_CONFIRMED: "<?php echo Lang::t('_LINK_NOT_CONFIRMED', 'admin_directory'); ?>",
         _LINK_CONFIRMED: "<?php echo Lang::t('_LINK_CONFIRMED', 'admin_directory'); ?>",
-		_DEL: "><?php echo Lang::t('_DEL', 'standard'); ?>",
+		_DEL: "<?php echo Lang::t('_DEL', 'standard'); ?>",
 		_DETAILS: "<?php echo Lang::t('_DETAILS', 'standard'); ?>",
 		_EMPTY_SELECTION: "<?php echo Lang::t('_EMPTY_SELECTION', 'admin_directory'); ?>",
 		_USERS: "<?php echo Lang::t('_USERS', 'standard'); ?>"
@@ -26,7 +26,7 @@ echo getTitleArea([
 	<div>
 		<div class="simple_search_box" id="waitingusers_simple_filter_options">
 			<?php
-                echo Form::getInputTextfield('search_t', 'filter_text', 'filter_text', $filter_text, 255, '');
+                echo Form::getInputTextfield('search_t', 'filter_text', 'filter_text', $filter_text, 255, 'placeholder="' . Lang::t('_SEARCH', 'standard') . '"');
                 echo Form::getButton('filter_set', 'filter_set', Lang::t('_SEARCH', 'standard'), 'search_b');
                 echo Form::getButton('filter_reset', 'filter_reset', Lang::t('_RESET', 'standard'), 'reset_b');
             ?>
@@ -76,7 +76,7 @@ $params = [
             ['key' => 'firstname', 'label' => Lang::t('_FIRSTNAME', 'standard'), 'sortable' => true, 'formatter' => 'WaitingManagement.labelFormatter'],
             ['key' => 'lastname', 'label' => Lang::t('_LASTNAME', 'standard'), 'sortable' => true, 'formatter' => 'WaitingManagement.labelFormatter'],
             ['key' => 'email', 'label' => Lang::t('_EMAIL', 'standard'), 'sortable' => true, 'formatter' => 'WaitingManagement.labelFormatter'],
-        ['key' => 'confirmed', 'label' => Lang::t('_STATUS', 'standard'), 'sortable' => true, 'formatter' => 'WaitingManagement.statusFormatter'],
+            ['key' => 'confirmed', 'label' => Lang::t('_STATUS', 'standard'), 'sortable' => true, 'formatter' => 'WaitingManagement.statusFormatter'],
             ['key' => 'insert_date', 'label' => Lang::t('_DATE', 'admin_directory'), 'sortable' => true],
             ['key' => 'inserted_by', 'label' => ucfirst(Lang::t('_BY', 'admin_directory')), 'sortable' => true],
             ['key' => 'details', 'label' => $icon_details, 'formatter' => 'WaitingManagement.detailsFormatter', 'className' => 'img-cell'],
