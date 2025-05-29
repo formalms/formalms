@@ -612,6 +612,7 @@
         <key id="configuration&amp;_REST_AUTH_API_SECRET" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Authorization API Secret key]]></key>
         <key id="configuration&amp;_REST_AUTH_CODE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Single code for platform]]></key>
         <key id="configuration&amp;_REST_AUTH_LIFETIME" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Generated token will expire after (minutes)]]></key>
+        <key id="configuration&amp;_SSO_LIFETIME" attributes="" save_date="2017-03-15 17:48:15"><![CDATA[Generated SSO token will expire after (minutes)]]></key>
         <key id="configuration&amp;_REST_AUTH_METHOD" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Authentication method:]]></key>
         <key id="configuration&amp;_REST_AUTH_SECRET_KEY" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Authorization Secret Key]]></key>
         <key id="configuration&amp;_REST_AUTH_TOKEN" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Token generation at every connection]]></key>

@@ -614,6 +614,7 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;_REST_AUTH_API_SECRET" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Aut. Codice segreto API]]></key>
         <key id="configuration&amp;_REST_AUTH_CODE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Codice unico di accesso:]]></key>
         <key id="configuration&amp;_REST_AUTH_LIFETIME" attributes="" save_date="2017-03-15 17:48:15"><![CDATA[Tempo di vita del token (min.):]]></key>
+        <key id="configuration&amp;_SSO_LIFETIME" attributes="" save_date="2017-03-15 17:48:15"><![CDATA[Tempo di vita del token SSO (min.):]]></key>
         <key id="configuration&amp;_REST_AUTH_METHOD" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Metodo di autenticazione:]]></key>
         <key id="configuration&amp;_REST_AUTH_SECRET_KEY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Aut. Chiave segreta]]></key>
         <key id="configuration&amp;_REST_AUTH_TOKEN" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Generazione di un Token ad ogni connessione]]></key>
