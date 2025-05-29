@@ -213,7 +213,7 @@ define('_LEARNING_NEWS_REMOVED', 'Login News function and its data has been remo
 
 /************************VALIDATION*************/
 define('_MISSING_LICENSE_CHECK', 'License terms must be checked');
-define('_UNSUITABLE_REQUIREMENTS', 'Minimal requirements are not satisfied');
+define('_UNSUITABLE_REQUIREMENTS', 'Requirements are not satisfied');
 define('_MISSING_FIELD', 'Missing Field');
 define('_FTP_NOT_SUPPORTED', 'FTP Methods are not supported');
 define('_FTP_CONNECT_FAIL', 'FTP connection failed');
