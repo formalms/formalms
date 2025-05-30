@@ -368,9 +368,8 @@ class Get
      *
      * @return string the relative path
      */
-    public static function rel_path($to = false)
+    public static function rel_path($to = false, $trailingSlash = false)
     {
-        // where are we ?
         if ($to === false) {
             if (defined('CORE')) {
                 $to = 'adm';
@@ -384,8 +383,17 @@ class Get
         $path = _deeppath_
             . str_replace(_base_, '.', constant('_' . $to . '_'));
 
-        return str_replace(['//', '\\/', '/./'], '/', $path);
+        $path = str_replace(['//', '\\/', '/./'], '/', $path);
+
+        if ($trailingSlash) {
+            $path = rtrim($path, '/') . '/';
+        } else {
+            $path = rtrim($path, '/');
+        }
+
+        return $path;
     }
+
 
     /**
      * Return the absolute path of the platform.
@@ -721,7 +729,13 @@ class Get
      */
     public static function user_ip()
     {
-        return $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['HTTP_CLIENT_IP'] ?? $_SERVER['REMOTE_ADDR'];
+        $fallbackIp = array_key_exists('REMOTE_ADDR', $_SERVER) ? $_SERVER['REMOTE_ADDR'] : '::1';
+        $ip = (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER) && $_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $fallbackIp;
+        if (strpos($ip, ',') !== false) {
+            $ip = substr($ip, 0, strpos($ip, ','));
+        }
+
+        return $ip;
     }
 
     /**

@@ -128,7 +128,7 @@ class VersionChecker
             $result['message'] = 'err';
             $result['match'] = false;
         } elseif (version_compare(PHP_VERSION, $istance->phpMaxVersion, '>')) {
-            $result['message'] = 'warn';
+            $result['message'] = 'err';
         } else {
             $result['message'] = 'ok';
         }

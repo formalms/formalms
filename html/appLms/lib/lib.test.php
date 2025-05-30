@@ -1053,10 +1053,13 @@ class PlayTestManagement
         $re_quest = sql_query($query_quest);
 
         if (sql_num_rows($re_quest)) {
+            $quest_displayed = [];
             // page alredy seen, retrive the question alredy displayed
             foreach ($re_quest as $row) {
                 [$id_quest] = array_values($row);
-                $quest_displayed[] = $id_quest;
+                if (!in_array($id_quest, $quest_displayed)) {
+                    $quest_displayed[] = $id_quest;
+                }
             }
 
             $query_question .= ' AND q.idQuest IN (' . implode(',', $quest_displayed) . ')';
@@ -1116,7 +1119,8 @@ class PlayTestManagement
                     if (count($queries) > 0) {
                         return '(' . implode(') UNION (', $queries) . ') ORDER BY RAND() ';
                     } else {
-                        return '';
+                        // Return a default query that will return no results instead of an empty string
+                        return $query_question;
                     }
                     break;
                 case '4':
@@ -1142,11 +1146,13 @@ class PlayTestManagement
                     if (count($queries) > 0) {
                         return '(' . implode(') UNION (', $queries) . ') ORDER BY RAND() ';
                     } else {
-                        return '';
+                        // Return a default query that will return no results instead of an empty string
+                        return $query_question;
                     }
                     break;
             }
         } else {
+            $quest_displayed = [];
             // One question per page
             $query_question .= " AND q.type_quest <> 'break_page'";
 
@@ -1158,11 +1164,13 @@ class PlayTestManagement
             $re_quest_seen = sql_query($query_quest_seen);
             foreach ($re_quest_seen as $row) {
                 [$id_quest] = array_values($row);
-                $quest_seen[] = $id_quest;
+                if (!in_array($id_quest, $quest_displayed)) {
+                    $quest_displayed[] = $id_quest;
+                }
             }
 
-            if (!empty($quest_seen)) {
-                $query_question .= ' AND q.idQuest NOT IN (' . implode(',', $quest_seen) . ') ';
+            if (!empty($quest_displayed)) {
+                $query_question .= ' AND q.idQuest NOT IN (' . implode(',', $quest_displayed) . ') ';
             }
             switch ($order_type) {
                 case '0':
@@ -1194,7 +1202,9 @@ class PlayTestManagement
                     $re_seen = sql_query($query_cat_seen);
                     foreach ($re_seen as $row) {
                         [$id_cat, $num] = array_values($row);
-                        $cat_seen[$id_cat] = $num;
+                        if (!array_key_exists($id_cat, $cat_seen)) {
+                            $cat_seen[$id_cat] = $num;
+                        }
                     }
 
                     // Random X quest on a set of selected categories, each of N(idCategory) quests
@@ -1222,7 +1232,8 @@ class PlayTestManagement
                     if (count($queries) > 0) {//NODEBUG echo "(".implode(") UNION (", $queries).") ORDER BY RAND() LIMIT 0,1";
                         return '(' . implode(') UNION (', $queries) . ') ORDER BY RAND() LIMIT 0,1';
                     } else {
-                        return '';
+                        // Return a default query that will return no results instead of an empty string
+                        return $query_question . " LIMIT 0,1";
                     }
                     break;
             }

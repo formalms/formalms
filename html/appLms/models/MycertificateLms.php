@@ -47,10 +47,17 @@ class MycertificateLms extends Model
         $data = [];
         foreach ($myCertificates as $cert) {
             if ($this->certificate->certificateAvailableForUser($cert['id_certificate'], $cert['id_course'], $this->id_user)) {
-                $download = '<a class="ico-wt-sprite subs_pdf" id="pdf_download" href="?r=mycertificate/'
-                    . 'downloadCert&id=' . $cert['idRecord'] . '" '
-                    . ' title="' . (isset($cert['on_date']) ? Lang::t('_DOWNLOAD', 'certificate') : Lang::t('_GENERATE', 'certificate')) . '"><span>'
-                    . (isset($cert['on_date']) ? Lang::t('_DOWNLOAD', 'certificate') : Lang::t('_GENERATE', 'certificate')) . '</span></a>';
+                $downloadUrl = '?r=mycertificate/downloadCert&id_certificate=' . $cert['id_certificate'] . '&id_course=' . $cert['id_course'] . '" ';
+                
+                $linkTitle = Lang::t('_GENERATE', 'certificate');
+                if ($cert['idRecord']){
+                    $linkTitle = Lang::t('_DOWNLOAD', 'certificate');
+                    $downloadUrl = '?r=mycertificate/downloadCert&id=' . $cert['idRecord'];
+                }
+
+                $download = '<a class="ico-wt-sprite subs_pdf" id="pdf_download" href="' . $downloadUrl . '" target="_blank"'
+                    . ' title="' . $linkTitle . '"><span>'
+                    . $linkTitle . '</span></a>';
 
                 $data[] = [
                     'on_date' => substr($cert['on_date'], 0, 10),
@@ -125,7 +132,7 @@ class MycertificateLms extends Model
             INNER JOIN %lms_aggregated_cert_assign aca ON c.id_certificate = aca.idCertificate
             INNER JOIN %lms_aggregated_cert_coursepath acc ON aca.idAssociation = acc.idAssociation AND acc.idUser = acc.idUser
             INNER JOIN %lms_coursepath cp ON acc.idCoursePath = cp.id_path
-            WHERE aca.idUser = " . (int)$this->id_user. ' ORDER BY c.id_certificate ASC';
+            WHERE aca.idUser = " . (int)$this->id_user . ' ORDER BY c.id_certificate ASC';
 
         $result = sql_query($query);
         $currentIdCert = 0;
