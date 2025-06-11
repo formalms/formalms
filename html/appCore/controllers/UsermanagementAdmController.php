@@ -1997,8 +1997,13 @@ class UsermanagementAdmController extends AdmController
             $success = true;
 
             // apply enroll rules
-            $lang_code = $acl_man->getSettingValueOfUsers('ui.language', [$id_user]);
-            $lang_code = ($lang_code ?: Lang::getDefault());
+            $userLanguages = $acl_man->getSettingValueOfUsers('ui.language', [$id_user]);
+            $lang_code = !empty($userLanguages) && in_array($id_user, $userLanguages) && $userLanguages[$id_user] ? $userLanguages[$id_user] : null;
+
+            $enabledLanguages = Lang::getEnabledLanguages();
+            if (!$lang_code || !in_array($lang_code, $enabledLanguages)) {
+                $lang_code = Lang::getDefault();
+            }
 
             $enrollrules = new EnrollrulesAlms();
             $enrollrules->applyRules('_USER_ASSIGNED_TO_TREE', [$id_user], $lang_code, $id_org);

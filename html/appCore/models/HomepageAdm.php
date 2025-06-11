@@ -143,15 +143,25 @@ class HomepageAdm extends Model
             }
         }
 
+        // Ottieni la lingua dell'utente con controllo delle lingue abilitate
+        $id_user = $user_info[ACL_INFO_IDST];
+        $userLanguages = $acl_man->getSettingValueOfUsers('ui.language', [$id_user]);
+        $userLanguage = !empty($userLanguages) && in_array($id_user, $userLanguages) && $userLanguages[$id_user] ? $userLanguages[$id_user] : null;
+
+        $enabledLanguages = Lang::getEnabledLanguages();
+        if (!$userLanguage || !in_array($userLanguage, $enabledLanguages)) {
+            $userLanguage = Lang::getDefault();
+        }
+
         $sender = DomainHandler::getInstance()->getMailerField('sender_mail_system');
         $recipients = $user_info[ACL_INFO_EMAIL];
-        $subject = Lang::t('_LOST_USERID_TITLE', 'register', [], $acl_man->getSettingValueOfUsers('ui.language', [$user_info[ACL_INFO_IDST]])[$user_info[ACL_INFO_IDST]]);
+        $subject = Lang::t('_LOST_USERID_TITLE', 'register', [], $userLanguage);
         $body = Lang::t('_LOST_USERID_MAILTEXT', 'register', [
             '[date_request]' => date('d-m-Y'),
             '[url]' => FormaLms\lib\Get::site_url(),
             '[dynamic_link]' => getCurrentDomain($reg_code) ?: FormaLms\lib\Get::site_url(),
             '[userid]' => $acl_man->relativeId($user_info[ACL_INFO_USERID]),
-        ], $acl_man->getSettingValueOfUsers('ui.language', [$user_info[ACL_INFO_IDST]])[$user_info[ACL_INFO_IDST]]);
+        ], $userLanguage);
         $params = [MAIL_SENDER_ACLNAME => DomainHandler::getInstance()->getMailerField('sender_name_system')];
         $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
         if ($mailer->SendMail([$recipients], $subject, $body, $sender, [], $params)) {
@@ -198,15 +208,25 @@ class HomepageAdm extends Model
 
         $url = getCurrentDomain($reg_code) ?: FormaLms\lib\Get::site_url();
 
+        // Ottieni la lingua dell'utente con controllo delle lingue abilitate
+        $id_user = $user_info[ACL_INFO_IDST];
+        $userLanguages = $acl_man->getSettingValueOfUsers('ui.language', [$id_user]);
+        $userLanguage = !empty($userLanguages) && in_array($id_user, $userLanguages) && $userLanguages[$id_user] ? $userLanguages[$id_user] : null;
+
+        $enabledLanguages = Lang::getEnabledLanguages();
+        if (!$userLanguage || !in_array($userLanguage, $enabledLanguages)) {
+            $userLanguage = Lang::getDefault();
+        }
+
         $sender = DomainHandler::getInstance()->getMailerField('sender_mail_system');
         $sender_name = DomainHandler::getInstance()->getMailerField('sender_name_system');
         $recipients = $user_info[ACL_INFO_EMAIL];
-        $subject = Lang::t('_LOST_PWD_TITLE', 'register', [], $acl_man->getSettingValueOfUsers('ui.language', [$user_info[ACL_INFO_IDST]])[$user_info[ACL_INFO_IDST]]);
+        $subject = Lang::t('_LOST_PWD_TITLE', 'register', [], $userLanguage);
         $body = Lang::t('_LOST_PWD_MAILTEXT', 'register', [
             '[link]' => FormaLms\lib\Get::site_url() . 'index.php?r=' . _newpwd_ . '&code=' . $code,
             '[dynamic_link]' => $url . 'index.php?r=' . _newpwd_ . '&code=' . $code,
             '[userid]' => $acl_man->relativeId($user_info[ACL_INFO_USERID]),
-        ], $acl_man->getSettingValueOfUsers('ui.language', [$user_info[ACL_INFO_IDST]])[$user_info[ACL_INFO_IDST]]);
+        ], $userLanguage);
         $params = [MAIL_SENDER_ACLNAME => $sender_name];
 
         $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
