@@ -442,7 +442,7 @@
         <key id="configuration&amp;MAIN_SET_4" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[General settings]]></key>
         <key id="configuration&amp;MAIN_SET_6" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[General settings]]></key>
         <key id="configuration&amp;MAIN_SET_8" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[General settings]]></key>
-        <key id="configuration&amp;MAIN_SET_9" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[LDAP]]></key>
+        <key id="configuration&amp;MAIN_SET_9" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[SSO]]></key>
         <key id="configuration&amp;PASSWORD_BCRYPT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[BYCRYPT Password]]></key>
         <key id="configuration&amp;PASSWORD_MD5" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[MD5 Password]]></key>
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Use high contrast colors]]></key>
@@ -517,11 +517,6 @@
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Activate language editing (used for debugging)]]></key>
         <key id="configuration&amp;_LANG_EXPORT_TIME" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Time of language export]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[First Name and Last Name are required in order to register]]></key>
-        <key id="configuration&amp;_LDAP" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[LDAP]]></key>
-        <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[LDAP port (usually 389)]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[LDAP server address]]></key>
-        <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Activate LDAP authentication]]></key>
-        <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Username for LDAP users, use $user for the username.<br />Ex. $user@domain2.domain1 (for: W2k3)]]></key>
         <key id="configuration&amp;_LIST_DB_UPGRADES" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[DB SQL scripts log]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Configuration of "magic_quotes_gpc"]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Registrations and Lost passwords email sender]]></key>
@@ -683,7 +678,6 @@
         <key id="configuration&amp;_URL" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Website URL with final /]]></key>
         <key id="configuration&amp;_URL_CHECKIN_TELESKILL" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[URL for check-in]]></key>
         <key id="configuration&amp;_URL_VIDEOCONFERENCE_TELESKILL" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[URL for videoconference]]></key>
-        <key id="configuration&amp;_USEFULL_ONLY_IF" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Consider this parameter only if you need to authenticate through LDAP]]></key>
         <key id="configuration&amp;_USERS_ALREADY_ASSIGNED" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[already assigned users]]></key>
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Ask the user to choose a password different from the last X used passwords]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Disk quota (in MB) for each user's My Files area]]></key>
@@ -1625,7 +1619,6 @@ you have been unsubscribed from the course ([course_code]) - [course]]]></key>
 To change these words please go to Admin/Language management, search for <b>login</b>, and edit the keys <b>_INTRO_STD_TEXT_TITLE</b> and <b>_INTRO_STD_TEXT</b>]]></key>
         <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[forma.lms is an open source e-learning platform (LMS and LCMS) used in corporate and higher education markets]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Jump to login form]]></key>
-        <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[LDAP authentication is active, functionality unavailable please call your administrator]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Login]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Accessible Login]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Login]]></key>

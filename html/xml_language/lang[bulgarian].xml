@@ -422,11 +422,6 @@
         <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2020-09-15 14:47:05"><![CDATA[Показва, в резултатите от търсено съдържание в библиотеките, също така и обекти, които не са напълно категоризирани]]></key>
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2020-09-15 14:47:05"><![CDATA[Активира редактиране на езика (използва се при отстраняване на грешки)]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2020-09-15 14:47:05"><![CDATA[Име и фамилия са необходими, за да се регистрирате]]></key>
-        <key id="configuration&amp;_LDAP" attributes="" save_date="2020-09-15 14:47:05"><![CDATA[LDAP]]></key>
-        <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2020-09-15 14:47:05"><![CDATA[LDAP порт (обикновено 389)]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2020-09-15 14:47:05"><![CDATA[LDAP сървър]]></key>
-        <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2020-09-15 14:47:05"><![CDATA[Активиране на LDAP удостоверяване]]></key>
-        <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2020-09-15 14:47:05"><![CDATA[Потребителско име за LDAP потребители, използвайте $user за потребителското име.<br />Изп. $user@domain2.domain1 (за: W2k3)]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2020-09-15 14:47:05"><![CDATA[Конфигурация за "magic_quotes_gpc"]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2020-09-15 14:47:05"><![CDATA[Регистрация и и-мейл за изпращане на загубена парола]]></key>
         <key id="configuration&amp;_MAIN_OPTIONS" attributes="" save_date="2020-09-15 14:47:05"><![CDATA[Основни параметри]]></key>
@@ -545,7 +540,6 @@
         <key id="configuration&amp;_URL" attributes="" save_date="2020-09-15 14:47:05"><![CDATA[Уебсайт URL с край /]]></key>
         <key id="configuration&amp;_URL_CHECKIN_TELESKILL" attributes="" save_date="2020-09-15 14:47:05"><![CDATA[URL за проверка]]></key>
         <key id="configuration&amp;_URL_VIDEOCONFERENCE_TELESKILL" attributes="" save_date="2020-09-15 14:47:05"><![CDATA[URL за видео конференции]]></key>
-        <key id="configuration&amp;_USEFULL_ONLY_IF" attributes="" save_date="2020-09-15 14:47:05"><![CDATA[Помислете за този параметър само ако трябва да удостоверява чрез LDAP]]></key>
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2020-09-15 14:47:05"><![CDATA[Посъветвайте се с потребителя да изберете парола, различно от предишните X използвани пароли]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2020-09-15 14:47:05"><![CDATA[Квота за дисково пространство (в МБ) за всяка файлова област на потребител]]></key>
         <key id="configuration&amp;_USE_ADVANCED_FORM" attributes="" save_date="2020-09-15 14:47:05"><![CDATA[Използвайте разширена регистрационна форма]]></key>
@@ -1251,9 +1245,7 @@
 <br/>
 За да промените тези думи, моля отидете до Администратор/управление на език, търси за <b>login</b> И променете ключа <b>_INTRO_STD_TEXT</b>]]></key>
         <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2020-09-15 14:47:05"><![CDATA[forma.lms е с отворен код платформа за е-Обучение (LMS и LCMS), използвана в областта на корпоративните пазари и висшето образование.]]></key>
-        <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2020-09-15 14:47:05"><![CDATA[Прескочете до формата за вход]]></key>
-        <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2020-09-15 14:47:05"><![CDATA[LDAP удостоверение е активно, недостъпна функционалност моля обадете се на администратора]]></key>
-        <key id="login&amp;_LOGIN" attributes="" save_date="2020-09-15 14:47:05"><![CDATA[Влез]]></key>
+        <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2020-09-15 14:47:05"><![CDATA[Прескочете до формата за вход]]></key>        <key id="login&amp;_LOGIN" attributes="" save_date="2020-09-15 14:47:05"><![CDATA[Влез]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2020-09-15 14:47:05"><![CDATA[Достъпно влизане]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2020-09-15 14:47:05"><![CDATA[Влез]]></key>
         <key id="login&amp;_LOGIN_WITH" attributes="" save_date="2020-09-15 14:47:05"><![CDATA[Влез с]]></key>

@@ -422,11 +422,6 @@
         <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Показывать в результатах поиска в библиотеке содержимого объекты, которые не категоризированы.]]></key>
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Активировать редактирование языка (используется для отладки)]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Для осуществления регистрации необходимо указать Имя и Фамилию]]></key>
-        <key id="configuration&amp;_LDAP" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[LDAP]]></key>
-        <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Порт LDAP (обычно 389)]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Сервер LDAP]]></key>
-        <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Активировать аутентификацию LDAP]]></key>
-        <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Учетная запись для пользователей LDAP, используйте $user для имени учетной записи.<br />Ex. $user@domain2.domain1 (для: W2k3)]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Конфигурирование "magic_quotes_gpc"]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Отправитель данных о регистрации и забытых паролей]]></key>
         <key id="configuration&amp;_MAIN_OPTIONS" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Основные опции]]></key>
@@ -544,7 +539,6 @@
         <key id="configuration&amp;_URL" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Ссылка на сайт содержит / в конце]]></key>
         <key id="configuration&amp;_URL_CHECKIN_TELESKILL" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[URL для регистрации]]></key>
         <key id="configuration&amp;_URL_VIDEOCONFERENCE_TELESKILL" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[URL для видеоконференции]]></key>
-        <key id="configuration&amp;_USEFULL_ONLY_IF" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Рассматривайте этот параметр только если Вам необходима аутентификация через LDAP]]></key>
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Просить пользователя выбрать пароль, отличающийся от последних X использованных]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Квота (в МБ) для области Мои Файлы каждого пользователя]]></key>
         <key id="configuration&amp;_USE_ADVANCED_FORM" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Использовать расширенную форму регистрации]]></key>
@@ -1252,7 +1246,6 @@
 Чтобы изменить эти слова, обратитесь к управлению языками, найдите <b>login</b> и редактируйте ключ <b>_INTRO_STD_TEXT</b>]]></key>
         <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[forma.lms это платформа электронного обучения с открытым кодом (LMS и LCMS) используемая на рынке высшего и корпоративного образования.]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Перейти к форме входа]]></key>
-        <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Активна аутентификация LDAP, функции недоступны, пожалуйста обратитесь к своему администратору]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Регистрация]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Доступная регистрация]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Регистрация]]></key>

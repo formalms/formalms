@@ -422,11 +422,6 @@
         <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[در بخش نتایج جستجوی کتابخانه مطالب، گروهه هایی را هم که کاملاً دسته بندی نشده اند نمایش می دهد.]]></key>
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[فعال سازی ویرایش زبانی (مورد استفاده در باگ زدایی)]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[درج نام و نام خانوادگی برای ثبت نام الزامی است]]></key>
-        <key id="configuration&amp;_LDAP" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[LDAP]]></key>
-        <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[درگاهیLDAP  (معمولاً 389)]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[سرور LDAP]]></key>
-        <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[فعال سازی تایید LDAP]]></key>
-        <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[گذرواژه کاربران LDAP، برای گذرواژه از $user استفاده کنید. <br />مثال $user@domain2.domain1 (برای: W2k3)]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[پیکربندی "magic_quotes_gpc"]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[فرستنده رایانامه  ثبت نام ها و گذرواژه های فراموش شده]]></key>
         <key id="configuration&amp;_MAIN_OPTIONS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[گزینه های اصلی]]></key>
@@ -544,7 +539,6 @@
         <key id="configuration&amp;_URL" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[نشانی وبسایت با / آخر]]></key>
         <key id="configuration&amp;_URL_CHECKIN_TELESKILL" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[نشانی برای ثبت حضور]]></key>
         <key id="configuration&amp;_URL_VIDEOCONFERENCE_TELESKILL" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[نشانی برای ویدیوکنفرانس]]></key>
-        <key id="configuration&amp;_USEFULL_ONLY_IF" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[لحاظ این پارامتر فقط در صورت ضرورت تایید از طریق LDAP]]></key>
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[درخواست از کاربر برای انتخاب گذرواژه ای متفاوت با آخرین X گذرواژه استفاده شده]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[سهم دیسک (به مگابایت) برای بخش پرونده های من هر کاربر]]></key>
         <key id="configuration&amp;_USE_ADVANCED_FORM" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[استفاده از فرم پیشرفته ثبت نام]]></key>
@@ -1230,7 +1224,6 @@
         <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[این تریبون از 26 زبان پشتیبانی می کند، با استانداردهای اسکورم 1.2 و 2004 سازگار است، و از مدل های آموزشی مختلف پشتیبانی می کند، از جمله: تلفیقی، خودگردان، همکارانه و حتی یادگیری اجتماعی از طریق گپ، ویکی، تالارهای گفتگو و کارکردهای دیگر. <br/> <br/> <br/> برای تغییر این واژه ها لطفا بروید به مدیر/ تنظیم زبان، <b>login</b> را جستجو کنید و کلید <b>_INTRO_STD_TEXT</b> را ویرایش کنید]]></key>
         <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[دوکبو یک تریبون متن باز یادگیری الکترونیک (LMS و LCMS) است که در شرکت ها و آموزش عالی استفاده می شود.]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[پرش به فرم ورود]]></key>
-        <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[تایید LDAP فعال است، اگر کارکرد موجود نیست، لطفا با مدیر خود تماس بگیرید]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[ورود]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[ورود افراد کم توان]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[ورود]]></key>

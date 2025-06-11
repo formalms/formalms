@@ -423,11 +423,6 @@
         <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Εμφάνιση Show, στην περιοχή αποτελεσμάτων των αναζητήσεων βιβλιοθήκης υλικού, και αντικείμενα που δεν είναι πλήρως κατηγοριοποιημένα]]></key>
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Ενεργοποίηση επεξεργασίας γλώσσεων (χρησιμοποιείται για αποσφαλμάτωση)]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Απαιτείται ονοματεπώνυμο για την εγγραφή]]></key>
-        <key id="configuration&amp;_LDAP" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[LDAP]]></key>
-        <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Πόρτα (port) LDAP (συνήθως 389)]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Διεύθυνση εξυπηρέτη LDAP]]></key>
-        <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Ενεργοποίηση ταυτοποίησης με χρήση LDAP]]></key>
-        <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Όνομα χρήστη για χρήστες LDAP, χρησιμοποιήστε $user για το όνομα χρήστη.<br />Π.χ. $user@domain2.domain1 (για: W2k3)]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Ρύθμιση του "magic_quotes_gpc"]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Αποστολέας email σχετικά με εγγραφές και χαμένα συνθηματικά]]></key>
         <key id="configuration&amp;_MAIN_OPTIONS" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Κύριες επιλογές]]></key>
@@ -545,7 +540,6 @@
         <key id="configuration&amp;_URL" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Προσθήκη / στο τέλος της διεύθυνσης του ιστοτόπου]]></key>
         <key id="configuration&amp;_URL_CHECKIN_TELESKILL" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[URL για εξωτερική είσοδο]]></key>
         <key id="configuration&amp;_URL_VIDEOCONFERENCE_TELESKILL" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[URL για τηλεδιασκέψεις]]></key>
-        <key id="configuration&amp;_USEFULL_ONLY_IF" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Χρησιμοποιήστε αυτή την παράμετρο μόνο εάν απαιτείται ταυτοποίηση μέσω LDAP]]></key>
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Ζήτα από το χρήστη να επιλέξει συνθηματικό που είναι διαφορετικό από τα προηγούμενα Χ που χρησιμοποίησε]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Μερίδιο δίσκου (σε MB) δια το χώρο "Τα αρχεία μου" του κάθε χρήστη]]></key>
         <key id="configuration&amp;_USE_ADVANCED_FORM" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Χρήση προχωρημένης φόρμας εγγραφής]]></key>
@@ -1252,7 +1246,6 @@
 Για να αλλάξετε αυτό το κείμενο παρακαλώ πηγαίνετε Διαχειριστής/Διαχείριση γλωσσών, αναζητήσεις <b>login</b> και επεξεργαστείτε τα κλειδια <b>_INTRO_STD_TEXT_TITLE</b> και <b>_INTRO_STD_TEXT</b>]]></key>
         <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Το forma.lms είναι μια πλατφόρμα Ανοιχτού Κώδικα, για Ηλεκτρονική Μάθηση (LMS και LCMS) που χρησιμοποιείται σε εμπορικές αγορές και αγορές ανώτατης εκπαίδευσης.]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Μετάβαση στη φόρμα εισαγωγής]]></key>
-        <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Η ταυτοποίηση LDAP είναι ενεργή, αλλά η λειτουργία δεν είναι διαθέσιμη, παρακαλώ επικοινωνήστε με το διαχειριστή]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Εισαγωγή]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Προσβάσιμη είσοδος]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Είσοδος]]></key>

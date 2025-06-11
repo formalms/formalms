@@ -468,11 +468,6 @@
         <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[İçerik kütüphanesi arama sonuç alanında kullanıcıya tam olarak kategorilendirilmemiş nesneleri de göster]]></key>
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[Dil düzenlemeyi etkinleştir (hata ayıklama için kullanılır)]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[İsim ve Soyisim kayıt yapabilmek için gereklidir]]></key>
-        <key id="configuration&amp;_LDAP" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[LDAP]]></key>
-        <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[LDAP port (genelde 389)]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[LDAP sunucusu]]></key>
-        <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[LDAP kimlik denetimini etkinleştir]]></key>
-        <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[LDAP kullanıcıları için kullanıcı adı, kullanıcı adı için $user kullan.<br />Örnek: $user@domain2.domain1 (W2k3 için)]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2020-09-15 14:47:23"><![CDATA["magic_quotes_gpc" ayarları]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[Kayıt ve Kayıp şifreler için e-posta gönderimi]]></key>
         <key id="configuration&amp;_MAIN_OPTIONS" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[Ana seçenekler]]></key>
@@ -590,7 +585,6 @@
         <key id="configuration&amp;_URL" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[Sonunda / ile Websitesi URL adresi]]></key>
         <key id="configuration&amp;_URL_CHECKIN_TELESKILL" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[Check-in için URL]]></key>
         <key id="configuration&amp;_URL_VIDEOCONFERENCE_TELESKILL" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[Video-konferans için URL]]></key>
-        <key id="configuration&amp;_USEFULL_ONLY_IF" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[Bu parametreyi sadece eğer LDAP üzerinden kimlik doğrulamayı kullanacaksanız dikkate alın]]></key>
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[Kullanıcının kullandığı en son X şifreden farklı bir şifre seçmesi isteminde bulun]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[Her kullanıcının Dosyalarım alanı için disk kotası (MB)]]></key>
         <key id="configuration&amp;_USE_ADVANCED_FORM" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[Gelişmiş kayıt formunu kullan]]></key>
@@ -1298,7 +1292,6 @@ Kullanıcı Adı: [userid]
 Bu kelimeleri değiştirmek için lütfen Admin/Language yönetimine gidin, <b>login</b> arayın ve <b>_INTRO_STD_TEXT</b> anahtarını değiştirin]]></key>
         <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[forma.lms, ticari ve yüksek öğretim pazarında kullanılan Açık Kaynaklı e-Öğrenme platformudur (LMS ve LCMS).]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[Oturum açma formuna atla]]></key>
-        <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[LDAP kimlik doğrulama etkin, fonksiyonelite etkin değil lütfen yöneticinizi arayın]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[Oturum aç]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[Erişilebilir Oturum Açma]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[Oturum aç]]></key>

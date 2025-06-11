@@ -423,11 +423,6 @@
         <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[コンテントライブラリサーチの結果に完全に分類されないものも表示する]]></key>
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[言語編集の実効化 (デバッグ用)]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[登録時の姓名の入力を必須]]></key>
-        <key id="configuration&amp;_LDAP" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[LDAP]]></key>
-        <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[LDAPポート (普通は389)]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[LDAPサーバ]]></key>
-        <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[LDAP検証の実効化]]></key>
-        <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[LDAPユーザ用ユーザネーム。$user をユーザネームに使ってください。<br />例: $user@domain2.domain1 (for: W2k3)]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2020-09-15 14:47:19"><![CDATA["magic_quotes_gpc"の設定]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[登録とパスワード紛失時のメール送り主]]></key>
         <key id="configuration&amp;_MAIN_OPTIONS" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[メインオプション]]></key>
@@ -545,7 +540,6 @@
         <key id="configuration&amp;_URL" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[最後が/のウェブサイトURL]]></key>
         <key id="configuration&amp;_URL_CHECKIN_TELESKILL" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[チェックイン用URL]]></key>
         <key id="configuration&amp;_URL_VIDEOCONFERENCE_TELESKILL" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[ビデオ会議用URL]]></key>
-        <key id="configuration&amp;_USEFULL_ONLY_IF" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[LDAP経由で認証しなければいけない場合のみこの項目を考慮してください]]></key>
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[ユーザに最近X回使ったもの以外のパスワードを要求する]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[ユーザ毎のマイファイルのディスククォータ (MB)]]></key>
         <key id="configuration&amp;_USE_ADVANCED_FORM" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[拡張登録フォームを使う]]></key>
@@ -1254,7 +1248,6 @@ forma.lmsのURL <a href="[url]">[url]</a>で読めます]]></key>
 これらの語を変える場合、管理者/言語の管理を参照し、<b>ログイン</b>を探し、<b>_INTRO_STD_TEXT</b>キーを変更してください]]></key>
         <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[forma.lmsは、企業および高等教育市場で使用されているオープンソースのeラーニングプラットフォーム（LMSおよびLCMS）です。]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[ログインフォームへジャンプ]]></key>
-        <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[LDAP認証実効中、機能は利用不能です。管理者に連絡してください]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[ログイン]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[アクセシブルログイン]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[ログイン]]></key>

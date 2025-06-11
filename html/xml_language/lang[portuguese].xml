@@ -498,11 +498,6 @@
         <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Mostrar, nos resultados das pesquisas dos conteúdos de bibliotecas, também objetos que não estão totalmente categorizados]]></key>
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Ativar edição de linguagem (usada para depuração)]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Primeiro Nome e Último Nome são necessários para registo]]></key>
-        <key id="configuration&amp;_LDAP" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[LDAP]]></key>
-        <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Porta LDAP (usualmente 389)]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Endereço de servidor LDAP]]></key>
-        <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Ativar autenticação LDAP]]></key>
-        <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Nome de utilizador para utilizadores LDAP, usar $user para nome de utilizador.<br />Ex. $user@domain2.domain1 (para: W2k3)]]></key>
         <key id="configuration&amp;_LIST_DB_UPGRADES" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Log de roteiro DB SQL]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Configuração de "magic_quotes_gpc"]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Remetente de email para registos e senhas esquecidas]]></key>
@@ -656,7 +651,6 @@
         <key id="configuration&amp;_URL" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[URL do website (deve terminar com /)]]></key>
         <key id="configuration&amp;_URL_CHECKIN_TELESKILL" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[URL para check-in]]></key>
         <key id="configuration&amp;_URL_VIDEOCONFERENCE_TELESKILL" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[URL para videoconferência]]></key>
-        <key id="configuration&amp;_USEFULL_ONLY_IF" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Considerar este parâmetro apenas se precisar de autentificar através de LDAP]]></key>
         <key id="configuration&amp;_USERS_ALREADY_ASSIGNED" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[utilizadors já atribuídos]]></key>
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Perguntar ao utilizador para escolher uma senha diferente das últimas senhas usadas]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Cota de disco (em MB) para cada utilizador em Meus Ficheiros]]></key>
@@ -1447,7 +1441,6 @@ Senha: [password]]]></key>
 Para alterar estas palavras por favor vá a  gestão Admin/Idioma, pesquise por <b>login</b> e edite as chaves <b>_INTRO_STD_TEXT_TITLE</b> e <b>_INTRO_STD_TEXT</b>]]></key>
         <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[forma.lms é uma plataforma de e-learning Open Source (LMS and LCMS) utilizada nos mercados de educação corporativa e superior.]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Vá para formulário de <b> login </b>]]></key>
-        <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Autenticação LDAP está activa, funcionalidade indisponível por favor informe o seu administrador]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Entrar]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Login Acessível]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Entrar]]></key>

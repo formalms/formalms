@@ -440,7 +440,7 @@
         <key id="configuration&amp;MAIN_SET_4" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Pamatiestatījumi]]></key>
         <key id="configuration&amp;MAIN_SET_6" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Pamatiestatījumi]]></key>
         <key id="configuration&amp;MAIN_SET_8" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Pamatiestatījumi]]></key>
-        <key id="configuration&amp;MAIN_SET_9" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[LDAP]]></key>
+        <key id="configuration&amp;MAIN_SET_9" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[SSO]]></key>
         <key id="configuration&amp;PASSWORD_BCRYPT" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[BCRYPT šifrēšana]]></key>
         <key id="configuration&amp;PASSWORD_MD5" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[MD5 šifrēšana]]></key>
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Aktivizēts pieejamības opcijas]]></key>
@@ -513,12 +513,6 @@
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Aktivizet valodu labojumus (lietot atkļūdošanai)]]></key>
         <key id="configuration&amp;_LANG_EXPORT_TIME" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Valodas eksportēšanas laiks]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Vārds un Uzvards ir obligāti lai reģistrētos]]></key>
-        <key id="configuration&amp;_LDAP" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[LDAP]]></key>
-        <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[LDAP ports (parasti 389)]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[LDAP servera adrese]]></key>
-        <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Iespējot LDAP autentifikāciju]]></key>
-        <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Lietotājvārds LDAP lietotājiem, lieto $user kā lietotājvardu.</br>
-Piemēram: $user@domain2.domain1 (priekš W2k3)]]></key>
         <key id="configuration&amp;_LIST_DB_UPGRADES" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[DB SQL skriptu logi]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2020-09-15 14:47:24"><![CDATA["magic_quotes_gpc" konfigurācija]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Reģistrācijas un paroles atjaunošanas e-pasta sūtītājs]]></key>
@@ -678,7 +672,6 @@ Piemēram: $user@domain2.domain1 (priekš W2k3)]]></key>
         <key id="configuration&amp;_URL" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Mājas lapas adrese ar / galā]]></key>
         <key id="configuration&amp;_URL_CHECKIN_TELESKILL" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Reģistrācijas URL]]></key>
         <key id="configuration&amp;_URL_VIDEOCONFERENCE_TELESKILL" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Videokonferences URL]]></key>
-        <key id="configuration&amp;_USEFULL_ONLY_IF" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Šis parametrs nepieciešams tikai tad ja autentifikācija notiek izmantojot LDAP]]></key>
         <key id="configuration&amp;_USERS_ALREADY_ASSIGNED" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[jau piesaistītie lietotāji]]></key>
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Pieprasīt lietotajam izveidot paroli kas atšķiras no X iepriekš lietotajām parolēm]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Diska vietas ierobežojums (MB) katra lietotaja "Manu failu" sadaļai]]></key>
@@ -1476,7 +1469,6 @@ Lietotājvārds: [userid]]]></key>
 Lai mainītu šo tekstu dodies uz Administrēšana/Valodas pārvaldība un mēklējiet moduli <b>pierakstīšanās</b>. Veiciet izmaiņas reģistros:  <b>_INTRO_STD_TEXT_TITLE</b> and <b>_INTRO_STD_TEXT</b>]]></key>
         <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[forma.lms ir atvērtā koda e-apmācību programmatūra  (LMS un LCMS) ko lieto korporatīvās apmācības un augstākās izglītības sektoros]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Doties uz pierakstīšanās formu]]></key>
-        <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Ir aktivizēta LDAP autorizēšanās un šī funkcija nav pieejama. Sazinieties ar administratoru]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Pierakstīties]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Pierakstīšanās izmantojot pieejamības opcijas]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Pierakstīties]]></key>

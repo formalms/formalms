@@ -485,11 +485,6 @@
         <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2020-09-15 14:47:09"><![CDATA[Laat in het resultaat van de inhoud, objecten zien die niet vollesdig gecategoriseerd zijn]]></key>
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2020-09-15 14:47:09"><![CDATA[Activeer de taal om te gebruiken (gebruikt om te debuggen)]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2020-09-15 14:47:09"><![CDATA[Voornaam en achternaam zijn verplicht om te kunnen registreren]]></key>
-        <key id="configuration&amp;_LDAP" attributes="" save_date="2020-09-15 14:47:09"><![CDATA[LDAP]]></key>
-        <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2020-09-15 14:47:09"><![CDATA[LDAP port (normaal gezien 389)]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2020-09-15 14:47:09"><![CDATA[LDAP server adres]]></key>
-        <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2020-09-15 14:47:09"><![CDATA[Activeer LDAP authenticatie]]></key>
-        <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2020-09-15 14:47:09"><![CDATA[Gebruikersnaam voor LDAP gebruikers, gebruik, gebruik $user als gebruikersnaam.<br />vb: $user@domain2.domain1 (for: W2k3)]]></key>
         <key id="configuration&amp;_LIST_DB_UPGRADES" attributes="" save_date="2020-09-15 14:47:09"><![CDATA[DB SQL scripts log]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2020-09-15 14:47:09"><![CDATA[Configuratie van "magic_quotes_gpc"]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2020-09-15 14:47:09"><![CDATA[Registratie en verloren wachtwoorden e-mail verzender]]></key>
@@ -641,7 +636,6 @@
         <key id="configuration&amp;_URL" attributes="" save_date="2020-09-15 14:47:09"><![CDATA[Website URL met /]]></key>
         <key id="configuration&amp;_URL_CHECKIN_TELESKILL" attributes="" save_date="2020-09-15 14:47:09"><![CDATA[URL voor check-in]]></key>
         <key id="configuration&amp;_URL_VIDEOCONFERENCE_TELESKILL" attributes="" save_date="2020-09-15 14:47:09"><![CDATA[URL voor videoconferentie]]></key>
-        <key id="configuration&amp;_USEFULL_ONLY_IF" attributes="" save_date="2020-09-15 14:47:09"><![CDATA[Overweeg deze instelling alleen als je authenticeerd via LDAP]]></key>
         <key id="configuration&amp;_USERS_ALREADY_ASSIGNED" attributes="" save_date="2020-09-15 14:47:09"><![CDATA[Gebruikers reeds toegewezen]]></key>
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2020-09-15 14:47:09"><![CDATA[Vraag de gebruiker om een ander wachtwoord dan de laatste X aantal gebruikte wachtwoorden]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2020-09-15 14:47:09"><![CDATA[Disk quota (in MB) voor elke gebruiker in "Mijn bestanden"]]></key>
@@ -1398,7 +1392,6 @@ Wachtwoord: [password]]]></key>
 Om deze woorden te veranderenga naar Admin/talen management, zoek naar <b>login</b> en wijzig de sleutels <b>_INTRO_STD_TEXT_TITLE</b> en <b>_INTRO_STD_TEXT</b>]]></key>
         <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2020-09-15 14:47:10"><![CDATA[forma.lms is een Open Source e-learning platform (LMS en LCMS) gebruikt in de bedrijfswereld en hogere opleidingen.]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2020-09-15 14:47:10"><![CDATA[Ga naar login form]]></key>
-        <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2020-09-15 14:47:10"><![CDATA[LDAP authenticatie is actief, functionaliteit niet beschikbaar. Roep een admin!]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2020-09-15 14:47:10"><![CDATA[Login]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2020-09-15 14:47:10"><![CDATA[Toegankelijke login]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2020-09-15 14:47:10"><![CDATA[Login]]></key>
