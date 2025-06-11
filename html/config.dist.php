@@ -141,6 +141,7 @@ $cfg['demo_mode'] = false;
 //$cfg['session']['pass'] = $cfg['db_pass']; // authentication psw session handler
 //$cfg['session']['options'] = []; // other options key value array to pass based on selected handler
 //$cfg['session']['cookieName'] = '__Secure-FORMALMS';
+//$cfg['session']['sameSite'] = ''; // Cookie SameSite policy configuration (format: "domain:policy,domain:policy")
 
 /*
  * Technical preferences

@@ -106,6 +106,12 @@ require('bootstrap-js-buttons/dist/bootstrap-js-buttons.min.js');
             this._options.processing = options.processing;
         }
 
+        if (options.searchDelay !== undefined) {
+            this._options.searchDelay = options.searchDelay;
+        } else {
+            this._options.searchDelay = 500;
+        }
+
 
         if (options.preselection !== undefined) {
             

@@ -421,11 +421,6 @@
         <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[在内容库搜索结果中同时显示没有完全归类的对象。]]></key>
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[激活语言编辑（用于调试）]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[必须填写名字以便完成注册]]></key>
-        <key id="configuration&amp;_LDAP" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[LDAP]]></key>
-        <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[LDAP端口（通常是 389）]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[LDAP服务器]]></key>
-        <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[激活LDAP证书]]></key>
-        <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[LDAP用户的用户名使用$用户作为用户名。<br />如：$user@domain2.domain1 (适用于： W2k3)]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2020-09-15 14:47:21"><![CDATA["magic_quotes_gpc"配置]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[注册和丢失密码电子邮件发送]]></key>
         <key id="configuration&amp;_MAIN_OPTIONS" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[主要选项]]></key>
@@ -543,7 +538,6 @@
         <key id="configuration&amp;_URL" attributes="" save_date="2020-09-15 14:47:22"><![CDATA[最后带有/的网址]]></key>
         <key id="configuration&amp;_URL_CHECKIN_TELESKILL" attributes="" save_date="2020-09-15 14:47:22"><![CDATA[检入的网址]]></key>
         <key id="configuration&amp;_URL_VIDEOCONFERENCE_TELESKILL" attributes="" save_date="2020-09-15 14:47:22"><![CDATA[视频会议网址]]></key>
-        <key id="configuration&amp;_USEFULL_ONLY_IF" attributes="" save_date="2020-09-15 14:47:22"><![CDATA[只有当您需要通过LDAP认证时才考虑这个参数]]></key>
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2020-09-15 14:47:22"><![CDATA[请用户选择一个不同于最后X次使用的密码]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2020-09-15 14:47:22"><![CDATA[每个用户在我的文件区域的磁盘定额（MB）]]></key>
         <key id="configuration&amp;_USE_ADVANCED_FORM" attributes="" save_date="2020-09-15 14:47:22"><![CDATA[使用高级登记表]]></key>
@@ -1250,7 +1244,6 @@
 要修改这些词汇，请到管理员与语言管理部分，找到<b>登陆</b>与编辑键 <b>_INTRO_STD_TEXT</b>]]></key>
         <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2020-09-15 14:47:22"><![CDATA[forma.lms是一个开源的网络学习平台(LMS和LCMS)，被广泛用于公司和高等教育领域。]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2020-09-15 14:47:22"><![CDATA[跳到登陆表单]]></key>
-        <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2020-09-15 14:47:22"><![CDATA[LDAP认证已启用，功能不可用，请致电您的管理员]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2020-09-15 14:47:22"><![CDATA[登录]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2020-09-15 14:47:22"><![CDATA[无障碍登录]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2020-09-15 14:47:22"><![CDATA[登录]]></key>

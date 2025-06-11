@@ -225,6 +225,7 @@ class AssessmentRuleManager
         $cmpman = new CompetencesAdm();
 
         $feedback_txt = [];
+        $levelCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('levelCourse');
         while ($row = $this->db->fetch_assoc($q)) {
             $course_arr = $json->decode($row['courses_list']);
             $competence_arr = $json->decode($row['competences_list']);
@@ -232,13 +233,13 @@ class AssessmentRuleManager
             $feedback_txt[] = $row['feedback_txt'];
 
             //courses subscriptions - only students are affected
-            if (!empty($course_arr) && $this->session->get('levelCourse') <= 3) {
+            if (!empty($course_arr) && $levelCourse <= 3) {
                 $arr_courses = array_keys($course_arr);
                 $csm->multipleUserSubscribe(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $arr_courses, 3);
             }
 
             //competences assignment - only students are affected
-            if (!empty($competence_arr) && $this->session->get('levelCourse') <= 3) {
+            if (!empty($competence_arr) && $levelCourse <= 3) {
                 foreach ($competence_arr as $c_id => $data) {
                     if ($data['type'] == 'score') {
                         $score = (isset($data['score']) ? $data['score'] : 0);

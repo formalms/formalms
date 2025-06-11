@@ -422,11 +422,6 @@
         <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2020-09-15 14:47:03"><![CDATA[تظهر في نتائج البحث محتوى المكتبة ، وأيضا الأشياء التي لم يتم تصنيفها بشكل كامل.]]></key>
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2020-09-15 14:47:03"><![CDATA[تنشيط تحرير اللغة (التي تستخدم لتصحيح الأخطاء)]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2020-09-15 14:47:03"><![CDATA[مطلوبة الاسم الأول واسم العائلة للتسجيل]]></key>
-        <key id="configuration&amp;_LDAP" attributes="" save_date="2020-09-15 14:47:03"><![CDATA[LDAP]]></key>
-        <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2020-09-15 14:47:03"><![CDATA[(عادة 389) LDAP المنفذ]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2020-09-15 14:47:03"><![CDATA[LDAP خادم]]></key>
-        <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2020-09-15 14:47:03"><![CDATA[LDAP  مصادقة  تنشيط]]></key>
-        <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2020-09-15 14:47:03"><![CDATA[اسم المستخدم لمستخدمي LDAP ، استخدام $ المستخدم لاسم المستخدم. <br/> السابق. $ user@domain2.domain1 (عن : W2k3)]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2020-09-15 14:47:03"><![CDATA["magic_quotes_gpc" تكوين]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2020-09-15 14:47:03"><![CDATA[البريد الالكتروني المرسل كلمات السر المفقودة التسجيلات و]]></key>
         <key id="configuration&amp;_MAIN_OPTIONS" attributes="" save_date="2020-09-15 14:47:03"><![CDATA[الخيارات الرئيسية]]></key>
@@ -547,7 +542,6 @@
         <key id="configuration&amp;_URL" attributes="" save_date="2020-09-15 14:47:03"><![CDATA[عنوان الموقع مع النهائي /]]></key>
         <key id="configuration&amp;_URL_CHECKIN_TELESKILL" attributes="" save_date="2020-09-15 14:47:03"><![CDATA[عنوان الاختيار في]]></key>
         <key id="configuration&amp;_URL_VIDEOCONFERENCE_TELESKILL" attributes="" save_date="2020-09-15 14:47:03"><![CDATA[عنوان فيديو كونفرنس]]></key>
-        <key id="configuration&amp;_USEFULL_ONLY_IF" attributes="" save_date="2020-09-15 14:47:03"><![CDATA[LDAP تنظر في هذه المعلمة فقط إذا كنت تحتاج إلى مصادقة من خلال]]></key>
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2020-09-15 14:47:03"><![CDATA[الماضية المستخدمة  كلمات السر اسأل المستخدم من اختيار كلمة مرور مختلفة عن]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2020-09-15 14:47:03"><![CDATA[ملفاتي للمنطقة لكل مستخدم ( الحصة النسبية للقرص (في ميغابايت]]></key>
         <key id="configuration&amp;_USE_ADVANCED_FORM" attributes="" save_date="2020-09-15 14:47:03"><![CDATA[استخدام استمارة التسجيل المتقدمة]]></key>
@@ -1255,9 +1249,7 @@ Username: [userid]]]></key>
 <br/>
 لتغيير هذه الكلمات الرجاء الذهاب إلى ادارة المراقبة / اللغة ، ابحث عن <b>login</b> and edit the key <b>_INTRO_STD_TEXT</b>]]></key>
         <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2020-09-15 14:47:03"><![CDATA[دوكوبو هو المصدر المفتوح منصة التعلم الإلكتروني   تستخدم في الشركات والتعليم العالي forma.lms (LMS and LCMS).]]></key>
-        <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2020-09-15 14:47:03"><![CDATA[الانتقال إلى نموذج تسجيل الدخول]]></key>
-        <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2020-09-15 14:47:03"><![CDATA[مصادقة نشطة ، وظائف غير متاحة ، يرجى الاتصال بمسؤولLDAP]]></key>
-        <key id="login&amp;_LOGIN" attributes="" save_date="2020-09-15 14:47:03"><![CDATA[تسجيل الدخول]]></key>
+        <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2020-09-15 14:47:03"><![CDATA[الانتقال إلى نموذج تسجيل الدخول]]></key>        <key id="login&amp;_LOGIN" attributes="" save_date="2020-09-15 14:47:03"><![CDATA[تسجيل الدخول]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2020-09-15 14:47:03"><![CDATA[الدخول يمكن الوصول اليه]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2020-09-15 14:47:03"><![CDATA[تسجيل الدخول]]></key>
         <key id="login&amp;_LOGIN_WITH" attributes="" save_date="2020-09-15 14:47:03"><![CDATA[تسجيل الدخول مع]]></key>

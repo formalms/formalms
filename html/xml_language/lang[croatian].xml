@@ -423,11 +423,6 @@
         <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2020-09-15 14:47:06"><![CDATA[Prikaži, u rezultatima pretraživanja biblioteka sadržaja, takođe i sredstva koja nisu u potpunosti kategorirana]]></key>
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2020-09-15 14:47:06"><![CDATA[Aktiviraj editiranje jezika (korišteno za otklanjanje grešaka)]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2020-09-15 14:47:06"><![CDATA[Ime i prezime je neophodno za registraciju]]></key>
-        <key id="configuration&amp;_LDAP" attributes="" save_date="2020-09-15 14:47:06"><![CDATA[LDAP]]></key>
-        <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2020-09-15 14:47:06"><![CDATA[LDAP port (uglavnom 389)]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2020-09-15 14:47:06"><![CDATA[LDAP server]]></key>
-        <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2020-09-15 14:47:06"><![CDATA[Aktiviraj LDAP autentifikaciju]]></key>
-        <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2020-09-15 14:47:06"><![CDATA[Korisničko ime LDAP korisnika, koristiti $user kao korisničko ime.<br />Npr. $user@domain2.domain1 (za: W2k3)]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2020-09-15 14:47:06"><![CDATA[Konfiguracija "magic_quotes_gpc"]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2020-09-15 14:47:06"><![CDATA[Pošiljalac emaila za registracije i zaboravljene zaporke]]></key>
         <key id="configuration&amp;_MAIN_OPTIONS" attributes="" save_date="2020-09-15 14:47:06"><![CDATA[Glavne opcije]]></key>
@@ -545,7 +540,6 @@
         <key id="configuration&amp;_URL" attributes="" save_date="2020-09-15 14:47:06"><![CDATA[URL internet sajta sa konačnim /]]></key>
         <key id="configuration&amp;_URL_CHECKIN_TELESKILL" attributes="" save_date="2020-09-15 14:47:06"><![CDATA[URL za prijavu]]></key>
         <key id="configuration&amp;_URL_VIDEOCONFERENCE_TELESKILL" attributes="" save_date="2020-09-15 14:47:06"><![CDATA[URL za video-konferenciju]]></key>
-        <key id="configuration&amp;_USEFULL_ONLY_IF" attributes="" save_date="2020-09-15 14:47:06"><![CDATA[Uvaži ovaj parametar samo ako se prijavljujete preko LDAPa]]></key>
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2020-09-15 14:47:06"><![CDATA[Zahtijevaj od korisnika da koristi zaporku koja je različita od zadnjih X zaporki]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2020-09-15 14:47:06"><![CDATA[Veličina na disku (u MB) za prostor "Moji fajlovi" svakog korisnika]]></key>
         <key id="configuration&amp;_USE_ADVANCED_FORM" attributes="" save_date="2020-09-15 14:47:06"><![CDATA[Koristi napredni registracijski formular]]></key>
@@ -1253,7 +1247,6 @@ Zaporka: [password]]]></key>
 Da promijenite ove riječi molimo idite na Admin/Jezik upravljanje, tražite <b>login</b> i promijenite ključ <b>_INTRO_STD_TEXT</b>]]></key>
         <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2020-09-15 14:47:06"><![CDATA[forma.lms je Open Source e-learning platforma (LMS and LCMS) koja se koristi u korporativnim i visokoškolskim tržištima.]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2020-09-15 14:47:06"><![CDATA[Skoči na prijavni formular]]></key>
-        <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2020-09-15 14:47:06"><![CDATA[LDAP autentifikacija je aktivna, funkcionalnost nedostupna, molimo zovite svog administratora]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2020-09-15 14:47:06"><![CDATA[Prijava]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2020-09-15 14:47:06"><![CDATA[Pristupna prijava]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2020-09-15 14:47:06"><![CDATA[Prijava]]></key>

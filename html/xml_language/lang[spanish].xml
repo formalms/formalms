@@ -487,11 +487,6 @@
         <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Mostrar, en los resultados de las búsquedas en la biblioteca, también objetos que no están totalmente categorizados]]></key>
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Activar edición del lenguaje (usado para depurar)]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Es necesario Nombre y Apellidos para registrarse]]></key>
-        <key id="configuration&amp;_LDAP" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[LDAP]]></key>
-        <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Puerto LDAP (usualmente 389)]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2017-05-05 17:16:54"><![CDATA[Dirección del servidor LDAP]]></key>
-        <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Activar LDAP autenticación]]></key>
-        <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Nombre de usuario para los usuarios de LDAP, use $user para el usuario.<br />Ejemplo: $user@domain2.domain1 (para Windows 2003)]]></key>
         <key id="configuration&amp;_LIST_DB_UPGRADES" attributes="" save_date="2016-12-07 07:28:07"><![CDATA[Lista de ampliación del DB]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Configuración de "magic_quotes_gpc"]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2017-05-29 10:19:44"><![CDATA[Enviador de correos del registros y contraseñas perdidas]]></key>
@@ -644,7 +639,6 @@
         <key id="configuration&amp;_URL" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[URL del sitio web con un / al final]]></key>
         <key id="configuration&amp;_URL_CHECKIN_TELESKILL" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[URL para la llegada]]></key>
         <key id="configuration&amp;_URL_VIDEOCONFERENCE_TELESKILL" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[URL para videoconferencia]]></key>
-        <key id="configuration&amp;_USEFULL_ONLY_IF" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Considere este parámetro solo si Ud. necesita autenticarse a través de LDAP]]></key>
         <key id="configuration&amp;_USERS_ALREADY_ASSIGNED" attributes="" save_date="2017-05-29 12:14:52"><![CDATA[usuarios ya asignados]]></key>
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Pedirle al usuario que seleccione una contraseña diferente a las últimas X contraseñas usadas]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Cuota de disco (en MB) para cada área de usuario en Mis Archivos]]></key>
@@ -1403,7 +1397,6 @@ La plataforma admite 26 idiomas, cumple con los estándares SCORM 1.2 y 2004, y 
 Para cambiar este texto, vaya a Administración / Gestión de idiomas, busque <b> inicio de sesión </b> y edite las claves <b>_INTRO_STD_TEXT_TITLE</b> y <b>_INTRO_STD_TEXT</b>]]></key>
         <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2018-06-19 00:00:00"><![CDATA[forma.lms es una plataforma de e-learning de código abierto (LMS y LCMS) utilizada en los mercados corporativos y de educación superior]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Ir al formulario de inicio de sesión]]></key>
-        <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[La autenticación por LDAP está activa, funcionalidad no disponible por favor llame a su administrador]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Usuario]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Usuario accesible]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2016-11-23 08:36:15"><![CDATA[Usuario]]></key>

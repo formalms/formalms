@@ -444,7 +444,7 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;MAIN_SET_4" attributes="" save_date="2019-10-02 11:39:01"><![CDATA[Opzioni generali]]></key>
         <key id="configuration&amp;MAIN_SET_6" attributes="" save_date="2019-10-02 11:39:14"><![CDATA[Opzioni generali]]></key>
         <key id="configuration&amp;MAIN_SET_8" attributes="" save_date="2019-10-02 11:39:27"><![CDATA[Opzioni generali]]></key>
-        <key id="configuration&amp;MAIN_SET_9" attributes="" save_date="2019-10-02 11:39:53"><![CDATA[LDAP]]></key>
+        <key id="configuration&amp;MAIN_SET_9" attributes="" save_date="2019-10-02 11:39:53"><![CDATA[SSO]]></key>
         <key id="configuration&amp;PASSWORD_BCRYPT" attributes="" save_date="2020-05-31 16:28:19"><![CDATA[Bycrypt password]]></key>
         <key id="configuration&amp;PASSWORD_MD5" attributes="" save_date="2020-05-31 16:28:27"><![CDATA[MD5 Password]]></key>
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Usa colori con alto contrasto]]></key>
@@ -519,11 +519,6 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Attiva l'interfaccia di editing delle lingue (utilizzato per il debug)]]></key>
         <key id="configuration&amp;_LANG_EXPORT_TIME" attributes="" save_date="2020-05-31 17:47:39"><![CDATA[Data dell'esportazione lingue]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2017-05-26 09:58:52"><![CDATA[Nome e Cognome sono campi obbligatori per la registrazione]]></key>
-        <key id="configuration&amp;_LDAP" attributes="" save_date="2017-03-15 11:47:14"><![CDATA[Estensione LDAP di PHP]]></key>
-        <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2017-03-15 11:48:12"><![CDATA[Porta server LDAP]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2017-03-15 11:48:01"><![CDATA[Indirizzo server LDAP]]></key>
-        <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2017-03-15 11:48:25"><![CDATA[Usa autenticazione LDAP]]></key>
-        <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2017-03-15 11:48:20"><![CDATA[Stringa di autenticazione LDAP]]></key>
         <key id="configuration&amp;_LIST_DB_UPGRADES" attributes="" save_date="2016-09-29 16:01:42"><![CDATA[Log script SQL eseguiti sul DB]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Configurazione di "magic_quotes_gpc"]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mittente delle email di registrazione e della procedura automatica di recupero password]]></key>
@@ -614,6 +609,7 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;_REST_AUTH_API_SECRET" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Aut. Codice segreto API]]></key>
         <key id="configuration&amp;_REST_AUTH_CODE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Codice unico di accesso:]]></key>
         <key id="configuration&amp;_REST_AUTH_LIFETIME" attributes="" save_date="2017-03-15 17:48:15"><![CDATA[Tempo di vita del token (min.):]]></key>
+        <key id="configuration&amp;_SSO_LIFETIME" attributes="" save_date="2017-03-15 17:48:15"><![CDATA[Tempo di vita del token SSO (min.):]]></key>
         <key id="configuration&amp;_REST_AUTH_METHOD" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Metodo di autenticazione:]]></key>
         <key id="configuration&amp;_REST_AUTH_SECRET_KEY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Aut. Chiave segreta]]></key>
         <key id="configuration&amp;_REST_AUTH_TOKEN" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Generazione di un Token ad ogni connessione]]></key>
@@ -685,7 +681,6 @@ http://server/path/index.php?modname=login) \]]></key>
         <key id="configuration&amp;_URL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Indirizzo del sito (deve terminare con /)]]></key>
         <key id="configuration&amp;_URL_CHECKIN_TELESKILL" attributes="" save_date="2017-03-15 17:48:53"><![CDATA[URL per le operazioni di check-in (Teleskill)]]></key>
         <key id="configuration&amp;_URL_VIDEOCONFERENCE_TELESKILL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[URL per videoconferenza]]></key>
-        <key id="configuration&amp;_USEFULL_ONLY_IF" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Fai attenzione a questo parametro solo se desideri autenticarti tramite LDAP]]></key>
         <key id="configuration&amp;_USERS_ALREADY_ASSIGNED" attributes="" save_date="2017-03-15 16:37:53"><![CDATA[utenti già assegnati]]></key>
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Chiedi all'utente di scegliere una nuova password diversa dalle ultime X password che ha usato]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Quota disco in MB assegnata all'utente per l'area myfiles]]></key>
@@ -1620,7 +1615,6 @@ sei stato disiscritto dal corso ([course_code]) - [course]]]></key>
         <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-12-11 09:53:18"><![CDATA[Il sistema, rilasciato nelle principali lingue supporta gli standard SCORM 1.2 e 2004, E' configurabile per adattarsi al modello didattico desiderato (autoapprendimento, blended learning, didattica collaborativa, social e-learning, gestione didattica in aula) attraverso molteplici oggetti didattici: SCORM, pagine HTML, download, test e  diverse funzionalità tra cui Wiki, Forum e Project Manager, <br /><br />Per cambiare questa frase andare su Admin/Gestione lingue, cercare <b>login</b> e modificare le chiavi  <b>_INTRO_STD_TEXT_TITLE</b> e <b>_INTRO_STD_TEXT</b><br /><br />]]></key>
         <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2017-12-11 09:52:43"><![CDATA[forma.lms è un sistema open source per l'e-learning (LMS e LCMS) utilizzato nelle più grandi organizzazioni e università]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Salta alla form di login]]></key>
-        <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[LDAP attivo funzioni disattivate contatta il responsabile]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Login]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Login accessibile]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Login]]></key>

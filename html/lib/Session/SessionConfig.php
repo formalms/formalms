@@ -18,7 +18,7 @@ class SessionConfig
     private array $config;
 
     private string $handler = SessionManager::FILESYSTEM;
-    private ?string $url = '';
+    private ?string $url = null;
     private ?string $host = null;
     private ?int $port = null;
     private float $timeout = 2.5;
@@ -30,9 +30,15 @@ class SessionConfig
     private ?string $password = null;
     private array $options = [];
     private string $cookieName;
+    private string $sameSite = 'Lax';
+    private array $sameSitePolicies = [];
 
     public const SECUREFORMA = '__Secure-FORMALMS';
     public const UNSECUREFORMA = 'FORMALMS';
+
+    public const SAMESITE_NONE = 'None';
+    public const SAMESITE_LAX = 'Lax';
+    public const SAMESITE_STRICT = 'Strict';
 
     public function __construct()
     {
@@ -204,5 +210,86 @@ class SessionConfig
     {
         $this->cookieName = $cookieName;
         return $this;
+    }
+
+    public function getSameSite(): string
+    {
+        return $this->sameSite;
+    }
+
+    public function setSameSite(string $sameSite): self
+    {
+        $this->sameSite = $sameSite;
+
+        // Parse the SameSite configuration string into the sameSitePolicies array
+        if (!empty($sameSite)) {
+            // Dividiamo la configurazione in coppie dominio:valore
+            $domainPairs = explode(',', $sameSite);
+
+            foreach ($domainPairs as $pair) {
+                // Divide la coppia in dominio e valore
+                $parts = explode(':', trim($pair));
+
+                // Se la coppia è invalida (non ha esattamente 2 parti), passa alla successiva
+                if (count($parts) !== 2) {
+                    continue;
+                }
+
+                $domain = trim($parts[0]);
+                $sameSiteValue = trim($parts[1]);
+
+                // Valida il valore SameSite (deve essere None, Lax, o Strict)
+                if (in_array($sameSiteValue, [self::SAMESITE_NONE, self::SAMESITE_LAX, self::SAMESITE_STRICT])) {
+                    $this->sameSitePolicies[$domain] = $sameSiteValue;
+                }
+            }
+        }
+
+        return $this;
+    }
+
+    public function getSameSitePolicies(): array
+    {
+        return $this->sameSitePolicies;
+    }
+
+    public function setSameSitePolicies(array $sameSitePolicies): self
+    {
+        $this->sameSitePolicies = $sameSitePolicies;
+        return $this;
+    }
+
+    /**
+     * Get the SameSite value for a specific domain
+     * 
+     * @param string $domain The domain to check
+     * @return string The SameSite value (None, Lax, or Strict)
+     */
+    public function getSameSiteForDomain(string $domain): string
+    {
+        if (empty($this->sameSitePolicies)) {
+            return $this->sameSite;
+        }
+
+        foreach ($this->sameSitePolicies as $domainPattern => $policy) {
+            // Verifica se il dominio corrisponde
+            $matches = false;
+
+            if ($domain === $domainPattern) {
+                $matches = true;
+            } elseif (str_contains($domain, $domainPattern)) {
+                $matches = true;
+            } elseif (str_contains($domainPattern, '*')) {
+                // Gestione wildcard
+                $pattern = '/^' . str_replace('\*', '.*', preg_quote($domainPattern, '/')) . '$/';
+                $matches = preg_match($pattern, $domain);
+            }
+
+            if ($matches) {
+                return $policy;
+            }
+        }
+
+        return $this->sameSite;
     }
 }

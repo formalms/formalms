@@ -422,11 +422,6 @@
         <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2020-09-15 14:47:18"><![CDATA[Tunjukkan, dalam hasil dari pencarian konten library, dan juga objek-objek yang belum sepenuhnya terkategorisasi.]]></key>
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2020-09-15 14:47:18"><![CDATA[Aktifkan editing bahasa (gunakan untuk debugging)]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2020-09-15 14:47:18"><![CDATA[Nama Depan dan Nama Belakang dibutuhkan untuk melakukan registrasi]]></key>
-        <key id="configuration&amp;_LDAP" attributes="" save_date="2020-09-15 14:47:18"><![CDATA[LDAP]]></key>
-        <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2020-09-15 14:47:18"><![CDATA[Port LDAP (usually 389)]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2020-09-15 14:47:18"><![CDATA[Server LDAP]]></key>
-        <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2020-09-15 14:47:18"><![CDATA[Aktifkan otentikasi LDAP]]></key>
-        <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2020-09-15 14:47:18"><![CDATA[Nama untuk user LDAP, gunakan $user untuk nama usernya.<br />contoh: $user@domain2.domain1 (untuk: W2k3)]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2020-09-15 14:47:18"><![CDATA[Konfigurasi dari "magic_quotes_gpc"]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2020-09-15 14:47:18"><![CDATA[Pengirim email registrasi dan kehilangan password]]></key>
         <key id="configuration&amp;_MAIN_OPTIONS" attributes="" save_date="2020-09-15 14:47:18"><![CDATA[Opsi Utama]]></key>
@@ -544,7 +539,6 @@
         <key id="configuration&amp;_URL" attributes="" save_date="2020-09-15 14:47:18"><![CDATA[URL Website dengan akhiran /]]></key>
         <key id="configuration&amp;_URL_CHECKIN_TELESKILL" attributes="" save_date="2020-09-15 14:47:18"><![CDATA[URL untuk check-in]]></key>
         <key id="configuration&amp;_URL_VIDEOCONFERENCE_TELESKILL" attributes="" save_date="2020-09-15 14:47:18"><![CDATA[URL untuk videoconference]]></key>
-        <key id="configuration&amp;_USEFULL_ONLY_IF" attributes="" save_date="2020-09-15 14:47:18"><![CDATA[Perhatikan parameter ini jika anda membutuhkan otentikasi melalui LDAP]]></key>
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2020-09-15 14:47:18"><![CDATA[Minta user untuk memilih sebuah password yang berbeda dengan password-password sebelumnya]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2020-09-15 14:47:18"><![CDATA[Kuota Disk (dalam MB) untuk setiap My Files milik user]]></key>
         <key id="configuration&amp;_USE_ADVANCED_FORM" attributes="" save_date="2020-09-15 14:47:18"><![CDATA[Gunakan Formulir registrasi advanced]]></key>
@@ -1252,7 +1246,6 @@ Password: [password]]]></key>
 Untuk mengubah kata-kata ini, silahkan menuju ke pengaturan Admin/Bahasa, cari <b>login</b> dan rubah kuncinya <b>_INTRO_STD_TEXT</b>]]></key>
         <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2020-09-15 14:47:18"><![CDATA[forma.lms ialah platform e-learning open source (LMS and LCMS) yang telah digunakan dalam korporasi dan pasar yang cerdas.]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2020-09-15 14:47:18"><![CDATA[Lompat ke form login]]></key>
-        <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2020-09-15 14:47:18"><![CDATA[Otentikasi LDAP sudah aktif, namun belum berfungsi, silahkan hubungi administrator anda]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2020-09-15 14:47:18"><![CDATA[Login]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2020-09-15 14:47:18"><![CDATA[Login yang bisa diakses]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2020-09-15 14:47:18"><![CDATA[Login]]></key>

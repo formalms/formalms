@@ -478,10 +478,6 @@
         <key id="configuration&amp;_HIDE_EMPTY_CATEGORY" attributes="" save_date="2018-11-26 15:24:47"><![CDATA[Skjul tom kategori]]></key>
         <key id="configuration&amp;_HOME_PAGE" attributes="" save_date="2018-11-26 15:24:37"><![CDATA[Hjemmeside]]></key>
         <key id="configuration&amp;_HTEDITOR" attributes="" save_date="2018-11-26 15:25:10"><![CDATA[Visuell HTML teksteditor]]></key>
-        <key id="configuration&amp;_LDAP" attributes="" save_date="2018-11-21 14:24:07"><![CDATA[LDAP]]></key>
-        <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2018-11-21 14:24:25"><![CDATA[LDAP port (vanligvis 389)]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2018-11-21 14:24:47"><![CDATA[LDAP serveradresse]]></key>
-        <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2018-11-21 14:25:05"><![CDATA[Aktiver LDAP autentisering]]></key>
         <key id="configuration&amp;_MAIN_OPTIONS" attributes="" save_date="2018-11-26 15:24:21"><![CDATA[Hovedinnstillinger]]></key>
         <key id="configuration&amp;_MYSQL_MODE" attributes="" save_date="2018-11-26 15:23:53"><![CDATA[SQL modus]]></key>
         <key id="configuration&amp;_MYSQL_TIMEZONE" attributes="" save_date="2018-11-26 15:24:02"><![CDATA[MySQL tidssone]]></key>

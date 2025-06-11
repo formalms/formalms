@@ -200,9 +200,9 @@ class UsermanagementAdm extends Model implements Accessible
         $query_type = 'standard';
 
         if (isset($pagination['sort'])) {
-            if (is_numeric($pagination['sort'])) {
+            if (is_numeric($pagination['sort']) || str_starts_with($pagination['sort'], '_custom')) {
                 //custom field
-                $sort = $pagination['sort'];
+                $sort = is_numeric($pagination['sort']) ? $pagination['sort'] : (int) explode('_', $pagination['sort'])[2];
                 if (isset($fields[$sort][FIELD_INFO_TYPE]) && $fields[$sort][FIELD_INFO_TYPE] == 'dropdown') {
                     $query_type = 'custom_sons';
                 } else {
@@ -400,7 +400,7 @@ class UsermanagementAdm extends Model implements Accessible
 					)";
                 }
 
-                if (count($columnsFilter) && !$searchFilter) {
+                if ($columnsFilter) {
                     foreach ($columnsFilter as $columnName => $columnValue) {
                         $query .= ' AND (
                                 u.' . $columnName . ' LIKE "%' . $columnValue . '%" 

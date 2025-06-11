@@ -475,11 +475,6 @@
         <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2020-09-15 14:47:13"><![CDATA[Näytä sisältökirjaston hakutulosalueessa myös objektit jotka eivät ole täysin kategorisoituja]]></key>
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2020-09-15 14:47:13"><![CDATA[Aktivoi kielen editointi (debug-käyttöön)]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2020-09-15 14:47:13"><![CDATA[Etunimi ja Sukunimi vaaditaan rekisteröitymiseen]]></key>
-        <key id="configuration&amp;_LDAP" attributes="" save_date="2020-09-15 14:47:13"><![CDATA[LDAP]]></key>
-        <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2020-09-15 14:47:13"><![CDATA[LDAP portti (yleensä 389)]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[LDAP palvelimen osoite]]></key>
-        <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[Aktivoi LDAP varmentaminen]]></key>
-        <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[Käyttäjänimi LDAP käyttäjille, käytä $user käyttäjänimenä.<br />Ex. $user@domain2.domain1 (for: W2k3)]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2020-09-15 14:47:14"><![CDATA["magic_quotes_gpc" mukautus]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[Rekisteröinnit ja kadonneen salasanan sähköpostilähetys]]></key>
         <key id="configuration&amp;_MAINTENANCE" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[Huoltotila]]></key>
@@ -605,7 +600,6 @@
         <key id="configuration&amp;_URL" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[Verkkosivun URL sisäältäen viimeinen /]]></key>
         <key id="configuration&amp;_URL_CHECKIN_TELESKILL" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[Check-in URL]]></key>
         <key id="configuration&amp;_URL_VIDEOCONFERENCE_TELESKILL" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[Videokonferenssin URL]]></key>
-        <key id="configuration&amp;_USEFULL_ONLY_IF" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[Mieti tätä parametriä vain jos sinun täytyy varmentaa LDAP:in kautta]]></key>
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[Pyydä käyttäjää valitsemaan salasana joka eroaa viimeisestä X edellisestä salasanasta]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[Levykiintiö (MB) jokaisen käyttäjän Minun Tiedostoni alueelle]]></key>
         <key id="configuration&amp;_USE_ADVANCED_FORM" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[Käytä edistyneempää rekisteröintilomaketta]]></key>
@@ -1352,7 +1346,6 @@ Salasana: [password]]]></key>
 Muuttaaksesi näitä sanoja mene Ylläpito/kielihallintaan, etsi <b>login</b> ja muuta avainta <b>_INTRO_STD_TEXT</b>]]></key>
         <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[forma.lms on avoimen lähdekoodin verkko-oppimisalusta (LMS ja LCMS) jota käytetään yritys- ja korkeakoulutusmarkkinoilla.]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[Siirry sisäänkirjautumislomakkeeseen]]></key>
-        <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[LDAP varmennus on aktiivinen, toiminnallisuus ei ole saatavilla, ota yhteyttä ylläpitoosi]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[Kirjaudu sisään]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[Helppopääsyinen sisäänkirjautuminen]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[Sisäänkirjautuminen]]></key>

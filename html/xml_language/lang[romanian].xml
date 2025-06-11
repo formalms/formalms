@@ -423,11 +423,6 @@
         <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Arata, in aria de rezultate a cautarilor continutului librariei, si obiecte care nu sunt categorisite pe deplin]]></key>
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Activeaza editare limba (folosita pentru depanare)]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Numele si prenumele sunt necesare pentru inregistrare]]></key>
-        <key id="configuration&amp;_LDAP" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[LDAP]]></key>
-        <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Port LDAP (de obicei 389)]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Server LDAP]]></key>
-        <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Activeaza autentificarea LDAP]]></key>
-        <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Username pentru userii LDAP , foloseste $user pentru numele utilizator.<br />Ex. $user@domain2.domain1 (for: W2k3)]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Configurarea "magic_quotes_gpc"]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Inregistrari si parole pierdute]]></key>
         <key id="configuration&amp;_MAIN_OPTIONS" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Principalele optiuni]]></key>
@@ -545,7 +540,6 @@
         <key id="configuration&amp;_URL" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[URL site cu final /]]></key>
         <key id="configuration&amp;_URL_CHECKIN_TELESKILL" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[URL pentru check-in]]></key>
         <key id="configuration&amp;_URL_VIDEOCONFERENCE_TELESKILL" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[URL pentru videoconferinta]]></key>
-        <key id="configuration&amp;_USEFULL_ONLY_IF" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Considera acest parametru doar daca te autentifici prin LDAP]]></key>
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Cere utilizatorului sa aleaga o parola diferita de ultimele X parole folosite]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Cota Disk (in MB) pentru fiecare zona de fisiere a urilizatorului]]></key>
         <key id="configuration&amp;_USE_ADVANCED_FORM" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Foloseste formularul de inregistrare avansata]]></key>
@@ -1253,7 +1247,6 @@ Parola: [password]]]></key>
 Pentru a schimba aceste cuvinte du-te la Admin/Language management, cauta pentru  <b>login</b> si editeaza cheile <b>_INTRO_STD_TEXT_TITLE</b> si <b>_INTRO_STD_TEXT</b>]]></key>
         <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[forma.lms este o platformade e-learning Open Source (LMS si LCMS) folosita in corporatie si magazine inalte de educatie.]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Sari la login forum]]></key>
-        <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Autentificarea LDAP este activa, functionalitate nedisponibila, te rog suna administratorul]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Login]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Accesibil Login]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2020-09-15 14:47:21"><![CDATA[Login]]></key>

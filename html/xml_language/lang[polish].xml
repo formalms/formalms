@@ -424,11 +424,6 @@
         <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[Pokaż, w wynikach wyszukiwania zawartości biblioteki, również obiekty nie w pełni skategoryzowane]]></key>
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[Włącz edycję języka(wykorzystanego do debugowania)]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[Imię i nazwisko są wymagane do rejestracji]]></key>
-        <key id="configuration&amp;_LDAP" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[LDAP]]></key>
-        <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[Port LDAP (zazwyczaj 389)]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[Serwer LDAP]]></key>
-        <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[Włącz autentykację LDAP]]></key>
-        <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[Nazwa użytkownika dla użytkowników LDAP, użyj $user dla nazwy użytkownika.<br />Ex. $user@domain2.domain1 (dla: W2k3)]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[Konfiguracja "magic_quotes_gpc"]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[Rejestracja i zgubione hasła nadawcy maila]]></key>
         <key id="configuration&amp;_MAIN_OPTIONS" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[Opcje główne]]></key>
@@ -546,7 +541,6 @@
         <key id="configuration&amp;_URL" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[Adres URL strony z końcowym /]]></key>
         <key id="configuration&amp;_URL_CHECKIN_TELESKILL" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[URL do check-in]]></key>
         <key id="configuration&amp;_URL_VIDEOCONFERENCE_TELESKILL" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[URL dla wideo konferencji]]></key>
-        <key id="configuration&amp;_USEFULL_ONLY_IF" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[Rozważ ten parametr tylko jeżeli potrzebujesz uwierzytelniania z LDAP]]></key>
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[Zapytaj użytkownika o wybranie hasła różnego od ostatnich X wykorzystanych]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[Dysk quota (w MB) dla każdego użytkownika w obszarze Moje Pliki]]></key>
         <key id="configuration&amp;_USE_ADVANCED_FORM" attributes="" save_date="2020-09-15 14:47:19"><![CDATA[Użyj zaawansowanej formy rejestracji]]></key>
@@ -1254,7 +1248,6 @@ Hasło: [password]]]></key>
 Aby zmienić te słowa przejdź do zarządzania Admin/Język, wyszukaj <b>login</b> i edytuj klucz <b>_INTRO_STD_TEXT</b>]]></key>
         <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[forma.lms jest platformą Open Source e-learning (LMS and LCMS) wykorzystywaną w korporacjach i zaawansowanym rynku edukacyjnym.]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Przejdź do formularza logowania]]></key>
-        <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Autentykacja LDAP włączona, funkcjonalność niedostępna proszę o kontakt z administratorem]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Login]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Dostępny Login]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2020-09-15 14:47:20"><![CDATA[Login]]></key>
