@@ -1626,6 +1626,9 @@ function showResult($object_test, $id_param)
         }
     }
 
+
+    Events::trigger('lms.test.show_details', ['idTest' => $id_test, 'backUrl' => $url_coded]);
+
     $GLOBALS['page']->add(Form::openForm('test_show', Util::str_replace_once('&', '&amp;', $object_test->back_url))
         . '<div class="align_right">'
         . Form::getButton('end_test', 'end_test', $lang->def('_TEST_END_BACKTOLESSON'))
