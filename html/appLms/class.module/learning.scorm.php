@@ -34,7 +34,7 @@ class Learning_ScormOrg extends Learning_Object
         $res = $this->db->query('SELECT title FROM %lms_scorm_organizations WHERE idscorm_organization = ' . (int) $id . '');
         if ($res && $this->db->num_rows($res) > 0) {
             $this->isPhysicalObject = true;
-            list($title) = $this->db->fetch_row($res);
+            [$title] = $this->db->fetch_row($res);
         }
 
         $this->idAuthor = '';
@@ -190,10 +190,10 @@ class Learning_ScormOrg extends Learning_Object
     {
         require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/scorm.php');
 
-        list($idscorm_package) = sql_fetch_row(sql_query('
+        [$idscorm_package] = sql_fetch_row(sql_query('
 		SELECT idscorm_package 
 		FROM ' . $GLOBALS['prefix_lms'] . "_scorm_organizations
-		WHERE idscorm_organization = '" . (int) $id . "'"));
+		WHERE idscorm_organization = '" . (int)$id . "'"));
 
         _scorm_deleteitem($idscorm_package, (int) $id);
 
@@ -212,10 +212,10 @@ class Learning_ScormOrg extends Learning_Object
     {
         require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/scorm.php');
 
-        list($idscorm_package) = sql_fetch_row(sql_query('
+        [$idscorm_package] = sql_fetch_row(sql_query('
 		SELECT idscorm_package 
 		FROM ' . $GLOBALS['prefix_lms'] . "_scorm_organizations
-		WHERE idscorm_organization = '" . (int) $id . "'"));
+		WHERE idscorm_organization = '" . (int)$id . "'"));
 
         return _scorm_copyitem($idscorm_package, $id);
     }
