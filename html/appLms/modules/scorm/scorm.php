@@ -256,7 +256,7 @@ function moditem($object_item)
     $query = 'SELECT idOrg ' .
         ' FROM %lms_organization ' .
         ' WHERE idResource = ' . (int) $object_item->id . " AND objectType = 'scormorg' ";
-    list($id_reference) = sql_fetch_row(sql_query($query));
+    [$id_reference] = sql_fetch_row(sql_query($query));
 
     require_once \FormaLms\lib\Forma::inc(_lib_ . '/lib.table.php');
     $tb = new Table();
@@ -330,7 +330,7 @@ function _scorm_deleteitem($idscorm_package, $idscorm_organization, $erasetrackc
         $rs = sql_query('SELECT path FROM ' . $GLOBALS['prefix_lms'] . "_scorm_package WHERE idscorm_package='" . (int) $idscorm_package . "'")
         or exit(sql_error());
 
-        list($path) = sql_fetch_row($rs);
+        [$path] = sql_fetch_row($rs);
         $scopath = str_replace('\\', '/', _files_ . '/appLms/' . FormaLms\lib\Get::sett('pathscorm'));
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $idCourse = $session->get('idCourse');
@@ -373,7 +373,7 @@ function _scorm_copyitem($idscorm_package, $idscorm_organization)
         return false;
     }
 
-    list($path) = sql_fetch_row($rs);
+    [$path] = sql_fetch_row($rs);
     $scopath = str_replace('\\', '/', _files_ . '/appLms/' . FormaLms\lib\Get::sett('pathscorm'));
 
     /* copy package record */
@@ -437,9 +437,9 @@ function _scorm_copyitem($idscorm_package, $idscorm_organization)
     foreach( $orgElems as $org )
         $cpm->RenderOrganization( $org->get_attribute('identifier'), $rdb );*/
 
-    list($org_identifier) = sql_fetch_row(sql_query(
+    [$org_identifier] = sql_fetch_row(sql_query(
         'SELECT org_identifier FROM %lms_scorm_organizations '
-        . " WHERE idscorm_organization='" . (int) $idscorm_organization . "'"));
+        . " WHERE idscorm_organization='" . (int)$idscorm_organization . "'"));
 
     $cpm->RenderOrganization($org_identifier, $rdb);
 

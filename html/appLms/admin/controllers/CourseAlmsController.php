@@ -634,10 +634,11 @@ class CourseAlmsController extends AlmsController
             // read the old course info
             $query = "SELECT * FROM %lms_course WHERE idCourse = '" . $idCourseToDulicate . "' ";
             $result = sql_query($query);
-            $courseData = sql_fetch_assoc($result);
+            $courseData = (array)sql_fetch_assoc($result);
+
 
             foreach ($courseData as $k => $v) {
-                $courseData[$k] = sql_escape_string($v);
+                $courseData[$k] = is_string($v) ? sql_escape_string($v) : $v;
             }
 
             $newCourseFileData = [];
@@ -842,6 +843,8 @@ class CourseAlmsController extends AlmsController
                     if (in_array($source->idOrg, $learningObjectList, true)) {
                         // if it's an object we must make a copy, if it's a folder we can create a row
                         // inside learning_orgation and save the id for later use
+                        $newIdReference = null;
+
                         if (empty($source->objectType)) {
                             // is a folder
                             // create a new row in learning_organization
@@ -873,9 +876,11 @@ class CourseAlmsController extends AlmsController
                             // make a copy
                             $newlearningObject = $this->_createLO($source->objectType);
                             $newIdResource = $newlearningObject->copy($source->idResource);
+                            if ($newIdResource) {
 
-                            // create a new row in learning_organization
-                            $query = "INSERT INTO %lms_organization (
+
+                                // create a new row in learning_organization
+                                $query = "INSERT INTO %lms_organization (
 								idParent, path, lev, title,
 								objectType, idResource, idCategory, idUser,
 								idAuthor, version, difficult, description,
@@ -890,32 +895,35 @@ class CourseAlmsController extends AlmsController
 								'" . $source->language . "', '" . $source->resource . "', '" . $source->objective . "', '" . $source->dateInsert . "',
 								'" . $newCourseId . "', '" . $source->prerequisites . "', '" . $source->isTerminator . "', '0',
 								'" . $source->visible . "', '" . $source->milestone . "')";
-                            $result = sql_query($query);
-                            if ($result) {
-                                $newIdReference = sql_insert_id();
-
-                                // for a learning_object we have to create a row in lo_param as well
-                                // with 4.1 or 4.2 we plan to remove this table, but until then we need this
-                                $query = "INSERT INTO %lms_lo_param (param_name, param_value) VALUES ('idReference', '" . $newIdReference . "') ";
                                 $result = sql_query($query);
                                 if ($result) {
-                                    $idLoParam = sql_insert_id();
+                                    $newIdReference = sql_insert_id();
 
-                                    $query = "UPDATE %lms_lo_param SET idParam = '" . $idLoParam . "' WHERE id = '" . $idLoParam . "' ";
+                                    // for a learning_object we have to create a row in lo_param as well
+                                    // with 4.1 or 4.2 we plan to remove this table, but until then we need this
+                                    $query = "INSERT INTO %lms_lo_param (param_name, param_value) VALUES ('idReference', '" . $newIdReference . "') ";
                                     $result = sql_query($query);
+                                    if ($result) {
+                                        $idLoParam = sql_insert_id();
 
-                                    $query = "UPDATE %lms_organization SET idParam = '" . $idLoParam . "' WHERE idOrg = '" . $newIdReference . "' ";
-                                    $result = sql_query($query);
+                                        $query = "UPDATE %lms_lo_param SET idParam = '" . $idLoParam . "' WHERE id = '" . $idLoParam . "' ";
+                                        $result = sql_query($query);
 
-                                    // map for later use
-                                    $learningObjects[$source->objectType][$source->idResource] = $newIdResource;
+                                        $query = "UPDATE %lms_organization SET idParam = '" . $idLoParam . "' WHERE idOrg = '" . $newIdReference . "' ";
+                                        $result = sql_query($query);
+
+                                        // map for later use
+                                        $learningObjects[$source->objectType][$source->idResource] = $newIdResource;
+                                    }
                                 }
                             }
                         }
-                        // create a map for the olds and new idReferences
-                        $learningObjectsIdOrgs[$source->idOrg] = $newIdReference;
-                        if ($source->prerequisites != '') {
-                            $learningObjectPrerequisites[$newIdReference] = $source->prerequisites;
+                        if (!empty($newIdReference)) {
+                            // create a map for the olds and new idReferences
+                            $learningObjectsIdOrgs[$source->idOrg] = $newIdReference;
+                            if ($source->prerequisites != '') {
+                                $learningObjectPrerequisites[$newIdReference] = $source->prerequisites;
+                            }
                         }
                     }
                 }
