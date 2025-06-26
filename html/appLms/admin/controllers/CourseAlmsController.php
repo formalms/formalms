@@ -528,7 +528,7 @@ class CourseAlmsController extends AlmsController
                 'type' => Lang::t('_' . strtoupper($row['course_type'])),
                 'type_id' => $course_type,
                 'wait' => (
-                ($row['course_edition'] != 1 && $row['pending'] != 0) || $num_overbooking > 0
+                    ($row['course_edition'] != 1 && $row['pending'] != 0) || $num_overbooking > 0
                     ? '<a href="index.php?r=' . $this->base_link_subscription . '/waitinguser&id_course=' . $row['idCourse'] . '" title="' . Lang::t('_WAITING', 'course') . '">' . ($row['pending'] + $num_overbooking) . '</a>'
                     : ''),
                 'user' => ($row['course_type'] !== 'classroom' && $row['course_edition'] != 1
@@ -1198,7 +1198,7 @@ class CourseAlmsController extends AlmsController
                 Lang::t('_TITLE', 'course'),
                 Lang::t('_CERTIFICATE_LANGUAGE', 'course'),
                 Lang::t('_CERTIFICATE_ASSIGN_STATUS', 'course'),
-                //Lang::t('_CERTIFICATE_EX_ASSIGN_STATUS', 'course'),
+
                 Lang::t('_CERTIFICATE_RELEASED', 'course'),
             ];
             $tb->setColsStyle($type_h);
@@ -1217,16 +1217,27 @@ class CourseAlmsController extends AlmsController
                 $cont = [];
                 $cont[] = '<label for="certificate_assign_' . $id_cert . '">' . $cert[CERT_NAME] . '</label>';
                 $cont[] = ($languages[$cert[CERT_LANG]] ?? $cert[CERT_LANG]); //lang description?
-                $cont[] = Form::getInputDropdown(
-                        'dropdown_nowh',
-                        'certificate_assign_' . $id_cert,
-                        'certificate_assign[' . $id_cert . ']',
-                        $possible_status,
-                        ($course_cert[$id_cert]['available_for_status'] ?? 0),
-                        ''
-                    )
-                    . '<br/>'
-                    . Lang::t('_ASSIGN_FOR_AT_LEAST_MINUTES', 'course') . ' '
+                $assignTbl = Form::getInputDropdown(
+                    'dropdown_nowh',
+                    'certificate_assign_' . $id_cert,
+                    'certificate_assign[' . $id_cert . ']',
+                    $possible_status,
+                    ($course_cert[$id_cert]['available_for_status'] ?? 0),
+                    ''
+                );
+
+                $eventResult = Events::trigger('core.certificate.mask.showing.assign', [
+                    'content' => $cont,
+                    'id_course' => $id_course,
+                    'id_cert' => $id_cert
+                ]);
+
+                if (array_key_exists('htmlData', $eventResult ?? [])) {
+                    $assignTbl .= $eventResult['htmlData'] . '<br />';
+                }
+
+
+                $assignTbl .= Lang::t('_ASSIGN_FOR_AT_LEAST_MINUTES', 'course') . ' '
                     . Form::getInputTextfield(
                         'dropdown_nowh',
                         'certificate_assign_minutes_' . $id_cert,
@@ -1235,12 +1246,9 @@ class CourseAlmsController extends AlmsController
                         6,
                         'style="width: 40px; text-align: right;"'
                     );
-                /*$cont[] = Form::getInputDropdown('dropdown_nowh',
-                    'certificate_ex_assign_' . $id_cert,
-                    'certificate_ex_assign[' . $id_cert . ']',
-                    $possible_status,
-                    (isset($course_ex_cert[$id_cert]) ? $course_ex_cert[$id_cert] : 0),
-                    '');*/
+
+                $cont[] = $assignTbl;
+
                 $cont[] = (isset($course_cert[$id_cert]) && $course_cert[$id_cert] != 0 && $view_cert ? '<a href="index.php?r=alms/course/list_certificate&amp;id_certificate=' . $id_cert . '&amp;id_course=' . $id_course . '&amp;from=course&amp;of_platform=lms"><b><u>' : '') . ($released[$id_cert] ?? '0') . (isset($course_cert[$id_cert]) && $course_cert[$id_cert] != 0 ? '</b></u></a>' : '');
 
                 $tb->addBody($cont);
@@ -1647,7 +1655,6 @@ class CourseAlmsController extends AlmsController
                 "visible" => true,
             ];
             $columns = \FormaLms\lib\Helpers\Util::putElementInArrayAfterIndex($columns, 'data', 'id_certificate', $editionColumn);
-
         }
 
 
@@ -1666,6 +1673,4 @@ class CourseAlmsController extends AlmsController
             ]
         );
     }
-
-
 }
