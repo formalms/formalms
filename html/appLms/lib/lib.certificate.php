@@ -44,8 +44,8 @@ class Certificate
         [$aval_status, $minutes_required] = sql_fetch_row(
             sql_query(
                 'SELECT available_for_status, minutes_required FROM %lms_certificate_course as cc'
-                . ' WHERE id_course=' . $filter['id_course']
-                . isset($filter['id_certificate']) ? ' AND id_certificate = ' . $filter['id_certificate'] : ''
+                    . ' WHERE id_course=' . $filter['id_course']
+                    . isset($filter['id_certificate']) ? ' AND id_certificate = ' . $filter['id_certificate'] : ''
             )
         );
 
@@ -243,7 +243,7 @@ class Certificate
         }
 
         $assigned = [];
-  
+
         $res = sql_query($query);
         while ($row = sql_fetch_assoc($res)) {
             $assigned[] = $row;
@@ -327,8 +327,8 @@ class Certificate
         $assignable = [];
 
         $res = sql_query($query);
-    
-        if($res) {
+
+        if ($res) {
             foreach ($res as $row) {
                 if ($this->certificateAvailableForUser($row['id_certificate'], $row['id_course'], $row['id_user'])) {
                     $assignable[] = $row;
@@ -369,35 +369,7 @@ class Certificate
         return $cert;
     }
 
-    public function getCourseCertificateObj($id_course)
-    {
-        $cert = [];
-        $query_certificate = '
-                SELECT id_certificate, certificate_available_for_obj
-                FROM ' . $GLOBALS['prefix_lms'] . "_certificate_course
-                WHERE id_course = '" . $id_course . "' ";
-        $re_certificate = sql_query($query_certificate);
-        while (list($id, $available_for_status) = sql_fetch_row($re_certificate)) {
-            $cert[$id] = $available_for_status;
-        }
 
-        return $cert;
-    }
-
-    public function getCourseCertificateAchi($id_course)
-    {
-        $cert = [];
-        $query_certificate = '
-                SELECT id_certificate, certificate_available_for_who
-                FROM ' . $GLOBALS['prefix_lms'] . "_certificate_course
-                WHERE id_course = '" . $id_course . "' ";
-        $re_certificate = sql_query($query_certificate);
-        while (list($id, $available_for_who) = sql_fetch_row($re_certificate)) {
-            $cert[$id] = $available_for_who;
-        }
-
-        return $cert;
-    }
 
     public function certificateAvailableForUser($id_cert, $id_course, $id_user)
     {
@@ -412,6 +384,12 @@ class Certificate
             if ($minutes_in < $minutes_required) {
                 return false;
             }
+        }
+
+        $eventResult = Events::trigger('lms.certificate.available', compact('id_cert', 'id_course', 'id_user'));
+
+        if($eventResult && array_key_exists('result',$eventResult)) {
+            return $eventResult['result'];
         }
 
         return true;
@@ -698,11 +676,12 @@ class Certificate
                         . ' VALUES (' . (int)$id_cert . ', ' . (int)$id_course . ', ' . (int)$status . ', ' . (int)$minutes . ')';
 
                     $certificate_info = $this->getCertificateInfo($id_cert);
-                    Events::trigger('lms.course_certificate.assigned', ['id_course' => $id_course, 'course' => $course, 'id_cert' => $id_cert, 'certificate_info' => $certificate_info, 'status' => $status, 'minutes' => $minutes, 'point_required' => $point_required]);
 
                     if (!sql_query($query)) {
                         return false;
                     }
+
+                    Events::trigger('lms.course_certificate.assigned', ['id_course' => $id_course, 'course' => $course, 'id_cert' => $id_cert, 'certificate_info' => $certificate_info, 'status' => $status, 'minutes' => $minutes, 'point_required' => $point_required]);
                 }
             }
         }
@@ -828,12 +807,12 @@ class Certificate
 				 AND id_course = '" . $id_course . "'
 				 AND id_user = '" . $id_user . "' ";
 
-                 if($idRecord) {
-                    $query_certificate = '
+            if ($idRecord) {
+                $query_certificate = '
                     SELECT cert_file
                     FROM %lms_certificate_assign
-                    WHERE id = "' . $idRecord . '"' ;
-                }
+                    WHERE id = "' . $idRecord . '"';
+            }
         } else {
             $query_certificate = 'SELECT cert_file'
                 . ' FROM ' . $aggCertLib->table_assign_agg_cert
@@ -861,7 +840,7 @@ class Certificate
             'id_certificate' => $id_certificate,
             'id_course' => $id_course
         ], 0);
-        
+
         $query_certificate = '
 		SELECT name, cert_structure, base_language, orientation, bgimage
 		FROM %lms_certificate WHERE id_certificate = "' . $id_certificate . '"';
@@ -1003,12 +982,13 @@ class Certificate
         return $info;
     }
 
-    public function fetchAssignedCertificates(array $ids) {
+    public function fetchAssignedCertificates(array $ids)
+    {
         $info = [];
-        $query = 'SELECT * from %lms_certificate_assign WHERE id in ('.implode(',',$ids).')';
+        $query = 'SELECT * from %lms_certificate_assign WHERE id in (' . implode(',', $ids) . ')';
         $results = sql_query($query);
 
-        foreach($results ?? [] as $result) {
+        foreach ($results ?? [] as $result) {
             $info[$result['id']] = $result;
         }
 
