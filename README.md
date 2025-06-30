@@ -1,13 +1,58 @@
 # INSTALLATION
 
-#### XAMPP User
-* you are required to enable php_openssl.dll in your php settings:
-  1) check if you have php_openssl.dll in \<xampp install dir>\php\ext\
-  2) in php.ini, add the following line under Windows Extensions section: `extension=php_openssl.dll`
+## System Requirements
+
+### PHP Requirements
+- PHP Version: 8.0.0 - 8.1.x
+- Required PHP Extensions:
+  - OpenSSL
+  - PDO
+  - MySQL/MariaDB
+  - GD
+  - cURL
+  - XML
+  - Zip
+
+### Database Requirements
+- MySQL Version: 5.7 - 8.x
+- MariaDB Version: 10.0 - 11.0
+
+### Web Server
+- Apache (recommended) with mod_rewrite enabled
+- Nginx (with proper rewrite rules)
+
+## Installation Steps
+
+### 1. Server Setup
+- Ensure your web server is properly configured
+- Make sure PHP and required extensions are installed
+- Create a database for FormaLMS
+
+### 2. Application Setup
+- Download and extract the FormaLMS package to your web server directory
+- Set proper permissions:
+  - Make sure the web server has write permissions to:
+    - `/html/files/` directory and subdirectories
+    - `/html/config.php` file
+
+### 3. Web-based Installation
+- Navigate to your FormaLMS URL in a web browser
+- Follow the installation wizard which will guide you through:
+  - Language selection
+  - System requirements check
+  - Database configuration
+  - Administrator account setup
+  - SMTP configuration (optional)
+
+### 4. Post-Installation
+- Configure cron jobs if needed for scheduled tasks
+- Review and adjust system settings in the admin panel
+
+## Development Setup
 
 #### To setup the first time the project for development:
 
-copy and rename `/test/behat/behat_config.yml.dist` and change `base_url` to your needs, then:
+Copy and rename `/test/behat/behat_config.yml.dist` and change `base_url` to your needs, then:
 
     # --ignore-platform-reqs use this when you don't have php >= 5.5 (tests will not run)
     cd html && php ../composer.phar install [--ignore-platform-reqs]
@@ -29,85 +74,51 @@ copy and rename `/test/behat/behat_config.yml.dist` and change `base_url` to you
     bin/phing project:build
 
 
-# EVENTS SYSTEM
-#### CORE
-* ConfigGetRegroupUnitsEvent
-  * Dispatched before the admin configuration menu is displayed
-  * Event object contains the array of the names of the groups. Useful to modify the order or add elements.
-* OnlineUserEvent
-  * WIP
-* UsersManagementEditMultipleEvent
-  * TODO - Plugin e-commerce
-* UsersManagementShowDetailsEvent
-  * TODO - Plugin e-commerce
-* UsersManagementShowEvent
-  * TODO - Plugin e-commerce  
+# MAKE COMMANDS
+FormaLMS provides several make commands to help with development and maintenance tasks. These commands can be executed from the project root directory using `make <command>`.
 
-#### CORE - Filesystem
-* CopyEvent
-  * Dispatched when a file copy operation is requested.
-  * Event object contains src and dest paths. It must return true or false if operation succeeded or not.
-* DownloadEvent
-  * Dispatched when a file download operation is requested.
-  * Event object contains info about requested file. Useful to modify the path returned to download.
-* UnlinkEvent  
-  * Dispatched when a file remove operation is requested.
-  * Event object contains path of the file. It must return true or false if operation succeeded or not.
-* UploadEvent
-  * Dispatched when a file upload operation is requested.
-  * Event object contains src and dest paths. It must return true or false if operation succeeded or not.
+## Available Commands
 
-#### CORE - User
-* RegisterUserEvent
-  * WIP
+### `make help`
+Displays a list of all available make commands with brief descriptions.
 
-#### API
-* ApiUserRegistrationEvent
-  * Dispatched when a new user is registered by Api
-  * Event object contains the idst of the new user
+### `make clean`
+Removes temporary build artifacts, including:
+- `/html/vendor` directory
+- `/html/files/cache` directory
+- `/tools/php-cs-fixer/vendor` directory
 
-#### LMS  
-* UserListEvent
-  * Dispatched in user export of event
-  * Used from UserDataExport Plugin
-  * Event object contains Event id and Lang.
-* TestCompletedEvent  
-  * Dispatched when a test status is completed
-  * Used from Test360 plugin to send message to user.
-  * Event object contains object_test, user Id and ACL manager instance.
-* TestUpdateModalityEvent
-  * Dispatched when UpdateModality of test il called.
-  * Used from Test360 Plugin to save more configuration showed.
-  * Event object contains POST variables passed in action.
-* TestCousereportEvent
-  * Dispatched when cousereport overview is opened
-  * Used from Test360 Plugin to override chartlink endpoint
-  * Event object contains an Learning_Test object.
-* TestConfigurationTabsRenderEvent
-  * Dispatched when the edit page of a Test object is opened.
-  * Event object contains an array of the tabs rendered (key is the name of the tab and value is the html). Useful to hide or add tabs.
-* TestGetTypesEvent
-  * Dispatched when the list of the Test types are requested. 
-  * Event object contains an array of the Test types. Useful when a new kind of Test LO is added to the platform.
-* TestConfigurationMethodOfUseRenderEvent
-  * Dispatched when Mode of use of test is Showed.
-  * Used from Test360 to add more configurations for test.
-  * Event object contains Learning_Test object and Lang.
-* TestCreateEvent
-  * Dispatched when a new Learning_Test object is created.
-  * Event object contains the brand new Learning_Test object.
-* TestUpdateEvent
-  * Dispatched when a Learning_Test object is updated.
-  * Event object contains the brand new Learning_Test object.
-* UserProfileShowEvent
-  * Dispatched when the user profile is showed up.
-  * Event object contains the LmsUserProfile instance. Useful to modify some user's profile property before the rendering.
-* UserSelectorBeforeRenderEvent
-  * Dispatched before the user-selector widget is rendered.
-  * Event object contains the columns and field values. useful to manipulate them before render.
-* UserSelectorRenderJSScriptEvent
-  * Dispatched before the user-selector widget is rendered.
-  * Event object can contains JS scripts to prepend to the default one. Useful to introduce custom logic into the user-selector widget.
+### `make dependencies`
+Installs composer dependencies:
+- Sets executable permissions for composer.phar and composer-normalize.phar
+- Installs dependencies in the `/html` directory
+- Installs dependencies for PHP CS Fixer in the `/tools/php-cs-fixer` directory
+
+### `make fix`
+Combines `fix-code-style` and `fix-composer` commands to:
+- Fix code style issues
+- Normalize composer.json file
+
+### `make fix-code-style`
+Fixes code style issues using PHP CS Fixer with the configuration from `/tools/php-cs-fixer/.php-cs-fixer.php`.
+
+### `make fix-composer`
+Normalizes the composer.json file and updates dependencies:
+- Normalizes `/html/composer.json` without updating the lock file
+- Updates composer dependencies without making changes
+
+### `make test`
+Executes all tests after cleaning build artifacts and fixing code style issues.
+
+### `make export-changelog`
+Exports the changelog using the PHP script at `/tools/php-changelog/changelog-upgrade.php`.
+
+### `make export-events`
+Extracts and displays all `Events::trigger` calls from the codebase using the PHP script at `/tools/php-events-extractor/extract-events.php`.
+
+### `make export-events-readme`
+Exports all events to the `EVENTS.md` file using the PHP script at `/tools/php-events-extractor/extract-events.php`.
+
 
 
 # DOCTRINE MIGRATIONS
@@ -144,4 +155,5 @@ copy and rename `/test/behat/behat_config.yml.dist` and change `base_url` to you
 * To set params for the event
 * `\Events::trigger('platform.upgrade', [_upgradeclass_ => formatUpgradeClass(__CLASS__, "pre"), "params" =>["arg1"=> "val1",...."argN" => "valN"]]);`
 
-
+# EVENTS SYSTEM
+For a complete list of all available events, see [EVENTS.md](EVENTS.md).

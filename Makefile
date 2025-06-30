@@ -15,6 +15,8 @@ help:
 	@echo '  test                Execute all tests'
 	@echo '  fix-code-style      Fix code style'
 	@echo '  export-changelog    Export changelog'
+	@echo '  export-events        Extract and display all Events::trigger calls'
+	@echo '  export-events-readme Export events to EVENTS.md file'
 
 .PHONY: test
 test: clean fix
@@ -47,3 +49,13 @@ clean:
 .PHONY: export-changelog
 export-changelog:
 	php $(CURRENT_PATH)/tools/php-changelog/changelog-upgrade.php
+
+.PHONY: export-events
+export-events:
+	@echo 'Extracting all Events::trigger calls...'
+	php $(CURRENT_PATH)/tools/php-events-extractor/extract-events.php
+
+.PHONY: export-events-readme
+export-events-readme:
+	@echo 'Exporting events to README...'
+	php $(CURRENT_PATH)/tools/php-events-extractor/extract-events.php --readme=EVENTS.md
