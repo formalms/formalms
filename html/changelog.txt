@@ -2,6 +2,85 @@ FORMA LMS
 RELEASE CHANGELOG
 
 ---------------------------------------------------------------------------------------
+forma.lms 4.0.19
+---------------------------------------------------------------------------------------
+Release date: 2025 July
+
+- #     - fix check if set HTTP_X_FORWARDED_FOR  before use
+- #     - add div and css class to course-box__title for course name into course box
+- #     - fix course block rendering  if "use_course_label" is on
+- #     - fix download if file not exists
+- #     - Upgrade legacy to version 3.3.26 + SQL_MODE from NO_AUTO_CREATE_USER to NO_ENGINE_SUBSTITUTION
+- #     - Fix Test with feedback: error 500
+- #     - Include column filters in search query during global search.
+- #     - Prevent column search event during global search.
+- #     - added search timeout and enabled search on submit button
+- #     - fix column in import subscription
+- #     - update german translate
+- #     - fix exception in HomepageAdmController.php 
+- #     - fix base url management in Get::site_url function 
+- #     - fix base url management in getCurrentDomain function
+- #     - fix catalogue subscription email
+- #     - fix and refactor course userCanUnsubscribe function 
+- #     - fix dashboard block calendar
+- #     - fix group query
+- #     - fix exception BaseCache::__wakeup()
+- #     - add lang cache to config
+- #     - fix lang translate month
+- #     - fix CourseLms
+- #     - implement API for multiple users
+- #     - improve course date begin and date end management
+- #     - fix date translate
+- #     - add clear lang cache
+- #     - fix lang load when new lang is installed
+- #     - Implement Abstract BaseCache to extends cache for generic use
+- #     - complete lang cache implementation
+- #     - wip implementation
+- #     - Fix dashboard exception
+- #     - add show_custom_fields to usersList API to return custom fields data in users list
+- #     - fix in API userDetails to show custom fields that user cannot view.
+- #     - add getCategories API
+- #     - Change SQL_MODE from NO_AUTO_CREATE_USER to NO_ENGINE_SUBSTITUTION for mysql 8.0 compatibility
+- #     - fix field_access_list in  lib.user_profile
+- #     - Add event "core.users.changestatus" in suspend/unsuspend user/users
+- #     - Fix myMetaCertificate function that does not return correct rows when i've two meta certificate that use the same idCertificate
+- #     - preg_match does not fall in catch branch in case of time format different from PT time; managed with if instruction.
+- #     - fix DbConn::getInstance to solve automatically the connection and not using external connection link
+- #     - Implement db factory interface 
+- #     - activate Plugin namespace
+- #     - fix coursereport
+- #     - replace old require with forma::include
+- #     - fix getDateSubscribed to get correct user for teacher
+- #     - fix(dateTimeLocal): empty values
+- #     - Fix actual space in CourseLmsController
+- #     - fix(bonusScore): put all statuses in scores query
+- #     - fix access to courses and lo objs
+- #     - fix data_end in courseAlms
+- #     - fix session save on org chart
+- #     - fix migration namespace
+- #     - fix api getAnswerQuest 
+- #     - fix gift import order
+- #     - fix create course date_begin, date_end to set NULL when parameters are blank
+- #     - fix create and update course hour_begin, hour_end when parameters are blank
+- #     - add Migration to update wrong hour_begin, hour_end setted to ':'
+- #     - replace migration to update single column
+- #     - fix classroom update on API
+- #     - fix accessSelection in UserselectorAdmController
+- #     - fix update classroom to manage textfield update
+- #     - fix location api
+- #     - fix dashboard block
+- #     - fix error in dashboard when permissions are not set.
+- #     - fix day custom field api
+- #     - fix duplicate answer in class choices
+- #     - fix api getAnswerTest to get one only couple idAnswer , idQuest
+- #     - fix(catalogue): complete access for superadmin in any condition
+- #     - chore(admins): delete from admin tree reference if admin changed level or is deleted
+- #     - fix send mail to moderators during import into course
+- #     - fix waiting approval entering courses
+- #     - fix can enter course in catalogue by date interval
+
+
+---------------------------------------------------------------------------------------
 forma.lms 4.0.11
 ---------------------------------------------------------------------------------------
 Release date: 2024 October
