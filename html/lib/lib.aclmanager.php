@@ -68,6 +68,7 @@ define('ADMIN_GROUP_USER', '/framework/level/user');
  */
 class FormaACLManager
 {
+    private static $instance = null;
     /** the actual context for acl management */
     public $context = '';
     /** the connection to database */
@@ -197,6 +198,14 @@ class FormaACLManager
             . ' ( idst ) VALUES ( null )'; //TODO NO_Strict_MODE: to be confirmed
 
         return $this->_executeInsert($query);
+    }
+
+    public static function getInstance()
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+        return self::$instance;
     }
 
     /**
@@ -1299,12 +1308,6 @@ class FormaACLManager
     public function getUser($idst, $userid)
     {
         // ha tanti parametri in più rispetto alla vecchia installazione... (3)
-        /*** dupplicate ***
-         * $query = "SELECT idst, userid, firstname, lastname, pass, email, avatar, ,"
-         * ." level, lastenter, valid, pwd_expire_at, register_date, lastenter, force_change,
-         * facebook_id, twitter_id, linkedin_id, google_id, privacy_policy "
-         * ." FROM ".$this->_getTableUser();
-         ***/
         $query = 'SELECT idst, userid, firstname, lastname, pass, email, avatar, '
             . ' level, lastenter, valid, pwd_expire_at, register_date, lastenter '
             . ', force_change, facebook_id, twitter_id, linkedin_id, google_id, privacy_policy '
@@ -1318,7 +1321,9 @@ class FormaACLManager
             return false;
         }
 
-        $rs = $this->_executeQuery($query);
+
+        $rs = sql_query($query);
+
         if (sql_num_rows($rs) > 0) {
             return sql_fetch_row($rs);
         } else {

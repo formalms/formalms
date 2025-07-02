@@ -382,7 +382,7 @@ class Lang
         $cache = self::getCache();
         $translations = $cache->get($lang_code, $module, 'translation');
 
-        if ($translations === null) {
+        if ($translations === null || empty($translations)) {
             // Check in memory translations
             if (isset(self::$translations[$lang_code][$module])) {
                 $translations = self::$translations[$lang_code][$module];

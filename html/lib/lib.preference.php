@@ -126,7 +126,7 @@ class UserPreferencesDb
 
         $preference = [];
         if (sql_num_rows($re_preference) > 0) {
-            list($path_name, $label, $default_value, $type, $visible, $load_at_startup) = sql_fetch_row($re_preference);
+            [$path_name, $label, $default_value, $type, $visible, $load_at_startup] = sql_fetch_row($re_preference);
             $preference = [
                 'path_name' => $path_name,
                 'label' => $label,
@@ -159,7 +159,7 @@ class UserPreferencesDb
 
         $preference = [];
         if (sql_num_rows($re_preference) > 0) {
-            list($default_value) = sql_fetch_row($re_preference);
+            [$default_value] = sql_fetch_row($re_preference);
 
             return $default_value;
         } else {
@@ -259,7 +259,7 @@ class UserPreferencesDb
         $re_preference = $this->_executeQuery($query_preference);
 
         if (sql_num_rows($re_preference) > 0) {
-            list($value) = sql_fetch_row($re_preference);
+            [$value] = sql_fetch_row($re_preference);
 
             return $value;
         } else {
@@ -488,7 +488,7 @@ class UserPreferences
      */
     public function __construct($id_user, $db_conn = null)
     {
-        $acl_man = new FormaACLManager();
+        $acl_man = FormaACLManager::getInstance();
 
         $this->id_user = $id_user;
 
@@ -728,29 +728,18 @@ class UserPreferences
     {
         require_once _base_ . '/lib/lib.form.php';
         $lang = FormaLanguage::createInstance('preferences', 'framework');
-
         $preferences = $this->_up_db->getFullPreferences($this->id_user, $only_visible, false, $base_path);
-
         $html = [];
         foreach ($preferences as $pref) {
             // Navigation trought the preferences
             // array( 'path_name', 'label', 'default_value', 'type', 'visible', 'load_at_startup', 'user_value' )
             switch ($pref['type']) {
                 case 'language':
-                    //drop down language
-                    $lang_sel = $this->getLanguage();
-
-                    $langs_var = \FormaLms\lib\Forma::langManager()->getAllLangCode();
-                    $langs = [];
-                    foreach ($langs_var as $k => $v) {
-                        $langs[$k] = $v;
-                    }
-                    /* XXX: remove when alll lang ready*/
-                    $html[$pref['path_name']] = Form::getDropdown($lang->def($pref['label']),
+                    $html[$pref['path_name']] = Form::getDropdown(Lang::t('_LANGUAGE','standard'),
                         $this->base_name . '_' . $pref['path_name'],
                         $this->base_name . '[' . $pref['path_name'] . ']',
-                        $langs,
-                        array_search($lang_sel, $langs));
+                        FormaLms\lib\Forma::langManager()->getAllLangCode(),
+                        Lang::getDefault(),'','','autocomplete=language');
                     break;
                 case 'template':
                     //drop down template
@@ -928,7 +917,7 @@ class AdminPreference
             . " WHERE idstMember = '" . $idst . "'"
             . ' AND idst IN (' . implode(',', $this->idstGroup()) . ')';
 
-        list($res) = sql_fetch_row(sql_query($query));
+        [$res] = sql_fetch_row(sql_query($query));
 
         if (!$res) {
             $res = 0;

@@ -1,7 +1,7 @@
 {{ Form_openForm('mod_profile_form', 'index.php?r=lms/profile/show&ap=saveinfo', false, 'post', 'multipart/form-data') }}
 <div class="section-course user-profile">
   <div class="page-subtitle">
-    {{user.name}}
+    {{name}}
     {% block modify_profile %}
     {% endblock %}
   </div>
@@ -35,10 +35,11 @@
                 <div class="course-info__label">{{ Lang_translate('_AVATAR', 'standard') }}</div>
                 {% block avatar %}
                   {% if user.avatar != '' %}
-                    <img class="user-profile__img" src="{{user.avatar}}" alt="{{user.name}}" />
+                    <img class="user-profile__img" src="{{user.avatar}}" alt="{{name}}" />
                   {% else %}
-                    <img class="user-profile__img" src="{{templatePath}}/static/images/icons/top-menu/icon--profile.svg" alt="{{user.name}}" />
+                    <img class="user-profile__img" src="{{templatePath}}/static/images/icons/top-menu/icon--profile.svg" alt="{{name}}" />
                   {% endif %}
+                  <br>
                 {% endblock %}
               </div>
             </div>
@@ -50,7 +51,8 @@
           <div id="up_email"><a class="user-profile__namelink" href="mailto:{{user.email}}" target="_blank">{{user.email}}</a></div>
         </div>
         <br>
-        {{ preference.getModifyMask('ui.') | raw}}
+        <label for="user_preference_ui.language" class="course-info__label">{{ Lang_translate('_LANGUAGE','standard') }}</label>
+        {{ preference | raw}}
         {% block message  %}
           {% if can_access_messages %}
               <a class="forma-button user-profile__cta" href="{{ route.message.url }}&idst={{ user.idst }}&signature={{ Util_getSignature() }}&sop=unregistercourse">
@@ -102,24 +104,7 @@
 
 <script>
 
-  document.querySelectorAll('.form_line_l').forEach(el => {el.classList.add('course-info__label'); el.id = 'language'} );
-  document.querySelectorAll('.form_line_l').forEach(el => el.classList.remove('form_line_l'));
-  document.querySelector('p').remove();
 
-
-  if(!document.getElementById('lableLanguage')){
-    const labelDiv = document.createElement("div");
-    labelDiv.id = 'lableLanguage';
-    labelDiv.className = "course-info__value text--gray"; // Aggiungi la classe
-    labelDiv.innerHTML = document.getElementById('language').innerHTML; // Aggiungi il testo
-
-    // Aggiungi il nuovo div al contenitore
-    const container = document.getElementById("language");
-    container.after(labelDiv);
-
-    document.getElementById('language').innerHTML = window.frontend.config.lang.translations.standard._LANGUAGE;
-    document.querySelector('select').style.width = '196px';
-  }
 
   document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("linkModifica").addEventListener("click", function() {
@@ -150,26 +135,23 @@
 
       });
 
-    });
-  });
+      document.getElementById("undo").addEventListener("click", function() {
+        // Nasconde il pulsante del form
+        document.getElementById("formButton").style.display = "none";
+        // Seleziona tutti gli input con ID contenente "_mod"
+        let inputs = document.querySelectorAll("input[id*='up_'], input[id*='field_']");
 
-
-  document.addEventListener("DOMContentLoaded", function() {
-    document.getElementById("undo").addEventListener("click", function() {
-      // Nasconde il pulsante del form
-      document.getElementById("formButton").style.display = "none";
-      // Seleziona tutti gli input con ID contenente "_mod"
-      let inputs = document.querySelectorAll("input[id*='up_'], input[id*='field_']");
-
-      // Trasforma ogni input in un div
-      inputs.forEach(input => {
-        if (input.tagName.toLowerCase() === "input") {
-          let div = document.createElement("div");
-          div.id = input.id;
-          div.textContent = input.value.trim(); // Usa textContent invece di value
-          input.parentNode.replaceChild(div, input);
-        }
+        // Trasforma ogni input in un div
+        inputs.forEach(input => {
+          if (input.tagName.toLowerCase() === "input") {
+            let div = document.createElement("div");
+            div.id = input.id;
+            div.textContent = input.value.trim(); // Usa textContent invece di value
+            input.parentNode.replaceChild(div, input);
+          }
+        });
       });
+
     });
   });
 
