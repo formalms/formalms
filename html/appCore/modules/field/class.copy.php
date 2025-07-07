@@ -47,7 +47,7 @@ class Copy extends Field
             list($type_file, $type_class) = sql_fetch_row(sql_query('SELECT type_file, type_class FROM core_field_type WHERE type_field = "' . $type_field . '"'));
 
             try {
-                require_once Forma::inc(_adm_ . '/modules/field/' . $type_file);
+                require_once Forma::include(_adm_ . '/modules/field/', $type_file);
 
                 self::$_obj = new $type_class($id_common, $copy_of);
 
