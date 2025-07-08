@@ -1053,6 +1053,13 @@ class FieldList
             $index += 2;
         }
 
+        $eventResult = Events::trigger('core.custom_fields.showing', ['arr_idst' => $arr_idst]);
+
+        if($eventResult && array_key_exists('arr_idst', $eventResult)) {
+
+            $arr_idst = $eventResult['arr_idst'];
+        }
+
         if (!$registrationLayout) {
             if (count($arr_idst) >= $index) {
                 // Not only roots ocd_0 and oc_0

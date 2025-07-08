@@ -38,11 +38,11 @@ final class Version20241113102634 extends AbstractMigration
         $this->addSql('DELETE FROM `core_field_type` WHERE `type_field` = "dropdown_complex"');
         $this->addSql('DELETE FROM `core_field_type` WHERE `type_field` = "copy_of"');
         $this->addSql(HelperTool::dropColumnIfExistsQueryBuilder());
-        $this->addSql($this->dropColumnIfExists('core_field_son','belongs_to'));
-        $this->addSql($this->dropColumnIfExists('core_field','father'));
-        $this->addSql($this->dropColumnIfExists('core_field','son'));
-        $this->addSql($this->dropColumnIfExists('core_field_son','selected'));
-        $this->addSql($this->dropColumnIfExists('core_field','copy_of'));
+        //$this->addSql($this->dropColumnIfExists('core_field_son','belongs_to'));
+        //$this->addSql($this->dropColumnIfExists('core_field','father'));
+        //$this->addSql($this->dropColumnIfExists('core_field','son'));
+        //$this->addSql($this->dropColumnIfExists('core_field_son','selected'));
+        //$this->addSql($this->dropColumnIfExists('core_field','copy_of'));
 
     }
 
