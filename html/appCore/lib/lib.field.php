@@ -736,8 +736,8 @@ class FieldList
     {
         $arr_result = sql_fetch_row(sql_query(
             'SELECT type_file, type_class '
-            . ' FROM ' . $this->getTypeFieldTable()
-            . " WHERE type_field = '" . $type_field . "'"
+                . ' FROM ' . $this->getTypeFieldTable()
+                . " WHERE type_field = '" . $type_field . "'"
         ));
 
         return $arr_result;
@@ -1055,7 +1055,7 @@ class FieldList
 
         $eventResult = Events::trigger('core.custom_fields.showing', ['arr_idst' => $arr_idst]);
 
-        if($eventResult && array_key_exists('arr_idst', $eventResult)) {
+        if ($eventResult && array_key_exists('arr_idst', $eventResult)) {
 
             $arr_idst = $eventResult['arr_idst'];
         }
@@ -1367,6 +1367,13 @@ class FieldList
 
         $group = $acl_man->getGroup(false, '/ocd_0');
         $arr_idst[] = $group[0];
+
+        $eventResult = Events::trigger('core.custom_fields.registration.validate', ['arr_idst' => $arr_idst]);
+
+        if ($eventResult && array_key_exists('arr_idst', $eventResult)) {
+
+            $arr_idst = $eventResult['arr_idst'];
+        }
 
         $query = 'SELECT ft.id_common, ft.type_field, tft.type_file, tft.type_class, gft.mandatory'
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'

@@ -1647,6 +1647,7 @@ class UserManagerRenderer
     {
         $lang = FormaLanguage::createInstance('register', $platform);
 
+        $skipEvent = true;
         // Check for error
         $errors = [];
 
@@ -1679,8 +1680,14 @@ class UserManagerRenderer
         $enrollrules = new EnrollrulesAlms();
         $enrollrules->newRules('_NEW_USER', [$iduser], Lang::get());
 
+        $eventResult = Events::trigger('core.user.registration.opt_in', ['id_user' => $iduser]);
+
+        if ($eventResult && array_key_exists('handled', $eventResult)) {
+
+            $skipEvent = false;
+        }
         // subscribe to groups -----------------------------------------
-        if (isset($_POST['group_sel_implode'])) {
+        if ($skipEvent && isset($_POST['group_sel_implode'])) {
             $groups = explode(',', $_POST['group_sel_implode']);
             foreach ($groups as $idst) {
                 $acl_man->addToGroup($idst, $iduser);
