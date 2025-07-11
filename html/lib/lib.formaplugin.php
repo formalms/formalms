@@ -79,7 +79,7 @@ abstract class FormaPlugin
     {
         $pg_adm = new PluginmanagerAdm();
         $plugin_info = $pg_adm->getPluginFromDB(self::getName(), 'name');
-        $query_insert_string = 'INSERT %adm_setting (param_name,param_value,value_type,max_size,pack,regroup,sequence,extra_info) VALUES ';
+        $query_insert_string = 'INSERT IGNORE %adm_setting (param_name,param_value,value_type,max_size,pack,regroup,sequence,extra_info) VALUES ';
         $query_insert_string .= "('" . $name . "','" . $value . "','" . $type . "'," . $size . ",'" . $plugin_info['name'] . "'," . $plugin_info['regroup'] . ',' . $sequence . ", '')";
         $res = sql_query($query_insert_string);
 
