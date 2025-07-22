@@ -1,100 +1,109 @@
 <div class="homepage__row homepage__row--login homepage__row--gray no-padding">
 
-    <div class="visible-xs">
-        {{ Layout_getCatalogue() }}
-    </div>
-    {% if not under_maintenence %}
-        {% if baseLogin is defined %}
-            <div class="col-xs-12 col-sm-6{% if socialLogin is not defined %} col-sm-offset-3{% endif %}">
-                {% if block_attempts == false %}
-                    {% for login in baseLogin %}
-                        {{ login.form|raw }}
-                    {% endfor %}
-                    {% if done != false %}
-                        <div>
-                            <strong class="logout">{{ done }}</strong>
-                        </div>
-                    {% endif %}
-                    {% if msg != false %}
-                        <div id="service_msg">
-                            <strong class="login_failed">{{ msg }}</strong>
-                        </div>
-                    {% endif %}
-                {% else %}
-                    <h3>{{ Lang_translate('_ACCESS_LOCK', 'login') }}</h3>
-                    <p>{{ block_attempts }}</p>
-                {% endif %}
-                {% if socialLogin is not defined %}
-                    <div class="homepage__links">
-                        {% if isSelfRegistrationActive != false %}
-                            <a href="{{ Get_relPath('base') }}/index.php?r={{ constant('_register_') }}">{{ Lang_translate('_REGISTER', 'login') }}</a>
-                        {% endif %}
-                        <a href="{{ Get_relPath('base') }}/index.php?r={{ constant('_lostpwd_') }}">{{ Lang_translate('_LOG_LOSTPWD', 'login') }}</a>
-                    </div>
-                {% endif %}
-            </div>
-        {% endif %}
-        {% if socialLogin is defined %}
-            <div class="col-xs-12 col-sm-6">
-                <div class="social-login">
-                    <p class="social-login__title">
-                        <span>{{ Lang_translate('_SOCIAL_LOGIN','login') }}</span>
-                    </p>
-                    <div class="social-login__list">
-                        {% for login in socialLogin %}
-                            {{ login.form|raw }}
-                        {% endfor %}
-                    </div>
-                </div>
-                <nav class="homepage__links">
-                    {% if isSelfRegistrationActive != false %}
-                        <a href="{{ Get_relPath('base') }}/index.php?r={{ constant('_register_') }}">{{ Lang_translate('_REGISTER', 'login') }}</a>
-                    {% endif %}
-                    <a href="{{ Get_relPath('base') }}/index.php?r={{ constant('_lostpwd_') }}">{{ Lang_translate('_LOG_LOSTPWD', 'login') }} </a>
-                </nav>
-            </div>
-        {% endif %}
-    {% else %}
-        <div class="box">
-            <h3>{{ Lang_translate('_MAINTENANCE', 'configuration') }}</h3>
-            <div class="text">
-                {{ Lang_translate('_MAINTENANCE_TEXT', 'login') }}
-            </div>
-        </div>
-    {% endif %}
+	<div class="visible-xs">
+		{{ Layout_getCatalogue() }}
+	</div>
+	{% if not under_maintenence %}
+		{% if baseLogin is defined %}
+			<div class="col-xs-12 col-sm-6{% if socialLogin is not defined %} col-sm-offset-3{% endif %}">
+				{% if block_attempts == false %}
+					{% for login in baseLogin %}
+						{{ login.form|raw }}
+					{% endfor %}
+					{% if done != false %}
+						<div>
+							<strong class="logout">{{ done }}</strong>
+						</div>
+					{% endif %}
+					{% if msg != false %}
+						<div id="service_msg">
+							<strong class="login_failed">{{ msg }}</strong>
+						</div>
+					{% endif %}
+				{% else %}
+					<h3>{{ Lang_translate('_ACCESS_LOCK', 'login') }}</h3>
+					<p>{{ block_attempts }}</p>
+				{% endif %}
+				{% if socialLogin is not defined %}
+					<div class="homepage__links">
+						{% if isSelfRegistrationActive != false %}
+							{% if register_urls is not empty %}
+								{% for registration_url in register_urls %}
+									<a class="{{ registration_url["class"] }}" href="{{ registration_url["url"] }}">{{ registration_url['label'] }}</a>
+								{% endfor %}
+							{% else %}
+								<a href="{{ Get_relPath('base') }}/index.php?r={{ constant('_register_') }}">{{ Lang_translate('_REGISTER', 'login') }}</a>
+							{% endif %}
+						{% endif %}
+						<a href="{{ Get_relPath('base') }}/index.php?r={{ constant('_lostpwd_') }}">{{ Lang_translate('_LOG_LOSTPWD', 'login') }}</a>
+					</div>
+				{% endif %}
+			</div>
+		{% endif %}
+		{% if socialLogin is defined %}
+			<div class="col-xs-12 col-sm-6">
+				<div class="social-login">
+					<p class="social-login__title">
+						<span>{{ Lang_translate('_SOCIAL_LOGIN','login') }}</span>
+					</p>
+					<div class="social-login__list">
+						{% for login in socialLogin %}
+							{{ login.form|raw }}
+						{% endfor %}
+					</div>
+				</div>
+				<nav class="homepage__links">
+					{% if isSelfRegistrationActive != false %}
+						{% for registration_url in register_urls %}
+							<a class="{{ registration_url["class"] }}" href="{{ registration_url["url"] }}">{{ registration_url['label'] }}</a>
+						{% endfor %}
+					{% endif %}
+					<a href="{{ Get_relPath('base') }}/index.php?r={{ constant('_lostpwd_') }}">{{ Lang_translate('_LOG_LOSTPWD', 'login') }}
+					</a>
+				</nav>
+			</div>
+		{% endif %}
+	{% else %}
+		<div class="box">
+			<h3>{{ Lang_translate('_MAINTENANCE', 'configuration') }}</h3>
+			<div class="text">
+				{{ Lang_translate('_MAINTENANCE_TEXT', 'login') }}
+			</div>
+		</div>
+	{% endif %}
 </div>
 <div class="homepage__row">
-    <br/>
-    <strong>{{ intro_text_header|raw }}</strong>
+	<br/>
+	<strong>{{ intro_text_header|raw }}</strong>
 </div>
 <div class="homepage__row">
-    <br/>
-    <div class="collapse homepage__collapsed-text js-collapsed-text" id="description">
-        <div style="line-height: 26px;">{{ intro_text_body|raw }}</div>
-    </div>
-    <div class="collapse-wrapper" data-toggle="collapse" data-target="#description">
-        <a class="forma-button forma-button--primary is-hidden js-show-collapsed-text btn-margin" href="#" aria-label="{{ Lang_translate('_READ_ALL_CONTENT', 'login') }}">
-            {{ read_all|raw }}
-        </a>
-        <span class="glyphicon glyphicon-remove icon icon--close">{{ close|raw }}</span>
-        <br/><br/>
-    </div>
+	<br/>
+	<div class="collapse homepage__collapsed-text js-collapsed-text" id="description">
+		<div style="line-height: 26px;">{{ intro_text_body|raw }}</div>
+	</div>
+	<div class="collapse-wrapper" data-toggle="collapse" data-target="#description">
+		<a class="forma-button forma-button--primary is-hidden js-show-collapsed-text btn-margin" href="#" aria-label="{{ Lang_translate('_READ_ALL_CONTENT', 'login') }}">
+			{{ read_all|raw }}
+		</a>
+		<span class="glyphicon glyphicon-remove icon icon--close">{{ close|raw }}</span>
+		<br/><br/>
+	</div>
 </div>
 <div class="homepage__row homepage__row--footer">
-    <div class="homepage__links">
-        {% if externalPages is defined %}
-            {% for externalPage in externalPages %}
-                <a href="{{ externalPage.link }}">{{ externalPage.title }}</a>
-            {% endfor %}
-        {% endif %}
-    </div>
-    <footer class="homepage__footer">
-        {{ Layout_getZone('footer') }}
-        {{ Layout_getCopyright() }}
-    </footer>
+	<div class="homepage__links">
+		{% if externalPages is defined %}
+			{% for externalPage in externalPages %}
+				<a href="{{ externalPage.link }}">{{ externalPage.title }}</a>
+			{% endfor %}
+		{% endif %}
+	</div>
+	<footer class="homepage__footer">
+		{{ Layout_getZone('footer') }}
+		{{ Layout_getCopyright() }}
+	</footer>
 </div>
 
-<script>
+ <script>
     $(document).ready(function () {
         var $elem = $('.js-collapsed-text');
         var _textHeight = $elem.children('div').height();

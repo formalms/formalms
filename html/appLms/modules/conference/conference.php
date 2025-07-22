@@ -24,7 +24,8 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  * ( editor = Eclipse 3.2.0[phpeclipse,subclipse,WTP], tabwidth = 4 )
  */
-require_once $GLOBALS['where_scs'] . '/lib/lib.conference.php';
+require_once \FormaLms\lib\Forma::include(_scs_ . '/lib/','lib.conference.php');
+
 
 function conference_list(&$url)
 {

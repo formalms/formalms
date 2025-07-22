@@ -10,8 +10,8 @@
 				<?php if (!$block_attempts) { ?>
 					<h2><?php echo Lang::t('_LOGIN', 'login'); ?></h2>
 					<?php foreach ($this->model->getLoginGUI() as $loginGUI) {
-    echo $loginGUI;
-} ?>
+						echo $loginGUI;
+					} ?>
 					<?php if ($done) { ?>
 						<div>
 							<b class="logout"><?php echo $done; ?></b>
@@ -31,20 +31,29 @@
 	</div>
 	<div class="footer">
 		<div id="link">
-			<?php if ($this->model->isSelfRegistrationActive() && !$under_maintenence) { ?>
-				<a class="first" href="<?php echo FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _register_; ?>"><?php echo Lang::t('_REGISTER', 'login'); ?></a>
-			<?php } ?>
+			<?php if ($this->model->isSelfRegistrationActive() && !$under_maintenence) {
+
+				if (count($register_urls ?? [])) {
+					foreach ($register_urls as $registration_url) { ?>
+						<a class="<?php echo $registration_url['class']; ?>" href="<?php echo $registration_url['url']; ?>"><?php echo $registration_url['label']; ?></a>
+					<?php
+					}
+				} else { ?>
+					<a class="first" href="<?php echo FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _register_; ?>"><?php echo Lang::t('_REGISTER', 'login'); ?></a>
+			<?php
+				}
+			} ?>
 			<a href="<?php echo FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _lostpwd_; ?>"><?php echo Lang::t('_LOG_LOSTPWD', 'login'); ?></a>
 		</div>
 	</div>
 	<div class="external_page">
 		<?php
-        $external_pages = $this->model->getExternalPages();
-        if (!empty($external_pages)) {
-            ?>
+		$external_pages = $this->model->getExternalPages();
+		if (!empty($external_pages)) {
+		?>
 			<ul id="main_menu">
 				<?php foreach ($external_pages as $id_page => $title) { ?>
-					<li <?php if ($id_page == end(array_keys($external_pages))) { ?>class='last'<?php } ?>>
+					<li <?php if ($id_page == end(array_keys($external_pages))) { ?>class='last' <?php } ?>>
 						<a href="<?php echo FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _homewebpage_ . '&page=' . $id_page; ?>">
 							<?php echo $title; ?>
 						</a>
@@ -52,7 +61,7 @@
 				<?php } ?>
 			</ul>
 		<?php
-        } ?>
+		} ?>
 	</div>
 	<div class="webcontent">
 		<?php if ($under_maintenence) { ?>

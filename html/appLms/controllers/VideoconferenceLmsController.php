@@ -69,7 +69,9 @@ class VideoconferenceLmsController extends LmsController
 
     public function getActiveTable()
     {
-        require_once $GLOBALS['where_scs'] . '/lib/lib.conference.php';
+        require_once \FormaLms\lib\Forma::include(_scs_ . '/lib/','lib.conference.php');
+
+
         $conference_man = new Conference_Manager();
 
         $conference = $this->model->getActiveConference();

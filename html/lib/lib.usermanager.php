@@ -420,43 +420,16 @@ class UserManager
 
     public function saveElapsedPassword()
     {
+
+        $option['pass_max_time_valid'] = $this->_option->getOption('pass_max_time_valid');
+        $option['pass_min_char'] = $this->_option->getOption('pass_min_char');
+        $option['pass_alfanumeric'] = $this->_option->getOption('pass_alfanumeric');
+        $option['user_pwd_history_length'] = $this->_option->getOption('user_pwd_history_length');
+
         return $this->_render->saveElapsedPassword($this->_platform, $option);
     }
 
-    // --------------------------------------------------
-    // XXX: BEGIN function for a correct option managment
 
-    /**
-     * @param string $platform specified a different platform for localization
-     * @param string $prefix   specified a prefix
-     * @param string $db_conn  specified a db connection with the database
-     *
-     * @return array array(group_id => group_name) with the regroup unit
-     */
-    public function getRegroupUnit()
-    {
-        return $this->_option->getRegroupUnit();
-    }
-
-    /**
-     * @param string    contains the group selected
-     *
-     * @return string contains the displayable information for a selected group
-     */
-    public function getPageWithElement($group_selected)
-    {
-        return $this->_option->getPageWithElement($group_selected);
-    }
-
-    /**
-     * @param string    contains the group selected
-     *
-     * @return bool true if the operation was successfull false otherwise
-     */
-    public function saveElement($group_selected)
-    {
-        return $this->_option->saveElement($group_selected);
-    }
 
     // XXX: END function for a correct option managment
     // ------------------------------------------------
@@ -1476,41 +1449,7 @@ class UserManagerRenderer
         return $out;
     }
 
-    // TODO: move this function in UserManager ?
-
-    /**
-     * getCodeCourses.
-     *
-     * @param int  $reg_code
-     * @param bool $byName
-     *
-     * @return array
-     */
-    private function getCodeCourses($reg_code)
-    {
-        $query = "SELECT re.course_list
-            FROM %adm_rules_entity AS re 
-            INNER JOIN %adm_rules r ON r.id_rule = re.id_rule
-            LEFT JOIN %adm_org_chart_tree AS oct
-            ON (oct.idst_oc = re.id_entity) 
-            WHERE r.rule_type = 'orgchart' AND oct.code = '" . $reg_code . "'";
-        $result = sql_query($query);
-        $entity = sql_fetch_array($result);
-
-        return $entity ? json_decode($entity['course_list']) : [];
-    }
-
-    private function getRegCodeFromNode($nodeName)
-    {
-        $query = "SELECT oct.idOrg
-            FROM %adm_org_chart_tree AS oct
-            WHERE oct.code = '" . $nodeName . "'";
-
-        $result = sql_query($query);
-        $entity = sql_fetch_array($result);
-
-        return $entity['idOrg'];
-    }
+   
 
     // TODO: move this function in UserManager ?
 
@@ -1676,10 +1615,35 @@ class UserManagerRenderer
         return $res;
     }
 
+        // TODO: move this function in UserManager ?
+
+    /**
+     * getCodeCourses.
+     *
+     * @param int  $reg_code
+     * @param bool $byName
+     *
+     * @return array
+     */
+    protected function getCodeCourses($reg_code)
+    {
+        $query = "SELECT re.course_list
+            FROM %adm_rules_entity AS re 
+            INNER JOIN %adm_rules r ON r.id_rule = re.id_rule
+            LEFT JOIN %adm_org_chart_tree AS oct
+            ON (oct.idst_oc = re.id_entity) 
+            WHERE r.rule_type = 'orgchart' AND oct.code = '" . $reg_code . "'";
+        $result = sql_query($query);
+        $entity = sql_fetch_array($result);
+
+        return $entity ? json_decode($entity['course_list']) : [];
+    }
+
     public function _opt_in($options, $platform, $opt_link)
     {
         $lang = FormaLanguage::createInstance('register', $platform);
 
+        $skipEvent = true;
         // Check for error
         $errors = [];
 
@@ -1712,8 +1676,14 @@ class UserManagerRenderer
         $enrollrules = new EnrollrulesAlms();
         $enrollrules->newRules('_NEW_USER', [$iduser], Lang::get());
 
+        $eventResult = Events::trigger('core.user.registration.opt_in', ['id_user' => $iduser]);
+
+        if ($eventResult && array_key_exists('handled', $eventResult)) {
+
+            $skipEvent = false;
+        }
         // subscribe to groups -----------------------------------------
-        if (isset($_POST['group_sel_implode'])) {
+        if ($skipEvent && isset($_POST['group_sel_implode'])) {
             $groups = explode(',', $_POST['group_sel_implode']);
             foreach ($groups as $idst) {
                 $acl_man->addToGroup($idst, $iduser);
@@ -1970,7 +1940,24 @@ class UserManagerRenderer
         return $out;
     }
 
-    private function _first_of_all($options, $platform, $errors = [])
+    
+
+    protected function getRegCodeFromNode($nodeName)
+    {
+        $query = "SELECT oct.idOrg
+            FROM %adm_org_chart_tree AS oct
+            WHERE oct.code = '" . $nodeName . "'";
+
+        $result = sql_query($query);
+        $entity = sql_fetch_array($result);
+
+        return $entity['idOrg'];
+    }
+
+  
+
+
+    protected function _first_of_all($options, $platform, $errors = [])
     {
         $precompileLms = new PrecompileLms();
         $lang = &FormaLanguage::createInstance('register', $platform);

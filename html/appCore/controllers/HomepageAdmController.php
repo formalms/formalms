@@ -81,6 +81,19 @@ class HomepageAdmController extends AdmController
         $params['read_all'] = Lang::t('_READ_ALL', 'login');
         $params['close'] = Lang::t('_CLOSE', 'standard');
 
+        $params['register_urls'][] = [
+            'label' =>  Lang::t('_REGISTER', 'login'),
+            'url' => $params['register'],
+            'class' => 'first',
+        ];
+
+        $eventResult = Events::trigger('lms.login.mask.showing', ['params' => $params]);
+
+        if($eventResult && array_key_exists('params', $eventResult)) {
+
+            $params = $eventResult['params'];
+        }
+
         // force_standard mode
         if (isset($_REQUEST['notuse_plugin'])) {
             $params['notuse_plugin'] = true;
