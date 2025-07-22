@@ -359,24 +359,30 @@ class FormaMailer extends PHPMailer
         //----------------------------------------------------------------------------
 
         foreach ($recipients as $recipient) {
+
+            if (is_array($recipient)) {
+                $email = $recipient[0] ?? null;
+                $name = $recipient[1] ?? '';
+            } else {
+                $email = $recipient;
+                $name = '';
+            }
             if ($params[MAIL_RECIPIENT_ACLNAME]) {
                 $temp = $this->aclManager->getUserByEmail($recipient);
                 $name = $temp[ACL_INFO_FIRSTNAME] . ' ' . $temp[ACL_INFO_LASTNAME];
-            } else {
-                $name = $recipient;
             }
 
             try {
                 switch ($params[MAIL_MULTIMODE]) {
                     case MAIL_CC     :
-                        $this->AddCC($recipient, $name);
+                        $this->AddCC($email, $name);
                         break;
                     case MAIL_BCC    :
-                        $this->AddBCC($recipient, $name);
+                        $this->AddBCC($email, $name);
                         break;
                     case MAIL_SINGLE :
                     default:
-                        $this->addAddress($recipient, $name);
+                        $this->addAddress($email, $name);
                         break;
                 }
             } catch (\PHPMailer\PHPMailer\Exception $e) {
@@ -387,11 +393,11 @@ class FormaMailer extends PHPMailer
             \Events::trigger('core.mail.sent',
                 [
                     'sender' => $sender,
-                    'recipient' => $recipient,
+                    'recipient' => $email,
                     'sent' => $sent,
                 ]
             );
-            $output[$recipient] = $sent;
+            $output[$email] = $sent;
             $this->ClearAddresses();
         }
 
