@@ -1336,7 +1336,7 @@ class AggregatedcertificateAlmsController extends AlmsController
     {
         // if courses have no parent category (like all the courses are under root), they will not be found!
 
-        $nodesArr = $this->model->getPathsFromIdParent($idParent); // getting nodes with idParent
+        $nodesArr = $this->model->getPathsFromIdParent($idParent) ?? []; // getting nodes with idParent
 
         if (count($nodesArr) > 0) {
             foreach ($nodesArr as $index => $node) { // Processing all nodes with idParent
