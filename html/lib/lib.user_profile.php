@@ -3916,7 +3916,9 @@ class UserProfileData
         require_once _base_ . '/lib/lib.upload.php';
         require_once _base_ . '/lib/lib.multimedia.php';
 
-        $savefile = $id_user . 'a_' . mt_rand(0, 100) . '_' . time(); //.'_'.$file_descriptor['name'];     removed for vulnerability
+        $extension = pathinfo($file_descriptor['name'], PATHINFO_EXTENSION);
+        $extension = strtolower($extension);
+        $savefile = $id_user . 'a_' . mt_rand(0, 100) . '_' . time().'.'.$extension; //.'_'.$file_descriptor['name'];     removed for vulnerability
         if (file_exists(_files_ . $this->getPAPath() . $savefile)) {
             return false;
         }

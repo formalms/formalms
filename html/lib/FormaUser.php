@@ -394,7 +394,8 @@ class FormaUser
     public function getAvatar()
     {
         if ($this->avatar != null) {
-            return Get::sett('url') . '/' . _folder_files_ . '/appCore/' . Get::sett('pathphoto') . $this->avatar;
+//            return Get::sett('url') . '/' . _folder_files_ . '/appCore/' . Get::sett('pathphoto') . $this->avatar;
+            return '/' . _folder_files_ . '/appCore/' . Get::sett('pathphoto') . $this->avatar;
         } else {
             return null;
         }
