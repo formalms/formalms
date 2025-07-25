@@ -515,10 +515,22 @@ class FormaACLManager
      *
      * @return int the security token
      */
-    public function registerUser($userid, $firstname, $lastname,
-                                 $pass, $email, $avatar, $alredy_encripted = false, $idst = false, $pwd_expire_at = '', $force_change = '',
-                                 $facebook_id = false, $twitter_id = false, $linkedin_id = false, $google_id = false)
-    {
+    public function registerUser(
+        $userid,
+        $firstname,
+        $lastname,
+        $pass,
+        $email,
+        $avatar,
+        $alredy_encripted = false,
+        $idst = false,
+        $pwd_expire_at = '',
+        $force_change = '',
+        $facebook_id = false,
+        $twitter_id = false,
+        $linkedin_id = false,
+        $google_id = false
+    ) {
         if ($idst === false) {
             $idst = $this->_createST();
         }
@@ -614,9 +626,20 @@ class FormaACLManager
      *
      * @return int the security token
      */
-    public function registerTempUser($userid, $firstname, $lastname, $pass, $email, $random_code, $create_by_admin = 0,
-                                     $facebook_id = '', $twitter_id = '', $linkedin_id = '', $google_id = '', $avatar = '')
-    {
+    public function registerTempUser(
+        $userid,
+        $firstname,
+        $lastname,
+        $pass,
+        $email,
+        $random_code,
+        $create_by_admin = 0,
+        $facebook_id = '',
+        $twitter_id = '',
+        $linkedin_id = '',
+        $google_id = '',
+        $avatar = ''
+    ) {
         $idst = $this->_createST();
         $userid = $this->absoluteId($userid);
         $query = 'INSERT INTO ' . $this->_getTableTempUser()
@@ -854,11 +877,22 @@ class FormaACLManager
      *
      * @return true if success, FALSE otherwise
      */
-    public function updateUser($idst, $userid = false, $firstname = false, $lastname = false,
-                               $pass = false, $email = false, $avatar = false,
-                               $lastenter = false, $resume = false, $force_change = '',
-                               $facebook_id = false, $twitter_id = false, $linkedin_id = false, $google_id = false)
-    {
+    public function updateUser(
+        $idst,
+        $userid = false,
+        $firstname = false,
+        $lastname = false,
+        $pass = false,
+        $email = false,
+        $avatar = false,
+        $lastenter = false,
+        $resume = false,
+        $force_change = '',
+        $facebook_id = false,
+        $twitter_id = false,
+        $linkedin_id = false,
+        $google_id = false
+    ) {
         $old_userdata = $this->getUser($idst, null);
 
         $new_userdata = [];
@@ -1077,7 +1111,7 @@ class FormaACLManager
             $control = $this->insertIntoDeleteUserTable($idst);
         } else {
             $control = true;
-        }//modname=directory&op=org_chart
+        } //modname=directory&op=org_chart
 
         $result = false;
 
@@ -2019,7 +2053,7 @@ class FormaACLManager
 		WHERE idst_user = '" . (int)$idst . "'";
         $rs = $this->_executeQuery($query);
         $idst_group = [];
-        foreach ($rs as $row){
+        foreach ($rs as $row) {
             $idst_group[$row['idst_group']] = $row['idst_group'];
         }
 
@@ -2137,12 +2171,12 @@ class FormaACLManager
         if (count($values) > 0) {
             $query = 'INSERT IGNORE INTO ' . $this->_getTableGroupMembers()
                 . ' (idst, idstMember, filter) VALUES '
-                //." ('".$idst."','".$idstMember."','".$filter."')";
                 . implode(',', $values);
 
-            return $this->_executeQuery($query);
-
+            $result = $this->_executeQuery($query);
             Events::trigger('core.orgchart_user.assigned', ['idst' => $idst, 'idstMember' => $idstMember]);
+
+            return $result;
         } else {
             return false;
         }
@@ -2466,8 +2500,10 @@ class FormaACLManager
      */
     public function getGroupMembers($idst, $filter = '')
     {
-        return array_merge($this->getGroupUMembers($idst, $filter),
-            $this->getGroupGMembers($idst, $filter));
+        return array_merge(
+            $this->getGroupUMembers($idst, $filter),
+            $this->getGroupGMembers($idst, $filter)
+        );
     }
 
     public function getGroupUMembersNumber($idst, $filter = '')
@@ -3282,7 +3318,7 @@ class FormaACLManager
         $temp = false;
 
         switch (gettype($paths)) {
-            case 'string' :
+            case 'string':
                 $temp = [$paths];
 
                 break;
@@ -3769,6 +3805,4 @@ class GroupMembersDataRetriever extends DataRetriever
 
         return $count;
     }
-
-
 }
