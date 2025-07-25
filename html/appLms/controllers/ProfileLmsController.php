@@ -69,8 +69,10 @@ class ProfileLmsController extends LmsController
 
     public function showProfile($selected_tab = '_PROFILE', $error_array = false){
         $profile_data = $this->getUserProfileData();
-        $prefLanguage = Form::getDropdown('','user_preference_ui.language','user_preference[ui.language]', FormaLms\lib\Forma::langManager()->getAllLangCode(),
-            Lang::getDefault(),'','','autocomplete=language');
+        $langCodes = FormaLms\lib\Forma::langManager()->getAllLangCode();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+        $currentLang = $session->get('current_lang');
+        //$prefLanguage = Form::getDropdown('','user_preference_ui.language','user_preference[ui.language]', $langCodes );
 
         $profile_data['tabs'] =  [
             '_PROFILE'=> ['translation'=>Lang::t('_PROFILE','profile'), 'enabled'=>true],
@@ -82,7 +84,8 @@ class ProfileLmsController extends LmsController
         $url_man = UrlManager::getInstance();
         $url_man->setStdQuery('r=lms/profile/show');
         $profile_data['modify_url'] = $url_man->getUrl('ap=mod_profile');
-        $profile_data['preference'] = $prefLanguage;
+        $profile_data['preference'] = $langCodes;
+        $profile_data['curLang'] = $currentLang;
 
 
         if ($profile_data['tabs']['_PASSWORD']['enabled']) {

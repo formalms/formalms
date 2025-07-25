@@ -52,7 +52,12 @@
         </div>
         <br>
         <label for="user_preference_ui.language" class="course-info__label">{{ Lang_translate('_LANGUAGE','standard') }}</label>
-        {{ preference | raw}}
+        <input type="hidden" name="special" value="changelang">
+        <select class="form-control dropdown" name="new_lang">
+          {% for langs in preference %}
+            <option {% if langs == curLang %}selected{% endif %}>{{ langs }}</option>
+          {% endfor %}
+        </select>
         {% block message  %}
           {% if can_access_messages %}
               <a class="forma-button user-profile__cta" href="{{ route.message.url }}&idst={{ user.idst }}&signature={{ Util_getSignature() }}&sop=unregistercourse">
