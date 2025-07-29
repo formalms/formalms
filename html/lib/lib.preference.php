@@ -735,7 +735,12 @@ class UserPreferences
             // array( 'path_name', 'label', 'default_value', 'type', 'visible', 'load_at_startup', 'user_value' )
             switch ($pref['type']) {
                 case 'language':
-                    $selected = array_search($this->getLanguage(), FormaLms\lib\Forma::langManager()->getAllLangCode());
+                    if(!$this->id_user){
+                        $selected = array_search(Lang::getDefault(), FormaLms\lib\Forma::langManager()->getAllLangCode());
+                    }
+                    else{
+                        $selected = array_search($this->getLanguage(), FormaLms\lib\Forma::langManager()->getAllLangCode());
+                    }
                     $html[$pref['path_name']] = Form::getDropdown(Lang::t('_LANGUAGE','standard'),
                         $this->base_name . '_' . $pref['path_name'],
                         $this->base_name . '[' . $pref['path_name'] . ']',
