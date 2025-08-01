@@ -2312,6 +2312,8 @@ class SubscriptionAlmsController extends AlmsController
                 $old_id_course = $_GET['id_course'];
                 $_GET['id_course'] = $id_course;
 
+                $this->model = new SubscriptionAlms($id_course, $this->id_edition, $this->id_date);
+
 
                 while (list($id_user, $level) = sql_fetch_row($result)) {
                     if (!$limited_subscribe || $max_subscribe) {
@@ -2326,8 +2328,11 @@ class SubscriptionAlmsController extends AlmsController
                 if ($move) {
                     $db = \FormaLms\db\DbConn::getInstance();
                     $arr_users = explode(',', $users);
-                    $re = $db->query('DELETE FROM learning_courseuser
-						WHERE idUser IN ( ' . implode(',', $arr_users) . " ) AND idCourse = '" . $old_id_course . "'");
+
+                    foreach($arr_users as $user) {
+                        $this->model->delUser($user, $old_id_course);
+                    }
+
                 }
             }
 

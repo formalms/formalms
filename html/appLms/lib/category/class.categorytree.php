@@ -35,18 +35,18 @@ class CategoryTree extends TreeDb_CatDb
     {
         if ($tname === false) {
             return $this->fields['id'] . ', '
-            . $this->fields['idParent'] . ', '
-            . $this->fields['path'] . ', '
-            . $this->fields['lev'] . ', '
-            . $this->fields['iLeft'] . ', '
-            . $this->fields['iRight'];
+                . $this->fields['idParent'] . ', '
+                . $this->fields['path'] . ', '
+                . $this->fields['lev'] . ', '
+                . $this->fields['iLeft'] . ', '
+                . $this->fields['iRight'];
         } else {
             return $tname . '.' . $this->fields['id'] . ', '
-            . $tname . '.' . $this->fields['idParent'] . ', '
-            . $tname . '.' . $this->fields['path'] . ', '
-            . $tname . '.' . $this->fields['lev'] . ', '
-            . $tname . '.' . $this->fields['iLeft'] . ', '
-            . $tname . '.' . $this->fields['iRight'];
+                . $tname . '.' . $this->fields['idParent'] . ', '
+                . $tname . '.' . $this->fields['path'] . ', '
+                . $tname . '.' . $this->fields['lev'] . ', '
+                . $tname . '.' . $this->fields['iLeft'] . ', '
+                . $tname . '.' . $this->fields['iRight'];
         }
     }
 
@@ -91,7 +91,7 @@ class CategoryTree extends TreeDb_CatDb
                 . ' WHERE (' . $fields['id'] . " = '" . (int) $id . "') "
                 . $this->_getFilter($this->table);
             $rs = $this->_executeQuery($query)
-            or $this->_printSQLError('getFolderById');
+                or $this->_printSQLError('getFolderById');
             if (sql_num_rows($rs) == 0) {
                 $false_var = null;
 
@@ -108,12 +108,12 @@ class CategoryTree extends TreeDb_CatDb
     {
         $fields = $this->_getArrBaseFields($this->table);
         $query = 'SELECT ' . $this->_getDISTINCT() . $this->_listFields($this->table)
-                . ' FROM ' . $this->table . $this->_getOtherTables()
-                . $this->_outJoinFilter($this->table)
-                . ' WHERE (' . $fields['path'] . "='" . sql_escape_string($path) . "')"
-                . $this->_getFilter($this->table);
+            . ' FROM ' . $this->table . $this->_getOtherTables()
+            . $this->_outJoinFilter($this->table)
+            . ' WHERE (' . $fields['path'] . "='" . sql_escape_string($path) . "')"
+            . $this->_getFilter($this->table);
         $rs = $this->_executeQuery($query)
-                or $this->_printSQLError('getFolderByPath: ' . $query);
+            or $this->_printSQLError('getFolderByPath: ' . $query);
         if (sql_num_rows($rs) == 0) {
             $false_var = null;
 
@@ -128,10 +128,10 @@ class CategoryTree extends TreeDb_CatDb
     {
         $fields = $this->_getArrBaseFields($this->table);
         $query = 'SELECT COUNT(*)'
-        . ' FROM ' . $this->table . $this->_getOtherTables()
-        . $this->_outJoinFilter($this->table)
-        . ' WHERE 1 '
-        . $this->_getFilter($this->table);
+            . ' FROM ' . $this->table . $this->_getOtherTables()
+            . $this->_outJoinFilter($this->table)
+            . ' WHERE 1 '
+            . $this->_getFilter($this->table);
         $rs = $this->_executeQuery($query)
             or $this->_printSQLError('getFolderById');
         if (sql_num_rows($rs) == 0) {
@@ -154,15 +154,15 @@ class CategoryTree extends TreeDb_CatDb
 
         //updating left limits
         $query = 'UPDATE ' . $this->table
-        . ' SET ' . $fields['iRight'] . '=' . $fields['iRight'] . '+2'
-        . ' WHERE ' . $fields['iRight'] . '>=' . $new_limits['iRight'];
+            . ' SET ' . $fields['iRight'] . '=' . $fields['iRight'] . '+2'
+            . ' WHERE ' . $fields['iRight'] . '>=' . $new_limits['iRight'];
         $rsl = $this->_executeQuery($query);
         //TO DO: handle error case (if !$rs ... )
 
         //updating right limits
         $query = 'UPDATE ' . $this->table
-        . ' SET ' . $fields['iLeft'] . '=' . $fields['iLeft'] . '+2'
-        . ' WHERE ' . $fields['iLeft'] . '>=' . $new_limits['iLeft'];
+            . ' SET ' . $fields['iLeft'] . '=' . $fields['iLeft'] . '+2'
+            . ' WHERE ' . $fields['iLeft'] . '>=' . $new_limits['iLeft'];
         $rsr = $this->_executeQuery($query);
         //TO DO: handle error case (if !$rs ... )
 
@@ -171,9 +171,9 @@ class CategoryTree extends TreeDb_CatDb
 
         //insert the new node
         $query = 'INSERT into ' . $this->table . ' ( ' . $this->_listFields() . ') VALUES ('
-        . "NULL,'" . (int) $idParent . "','" . $path . "','" . (int) $level . "','" . $new_limits['iLeft'] . "','" . ($new_limits['iRight'] + 1) . "' "
-        . $this->_getOtherValues()
-        . ')';
+            . "NULL,'" . (int) $idParent . "','" . $path . "','" . (int) $level . "','" . $new_limits['iLeft'] . "','" . ($new_limits['iRight'] + 1) . "' "
+            . $this->_getOtherValues()
+            . ')';
         $id = $this->_executeInsert($query) or $this->_printSQLError('_addFolder: ' . $query);
 
         return $id;
@@ -217,10 +217,10 @@ class CategoryTree extends TreeDb_CatDb
     {
         if ($idFolder == 0) {
             $query = 'SELECT COUNT(*)'
-            . ' FROM ' . $this->table . $this->_getOtherTables()
-            . $this->_outJoinFilter($this->table)
-            . ' WHERE 1 '
-            . $this->_getFilter($this->table);
+                . ' FROM ' . $this->table . $this->_getOtherTables()
+                . $this->_outJoinFilter($this->table)
+                . ' WHERE 1 '
+                . $this->_getFilter($this->table);
             $rs = $this->_executeQuery($query)
                 or $this->_printSQLError('getFolderById');
             if (sql_num_rows($rs) == 0) {
@@ -253,13 +253,13 @@ class CategoryTree extends TreeDb_CatDb
         $limits = $this->_getFolderLimits($idFolder);
         $fields = $this->_getArrBaseFields($this->table);
         $query = 'SELECT ' . $this->_getDISTINCT() . $this->_listFields($this->table)
-        . ' FROM ' . $this->table . $this->_getOtherTables()
-        . $this->_outJoinFilter($this->table)
-        . ' WHERE ' . $fields['iLeft'] . '>=' . $limits['iLeft']
-        . ' AND ' . $fields['iRight'] . '<=' . $limits['iRight']
-        . ' ORDER BY ' . $this->_getOrderBy($this->table);
+            . ' FROM ' . $this->table . $this->_getOtherTables()
+            . $this->_outJoinFilter($this->table)
+            . ' WHERE ' . $fields['iLeft'] . '>=' . $limits['iLeft']
+            . ' AND ' . $fields['iRight'] . '<=' . $limits['iRight']
+            . ' ORDER BY ' . $this->_getOrderBy($this->table);
         $rs = $this->_executeQuery($query)
-        or $this->_printSQLError('getDescendantsById');
+            or $this->_printSQLError('getDescendantsById');
 
         return $rs;
     }
@@ -279,13 +279,13 @@ class CategoryTree extends TreeDb_CatDb
     {
         $fields = $this->_getArrBaseFields($this->table);
         $query = 'SELECT ' . $this->_getDISTINCT() . $this->_listFields($this->table)
-        . ' FROM ' . $this->table . $this->_getOtherTables()
-        . $this->_outJoinFilter($this->table)
-        . ' WHERE ((' . $fields['idParent'] . " = '" . (int) $idFolder . "')"
-        . $this->_getFilter($this->table)
-        . ') ORDER BY ' . $this->_getOrderBy($this->table);
+            . ' FROM ' . $this->table . $this->_getOtherTables()
+            . $this->_outJoinFilter($this->table)
+            . ' WHERE ((' . $fields['idParent'] . " = '" . (int) $idFolder . "')"
+            . $this->_getFilter($this->table)
+            . ') ORDER BY ' . $this->_getOrderBy($this->table);
         $rs = $this->_executeQuery($query)
-        or $this->_printSQLError('getChildrensById');
+            or $this->_printSQLError('getChildrensById');
 
         return $rs;
     }
@@ -294,10 +294,10 @@ class CategoryTree extends TreeDb_CatDb
     {
         $fields = $this->_getArrBaseFields($this->table);
         $query = 'SELECT ' . $this->_getDISTINCT() . $this->_listFields($this->table) . ', COUNT(t2.idCourse)'
-                . ' FROM ' . $this->table . ' LEFT JOIN %lms_course as t2'
-                . ' ON ( ' . $this->table . '.idCategory = t2.idCategory )'
+            . ' FROM ' . $this->table . ' LEFT JOIN %lms_course as t2'
+            . ' ON ( ' . $this->table . '.idCategory = t2.idCategory )'
             . ' WHERE ((' . $fields['idParent'] . " = '" . (int) $idFolder . "')"
-                . $this->_getFilter($this->table)
+            . $this->_getFilter($this->table)
             . ') GROUP BY ' . $this->table . '.idCategory '
             . 'ORDER BY ' . $this->_getOrderBy($this->table);
 
@@ -326,7 +326,7 @@ class CategoryTree extends TreeDb_CatDb
             ];
 
             $childrenIds = $this->getChildrensById($folder->id);
-            foreach ($childrenIds as $childRow){
+            foreach ($childrenIds as $childRow) {
                 $childFolder = $this->getFolderById($childRow[$this->fields['id']]);
                 if ($childFolder !== null) {
                     $node['children'][] = $buildTree($childFolder);
@@ -342,32 +342,41 @@ class CategoryTree extends TreeDb_CatDb
         return $tree;
     }
 
+    public function deleteTreeById($id)
+    {
+        $folder = $this->getFolderById($id);
+
+        Events::trigger('lms.course_category.deleted',['folderId' => $id]);
+
+        return $this->_deleteTree($folder);
+    }
+
     public function getFoldersCollection(&$arrayId)
     {
         $query = 'SELECT ' . $this->_getDISTINCT() . $this->_getBaseFields('t1') . ', count(t2.' . $this->fields['id'] . ') '
-                . $this->_getOtherSelectFields('t1')
-                . $this->_getOtherFields('t1')
-                . ' FROM ' . $this->table . ' AS t1 LEFT JOIN ' . $this->table . ' AS t2'
-                . '		ON (t1.' . $this->fields['id'] . ' = t2.' . $this->fields['idParent']
-                . $this->_getParentJoinFilter('t1', 't2') . ')'
-                . $this->_getOtherTables('t1')
-                . $this->_outJoinFilter('t1');
+            . $this->_getOtherSelectFields('t1')
+            . $this->_getOtherFields('t1')
+            . ' FROM ' . $this->table . ' AS t1 LEFT JOIN ' . $this->table . ' AS t2'
+            . '		ON (t1.' . $this->fields['id'] . ' = t2.' . $this->fields['idParent']
+            . $this->_getParentJoinFilter('t1', 't2') . ')'
+            . $this->_getOtherTables('t1')
+            . $this->_outJoinFilter('t1');
         if ($arrayId === null) {
             $query .= ' WHERE ((1) '
-                    . $this->_getFilter('t1');
+                . $this->_getFilter('t1');
         } else {
             $query .= ' WHERE ((t1.' . $this->fields['id'] . ' IN (' . implode(',', $arrayId) . '))'
-                    //."   AND ((t1.".$this->fields['id']." = t2.".$this->fields['idParent'] .")"
-                    //."    OR  (t1.".$this->fields['id']." = 0 ))"
-                    . $this->_getFilter('t1');
+                //."   AND ((t1.".$this->fields['id']." = t2.".$this->fields['idParent'] .")"
+                //."    OR  (t1.".$this->fields['id']." = 0 ))"
+                . $this->_getFilter('t1');
         }
         $query .= ') ' . ' AND t1.' . $this->fields['id'] . '<>0 '
-                . 'GROUP BY ' . $this->_getBaseFields('t1')
-                . $this->_getOtherFields('t1')
-                . ' ORDER BY ' . $this->_getOrderBy('t1');
+            . 'GROUP BY ' . $this->_getBaseFields('t1')
+            . $this->_getOtherFields('t1')
+            . ' ORDER BY ' . $this->_getOrderBy('t1');
 
         $rs = $this->_executeQuery($query)
-                or $this->_printSQLError('getFoldersCollection: ' . $query);
+            or $this->_printSQLError('getFoldersCollection: ' . $query);
         $coll = new FoldersCollection($this, $rs, true, true);
 
         return $coll;
@@ -377,12 +386,12 @@ class CategoryTree extends TreeDb_CatDb
     {
         $fields = $this->_getArrBaseFields($this->table);
         $query = 'SELECT ' . $this->_getDISTINCT() . $fields['id']
-        . ' FROM ' . $this->table . $this->_getOtherTables()
-        . $this->_outJoinFilter($this->table)
-        . " WHERE ((path LIKE '" . (($folder->id == 0) ? '' : sql_escape_string($folder->path)) . "/%')"
-        . '   AND (' . $fields['id'] . " != '" . $folder->id . "') "
-        . $this->_getFilter($this->table)
-        . ') ORDER BY ' . $this->_getOrderBy($this->table);
+            . ' FROM ' . $this->table . $this->_getOtherTables()
+            . $this->_outJoinFilter($this->table)
+            . " WHERE ((path LIKE '" . (($folder->id == 0) ? '' : sql_escape_string($folder->path)) . "/%')"
+            . '   AND (' . $fields['id'] . " != '" . $folder->id . "') "
+            . $this->_getFilter($this->table)
+            . ') ORDER BY ' . $this->_getOrderBy($this->table);
         $rs = $this->_executeQuery($query)
             or exit(sql_error() . " [ $query ]");
         // or $this->_printSQLError( 'getChildrensById' );
@@ -413,18 +422,18 @@ class CategoryTree extends TreeDb_CatDb
 
         $folder->idParent = $parentFolder->id;
         $folder->path = (($parentFolder->id == 0) ? '/root/' : ($parentFolder->path . '/'))
-        . (($newfoldername !== false) ? $newfoldername : $oldFolder->getFolderName());
+            . (($newfoldername !== false) ? $newfoldername : $oldFolder->getFolderName());
 
         $folder->level = $parentFolder->level + 1;
         $query = 'UPDATE ' . $this->table
-        . ' SET '
-        . $this->fields['idParent'] . " = '" . $folder->idParent . "',"
-        . $this->fields['path'] . " = '" . $folder->path . "',"
-        . $this->fields['lev'] . " = '" . $folder->level . "'"
-        . ' WHERE (' . $this->fields['id'] . " = '" . $folder->id . "')"
-        . $this->_getFilter();
+            . ' SET '
+            . $this->fields['idParent'] . " = '" . $folder->idParent . "',"
+            . $this->fields['path'] . " = '" . $folder->path . "',"
+            . $this->fields['lev'] . " = '" . $folder->level . "'"
+            . ' WHERE (' . $this->fields['id'] . " = '" . $folder->id . "')"
+            . $this->_getFilter();
         $this->_executeQuery($query)
-        or $this->_printSQLError('moveFolder');
+            or $this->_printSQLError('moveFolder');
         $this->_propagateChange($oldFolder, $folder);
     }
 
@@ -454,31 +463,19 @@ class CategoryTree extends TreeDb_CatDb
 
     public function renameFolderById($idFolder, $newName)
     {
-        return $this->renameFolder($this->getFolderById($idFolder), $newName);
+        $result = $this->renameFolder($this->getFolderById($idFolder), $newName);
+
+        Events::trigger('lms.course_category.updated', ['idFolder' => $idFolder, 'newName' => $newName]);
+
+        return $result;
     }
 
-    /*
-    function getChildrensByIdList( $idFolderList ) {
-        $fields = $this->_getArrBaseFields( $this->table );
-
-        $query = "SELECT ".$this->_getDISTINCT(). $fields['id']
-        ." FROM ". $this->table.$this->_getOtherTables()
-        .$this->_outJoinFilter($this->table)
-        ." WHERE ".$fields['id']." IN (".implode(",", $idFolderList).") "
-        .$this->_getFilter($this->table)
-        .") ORDER BY ". $this->_getOrderBy($this->table);
-        $rs = $this->_executeQuery( $query )
-            or die( sql_error() . " [ $query ]");
-
-        $query =
-    }
-    */
 
     public function getOpenedFolders($idFolder)
     {
         $limits = $this->_getFolderLimits($idFolder);
         $query = 'SELECT idCategory FROM %lms_category ' .
-                'WHERE iLeft <= ' . $limits['iLeft'] . ' AND iRight >= ' . $limits['iRight'] . ' AND idCategory > 0 ORDER BY iLeft';
+            'WHERE iLeft <= ' . $limits['iLeft'] . ' AND iRight >= ' . $limits['iRight'] . ' AND idCategory > 0 ORDER BY iLeft';
         $res = sql_query($query);
         $folders = [0];
         foreach ($res as $row) {

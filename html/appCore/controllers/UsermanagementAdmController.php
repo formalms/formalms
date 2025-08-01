@@ -70,7 +70,7 @@ class UsermanagementAdmController extends AdmController
     protected function _setSessionValue($index, $value)
     {
         $this->session->set($this->sessionPrefix . '_' . $index, $value);
-      //  $this->session->save(); //commented since it can randomly lose references, set is enough because session is treated as singleton
+        //  $this->session->save(); //commented since it can randomly lose references, set is enough because session is treated as singleton
     }
 
     protected function _getSessionValue($index, $default = false)
@@ -1701,7 +1701,7 @@ class UsermanagementAdmController extends AdmController
 
                 $res = $this->model->assignUsers($id, $selection);
 
-                if(is_array($res) && !$res['success']) {
+                if (is_array($res) && !$res['success']) {
                     Util::jump_to($next_url . '&res=err_alreadyassigned&count=' . $res['count_assigned'] . '&id_first=' . $res['already_assigned']);
                 }
 
@@ -1963,12 +1963,14 @@ class UsermanagementAdmController extends AdmController
             $new_fields[] = $this->getFieldGroupById($idst);
         }
 
-        //TODO: EVT_OBJECT (§)
-        //$event = new \appCore\Events\Core\User\UsersManagementOrgChartEditNodeFieldsEvent();
-        //$event->setNode($nodedata);
-        //$event->setFields($new_fields);
-        //TODO: EVT_LAUNCH (&)
-        //\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartEditNodeFieldsEvent::EVENT_NAME, $event);
+        Events::trigger('core.orgchart.field_assigned', [
+            'idOrg' => $id_org,
+            'fields_use' => $fields_use,
+            'fields_inherit' => $fields_inherit,
+            'fields_mandatory' => $fields_mandatory,
+            'fields_invisible' => $fields_invisible,
+            'fields_userinherit' => $fields_userinherit
+        ]);
 
         $output = ['success' => true, 'total' => count($fields_use), 'done' => $count];
         echo $this->json->encode($output);
