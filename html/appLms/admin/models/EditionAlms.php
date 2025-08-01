@@ -70,19 +70,21 @@ class EditionAlms extends Model
 
     protected function getEditionInfoFromPost()
     {
-        $res = ['code' => FormaLms\lib\Get::req('code', DOTY_MIXED, ''),
-                        'name' => FormaLms\lib\Get::req('name', DOTY_MIXED, ''),
-                        'description' => FormaLms\lib\Get::req('description', DOTY_MIXED, ''),
-                        'status' => FormaLms\lib\Get::req('status', DOTY_INT, 0),
-                        'max_par' => FormaLms\lib\Get::req('max_par', DOTY_INT, 0),
-                        'min_par' => FormaLms\lib\Get::req('min_par', DOTY_INT, 0),
-                        'price' => FormaLms\lib\Get::req('price', DOTY_MIXED, ''),
-                        'date_begin' => FormaLms\lib\Get::req('date_begin', DOTY_MIXED, ''),
-                        'date_end' => FormaLms\lib\Get::req('date_end', DOTY_MIXED, ''),
-                        'overbooking' => FormaLms\lib\Get::req('overbooking', DOTY_INT, 0),
-                        'can_subscribe' => FormaLms\lib\Get::req('can_subscribe', DOTY_INT, 0),
-                        'sub_date_begin' => FormaLms\lib\Get::req('sub_date_begin', DOTY_MIXED, ''),
-                        'sub_date_end' => FormaLms\lib\Get::req('sub_date_end', DOTY_MIXED, ''), ];
+        $res = [
+            'code' => FormaLms\lib\Get::req('code', DOTY_MIXED, ''),
+            'name' => FormaLms\lib\Get::req('name', DOTY_MIXED, ''),
+            'description' => FormaLms\lib\Get::req('description', DOTY_MIXED, ''),
+            'status' => FormaLms\lib\Get::req('status', DOTY_INT, 0),
+            'max_par' => FormaLms\lib\Get::req('max_par', DOTY_INT, 0),
+            'min_par' => FormaLms\lib\Get::req('min_par', DOTY_INT, 0),
+            'price' => FormaLms\lib\Get::req('price', DOTY_MIXED, ''),
+            'date_begin' => FormaLms\lib\Get::req('date_begin', DOTY_MIXED, ''),
+            'date_end' => FormaLms\lib\Get::req('date_end', DOTY_MIXED, ''),
+            'overbooking' => FormaLms\lib\Get::req('overbooking', DOTY_INT, 0),
+            'can_subscribe' => FormaLms\lib\Get::req('can_subscribe', DOTY_INT, 0),
+            'sub_date_begin' => FormaLms\lib\Get::req('sub_date_begin', DOTY_MIXED, ''),
+            'sub_date_end' => FormaLms\lib\Get::req('sub_date_end', DOTY_MIXED, ''),
+        ];
 
         return $res;
     }
@@ -90,6 +92,8 @@ class EditionAlms extends Model
     public function addEdition()
     {
         $edition_info = $this->getEditionInfoFromPost();
+
+        Events::trigger('lms.course_edition.created', ['edition_info' => $edition_info]);
 
         return $this->edition_man->insertEdition($this->id_course, $edition_info['code'], $edition_info['name'], $edition_info['description'], $edition_info['status'], $edition_info['max_par'], $edition_info['min_par'], $edition_info['price'], $edition_info['date_begin'], $edition_info['date_end'], $edition_info['overbooking'], $edition_info['can_subscribe'], $edition_info['sub_date_begin'], $edition_info['sub_date_end']);
     }
@@ -103,19 +107,23 @@ class EditionAlms extends Model
     {
         $edition_info = $this->getEditionInfoFromPost();
 
+        Events::trigger('lms.course_edition.updated', ['id_edition' => $this->id_edition, 'edition_info' => $edition_info]);
+
         return $this->edition_man->modEdition($this->id_edition, $edition_info['code'], $edition_info['name'], $edition_info['description'], $edition_info['status'], $edition_info['max_par'], $edition_info['min_par'], $edition_info['price'], $edition_info['date_begin'], $edition_info['date_end'], $edition_info['overbooking'], $edition_info['can_subscribe'], $edition_info['sub_date_begin'], $edition_info['sub_date_end']);
     }
 
     public function delEdition()
     {
+        Events::trigger('lms.course_edition.deleted', ['id_edition' => $this->id_edition]);
+
         return $this->edition_man->delEdition($this->id_edition);
     }
 
     public function getEditionIdFromCourse($id_course)
     {
         $query = 'SELECT id_edition'
-                    . ' FROM %lms_course_editions'
-                    . ' WHERE id_course = ' . (int) $id_course;
+            . ' FROM %lms_course_editions'
+            . ' WHERE id_course = ' . (int) $id_course;
 
         $result = sql_query($query);
 

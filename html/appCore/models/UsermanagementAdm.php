@@ -2257,24 +2257,7 @@ class UsermanagementAdm extends Model implements Accessible
 
         [$id_parent] = sql_fetch_row(sql_query($query));
 
-        //todo: back compatibility
-        /*
-        $folder->idParent = $parentFolder->id;
-        $folder->path = (($parentFolder->id == 0)?'/root/':($parentFolder->path . "/"))
-                        .(($newfoldername!==FALSE)?$newfoldername:$oldFolder->getFolderName());
-
-        $folder->level = $parentFolder->level+1;
-        $query = "UPDATE ". $this->table
-                ." SET "
-                . $this->fields['idParent'] ." = '".$folder->idParent ."',"
-                . $this->fields['path']	." = '". $folder->path ."',"
-                . $this->fields['lev'] ." = '".$folder->level ."'"
-                ." WHERE (". $this->fields['id'] ." = '". $folder->id ."')"
-                .$this->_getFilter();
-        $this->_executeQuery( $query )
-            or $this->_printSQLError( 'moveFolder' );
-        $this->_propagateChange( $oldFolder, $folder);
-        */
+   
 
         [$src_left, $src_right, $lvl_src] = $this->getFolderLimits($src_folder);
         [$dest_left, $dest_right, $lvl_dest] = $this->getFolderLimits($dest_folder);
@@ -2340,16 +2323,7 @@ class UsermanagementAdm extends Model implements Accessible
         // fix values from the gap created
         $this->shiftRL($src_right + 1, -$gap);
 
-        /*
-        //update path column for source
-        list($parent_path) = $this->db->fetch_row($this->db->query("SELECT path FROM %adm_org_chart_tree WHERE idOrg=".(int)$dest_folder));
-        list($source_endpath) = $this->db->fetch_row($this->db->query("SELECT MAX(path) FROM %adm_org_chart_tree WHERE idParent=".(int)$dest_folder." GROUP BY idParent"));
-        $_last_index = !$source_endpath ? 0 : (int)end(explode("/", $source_endpath));
-        $source_name = str_pad("".$_last_index, 8, '0');
-        list($old_src_path) = $this->db->query("SELECT path FROM %adm_org_chart_tree WHERE idOrg=".(int)$src_folder);
-        $res = $this->db->query("UPDATE %adm_org_chart_tree SET path='".$parent_path.'/'.$source_name."' WHERE idOrg=".(int)$src_folder);
-        $res = $this->db->query("UPDATE %adm_org_chart_tree SET path = REPLACE(path,'".$old_src_path."', '".$parent_path."')");
-*/
+ 
         //if folder moving has been successfull than set new /ocd_ groups
         if ($output) {
             $query = 'SELECT idst'
@@ -2382,6 +2356,8 @@ class UsermanagementAdm extends Model implements Accessible
 
             $output = sql_query($query);
         }
+
+        Events::trigger('core.orgchart.moved', ['scr_folder' => $src_folder, 'dest_folder' => $dest_folder]);
 
         return $output;
     }

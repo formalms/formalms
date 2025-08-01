@@ -258,8 +258,8 @@ class SubscriptionAlms extends Model implements Accessible
     public function getCoursepathNameForSubscription($id_path)
     {
         $query = 'SELECT path_code, path_name'
-                    . ' FROM %lms_coursepath'
-                    . ' WHERE id_path = ' . (int) $id_path;
+            . ' FROM %lms_coursepath'
+            . ' WHERE id_path = ' . (int) $id_path;
 
         [$code, $name] = sql_fetch_row(sql_query($query));
 
@@ -270,7 +270,7 @@ class SubscriptionAlms extends Model implements Accessible
 
     public function subscribeUser($id_user, $level, $waiting, $date_begin_validity = false, $date_expire_validity = false, $overbooking = 0)
     {
-        Events::trigger('lms.course_user.subscribing',[
+        Events::trigger('lms.course_user.subscribing', [
             'id_user' => $id_user,
             'level' => $level,
             'waiting' => $waiting,
@@ -299,7 +299,7 @@ class SubscriptionAlms extends Model implements Accessible
             $result = $subscribe_man->subscribeUserToCourse($id_user, $this->id_course, $level, $waiting, $date_begin_validity, $date_expire_validity, $overbooking);
         }
 
-        Events::trigger('lms.course_user.subscribed',[
+        Events::trigger('lms.course_user.subscribed', [
             'id_user' => $id_user,
             'level' => $level,
             'waiting' => $waiting,
@@ -314,23 +314,33 @@ class SubscriptionAlms extends Model implements Accessible
         return $result;
     }
 
-    public function delUser($id_user)
+    public function delUser($id_user, $idCourse = null, $idEdition = 0, $idDate = 0)
     {
-        $cmodel = new CourseAlms($this->id_course, $this->id_date, $this->id_edition);
+
+        $idCourseToConsider = $idCourse ?? $this->id_course;
+        $idEditionToConsider = $idEdition ?? $this->id_edition;
+        $idDateToConsider = $idDate ?? $this->id_date;
+
+  
+
+
+        $cmodel = new CourseAlms(   $idCourseToConsider, $idDateToConsider, $idEditionToConsider);
         if ($this->id_edition != 0) {
             require_once _lms_ . '/lib/lib.edition.php';
             $edition_man = new EditionManager();
-            $ret = $edition_man->delUserFromEdition($id_user, $this->id_course, $this->id_edition);
-        } elseif ($this->id_date != 0) {
+            $ret = $edition_man->delUserFromEdition($id_user, $idCourseToConsider, $idEditionToConsider);
+        } elseif ($idDateToConsider != 0) {
             require_once _lms_ . '/lib/lib.date.php';
             $date_man = new DateManager();
             // managing overbooked user on course_date_user here
-            $ret = $date_man->delUserFromDate($id_user, $this->id_course, $this->id_date);
+            $ret = $date_man->delUserFromDate($id_user, $idCourseToConsider, $idDateToConsider);
         } else {
             require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
             $subscribe_man = new CourseSubscribe_Manager();
-            $ret = $subscribe_man->delUserFromCourse($id_user, $this->id_course);
+            $ret = $subscribe_man->delUserFromCourse($id_user, $idCourseToConsider);
         }
+
+
         /* enrolling first overbooked user, if any */
         if ($ret) {
             // For classroom courses, be sure that is enabled overbooking in the course, not in the edition, or this method  return null
@@ -340,8 +350,8 @@ class SubscriptionAlms extends Model implements Accessible
                 $status = ($course_info['subscribe_method'] == 1 ? -2 : 0); // check for need approval
 
                 $query = 'UPDATE %lms_courseuser  SET status = ' . $status
-                . ($status == -2 ? ' ,waiting=1' : '')
-                . ' WHERE idCourse = ' . $this->id_course . ' AND iduser = ' . $user_to_enroll;
+                    . ($status == -2 ? ' ,waiting=1' : '')
+                    . ' WHERE idCourse = ' . $idCourseToConsider . ' AND iduser = ' . $user_to_enroll;
 
                 $sql_query_res = sql_query($query);
 
@@ -479,7 +489,7 @@ class SubscriptionAlms extends Model implements Accessible
                     } else {
                         $subject = Lang::t('NEXT_USER_ENTERED_SUBJECT', 'email');
                         $email_body = Lang::t('NEXT_USER_ENTERED_BODY', 'email', $array_subst);
-                        $calendar = CalendarManager::getCalendarDataContainerForDateDays((int) $this->id_course, (int) $this->id_date, (int) $user_info[ACL_INFO_IDST]);
+                        $calendar = CalendarManager::getCalendarDataContainerForDateDays((int) $idCourseToConsider, (int) $idDateToConsider, (int) $user_info[ACL_INFO_IDST]);
                         $attachments = [$calendar->getFile()];
                     }
                     $user_notification->_sendMail($subject, $email_body, $attachments, $recipients, $user_info_arr);
@@ -606,15 +616,15 @@ class SubscriptionAlms extends Model implements Accessible
         }
 
         $query = 'SELECT idst, userid, firstname, lastname '
-                    . ' FROM %adm_user'
-                    . " WHERE (userid LIKE '%" . $filter . "%'"
-                    . " OR firstname LIKE '%" . $filter . "%'"
-                    . " OR lastname LIKE '%" . $filter . "%')"
-                    . ($is_admin ? ' AND ' . $admin_query : '')
-                    . (!empty($already_subscribed) ? ' AND idst NOT IN (' . implode(',', $already_subscribed) . ') ' : '')
-                    . " AND userid<>'/Anonymous' "
-                    . ' ORDER BY userid '
-                    . ' LIMIT 0, ' . $limit;
+            . ' FROM %adm_user'
+            . " WHERE (userid LIKE '%" . $filter . "%'"
+            . " OR firstname LIKE '%" . $filter . "%'"
+            . " OR lastname LIKE '%" . $filter . "%')"
+            . ($is_admin ? ' AND ' . $admin_query : '')
+            . (!empty($already_subscribed) ? ' AND idst NOT IN (' . implode(',', $already_subscribed) . ') ' : '')
+            . " AND userid<>'/Anonymous' "
+            . ' ORDER BY userid '
+            . ' LIMIT 0, ' . $limit;
 
         $res = $this->db->query($query);
         $output = [];
@@ -685,8 +695,7 @@ class SubscriptionAlms extends Model implements Accessible
         }
 
         $query = 'UPDATE %lms_courseuser SET date_begin_validity = NULL, date_expire_validity = NULL '
-            . ' WHERE idCourse = ' . (int) $id_course . ' AND idUser = ' . (int) $id_user . ' '
-            ; //.((int)$id_edition > 0 ? " AND edition_id = ".(int)$id_edition : "");
+            . ' WHERE idCourse = ' . (int) $id_course . ' AND idUser = ' . (int) $id_user . ' '; //.((int)$id_edition > 0 ? " AND edition_id = ".(int)$id_edition : "");
         $res = sql_query($query);
 
         return $res ? true : false;
@@ -897,18 +906,34 @@ class SubscriptionAlms extends Model implements Accessible
         }
         if (isset($pagination['dir'])) {
             switch (strtolower($pagination['dir'])) {
-                case 'desc': $dir = 'DESC'; break;
-                default: $dir = 'ASC'; break;
+                case 'desc':
+                    $dir = 'DESC';
+                    break;
+                default:
+                    $dir = 'ASC';
+                    break;
             }
         }
         if (isset($pagination['sort'])) {
             switch ($pagination['sort']) {
-                case 'userid': $sort = 'u.userid'; break;
-                case 'firstname': $sort = 'u.firstname ' . $dir . ', u.lastname ' . $dir . ', u.userid'; break;
-                case 'lastname': $sort = 'u.lastname ' . $dir . ', u.firstname ' . $dir . ', u.userid'; break;
-                case 'course_code': $sort = 'c.code'; break;
-                case 'course_name': $sort = 'c.name'; break;
-                case 'request_date': $sort = 'requesting_unsubscribe_date'; break;
+                case 'userid':
+                    $sort = 'u.userid';
+                    break;
+                case 'firstname':
+                    $sort = 'u.firstname ' . $dir . ', u.lastname ' . $dir . ', u.userid';
+                    break;
+                case 'lastname':
+                    $sort = 'u.lastname ' . $dir . ', u.firstname ' . $dir . ', u.userid';
+                    break;
+                case 'course_code':
+                    $sort = 'c.code';
+                    break;
+                case 'course_name':
+                    $sort = 'c.name';
+                    break;
+                case 'request_date':
+                    $sort = 'requesting_unsubscribe_date';
+                    break;
             }
         }
 
@@ -973,18 +998,34 @@ class SubscriptionAlms extends Model implements Accessible
         }
         if (isset($pagination['dir'])) {
             switch (strtolower($pagination['dir'])) {
-                case 'desc': $dir = 'DESC'; break;
-                default: $dir = 'ASC'; break;
+                case 'desc':
+                    $dir = 'DESC';
+                    break;
+                default:
+                    $dir = 'ASC';
+                    break;
             }
         }
         if (isset($pagination['sort'])) {
             switch ($pagination['sort']) {
-                case 'userid': $sort = 'userid'; break;
-                case 'firstname': $sort = 'firstname ' . $dir . ', lastname ' . $dir . ', userid'; break;
-                case 'lastname': $sort = 'lastname ' . $dir . ', firstname ' . $dir . ', userid'; break;
-                case 'course_code': $sort = 'course_code'; break;
-                case 'course_name': $sort = 'course_name'; break;
-                case 'request_date': $sort = 'request_date'; break;
+                case 'userid':
+                    $sort = 'userid';
+                    break;
+                case 'firstname':
+                    $sort = 'firstname ' . $dir . ', lastname ' . $dir . ', userid';
+                    break;
+                case 'lastname':
+                    $sort = 'lastname ' . $dir . ', firstname ' . $dir . ', userid';
+                    break;
+                case 'course_code':
+                    $sort = 'course_code';
+                    break;
+                case 'course_name':
+                    $sort = 'course_name';
+                    break;
+                case 'request_date':
+                    $sort = 'request_date';
+                    break;
             }
         }
 
@@ -1103,7 +1144,9 @@ class SubscriptionAlms extends Model implements Accessible
         $cinfo = $cmodel->getCourseModDetails($id_course);
 
         switch ((int) $cinfo['auto_unsubscribe']) {
-            case 0: return false; break;
+            case 0:
+                return false;
+                break;
             case 1:
             case 2:
                 if ($cinfo['unsubscribe_date_limit'] != '') {
@@ -1111,7 +1154,7 @@ class SubscriptionAlms extends Model implements Accessible
                         return false;
                     }
                 }
-             break;
+                break;
         }
 
         if ($id_date > 0) {
@@ -1131,7 +1174,8 @@ class SubscriptionAlms extends Model implements Accessible
         if (($res) && (int) $cinfo['auto_unsubscribe'] == 1) {
             //moderated self unsubscribe
             $userinfo = $this->acl_man->getUser($id_user, false);
-            $array_subst = ['[url]' => FormaLms\lib\Get::site_url(),
+            $array_subst = [
+                '[url]' => FormaLms\lib\Get::site_url(),
                 '[course]' => $cinfo['name'],
                 '[firstname]' => $userinfo[ACL_INFO_FIRSTNAME],
                 '[lastname]' => $userinfo[ACL_INFO_LASTNAME],
@@ -1175,36 +1219,36 @@ class SubscriptionAlms extends Model implements Accessible
                 $control_user = array_search(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $array_user);
 
                 $query = 'SELECT COUNT(*)'
-                            . ' FROM ' . FormaLms\lib\Get::cfg('prefix_fw') . '_admin_course'
-                            . " WHERE idst_user = '" . $id_user . "'"
-                            . " AND type_of_entry = 'course'"
-                            . " AND id_entry = '" . $id_course . "'";
+                    . ' FROM ' . FormaLms\lib\Get::cfg('prefix_fw') . '_admin_course'
+                    . " WHERE idst_user = '" . $id_user . "'"
+                    . " AND type_of_entry = 'course'"
+                    . " AND id_entry = '" . $id_course . "'";
 
                 [$control_course] = sql_fetch_row(sql_query($query));
 
                 $query = 'SELECT COUNT(*)'
-                            . ' FROM ' . FormaLms\lib\Get::cfg('prefix_fw') . '_admin_course'
-                            . " WHERE idst_user = '" . $id_user . "'"
-                            . " AND type_of_entry = 'coursepath'"
-                            . ' AND id_entry IN'
-                            . ' ('
-                            . ' SELECT id_path'
-                            . ' FROM ' . FormaLms\lib\Get::cfg('prefix_lms') . '_coursepath_courses'
-                            . " WHERE id_item = '" . $id_course . "'"
-                            . ' )';
+                    . ' FROM ' . FormaLms\lib\Get::cfg('prefix_fw') . '_admin_course'
+                    . " WHERE idst_user = '" . $id_user . "'"
+                    . " AND type_of_entry = 'coursepath'"
+                    . ' AND id_entry IN'
+                    . ' ('
+                    . ' SELECT id_path'
+                    . ' FROM ' . FormaLms\lib\Get::cfg('prefix_lms') . '_coursepath_courses'
+                    . " WHERE id_item = '" . $id_course . "'"
+                    . ' )';
 
                 [$control_coursepath] = sql_fetch_row(sql_query($query));
 
                 $query = 'SELECT COUNT(*)'
-                            . ' FROM ' . FormaLms\lib\Get::cfg('prefix_fw') . '_admin_course'
-                            . " WHERE idst_user = '" . $id_user . "'"
-                            . " AND type_of_entry = 'catalogue'"
-                            . ' AND id_entry IN'
-                            . ' ('
-                            . ' SELECT idCatalogue'
-                            . ' FROM ' . FormaLms\lib\Get::cfg('prefix_lms') . '_catalogue_entry'
-                            . " WHERE idEntry = '" . $id_course . "'"
-                            . ' )';
+                    . ' FROM ' . FormaLms\lib\Get::cfg('prefix_fw') . '_admin_course'
+                    . " WHERE idst_user = '" . $id_user . "'"
+                    . " AND type_of_entry = 'catalogue'"
+                    . ' AND id_entry IN'
+                    . ' ('
+                    . ' SELECT idCatalogue'
+                    . ' FROM ' . FormaLms\lib\Get::cfg('prefix_lms') . '_catalogue_entry'
+                    . " WHERE idEntry = '" . $id_course . "'"
+                    . ' )';
 
                 [$control_catalogue] = sql_fetch_row(sql_query($query));
 
@@ -1215,8 +1259,15 @@ class SubscriptionAlms extends Model implements Accessible
 
             $recipients = array_unique($recipients);
 
-            createNewAlert('UserCourseRemovedModerate', 'unsubscribe', 'insert', '1', 'User unsubscribed with moderation',
-                        $recipients, $msg_composer);
+            createNewAlert(
+                'UserCourseRemovedModerate',
+                'unsubscribe',
+                'insert',
+                '1',
+                'User unsubscribed with moderation',
+                $recipients,
+                $msg_composer
+            );
         }
 
         return $res ? true : false;
@@ -1246,9 +1297,9 @@ class SubscriptionAlms extends Model implements Accessible
     public function controlCoursesWithEdition($courses)
     {
         $query = 'SELECT COUNT(*)'
-                    . ' FROM %lms_course'
-                    . ' WHERE idCourse IN (' . implode(',', $courses) . ')'
-                    . " AND (course_type = 'classroom' OR course_edition = 1)";
+            . ' FROM %lms_course'
+            . ' WHERE idCourse IN (' . implode(',', $courses) . ')'
+            . " AND (course_type = 'classroom' OR course_edition = 1)";
 
         [$control] = sql_fetch_row(sql_query($query));
 
@@ -1266,9 +1317,11 @@ class SubscriptionAlms extends Model implements Accessible
 
     public function getEditionTableHeader()
     {
-        return [Lang::t('_CODE', 'course'),
-                        Lang::t('_NAME', 'course'),
-                        '', ];
+        return [
+            Lang::t('_CODE', 'course'),
+            Lang::t('_NAME', 'course'),
+            '',
+        ];
     }
 
     public function getEditionTableContent($courses)
@@ -1277,8 +1330,8 @@ class SubscriptionAlms extends Model implements Accessible
         foreach ($courses as $id_course) {
             if ($this->controlCoursesWithEdition([$id_course])) {
                 $query = 'SELECT code, name, course_type'
-                            . ' FROM %lms_course'
-                            . ' WHERE idCourse = ' . (int) $id_course;
+                    . ' FROM %lms_course'
+                    . ' WHERE idCourse = ' . (int) $id_course;
 
                 [$code, $name, $course_type] = sql_fetch_row(sql_query($query));
 
@@ -1295,17 +1348,21 @@ class SubscriptionAlms extends Model implements Accessible
                 $all_value = [];
                 foreach ($edition as $edition_info) {
                     $all_value[(isset($edition_info['id_date']) ? $edition_info['id_date'] : $edition_info['id_edition'])] = $edition_info['code'] . ' - '
-                                                                                                                                . $edition_info['name']
-                                                                                                                                . ' (' . (isset($edition_info['id_date']) ? $edition_info['date_begin'] : Format::date($edition_info['date_begin'], 'date')) . ' - ' . (isset($edition_info['id_date']) ? $edition_info['date_end'] : Format::date($edition_info['date_end'], 'date')) . ')';
+                        . $edition_info['name']
+                        . ' (' . (isset($edition_info['id_date']) ? $edition_info['date_begin'] : Format::date($edition_info['date_begin'], 'date')) . ' - ' . (isset($edition_info['id_date']) ? $edition_info['date_end'] : Format::date($edition_info['date_end'], 'date')) . ')';
                 }
-                $res[] = [$code,
-                                $name,
-                                Form::getInputDropdown('dropdown',
-                                                        'edition_' . $id_course,
-                                                        'edition_' . $id_course,
-                                                        $all_value,
-                                                        false,
-                                                        ''), ];
+                $res[] = [
+                    $code,
+                    $name,
+                    Form::getInputDropdown(
+                        'dropdown',
+                        'edition_' . $id_course,
+                        'edition_' . $id_course,
+                        $all_value,
+                        false,
+                        ''
+                    ),
+                ];
             }
         }
 
@@ -1318,15 +1375,25 @@ class SubscriptionAlms extends Model implements Accessible
     {
         $_dir = 'ASC';
         switch (strtolower($dir)) {
-            case 'desc': $_dir = 'DESC'; break;
+            case 'desc':
+                $_dir = 'DESC';
+                break;
         }
 
         $_sort = 'u.userid';
         switch ($sort) {
-            case 'firstname': $_sort = 'u.firstname ' . $_dir . ', u.lastname ' . $_dir . ', u.userid'; break;
-            case 'lastname': $_sort = 'u.lastname ' . $_dir . ', u.firstname ' . $_dir . ', u.userid'; break;
-            case 'date_begin': $_sort = 's.date_begin_validity'; break;
-            case 'date_expire': $_sort = 's.date_expire_validity'; break;
+            case 'firstname':
+                $_sort = 'u.firstname ' . $_dir . ', u.lastname ' . $_dir . ', u.userid';
+                break;
+            case 'lastname':
+                $_sort = 'u.lastname ' . $_dir . ', u.firstname ' . $_dir . ', u.userid';
+                break;
+            case 'date_begin':
+                $_sort = 's.date_begin_validity';
+                break;
+            case 'date_expire':
+                $_sort = 's.date_expire_validity';
+                break;
         }
 
         require_once _lms_ . '/lib/lib.coursepath.php';
@@ -1375,23 +1442,23 @@ class SubscriptionAlms extends Model implements Accessible
                 switch ($filter['show']) {
                     case 0:  //all
                         //no condition to check ...
-                     break;
+                        break;
 
                     case 1:  //expired
                         $query .= ' AND (s.date_expire_validity IS NOT NULL AND s.date_expire_validity < NOW())';
-                     break;
+                        break;
 
                     case 2:  //not expired with expiring date
                         $query .= ' AND (s.date_expire_validity IS NOT NULL AND s.date_expire_validity > NOW())';
-                     break;
+                        break;
 
                     case 3:  //not expired without expiring date
                         $query .= " AND (s.date_expire IS NULL OR s.date_expire='') ";
-                     break;
+                        break;
 
                     default:
                         //all ...
-                     break;
+                        break;
                 }
             }
         }
@@ -1434,8 +1501,7 @@ class SubscriptionAlms extends Model implements Accessible
             . ' ON (s.idUser = p.idUser)) '
             . ' JOIN %adm_user as u '
             . ' ON (s.idUser = u.idst) '
-            . ' WHERE p.id_path = ' . (int) $id_path . ' AND s.idCourse IN (' . implode(',', array_values($courses)) . ') '
-            ; //." GROUP BY s.idUser";
+            . ' WHERE p.id_path = ' . (int) $id_path . ' AND s.idCourse IN (' . implode(',', array_values($courses)) . ') '; //." GROUP BY s.idUser";
 
         if (is_array($filter)) {
             if (isset($filter['text']) && $filter['text'] != '') {
@@ -1466,23 +1532,23 @@ class SubscriptionAlms extends Model implements Accessible
                 switch ($filter['show']) {
                     case 0:  //all
                         //no condition to check ...
-                     break;
+                        break;
 
                     case 1:  //expired
                         $query .= ' AND (s.date_expire_validity IS NOT NULL AND s.date_expire_validity < NOW())';
-                     break;
+                        break;
 
                     case 2:  //not expired with expiring date
                         $query .= ' AND (s.date_expire_validity IS NOT NULL AND s.date_expire_validity > NOW())';
-                     break;
+                        break;
 
                     case 3:  //not expired without expiring date
                         $query .= " AND (s.date_expire IS NULL OR s.date_expire='') ";
-                     break;
+                        break;
 
                     default:
                         //all ...
-                     break;
+                        break;
                 }
             }
         }
@@ -1510,8 +1576,8 @@ class SubscriptionAlms extends Model implements Accessible
         $courses = $cman->getAllCourses([$id_path]);
 
         $query = 'SELECT DISTINCT idUser '
-              . ' FROM %lms_coursepath_user '
-              . ' WHERE id_path = ' . (int) $id_path ;
+            . ' FROM %lms_coursepath_user '
+            . ' WHERE id_path = ' . (int) $id_path;
 
 
         if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
@@ -1552,8 +1618,8 @@ class SubscriptionAlms extends Model implements Accessible
         require_once _lms_ . '/lib/lib.date.php';
         $man_subs = new CourseSubscribe_Management();
         // unsubscribe from all courses related to coursepath
-        $resUnsubFromAllCourses = $man_subs->unsubscribeUserFromAllCourses(implode(',', $users),(int) $id_path);
-        if($resUnsubFromAllCourses){
+        $resUnsubFromAllCourses = $man_subs->unsubscribeUserFromAllCourses(implode(',', $users), (int) $id_path);
+        if ($resUnsubFromAllCourses) {
             $query = 'DELETE FROM %lms_coursepath_user WHERE id_path=' . (int) $id_path . ' '
                 . ' AND idUser IN (' . implode(',', $users) . ')';
             $res = sql_query($query);
@@ -1598,91 +1664,96 @@ class SubscriptionAlms extends Model implements Accessible
     }
 
 
-    public function getAclManager() {
+    public function getAclManager()
+    {
 
         return $this->acl_man;
     }
 
     //--- end coursepaths --------------------------------------------------------
 
-    public function getAccessList($resourceId) : array {
+    public function getAccessList($resourceId): array
+    {
 
         return $this->getCoursePathSubscriptionsList($resourceId);
-        
     }
 
-    public function setAccessList($resourceId, array $selection) : bool {
+    public function setAccessList($resourceId, array $selection): bool
+    {
 
 
-            require_once _lms_ . '/lib/lib.coursepath.php';
-            $old_selection = $this->getCoursePathSubscriptionsList($resourceId);
+        require_once _lms_ . '/lib/lib.coursepath.php';
+        $old_selection = $this->getCoursePathSubscriptionsList($resourceId);
 
 
-            $new_selection = $this->acl_man->getAllUsersFromSelection($selection);
-            $_common = array_intersect($new_selection, $old_selection);
+        $new_selection = $this->acl_man->getAllUsersFromSelection($selection);
+        $_common = array_intersect($new_selection, $old_selection);
 
-            $_to_add = array_diff($new_selection, $_common);
-            $_to_del = array_diff($old_selection, $_common);
-            $this->setAccessUsers(['to_add' => $_to_add, 'to_del' => $_to_del]);
-            $path_man = new CoursePath_Manager();
-            $cman = new CourseAlms();
-            $coursepath_info = $path_man->getCoursepathAllInfo([$resourceId]);
+        $_to_add = array_diff($new_selection, $_common);
+        $_to_del = array_diff($old_selection, $_common);
+        $this->setAccessUsers(['to_add' => $_to_add, 'to_del' => $_to_del]);
+        $path_man = new CoursePath_Manager();
+        $cman = new CourseAlms();
+        $coursepath_info = $path_man->getCoursepathAllInfo([$resourceId]);
 
         //1 - get list of the courses of the coursepath
 
-            $courses = $path_man->getAllCourses([$resourceId]);
-            if (empty($courses)) {
-                return false;
-            }
+        $courses = $path_man->getAllCourses([$resourceId]);
+        if (empty($courses)) {
+            return false;
+        }
 
-            //2 - check if there are any editions or classrooms
+        //2 - check if there are any editions or classrooms
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
+        $course_man = new Man_Course();
+
+        $classroom = $course_man->getAllCourses(false, 'classroom', $courses);
+        $edition = $course_man->getAllCourses(false, 'edition', $courses);
+
+        if (empty($classroom) && empty($edition)) {
+
+            $result = 'ok_subcribe';
             require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
-            $course_man = new Man_Course();
-
-            $classroom = $course_man->getAllCourses(false, 'classroom', $courses);
-            $edition = $course_man->getAllCourses(false, 'edition', $courses);
-
-            if (empty($classroom) && empty($edition)) {
-
-                $result = 'ok_subcribe';
-                require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
-                //$path_man->subscribeUserToCoursePath($resourceId, $_to_add);
-                 foreach ($courses as $id_course) {
-                     $formaCourse = new FormaCourse($id_course);
-                     $level_idst = $formaCourse->getCourseLevel($id_course);
-                     $this->id_course = $id_course;
-                     if (count($level_idst) == 0 || $level_idst[1] == '') {
-                         $level_idst = FormaCourse::createCourseLevel($id_course);
-                     }
-                     if (!isset($_POST['subs'])){
-                         $this->setResponseforAccessor($result);
-                     }
-
-                 }
+            //$path_man->subscribeUserToCoursePath($resourceId, $_to_add);
+            foreach ($courses as $id_course) {
+                $formaCourse = new FormaCourse($id_course);
+                $level_idst = $formaCourse->getCourseLevel($id_course);
+                $this->id_course = $id_course;
+                if (count($level_idst) == 0 || $level_idst[1] == '') {
+                    $level_idst = FormaCourse::createCourseLevel($id_course);
+                }
+                if (!isset($_POST['subs'])) {
+                    $this->setResponseforAccessor($result);
+                }
             }
+        }
 
 
         return true;
     }
 
 
-    protected function setResponseforAccessor(string $response) {
+    protected function setResponseforAccessor(string $response)
+    {
 
         $this->responseAccessor = $response;
         return $this;
     }
 
-    public function getAccessUsers() : array {
+    public function getAccessUsers(): array
+    {
         return $this->accessUsers;
     }
 
-    protected function setAccessUsers(array $users) {
+    protected function setAccessUsers(array $users)
+    {
 
         $this->accessUsers = $users;
         return $this;
     }
 
-    public function getResponseForAccessor() : string {
+    public function getResponseForAccessor(): string
+    {
         return $this->responseAccessor;
     }
 
@@ -1690,6 +1761,4 @@ class SubscriptionAlms extends Model implements Accessible
     {
         \FormaLms\lib\Forma::getAclManager()->addToGroup($id_group, $id_user);
     }
-
-
 }
