@@ -1153,7 +1153,7 @@ class UsermanagementAdm extends Model implements Accessible
         return $output;
     }
 
-    public function createUser($userdata, $folders = false)
+    public function createUser($userdata, $folders = false, $source = 'registration')
     {
         require_once _base_ . '/lib/lib.preference.php';
         require_once _adm_ . '/lib/lib.field.php';
@@ -1182,7 +1182,8 @@ class UsermanagementAdm extends Model implements Accessible
                 (property_exists($userdata, 'facebook_id') ? $userdata->facebook_id : ''),
                 (property_exists($userdata, 'twitter_id') ? $userdata->twitter_id : ''),
                 (property_exists($userdata, 'linkedin_id') ? $userdata->linkedin_id : ''),
-                (property_exists($userdata, 'google_id') ? $userdata->google_id : '')
+                (property_exists($userdata, 'google_id') ? $userdata->google_id : ''),
+                $source
             );
             if (is_numeric($user_idst) && $user_idst > 0) {
                 //add user to root branch

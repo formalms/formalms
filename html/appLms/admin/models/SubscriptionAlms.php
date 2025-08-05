@@ -268,7 +268,7 @@ class SubscriptionAlms extends Model implements Accessible
         return $res;
     }
 
-    public function subscribeUser($id_user, $level, $waiting, $date_begin_validity = false, $date_expire_validity = false, $overbooking = 0)
+    public function subscribeUser($id_user, $level, $waiting, $date_begin_validity = false, $date_expire_validity = false, $overbooking = 0, $source = 'admin')
     {
         Events::trigger('lms.course_user.subscribing', [
             'id_user' => $id_user,
@@ -279,7 +279,8 @@ class SubscriptionAlms extends Model implements Accessible
             'overbooking' => $overbooking,
             'id_course' => $this->id_course,
             'id_date' => $this->id_date,
-            'id_edition' => $this->id_edition
+            'id_edition' => $this->id_edition,
+            'source' => $source,
         ]);
 
         if ($this->id_edition != 0) {
@@ -308,7 +309,8 @@ class SubscriptionAlms extends Model implements Accessible
             'overbooking' => $overbooking,
             'id_course' => $this->id_course,
             'id_date' => $this->id_date,
-            'id_edition' => $this->id_edition
+            'id_edition' => $this->id_edition,
+            'source' => $source,
         ]);
 
         return $result;
@@ -321,10 +323,10 @@ class SubscriptionAlms extends Model implements Accessible
         $idEditionToConsider = $idEdition ?? $this->id_edition;
         $idDateToConsider = $idDate ?? $this->id_date;
 
-  
 
 
-        $cmodel = new CourseAlms(   $idCourseToConsider, $idDateToConsider, $idEditionToConsider);
+
+        $cmodel = new CourseAlms($idCourseToConsider, $idDateToConsider, $idEditionToConsider);
         if ($this->id_edition != 0) {
             require_once _lms_ . '/lib/lib.edition.php';
             $edition_man = new EditionManager();

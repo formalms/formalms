@@ -658,7 +658,8 @@ class FormaConnectorFormaUsers extends FormaConnector
                 false, //facebook_id
                 false, //twitter_id
                 false, //linkedin_id
-                false //google_id
+                false, //google_id
+                'connectors'
             );
 
             $language = $this->return_valid_language_from_csv_row($language);

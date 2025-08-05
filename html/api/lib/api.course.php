@@ -634,7 +634,7 @@ class Course_API extends API
 
         $acl_man->addToGroup($level_idst[$user_level], $user_id);
 
-        $subscribe_ok = $model->subscribeUser($user_id, $user_level, $waiting, false, false);
+        $subscribe_ok = $model->subscribeUser($user_id, $user_level, $waiting, false, false, 0, 'api');
 
         if (!$subscribe_ok) {
             $acl_man->removeFromGroup($level_idst[$user_level], $user_id);
