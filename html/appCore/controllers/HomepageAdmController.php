@@ -394,29 +394,31 @@ class HomepageAdmController extends AdmController
 
         $res = $this->model->login($plugin);
 
+        $loginRedirect = FormaLms\lib\Get::req('login_redirect', DOTY_STRING, null);
+
         if (!empty($loginRedirect)) {
             $url = substr_replace($loginRedirect, '', 0, strlen(trim(dirname($_SERVER['SCRIPT_NAME']), DIRECTORY_SEPARATOR)) + 1);
-            $redirection['req'] = $url;
-        }
-
-        switch ($res) {
-            case PWD_ELAPSED:
-                $this->session->set('must_renew_pwd', 1);
-                $redirection['req'] = 'lms/profile/renewalpwd';
-                break;
-            case MANDATORY_FIELDS:
-                $this->session->set('request_mandatory_fields_compilation', 1);
-                $redirection['req'] = 'lms/precompile/show';
-                break;
-            case USER_SAVED:
-                $redirection['req'] = _homepage_;
-                break;
-            default:
-                $redirection['req'] = _homepage_;
-                $redirection['query'] = [
-                    'msg' => $res,
-                ];
-                break;
+            Util::jump_to($url);
+        } else {
+            switch ($res) {
+                case PWD_ELAPSED:
+                    $this->session->set('must_renew_pwd', 1);
+                    $redirection['req'] = 'lms/profile/renewalpwd';
+                    break;
+                case MANDATORY_FIELDS:
+                    $this->session->set('request_mandatory_fields_compilation', 1);
+                    $redirection['req'] = 'lms/precompile/show';
+                    break;
+                case USER_SAVED:
+                    $redirection['req'] = _homepage_;
+                    break;
+                default:
+                    $redirection['req'] = _homepage_;
+                    $redirection['query'] = [
+                        'msg' => $res,
+                    ];
+                    break;
+            }
         }
 
         $this->session->save();

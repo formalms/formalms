@@ -20,7 +20,7 @@ $eventData = Events::trigger('core.index.preoperation');
 // access granted only if user is logged in
 if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     // save requested page in session to call it after login
-    $loginRedirect = $_SERVER['REQUEST_URI'];
+    $loginRedirect = urlencode($_SERVER['REQUEST_URI']);
 
     // redirect to index
 
