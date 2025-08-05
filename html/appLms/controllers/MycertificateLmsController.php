@@ -133,7 +133,7 @@ class MycertificateLmsController extends LmsController
         $id_course = importVar('id_course', true, 0);
         $idAssociation = importVar('idAssociation', true, 0);
 
-        if ($this->certificate->certificateAvailableForUser($id_certificate, $id_course, $this->id_user)) {
+        if ($this->certificate->certificateAvailableForUser($id_certificate, $id_course, $this->id_user, true)) {
             $subs = $this->certificate->getSubstitutionArray($this->id_user, $id_course, $idAssociation);
             $this->certificate->send_certificate($id_certificate, $this->id_user, $id_course, $subs);
         }

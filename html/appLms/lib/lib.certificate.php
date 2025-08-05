@@ -371,7 +371,7 @@ class Certificate
 
 
 
-    public function certificateAvailableForUser($id_cert, $id_course, $id_user)
+    public function certificateAvailableForUser($id_cert, $id_course, $id_user, $download = false)
     {
         $sql = 'SELECT minutes_required FROM learning_certificate_course WHERE id_course = ' . $id_course . ' AND id_certificate = ' . $id_cert;
         $re = sql_query($sql);
@@ -386,7 +386,7 @@ class Certificate
             }
         }
 
-        $eventResult = Events::trigger('lms.certificate.available', compact('id_cert', 'id_course', 'id_user'));
+        $eventResult = Events::trigger('lms.certificate.available', compact('id_cert', 'id_course', 'id_user', 'download'));
 
         if($eventResult && array_key_exists('result',$eventResult)) {
             return $eventResult['result'];
