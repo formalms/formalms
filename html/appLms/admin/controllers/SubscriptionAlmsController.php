@@ -1969,7 +1969,7 @@ class SubscriptionAlmsController extends AlmsController
                                 //$this->acl_man->addToGroup($level_idst['3'], $id_user);
                                 $this->model->_addToCourseGroup($level_idst['3'], $id_user);
 
-                                if ($this->model->subscribeUser($id_user, '3', $waiting)) {
+                                if ($this->model->subscribeUser($id_user, '3', $waiting, false, false, 0, 'import_csv')) {
                                     ++$user_added;
                                     $id_user_added[$counter]['id_user'] = $row[0];
                                     $id_user_added[$counter]['status'] = '_CORRECT';

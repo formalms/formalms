@@ -1137,25 +1137,23 @@ class CourseSubscribe_Management
      *
      * @return bool true if success, false otherwise
      */
-    public function subscribeUsers($arr_users, $id_course, $levels, $id_log = false)
+    public function subscribeUsers($arr_users, $id_course, $levels, $id_log = false, $source = 'admin')
     {
         if (empty($arr_users)) {
             return true;
         }
 
         $re = true;
+        $waiting = 0;
         $group_levels = &$this->course_man->getCourseIdstGroupLevel($id_course);
         $user_level = $this->course_man->getLevelsOfUsers($id_course, $arr_users);
-
+        $subscriptionAlms = new SubscriptionAlms($id_course);
         foreach ($arr_users as $id_user) {
             $lv = (is_array($levels) ? $levels[$id_user] : $levels);
             if (!isset($user_level[$id_user])) {
                 $this->acl_man->addToGroup($group_levels[$lv], $id_user);
-
-                $query = 'INSERT INTO ' . $GLOBALS['prefix_lms'] . "_courseuser
-				( idUser, idCourse, level, waiting, subscribed_by, date_inscr, rule_log ) VALUES
-				( '" . $id_user . "', '" . $id_course . "', '" . $lv . "', '0', '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "', '" . date('Y-m-d H:i:s') . "', " . ($id_log ? (int)$id_log : 'NULL') . ' )';
-                $re &= $this->_query($query);
+                $subscriptionAlms->subscribeUser($id_user, $group_levels[$lv], $waiting, false, false, 0, $source);
+                
             } else {
                 $old_lv = $user_level[$id_user];
 
@@ -1182,9 +1180,9 @@ class CourseSubscribe_Management
      *
      * @return bool true if success, false otherwise
      */
-    public function subscribeUser($id_user, $id_course, $level_number)
+    public function subscribeUser($id_user, $id_course, $level_number, $source = 'admin')
     {
-        return $this->subscribeUsers([$id_user], $id_course, $level_number);
+        return $this->subscribeUsers([$id_user], $id_course, $level_number, false, $source);
     }
 
     public function retriveLogSubscriptionInfo($id_log)
@@ -1442,12 +1440,8 @@ class CourseSubscribe_Management
         if (!sql_num_rows($re_courseuser)) {
             $this->acl_man->addToGroup($group_levels[$level], $id_user);
 
-            $model->subscribeUser($id_user, $level, $waiting, false, false, 0, 'connector');
-            $query = 'INSERT INTO ' . $GLOBALS['prefix_lms'] . "_courseuser
-			( idUser, idCourse, level, waiting, subscribed_by, date_inscr, imported_from_connection ) VALUES
-			( '" . $id_user . "', '" . $id_course . "', '" . $level . "', '0', '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "', '" . ($date ? $date : date('Y-m-d H:i:s')) . "', '" . $connection . "' )";
-
-            $re &= $this->_query($query);
+            $re = $model->subscribeUser($id_user, $level, $waiting, false, false, 0, 'connector');
+          
         } else {
             list($id_user, $old_lv, $import_from) = sql_fetch_row($re_courseuser);
             if ($import_from !== $connection) {

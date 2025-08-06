@@ -2132,7 +2132,7 @@ class Man_CourseUser
         }
         while (list($idCourse) = sql_fetch_row($result_course)) {
             if (!isset($subs[$idCourse])) {
-                $result = $subscriber->subscribeUser($id_user, $idCourse, $level);
+                $result = $subscriber->subscribeUser($id_user, $idCourse, $level, 'code');
                 if ($result) {
                     ++$counter;
                 }

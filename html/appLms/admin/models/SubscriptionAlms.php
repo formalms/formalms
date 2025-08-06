@@ -297,7 +297,7 @@ class SubscriptionAlms extends Model implements Accessible
             require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php'); // elearning enrollment
             $subscribe_man = new CourseSubscribe_Manager();
 
-            $result = $subscribe_man->subscribeUserToCourse($id_user, $this->id_course, $level, $waiting, $date_begin_validity, $date_expire_validity, $overbooking);
+            $result = $subscribe_man->subscribeUserToCourse($id_user, $this->id_course, $level, $waiting, $date_begin_validity, $date_expire_validity, $overbooking, $source);
         }
 
         Events::trigger('lms.course_user.subscribed', [
