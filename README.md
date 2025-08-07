@@ -157,3 +157,7 @@ Exports all events to the `EVENTS.md` file using the PHP script at `/tools/php-e
 
 # EVENTS SYSTEM
 For a complete list of all available events, see [EVENTS.md](EVENTS.md).
+
+
+# BRANCHING RULES
+FormaLMS follows specific branching rules for version control. For detailed information about the Git workflow, branching rules, and command examples, please refer to the [GIT-WORKFLOW.md](GIT-WORKFLOW.md) file.
