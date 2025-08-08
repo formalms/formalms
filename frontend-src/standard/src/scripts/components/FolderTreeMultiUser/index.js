@@ -87,7 +87,7 @@ class FolderTreeMultiUser extends FolderTreeBase {
     const endpoint = `${window.frontend.config.url.appCore}/ajax.adm_server.php?r=adm/userselector/getData`; 
     this.openFolders.push(id);
     this.container.querySelector(`.loader_${id}`).classList.remove('hidden');
-    await window.frontend.helpers.Axios.get(endpoint + `&node_id=${id}`).then((response) => {
+    await window.frontend.helpers.Axios.post(endpoint + `&node_id=${id}`).then((response) => {
       this.insertChildren(this.data, id, response.data.data);
       if(cb) {
         cb();
