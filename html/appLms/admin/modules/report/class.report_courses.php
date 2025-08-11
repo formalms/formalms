@@ -995,13 +995,11 @@ class Report_Courses extends Report
             if ($alluser == 1) {
                 $user_level = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
 
-                if ($user_level != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
-                    $elem_selected = $user_selected;
-                } else {
+            
                     $elem_selected = $org_man->getAllGroupIdFolder();
-                }
+                
             } else {
-                $elem_selected = $user_selected;
+                $elem_selected = $reportTempData['columns_filter']['users'];
             }
             $org_name = $org_man->getFolderFormIdst($elem_selected);
 
