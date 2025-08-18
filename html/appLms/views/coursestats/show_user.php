@@ -2,10 +2,7 @@
 
 include \FormaLms\lib\Forma::inc(_lib_ . '/formatable/include.php');
 
-  $rel_actions = '<a href="index.php?r=coursestats/export_csv2&id_user=' . $id_user . '" class="ico-wt-sprite subs_csv" title="' . Lang::t('_EXPORT_CSV', 'report') . '">'
-          . '<span>' . Lang::t('_EXPORT_CSV', 'report') . '</span></a>';
-  $rel_actions .= '<a href="index.php?r=coursestats/export_xls2&id_user=' . $id_user . '" class="ico-wt-sprite subs_xls" title="' . Lang::t('_EXPORT_XLS', 'report') . '">'
-          . '<span>' . Lang::t('_EXPORT_XLS', 'report') . '</span></a>';
+ 
 ?>
 <style type="text/css">
   table.dataTable {
