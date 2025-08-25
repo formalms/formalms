@@ -1718,6 +1718,7 @@ class CourseAlms extends Model
 
         foreach ($res as $row) {
             $idst = $row['idst'];
+            $idRecord = $row['idRecord'];
             $userid = $row['userid'];
             $firstname = $row['firstname'];
             $lastname = $row['lastname'];
@@ -1753,6 +1754,7 @@ class CourseAlms extends Model
                 'username' => substr($userid, 1),
                 'lastname' => $lastname,
                 'firstname' => $firstname,
+                'idRecord' => $idRecord,
             ];
             // getting custom fields values
             $cf_values = $usermanagementAdm->getCustomFieldUserValues((int)$id_user);
