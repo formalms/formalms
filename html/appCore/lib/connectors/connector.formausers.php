@@ -221,8 +221,7 @@ class FormaConnectorFormaUsers extends FormaConnector
         require_once _base_ . '/lib/lib.userselector.php';
         require_once _adm_ . '/lib/lib.field.php';
 
-        $aclManager = \FormaLms\lib\Forma::getAclManager();
-        ;
+        $aclManager = \FormaLms\lib\Forma::getAclManager();;
 
         $this->directory = new UserSelector();
         $this->groupFilter_idst = $aclManager->getGroupST($this->groupFilter);
@@ -443,12 +442,12 @@ class FormaConnectorFormaUsers extends FormaConnector
 
     public function is_readonly()
     {
-        return (bool) ($this->readwrite & 1);
+        return (bool)($this->readwrite & 1);
     }
 
     public function is_writeonly()
     {
-        return (bool) ($this->readwrite & 2);
+        return (bool)($this->readwrite & 2);
     }
 
     public function get_tot_cols()
@@ -491,7 +490,7 @@ class FormaConnectorFormaUsers extends FormaConnector
         //find user field value
         foreach ($this->simplecols as $field_id => $name) {
             if (is_numeric($field_id)) {
-                $p = $this->fl->fieldValue((int) $field_id, [$row[0]]);
+                $p = $this->fl->fieldValue((int)$field_id, [$row[0]]);
                 $export[] = reset($p);
             } else {
                 switch ($field_id) {
@@ -720,9 +719,9 @@ class FormaConnectorFormaUsers extends FormaConnector
         if ($idst !== false) {
             //destination folder
             if ($this->org_chart_destination > 0) {
-                $res = \FormaLms\db\DbConn::getInstance()->query('SELECT idst_oc, idst_ocd FROM %adm_org_chart_tree WHERE idOrg = ' . (int) $this->org_chart_destination);
+                $res = \FormaLms\db\DbConn::getInstance()->query('SELECT idst_oc, idst_ocd FROM %adm_org_chart_tree WHERE idOrg = ' . (int)$this->org_chart_destination);
                 if ($res && \FormaLms\db\DbConn::getInstance()->num_rows($res) > 0) {
-                    list($oc, $ocd) = \FormaLms\db\DbConn::getInstance()->fetch_row($res);
+                    [$oc, $ocd] = \FormaLms\db\DbConn::getInstance()->fetch_row($res);
                     if ($oc && $ocd) {
                         \FormaLms\lib\Forma::getAclManager()->addToGroup($oc, $idst);
                         \FormaLms\lib\Forma::getAclManager()->addToGroup($ocd, $idst);
@@ -733,7 +732,7 @@ class FormaConnectorFormaUsers extends FormaConnector
             if ($this->cache_inserted) {
                 $this->arr_idst_inserted[] = $idst;
             }
-            if ($this->sendnotify == 1) {
+            if ($arr_user === false && $this->sendnotify == 1) {
                 // - Send alert ----------------------------------------------------
                 require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.eventmanager.php');
                 $reg_code = null;
@@ -930,7 +929,7 @@ class FormaConnectorFormaUsers extends FormaConnector
         // TO add remove query from this table - why isn't working?
         $q_lang = 'INSERT INTO ' . $GLOBALS['prefix_fw'] . '_setting_user (path_name, id_user, value) '
             . "VALUES ('" . $path_name . "', "
-            . (int) $idst . ", '"
+            . (int)$idst . ", '"
             . $language
             . "' )";
 
@@ -949,7 +948,7 @@ class FormaConnectorFormaUsers extends FormaConnector
         $path_name = 'ui.language'; // ???
 
         $q_lang = 'UPDATE ' . $GLOBALS['prefix_fw'] . "_setting_user SET value = '" . $language . "' WHERE path_name = '" . $path_name
-            . "' AND id_user = " . (int) $idst;
+            . "' AND id_user = " . (int)$idst;
 
         $rs = sql_query($q_lang, $this->dbconn);
 
@@ -1104,7 +1103,7 @@ class FormaConnectorFormaUsersUI extends FormaConnectorUI
 
             $this->post_params['org_chart_destination'] =
                 isset($arr_new_params['org_chart_destination'])
-                    ? (int) $arr_new_params['org_chart_destination']
+                    ? (int)$arr_new_params['org_chart_destination']
                     : $this->post_params['org_chart_destination'];
         }
         $this->_load_step_info();
