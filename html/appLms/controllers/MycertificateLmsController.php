@@ -55,7 +55,17 @@ class MycertificateLmsController extends LmsController
         $totalMetaCertificates = count($metaCertificates);
         $cert_columns = Util::config('tables.mycert_columns');
         $selected_tab = FormaLms\lib\Get::req('current_tab', DOTY_STRING, 'cert');
-        $this->render('show',
+
+
+
+        $view = 'show';
+
+        $eventResults = Events::trigger('lms.certificate.show', ['view' => $view]);
+
+        $view = $eventResults['view'];
+
+
+        $this->render($view,
             [
                 'metacertificates' => $this->json->encode($metaCertificates),
                 'certa' => $this->json->encode(\Util::config('tables.columnsacert')),

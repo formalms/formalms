@@ -160,11 +160,18 @@ class Certificate
 
         $paginated_assignment = [];
         if ($pagination) {
-            $offset = $pagination['startIndex'];
-            $limit = $offset + $pagination['rowsPerPage'];
+                        if (array_key_exists('offset', $pagination)) {
+                $offset = $pagination['offset'];
+            } else {
+                $offset = $pagination['startIndex'];
+            }
+
+            $limit = $offset + (array_key_exists('rowsPerPage', $pagination) ? $pagination['rowsPerPage'] : $pagination['num_rows']);
             $limit = ($limit <= count($assignment) ? $limit : count($assignment));
             for ($i = $offset; $i < $limit; ++$i) {
-                $paginated_assignment[] = $assignment[$i];
+                if (isset($assignment[$i])) {
+                    $paginated_assignment[] = $assignment[$i];
+                }
             }
         }
 
@@ -244,6 +251,9 @@ class Certificate
 
         $assigned = [];
 
+        $eventResults = Events::trigger('lms.certificate.assigned.query', ['query' => $query, 'filter' => $filter]);
+
+        $query = $eventResults['query'];
         $res = sql_query($query);
         while ($row = sql_fetch_assoc($res)) {
             $assigned[] = $row;
@@ -323,6 +333,10 @@ class Certificate
                 $query .= ' AND ' . $adminManager->getAdminUsersQuery(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), 'idUser');
             }
         }
+
+        $eventResults = Events::trigger('lms.certificate.assignable.query', ['query' => $query, 'filter' => $filter]);
+
+        $query = $eventResults['query'];
 
         $assignable = [];
 
@@ -808,6 +822,10 @@ class Certificate
 				 AND id_course = '" . $id_course . "'
 				 AND id_user = '" . $id_user . "' ";
 
+        $eventResults  = Events::trigger('lms.certificate.send.query', ['query' => $query_certificate]);
+
+        $query_certificate = $eventResults['query'];
+
             if ($idRecord) {
                 $query_certificate = '
                     SELECT cert_file
@@ -946,7 +964,7 @@ class Certificate
         return $id_course;
     }
 
-    public function getInfoForCourseCertificate($id_course, $id_certificate, $id_user = false)
+    public function getInfoForCourseCertificate($id_course, $id_certificate, $id_user = false, $params = [])
     {
         // Get Course info
         $query = 'SELECT name' .
@@ -990,6 +1008,9 @@ class Certificate
             $query .= " AND id_user = $id_user";
         }
 
+        $eventResults = Events::trigger('lms.certificate.assign.query', ['query' => $query]);
+
+        $query = $eventResults['query'];
         $result = sql_query($query);
 
         while ($row = sql_fetch_row($result)) {

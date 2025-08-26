@@ -716,6 +716,12 @@ class CourseAlms extends Model
             auto_unsubscribe = '" . (int)$data_params['auto_unsubscribe'] . "',
             unsubscribe_date_limit = " . (isset($data_params['use_unsubscribe_date_limit']) && $data_params['use_unsubscribe_date_limit'] > 0 ? "'" . Format::dateDb($data_params['unsubscribe_date_limit'], 'date') . "'" : 'NULL') . '';
 
+        $eventResults = Events::trigger('core.course.query', compact('query_course', 'data_params'));
+
+        if ($eventResults && array_key_exists('query_course', $eventResults)) {
+            $query_course = $eventResults['query_course'];
+        }
+
         if (isset($data_params['random_course_autoregistration_code'])) {
             $control = 1;
             $str = '';
@@ -1093,6 +1099,12 @@ class CourseAlms extends Model
             auto_unsubscribe = '" . (int)$data_params['auto_unsubscribe'] . "',
             unsubscribe_date_limit = " . (isset($data_params['use_unsubscribe_date_limit']) && $data_params['use_unsubscribe_date_limit'] > 0 ? "'" . Format::dateDb($data_params['unsubscribe_date_limit'], 'date') . "'" : 'NULL') . '';
 
+
+        $eventResults = Events::trigger('core.course.query', compact('query_course', 'data_params'));
+
+        if ($eventResults && array_key_exists('query_course', $eventResults)) {
+            $query_course = $eventResults['query_course'];
+        }
         if (isset($data_params['random_course_autoregistration_code'])) {
             $control = 1;
             $str = '';
@@ -1709,61 +1721,73 @@ class CourseAlms extends Model
             . ' AND coalesce(elapsed,0) >= coalesce(cc.minutes_required,0)*60 '
             . " AND cu.idCourse='" . (int)$id_course . "'";
 
+
+
         if (count($usersFilterIds)) {
             $query .= 'AND u.idst in (' . implode(',', $usersFilterIds) . ')';
         }
+        $eventResults = Events::trigger('core.course.certifcate.query', compact('query', 'usersFilterIds', 'id_certificate', 'id_course'));
 
+        $query = $eventResults['query'];
 
         $res = sql_query($query);
 
-        foreach ($res as $row) {
-            $idst = $row['idst'];
-            $userid = $row['userid'];
-            $firstname = $row['firstname'];
-            $lastname = $row['lastname'];
-            $date_complete = $row['dateComplete'];
-            $on_date = $row['onDate'];
-            $id_user = $row['id_user'];
-            $status = $row['status'];
-            $id_course = $row['idCourse'];
-            $id_certificate = $row['id_certificate'];
-            $name_certificate = $row['name_certificate'];
+        $users = [];
 
-            foreach ($cf as $i => $value) {
-                $cf[$i] = '';
-            }
-            $url = 'index.php?modname=certificate&amp;certificate_id=' . $id_certificate . '&amp;course_id=' . $id_course . '&amp;user_id=' . $id_user . '&amp;of_platform=lms';
-            $ajax_url = 'ajax.adm_server.php?r=adm/certificate/deleteMass&amp;id=' . $row['idRecord'];
-            if ($on_date != null) {
-                $url = 'index.php?modname=certificate&amp;id='. $row['idRecord'] .'&amp;of_platform=lms';
-                $operation_url = $url . '&amp;op=send_certificate';
-                $cell_down_gen = "<a href='" . $operation_url . "' class='ico-wt-sprite subs_pdf'>" . Lang::t('_DOWNLOAD', 'certificate') . '</a>';
-                $cell_del_cert = FormaLms\lib\Get::sprite_link('subs_del delete_certificate', $ajax_url . '&op=del_report_certificate&from=' . FormaLms\lib\Get::req('from'), Lang::t('_DEL', 'certificate'));
-            } else {
-                $operation_url = $url . '&amp;op=print_certificate';
-                $generate = 'javascript:print_certificate(' . $id_user . ',' . $id_course . ',' . $id_certificate . ')';
-                $cell_down_gen = "<a href='" . $generate . "' class='ico-wt-sprite subs_pdf'>" . Lang::t('_GENERATE', 'certificate') . '</a>';
-                $cell_del_cert = '';
-            }
+        $eventResults = Events::trigger('core.course.certificate.rows', compact('res', 'users','cf'));
+        $users = $eventResults['users'];
 
-            $user1 = [
-                'id_user' => $id_user,
-                'id_certificate' => $id_certificate,
-                'edition' => $this->getInfoClassroom($id_user, $id_course),
-                'username' => substr($userid, 1),
-                'lastname' => $lastname,
-                'firstname' => $firstname,
-            ];
-            // getting custom fields values
-            $cf_values = $usermanagementAdm->getCustomFieldUserValues((int)$id_user);
-            $cf = array_replace($cf, $cf_values);
-            $user2 = [];
-            foreach ($cf as $key => $value) {
-                $user2["cf_$key"] = $value;
-            }
-            $user3 = ['status' => $status, 'name_certificate' => $name_certificate, 'date_complete' => $date_complete, 'on_date' => $on_date, 'cell_down_gen' => $cell_down_gen, 'cell_del_cert' => $cell_del_cert];
+        if (!count($users)) {
 
-            $users[] = array_merge($user1, $user2, $user3);
+            foreach ($res as $row) {
+                $idst = $row['idst'];
+                $userid = $row['userid'];
+                $firstname = $row['firstname'];
+                $lastname = $row['lastname'];
+                $date_complete = $row['dateComplete'];
+                $on_date = $row['onDate'];
+                $id_user = $row['id_user'];
+                $status = $row['status'];
+                $id_course = $row['idCourse'];
+                $id_certificate = $row['id_certificate'];
+                $name_certificate = $row['name_certificate'];
+
+                foreach ($cf as $i => $value) {
+                    $cf[$i] = '';
+                }
+                $url = 'index.php?modname=certificate&amp;certificate_id=' . $id_certificate . '&amp;course_id=' . $id_course . '&amp;user_id=' . $id_user . '&amp;of_platform=lms';
+                $ajax_url = 'ajax.adm_server.php?r=adm/certificate/deleteMass&amp;id=' . $row['idRecord'];
+                if ($on_date != null) {
+                    $url = 'index.php?modname=certificate&amp;id=' . $row['idRecord'] . '&amp;of_platform=lms';
+                    $operation_url = $url . '&amp;op=send_certificate';
+                    $cell_down_gen = "<a href='" . $operation_url . "' class='ico-wt-sprite subs_pdf'>" . Lang::t('_DOWNLOAD', 'certificate') . '</a>';
+                    $cell_del_cert = FormaLms\lib\Get::sprite_link('subs_del delete_certificate', $ajax_url . '&op=del_report_certificate&from=' . FormaLms\lib\Get::req('from'), Lang::t('_DEL', 'certificate'));
+                } else {
+                    $operation_url = $url . '&amp;op=print_certificate';
+                    $generate = 'javascript:print_certificate(' . $id_user . ',' . $id_course . ',' . $id_certificate . ')';
+                    $cell_down_gen = "<a href='" . $generate . "' class='ico-wt-sprite subs_pdf'>" . Lang::t('_GENERATE', 'certificate') . '</a>';
+                    $cell_del_cert = '';
+                }
+
+                $user1 = [
+                    'id_user' => $id_user,
+                    'id_certificate' => $id_certificate,
+                    'edition' => $this->getInfoClassroom($id_user, $id_course),
+                    'username' => substr($userid, 1),
+                    'lastname' => $lastname,
+                    'firstname' => $firstname,
+                ];
+                // getting custom fields values
+                $cf_values = $usermanagementAdm->getCustomFieldUserValues((int)$id_user);
+                $cf = array_replace($cf, $cf_values);
+                $user2 = [];
+                foreach ($cf as $key => $value) {
+                    $user2["cf_$key"] = $value;
+                }
+                $user3 = ['status' => $status, 'name_certificate' => $name_certificate, 'date_complete' => $date_complete, 'on_date' => $on_date, 'cell_down_gen' => $cell_down_gen, 'cell_del_cert' => $cell_del_cert];
+
+                $users[] = array_merge($user1, $user2, $user3);
+            }
         }
 
         return $users;

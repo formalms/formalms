@@ -152,6 +152,14 @@ class CourseSubscribe_Manager
                 $query .= " AND (s.date_expire_validity >= '" . $filter['date_valid'] . "' OR s.date_expire_validity IS NULL)";
             }
 
+            if (isset($filter['status']) && $filter['status'] != '') {
+                $query .= ' AND s.status = ' . $filter['status'] . ' ';
+            }
+
+            if (isset($filter['date_complete']) && strlen($filter['date_complete']) >= 10) {
+                $query .= " AND DATE(s.date_complete) = DATE('" . Format::dateDb($filter['date_complete'], 'date') . "') ";
+            }
+
             if (isset($filter['show'])) {
                 //validate values
                 switch ($filter['show']) {
@@ -285,6 +293,10 @@ class CourseSubscribe_Manager
 
             case 'status':
                 $query .= ' ORDER BY s.status ' . $dir . ', u.userid ' . $dir;
+                break;
+
+            case 'date_complete':
+                $query .= ' ORDER BY s.date_complete ' . $dir . ', u.userid ' . $dir;
                 break;
         }
 
@@ -1153,7 +1165,6 @@ class CourseSubscribe_Management
             if (!isset($user_level[$id_user])) {
                 $this->acl_man->addToGroup($group_levels[$lv], $id_user);
                 $subscriptionAlms->subscribeUser($id_user, $group_levels[$lv], $waiting, false, false, 0, $source);
-                
             } else {
                 $old_lv = $user_level[$id_user];
 
@@ -1425,7 +1436,7 @@ class CourseSubscribe_Management
      *
      * @return bool true if success, false otherwise
      */
-    public function subscribeUserWithConnection($id_user, $id_course, $level, $connection, $date = false)
+    public function subscribeUserWithConnection($id_user, $id_course, $level, $connection, $date = false, $date_complete = null)
     {
         $query_courseuser = '
 		SELECT idUser, level, imported_from_connection
@@ -1441,7 +1452,6 @@ class CourseSubscribe_Management
             $this->acl_man->addToGroup($group_levels[$level], $id_user);
 
             $re = $model->subscribeUser($id_user, $level, $waiting, false, false, 0, 'connector');
-          
         } else {
             list($id_user, $old_lv, $import_from) = sql_fetch_row($re_courseuser);
             if ($import_from !== $connection) {

@@ -474,7 +474,7 @@ function delcertificate()
         if (!sql_query($query_certificate)) {
             Util::jump_to('index.php?modname=certificate&op=certificate&result=err_del');
         } else {
-            Events::trigger('lms.certificate.created', ['id_certificate' => $id_certificate, 'certificate_info' => $certificate_info]);
+            Events::trigger('lms.certificate.deleted', ['id_certificate' => $id_certificate, 'certificate_info' => $certificate_info]);
 
             Util::jump_to('index.php?modname=certificate&op=certificate&result=ok');
         }
@@ -655,6 +655,7 @@ function del_report_certificate()
     $certificate_info = [];
     $certificate_info = $certificate->getCertificateInfo($id_certificate);
 
+ 
     $c_infos = $certificate->getInfoForCourseCertificate($id_course, $id_certificate, $id_user);
     $certificate_info = current($c_infos);
 
@@ -897,5 +898,7 @@ function certificateDispatch($op)
             preview();
             break;
         default:
+            Events::trigger('lms.certificate.dispatch',['op' => $op]);
+        break;
     }
 }
