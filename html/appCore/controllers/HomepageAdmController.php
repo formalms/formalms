@@ -500,17 +500,17 @@ class HomepageAdmController extends AdmController
             exit;
         }
 
-        $time = FormaLms\lib\Get::req('time', DOTY_MIXED, '');
+        $time = (int) FormaLms\lib\Get::req('time', DOTY_MIXED, '');
         $token = strtoupper(FormaLms\lib\Get::req('token', DOTY_MIXED, ''));
         $recalc_token = strtoupper(md5($login_user . ',' . $time . ',' . $secret));
 
-      
-        $lifetime = FormaLms\lib\Get::sett('sso_lifetime', 0)  ?? FormaLms\lib\Get::sett('rest_auth_lifetime', 1);
+        // Lifetime is configured in minutes; if 0, no expiration check
+        $lifetime = (int) (FormaLms\lib\Get::sett('sso_lifetime', 0) ?? FormaLms\lib\Get::sett('rest_auth_lifetime', 1));
 
-        //time() returns value in seconds since 1st Jan 1970 so let's convert lifetime in seconds
+        // time() returns seconds since 1 Jan 1970; convert lifetime minutes to seconds
         $expireRange = $lifetime * 60;
-        //to check if it's expired the $time sent by the client must be major than now less expireRange and minor than now
-        $isTimeValid = $lifetime >= (time() - $expireRange) && $lifetime <= time();
+        // Validate that provided $time lies within [now - expireRange, now]; if lifetime=0, skip check
+        $isTimeValid = $lifetime === 0 ? true : ($time >= (time() - $expireRange) && $time <= time());
 
         if ($recalc_token != $token || !$isTimeValid) {
             $redirection['req'] = _homepage_;
