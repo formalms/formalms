@@ -118,7 +118,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
                     . ' VALUES'
                     . ' ('
                     . "     '" . $username . "',"
-                    . "     '" . date() . "',"
+                    . "     '" . date("Y-m-d H:i:s") . "',"
                     . "     '" . $session->get('user_attempt_number') . "',"
                     . "     '" . $_SERVER['REMOTE_ADDR'] . "' )";
 
