@@ -37,10 +37,10 @@ class CertificateAdmController extends AdmController
 
         $certificate = new Certificate();
 
-        $ids = FormaLms\lib\Get::req('id', DOTY_STRING, '');
+        $ids = FormaLms\lib\Get::req('id', DOTY_NUMLIST, '');
+        $idsExploded = array_filter(
+            explode(',', $ids));
     
-        $idsExploded = explode(',', $ids);
-
         if(count($idsExploded)) {
             $assignedCertificates = $certificate->fetchAssignedCertificates($idsExploded);
             foreach($assignedCertificates  as $assignedCertificate) {
@@ -52,7 +52,8 @@ class CertificateAdmController extends AdmController
                 }
             }
 
-            $deletion_result = $certificate->deleteAssignedCertificates($ids);
+            $deletion_result = $certificate->deleteAssignedCertificates(implode(',', $idsExploded));
+
             if ($deletion_result) {
 
                 Events::trigger('lms.certificate_user.deleted', [
