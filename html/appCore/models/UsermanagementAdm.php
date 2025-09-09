@@ -2962,7 +2962,6 @@ class UsermanagementAdm extends Model implements Accessible
             }
         }
 
-        // Main query to build data tree with level, idParent and translation for actual language
         $query = 'SELECT t.idOrg, t.lev, t.idParent, c.translation FROM %adm_org_chart_tree as t JOIN %adm_org_chart as c ON c.id_dir = t.idOrg WHERE c.lang_code = "' . Lang::get() . '"';
         if ($idstUser != null) {
             $orgGroups = $this->_getAdminOrgTree($idstUser);
@@ -2970,12 +2969,51 @@ class UsermanagementAdm extends Model implements Accessible
                 $query .= ' AND idOrg in (' . implode(',', $orgGroups) . ')';
             }
         }
-        $query .= ' order by path';
 
         $res = $this->db->query($query);
         if ($res) {
+            $nodes = [];
+            $children = [];
+            
             foreach ($res as $row) {
-                $output[$row['idOrg']] = str_repeat('&nbsp;', $row['lev'] * 2) . $row['translation'];;
+                $nodes[$row['idOrg']] = $row;
+                $parentId = $row['idParent'];
+                
+                if (!isset($children[$parentId])) {
+                    $children[$parentId] = [];
+                }
+                
+                $inserted = false;
+                for ($i = 0; $i < count($children[$parentId]); $i++) {
+                    if (strcasecmp($row['translation'], $nodes[$children[$parentId][$i]]['translation']) < 0) {
+                        array_splice($children[$parentId], $i, 0, [$row['idOrg']]);
+                        $inserted = true;
+                        break;
+                    }
+                }
+                if (!$inserted) {
+                    $children[$parentId][] = $row['idOrg'];
+                }
+            }
+            
+            $buildOutput = function($parentId, $level) use (&$buildOutput, $children, $nodes, &$output) {
+                if (!isset($children[$parentId])) {
+                    return;
+                }
+                
+                foreach ($children[$parentId] as $childId) {
+                    $node = $nodes[$childId];
+                    $output[$node['idOrg']] = str_repeat('&nbsp;', $level * 2) . $node['translation'];
+                    $buildOutput($childId, $level + 1);
+                }
+            };
+            
+            $buildOutput(0, 0);
+            if (isset($children[''])) {
+                $buildOutput('', 0);
+            }
+            if (isset($children[null])) {
+                $buildOutput(null, 0);
             }
         }
         return $output;
