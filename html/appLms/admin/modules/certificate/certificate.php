@@ -697,6 +697,7 @@ function send_zip_certificates()
         }
 
         $sendname = $info_report[ASSIGN_CERT_SENDNAME];
+        $sendname = Certificate::sanitizeFilename($sendname);
         copy(_files_ . '/appLms/certificate/' . $file, _files_ . '/tmp/' . $sendname);
         $files[] = '/tmp/' . $sendname;
     }
@@ -733,6 +734,7 @@ function send_certificate()
 
     $file = $info_report[ASSIGN_CERT_FILE];
     $sendname = $info_report[ASSIGN_CERT_SENDNAME];
+    $sendname = Certificate::sanitizeFilename($sendname);
 
     //recognize mime type
     $expFileName = explode('.', $file);
@@ -803,6 +805,7 @@ function gen_zip_cert()
         }
 
         $sendname = $info_report[ASSIGN_CERT_SENDNAME];
+        $sendname = Certificate::sanitizeFilename($sendname);
         $copyResult = copy(_files_ . '/appLms/certificate/' . $file, _files_ . '/tmp/' . $sendname);
         if ($copyResult) {
             $files[] = _files_ . '/tmp/' . $sendname;

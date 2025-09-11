@@ -41,15 +41,18 @@ class SubscriptionAlms extends Model implements Accessible
     {
         $this->db = \FormaLms\db\DbConn::getInstance();
         $this->acl_man = \FormaLms\lib\Forma::getAclManager();
-        $this->setCourseData($id_course, $id_edition, $id_date);
+        $this->id_course = (int) $id_course;
+        $this->id_edition = (int) $id_edition;
+        $this->id_date = (int) $id_date;
         parent::__construct();
     }
 
+    /** @deprecated */
     public function setCourseData($id_course, $id_edition = false, $id_date = false)
     {
-        $this->setIdCourse($id_course);
-        $this->setIdEdition($id_edition);
-        $this->setIdDate($id_date);
+        $this->id_course = (int) $id_course;
+        $this->id_edition = (int) $id_edition;
+        $this->id_date = (int) $id_date;
     }
 
     public function setIdCourse($id_course)
@@ -321,10 +324,7 @@ class SubscriptionAlms extends Model implements Accessible
         $idEditionToConsider = $idEdition ?? $this->id_edition;
         $idDateToConsider = $idDate ?? $this->id_date;
 
-  
-
-
-        $cmodel = new CourseAlms(   $idCourseToConsider, $idDateToConsider, $idEditionToConsider);
+        $cmodel = new CourseAlms($idCourseToConsider, $idDateToConsider, $idEditionToConsider);
         if ($this->id_edition != 0) {
             require_once _lms_ . '/lib/lib.edition.php';
             $edition_man = new EditionManager();
@@ -339,7 +339,6 @@ class SubscriptionAlms extends Model implements Accessible
             $subscribe_man = new CourseSubscribe_Manager();
             $ret = $subscribe_man->delUserFromCourse($id_user, $idCourseToConsider);
         }
-
 
         /* enrolling first overbooked user, if any */
         if ($ret) {
@@ -427,7 +426,7 @@ class SubscriptionAlms extends Model implements Accessible
                                 . ' FROM ' . FormaLms\lib\Get::cfg('prefix_fw') . '_admin_course'
                                 . " WHERE idst_user = '" . $id_user . "'"
                                 . " AND type_of_entry = 'course'"
-                                . ' AND id_entry in (-1,0,' . $id_course . ')';
+                                . ' AND id_entry in (-1,0,' . $idCourseToConsider . ')';
 
                             [$control_course] = sql_fetch_row(sql_query($query));
 
@@ -439,7 +438,7 @@ class SubscriptionAlms extends Model implements Accessible
                                 . ' ('
                                 . ' SELECT id_path'
                                 . ' FROM ' . FormaLms\lib\Get::cfg('prefix_lms') . '_coursepath_courses'
-                                . " WHERE id_item = '" . $id_course . "'"
+                                . " WHERE id_item = '" . $idCourseToConsider . "'"
                                 . ' )';
 
                             [$control_coursepath] = sql_fetch_row(sql_query($query));
@@ -452,7 +451,7 @@ class SubscriptionAlms extends Model implements Accessible
                                 . ' ('
                                 . ' SELECT idCatalogue'
                                 . ' FROM ' . FormaLms\lib\Get::cfg('prefix_lms') . '_catalogue_entry'
-                                . " WHERE idEntry = '" . $id_course . "'"
+                                . " WHERE idEntry = '" . $idCourseToConsider . "'"
                                 . ' )';
 
                             [$control_catalogue] = sql_fetch_row(sql_query($query));
@@ -1760,5 +1759,63 @@ class SubscriptionAlms extends Model implements Accessible
     public function _addToCourseGroup($id_group, $id_user)
     {
         \FormaLms\lib\Forma::getAclManager()->addToGroup($id_group, $id_user);
+    }
+
+    /**
+     * Controlla tutti i corsi di tipo classroom o l'id del corso specificato,
+     * e per ogni utente iscritto al corso verifica che sia iscritto ad almeno una data del corso d'aula.
+     * Se un utente non è iscritto a nessuna data, lo elimina dal corso.
+     * Versione ottimizzata con query unificate per ridurre la complessità e i cicli.
+     *
+     * @param int|null $id_course ID del corso opzionale. Se non specificato, controlla tutti i corsi classroom
+     * @return bool True se l'operazione è completata con successo
+     */
+    public function cleanupUsersNotEnrolledInClassroomDates($id_course = null)
+    {
+        // Query unificata per trovare direttamente tutti gli utenti da rimuovere
+        // Trova utenti iscritti a corsi classroom che non sono iscritti a nessuna data
+        $course_condition = '';
+        if ($id_course !== null) {
+            $course_condition = ' AND c.idCourse = ' . (int)$id_course;
+        }
+        
+        $query = "
+            SELECT DISTINCT cu.idUser, cu.idCourse
+            FROM %lms_courseuser cu
+            INNER JOIN %lms_course c ON c.idCourse = cu.idCourse
+            WHERE c.course_type = 'classroom'
+            $course_condition
+            AND NOT EXISTS (
+                SELECT 1 
+                FROM %lms_course_date cd
+                INNER JOIN %lms_course_date_user cdu ON cdu.id_date = cd.id_date
+                WHERE cd.id_course = cu.idCourse 
+                AND cdu.id_user = cu.idUser
+            )
+        ";
+        
+        $result = sql_query($query);
+        if (!$result) {
+            return false;
+        }
+
+        if (!empty($result)) {
+            foreach ($result as $row) {
+
+                $user_id = (int)$row['idUser'];
+                $course_id = (int)$row['idCourse'];
+
+                // Usa il metodo delUser esistente per mantenere la logica di rimozione
+                $this->delUser($user_id, $course_id);
+
+                // Rimuovi anche eventuali dati correlati
+                $query_remove_related = "DELETE FROM %lms_coursereport 
+                                   WHERE id_course = $course_id 
+                                   AND id_user = $user_id";
+                sql_query($query_remove_related);
+            }
+        }
+        
+        return true;
     }
 }

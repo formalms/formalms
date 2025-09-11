@@ -99,7 +99,7 @@ class CourseSubscribe_Manager
      */
     public function getUserLevelTr($level)
     {
-        return isset($this->array_user_level[$level]) ? $this->array_user_level[$level] : '';
+        return $this->array_user_level[$level] ?? '';
     }
 
     public function getUserStatus()
@@ -123,7 +123,7 @@ class CourseSubscribe_Manager
     {
         if (is_array($filter)) {
             $query = 'SELECT COUNT(*)'
-                . ' FROM ' . $this->subscribe_table . ' as s JOIN ' . $this->user_table . ' as u '
+                . ' FROM %lms_courseuser as s JOIN ' . $this->user_table . ' as u '
                 . ' ON (s.idUser = u.idst) '
                 . ' WHERE idCourse = ' . (int)$id_course;
 
@@ -173,7 +173,7 @@ class CourseSubscribe_Manager
             }
         } else {
             $query = 'SELECT COUNT(*)'
-                . ' FROM ' . $this->subscribe_table . ' AS s '
+                . ' FROM %lms_courseuser AS s '
                 . ' WHERE s.idCourse = ' . (int)$id_course;
         }
 
@@ -190,7 +190,7 @@ class CourseSubscribe_Manager
             $query .= ' AND ' . $adminManager->getAdminUsersQuery(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), 'idUser');
         }
 
-        list($res) = sql_fetch_row(sql_query($query));
+        [$res] = sql_fetch_row(sql_query($query));
 
         return $res;
     }
@@ -200,7 +200,7 @@ class CourseSubscribe_Manager
         require_once _base_ . '/lib/lib.form.php';
 
         $query = 'SELECT u.idst, u.userid, u.firstname, u.lastname, s.level, s.status, s.date_complete, s.date_begin_validity, s.date_expire_validity, s.waiting '
-            . ' FROM ' . $this->subscribe_table . ' AS s'
+            . ' FROM %lms_courseuser AS s'
             . ' JOIN ' . $this->user_table . ' AS u ON s.idUser = u.idst'
             . ' WHERE s.idCourse = ' . $id_course;
 
@@ -331,7 +331,7 @@ class CourseSubscribe_Manager
         }
 
         $query = 'SELECT s.idUser, s.idCourse '
-            . ' FROM ' . $this->subscribe_table . ' AS s '
+            . ' FROM %lms_courseuser AS s '
             . ' JOIN ' . $this->user_table . ' AS u ON u.idst = s.idUser '
             . ' WHERE s.idCourse IN (' . implode(',', $arr) . ') ';
 
@@ -552,7 +552,7 @@ class CourseSubscribe_Manager
             . ' WHERE idUser = ' . $id_user
             . ' AND idCourse = ' . $id_course;
 
-        list($res) = sql_fetch_row(sql_query($query));
+        [$res] = sql_fetch_row(sql_query($query));
 
         return $res;
     }
@@ -853,7 +853,7 @@ class CourseSubscribe_Manager
             . " WHERE idUser = '" . $idUser . "'"
             . " AND idCourse = '" . $idCourse . "'";
         $resultStatus = $this->db->query($queryStatus);
-        list($st, $d_insc, $d_fa, $d_c) = $this->db->fetch_row($resultStatus);
+        [$st, $d_insc, $d_fa, $d_c] = $this->db->fetch_row($resultStatus);
         $current_status = ['status' => $st, 'date_inscr' => $d_insc, 'date_first_access' => $d_fa, 'date_complete' => $d_c];
         $data = Events::trigger('lms.course_user.updating', [
             'id_user' => $idUser,
@@ -985,7 +985,7 @@ class CourseSubscribe_Manager
             . ' WHERE idUser = ' . (int)$id_user
             . ' AND idCourse = ' . (int)$id_course;
 
-        list($res) = sql_fetch_row(sql_query($query));
+        [$res] = sql_fetch_row(sql_query($query));
 
         if ($res == 1) {
             return true;
@@ -1434,7 +1434,7 @@ class CourseSubscribe_Management
 
             $re &= $this->_query($query);
         } else {
-            list($id_user, $old_lv, $import_from) = sql_fetch_row($re_courseuser);
+            [$id_user, $old_lv, $import_from] = sql_fetch_row($re_courseuser);
             if ($import_from !== $connection) {
                 return 'jump';
             }
@@ -1493,7 +1493,7 @@ class CourseSubscribe_Management
 		WHERE idCourse = '" . $id_course . "' AND idUser = '" . $id_user . "'";
         $re_courseuser = $this->_query($query_courseuser);
 
-        list($id_user, $level, $import_from) = sql_fetch_row($re_courseuser);
+        [$id_user, $level, $import_from] = sql_fetch_row($re_courseuser);
         if ($import_from == $connection) {
             return 'jump';
         }
@@ -1595,7 +1595,7 @@ class CourseSubscribe_Management
             $level_idst = &FormaCourse::createCourseLevel($id_course);
         }
 
-        list($subscribe_method) = sql_fetch_row(sql_query('SELECT subscribe_method FROM %lms_course WHERE idCourse = ' . $id_course));
+        [$subscribe_method] = sql_fetch_row(sql_query('SELECT subscribe_method FROM %lms_course WHERE idCourse = ' . $id_course));
 
         $waiting = 0;
         if ($subscribe_method == '1') {

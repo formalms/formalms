@@ -341,9 +341,9 @@ class Man_Course
     /**
      * @param int $idCourse the id of the course
      *
-     * @return array return som info about the course [code, name, description, status, difficult, subscribe_method, max_num_subscribe]
+     * @return false|void return som info about the course [code, name, description, status, difficult, subscribe_method, max_num_subscribe]
      */
-    public static function getCourseInfo($idCourse)
+    public function getCourseInfo($idCourse)
     {
         $query = "
 		SELECT *
@@ -358,7 +358,7 @@ class Man_Course
      * @param int $edition_id the id of the edition
      * @param int $course_id  the id of the course
      *
-     * @return array return som info about the course [code, name, description, status, difficult, subscribe_method, max_num_subscribe]
+     * @return false|void return som info about the course [code, name, description, status, difficult, subscribe_method, max_num_subscribe]
      */
     public function getEditionInfo($edition_id, $course_id = false)
     {

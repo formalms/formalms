@@ -95,7 +95,7 @@ class CertificateAdmController extends AdmController
         $list_cert = explode(',', $str_rows);
 
         foreach ($list_cert as $certRow) {
-            list($id_user, $id_certificate, $id_course) = explode('-', $certRow);
+            [$id_user, $id_certificate, $id_course] = explode('-', $certRow);
 
             $certificate = new Certificate();
 
@@ -109,6 +109,7 @@ class CertificateAdmController extends AdmController
             }
 
             $sendname = $info_report[ASSIGN_CERT_SENDNAME];
+            $sendname = Certificate::sanitizeFilename($sendname);
             $copyResult = copy(_files_ . '/appLms/certificate/' . $file, _files_ . '/tmp/' . $sendname);
             if ($copyResult) {
                 $files[] = _files_ . '/tmp/' . $sendname;

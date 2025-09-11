@@ -10,6 +10,7 @@
  * from docebo 4.0.5 CE 2008-2012 (c) docebo
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
+
 namespace FormaLms\db\drivers;
 
 use FormaLms\db\DbConn;
@@ -49,13 +50,13 @@ class Mysqli extends DbConn
                 $this->log('mysql connected to : ' . $host);
                 $this->log('mysql db selected');
             } else {
-            
-                    if (!$this->conn = @mysqli_connect($host, $user, $pwd)) {
-                        $this->log('mysql connect error : ' . mysqli_connect_error());
-                        //Util::fatal('Cannot connect to the database server.');
-                        return false;
-                    }
-            
+
+                if (!$this->conn = @mysqli_connect($host, $user, $pwd)) {
+                    $this->log('mysql connect error : ' . mysqli_connect_error());
+                    //Util::fatal('Cannot connect to the database server.');
+                    return false;
+                }
+
                 $GLOBALS['dbConn'] = $this;
                 $this->log('mysql connected to : ' . $host);
             }
@@ -88,7 +89,7 @@ class Mysqli extends DbConn
         $this->query("SET CHARACTER SET '" . $charset . "'", $this->conn);
 
         // required by userselector: almost 10000 users selected
-		//TODO to be removed when userselector reworked
+        //TODO to be removed when userselector reworked
         $this->query('SET SESSION group_concat_max_len = 70000', $this->conn);
 
         //TODO NO_Strict_MODE: to be confirmed
@@ -184,12 +185,12 @@ class Mysqli extends DbConn
         return $re;
     }
 
-    public function insert_id()
+    public function insert_id(): int|string
     {
         return mysqli_insert_id($this->conn);
     }
 
-    public function fetch_row($result)
+    public function fetch_row($result): array|false|null
     {
         if (!$result) {
             return false;
@@ -198,7 +199,7 @@ class Mysqli extends DbConn
         return $this->false_if_null(mysqli_fetch_row($result));
     }
 
-    public function fetch_assoc($result)
+    public function fetch_assoc($result): array|null|false
     {
         if (!$result) {
             return false;
@@ -207,7 +208,7 @@ class Mysqli extends DbConn
         return $this->false_if_null(mysqli_fetch_assoc($result));
     }
 
-    public function fetch_array($result)
+    public function fetch_array($result): array|null|false
     {
         if (!$result) {
             return false;
@@ -216,7 +217,7 @@ class Mysqli extends DbConn
         return $this->false_if_null(mysqli_fetch_array($result));
     }
 
-    public function fetch_obj($result, $class_name = null, $params = null)
+    public function fetch_obj($result, $class_name = null, $params = null): object|null|false
     {
         if (!$result) {
             return false;

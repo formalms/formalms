@@ -46,7 +46,7 @@ class ClassroomAlmsController extends AlmsController
         $this->acl_man = \FormaLms\lib\Forma::getAclManager();
         $this->idCourse = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
         $this->idDate = FormaLms\lib\Get::req('id_date', DOTY_INT, 0);
-
+        (new SubscriptionAlms())->cleanupUsersNotEnrolledInClassroomDates($this->idCourse);
         $this->model = new ClassroomAlms($this->idCourse, $this->idDate);
 
         $this->permissions = [
@@ -77,6 +77,7 @@ class ClassroomAlmsController extends AlmsController
         $course_info = $cmodel->getInfo($this->idCourse);
         $course_name = ($course_info['code'] !== '' ? '[' . $course_info['code'] . '] ' : '') . $course_info['name'];
 
+        $this->model->deleteDatesWithoutDays($this->idCourse);
         $result_message = FormaLms\lib\Get::req('result', DOTY_MIXED, false);
         switch ($result_message) {
             case 'ok_mod':

@@ -1485,9 +1485,9 @@ class CourseAlms extends Model
 
     public function getInfo($id_course = false, $id_edition = false, $id_date = false)
     {
-        $_id_course = ($id_course ? $id_course : $this->id_course);
-        $_id_edition = ($id_edition ? $id_edition : $this->id_edition);
-        $_id_date = ($id_date ? $id_date : $this->id_date);
+        $_id_course = ($id_course ?: $this->id_course);
+        $_id_edition = ($id_edition ?: $this->id_edition);
+        $_id_date = ($id_date ?: $this->id_date);
 
         if (!$_id_course) {
             return false;

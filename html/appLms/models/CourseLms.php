@@ -275,7 +275,7 @@ class CourseLms extends Model
             $parsedData['img_course'] = FormaLms\lib\Get::tmpl_path() . 'images/course/course_nologo.png';
         }
 
-        if (array_key_exists('nameCategory', $parsedData) && strlen($parsedData['nameCategory']) > 1) {
+        if (array_key_exists('nameCategory', $parsedData) && !empty($parsedData['nameCategory']) && strlen($parsedData['nameCategory']) > 1) {
             $parsedData['nameCategory'] = substr($parsedData['nameCategory'], strripos($parsedData['nameCategory'], '/') + 1);
         }
 

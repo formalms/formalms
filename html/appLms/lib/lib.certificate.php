@@ -731,6 +731,21 @@ class Certificate
         return $stringArray;
     }
 
+    /**
+     * Sanitize filename by removing accents and special characters
+     * @param string $filename The filename to sanitize
+     * @return string The sanitized filename
+     */
+    public static function sanitizeFilename($filename)
+    {
+        // Remove accents and convert to ASCII
+        $sanitized = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $filename);
+        // Remove any remaining non-alphanumeric characters except dots, dashes, and underscores
+        $sanitized = preg_replace('/[^a-zA-Z0-9._-]/', '', $sanitized);
+        
+        return $sanitized;
+    }
+
     public function send_preview_certificate($id_certificate, $array_substituton = false)
     {
         $query_certificate = '

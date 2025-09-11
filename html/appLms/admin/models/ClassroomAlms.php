@@ -130,6 +130,11 @@ class ClassroomAlms extends Model
         return $this->id_date;
     }
 
+    public function deleteDatesWithoutDays($idCourse = null)
+    {
+        $this->classroom_man->deleteDatesWithoutDays($idCourse);
+    }
+
     public function getCourseEditionNumber()
     {
         return $this->classroom_man->getDateNumberNoLimit($this->id_course);

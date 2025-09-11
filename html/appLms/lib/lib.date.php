@@ -42,6 +42,23 @@ class DateManager
     {
     }
 
+    public function deleteDatesWithoutDays($idCourse = null)
+    {
+        $query = 'DELETE FROM %lms_course_date 
+                  WHERE id_date NOT IN (
+                      SELECT DISTINCT id_date 
+                      FROM %lms_course_date_day
+                  )';
+
+        if ($idCourse) {
+            $query .= ' AND id_course = ' . $idCourse;
+        }
+
+        $result = sql_query($query);
+
+        return $result;
+    }
+
     public function getDateNumber($id_course, $all = false)
     {
         $query = 'SELECT dt.id_date, MIN(dy.date_begin) AS date_begin, MAX(dy.date_end) AS date_end'
@@ -119,7 +136,7 @@ class DateManager
     public function getClassroomForDropdown()
     {
         $res = [];
-        $res[0] = Lang::t('_NOT_ASSIGNED','admin_date');
+        $res[0] = Lang::t('_NOT_ASSIGNED', 'admin_date');
 
         $query = 'SELECT idClassroom, location, name'
             . ' FROM %lms_class_location as loc JOIN %lms_classroom AS cl '
@@ -338,7 +355,7 @@ class DateManager
         $result = sql_query($query);
 
         foreach ($result as $row) {
-            if (strcmp($row['date_begin'], date('Y-m-d H:i:s')) > 0 || $all) {
+            if (!empty($row['date_begin']) && (strcmp($row['date_begin'], date('Y-m-d H:i:s')) > 0 || $all)) {
                 $row['classroom'] = $this->getDateClassrooms($row['id_date']);
 
                 if ($row['user_subscribed'] > 1) {
@@ -386,7 +403,7 @@ class DateManager
 
         if (isset($array_classroom[0])) {
             $first = false;
-            $res .= Lang::t('_NOT_ASSIGNED','admin_date');
+            $res .= Lang::t('_NOT_ASSIGNED', 'admin_date');
         }
 
 
@@ -439,6 +456,10 @@ class DateManager
         return $location . ' - ' . $name . '  ' . $street . '  ' . $city . ' ' . $zip_code . '';
     }
 
+    /**
+     * @param $id_date
+     * @return array
+     */
     public function getDateInfo($id_date)
     {
         $result = [];
@@ -451,7 +472,7 @@ class DateManager
             . ' GROUP BY dt.id_date'
             . ' ORDER BY dy.date_begin';
 
-        $res = sql_fetch_assoc(sql_query($query));
+        $res = (array)sql_fetch_assoc(sql_query($query));
 
 
         if (is_array($res) && $res['user_subscribed'] > 1) {
@@ -579,7 +600,7 @@ class DateManager
             . ' WHERE id_date = ' . $id_date;
 
         $res = sql_query($query);
-        if ($res){
+        if ($res) {
             if (isset($_POST['textfield']) && is_array($_POST['textfield'])) {
                 foreach ($_POST['textfield'] as $key => $value) {
                     if (!empty($value)) {
@@ -953,14 +974,9 @@ class DateManager
 
     public function controlUserSubscriptions($id_user, $id_course)
     {
-        $query = 'SELECT COUNT(*)'
-            . ' FROM %lms_course_date_user '
+        $query = 'SELECT COUNT(*)  FROM %lms_course_date_user '
             . ' WHERE id_user = ' . $id_user
-            . ' AND id_date IN'
-            . ' ('
-            . ' SELECT id_date'
-            . ' FROM %lms_course_date '
-            . ' WHERE id_course = ' . $id_course
+            . ' AND id_date IN  (  SELECT id_date  FROM %lms_course_date   WHERE id_course = ' . $id_course
             . ' )';
 
         [$res] = sql_fetch_row(sql_query($query));
@@ -982,9 +998,9 @@ class DateManager
 
     public function getTestTypeForDropdown()
     {
-        return [_DATE_TEST_TYPE_WEB => Lang::t('_WEB_TEST','admin_date'),
-            _DATE_TEST_TYPE_PAPER => Lang::t('_PAPER_TEST','admin_date'),
-            _DATE_TEST_TYPE_NONE => Lang::t('_NONE','admin_date'),];
+        return [_DATE_TEST_TYPE_WEB => Lang::t('_WEB_TEST', 'admin_date'),
+            _DATE_TEST_TYPE_PAPER => Lang::t('_PAPER_TEST', 'admin_date'),
+            _DATE_TEST_TYPE_NONE => Lang::t('_NONE', 'admin_date'),];
     }
 
     public function getHours()
@@ -1484,7 +1500,7 @@ class DateManager
 
         if (isset($array_classroom[0])) {
             $first = false;
-            $res .= Lang::t('_NOT_ASSIGNED','admin_date');
+            $res .= Lang::t('_NOT_ASSIGNED', 'admin_date');
         }
 
         $query = 'SELECT *'
@@ -1875,25 +1891,36 @@ class DateManager
 
     public function delUserFromDate($id_user, $id_course, $id_date)
     {
-        $this->removeUserFromDate($id_user, $id_date, $id_course);
+        $result = $this->removeUserFromDate($id_user, $id_date, $id_course);
+
+        if (!$result) {
+            return false;
+        }
+
         if (!$this->controlUserSubscriptions($id_user, $id_course)) {
-            require_once _lms_ . '/lib/lib.course.php';
+            require_once Forma::include(_lms_ . '/lib/', 'lib.course.php');
             require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
             $subscribe_man = new CourseSubscribe_Manager();
             $level = $this->subscribe_man->getUserLeveInCourse($id_user, $id_course);
-            $subscribe_man->delUserFromCourse($id_user, $id_course, null, $id_date);
+            $subscribe_result = $subscribe_man->delUserFromCourse($id_user, $id_course, null, $id_date);
+
+            if (!$subscribe_result) {
+                return false;
+            }
 
             $formaCourse = new FormaCourse($id_course);
-            $level_idst = &$formaCourse->getCourseLevel($id_course);
+            $level_idst = $formaCourse->getCourseLevel($id_course);
             $this->acl_man->removeFromGroup($level_idst[$level], $id_user);
 
             //check if there are overbooked users
             $cinfo = $this->getDateInfo($id_date);
-            $overbooking_users = $this->getDateOverbookingUsers($id_date);
-            if ($cinfo['overbooking'] > 0 && !empty($overbooking_users)) {
-                if (($cinfo['user_subscribed'] - count($overbooking_users)) < $cinfo['max_par']) {
-                    $this->setFirstOverbookingUser($id_date);
+            if ($cinfo && is_array($cinfo)) {
+                $overbooking_users = $this->getDateOverbookingUsers($id_date);
+                if ($cinfo['overbooking'] > 0 && !empty($overbooking_users)) {
+                    if (($cinfo['user_subscribed'] - count($overbooking_users)) < $cinfo['max_par']) {
+                        $this->setFirstOverbookingUser($id_date);
+                    }
                 }
             }
         }
