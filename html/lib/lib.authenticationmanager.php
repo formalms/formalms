@@ -70,7 +70,7 @@ class AuthenticationManager
 
         $saveUser = $this->saveUser($user);
 
-        Events::trigger('core.user.logged_in', ['user' => $user]);
+        Events::trigger('core.user.logged_in', ['user' => $user, 'idst' => $user->getIdst()]);
 
         return $saveUser;
     }

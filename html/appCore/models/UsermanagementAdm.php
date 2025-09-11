@@ -1153,7 +1153,7 @@ class UsermanagementAdm extends Model implements Accessible
         return $output;
     }
 
-    public function createUser($userdata, $folders = false)
+    public function createUser($userdata, $folders = false, $source = 'registration')
     {
         require_once _base_ . '/lib/lib.preference.php';
         require_once _adm_ . '/lib/lib.field.php';
@@ -1182,7 +1182,8 @@ class UsermanagementAdm extends Model implements Accessible
                 (property_exists($userdata, 'facebook_id') ? $userdata->facebook_id : ''),
                 (property_exists($userdata, 'twitter_id') ? $userdata->twitter_id : ''),
                 (property_exists($userdata, 'linkedin_id') ? $userdata->linkedin_id : ''),
-                (property_exists($userdata, 'google_id') ? $userdata->google_id : '')
+                (property_exists($userdata, 'google_id') ? $userdata->google_id : ''),
+                $source
             );
             if (is_numeric($user_idst) && $user_idst > 0) {
                 //add user to root branch
@@ -2257,7 +2258,7 @@ class UsermanagementAdm extends Model implements Accessible
 
         [$id_parent] = sql_fetch_row(sql_query($query));
 
-   
+
 
         [$src_left, $src_right, $lvl_src] = $this->getFolderLimits($src_folder);
         [$dest_left, $dest_right, $lvl_dest] = $this->getFolderLimits($dest_folder);
@@ -2323,7 +2324,7 @@ class UsermanagementAdm extends Model implements Accessible
         // fix values from the gap created
         $this->shiftRL($src_right + 1, -$gap);
 
- 
+
         //if folder moving has been successfull than set new /ocd_ groups
         if ($output) {
             $query = 'SELECT idst'
@@ -2974,15 +2975,15 @@ class UsermanagementAdm extends Model implements Accessible
         if ($res) {
             $nodes = [];
             $children = [];
-            
+
             foreach ($res as $row) {
                 $nodes[$row['idOrg']] = $row;
                 $parentId = $row['idParent'];
-                
+
                 if (!isset($children[$parentId])) {
                     $children[$parentId] = [];
                 }
-                
+
                 $inserted = false;
                 for ($i = 0; $i < count($children[$parentId]); $i++) {
                     if (strcasecmp($row['translation'], $nodes[$children[$parentId][$i]]['translation']) < 0) {
@@ -2995,19 +2996,19 @@ class UsermanagementAdm extends Model implements Accessible
                     $children[$parentId][] = $row['idOrg'];
                 }
             }
-            
+
             $buildOutput = function($parentId, $level) use (&$buildOutput, $children, $nodes, &$output) {
                 if (!isset($children[$parentId])) {
                     return;
                 }
-                
+
                 foreach ($children[$parentId] as $childId) {
                     $node = $nodes[$childId];
                     $output[$node['idOrg']] = str_repeat('&nbsp;', $level * 2) . $node['translation'];
                     $buildOutput($childId, $level + 1);
                 }
             };
-            
+
             $buildOutput(0, 0);
             if (isset($children[''])) {
                 $buildOutput('', 0);

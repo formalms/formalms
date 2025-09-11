@@ -19,6 +19,8 @@ class Controller
 
     protected $_default_action = 'show';
 
+    public const PREFIX = 'base';
+
     protected \Symfony\Component\HttpFoundation\Request $request;
 
     protected $session;
@@ -28,15 +30,34 @@ class Controller
         $this->_mvc_name = $mvc_name;
         $this->request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
         $this->session = $this->request->getSession();
+        $controllerName = $this->getControllerName();
+        Events::trigger(static::PREFIX . ".{$controllerName}.init", ['instance' => $this]);
         $this->init();
+    }
+
+    private function getControllerName()
+    {
+        return strtolower(get_class($this));
+    }
+
+    public function __call($method, $args)
+    {
+        $controllerName = $this->getControllerName();
+        $event = static::PREFIX . ".{$controllerName}.method.$method";
+
+        $results = Events::trigger($event, [$this, $args]);
+
+        if ($results && count($results) > 0) {
+            return end($results);
+        }
+
+        throw new BadMethodCallException(" $method not found in $controllerName");
     }
 
     /**
      * Initialize the istance of the controller, this method will be called from the constructor.
      */
-    public function init()
-    {
-    }
+    public function init() {}
 
     /**
      * This method can be used in order to modify the standard task requested to the mvc.
@@ -68,7 +89,15 @@ class Controller
             $this->$task();
         } elseif (method_exists($this, $this->_default_action)) {
             $method = $this->_default_action;
-            $this->$method();
+            if ($task) {
+                try {
+                    $this->$task();
+                } catch (BadMethodCallException $b) {
+                    $this->$method();
+                }
+            } else {
+                $this->$method();
+            }
         }
     }
 
@@ -222,5 +251,11 @@ class Controller
         $widget_obj->init();
         // Return the widget for further use
         return $widget_obj;
+    }
+
+
+    public function getRequest()
+    {
+        return array_merge($this->request->request->all(), $this->request->query->all());
     }
 }

@@ -84,8 +84,8 @@ class DashboardAdmController extends AdmController
 
         //load date script for user creation and editing mask
         Form::loadDatefieldScript();
-     
-   
+
+
         //render view
         $this->render('show', [
             'diagnostic_problem' => $problem,
@@ -169,6 +169,11 @@ class DashboardAdmController extends AdmController
         $body .= Form::getTextfield(Lang::t('_USER', 'standard'), 'certificate_userid', 'certificate_userid', 255, '');
         $body .= '<div id="certificate_userid_container"></div>';
 
+        $eventResults = Events::trigger('core.dashboard.certificate.form', ['body' => $body]);
+
+        if ($eventResults && array_key_exists('body', $eventResults)) {
+            $body = $eventResults['body'];
+        }
         $body .= Form::closeForm();
 
         $output['header'] = Lang::t('_CERTIFICATE', 'menu');
@@ -178,12 +183,15 @@ class DashboardAdmController extends AdmController
 
     public function findcertificateTask()
     {
-        $json = new Services_JSON();
+
+        $print = [];
+        $relesable = [];
 
         $c_course = FormaLms\lib\Get::req('certificate_course', DOTY_MIXED, '');
         $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
         $c_userid = FormaLms\lib\Get::req('certificate_userid', DOTY_MIXED, '');
         $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, 0);
+
 
         require_once _lms_ . '/lib/lib.course.php';
         $man_course = new Man_Course();
@@ -209,25 +217,35 @@ class DashboardAdmController extends AdmController
             return;
         }
 
-        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.certificate.php');
-        $cert = new Certificate();
-        $released = $cert->certificateStatus($id_user, $id_course);
-        $print = [];
-        foreach ($released as $id_cert => $name) {
-            $print[] = '<a class="ico-wt-sprite subs_pdf" href="index.php?modname=certificate&id=' . $id_cert . '&op=send_certificate&of_platform=lms">'
-                . '<span>' . $name . '</span>'
-                . '</a>';
-        }
+        $eventResults = Events::trigger('core.dashboard.certificate.released', ['id_user' => $id_user, 'id_course' => $id_course]);
 
-        $res = $this->model->getDashBoardCertList($id_course, $id_user);
-        $relesable = [];
-        while (list($id_certificate, $name, $available_for_status, $user_status) = sql_fetch_row($res)) {
-            if ($cert->canRelease($available_for_status, $user_status) && !isset($released[$id_certificate])) {
-                $relesable[] = '<a class="ico-wt-sprite subs_pdf" href="index.php?modname=certificate&certificate_id=' . $id_certificate . '&course_id=' . $id_course . '&user_id=' . $id_user . '&op=print_certificate&of_platform=lms">'
+        if ($eventResults && array_key_exists('print',  $eventResults) && array_key_exists('relasable',  $eventResults)) {
+            $print = $eventResults['print'];
+            $relesable = $eventResults['relesable'];
+        } else {
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.certificate.php');
+            $cert = new Certificate();
+
+
+            $released = $cert->certificateStatus($id_user, $id_course);
+
+            foreach ($released as $id_cert => $name) {
+                $print[] = '<a class="ico-wt-sprite subs_pdf" href="index.php?modname=certificate&id=' . $id_cert . '&op=send_certificate&of_platform=lms">'
                     . '<span>' . $name . '</span>'
                     . '</a>';
             }
+
+            $res = $this->model->getDashBoardCertList($id_course, $id_user);
+
+            while (list($id_certificate, $name, $available_for_status, $user_status) = sql_fetch_row($res)) {
+                if ($cert->canRelease($available_for_status, $user_status) && !isset($released[$id_certificate])) {
+                    $relesable[] = '<a class="ico-wt-sprite subs_pdf" href="index.php?modname=certificate&certificate_id=' . $id_certificate . '&course_id=' . $id_course . '&user_id=' . $id_user . '&op=print_certificate&of_platform=lms">'
+                        . '<span>' . $name . '</span>'
+                        . '</a>';
+                }
+            }
         }
+
 
         $output['success'] = true;
         $output['message'] = '';

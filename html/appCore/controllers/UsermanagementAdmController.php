@@ -572,7 +572,7 @@ class UsermanagementAdmController extends AdmController
 
         $folders = FormaLms\lib\Get::req('sel', DOTY_MIXED, false);
 
-        $idst = $this->model->createUser($userdata, $folders);
+        $idst = $this->model->createUser($userdata, $folders, 'admin');
         if (is_numeric($idst) && $idst > 0) {
             $output['success'] = true;
             $output['idst'] = $idst;

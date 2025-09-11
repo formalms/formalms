@@ -137,6 +137,8 @@ class CoursestatsLmsController extends LmsController
 
     public function showTask()
     {
+
+
         $view_all_perm = checkPerm('view_all', true, 'coursestats');
 
         if ((int)$this->idCourse <= 0) {
@@ -182,6 +184,22 @@ class CoursestatsLmsController extends LmsController
 
         $umodel = new UsermanagementAdm();
         $gmodel = new GroupmanagementAdm();
+        $rel_actions = '
+	<a href="index.php?r=coursestats/export_csv" class="ico-wt-sprite subs_csv" title="' . Lang::t('_EXPORT_CSV', 'report') . '">
+		<span>' . Lang::t('_EXPORT_CSV', 'report') . '</span>
+	</a>
+	<a href="index.php?r=coursestats/export_csv3" class="ico-wt-sprite subs_csv" title="' . Lang::t('_EXPORT_REPORT_DETAIL_CSV', 'report') . '">
+		<span>' . Lang::t('_EXPORT_REPORT_DETAIL_CSV', 'report') . '</span>
+	</a>
+	<a href="index.php?r=coursestats/export_Xls" class="ico-wt-sprite subs_xls" title="' . Lang::t('_EXPORT_REPORT_DETAIL_XLS', 'report') . '">
+		<span>' . Lang::t('_EXPORT_REPORT_DETAIL_XLS', 'report') . '</span>
+	</a>';
+
+        $eventResult = Events::trigger('lms.course.stats.showing', [
+            'actions' => $rel_actions,
+        ]);
+
+        $rel_actions = $eventResult['actions'];
 
         $params = [
             'id_course' => $this->idCourse,
@@ -198,6 +216,7 @@ class CoursestatsLmsController extends LmsController
             'lo_totals_js' => $lo_totals_js,
             'status_list' => $this->_getJsArrayStatus(),
             'permissions' => $this->permissions,
+            'rel_actions' => $rel_actions,
         ];
 
         $this->render('show', $params);
@@ -340,6 +359,18 @@ class CoursestatsLmsController extends LmsController
         $info->last_access = '';
         $info->date_complete = $course_info->date_complete != '' ? Format::date($course_info->date_complete, 'datetime', true) : Lang::t('_NONE', '');
 
+        $rel_actions = '<a href="index.php?r=coursestats/export_csv2&id_user=' . $id_user . '" class="ico-wt-sprite subs_csv" title="' . Lang::t('_EXPORT_CSV', 'report') . '">'
+            . '<span>' . Lang::t('_EXPORT_CSV', 'report') . '</span></a>';
+        $rel_actions .= '<a href="index.php?r=coursestats/export_xls2&id_user=' . $id_user . '" class="ico-wt-sprite subs_xls" title="' . Lang::t('_EXPORT_XLS', 'report') . '">'
+            . '<span>' . Lang::t('_EXPORT_XLS', 'report') . '</span></a>';
+            
+        $eventResult = Events::trigger('lms.course.stats.user.showing', [
+            'actions' => $rel_actions,
+            'id_user' => $id_user,
+        ]);
+
+        $rel_actions = $eventResult['actions'];
+
         $params = [
             'id_course' => $this->idCourse,
             'id_user' => $id_user,
@@ -347,6 +378,7 @@ class CoursestatsLmsController extends LmsController
             'status_list_js' => $this->_getJsArrayLOStatus(),
             'permissions' => $this->permissions,
             'base_url' => 'index.php?r=lms/coursestats/show',
+            'rel_actions' => $rel_actions,
         ];
 
         $this->render('show_user', $params);

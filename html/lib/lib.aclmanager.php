@@ -529,7 +529,8 @@ class FormaACLManager
         $facebook_id = false,
         $twitter_id = false,
         $linkedin_id = false,
-        $google_id = false
+        $google_id = false,
+        $source = 'registration'
     ) {
         if ($idst === false) {
             $idst = $this->_createST();
@@ -561,6 +562,7 @@ class FormaACLManager
 
         $data = Events::trigger('core.user.creating', [
             'userdata' => $userdata,
+            'source' => $source,
         ]);
 
         $userdata = $data['userdata'];
@@ -604,7 +606,7 @@ class FormaACLManager
             $userdata = $this->getUser($idst, false);
 
             if ($userdata) {
-                Events::trigger('core.user.created', ['idst' => $idst, 'userdata' => $userdata]);
+                Events::trigger('core.user.created', ['idst' => $idst, 'userdata' => $userdata, 'source' => $source,]);
             }
 
             return $idst;

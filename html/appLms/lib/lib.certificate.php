@@ -160,11 +160,18 @@ class Certificate
 
         $paginated_assignment = [];
         if ($pagination) {
-            $offset = $pagination['startIndex'];
-            $limit = $offset + $pagination['rowsPerPage'];
+                        if (array_key_exists('offset', $pagination)) {
+                $offset = $pagination['offset'];
+            } else {
+                $offset = $pagination['startIndex'];
+            }
+
+            $limit = $offset + (array_key_exists('rowsPerPage', $pagination) ? $pagination['rowsPerPage'] : $pagination['num_rows']);
             $limit = ($limit <= count($assignment) ? $limit : count($assignment));
             for ($i = $offset; $i < $limit; ++$i) {
-                $paginated_assignment[] = $assignment[$i];
+                if (isset($assignment[$i])) {
+                    $paginated_assignment[] = $assignment[$i];
+                }
             }
         }
 
@@ -244,6 +251,9 @@ class Certificate
 
         $assigned = [];
 
+        $eventResults = Events::trigger('lms.certificate.assigned.query', ['query' => $query, 'filter' => $filter]);
+
+        $query = $eventResults['query'];
         $res = sql_query($query);
         while ($row = sql_fetch_assoc($res)) {
             $assigned[] = $row;
@@ -324,6 +334,10 @@ class Certificate
             }
         }
 
+        $eventResults = Events::trigger('lms.certificate.assignable.query', ['query' => $query, 'filter' => $filter]);
+
+        $query = $eventResults['query'];
+
         $assignable = [];
 
         $res = sql_query($query);
@@ -388,7 +402,7 @@ class Certificate
 
         $eventResult = Events::trigger('lms.certificate.available', compact('id_cert', 'id_course', 'id_user', 'download'));
 
-        if($eventResult && array_key_exists('result',$eventResult)) {
+        if ($eventResult && array_key_exists('result', $eventResult)) {
             return $eventResult['result'];
         }
 
@@ -804,10 +818,11 @@ class Certificate
     /**
      *  $from_multi true and download false used for generating multiple certificates zipped in a file.
      */
-    public function send_certificate($id_certificate, $id_user, $id_course, $array_substituton = false, $download = true, $from_multi = false, $id_association = 0)
+    public function send_certificate($id_certificate, $id_user, $id_course, $array_substituton = [], $download = true, $from_multi = false, $id_association = 0, $params = [])
     {
         $isAggregatedCert = FormaLms\lib\Get::req('aggCert', DOTY_INT, 0);
         $idRecord = FormaLms\lib\Get::req('id', DOTY_INT, 0);
+
         if ($isAggregatedCert) {
             require_once \FormaLms\lib\Forma::inc(_lms_ . '/' . _folder_lib_ . '/lib.aggregated_certificate.php');
             $aggCertLib = new AggregatedCertificate();
@@ -821,6 +836,10 @@ class Certificate
 			WHERE id_certificate = '" . $id_certificate . "'
 				 AND id_course = '" . $id_course . "'
 				 AND id_user = '" . $id_user . "' ";
+
+        $eventResults  = Events::trigger('lms.certificate.send.query', ['query' => $query_certificate]);
+
+        $query_certificate = $eventResults['query'];
 
             if ($idRecord) {
                 $query_certificate = '
@@ -861,14 +880,51 @@ class Certificate
 		FROM %lms_certificate WHERE id_certificate = "' . $id_certificate . '"';
         [$name, $cert_structure, $base_language, $orientation, $bgimage] = sql_fetch_row(sql_query($query_certificate));
 
+
         require_once _base_ . '/lib/lib.upload.php';
 
-        if ($array_substituton !== false) {
+        if (!empty($array_substituton)) {
             $cert_structure = str_replace(array_keys($array_substituton), $array_substituton, $cert_structure);
         }
         $cert_structure = fillSiteBaseUrlTag($cert_structure);
 
         $cert_file = $id_course . '_' . $id_certificate . '_' . $id_user . '_' . time() . '_' . $name . '.pdf';
+
+        //save the generated file in database
+        $the_date = date('Y-m-d H:i:s');
+        if (!$isAggregatedCert) {
+            $queryAssign = 'INSERT INTO %lms_certificate_assign '
+                . ' ( id_certificate, id_course, id_user, on_date, cert_file ) '
+                . ' VALUES '
+                . " ( '" . $id_certificate . "', '" . $id_course . "', '" . $id_user . "', '" . $the_date . "', '" . addslashes($cert_file) . "' ) ";
+        } else {
+            $queryAssign = 'UPDATE ' . $aggCertLib->table_assign_agg_cert
+                . " SET on_date = '" . $the_date
+                . "', cert_file = '" . addslashes($cert_file)
+                . "' WHERE idUser = " . intval($id_user)
+                . ' AND idCertificate = ' . intval($id_certificate)
+                . ' AND idAssociation = ' . intval($id_association);
+        }
+
+
+        $eventResults = Events::trigger('lms.certificate.send', [
+            'cert_structure' =>  $cert_structure,
+            'isAggregatedCert' => $isAggregatedCert,
+            'id_certificate' => $id_certificate ,
+            'id_course' => $id_course,
+            'id_user' => $id_user,
+            'the_date' => $the_date,
+            'params' => $params,
+        ]);
+
+        if ($eventResults && array_key_exists('cert_structure', $eventResults)) {
+            $cert_structure = $eventResults['cert_structure'];
+        }
+
+        if ($eventResults && array_key_exists('query_assign', $eventResults)) {
+            $queryAssign = $eventResults['query_assign'];
+        }
+
 
         sl_open_fileoperations();
         if (!$fp = sl_fopen(CERTIFICATE_PATH . $cert_file, 'w')) {
@@ -884,22 +940,8 @@ class Certificate
         fclose($fp);
         sl_close_fileoperations();
 
-        //save the generated file in database
-        $the_date = date('Y-m-d H:i:s');
-        if (!$isAggregatedCert) {
-            $query = 'INSERT INTO %lms_certificate_assign '
-                . ' ( id_certificate, id_course, id_user, on_date, cert_file ) '
-                . ' VALUES '
-                . " ( '" . $id_certificate . "', '" . $id_course . "', '" . $id_user . "', '" . $the_date . "', '" . addslashes($cert_file) . "' ) ";
-        } else {
-            $query = 'UPDATE ' . $aggCertLib->table_assign_agg_cert
-                . " SET on_date = '" . $the_date
-                . "', cert_file = '" . addslashes($cert_file)
-                . "' WHERE idUser = " . intval($id_user)
-                . ' AND idCertificate = ' . intval($id_certificate)
-                . ' AND idAssociation = ' . intval($id_association);
-        }
-        if (!sql_query($query)) {
+
+        if (!sql_query($queryAssign)) {
             return false;
         }
 
@@ -937,7 +979,7 @@ class Certificate
         return $id_course;
     }
 
-    public function getInfoForCourseCertificate($id_course, $id_certificate, $id_user = false)
+    public function getInfoForCourseCertificate($id_course, $id_certificate, $id_user = false, $params = [])
     {
         // Get Course info
         $query = 'SELECT name' .
@@ -981,6 +1023,9 @@ class Certificate
             $query .= " AND id_user = $id_user";
         }
 
+        $eventResults = Events::trigger('lms.certificate.assign.query', ['query' => $query]);
+
+        $query = $eventResults['query'];
         $result = sql_query($query);
 
         while ($row = sql_fetch_row($result)) {

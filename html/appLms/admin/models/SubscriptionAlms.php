@@ -271,7 +271,7 @@ class SubscriptionAlms extends Model implements Accessible
         return $res;
     }
 
-    public function subscribeUser($id_user, $level, $waiting, $date_begin_validity = false, $date_expire_validity = false, $overbooking = 0)
+    public function subscribeUser($id_user, $level, $waiting, $date_begin_validity = false, $date_expire_validity = false, $overbooking = 0, $source = 'admin')
     {
         Events::trigger('lms.course_user.subscribing', [
             'id_user' => $id_user,
@@ -282,7 +282,8 @@ class SubscriptionAlms extends Model implements Accessible
             'overbooking' => $overbooking,
             'id_course' => $this->id_course,
             'id_date' => $this->id_date,
-            'id_edition' => $this->id_edition
+            'id_edition' => $this->id_edition,
+            'source' => $source,
         ]);
 
         if ($this->id_edition != 0) {
@@ -299,7 +300,7 @@ class SubscriptionAlms extends Model implements Accessible
             require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php'); // elearning enrollment
             $subscribe_man = new CourseSubscribe_Manager();
 
-            $result = $subscribe_man->subscribeUserToCourse($id_user, $this->id_course, $level, $waiting, $date_begin_validity, $date_expire_validity, $overbooking);
+            $result = $subscribe_man->subscribeUserToCourse($id_user, $this->id_course, $level, $waiting, $date_begin_validity, $date_expire_validity, $overbooking, $source);
         }
 
         Events::trigger('lms.course_user.subscribed', [
@@ -311,7 +312,8 @@ class SubscriptionAlms extends Model implements Accessible
             'overbooking' => $overbooking,
             'id_course' => $this->id_course,
             'id_date' => $this->id_date,
-            'id_edition' => $this->id_edition
+            'id_edition' => $this->id_edition,
+            'source' => $source,
         ]);
 
         return $result;

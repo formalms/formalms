@@ -121,7 +121,12 @@ class User_API extends API
             false, // alredy_encripted
             $set_idst,
             (isset($userdata['pwd_expire_at']) ? $userdata['pwd_expire_at'] : ''),
-            (isset($userdata['force_change']) ? $userdata['force_change'] : 0)
+            (isset($userdata['force_change']) ? $userdata['force_change'] : 0),
+            false,
+            false,
+            false,
+            false,
+            'api'
         );
 
         //TODO: EVT_OBJECT (§)
@@ -141,7 +146,11 @@ class User_API extends API
             $user_manager = new UserManager();
             $uma = new UsermanagementAdm();
             $reg_code_res = $user_manager->_render->processRegistrationCode(
-                $this->aclManager, $uma, $id_user, $userdata['reg_code'], $userdata['reg_code_type']
+                $this->aclManager,
+                $uma,
+                $id_user,
+                $userdata['reg_code'],
+                $userdata['reg_code_type']
             );
             if ($reg_code_res['success'] == false) {
                 $this->aclManager->deleteUser($id_user);
@@ -216,7 +225,6 @@ class User_API extends API
                             $this->aclManager->addToGroup($ocd, $id_user);
                             $entities[$oc] = $oc;
                             $entities[$ocd] = $ocd;
-
                         }
                     }
                 }
@@ -243,7 +251,8 @@ class User_API extends API
             }
 
 
-            $enrollrules->newRules('_NEW_USER',
+            $enrollrules->newRules(
+                '_NEW_USER',
                 [$id_user],
                 $userdata['language'],
                 0, // idOrg
@@ -314,7 +323,6 @@ class User_API extends API
 
         if (!$user_data) {
             return -1;
-
         }
 
         if (isset($userdata['valid']) && $userdata['valid'] == '1') {
@@ -377,7 +385,7 @@ class User_API extends API
         $okcustom = true;
         if (isset($userdata['_customfields']) && $res) {
             require_once _adm_ . '/lib/lib.field.php';
-            $fields =& $userdata['_customfields'];
+            $fields = &$userdata['_customfields'];
             if (count($fields) > 0) {
                 $fl = new FieldList();
                 $okcustom = $fl->storeDirectFieldsForUser($id_user, $fields);
@@ -645,8 +653,18 @@ class User_API extends API
         $kb_model = new KbAlms();
         $sf = $kb_model->getSearchFilter($id_user, $filter_text, $course_filter);
 
-        $res_arr = $kb_model->getResources(0, $start_index, $results, false,
-            false, $sf['where'], $sf['search'], false, true, $sf['show_what']);
+        $res_arr = $kb_model->getResources(
+            0,
+            $start_index,
+            $results,
+            false,
+            false,
+            $sf['where'],
+            $sf['search'],
+            false,
+            true,
+            $sf['show_what']
+        );
 
         foreach ($res_arr['data'] as $key => $content_info) {
             $output[]['content_info'] = $content_info;

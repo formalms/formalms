@@ -17,6 +17,8 @@ class AdmController extends Controller
 {
     protected $_mvc_name = 'admcontroller';
 
+     public const PREFIX = 'adm';
+
     public function viewPath()
     {
         return _adm_ . '/views';

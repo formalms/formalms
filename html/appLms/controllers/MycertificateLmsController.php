@@ -55,7 +55,17 @@ class MycertificateLmsController extends LmsController
         $totalMetaCertificates = count($metaCertificates);
         $cert_columns = Util::config('tables.mycert_columns');
         $selected_tab = FormaLms\lib\Get::req('current_tab', DOTY_STRING, 'cert');
-        $this->render('show',
+
+
+
+        $view = 'show';
+
+        $eventResults = Events::trigger('lms.certificate.show', ['view' => $view]);
+
+        $view = $eventResults['view'];
+
+
+        $this->render($view,
             [
                 'metacertificates' => $this->json->encode($metaCertificates),
                 'certa' => $this->json->encode(\Util::config('tables.columnsacert')),
@@ -141,11 +151,19 @@ class MycertificateLmsController extends LmsController
 
     public function downloadMetaCert()
     {
+        $params = [];
         $id_certificate = importVar('id_certificate', true, 0);
         $id_association = importVar('id_association', true, 0);
+        $id_course = importVar('id_course', true, 0);
         $id_user = $this->id_user;
 
+        $eventResults = Events::trigger('lms.certificate.download.meta', compact('id_certificate', 'id_association', 'id_course', 'id_user'));
+
+        if($eventResults && array_key_exists('params', $eventResults)) {
+            $params = array_merge($params, $eventResults['params']);
+        }
+        
         $subs = $this->certificate->getSubstitutionArray($id_user, $id_course, $id_association);
-        $rs = $this->certificate->send_certificate($id_certificate, $id_user, 0, $subs, true, false, $id_association);
+        $rs = $this->certificate->send_certificate($id_certificate, $id_user, 0, $subs, true, false, $id_association, $params);
     }
 }

@@ -17,6 +17,8 @@ class AlmsController extends Controller
 {
     protected $_mvc_name = 'almscontroller';
 
+     public const PREFIX = 'alms';
+
     public function viewPath()
     {
         return _lms_ . '/admin/views';

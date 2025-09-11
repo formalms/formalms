@@ -50,22 +50,24 @@ class CourseSubscribe_Manager
         $this->array_user_status = [
             //-4 => Lang::t('_USER_STATUS_CANCELLED','subscribe'),
             //-3 => '',
-            _CUS_WAITING_LIST => Lang::t('_WAITING_USERS','subscribe'),
-            _CUS_CONFIRMED => Lang::t('_USER_STATUS_CONFIRMED','subscribe'),
-            _CUS_SUBSCRIBED => Lang::t('_USER_STATUS_SUBS','subscribe'),
-            _CUS_BEGIN => Lang::t('_USER_STATUS_BEGIN','subscribe'),
-            _CUS_END => Lang::t('_USER_STATUS_END','subscribe'),
-            _CUS_SUSPEND => Lang::t('_USER_STATUS_SUSPEND','subscribe'),
-            _CUS_OVERBOOKING => Lang::t('_USER_STATUS_OVERBOOKING','subscribe'),
+            _CUS_WAITING_LIST => Lang::t('_WAITING_USERS', 'subscribe'),
+            _CUS_CONFIRMED => Lang::t('_USER_STATUS_CONFIRMED', 'subscribe'),
+            _CUS_SUBSCRIBED => Lang::t('_USER_STATUS_SUBS', 'subscribe'),
+            _CUS_BEGIN => Lang::t('_USER_STATUS_BEGIN', 'subscribe'),
+            _CUS_END => Lang::t('_USER_STATUS_END', 'subscribe'),
+            _CUS_SUSPEND => Lang::t('_USER_STATUS_SUSPEND', 'subscribe'),
+            _CUS_OVERBOOKING => Lang::t('_USER_STATUS_OVERBOOKING', 'subscribe'),
         ];
 
-        $this->array_user_level = [1 => Lang::t('_LEVEL_1', 'levels'),
+        $this->array_user_level = [
+            1 => Lang::t('_LEVEL_1', 'levels'),
             2 => Lang::t('_LEVEL_2', 'levels'),
             3 => Lang::t('_LEVEL_3', 'levels'),
             4 => Lang::t('_LEVEL_4', 'levels'),
             5 => Lang::t('_LEVEL_5', 'levels'),
             6 => Lang::t('_LEVEL_6', 'levels'),
-            7 => Lang::t('_LEVEL_7', 'levels'),];
+            7 => Lang::t('_LEVEL_7', 'levels'),
+        ];
     }
 
     /**
@@ -148,6 +150,14 @@ class CourseSubscribe_Manager
             if (isset($filter['date_valid']) && strlen($filter['date_valid']) >= 10) {
                 $query .= " AND (s.date_begin_validity <= '" . $filter['date_valid'] . "' OR s.date_begin_validity IS NULL)";
                 $query .= " AND (s.date_expire_validity >= '" . $filter['date_valid'] . "' OR s.date_expire_validity IS NULL)";
+            }
+
+            if (isset($filter['status']) && $filter['status'] != '') {
+                $query .= ' AND s.status = ' . $filter['status'] . ' ';
+            }
+
+            if (isset($filter['date_complete']) && strlen($filter['date_complete']) >= 10) {
+                $query .= " AND DATE(s.date_complete) = DATE('" . Format::dateDb($filter['date_complete'], 'date') . "') ";
             }
 
             if (isset($filter['show'])) {
@@ -284,6 +294,10 @@ class CourseSubscribe_Manager
             case 'status':
                 $query .= ' ORDER BY s.status ' . $dir . ', u.userid ' . $dir;
                 break;
+
+            case 'date_complete':
+                $query .= ' ORDER BY s.date_complete ' . $dir . ', u.userid ' . $dir;
+                break;
         }
 
         ($start_index === false ? '' : $query .= ' LIMIT ' . $start_index . ', ' . $results);
@@ -302,7 +316,8 @@ class CourseSubscribe_Manager
                 $user = '';
             }
 
-            $res[] = ['sel' => '',
+            $res[] = [
+                'sel' => '',
                 'id_user' => $id_user,
                 'userid' => $this->acl_man->relativeId($userid),
                 'fullname' => $user,
@@ -314,7 +329,8 @@ class CourseSubscribe_Manager
                 'date_begin_validity' => $date_begin_validity,
                 'date_expire_validity' => $date_expire_validity,
                 'waiting' => $waiting > 0,
-                'del' => 'ajax.adm_server.php?r=alms/subscription/delPopUp&id_course=' . $id_course . '&id_user=' . $id_user,];
+                'del' => 'ajax.adm_server.php?r=alms/subscription/delPopUp&id_course=' . $id_course . '&id_user=' . $id_user,
+            ];
         }
 
         return $res;
@@ -383,9 +399,16 @@ class CourseSubscribe_Manager
         return $res;
     }
 
-    public function subscribeUserToCourse($id_user, $id_course, $level = 3, $waiting = 0, $date_begin_validity = false,
-                                          $date_expire_validity = false, $overbooking = 0)
-    {
+    public function subscribeUserToCourse(
+        $id_user,
+        $id_course,
+        $level = 3,
+        $waiting = 0,
+        $date_begin_validity = false,
+        $date_expire_validity = false,
+        $overbooking = 0,
+        $source = 'admin'
+    ) {
         if ($this->controlSubscription($id_user, $id_course)) {
             return true;
         }
@@ -397,6 +420,7 @@ class CourseSubscribe_Manager
             'waiting' => $waiting,
             'date_begin_validity' => $date_begin_validity,
             'date_expire_validity' => $date_expire_validity,
+            'source' => $source,
         ]);
 
         $level = $data['level'];
@@ -437,6 +461,7 @@ class CourseSubscribe_Manager
                 'waiting' => $waiting,
                 'date_begin_validity' => $date_begin_validity,
                 'date_expire_validity' => $date_expire_validity,
+                'source' => $source
             ]);
         }
 
@@ -684,12 +709,11 @@ class CourseSubscribe_Manager
                 }
 
                 return true; //this should be in dependance with above results
-            } elseif($new_status != _CUS_END && $oldStatus == _CUS_END) { //no 'completed' status --> just return with "ok"
+            } elseif ($new_status != _CUS_END && $oldStatus == _CUS_END) { //no 'completed' status --> just return with "ok"
                 require_once _lms_ . '/lib/lib.coursepath.php';
                 $cpmodel = new CoursePath_Manager();
                 $cpmodel->unAssignComplete($data['id_course'], $data['id_user']);
-            }
-            else{
+            } else {
                 return true;
             }
         } else { //query error
@@ -955,13 +979,15 @@ class CourseSubscribe_Manager
             $msg_composer->setBodyLangText('sms', '_USER_END_COURSE_TEXT_SMS', $array_subst);
 
             // send message to the user subscribed
-            createNewAlert('UserCourseEnded',
+            createNewAlert(
+                'UserCourseEnded',
                 'status',
                 'modify',
                 '1',
                 'User end course',
                 $teachers,
-                $msg_composer);
+                $msg_composer
+            );
 
             //add course's competences scores to user
             /*
@@ -1123,25 +1149,22 @@ class CourseSubscribe_Management
      *
      * @return bool true if success, false otherwise
      */
-    public function subscribeUsers($arr_users, $id_course, $levels, $id_log = false)
+    public function subscribeUsers($arr_users, $id_course, $levels, $id_log = false, $source = 'admin')
     {
         if (empty($arr_users)) {
             return true;
         }
 
         $re = true;
+        $waiting = 0;
         $group_levels = &$this->course_man->getCourseIdstGroupLevel($id_course);
         $user_level = $this->course_man->getLevelsOfUsers($id_course, $arr_users);
-
+        $subscriptionAlms = new SubscriptionAlms($id_course);
         foreach ($arr_users as $id_user) {
             $lv = (is_array($levels) ? $levels[$id_user] : $levels);
             if (!isset($user_level[$id_user])) {
                 $this->acl_man->addToGroup($group_levels[$lv], $id_user);
-
-                $query = 'INSERT INTO ' . $GLOBALS['prefix_lms'] . "_courseuser
-				( idUser, idCourse, level, waiting, subscribed_by, date_inscr, rule_log ) VALUES
-				( '" . $id_user . "', '" . $id_course . "', '" . $lv . "', '0', '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "', '" . date('Y-m-d H:i:s') . "', " . ($id_log ? (int)$id_log : 'NULL') . ' )';
-                $re &= $this->_query($query);
+                $subscriptionAlms->subscribeUser($id_user, $group_levels[$lv], $waiting, false, false, 0, $source);
             } else {
                 $old_lv = $user_level[$id_user];
 
@@ -1168,9 +1191,9 @@ class CourseSubscribe_Management
      *
      * @return bool true if success, false otherwise
      */
-    public function subscribeUser($id_user, $id_course, $level_number)
+    public function subscribeUser($id_user, $id_course, $level_number, $source = 'admin')
     {
-        return $this->subscribeUsers([$id_user], $id_course, $level_number);
+        return $this->subscribeUsers([$id_user], $id_course, $level_number, false, $source);
     }
 
     public function retriveLogSubscriptionInfo($id_log)
@@ -1228,7 +1251,7 @@ class CourseSubscribe_Management
      *
      * @return bool true if success, false otherwise
      */
-    public function unsubscribeUsers($arr_users, $id_course,$idPath = 0)
+    public function unsubscribeUsers($arr_users, $id_course, $idPath = 0)
     {
         if (empty($arr_users)) {
             return true;
@@ -1279,7 +1302,7 @@ class CourseSubscribe_Management
     public function unsubscribeUserFromAllCourses($id_user, $id_path = 0)
     {
 
-        if($id_path != 0){
+        if ($id_path != 0) {
             $query = '
                     SELECT id_item
                     FROM ' . $GLOBALS['prefix_lms'] . "_coursepath_courses
@@ -1288,9 +1311,9 @@ class CourseSubscribe_Management
             $res = false;
             while (list($id_course) = sql_fetch_row($courseCoursepath)) {
                 $arrayUser = explode(",", $id_user);
-                foreach ($arrayUser as $user){
+                foreach ($arrayUser as $user) {
                     $res = $this->unsubscribeUsers($user, $id_course, $id_path);
-                    if($res) {
+                    if ($res) {
                         $modelEdition = new DateManager();
 
                         $isInEdition = $modelEdition->controlUserSubscriptions($user, $id_course);
@@ -1310,11 +1333,10 @@ class CourseSubscribe_Management
                     WHERE idUser = '" . $id_user . "'");
 
             $res = true;
-            foreach ($re as $row){
+            foreach ($re as $row) {
                 $id_course = $row['idCourse'];
                 $res &= $this->unsubscribeUsers([$id_user], $id_course);
             }
-
         }
         return $res;
     }
@@ -1414,7 +1436,7 @@ class CourseSubscribe_Management
      *
      * @return bool true if success, false otherwise
      */
-    public function subscribeUserWithConnection($id_user, $id_course, $level, $connection, $date = false)
+    public function subscribeUserWithConnection($id_user, $id_course, $level, $connection, $date = false, $date_complete = null)
     {
         $query_courseuser = '
 		SELECT idUser, level, imported_from_connection
@@ -1424,15 +1446,12 @@ class CourseSubscribe_Management
 
         $re = true;
         $group_levels = &$this->course_man->getCourseIdstGroupLevel($id_course);
-
+        $model = new SubscriptionAlms($id_course);
+        $waiting = 0;
         if (!sql_num_rows($re_courseuser)) {
             $this->acl_man->addToGroup($group_levels[$level], $id_user);
 
-            $query = 'INSERT INTO ' . $GLOBALS['prefix_lms'] . "_courseuser
-			( idUser, idCourse, level, waiting, subscribed_by, date_inscr, imported_from_connection ) VALUES
-			( '" . $id_user . "', '" . $id_course . "', '" . $level . "', '0', '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "', '" . ($date ? $date : date('Y-m-d H:i:s')) . "', '" . $connection . "' )";
-
-            $re &= $this->_query($query);
+            $re = $model->subscribeUser($id_user, $level, $waiting, false, false, 0, 'connector');
         } else {
             [$id_user, $old_lv, $import_from] = sql_fetch_row($re_courseuser);
             if ($import_from !== $connection) {

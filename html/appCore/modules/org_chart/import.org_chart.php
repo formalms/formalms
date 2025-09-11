@@ -26,14 +26,28 @@ class ImportUser extends FormaImport_Destination
     public $last_error = null;
     public $mandatory_cols = ['userid'];
     public $default_cols = [
-        'firstname' => '', 'lastname' => '', 'pass' => '',
-        'email' => '', 'avatar' => '',
+        'firstname' => '',
+        'lastname' => '',
+        'pass' => '',
+        'email' => '',
+        'avatar' => '',
     ];
     public $ignore_cols = [
-        'idst', 'avatar', 'lastenter', 'valid', 'pwd_expire_at', 'level', 'register_date', 'force_change',
-        'facebook_id', 'twitter_id', 'linkedin_id', 'google_id', 'privacy_policy',
+        'idst',
+        'avatar',
+        'lastenter',
+        'valid',
+        'pwd_expire_at',
+        'level',
+        'register_date',
+        'force_change',
+        'facebook_id',
+        'twitter_id',
+        'linkedin_id',
+        'google_id',
+        'privacy_policy',
     ];
-    public $valid_filed_type = ['textfield', 'date', 'dropdown', 'yesno', 'freetext', 'country',	'gmail', 'icq', 'msn', 'skype', 'yahoo', 'codicefiscale', 'country'];
+    public $valid_filed_type = ['textfield', 'date', 'dropdown', 'yesno', 'freetext', 'country',    'gmail', 'icq', 'msn', 'skype', 'yahoo', 'codicefiscale', 'country'];
     public $cols_descriptor = null;
     public $dbconn = null;
     public $tree = 0;
@@ -187,9 +201,7 @@ class ImportUser extends FormaImport_Destination
         return true;
     }
 
-    public function close()
-    {
-    }
+    public function close() {}
 
     public function get_tot_cols()
     {
@@ -342,7 +354,8 @@ class ImportUser extends FormaImport_Destination
                         false,
                         false,
                         false,
-                        false
+                        false,
+                        'import_csv'
                     );
 
                     if ($idst === false) {
@@ -372,8 +385,8 @@ class ImportUser extends FormaImport_Destination
                         $this->last_error = 'Error on update user';
                         $err = true;
                     }
-                } 
-    
+                }
+
                 break;
             case 'create_all':
                 $a = 1;
@@ -399,7 +412,8 @@ class ImportUser extends FormaImport_Destination
                     false,
                     false,
                     false,
-                    false
+                    false,
+                    'import_csv'
                 );
 
                 if ($idst === false) {
@@ -408,7 +422,7 @@ class ImportUser extends FormaImport_Destination
                 }
                 break;
             case 'only_create':
-                if ($idst === false ) {
+                if ($idst === false) {
                     // create a new user
                     $idst = $acl_manager->registerUser(
                         $userid,
@@ -424,7 +438,9 @@ class ImportUser extends FormaImport_Destination
                         $force_change,
                         false,
                         false,
-                        false
+                        false,
+                        false,
+                        'import_csv'
                     );
 
                     if ($idst === false) {
@@ -436,8 +452,8 @@ class ImportUser extends FormaImport_Destination
                     $this->last_error = Lang::t('_USER_ALREADY_EXISTS', 'standard') . ' --> ' . $userid . ' | ' . $firstname . ' | ' . $lastname . ' | ' . $pass . ' | ' . $email . ' |';
 
                     return false;
-                } 
-                
+                }
+
                 break;
             case 'only_update':
                 if ($userid) {   //if($sameuserid !== false) {
@@ -641,9 +657,7 @@ class ImportGroupUser extends FormaImport_Destination
         return true;
     }
 
-    public function close()
-    {
-    }
+    public function close() {}
 
     public function get_tot_cols()
     {
