@@ -41,33 +41,33 @@ class SubscriptionAlms extends Model implements Accessible
     {
         $this->db = \FormaLms\db\DbConn::getInstance();
         $this->acl_man = \FormaLms\lib\Forma::getAclManager();
-        $this->id_course = (int) $id_course;
-        $this->id_edition = (int) $id_edition;
-        $this->id_date = (int) $id_date;
+        $this->id_course = (int)$id_course;
+        $this->id_edition = (int)$id_edition;
+        $this->id_date = (int)$id_date;
         parent::__construct();
     }
 
     /** @deprecated */
     public function setCourseData($id_course, $id_edition = false, $id_date = false)
     {
-        $this->id_course = (int) $id_course;
-        $this->id_edition = (int) $id_edition;
-        $this->id_date = (int) $id_date;
+        $this->id_course = (int)$id_course;
+        $this->id_edition = (int)$id_edition;
+        $this->id_date = (int)$id_date;
     }
 
     public function setIdCourse($id_course)
     {
-        $this->id_course = (int) $id_course;
+        $this->id_course = (int)$id_course;
     }
 
     public function setIdEdition($id_edition)
     {
-        $this->id_edition = (int) $id_edition;
+        $this->id_edition = (int)$id_edition;
     }
 
     public function setIdDate($id_date)
     {
-        $this->id_date = (int) $id_date;
+        $this->id_date = (int)$id_date;
     }
 
     public function loadUser($start_index = false, $results = false, $sort = false, $dir = false, $filter = false, $adminFilter = true)
@@ -262,7 +262,7 @@ class SubscriptionAlms extends Model implements Accessible
     {
         $query = 'SELECT path_code, path_name'
             . ' FROM %lms_coursepath'
-            . ' WHERE id_path = ' . (int) $id_path;
+            . ' WHERE id_path = ' . (int)$id_path;
 
         [$code, $name] = sql_fetch_row(sql_query($query));
 
@@ -317,12 +317,12 @@ class SubscriptionAlms extends Model implements Accessible
         return $result;
     }
 
-    public function delUser($id_user, $idCourse = null, $idEdition = 0, $idDate = 0)
+    public function delUser($id_user, $idCourse = null, $idEdition = null, $idDate = null)
     {
 
-        $idCourseToConsider = $idCourse ?? $this->id_course;
-        $idEditionToConsider = $idEdition ?? $this->id_edition;
-        $idDateToConsider = $idDate ?? $this->id_date;
+        $idCourseToConsider = $idCourse || $idCourse !== 0 ? $idCourse : $this->id_course;
+        $idEditionToConsider = $idEdition || $idEdition !== 0 ? $idEdition : $this->id_edition;
+        $idDateToConsider = $idDate || $idDate !== 0 ? $idDate : $this->id_date;
 
         $cmodel = new CourseAlms($idCourseToConsider, $idDateToConsider, $idEditionToConsider);
         if ($this->id_edition != 0) {
@@ -488,7 +488,7 @@ class SubscriptionAlms extends Model implements Accessible
                     } else {
                         $subject = Lang::t('NEXT_USER_ENTERED_SUBJECT', 'email');
                         $email_body = Lang::t('NEXT_USER_ENTERED_BODY', 'email', $array_subst);
-                        $calendar = CalendarManager::getCalendarDataContainerForDateDays((int) $idCourseToConsider, (int) $idDateToConsider, (int) $user_info[ACL_INFO_IDST]);
+                        $calendar = CalendarManager::getCalendarDataContainerForDateDays((int)$idCourseToConsider, (int)$idDateToConsider, (int)$user_info[ACL_INFO_IDST]);
                         $attachments = [$calendar->getFile()];
                     }
                     $user_notification->_sendMail($subject, $email_body, $attachments, $recipients, $user_info_arr);
@@ -694,7 +694,7 @@ class SubscriptionAlms extends Model implements Accessible
         }
 
         $query = 'UPDATE %lms_courseuser SET date_begin_validity = NULL, date_expire_validity = NULL '
-            . ' WHERE idCourse = ' . (int) $id_course . ' AND idUser = ' . (int) $id_user . ' '; //.((int)$id_edition > 0 ? " AND edition_id = ".(int)$id_edition : "");
+            . ' WHERE idCourse = ' . (int)$id_course . ' AND idUser = ' . (int)$id_user . ' '; //.((int)$id_edition > 0 ? " AND edition_id = ".(int)$id_edition : "");
         $res = sql_query($query);
 
         return $res ? true : false;
@@ -738,13 +738,13 @@ class SubscriptionAlms extends Model implements Accessible
 
         if ($id_date > 0) {
             $query = 'SELECT requesting_unsubscribe FROM %lms_course_date_user '
-                . ' WHERE id_user = ' . (int) $id_user . ' AND id_date = ' . (int) $id_date;
+                . ' WHERE id_user = ' . (int)$id_user . ' AND id_date = ' . (int)$id_date;
         } elseif ($id_edition > 0) {
             $query = 'SELECT requesting_unsubscribe FROM %lms_course_editions_user '
-                . ' WHERE id_user = ' . (int) $id_user . ' AND id_edition = ' . (int) $id_edition;
+                . ' WHERE id_user = ' . (int)$id_user . ' AND id_edition = ' . (int)$id_edition;
         } else {
             $query = 'SELECT requesting_unsubscribe FROM %lms_courseuser '
-                . ' WHERE idUser = ' . (int) $id_user . ' AND idCourse = ' . (int) $id_course;
+                . ' WHERE idUser = ' . (int)$id_user . ' AND idCourse = ' . (int)$id_course;
         }
         $res = $this->db->query($query);
         if ($res && $this->db->num_rows($res) > 0) {
@@ -843,7 +843,7 @@ class SubscriptionAlms extends Model implements Accessible
         $res = $this->db->query($query);
         if ($res) {
             [$tot] = $this->db->fetch_row($res);
-            $output = (int) $tot;
+            $output = (int)$tot;
         }
 
         // -- Count for editions:
@@ -865,7 +865,7 @@ class SubscriptionAlms extends Model implements Accessible
         $res = $this->db->query($query);
         if ($res) {
             [$tot] = $this->db->fetch_row($res);
-            $output += (int) $tot;
+            $output += (int)$tot;
         }
 
         // -- Count for classrooms:
@@ -887,7 +887,7 @@ class SubscriptionAlms extends Model implements Accessible
         $res = $this->db->query($query);
         if ($res) {
             [$tot] = $this->db->fetch_row($res);
-            $output += (int) $tot;
+            $output += (int)$tot;
         }
 
         return $output > 0 ? $output : false;
@@ -898,10 +898,10 @@ class SubscriptionAlms extends Model implements Accessible
         $startIndex = $results = $sort = $dir = false;
 
         if (isset($pagination['startIndex'])) {
-            $startIndex = (int) $pagination['startIndex'];
+            $startIndex = (int)$pagination['startIndex'];
         }
         if (isset($pagination['results'])) {
-            $results = (int) $pagination['results'];
+            $results = (int)$pagination['results'];
         }
         if (isset($pagination['dir'])) {
             switch (strtolower($pagination['dir'])) {
@@ -961,7 +961,7 @@ class SubscriptionAlms extends Model implements Accessible
         }
 
         if ($startIndex !== false && $results > 0) {
-            $query .= ' LIMIT ' . (int) $startIndex . ', ' . (int) $results;
+            $query .= ' LIMIT ' . (int)$startIndex . ', ' . (int)$results;
         }
 
         $output = false;
@@ -990,10 +990,10 @@ class SubscriptionAlms extends Model implements Accessible
         $startIndex = $results = $sort = $dir = false;
 
         if (isset($pagination['startIndex'])) {
-            $startIndex = (int) $pagination['startIndex'];
+            $startIndex = (int)$pagination['startIndex'];
         }
         if (isset($pagination['results'])) {
-            $results = (int) $pagination['results'];
+            $results = (int)$pagination['results'];
         }
         if (isset($pagination['dir'])) {
             switch (strtolower($pagination['dir'])) {
@@ -1095,7 +1095,7 @@ class SubscriptionAlms extends Model implements Accessible
         }
 
         if ($startIndex !== false && $results > 0) {
-            $query .= ' LIMIT ' . (int) $startIndex . ', ' . (int) $results;
+            $query .= ' LIMIT ' . (int)$startIndex . ', ' . (int)$results;
         }
 
         //if (!$req_tot && !$all) { echo $query; return true; }
@@ -1110,7 +1110,7 @@ class SubscriptionAlms extends Model implements Accessible
                 }
             } elseif ($req_tot) { // getUnsubscribeRequestsTotal
                 while (list($tot) = $this->db->fetch_row($res)) {
-                    $output = $output + (int) $tot;
+                    $output = $output + (int)$tot;
                 }
             } else { // Normal output
                 $output = [];
@@ -1142,7 +1142,7 @@ class SubscriptionAlms extends Model implements Accessible
         $cmodel = new CourseAlms();
         $cinfo = $cmodel->getCourseModDetails($id_course);
 
-        switch ((int) $cinfo['auto_unsubscribe']) {
+        switch ((int)$cinfo['auto_unsubscribe']) {
             case 0:
                 return false;
                 break;
@@ -1158,19 +1158,19 @@ class SubscriptionAlms extends Model implements Accessible
 
         if ($id_date > 0) {
             $query = 'UPDATE %lms_course_date_user SET requesting_unsubscribe = 1, requesting_unsubscribe_date = NOW() '
-                . ' WHERE id_user = ' . (int) $id_user . ' AND id_date = ' . (int) $id_date;
+                . ' WHERE id_user = ' . (int)$id_user . ' AND id_date = ' . (int)$id_date;
         } elseif ($id_edition > 0) {
             $query = 'UPDATE %lms_course_editions_user SET requesting_unsubscribe = 1, requesting_unsubscribe_date = NOW() '
-                . ' WHERE id_user = ' . (int) $id_user . ' AND id_edition = ' . (int) $id_edition;
+                . ' WHERE id_user = ' . (int)$id_user . ' AND id_edition = ' . (int)$id_edition;
         } else {
             $query = 'UPDATE %lms_courseuser SET requesting_unsubscribe = 1, requesting_unsubscribe_date = NOW() '
-                . ' WHERE idUser = ' . (int) $id_user . ' AND idCourse = ' . (int) $id_course;
+                . ' WHERE idUser = ' . (int)$id_user . ' AND idCourse = ' . (int)$id_course;
         }
 
         $res = $this->db->query($query);
 
         // check and send message for unsibscription moderated
-        if (($res) && (int) $cinfo['auto_unsubscribe'] == 1) {
+        if (($res) && (int)$cinfo['auto_unsubscribe'] == 1) {
             //moderated self unsubscribe
             $userinfo = $this->acl_man->getUser($id_user, false);
             $array_subst = [
@@ -1280,13 +1280,13 @@ class SubscriptionAlms extends Model implements Accessible
 
         if ($id_date > 0) { // classroom unsubscribe request
             $query = 'UPDATE %lms_course_date_user SET requesting_unsubscribe = 0, requesting_unsubscribe_date = NULL '
-                . ' WHERE id_user = ' . (int) $id_user . ' AND id_date = ' . (int) $id_date;
+                . ' WHERE id_user = ' . (int)$id_user . ' AND id_date = ' . (int)$id_date;
         } elseif ($id_edition > 0) {  // edition unsubscribe request
             $query = 'UPDATE %lms_course_editions_user SET requesting_unsubscribe = 0, requesting_unsubscribe_date = NULL '
-                . ' WHERE id_user = ' . (int) $id_user . ' AND id_edition = ' . (int) $id_edition;
+                . ' WHERE id_user = ' . (int)$id_user . ' AND id_edition = ' . (int)$id_edition;
         } else {  // course unsubscribe request
             $query = 'UPDATE %lms_courseuser SET requesting_unsubscribe = 0, requesting_unsubscribe_date = NULL '
-                . ' WHERE idUser = ' . (int) $id_user . ' AND idCourse = ' . (int) $id_course;
+                . ' WHERE idUser = ' . (int)$id_user . ' AND idCourse = ' . (int)$id_course;
         }
         $res = $this->db->query($query);
 
@@ -1330,7 +1330,7 @@ class SubscriptionAlms extends Model implements Accessible
             if ($this->controlCoursesWithEdition([$id_course])) {
                 $query = 'SELECT code, name, course_type'
                     . ' FROM %lms_course'
-                    . ' WHERE idCourse = ' . (int) $id_course;
+                    . ' WHERE idCourse = ' . (int)$id_course;
 
                 [$code, $name, $course_type] = sql_fetch_row(sql_query($query));
 
@@ -1410,7 +1410,7 @@ class SubscriptionAlms extends Model implements Accessible
             . ' ON (s.idUser = p.idUser)) '
             . ' JOIN %adm_user as u '
             . ' ON (s.idUser = u.idst) '
-            . ' WHERE p.id_path = ' . (int) $id_path . ' AND s.idCourse IN (' . implode(',', array_values($courses)) . ') ';
+            . ' WHERE p.id_path = ' . (int)$id_path . ' AND s.idCourse IN (' . implode(',', array_values($courses)) . ') ';
 
         if (is_array($filter)) {
             if (isset($filter['text']) && $filter['text'] != '') {
@@ -1500,7 +1500,7 @@ class SubscriptionAlms extends Model implements Accessible
             . ' ON (s.idUser = p.idUser)) '
             . ' JOIN %adm_user as u '
             . ' ON (s.idUser = u.idst) '
-            . ' WHERE p.id_path = ' . (int) $id_path . ' AND s.idCourse IN (' . implode(',', array_values($courses)) . ') '; //." GROUP BY s.idUser";
+            . ' WHERE p.id_path = ' . (int)$id_path . ' AND s.idCourse IN (' . implode(',', array_values($courses)) . ') '; //." GROUP BY s.idUser";
 
         if (is_array($filter)) {
             if (isset($filter['text']) && $filter['text'] != '') {
@@ -1576,7 +1576,7 @@ class SubscriptionAlms extends Model implements Accessible
 
         $query = 'SELECT DISTINCT idUser '
             . ' FROM %lms_coursepath_user '
-            . ' WHERE id_path = ' . (int) $id_path;
+            . ' WHERE id_path = ' . (int)$id_path;
 
 
         if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
@@ -1605,7 +1605,7 @@ class SubscriptionAlms extends Model implements Accessible
             return false;
         }
         if (is_numeric($users)) {
-            $users = [(int) $users];
+            $users = [(int)$users];
         }
         if (!is_array($users)) {
             return false;
@@ -1617,9 +1617,9 @@ class SubscriptionAlms extends Model implements Accessible
         require_once _lms_ . '/lib/lib.date.php';
         $man_subs = new CourseSubscribe_Management();
         // unsubscribe from all courses related to coursepath
-        $resUnsubFromAllCourses = $man_subs->unsubscribeUserFromAllCourses(implode(',', $users), (int) $id_path);
+        $resUnsubFromAllCourses = $man_subs->unsubscribeUserFromAllCourses(implode(',', $users), (int)$id_path);
         if ($resUnsubFromAllCourses) {
-            $query = 'DELETE FROM %lms_coursepath_user WHERE id_path=' . (int) $id_path . ' '
+            $query = 'DELETE FROM %lms_coursepath_user WHERE id_path=' . (int)$id_path . ' '
                 . ' AND idUser IN (' . implode(',', $users) . ')';
             $res = sql_query($query);
         }
@@ -1640,7 +1640,7 @@ class SubscriptionAlms extends Model implements Accessible
         }
 
         $query = 'UPDATE %lms_courseuser SET date_begin_validity = NULL, date_expire_validity = NULL '
-            . ' WHERE idCourse IN (' . implode(',', $courses) . ') AND idUser=' . (int) $id_user . '';
+            . ' WHERE idCourse IN (' . implode(',', $courses) . ') AND idUser=' . (int)$id_user . '';
         $res = sql_query($query);
 
         return $res ? true : false;
@@ -1652,7 +1652,7 @@ class SubscriptionAlms extends Model implements Accessible
             return false;
         }
         if (is_numeric($users)) {
-            $users = [(int) $users];
+            $users = [(int)$users];
         }
         if (!is_array($users)) {
             return false;
@@ -1765,6 +1765,7 @@ class SubscriptionAlms extends Model implements Accessible
      * Controlla tutti i corsi di tipo classroom o l'id del corso specificato,
      * e per ogni utente iscritto al corso verifica che sia iscritto ad almeno una data del corso d'aula.
      * Se un utente non è iscritto a nessuna data, lo elimina dal corso.
+     * Controlla anche il contrario: tutti gli utenti che sono iscritti nelle date ma non nel corso principale.
      * Versione ottimizzata con query unificate per ridurre la complessità e i cicli.
      *
      * @param int|null $id_course ID del corso opzionale. Se non specificato, controlla tutti i corsi classroom
@@ -1772,13 +1773,12 @@ class SubscriptionAlms extends Model implements Accessible
      */
     public function cleanupUsersNotEnrolledInClassroomDates($id_course = null)
     {
-        // Query unificata per trovare direttamente tutti gli utenti da rimuovere
-        // Trova utenti iscritti a corsi classroom che non sono iscritti a nessuna data
         $course_condition = '';
         if ($id_course !== null) {
             $course_condition = ' AND c.idCourse = ' . (int)$id_course;
         }
-        
+
+        // Prima query: trova utenti iscritti a corsi classroom che non sono iscritti a nessuna data
         $query = "
             SELECT DISTINCT cu.idUser, cu.idCourse
             FROM %lms_courseuser cu
@@ -1793,15 +1793,15 @@ class SubscriptionAlms extends Model implements Accessible
                 AND cdu.id_user = cu.idUser
             )
         ";
-        
+
         $result = sql_query($query);
         if (!$result) {
             return false;
         }
 
+        // Rimuovi utenti iscritti al corso ma non alle date
         if (!empty($result)) {
             foreach ($result as $row) {
-
                 $user_id = (int)$row['idUser'];
                 $course_id = (int)$row['idCourse'];
 
@@ -1815,7 +1815,42 @@ class SubscriptionAlms extends Model implements Accessible
                 sql_query($query_remove_related);
             }
         }
-        
+
+        // Seconda query: trova utenti iscritti alle date di corsi classroom ma non iscritti al corso principale
+        $query2 = "
+            SELECT DISTINCT cdu.id_user, cd.id_course, cdu.id_date
+            FROM %lms_course_date_user cdu
+            INNER JOIN %lms_course_date cd ON cd.id_date = cdu.id_date
+            INNER JOIN %lms_course c ON c.idCourse = cd.id_course
+            WHERE c.course_type = 'classroom'
+            $course_condition
+            AND NOT EXISTS (
+                SELECT 1 
+                FROM %lms_courseuser cu
+                WHERE cu.idCourse = cd.id_course 
+                AND cu.idUser = cdu.id_user
+            )
+        ";
+
+        $result = sql_query($query2);
+        if (!$result) {
+            return false;
+        }
+
+        // Rimuovi utenti iscritti alle date ma non al corso
+        if (!empty($result)) {
+            foreach ($result as $row) {
+                $user_id = (int)$row['id_user'];
+                $date_id = (int)$row['id_date'];
+
+                // Rimuovi l'utente dalla data del corso
+                $query_remove_date = "DELETE FROM %lms_course_date_user 
+                                     WHERE id_user = $user_id 
+                                     AND id_date = $date_id";
+                sql_query($query_remove_date);
+            }
+        }
+
         return true;
     }
 }

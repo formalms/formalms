@@ -343,7 +343,7 @@ class Man_Course
      *
      * @return false|void return som info about the course [code, name, description, status, difficult, subscribe_method, max_num_subscribe]
      */
-    public function getCourseInfo($idCourse)
+    public static function getCourseInfo($idCourse)
     {
         $query = "
 		SELECT *
