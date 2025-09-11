@@ -322,9 +322,9 @@ class SubscriptionAlms extends Model implements Accessible
     public function delUser($id_user, $idCourse = null, $idEdition = null, $idDate = null)
     {
 
-        $idCourseToConsider = $idCourse || $idCourse !== 0 ? $idCourse : $this->id_course;
-        $idEditionToConsider = $idEdition || $idEdition !== 0 ? $idEdition : $this->id_edition;
-        $idDateToConsider = $idDate || $idDate !== 0 ? $idDate : $this->id_date;
+        $idCourseToConsider = $idCourse ?? $this->id_course;
+        $idEditionToConsider = $idEdition ?? $this->id_edition;
+        $idDateToConsider = $idDate ?? $this->id_date;
 
         $cmodel = new CourseAlms($idCourseToConsider, $idDateToConsider, $idEditionToConsider);
         if ($this->id_edition != 0) {
