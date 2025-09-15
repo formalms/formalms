@@ -35,10 +35,9 @@ class MultiUserSelector
     public const ALL_USER_ACCESS = 1; //è l'idst che corrisponde al nodo master di org di forma che non è selezionabile in alcun modo dallo user selector e solo tramite il checkbox apposito
 
 
-
     public function __construct(array $requestParams)
     {
-        $this->db =\FormaLms\db\DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         $this->requestParams = $requestParams;
 
     }
@@ -48,20 +47,21 @@ class MultiUserSelector
         $className = self::NAMESPACE . $dataSelector;
         try {
             $this->dataSelectors[$key] = new $className();
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             dd($e);
         }
 
         return $this;
     }
 
-    public function setAccessProcessor(string $type) : self {
+    public function setAccessProcessor(string $type): self
+    {
 
         $className = self::PROCESSOR_NAMESPACE . ucfirst($type) . self::PROCESSOR_SUFFIX;
 
         try {
             $this->accessProcessor = new $className($this->requestParams);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             dd($e);
         }
 
@@ -74,117 +74,78 @@ class MultiUserSelector
         return $this->dataSelectors;
     }
 
-   public function associate($instanceId, $selection)
-   {
+    public function associate($instanceId, $selection)
+    {
 
         $return = $this->accessProcessor->applyAssociation($instanceId, $selection);
 
         return $return;
-   }
+    }
 
 
-   public function getAccessList($instanceId, $parsing = false)
-   {
+    public function getAccessList($instanceId, $parsing = false)
+    {
 
         $selection = $this->accessProcessor->getAccessList($instanceId);
 
+        if ($parsing) {
 
-       if ($parsing) {
-           $selection = $this->parseSelection($selection);
-       }
+            $selection = $this->parseSelection($selection);
+        }
 
-       return $selection;
-   }
+        return $selection;
+    }
 
 
-   public function getAccessProcessor(): object
-   {
-       return $this->accessProcessor;
-   }
+    public function getAccessProcessor(): object
+    {
+        return $this->accessProcessor;
+    }
 
-   public function getSelectedAllValue(): int
-   {
-       return self::ALL_USER_ACCESS;
-   }
+    public function getSelectedAllValue(): int
+    {
+        return self::ALL_USER_ACCESS;
+    }
 
     public function retrieveDataSelector($key): ?DataSelector
     {
         return $this->dataSelectors[$key];
     }
 
-
     public function parseSelection($selectedIds)
     {
         $selection = [];
 
         $selectString = count($selectedIds) && $selectedIds[0] != "" ? implode(",", $selectedIds) : 0;
-        $query = 'SELECT
-                    GROUP_CONCAT( DISTINCT(coretables.idst) ) AS ids,
-                    nametables.table_name AS selector
-                        FROM
-                        (
-                            SELECT
-                                idst,
-                                "user" AS table_name 
-                            FROM
-                                core_user 
-                            WHERE
-                                idst IN ( ' . $selectString . ' ) UNION ALL
-                            SELECT
-                                idst,
-                                "role" AS table_name 
-                            FROM
-                                core_role 
-                            WHERE
-                                idst IN ( ' . $selectString . ' ) UNION ALL
-                            SELECT
-                                idst,
-                                "org" AS table_name 
-                            FROM
-                                core_group 
-                            WHERE
-                                idst IN ( ' . $selectString . ' ) 
-                                AND groupid LIKE \'%/oc%\' UNION ALL
-                            SELECT
-                                idst,
-                                "group" AS table_name 
-                            FROM
-                                core_group 
-                            WHERE
-                                idst IN ( ' . $selectString . ') 
-                                AND groupid NOT LIKE \'%/oc%\' 
-                                ) coretables
-                    RIGHT JOIN (
-                            SELECT
-                                "user" AS table_name 
-                            FROM
-                                core_user UNION 
-                            SELECT
-                                "role" AS table_name 
-                            FROM
-                                core_role UNION 
-                            SELECT
-                                "org" AS table_name 
-                            FROM
-                                core_group 
-                            WHERE
-                                groupid LIKE \'%/oc%\' UNION 
-                            SELECT
-                                "group" AS table_name 
-                            FROM
-                                core_group 
-                            WHERE
-                                groupid NOT LIKE \'%/oc%\' 
-                                ) nametables ON nametables.table_name = coretables.table_name 
-                            GROUP BY
-                                nametables.table_name';
 
-        $results = $this->db->query($query) ?? [];
+        // Execute separate queries for each entity type to avoid ID overlap issues
+        $entityTypes = [
+            'user' => 'SELECT idst FROM core_user WHERE idst IN ( ' . $selectString . ' )',
+            'role' => 'SELECT idst FROM core_role WHERE idst IN ( ' . $selectString . ' )',
+            'org' => 'SELECT idst FROM core_group WHERE idst IN ( ' . $selectString . ' ) AND groupid LIKE \'%/oc%\'',
+            'group' => 'SELECT idst FROM core_group WHERE idst IN ( ' . $selectString . ' ) AND groupid NOT LIKE \'%/oc%\''
+        ];
 
-        if ($results) {
-            foreach ($results as $result) {
-                $selection[$result['selector']] = $result['ids'] ? explode(',', $result['ids']) : [];
+        // Initialize all entity types
+        $selection = [
+            'user' => [],
+            'role' => [],
+            'org' => [],
+            'group' => []
+        ];
+
+        // Execute each query separately to properly handle overlapping IDs
+        foreach ($entityTypes as $entityType => $query) {
+            $results = $this->db->query($query) ?? [];
+            $ids = [];
+
+            if ($results) {
+                foreach ($results as $result) {
+                    $ids[] = $result['idst'];
+                }
             }
+
+            $selection[$entityType] = $ids;
         }
 
         return $selection;

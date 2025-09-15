@@ -202,7 +202,7 @@ class UsermanagementAdm extends Model implements Accessible
         if (isset($pagination['sort'])) {
             if (is_numeric($pagination['sort']) || str_starts_with($pagination['sort'], '_custom')) {
                 //custom field
-                $sort = is_numeric($pagination['sort']) ? $pagination['sort'] : (int) explode('_', $pagination['sort'])[2];
+                $sort = is_numeric($pagination['sort']) ? $pagination['sort'] : (int)explode('_', $pagination['sort'])[2];
                 if (isset($fields[$sort][FIELD_INFO_TYPE]) && $fields[$sort][FIELD_INFO_TYPE] == 'dropdown') {
                     $query_type = 'custom_sons';
                 } else {
@@ -721,6 +721,7 @@ class UsermanagementAdm extends Model implements Accessible
     public function getTotalUsers($idOrg, $descendants = false, $filter = false, $usersFilter = false, $learning_filter = 'none', $columnsFilter = [])
     {
         $useAnonymous = false;
+        $useAnonymsous = false;
         $searchFilter = isset($filter['text']) ? $filter['text'] : false;
         $useSuspended = isset($filter['suspended']) ? (bool)$filter['suspended'] : true;
         $dynFilter = isset($filter['dyn_filter']) ? $filter['dyn_filter'] : false;
@@ -849,6 +850,7 @@ class UsermanagementAdm extends Model implements Accessible
             }
         }
         $res = $this->db->query($filtered_query) ?? [];
+
         $row = $this->db->fetch_row($res);
 
         $output = is_array($row) ? $row[0] : [];
@@ -2259,7 +2261,6 @@ class UsermanagementAdm extends Model implements Accessible
         [$id_parent] = sql_fetch_row(sql_query($query));
 
 
-
         [$src_left, $src_right, $lvl_src] = $this->getFolderLimits($src_folder);
         [$dest_left, $dest_right, $lvl_dest] = $this->getFolderLimits($dest_folder);
 
@@ -2471,8 +2472,9 @@ class UsermanagementAdm extends Model implements Accessible
 
         if ($res) {
             $output = [];
-            while (list($user) = $this->db->fetch_row($res)) {
-                $output[] = $user;
+
+            foreach ($res as $re) {
+                $output[] = $re['idstMember'];
             }
         }
 
@@ -2545,8 +2547,14 @@ class UsermanagementAdm extends Model implements Accessible
             . ((int)$limit > 0 ? ' LIMIT 0, ' . (int)$limit : '');
         $res = $this->db->query($query);
         if ($res) {
-            while ($obj = $this->db->fetch_obj($res)) {
-                $output[] = $obj;
+            foreach ($res as $user) {
+                $_userid = \FormaLms\lib\Forma::getAclManager()->relativeId($user['userid']);
+                $output[] = [
+                    'idst' => $user['idst'],
+                    'userid' => $_userid,
+                    'userid_highlight' => Layout::highlight($_userid, $query),
+                    'name' => $user['lastname'] . ' ' . $user['firstname'],
+                ];
             }
         }
 
@@ -2743,8 +2751,8 @@ class UsermanagementAdm extends Model implements Accessible
 
         $output = [];
         if ($res) {
-            while (list($idst) = $this->db->fetch_row($res)) {
-                $output[] = (int)$idst;
+            foreach ($output as $row) {
+                $output[] = $row['idst'];
             }
         }
 
@@ -2775,7 +2783,7 @@ class UsermanagementAdm extends Model implements Accessible
         return $output;
     }
 
-    public function getWaitingUsersList($pagination = [], $filter = false)
+    public function getWaitingUsersList($pagination = [], $filter = false, $link = '')
     {
         if (!is_array($pagination)) {
             $pagination = [];
@@ -2840,8 +2848,20 @@ class UsermanagementAdm extends Model implements Accessible
 
         $output = [];
         if ($res) {
-            while ($obj = $this->db->fetch_obj($res)) {
-                $output[] = $obj;
+            foreach ($res as $record) {
+                $_userid = \FormaLms\lib\Forma::getAclManager()->relativeId($record['userid']);
+                $_inserted_by = $record['inserted_by'] != '' ? \FormaLms\lib\Forma::getAclManager()->relativeId($record['inserted_by']) : '';
+                $output[] = [
+                    'id' => (int)$record['idst'],
+                    'userid' => Layout::highlight($_userid, $filter),
+                    'firstname' => Layout::highlight($record['firstname'], $filter),
+                    'lastname' => Layout::highlight($record['lastname'], $filter),
+                    'email' => Layout::highlight($record['email'], $filter),
+                    'confirmed' => Layout::highlight($record['confirmed'], $filter),
+                    'insert_date' => Format::date($record['insert_date'], 'datetime'),
+                    'inserted_by' => $_inserted_by,
+                    'del' => 'ajax.adm_server.php?r=' . $link . '/delete_waiting&id_user=' . (int)$record['idst'],
+                ];
             }
         } else {
             return false;
@@ -2938,8 +2958,18 @@ class UsermanagementAdm extends Model implements Accessible
 
         $output = [];
         if ($res) {
-            while ($obj = $this->db->fetch_obj($res)) {
-                $output[] = $obj;
+            foreach ($res as $record) {
+                $_userid = \FormaLms\lib\Forma::getAclManager()->relativeId($record['userid']);
+                $_deleted_by = $record['deleted_by'] != '' ? \FormaLms\lib\Forma::getAclManager()->relativeId($record['deleted_by']) : '';
+                $output[] = [
+                    'id' => (int)$record['idst'],
+                    'userid' => Layout::highlight($_userid, $filter),
+                    'firstname' => Layout::highlight($record['firstname'], $filter),
+                    'lastname' => Layout::highlight($record['lastname'], $filter),
+                    'email' => Layout::highlight($record['email'], $filter),
+                    'deletion_date' => Format::date($record['deletion_date'], 'datetime'),
+                    'deleted_by' => $_deleted_by,
+                ];
             }
         } else {
             return false;
@@ -2997,7 +3027,7 @@ class UsermanagementAdm extends Model implements Accessible
                 }
             }
 
-            $buildOutput = function($parentId, $level) use (&$buildOutput, $children, $nodes, &$output) {
+            $buildOutput = function ($parentId, $level) use (&$buildOutput, $children, $nodes, &$output) {
                 if (!isset($children[$parentId])) {
                     return;
                 }
@@ -3138,22 +3168,23 @@ class UsermanagementAdm extends Model implements Accessible
             . ' WHERE gm.idstMember = ' . (int)$id_user . ' ';
         $res = $this->db->query($query);
         if ($res && $this->db->num_rows($res) > 0) {
-            while (list($idst, $groupid) = $this->db->fetch_row($res)) {
-                $groups[$idst] = $this->aclManager->relativeId($groupid);
+            foreach ($res as $row) {
+                $groups[$row['idst']] = $this->aclManager->relativeId($row['groupid']);
             }
         }
 
         //extract entire tree folders with translation
-        $folders = [];
-        $trans = [];
         $query = 'SELECT * FROM %adm_org_chart_tree AS ot JOIN %adm_org_chart AS o '
             . " ON (ot.idOrg = o.id_dir AND o.lang_code = '" . $language . "') ORDER BY ot.path";
         $res = $this->db->query($query);
         if ($res && $this->db->num_rows($res) > 0) {
-            while ($obj = $this->db->fetch_obj($res)) {
-                $str_path = str_replace('/root/', '', $obj->path);
-                $folders[$obj->idst_oc] = $str_path;
-                $trans['/' . $str_path] = $obj->translation;
+            $folders = [];
+            $trans = [];
+            
+            foreach ($res as $record) {
+                $str_path = str_replace('/root/', '', $record['path']);
+                $folders[$record['idst_oc']] = $str_path;
+                $trans['/' . $str_path] = $record['translation'];
             }
 
             foreach ($groups as $idst => $groupid) {
@@ -3183,8 +3214,8 @@ class UsermanagementAdm extends Model implements Accessible
             . ' WHERE idstMember = ' . (int)$id_user . ' ';
         $res = $this->db->query($query);
         if ($res && $this->db->num_rows($res) > 0) {
-            while (list($id_group, $group_name) = $this->db->fetch_row($res)) {
-                $output[$id_group] = $this->aclManager->relativeId($group_name);
+            foreach ($res as $record) {
+                $output[$record['idst']] = $this->aclManager->relativeId($record['groupid']);
             }
         }
 
@@ -3283,11 +3314,11 @@ class UsermanagementAdm extends Model implements Accessible
             . ' FROM %adm_user AS u '
             . ' WHERE u.idst IN (' . implode(',', $users) . ')';
         $res_std = $this->db->query($query_std);
-        while ($urow = $this->db->fetch_obj($res_std)) {
-            $output[$urow->idst] = [
-                'email' => $urow->email,
-                'register_date' => Format::date($urow->register_date, 'datetime'), //formatting should be placed in the controller
-                'lastenter' => Format::date($urow->lastenter, 'datetime'), //formatting should be placed in the controller
+        foreach ($res_std as $urow) {
+            $output[$urow['idst']] = [
+                'email' => $urow['email'],
+                'register_date' => Format::date($urow['register_date'], 'datetime'), //formatting should be placed in the controller
+                'lastenter' => Format::date($urow['lastenter'], 'datetime'), //formatting should be placed in the controller
             ];
         }
 
@@ -3306,7 +3337,10 @@ class UsermanagementAdm extends Model implements Accessible
             ' ON (u.idst = gm.idstMember AND gm.idst IN (' . implode(',', array_values($levels_idst)) . '))' .
             ' WHERE u.idst IN (' . implode(',', $users) . ') )';
         $res_others = $this->db->query($query_others);
-        while (list($idst, $value, $type) = $this->db->fetch_row($res_others)) {
+        foreach ($res_others as $record) {
+            $idst = $record['idst'];
+            $value = $record['value'];
+            $type = $record['type'];
             switch ($type) {
                 case 'language':
                     $output[(int)$idst]['language'] = $value;
@@ -3329,15 +3363,15 @@ class UsermanagementAdm extends Model implements Accessible
 
         //get values to add in the row
         $custom_fields = [];
-        while ($frow = $this->db->fetch_obj($res_fields)) {
-            if (!in_array($frow->id_common, $custom_fields)) {
-                $custom_fields[] = $frow->id_common;
+        foreach ($res_fields as $frow) {
+            if (!in_array($frow['id_common'], $custom_fields)) {
+                $custom_fields[] = $frow['id_common'];
             }
 
             $field_value = '';
-            switch ($frow->type_field) {
+            switch ($frow['type_field']) {
                 case 'yesno':
-                    switch ($frow->user_entry) {
+                    switch ($frow['user_entry']) {
                         case 1:
                             $field_value = Lang::t('_YES', 'field');
                             break;
@@ -3355,17 +3389,17 @@ class UsermanagementAdm extends Model implements Accessible
                         //retrieve translations for dropdowns fields
                         $query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '" . Lang::get() . "' ORDER BY idField, sequence";
                         $res_fields_sons = $this->db->query($query_fields_sons);
-                        while ($fsrow = $this->db->fetch_obj($res_fields_sons)) {
-                            $field_sons[$fsrow->idField][$fsrow->id_common_son] = $fsrow->translation;
+                        foreach ($res_fields_sons as $fsrow) {
+                            $field_sons[$fsrow['idField']][$fsrow['id_common_son']] = $fsrow['translation'];
                         }
                     }
-                    if (isset($field_sons[$frow->id_common][$frow->user_entry])) {
-                        $field_value = $field_sons[$frow->id_common][$frow->user_entry];
+                    if (isset($field_sons[$frow['id_common']][$frow['user_entry']])) {
+                        $field_value = $field_sons[$frow['id_common']][$frow['user_entry']];
                     }
 
                     break;
                 case 'date':
-                    $field_value = Format::date(substr($frow->user_entry, 0, 10), 'date');
+                    $field_value = Format::date(substr($frow['user_entry'], 0, 10), 'date');
 
                     break;
                 case 'copy':
@@ -3374,12 +3408,12 @@ class UsermanagementAdm extends Model implements Accessible
                         $query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '" . Lang::get() . "' ORDER BY idField, sequence";
                         $res_fields_sons = $this->db->query($query_fields_sons);
                         $field_sons = [];
-                        while ($fsrow = $this->db->fetch_obj($res_fields_sons)) {
-                            $field_sons[$fsrow->idField][$fsrow->id_common_son] = $fsrow->translation;
+                        foreach ($res_fields_sons as $fsrow) {
+                            $field_sons[$fsrow['idField']][$fsrow['id_common_son']] = $fsrow['translation'];
                         }
                     }
-                    if (isset($field_sons[$frow->copy_of][$frow->user_entry])) {
-                        $field_value = $field_sons[$frow->copy_of][$frow->user_entry];
+                    if (isset($field_sons[$frow['copy_of']][$frow['user_entry']])) {
+                        $field_value = $field_sons[$frow['copy_of']][$frow['user_entry']];
                     } else {
                         $field_value = '';
                     }
@@ -3391,22 +3425,22 @@ class UsermanagementAdm extends Model implements Accessible
                         $query_countries = 'SELECT id_country, name_country FROM %adm_country ORDER BY name_country';
                         $res_countries = $this->db->query($query_countries);
                         $countries = [];
-                        while ($crow = $this->db->fetch_obj($res_countries)) {
-                            $countries[$crow->id_country] = $crow->name_country;
+                        foreach ($res_countries as $crow) {
+                            $countries[$crow['id_country']] = $crow['name_country'];
                         }
                     }
-                    if (isset($countries[$frow->user_entry])) {
-                        $field_value = $countries[$frow->user_entry];
+                    if (isset($countries[$frow['user_entry']])) {
+                        $field_value = $countries[$frow['user_entry']];
                     } else {
                         $field_value = '';
                     }
 
                     break;
                 default:
-                    $field_value = $frow->user_entry;
+                    $field_value = $frow['user_entry'];
                     break;
             }
-            $output[(int)$frow->id_user][(int)$frow->id_common] = $field_value; //$frow->user_entry;
+            $output[(int)$frow['id_user']][(int)$frow['id_common']] = $field_value; //$frow->user_entry;
         }
 
         return $output;
@@ -3435,16 +3469,17 @@ class UsermanagementAdm extends Model implements Accessible
                 from %adm_customfield_lang, %adm_customfield 
                 where %adm_customfield_lang.id_field = %adm_customfield.id_field  and
                  %adm_customfield_lang.lang_code = \'' . Lang::get() . '\' and area_code="ORG_CHART"';
-        $rs = sql_query($query) or
-        errorCommunication('getCustomFieldOrg');
+        $rs = $this->db->query($query);
         $result = [];
-        while (list($id_field, $translation, $type_field) = sql_fetch_row($rs)) {
-            $arr = [
-                'id_field' => $id_field,
-                'translation' => $translation,
-                'type_field' => $type_field,
-            ];
-            $result[$id_field] = $arr;
+        if ($rs) {
+            foreach ($rs as $record) {
+                $arr = [
+                    'id_field' => $record['id_field'],
+                    'translation' => $record['translation'],
+                    'type_field' => $record['type_field'],
+                ];
+                $result[$record['id_field']] = $arr;
+            }
         }
 
         return $result;
@@ -3455,11 +3490,12 @@ class UsermanagementAdm extends Model implements Accessible
         $query = 'select %adm_customfield_son_lang.id_field_son ,  translation from
             %adm_customfield_son_lang  , %adm_customfield_son
             where %adm_customfield_son_lang.id_field_son=%adm_customfield_son.id_field_son and id_field=' . $id_field . ' order by sequence ';
-        $rs = sql_query($query) or
-        errorCommunication('getLO_Custom_Value_Array');
+        $rs = $this->db->query($query);
         $result = [];
-        while (list($id_field_son, $translation) = sql_fetch_row($rs)) {
-            $result[$id_field_son] = $translation;
+        if ($rs) {
+            foreach ($rs as $record) {
+                $result[$record['id_field_son']] = $record['translation'];
+            }
         }
 
         return $result;
@@ -3491,7 +3527,7 @@ class UsermanagementAdm extends Model implements Accessible
             $query = 'INSERT INTO %adm_customfield_entry '
                 . '( id_field, id_obj, obj_entry)'
                 . ' VALUES '
-                . "( '" . ($id_field) . "' ," . intval($idOrg) . " , '" . $value . "')";
+                . "( '" . ($id_field) . "' ," . (int)$idOrg . " , '" . $value . "')";
             sql_query($query);
         }
 
@@ -3502,11 +3538,12 @@ class UsermanagementAdm extends Model implements Accessible
     public function getCustomOrg()
     {
         $query = "select id_field from %adm_customfield where area_code = 'ORG_CHART'";
-        $rs = sql_query($query) or
-        errorCommunication('getCustomOrg');
+        $rs = $this->db->query($query);
         $result = [];
-        while (list($id_field, $translation) = sql_fetch_row($rs)) {
-            $result[$id_field] = $id_field;
+        if ($rs) {
+            foreach ($rs as $record) {
+                $result[$record['id_field']] = $record['id_field'];
+            }
         }
 
         return $result;
@@ -3554,10 +3591,10 @@ class UsermanagementAdm extends Model implements Accessible
             $id_field = $row['idField'];
             $user_entry = $row['user_entry'];
             $type_field = $row['type_field'];
-            if ($type_field == 'dropdown'|| $type_field == 'dropdown_complex') {
-                $q = sprintf("SELECT translation FROM %%adm_field_son WHERE idField = %s AND id_common_son = %s AND lang_code = '%s'", $id_field, empty($user_entry) ? "NULL" :  $user_entry, $currentLanguage);
+            if ($type_field == 'dropdown' || $type_field == 'dropdown_complex') {
+                $q = sprintf("SELECT translation FROM %%adm_field_son WHERE idField = %s AND id_common_son = %s AND lang_code = '%s'", $id_field, empty($user_entry) ? "NULL" : $user_entry, $currentLanguage);
 
-                if(!$user_entry) {
+                if (!$user_entry) {
                     continue;
                 }
                 $q = sprintf("SELECT translation FROM %%adm_field_son WHERE idField = %s AND id_common_son = %s AND lang_code = '%s'", $id_field, $user_entry, $currentLanguage);
@@ -3565,7 +3602,7 @@ class UsermanagementAdm extends Model implements Accessible
                 [$translation] = sql_fetch_row($res);
                 $output[$id_field] = $translation;
             } else if ($type_field == 'country') {
-                $q = sprintf("SELECT name_country as translation FROM %%adm_country WHERE id_country = %s", empty($user_entry) ? "NULL" :  $user_entry);
+                $q = sprintf("SELECT name_country as translation FROM %%adm_country WHERE id_country = %s", empty($user_entry) ? "NULL" : $user_entry);
 
                 $res = sql_query($q);
                 [$translation] = sql_fetch_row($res);
@@ -3581,7 +3618,6 @@ class UsermanagementAdm extends Model implements Accessible
 
     public function getAccessList($resourceId): array
     {
-
         return $this->getFolderUsers($resourceId);
     }
 

@@ -2325,17 +2325,7 @@ class UsermanagementAdmController extends AdmController
         $results = FormaLms\lib\Get::Req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem', 25));
         $output = ['users' => []];
         if ($query != '') {
-            $users = $this->model->searchUsersByUserid($query, $results, true);
-            $acl_man = \FormaLms\lib\Forma::getAclManager();
-            foreach ($users as $user) {
-                $_userid = $acl_man->relativeId($user->userid);
-                $output['users'][] = [
-                    'idst' => $user->idst,
-                    'userid' => $_userid,
-                    'userid_highlight' => Layout::highlight($_userid, $query),
-                    'name' => $user->lastname . ' ' . $user->firstname,
-                ];
-            }
+            $output['users'] = $this->model->searchUsersByUserid($query, $results, true);
         }
         echo $this->json->encode($output);
     }
@@ -2821,32 +2811,14 @@ class UsermanagementAdmController extends AdmController
 
         $list = $this->model->getDeletedUsersList($pagination, $filter);
 
-        //format models' data
-        $records = [];
-        $acl_man = \FormaLms\lib\Forma::getAclManager();
-        if (is_array($list)) {
-            foreach ($list as $record) {
-                $_userid = $acl_man->relativeId($record->userid);
-                $records[] = [
-                    'id' => (int) $record->idst,
-                    'userid' => Layout::highlight($_userid, $filter),
-                    'firstname' => Layout::highlight($record->firstname, $filter),
-                    'lastname' => Layout::highlight($record->lastname, $filter),
-                    'email' => Layout::highlight($record->email, $filter),
-                    'deletion_date' => Format::date($record->deletion_date, 'datetime'),
-                    'deleted_by' => $acl_man->relativeId($record->deleted_by),
-                ];
-            }
-        }
-
         $output = [
             'startIndex' => $startIndex,
-            'recordsReturned' => count($records),
+            'recordsReturned' => count($list),
             'sort' => $sort,
             'dir' => $dir,
             'totalRecords' => $total,
             'pageSize' => $rowsPerPage,
-            'records' => $records,
+            'records' => $list,
         ];
 
         echo $this->json->encode($output);
@@ -2896,35 +2868,14 @@ class UsermanagementAdmController extends AdmController
 
         $list = $this->model->getWaitingUsersList($pagination, $filter);
 
-        //format models' data
-        $records = [];
-        $acl_man = \FormaLms\lib\Forma::getAclManager();
-        if (is_array($list)) {
-            foreach ($list as $record) {
-                $_userid = $acl_man->relativeId($record->userid);
-                $_inserted_by = $record->inserted_by != '' ? $acl_man->relativeId($record->inserted_by) : '';
-                $records[] = [
-                    'id' => (int) $record->idst,
-                    'userid' => Layout::highlight($_userid, $filter),
-                    'firstname' => Layout::highlight($record->firstname, $filter),
-                    'lastname' => Layout::highlight($record->lastname, $filter),
-                    'email' => Layout::highlight($record->email, $filter),
-                    'confirmed' => Layout::highlight($record->confirmed, $filter),
-                    'insert_date' => Format::date($record->insert_date, 'datetime'),
-                    'inserted_by' => $_inserted_by,
-                    'del' => 'ajax.adm_server.php?r=' . $this->link . '/delete_waiting&id_user=' . (int) $record->idst,
-                ];
-            }
-        }
-
         $output = [
             'startIndex' => $startIndex,
-            'recordsReturned' => count($records),
+            'recordsReturned' => count($list),
             'sort' => $sort,
             'dir' => $dir,
             'totalRecords' => $total,
             'pageSize' => $rowsPerPage,
-            'records' => $records,
+            'records' => $list,
         ];
 
         echo $this->json->encode($output);
