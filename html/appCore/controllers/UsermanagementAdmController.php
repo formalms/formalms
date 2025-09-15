@@ -2866,7 +2866,7 @@ class UsermanagementAdmController extends AdmController
             'dir' => $dir,
         ];
 
-        $list = $this->model->getWaitingUsersList($pagination, $filter);
+        $list = $this->model->getWaitingUsersList($pagination, $filter, $this->link);
 
         $output = [
             'startIndex' => $startIndex,
