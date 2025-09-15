@@ -85,8 +85,14 @@ class TemplatelayoutAdm extends Model
         $output = [];
         $res = $this->db->query($query);
         if ($res) {
-            while ($row = $this->db->fetch_obj($res)) {
-                $output[] = $row;
+            foreach ($res as $record) {
+                $output[] = [
+                    'id' => (int)$record['id_template'],
+                    'name' => highlightText($record['name'], $filter),
+                    'date_creation' => Format::date($record['date_creation'], 'datetime'),
+                    'last_modify' => Format::date($record['last_modify'], 'datetime'),
+                    'del' => 'ajax.adm_server.php?r=adm/templatelayout/delete&id=' . (int)$record['id_template'],
+                ];
             }
         }
 
@@ -100,7 +106,7 @@ class TemplatelayoutAdm extends Model
         $query = 'SELECT COUNT(*) FROM %adm_template' . ($filter ? " WHERE name LIKE '%" . $filter . "%'" : '');
         $res = $this->db->query($query);
         if ($res) {
-            list($output) = $this->db->fetch_row($res);
+            [$output] = $this->db->fetch_row($res);
         }
 
         return $output;
@@ -112,7 +118,7 @@ class TemplatelayoutAdm extends Model
         $query = 'SELECT template_data FROM %adm_template WHERE id_template=' . (int) $id;
         $res = $this->db->query($query);
         if ($res) {
-            list($json_data) = $this->db->fetch_row($res);
+            [$json_data] = $this->db->fetch_row($res);
             $decoded = $this->json->decode($json_data);
             //validate ...
             $output = $decoded;

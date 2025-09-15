@@ -70,18 +70,6 @@ class TemplatelayoutAdmController extends AdmController
         $params->filter = $filter;
 
         $templates = $this->model->getTemplates($params);
-        $template_rows = [];
-        if (is_array($templates)) {
-            foreach ($templates as $template) {
-                $template_rows[] = [
-                    'id' => $template->id_template,
-                    'name' => highlightText($template->name, $filter),
-                    'date_creation' => Format::date($template->date_creation, 'datetime'),
-                    'last_modify' => Format::date($template->last_modify, 'datetime'),
-                    'del' => 'ajax.adm_server.php?r=adm/templatelayout/delete&id=' . (int) $template->id_template,
-                ];
-            }
-        }
 
         $output = [
             'startIndex' => $startIndex,
@@ -90,7 +78,7 @@ class TemplatelayoutAdmController extends AdmController
             'dir' => $dir,
             'totalRecords' => $this->model->getTotalTemplates($filter),
             'pageSize' => $page_size,
-            'records' => $template_rows,
+            'records' => $templates,
         ];
 
         echo $this->json->encode($output);
