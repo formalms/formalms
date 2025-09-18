@@ -290,7 +290,7 @@ class CoursereportLmsController extends LmsController
 
                                 if (!isset($testDetails[$id][CoursereportLms::TEST_STATUS_VARIANZA])) {
                                     $testDetails[$id][CoursereportLms::TEST_STATUS_VARIANZA] = 0;
-                            }
+                                }
 
                                 $totalTests = $testDetails[$id][CoursereportLms::TEST_STATUS_NOT_PASSED] + $testDetails[$id][CoursereportLms::TEST_STATUS_PASSED];
                                 if ($totalTests > 0) {
@@ -2135,10 +2135,7 @@ class CoursereportLmsController extends LmsController
                 $_POST['titolo'] = $lang->def('_NOTITLE');
             }
             //MODIFICHE NUOVISSIMISSIME
-            $query_report = '
-		SELECT  *
-		FROM %lms_scorm_items
-		WHERE idscorm_item=' . $_POST['id_source'];
+            $query_report = 'SELECT  * FROM %lms_scorm_items WHERE idscorm_item=' . $_POST['id_source'];
             //echo $query_report;
             $risultato = sql_query($query_report);
             $titolo2 = sql_fetch_assoc($risultato);
@@ -2152,10 +2149,11 @@ class CoursereportLmsController extends LmsController
             $re_check = $this->courseReportManager->checkActivityData($_POST);
 
             if (!$re_check['error']) {
-                if ($id_report == 0) {
-                    $numero = $this->courseReportManager->getNextSequence();
-                    $query_ins_report = "
-				INSERT IGNORE INTO %lms_coursereport
+                $re = false;
+                if ($_POST['id_source'] !== 0) {
+                    if ($id_report == 0) {
+                        $sequence = $this->courseReportManager->getNextSequence();
+                        $query_ins_report = "INSERT IGNORE INTO %lms_coursereport
 				( id_course, title, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source, sequence ) VALUES (
 					'" . $this->idCourse . "',
 					'" . $_POST['title'] . "',
@@ -2166,13 +2164,13 @@ class CoursereportLmsController extends LmsController
 					'" . $_POST['use_for_final'] . "',
 					'" . $_POST['source_of'] . "',
 					'" . $_POST['id_source'] . "',
-					'" . $numero . "'
+					'" . $sequence . "'
 				)";
-                    echo $query_ins_report;
+                        echo $query_ins_report;
 
-                    $re = sql_query($query_ins_report);
-                } else {
-                    $query_upd_report = "
+                        $re = sql_query($query_ins_report);
+                    } else {
+                        $query_upd_report = "
 				UPDATE %lms_coursereport
 				SET title = '" . $_POST['title'] . "',
 					weight = '" . $_POST['weight'] . "',
@@ -2181,7 +2179,8 @@ class CoursereportLmsController extends LmsController
 					use_for_final = '" . $_POST['use_for_final'] . "',
 					show_to_user = '" . $_POST['show_to_user'] . "'
 				WHERE id_course = '" . $_POST['id_course'] . "' AND id_report = '" . $id_report . "'";
-                    $re = sql_query($query_upd_report);
+                        $re = sql_query($query_upd_report);
+                    }
                 }
                 Util::jump_to('index.php?r=coursereport/coursereport&result=' . ($re ? 'ok' : 'err'));
             } else {
@@ -2199,14 +2198,10 @@ class CoursereportLmsController extends LmsController
                 $titolo = sql_fetch_assoc($risultato);
                 $titolo = $titolo['title'];
 
-                $query_report = '
-			SELECT  *
-			FROM %lms_scorm_items
-			WHERE idscorm_organization=' . (int)$_POST['title'] . '
-			ORDER BY idscorm_item';
+                $query_report = 'SELECT  * FROM %lms_scorm_items WHERE idscorm_organization=' . (int)$_POST['title'] . ' ORDER BY idscorm_item';
                 //echo $query_report;
                 $risultato = sql_query($query_report);
-                while ($scorm = sql_fetch_assoc($risultato)) {
+                foreach ($risultato as $scorm) {
                     $array_scorm[$scorm['idscorm_item']] = $scorm['title'];
                 }
 
@@ -2267,7 +2262,7 @@ class CoursereportLmsController extends LmsController
 			WHERE objectType='scormorg' AND idCourse=" . $this->idCourse;
 
             $risultato = sql_query($query_report);
-            while ($scorm = sql_fetch_assoc($risultato)) {
+            foreach ($risultato as $scorm) {
                 $array_scorm[$scorm['idResource']] = $scorm['title'];
             }
 
@@ -2351,7 +2346,7 @@ class CoursereportLmsController extends LmsController
         );
         // XXX: Save input if needed
         if (isset($_POST['save'])) {
-           ;
+            ;
             // check input
             if ($_POST['title'] == '') {
                 $_POST['title'] = $lang->def('_NOTITLE');
@@ -2686,7 +2681,6 @@ class CoursereportLmsController extends LmsController
         $lang = FormaLanguage::createInstance('coursereport', 'lms');
         $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
-
 
 
         if (isset($_POST['confirm'])) {
@@ -3533,15 +3527,11 @@ class CoursereportLmsController extends LmsController
 
         $result_quest = sql_query($query_quest);
 
-        while (list($id_quest, $type_quest, $title_quest) = sql_fetch_row($result_quest)) {
-            $quests[$id_quest]['idQuest'] = $id_quest;
-            $quests[$id_quest]['type_quest'] = $type_quest;
-            $quests[$id_quest]['title_quest'] = $title_quest;
+        foreach ($result_quest as $row) {
 
-            //		$query_answer =	"SELECT idAnswer, is_correct, answer"
-            //						." FROM ".$GLOBALS['prefix_lms']."_testquestanswer"
-            //						." WHERE idQuest = '".$id_quest."'"
-            //						." ORDER BY sequence";
+            $quests[$row['idQuest']]['idQuest'] = $row['idQuest'];
+            $quests[$row['idQuest']]['type_quest'] = $row['type_quest'];
+            $quests[$row['idQuest']]['title_quest'] = $row['title_quest'];
 
             $query_answer = 'SELECT tqa.idAnswer, tqa.is_correct, tqa.answer'
                 . ' FROM %lms_testquestanswer AS tqa'
@@ -3549,21 +3539,21 @@ class CoursereportLmsController extends LmsController
                 . ' %lms_testtrack_answer tta ON tqa.idAnswer = tta.idAnswer'
                 . ' LEFT JOIN'
                 . ' %lms_testtrack tt ON tt.idTrack = tta.idTrack'
-                . " WHERE tqa.idQuest = '" . $id_quest . "'";
+                . " WHERE tqa.idQuest = '" . $row['idQuest'] . "'";
             $query_answer .= ' and tt.idUser in (' . implode(',', $id_students) . ')';
             $query_answer .= ' ORDER BY tqa.sequence';
 
             $result_answer = sql_query($query_answer);
 
-            while (list($id_answer, $is_correct, $answer) = sql_fetch_row($result_answer)) {
-                $answers[$id_quest][$id_answer]['idAnswer'] = $id_answer;
-                $answers[$id_quest][$id_answer]['is_correct'] = $is_correct;
-                $answers[$id_quest][$id_answer]['answer'] = $answer;
+            foreach ($result_answer as $row_answer) {
+                $answers[$row['idQuest']][$row_answer['idAnswer']]['idAnswer'] = $row_answer['idAnswer'];
+                $answers[$row['idQuest']][$row_answer['idAnswer']]['is_correct'] = $row_answer['is_correct'];
+                $answers[$row['idQuest']][$row_answer['idAnswer']]['answer'] = $row_answer['answer'];
             }
-            if ($type_quest == 'choice_multiple' || $type_quest == 'choice' || $type_quest == 'inline_choice') {
-                $answers[$id_quest][0]['idAnswer'] = 0;
-                $answers[$id_quest][0]['is_correct'] = 0;
-                $answers[$id_quest][0]['answer'] = $lang->def('_NO_ANSWER');
+            if ($row['type_quest'] == 'choice_multiple' || $row['type_quest'] == 'choice' || $row['type_quest'] == 'inline_choice') {
+                $answers[$row['idQuest']][0]['idAnswer'] = 0;
+                $answers[$row['idQuest']][0]['is_correct'] = 0;
+                $answers[$row['idQuest']][0]['answer'] = $lang->def('_NO_ANSWER');
             }
         }
 
@@ -3575,19 +3565,18 @@ class CoursereportLmsController extends LmsController
 
         $result_track = sql_query($query_track);
 
-        while (list($id_track) = sql_fetch_row($result_track)) {
+        foreach ($result_track as $row_track) {
             $query_track_answer = 'SELECT idQuest, idAnswer, more_info'
                 . ' FROM %lms_testtrack_answer'
-                . " WHERE idTrack = '" . $id_track . "'";
+                . " WHERE idTrack = '" . $row_track['idTrack'] . "'";
             // COMMENTATO MA NON E' CHIARO COME MAI C'E'????
             //." AND user_answer = 1";
             //print_r($query_track_answer.'<br />');
             $result_track_answer = sql_query($query_track_answer);
 
             //echo $query_track_answer."<br>";
-            while (list($id_quest, $id_answer, $more_info) = sql_fetch_row($result_track_answer)) {
-                $tracks[$id_track][$id_quest][$id_answer]['more_info'] = $more_info;
-                //echo " -> ".$id_quest." - ".$id_answer." - ".$more_info."<br>";
+            foreach ($result_track_answer as $row_track_answer) {
+                $tracks[$row_track['idTrack']][$row_track_answer['idQuest']][$row_track_answer['idAnswer']]['more_info'] = $row_track_answer['more_info'];
             }
         }
 
@@ -3599,15 +3588,6 @@ class CoursereportLmsController extends LmsController
 
         [$total_play] = sql_fetch_row(sql_query($query_total_play));
 
-        /*if ($total_play == 0) {
-                    $query_total_play =     "SELECT COUNT(*)"
-                                                    ." FROM ".$GLOBALS['prefix_lms']."_testtrack"
-                                                    ." WHERE idTest = '".$idTest."' AND score_status = CoursereportLms::TEST_STATUS_NOT_CHECKED";
-                    list($total_play2) = sql_fetch_row(sql_query($query_total_play));
-    $total_play += $total_play2;
-
-            }*/
-        //print_r($tracks);
         foreach ($quests as $quest) {
             switch ($quest['type_quest']) {
                 case 'inline_choice':

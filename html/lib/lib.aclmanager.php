@@ -531,7 +531,8 @@ class FormaACLManager
         $linkedin_id = false,
         $google_id = false,
         $source = 'registration'
-    ) {
+    )
+    {
         if ($idst === false) {
             $idst = $this->_createST();
         }
@@ -641,7 +642,8 @@ class FormaACLManager
         $linkedin_id = '',
         $google_id = '',
         $avatar = ''
-    ) {
+    )
+    {
         $idst = $this->_createST();
         $userid = $this->absoluteId($userid);
         $query = 'INSERT INTO ' . $this->_getTableTempUser()
@@ -894,7 +896,8 @@ class FormaACLManager
         $twitter_id = false,
         $linkedin_id = false,
         $google_id = false
-    ) {
+    )
+    {
         $old_userdata = $this->getUser($idst, null);
 
         $new_userdata = [];
@@ -1166,7 +1169,7 @@ class FormaACLManager
 
         $insert_query = 'INSERT INTO ' . $this->_getTableUserDeleted() . ' ' .
             ' (id_deletion, idst, userid, firstname, lastname, pass, email, avatar, level, lastenter, valid, pwd_expire_at, register_date, deletion_date, deleted_by)' .
-            " VALUES ('', '" . (int) $idst . "', '" . addslashes($userid) . "', '" . addslashes($firstname) . "', '" . addslashes($lastname) . "', '" . addslashes($pass) . "', '" . addslashes($email) . "', '" . addslashes($avatar) . "', '" . $level . "', '" . $lastenter . "', '" . $valid . "', '" . $pwd_expire_at . "', '" . $register_date . "', '" . date('Y-m-d H:i:s') . "','" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "')";
+            " VALUES ('', '" . (int)$idst . "', '" . addslashes($userid) . "', '" . addslashes($firstname) . "', '" . addslashes($lastname) . "', '" . addslashes($pass) . "', '" . addslashes($email) . "', '" . addslashes($avatar) . "', '" . $level . "', '" . $lastenter . "', '" . $valid . "', '" . $pwd_expire_at . "', '" . $register_date . "', '" . date('Y-m-d H:i:s') . "','" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "')";
 
         $insert_result = sql_query($insert_query);
 
@@ -2538,7 +2541,7 @@ class FormaACLManager
     /**
      * search users member of a group (or an array of groups).
      *
-     * @param int $idst scurity token of the group
+     * @param int|array $idst scurity token of the group
      * @param string $filter (Optional). Filter to applay.
      *
      * @return array array of security token of users contained in group
@@ -2571,11 +2574,10 @@ class FormaACLManager
             }
         }
 
-
         $rs = $this->_executeQuery($query);
         $arrUsers = [];
-        while (list($idst) = sql_fetch_row($rs)) {
-            $arrUsers[] = (int)$idst;
+        foreach ($rs as $row) {
+            $arrUsers[] = $row['idstMember'];
         }
 
         return $arrUsers;
@@ -2584,24 +2586,37 @@ class FormaACLManager
     /**
      * search groups member of a group.
      *
-     * @param int $idst scurity token of the group
+     * @param int|array $idst scurity token of the group
      * @param string $filter (Optional). Filter to applay.
      *
      * @return array array of security token of groups contained in group
      */
     public function getGroupGMembers($idst, $filter = '')
     {
-        if (is_array($idst)) {
-            foreach ($idst as $index => $vidst) {
-                if (!is_numeric($vidst)) {
-                    unset($idst[$index]);
-                }
-            }
-        } elseif (!is_array($idst)) {
-            $idst = [(int)$idst];
+        // Input validation and normalization
+        if (empty($idst)) {
+            return [];
         }
 
-        $inString = (implode(',', $idst) == '' ? 'NULL' : implode(',', $idst));
+        if (is_array($idst)) {
+            // Filter and validate numeric values
+            $idst = array_filter(array_map('intval', $idst), function ($val) {
+                return $val > 0;
+            });
+            if (empty($idst)) {
+                return [];
+            }
+        } else {
+            $idst = [(int)$idst];
+            if ($idst[0] <= 0) {
+                return [];
+            }
+        }
+
+        // Sanitize filter parameter to prevent SQL injection
+        $filter = sql_escape_string($filter);
+
+        $inString = implode(',', $idst);
 
         $query = 'SELECT tgm.idstMember'
             . '  FROM ' . $this->_getTableGroupMembers() . ' AS tgm'
@@ -2610,10 +2625,12 @@ class FormaACLManager
             . ' WHERE tgm.idst IN (' . $inString . ')'
             . "   AND tgm.filter = '" . $filter . "'"
             . '   AND NOT ISNULL(tg.idst)';
+
         $rs = $this->_executeQuery($query);
         $arrGroups = [];
-        while (list($idst) = sql_fetch_row($rs)) {
-            $arrGroups[] = (int)$idst;
+
+        foreach ($rs as $row) {
+            $arrGroups[] = $row['idstMember'];
         }
 
         return $arrGroups;
@@ -2629,108 +2646,193 @@ class FormaACLManager
      **/
     public function getGroupGDescendants($idst, $filter = '')
     {
-        /*$arrST = $this->getGroupGMembers( $idst );
-        // search in groups
-        $count = 0;
-        while( $count < count( $arrST ) ) {
-            $idST = $arrST[$count];
-            $arrResult = $this->getGroupGMembers( $idST, $filter );
-            $arrST = array_merge( $arrST, array_diff($arrResult, $arrST ));
-            $count++;
+        // Input validation and normalization
+        if (empty($idst)) {
+            return [];
         }
-        return $arrST;*/
+
+        // Sanitize filter parameter to prevent SQL injection
+        $filter = sql_escape_string($filter);
+
+        // Normalize input to array and validate numeric values
         if (!is_array($idst)) {
-            $arrST = [$idst];
-            $new_st = [$idst];
+            $idst = [(int)$idst];
         } else {
-            $arrST = $idst;
-            $new_st = $idst;
+            $idst = array_filter(array_map('intval', $idst), function ($val) {
+                return $val > 0;
+            });
+            if (empty($idst)) {
+                return [];
+            }
         }
 
-        $loop_check = 0;
-        do {
-            ++$loop_check;
-            $new_st = $this->getGroupGMembers($new_st, $filter);
-            if (!empty($new_st)) {
-                $arrST = array_merge($arrST, array_diff($new_st, $arrST));
-            }
-        } while (!empty($new_st) && ($loop_check < 50));
+        // Use associative array for O(1) lookups instead of array_diff
+        $visited = array_flip($idst);
+        $queue = $idst;
+        $processed = [];
 
-        return $arrST;
+        // Breadth-first search with cycle detection
+        while (!empty($queue)) {
+            // Process current batch to reduce database queries
+            $current_batch = array_splice($queue, 0, min(50, count($queue))); // Process in batches of 100
+            $batch_key = implode(',', $current_batch);
+
+            // Skip if we've already processed this exact batch
+            if (isset($processed[$batch_key])) {
+                continue;
+            }
+            $processed[$batch_key] = true;
+
+            $new_groups = $this->getGroupGMembers($current_batch, $filter);
+
+            if (!empty($new_groups)) {
+                foreach ($new_groups as $group_id) {
+                    if (!isset($visited[$group_id])) {
+                        $visited[$group_id] = true;
+                        $queue[] = $group_id;
+                    }
+                }
+            }
+
+            // Safety check to prevent infinite loops
+            if (count($visited) > 10000) {
+                error_log("Warning: getGroupGDescendants exceeded maximum group limit, possible circular reference");
+                break;
+            }
+        }
+
+        return array_keys($visited);
     }
 
     public function getAllGroupsFromSelection($array_idst)
     {
         $array_idst = $this->getGroupsFromMixedIdst($array_idst);
 
-        $array_ocd = [];
-        $array_oc = [];
-
-        $query = 'SELECT idst'
-            . ' FROM %adm_group'
-            . " WHERE groupid = '/oc_0'";
-
-        [$idst] = sql_fetch_row(sql_query($query));
-        $array_oc[$idst] = $idst;
-
-        $query = 'SELECT idst'
-            . ' FROM %adm_group'
-            . " WHERE groupid = '/ocd_0'";
-
-        [$idst] = sql_fetch_row(sql_query($query));
-        $array_ocd[$idst] = $idst;
-
-        $query = 'SELECT idst_oc, idst_ocd'
-            . ' FROM %adm_org_chart_tree';
-
-        $result = sql_query($query);
-
-        while (list($idst_oc, $idst_ocd) = sql_fetch_row($result)) {
-            $array_ocd[$idst_ocd] = $idst_ocd;
-            $array_oc[$idst_oc] = $idst_oc;
+        if (empty($array_idst)) {
+            return [];
         }
 
-        $res = [];
+        // Cache for org chart data to avoid repeated queries
 
-        foreach ($array_idst as $id_group) {
-            if (isset($array_oc[$id_group])) {
-                $res[$id_group] = $id_group;
+        $org_chart_cache = [
+            'array_ocd' => [],
+            'array_oc' => [],
+            'tree_data' => []
+        ];
+
+        // Get org chart root groups in single queries
+        $query = 'SELECT idst, groupid FROM %adm_group WHERE groupid IN (\'/oc_0\', \'/ocd_0\')';
+        $result = sql_query($query);
+        foreach ($result as $row) {
+            if ($row['groupid'] === '/oc_0') {
+                $org_chart_cache['array_oc'][$row['idst']] = $row['idst'];
+            } else {
+                $org_chart_cache['array_ocd'][$row['idst']] = $row['idst'];
             }
-            if (isset($array_ocd[$id_group])) {
-                $query = 'SELECT iLeft, iRight'
-                    . ' FROM %adm_org_chart_tree'
-                    . ' WHERE idst_ocd = ' . (int)$id_group;
+        }
 
-                [$i_left, $i_right] = sql_fetch_row(sql_query($query));
+        // Get all org chart tree data at once
+        $query = 'SELECT idst_oc, idst_ocd, iLeft, iRight FROM %adm_org_chart_tree';
+        $result = sql_query($query);
+        foreach ($result as $row) {
+            $org_chart_cache['array_ocd'][$row['idst_ocd']] = $row['idst_ocd'];
+            $org_chart_cache['array_oc'][$row['idst_oc']] = $row['idst_oc'];
+            $org_chart_cache['tree_data'][$row['idst_ocd']] = [
+                'iLeft' => $row['iLeft'],
+                'iRight' => $row['iRight'],
+                'idst_oc' => $row['idst_oc']
+            ];
+        }
 
-                $query = 'SELECT idst_oc, idst_ocd'
-                    . ' FROM %adm_org_chart_tree'
-                    . ' WHERE iLeft >= ' . $i_left
-                    . ' AND iRight <= ' . $i_right;
 
-                $result = sql_query($query);
-                while (list($idst_oc, $idst_ocd) = sql_fetch_row($result)) {
-                    $res[$idst_oc] = $idst_oc;
-                    $res[$idst_ocd] = $idst_ocd;
-                }
+        $res = [];
+        $ocd_groups_to_process = [];
+
+        // First pass: identify groups and collect OCD groups
+        foreach ($array_idst as $id_group) {
+            $id_group = (int)$id_group;
+            if ($id_group <= 0) continue;
+
+            if (isset($org_chart_cache['array_oc'][$id_group])) {
+                $res[$id_group] = $id_group;
+            } elseif (isset($org_chart_cache['array_ocd'][$id_group])) {
+                $ocd_groups_to_process[] = $id_group;
             } else {
                 $res[$id_group] = $id_group;
+            }
+        }
 
-                $query = 'SELECT idstMember'
-                    . ' FROM %adm_group_members'
-                    . ' WHERE idst = ' . (int)$id_group
-                    . ' AND idstMember IN'
-                    . ' ('
-                    . ' SELECT idst'
-                    . ' FROM %adm_group'
-                    . ' )';
+        // Process OCD groups in batch
+        if (!empty($ocd_groups_to_process)) {
+            foreach ($ocd_groups_to_process as $id_group) {
+                if (isset($org_chart_cache['tree_data'][$id_group])) {
+                    $tree_info = $org_chart_cache['tree_data'][$id_group];
 
-                $result = sql_query($query);
-                while (list($idst) = sql_fetch_row($result)) {
-                    $tmp = $this->getAllGroupsFromSelection([$idst]);
-                    foreach ($tmp as $idst_t) {
-                        $res[$idst_t] = $idst_t;
+                    // Get all descendants in single query
+                    $query = 'SELECT idst_oc, idst_ocd'
+                        . ' FROM %adm_org_chart_tree'
+                        . ' WHERE iLeft >= ' . (int)$tree_info['iLeft']
+                        . ' AND iRight <= ' . (int)$tree_info['iRight'];
+
+                    $result = sql_query($query);
+                    foreach ($result as $row) {
+                        $res[(int)$row['idst_oc']] = (int)$row['idst_oc'];
+                        $res[(int)$row['idst_ocd']] = (int)$row['idst_ocd'];
                     }
+                }
+            }
+        }
+
+        // Handle regular groups (non-org chart) - get all group members at once
+        $regular_groups = array_diff_key(array_flip($array_idst), $org_chart_cache['array_oc'], $org_chart_cache['array_ocd']);
+        if (!empty($regular_groups)) {
+            $regular_group_ids = array_keys($regular_groups);
+            $in_string = implode(',', array_map('intval', $regular_group_ids));
+
+            // Get all group members in single query instead of recursion
+            $query = 'WITH RECURSIVE group_descendants AS ('
+                . ' SELECT idst, idstMember FROM %adm_group_members'
+                . ' WHERE idst IN (' . $in_string . ')'
+                . ' AND idstMember IN (SELECT idst FROM %adm_group)'
+                . ' UNION ALL'
+                . ' SELECT gm.idst, gm.idstMember FROM %adm_group_members gm'
+                . ' INNER JOIN group_descendants gd ON gd.idstMember = gm.idst'
+                . ' WHERE gm.idstMember IN (SELECT idst FROM %adm_group)'
+                . ') SELECT DISTINCT idstMember FROM group_descendants';
+
+            // Fallback for databases that don't support CTEs like Mysql 5.7
+            $result = sql_query($query);
+            if (!$result) {
+                // Use iterative approach instead of recursion
+                $to_process = $regular_group_ids;
+                $processed = [];
+
+                while (!empty($to_process)) {
+                    $current_batch = array_splice($to_process, 0, 100);
+                    $batch_string = implode(',', array_map('intval', $current_batch));
+
+                    foreach ($current_batch as $group_id) {
+                        $res[$group_id] = $group_id;
+                        $processed[$group_id] = true;
+                    }
+
+                    $query = 'SELECT idstMember FROM %adm_group_members'
+                        . ' WHERE idst IN (' . $batch_string . ')'
+                        . ' AND idstMember IN (SELECT idst FROM %adm_group)';
+
+                    $result = sql_query($query);
+                    foreach ($result as $row) {
+                        if (!isset($res[(int)$row['idstMember']])) {
+                        };
+                        $res[(int)$row['idstMember']] = (int)$row['idstMember'];
+                        if (!isset($processed[(int)$row['idstMember']])) {
+                            $to_process[] = (int)$row['idstMember'];
+                        }
+                    }
+                }
+            } else {
+                foreach ($result as $row) {
+                    $res[(int)$row['idstMember']] = (int)$row['idstMember'];
                 }
             }
         }
@@ -2741,7 +2843,7 @@ class FormaACLManager
     /**
      * get all users of a group (search in subgroups).
      *
-     * @param int $idst idst of the group
+     * @param int|array $idst idst of the group
      * @param string $filter (Optional). Filter to applay.
      *
      * @return mixed array of users of the group or FALSE
@@ -2858,9 +2960,9 @@ class FormaACLManager
             . " WHERE idst = '" . $idst . "'";
         $rs = $this->_executeQuery($query);
         $arrGroups = [];
-        $i = 0;
-        while (list($idstMember) = sql_fetch_row($rs)) {
-            $arrGroups[] = (int)$idstMember;
+
+        foreach ($rs as $row) {
+            $arrGroups[] = $row['idstMember'];
         }
 
         return $arrGroups;
@@ -2882,8 +2984,8 @@ class FormaACLManager
         $rs = $this->_executeQuery($query);
         $res = [];
         $i = 0;
-        while (list($idstMember) = sql_fetch_row($rs)) {
-            $res[] = (int)$idstMember;
+        foreach ($rs as $row) {
+            $arrGroups[] = $row['idstMember'];
         }
 
         return $res;
@@ -2900,8 +3002,8 @@ class FormaACLManager
         $rs = $this->_executeQuery($query);
         $res = [];
         $i = 0;
-        while (list($idstMember) = sql_fetch_row($rs)) {
-            $res[] = (int)$idstMember;
+        foreach ($rs as $row) {
+            $res[] = $row['idstMember'];
         }
         $guser = $this->getGroupAllUser($res);
         $res = array_merge($res, $guser);
@@ -3032,15 +3134,15 @@ class FormaACLManager
         $inString = (implode(',', $arr_idst) == '' ? 'NULL' : implode(',', $arr_idst));
 
         $query = ' SELECT u.idst '
-            . ' FROM ' . $this->_getTableUser() . ' AS u'
+            . ' FROM core_user AS u'
             . ' WHERE u.idst IN ( ' . $inString . ' )';
         $rs = $this->_executeQuery($query);
         $arr_user = [];
         if (!$rs) {
             return $arr_user;
         }
-        while (list($idst) = sql_fetch_row($rs)) {
-            $arr_user[] = (int)$idst;
+        foreach ($rs as $row) {
+            $arr_user[] = $row['idst'];
         }
 
         return $arr_user;
@@ -3071,8 +3173,8 @@ class FormaACLManager
         if (!$rs) {
             return $arr_groups;
         }
-        while (list($idst) = sql_fetch_row($rs)) {
-            $arr_groups[] = (int)$idst;
+        foreach ($rs as $row) {
+            $arr_groups[] = $row['idst'];
         }
 
         return $arr_groups;
@@ -3137,8 +3239,9 @@ class FormaACLManager
         }
 
         $q = $this->_executeQuery($qtxt);
+        $res = [];
         if (($q) && (sql_num_rows($q) > 0)) {
-            while ($row = sql_fetch_assoc($q)) {
+            foreach ($q as $row) {
                 $roleid = $row['roleid'];
 
                 if ($path_end !== false) {
@@ -3148,7 +3251,7 @@ class FormaACLManager
                 }
 
                 $role_info = trim(substr($role_info, strlen($path_start)), '/');
-                if (strpos($role_info, '/') !== false) {
+                if (str_contains($role_info, '/')) {
                     $tmp_arr = explode('/', $role_info);
                     $role_info = $tmp_arr[0];
                     unset($tmp_arr);
@@ -3190,11 +3293,11 @@ class FormaACLManager
         $qtxt = $this->_getSearchUsersQuery($internal_fields, $extra_fields, $idst_filter, $ini, $vis_item);
         // echo $qtxt;
 
-        $q = $this->_executeQuery($qtxt);
+        $result = $this->_executeQuery($qtxt);
 
-        if (($q) && (sql_num_rows($q) > 0)) {
-            while ($row = sql_fetch_row($q)) {
-                $res[] = $row[ACL_INFO_IDST];
+        if ($result && is_iterable($result)) {
+            foreach ($result as $row) {
+                $res[] = $row['idst'];
             }
         }
 
@@ -3342,8 +3445,8 @@ class FormaACLManager
                 . " WHERE g.groupid IN ( '" . implode("','", $temp) . "' )";
 
             $res = $db->query($query);
-            while (list($idst) = $db->fetch_row($res)) {
-                $output[] = $idst;
+            foreach ($res as $row) {
+                $output[] = $row['idst'];
             }
         } else {
             $output = false;

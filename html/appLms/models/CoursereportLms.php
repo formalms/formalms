@@ -124,83 +124,93 @@ class CoursereportLms extends Model
     private function grabCourseReports()
     {
         $report_man = new CourseReportManager($this->idCourse);
-        $org_tests = &$report_man->getTest();
+        $org_tests = $report_man->getTest();
 
-        $query_final_tot_report = "SELECT COUNT(*) FROM %lms_coursereport WHERE id_course = '" . $this->idCourse . "' AND source_of = '" . self::SOURCE_OF_FINAL_VOTE . "'";
+        // Clean up orphaned records first - remove records referencing non-existent course objects
+        $this->cleanupOrphanedReports($org_tests);
 
-        [$final_score_report] = sql_fetch_row(sql_query($query_final_tot_report));
+        // Single optimized query to get all necessary counts and data
+        $query_stats = "
+            SELECT 
+                COUNT(CASE WHEN source_of = '" . self::SOURCE_OF_FINAL_VOTE . "' THEN 1 END) as final_count,
+                COUNT(*) as total_count,
+                GROUP_CONCAT(
+                    CASE WHEN source_of = '" . self::SOURCE_OF_TEST . "' 
+                    THEN CONCAT(id_report, ':', id_source) 
+                    END
+                ) as test_reports
+            FROM %lms_coursereport 
+            WHERE id_course = '" . (int)$this->idCourse . "'
+        ";
 
-        if ((int)$final_score_report === 0) {
+        $stats_result = sql_query($query_stats);
+        $stats = sql_fetch_assoc($stats_result);
+        
+        $final_score_report = (int)$stats['final_count'];
+        $tot_report = (int)$stats['total_count'];
+
+        // Add final vote if missing
+        if ($final_score_report === 0) {
             $report_man->addFinalVoteToReport();
         }
 
-        $query_tot_report = "SELECT COUNT(*) FROM %lms_coursereport  WHERE id_course = '" . $this->idCourse . "'";
-
-        [$tot_report] = sql_fetch_row(sql_query($query_tot_report));
-
-        if ((int)$tot_report === 1) {
-            if ((int)$final_score_report === 1) {
-                $query_remove_final_score = "DELETE FROM %lms_coursereport WHERE id_course = '" . $this->idCourse . "'";
-
-                sql_query($query_remove_final_score);
-            }
-
+        // Handle case where only final vote exists
+        if ($tot_report === 1 && $final_score_report === 1) {
+            sql_query("DELETE FROM %lms_coursereport WHERE id_course = '" . (int)$this->idCourse . "'");
             $tot_report = 0;
         }
 
-        $query_tests = 'SELECT id_report, id_source '
-            . ' FROM %lms_coursereport '
-            . " WHERE id_course = '" . $this->idCourse . "' AND source_of = '" . self::SOURCE_OF_TEST . "'";
-
-        $re_tests = sql_query($query_tests);
-
+        // Parse existing test reports
         $included_test = [];
-
-        foreach ($re_tests as $re_test) {
-            $included_test[$re_test['id_source']] = $re_test['id_source'];
+        if (!empty($stats['test_reports'])) {
+            $test_reports = explode(',', $stats['test_reports']);
+            foreach ($test_reports as $test_report) {
+                if (!empty($test_report)) {
+                    [$id_report, $id_source] = explode(':', $test_report);
+                    $included_test[$id_source] = $id_source;
+                }
+            }
         }
 
-        // XXX: Update if needed
-        if ((int)$tot_report === 0) {
+        // Manage test reports
+        if ($tot_report === 0) {
             $report_man->initializeCourseReport($org_tests);
         } else {
-
-            if (is_array($included_test)) {
-                $test_to_add = array_diff($org_tests, $included_test);
-            } else {
-                $test_to_add = $org_tests;
-            }
-
-            if (is_array($included_test)) {
-                $test_to_del = array_diff($included_test, $org_tests);
-            } else {
-                $test_to_del = $org_tests;
-            }
+            $test_to_add = array_diff($org_tests, $included_test);
+            $test_to_del = array_diff($included_test, $org_tests);
 
             if (!empty($test_to_add) || !empty($test_to_del)) {
-                $report_man->addTestToReport($test_to_add, 1);
-                $report_man->delTestToReport($test_to_del);
+                if (!empty($test_to_add)) {
+                    $report_man->addTestToReport($test_to_add, 1);
+                }
+                if (!empty($test_to_del)) {
+                    $report_man->delTestToReport($test_to_del);
+                }
             }
         }
 
         $report_man->updateTestReport($org_tests);
 
-        $query_report = "SELECT id_report FROM %lms_coursereport WHERE id_course = '" . $this->idCourse . "'";
+        // Build final report query with proper escaping
+        $query_report = "SELECT id_report FROM %lms_coursereport WHERE id_course = '" . (int)$this->idCourse . "'";
 
         if (!is_null($this->idReport)) {
-            $query_report .= " AND id_report = '" . $this->idReport . "'";
+            $query_report .= " AND id_report = '" . (int)$this->idReport . "'";
         }
 
         if (!is_null($this->sourceOf)) {
             if (is_array($this->sourceOf)) {
-                $query_report .= " AND source_of IN ('" . implode("','", $this->sourceOf) . "')";
+                $escaped_sources = array_map(function($s) { 
+                    return "'" . sql_escape_string($s) . "'"; 
+                }, $this->sourceOf);
+                $query_report .= " AND source_of IN (" . implode(",", $escaped_sources) . ")";
             } else {
-                $query_report .= " AND source_of = '" . $this->sourceOf . "'";
+                $query_report .= " AND source_of = '" . sql_escape_string($this->sourceOf) . "'";
             }
         }
 
         if (!is_null($this->idSource)) {
-            $query_report .= " AND id_source = '" . $this->idSource . "'";
+            $query_report .= " AND id_source = '" . (int)$this->idSource . "'";
         }
 
         $query_report .= ' ORDER BY sequence ';
@@ -209,9 +219,37 @@ class CoursereportLms extends Model
 
         foreach ($re_report as $infoReport) {
             $report = new ReportLms($infoReport['id_report']);
-
             $this->courseReports[] = $report;
         }
+    }
+
+    /**
+     * Clean up orphaned records from learning_coursereport table
+     * that reference objects not belonging to this course
+     */
+    private function cleanupOrphanedReports($valid_tests)
+    {
+        // Remove test reports that reference non-existent or invalid test objects
+        if (!empty($valid_tests)) {
+            $valid_test_ids = array_map('intval', array_keys($valid_tests));
+            $valid_test_list = implode(',', $valid_test_ids);
+            
+            $cleanup_query = "
+                DELETE FROM %lms_coursereport 
+                WHERE id_course = '" . (int)$this->idCourse . "' 
+                AND source_of = '" . self::SOURCE_OF_TEST . "'
+                AND id_source NOT IN (" . $valid_test_list . ")
+            ";
+        } else {
+            // If no valid tests, remove all test reports for this course
+            $cleanup_query = "
+                DELETE FROM %lms_coursereport 
+                WHERE id_course = '" . (int)$this->idCourse . "' 
+                AND source_of = '" . self::SOURCE_OF_TEST . "'
+            ";
+        }
+        
+        sql_query($cleanup_query);
     }
 
     /**

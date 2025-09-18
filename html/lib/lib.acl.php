@@ -257,7 +257,7 @@ class FormaACL
     /**
      * get all groups of an array of idst.
      *
-     * @param int $arr_idst idst
+     * @param array $arr_idst idst
      * @param string $filter (Optional). Filter to applay.
      *
      * @return mixed array of groups of the user or FALSE
@@ -273,7 +273,7 @@ class FormaACL
             $new_st = $this->aclManager->getGroupsAllContainer($new_st, $filter);
 
             if (!empty($new_st)) {
-                $arrST = array_merge($arrST, array_diff($new_st, $arrST));
+                $arrST = array_merge($arrST, (array)array_diff($new_st, $arrST));
             }
         } while (!empty($new_st) && ($loop_check < 50));
 

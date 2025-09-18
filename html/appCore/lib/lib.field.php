@@ -116,7 +116,7 @@ class FieldList
 
                 return $false_var;
             }
-            list($id_common, $type_file, $type_class) = sql_fetch_row($rs);
+            [$id_common, $type_file, $type_class] = sql_fetch_row($rs);
         } else {
             $id_common = $id_field;
         }
@@ -531,7 +531,7 @@ class FieldList
             return false;
         }
 
-        list($num) = sql_fetch_row($rs);
+        [$num] = sql_fetch_row($rs);
 
         return $num;
     }
@@ -764,7 +764,7 @@ class FieldList
         if (sql_num_rows($rs) < 1) {
             return 'NULL';
         }
-        list($type_file, $type_class) = sql_fetch_row($rs);
+        [$type_file, $type_class] = sql_fetch_row($rs);
         require_once \FormaLms\lib\Forma::inc(_adm_ . '/modules/field/' . $type_file);
         $quest_obj = eval("return new $type_class( $id_field );");
         if ($this->field_entry_table !== false) {
@@ -872,7 +872,7 @@ class FieldList
         if (sql_num_rows($rs) < 1) {
             return $res;
         }
-        list($id_common, $type_file, $type_class) = sql_fetch_row($rs);
+        [$id_common, $type_file, $type_class] = sql_fetch_row($rs);
         require_once \FormaLms\lib\Forma::inc(_adm_ . '/modules/field/' . $type_file);
         $quest_obj = eval("return new $type_class( $id_common );");
         if ($this->field_entry_table !== false) {
@@ -968,7 +968,7 @@ class FieldList
             return 'NULL';
         }
 
-        list($id_common, $type_file, $type_class) = sql_fetch_row($rs);
+        [$id_common, $type_file, $type_class] = sql_fetch_row($rs);
 
         require_once \FormaLms\lib\Forma::inc(_adm_ . '/modules/field/' . $type_file);
         $quest_obj = new $type_class($id_common);
@@ -1012,7 +1012,7 @@ class FieldList
         if (sql_num_rows($rs) < 1) {
             return 'NULL';
         }
-        list($type_file, $type_class) = sql_fetch_row($rs);
+        [$type_file, $type_class] = sql_fetch_row($rs);
         require_once \FormaLms\lib\Forma::inc(_adm_ . '/modules/field/' . $type_file);
         $quest_obj = eval("return new $type_class( $id_field );");
         if ($this->field_entry_table !== false) {
@@ -2099,7 +2099,7 @@ class FieldList
             ' FROM ' . $this->getFieldTable() . '' .
             " WHERE translation LIKE '" . $translation . "'";
 
-        list($res) = sql_fetch_row(sql_query($query));
+        [$res] = sql_fetch_row(sql_query($query));
 
         return $res;
     }

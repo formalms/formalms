@@ -69,18 +69,18 @@ class Report_User extends Report
     public function __construct($id_report, $report_name = false)
     {
         parent::__construct($id_report, $report_name);
-        
+
         $this->usestandardtitle_rows = false;
 
-        $this->_set_columns_category(_RU_CATEGORY_COURSES, Lang::t('_RU_CAT_COURSES','report'), 'get_courses_filter', 'show_report_courses', '_get_courses_query');
+        $this->_set_columns_category(_RU_CATEGORY_COURSES, Lang::t('_RU_CAT_COURSES', 'report'), 'get_courses_filter', 'show_report_courses', '_get_courses_query');
         //$this->_set_columns_category(_RU_CATEGORY_GENERAL, Lang::t('_RU_CAT_GENERAL','report'), 'get_general_filter', 'show_report_general');
         //$this->_set_columns_category(_RU_CATEGORY_COMPETENCES, Lang::t('_RU_CAT_COMPETENCES','report'), 'get_competences_filter', 'show_report_competences', '_get_competences_query');
-        $this->_set_columns_category(_RU_CATEGORY_DELAY, Lang::t('_RU_CAT_DELAY','report'), 'get_delay_filter', 'show_report_delay', '_get_delay_query');
-        $this->_set_columns_category(_RU_CATEGORY_LO, Lang::t('_RU_CAT_LO','report'), 'get_LO_filter', 'show_report_LO', '_get_LO_query');
-        $this->_set_columns_category(_RU_CATEGORY_TESTSTAT, Lang::t('_RU_CAT_TESTSTAT','report'), 'get_TESTSTAT_filter', 'show_report_TESTSTAT', '_get_TESTSTAT_query');
+        $this->_set_columns_category(_RU_CATEGORY_DELAY, Lang::t('_RU_CAT_DELAY', 'report'), 'get_delay_filter', 'show_report_delay', '_get_delay_query');
+        $this->_set_columns_category(_RU_CATEGORY_LO, Lang::t('_RU_CAT_LO', 'report'), 'get_LO_filter', 'show_report_LO', '_get_LO_query');
+        $this->_set_columns_category(_RU_CATEGORY_TESTSTAT, Lang::t('_RU_CAT_TESTSTAT', 'report'), 'get_TESTSTAT_filter', 'show_report_TESTSTAT', '_get_TESTSTAT_query');
 
-        $this->_set_columns_category(_RU_CATEGORY_COMMUNICATIONS, Lang::t('_RU_CAT_COMMUNICATIONS','report'), 'get_communications_filter', 'show_report_communications', '_get_communications_query');
-        $this->_set_columns_category(_RU_CATEGORY_GAMES, Lang::t('_RU_CAT_GAMES','report'), 'get_games_filter', 'show_report_games', '_get_games_query');
+        $this->_set_columns_category(_RU_CATEGORY_COMMUNICATIONS, Lang::t('_RU_CAT_COMMUNICATIONS', 'report'), 'get_communications_filter', 'show_report_communications', '_get_communications_query');
+        $this->_set_columns_category(_RU_CATEGORY_GAMES, Lang::t('_RU_CAT_GAMES', 'report'), 'get_games_filter', 'show_report_games', '_get_games_query');
 
         $this->status_c = [
             CST_PREPARATION => Lang::t('_CST_PREPARATION', 'course'),
@@ -94,14 +94,14 @@ class Report_User extends Report
         $this->status_u = $csub->getUserStatus();
 
         $this->courses_filter_definition = [
-            ['key' => _COURSES_FILTER_SESSION_NUMBER, 'label' => Lang::t('_COURSES_FILTER_SESSION_NUMBER','report'), 'type' => _FILTER_INTEGER],
-            ['key' => _COURSES_FILTER_SCORE_INIT, 'label' => Lang::t('_COURSES_FILTER_SCORE_INIT','report'), 'type' => _FILTER_INTEGER],
-            ['key' => _COURSES_FILTER_SCORE_END, 'label' => Lang::t('_FINAL_SCORE','report'), 'type' => _FILTER_INTEGER],
-            ['key' => _COURSES_FILTER_SCORE_COURSE, 'label' => Lang::t('_COURSES_FILTER_SCORE_COURSE','report'), 'type' => _FILTER_INTEGER],
-            ['key' => _COURSES_FILTER_INSCRIPTION_DATE, 'label' => Lang::t('_COURSES_FILTER_INSCRIPTION_DATE','report'), 'type' => _FILTER_DATE],
-            ['key' => _COURSES_FILTER_FIRSTACCESS_DATE, 'label' => Lang::t('_DATE_FIRST_ACCESS','report'), 'type' => _FILTER_DATE],
-            ['key' => _COURSES_FILTER_END_DATE, 'label' => Lang::t('_COURSES_FILTER_END_DATE','report'), 'type' => _FILTER_DATE],
-            ['key' => _COURSES_FILTER_LASTACCESS_DATE, 'label' => Lang::t('_DATE_LAST_ACCESS','report'), 'type' => _FILTER_DATE],
+            ['key' => _COURSES_FILTER_SESSION_NUMBER, 'label' => Lang::t('_COURSES_FILTER_SESSION_NUMBER', 'report'), 'type' => _FILTER_INTEGER],
+            ['key' => _COURSES_FILTER_SCORE_INIT, 'label' => Lang::t('_COURSES_FILTER_SCORE_INIT', 'report'), 'type' => _FILTER_INTEGER],
+            ['key' => _COURSES_FILTER_SCORE_END, 'label' => Lang::t('_FINAL_SCORE', 'report'), 'type' => _FILTER_INTEGER],
+            ['key' => _COURSES_FILTER_SCORE_COURSE, 'label' => Lang::t('_COURSES_FILTER_SCORE_COURSE', 'report'), 'type' => _FILTER_INTEGER],
+            ['key' => _COURSES_FILTER_INSCRIPTION_DATE, 'label' => Lang::t('_COURSES_FILTER_INSCRIPTION_DATE', 'report'), 'type' => _FILTER_DATE],
+            ['key' => _COURSES_FILTER_FIRSTACCESS_DATE, 'label' => Lang::t('_DATE_FIRST_ACCESS', 'report'), 'type' => _FILTER_DATE],
+            ['key' => _COURSES_FILTER_END_DATE, 'label' => Lang::t('_COURSES_FILTER_END_DATE', 'report'), 'type' => _FILTER_DATE],
+            ['key' => _COURSES_FILTER_LASTACCESS_DATE, 'label' => Lang::t('_DATE_LAST_ACCESS', 'report'), 'type' => _FILTER_DATE],
         ];
 
         $this->LO_columns = [
@@ -110,17 +110,17 @@ class Report_User extends Report
             ['key' => 'email', 'select' => true, 'group' => 'user', 'label' => Lang::t('_EMAIL', 'standard')],
             ['key' => 'suspended', 'select' => true, 'group' => 'user', 'label' => Lang::t('_SUSPENDED', 'standard')],
             ['key' => '_CUSTOM_FIELDS_', 'select' => false, 'group' => 'user', 'label' => false],
-            ['key' => 'course_code', 'select' => false, 'group' => 'course', 'label' => Lang::t('_CODE','report')],
-            ['key' => 'course_name', 'select' => true, 'group' => 'course', 'label' => Lang::t('_COURSE_NAME','report')],
-            ['key' => 'course_status', 'select' => true, 'group' => 'course', 'label' => Lang::t('_STATUS','report')],
-            ['key' => 'lo_type', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_LO_COL_TYPE','report')],
-            ['key' => 'lo_name', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_TITLE','report')],
-            ['key' => 'lo_milestone', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_LO_COL_MILESTONE','report')],
-            ['key' => 'firstAttempt', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_LO_COL_FIRSTATT','report')],
-            ['key' => 'lastAttempt', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_LO_COL_LASTATT','report')],
-            ['key' => 'lo_status', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_STATUS','report')],
-            ['key' => 'lo_score', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_SCORE','report')],
-            ['key' => 'lo_total_time', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_TOTAL_TIME','report')],
+            ['key' => 'course_code', 'select' => false, 'group' => 'course', 'label' => Lang::t('_CODE', 'report')],
+            ['key' => 'course_name', 'select' => true, 'group' => 'course', 'label' => Lang::t('_COURSE_NAME', 'report')],
+            ['key' => 'course_status', 'select' => true, 'group' => 'course', 'label' => Lang::t('_STATUS', 'report')],
+            ['key' => 'lo_type', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_LO_COL_TYPE', 'report')],
+            ['key' => 'lo_name', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_TITLE', 'report')],
+            ['key' => 'lo_milestone', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_LO_COL_MILESTONE', 'report')],
+            ['key' => 'firstAttempt', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_LO_COL_FIRSTATT', 'report')],
+            ['key' => 'lastAttempt', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_LO_COL_LASTATT', 'report')],
+            ['key' => 'lo_status', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_STATUS', 'report')],
+            ['key' => 'lo_score', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_SCORE', 'report')],
+            ['key' => 'lo_total_time', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_TOTAL_TIME', 'report')],
         ];
 
         $this->TESTSTAT_columns = [
@@ -129,13 +129,13 @@ class Report_User extends Report
             ['key' => 'email', 'select' => true, 'group' => 'user', 'label' => Lang::t('_EMAIL', 'standard')],
             ['key' => 'suspended', 'select' => true, 'group' => 'user', 'label' => Lang::t('_SUSPENDED', 'standard')],
             ['key' => '_CUSTOM_FIELDS_', 'select' => false, 'group' => 'user', 'label' => false],
-            ['key' => 'course_code', 'select' => false, 'group' => 'course', 'label' => Lang::t('_CODE','report')],
-            ['key' => 'course_name', 'select' => true, 'group' => 'course', 'label' => Lang::t('_COURSE_NAME','report')],
-            ['key' => 'course_status', 'select' => true, 'group' => 'course', 'label' => Lang::t('_STATUS','report')],
-            ['key' => 'lo_name', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_TITLE','report')],
-            ['key' => 'lo_status', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_STATUS','report')],
-            ['key' => 'lo_score', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_SCORE','report')],
-            ['key' => 'lo_date', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_DATE','report')],
+            ['key' => 'course_code', 'select' => false, 'group' => 'course', 'label' => Lang::t('_CODE', 'report')],
+            ['key' => 'course_name', 'select' => true, 'group' => 'course', 'label' => Lang::t('_COURSE_NAME', 'report')],
+            ['key' => 'course_status', 'select' => true, 'group' => 'course', 'label' => Lang::t('_STATUS', 'report')],
+            ['key' => 'lo_name', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_TITLE', 'report')],
+            ['key' => 'lo_status', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_STATUS', 'report')],
+            ['key' => 'lo_score', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_SCORE', 'report')],
+            ['key' => 'lo_date', 'select' => true, 'group' => 'lo', 'label' => Lang::t('_DATE', 'report')],
         ];
 
         $this->delay_columns = [
@@ -156,20 +156,21 @@ class Report_User extends Report
 
     public function getLOTypesTranslations()
     {
-        
+
         if (!is_array($this->LO_types)) {
             $this->LO_types = [];
             $res = sql_query('SELECT objectType FROM %lms_lo_types');
-            while (list($id_type) = sql_fetch_row($res)) {
-                switch ($id_type) {
+            foreach ($res as $row) {
+
+                switch ($row['objectType']) {
                     case 'scormorg':
-                        $this->LO_types[$id_type] = Lang::t('_SCORMSECTIONNAME', 'scorm');
+                        $this->LO_types[$row['objectType']] = Lang::t('_SCORMSECTIONNAME', 'scorm');
                         break;
                     case 'item':
-                        $this->LO_types[$id_type] = Lang::t('_FILE', 'standard');
+                        $this->LO_types[$row['objectType']] = Lang::t('_FILE', 'standard');
                         break;
                     default:
-                        $this->LO_types[$id_type] = Lang::t('_LONAME_' . $id_type, 'storage');
+                        $this->LO_types[$row['objectType']] = Lang::t('_LONAME_' . $row['objectType'], 'storage');
                         break;
                 }
             }
@@ -247,7 +248,7 @@ class Report_User extends Report
         if (isset($_POST['cancelselector'])) {
             Util::jump_to($back_url);
         } elseif (isset($_POST['okselector'])) {
-         
+
             $temp = $user_select->getSelection($_POST);
 
             $reportTempData['rows_filter']['users'] = $temp;
@@ -494,8 +495,8 @@ class Report_User extends Report
                         'id' => $val['id'],
                         'label' => $val['label'],
                         'selected' => $is_selected,
-                        'translation' => array_key_exists('translation' , $val) ? $val['translation'] : '',
-                        'type_field' => array_key_exists('type_field' , $val) ? $val['type_field'] : '',
+                        'translation' => array_key_exists('translation', $val) ? $val['translation'] : '',
+                        'type_field' => array_key_exists('type_field', $val) ? $val['type_field'] : '',
                     ];
                 }
                 $reportTempData['columns_filter']['custom_fields_org'] = $t_arr;
@@ -847,7 +848,7 @@ class Report_User extends Report
         $sort_dir_dropdown = Form::getInputDropdown('', 'order_dir', 'order_dir', $dir_list, $dir_selected, '');
         $box->body .= Form::getDropdown(Lang::t('_ORDER_BY', 'standard'), 'order_by', 'order_by', $sort_list, $sort_selected, $sort_dir_dropdown);
 
-        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool) $reportTempData['columns_filter']['show_suspended']);
+        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool)$reportTempData['columns_filter']['show_suspended']);
 
         cout($box->get());
     }
@@ -962,8 +963,8 @@ class Report_User extends Report
         $selected = ' checked="checked"';
         $box = new ReportBox();
 
-        $box->title = Lang::t('_COMPETENCESFILTER_TITLE','report');
-        $box->description = Lang::t('_COMPETENCESFILTER_TITLE_DESC','report');
+        $box->title = Lang::t('_COMPETENCESFILTER_TITLE', 'report');
+        $box->description = Lang::t('_COMPETENCESFILTER_TITLE_DESC', 'report');
         $box->body = Form::getBreakRow()
             . Form::getHidden('is_updating', 'is_updating', 1)
 
@@ -1062,8 +1063,8 @@ class Report_User extends Report
     /**
      * Return the output in the selected format for the report with the filters given.
      *
-     * @param string $type        output type
-     * @param array  $report_data a properly formatted list of rule to follow
+     * @param string $type output type
+     * @param array $report_data a properly formatted list of rule to follow
      * @param string $other
      *
      * @return string the properly formated report
@@ -1142,8 +1143,8 @@ class Report_User extends Report
             if (!$filter_allcourses) {
                 $rs = sql_query('SELECT idCourse FROM %lms_course');
                 $course_selected = [];
-                while (list($id_course) = sql_fetch_row($rs)) {
-                    $course_selected[] = $id_course;
+                foreach ($rs as $row) {
+                    $course_selected[] = $row['idCourse'];
                 }
             }
 
@@ -1176,8 +1177,8 @@ class Report_User extends Report
                 if (!empty($admin_courses['course'])) {
                     $rs = sql_query('SELECT idCourse FROM %lms_course');
                     $course_selected = [];
-                    while (list($id_course) = sql_fetch_row($rs)) {
-                        $course_selected[] = $id_course;
+                    foreach ($rs as $row) {
+                        $course_selected[] = $row['idCourse'];
                     }
                     $_clist = array_values($admin_courses['course']);
                     $course_selected = array_intersect($course_selected, $_clist);
@@ -1207,8 +1208,8 @@ class Report_User extends Report
                 if (!empty($admin_courses['course'])) {
                     $rs = sql_query('SELECT idCourse FROM %lms_course');
                     $course_selected = [];
-                    while (list($id_course) = sql_fetch_row($rs)) {
-                        $course_selected[] = $id_course;
+                    foreach ($rs as $row) {
+                        $course_selected[] = $row['idCourse'];
                     }
                     $_clist = array_values($admin_courses['course']);
                     $course_selected = array_intersect($course_selected, $_clist);
@@ -1231,7 +1232,7 @@ class Report_User extends Report
             }
         }
 
-        $show_classrooms_editions = isset($filter_columns['show_classrooms_editions']) ? (bool) $filter_columns['show_classrooms_editions'] : false;
+        $show_classrooms_editions = isset($filter_columns['show_classrooms_editions']) ? (bool)$filter_columns['show_classrooms_editions'] : false;
 
         $classrooms_editions_info = [];
         if ($show_classrooms_editions) {
@@ -1241,10 +1242,9 @@ class Report_User extends Report
                 . (!$filter_allcourses ? ' AND d.id_course IN (' . implode(',', $filter_courseselection) . ') ' : '')
                 . ' GROUP BY dd.id_date';
             $res = sql_query($query);
-            while ($obj = sql_fetch_object($res)) {
-                $classrooms_editions_info['classrooms'][$obj->id_date] = $obj;
+            foreach ($res as $row) {
+                $classrooms_editions_info['classrooms'][$row['id_date']] = (object)$row;
             }
-
             //retrieve editions info
             //TO DO ...
         }
@@ -1293,9 +1293,9 @@ class Report_User extends Report
 		FROM %lms_category');
         $category_list = [0 => $lang->def('_NONE')];
         $category_path_list = [0 => '/'];
-        while (list($id_cat, $name_cat) = sql_fetch_row($re_category)) {
-            $category_list[$id_cat] = substr($name_cat, strrpos($name_cat, '/') + 1);
-            $category_path_list[$id_cat] = substr($name_cat, 5, (strlen($name_cat) - 5)); //eliminates "/root"
+        foreach ($re_category as $row) {
+            $category_list[$row['idCategory']] = substr($row['path'], strrpos($row['path'], '/') + 1);
+            $category_path_list[$row['idCategory']] = substr($row['path'], 5, (strlen($row['path']) - 5)); //eliminates "/root"
         }
 
         $time_list = [];
@@ -1303,7 +1303,7 @@ class Report_User extends Report
         $lastaccess_list = [];
 
         $query = '
-		SELECT idUser, idCourse, COUNT(*), SUM(UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)), MAX(lastTime)
+		SELECT idUser, idCourse, COUNT(*) as session_num, SUM(UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)) as time_num, MAX(lastTime) as last_time
 		FROM %lms_tracksession
 		WHERE 1 ' .
             ($alluser > 0 ? '' : 'AND idUser IN ( ' . implode(',', $user_selected) . ' ) ') .
@@ -1312,10 +1312,10 @@ class Report_User extends Report
         //if($end_time != '') $query .= " AND lastTime <= '".$end_time."' ";
         $query .= 'GROUP BY idUser, idCourse ';
         $re_time = sql_query($query);
-        while (list($id_u, $id_c, $session_num, $time_num, $last_num) = sql_fetch_row($re_time)) {
-            $session_list[$id_u . '_' . $id_c] = $session_num;
-            $time_list[$id_u . '_' . $id_c] = $time_num;
-            $lastaccess_list[$id_u . '_' . $id_c] = $last_num;
+        foreach ($re_time as $row) {
+            $session_list[$row['idUser'] . '_' . $row['idCourse']] = $row['session_num'];
+            $time_list[$row['idUser'] . '_' . $row['idCourse']] = $row['time_num'];
+            $lastaccess_list[$row['idUser'] . '_' . $row['idCourse']] = $row['last_time'];
         }
         //recover start and final score
         require_once _lms_ . '/lib/lib.orgchart.php';
@@ -1496,7 +1496,7 @@ class Report_User extends Report
             }
         }
 
-   
+
         return $output;
     }
 
@@ -1610,6 +1610,7 @@ class Report_User extends Report
             ++$colspanuser;
         }
 
+
         $aclManager = new FormaACLManager();
         $aclManager->include_suspended = true;
         $_users = $aclManager->getAllUsersFromSelection($filter_rows);
@@ -1679,18 +1680,18 @@ class Report_User extends Report
         }
         //LRZ: custom field for course
         $field_values_course = [];
-        $customcols_course = array_key_exists('custom_fields_course' , $filter_columns) ? $filter_columns['custom_fields_course'] : '';
+        $customcols_course = array_key_exists('custom_fields_course', $filter_columns) ? $filter_columns['custom_fields_course'] : '';
         $custom_list_course = [];
 
-        if(is_array($customcols_course)) {
-           foreach ($customcols_course as $val) {
+        if (is_array($customcols_course)) {
+            foreach ($customcols_course as $val) {
                 if ($val['selected']) {
                     $th2[] = $val['label'];
                     ++$colspan1;
                 }
-            } 
+            }
         }
-        
+
         $colspan_classrooms_editions = 0;
         if ($show_classrooms_editions) {
             if (in_array('_TH_CLASSROOM_CODE', $cols)) {
@@ -1801,16 +1802,34 @@ class Report_User extends Report
 
         $buffer->openBody();
         $exclusive = ($filter_columns['filter_exclusive'] == 1 ? true : false); //1 if exclusive, 0 if inclusive
-        while ($sql_row = sql_fetch_array($re_course_user)) {
+        // SELECT cu.idUser, c.code, c.idCourse, c.idCategory, c.name, c.status AS course_status, cu.level,  cu.status, cu.date_inscr, cu.date_first_access, cu.date_complete,
+        //c.mediumTime, c.course_type, c.credits,  u.userid, u.firstname, u.lastname, u.email, u.register_date, u.valid  FROM  %lms_courseuser AS cu JOIN %lms_course AS c JOIN %adm_user as u  ON (cu.idCourse = c.idCourse AND cu.idUser = u.idst)  WHERE u.valid = 1 = 1 AND cu.idUser
+        foreach ($re_course_user as $row) {
+
+            $id_user = $row['idUser'];
+            $code = $row['code'];
+            $id_course = $row['idCourse'];
+            $id_category = $row['idCategory'];
+            $name = $row['name'];
+            $status = $row['status'];
+            $level_user = $row['level'];
+            $status_user = $row['status'];
+            $date_inscr = $row['date_inscr'];
+            $date_first_access = $row['date_first_access'];
+            $date_complete = $row['date_complete'];
+            $medium_time = $row['mediumTime'];
+            $course_type = $row['course_type'];
+            $credits = $row['credits'];
+            $userid = $row['userid'];
+            $firstname = $row['firstname'];
+            $lastname = $row['lastname'];
+            $email = $row['email'];
+            $register_date = $row['register_date'];
+            $valid = $row['valid'];
             if ($show_classrooms_editions) {
-                list($id_user, $code, $id_course, $id_category, $name, $status, $level_user,
-                    $status_user, $date_inscr, $date_first_access, $date_complete, $medium_time, $course_type, $credits,
-                    $userid, $firstname, $lastname, $email, $register_date, $valid,
-                    $id_date, $classroom_date_subscription, $classroom_date_complete) = $sql_row;
-            } else {
-                list($id_user, $code, $id_course, $id_category, $name, $status, $level_user,
-                    $status_user, $date_inscr, $date_first_access, $date_complete, $medium_time, $course_type, $credits,
-                    $userid, $firstname, $lastname, $email, $register_date, $valid) = $sql_row;
+                $id_date = $row['id_date'];
+                $classroom_date_subscription = $row['classroom_date_subscription'];
+                $classroom_date_complete = $row['classroom_date_complete'];
             }
 
             //$draw_row = $exclusive;
@@ -1979,14 +1998,14 @@ class Report_User extends Report
                     $row[] = $credits;
                 }
 
-                if(is_array($customcols_course)) {
+                if (is_array($customcols_course)) {
                     foreach ($customcols_course as $val) {
                         if ($val['selected']) {
                             $row[] = '<i></i>' . $fman->getValueCustomCourse($id_course, $val['id']);
                         }
                     }
                 }
-                
+
                 if ($show_classrooms_editions) {
                     $e_code = $e_name = $date_1 = $date_2 = '';
                     if (isset($classrooms_editions_info['classrooms'][$id_date])) {
@@ -2053,35 +2072,33 @@ class Report_User extends Report
 
                 if (in_array('_TH_USER_ELAPSED_TIME', $cols)) {
                     $row[] = (isset($time_list[$id_user . '_' . $id_course]) ?
-                        substr('0' . ((int) ($time_list[$id_user . '_' . $id_course] / 3600)), -2) . 'h '
-                        . substr('0' . ((int) (($time_list[$id_user . '_' . $id_course] % 3600) / 60)), -2) . 'm '
-                        . substr('0' . ((int) ($time_list[$id_user . '_' . $id_course] % 60)), -2) . 's ' : '&nbsp;');
+                        substr('0' . ((int)($time_list[$id_user . '_' . $id_course] / 3600)), -2) . 'h '
+                        . substr('0' . ((int)(($time_list[$id_user . '_' . $id_course] % 3600) / 60)), -2) . 'm '
+                        . substr('0' . ((int)($time_list[$id_user . '_' . $id_course] % 60)), -2) . 's ' : '&nbsp;');
                 }
 
                 if (in_array('_TH_ESTIMATED_TIME', $cols)) {
                     $row[] = $medium_time . 'h';
                 }
 
-                // Luca
-                if (in_array('_TH_PERC_LO', $cols)) {
+                if (in_array('_TH_PERC_LO', $cols) || in_array('_TH_PERC_LO_GRAPH', $cols)) {
 
                     $courseAlms = new CourseAlms();
                     $courseStats = $courseAlms->getCourseCompletedPercentage($id_course, $id_user);
 
-                    $row[] = $courseStats['complete_percentage'] . '%';
-                }
+                    if (in_array('_TH_PERC_LO', $cols)) {
 
-                if (in_array('_TH_PERC_LO_GRAPH', $cols)) {
-                    $courseAlms = new CourseAlms();
-                    $courseStats = $courseAlms->getCourseCompletedPercentage($id_course, $id_user);
-                    $str_color_bar = 'warning';
-                    if ($courseStats['complete_percentage'] == 100) {
-                        $str_color_bar = 'success';
-                    }
+                        $row[] = $courseStats['complete_percentage'] . '%';
+                    } else {
 
-                    $list_mat = $this->listLoCompleted($id_user, $id_course);
+                        $str_color_bar = 'warning';
+                        if ($courseStats['complete_percentage'] == 100) {
+                            $str_color_bar = 'success';
+                        }
 
-                    $row[] = '  
+                        $list_mat = $this->listLoCompleted($id_user, $id_course);
+
+                        $row[] = '  
         
                                  <div class="progress" style=" cursor: pointer;">
                                       <div class="progress-bar progress-bar-' . $str_color_bar . '"
@@ -2093,11 +2110,8 @@ class Report_User extends Report
                                             >
                                         <span class="sr-only" >&nbsp;</span>
                                       </div>
-                                 </div>                                   
-                                                 
-                                      
-                    
-                                   ';
+                                 </div>';
+                    }
                 }
 
                 //checkbox for mail
@@ -2186,7 +2200,7 @@ class Report_User extends Report
         $query = 'select count(*) as tot_lo from learning_organization where idCourse=' . $idCourse . " AND (objectType <> '' OR objectType IS NULL)";
 
         $res = $this->db->query($query);
-        list($tot_lo) = $this->db->fetch_row($res);
+        [$tot_lo] = $this->db->fetch_row($res);
 
         return $tot_lo;
     }
@@ -2201,7 +2215,7 @@ class Report_User extends Report
          ";
 
         $res = $this->db->query($query);
-        list($tot_lo) = $this->db->fetch_row($res);
+        [$tot_lo] = $this->db->fetch_row($res);
 
         return $tot_lo;
     }
@@ -2212,19 +2226,13 @@ class Report_User extends Report
                     where  idOrg = idReference and idCourse=' . $id_course . ' and learning_commontrack.idUser=' . $id_user . " and learning_commontrack.status in ('completed', 'passed') order by last_complete";
 
         $res = $this->db->query($query);
-        $cont = 0;
-        $str_lo = '<ul class="list-group" type="circle">';
-        while (list($title, $last_complete) = $this->db->fetch_row($res)) {
-            $str_lo = $str_lo . "<li class='list-group-item'>" . $last_complete . '    -    ' . addslashes($title) . '</li>';
-            ++$cont;
-        }
-        if ($cont == 0) {
-            $str_lo = '-';
+        $str = '-';
+
+        foreach ($res as $row) {
+            $str .= "<li class='list-group-item'>" . $row['last_complete'] . '    -    ' . addslashes($row['title']) . '</li>';
         }
 
-        $str_lo = $str_lo . '</ul>';
-
-        return $str_lo;
+        return '<ul class="list-group" type="circle">' . $str . '</ul>';;
     }
 
     public function show_report_competences($report_data = null, $other = '')
@@ -2258,7 +2266,7 @@ class Report_User extends Report
                 $header = 'MIME-Version: 1.0' . $GLOBALS['mail_br']
                     . 'Content-type: text/html; charset=' . Lang::charset() . $GLOBALS['mail_br'];
                 $header .= 'Return-Path: ' . $senderMailSystem . $GLOBALS['mail_br'];
-   
+
                 $header .= 'X-Sender: ' . $senderMailSystem . $GLOBALS['mail_br'];
                 $header .= 'X-Mailer: PHP/' . PHP_VERSION . $GLOBALS['mail_br'];
 
@@ -2364,12 +2372,12 @@ class Report_User extends Report
             . ' JOIN ' . $table4 . ' as t4 ON (t3.id_user = t4.idst AND t4.valid=1 ' . $user_query_select . ' ) '
             . ' ORDER BY t4.userid';
         $res = sql_query($query);
-        while ($obj = sql_fetch_object($res)) {
-            $arr_data[$obj->id_user][$obj->id_competence] = $obj->score_got;
-            if (!in_array($obj->id_competence, $arr_competences)) {
-                $arr_competences[] = $obj->id_competence;
+        foreach ($res as $row) {
+            $arr_data[$row['id_user']][$row['id_competence']] = $row['score_got'];
+            if (!in_array($row['id_competence'], $arr_competences)) {
+                $arr_competences[] = $row['id_competence'];
             }
-            $arr_userids[$obj->id_user] = $acl_man->relativeId($obj->userid);
+            $arr_userids[$row['id_user']] = $acl_man->relativeId($row['userid']);
         }
 
         if (count($arr_competences) <= 0) {
@@ -2725,7 +2733,7 @@ class Report_User extends Report
         $sort_dir_dropdown = Form::getInputDropdown('', 'order_dir', 'order_dir', $dir_list, $dir_selected, '');
         $box->body .= Form::getDropdown(Lang::t('_ORDER_BY', 'standard'), 'order_by', 'order_by', $sort_list, $sort_selected, $sort_dir_dropdown);
 
-        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool) $reportTempData['columns_filter']['show_suspended']);
+        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool)$reportTempData['columns_filter']['show_suspended']);
 
         cout($box->get());
     }
@@ -2836,7 +2844,7 @@ class Report_User extends Report
 
         $order_by = (isset($cdata['order_by']) ? $cdata['order_by'] : 'userid');
         $order_dir = (isset($cdata['order_dir']) ? $cdata['order_dir'] : 'asc');
-        $show_suspended = (isset($cdata['show_suspended']) ? (bool) $cdata['show_suspended'] : false);
+        $show_suspended = (isset($cdata['show_suspended']) ? (bool)$cdata['show_suspended'] : false);
 
         if (!$alluser) {
             $user_selected = &$acl_man->getAllUsersFromIdst($rdata['users']);
@@ -2936,8 +2944,21 @@ class Report_User extends Report
         $element_to_print = [];
         $courses_codes = [];
 
-        while (list($id_u, $id_c, $id_e, $date_inscr, $date_first_access, $date_complete, $status, $level,
-            $u_userid, $u_firstname, $u_lastname, $u_email, $u_valid) = sql_fetch_row($re_course_user)) {
+        foreach ($re_course_user as $row) {
+            $idUser = $row['idUser'];
+            $idCourse = $row['idCourse'];
+            $idEdition = $row['edition_id'];
+            $date_inscr = $row['date_inscr'];
+            $date_first_access = $row['date_first_access'];
+            $date_complete = $row['date_complete'];
+            $status = $row['status'];
+            $level = $row['level'];
+            $u_userid = $row['userid'];
+            $u_firstname = $row['firstname'];
+            $u_lastname = $row['lastname'];
+            $u_email = $row['email'];
+            $u_valid = $row['valid'];
+
             if ($level == '3') { //$report_type === 'course_started' && $level == '3') {
                 $user_check = false;
                 $now_timestamp = mktime('0', '0', '0', date('m'), date('d'), date('Y'));
@@ -2962,10 +2983,10 @@ class Report_User extends Report
 
                 if ($day_until_course_end) {
                     if ($status_condition) {
-                        if ($id_e > 0) {
+                        if ($idEdition > 0) {
                             $query = 'SELECT date_end'
                                 . ' FROM %lms_course_edition'
-                                . " WHERE idCourseEdition = '" . $id_e . "'";
+                                . " WHERE idCourseEdition = '" . $idEdition . "'";
                             [$date_end] = sql_fetch_row(sql_query($query));
                             $user_timestamp = mktime('0', '0', '0', $date_end[5] . $date_end[6], ($date_end[8] . $date_end[9]) - $day_until_course_end, $date_end[0] . $date_end[1] . $date_end[2] . $date_end[3]);
                             if ($user_timestamp < $now_timestamp) {
@@ -2974,7 +2995,7 @@ class Report_User extends Report
                         } else {
                             $query = 'SELECT date_end'
                                 . ' FROM %lms_course'
-                                . " WHERE idCourse = '" . $id_c . "'";
+                                . " WHERE idCourse = '" . $idCourse . "'";
                             [$date_end] = sql_fetch_row(sql_query($query));
                             $user_timestamp = mktime('0', '0', '0', $date_end[5] . $date_end[6], ($date_end[8] . $date_end[9]) - $day_until_course_end, $date_end[0] . $date_end[1] . $date_end[2] . $date_end[3]);
                             if ($user_timestamp < $now_timestamp) {
@@ -2986,10 +3007,10 @@ class Report_User extends Report
 
                 if ($date_until_course_end) {
                     if ($status_condition) {
-                        if ($id_e > 0) {
+                        if ($idEdition > 0) {
                             $query = 'SELECT COUNT(*)'
                                 . ' FROM %lms_course_edition'
-                                . " WHERE idCourseEdition = '" . $id_e . "'"
+                                . " WHERE idCourseEdition = '" . $idEdition . "'"
                                 . " AND date_end < '" . Format::dateDb($date_until_course_end, 'date') . "'";
                             [$control] = sql_fetch_row(sql_query($query));
                             if ($control) {
@@ -2998,7 +3019,7 @@ class Report_User extends Report
                         } else {
                             $query = 'SELECT COUNT(*)'
                                 . ' FROM %lms_course'
-                                . " WHERE idCourse = '" . $id_c . "'"
+                                . " WHERE idCourse = '" . $idCourse . "'"
                                 . " AND date_end < '" . Format::dateDb($date_until_course_end, 'date') . "'";
                             [$control] = sql_fetch_row(sql_query($query));
                             if ($control) {
@@ -3015,21 +3036,21 @@ class Report_User extends Report
                 }
 
                 if (in_array('date_last_access', $cdata['showed_columns'])) {
-                   $query = "SELECT lastTime from %lms_tracksession WHERE idCourse = $id_c AND idUser = $id_u ORDER BY idEnter DESC LIMIT 1";
+                    $query = "SELECT lastTime from %lms_tracksession WHERE idCourse = $idCourse AND idUser = $idUser ORDER BY idEnter DESC LIMIT 1";
                     [$control] = sql_fetch_row(sql_query($query));
                     $date_last_access = $control ?: '';
                 }
 
                 if ($user_check) {
-                    $course_info = $course_man->getCourseInfo($id_c);
+                    $course_info = $course_man->getCourseInfo($idCourse);
 
 
-                    $element_to_print[$id_c]['name'] = $course_info['name'];
-                    $element_to_print[$id_c]['code'] = $course_info['code'];
-                    $element_to_print[$id_c]['data'][] = [
-                        'idUser' => $id_u,
-                        'idCourse' => $id_c,
-                        'idCourseEdition' => $id_e,
+                    $element_to_print[$idCourse]['name'] = $course_info['name'];
+                    $element_to_print[$idCourse]['code'] = $course_info['code'];
+                    $element_to_print[$idCourse]['data'][] = [
+                        'idUser' => $idUser,
+                        'idCourse' => $idCourse,
+                        'idCourseEdition' => $idEdition,
                         'status' => $status,
                         'level' => $level,
                         'userid' => \FormaLms\lib\Forma::getAclManager()->relativeId($u_userid),
@@ -3070,7 +3091,7 @@ class Report_User extends Report
         }
 
         if (empty($element_to_print)) {
-            cout(Lang::t('_NO_USER_FOUND','report'), 'content');
+            cout(Lang::t('_NO_USER_FOUND', 'report'), 'content');
         } else {
             require_once _lms_ . '/admin/modules/report/report_tableprinter.php';
             $buffer = new ReportTablePrinter($type);
@@ -3323,7 +3344,7 @@ class Report_User extends Report
         $lo_trans = $this->getLOTypesTranslations();
         $box->body .= Form::getOpenFieldset(Lang::t('_RU_LO_TYPES', 'report'), 'lotypes_fieldset');
         $res = sql_query('SELECT * FROM %lms_lo_types');
-        while ($row = sql_fetch_assoc($res)) {
+        foreach ($res as $row) {
             $trans = isset($lo_trans[$row['objectType']]) ? $lo_trans[$row['objectType']] : '';
             $box->body .= Form::getCheckBox($trans, 'lo_type_' . $row['objectType'], 'lo_types[' . $row['objectType'] . ']', $row['objectType'], (in_array($row['objectType'], $reportTempData['columns_filter']['lo_types']) ? true : false));
         }
@@ -3426,7 +3447,7 @@ class Report_User extends Report
         $sort_dir_dropdown = Form::getInputDropdown('', 'order_dir', 'order_dir', $dir_list, $dir_selected, '');
         $box->body .= Form::getDropdown(Lang::t('_ORDER_BY', 'standard'), 'order_by', 'order_by', $sort_list, $sort_selected, $sort_dir_dropdown);
 
-        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool) $reportTempData['columns_filter']['show_suspended']);
+        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool)$reportTempData['columns_filter']['show_suspended']);
 
         cout($box->get(), 'content');
     }
@@ -3460,8 +3481,8 @@ class Report_User extends Report
                 $from = 'From: ' . $sender . $GLOBALS['mail_br'];
                 $header = 'MIME-Version: 1.0' . $GLOBALS['mail_br']
                     . 'Content-type: text/html; charset=' . Lang::charset() . $GLOBALS['mail_br'];
-                $header .= 'Return-Path: ' .   $senderMailSystem . $GLOBALS['mail_br'];
-                $header .= 'X-Sender: ' .   $senderMailSystem  . $GLOBALS['mail_br'];
+                $header .= 'Return-Path: ' . $senderMailSystem . $GLOBALS['mail_br'];
+                $header .= 'X-Sender: ' . $senderMailSystem . $GLOBALS['mail_br'];
                 $header .= 'X-Mailer: PHP/' . PHP_VERSION . $GLOBALS['mail_br'];
 
                 // send mail
@@ -3542,7 +3563,7 @@ class Report_User extends Report
         $customcols = $_cols['custom_fields'];
         $order_by = isset($_cols['order_by']) ? $_cols['order_by'] : 'userid';
         $order_dir = isset($_cols['order_dir']) ? $_cols['order_dir'] : 'asc';
-        $suspended = isset($_cols['show_suspended']) ? (bool) $_cols['show_suspended'] : false;
+        $suspended = isset($_cols['show_suspended']) ? (bool)$_cols['show_suspended'] : false;
         if ($all_users) {
             $users = $acl_man->getAllUsersIdst();
         } else {
@@ -3618,7 +3639,7 @@ class Report_User extends Report
             if ($val['selected']) {
                 ++$colspans['user'];
                 $temp_head2[] = $val['label'];
-                $field_values[$val['id']] = $fman->fieldValue((int) $val['id'], $users);
+                $field_values[$val['id']] = $fman->fieldValue((int)$val['id'], $users);
             }
         }
 
@@ -3694,7 +3715,7 @@ class Report_User extends Report
             . (!$all_users ? ' AND t2.idUser IN (' . implode(',', $users) . ') ' : '')
             . (count($tempmilestones) > 0 ? ' AND t1.milestone IN (' . implode(',', $tempmilestones) . ') ' : '');
         $res = sql_query($query);
-        while ($row = sql_fetch_assoc($res)) {
+        foreach ($res as $row) {
             $score_arr['test'][$row['idOrg']][$row['idUser']] = $row['score'] + $row['bonus_score'];
         }
 
@@ -3714,7 +3735,7 @@ class Report_User extends Report
             . (count($tempmilestones) > 0 ? ' AND t1.milestone IN (' . implode(',', $tempmilestones) . ') ' : '')
             . ' GROUP BY t1.idOrg, t2.idUser, t1.idCourse, t2.score_raw, t2.score_min, t2.score_max, t2.total_time';
         $res = sql_query($query);
-        while ($row = sql_fetch_assoc($res)) {
+        foreach ($res as $row) {
             $score_arr['scorm'][$row['idOrg']][$row['idUser']] = $row['score_raw'];
             $total_time_arr['scorm'][$row['idOrg']][$row['idUser']] = $row['total_time'];
         }
@@ -3779,7 +3800,7 @@ class Report_User extends Report
             . (count($tempmilestones) > 0 ? 'AND t1.milestone IN (' . implode(',', $tempmilestones) . ')' : '')
             . ' ORDER BY ' . $query_order_by;
         $res = sql_query($query);
-        while ($row = sql_fetch_assoc($res)) {
+        foreach ($res as $row) {
             $temp = [];
             foreach ($this->LO_columns as $val) {
                 switch ($val['key']) {
@@ -4085,8 +4106,8 @@ class Report_User extends Report
             $query = 'SELECT id_comm FROM %lms_communication';
             $res = $this->db->query($query);
             $arR_selected_comm = [];
-            while (list($id_comm) = $this->db->fetch_row($res)) {
-                $arr_selected_comm[] = $id_comm;
+            foreach ($res as $row) {
+                $arrselected_comm[] = $row['id_comm'];
             }
         }
 
@@ -4172,20 +4193,20 @@ class Report_User extends Report
             return;
         }
 
-        while ($obj = $this->db->fetch_obj($res)) {
+        foreach ($res as $row) {
             $line = [];
 
-            $line[] = $obj->title;
-            $line[] = isset($lang_type[$obj->type_of]) ? $lang_type[$obj->type_of] : '';
-            $line[] = Format::date($obj->publish_date, 'date');
+            $line[] = $row['title'];
+            $line[] = isset($lang_type[$row['type_of']]) ? $lang_type[$row['type_of']] : '';
+            $line[] = Format::date($row['publish_date'], 'date');
 
-            $line[] = $acl_man->relativeId($obj->userid);
-            $line[] = $obj->status == 'completed' || $obj->status == 'passed' ? $_YES : $_NO;
-            $line[] = Format::date($obj->dateAttempt, 'datetime');
+            $line[] = $acl_man->relativeId($row['userid']);
+            $line[] = $row['status'] == 'completed' || $row['status'] == 'passed' ? $_YES : $_NO;
+            $line[] = Format::date($row['dateAttempt'], 'datetime');
 
             if ($this->use_mail) {
                 $line[] = '<div class="align_center">' .
-                    Form::getInputCheckbox('mail_' . $obj->idUser, 'mail_recipients[]', $obj->idUser, isset($_POST['select_all']), '') . '</div>';
+                    Form::getInputCheckbox('mail_' . $row['idUser'], 'mail_recipients[]', $row['idUser'], isset($_POST['select_all']), '') . '</div>';
             }
 
             $buffer->addLine($line);
@@ -4350,8 +4371,8 @@ class Report_User extends Report
             $query = 'SELECT id_game FROM %lms_games';
             $res = $this->db->query($query);
             $arr_selected_comp = [];
-            while (list($id_game) = $this->db->fetch_row($res)) {
-                $arr_selected_comp[] = $id_game;
+            foreach ($res as $row) {
+                $arr_selected_comp[] = $row['id_game'];
             }
         }
 
@@ -4442,26 +4463,26 @@ class Report_User extends Report
             return;
         }
 
-        while ($obj = $this->db->fetch_obj($res)) {
+        foreach ($res as $row) {
             $line = [];
 
-            $line[] = $obj->title;
-            $line[] = isset($lang_type[$obj->type_of]) ? $lang_type[$obj->type_of] : '';
-            $line[] = Format::date($obj->start_date, 'date');
-            $line[] = Format::date($obj->end_date, 'date');
+            $line[] = $row['title'];
+            $line[] = isset($lang_type[$row['type_of']]) ? $lang_type[$row['type_of']] : '';
+            $line[] = Format::date($row['start_date'], 'date');
+            $line[] = Format::date($row['end_date'], 'date');
 
-            $line[] = $acl_man->relativeId($obj->userid);
-            $line[] = $obj->status == 'completed' || $obj->status == 'passed' ? $_YES : $_NO;
-            $line[] = Format::date($obj->dateAttempt, 'datetime');
-            $line[] = Format::date($obj->firstAttempt, 'datetime');
+            $line[] = $acl_man->relativeId($row['userid']);
+            $line[] = $row['status'] == 'completed' || $row['status'] == 'passed' ? $_YES : $_NO;
+            $line[] = Format::date($row['dateAttempt'], 'datetime');
+            $line[] = Format::date($row['firstAttempt'], 'datetime');
 
-            $line[] = $obj->current_score;
-            $line[] = $obj->max_score;
-            $line[] = $obj->num_attempts;
+            $line[] = $row['current_score'];
+            $line[] = $row['max_score'];
+            $line[] = $row['num_attempts'];
 
             if ($this->use_mail) {
                 $line[] = '<div class="align_center">' .
-                    Form::getInputCheckbox('mail_' . $obj->idUser, 'mail_recipients[]', $obj->idUser, isset($_POST['select_all']), '') . '</div>';
+                    Form::getInputCheckbox('mail_' . $row['idUser'], 'mail_recipients[]', $row['idUser'], isset($_POST['select_all']), '') . '</div>';
             }
 
             $buffer->addLine($line);
@@ -4475,7 +4496,7 @@ class Report_User extends Report
     }
 
     // +++++++++++++++++++++++++++++++++
-//     TEST STAT report functions
+    //     TEST STAT report functions
     // +++++++++++++++++++++++++++++++++
     public function get_TESTSTAT_filter()
     {
@@ -4687,7 +4708,7 @@ class Report_User extends Report
         $sort_dir_dropdown = Form::getInputDropdown('', 'order_dir', 'order_dir', $dir_list, $dir_selected, '');
         $box->body .= Form::getDropdown(Lang::t('_ORDER_BY', 'standard'), 'order_by', 'order_by', $sort_list, $sort_selected, $sort_dir_dropdown);
 
-        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool) $reportTempData['columns_filter']['show_suspended']);
+        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool)$reportTempData['columns_filter']['show_suspended']);
 
         cout($box->get(), 'content');
     }
@@ -4709,7 +4730,7 @@ class Report_User extends Report
 
         switch ($op) {
             case 'send_mail_confirm':
-          
+
                 $subject = importVar('mail_object', false, '[' . $lang->def('_SUBJECT') . ']'); //'[No subject]');
                 $body = importVar('mail_body', false, '');
                 $acl_man = new FormaACLManager();
@@ -4721,7 +4742,7 @@ class Report_User extends Report
                 $header = 'MIME-Version: 1.0' . $GLOBALS['mail_br']
                     . 'Content-type: text/html; charset=' . Lang::charset() . $GLOBALS['mail_br'];
                 $header .= 'Return-Path: ' . $sender . $GLOBALS['mail_br'];
-          
+
                 $header .= 'X-Sender: ' . $sender . $GLOBALS['mail_br'];
                 $header .= 'X-Mailer: PHP/' . PHP_VERSION . $GLOBALS['mail_br'];
 
@@ -4790,7 +4811,7 @@ class Report_User extends Report
         $customcols = &$_cols['custom_fields'];
         $order_by = isset($_cols['order_by']) ? $_cols['order_by'] : 'userid';
         $order_dir = isset($_cols['order_dir']) ? $_cols['order_dir'] : 'asc';
-        $suspended = isset($_cols['show_suspended']) ? (bool) $_cols['show_suspended'] : false;
+        $suspended = isset($_cols['show_suspended']) ? (bool)$_cols['show_suspended'] : false;
         if ($all_users) {
             $users = $acl_man->getAllUsersIdst();
         } else {
@@ -4851,7 +4872,7 @@ class Report_User extends Report
             if ($val['selected']) {
                 ++$colspans['user'];
                 $temp_head2[] = $val['label'];
-                $field_values[$val['id']] = $fman->fieldValue((int) $val['id'], $users);
+                $field_values[$val['id']] = $fman->fieldValue((int)$val['id'], $users);
             }
         }
 
@@ -4927,7 +4948,7 @@ class Report_User extends Report
                 . 'ORDER BY t4.date_end ASC');
         $res = sql_query($query);
         $color_id = 0;
-        while ($row = sql_fetch_assoc($res)) {
+        foreach ($res as $row) {
             $color = '#efefef';
             if ($color_id % 2 == 0) {
                 $color = '#FFF';
@@ -4946,7 +4967,7 @@ class Report_User extends Report
             . (!$all_users ? ' AND t2.idUser IN (' . implode(',', $users) . ') ' : '')
             . (count($tempmilestones) > 0 ? ' AND t1.milestone IN (' . implode(',', $tempmilestones) . ') ' : '');
         $res = sql_query($query);
-        while ($row = sql_fetch_assoc($res)) {
+        foreach ($res as $row) {
             $score_arr['scorm'][$row['idOrg']][$row['idUser']] = $row['score_raw'];
         }
 
@@ -5015,7 +5036,7 @@ class Report_User extends Report
             . ' ORDER BY ' . $query_order_by;
 
         $res = sql_query($query);
-        while ($row = sql_fetch_assoc($res)) {
+        foreach ($res as $row) {
             $temp = [];
             foreach ($this->TESTSTAT_columns as $val) {
                 switch ($val['key']) {
@@ -5120,7 +5141,4 @@ class Report_User extends Report
     }
 
 
-
-
-  
 }

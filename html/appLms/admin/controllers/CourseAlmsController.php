@@ -608,7 +608,7 @@ class CourseAlmsController extends AlmsController
         if (!isset($this->lo_types_cache[$objectType])) {
             return null;
         }
-        list($className, $fileName) = $this->lo_types_cache[$objectType];
+        [$className, $fileName] = $this->lo_types_cache[$objectType];
         require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/' . $fileName);
         $lo = new $className($idResource);
 
@@ -971,109 +971,6 @@ class CourseAlmsController extends AlmsController
 
                 //--- end forum --------------------------------------------------------
 
-                //--- copy coursereports data ------------------------------------------
-
-                //create a conversion table for tests and scoitems coursereports
-                $organizationArray = [
-                    'test' => [],
-                    'scoitem' => [],
-                ];
-                $itemsArray = [
-                    'test' => [],
-                    'scoitem' => [],
-                ];
-
-                $query = "SELECT source_of, id_source
-					FROM %lms_coursereport WHERE id_course = '" . $idCourseToDulicate . "'
-					AND source_of IN ('test', 'scoitem')";
-                $result = sql_query($query);
-
-                foreach ($result as $row) {
-                    switch ($row['source_of']) {
-                        case 'scoitem':
-                            $itemsArray['scoitem'][] = $row['id_source'];
-                            break;
-                        default:
-                    }
-                }
-
-                if (!empty($itemsArray['scoitem'])) {
-                    //retrieve idOrgs of scoitems' scormorgs
-                    $oldIdOrganizationsArray = [];
-                    $oldIdentifiersArray = [];
-                    $query = 'SELECT o.idOrg, o.idResource, s.idscorm_item, s.item_identifier
-						FROM %lms_organization AS o
-						JOIN %lms_scorm_items AS s
-						ON (o.idResource = s.idscorm_organization)
-						WHERE s.idscorm_item IN (' . implode(',', $itemsArray['scoitem']) . ")
-						AND o.objectType = 'scormorg'";
-                    $res = sql_query($query);
-
-                    foreach ($res as $row) {
-                        list($idOrg, $idResource, $idscorm_item, $item_identifier) = $row;
-
-                        $oldIdOrganizationsArray[] = $idOrg;
-                        $oldIdentifiersArray[$idOrg . '/' . $item_identifier] = $idscorm_item;
-                    }
-                    if (!empty($oldIdOrganizationsArray)) {
-                        $newIdOrganizationsArray = [];
-                        foreach ($oldIdOrganizationsArray as $idOrg) {
-                            $newIdOrganizationsArray[] = $learningObjectsIdOrgs[$idOrg];
-                        }
-                        $query = 'SELECT o.idOrg, o.idResource, s.idscorm_item, s.item_identifier
-							FROM %lms_organization AS o
-							JOIN %lms_scorm_items AS s
-							ON (o.idResource = s.idscorm_organization)
-							WHERE o.idOrg IN (' . implode(',', $newIdOrganizationsArray) . ")
-							AND o.objectType = 'scormorg'";
-                        $res = sql_query($query);
-                        $newToOld = array_flip($learningObjectsIdOrgs);
-                        foreach ($res as $row) {
-                            list($idOrg, $idResource, $idscorm_item, $item_identifier) = $row;
-
-                            $_key = $newToOld[$idOrg] . '/' . $item_identifier;
-                            if (array_key_exists($_key, $oldIdentifiersArray)) {
-                                $_index = $oldIdentifiersArray[$_key];
-                                $organizationArray['scoitem'][$_index] = $idscorm_item;
-                            }
-                        }
-                    }
-                }
-
-                $insertQueryList = [];
-                $query = "SELECT * FROM %lms_coursereport WHERE id_course = '" . $idCourseToDulicate . "' ";
-                $result = sql_query($query);
-                foreach ($result as $newOrg) {
-                    $idSourceValue = 0;
-                    switch ($newOrg['source_of']) {
-                        case 'test':
-                            $idSourceValue = $learningObjects['test'][$newOrg['id_source']] ?? 0;
-
-                            break;
-                        case 'scoitem':
-                            $idSourceValue = !isset($organizationArray['scoitem'][$newOrg['id_source']]) || $organizationArray['scoitem'][$newOrg['id_source']] == ''
-                                ? 0
-                                : $organizationArray['scoitem'][$newOrg['id_source']];
-
-                            break;
-                        default:
-                    }
-
-                    $insertQueryList[] = "('" . $newCourseId . "', '" . sql_escape_string($newOrg['title']) . "', '" . $newOrg['max_score'] . "',
-						'" . $newOrg['required_score'] . "', '" . $newOrg['weight'] . "', '" . $newOrg['show_to_user'] . "',
-						'" . $newOrg['use_for_final'] . "', '" . $newOrg['sequence'] . "', '" . $newOrg['source_of'] . "',
-						'" . $idSourceValue . "')";
-                }
-
-                $result_dupman = true;
-                if (!empty($insertQueryList)) {
-                    $query = 'INSERT IGNORE INTO %lms_coursereport
-						(id_course,title,max_score,required_score,weight,show_to_user,use_for_final,sequence,source_of,id_source)
-						VALUES ' . implode(',', $insertQueryList);
-                    $menuDuplicated = sql_query($query);
-                }
-                //--- end coursereports ------------------------------------------------
-
                 //--- copy htmlfront data ----------------------------------------------
 
                 $insertQueryList = [];
@@ -1317,7 +1214,7 @@ class CourseAlmsController extends AlmsController
 							ORDER BY main.sequence, un.sequence
 							LIMIT 0,1";
 
-                list($id_module, $id_main) = sql_fetch_row(sql_query($query));
+                [$id_module, $id_main] = sql_fetch_row(sql_query($query));
 
                 $this->session->set('current_main_menu', $id_main);
                 $this->session->set('sel_module_id', $id_module);
@@ -1547,7 +1444,7 @@ class CourseAlmsController extends AlmsController
         if ($id_course === false) {
             require_once _lms_ . '/lib/lib.manmenu.php';
             $menu_custom = getAllCustom();
-            list($sel_custom) = current($menu_custom);
+            [$sel_custom] = current($menu_custom);
             reset($menu_custom);
 
             $params['menu_custom'] = $menu_custom;

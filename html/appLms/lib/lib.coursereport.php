@@ -39,7 +39,7 @@ class CourseReportManager
 		SELECT sequence
 		FROM %lms_coursereport 
 		WHERE id_course = '" . $this->idCourse . "' AND source_of = 'final_vote'";
-        list($seq) = sql_fetch_row(sql_query($query_seq));
+        [$seq] = sql_fetch_row(sql_query($query_seq));
 
         $query_seq = "
 		UPDATE %lms_coursereport 
@@ -59,13 +59,13 @@ class CourseReportManager
         return $course_user;
     }
 
-    public function &getTest()
+    public function getTest()
     {
         require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.orgchart.php');
         require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/learning.test.php');
 
         $org_man = new OrganizationManagement($this->idCourse);
-        $tests = &$org_man->getAllLoAbsoluteIdWhereType(Learning_Test::getTestTypes());
+        $tests = $org_man->getAllLoAbsoluteIdWhereType(Learning_Test::getTestTypes());
 
         return $tests;
     }
@@ -297,8 +297,8 @@ class CourseReportManager
 					score_status = 'valid',
 					comment = '" . $comments[$idst_user] . "'
 					" . ($old_scores[$id_report][$idst_user] != $score
-                    ? ", score_status = 'valid'"
-                    : '') . " 
+                        ? ", score_status = 'valid'"
+                        : '') . " 
 				WHERE id_report = '" . $id_report . "' AND id_user = '" . $idst_user . "'";
             }
             $re = sql_query($query_scores);
@@ -324,7 +324,7 @@ class CourseReportManager
             $query_scores .= ' AND idUser IN ( ' . implode(',', $id_users) . ' ) ';
         }
         $re_scores = sql_query($query_scores);
-        foreach ($re_scores  as $row) {
+        foreach ($re_scores as $row) {
             [$user, $score, $score_status] = array_values($row);
             if ($score_status == 'valid') {
                 $query_scores = "
@@ -511,11 +511,10 @@ class CourseReportManager
 
         foreach ($commonScores as $idCourse => $score) {
             $scores[$idCourse] = $this->getCourseFinalScoreComputation($idCourse);
-            foreach ($score['idUsers'] as $idUser){
-                if(array_key_exists($idUser, $scores[$idCourse])) {
+            foreach ($score['idUsers'] as $idUser) {
+                if (array_key_exists($idUser, $scores[$idCourse])) {
                     $re[$idUser][$idCourse]['score'] = ($score['status'] == 'not_found') ? 0 : $scores[$idCourse][$idUser];
-                }
-                else {
+                } else {
                     $re[$idUser][$idCourse]['score'] = 0;
                 }
                 $re[$idUser][$idCourse]['max_score'] = $score['max_score'];
@@ -541,7 +540,8 @@ class CourseReportManager
         return $re;
     }
 
-    public function getCourseFinalScoreComputation($idCourse, $idUser = null) {
+    public function getCourseFinalScoreComputation($idCourse, $idUser = null)
+    {
         $this->idCourse = $idCourse;
         require_once Forma::inc(_lms_ . '/lib/lib.coursereport.php');
         require_once Forma::inc(_lms_ . '/lib/lib.test.php');
@@ -549,7 +549,7 @@ class CourseReportManager
         require_once Forma::inc(_base_ . '/lib/lib.table.php');
         $test_man = new GroupTestManagement();
         // XXX: Find students
-        $id_students = $idUser ? [$idUser] : $this->getStudentId() ;
+        $id_students = $idUser ? [$idUser] : $this->getStudentId();
         // XXX: retrive info about the final score
         $courseReportLms = new CoursereportLms($idCourse);
         $info_final = $courseReportLms->getReportsFilteredBySourceOf(CoursereportLms::SOURCE_OF_FINAL_VOTE);
@@ -616,7 +616,7 @@ class CourseReportManager
                 $final_score[$id_user] = 0;
             }
         }
-        if($idUser) {
+        if ($idUser) {
             return $final_score[$id_user];
         }
         return $final_score;
