@@ -1044,6 +1044,11 @@ class OrgDirDb extends RepoDirDb implements Accessible
             sql_query($query);
 
             foreach ($selection as $idst_element) {
+                // Skip inserting records with value=0 to prevent making LO inaccessible to all users
+                if ((int) $idst_element === 0) {
+                    continue;
+                }
+                
                 if (array_search($idst_element, $id_groups) !== false) {
                     $type = 'group';
                 } else {
