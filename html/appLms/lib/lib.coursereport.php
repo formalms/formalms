@@ -105,11 +105,13 @@ class CourseReportManager
         sql_query($query_seq);
 
         $test_info = $test_man->getTestInfo($id_tests);
-        foreach ($id_tests as $id_test => $title) {
+        foreach ($id_tests as $id_test) {
+
             $query_test = "
 			INSERT IGNORE INTO %lms_coursereport 
-			( id_course, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source, sequence ) VALUES (
+			( id_course, title, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source, sequence ) VALUES (
 				'" . $this->idCourse . "',
+				'" . addslashes($test_info[$id_test]['title']) . "',
 				'" . $test_man->getMaxScore($id_test) . "', 
 				'" . $test_man->getRequiredScore($id_test) . "',
 				'100',
@@ -175,10 +177,12 @@ class CourseReportManager
             return;
         }
 
+        // Fix: Delete by id_source (test IDs) instead of id_report to properly remove orphaned records
+        $escaped_test_ids = array_map('intval', $id_tests);
         $query_test = "DELETE FROM %lms_coursereport 
 		WHERE id_course = '" . $this->idCourse . "' AND
 			source_of = 'test' AND 
-			id_report IN ( " . implode(',', $id_tests) . ' )';
+			id_source IN ( " . implode(',', $escaped_test_ids) . ' )';
         sql_query($query_test);
 
         $this->repairSequence();
@@ -190,13 +194,14 @@ class CourseReportManager
         $re_select = sql_query($query_select);
         $i = 1;
         foreach ($re_select as $row) {
-            [$id_report] = array_values($row);
+            $id_report = $row['id_report'];
 
             $query_seq = "UPDATE %lms_coursereport SET sequence = '" . $i++ . "' WHERE id_course = '" . $this->idCourse . "' AND id_report = '$id_report'";
             sql_query($query_seq);
         }
-        $query_seq = "
-		UPDATE %lms_coursereport  SET sequence = '" . $i . "' WHERE id_course = '" . $this->idCourse . "' AND source_of = 'final_vote'";
+
+        $query_seq = "UPDATE %lms_coursereport  SET sequence = '" . $i . "' WHERE id_course = '" . $this->idCourse . "' AND source_of = 'final_vote'";
+
         sql_query($query_seq);
     }
 
@@ -543,7 +548,6 @@ class CourseReportManager
     public function getCourseFinalScoreComputation($idCourse, $idUser = null)
     {
         $this->idCourse = $idCourse;
-        require_once Forma::inc(_lms_ . '/lib/lib.coursereport.php');
         require_once Forma::inc(_lms_ . '/lib/lib.test.php');
         require_once Forma::inc(_base_ . '/lib/lib.form.php');
         require_once Forma::inc(_base_ . '/lib/lib.table.php');

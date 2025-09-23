@@ -146,8 +146,18 @@ class CoursereportLms extends Model
         $stats_result = sql_query($query_stats);
         $stats = sql_fetch_assoc($stats_result);
         
-        $final_score_report = (int)$stats['final_count'];
-        $tot_report = (int)$stats['total_count'];
+        // Ensure $stats is a valid array to prevent wrong evaluation records
+        if (!is_array($stats)) {
+            // If query failed or returned invalid data, initialize with safe defaults
+            $stats = [
+                'final_count' => 0,
+                'total_count' => 0,
+                'test_reports' => null
+            ];
+        }
+        
+        $final_score_report = (int)($stats['final_count'] ?? 0);
+        $tot_report = (int)($stats['total_count'] ?? 0);
 
         // Add final vote if missing
         if ($final_score_report === 0) {
@@ -162,8 +172,9 @@ class CoursereportLms extends Model
 
         // Parse existing test reports
         $included_test = [];
-        if (!empty($stats['test_reports'])) {
-            $test_reports = explode(',', $stats['test_reports']);
+        $test_reports_string = $stats['test_reports'] ?? null;
+        if (!empty($test_reports_string)) {
+            $test_reports = explode(',', $test_reports_string);
             foreach ($test_reports as $test_report) {
                 if (!empty($test_report)) {
                     [$id_report, $id_source] = explode(':', $test_report);
@@ -171,17 +182,20 @@ class CoursereportLms extends Model
                 }
             }
         }
-
         // Manage test reports
         if ($tot_report === 0) {
             $report_man->initializeCourseReport($org_tests);
         } else {
-            $test_to_add = array_diff($org_tests, $included_test);
-            $test_to_del = array_diff($included_test, $org_tests);
+            // Compare test IDs properly - $org_tests has test IDs as keys, $included_test has them as values
+            $org_test_keys = array_values($org_tests);
+            $test_to_add = array_diff($org_test_keys, $included_test);
+            $test_to_del = array_diff($included_test, $org_test_keys);
 
             if (!empty($test_to_add) || !empty($test_to_del)) {
                 if (!empty($test_to_add)) {
-                    $report_man->addTestToReport($test_to_add, 1);
+                    // Create proper array structure for addTestToReport (id => title)
+                    $tests_to_add_formatted = array_intersect_key($org_tests, array_flip($test_to_add));
+                    $report_man->addTestToReport($tests_to_add_formatted, 1);
                 }
                 if (!empty($test_to_del)) {
                     $report_man->delTestToReport($test_to_del);
@@ -226,12 +240,13 @@ class CoursereportLms extends Model
     /**
      * Clean up orphaned records from learning_coursereport table
      * that reference objects not belonging to this course
+     * @todo to be removed in future releases
      */
     private function cleanupOrphanedReports($valid_tests)
     {
         // Remove test reports that reference non-existent or invalid test objects
         if (!empty($valid_tests)) {
-            $valid_test_ids = array_map('intval', array_keys($valid_tests));
+            $valid_test_ids = array_map('intval', array_values($valid_tests));
             $valid_test_list = implode(',', $valid_test_ids);
             
             $cleanup_query = "
@@ -248,7 +263,7 @@ class CoursereportLms extends Model
                 AND source_of = '" . self::SOURCE_OF_TEST . "'
             ";
         }
-        
+
         sql_query($cleanup_query);
     }
 
