@@ -66,13 +66,15 @@
                 type: "POST",
                 complete: function(json) {},
             },
+            info: false,
             language: languageObj
         });
 
         var metacert_tb = $('#mymetacertificates').FormaTable({
             data: {{ metacertificates|raw }},
             columns:{{ cert_columns | raw }},
-            language: languageObj
+            language: languageObj,
+            info: false
         });
     });
 </script>
