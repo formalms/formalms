@@ -1270,8 +1270,7 @@ class InstallAdm extends Model
      *
      * @return bool
      */
-    public
-    static function checkDbInstallation(): bool
+    public static function checkDbInstallation(): bool
     {
         \FormaLms\db\DbConn::getInstance();
 

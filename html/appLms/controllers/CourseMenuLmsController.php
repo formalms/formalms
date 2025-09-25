@@ -31,7 +31,7 @@ class CourseMenuLmsController extends LmsController
 
         YuiLib::load('base,tabview');
 
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         //$this->model = new CoursepathLms();
     }

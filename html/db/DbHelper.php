@@ -8,7 +8,7 @@ class DbHelper {
 
 function sql_query($query, $conn = false)
 {
-    $db = \FormaLms\db\DbConn::getInstance($conn);
+    $db = \FormaLms\db\DbConn::getInstance();
     $re = $db->query($query);
 
     return $re;
@@ -16,7 +16,7 @@ function sql_query($query, $conn = false)
 
 function sql_limit_query($query, $from, $results, $conn = false)
 {
-    $db = \FormaLms\db\DbConn::getInstance($conn);
+    $db = \FormaLms\db\DbConn::getInstance();
     $re = $db->query_limit($query, $from, $results);
 
     return $re;
@@ -24,7 +24,7 @@ function sql_limit_query($query, $from, $results, $conn = false)
 
 function sql_insert_id($conn = false)
 {
-    $db = \FormaLms\db\DbConn::getInstance($conn);
+    $db = \FormaLms\db\DbConn::getInstance();
     $re = $db->insert_id();
 
     return $re;
@@ -80,7 +80,7 @@ function sql_escape_string($res)
 
 function sql_error($link = null)
 {
-    $db = \FormaLms\db\DbConn::getInstance($link);
+    $db = \FormaLms\db\DbConn::getInstance();
     $re = $db->error();
 
     return $re;
@@ -96,7 +96,7 @@ function sql_free_result($res)
 
 function sql_get_client_info($link = null)
 {
-    $db = \FormaLms\db\DbConn::getInstance($link);
+    $db = \FormaLms\db\DbConn::getInstance();
     $re = $db->get_client_info();
 
     return $re;
@@ -104,7 +104,7 @@ function sql_get_client_info($link = null)
 
 function sql_get_server_info($link = null)
 {
-    $db = \FormaLms\db\DbConn::getInstance($link);
+    $db = \FormaLms\db\DbConn::getInstance();
     $re = $db->get_server_info();
 
     return $re;
@@ -112,7 +112,7 @@ function sql_get_server_info($link = null)
 
 function sql_get_server_version($link = null)
 {
-    $db = \FormaLms\db\DbConn::getInstance($link);
+    $db = \FormaLms\db\DbConn::getInstance();
     $re = $db->query('SELECT VERSION() as version');
 
     $result = sql_fetch_assoc($re);
@@ -130,7 +130,7 @@ function sql_data_seek($result, $row_number)
 
 function sql_errno($link = null)
 {
-    $db = \FormaLms\db\DbConn::getInstance($link);
+    $db = \FormaLms\db\DbConn::getInstance();
     $re = $db->errno();
 
     return $re;
@@ -138,7 +138,7 @@ function sql_errno($link = null)
 
 function sql_affected_rows($link = null)
 {
-    $db = \FormaLms\db\DbConn::getInstance($link);
+    $db = \FormaLms\db\DbConn::getInstance();
     $re = $db->affected_rows();
 
     return $re;
@@ -186,7 +186,7 @@ function sql_connect($db_host, $db_user, $db_pass, $db_name = false)
 
 function sql_select_db($db_name, $link = false)
 {
-    $db = \FormaLms\db\DbConn::getInstance($link);
+    $db = \FormaLms\db\DbConn::getInstance();
     $re = $db->select_db($db_name);
 
     return $re;

@@ -18,7 +18,7 @@ if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 }
 
 require_once _lms_ . '/lib/lib.levels.php';
-require_once _lms_ . '/lib/lib.course.php';
+require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
 function mycourses(&$url)
 {
@@ -333,7 +333,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
     require_once _base_ . '/lib/lib.navbar.php';
     require_once _lms_ . '/lib/lib.preassessment.php';
     require_once _lms_ . '/lib/lib.catalogue.php';
-    require_once _lms_ . '/lib/lib.course.php';
+    require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
     require_once _lms_ . '/lib/lib.coursereport.php';
     require_once _lms_ . '/lib/lib.coursepath.php';
     require_once _adm_ . '/lib/lib.ajax_comment.php';
@@ -1462,7 +1462,7 @@ function dashAcourse($id_course, $h_number)
     require_once _lms_ . '/lib/lib.preassessment.php';
     require_once _lms_ . '/lib/lib.catalogue.php';
     require_once _lms_ . '/lib/lib.coursepath.php';
-    require_once _lms_ . '/lib/lib.course.php';
+    require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
     require_once _lms_ . '/modules/coursecatalogue/lib.coursecatalogue.php';
     $lang = FormaLanguage::createInstance('standard', 'framework');
     
@@ -1522,7 +1522,7 @@ function dashAcourse($id_course, $h_number)
 
 function downloadMaterials()
 {
-    require_once _lms_ . '/lib/lib.course.php';
+    require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
     require_once _base_ . '/lib/lib.multimedia.php';
     $lang = FormaLanguage::createInstance('course', 'lms');
 

@@ -361,7 +361,7 @@ class HomepageAdmController extends AdmController
         }
 
         $params['code'] = $code;
-        $params += $this->model->getNewPwdOptions();
+        $params .= $this->model->getNewPwdOptions();
 
         $this->render('newpwd', $params);
     }
@@ -556,7 +556,7 @@ class HomepageAdmController extends AdmController
         if ($id_course) {
             define('LMS', true);
 
-            require_once _lms_ . '/lib/lib.course.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
             logIntoCourse($id_course, ($next_action == false || $next_action == 'none' ? true : false));
 
             $url = str_replace('act=', 'op=', $_SERVER['REQUEST_URI']);
@@ -572,7 +572,7 @@ class HomepageAdmController extends AdmController
             $this->session->set('login_redirect', $loginRedirect);
             switch ($next_action) {
                 case 'custom_playitem':
-                    $loginRedirect += '&collapse_menu=1';
+                    $loginRedirect .= '&collapse_menu=1';
                     $this->session->set('login_redirect', $loginRedirect);
                     break;
             }

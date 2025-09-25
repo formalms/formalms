@@ -103,13 +103,12 @@ function parseTemplateDomain($curr_domain = false)
 
 function getCurrentDomain($idOrg = null, $baseUrl = false)
 {
-    $domain = FormaLms\lib\Get::site_url();
-    $queryTxt = 'SELECT * FROM
-    %adm_domain_configs';
+    $domain = \FormaLms\lib\Get::site_url(true, $baseUrl);
+    $queryTxt = 'SELECT orgId FROM %adm_domain_configs';
     $domains = [];
     $result = sql_query($queryTxt);
     if (sql_num_rows($result) > 0) {
-        while ($item = sql_fetch_assoc($result)) {
+        foreach ($result as $item) {
             $domains[$item['orgId']] = $item;
         }
     }
@@ -121,7 +120,7 @@ function getCurrentDomain($idOrg = null, $baseUrl = false)
         $query = sql_query($sql);
         $node = sql_fetch_object($query);
         if ($node && $node->idParent) {
-            return getCurrentDomain($node->idParent);
+            return getCurrentDomain($node->idParent, $baseUrl);
         }
     }
 
@@ -221,15 +220,15 @@ function getTemplateList($set_keys = false, $addUndefined = false, $excludeNotCo
     $templ = dir(_templates_ . '/');
     while ($elem = $templ->read()) {
         if ((is_dir(_templates_ . '/' . $elem)) && ($elem != '.') && ($elem != '..') && ($elem != '.svn') && $elem[0] != '_' && checkTemplateVersion($elem)) {
-            if($addUndefined) {
+            if ($addUndefined) {
                 $templArray[0] = Lang::t('_NOT_ASSIGNED');
             }
 
-            $xml = simplexml_load_string(file_get_contents(_templates_ . '/' . $elem. '/manifest.xml'));
+            $xml = simplexml_load_string(file_get_contents(_templates_ . '/' . $elem . '/manifest.xml'));
 
             $compliance = version_compare((string)$xml->forma_version, \FormaLms\lib\Version\VersionChecker::getMinimumTemplateVersion());
 
-            if($excludeNotCompliant && ($compliance < 0)) {
+            if ($excludeNotCompliant && ($compliance < 0)) {
                 continue;
             }
 
@@ -668,7 +667,7 @@ function getTemplateFromIdOrg(int $id_org)
  * */
 function getPageName()
 {
-    $pageRef = str_replace('/', '_','adm/homepage/show');
+    $pageRef = str_replace('/', '_', 'adm/homepage/show');
 
     $request = FormaLms\lib\Get::req('r', DOTY_MIXED, '');
     $modName = FormaLms\lib\Get::req('modname', DOTY_ALPHANUM, '');

@@ -290,7 +290,7 @@ class DashboardAdm extends Model
 
     public function getCoursesStats()
     {
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once _lms_ . '/lib/lib.course_managment.php';
 
         $course_man = new AdminCourseManagment();

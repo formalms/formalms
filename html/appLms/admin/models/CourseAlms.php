@@ -14,7 +14,6 @@
 defined('IN_FORMA') or exit('Direct access is forbidden');
 
 
-
 class CourseAlms extends Model
 {
     protected $acl_man;
@@ -33,9 +32,9 @@ class CourseAlms extends Model
 
     public function __construct($id_course = 0, $id_date = 0, $id_edition = 0)
     {
-        require_once _lms_ . '/lib/lib.date.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
         require_once _lms_ . '/lib/lib.edition.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         $this->id_course = $id_course;
         $this->id_date = $id_date;
@@ -389,7 +388,7 @@ class CourseAlms extends Model
 
         if (!$all_courses) {
             if (!empty($this->admin_courses['course'])) {
-             
+
                 $query .= ' AND c.idCourse IN (' . implode(',', $this->admin_courses['course']) . ') ';
             }
         }
@@ -483,7 +482,7 @@ class CourseAlms extends Model
 
         require_once _base_ . '/lib/lib.upload.php';
         require_once _base_ . '/lib/lib.multimedia.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once _lms_ . '/lib/lib.manmenu.php';
 
         $array_lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
@@ -492,13 +491,13 @@ class CourseAlms extends Model
         $id_custom = $data_params['selected_menu'];
 
         // calc quota limit
-        $quota = (float) $data_params['course_quota'];
+        $quota = (float)$data_params['course_quota'];
         if (isset($data_params['inherit_quota'])) {
             $quota = FormaLms\lib\Get::sett('course_quota');
             $data_params['course_quota'] = COURSE_QUOTA_INHERIT;
         }
 
-        $quota = (float) $quota * 1024 * 1024;
+        $quota = (float)$quota * 1024 * 1024;
 
         $path = FormaLms\lib\Get::sett('pathcourse');
         $path = '/appLms/' . FormaLms\lib\Get::sett('pathcourse') . (substr($path, -1) != '/' && substr($path, -1) != '\\' ? '/' : '');
@@ -626,7 +625,7 @@ class CourseAlms extends Model
         // insert the course in database -----------------------------------------------------------
         $hour_begin = '-1';
         $hour_end = '-1';
-        if ($data_params['hour_begin']['hour'] != '-1') {
+        if ($data_params['hour_begin']['hour'] != '-1' && !empty($data_params['hour_begin']['hour'])) {
             $hour_begin = (strlen($data_params['hour_begin']['hour']) == 1 ? '0' . $data_params['hour_begin']['hour'] : $data_params['hour_begin']['hour']);
             if ($data_params['hour_begin']['quarter'] == '-1') {
                 $hour_begin .= ':00';
@@ -635,7 +634,7 @@ class CourseAlms extends Model
             }
         }
 
-        if ($data_params['hour_end']['hour'] != '-1') {
+        if ($data_params['hour_end']['hour'] != '-1' && !empty($data_params['hour_end']['hour'])) {
             $hour_end = (strlen($data_params['hour_end']['hour']) == 1 ? '0' . $data_params['hour_end']['hour'] : $data_params['hour_end']['hour']);
             if ($data_params['hour_end']['quarter'] == '-1') {
                 $hour_end .= ':00';
@@ -686,10 +685,10 @@ class CourseAlms extends Model
 
             direct_play         = '" . (isset($data_params['direct_play']) ? 1 : 0) . "',
 
-            date_begin          = '" . $date_begin . "',
-            date_end            = '" . $date_end . "',
-            hour_begin          = '" . $hour_begin . "',
-            hour_end            = '" . $hour_end . "',
+            date_begin          = " . (!empty($date_begin) ? "'" . $date_begin . "'" : 'NULL') . ",
+            date_end            = " . (!empty($date_end) ? "'" . $date_end . "'" : 'NULL') . ",
+            hour_begin          = '" . ($hour_begin == -1 ? '00:00' : $hour_begin) . "',
+            hour_end            = '" . ($hour_end == -1 ? '23:59' : $hour_end) . "',
 
             valid_time          = '" . (int)$data_params['course_day_of'] . "',
 
@@ -847,7 +846,7 @@ class CourseAlms extends Model
 
         require_once _base_ . '/lib/lib.upload.php';
         require_once _base_ . '/lib/lib.multimedia.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once _lms_ . '/lib/lib.manmenu.php';
 
         $array_lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
@@ -1001,7 +1000,7 @@ class CourseAlms extends Model
 
         $hour_begin = '-1';
         $hour_end = '-1';
-        if ($data_params['hour_begin']['hour'] != '-1') {
+        if ($data_params['hour_begin']['hour'] != '-1' && !empty($data_params['hour_begin']['hour'])) {
             $hour_begin = (strlen($data_params['hour_begin']['hour']) == 1 ? '0' . $data_params['hour_begin']['hour'] : $data_params['hour_begin']['hour']);
             if ($data_params['hour_begin']['quarter'] == '-1') {
                 $hour_begin .= ':00';
@@ -1010,7 +1009,7 @@ class CourseAlms extends Model
             }
         }
 
-        if ($data_params['hour_end']['hour'] != '-1') {
+        if ($data_params['hour_end']['hour'] != '-1' && !empty($data_params['hour_end']['hour'])) {
             $hour_end = (strlen($data_params['hour_end']['hour']) == 1 ? '0' . $data_params['hour_end']['hour'] : $data_params['hour_end']['hour']);
             if ($data_params['hour_end']['quarter'] == '-1') {
                 $hour_end .= ':00';
@@ -1029,7 +1028,7 @@ class CourseAlms extends Model
             name                = '" . $data_params['course_name'] . "',
             idCategory          = '" . (int)$data_params['idCategory'] . "',
             description         = '" . $data_params['course_descr'] . "',
-            box_description         = '" . $data_params['course_box_descr'] . "',
+            box_description     = '" . $data_params['course_box_descr'] . "',
             lang_code           = '" . $array_lang[$data_params['course_lang']] . "',
             status              = '" . (int)$data_params['course_status'] . "',
             level_show_user     = '" . $show_level . "',
@@ -1061,10 +1060,10 @@ class CourseAlms extends Model
 
             direct_play         = '" . (isset($data_params['direct_play']) ? 1 : 0) . "',
 
-            date_begin          = '" . $date_begin . "',
-            date_end            = '" . $date_end . "',
-            hour_begin          = '" . $hour_begin . "',
-            hour_end            = '" . $hour_end . "',
+            date_begin          = " . (!empty($date_begin) ? "'" . $date_begin . "'" : 'NULL') . ",
+            date_end            = " . (!empty($date_end) ? "'" . $date_end . "'" : 'NULL') . ",
+            hour_begin          = '" . ($hour_begin == -1 ? '00:00' : $hour_begin) . "',
+            hour_end            = '" . ($hour_end == -1 ? '23:59' : $hour_end) . "',
 
             valid_time          = '" . (int)$data_params['course_day_of'] . "',
 
@@ -1277,7 +1276,7 @@ class CourseAlms extends Model
             return false;
         }
 
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once _base_ . '/lib/lib.upload.php';
 
         $course_man = new Man_Course();

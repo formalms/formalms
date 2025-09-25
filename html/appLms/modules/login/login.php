@@ -226,7 +226,7 @@ function externalCourselist()
     require_once _lms_ . '/lib/lib.preassessment.php';
     require_once _lms_ . '/lib/lib.catalogue.php';
     require_once _lms_ . '/lib/lib.coursepath.php';
-    require_once _lms_ . '/lib/lib.course.php';
+    require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
     require_once _base_ . '/lib/lib.urlmanager.php';
     $url = &UrlManager::getInstance('login');
@@ -310,7 +310,7 @@ function externalCourselist()
 
 function showdemo()
 {
-    require_once _lms_ . '/lib/lib.course.php';
+    require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
     require_once _base_ . '/lib/lib.multimedia.php';
     $lang = FormaLanguage::createInstance('course', 'lms');
 
@@ -345,7 +345,7 @@ function showdemo()
 
 function donwloadmaterials()
 {
-    require_once _lms_ . '/lib/lib.course.php';
+    require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
     require_once _base_ . '/lib/lib.multimedia.php';
     $lang = FormaLanguage::createInstance('course', 'lms');
 
@@ -370,7 +370,7 @@ function donwloadmaterials()
 
 function showprofile()
 {
-    require_once _lms_ . '/lib/lib.course.php';
+    require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
     require_once _lms_ . '/lib/lib.lms_user_profile.php';
 
     $lang = &FormaLanguage::createInstance('catalogue');

@@ -15,7 +15,7 @@ namespace Plugin\report_course;
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once _lms_ . '/lib/lib.course.php';
+require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
 define('_RCS_CATEGORY_USERS', 'users');
 define('_RCS_CATEGORY_LO', 'LO');
@@ -96,7 +96,7 @@ class Report extends \ReportPlugin
         $next_url = $this->next_url;
 
         require_once _base_ . '/lib/lib.form.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once _lms_ . '/lib/lib.course_managment.php';
 
         $lang = &FormaLanguage::createInstance('report', 'framework');
@@ -181,7 +181,7 @@ class Report extends \ReportPlugin
         require_once _base_ . '/lib/lib.form.php';
         require_once _adm_ . '/lib/lib.directory.php';
         require_once _adm_ . '/class.module/class.directory.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         $lang = &FormaLanguage::createInstance('report', 'framework');
         $org_chart_subdivision = importVar('org_chart_subdivision', true, 0);
@@ -464,7 +464,7 @@ class Report extends \ReportPlugin
         require_once _base_ . '/lib/lib.form.php';
         require_once _adm_ . '/lib/lib.directory.php';
         require_once _adm_ . '/class.module/class.directory.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         $lang = &FormaLanguage::createInstance('report', 'framework');
         $glang = &FormaLanguage::createInstance('admin_course_managment', 'lms');
@@ -540,7 +540,7 @@ class Report extends \ReportPlugin
         require_once _base_ . '/lib/lib.form.php';
         require_once _adm_ . '/lib/lib.directory.php';
         require_once _adm_ . '/class.module/class.directory.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         $lang = &FormaLanguage::createInstance('report', 'framework');
         $glang = &FormaLanguage::createInstance('admin_course_managment', 'lms');
@@ -1516,7 +1516,7 @@ class Report extends \ReportPlugin
 
         $output = '';
 
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         $lang = &FormaLanguage::createInstance('course', 'lms');
         $course_lang = &FormaLanguage::createInstance('course', 'lms');

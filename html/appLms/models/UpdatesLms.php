@@ -21,8 +21,8 @@ class UpdatesLms extends Model
     public function __construct()
     {
         parent::__construct();
-        require_once _lms_ . '/lib/lib.date.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         $this->id_user = \FormaLms\lib\FormaUser::getCurrentUser()->getIdst();
         $this->db = \FormaLms\db\DbConn::getInstance();

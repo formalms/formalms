@@ -592,7 +592,7 @@ class AggregatedcertificateAlmsController extends AlmsController
      */
     public function associationCourses()
     {
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once _lms_ . '/lib/lib.course_managment.php';
 
         if (isset($_POST['undo_assign'])) {
@@ -630,7 +630,7 @@ class AggregatedcertificateAlmsController extends AlmsController
 
     public function associationPaths()
     {
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once _lms_ . '/lib/lib.course_managment.php';
 
         if (isset($_POST['cancelselector'])) {
@@ -716,7 +716,7 @@ class AggregatedcertificateAlmsController extends AlmsController
     {
         // Loading necessary libraries
         require_once _base_ . '/lib/lib.userselector.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once _lms_ . '/lib/lib.coursepath.php';
         require_once _lms_ . '/lib/lib.course_managment.php';
 
@@ -834,7 +834,7 @@ class AggregatedcertificateAlmsController extends AlmsController
     {
         // Loading necessary libraries
         require_once _base_ . '/lib/lib.userselector.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once _lms_ . '/lib/lib.course_managment.php';
 
         YuiLib::load();
@@ -992,7 +992,7 @@ class AggregatedcertificateAlmsController extends AlmsController
     public function viewdetails()
     {
         require_once _lms_ . '/lib/lib.coursepath.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         $acl_man = \FormaLms\lib\Forma::getAclManager();
 

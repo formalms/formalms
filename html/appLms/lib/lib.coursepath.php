@@ -823,7 +823,7 @@ class CoursePath_Manager
 
     public function subscribeUserToCoursePath($id_path, $users)
     {
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         $re = true;
 
         if (!empty($users)) {
@@ -901,7 +901,7 @@ class CoursePath_Manager
      */
     public function isCoursePathCompleted($id_user, $id_path)
     {
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         if (is_array($id_path)) {
             $courseIdsFromPath = [];
             foreach ($id_path as $id) {
@@ -924,7 +924,7 @@ class CoursePath_Manager
 
     public function checkPrerequisites($prerequisites, &$courses_info)
     {
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         if ($prerequisites == '') {
             return true;

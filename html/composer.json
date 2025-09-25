@@ -43,7 +43,6 @@
     "require-dev": {
         "phing/phing": "^2.13",
         "phpunit/phpunit": "^6.5",
-        "roave/security-advisories": "dev-master",
         "simpletest/simpletest": "^1.1",
         "symfony/var-dumper": "^v5.3"
     },
@@ -57,7 +56,8 @@
     },
     "autoload": {
         "psr-4": {
-            "FormaLms\\": ""
+            "FormaLms\\": "",
+            "Plugin\\": "./plugins"
         }
     },
     "minimum-stability": "stable",

@@ -16,7 +16,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 function decodeSessionTime($stime)
 {
     $output = $stime;
-    if (strpos($stime, 'P') !== false) {
+    if (str_contains($stime, 'P')) {
         $re1 = preg_match('/^P((\d*)Y)?((\d*)M)?((\d*)D)?(T((\d*)H)?((\d*)M)?((\d*)(\.(\d{1,2}))?S)?)?$/', $stime, $t1_s);
         if (!isset($t1_s[15]) || $t1_s[15] == '') {
             $t1_s[15] = '00';

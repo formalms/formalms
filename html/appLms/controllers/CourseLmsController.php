@@ -106,7 +106,8 @@ class CourseLmsController extends LmsController
             $course['show_quota'] = true;
             $quota = [];
             $max_quota = $GLOBALS['course_descriptor']->getQuotaLimit();
-            $actual_space = $GLOBALS['course_descriptor']->getUsedSpace();
+            $actual_space = $GLOBALS['course_descriptor']->getUsedSpace() === '' ? 0 : $GLOBALS['course_descriptor']->getUsedSpace();
+
 
             $actual_space = number_format(($actual_space / (1024 * 1024)), '2');
 
@@ -276,7 +277,7 @@ class CourseLmsController extends LmsController
             '[course_code]' => $this->request->get('course_code'),
             '[course]' => $this->request->get('course_name'),]);
 
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         $course_man = new Man_Course();
         $recipients = $course_man->getIdUserOfLevel($session->get('idCourse'));
 

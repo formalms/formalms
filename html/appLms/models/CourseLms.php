@@ -101,7 +101,8 @@ class CourseLms extends Model
     {
         $commonLabel = $this->session->get('id_common_label');
         $db = \FormaLms\db\DbConn::getInstance();
-        $queryResult = $db->query(
+
+        $queryString =
             'SELECT c.idCourse, c.course_type, c.idCategory, c.code, c.name, c.description, c.difficult, c.status AS course_status, c.course_edition, '
             . '	c.max_num_subscribe, c.create_date, '
             . '	c.direct_play, c.img_othermaterial, c.course_demo, c.use_logo_in_courselist, c.img_course, c.lang_code, '
@@ -114,8 +115,9 @@ class CourseLms extends Model
             . ' JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse) '
             . ' WHERE ' . $this->compileWhere($conditions, $params)
             . ($commonLabel > 0 ? " AND c.idCourse IN (SELECT id_course FROM %lms_label_course WHERE id_common_label = '" . $commonLabel . "')" : '')
-            . ' ORDER BY ' . $this->_resolveOrder(['cu', 'c'])
-        );
+            . ' ORDER BY ' . $this->_resolveOrder(['cu', 'c']);
+
+        $queryResult = $db->query($queryString);
 
         $result = [];
         $courses = [];
@@ -155,6 +157,106 @@ class CourseLms extends Model
         return $result;
     }
 
+    public function findMyCourses($conditions, $params)
+    {
+        $classroomManager = new DateManager();
+        $db = \FormaLms\db\DbConn::getInstance();
+
+        $queryString = "
+            WITH course_counts AS (
+                SELECT 
+                    idCourse,
+                    COUNT(*) as total_associated,
+                    SUM(waiting) as total_waiting
+                FROM 
+                    learning_courseuser
+                WHERE 
+                    status >= 0 AND status < 2
+                GROUP BY 
+                    idCourse
+            )
+            SELECT 
+                c.idCourse AS course_id,
+                c.course_type,
+                c.name AS course_name,
+                c.description AS course_description,
+                CONCAT('https://elearning.texa.com/appLms/index.php?modname=course&amp;op=aula&amp;idCourse=', c.idCourse) AS course_link,
+                cu.status AS user_status,
+                cc.total_associated as numof_associated,
+                cc.total_waiting as numof_waiting,
+                cu.idUser as id_user
+            FROM %lms_course AS c
+            JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse)
+            LEFT JOIN course_counts cc ON (c.idCourse = cc.idCourse)
+            WHERE " . $this->compileWhere($conditions, $params) . "
+            ORDER BY " . $this->_resolveOrder(['cu', 'c']);
+
+        // Esecuzione della query
+        $queryResult = $db->query($queryString);
+
+        $result = [];
+        $courses = []; // Assicurati che questa variabile sia definita o passata correttamente
+
+        foreach ($queryResult as $data) {
+            // Sostituzione dei caratteri & per evitare problemi con XML/HTML
+            $data['course_name'] = str_replace('&', '&amp;', $data['course_name']);
+            $data['course_description'] = str_replace('&', '&amp;', $data['course_description']);
+
+            // Calcolo di enrolled e numof_waiting
+            $data['numof_waiting'] = $data['numof_waiting'] ?? 0;
+            $data['enrolled'] = $data['numof_associated'] - $data['numof_waiting'];
+
+            // Inizializzazione di campi aggiuntivi
+            $data['first_lo_type'] = false;
+            $dates = [];
+
+            // Gestione specifica per corsi di tipo 'classroom'
+            if ($data['course_type'] === 'classroom') {
+                $courseDates = $courses[$data['course_id']] ?? $classroomManager->getCourseDate($data['course_id']);
+                foreach ($courseDates as $courseDate) {
+                    $userStatus = $classroomManager->getCourseEditionUserStatus($data['id_user'], $data['course_id'], $courseDate['id_date']);
+                    if (!empty($userStatus)) {
+                        $dates[] = $userStatus;
+                    }
+                }
+            }
+
+            $data['dates'] = $dates;
+
+            // Aggiunta dei dati al risultato finale
+            $result[$data['id_user']]['courses'][] = $data;
+        }
+
+        return $result;
+    }
+    
+    /**
+     * Helper function to safely create DateTime object
+     * @param string|null $date
+     * @param string|null $time
+     * @return DateTime|null
+     */
+    private static function parseDateTime($date, $time = null, $defaultTime = '00:00:00')
+    {
+        if (empty($date)) {
+            return null;
+        }
+
+        try {
+            if ($time !== null) {
+                // Ensure time format is valid (HH:mm)
+                if (!preg_match('/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/', $time)) {
+                    $time = $defaultTime;
+                }
+                return new DateTime($date . ' ' . $time);
+            }
+            return new DateTime($date);
+        } catch (Exception $e) {
+            return null;
+        }
+        return null;
+    }
+
     public static function getCourseParsedData($course)
     {
         $path_course = $GLOBALS['where_files_relative'] . '/appLms/' . FormaLms\lib\Get::sett('pathcourse') . '/';
@@ -190,14 +292,7 @@ class CourseLms extends Model
         //    $parsedData['dateClosing_month'] = Lang::t('_MONTH_' . substr('0' . date('m', $time_expired), -2), 'standard');
         //    $parsedData['dateClosing_day'] = date('d', $time_expired);
         //}
-        if ($parsedData['date_end'] !== null) {
-            $date_closing = getdate(strtotime(Format::date($parsedData['date_end'], 'date')));
-            if ($date_closing['year'] > 0) {
-                $parsedData['dateClosing_year'] = $date_closing['year'];
-                $parsedData['dateClosing_month'] = Lang::t('_MONTH_' . substr('0' . $date_closing['mon'], -2), 'standard');
-                $parsedData['dateClosing_day'] = $date_closing['mday'];
-            }
-        }
+
 
         $parsedData['is_enrolled'] = !empty($infoEnroll);
         if ($parsedData['is_enrolled']) {
@@ -209,6 +304,43 @@ class CourseLms extends Model
         } else {
             $parsedData['canEnter'] = false;
         }
+
+
+        // se l'utente è in attesa dsi approvazione ne sovrascrivo i permessi derivati dalla sessione
+        if ($infoEnroll['waiting']) {
+            $parsedData['canEnter'] = false;
+        }
+
+        $now = new DateTime();
+
+        if ($parsedData['date_begin'] !== null) {
+            try {
+                $dateBegin = self::parseDateTime($parsedData['date_begin'], $parsedData['hour_begin']);
+
+                if ($dateBegin && $dateBegin > $now) {
+                    $parsedData['canEnter'] = false;
+                }
+            } catch (Exception $e) {
+            }
+        }
+
+        if ($parsedData['date_end'] !== null) {
+            $dateEnd = self::parseDateTime($parsedData['date_end'], $parsedData['hour_end'], '23:59:59');
+            if ($dateEnd) {
+                $parsedData['dateClosing_year'] = $dateEnd->format('Y');
+                $parsedData['dateClosing_month'] = Lang::t('_MONTH_' . $dateEnd->format('m'), 'standard');
+                $parsedData['dateClosing_day'] = $dateEnd->format('d');
+
+
+                if ($dateEnd < $now) {
+                    $parsedData['canEnter'] = false;
+                    //anche nel caso di semplice iscrizione metto un flag fake per impedire iscrizione
+                    $parsedData['subscribe_method'] = -1;
+                }
+            }
+        }
+
+
         $parsedData['editions'] = false;
         $parsedData['course_full'] = false;
         $parsedData['in_cart'] = false;
@@ -257,6 +389,13 @@ class CourseLms extends Model
 
         $parsedData['courseBoxEnabled'] = false;
 
+        //se l'utente è superadmin sovrascrive quanto presente per vincoli di accesso al corso
+        $userLevel = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
+        if ($userLevel == ADMIN_GROUP_GODADMIN) {
+            $parsedData['canEnter'] = true;
+            $parsedData['subscribe_method'] = 2;
+        }
+
         return $parsedData;
     }
 
@@ -264,7 +403,7 @@ class CourseLms extends Model
     {
         $query = 'select date_first_access from learning_courseuser where idCourse=' . $id_course . ' and idUser=' . $id_user;
 
-        list($date_first_access) = sql_fetch_row(sql_query($query));
+        [$date_first_access] = sql_fetch_row(sql_query($query));
 
         return $date_first_access;
     }
@@ -340,14 +479,14 @@ class CourseLms extends Model
             . ' FROM %lms_courseuser'
             . " WHERE idCourse = '" . $idCourse . "'";
 
-        list($enrolled) = sql_fetch_row(sql_query($query));
+        [$enrolled] = sql_fetch_row(sql_query($query));
 
         return $enrolled;
     }
 
     public static function getAllClassDisplayInfo($id_course, &$course_array)
     {
-        require_once _lms_ . '/lib/lib.date.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
         $dm = new DateManager();
         $cl = new ClassroomLms();
         $course_editions = $cl->getUserEditionsInfo(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_course);
@@ -413,7 +552,7 @@ class CourseLms extends Model
             . ' FROM %lms_course'
             . ' WHERE idCourse = ' . (int)$id_course;
 
-        list($course_name, $selling, $price) = sql_fetch_row(sql_query($query));
+        [$course_name, $selling, $price] = sql_fetch_row(sql_query($query));
         $classrooms = $this->classroom_man->getCourseDate($id_course, false);
         $classroom_not_confirmed = $this->classroom_man->getNotConfirmetDateForCourse($id_course);
         // cutting not confirmed classrooms
@@ -464,50 +603,49 @@ class CourseLms extends Model
         return $responseData;
     }
 
-    public static function userCanUnsubscribe(&$course)
+    public static function userCanUnsubscribe($course)
     {
         $now = new DateTime();
-        $defaultTrueDate = new DateTime('2999-01-01');
-
-        if ($course['course_type'] == 'classroom') {
-            if ((int)$course['auto_unsubscribe'] === 2) {
-                $editionKey = array_key_first($course['editions']);
-
-                if (array_key_exists('unsubscribe_date_limit', $course['editions'][$editionKey])) {
-                    $unsub_date_limit = $course['editions'][$editionKey]['unsubscribe_date_limit'];
-                    $unsub_date_limit = DateTime::createFromFormat('Y-m-d H:i:s', $unsub_date_limit);
-                } else {
-                    $unsub_date_limit = $defaultTrueDate;
+        $canUnsubscribe = false;
+        $autoUnsubscribeEnabled = false;
+        $courseUnsubscribeDateLimit = null;
+        switch ($course['course_type']) {
+            case 'classroom':
+                if ((int)$course['auto_unsubscribe'] === 2) {
+                    $autoUnsubscribeEnabled = true;
                 }
-                $edition_not_started = true;
-                $days = array_key_exists('days', $course['editions'][$editionKey]) ? $course['editions'][$editionKey]['days'] : [];
-                foreach ($days as $k => $day) {
-                    $next_day = $day['full_date'];
-                    $next_day = DateTime::createFromFormat('Y-m-d H:i:s', $next_day);
-                    $edition_not_started = $edition_not_started && ($now < $next_day);
-                    if (!$edition_not_started) {
-                        break;
+                $editionKey = array_key_first($course['editions']);
+                if ($editionKey) {
+                    $days = array_key_exists('days', $course['editions'][$editionKey]) ? $course['editions'][$editionKey]['days'] : [];
+                    foreach ($days as $day) {
+                        $fullDate = DateTime::createFromFormat('Y-m-d H:i:s', $day['full_date']);
+                        $editionStarted = ($now < $fullDate);
+                        if ($editionStarted) {
+                            if (array_key_exists('unsubscribe_date_limit', $course['editions'][$editionKey]) && !empty($course['editions'][$editionKey]['unsubscribe_date_limit'])) {
+                                $courseUnsubscribeDateLimit = DateTime::createFromFormat('Y-m-d H:i:s', $course['editions'][$editionKey]['unsubscribe_date_limit']);
+                                break;
+                            };
+                        }
                     }
                 }
-
-                return $now < $unsub_date_limit && $edition_not_started;
-            } else {
-                return false;
-            }
-        } else {
-            // if course date end, cannot unenroll
-       
-            if ($course['date_end'] && $now > DateTime::createFromFormat('Y-m-d', $course['date_end'])) {
-                return false;
-            }
-
-            $courseUnsubscribeDateLimit = (null !== $course['unsubscribe_date_limit'] ? DateTime::createFromFormat('Y-m-d H:i:s', $course['unsubscribe_date_limit']) : $defaultTrueDate);
-            if (((int)$course['auto_unsubscribe'] === 2 || (int)$course['auto_unsubscribe'] === 1) && ($now < $courseUnsubscribeDateLimit)) {
-                return true;
-            }
-
-            return false;
+                break;
+            case 'elearning':
+                if ((int)$course['auto_unsubscribe'] === 2 || (int)$course['auto_unsubscribe'] === 1) {
+                    $autoUnsubscribeEnabled = true;
+                    if (array_key_exists('unsubscribe_date_limit', $course) && !empty($course['unsubscribe_date_limit'])) {
+                        $courseUnsubscribeDateLimit = DateTime::createFromFormat('Y-m-d H:i:s', $course['unsubscribe_date_limit']);
+                    }
+                }
+                break;
+            default:
+                break;
         }
+
+        if ($autoUnsubscribeEnabled && $courseUnsubscribeDateLimit) {
+            $canUnsubscribe = $now < $courseUnsubscribeDateLimit;
+        }
+
+        return $canUnsubscribe;
     }
 
     /**
@@ -519,7 +657,7 @@ class CourseLms extends Model
 
         $sql_exist = 'select count(id_course) as exist from learning_htmlfront where id_course=' . $this->idCourse;
         $qres = sql_query($sql_exist);
-        list($exist) = sql_fetch_row($qres);
+        [$exist] = sql_fetch_row($qres);
 
         if ((int)$exist === 1) {
             return true;
@@ -594,7 +732,7 @@ class CourseLms extends Model
             where lc.idCourse=lcu.idCourse
             and lc.idCourse=' . $idCourse . ' and idUser=' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
-        list($course_type, $level) = sql_fetch_row(sql_query($query));
+        [$course_type, $level] = sql_fetch_row(sql_query($query));
 
         $out = [];
         $out['course_type'] = $course_type;
@@ -633,7 +771,7 @@ class CourseLms extends Model
     {
         $query = 'select code, name from %lms_course_date where id_date=' . $idDate;
 
-        list($code, $name) = sql_fetch_row(sql_query($query));
+        [$code, $name] = sql_fetch_row(sql_query($query));
 
         $out = [];
         $out['code'] = $code;
@@ -649,7 +787,7 @@ class CourseLms extends Model
             lcd.id_date = lcdu.id_date
             and id_user = ' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . ' and lcd.id_course=' . $idCourse;
 
-        list($id_date) = sql_fetch_row(sql_query($query));
+        [$id_date] = sql_fetch_row(sql_query($query));
 
         return $id_date;
     }

@@ -14,7 +14,7 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 require_once dirname(__FILE__) . '/lib.connector.php';
-require_once _lms_ . '/lib/lib.course.php';
+require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
 /**
  * class for define docebo courses connection to data source.
@@ -462,7 +462,7 @@ class FormaConnectorFormaCourses extends FormaConnector
                                                                                     '[course_code]' => $row['code'],
                                                                                     '[course]' => $row['name'], ]);
 
-                    require_once _lms_ . '/lib/lib.course.php';
+                    require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
                     $course_man = new Man_Course();
                     $recipients = $course_man->getIdUserOfLevel($id_course);
                     createNewAlert('CoursePropModified',

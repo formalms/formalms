@@ -539,9 +539,8 @@ class CoursestatsLms extends Model
 
     private function parseScormTime($pt_time)
     {
-        try {
-            preg_match('/^PT((\d*H)?(\d*M)?)?(\d+(\.\d+)?S)$/', $pt_time, $matches);
-
+        preg_match('/^PT((\d*H)?(\d*M)?)?(\d+(\.\d+)?S)$/', $pt_time, $matches);
+        if (!empty($matches)) {
             // Inizializza variabili per ore, minuti e secondi
             $hours = !empty($matches[2]) ? (int)$matches[2] : 0;
             $minutes = !empty($matches[3]) ? (int)$matches[3] : 0;
@@ -551,7 +550,7 @@ class CoursestatsLms extends Model
             // Controlla se ci sono secondi con frazione
             if (isset($matches[5])) {
                 list($whole, $decimal) = explode('.', $matches[5]);
-             
+
                 $fraction = (float)("0." . $decimal);
             }
 
@@ -572,17 +571,14 @@ class CoursestatsLms extends Model
             $interval = new DateInterval($pt_time);
 
             return sprintf('%u:%u:%u', $interval->h, $interval->i, $interval->s);
-        } catch (Exception $exception) {
-
+        } else {
             $formatRegex = ['/\d{4}:\d{2}:\d{2}\/', '/\d{4}:\d{2}:\d{2}\.\d{2}/'];
-
             foreach ($formatRegex as $regex) {
                 if (preg_match($regex, $pt_time)) {
                     $pt_time = substr($pt_time, 2);
                     break;
                 }
             }
-
             $timeFormats = ['H:i:s.u', 'HH:MM:SS', 'HH:MM:SS.ms'];
 
             foreach ($timeFormats as $timeFormat) {

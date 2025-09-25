@@ -61,7 +61,7 @@ switch ($command) {
         $session->set('course_category', $courseCategory);
         $session->save();
 
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         $man_courses = new Man_Course();
 
         require_once _lms_ . '/lib/lib.edition.php';
@@ -133,7 +133,7 @@ switch ($command) {
      break;
 
     case 'del_row':
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         $output = ['success' => false];
 

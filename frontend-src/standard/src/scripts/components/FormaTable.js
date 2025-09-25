@@ -67,7 +67,7 @@ require('bootstrap-js-buttons/dist/bootstrap-js-buttons.min.js');
 
         this.addSearchBar();
 
-        //this.searchBar.init();
+        // this.searchBar.init();
     }
 
     callAjax(ajaxUrl, ajaxData, dt) {
@@ -84,26 +84,33 @@ require('bootstrap-js-buttons/dist/bootstrap-js-buttons.min.js');
         /**
          * Options.
          */
-         if (options.rowId !== undefined) {
-          this._options.rowId = options.rowId;
-         }
 
-         if (options.data !== undefined) {
+        if (options.rowId !== undefined) {
+            this._options.rowId = options.rowId;
+        }
+
+        if (options.data !== undefined) {
             this._options.data = options.data
-          }
+        }
 
-          if (options.serverSide !== undefined) {
+        if (options.serverSide !== undefined) {
             this._options.serverSide = options.serverSide;
-          }
+        }
 
-          if (options.ajax !== undefined) {
-           
-              this._options.ajax = options.ajax;
-              this._options.ajax.headers = {'X-Signature': window.frontend.config.signature};
-          }
+        if (options.ajax !== undefined) {
+        
+            this._options.ajax = options.ajax;
+            this._options.ajax.headers = {'X-Signature': window.frontend.config.signature};
+        }
 
-          if (options.processing !== undefined) {
-            this._options.processing = options.processing;
+        if (options.processing !== undefined) {
+        this._options.processing = options.processing;
+        }
+
+        if (options.searchDelay !== undefined) {
+            this._options.searchDelay = options.searchDelay;
+        } else {
+            this._options.searchDelay = 500;
         }
 
 

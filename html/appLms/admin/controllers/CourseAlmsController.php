@@ -766,7 +766,7 @@ class CourseAlmsController extends AlmsController
 
             //--- end menu -----------------------------------------------------------
 
-            require_once _lms_ . '/lib/lib.course.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
             require_once _lms_ . '/lib/lib.manmenu.php';
             require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
@@ -1260,7 +1260,7 @@ class CourseAlmsController extends AlmsController
             $id_custom = FormaLms\lib\Get::req('selected_menu', DOTY_INT, 0);
 
             require_once _lms_ . '/lib/lib.manmenu.php';
-            require_once _lms_ . '/lib/lib.course.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
             $acl_man = \FormaLms\lib\Forma::getAclManager();
             $course_man = new Man_Course();

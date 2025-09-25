@@ -233,7 +233,7 @@ class AdminmanagerAdmController extends AdmController
         $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, 0);
 
         require_once _base_ . '/lib/lib.form.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once _lms_ . '/lib/lib.course_managment.php';
 
         $course_selector = new Course_Manager();

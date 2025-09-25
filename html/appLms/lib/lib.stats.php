@@ -215,7 +215,7 @@ function saveTrackStatusChange($idUser, $idCourse, $status)
 
     $status = $data['new_data']['status'];
 
-    require_once _lms_ . '/lib/lib.course.php';
+    require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
     /*
     list($prev_status) = sql_fetch_row(sql_query("
@@ -277,7 +277,7 @@ function saveTrackStatusChange($idUser, $idCourse, $status)
 
     if ($prev_status != $status && $status == _CUS_END) {
         // send alert
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once _base_ . '/lib/lib.eventmanager.php';
 
         $cd = new FormaCourse($idCourse);

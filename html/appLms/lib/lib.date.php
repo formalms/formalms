@@ -166,6 +166,14 @@ class DateManager
         if ($result) {
             $res = sql_insert_id();
 
+            if (isset($_POST['textfield']) && is_array($_POST['textfield'])) {
+                foreach ($_POST['textfield'] as $key => $value) {
+                    if (!empty($value)) {
+                        $this->addCustomFieldValue($res, $key, $value);
+                    }
+                }
+            }
+
             return $res;
         }
 
@@ -186,7 +194,7 @@ class DateManager
             $query = 'INSERT INTO %adm_customfield_entry '
                 . '( id_field, id_obj, obj_entry)'
                 . ' VALUES '
-                . "( '" . ($id_field) . "' ," . intval($idDate) . " , '" . $value . "')";
+                . "( '" . ($id_field) . "' ," . (int)$idDate . " , '" . $value . "')";
             sql_query($query);
         }
 
@@ -571,7 +579,17 @@ class DateManager
             . " unsubscribe_date_limit = '" . $unsubscribe_date_limit . "'"
             . ' WHERE id_date = ' . $id_date;
 
-        return sql_query($query);
+        $res = sql_query($query);
+        if ($res) {
+            if (isset($_POST['textfield']) && is_array($_POST['textfield'])) {
+                foreach ($_POST['textfield'] as $key => $value) {
+                    if (!empty($value)) {
+                        $this->addCustomFieldValue($id_date, $key, $value);
+                    }
+                }
+            }
+        }
+        return $res;
     }
 
     public function generateCalendarIdForDate($idDate)
@@ -603,7 +621,7 @@ class DateManager
             $control = $this->removeUserFromDate($id_user, $id_date, $id_course);
             if ($control) {
                 //require_once (_lms_.'/admin/modules/subscribe/subscribe.php');
-                require_once _lms_ . '/lib/lib.course.php';
+                require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
                 $formaCourse = new FormaCourse($id_course);
 
@@ -760,14 +778,14 @@ class DateManager
         return $res;
     }
 
-    public function getDateSubscribed($id_date, $filter = '')
+    public function getDateSubscribed($id_date, $filter = '', $adminFilter = true)
     {
         $query = 'SELECT ud.id_user'
             . ' FROM %lms_course_date_user AS ud'
             . ' JOIN %adm_user  AS u ON u.idst = ud.id_user'
             . ' WHERE ud.id_date = ' . $id_date;
 
-        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if ($adminFilter && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
             $query .= ' AND ' . $adminManager->getAdminUsersQuery(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), ' ud.id_user');
@@ -934,7 +952,7 @@ class DateManager
         return $res;
     }
 
-    private function controlUserSubscriptions($id_user, $id_course)
+    public function controlUserSubscriptions($id_user, $id_course)
     {
         $query = 'SELECT COUNT(*)'
             . ' FROM %lms_course_date_user '
@@ -1105,7 +1123,7 @@ class DateManager
         $clear = $this->clearDatePresence($id_date);
 
         if ($clear) {
-            require_once _lms_ . '/lib/lib.course.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
             require_once _lms_ . '/lib/lib.stats.php';
 
             $cmodel = new CompetencesAdm();
@@ -1644,7 +1662,7 @@ class DateManager
             . ' FROM %lms_courseuser  AS s'
             . ' JOIN %adm_user  AS u ON s.idUser = u.idst'
             . ' WHERE s.idCourse = ' . (int)$id_course
-            . ' AND u.idst IN (' . implode(', ', $this->getDateSubscribed($id_date)) . ')';
+            . ' AND u.idst IN (' . implode(', ', $this->getDateSubscribed($id_date, $filter, $adminFilter)) . ')';
 
         if (is_array($filter)) {
             if (isset($filter['text']) && $filter['text'] != '') {
@@ -1860,7 +1878,7 @@ class DateManager
     {
         $this->removeUserFromDate($id_user, $id_date, $id_course);
         if (!$this->controlUserSubscriptions($id_user, $id_course)) {
-            require_once _lms_ . '/lib/lib.course.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
             require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
             $subscribe_man = new CourseSubscribe_Manager();

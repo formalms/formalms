@@ -45,6 +45,9 @@ class GroupmanagementAdm extends Model implements Accessible
             $pagination = [];
         }
 
+        $admin_tree = [];
+        $res = [];
+
         $startIndex = (isset($pagination['startIndex']) ? $pagination['startIndex'] : 0);
         $results = (isset($pagination['results']) ? $pagination['results'] : FormaLms\lib\Get::sett('visuItem', 25));
 
@@ -89,7 +92,7 @@ class GroupmanagementAdm extends Model implements Accessible
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
             $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
-            $query .= ' AND g.idst IN (' . implode(',', $admin_tree) . ') ';
+         
         }
 
         if ($filter) {
@@ -113,7 +116,7 @@ class GroupmanagementAdm extends Model implements Accessible
                 if ($id_course != 0) {
                     $res = $this->acl_man->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/group/');
                 } else {
-                    require_once _lms_ . '/lib/lib.course.php';
+                    require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
                     $course_man = new Man_Course();
                     $all_courses = $course_man->getUserCourses(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                     $res = [];
@@ -123,21 +126,25 @@ class GroupmanagementAdm extends Model implements Accessible
                     }
                 }
 
-                $query .= ' g.idst IN (' . implode(',', $res) . ') ';
                 break;
             case 'course':
                 $id_course = $session->get('idCourse');
 
                 $res = $this->acl_man->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/group/');
 
-                $query .= ' AND g.idst IN (' . implode(',', $res) . ') ';
+             
+                
                 break;
         }
+
+        if(!empty($res) || !empty($admin_tree)) {
+            $res = array_merge($res,$admin_tree);
+            $query .= ' AND g.idst IN (' . implode(',', $res) . ') ';
+        } 
 
         $query .= ' GROUP BY g.idst ';
         $query .= ' ORDER BY ' . $sort . ' ' . $dir . ' ';
         $query .= 'LIMIT ' . $startIndex . ', ' . $results;
-
 
         $res = $this->db->query($query);
 
@@ -184,7 +191,7 @@ class GroupmanagementAdm extends Model implements Accessible
                 if ($id_course != 0) {
                     $res = $this->acl_man->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/group/');
                 } else {
-                    require_once _lms_ . '/lib/lib.course.php';
+                    require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
                     $course_man = new Man_Course();
                     $all_courses = $course_man->getUserCourses(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                     $res = [];

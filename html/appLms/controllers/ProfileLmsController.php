@@ -169,7 +169,7 @@ class ProfileLmsController extends LmsController
 
     public function credits()
     {
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         //		$str = '<h2 class="heading">' . Lang::t ( '_CREDITS', 'catalogue' ) . '</h2>' . '<div class="content">';
         $str = '';
         $period_start = '';

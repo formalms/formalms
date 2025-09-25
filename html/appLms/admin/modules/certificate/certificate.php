@@ -494,7 +494,7 @@ function report_certificate()
 {
     require_once _base_ . '/lib/lib.form.php';
     require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.certificate.php');
-    require_once _lms_ . '/lib/lib.course.php';
+    require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
     require_once _base_ . '/lib/lib.table.php';
 
     checkPerm('view');

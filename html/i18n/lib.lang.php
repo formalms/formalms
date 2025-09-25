@@ -16,7 +16,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 /**
  * This class is a temporary abstractor for the old lang module.
  *
- * @deprecated
+ * @deprecated until Forma 4.2
  */
 class FormaLanguage
 {
@@ -29,6 +29,13 @@ class FormaLanguage
         $this->module = $module;
     }
 
+    /**
+     * @param $module
+     * @param $platform
+     * @param $lang_code
+     * @return FormaLanguage|mixed
+     * @deprecated
+     */
     public static function createInstance($module = false, $platform = false, $lang_code = false)
     {
         Lang::init($module);
@@ -81,12 +88,6 @@ class Lang
      */
     protected static $_lang = false;
 
-    /**
-     * The loaded languages cache.
-     *
-     * @var LangAdm
-     */
-    protected static $_lang_cache = [];
 
     /**
      * Current working module (will be used as default).
@@ -102,11 +103,18 @@ class Lang
      */
     protected static $_loaded_modules = [''];
 
+    private static $_cache = null;
+
     /**
      * Class construnctor, unused because this is a static class.
      */
     private function __construct()
     {
+    }
+
+    private static function getCache(): \FormaLms\lib\Cache\Lang\LangCache
+    {
+        return \FormaLms\lib\Cache\Lang\LangCache::getInstance();
     }
 
     /**
@@ -115,6 +123,8 @@ class Lang
      * @param string $module module to load
      * @param bool $override override default module
      */
+
+
     public static function init($module, $override = true, $lang_code = false)
     {
         if ($override) {
@@ -122,6 +132,113 @@ class Lang
         }
         self::lang_code(Lang::get());
         self::load_module($module, $lang_code);
+    }
+
+    /**
+     * Generate cache for all translations
+     *
+     * @param string|null $lang_code Optional specific language code
+     * @param bool $verbose Whether to output progress information
+     * @return array Cache generation statistics
+     */
+    public static function generateCache($lang_code = null, $verbose = false)
+    {
+        if (!self::$_lang) {
+            self::$_lang = new LangAdm();
+        }
+
+        if ($verbose) {
+            echo "Starting cache generation...\n";
+            echo "This might take a few minutes...\n";
+        }
+
+        $startTime = microtime(true);
+
+        // Clear existing cache first
+        $cache = self::getCache();
+        $cache->clear();
+
+        if ($verbose) {
+            echo "Cleared existing cache...\n";
+        }
+
+        // Generate new cache
+        $stats = self::$_lang->generateFullCache($lang_code);
+
+        $endTime = microtime(true);
+        $stats['execution_time'] = round($endTime - $startTime, 2);
+
+        if ($verbose) {
+            echo "\nCache generation completed:\n";
+            echo "- Languages processed: {$stats['languages_processed']}/{$stats['total_languages']}\n";
+            echo "- Modules processed: {$stats['modules_processed']}/{$stats['total_modules']}\n";
+            echo "- Translations cached: {$stats['translations_cached']}\n";
+            echo "- Execution time: {$stats['execution_time']} seconds\n";
+
+            if (!empty($stats['errors'])) {
+                echo "\nErrors encountered:\n";
+                foreach ($stats['errors'] as $error) {
+                    echo "- $error\n";
+                }
+            }
+        }
+
+        return $stats;
+    }
+
+    /**
+     * Check if all required translations are cached
+     *
+     * @param string|null $lang_code Optional specific language code
+     * @return array Status of cache completeness
+     */
+    public static function checkCacheStatus($lang_code = null)
+    {
+        if (!self::$_lang) {
+            self::$_lang = new LangAdm();
+        }
+
+        $cache = self::getCache();
+        $status = [
+            'complete' => true,
+            'missing' => [],
+            'languages' => [],
+            'modules' => []
+        ];
+
+        // Get all modules
+        $modules = self::$_lang->getAllModules();
+        $status['total_modules'] = count($modules);
+
+        // Get all languages or specific language
+        if ($lang_code) {
+            $languages = [$lang_code];
+        } else {
+            $languages = self::$_lang->getLangListNoStat();
+            $languages = array_keys($languages);
+        }
+        $status['total_languages'] = count($languages);
+
+        foreach ($languages as $lang) {
+            $status['languages'][$lang] = [
+                'info_cached' => $cache->get($lang, 'info', 'language') !== null,
+                'modules_cached' => 0,
+                'missing_modules' => []
+            ];
+
+            foreach ($modules as $module) {
+                $translations = $cache->get($lang, $module, 'translation');
+                if ($translations === null) {
+                    $status['complete'] = false;
+                    $status['languages'][$lang]['missing_modules'][] = $module;
+                    $status['missing'][] = "$lang:$module";
+                } else {
+                    $status['languages'][$lang]['modules_cached']++;
+                }
+            }
+        }
+
+        return $status;
     }
 
     /**
@@ -139,8 +256,30 @@ class Lang
         if (!self::$lang_code) {
             self::$lang_code = Lang::get();
         }
-
         return self::$lang_code;
+    }
+
+    public static function getLanguageBrowsercode($lang_code)
+    {
+        $cache = self::getCache();
+        $languageData = $cache->get($lang_code, 'info', 'language');
+
+        if ($languageData !== null) {
+            return $languageData['lang_browsercode'] ?? false;
+        }
+
+        if (!self::$_lang) {
+            self::$_lang = new LangAdm();
+        }
+
+        // Get complete language data to cache all info at once
+        $language = self::$_lang->getLanguage($lang_code);
+        if ($language) {
+            $cache->set($lang_code, 'info', (array)$language, 'language');
+            return $language->lang_browsercode;
+        }
+
+        return false;
     }
 
     /**
@@ -154,18 +293,24 @@ class Lang
         if (!$lang_code) {
             $lang_code = self::lang_code();
         }
-        //$lang_code = self::lang_code($lang_code);
+
         if (isset(self::$_loaded_modules[$lang_code][$module]) && $includeDisabledPlugins === false) {
             return true;
-        } else {
-            self::$_loaded_modules[$lang_code][$module] = $module;
         }
 
-        // load module translations
-        if (!self::$_lang) {
-            self::$_lang = new LangAdm();
+        $cache = self::getCache();
+        $translations = $cache->get($lang_code, $module, 'translation');
+
+        if ($translations === null) {
+            if (!self::$_lang) {
+                self::$_lang = new LangAdm();
+            }
+            $translations = self::$_lang->getTranslation($module, $lang_code, $includeDisabledPlugins);
+            $cache->set($lang_code, $module, $translations, 'translation');
         }
-        self::$translations[$lang_code][$module] = self::$_lang->getTranslation($module, $lang_code, $includeDisabledPlugins);
+
+        self::$translations[$lang_code][$module] = $translations;
+        self::$_loaded_modules[$lang_code][$module] = $module;
     }
 
     /**
@@ -188,18 +333,25 @@ class Lang
         if (!$lang_code) {
             $lang_code = self::lang_code();
         }
-        //$lang_code = self::lang_code($lang_code);
 
-        $translation = '';
-        if (isset(self::$translations[$lang_code][$module][$key])) {
-            // translation found
-            return true;
-        } elseif (isset(self::$translations[$lang_code][$module][$key])) {
-            //translation found in the standard module
-            return true;
+        $cache = self::getCache();
+        $translations = $cache->get($lang_code, $module, 'translation');
+
+        if ($translations === null) {
+            // Check in memory translations
+            if (isset(self::$translations[$lang_code][$module][$key])) {
+                return true;
+            }
+
+            // Load from database
+            if (!self::$_lang) {
+                self::$_lang = new LangAdm();
+            }
+            $translations = self::$_lang->getTranslation($module, $lang_code);
+            $cache->set($lang_code, $module, $translations, 'translation');
         }
 
-        return false;
+        return isset($translations[$key]);
     }
 
     /**
@@ -226,77 +378,46 @@ class Lang
         if (!$lang_code) {
             $lang_code = self::lang_code();
         }
-        //$lang_code = self::lang_code($lang_code);
-        self::load_module($module, $lang_code, $includeDisabledPlugins);
+
+        $cache = self::getCache();
+        $translations = $cache->get($lang_code, $module, 'translation');
+
+        if ($translations === null) {
+            // Check in memory translations
+            if (isset(self::$translations[$lang_code][$module])) {
+                $translations = self::$translations[$lang_code][$module];
+            } else {
+                // Load from database
+                if (!self::$_lang) {
+                    self::$_lang = new LangAdm();
+                }
+                $translations = self::$_lang->getTranslation($module, $lang_code, $includeDisabledPlugins);
+                $cache->set($lang_code, $module, $translations, 'translation');
+                self::$translations[$lang_code][$module] = $translations;
+            }
+        }
 
         $translation = '';
-        if (FormaLms\lib\Get::cfg('log_missing_translation_level', (int)0) > 0) {
-            // LOG MISSING TRANSLATIONS -->
-            $missing = false;
-            $missing_in_module = false;
-            $found_in_standard = 0;
-            // <-- LOG MISSING TRANSLATIONS
-        }
-        if (isset(self::$translations[$lang_code][$module][$key])) {
-            // translation found
-            $translation = self::$translations[$lang_code][$module][$key];
+        if (isset($translations[$key])) {
+            $translation = $translations[$key];
         } elseif (!isset(self::$translations[$lang_code]['standard'])) {
-            //stadnard module not loaded
             self::load_module('standard', $lang_code);
+            if (isset(self::$translations[$lang_code]['standard'][$key])) {
+                $translation = self::$translations[$lang_code]['standard'][$key];
+            }
         } elseif (isset(self::$translations[$lang_code]['standard'][$key])) {
-            //translation found in the standard module
             $translation = self::$translations[$lang_code]['standard'][$key];
-            if (FormaLms\lib\Get::cfg('log_missing_translation_level', (int)0) > 1) {
-                // LOG MISSING TRANSLATIONS -->
-                if ($module !== 'standard') {
-                    $missing_in_module = true;
-                    $found_in_standard = 1;
-                }
-                // <-- LOG MISSING TRANSLATIONS
-            }
-        } elseif ($default == false) {
-            //translation not found
-            self::undefinedKey($key, $module, $lang_code);
-            if (FormaLms\lib\Get::cfg('log_missing_translation_level', (int)0) > 0) {
-                // LOG MISSING TRANSLATIONS -->
-                $missing = true;
-                // <-- LOG MISSING TRANSLATIONS
-            }
-        }
-
-        if (FormaLms\lib\Get::cfg('log_missing_translation_level', (int)0) == 1) {
-            // LOG MISSING TRANSLATIONS -->
-            if ($missing) {
-                $_substitutions = json_encode($substitution ? $substitution : []);
-                $log = "KEY: '$key'\t- MODULE: '$module'\t- SUBTITUTIONS: $_substitutions\t \n";
-                $date = date('Y_m_d');
-                if (!@mkdir(_files_ . "/log/missing_translations/$lang_code/", 0777, true)) {
-                    echo "<script>console.log('Directory creato con successo');</script>";
-                }
-                file_put_contents(_files_ . "/log/missing_translations/$lang_code/$date.log", $log, FILE_APPEND);
-            }
-            // <-- LOG MISSING TRANSLATIONS
-        } elseif (FormaLms\lib\Get::cfg('log_missing_translation_level', (int)0) == 2) {
-            // LOG MISSING TRANSLATIONS -->
-            if ($missing or $missing_in_module) {
-                $_substitutions = json_encode($substitution ? $substitution : []);
-                $log = "KEY: '$key'\t- MODULE: '$module'\t- SUBTITUTIONS: $_substitutions\t- FOUND IN STANDARD: $found_in_standard\n";
-                $date = date('Y_m_d');
-                if (!@mkdir(_files_ . "/log/missing_translations/$lang_code/", 0777, true)) {
-                    echo "<script>console.log('Directory creato con successo');</script>";
-                }
-                file_put_contents(_files_ . "/log/missing_translations/$lang_code/$date.log", $log, FILE_APPEND);
-            }
-            // <-- LOG MISSING TRANSLATIONS
         }
 
         if (trim($translation) == '') {
-            if ($default != false) {
+            if ($default !== false) {
                 $translation = $default;
             } else {
-                $translation = (FormaLms\lib\Get::sett('lang_check') == 'on' ? "§($module)" : '') . trim(strtolower(str_replace('_', ' ', $key)));
+                $translation = (FormaLms\lib\Get::sett('lang_check') == 'on' ? "§($module)" : '') .
+                    trim(strtolower(str_replace('_', ' ', $key)));
             }
         }
+
         if (empty($substitution) || !is_array($substitution)) {
             return $translation;
         }
@@ -332,6 +453,7 @@ class Lang
         return 'utf-8';
     }
 
+
     /**
      * Return the current language, the following policy is followed
      * if a session preference is found, that one will be used, otherwise :
@@ -343,37 +465,39 @@ class Lang
      */
     public static function get($reset = false)
     {
-        //retrocompatibilità perchè il domainconfighandler istanzia l'utente di sessione sul clientservice
-        /*************************************** */
-        /***************************************** */
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $currentLang = $session->get('current_lang');
+
         if ($reset && isset($currentLang)) {
             $currentLang = null;
         }
 
         if (!$currentLang) {
             $currentLang = self::getDefault();
-            // we if (!FormaLms\lib\Get::cfg('demo_mode', false) && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {don't know which language we need
+
             if (!FormaLms\lib\Get::cfg('demo_mode', false) && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
-                // load the language from the user setting
-				$currentLang = \FormaLms\lib\FormaUser::getCurrentUser()->getPreference('ui.language');
+                $currentLang = \FormaLms\lib\FormaUser::getCurrentUser()->getPreference('ui.language');
             } else {
-                // find the user language looking into the browser info
                 $langadm = new LangAdm();
-                $all_language = $langadm->getLangListNoStat();
+                $cache = self::getCache();
+                $all_language = $cache->get('all', 'languages', 'language_list');
+
+                if ($all_language === null) {
+                    $all_language = $langadm->getLangListNoStat();
+                    $cache->set('all', 'languages', $all_language, 'language_list');
+                }
+
                 $browser_lang = FormaLms\lib\Get::user_acceptlang(false);
                 foreach ($browser_lang as $code) {
                     foreach ($all_language as $lang) {
-                        if ($code) {
-                            if (strpos($lang->lang_browsercode, (string)$code) !== false) {
-                                $currentLang = $lang->lang_code;
-                                break 2;
-                            }
+                        if ($code && strpos($lang->lang_browsercode, $code) !== false) {
+                            $currentLang = $lang->lang_code;
+                            break 2;
                         }
-                    } // end foreach
-                } // end foreach
+                    }
+                }
             }
+
             $session->set('current_lang', $currentLang);
             $session->save();
         }
@@ -390,28 +514,134 @@ class Lang
      */
     public static function set($lang_code, $force = true)
     {
-        // check lang_code:
         $langadm = new LangAdm();
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-        $all_language = $langadm->getLangListNoStat();
+        $cache = self::getCache();
 
+        // Prima verifica nella cache
+        $all_language = $cache->get('all', 'languages', 'language_list');
+
+        // Se non è in cache, carica dal DB
+        if ($all_language === null) {
+            $all_language = $langadm->getLangListNoStat();
+            $cache->set('all', 'languages', $all_language, 'language_list');
+        }
+
+        // Se non è nella lista caricata, verifica direttamente nel DB
         if (!isset($all_language[$lang_code])) {
-            return false;
+            $language = $langadm->getLanguage($lang_code);
+
+            if ($language) {
+                // Aggiorna la cache con la nuova lingua
+                $all_language[$lang_code] = $language;
+                $cache->set('all', 'languages', $all_language, 'language_list');
+            } else {
+                // La lingua non esiste proprio nel sistema
+                return false;
+            }
         }
 
         if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
-            // if the user is anonymous we will remember it's forced selection and set up the selected language as
-            // it's user preference when he login
             if ($force) {
                 $session->set('forced_lang', true);
             }
         } else {
             \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->setLanguage($lang_code);
         }
+
         $session->set('current_lang', $lang_code);
         $session->save();
 
         return $lang_code;
+    }
+
+    /**
+     * Get current language configuration
+     *
+     * @return array Language configuration data
+     */
+    public static function getCurrentLanguageConfig(): array
+    {
+        $currentLang = self::get();
+        $cache = self::getCache();
+
+        // Get language data from cache
+        $languageData = $cache->get($currentLang, 'info', 'language');
+
+        if ($languageData === null) {
+            if (!self::$_lang) {
+                self::$_lang = new LangAdm();
+            }
+            $language = self::$_lang->getLanguage($currentLang);
+            if ($language) {
+                $cache->set($currentLang, 'info', (array)$language, 'language');
+                $languageData = (array)$language;
+            }
+        }
+
+        // Process browser code
+        $browserCode = $languageData['lang_browsercode'] ?? '';
+        $langCode = explode(';', $browserCode)[0] ?? '';
+
+        // Get enabled languages
+        $enabledLanguages = self::getEnabledLanguages();
+
+        // Get translations
+        $translations = self::getAllTranslations($currentLang);
+
+        return [
+            'enabledLanguages' => $enabledLanguages,
+            'currentLanguage' => $currentLang,
+            'currentLangCode' => $langCode,
+            'translations' => $translations,
+        ];
+    }
+
+    /**
+     * Get list of enabled languages
+     *
+     * @return array List of enabled languages
+     */
+    public static function getEnabledLanguages(): array
+    {
+        $cache = self::getCache();
+        $enabledLanguages = $cache->get('all', 'languages', 'language_list');
+
+        if ($enabledLanguages === null) {
+            if (!self::$_lang) {
+                self::$_lang = new LangAdm();
+            }
+            $enabledLanguages = self::$_lang->getLangList();
+            $cache->set('all', 'languages', $enabledLanguages, 'language_list');
+        }
+
+        return $enabledLanguages;
+    }
+
+    /**
+     * Get all translations for a language
+     *
+     * @param string|null $lang_code Language code, if null uses current language
+     * @return array Translations
+     */
+    public static function getAllTranslations(?string $lang_code = null): array
+    {
+        if (!$lang_code) {
+            $lang_code = self::get();
+        }
+
+        $cache = self::getCache();
+        $translations = $cache->get($lang_code, 'translations', 'all_translations');
+
+        if ($translations === null) {
+            if (!self::$_lang) {
+                self::$_lang = new LangAdm();
+            }
+            $translations = self::$_lang->langTranslation();
+            $cache->set($lang_code, 'translations', $translations, 'all_translations');
+        }
+
+        return $translations;
     }
 
     /**
@@ -429,16 +659,25 @@ class Lang
         if (!$lang_code) {
             $lang_code = self::get();
         }
-        if (isset(self::$_lang_cache[$lang_code])) {
-            return self::$_lang_cache[$lang_code]->lang_direction;
+
+        $cache = self::getCache();
+        $languageData = $cache->get($lang_code, 'info', 'language');
+
+        if ($languageData !== null) {
+            return $languageData['lang_direction'] ?? null;
         }
 
         if (!self::$_lang) {
             self::$_lang = new LangAdm();
         }
-        self::$_lang_cache[$lang_code] = self::$_lang->getLanguage($lang_code);
 
-        return isset(self::$_lang_cache[$lang_code]->lang_direction) ?? null;
+        $language = self::$_lang->getLanguage($lang_code);
+        if ($language) {
+            $cache->set($lang_code, 'info', (array)$language, 'language');
+            return $language->lang_direction;
+        }
+
+        return null;
     }
 
     public static function getLangNameFromFile($file)
@@ -458,20 +697,26 @@ class Lang
 
     public static function getFileSystemCoreLanguages($arrayKey = null)
     {
-        $langs = [];
-        $langs[''] = static::t('_SELECT_LANG', 'standard');
-        $files = scandir(_langs_);
+        $cache = self::getCache();
+        $langs = $cache->get('core', 'languages', 'filesystem_languages');
 
-        foreach ($files as $file) {
-            if (strpos($file, '.xml') !== false) {
+        if ($langs === null) {
+            $langs = [];
+            $langs[''] = static::t('_SELECT_LANG', 'standard');
+            $files = scandir(_langs_);
 
-                if($arrayKey) {
-                    $key = strtolower(static::getLangNameFromFile($file));
-                } else {
-                    $key = $file;
+            foreach ($files as $file) {
+                if (strpos($file, '.xml') !== false) {
+                    if ($arrayKey) {
+                        $key = strtolower(static::getLangNameFromFile($file));
+                    } else {
+                        $key = $file;
+                    }
+                    $langs[$key] = static::getLangNameFromFile($file);
                 }
-                $langs[$key] = static::getLangNameFromFile($file);
             }
+
+            $cache->set('core', 'languages', $langs, 'filesystem_languages');
         }
 
         return $langs;
@@ -640,9 +885,9 @@ class FormaLangManager
     public function getLangTranslationText($lang_code, $key, $module = false, $platform = false)
     {
         if ($module === false) {
-            list($key, $module, $platform) = $this->decomposeKey($key);
+            [$key, $module, $platform] = $this->decomposeKey($key);
         } elseif ($platform === false) {
-            list($module, $platform) = $this->decomposeKey($module);
+            [$module, $platform] = $this->decomposeKey($module);
         }
 
         $query = 'SELECT tran.translation_text'
@@ -656,7 +901,7 @@ class FormaLangManager
         if (sql_num_rows($rs) < 1) {
             return false;
         }
-        list($translation_text) = sql_fetch_row($rs);
+        [$translation_text] = sql_fetch_row($rs);
 
         return $translation_text;
     }
@@ -743,9 +988,9 @@ class FormaLangManager
     public function getKeyAttributes($key, $module = false, $platform = false)
     {
         if ($module === false) {
-            list($key, $module, $platform) = $this->decomposeKey($key);
+            [$key, $module, $platform] = $this->decomposeKey($key);
         } elseif ($platform === false) {
-            list($module, $platform) = $this->decomposeKey($module);
+            [$module, $platform] = $this->decomposeKey($module);
         }
 
         $query = 'SELECT text_attributes FROM ' . $this->_getTableText()
@@ -755,7 +1000,7 @@ class FormaLangManager
         if (sql_num_rows($rs) == 0) {
             return false;
         }
-        list($attributes) = sql_fetch_row($rs);
+        [$attributes] = sql_fetch_row($rs);
 
         return $attributes;
     }
@@ -772,9 +1017,9 @@ class FormaLangManager
     public function deleteKey($key, $module = false, $platform = false)
     {
         if ($module === false) {
-            list($key, $module, $platform) = $this->decomposeKey($key);
+            [$key, $module, $platform] = $this->decomposeKey($key);
         } elseif ($platform === false) {
-            list($module, $platform) = $this->decomposeKey($module);
+            [$module, $platform] = $this->decomposeKey($module);
         }
 
         $query = 'SELECT id_text FROM ' . $this->_getTableText()
@@ -784,7 +1029,7 @@ class FormaLangManager
         if (sql_num_rows($rs) == 0) {
             return false;
         }
-        list($id_text) = sql_fetch_row($rs);
+        [$id_text] = sql_fetch_row($rs);
 
         $query = 'DELETE FROM ' . $this->_getTableTranslation()
             . ' WHERE id_text=' . $id_text;
@@ -811,9 +1056,9 @@ class FormaLangManager
     public function updateKey($key, $module = false, $platform = false, $description = false, $attributes = false, $overwrite = true, $no_add = false)
     {
         if ($module === false) {
-            list($key, $module, $platform) = $this->decomposeKey($key);
+            [$key, $module, $platform] = $this->decomposeKey($key);
         } elseif ($platform === false) {
-            list($module, $platform) = $this->decomposeKey($module);
+            [$module, $platform] = $this->decomposeKey($module);
         }
 
         $query = 'SELECT id_text FROM ' . $this->_getTableText()
@@ -831,7 +1076,7 @@ class FormaLangManager
             return sql_query($query);
         } elseif ($description !== false) {
             if ($overwrite === true && $attributes !== false) {
-                list($id_text) = sql_fetch_row($rs);
+                [$id_text] = sql_fetch_row($rs);
                 $query = 'UPDATE ' . $this->_getTableText()
                     . " SET text_attributes  = '" . $attributes . "' ";
                 $query .= " WHERE id_text = '" . $id_text . "'";
@@ -845,7 +1090,7 @@ class FormaLangManager
 
     public function updateTranslationC($composed_key, $translation, $lang_code)
     {
-        list($key, $module) = $this->decomposeKey($composed_key);
+        [$key, $module] = $this->decomposeKey($composed_key);
 
         return $this->updateTranslation($key, $module, false, $translation, $lang_code);
     }
@@ -864,7 +1109,7 @@ class FormaLangManager
             return false;
         }
 
-        list($id_text) = sql_fetch_row($rs);
+        [$id_text] = sql_fetch_row($rs);
 
         // update save_date only if the content is changed ------------
         $query = 'UPDATE ' . $this->_getTableTranslation()
@@ -963,7 +1208,7 @@ class FormaLangManager
             return false;
         }
 
-        list($description) = sql_fetch_row($rs);
+        [$description] = sql_fetch_row($rs);
 
         return $description;
     }
@@ -990,14 +1235,14 @@ class FormaLangManager
     public function getLanguageBrowsercode($lang_code)
     {
         $query = 'SELECT lang_browsercode'
-            . ' FROM ' . $this->_getTableLanguage()
+            . ' FROM %adm_lang_language'
             . " WHERE lang_code='" . $lang_code . "'";
         $rs = sql_query($query);
         if (sql_num_rows($rs) !== 1) {
             return false;
         }
 
-        list($lang_browsercode) = sql_fetch_row($rs);
+        [$lang_browsercode] = sql_fetch_row($rs);
 
         return $lang_browsercode;
     }
@@ -1019,7 +1264,7 @@ class FormaLangManager
             return false;
         }
 
-        list($lang_direction) = sql_fetch_row($rs);
+        [$lang_direction] = sql_fetch_row($rs);
 
         return $lang_direction;
     }
@@ -1044,7 +1289,7 @@ class FormaLangManager
                 . " WHERE lang_browsercode LIKE '%" . $browser_language . "%'";
             $rs = sql_query($query);
             if (sql_num_rows($rs) != 0) {
-                list($lang_code) = sql_fetch_row($rs);
+                [$lang_code] = sql_fetch_row($rs);
 
                 return $lang_code;
             }
@@ -1180,7 +1425,7 @@ class FormaLangManager
             $lang_stat .= " OR text_platform = '" . $plat . "' ";
         }
 
-        list($stats['tot_lang']) = sql_fetch_row(sql_query($lang_stat));
+        [$stats['tot_lang']] = sql_fetch_row(sql_query($lang_stat));
 
         $lang_stat = ''
             . 'SELECT lang_code, COUNT(*) '
@@ -1195,5 +1440,5 @@ class FormaLangManager
         return $stats;
     }
 
-   
+
 }

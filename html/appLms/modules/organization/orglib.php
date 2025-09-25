@@ -253,6 +253,7 @@ class OrgDirDb extends RepoDirDb implements Accessible
             if ($this->filterVisibility) {
                 $result .= " AND (visible = '1' )";
                 $result .= " AND (NOW() > publish_from OR publish_from IS NULL)";
+                $result .= ' AND (NOW() < publish_to OR publish_to IS NULL)';
             }
         } else {
             $result = ' AND (' . $tname . ".idCourse = '" . $this->idCourse . "')";
@@ -262,6 +263,7 @@ class OrgDirDb extends RepoDirDb implements Accessible
             if ($this->filterVisibility) {
                 $result .= ' AND (' . $tname . ".visible = '1' )";
                 $result .= ' AND (NOW() > ' . $tname . '.publish_from OR ' . $tname . '.publish_from IS NULL)';
+                $result .= ' AND (NOW() < ' . $tname . '.publish_to OR ' . $tname . '.publish_to IS NULL)';
             }
         }
         if ($this->filterAccess !== false) {
@@ -616,10 +618,16 @@ class OrgDirDb extends RepoDirDb implements Accessible
 
         $this->org_height = $arrData['obj_height'] ?? $folder->otherValues[ORGFIELD_HEIGHT];
 
-        $arrData['publish_from'] = Format::dateDb($arrData['publish_from'], 'date');
-        $arrData['publish_to'] = Format::dateDb($arrData['publish_to'], 'date');
-
-        if ($arrData['publish_from'] > $arrData['publish_to'] && $arrData['publish_to'] != '') {
+        $checkDates = -1;
+        if(!empty($arrData['publish_from'])) {
+            $arrData['publish_from'] = (new Datetime($arrData['publish_from']))->format('Y-m-d H:i:s');
+            $checkDates++;
+        }
+        if(!empty($arrData['publish_to'])) {
+            $arrData['publish_to'] = (new Datetime($arrData['publish_to']))->format('Y-m-d H:i:s');
+            $checkDates++;
+        }
+        if ($checkDates > 0 && $arrData['publish_from'] > $arrData['publish_to']) {
             $temp = $arrData['publish_from'];
             $arrData['publish_from'] = $arrData['publish_to'];
             $arrData['publish_to'] = $temp;
@@ -1815,7 +1823,7 @@ class Org_TreeView extends RepoTreeView
     {
         $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         if (array_key_exists('course_descriptor',$GLOBALS) && $GLOBALS['course_descriptor']->getValue('course_type') === 'classroom') {
-            require_once _lms_ . '/lib/lib.date.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
             $man_date = new DateManager();
             $this->user_presence = $man_date->checkUserPresence(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $idCourse);
         }
@@ -1823,7 +1831,7 @@ class Org_TreeView extends RepoTreeView
         $idLoList = (array) $idLoList;
         require_once _lms_ . '/lib/lib.kbres.php';
         require_once _lms_ . '/class.module/track.object.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         $res = [];
         foreach ($idLoList as $index => $idLo) {
@@ -2007,7 +2015,7 @@ class Org_TreeView extends RepoTreeView
         $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         // check if the user attende the course
         if ($GLOBALS['course_descriptor']->getValue('course_type') == 'classroom') {
-            require_once _lms_ . '/lib/lib.date.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
             $man_date = new DateManager();
             $this->user_presence = $man_date->checkUserPresence(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $idCourse);
         }

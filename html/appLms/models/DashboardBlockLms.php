@@ -285,19 +285,23 @@ abstract class DashboardBlockLms extends Model
 
         $hourBegin = $course['course_hour_begin'];
         $hourBeginString = '';
-        if ($hourBegin === '-1' || $hourBegin === null) {
+        if ($hourBegin === '-1' || $hourBegin === null || $hourBegin === 'NULL') {
             $hourBegin = '';
+            $hourBeginString = '';
         } else {
-            $hourBegin .= ':00';
+            // Only append :00 if the hour is not empty and doesn't already contain seconds
+            $hourBegin = !empty($hourBegin) && !str_contains($hourBegin, ':') ? $hourBegin . ':00' : $hourBegin;
             $hourBeginString = $hourBegin;
         }
 
         $hourEnd = $course['course_hour_end'];
         $hourEndString = '';
-        if ($hourEnd === '-1' || $hourEnd === null) {
+        if ($hourEnd === '-1' || $hourEnd === null || $hourEnd === 'NULL') {
             $hourEnd = '';
+            $hourEndString = '';
         } else {
-            $hourEnd .= ':00';
+            // Only append :00 if the hour is not empty and doesn't already contain seconds
+            $hourEnd = !empty($hourEnd) && !str_contains($hourEnd, ':') ? $hourEnd . ':00' : $hourEnd;
             $hourEndString = $hourEnd;
         }
 
@@ -308,8 +312,8 @@ abstract class DashboardBlockLms extends Model
             'endDate' => !empty($dateEnd) ? $dateEnd : '',
             'startDateString' => $startDate !== null ? $startDate->format('d/m/Y') : '',
             'endDateString' => $endDate !== null ? $endDate->format('d/m/Y') : '',
-            'hourBeginString' => $course['course_hour_begin'],
-            'hourEndString' => $course['course_hour_end'],
+            'hourBeginString' => $hourBeginString,
+            'hourEndString' => $hourEndString,
             'hourBegin' => $hourBegin,
             'hourEnd' => $hourEnd,
             'type' => $course['course_type'],

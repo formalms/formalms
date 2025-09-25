@@ -29,9 +29,9 @@ class HomecatalogueLms extends CatalogLms
 
     public function __construct()
     {
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once _lms_ . '/lib/lib.edition.php';
-        require_once _lms_ . '/lib/lib.date.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
 
         $this->course_man = new Man_Course();
         $this->edition_man = new EditionManager();

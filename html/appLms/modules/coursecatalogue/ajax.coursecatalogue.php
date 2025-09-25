@@ -20,7 +20,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  */
 
 if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
-    require_once _lms_ . '/lib/lib.course.php';
+    require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
     require_once _lms_ . '/modules/coursecatalogue/lib.coursecatalogue.php';
     $lang = &FormaLanguage::createInstance('standard', 'framework');
     
@@ -102,7 +102,7 @@ if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             require_once _lms_ . '/lib/lib.preassessment.php';
             require_once _lms_ . '/lib/lib.catalogue.php';
             require_once _lms_ . '/lib/lib.coursepath.php';
-            require_once _lms_ . '/lib/lib.course.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
             require_once _lms_ . '/modules/coursecatalogue/lib.coursecatalogue.php';
 
             $lang = &FormaLanguage::createInstance('standard', 'framework');
@@ -176,7 +176,7 @@ if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
          break;
         // -------------------------------------------------------------------------------
         case 'course_vote':
-            require_once _lms_ . '/lib/lib.course.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
             require_once _lms_ . '/modules/coursecatalogue/lib.coursecatalogue.php';
 
             $id_course = importVar('id_course', true, 0);
@@ -230,7 +230,7 @@ if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         // -----------------------------------------------------------------------------------
 
         case 'course_action_confirm':
-            require_once _lms_ . '/lib/lib.course.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
             require_once _lms_ . '/modules/coursecatalogue/lib.coursecatalogue.php';
             $lang = &FormaLanguage::createInstance('standard', 'framework');
             
@@ -312,7 +312,7 @@ if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             aout($output);
          break;
         case 'course_action_confirm_edition':
-            require_once _lms_ . '/lib/lib.course.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
             require_once _lms_ . '/modules/coursecatalogue/lib.coursecatalogue.php';
             $lang = &FormaLanguage::createInstance('standard', 'framework');
             
@@ -355,7 +355,7 @@ if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 
         case 'addnewcomment':
             require_once _adm_ . '/lib/lib.ajax_comment.php';
-            require_once _lms_ . '/lib/lib.course.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
             $id_course = importVar('id_course', true, 0);
             $ax_comm = new AjaxComment('course', 'lms');
@@ -415,7 +415,7 @@ if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 
         case 'delcomment':
             require_once _adm_ . '/lib/lib.ajax_comment.php';
-            require_once _lms_ . '/lib/lib.course.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
             $lang = &FormaLanguage::createInstance('standard', 'framework');
             
@@ -465,7 +465,7 @@ if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 
         case 'comment_it':
             require_once _adm_ . '/lib/lib.ajax_comment.php';
-            require_once _lms_ . '/lib/lib.course.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
             $lang = &FormaLanguage::createInstance('standard', 'framework');
             
@@ -509,7 +509,7 @@ if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             aout($output);
          break;
         case 'course_materials':
-            require_once _lms_ . '/lib/lib.course.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
             $lang = &FormaLanguage::createInstance('standard', 'framework');
             
             $lang = &FormaLanguage::createInstance('course', 'lms');
@@ -575,7 +575,7 @@ if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             aout($output);
          break;
         case 'play_demo':
-            require_once _lms_ . '/lib/lib.course.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
             require_once _base_ . '/lib/lib.multimedia.php';
 
             $lang = &FormaLanguage::createInstance('standard', 'framework');

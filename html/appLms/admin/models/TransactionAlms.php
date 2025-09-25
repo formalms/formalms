@@ -180,7 +180,7 @@ class TransactionAlms extends Model
 
         $res = true;
 
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         foreach ($product as $key => $i) {
             $course_data = explode('_', $key);

@@ -56,12 +56,12 @@ class Choice_Question extends Question
             //.Form::getTextarea('', 'answer_'.$i, 'answer['.$i.']', ( isset($_REQUEST['answer'][$i]) ? stripslashes($_REQUEST['answer'][$i]) : ''),false,'','form_line_l','floating','textarea',true)
 
             . loadHtmlEditor('',
-                            'answer_' . $i,
-                            'answer[' . $i . ']',
-                            (isset($_REQUEST['answer'][$i]) ? stripslashes($_REQUEST['answer'][$i]) : ''),
-                            false,
-                            '',
-                            true)
+                'answer_' . $i,
+                'answer[' . $i . ']',
+                (isset($_REQUEST['answer'][$i]) ? stripslashes($_REQUEST['answer'][$i]) : ''),
+                false,
+                '',
+                true)
 
             //.'<textarea class="test_area_answer" id="answer_'.$i.'" name="answer['.$i.']" cols="25" rows="3">'
 
@@ -71,16 +71,16 @@ class Choice_Question extends Question
             . '<td rowspan="2" class="image">'
             //comment
             . '<label class="access-only" for="comment_' . $i . '">' . $lang->def('_COMMENTS') . '</label>'
-			//.'<textarea class="test_comment" id="comment_'.$i.'" name="comment['.$i.']" rows="6">'
-			//.( isset($_REQUEST['comment'][$i]) ? stripslashes($_REQUEST['comment'][$i]) : '')
-			//.'</textarea>'
-			.loadHtmlEditor('',
-				'comment_'.$i,
-				'comment['.$i.']',
-				( isset($_REQUEST['comment'][$i]) ? stripslashes($_REQUEST['comment'][$i]) : ''),
-				false,
-				'rows="6"',
-				true)
+            //.'<textarea class="test_comment" id="comment_'.$i.'" name="comment['.$i.']" rows="6">'
+            //.( isset($_REQUEST['comment'][$i]) ? stripslashes($_REQUEST['comment'][$i]) : '')
+            //.'</textarea>'
+            . loadHtmlEditor('',
+                'comment_' . $i,
+                'comment[' . $i . ']',
+                (isset($_REQUEST['comment'][$i]) ? stripslashes($_REQUEST['comment'][$i]) : ''),
+                false,
+                'rows="6"',
+                true)
             . '</td>'
             . '<td class="test_ifcorrect">'
             . '<label for="score_correct_' . $i . '">' . $lang->def('_TEST_IFCORRECT') . '</label>'
@@ -133,12 +133,12 @@ class Choice_Question extends Question
             //.Form::getTextarea('', 'answer_'.$i, 'answer['.$i.']', ( isset($_REQUEST['answer'][$i]) ? stripslashes($_REQUEST['answer'][$i]) : ''),false,'','form_line_l','floating','textarea',true)
 
             . loadHtmlEditor('',
-                            'answer_' . $i,
-                            'answer[' . $i . ']',
-                            (isset($_REQUEST['answer'][$i]) ? stripslashes($_REQUEST['answer'][$i]) : ''),
-                            false,
-                            '',
-                            true)
+                'answer_' . $i,
+                'answer[' . $i . ']',
+                (isset($_REQUEST['answer'][$i]) ? stripslashes($_REQUEST['answer'][$i]) : ''),
+                false,
+                '',
+                true)
 
             //.'<textarea class="test_area_answer" id="answer_'.$i.'" name="answer['.$i.']" cols="25" rows="3">'
             //.( isset($_REQUEST['answer'][$i]) ? stripslashes($_REQUEST['answer'][$i]) : '')
@@ -175,7 +175,7 @@ class Choice_Question extends Question
     /**
      * this function create a new question.
      *
-     * @param int    $idTest    indicates the test selected
+     * @param int $idTest indicates the test selected
      * @param string $back_test indicates the return url
      *
      * @return nothing
@@ -204,17 +204,17 @@ class Choice_Question extends Question
 			INSERT INTO ' . $GLOBALS['prefix_lms'] . "_testquest 
 			( idTest, idCategory, type_quest, title_quest, difficult, time_assigned, sequence, page, shuffle ) VALUES
 			( 	'" . $idTest . "', 
-				'" . (int) $_REQUEST['idCategory'] . "', 
+				'" . (int)$_REQUEST['idCategory'] . "', 
 				'" . $this->getQuestionType() . "', 
 				'" . addslashes($_REQUEST['title_quest']) . "',
-				'" . (int) $_REQUEST['difficult'] . "', 
-				'" . (int) $_REQUEST['time_assigned'] . "', 
-				'" . (int) $_REQUEST['sequence'] . "', 
+				'" . (int)$_REQUEST['difficult'] . "', 
+				'" . (int)$_REQUEST['time_assigned'] . "', 
+				'" . (int)$_REQUEST['sequence'] . "', 
 				'" . $this->_getPageNumber($idTest) . "',
 				'" . (isset($_REQUEST['shuffle']) ? 1 : 0) . "' ) "; //'".(int)$this->_getNextSequence($idTest)."',
             if (!sql_query($ins_query)) {
                 errorCommunication($lang->def('_OPERATION_FAILURE')
-                        . getBackUi('index.php?modname=question&amp;op=create&amp;type_quest='
+                    . getBackUi('index.php?modname=question&amp;op=create&amp;type_quest='
                         . $this->getQuestionType() . '&amp;idTest=' . $idTest . '&amp;back_test=' . $url_encode, $lang->def('_BACK')));
             }
             //find id of auto_increment colum
@@ -294,9 +294,9 @@ class Choice_Question extends Question
             . Form::getCheckbox($lang->def('_TEST_QUEST_SHUFFLE'), 'shuffle', 'shuffle', '1', (isset($_REQUEST['shuffle']) ? 1 : 0))
             . Form::getTextfield($lang->def('_TEST_QUEST_TIMEASS'), 'time_assigned', 'time_assigned', 5,
                 (isset($_REQUEST['time_assigned']) ? $_REQUEST['time_assigned'] : '00000'), $lang->def('_TEST_QUEST_TIMEASS'),
-            $lang->def('_SECONDS'))
+                $lang->def('_SECONDS'))
             . Form::getTextfield($lang->def('_ORDER', 'manmenu'), 'sequence', 'sequence', 5,
-                (isset($_REQUEST['sequence']) ? $_REQUEST['sequence'] : (int) $this->_getNextSequence($idTest)))
+                (isset($_REQUEST['sequence']) ? $_REQUEST['sequence'] : (int)$this->_getNextSequence($idTest)))
             . '<div class="nofloat"></div><br />', 'content');
 
         $GLOBALS['page']->add('<table class="test_answer" cellspacing="0" summary="' . $lang->def('_TEST_ANSWER') . '">' . "\n"
@@ -355,18 +355,18 @@ class Choice_Question extends Question
             //update question
             $ins_query = '
 			UPDATE ' . $GLOBALS['prefix_lms'] . "_testquest
-			SET idCategory = '" . (int) $_REQUEST['idCategory'] . "', 
+			SET idCategory = '" . (int)$_REQUEST['idCategory'] . "', 
 				type_quest = '" . $this->getQuestionType() . "', 
 				title_quest = '" . addslashes($_REQUEST['title_quest']) . "', 
-				difficult = '" . (int) $_REQUEST['difficult'] . "', 
-				time_assigned = '" . (int) $_REQUEST['time_assigned'] . "',
-				sequence = '" . (int) $_REQUEST['sequence'] . "',
+				difficult = '" . (int)$_REQUEST['difficult'] . "', 
+				time_assigned = '" . (int)$_REQUEST['time_assigned'] . "',
+				sequence = '" . (int)$_REQUEST['sequence'] . "',
 				shuffle = '" . (isset($_REQUEST['shuffle']) ? 1 : 0) . "'
-			WHERE idQuest = '" . (int) $this->id . "'";
+			WHERE idQuest = '" . (int)$this->id . "'";
             if (!sql_query($ins_query)) {
                 errorCommunication($lang->def('_OPERATION_FAILURE')
                     . getBackUi('index.php?modname=question&amp;op=edit&amp;type_quest='
-                    . $this->getQuestionType() . '&amp;idQuest=' . $this->id . '&amp;back_test=' . $url_encode, $lang->def('_BACK')));
+                        . $this->getQuestionType() . '&amp;idQuest=' . $this->id . '&amp;back_test=' . $url_encode, $lang->def('_BACK')));
             }
 
             // Salvataggio CustomField
@@ -384,7 +384,7 @@ class Choice_Question extends Question
             $re_answer = sql_query('
 			SELECT idAnswer
 			FROM ' . $GLOBALS['prefix_lms'] . "_testquestanswer 
-			WHERE idQuest = '" . (int) $this->id . "'");
+			WHERE idQuest = '" . (int)$this->id . "'");
             while (list($id_a) = sql_fetch_row($re_answer)) {
                 $existent_answer[$id_a] = 1;
             }
@@ -405,7 +405,7 @@ class Choice_Question extends Question
 						comment = '" . addslashes($_REQUEST['comment'][$i]) . "',
 						score_correct = '" . $this->_checkScore($_REQUEST['score_correct'][$i]) . "', 
 						score_incorrect = '" . $this->_checkScore($_REQUEST['score_incorrect'][$i]) . "'
-					WHERE idAnswer = '" . (int) $idAnswer . "'";
+					WHERE idAnswer = '" . (int)$idAnswer . "'";
                     if (!sql_query($upd_ans_query)) {
                         errorCommunication($lang->def('_OPERATION_FAILURE') . getBackUi(Util::str_replace_once('&', '&amp;', $back_test), $lang->def('_BACK')));
                     }
@@ -429,7 +429,7 @@ class Choice_Question extends Question
                 //i must delete these answer
                 $del_answer_query = '
 				DELETE FROM ' . $GLOBALS['prefix_lms'] . "_testquestanswer
-				WHERE idQuest = '" . (int) $this->id . "' AND idAnswer = '" . (int) $idA . "'";
+				WHERE idQuest = '" . (int)$this->id . "' AND idAnswer = '" . (int)$idA . "'";
                 if (!sql_query($del_answer_query)) {
                     errorCommunication($lang->def('_OPERATION_FAILURE') . getBackUi(Util::str_replace_once('&', '&amp;', $back_test), $lang->def('_BACK')));
                 }
@@ -449,12 +449,12 @@ class Choice_Question extends Question
             list($sel_cat, $quest, $sel_diff, $sel_time, $sel_sequence, $shuffle) = sql_fetch_row(sql_query('
 			SELECT idCategory, title_quest, difficult, time_assigned, sequence, shuffle 
 			FROM ' . $GLOBALS['prefix_lms'] . "_testquest 
-			WHERE idQuest = '" . (int) $this->id . "'"));
+			WHERE idQuest = '" . (int)$this->id . "'"));
 
             $re_answer = sql_query('
 			SELECT idAnswer, is_correct, answer, comment, score_correct, score_incorrect 
 			FROM ' . $GLOBALS['prefix_lms'] . "_testquestanswer 
-			WHERE idQuest = '" . (int) $this->id . "'
+			WHERE idQuest = '" . (int)$this->id . "'
 			ORDER BY idAnswer");
 
             $i_load = 0;
@@ -586,21 +586,21 @@ class Choice_Question extends Question
         list($sel_cat, $quest, $sel_diff, $time_ass, $sequence, $page, $shuffle) = sql_fetch_row(sql_query('
 		SELECT idCategory, title_quest, difficult, time_assigned, sequence, page, shuffle 
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquest 
-		WHERE idQuest = '" . (int) $this->id . "'"));
+		WHERE idQuest = '" . (int)$this->id . "'"));
 
         //insert question
         $ins_query = '
 		INSERT INTO ' . $GLOBALS['prefix_lms'] . "_testquest 
 		( idTest, idCategory, type_quest, title_quest, difficult, time_assigned, sequence, page, shuffle ) VALUES 
-		( 	'" . (int) $new_id_test . "', 
-			'" . (int) $sel_cat . "', 
+		( 	'" . (int)$new_id_test . "', 
+			'" . (int)$sel_cat . "', 
 			'" . $this->getQuestionType() . "', 
 			'" . sql_escape_string($quest) . "',
-			'" . (int) $sel_diff . "', 
+			'" . (int)$sel_diff . "', 
 			'" . $time_ass . "',
-			'" . (int) $sequence . "',
-			'" . (int) $page . "', 
-			'" . (int) $shuffle . "' ) ";
+			'" . (int)$sequence . "',
+			'" . (int)$page . "', 
+			'" . (int)$shuffle . "' ) ";
         if (!sql_query($ins_query)) {
             return false;
         }
@@ -615,16 +615,16 @@ class Choice_Question extends Question
 		SELECT ce.id_field, ce.id_obj, ce.obj_entry  
 		FROM ' . $GLOBALS['prefix_fw'] . '_customfield_entry AS ce
 		INNER JOIN ' . $GLOBALS['prefix_fw'] . '_customfield c ON c.id_field = ce.id_field
-		WHERE ce.id_obj = ' . (int) $this->id . " AND c.area_code IN ('LO_OBJECT', 'LO_TEST')
+		WHERE ce.id_obj = ' . (int)$this->id . " AND c.area_code IN ('LO_OBJECT', 'LO_TEST')
 		ORDER BY ce.id_field");
         while (list($id_field, $id_obj, $obj_entry) = sql_fetch_row($re_customfields)) {
             //insert customfields
             $ins_customfields_query = '
 			INSERT INTO ' . $GLOBALS['prefix_fw'] . "_customfield_entry
 			( id_field, id_obj, obj_entry   ) VALUES
-			( 	'" . (int) $id_field . "', 
-				'" . (int) $new_id_quest . "', 
-				'" . (int) $obj_entry . "' ) ";
+			( 	'" . (int)$id_field . "', 
+				'" . (int)$new_id_quest . "', 
+				'" . (int)$obj_entry . "' ) ";
             if (!sql_query($ins_customfields_query)) {
                 return false;
             }
@@ -634,15 +634,15 @@ class Choice_Question extends Question
         $re_answer = sql_query('
 		SELECT idAnswer, is_correct, answer, comment, score_correct, score_incorrect 
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquestanswer 
-		WHERE idQuest = '" . (int) $this->id . "'
+		WHERE idQuest = '" . (int)$this->id . "'
 		ORDER BY idAnswer");
         while (list($idAnswer, $is_correct, $answer, $comment, $score_c, $score_inc) = sql_fetch_row($re_answer)) {
             //insert answer
             $ins_answer_query = '
 			INSERT INTO ' . $GLOBALS['prefix_lms'] . "_testquestanswer 
 			( idQuest, is_correct, answer, comment, score_correct, score_incorrect ) VALUES
-			( 	'" . (int) $new_id_quest . "', 
-				'" . (int) $is_correct . "', 
+			( 	'" . (int)$new_id_quest . "', 
+				'" . (int)$is_correct . "', 
 				'" . sql_escape_string($answer) . "', 
 				'" . sql_escape_string($comment) . "',
 				'" . $this->_checkScore($score_c) . "', 
@@ -658,10 +658,10 @@ class Choice_Question extends Question
     /**
      * display the quest for play, if.
      *
-     * @param int  $num_quest      the number of the quest to display in front of the quest title
+     * @param int $num_quest the number of the quest to display in front of the quest title
      * @param bool $shuffle_answer randomize the answer display order
-     * @param int  $id_track       where find the answer, if find -> load
-     * @param bool $freeze         if true, when load disable the user interaction
+     * @param int $id_track where find the answer, if find -> load
+     * @param bool $freeze if true, when load disable the user interaction
      *
      * @return string of html question code
      *
@@ -679,7 +679,7 @@ class Choice_Question extends Question
         $query_answer = '
 		SELECT idAnswer, answer 
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquestanswer 
-		WHERE idQuest = '" . (int) $this->id . "'";
+		WHERE idQuest = '" . (int)$this->id . "'";
         if ($shuffle_answer || $shuffle) {
             $query_answer .= ' ORDER BY RAND()';
         } else {
@@ -694,8 +694,8 @@ class Choice_Question extends Question
             $recover_answer = '
 			SELECT idAnswer 
 			FROM ' . $GLOBALS['prefix_lms'] . "_testtrack_answer 
-			WHERE idQuest = '" . (int) $this->id . "' AND 
-				idTrack = '" . (int) $id_track . "' AND ( user_answer = 1 OR user_answer = NULL ) AND number_time =  " . $number_time;
+			WHERE idQuest = '" . (int)$this->id . "' AND 
+				idTrack = '" . (int)$id_track . "' AND ( user_answer = 1 OR user_answer = NULL ) AND number_time =  " . $number_time;
             $re_answer_do = sql_query($recover_answer);
             if (sql_num_rows($re_answer_do)) {
                 //find previous answer
@@ -729,10 +729,10 @@ class Choice_Question extends Question
         }
         if (FormaLms\lib\Get::sett('no_answer_in_test') == 'on') {
             $content .= '<input type="radio" id="quest_' . $id_quest . '_0" '
-                    . 'name="quest[' . $id_quest . ']" value="0" '
-                    . ($find_prev ? ($id_answer == $id_answer_do ? ' checked="checked"' : '') : ' checked="checked"')
-                    . ($find_prev && $freeze ? ' disabled="disabled"' : '') . ' /> '
-                    . '<label class="text_answer_none" for="quest_' . $id_quest . '_0">' . $lang->def('_NO_ANSWER') . '</label>';
+                . 'name="quest[' . $id_quest . ']" value="0" '
+                . ($find_prev ? ($id_answer == $id_answer_do ? ' checked="checked"' : '') : ' checked="checked"')
+                . ($find_prev && $freeze ? ' disabled="disabled"' : '') . ' /> '
+                . '<label class="text_answer_none" for="quest_' . $id_quest . '_0">' . $lang->def('_NO_ANSWER') . '</label>';
         }
         $content .= '</div>'
             . '</div>';
@@ -743,9 +743,9 @@ class Choice_Question extends Question
     /**
      * save the answer to the question in an proper format.
      *
-     * @param int   $id_track      the relative id_track
-     * @param array $source        source of the answer send by the user
-     * @param bool  $can_overwrite if the answer for this question exists and this is true, the old answer
+     * @param int $id_track the relative id_track
+     * @param array $source source of the answer send by the user
+     * @param bool $can_overwrite if the answer for this question exists and this is true, the old answer
      *                             is updated, else the old answer will be leaved
      *
      * @return bool true if success false otherwise
@@ -756,7 +756,7 @@ class Choice_Question extends Question
     {
         $result = true;
 
-        $track_query = null;
+
         if ($this->userDoAnswer($trackTest->idTrack) && !$trackTest->getTestObj()->isRetainAnswersHistory()) {
             if (!$can_overwrite) {
                 return true;
@@ -771,50 +771,51 @@ class Choice_Question extends Question
         $re_answer = sql_query('
 		SELECT idAnswer, is_correct, score_correct, score_incorrect 
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquestanswer 
-		WHERE idQuest = '" . (int) $this->id . "'");
+		WHERE idQuest = '" . (int)$this->id . "'");
         while (list($id_answer, $is_correct, $score_corr, $score_incorr) = sql_fetch_row($re_answer)) {
+            $track_query = null;
             if (isset($source['quest'][$this->id]) && ($source['quest'][$this->id] == $id_answer)) {
                 //answer checked by the user
                 $track_query = '
 				INSERT INTO ' . $GLOBALS['prefix_lms'] . "_testtrack_answer ( idTrack, idQuest, idAnswer, score_assigned, more_info, user_answer, number_time )
 				VALUES (
-					'" . (int) $trackTest->idTrack . "',
-					'" . (int) $this->id . "', 
-					'" . (int) $id_answer . "', 
+					'" . (int)$trackTest->idTrack . "',
+					'" . (int)$this->id . "', 
+					'" . (int)$id_answer . "', 
 					'" . ($is_correct ? $score_corr : -$score_incorr) . "', 
 					'',
 					1,
-					'" . (int) ($trackTest->getNumberOfAttempt() + 1) . "')";
-             
+					'" . (int)($trackTest->getNumberOfAttempt() + 1) . "')";
+
             } elseif ($is_correct && ($score_incorr != 0)) {
                 //answer correct with penality but not checked by the user
                 $track_query = '
 				INSERT INTO ' . $GLOBALS['prefix_lms'] . "_testtrack_answer ( idTrack, idQuest, idAnswer, score_assigned, more_info, user_answer, number_time )
 				VALUES (
-					'" . (int) $trackTest->idTrack . "',
-					'" . (int) $this->id . "', 
-					'" . (int) $id_answer . "', 
+					'" . (int)$trackTest->idTrack . "',
+					'" . (int)$this->id . "', 
+					'" . (int)$id_answer . "', 
 					'" . -$score_incorr . "', 
 					'',
 					0,
-					'" . (int) ($trackTest->getNumberOfAttempt() + 1) . "')";
-             
+					'" . (int)($trackTest->getNumberOfAttempt() + 1) . "')";
+
             } elseif (!$is_correct && ($score_corr != 0)) {
                 //answer correct with penality but not checked by the user
                 $track_query = '
 				INSERT INTO ' . $GLOBALS['prefix_lms'] . "_testtrack_answer ( idTrack, idQuest, idAnswer, score_assigned, more_info, user_answer, number_time )
 				VALUES (
-					'" . (int) $trackTest->idTrack . "',
-					'" . (int) $this->id . "', 
-					'" . (int) $id_answer . "', 
+					'" . (int)$trackTest->idTrack . "',
+					'" . (int)$this->id . "', 
+					'" . (int)$id_answer . "', 
 					'" . $score_corr . "', 
 					'',
 					0,
-					'" . (int) ($trackTest->getNumberOfAttempt() + 1) . "')";
-          
+					'" . (int)($trackTest->getNumberOfAttempt() + 1) . "')";
+
             }
 
-            if($track_query) {
+            if ($track_query) {
                 $result = sql_query($track_query);
             }
         }
@@ -825,8 +826,8 @@ class Choice_Question extends Question
     /**
      * save the answer to the question in an proper format overwriting the old entry.
      *
-     * @param int   $id_track the relative id_track
-     * @param array $source   source of the answer send by the user
+     * @param int $id_track the relative id_track
+     * @param array $source source of the answer send by the user
      *
      * @return bool true if success false otherwise
      *
@@ -859,14 +860,14 @@ class Choice_Question extends Question
     /**
      * display the question with the result of a user.
      *
-     * @param int $id_track    the test relative to this question
-     * @param int $num_quest   the quest sequqnce number
+     * @param int $id_track the test relative to this question
+     * @param int $num_quest the quest sequqnce number
      * @param int $number_time the quest attempt number
      *
      * @return array return an array with xhtml code in this way
-     *               string	'quest' 	=> the quest,
-     *               double	'score'		=> score obtained from this question,
-     *               string	'comment'	=> relative comment to the quest )
+     *               string    'quest'    => the quest,
+     *               double    'score'        => score obtained from this question,
+     *               string    'comment'    => relative comment to the quest )
      *
      * @author Fabio Pirovano (fabio@docebo.com)
      */
@@ -888,7 +889,7 @@ class Choice_Question extends Question
         $query_answer = '
 		SELECT idAnswer, is_correct, answer, comment 
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquestanswer 
-		WHERE idQuest = '" . (int) $this->id . "'
+		WHERE idQuest = '" . (int)$this->id . "'
 		ORDER BY idAnswer";
         $re_answer = sql_query($query_answer);
 
@@ -896,8 +897,8 @@ class Choice_Question extends Question
         $recover_answer = '
 		SELECT idAnswer 
 		FROM ' . $GLOBALS['prefix_lms'] . "_testtrack_answer 
-		WHERE idQuest = '" . (int) $this->id . "' AND 
-			idTrack = '" . (int) $id_track . "' AND ( user_answer = 1 OR user_answer IS NULL )";
+		WHERE idQuest = '" . (int)$this->id . "' AND 
+			idTrack = '" . (int)$id_track . "' AND ( user_answer = 1 OR user_answer IS NULL )";
         if ($number_time != null) {
             $recover_answer .= ' AND number_time = ' . $number_time;
         } else {
@@ -915,7 +916,7 @@ class Choice_Question extends Question
         require_once _adm_ . '/lib/lib.customfield.php';
         $fman = new CustomFieldList();
         $fman->setFieldArea('LO_TEST');
-        $fields_mask = $fman->playFields((int) $this->id, false, true);
+        $fields_mask = $fman->playFields((int)$this->id, false, true);
 
         $quest .= $fields_mask;
 
@@ -926,7 +927,7 @@ class Choice_Question extends Question
         while (list($id_answer, $is_correct, $answer, $comm) = sql_fetch_row($re_answer)) {
             if ($id_answer == $id_answer_do) {
                 $quest .= '<img src="' . getPathImage() . 'standard/dot_sel.png" title="' . $lang->def('_TEST_ANSWER_CHECK') . '" '
-                        . 'alt="' . $lang->def('_TEST_ANSWER_CHECK') . '" />&nbsp;'
+                    . 'alt="' . $lang->def('_TEST_ANSWER_CHECK') . '" />&nbsp;'
                     . $answer . '&nbsp;';
                 if ($is_correct) {
                     $quest .= '<span class="test_answer_correct">' . $lang->def('_TEST_CORRECT') . '</span>';
@@ -952,11 +953,11 @@ class Choice_Question extends Question
             . '</div>';
 
         return ['quest' => $quest,
-                        'score' => $this->userScore($id_track, $number_time),
-                        'comment' => ($com_is_correct != '' ? $com_is_correct . '<br />' : '') . $comment, ];
+            'score' => $this->userScore($id_track, $number_time),
+            'comment' => ($com_is_correct != '' ? $com_is_correct . '<br />' : '') . $comment,];
     }
 
-    public function importFromRaw($raw_quest, $id_test = false)
+    public function importFromRaw($raw_quest, $id_test = false, $sequence = 1)
     {
         if ($id_test === false) {
             $id_test = 0;
@@ -967,13 +968,13 @@ class Choice_Question extends Question
 		INSERT INTO ' . $GLOBALS['prefix_lms'] . "_testquest 
 		( idQuest, idTest, idCategory, type_quest, title_quest, difficult, time_assigned, sequence, page ) VALUES 
 		( 	NULL,
-			'" . (int) $id_test . "', 
-			'" . (int) $raw_quest->id_category . "', 
+			'" . (int)$id_test . "', 
+			'" . (int)$raw_quest->id_category . "', 
 			'" . $this->getQuestionType() . "', 
 			'" . $raw_quest->quest_text . "',
-			'" . (int) $raw_quest->difficult . "', 
+			'" . (int)$raw_quest->difficult . "', 
 			'" . $raw_quest->time_assigned . "',
-			'1',
+			'" . $sequence . "',
 			'1' ) ";
         if (!sql_query($ins_query)) {
             return false;
@@ -992,9 +993,9 @@ class Choice_Question extends Question
                 $ins_cf_query = '
 			INSERT INTO ' . $GLOBALS['prefix_fw'] . "_customfield_entry 
 			( id_field, id_obj, obj_entry ) VALUES
-			( 	'" . (int) $field['idField'] . "', 
-				" . (int) $new_id_quest . ", 
-				'" . (int) $field['idSon'] . "' ) ";
+			( 	'" . (int)$field['idField'] . "', 
+				" . (int)$new_id_quest . ", 
+				'" . (int)$field['idSon'] . "' ) ";
                 if (!sql_query($ins_cf_query)) {
                     return false;
                 }
@@ -1016,8 +1017,8 @@ class Choice_Question extends Question
             $ins_answer_query = '
 			INSERT INTO ' . $GLOBALS['prefix_lms'] . "_testquestanswer 
 			( idQuest, is_correct, answer, comment, score_correct, score_incorrect ) VALUES
-			( 	'" . (int) $new_id_quest . "', 
-				'" . (int) $raw_answer->is_correct . "', 
+			( 	'" . (int)$new_id_quest . "', 
+				'" . (int)$raw_answer->is_correct . "', 
 				'" . $raw_answer->text . "', 
 				'" . $raw_answer->comment . "',
 				'" . $this->_checkScore($raw_answer->score_correct) . "', 

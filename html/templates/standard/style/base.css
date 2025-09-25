@@ -1939,9 +1939,9 @@ a:focus, a:hover {
     outline: 1px solid rgb(178, 206, 79)!important;
     box-shadow: 0px 0px 0px 5px rgba(178, 206, 79,0.26);
     border: inherit;
-  }
+}
   
   /* Assicura che l'outline sia ancora nascosto per gli elementi che non hanno il focus */
-  *:focus:not(:focus-visible) {
+*:focus:not(:focus-visible) {
     outline: 0!important;
-  }
+}

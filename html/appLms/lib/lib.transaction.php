@@ -232,8 +232,8 @@ class Man_Transaction
     {
         require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
         //require_once (_lms_.'/admin/modules/subscribe/subscribe.php');
-        require_once _lms_ . '/lib/lib.date.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         $subscribe_man = new CourseSubscribe_Management();
         $date_man = new DateManager();

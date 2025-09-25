@@ -1075,7 +1075,7 @@ class AggregatedCertificate implements Accessible
 
     public function releaseNewAggrCertCourses($params)
     {
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         $man_courseuser = new Man_CourseUser(\FormaLms\db\DbConn::getInstance());
         $associated_aggr_cert_courses = $this->getIdAssocForUserCourse($params['id_user'], $params['id_course']);
 
@@ -1125,7 +1125,7 @@ class AggregatedCertificate implements Accessible
         
           // Loading necessary libraries
           require_once _base_ . '/lib/lib.userselector.php';
-          require_once _lms_ . '/lib/lib.course.php';
+          require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
           require_once _lms_ . '/lib/lib.course_managment.php';
           require_once _lms_ . '/lib/lib.coursepath.php';
 

@@ -652,7 +652,7 @@ class Certificate
 
     public function canRelease($av_for_status, $user_status)
     {
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         switch ($av_for_status) {
             case AVS_NOT_ASSIGNED:

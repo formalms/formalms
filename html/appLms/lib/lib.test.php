@@ -159,6 +159,7 @@ class GroupTestManagement
                 $test_data['score'] = $test_data['score'] + $test_data['bonus_score'];
             }
 
+            $data['testDetails'][$test_data['idTest']]['bonus_score'] = $test_data['bonus_score'];
             $data['testDetails'][$test_data['idTest']] = [];
 
             if ($test_data['score_status'] == 'valid') {
@@ -261,7 +262,7 @@ class GroupTestManagement
 		WHERE idTest = '" . $id_test . "'";
         $re_test = sql_query($query_test);
         [$point_required, $show_only_status] = sql_fetch_row($re_test);
-        $old_scores = &$this->getTestsScores([$id_test], false, true);
+        $old_scores = &$this->getTestsScores([$id_test], false, true, []);
         $re = true;
 
         foreach ($users_scores as $idst_user => $score) {

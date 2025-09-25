@@ -80,7 +80,7 @@ class Forma
 
     public static function setCourse($id_course)
     {
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         $GLOBALS['course_descriptor'] = new \FormaCourse($id_course);
     }
 

@@ -1094,6 +1094,8 @@ class FormaACLManager
 
             $query1 = 'DELETE FROM %lms_courseuser where idUser =' . $idst;
 
+            $this->removeAdminFromCoreTree($idst);
+
             $result = $this->_executeQuery($query1);
 
             // --- mod. 06-09-2010
@@ -1446,7 +1448,7 @@ class FormaACLManager
         if (!$rs || !sql_num_rows($rs)) {
             return false;
         }
-        list($level) = sql_fetch_row($rs);
+        [$level] = sql_fetch_row($rs);
 
         return $arr_levels_idst[$level];
     }
@@ -1460,11 +1462,11 @@ class FormaACLManager
      *               - idst, userid, firstname, lastname, pass, email, avatar, signature
      *               - FALSE if user is not found
      */
-    public function getUsers($array_idst)
+    public function getUsers($array_idst, $customField = false)
     {
         $users_info = [];
 
-        if (!is_array($array_idst)){
+        if (!is_array($array_idst)) {
             $array_idst = [];
         }
 
@@ -2332,12 +2334,39 @@ class FormaACLManager
         $rs = $this->_executeQuery($query);
 
         $arrGroups = [];
-        while (list($idst) = sql_fetch_row($rs)) {
-            $arrGroups[] = $idst;
+        foreach ($rs as $row) {
+            $arrGroups[] = $row['idst'];
         }
 
         return $arrGroups;
     }
+
+    public function getGroupsAllContainerBatch($arrMembers, $filter = '')
+    {
+        $arrMembers = array_filter($arrMembers, 'is_numeric');
+
+        if (empty($arrMembers)) {
+            return [];
+        }
+
+        $query = "SELECT idst, idstMember 
+              FROM " . $this->_getTableGroupMembers() . "
+              WHERE idstMember IN (" . implode(',', $arrMembers) . ")
+              AND filter = '" . $filter . "'";
+
+        $rs = $this->_executeQuery($query);
+
+        $arrGroups = [];
+        foreach ($rs as $row) {
+            if (!isset($arrGroups[$row['idst']])) {
+                $arrGroups[$row['idst']] = [];
+            }
+            $arrGroups[$row['idst']][] = $row['idstMember'];
+        }
+
+        return $arrGroups;
+    }
+
 
     /**
      * search roles containing a security token.
@@ -3308,6 +3337,11 @@ class FormaACLManager
 
         return $this->_executeQuery($query);
     }
+
+    public function removeAdminFromCoreTree(int $idst) {
+
+        return (bool) $this->_executeQuery('DELETE FROM %adm_admin_tree where idstAdmin = '.$idst);
+    }
 } //END ACLManagaer class
 
 require_once _base_ . '/lib/lib.dataretriever.php';
@@ -3712,5 +3746,8 @@ class GroupMembersDataRetriever extends DataRetriever
 
         return $count;
     }
+
+
+   
 
 }

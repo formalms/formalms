@@ -122,7 +122,6 @@ class SubscriptionAlmsController extends AlmsController
     }
 
 
-
     public function show()
     {
         if (!$this->permissions['subscribe_course']) {
@@ -194,7 +193,7 @@ class SubscriptionAlmsController extends AlmsController
             //'sub_start' => $sub_start,
             //'sub_end' => $sub_end,
             //'del_sub' => $del_sub,
-            'use_overbooking' => (isset($course_info['overbooking']) ? (bool) $course_info['overbooking'] : false),
+            'use_overbooking' => (isset($course_info['overbooking']) ? (bool)$course_info['overbooking'] : false),
             //'info_subscriptions' => $this->model->getSubscriptionsInfo(),
             'num_var_fields' => 1,
             'fieldlist' => $f_list,
@@ -296,89 +295,89 @@ class SubscriptionAlmsController extends AlmsController
             $select_level_mode = FormaLms\lib\Get::req('select_level_mode', DOTY_STRING, '');
             switch ($select_level_mode) {
                 case 'students':
-                        // subscribe the selection with the students level
-                        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
-                        $course_info = $model->getCourseInfoForSubscription();
+                    // subscribe the selection with the students level
+                    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
+                    $course_info = $model->getCourseInfoForSubscription();
 
-                        //check if the subscriber is a sub admin and, if true check it's limitation
-                        $can_subscribe = true;
-                        $subscribe_method = $course_info['subscribe_method'];
-                        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-                            $limited_subscribe = \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->getAdminPreference('admin_rules.limit_course_subscribe');
-                            $max_subscribe = \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->getAdminPreference('admin_rules.max_course_subscribe');
-                            $direct_subscribe = \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->getAdminPreference('admin_rules.direct_course_subscribe');
+                    //check if the subscriber is a sub admin and, if true check it's limitation
+                    $can_subscribe = true;
+                    $subscribe_method = $course_info['subscribe_method'];
+                    if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                        $limited_subscribe = \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->getAdminPreference('admin_rules.limit_course_subscribe');
+                        $max_subscribe = \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->getAdminPreference('admin_rules.max_course_subscribe');
+                        $direct_subscribe = \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->getAdminPreference('admin_rules.direct_course_subscribe');
 
-                            if ($limited_subscribe == 'on') {
-                                $limited_subscribe = true;
-                            } else {
-                                $limited_subscribe = false;
-                            }
-                            if ($direct_subscribe == 'on') {
-                                $direct_subscribe = true;
-                            } else {
-                                $direct_subscribe = false;
-                            }
+                        if ($limited_subscribe == 'on') {
+                            $limited_subscribe = true;
                         } else {
                             $limited_subscribe = false;
-                            $max_subscribe = 0;
+                        }
+                        if ($direct_subscribe == 'on') {
                             $direct_subscribe = true;
+                        } else {
+                            $direct_subscribe = false;
+                        }
+                    } else {
+                        $limited_subscribe = false;
+                        $max_subscribe = 0;
+                        $direct_subscribe = true;
+                    }
+
+                    if ($can_subscribe) {
+                        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
+                        $formaCourse = new FormaCourse($id_course);
+
+                        $level_idst = $formaCourse->getCourseLevel($id_course);
+                        if (count($level_idst) == 0 || $level_idst[1] == '') {
+                            $level_idst = FormaCourse::createCourseLevel($id_course);
                         }
 
-                        if ($can_subscribe) {
-                            require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
-                            $formaCourse = new FormaCourse($id_course);
+                        $waiting = 0;
+                        $user_subscribed = [];
+                        $user_waiting = [];
 
-                            $level_idst = $formaCourse->getCourseLevel($id_course);
-                            if (count($level_idst) == 0 || $level_idst[1] == '') {
-                                $level_idst = FormaCourse::createCourseLevel($id_course);
-                            }
+                        if (!$direct_subscribe) {
+                            $waiting = 1;
+                        }
 
-                            $waiting = 0;
-                            $user_subscribed = [];
-                            $user_waiting = [];
+                        // do the subscriptions
+                        $result = true;
+                        $this->db->start_transaction();
+                        foreach ($user_selected as $id_user) {
+                            if (!$limited_subscribe || $max_subscribe) {
+                                //$this->acl_man->addToGroup($level_idst[3], $id_user);
+                                $this->model->_addToCourseGroup($level_idst[3], $id_user);
 
-                            if (!$direct_subscribe) {
-                                $waiting = 1;
-                            }
-
-                            // do the subscriptions
-                            $result = true;
-                            $this->db->start_transaction();
-                            foreach ($user_selected as $id_user) {
-                                if (!$limited_subscribe || $max_subscribe) {
-                                    //$this->acl_man->addToGroup($level_idst[3], $id_user);
-                                    $this->model->_addToCourseGroup($level_idst[3], $id_user);
-
-                                    if ($model->subscribeUser($id_user, 3, $waiting, $date_begin_validity, $date_expire_validity)) {
-                                        --$max_subscribe;
-                                    } else {
-                                        $this->acl_man->removeFromGroup($level_idst[3], $id_user);
-                                        $result = false;
-                                    }
-                                }
-                            } //End While
-                            $this->db->commit();
-
-                            // Save limit preference for admin
-                            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-                                $to_subscribe = count($user_selected);
-
-                                if ($pref['admin_rules.limit_course_subscribe'] == 'on') {
-                                    $user_pref->setPreference('user_subscribed_count', $subscribed_count + $to_subscribe);
+                                if ($model->subscribeUser($id_user, 3, $waiting, $date_begin_validity, $date_expire_validity)) {
+                                    --$max_subscribe;
+                                } else {
+                                    $this->acl_man->removeFromGroup($level_idst[3], $id_user);
+                                    $result = false;
                                 }
                             }
+                        } //End While
+                        $this->db->commit();
 
-                            reset($user_selected);
-                            $send_alert = FormaLms\lib\Get::req('send_alert', DOTY_INT, 0);
-                            //basically we will consider the alert as a checkbox, the initial state of the checkbox will be setted according to the alert status
-                            if (!empty($user_selected) && $send_alert) {
-                                $course_info['id_date'] = $this->id_date;
-                                $this->model->sendAlert(array_keys($user_selected), $course_info,$send_alert);
+                        // Save limit preference for admin
+                        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                            $to_subscribe = count($user_selected);
+
+                            if ($pref['admin_rules.limit_course_subscribe'] == 'on') {
+                                $user_pref->setPreference('user_subscribed_count', $subscribed_count + $to_subscribe);
                             }
                         }
 
-                        $result = $result > 0 ? '_operation_successful' : '_operation_failed';
-                        Util::jump_to('index.php?r=' . $this->link . '/show&id_course=' . $id_course . '&id_edition=' . $id_edition . '&id_date=' . $id_date . '&res=' . $result);
+                        reset($user_selected);
+                        $send_alert = FormaLms\lib\Get::req('send_alert', DOTY_INT, 0);
+                        //basically we will consider the alert as a checkbox, the initial state of the checkbox will be setted according to the alert status
+                        if (!empty($user_selected) && $send_alert) {
+                            $course_info['id_date'] = $this->id_date;
+                            $this->model->sendAlert(array_keys($user_selected), $course_info, $send_alert);
+                        }
+                    }
+
+                    $result = $result > 0 ? '_operation_successful' : '_operation_failed';
+                    Util::jump_to('index.php?r=' . $this->link . '/show&id_course=' . $id_course . '&id_edition=' . $id_edition . '&id_date=' . $id_date . '&res=' . $result);
 
                     break;
                 default:
@@ -420,7 +419,7 @@ class SubscriptionAlmsController extends AlmsController
             }
 
             //find if the event manager is configured to send an alert or not in case of new subscription
-            list($send_alert) = sql_fetch_row(sql_query('SELECT permission '
+            [$send_alert] = sql_fetch_row(sql_query('SELECT permission '
                 . ' FROM %adm_event_class as ec'
                 . ' JOIN %adm_event_manager as em'
                 . " WHERE ec.idClass = em.idClass AND ec.class = 'UserCourseInserted' "));
@@ -570,7 +569,7 @@ class SubscriptionAlmsController extends AlmsController
             //basically we will consider the alert as a checkbox, the initial state of the checkbox will be setted according to the alert status
             if (!empty($user_selected) && $send_alert) {
                 $course_info['id_date'] = $this->id_date;
-                $this->model->sendAlert(array_keys($user_selected), $course_info,$send_alert);
+                $this->model->sendAlert(array_keys($user_selected), $course_info, $send_alert);
             }
 
             $user_selected = [];
@@ -631,9 +630,9 @@ class SubscriptionAlmsController extends AlmsController
         $op = FormaLms\lib\Get::req('op', DOTY_MIXED, false);
         switch ($op) {
             case 'selectall':
-                    $this->_selectall();
+                $this->_selectall();
 
-                    return;
+                return;
 
                 break;
         }
@@ -683,8 +682,8 @@ class SubscriptionAlmsController extends AlmsController
                     $record['status'] = '' . _CUS_OVERBOOKING;
                 }
             }
-            $list[(int) $value['id_user']] = $record;
-            $date_complete[(int) $value['id_user']] = $value['date_complete'];
+            $list[(int)$value['id_user']] = $record;
+            $date_complete[(int)$value['id_user']] = $value['date_complete'];
         }
 
         //custom fields
@@ -819,119 +818,119 @@ class SubscriptionAlmsController extends AlmsController
             $userModel = new UsermanagementAdm();
             $user = $userModel->getProfileData($id_user);
 
-            require_once _lms_ . '/lib/lib.course.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
             $formaCourse = new FormaCourse($this->id_course);
 
             switch ($col) {
                 case 'level':
-                        require_once _lms_ . '/lib/lib.course.php';
+                    require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
-                        $level_idst = &$formaCourse->getCourseLevel($this->id_course);
-                        if (count($level_idst) == 0 || $level_idst[1] == '') {
-                            $level_idst = FormaCourse::createCourseLevel($this->id_course);
-                        }
+                    $level_idst = &$formaCourse->getCourseLevel($this->id_course);
+                    if (count($level_idst) == 0 || $level_idst[1] == '') {
+                        $level_idst = FormaCourse::createCourseLevel($this->id_course);
+                    }
 
-                        $level = $this->model->getUserLevel($id_user);
-                        if (!isset($level_idst[$level])) {
-                            echo $this->json->encode(['succes' => false]);
-                            break;
-                        }
-                        $this->acl_man->removeFromGroup($level_idst[$level], $id_user);
+                    $level = $this->model->getUserLevel($id_user);
+                    if (!isset($level_idst[$level])) {
+                        echo $this->json->encode(['succes' => false]);
+                        break;
+                    }
+                    $this->acl_man->removeFromGroup($level_idst[$level], $id_user);
 
-                        if (!isset($level_idst[$new_value])) {
-                            echo $this->json->encode(['succes' => false]);
-                            break;
-                        }
-                        $this->acl_man->addToGroup($level_idst[$new_value], $id_user);
+                    if (!isset($level_idst[$new_value])) {
+                        echo $this->json->encode(['succes' => false]);
+                        break;
+                    }
+                    $this->acl_man->addToGroup($level_idst[$new_value], $id_user);
 
-                        if ($this->model->updateUserLevel($id_user, $new_value)) {
-                            echo $this->json->encode(['succes' => true]);
-                        } else {
-                            echo $this->json->encode(['succes' => false]);
-                        }
+                    if ($this->model->updateUserLevel($id_user, $new_value)) {
+                        echo $this->json->encode(['succes' => true]);
+                    } else {
+                        echo $this->json->encode(['succes' => false]);
+                    }
 
                     break;
 
                 case 'status':
-                        $status = $this->model->getUserStatusList();
+                    $status = $this->model->getUserStatusList();
 
-                        if (!isset($status[$new_value])) {
-                            echo $this->json->encode(['succes' => false]);
-                            break;
+                    if (!isset($status[$new_value])) {
+                        echo $this->json->encode(['succes' => false]);
+                        break;
+                    }
+
+                    if ($this->model->updateUserStatus($id_user, $new_value)) {
+                        echo $this->json->encode(['succes' => true]);
+
+                        switch ((int)$new_value) {
+                            case _CUS_SUSPEND:
+                                require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.eventmanager.php');
+
+                                $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($id_user, false);
+
+                                $userid = \FormaLms\lib\Forma::getAclManager()->relativeId($uinfo[ACL_INFO_USERID]);
+
+                                $array_subst = [
+                                    '[url]' => FormaLms\lib\Get::site_url(),
+                                    '[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
+                                    '[lastname]' => $uinfo[ACL_INFO_LASTNAME],
+                                    '[username]' => $userid,
+                                    '[course]' => $formaCourse->course_info['name'],
+                                ];
+
+                                // message to user that is odified
+                                $msg_composer = new EventMessageComposer();
+
+                                $msg_composer->setSubjectLangText('email', '_EVENT_COURSE_EVENT_SUSPENDED_USER_SBJ', false);
+                                $msg_composer->setBodyLangText('email', '_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT', $array_subst);
+
+                                $msg_composer->setBodyLangText('sms', '_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT_SMS', $array_subst);
+
+                                $acl_manager = \FormaLms\lib\Forma::getAclManager();
+
+                                $permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
+                                $permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
+
+                                $course_man = new Man_Course();
+                                $recipients = $course_man->getIdUserOfLevel($this->id_course, '6');
+
+                                $recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_godadmin));
+                                $recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_admin));
+
+                                createNewAlert(
+                                    'UserCourseSuspendedSuperAdmin',
+                                    'directory',
+                                    'edit',
+                                    '1',
+                                    'User ' . $userid . ' was suspended',
+                                    $recipients,
+                                    $msg_composer
+                                );
+
+                                break;
+                            default:
                         }
 
-                        if ($this->model->updateUserStatus($id_user, $new_value)) {
-                            echo $this->json->encode(['succes' => true]);
-
-                            switch ((int) $new_value) {
-                                case _CUS_SUSPEND:
-                                    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.eventmanager.php');
-
-                                    $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($id_user, false);
-
-                                    $userid = \FormaLms\lib\Forma::getAclManager()->relativeId($uinfo[ACL_INFO_USERID]);
-
-                                    $array_subst = [
-                                        '[url]' => FormaLms\lib\Get::site_url(),
-                                        '[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
-                                        '[lastname]' => $uinfo[ACL_INFO_LASTNAME],
-                                        '[username]' => $userid,
-                                        '[course]' => $formaCourse->course_info['name'],
-                                    ];
-
-                                    // message to user that is odified
-                                    $msg_composer = new EventMessageComposer();
-
-                                    $msg_composer->setSubjectLangText('email', '_EVENT_COURSE_EVENT_SUSPENDED_USER_SBJ', false);
-                                    $msg_composer->setBodyLangText('email', '_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT', $array_subst);
-
-                                    $msg_composer->setBodyLangText('sms', '_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT_SMS', $array_subst);
-
-                                    $acl_manager = \FormaLms\lib\Forma::getAclManager();
-
-                                    $permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
-                                    $permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
-
-                                    $course_man = new Man_Course();
-                                    $recipients = $course_man->getIdUserOfLevel($this->id_course, '6');
-
-                                    $recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_godadmin));
-                                    $recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_admin));
-
-                                    createNewAlert(
-                                        'UserCourseSuspendedSuperAdmin',
-                                        'directory',
-                                        'edit',
-                                        '1',
-                                        'User ' . $userid . ' was suspended',
-                                        $recipients,
-                                        $msg_composer
-                                    );
-
-                                    break;
-                                default:
-                            }
-
-                            Events::trigger('core.course.subscription.status.updated', ['user' => $user, 'status' => ['id' => $new_value, 'name' => $status[$new_value]], 'course' => $formaCourse->course_info]);
-                        } else {
-                            echo $this->json->encode(['succes' => false]);
-                        }
+                        Events::trigger('core.course.subscription.status.updated', ['user' => $user, 'status' => ['id' => $new_value, 'name' => $status[$new_value]], 'course' => $formaCourse->course_info]);
+                    } else {
+                        echo $this->json->encode(['succes' => false]);
+                    }
 
                     break;
                 case 'date_begin':
-                        if ($this->model->updateUserDateBeginValidity($id_user, Format::dateDb($new_value, 'date'))) {
-                            echo $this->json->encode(['succes' => true]);
-                        } else {
-                            echo $this->json->encode(['succes' => false]);
-                        }
+                    if ($this->model->updateUserDateBeginValidity($id_user, Format::dateDb($new_value, 'date'))) {
+                        echo $this->json->encode(['succes' => true]);
+                    } else {
+                        echo $this->json->encode(['succes' => false]);
+                    }
 
                     break;
                 case 'date_expire':
-                        if ($this->model->updateUserDateExpireValidity($id_user, Format::dateDb($new_value, 'date'))) {
-                            echo $this->json->encode(['succes' => true]);
-                        } else {
-                            echo $this->json->encode(['succes' => false]);
-                        }
+                    if ($this->model->updateUserDateExpireValidity($id_user, Format::dateDb($new_value, 'date'))) {
+                        echo $this->json->encode(['succes' => true]);
+                    } else {
+                        echo $this->json->encode(['succes' => false]);
+                    }
 
                     break;
                 default:
@@ -1061,7 +1060,7 @@ class SubscriptionAlmsController extends AlmsController
 
                 if ($send_alert) {
                     $course_info['id_date'] = $this->id_date;
-                    $this->model->sendAlert([$id_user],$course_info,$send_alert);
+                    $this->model->sendAlert([$id_user], $course_info, $send_alert);
                 }
 
                 // Moderator notification
@@ -1255,15 +1254,15 @@ class SubscriptionAlmsController extends AlmsController
                     $new_date_complete = Format::dateDb($new_date_complete, 'date');
                     $new_status = FormaLms\lib\Get::req('multimod_status', DOTY_INT, -999);
                     if (in_array($new_status, array_keys($this->model->getUserStatusList()))) {
-                        foreach($users_list as $idUser) {
+                        foreach ($users_list as $idUser) {
                             $res2 = $sman->updateUserStatusInCourse($idUser, $this->id_course, $new_status, $new_date_complete);
                         }
                     }
 
                     foreach ($users_list as $user) {
-                        switch ((int) $new_status) {
+                        switch ((int)$new_status) {
                             case _CUS_SUSPEND:
-                                require_once _lms_ . '/lib/lib.course.php';
+                                require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
                                 $formaCourse = new FormaCourse($this->id_course);
 
                                 require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.eventmanager.php');
@@ -1404,7 +1403,7 @@ class SubscriptionAlmsController extends AlmsController
             $step = 0;
         }
 
-        
+
         switch ($step) {
             case '0':
                 Util::jump_to('index.php?r=' . $this->link_course . '/show');
@@ -1524,7 +1523,7 @@ class SubscriptionAlmsController extends AlmsController
 
                     foreach ($courses as $id_course) {
                         if (isset($_POST['edition_' . $id_course])) {
-                            $edition_selected[$id_course] = (int) $_POST['edition_' . $id_course];
+                            $edition_selected[$id_course] = (int)$_POST['edition_' . $id_course];
                         }
                     }
 
@@ -1582,7 +1581,7 @@ class SubscriptionAlmsController extends AlmsController
                     if ($_POST['subs']) {
                         $subs = explode(',', $_POST['subs']);
                         foreach ($subs as $sub) {
-                            list($user, $level) = explode(':', $sub);
+                            [$user, $level] = explode(':', $sub);
                             $user_selected[$user] = $level;
                         }
                     }
@@ -1816,10 +1815,10 @@ class SubscriptionAlmsController extends AlmsController
                 // ----------- file upload -----------------------------------------
                 if ($_FILES['file_import']['name'] == '') {
                     $this->session->getFlashBag()->add('error', Lang::t('_FILEUNSPECIFIED'));
-                    jumpTo($back_url . '&err=_file_unspecified');
+                    Util::jump_to($back_url . '&err=_file_unspecified');
                 } else {
                     $path = '/appCore/';
-                    $savefile = mt_rand(0, 100) . '_' . time() . '_' . $_FILES['file_import']['name'];
+                    $savefile = random_int(0, 100) . '_' . time() . '_' . $_FILES['file_import']['name'];
 
                     if (!file_exists(_files_ . $path . $savefile)) {
                         sl_open_fileoperations();
@@ -1827,13 +1826,13 @@ class SubscriptionAlmsController extends AlmsController
                         if (!sl_upload($_FILES['file_import']['tmp_name'], $path . $savefile)) {
                             sl_close_fileoperations();
                             $this->session->getFlashBag()->add('error', Lang::t('_ERROR_UPLOAD', 'subscribe'));
-                            jumpTo($back_url . '&err=_err_upload');
+                            Util::jump_to($back_url . '&err=_err_upload');
                         }
 
                         sl_close_fileoperations();
                     } else {
                         $this->session->getFlashBag()->add('error', Lang::t('_ERROR_UPLOAD', 'subscribe'));
-                        jumpTo($back_url . '&err=_err_upload');
+                        Util::jump_to($back_url . '&err=_err_upload');
                     }
                 }
 
@@ -1920,7 +1919,7 @@ class SubscriptionAlmsController extends AlmsController
                                         . " WHERE idUser = '" . $id_user . "'"
                                         . " AND idCourse = '" . $this->id_course . "'";
 
-                                    list($control) = sql_fetch_row(sql_query($query));
+                                    [$control] = sql_fetch_row(sql_query($query));
 
                                     if ($control) {
                                         ++$user_not_needed;
@@ -1984,7 +1983,7 @@ class SubscriptionAlmsController extends AlmsController
                                         . " WHERE idUser = '" . $id_user . "'"
                                         . " AND idCourse = '" . $this->id_course . "'";
 
-                                    list($control) = sql_fetch_row(sql_query($query));
+                                    [$control] = sql_fetch_row(sql_query($query));
 
                                     if ($control) {
                                         ++$user_not_needed;
@@ -2015,7 +2014,7 @@ class SubscriptionAlmsController extends AlmsController
                 require_once _base_ . '/lib/lib.table.php';
 
                 $type_h = ['align_center', 'align_center', 'align_center', 'align_center'];
-                $cont_h = [Lang::t('_USERNAME', 'subscribe'), Lang::t('_LASTNAME', 'subscribe'), Lang::t('_FIRSTNAME', 'subscribe'), Lang::t('_INSER_STATUS', 'subscribe')];
+                $cont_h = [Lang::t('_USERNAME', 'subscribe'), Lang::t('_FIRSTNAME', 'subscribe'), Lang::t('_LASTNAME', 'subscribe'), Lang::t('_INSER_STATUS', 'subscribe')];
 
                 $tb = new Table(false, Lang::t('_USER_SUBSCRIBED', 'subscribe'), Lang::t('_USER_SUBSCRIBED', 'subscribe'));
                 $tb->addHead($cont_h, $type_h);
@@ -2037,16 +2036,61 @@ class SubscriptionAlmsController extends AlmsController
                 sl_unlink(_files_ . $path . $savefile);
 
                 sl_close_fileoperations();
-                
+
                 $course_info = $this->model->getCourseInfoForSubscription();
                 $course_name = ($course_info['code'] !== '' ? '[' . $course_info['code'] . '] ' : '') . $course_info['name'];
 
-                if($sendAlert) {
+                if ($sendAlert) {
                     $course_info['id_date'] = $this->id_date;
-                    $this->model->sendAlert($user_subscribed, $course_info,$sendAlert);
+                    $this->model->sendAlert($user_subscribed, $course_info, $sendAlert);
                 }
 
-              
+                require_once _base_ . '/lib/lib.eventmanager.php';
+                $userModel = new UsermanagementAdm();
+
+                foreach ($user_subscribed as $user_subscribed_id) {
+
+                    $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($user_subscribed_id, false);
+
+                    $username = str_replace('/', '', $uinfo[ACL_INFO_USERID]);
+                    $reg_code = null;
+                    if ($nodes = $userModel->getUserFolders($user_subscribed_id)) {
+                        $idst_oc = array_keys($nodes)[0];
+
+                        if ($query = sql_query("SELECT idOrg FROM %adm_org_chart_tree WHERE idst_oc = $idst_oc LIMIT 1")) {
+                            $resoObj = sql_fetch_object($query);
+                            if ($resoObj) {
+                                $reg_code = $resoObj->idOrg;
+                            }
+                        }
+                    }
+
+                    $array_subst = [
+                        '[url]' => FormaLms\lib\Get::site_url(),
+                        '[dynamic_link]' => getCurrentDomain($reg_code) ?: FormaLms\lib\Get::site_url(),
+                        '[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
+                        '[lastname]' => $uinfo[ACL_INFO_LASTNAME],
+                        '[course]' => $course_info['name'],
+                        '[username]' => \FormaLms\lib\Forma::getAclManager()->relativeId($uinfo[ACL_INFO_USERID]),
+                    ];
+
+                    // message to user that is odified
+                    $msg_composer = new EventMessageComposer();
+
+                    $msg_composer->setSubjectLangText('email', '_NEW_USER_SUBSCRIBED_SUBJECT_MODERATORS', false);
+                    $msg_composer->setBodyLangText('email', '_NEW_USER_SUBSCRIBED_TEXT_MODERATORS', $array_subst);
+                    $msg_composer->setBodyLangText('sms', '_NEW_USER_SUBSCRIBED_TEXT_SMS_MODERATORS', $array_subst);
+
+                    $recipients = [];
+                    $sql = 'SELECT idUser FROM learning_courseuser WHERE idCourse = ' . $this->id_course . ' AND (level = 6 OR level = 7)';
+                    $query = sql_query($sql);
+                    foreach ($query as $row) {
+                        $recipients[] = $row['idUser'];
+                    }
+
+                    createNewAlert('UserCourseInsertedModerators', 'directory', 'edit', '1', 'User ' . $username . ' was modified', $recipients, $msg_composer);
+                }
+
                 $params = [
                     'table' => $tb,
                     'id_course' => $this->id_course,
@@ -2268,7 +2312,7 @@ class SubscriptionAlmsController extends AlmsController
 
                 $old_id_course = $_GET['id_course'];
                 $_GET['id_course'] = $id_course;
-               
+
 
                 while (list($id_user, $level) = sql_fetch_row($result)) {
                     if (!$limited_subscribe || $max_subscribe) {
@@ -2290,7 +2334,7 @@ class SubscriptionAlmsController extends AlmsController
 
             Util::jump_to('index.php?r=' . $this->link . '/show&amp;id_course=' . $this->model->getIdCourse() . '&res=_copy_ok');
 
-        ////////////////////////////////
+            ////////////////////////////////
         } else {
             $id_cat = FormaLms\lib\Get::req('id_cat', DOTY_INT, 0);
 
@@ -2353,13 +2397,13 @@ class SubscriptionAlmsController extends AlmsController
 
     protected function _getCatalogueName($id_catalogue)
     {
-        if ((int) $id_catalogue <= 0) {
+        if ((int)$id_catalogue <= 0) {
             return false;
         }
         $db = \FormaLms\db\DbConn::getInstance();
-        $query = "SELECT name, description FROM %lms_catalogue WHERE idCatalogue='" . (int) $id_catalogue . "'";
+        $query = "SELECT name, description FROM %lms_catalogue WHERE idCatalogue='" . (int)$id_catalogue . "'";
         $res = $db->query($query);
-        list($name, $description) = $db->fetch_row($res);
+        [$name, $description] = $db->fetch_row($res);
 
         return $name;
     }
@@ -2368,9 +2412,9 @@ class SubscriptionAlmsController extends AlmsController
     {
         require_once _adm_ . '/lib/lib.directory.php';
         require_once _adm_ . '/class.module/class.directory.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once _lms_ . '/lib/lib.edition.php';
-        require_once _lms_ . '/lib/lib.date.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
 
         $acl_man = \FormaLms\lib\Forma::getAclManager();
         $edition_man = new EditionManager();
@@ -2700,8 +2744,8 @@ class SubscriptionAlmsController extends AlmsController
                 $data[] = [
                     $user,
                     $idCourse,
-                    array_key_exists($idCourse, $editions) ? (int) $editions[$idCourse] : false,
-                    array_key_exists($idCourse, $classrooms) ? (int) $classrooms[$idCourse] : false,
+                    array_key_exists($idCourse, $editions) ? (int)$editions[$idCourse] : false,
+                    array_key_exists($idCourse, $classrooms) ? (int)$classrooms[$idCourse] : false,
                 ];
             }
         }
@@ -2713,10 +2757,10 @@ class SubscriptionAlmsController extends AlmsController
 
     protected function _subscribeUsersToCatalogue($data)
     {
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
         require_once _lms_ . '/lib/lib.edition.php';
-        require_once _lms_ . '/lib/lib.date.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
 
         $subscribe_man = new CourseSubscribe_Manager();
         $edition_man = new EditionManager();
@@ -2728,7 +2772,7 @@ class SubscriptionAlmsController extends AlmsController
         //check users who are already subscribed in any selected course
         $arr_courses = [];
         foreach ($data as $value) {
-            list($id_user, $id_course, $id_edition, $id_date) = $value;
+            [$id_user, $id_course, $id_edition, $id_date] = $value;
             $arr_courses[] = $id_course;
         }
 
@@ -2749,7 +2793,7 @@ class SubscriptionAlmsController extends AlmsController
 
         reset($data);
         foreach ($data as $value) {
-            list($id_user, $id_course, $id_edition, $id_date) = $value;
+            [$id_user, $id_course, $id_edition, $id_date] = $value;
 
             $_u_subscribed = false;
             if ($id_date) {
@@ -2913,7 +2957,7 @@ class SubscriptionAlmsController extends AlmsController
         $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, 0);
         $acl_man = new FormaACLManager();
 
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
         if ($id_user <= 0) {
@@ -2939,94 +2983,94 @@ class SubscriptionAlmsController extends AlmsController
         } else {
             switch ($col) {
                 case 'date_begin':
-                        $_new_date = date('Y-m-d H:i:s', $new_value); //convert the input in ISO format
-                        //extract date_expire and check if less than date_begin
-                        $res = false;
+                    $_new_date = date('Y-m-d H:i:s', $new_value); //convert the input in ISO format
+                    //extract date_expire and check if less than date_begin
+                    $res = false;
 
-                        if ($id_path > 0) {
-                            $query = 'SELECT  MIN(s.date_expire_validity) as date_expire_validity '
+                    if ($id_path > 0) {
+                        $query = 'SELECT  MIN(s.date_expire_validity) as date_expire_validity '
                             . ' FROM (%lms_courseuser as s JOIN %lms_coursepath_user as p '
                             . ' ON (s.idUser = p.idUser)) '
-                            . ' WHERE p.id_path = ' . (int) $id_path . ' AND s.idCourse IN (' . implode(',', array_values($courses)) . ') ';
+                            . ' WHERE p.id_path = ' . (int)$id_path . ' AND s.idCourse IN (' . implode(',', array_values($courses)) . ') ';
+                    } else {
+                        $query = 'SELECT date_expire_validity FROM %lms_courseuser ' . ' WHERE idCourse=' . (int)$id_course . ' AND idUser=' . (int)$id_user . ' AND edition_id=' . (int)$id_edition;
+                    }
+
+                    [$date_expire] = sql_fetch_row(sql_query($query));
+                    if ($date_expire == null || $date_expire == '' || $date_expire > $_new_date) {
+                        if ($id_path > 0) {
+                            $query = "UPDATE %lms_courseuser SET date_begin_validity = '" . $_new_date . "' " . ' WHERE idCourse IN (' . implode(',', array_values($courses)) . ') AND idUser=' . (int)$id_user;
                         } else {
-                            $query = 'SELECT date_expire_validity FROM %lms_courseuser ' . ' WHERE idCourse=' . (int) $id_course . ' AND idUser=' . (int) $id_user . ' AND edition_id=' . (int) $id_edition;
+                            $query = "UPDATE %lms_courseuser SET date_begin_validity = '" . $_new_date . "' " . ' WHERE idCourse=' . (int)$id_course . ' AND idUser=' . (int)$id_user . ' AND edition_id=' . (int)$id_edition;
                         }
+                        $res = sql_query($query);
+                    }
 
-                        list($date_expire) = sql_fetch_row(sql_query($query));
-                        if ($date_expire == null || $date_expire == '' || $date_expire > $_new_date) {
-                            if ($id_path > 0) {
-                                $query = "UPDATE %lms_courseuser SET date_begin_validity = '" . $_new_date . "' " . ' WHERE idCourse IN (' . implode(',', array_values($courses)) . ') AND idUser=' . (int) $id_user;
-                            } else {
-                                $query = "UPDATE %lms_courseuser SET date_begin_validity = '" . $_new_date . "' " . ' WHERE idCourse=' . (int) $id_course . ' AND idUser=' . (int) $id_user . ' AND edition_id=' . (int) $id_edition;
-                            }
-                            $res = sql_query($query);
-                        }
+                    $output = ['success' => $res ? true : false];
+                    if ($res) {
+                        $output['new_value'] = Format::date($_new_date, 'date');
+                    }
 
-                        $output = ['success' => $res ? true : false];
-                        if ($res) {
-                            $output['new_value'] = Format::date($_new_date, 'date');
-                        }
-
-                        echo $this->json->encode($output);
+                    echo $this->json->encode($output);
 
                     break;
 
                 case 'date_expire':
-                        $_new_date = date('Y-m-d H:i:s', $new_value); //convert the input in ISO format
-                        //extract date_begin and check if ggreater than date_expire
-                        $res = false;
+                    $_new_date = date('Y-m-d H:i:s', $new_value); //convert the input in ISO format
+                    //extract date_begin and check if ggreater than date_expire
+                    $res = false;
 
-                        if ($id_path > 0) {
-                            $query = 'SELECT  MIN(s.date_begin_validity) as date_begin_validity '
+                    if ($id_path > 0) {
+                        $query = 'SELECT  MIN(s.date_begin_validity) as date_begin_validity '
                             . ' FROM (%lms_courseuser as s JOIN %lms_coursepath_user as p '
                             . ' ON (s.idUser = p.idUser)) '
-                            . ' WHERE p.id_path = ' . (int) $id_path . ' AND s.idCourse IN (' . implode(',', array_values($courses)) . ') ';
+                            . ' WHERE p.id_path = ' . (int)$id_path . ' AND s.idCourse IN (' . implode(',', array_values($courses)) . ') ';
+                    } else {
+                        $query = 'SELECT date_begin_validity FROM %lms_courseuser ' . ' WHERE idCourse=' . (int)$id_course . ' AND idUser=' . (int)$id_user . ' AND edition_id=' . (int)$id_edition;
+                    }
+
+                    [$date_begin] = sql_fetch_row(sql_query($query));
+                    if ($date_begin == null || $date_begin == '' || $date_begin < $_new_date) {
+                        if ($id_path > 0) {
+                            $query = "UPDATE %lms_courseuser SET date_expire_validity = '" . $_new_date . "' " . ' WHERE idCourse IN (' . implode(',', array_values($courses)) . ') AND idUser=' . (int)$id_user;
                         } else {
-                            $query = 'SELECT date_begin_validity FROM %lms_courseuser ' . ' WHERE idCourse=' . (int) $id_course . ' AND idUser=' . (int) $id_user . ' AND edition_id=' . (int) $id_edition;
+                            $query = "UPDATE %lms_courseuser SET date_expire_validity = '" . $_new_date . "' " . ' WHERE idCourse=' . (int)$id_course . ' AND idUser=' . (int)$id_user . ' AND edition_id=' . (int)$id_edition;
                         }
 
-                        list($date_begin) = sql_fetch_row(sql_query($query));
-                        if ($date_begin == null || $date_begin == '' || $date_begin < $_new_date) {
-                            if ($id_path > 0) {
-                                $query = "UPDATE %lms_courseuser SET date_expire_validity = '" . $_new_date . "' " . ' WHERE idCourse IN (' . implode(',', array_values($courses)) . ') AND idUser=' . (int) $id_user;
-                            } else {
-                                $query = "UPDATE %lms_courseuser SET date_expire_validity = '" . $_new_date . "' " . ' WHERE idCourse=' . (int) $id_course . ' AND idUser=' . (int) $id_user . ' AND edition_id=' . (int) $id_edition;
-                            }
+                        $res = sql_query($query);
+                    }
 
-                            $res = sql_query($query);
-                        }
+                    $output = ['success' => $res ? true : false];
+                    if ($res) {
+                        $output['new_value'] = Format::date($_new_date, 'date');
+                    }
 
-                        $output = ['success' => $res ? true : false];
-                        if ($res) {
-                            $output['new_value'] = Format::date($_new_date, 'date');
-                        }
-
-                        echo $this->json->encode($output);
+                    echo $this->json->encode($output);
 
                     break;
 
                 case 'date_complete':
-                        $_new_date = date('Y-m-d H:i:s', $new_value); //convert the input in ISO format
-                        //extract date_begin and check if ggreater than date_expire
-                        $res = false;
-                        $query = 'SELECT date_complete FROM %lms_courseuser '
-                            . ' WHERE idCourse=' . (int) $id_course . ' AND idUser=' . (int) $id_user . ' AND edition_id=' . (int) $id_edition;
-                        list($date_begin) = sql_fetch_row(sql_query($query));
-                        $query = "UPDATE %lms_courseuser SET date_complete = '" . $_new_date . "' "
-                            . ' WHERE idCourse=' . (int) $id_course . ' AND idUser=' . (int) $id_user . ' AND edition_id=' . (int) $id_edition;
-                        $res = sql_query($query);
+                    $_new_date = date('Y-m-d H:i:s', $new_value); //convert the input in ISO format
+                    //extract date_begin and check if ggreater than date_expire
+                    $res = false;
+                    $query = 'SELECT date_complete FROM %lms_courseuser '
+                        . ' WHERE idCourse=' . (int)$id_course . ' AND idUser=' . (int)$id_user . ' AND edition_id=' . (int)$id_edition;
+                    [$date_begin] = sql_fetch_row(sql_query($query));
+                    $query = "UPDATE %lms_courseuser SET date_complete = '" . $_new_date . "' "
+                        . ' WHERE idCourse=' . (int)$id_course . ' AND idUser=' . (int)$id_user . ' AND edition_id=' . (int)$id_edition;
+                    $res = sql_query($query);
 
-                        $output = ['success' => $res ? true : false];
-                        if ($res) {
-                            $output['new_value'] = Format::date($_new_date, 'date');
-                        }
+                    $output = ['success' => $res ? true : false];
+                    if ($res) {
+                        $output['new_value'] = Format::date($_new_date, 'date');
+                    }
 
-                        echo $this->json->encode($output);
+                    echo $this->json->encode($output);
 
                     break;
 
                 default:
-                        echo $this->json->encode(['success' => false]);
+                    echo $this->json->encode(['success' => false]);
 
                     break;
             }
@@ -3108,9 +3152,9 @@ class SubscriptionAlmsController extends AlmsController
         $op = FormaLms\lib\Get::req('op', DOTY_MIXED, false);
         switch ($op) {
             case 'selectall':
-                    $this->_selectall_coursepath();
+                $this->_selectall_coursepath();
 
-                    return;
+                return;
 
                 break;
         }
@@ -3358,7 +3402,7 @@ class SubscriptionAlmsController extends AlmsController
         $path_man = new CoursePath_Manager();
 
         //1 - get list of the courses of the coursepath
-        $base_url = 'index.php?r=' . $this->link . '/show_coursepath&id_path=' . (int) $id_path;
+        $base_url = 'index.php?r=' . $this->link . '/show_coursepath&id_path=' . (int)$id_path;
         $courses = $path_man->getAllCourses([$id_path]);
         if (empty($courses)) {
             Util::jump_to($base_url);
@@ -3375,7 +3419,7 @@ class SubscriptionAlmsController extends AlmsController
         if (!empty($classroom) || !empty($edition)) {
             $classroom_list = [];
             if (!empty($classroom)) {
-                require_once _lms_ . '/lib/lib.date.php';
+                require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
                 $date_man = new DateManager();
 
                 foreach ($classroom as $id_course => $info) {
@@ -3451,14 +3495,14 @@ class SubscriptionAlmsController extends AlmsController
                     $this->model->subscribeUser($id_user, $level, $waiting);
                 }
             }
-            Util::jump_to('index.php?r=' . $this->link . '/show_coursepath&id_path=' . (int) $id_path . '&res=' . $result);
+            Util::jump_to('index.php?r=' . $this->link . '/show_coursepath&id_path=' . (int)$id_path . '&res=' . $result);
         }
     }
 
     public function choose_editions_coursepath_action()
     {
         if (isset($_POST['undo'])) {
-            Util::jump_to('index.php?r=' . $this->link . '/show_coursepath&id_path=' . (int) $_POST['id_path']);
+            Util::jump_to('index.php?r=' . $this->link . '/show_coursepath&id_path=' . (int)$_POST['id_path']);
         }
 
         $courses = explode(',', FormaLms\lib\Get::req('courses_list', DOTY_MIXED, ''));
@@ -3503,7 +3547,7 @@ class SubscriptionAlmsController extends AlmsController
             $res = $path_man->subscribeUserToCoursePath($id_path, $_to_add);
         }
 
-        Util::jump_to('index.php?r=' . $this->link . '/show_coursepath&id_path=' . (int) $_POST['id_path'] . '&res=' . $res);
+        Util::jump_to('index.php?r=' . $this->link . '/show_coursepath&id_path=' . (int)$_POST['id_path'] . '&res=' . $res);
     }
 
     /****** End coursepaths ****************************************************/
@@ -3511,7 +3555,7 @@ class SubscriptionAlmsController extends AlmsController
     public function getDateEnroll($id_user, $id_course)
     {
         $query = 'select date_inscr from learning_courseuser where idUser=' . $id_user . ' and idCourse=' . $id_course;
-        list($date_enroll) = sql_fetch_row(sql_query($query));
+        [$date_enroll] = sql_fetch_row(sql_query($query));
 
         return $date_enroll;
     }
@@ -3584,11 +3628,11 @@ class SubscriptionAlmsController extends AlmsController
         //echo $tot_subscribe."<br>".$tot_waiting."<br>".$tot_overbooking."<br>".$tot_subscribe_w;
 
         $msg_info_course = '';
-        if ((int) $course_info['min_num_subscribe'] > 0) {
-            $msg_info_course = $lang->def('_MIN_NUM_SUBSCRIBE', 'course') . ': <b>' . (int) $course_info['min_num_subscribe'] . '</b><br>';
+        if ((int)$course_info['min_num_subscribe'] > 0) {
+            $msg_info_course = $lang->def('_MIN_NUM_SUBSCRIBE', 'course') . ': <b>' . (int)$course_info['min_num_subscribe'] . '</b><br>';
         }
-        if ((int) $course_info['max_num_subscribe'] > 0) {
-            $msg_info_course = $msg_info_course . $lang->def('_MAX_NUM_SUBSCRIBE', 'course') . ': <b>' . (int) $course_info['max_num_subscribe'] . '</b><br>';
+        if ((int)$course_info['max_num_subscribe'] > 0) {
+            $msg_info_course = $msg_info_course . $lang->def('_MAX_NUM_SUBSCRIBE', 'course') . ': <b>' . (int)$course_info['max_num_subscribe'] . '</b><br>';
         }
 
         $msg_info_course = $msg_info_course . $lang->def('_COURSE_USERISCR', 'course') . ': <b>' . ($tot_subscribe - $tot_overbooking - $tot_waiting) . '</b>';
@@ -3730,20 +3774,20 @@ class SubscriptionAlmsController extends AlmsController
             $acl_man->removeFromGroup($group_idst, $id_user);
         }
 
-        $classroom_type = \FormaLms\lib\Get::req('is_classroom',DOTY_INT);
+        $classroom_type = \FormaLms\lib\Get::req('is_classroom', DOTY_INT);
         if ($classroom_type) {
-            require_once _lms_ . '/lib/lib.date.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
             $date_man = new DateManager();
             $date_array = $date_man->getAvailableDate($id_course);
             foreach ($date_array as $k => $v) {
-                sql_query('DELETE FROM %lms_course_date_user WHERE id_user ='.$id_user.' AND id_date='.$k);
+                sql_query('DELETE FROM %lms_course_date_user WHERE id_user =' . $id_user . ' AND id_date=' . $k);
             }
         }
 
         return sql_query('
 		DELETE FROM ' . $GLOBALS['prefix_lms'] . "_courseuser
 		WHERE idUser = '" . $id_user . "' AND idCourse = '" . $id_course . "'
-		AND edition_id='" . (int) $edition_id . "'");
+		AND edition_id='" . (int)$edition_id . "'");
     }
 
     public function approveusers()
@@ -3768,7 +3812,7 @@ class SubscriptionAlmsController extends AlmsController
             $waiting_users = &$man_course->getWaitingSubscribed($id_course);
             $tot_deny = [];
 
-            require_once _lms_ . '/lib/lib.course.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
             //require_once (_lms_.'/admin/modules/subscribe/subscribe.php');
 
             $formaCourse = new FormaCourse($id_course);
@@ -3859,7 +3903,7 @@ class SubscriptionAlmsController extends AlmsController
 
             if ($course_info['sendCalendar'] && $course_info['course_type'] == 'classroom') {
                 $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($approve_user, false);
-                $calendar = CalendarManager::getCalendarDataContainerForDateDays((int) $this->id_course, (int) $this->id_date, (int) $uinfo[ACL_INFO_IDST]);
+                $calendar = CalendarManager::getCalendarDataContainerForDateDays((int)$this->id_course, (int)$this->id_date, (int)$uinfo[ACL_INFO_IDST]);
                 $msg_composer->setAttachments([$calendar->getFile()]);
             }
         }
@@ -3979,12 +4023,12 @@ class SubscriptionAlmsController extends AlmsController
 
         if ($filter_course > 0) {
             if ($courses_filter === false) {
-                $courses_filter = (int) $filter_course;
+                $courses_filter = (int)$filter_course;
             } else {
                 if (!in_array($filter_course, $courses_filter)) {
                     $courses_filter = [];
                 } else {
-                    $courses_filter = (int) $filter_course;
+                    $courses_filter = (int)$filter_course;
                 }
             }
         }
@@ -4015,7 +4059,7 @@ class SubscriptionAlmsController extends AlmsController
         $records = [];
         if (is_array($list)) {
             foreach ($list as $record) {
-                $id_unsub = (int) $record->user_id . '_' . $record->idCourse . '_' . $record->res_id . '_' . $record->r_type;
+                $id_unsub = (int)$record->user_id . '_' . $record->idCourse . '_' . $record->res_id . '_' . $record->r_type;
                 $record->id = $id_unsub;
                 $record->userid = Layout::highlight($this->acl_man->relativeId($record->userid), $filter_text);
                 $record->firstname = Layout::highlight($record->firstname, $filter_text);
@@ -4108,12 +4152,12 @@ class SubscriptionAlmsController extends AlmsController
 
         if ($filter_course > 0) {
             if ($courses_filter === false) {
-                $courses_filter = (int) $filter_course;
+                $courses_filter = (int)$filter_course;
             } else {
                 if (!in_array($filter_course, $courses_filter)) {
                     $courses_filter = [];
                 } else {
-                    $courses_filter = (int) $filter_course;
+                    $courses_filter = (int)$filter_course;
                 }
             }
         }
@@ -4137,19 +4181,19 @@ class SubscriptionAlmsController extends AlmsController
             //...
         }
 
-        list($user_id, $idCourse, $res_id, $r_type) = explode('_', $_id);
+        [$user_id, $idCourse, $res_id, $r_type] = explode('_', $_id);
         $smodel = new SubscriptionAlms();
         switch ($r_type) {
             case 'course':
-                    $res = $smodel->unsubscribeUser($user_id, $idCourse);
+                $res = $smodel->unsubscribeUser($user_id, $idCourse);
 
                 break;
             case 'edition':
-                    $res = $smodel->unsubscribeUser($user_id, $idCourse, $res_id);
+                $res = $smodel->unsubscribeUser($user_id, $idCourse, $res_id);
 
                 break;
             case 'classroom':
-                    $res = $smodel->unsubscribeUser($user_id, $idCourse, false, $res_id);
+                $res = $smodel->unsubscribeUser($user_id, $idCourse, false, $res_id);
 
                 break;
         }
@@ -4163,19 +4207,19 @@ class SubscriptionAlmsController extends AlmsController
         if (!$_id) {
             //...
         }
-        list($user_id, $idCourse, $res_id, $r_type) = explode('_', $_id);
+        [$user_id, $idCourse, $res_id, $r_type] = explode('_', $_id);
         $smodel = new SubscriptionAlms();
         switch ($r_type) {
             case 'course':
-                    $res = $smodel->unsetUnsubscribeRequest($user_id, $idCourse);
+                $res = $smodel->unsetUnsubscribeRequest($user_id, $idCourse);
 
                 break;
             case 'edition':
-                    $res = $smodel->unsetUnsubscribeRequest($user_id, $idCourse, $res_id);
+                $res = $smodel->unsetUnsubscribeRequest($user_id, $idCourse, $res_id);
 
                 break;
             case 'classroom':
-                    $res = $smodel->unsetUnsubscribeRequest($user_id, $idCourse, false, $res_id);
+                $res = $smodel->unsetUnsubscribeRequest($user_id, $idCourse, false, $res_id);
 
                 break;
         }
@@ -4195,18 +4239,18 @@ class SubscriptionAlmsController extends AlmsController
         $smodel = new SubscriptionAlms();
         $list = explode(',', $_requests);
         foreach ($list as $request) {
-            list($user_id, $idCourse, $res_id, $r_type) = explode('_', $request);
+            [$user_id, $idCourse, $res_id, $r_type] = explode('_', $request);
             switch ($r_type) {
                 case 'course':
-                        $res = $smodel->unsubscribeUser($user_id, $idCourse);
+                    $res = $smodel->unsubscribeUser($user_id, $idCourse);
 
                     break;
                 case 'edition':
-                        $res = $smodel->unsubscribeUser($user_id, $idCourse, $res_id);
+                    $res = $smodel->unsubscribeUser($user_id, $idCourse, $res_id);
 
                     break;
                 case 'classroom':
-                        $res = $smodel->unsubscribeUser($user_id, $idCourse, false, $res_id);
+                    $res = $smodel->unsubscribeUser($user_id, $idCourse, false, $res_id);
 
                     break;
             }
@@ -4227,18 +4271,18 @@ class SubscriptionAlmsController extends AlmsController
         $smodel = new SubscriptionAlms();
         $list = explode(',', $_requests);
         foreach ($list as $request) {
-            list($user_id, $idCourse, $res_id, $r_type) = explode('_', $request);
+            [$user_id, $idCourse, $res_id, $r_type] = explode('_', $request);
             switch ($r_type) {
                 case 'course':
-                        $res = $smodel->unsetUnsubscribeRequest($user_id, $idCourse);
+                    $res = $smodel->unsetUnsubscribeRequest($user_id, $idCourse);
 
                     break;
                 case 'edition':
-                        $res = $smodel->unsetUnsubscribeRequest($user_id, $idCourse, $res_id);
+                    $res = $smodel->unsetUnsubscribeRequest($user_id, $idCourse, $res_id);
 
                     break;
                 case 'classroom':
-                        $res = $smodel->unsetUnsubscribeRequest($user_id, $idCourse, false, $res_id);
+                    $res = $smodel->unsetUnsubscribeRequest($user_id, $idCourse, false, $res_id);
 
                     break;
             }

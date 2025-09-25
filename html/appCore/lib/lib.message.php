@@ -115,7 +115,7 @@ class MessageModule implements Accessible
     {
         //checkPerm('view');
         require_once _base_ . '/lib/lib.tab.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         //YuiLib::load('tabview');
         $send_perm = true; //checkPerm('send_all', true) || checkPerm('send_upper', true);
@@ -672,7 +672,7 @@ class MessageModule implements Accessible
 
         require_once _base_ . '/lib/lib.userselector.php';
 
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         $lang = FormaLanguage::createInstance('message', 'lms');
         $out = $GLOBALS['page'];
@@ -880,7 +880,7 @@ class MessageModule implements Accessible
                         $re &= $re_single;
                     }
                     if (!empty($recip_alert)) {
-                        require_once _lms_ . '/lib/lib.course.php';
+                        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
                         require_once _base_ . '/lib/lib.eventmanager.php';
                         $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
                         $is_course = false;

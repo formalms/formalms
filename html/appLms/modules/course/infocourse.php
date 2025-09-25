@@ -102,7 +102,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     {
         checkPerm('view_info');
 
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         //finding course information
         $mod_perm = checkPerm('mod', true);
@@ -457,7 +457,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             '[course_code]' => $_POST['course_code'],
             '[course]' => $_POST['course_name'], ]);
 
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         $course_man = new Man_Course();
         $recipients = $course_man->getIdUserOfLevel($session->get('idCourse'));
 

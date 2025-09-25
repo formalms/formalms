@@ -522,7 +522,7 @@ class Choice_QuestionPoll extends QuestionPoll
     {
         $lang = &FormaLanguage::createInstance('poll');
 
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         list($id_quest, $title_quest) = sql_fetch_row(sql_query('
 		SELECT id_quest, title_quest 
@@ -664,7 +664,7 @@ class Choice_QuestionPoll extends QuestionPoll
     {
         $lang = &FormaLanguage::createInstance('poll');
 
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         list($id_quest, $title_quest) = sql_fetch_row(sql_query('
 		SELECT id_quest, title_quest 

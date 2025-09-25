@@ -348,7 +348,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         require_once _base_ . '/lib/lib.form.php';
 
         require_once _lms_ . '/lib/lib.coursepath.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         $lang = FormaLanguage::createInstance('catalogue', 'lms');
         $out = $GLOBALS['page'];

@@ -26,8 +26,8 @@ class ClassroomAlms extends Model
     public function __construct($id_course = 0, $id_date = 0)
     {
         parent::__construct();
-        require_once _lms_ . '/lib/lib.date.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         $this->id_course = $id_course;
         $this->id_date = $id_date;

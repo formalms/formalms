@@ -361,7 +361,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         checkPerm('view');
 
         require_once _base_ . '/lib/lib.table.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once _lms_ . '/lib/lib.coursepath.php';
 
         $lang = FormaLanguage::createInstance('coursepath', 'lms');
@@ -583,7 +583,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         checkPerm('mod');
 
         require_once _base_ . '/lib/lib.form.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once _lms_ . '/lib/lib.coursepath.php';
 
         $out = &$GLOBALS['page'];
@@ -686,7 +686,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         checkPerm('mod');
 
         require_once _base_ . '/lib/lib.table.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once _base_ . '/lib/lib.form.php';
 
         $out = &$GLOBALS['page'];
@@ -823,7 +823,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             Util::jump_to('index.php?modname=coursepath&op=pathelem&amp;id_path=' . $id_path . '&amp;result=' . ($re ? 'ok' : 'err'));
         } else {
             require_once _base_ . '/lib/lib.form.php';
-            require_once _lms_ . '/lib/lib.course.php';
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
             $arr_course = [$id_course => $id_course];
             $course_info = &getCoursesInfo($arr_course);
@@ -869,7 +869,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 
         require_once _base_ . '/lib/lib.table.php';
         require_once _base_ . '/lib/lib.form.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once _lms_ . '/lib/lib.coursepath.php';
         require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
@@ -1078,7 +1078,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                     . Form::getHidden('users', 'users', $user_selected_post));
 
                 if (!empty($classroom)) {
-                    require_once _lms_ . '/lib/lib.date.php';
+                    require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
                     $date_man = new DateManager();
 
                     foreach ($classroom as $id_course => $info) {
@@ -1221,7 +1221,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             }
         }
 
-        require_once _lms_ . '/lib/lib.date.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
         $date_man = new DateManager();
 
         require_once _lms_ . '/lib/lib.edition.php';

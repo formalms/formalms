@@ -185,7 +185,7 @@ class DashboardAdmController extends AdmController
         $c_userid = FormaLms\lib\Get::req('certificate_userid', DOTY_MIXED, '');
         $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, 0);
 
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         $man_course = new Man_Course();
         $acl_man = \FormaLms\lib\Forma::getAclManager();
 

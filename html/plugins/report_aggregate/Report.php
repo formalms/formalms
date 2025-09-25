@@ -15,7 +15,7 @@ namespace Plugin\report_aggregate;
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once _lms_ . '/lib/lib.course.php';
+require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 require_once _lms_ . '/admin/modules/report/report_tableprinter.php';
 
 define('_RA_CATEGORY_COURSES', 'courses');
@@ -72,7 +72,7 @@ class Report extends \ReportPlugin
         require_once _base_ . '/lib/lib.form.php';
         require_once _adm_ . '/lib/lib.directory.php';
         require_once _base_ . '/lib/lib.userselector.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once _lms_ . '/lib/lib.course_managment.php';
 
         $lang = &FormaLanguage::createInstance('report', 'framework');
@@ -187,7 +187,7 @@ class Report extends \ReportPlugin
         $next_url = $this->next_url;
 
         require_once _base_ . '/lib/lib.form.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once _lms_ . '/lib/lib.course_managment.php';
 
         $lang = &FormaLanguage::createInstance('report', 'framework');
@@ -309,7 +309,7 @@ class Report extends \ReportPlugin
 
     public function _get_courses_query($type = 'html', $report_data = null, $other = '')
     {
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         if ($report_data == null) {
             $ref = $this->session->get('report_tempdata');
@@ -908,7 +908,7 @@ class Report extends \ReportPlugin
         $next_url = $this->next_url;
 
         require_once _base_ . '/lib/lib.form.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         require_once _lms_ . '/lib/category/lib.categorytree.php';
 
         $lang = &FormaLanguage::createInstance('report', 'framework');
@@ -982,7 +982,7 @@ class Report extends \ReportPlugin
 
     public function _get_coursecategories_query($type = 'html', $report_data = null, $other = '')
     {
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         if ($report_data == null) {
             $ref = $this->session->get('report_tempdata');
@@ -1443,7 +1443,7 @@ class Report extends \ReportPlugin
 
     public function _get_time_query($type = 'html', $report_data = null, $other = '')
     {
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         if ($report_data == null) {
             $ref = $this->session->get('report_tempdata');
