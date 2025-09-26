@@ -1807,14 +1807,7 @@ class SubscriptionAlms extends Model implements Accessible
                 $user_id = (int)$row['idUser'];
                 $course_id = (int)$row['idCourse'];
 
-                // Usa il metodo delUser esistente per mantenere la logica di rimozione
                 $this->delUser($user_id, $course_id);
-
-                // Rimuovi anche eventuali dati correlati
-                $query_remove_related = "DELETE FROM %lms_coursereport 
-                                   WHERE id_course = $course_id 
-                                   AND id_user = $user_id";
-                sql_query($query_remove_related);
             }
         }
 
