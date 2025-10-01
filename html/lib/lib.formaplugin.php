@@ -127,27 +127,29 @@ abstract class FormaPlugin
     /**
      * Add new menu item and create the required role using the plug-in ID reference.
      *
-     * @param array      $menu
-     *                                string $name
-     *                                string|null $image
-     *                                int|null $sequence
-     *                                bool|null $isActive
-     *                                bool|null $collapse
-     *                                int|null $idParent
-     *                                string|null $ofPlatform
-     * @param array|null $menuUnder
-     *                                string $defaultName
-     *                                string $moduleName
-     *                                string $associatedToken
-     *                                string|null $defaultOp
-     *                                string|null $ofPlatform
-     *                                int|null $sequence
-     *                                string|null $classFile
-     *                                string|null $className
-     *                                string|null $mvcPath
-     * @param array      $roleMembers
+     * @param array $menu Associative array with the following keys:
+     *                    - 'name' (string): Menu name
+     *                    - 'image' (string|null): Image path (optional)
+     *                    - 'sequence' (int|null): Display order (optional)
+     *                    - 'isActive' (bool|null): Active/inactive state (optional)
+     *                    - 'collapse' (bool|null): Whether the menu is collapsible (optional)
+     *                    - 'idParent' (int|null): Parent menu ID (optional)
+     *                    - 'ofPlatform' (string|null): Platform reference (optional)
      *
-     * @return int|false
+     * @param array|null $menuUnder Associative array with the following keys (optional):
+     *                              - 'defaultName' (string): Default name
+     *                              - 'moduleName' (string): Module name
+     *                              - 'associatedToken' (string): Associated token
+     *                              - 'defaultOp' (string|null): Default operation (optional)
+     *                              - 'ofPlatform' (string|null): Platform reference (optional)
+     *                              - 'sequence' (int|null): Display order (optional)
+     *                              - 'classFile' (string|null): Class file path (optional)
+     *                              - 'className' (string|null): Class name (optional)
+     *                              - 'mvcPath' (string|null): MVC path (optional)
+     *
+     * @param array $roleMembers Array of role members
+     *
+     * @return int|false The created menu ID or false on failure
      */
     public static function addMenu($menu, $menuUnder = null, $roleMembers = [])
     {
@@ -157,7 +159,7 @@ abstract class FormaPlugin
     /**
      * Add menu item in admin area using plug-in ID reference.
      *
-     * @deprecated
+     * @deprecated will be removed in future 4.2.x
      *
      * @param string $name
      * @param string $mvcPath
@@ -176,7 +178,7 @@ abstract class FormaPlugin
     /**
      * Add menu item in LMS area using plug-in ID reference.
      *
-     * @deprecated
+     * @deprecated will be removed in future 4.2.x
      *
      * @param string $name
      * @param string $mvcPath

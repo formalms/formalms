@@ -14,6 +14,7 @@
 namespace FormaLms\lib\Version;
 
 use Exception;
+use FormaLms\lib\Database\FormaMigrator;
 use FormaLms\lib\Helpers\HelperTool;
 
 class VersionChecker
@@ -111,7 +112,7 @@ class VersionChecker
     public static function getPhpVersion(): string
     {
 
-        return phpversion();
+        return PHP_VERSION;
     }
 
     /**
@@ -309,7 +310,7 @@ class VersionChecker
     public static function checkTemplateversion($templateVersion): bool
     {
 
-        return (bool)(version_compare((new self)->getMinimumTemplateVersion(), $templateVersion) <= 0);
+        return (bool)(version_compare(self::getMinimumTemplateVersion(), $templateVersion) <= 0);
 
     }
 
@@ -417,7 +418,6 @@ class VersionChecker
      */
     public static function getCurrentVersionArray(): array
     {
-
         $directories = \FormaLms\lib\Database\FormaMigrator::getInstance()->getConfiguration()->getMigrationDirectories();
         //the last line in folder
         $migrationDirectory = array_pop($directories);
@@ -445,21 +445,64 @@ class VersionChecker
     }
 
     /**
-     * Cehck if system must be updated
+     * Check if system must be updated using both uptodate and status commands
      *
      * @return bool
      */
     public static function needsUpgrade(): bool
     {
+        $migrator = \FormaLms\lib\Database\FormaMigrator::getInstance();
+        
+        // First, get the uptodate command response for primary check
+        $uptodateResponse = trim($migrator->executeCommand(FormaMigrator::COMMAND_UPTODATE));
 
-        $response = trim(\FormaLms\lib\Database\FormaMigrator::getInstance()->executeCommand('uptodate'));
-
-        if (preg_match("/^\[OK\]/", $response)) {
+        // Check if the response indicates the system is up-to-date
+        // Doctrine UpToDateCommand outputs "Up-to-date! No migrations to execute." when no migrations are pending
+        // and "Out-of-date! X migration(s) available to execute." when migrations are pending
+        if (preg_match("/Up-to-date!/", $uptodateResponse) || preg_match("/^\[OK\]/", $uptodateResponse)) {
             return false;
-        } else {
-            return true;
         }
 
+        // Get additional information from status command for better analysis
+        try {
+            $statusResponse = trim($migrator->executeCommand(FormaMigrator::COMMAND_STATUS));
+
+            // Extract information from status command
+            // Look for "New | X" pattern to see how many new migrations are available
+            if (preg_match("/\|\s*New\s*\|\s*(\d+)\s*\|/", $statusResponse, $matches)) {
+                $newMigrations = (int)$matches[1];
+                
+                // If status shows new migrations available, we need upgrade
+                if ($newMigrations > 0) {
+                    return true;
+                }
+            }
+            
+            // Also check for "Executed Unavailable" migrations which might indicate issues
+            if (preg_match("/\|\s*Executed Unavailable\s*\|\s*(\d+)\s*\|/", $statusResponse, $matches)) {
+                $unavailableMigrations = (int)$matches[1];
+                
+                // If there are unavailable migrations but also new ones, still allow upgrade
+                // The unavailable ones are handled separately and shouldn't block legitimate upgrades
+                if ($unavailableMigrations > 0) {
+                    // Double-check if there are also new migrations to run
+                    if (preg_match("/\|\s*New\s*\|\s*(\d+)\s*\|/", $statusResponse, $newMatches)) {
+                        $newMigrations = (int)$newMatches[1];
+                        return $newMigrations > 0;
+                    }
+                    // If only unavailable migrations and no new ones, don't upgrade
+                    return false;
+                }
+            }
+            
+        } catch (\Exception $e) {
+            // If status command fails, fall back to uptodate command result
+            // This ensures we don't break existing functionality
+        }
+
+        // If we reach here, it's likely "Out-of-date! X migration(s) available to execute."
+        // which means there are legitimate new migrations to run
+        return true;
     }
 
     /**
@@ -478,7 +521,6 @@ class VersionChecker
             //devo capire se la versione è supportata
             $compareMinVersion = static::getUpgradeSupportedVersion();
 
-
             if (0 > $compareMinVersion) {
                 //not supported
                 $result['upgradeTrigger'] = 0;
@@ -490,7 +532,9 @@ class VersionChecker
             } else {
                 $compareResult = VersionChecker::getUpgradeFileVersion();
 
-                if (0 > $compareResult) {
+                $needsToUpgrade = static::needsUpgrade();
+
+                if (0 > $compareResult || $needsToUpgrade) {
                     //ok the upgrade is possible
                     $result['upgradeTrigger'] = 1;
                     $result['upgradeClass'] = 'ok';

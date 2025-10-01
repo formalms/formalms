@@ -361,8 +361,6 @@ class SubscriptionAlms extends Model implements Accessible
                     require_once _lms_ . '/lib/lib.levels.php';
                     require_once _base_ . '/lib/lib.eventmanager.php';
 
-                    $acl_man = \FormaLms\lib\Forma::getAclManager();
-
                     $event = $status < 0 ? 'UserCourseInsertModerate' : 'UserCourseInserted';
                     $isEventEnabled = getEnabledEvent($event);
 
@@ -384,7 +382,7 @@ class SubscriptionAlms extends Model implements Accessible
                             '[course]' => $course_info['name'],
                             '[firstname]' => $userinfo[ACL_INFO_FIRSTNAME], //istantiate user_info with the user to enroll if you want to enable this
                             '[lastname]' => $userinfo[ACL_INFO_LASTNAME],
-                            '[userid]' => $acl_man->relativeId($userinfo[ACL_INFO_USERID]),
+                            '[userid]' => $this->acl_man->relativeId($userinfo[ACL_INFO_USERID]),
                         ];
 
                         $msg_composer->setSubjectLangText('email', $subject_key, false);
@@ -392,31 +390,22 @@ class SubscriptionAlms extends Model implements Accessible
                         // message to user that is waiting
 
                         $acl = \FormaLms\lib\Forma::getAcl();;
-                        $acl_man = &$this->acl_man;
 
                         $recipients = [];
 
-                        // get all superadmins
-                        // no mail to superadmin
-                        /*
-                            $idst_group_god_admin = $acl->getGroupST(ADMIN_GROUP_GODADMIN);
-                        $recipients = $acl_man->getGroupMembers($idst_group_god_admin);
-                        */
-
                         // get all admins
                         $idst_group_admin = $acl->getGroupST(ADMIN_GROUP_ADMIN);
-                        $idst_admin = $acl_man->getGroupMembers($idst_group_admin);
+                        $idst_admin = $this->acl_man->getGroupMembers($idst_group_admin);
 
                         require_once _adm_ . '/lib/lib.adminmanager.php';
 
-                        foreach ($idst_admin as $id_user) {
+                        foreach ($idst_admin as $id_admin_user) {
                             $adminManager = new AdminManager();
-                            $acl_manager = &$acl_man;
 
                             // st = organization, get all orgs related to the user
-                            $idst_associated = $adminManager->getAdminTree($id_user);
+                            $idst_associated = $adminManager->getAdminTree($id_admin_user);
 
-                            $array_user = &$acl_manager->getAllUsersFromIdst($idst_associated);
+                            $array_user = $this->acl_man->getAllUsersFromIdst($idst_associated);
                             $array_user = array_unique($array_user);
 
                             $control_user = array_search(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $array_user);
@@ -426,7 +415,7 @@ class SubscriptionAlms extends Model implements Accessible
 
                             $query = 'SELECT COUNT(*)'
                                 . ' FROM ' . FormaLms\lib\Get::cfg('prefix_fw') . '_admin_course'
-                                . " WHERE idst_user = '" . $id_user . "'"
+                                . " WHERE idst_user = '" . $id_admin_user . "'"
                                 . " AND type_of_entry = 'course'"
                                 . ' AND id_entry in (-1,0,' . $idCourseToConsider . ')';
 
@@ -434,7 +423,7 @@ class SubscriptionAlms extends Model implements Accessible
 
                             $query = 'SELECT COUNT(*)'
                                 . ' FROM ' . FormaLms\lib\Get::cfg('prefix_fw') . '_admin_course'
-                                . " WHERE idst_user = '" . $id_user . "'"
+                                . " WHERE idst_user = '" . $id_admin_user . "'"
                                 . " AND type_of_entry = 'coursepath'"
                                 . ' AND id_entry IN'
                                 . ' ('
@@ -447,7 +436,7 @@ class SubscriptionAlms extends Model implements Accessible
 
                             $query = 'SELECT COUNT(*)'
                                 . ' FROM ' . FormaLms\lib\Get::cfg('prefix_fw') . '_admin_course'
-                                . " WHERE idst_user = '" . $id_user . "'"
+                                . " WHERE idst_user = '" . $id_admin_user . "'"
                                 . " AND type_of_entry = 'catalogue'"
                                 . ' AND id_entry IN'
                                 . ' ('
@@ -459,7 +448,7 @@ class SubscriptionAlms extends Model implements Accessible
                             [$control_catalogue] = sql_fetch_row(sql_query($query));
 
                             if ($control_user && ($control_course || $control_coursepath || $control_catalogue)) {
-                                $recipients[] = $id_user;
+                                $recipients[] = $id_admin_user;
                             }
                         }
 
@@ -470,13 +459,13 @@ class SubscriptionAlms extends Model implements Accessible
 
                     // Notify the user that is entering to the course
 
-                    $user_info = $acl_man->getUser($user_to_enroll, false);
+                    $user_info = $this->acl_man->getUser($user_to_enroll, false);
                     $array_subst = [
                         '[url]' => FormaLms\lib\Get::site_url(),
                         '[course]' => $course_info['name'],
                         '[firstname]' => $user_info[ACL_INFO_FIRSTNAME],
                         '[lastname]' => $user_info[ACL_INFO_LASTNAME],
-                        '[userid]' => $acl_man->relativeId($user_info[ACL_INFO_USERID]),
+                        '[userid]' => $this->acl_man->relativeId($user_info[ACL_INFO_USERID]),
                     ];
 
                     $recipients = [$user_info[ACL_INFO_EMAIL]];
@@ -1764,14 +1753,13 @@ class SubscriptionAlms extends Model implements Accessible
     }
 
     /**
-     * Controlla tutti i corsi di tipo classroom o l'id del corso specificato,
-     * e per ogni utente iscritto al corso verifica che sia iscritto ad almeno una data del corso d'aula.
-     * Se un utente non è iscritto a nessuna data, lo elimina dal corso.
-     * Controlla anche il contrario: tutti gli utenti che sono iscritti nelle date ma non nel corso principale.
-     * Versione ottimizzata con query unificate per ridurre la complessità e i cicli.
+     * Checks all classroom-type courses or the specified course ID,
+     * and for each user enrolled in the course verifies that they are enrolled in at least one classroom course date.
+     * If a user is not enrolled in any date, removes them from the course.
+     * Also checks the opposite: all users who are enrolled in dates but not in the main course and enrolls them in the main course
      *
-     * @param int|null $id_course ID del corso opzionale. Se non specificato, controlla tutti i corsi classroom
-     * @return bool True se l'operazione è completata con successo
+     * @param int|null $id_course Optional course ID. If not specified, checks all classroom courses
+     * @return bool True if the operation is completed successfully
      */
     public function cleanupUsersNotEnrolledInClassroomDates($id_course = null)
     {
@@ -1780,7 +1768,7 @@ class SubscriptionAlms extends Model implements Accessible
             $course_condition = ' AND c.idCourse = ' . (int)$id_course;
         }
 
-        // Prima query: trova utenti iscritti a corsi classroom che non sono iscritti a nessuna data
+        // finds users enrolled in classroom courses who are not enrolled in any date
         $query = "
             SELECT DISTINCT cu.idUser, cu.idCourse
             FROM %lms_courseuser cu
@@ -1801,7 +1789,7 @@ class SubscriptionAlms extends Model implements Accessible
             return false;
         }
 
-        // Rimuovi utenti iscritti al corso ma non alle date
+        // Removes users enrolled in the course but not in the datesRetry
         if (!empty($result)) {
             foreach ($result as $row) {
                 $user_id = (int)$row['idUser'];
@@ -1811,8 +1799,8 @@ class SubscriptionAlms extends Model implements Accessible
             }
         }
 
-        // Seconda query: trova utenti iscritti alle date di corsi classroom ma non iscritti al corso principale
-        $query2 = "
+        // finds users enrolled in classroom course dates but not enrolled in the main course
+        $query = "
             SELECT DISTINCT cdu.id_user, cd.id_course, cdu.id_date
             FROM %lms_course_date_user cdu
             INNER JOIN %lms_course_date cd ON cd.id_date = cdu.id_date
@@ -1827,22 +1815,34 @@ class SubscriptionAlms extends Model implements Accessible
             )
         ";
 
-        $result = sql_query($query2);
+        $result = sql_query($query);
         if (!$result) {
             return false;
         }
 
-        // Rimuovi utenti iscritti alle date ma non al corso
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.coursesubscribe.php');
+        $courseSubscribe = new CourseSubscribe();
+
+        // Enrolls users in the master course if they are enrolled in the dates but not in the course
         if (!empty($result)) {
             foreach ($result as $row) {
                 $user_id = (int)$row['id_user'];
                 $date_id = (int)$row['id_date'];
+                $course_id = (int)$row['id_course'];
 
-                // Rimuovi l'utente dalla data del corso
-                $query_remove_date = "DELETE FROM %lms_course_date_user 
-                                     WHERE id_user = $user_id 
-                                     AND id_date = $date_id";
-                sql_query($query_remove_date);
+                $course = new FormaCourse($course_id);
+
+                $level_idst = $course->getCourseLevel($course_id);
+
+                if (0 == count($level_idst) || '' == $level_idst[1]) {
+                    $level_idst = FormaCourse::createCourseLevel($course_id);
+                }
+
+                \FormaLms\lib\Forma::getAclManager()->addToGroup($level_idst[3], $user_id);
+
+                $this->setIdCourse($course_id);
+                $this->setIdDate($date_id);
+                $this->subscribeUser($user_id,3, 0, false, false, $courseSubscribe->allowOverbooking($id_course));
             }
         }
 
