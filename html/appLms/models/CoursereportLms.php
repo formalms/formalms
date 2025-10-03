@@ -193,9 +193,7 @@ class CoursereportLms extends Model
 
             if (!empty($test_to_add) || !empty($test_to_del)) {
                 if (!empty($test_to_add)) {
-                    // Create proper array structure for addTestToReport (id => title)
-                    $tests_to_add_formatted = array_intersect_key($org_tests, array_flip($test_to_add));
-                    $report_man->addTestToReport($tests_to_add_formatted, 1);
+                    $report_man->addTestToReport($test_to_add, 1);
                 }
                 if (!empty($test_to_del)) {
                     $report_man->delTestToReport($test_to_del);

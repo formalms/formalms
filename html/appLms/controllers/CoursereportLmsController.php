@@ -2824,15 +2824,15 @@ class CoursereportLmsController extends LmsController
             $students_info[$idst] = &$aclMan->getUser($idst, false);
         }
 
-        $query_tot_report = "SELECT COUNT(*) FROM %lms_coursereport WHERE id_course = '" . $this->idCourse . "'";
+        $query_tot_report = "SELECT COUNT(*) FROM %lms_coursereport WHERE id_course = '" . $this->idCourse . "' AND source_of = 'activity' ";
         [$tot_report] = sql_fetch_row(sql_query($query_tot_report));
 
         $query_tests = "SELECT id_report, id_source FROM %lms_coursereport WHERE id_course = '" . $this->idCourse . "' AND source_of = '" . CoursereportLms::SOURCE_OF_TEST . "'";
 
         $re_tests = sql_query($query_tests);
-        while (list($id_r, $id_t) = sql_fetch_row($re_tests)) {
-            $includedTest[$id_t] = $id_t;
-            $includedTestReportId[$id_r] = $id_r;
+        foreach ($re_tests as $row) {
+            $includedTest[$row['id_report']] = $row['id_source'];
+            $includedTestReportId[$row['id_report']] = $row['id_source'];
         }
 
         if ((int)$tot_report === 0) {
@@ -3139,7 +3139,7 @@ class CoursereportLmsController extends LmsController
                                         if (isset($testDetails[$id][CoursereportLms::TEST_STATUS_VARIANZA]) && isset($testDetails[$id]['average'])) {
                                             $testDetails[$id][CoursereportLms::TEST_STATUS_VARIANZA] += pow(($testsScore[$id][$idstUser]['score'] - $testDetails[$id]['average']), 2);
                                         } else {
-                                            $testDetails[$id][CoursereportLms::TEST_STATUS_VARIANZA] = pow(($testsScore[$id][$idstUser]['score'] - $testDetails[$id]['average']), 2);
+                                            $testDetails[$id][CoursereportLms::TEST_STATUS_VARIANZA] = ($testsScore[$id][$idstUser]['score'] - $testDetails[$id]['average']) ** 2;
                                         }
 
                                         break;

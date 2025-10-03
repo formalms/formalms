@@ -52,7 +52,7 @@ class CourseReportManager
 
     public function getStudentId($onlyStudents = false)
     {
-        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 
         $course_user = Man_Course::getIdUserOfLevel($this->idCourse, $onlyStudents ? 3 : false);
 
@@ -61,8 +61,8 @@ class CourseReportManager
 
     public function getTest()
     {
-        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.orgchart.php');
-        require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/learning.test.php');
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.orgchart.php');
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/class.module/', 'learning.test.php');
 
         $org_man = new OrganizationManagement($this->idCourse);
         $tests = $org_man->getAllLoAbsoluteIdWhereType(Learning_Test::getTestTypes());
@@ -142,7 +142,7 @@ class CourseReportManager
     {
         $query = "SELECT * from %lms_coursereport WHERE id_course=${idCourse} AND id_source=${$idTest} AND source_of='test'";
 
-        $result = \FormaLms\db\DbConn::getInstance()->query($query);
+        $result = sql_query($query);
 
         $reports = [];
         foreach ($result as $item) {
@@ -422,8 +422,8 @@ class CourseReportManager
 		WHERE id_course = '" . $id_course . "' AND id_report = '" . $id_report . "' 
 			AND source_of = '" . $source_of . "' AND id_source = '" . $id_source . "'";
         } else {
-            $source_of = isset($source['source_of']) ? $source['source_of'] : 'activity';
-            $id_source = isset($source['id_source']) ? $source['id_source'] : '0';
+            $source_of = $source['source_of'] ?? 'activity';
+            $id_source = $source['id_source'] ?? '0';
 
             $query_upd_report = "
 		UPDATE %lms_coursereport
@@ -525,22 +525,6 @@ class CourseReportManager
                 $re[$idUser][$idCourse]['max_score'] = $score['max_score'];
             }
         }
-
-
-        /*
-        foreach ($arr_courses as $idCourse) {
-            $scores[$idCourse] = $this->getCourseFinalScoreComputation($idCourse);
-            foreach ($arr_users as $idUser) {
-                if(array_key_exists($idUser, $scores[$idCourse])) {
-                    $re[$idUser][$idCourse]['score'] = ($commonScores[$idCourse]['status'] == 'not_found') ? 0 : $scores[$idCourse][$idUser];
-                }
-                else {
-                    $re[$idUser][$idCourse]['score'] = 0;
-                }
-                $re[$idUser][$idCourse]['max_score'] = $commonScores[$idCourse]['max_score'];
-            }
-        }
-        */
 
         return $re;
     }
