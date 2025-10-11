@@ -1822,7 +1822,7 @@ class SubscriptionAlms extends Model implements Accessible
 
         require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.coursesubscribe.php');
         $courseSubscribe = new CourseSubscribe();
-
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
         // Enrolls users in the master course if they are enrolled in the dates but not in the course
         if (!empty($result)) {
             foreach ($result as $row) {
