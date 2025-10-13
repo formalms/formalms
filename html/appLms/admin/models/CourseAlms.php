@@ -1795,7 +1795,7 @@ class CourseAlms extends Model
         return $users;
     }
 
-    protected function getInfoClassroom($id_user, $id_course)
+    public function getInfoClassroom($id_user, $id_course)
     {
         $query = "SELECT cd.code, cd.name
                  FROM %lms_course_date AS cd

@@ -134,9 +134,14 @@ class SubscriptionAlmsController extends AlmsController
             return;
         }
 
-        Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/lib.elem_selector.js', true, true);
-        Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
-        Util::get_js(FormaLms\lib\Get::rel_path('lms') . '/admin/views/subscription/subscription.js', true, true);
+        $eventResults = Events::trigger('core.subscription.show.includes', []);
+
+        if (!$eventResults || !array_key_exists('include', $eventResults)) {
+            Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/lib.elem_selector.js', true, true);
+            Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
+            Util::get_js(FormaLms\lib\Get::rel_path('lms') . '/admin/views/subscription/subscription.js', true, true);
+        }
+
 
         if (isset($_GET['res']) && $_GET['res'] !== '') {
             UIFeedback::info(Lang::t(strtoupper($_GET['res']), 'subscription'));
@@ -664,6 +669,7 @@ class SubscriptionAlmsController extends AlmsController
             $del_url = 'ajax.adm_server.php?r=' . $this->link . '/del&id_user=' . $value['id_user']
                 . '&id_course=' . $this->id_course . '&id_edition=' . $this->id_edition . '&id_date=' . $this->id_date;
 
+
             $record = [
                 'id' => $value['id_user'],
                 'userid' => highlightText($value['userid'], $filter['text']),
@@ -682,6 +688,17 @@ class SubscriptionAlmsController extends AlmsController
                     $record['status'] = '' . _CUS_OVERBOOKING;
                 }
             }
+
+            $eventResults = Events::trigger('core.subscription.list.records', [
+                'record' => $record,
+                'idCourse' => $this->id_course,
+                'idEdition' => $this->id_edition,
+                'idDate' => $this->id_date,
+                'idUser' => $value['id_user'],
+                'url' => $this->link
+            ]);
+
+            $record = $eventResults['record'];
             $list[(int)$value['id_user']] = $record;
             $date_complete[(int)$value['id_user']] = $value['date_complete'];
         }
@@ -1835,7 +1852,8 @@ class SubscriptionAlmsController extends AlmsController
                     }
                 }
 
-                $src = new DeceboImport_SourceCSV(['filename' => _files_ . $path . $savefile,
+                $src = new DeceboImport_SourceCSV([
+                    'filename' => _files_ . $path . $savefile,
                     'separator' => $separator,
                     'first_row_header' => $first_row_header,
                     'import_charset' => $import_charset,
@@ -2329,10 +2347,9 @@ class SubscriptionAlmsController extends AlmsController
                     $db = \FormaLms\db\DbConn::getInstance();
                     $arr_users = explode(',', $users);
 
-                    foreach($arr_users as $user) {
+                    foreach ($arr_users as $user) {
                         $this->model->delUser($user, $old_id_course);
                     }
-
                 }
             }
 
@@ -2685,7 +2702,7 @@ class SubscriptionAlmsController extends AlmsController
             ];
             $user_select->addFormInfo(
                 Form::getHidden('is_updating', 'is_updating', 1) .
-                Form::getHidden('id_catalogue', 'id_catalogue', $id_catalogue)
+                    Form::getHidden('id_catalogue', 'id_catalogue', $id_catalogue)
             );
             $user_select->loadSelector(
                 Util::str_replace_once('&', '&amp;', $jump_url),
@@ -3129,7 +3146,7 @@ class SubscriptionAlmsController extends AlmsController
             'back_link' => 'index.php?modname=coursepath&op=pathlist&of_platform=lms',
             'level_list_js' => $this->_getJsArrayLevel(),
             'id_path' => $id_path,
-            'idCourse' => implode(',' , $idCourse),
+            'idCourse' => implode(',', $idCourse),
             'message' => $message,
             'orgchart_list' => $umodel->getOrgChartDropdownList(),
             'is_active_advanced_filter' => false,
@@ -3190,7 +3207,7 @@ class SubscriptionAlmsController extends AlmsController
                 'id' => $record->idst,
                 'userid' => Layout::highlight($this->acl_man->relativeId($record->userid), $filter['text']),
                 'fullname' => Layout::highlight($record->lastname, $filter['text']) . ' ' . Layout::highlight($record->firstname, $filter['text']),
-                'level' =>$record->level,
+                'level' => $record->level,
                 'date_begin' => Format::date($record->date_begin_validity, 'date'),
                 'date_expire' => Format::date($record->date_expire_validity, 'date'),
                 'date_begin_timestamp' => Format::toTimestamp($record->date_begin_validity == null ? date('U') : $record->date_begin_validity),
@@ -3515,58 +3532,57 @@ class SubscriptionAlmsController extends AlmsController
         $id_path[] = FormaLms\lib\Get::req('id_path', DOTY_INT, 0);
         $classrooms = FormaLms\lib\Get::req('classrooms', DOTY_MIXED, []);
         $editions = FormaLms\lib\Get::req('editions', DOTY_MIXED, []);
-//
+        //
         require_once _lms_ . '/lib/lib.coursepath.php';
         require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
         $path_man = new CoursePath_Manager();
 
 
-            $model = new SubscriptionAlms($courses, $this->model->id_edition, $this->model->id_date);
-            $cman = new CourseAlms();
+        $model = new SubscriptionAlms($courses, $this->model->id_edition, $this->model->id_date);
+        $cman = new CourseAlms();
 
-            $model->loadSelectedUser($_to_add);
+        $model->loadSelectedUser($_to_add);
 
-            $coursepath_info = $path_man->getCoursepathAllInfo($id_path);
-            $int_id_path = intval(implode(',', $id_path));
-            $sel_date_begin_validity = FormaLms\lib\Get::req('sel_date_begin_validity', DOTY_INT, 0) > 0;
-            $sel_date_expire_validity = FormaLms\lib\Get::req('sel_date_expire_validity', DOTY_INT, 0) > 0;
-            $date_begin_validity = $sel_date_begin_validity ? FormaLms\lib\Get::req('set_date_begin_validity', DOTY_STRING, '') : false;
-            $date_expire_validity = $sel_date_expire_validity ? FormaLms\lib\Get::req('set_date_expire_validity', DOTY_STRING, '') : false;
+        $coursepath_info = $path_man->getCoursepathAllInfo($id_path);
+        $int_id_path = intval(implode(',', $id_path));
+        $sel_date_begin_validity = FormaLms\lib\Get::req('sel_date_begin_validity', DOTY_INT, 0) > 0;
+        $sel_date_expire_validity = FormaLms\lib\Get::req('sel_date_expire_validity', DOTY_INT, 0) > 0;
+        $date_begin_validity = $sel_date_begin_validity ? FormaLms\lib\Get::req('set_date_begin_validity', DOTY_STRING, '') : false;
+        $date_expire_validity = $sel_date_expire_validity ? FormaLms\lib\Get::req('set_date_expire_validity', DOTY_STRING, '') : false;
 
 
-            foreach ($courses as $id_course) {
-                $res = true;
-                $level = 0;
-                $formaCourse = new FormaCourse($id_course);
-                $level_idst = &$formaCourse->getCourseLevel($id_course);
-                if (count($level_idst) == 0 || $level_idst[1] == '') {
-                    $level_idst = FormaCourse::createCourseLevel($id_course);
-                }
-
+        foreach ($courses as $id_course) {
+            $res = true;
+            $level = 0;
+            $formaCourse = new FormaCourse($id_course);
+            $level_idst = &$formaCourse->getCourseLevel($id_course);
+            if (count($level_idst) == 0 || $level_idst[1] == '') {
+                $level_idst = FormaCourse::createCourseLevel($id_course);
             }
-            if (!isset($_POST['subs']) && !isset($_POST['undo'])){
-                $this->render('level', [
-                    'link' => $this->link ."/subToCoursepathWithLevel",
-                    'id_course' => implode(',', $courses),
-                    'id_path' => implode(',', $id_path),
-                    'id_date' => $this->model->id_date,
-                    'model' => $model,
-                    'course_info' => $cman->getInfo($this->model->id_course, $this->model->id_edition, $this->model->id_date),
-                    'num_subscribed' => count($_to_add),
-                    'send_alert' => FormaLms\lib\Get::req('send_alert', DOTY_INT, 0),
-                    'date_begin_validity' => $date_begin_validity,
-                    'date_expire_validity' => $date_expire_validity,
-                    'course_name' => $coursepath_info[$int_id_path][2],
-                    'classrooms' => $classrooms,
-                ]);
-            }
-            if (isset($_POST['undo'])){
-                Util::jump_to('index.php?r=' . $this->link . '/show_coursepath&id_path=' . $int_id_path . '&res=' . $res);
-            }
-
+        }
+        if (!isset($_POST['subs']) && !isset($_POST['undo'])) {
+            $this->render('level', [
+                'link' => $this->link . "/subToCoursepathWithLevel",
+                'id_course' => implode(',', $courses),
+                'id_path' => implode(',', $id_path),
+                'id_date' => $this->model->id_date,
+                'model' => $model,
+                'course_info' => $cman->getInfo($this->model->id_course, $this->model->id_edition, $this->model->id_date),
+                'num_subscribed' => count($_to_add),
+                'send_alert' => FormaLms\lib\Get::req('send_alert', DOTY_INT, 0),
+                'date_begin_validity' => $date_begin_validity,
+                'date_expire_validity' => $date_expire_validity,
+                'course_name' => $coursepath_info[$int_id_path][2],
+                'classrooms' => $classrooms,
+            ]);
+        }
+        if (isset($_POST['undo'])) {
+            Util::jump_to('index.php?r=' . $this->link . '/show_coursepath&id_path=' . $int_id_path . '&res=' . $res);
+        }
     }
 
-    public function subToCoursepathWithLevel(){
+    public function subToCoursepathWithLevel()
+    {
 
         require_once _lms_ . '/lib/lib.coursepath.php';
         require_once _lms_ . '/lib/lib.course.php';
@@ -3597,27 +3613,22 @@ class SubscriptionAlmsController extends AlmsController
                 if (isset($classrooms[$id_course])) {
                     $this->model->id_date = $classrooms[$id_course];
                 }
-                if (!isset($_POST['undo'])){
-                    if (isset($courses_subscribed[$id_course])){
-                        $this->model->updateUserLevel($id_user,$level);
-                    }
-                    elseif (!$this->model->subscribeUser($id_user, $level, $waiting)) {
+                if (!isset($_POST['undo'])) {
+                    if (isset($courses_subscribed[$id_course])) {
+                        $this->model->updateUserLevel($id_user, $level);
+                    } elseif (!$this->model->subscribeUser($id_user, $level, $waiting)) {
                         $res = false;
                     }
-
                 }
                 $users[$id_user] = true;
-
             }
         }
         $users = array_keys($users);
         if ($res and !isset($_POST['undo'])) {
-            $path_man->subscribeUserToCoursePath($id_path,$users);
-
+            $path_man->subscribeUserToCoursePath($id_path, $users);
         }
 
         Util::jump_to('index.php?r=' . $this->link . '/show_coursepath&id_path=' . (int)$id_path . '&res=' . $res);
-
     }
 
 
@@ -3677,11 +3688,11 @@ class SubscriptionAlmsController extends AlmsController
         ];
         $GLOBALS['page']->add(
             getTitleArea($page_title, 'subscribe')
-            . '<div class="std_block">'
-            . Form::openForm('approve users', 'index.php?r=' . $this->link . '/approveusers')
-            . Form::getHidden('id_course', 'id_course', $id_course)
-            . Form::getHidden('edition_id', 'edition_id', $edition_id)
-            . Form::getHidden('is_classroom', 'is_classroom', $is_classroom),
+                . '<div class="std_block">'
+                . Form::openForm('approve users', 'index.php?r=' . $this->link . '/approveusers')
+                . Form::getHidden('id_course', 'id_course', $id_course)
+                . Form::getHidden('edition_id', 'edition_id', $edition_id)
+                . Form::getHidden('is_classroom', 'is_classroom', $is_classroom),
             'content'
         );
 
@@ -3782,28 +3793,28 @@ class SubscriptionAlmsController extends AlmsController
                     $content[] = '';
                 } else {
                     $content[] = Form::getInputRadio(
-                            'waiting_user_0_' . $id_user,
-                            'waiting_user[' . $id_user . ']',
-                            '0',
-                            false,
-                            ''
-                        ) . '<label class="access-only" for="waiting_user_0_' . $id_user . '">' . $users_name[$id_user][ACL_INFO_USERID] . '</label>';
+                        'waiting_user_0_' . $id_user,
+                        'waiting_user[' . $id_user . ']',
+                        '0',
+                        false,
+                        ''
+                    ) . '<label class="access-only" for="waiting_user_0_' . $id_user . '">' . $users_name[$id_user][ACL_INFO_USERID] . '</label>';
 
                     $content[] = Form::getInputRadio(
-                            'waiting_user_1_' . $id_user,
-                            'waiting_user[' . $id_user . ']',
-                            '1',
-                            false,
-                            ''
-                        ) . '<label class="access-only" for="waiting_user_1_' . $id_user . '">' . $users_name[$id_user][ACL_INFO_USERID] . '</label>';
+                        'waiting_user_1_' . $id_user,
+                        'waiting_user[' . $id_user . ']',
+                        '1',
+                        false,
+                        ''
+                    ) . '<label class="access-only" for="waiting_user_1_' . $id_user . '">' . $users_name[$id_user][ACL_INFO_USERID] . '</label>';
 
                     $content[] = Form::getInputRadio(
-                            'waiting_user_2_' . $id_user,
-                            'waiting_user[' . $id_user . ']',
-                            '2',
-                            true,
-                            ''
-                        ) . '<label class="access-only" for="waiting_user_1_' . $id_user . '">' . $users_name[$id_user][ACL_INFO_USERID] . '</label>';
+                        'waiting_user_2_' . $id_user,
+                        'waiting_user[' . $id_user . ']',
+                        '2',
+                        true,
+                        ''
+                    ) . '<label class="access-only" for="waiting_user_1_' . $id_user . '">' . $users_name[$id_user][ACL_INFO_USERID] . '</label>';
                 }
 
                 $tb->addBody($content);
@@ -3817,17 +3828,17 @@ class SubscriptionAlmsController extends AlmsController
 
         $GLOBALS['page']->add(
             $tb->getTable()
-            . '<br />'
-            . Form::openElementSpace()
-            . Form::getTextarea($lang->def('_SUBSCRIBE_ACCEPT'), 'subscribe_accept', 'subscribe_accept', $lang->def('_APPROVED_SUBSCRIBED_TEXT', 'email'))
-            . Form::getTextarea($lang->def('_SUBSCRIBE_REFUSE'), 'subscribe_refuse', 'subscribe_refuse', $lang->def('_DENY_SUBSCRIBED_TEXT', 'email'))
-            . Form::closeElementSpace()
-            . Form::openButtonSpace()
-            . '<br />'
-            . Form::getButton('subscribe', 'subscribe', $lang->def('_SAVE'))
-            . Form::getButton('cancelselector', 'cancelselector', $lang->def('_UNDO'))
-            . Form::closeButtonSpace()
-            . Form::closeForm(),
+                . '<br />'
+                . Form::openElementSpace()
+                . Form::getTextarea($lang->def('_SUBSCRIBE_ACCEPT'), 'subscribe_accept', 'subscribe_accept', $lang->def('_APPROVED_SUBSCRIBED_TEXT', 'email'))
+                . Form::getTextarea($lang->def('_SUBSCRIBE_REFUSE'), 'subscribe_refuse', 'subscribe_refuse', $lang->def('_DENY_SUBSCRIBED_TEXT', 'email'))
+                . Form::closeElementSpace()
+                . Form::openButtonSpace()
+                . '<br />'
+                . Form::getButton('subscribe', 'subscribe', $lang->def('_SAVE'))
+                . Form::getButton('cancelselector', 'cancelselector', $lang->def('_UNDO'))
+                . Form::closeButtonSpace()
+                . Form::closeForm(),
             'content'
         );
 
