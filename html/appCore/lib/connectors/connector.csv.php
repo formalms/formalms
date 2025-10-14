@@ -53,7 +53,8 @@ class FormaConnectorCsv extends FormaConnector
 
     public function get_config()
     {
-        return ['filepattern' => $this->filename,
+        return [
+            'filepattern' => $this->filename,
             'first_row_header' => $this->first_row_header,
             'field_delimiter' => $this->separator,
             'field_enclosure' => $this->enclosure,
@@ -61,7 +62,7 @@ class FormaConnectorCsv extends FormaConnector
             'readwrite' => $this->readwrite,
             'name' => $this->name,
             'description' => $this->description,
-            'subpattern' => $this->subpattern, ];
+            'subpattern' => $this->subpattern,];
     }
 
     public function set_config($params)
@@ -70,10 +71,10 @@ class FormaConnectorCsv extends FormaConnector
             $this->filename = $params['filepattern'];
         }
         if (isset($params['readwrite'])) {
-            $this->readwrite = (int) $params['readwrite'];
+            $this->readwrite = (int)$params['readwrite'];
         }
         if (isset($params['first_row_header'])) {
-            $this->first_row_header = (int) $params['first_row_header'];
+            $this->first_row_header = (int)$params['first_row_header'];
         }
         if (isset($params['field_delimiter'])) {
             $this->separator = substr($params['field_delimiter'], 0, 5);
@@ -105,23 +106,39 @@ class FormaConnectorCsv extends FormaConnector
         $this->close();
 
         /* search for file with pattern */
-        $pat = str_replace(['*', '?'], ['.*', '.{1}'], $this->filename);
+        // First, escape all regex special characters
+        $pat = preg_quote($this->filename, '/');
+        // Then replace escaped wildcards with their regex equivalents
+        $pat = str_replace(['\*', '\?'], ['.*', '.'], $pat);
+
         $arr_files = preg_ls(FORMAIMPORT_BASEDIR . $this->subpattern, false, '/' . $pat . '/');
         if (count($arr_files) == 0 && !$this->is_writeonly()) {
             //$this->last_error = 'file not found: '.FORMAIMPORT_BASEDIR.$this->filename;
             return FORMA_IMPORT_NOTHINGTOPROCESS;
         } elseif (!$this->is_writeonly()) {
+            // Sort files by modification date (oldest to newest)
+            // If they have the same date, sort alphabetically
+            usort($arr_files, function($a, $b) {
+                $time_diff = filemtime($a) - filemtime($b);
+                if ($time_diff != 0) {
+                    return $time_diff;
+                }
+                // If same date, sort alphabetically
+                return strcmp($a, $b);
+            });
+            // Take the first file (the oldest)
             $this->curr_file = $arr_files[0];
         } else {
             $this->curr_file = FORMAIMPORT_BASEDIR . $this->subpattern . $pat;
         }
+
         /* open file */
         if ($this->is_readonly()) {
-            $this->filehandle = @fopen($this->curr_file, 'r');
+            $this->filehandle = @fopen($this->curr_file, 'rb');
         } elseif ($this->is_writeonly()) {
-            $this->filehandle = @fopen($this->curr_file, 'w');
+            $this->filehandle = @fopen($this->curr_file, 'wb');
         } else {
-            $this->filehandle = @fopen($this->curr_file, 'rw');
+            $this->filehandle = @fopen($this->curr_file, 'rwb');
         }
 
         if ($this->filehandle === false) {
@@ -210,12 +227,12 @@ class FormaConnectorCsv extends FormaConnector
 
     public function is_readonly()
     {
-        return (bool) ($this->readwrite & 1);
+        return (bool)($this->readwrite & 1);
     }
 
     public function is_writeonly()
     {
-        return (bool) ($this->readwrite & 2);
+        return (bool)($this->readwrite & 2);
     }
 
     public function get_tot_cols()
@@ -506,7 +523,7 @@ class FormaConnectorCsvUI extends FormaConnectorUI
             $this->_get_base_name() . '_readwrite',
             $this->_get_base_name() . '[readwrite]',
             [$this->lang->def('_READ') => '1',
-                $this->lang->def('_WRITE') => '2', ],
+                $this->lang->def('_WRITE') => '2',],
             $this->post_params['readwrite']);
 
         // ---- file pattern ----
@@ -521,7 +538,7 @@ class FormaConnectorCsvUI extends FormaConnectorUI
             $this->_get_base_name() . '_def_type',
             $this->_get_base_name() . '[field_def_type]',
             [$this->lang->def('_MANUAL') => '1',
-                $this->lang->def('_BYEXAMPLE') => '2', ],
+                $this->lang->def('_BYEXAMPLE') => '2',],
             $this->post_params['field_def_type']
         );
         $out .= $this->form->getTextfield($this->lang->def('_FIELD_DELIMITER'),
@@ -545,7 +562,7 @@ class FormaConnectorCsvUI extends FormaConnectorUI
             $this->_get_base_name() . '_first_row_header',
             $this->_get_base_name() . '[first_row_header]',
             [$this->lang->def('_YES') => '1',
-                $this->lang->def('_NO') => '0', ],
+                $this->lang->def('_NO') => '0',],
             $this->post_params['first_row_header']
         );
 
@@ -566,7 +583,7 @@ class FormaConnectorCsvUI extends FormaConnectorUI
             if (count($arr_files) == 0) {
                 $this->post_params['field_def'] = ['File not found: ' . $pat];
             } else {
-                $hfile = @fopen($arr_files[0], 'r');
+                $hfile = @fopen($arr_files[0], 'rb');
                 if ($hfile === false) {
                     $this->post_params['field_def'] = ['File not open: ' . $arr_files[0]];
                 } else {
