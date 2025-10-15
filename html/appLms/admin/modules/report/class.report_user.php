@@ -1811,7 +1811,7 @@ class Report_User extends Report
             $id_course = $row['idCourse'];
             $id_category = $row['idCategory'];
             $name = $row['name'];
-            $status = $row['status'];
+            $course_status = $row['course_status'];
             $level_user = $row['level'];
             $status_user = $row['status'];
             $date_inscr = $row['date_inscr'];
@@ -1992,7 +1992,7 @@ class Report_User extends Report
                     $row[] = $category_path_list[$id_category];
                 }
                 if (in_array('_TH_COURSESTATUS', $cols)) {
-                    $row[] = $this->_convertStatusCourse($status);
+                    $row[] = $this->_convertStatusCourse($course_status);
                 }
                 if (in_array('_TH_COURSECREDITS', $cols)) {
                     $row[] = $credits;
@@ -2180,11 +2180,7 @@ class Report_User extends Report
 
     public function _convertStatusCourse($status)
     {
-        if (isset($this->status_c[$status])) { //just debug, sometimes it receives an inexistent status
-            return $this->status_c[$status];
-        } else {
-            return '';
-        }
+        return $this->status_c[$status] ?? '';
     }
 
     public function _convertStatusUser($status)
