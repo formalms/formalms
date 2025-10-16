@@ -313,11 +313,29 @@ class LangAdm extends Model
      */
     public function delLanguage($lang_code)
     {
-        $query = "DELETE FROM %adm_lang_language WHERE lang_code = '" . $lang_code . "' ";
-        if (!$this->db->query($query)) {
+        $lang_code = trim((string)$lang_code);
+        if ($lang_code === '') {
+            return false;
+        }
+        $check = "SELECT 1 FROM %adm_lang_language WHERE lang_code = '" . $this->db->escape($lang_code) . "' LIMIT 1";
+        $res = $this->db->query($check);
+        if (!$res || $this->db->num_rows($res) === 0) {
             return false;
         }
 
+        $this->db->start_transaction();
+        $query = "DELETE FROM %adm_lang_translation WHERE lang_code = '" . $this->db->escape($lang_code) . "'";
+        if (!$this->db->query($query)) {
+            $this->db->rollback();
+            return false;
+        }
+        $query = "DELETE FROM %adm_lang_language WHERE lang_code = '" . $this->db->escape($lang_code) . "'";
+        if (!$this->db->query($query)) {
+            $this->db->rollback();
+            return false;
+        }
+
+        $this->db->commit();
         return true;
     }
 
