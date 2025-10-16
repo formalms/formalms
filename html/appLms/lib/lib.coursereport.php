@@ -156,7 +156,6 @@ class CourseReportManager
     {
         $test_man = new GroupTestManagement();
         $tests_list = $test_man->getTestInfo($id_tests);
-
         foreach ($tests_list as $id_test => $test_info) {
             $query_test = "
 			UPDATE %lms_coursereport 
@@ -177,12 +176,31 @@ class CourseReportManager
             return;
         }
 
-        // Fix: Delete by id_source (test IDs) instead of id_report to properly remove orphaned records
+        // first load the reports id associated to the tests
         $escaped_test_ids = array_map('intval', $id_tests);
+        $query_get_reports = "SELECT id_report FROM %lms_coursereport 
+        WHERE id_course = '" . $this->idCourse . "' AND
+            source_of = 'test' AND 
+            id_source IN ( " . implode(',', $escaped_test_ids) . ' )';
+
+        $result = sql_query($query_get_reports);
+        $report_ids = [];
+        foreach ($result as $row) {
+            $report_ids[] = $row['id_report'];
+        }
+
+        // delete the associated scores
+        if (!empty($report_ids)) {
+            $query_del_scores = "DELETE FROM %lms_coursereport_score 
+            WHERE id_report IN (" . implode(',', $report_ids) . ")";
+            sql_query($query_del_scores);
+        }
+
+        // delete the reports
         $query_test = "DELETE FROM %lms_coursereport 
-		WHERE id_course = '" . $this->idCourse . "' AND
-			source_of = 'test' AND 
-			id_source IN ( " . implode(',', $escaped_test_ids) . ' )';
+        WHERE id_course = '" . $this->idCourse . "' AND
+            source_of = 'test' AND 
+            id_source IN ( " . implode(',', $escaped_test_ids) . ' )';
         sql_query($query_test);
 
         $this->repairSequence();
@@ -354,6 +372,9 @@ class CourseReportManager
 
     public function deleteReport($id_report)
     {
+        // First delete the scores
+        $this->deleteReportScore($id_report);
+
         $query_scores = "
 		DELETE FROM %lms_coursereport 
 		WHERE id_report = '" . $id_report . "'";
@@ -622,40 +643,13 @@ class CourseReportManager
             return false;
         }
 
-        $db = \FormaLms\db\DbConn::getInstance();
-
-        $db->start_transaction();
-
         //get all existing report for the course
         $arr_id_report = [];
         $query = 'SELECT id_report FROM %lms_coursereport_score WHERE id_course = ' . (int)$id_course;
-        $res = $db->query($query) ?? [];
+        $res = sql_query($query) ?? [];
         foreach ($res as $row) {
-            [$id_report] = array_values($row);
-            $arr_id_report[] = $id_report;
+            $this->deleteReport($row['id_report']);
         }
-
-        //delete all reports scores
-        if (!empty($arr_id_report)) {
-            $query = 'DELETE FROM %lms_coursereport_score WHERE id_report IN (' . implode(',', $arr_id_report) . ')';
-            $res = $db->query($query);
-            if (!$res) {
-                $db->rollback();
-
-                return false;
-            }
-        }
-
-        //delete course reports
-        $query = "DELETE FROM %lms_coursereport WHERE id_course = '" . (int)$id_course . "'";
-        $res = $db->query($query);
-        if (!$res) {
-            $db->rollback();
-
-            return false;
-        }
-
-        $db->commit();
 
         return true;
     }
