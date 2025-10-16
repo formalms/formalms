@@ -56,7 +56,7 @@ class LangAdm extends Model
                  WHERE text_module != ''
                  ORDER BY text_module";
 
-        $result = $this->db->query($query);
+        $result = sql_query($query);
         $modules = [];
 
         foreach ($result as $row) {
@@ -145,9 +145,9 @@ class LangAdm extends Model
         $query = 'SELECT lang_code, lang_description, lang_direction, lang_browsercode '
             . ' FROM %adm_lang_language '
             . " WHERE lang_code = '" . $lang_code . "'";
-        $rs = $this->db->query($query);
+        $rs = sql_query($query);
 
-        return $this->db->fetch_obj($rs);
+        return sql_fetch_object($rs);
     }
 
     /**
@@ -162,9 +162,9 @@ class LangAdm extends Model
         $query = 'SELECT lang_code '
             . ' FROM %adm_lang_language '
             . " WHERE lang_code = '" . $lang_code . "'";
-        $rs = $this->db->query($query);
+        $rs = sql_query($query);
 
-        return $this->db->num_rows($rs) > 0;
+        return sql_num_rows($rs) > 0;
     }
 
     /**
@@ -182,8 +182,8 @@ class LangAdm extends Model
         $query = 'SELECT COUNT(*) as lang_max '
             . ' FROM %adm_lang_text '
             . ' WHERE 1 ';
-        $rs = $this->db->query($query);
-        $text = $this->db->fetch_obj($rs);
+        $rs = sql_query($query);
+        $text = sql_fetch_object($rs);
 
         $query = 'SELECT l.*, COUNT(t.id_text) AS lang_stats '
             . ' FROM %adm_lang_language AS l LEFT JOIN %adm_lang_translation AS t ON (l.lang_code =t.lang_code ) '
@@ -195,10 +195,10 @@ class LangAdm extends Model
         if ($startIndex && $results) {
             $query .= ' LIMIT ' . (int)$startIndex . ', ' . (int)$results;
         }
-        $rs = $this->db->query($query);
+        $rs = sql_query($query);
 
         $result = [];
-        while ($lang = $this->db->fetch_obj($rs)) {
+        while ($lang = sql_fetch_object($rs)) {
             $diff = $text->lang_max - $lang->lang_stats;
             if ($diff != 0) {
                 $lang->lang_stats .= ' / ' . $text->lang_max . ($diff ? ' (' . $diff . ')' : '');
@@ -230,10 +230,10 @@ class LangAdm extends Model
         if ($startIndex && $results) {
             $query .= ' LIMIT ' . (int)$startIndex . ', ' . (int)$results;
         }
-        $rs = $this->db->query($query);
+        $rs = sql_query($query);
 
         $result = [];
-        while ($lang = $this->db->fetch_obj($rs)) {
+        while ($lang = sql_fetch_object($rs)) {
             $result[$lang->lang_code] = $lang;
         }
 
@@ -250,10 +250,10 @@ class LangAdm extends Model
         $query = 'SELECT COUNT(*) '
             . ' FROM %adm_lang_language '
             . ' WHERE 1 ';
-        if (!$rs = $this->db->query($query)) {
+        if (!$rs = sql_query($query)) {
             return 0;
         }
-        list($tot) = $this->db->fetch_row($rs);
+        [$tot] = sql_fetch_row($rs);
 
         return $tot;
     }
@@ -275,7 +275,7 @@ class LangAdm extends Model
             . " '" . $lang_direction . "', "
             . " '" . $lang_browsercode . "' "
             . ')';
-        if (!$this->db->query($query)) {
+        if (!sql_query($query)) {
             return false;
         }
 
@@ -297,7 +297,7 @@ class LangAdm extends Model
         $query = ' UPDATE %adm_lang_language ';
         $query .= " SET lang_description = '" . $lang_description . "', lang_direction = '" . $lang_direction . "', lang_browsercode = '" . $lang_browsercode . "' ";
         $query .= " WHERE lang_code = '" . $lang_code . "' ";
-        if (!$this->db->query($query)) {
+        if (!sql_query($query)) {
             return false;
         }
 
@@ -313,30 +313,20 @@ class LangAdm extends Model
      */
     public function delLanguage($lang_code)
     {
-        $lang_code = trim((string)$lang_code);
-        if ($lang_code === '') {
-            return false;
-        }
-        $check = "SELECT 1 FROM %adm_lang_language WHERE lang_code = '" . $this->db->escape($lang_code) . "' LIMIT 1";
-        $res = $this->db->query($check);
-        if (!$res || $this->db->num_rows($res) === 0) {
-            return false;
-        }
+        $result = false;
 
-        $this->db->start_transaction();
-        $query = "DELETE FROM %adm_lang_translation WHERE lang_code = '" . $this->db->escape($lang_code) . "'";
-        if (!$this->db->query($query)) {
-            $this->db->rollback();
-            return false;
-        }
-        $query = "DELETE FROM %adm_lang_language WHERE lang_code = '" . $this->db->escape($lang_code) . "'";
-        if (!$this->db->query($query)) {
-            $this->db->rollback();
-            return false;
+        $query = 'DELETE FROM core_lang_translation WHERE lang_code = "' . $lang_code . '" ';
+
+        $result = sql_query($query);
+
+        if ($result) {
+            $query = "DELETE FROM core_lang_language WHERE lang_code = '" . $lang_code . "' ";
+
+            $result = sql_query($query);
         }
 
         $this->db->commit();
-        return true;
+        return $result;
     }
 
     /**
@@ -346,13 +336,12 @@ class LangAdm extends Model
      */
     public function getLangCodeList()
     {
-        $query = 'SELECT lang_code, lang_description, lang_direction '
-            . ' FROM %adm_lang_language '
-            . ' WHERE 1';
-        $rs = $this->db->query($query);
+        $query = 'SELECT lang_code'
+            . ' FROM core_lang_language ';
+        $rs = sql_query($query);
         $result = [];
-        while (list($lang_code, $lang_description, $lang_direction) = $this->db->fetch_row($rs)) {
-            $result[$lang_code] = $lang_code;
+        foreach ($rs as $lang) {
+            $result[$lang['lang_code']] = $lang['lang_code'];
         }
 
         return $result;
@@ -366,12 +355,12 @@ class LangAdm extends Model
     public function getModuleList()
     {
         $qtxt = 'SELECT DISTINCT text_module '
-            . 'FROM %adm_lang_text '
+            . 'FROM core_lang_text '
             . 'ORDER BY text_module';
-        $re = $this->db->query($qtxt);
+        $re = sql_query($qtxt);
         $module_list = [];
-        while (list($module) = $this->db->fetch_row($re)) {
-            $module_list[$module] = $module;
+        foreach ($re as $row) {
+            $module_list[$row['text_module']] = $row['text_module'];
         }
 
         return $module_list;
@@ -385,13 +374,13 @@ class LangAdm extends Model
     public function getPluginsList()
     {
         $qtxt = 'SELECT DISTINCT p.plugin_id, p.name '
-            . 'FROM %adm_lang_text AS lt '
-            . 'LEFT JOIN %adm_plugin AS p ON ( lt.plugin_id = p.plugin_id ) '
+            . 'FROM core_lang_text AS lt '
+            . 'LEFT JOIN core_plugin AS p ON ( lt.plugin_id = p.plugin_id ) '
             . 'WHERE p.plugin_id IS NOT NULL AND p.active = 1';
-        $re = $this->db->query($qtxt);
+        $re = sql_query($qtxt);
         $plugin_id_list = [];
-        while (list($plugin_id, $name) = $this->db->fetch_row($re)) {
-            $plugin_id_list[$plugin_id] = $name;
+        foreach ($re as $row) {
+            $plugin_id_list[$row['plugin_id']] = $row['name'];
         }
 
         return $plugin_id_list;
@@ -415,12 +404,7 @@ class LangAdm extends Model
         if (!$lang_code) {
             $lang_code = Lang::get();
         }
-        /*
-        // for a better display i need to know if the language is rtl or ltr
-        $langs = \FormaLms\lib\Forma::langManager()->getAllLanguages(true);
-        $main_dir = $langs[$lang_code]['direction'];
-        if($lang_code_diff != false) $diff_dir = $langs[$lang_code_diff]['direction'];
-        */
+
         if ($lang_code_diff == false) {
             $qtxt = "
 			SELECT lt.id_text as id, lt.text_key, lt.text_module, ta.translation_text, '' as translation_text_diff, ta.save_date, p.name plugin_name
@@ -496,13 +480,10 @@ class LangAdm extends Model
         }
 
         $data = [];
-        $result = $this->db->query($qtxt);
-        while ($obj = $this->db->fetch_obj($result)) {
-            //if($text != false) $obj->translation_text = Util::highlight($obj->translation_text, $text);
-            //if($main_dir == 'rtl') $obj->translation_text = '<div style="direction:rtl;">'.$obj->translation_text.'</div>';
-            //if($lang_code_diff != false && $diff_dir == 'rtl') $obj->translation_text_diff = '<div style="direction:rtl;">'.$obj->translation_text_diff.'</div>';
-            $obj->delete = 'ajax.adm_server.php?r=adm/lang/deleteKey&id_text=' . $obj->id;
-            $data[] = $obj;
+        $result = sql_query($qtxt);
+        foreach ($result as $row) {
+            $row['delete'] = 'ajax.adm_server.php?r=adm/lang/deleteKey&id_text=' . $row['id'];
+            $data[] = $row;
         }
 
         return $data;
@@ -537,8 +518,8 @@ class LangAdm extends Model
         $qtxt .= ' ORDER BY lt.text_module ASC , ta.translation_text ASC';
 
         $data = [];
-        $result = $this->db->query($qtxt);
-        while ($obj = $this->db->fetch_obj($result)) {
+        $result = sql_query($qtxt);
+        while ($obj = sql_fetch_object($result)) {
             $data[] = $obj;
         }
 
@@ -669,8 +650,8 @@ class LangAdm extends Model
             $qtxt .= ' AND ta.translation_text IS NULL';
         }
 
-        $re = $this->db->query($qtxt);
-        list($count) = $this->db->fetch_row($re);
+        $re = sql_query($qtxt);
+        [$count] = sql_fetch_row($re);
 
         return $count;
     }
@@ -684,11 +665,10 @@ class LangAdm extends Model
 		WHERE 1 ";
 
         $data = [];
-        $result = $this->db->query($qtxt);
-        while ($obj = $this->db->fetch_obj($result)) {
-            $data[$obj->text_module][$obj->text_key][(int)$obj->plugin_id] = [$obj->id, $obj->translation_text, $obj->save_date];
+        $result = sql_query($qtxt);
+        foreach ($result as $row) {
+            $data[$row['text_module']][$row['text_key']][(int)$row['plugin_id']] = [$row['id'], $row['translation_text'], $row['save_date']];
         }
-
         return $data;
     }
 
@@ -716,16 +696,15 @@ class LangAdm extends Model
 		ORDER BY p.priority DESC';
 
         $data = [];
-        $result = $this->db->query($qtxt);
-        while ($obj = $this->db->fetch_obj($result)) {
-            if (array_key_exists($obj->text_key, $data)) {
-                if ($obj->priority == null) {
+        $result = sql_query($qtxt);
+        foreach ($result as $row) {
+            if (array_key_exists($row['text_key'], $data)) {
+                if ($row['priority'] == null) {
                     continue;
                 }
             }
-            $data[$obj->text_key] = $obj->translation_text;
+            $data[$row['text_key']] = $row['translation_text'];
         }
-
         return $data;
     }
 
@@ -749,9 +728,9 @@ class LangAdm extends Model
 		LEFT JOIN %adm_lang_translation AS ta ON ( lt.id_text = ta.id_text AND ta.lang_code = '" . $lang_code . "') ";
 
         $data = [];
-        $result = $this->db->query($qtxt);
-        while ($obj = $this->db->fetch_obj($result)) {
-            $data[$obj->text_module][$obj->text_key] = $obj->translation_text;
+        $result = sql_query($qtxt);
+        foreach ($result as $row) {
+            $data[$row['text_module']][$row['text_key']] = $row['translation_text'];
         }
 
         return $data;
@@ -772,11 +751,11 @@ class LangAdm extends Model
             . ' ( id_text, text_key, text_module, text_attributes, plugin_id ) VALUES ( '
             . " NULL, '" . $text_key . "', '" . $text_module . "', '" . $text_attributes . "', $idPlugin "
             . ') ';
-        if (!$this->db->query($query)) {
+        if (!sql_query($query)) {
             return false;
         }
 
-        return $this->db->insert_id();
+        return sql_insert_id();
     }
 
     /**
@@ -789,12 +768,12 @@ class LangAdm extends Model
     public function deleteKey($id_text)
     {
         $query = 'DELETE FROM %adm_lang_translation WHERE id_text = ' . (int)$id_text . ' ';
-        if (!$this->db->query($query)) {
+        if (!sql_query($query)) {
             return false;
         }
 
         $query = 'DELETE FROM %adm_lang_text WHERE id_text = ' . (int)$id_text . ' ';
-        if (!$this->db->query($query)) {
+        if (!sql_query($query)) {
             return false;
         }
 
@@ -814,9 +793,9 @@ class LangAdm extends Model
         $query = 'select * from %adm_lang_translation '
             . 'WHERE id_text = ' . (int)$id_text . ' '
             . " AND lang_code = '" . $lang_code . "'";
-        $re = $this->db->query($query);
+        $re = sql_query($query);
 
-        return $this->db->num_rows($re) > 0;
+        return sql_num_rows($re) > 0;
     }
 
     /**
@@ -852,7 +831,7 @@ class LangAdm extends Model
             . " '" . $new_value . "', "
             . ' ' . $dt . ' )';
 
-        return $this->db->query($query);
+        return sql_query($query);
     }
 
     public function updateTranslation($id_text, $lang_code, $new_value, $save_date = null)
@@ -869,7 +848,7 @@ class LangAdm extends Model
             . 'WHERE id_text = ' . (int)$id_text . ' '
             . " AND lang_code = '" . $lang_code . "'";
 
-        return $this->db->query($query);
+        return sql_query($query);
     }
 
     public function exportTranslation($lang_code, $text_items = null)

@@ -220,6 +220,7 @@ class LangAdmController extends AdmController
         $lang_code = FormaLms\lib\Get::req('lang_code', DOTY_STRING, '');
 
         $re = false;
+
         if ($lang_code != '') {
             $re = $this->model->delLanguage($lang_code);
         }
