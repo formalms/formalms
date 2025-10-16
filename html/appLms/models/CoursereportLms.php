@@ -263,26 +263,49 @@ class CoursereportLms extends Model
     /**
      * Normalize a list/assoc array into a flat list of unique integer IDs.
      * Accepts arrays like [12, 34] or [12 => 12, 'x' => 34, 56 => '56'].
+     * For indexed lists, uses only values; for associative arrays, uses numeric values
+     * and, if needed, numeric keys. Finally validates IDs against existing tests.
      * @param array $arr
      * @return array
      */
     private function extractNumericIds($arr)
     {
-        $ids = [];
         if (!is_array($arr)) {
-            return $ids;
+            return [];
         }
-        foreach ($arr as $k => $v) {
-            if (is_numeric($k)) {
-                $ids[] = (int)$k;
+
+        $keys = array_keys($arr);
+        $isList = ($keys === array_keys($keys));
+
+        $ids = [];
+        if ($isList) {
+            // Indexed list: consider only numeric values
+            foreach ($arr as $v) {
+                if (is_numeric($v) && (int)$v > 0) {
+                    $ids[] = (int)$v;
+                }
             }
-            if (is_numeric($v)) {
-                $ids[] = (int)$v;
+        } else {
+            // Associative: prefer numeric values; fallback to numeric keys
+            foreach ($arr as $k => $v) {
+                if (is_numeric($v) && (int)$v > 0) {
+                    $ids[] = (int)$v;
+                } elseif (is_numeric($k) && (int)$k > 0) {
+                    $ids[] = (int)$k;
+                }
             }
         }
-        $ids = array_values(array_unique(array_filter($ids, function ($n) {
-            return $n > 0;
-        })));
+
+        // Unique list
+        $ids = array_values(array_unique($ids));
+
+        // Validate against existing tests to avoid phantom IDs
+        if (!empty($ids)) {
+            $gtm = new GroupTestManagement();
+            $info = $gtm->getTestInfo($ids);
+            $ids = array_values(array_intersect($ids, array_keys($info)));
+        }
+
         return $ids;
     }
 

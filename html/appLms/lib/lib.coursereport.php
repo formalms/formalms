@@ -97,15 +97,26 @@ class CourseReportManager
     {
         $test_man = new GroupTestManagement();
 
-        $plus = count($id_tests);
+        // Retrieve info only for valid tests
+        $test_info = $test_man->getTestInfo($id_tests);
+        $valid_ids = array_keys((array)$test_info);
+        if (empty($valid_ids)) {
+            return;
+        }
+
+        // Shift sequence only by the number of valid tests
+        $plus = count($valid_ids);
         $query_seq = '
 		UPDATE %lms_coursereport 
 		SET sequence = sequence + ' . $plus . " 
 		WHERE id_course = '" . $this->idCourse . "'";
         sql_query($query_seq);
 
-        $test_info = $test_man->getTestInfo($id_tests);
-        foreach ($id_tests as $id_test) {
+        foreach ($valid_ids as $id_test) {
+            // Defensive: skip if metadata unexpectedly missing
+            if (empty($test_info[$id_test])) {
+                continue;
+            }
 
             $query_test = "
 			INSERT IGNORE INTO %lms_coursereport 
