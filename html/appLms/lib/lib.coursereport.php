@@ -140,7 +140,7 @@ class CourseReportManager
 
     public function getTestReports($idCourse, $idTest)
     {
-        $query = "SELECT * from %lms_coursereport WHERE id_course=${idCourse} AND id_source=${$idTest} AND source_of='test'";
+        $query = "SELECT * FROM %lms_coursereport WHERE id_course=" . (int)$idCourse . " AND id_source=" . (int)$idTest . " AND source_of='test'";
 
         $result = sql_query($query);
 

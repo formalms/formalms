@@ -124,7 +124,8 @@ class CoursereportLms extends Model
     private function grabCourseReports()
     {
         $report_man = new CourseReportManager($this->idCourse);
-        $org_tests = $report_man->getTest();
+        $org_tests_raw = $report_man->getTest();
+        $org_tests = $this->extractNumericIds($org_tests_raw);
 
         // Clean up orphaned records first - remove records referencing non-existent course objects
         $this->cleanupOrphanedReports($org_tests);
@@ -186,10 +187,10 @@ class CoursereportLms extends Model
         if ($tot_report === 0) {
             $report_man->initializeCourseReport($org_tests);
         } else {
-            // Compare test IDs properly - $org_tests has test IDs as keys, $included_test has them as values
-            $org_test_keys = array_values($org_tests);
-            $test_to_add = array_diff($org_test_keys, $included_test);
-            $test_to_del = array_diff($included_test, $org_test_keys);
+            // Compare test IDs properly using normalized IDs
+            $org_test_ids = $org_tests;
+            $test_to_add = array_diff($org_test_ids, $included_test);
+            $test_to_del = array_diff($included_test, $org_test_ids);
 
             if (!empty($test_to_add) || !empty($test_to_del)) {
                 if (!empty($test_to_add)) {
@@ -242,27 +243,47 @@ class CoursereportLms extends Model
      */
     private function cleanupOrphanedReports($valid_tests)
     {
-        // Remove test reports that reference non-existent or invalid test objects
-        if (!empty($valid_tests)) {
-            $valid_test_ids = array_map('intval', array_values($valid_tests));
-            $valid_test_list = implode(',', $valid_test_ids);
-            
-            $cleanup_query = "
+        // Build a conservative list of valid test IDs (ints) from both keys and values
+        $valid_ids = $this->extractNumericIds(is_array($valid_tests) ? $valid_tests : []);
+        if (empty($valid_ids)) {
+            // If we cannot determine valid test IDs, skip cleanup to avoid accidental deletions
+            return;
+        }
+        $valid_test_list = implode(',', $valid_ids);
+        $cleanup_query = "
                 DELETE FROM %lms_coursereport 
                 WHERE id_course = '" . (int)$this->idCourse . "' 
                 AND source_of = '" . self::SOURCE_OF_TEST . "'
                 AND id_source NOT IN (" . $valid_test_list . ")
             ";
-        } else {
-            // If no valid tests, remove all test reports for this course
-            $cleanup_query = "
-                DELETE FROM %lms_coursereport 
-                WHERE id_course = '" . (int)$this->idCourse . "' 
-                AND source_of = '" . self::SOURCE_OF_TEST . "'
-            ";
-        }
 
         sql_query($cleanup_query);
+    }
+
+    /**
+     * Normalize a list/assoc array into a flat list of unique integer IDs.
+     * Accepts arrays like [12, 34] or [12 => 12, 'x' => 34, 56 => '56'].
+     * @param array $arr
+     * @return array
+     */
+    private function extractNumericIds($arr)
+    {
+        $ids = [];
+        if (!is_array($arr)) {
+            return $ids;
+        }
+        foreach ($arr as $k => $v) {
+            if (is_numeric($k)) {
+                $ids[] = (int)$k;
+            }
+            if (is_numeric($v)) {
+                $ids[] = (int)$v;
+            }
+        }
+        $ids = array_values(array_unique(array_filter($ids, function ($n) {
+            return $n > 0;
+        })));
+        return $ids;
     }
 
     /**
