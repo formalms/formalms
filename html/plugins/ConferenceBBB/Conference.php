@@ -29,7 +29,7 @@ class Conference extends \PluginConference
 {
     public static $can_mod = false;
 
-    public function name()
+    public static function name()
     {
         return Plugin::getName();
     }
@@ -92,7 +92,6 @@ class Conference extends \PluginConference
         $extra_conf['autoHandsFreeOnAVLoad'] = false;
         $extra_conf['joinEmailRequired'] = false;
 
-        $res->result = true;
         require_once _base_ . '/lib/lib.json.php';
         $json = new \Services_JSON();
 

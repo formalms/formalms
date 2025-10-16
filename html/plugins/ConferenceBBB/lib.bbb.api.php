@@ -130,7 +130,7 @@ class BigBlueButton
      *
      *@return The url to join the meeting
      */
-    public function createMeetingURL($name, $meetingID, $attendeePW, $moderatorPW, $welcome, $logoutURL, $SALT, $URL)
+    public static function createMeetingURL($name, $meetingID, $attendeePW, $moderatorPW, $welcome, $logoutURL, $SALT, $URL)
     {
         $url_create = $URL . 'api/create?';
         $voiceBridge = 70000 + rand(0, 9999);
