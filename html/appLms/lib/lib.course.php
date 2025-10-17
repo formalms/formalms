@@ -2307,7 +2307,7 @@ class FormaCourse
 
     public function getUsedSpace()
     {
-        $course_size = $this->course_info['used_space'];
+        $course_size = (float)$this->course_info['used_space'];
 
         return $course_size;
     }
