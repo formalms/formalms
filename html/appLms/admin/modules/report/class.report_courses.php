@@ -671,7 +671,7 @@ class Report_Courses extends Report
         if (!$view_all_perm) {
             if ($all_courses == true) {
                 // get all course
-                $result = sql_query('SELECT idCourse FROM %lms_course');
+                $result = sql_query('SELECT idCourse FROM learning_course');
                 $course_selected = [];
                 foreach ($result as $row) {
                     $course_selected[] = $row['idCourse'];
@@ -691,9 +691,9 @@ class Report_Courses extends Report
         }
 
         $query = 'SELECT c.idCourse, c.code, c.name, c.idCategory, c.status, c.create_date, p.id_quest, p.title_quest'
-            . ' FROM %lms_course AS c'
-            . ' JOIN %lms_organization AS o ON o.idCourse = c.idCourse'
-            . ' JOIN %lms_pollquest AS p ON p.id_poll = o.idResource'
+            . ' FROM learning_course AS c'
+            . ' JOIN learning_organization AS o ON o.idCourse = c.idCourse'
+            . ' JOIN learning_pollquest AS p ON p.id_poll = o.idResource'
             . " WHERE o.objectType = 'poll'"
             . " AND p.type_quest = 'doc_valutation'"
             . ($all_courses ? '' : ' AND c.idCourse IN (' . implode(',', $course_selected) . ')')
@@ -701,8 +701,6 @@ class Report_Courses extends Report
             . ' ORDER BY c.idCourse, p.id_quest';
 
         $result = sql_query($query);
-
-        //echo "query_course: ". $query;
 
         $course_doc = [];
         $question_id = [];
@@ -726,12 +724,12 @@ class Report_Courses extends Report
         } else {
             if (!$view_all_perm) {
                 $query = 'SELECT pta.id_quest, MIN(CAST(pta.more_info AS DECIMAL(65,30))) AS min_answer, MAX(CAST(pta.more_info AS DECIMAL(65,30))) AS max_answer, SUM(CAST(pta.more_info AS DECIMAL(65,30))) AS sum_answer, COUNT(*) AS num_answer'
-                    . ' FROM %lms_polltrack_answer AS pta, %lms_polltrack AS pt'
+                    . ' FROM learning_polltrack_answer AS pta, learning_polltrack AS pt'
                     . ' WHERE 1 AND pta.id_track = pt.id_track AND pt.id_user IN (' . implode(',', $ctrl_users) . ') AND pta.id_quest IN (' . implode(',', $question_id) . ')'
                     . ' GROUP BY pta.id_quest';
             } else {
                 $query = 'SELECT id_quest, MIN(CAST(more_info AS DECIMAL(65,30))) AS min_answer, MAX(CAST(more_info AS DECIMAL(65,30))) AS max_answer, SUM(CAST(more_info AS DECIMAL(65,30))) AS sum_answer, COUNT(*) AS num_answer'
-                    . ' FROM %lms_polltrack_answer'
+                    . ' FROM learning_polltrack_answer'
                     . ' WHERE id_quest IN (' . implode(',', $question_id) . ')'
                     . ' GROUP BY id_quest';
             }
@@ -768,7 +766,7 @@ class Report_Courses extends Report
         if (!$view_all_perm) {
             if ($all_courses == true) {
                 // get all course
-                $result = sql_query('SELECT idCourse FROM %lms_course');
+                $result = sql_query('SELECT idCourse FROM learning_course');
                 $course_selected = [];
                 foreach ($result as $row) {
                     $course_selected[] = $row['idCourse'];
@@ -787,9 +785,9 @@ class Report_Courses extends Report
         }
 
         $query = 'SELECT c.idCourse, c.code, c.name, c.idCategory, c.status, c.create_date, p.id_quest, title_quest'
-            . ' FROM %lms_course AS c'
-            . ' JOIN %lms_organization AS o ON o.idCourse = c.idCourse'
-            . ' JOIN %lms_pollquest AS p ON p.id_poll = o.idResource'
+            . ' FROM learning_course AS c'
+            . ' JOIN learning_organization AS o ON o.idCourse = c.idCourse'
+            . ' JOIN learning_pollquest AS p ON p.id_poll = o.idResource'
             . " WHERE o.objectType = 'poll'"
             . " AND p.type_quest = 'course_valutation'"
             . ($all_courses ? '' : ' AND c.idCourse IN (' . implode(',', $course_selected) . ')');
@@ -819,12 +817,12 @@ class Report_Courses extends Report
         } else {
             if (!$view_all_perm) {
                 $query = 'SELECT pta.id_quest, MIN(CAST(pta.more_info AS DECIMAL(65,30))) AS min_answer, MAX(CAST(pta.more_info AS DECIMAL(65,30))) AS max_answer, SUM(CAST(pta.more_info AS DECIMAL(65,30))) AS sum_answer, COUNT(*) AS num_answer'
-                    . ' FROM %lms_polltrack_answer AS pta, %lms_polltrack AS pt'
+                    . ' FROM learning_polltrack_answer AS pta, learning_polltrack AS pt'
                     . ' WHERE 1 AND pta.id_track = pt.id_track AND pt.id_user IN (' . implode(',', $ctrl_users) . ') AND pta.id_quest IN (' . implode(',', $question_id) . ')'
                     . ' GROUP BY pta.id_quest';
             } else {
                 $query = 'SELECT id_quest, MIN(CAST(more_info AS DECIMAL(65,30))) AS min_answer, MAX(CAST(more_info AS DECIMAL(65,30))) AS max_answer, SUM(CAST(more_info AS DECIMAL(65,30))) AS sum_answer, COUNT(*) AS num_answer'
-                    . ' FROM %lms_polltrack_answer'
+                    . ' FROM learning_polltrack_answer'
                     . ' WHERE id_quest IN (' . implode(',', $question_id) . ')'
                     . ' GROUP BY id_quest';
             }
@@ -910,10 +908,10 @@ class Report_Courses extends Report
             $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             if ($all_courses) {
                 $all_courses = false;
-                $rs = sql_query('SELECT idCourse FROM %lms_course');
+                $rs = sql_query('SELECT idCourse FROM learning_course');
                 $course_selected = [];
-                while (list($id_course) = sql_fetch_row($rs)) {
-                    $course_selected[] = $id_course;
+                foreach ($rs as $row) {
+                    $course_selected[] = $row['idCourse'];
                 }
             }
 
@@ -992,7 +990,7 @@ class Report_Courses extends Report
         $id_courses = [];
         if (!$show_classrooms_editions) {
             $q_courses = 'SELECT c.idCourse, c.code, c.name, c.description, c.course_type '
-                . ' FROM %lms_course As c '
+                . ' FROM learning_course As c '
                 . ' ORDER BY c.code, c.name';
             $r_courses = sql_query($q_courses);
             foreach ($r_courses as $courseData) {
@@ -1013,7 +1011,7 @@ class Report_Courses extends Report
             }
         } else {
             $q_courses = 'SELECT c.idCourse, c.code, c.name, c.description, c.course_type, d.id_date '
-                . ' FROM %lms_course As c LEFT JOIN %lms_course_date AS d ON (c.idCourse = d.id_course) '
+                . ' FROM learning_course As c LEFT JOIN learning_course_date AS d ON (c.idCourse = d.id_course) '
                 . ' ORDER BY c.code, c.name, d.code, d.name';
             $r_courses = sql_query($q_courses);
             foreach ($r_courses as $courseData) {
@@ -1048,11 +1046,12 @@ class Report_Courses extends Report
         if ($show_classrooms_editions) {
             //retrieve classrooms info
             $query = 'SELECT d.*, MIN(dd.date_begin) AS date_1, MAX(dd.date_end) AS date_2 '
-                . ' FROM %lms_course_date AS d JOIN %lms_course_date_day AS dd ON (d.id_date = dd.id_date) ' . ' AND dd.deleted = 0 '
+                . ' FROM learning_course_date AS d JOIN learning_course_date_day AS dd ON (d.id_date = dd.id_date) ' . ' AND dd.deleted = 0 '
                 . (!$all_courses ? ' AND d.id_course IN (' . implode(',', $course_selected) . ') ' : '')
                 . ' GROUP BY dd.id_date';
             $res = sql_query($query);
-            while ($obj = sql_fetch_object($res)) {
+            foreach ($res as $row) {
+                $obj = (object)$row;
                 $classrooms_editions_info['classrooms'][$obj->id_date] = $obj;
 
                 $dateManager = new DateManager();
@@ -1060,15 +1059,12 @@ class Report_Courses extends Report
 
                 $obj->date_location = $dateLocation;
             }
-
-            //retrieve editions info
-            //TO DO ...
         }
 
         if (!$show_classrooms_editions) {
 
             $query_course_user = 'SELECT cu.idUser, cu.idCourse, cu.date_first_access, cu.date_complete, cu.status '
-                . ' FROM %lms_courseuser AS cu JOIN %adm_user AS u ON (cu.idUser = u.idst) '
+                . ' FROM learning_courseuser AS cu JOIN core_user AS u ON (cu.idUser = u.idst) '
                 . ' WHERE cu.idUser IN ( ' . implode(',', $user_selected) . ' ) '
                 . ($all_courses ? '' : 'AND cu.idCourse IN (' . implode(',', $course_selected) . ') ')
                 . ($show_suspended ? '' : ' AND u.valid = 1 ')
@@ -1088,7 +1084,14 @@ class Report_Courses extends Report
             $effective_user = [];
 
             $re_course_user = sql_query($query_course_user);
-            while (list($id_u, $id_c, $first_access, $date_complete, $status) = sql_fetch_row($re_course_user)) {
+
+            foreach ($re_course_user as $row) {
+                $id_u = $row['idUser'];
+                $id_c = $row['idCourse'];
+                $first_access = $row['date_first_access'];
+                $date_complete = $row['date_complete'];
+                $status = $row['status'];
+
                 if (isset($num_iscr[$id_c])) {
                     ++$num_iscr[$id_c];
                 } else {
@@ -1126,8 +1129,8 @@ class Report_Courses extends Report
             }
             if (!empty($effective_user)) {
                 $query_time = '
-						SELECT idCourse, SUM(UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime))
-						FROM %lms_tracksession
+						SELECT idCourse, SUM(UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)) AS time_sum
+						FROM learning_tracksession
 						WHERE  idUser IN ( ' . implode(',', $effective_user) . ' )  ';
                 if ($start_time != '' && $start_time) {
                     $query_time .= " AND enterTime >= '" . $start_time . "' ";
@@ -1139,7 +1142,9 @@ class Report_Courses extends Report
 
                 $re_time = sql_query($query_time);
 
-                while (list($id_c, $time_num) = sql_fetch_row($re_time)) {
+                foreach ($re_time as $row) {
+                    $id_c = $row['idCourse'];
+                    $time_num = (int)$row['time_sum'];
                     $time_in_course[$id_c] = $time_num;
                 }
             }
@@ -1163,18 +1168,18 @@ class Report_Courses extends Report
         } else {
 
             $query_course_user = 'SELECT cu.idUser, cu.idCourse, cu.date_first_access, cu.date_complete, cu.status, c.course_type, d.id_date '
-                . ' FROM (%lms_courseuser AS cu JOIN %lms_course AS c JOIN %adm_user AS u ON (cu.idCourse = c.idCourse AND cu.idUser = u.idst)) '
-                . ' LEFT JOIN (%lms_course_date AS d JOIN %lms_course_date_user AS du ON (du.id_date=d.id_date)) '
+                . ' FROM (learning_courseuser AS cu JOIN learning_course AS c JOIN core_user AS u ON (cu.idCourse = c.idCourse AND cu.idUser = u.idst)) '
+                . ' LEFT JOIN (learning_course_date AS d JOIN learning_course_date_user AS du ON (du.id_date=d.id_date)) '
                 . ' ON (du.id_user = cu.idUser AND d.id_course = cu.idCourse) '
                 . ' WHERE cu.idUser IN ( ' . implode(',', $user_selected) . ' ) '
                 . ($all_courses ? '' : 'AND cu.idCourse IN (' . implode(',', $course_selected) . ')')
                 . ($show_suspended ? '' : ' AND u.valid = 1 ')
                 . ($only_students ? ' AND cu.level = 3 ' : '');
             if ($start_time != '' && $start_time) {
-                $query_course_user .= " AND cu.date_complete >= '" . $start_time . "' ";
+                $query_course_user .= " AND greatest(coalesce(cu.date_complete, 0), coalesce(cu.date_first_access, 0), coalesce(cu.date_inscr), 0) >= '" . $start_time . "' ";
             }
             if ($end_time != '' && $end_time) {
-                $query_course_user .= " AND cu.date_complete <= '" . $end_time . "'";
+                $query_course_user .= " AND greatest(coalesce(cu.date_complete, 0), coalesce(cu.date_first_access, 0), coalesce(cu.date_inscr), 0) <= '" . $end_time . "'";
             }
 
             $num_iscr = [];
@@ -1185,7 +1190,15 @@ class Report_Courses extends Report
             $effective_user = [];
 
             $re_course_user = sql_query($query_course_user);
-            while (list($id_u, $id_c, $fisrt_access, $date_complete, $status, $course_type, $id_date) = sql_fetch_row($re_course_user)) {
+            foreach ($re_course_user as $row) {
+                $id_u = $row['idUser'];
+                $id_c = $row['idCourse'];
+                $fisrt_access = $row['date_first_access'];
+                $date_complete = $row['date_complete'];
+                $status = $row['status'];
+                $course_type = $row['course_type'];
+                $id_date = $row['id_date'];
+
                 $index = $course_type == 'classroom' ? $id_c . '_' . $id_date : $id_c;
 
                 if (isset($num_iscr[$index])) {
@@ -1227,8 +1240,8 @@ class Report_Courses extends Report
             }
 
             if (!empty($effective_user)) {
-                $query_time = 'SELECT idCourse, SUM(UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)) '
-                    . ' FROM %lms_tracksession WHERE  idUser IN ( ' . implode(',', $effective_user) . ' ) ';
+                $query_time = 'SELECT idCourse, SUM(UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)) AS time_sum '
+                    . ' FROM learning_tracksession WHERE  idUser IN ( ' . implode(',', $effective_user) . ' ) ';
                 if ($start_time != '' && $start_time) {
                     $query_time .= " AND enterTime >= '" . $start_time . "' ";
                 }
@@ -1237,7 +1250,9 @@ class Report_Courses extends Report
                 }
                 $query_time .= ' GROUP BY idCourse ';
                 $re_time = sql_query($query_time);
-                while (list($id_c, $time_num) = sql_fetch_row($re_time)) {
+                foreach ($re_time as $row) {
+                    $id_c = $row['idCourse'];
+                    $time_num = (int)$row['time_sum'];
                     $time_in_course[$id_c] = $time_num;
                 }
             }
@@ -1621,26 +1636,33 @@ class Report_Courses extends Report
 
         //extract course categories
         $query = 'SELECT idCategory, path'
-            . ' FROM %lms_category';
+            . ' FROM learning_category';
         $result = sql_query($query);
         $array_category = [0 => $lang->def('_NONE')];
-        while (list($id_cat, $name_cat) = sql_fetch_row($result)) {
+        foreach ($result as $row) {
+            $id_cat = $row['idCategory'];
+            $name_cat = $row['path'];
             $array_category[$id_cat] = substr($name_cat, 5, (strlen($name_cat) - 5));
         }//strrpos($name_cat, '/') + 1 );
 
         //extract course catalogues and relations
         $query = 'SELECT idCatalogue, name'
-            . ' FROM %lms_catalogue';
+            . ' FROM learning_catalogue';
         $result = sql_query($query);
         $array_catalogue = [];
-        while (list($id_cat, $name_cat) = sql_fetch_row($result)) {
+        foreach ($result as $row) {
+            $id_cat = $row['idCatalogue'];
+            $name_cat = $row['name'];
             $array_catalogue[$id_cat] = $name_cat;
         }//strrpos($name_cat, '/') + 1 );
 
         $catalogue_entries = [];
-        $query = 'select * FROM %lms_catalogue_entry '; //where idst_member in (...)
+        $query = 'select * FROM learning_catalogue_entry '; //where idst_member in (...)
         $result = sql_query($query);
-        while (list($idcat, $entry, $type) = sql_fetch_row($result)) {
+        foreach ($result as $row) {
+            $idcat = $row[0] ?? ($row['idCatalogue'] ?? null);
+            $entry = $row[1] ?? ($row['entry'] ?? null);
+            $type = $row[2] ?? ($row['type'] ?? null);
             switch ($type) {
                 case 'course':
                     if (!isset($catalogue_entries[$entry])) {
@@ -1718,7 +1740,7 @@ class Report_Courses extends Report
 
             if (!$show_classrooms_editions && in_array('_NUM_CLASSROOM', $filter_cols)) {
                 $query = 'SELECT d.*, MIN(dd.date_begin) AS date_1, MAX(dd.date_end) AS date_2 '
-                    . ' FROM %lms_course_date AS d JOIN %lms_course_date_day AS dd ON (d.id_date = dd.id_date) ' . ' AND dd.deleted = 0 '
+                    . ' FROM learning_course_date AS d JOIN learning_course_date_day AS dd ON (d.id_date = dd.id_date) ' . ' AND dd.deleted = 0 '
                     . ' AND d.id_course = ' . $course_info['id_course']
                     . ' GROUP BY dd.id_date';
 
@@ -2039,13 +2061,15 @@ class Report_Courses extends Report
         $glang = &FormaLanguage::createInstance('admin_course_managment', 'lms');
 
         $query = 'SELECT idCategory, path'
-            . ' FROM %lms_category';
+            . ' FROM learning_category';
 
         $result = sql_query($query);
 
         $array_category = [0 => $lang->def('_NONE')];
 
-        while (list($id_cat, $name_cat) = sql_fetch_row($result)) {
+        foreach ($result as $row) {
+            $id_cat = $row['idCategory'];
+            $name_cat = $row['path'];
             $array_category[$id_cat] = substr($name_cat, 5, (strlen($name_cat) - 5));
         }
 
@@ -2170,13 +2194,15 @@ class Report_Courses extends Report
         $glang = &FormaLanguage::createInstance('admin_course_managment', 'lms');
 
         $query = 'SELECT idCategory, path'
-            . ' FROM %lms_category';
+            . ' FROM learning_category';
 
         $result = sql_query($query);
 
         $array_category = [0 => $lang->def('_NONE')];
 
-        while (list($id_cat, $name_cat) = sql_fetch_row($result)) {
+        foreach ($result as $row) {
+            $id_cat = $row['idCategory'];
+            $name_cat = $row['path'];
             $array_category[$id_cat] = substr($name_cat, 5, (strlen($name_cat) - 5));
         }
 
