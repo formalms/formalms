@@ -402,48 +402,6 @@
                     <div id="users_chart_display"></div>
                 </div> --><br/>
                 <!--				<div id="courses_tabview"></div>-->
-                <div class="graph graph--users js-graph-courses">
-                    <div class="graph__nav">
-                        <ul>
-                            <li class="js-dashboard-graph graph__label selected" data-tab="registered"><?php echo Lang::t('_ACCESSES', 'standard'); ?></li>
-                            <li class="js-dashboard-graph graph__label" data-tab="ongoing"><?php echo Lang::t('_USER_STATUS_BEGIN', 'standard'); ?></li>
-                            <li class="js-dashboard-graph graph__label" data-tab="finished"><?php echo Lang::t('_USER_STATUS_END', 'standard'); ?></li>
-                        </ul>
-                    </div>
-                    <div class="graph__container">
-                        <div id="courses_subscriptions_chart"
-                             class="graph__content graph__content--registered graph__content--visible">
-
-                        </div>
-                        <div class="yui-u">
-                            <ul class="link_list">
-                                <li>
-                                    <?php echo Lang::t('_TOTAL_SUBSCRIPTION', 'dashboard') . ': <b>' . $course_stats['user_subscription'] . '</b>;'; ?>
-                                </li>
-                                <?php
-                                echo checkPerm('moderate', true, 'course', 'lms') ? '<li>' . Lang::t('_WAITING_SUBSCRIPTION', 'dashboard') . ': <b>' . $course_stats['user_waiting'] . '</b>;</li>' : '';
-                                $month_1 = (int) date('m');
-                                $month_2 = (($month_1 + 12 - 2) % 12) + 1;
-                                $month_3 = (($month_1 + 12 - 3) % 12) + 1;
-                                ?>
-                                <li>
-                                    <?php echo Lang::t('_SUBSCRIPTION', 'course') . '&nbsp;' . Lang::t('_MONTH_' . ((int) $month_1 < 10 ? '0' : '') . (int) $month_1) . ': <b>' . $course_months_stats['month_subs_1'] . '</b>;'; ?>
-                                </li>
-                                <li>
-                                    <?php echo Lang::t('_SUBSCRIPTION', 'course') . '&nbsp;' . Lang::t('_MONTH_' . ((int) $month_2 < 10 ? '0' : '') . (int) $month_2) . ': <b>' . $course_months_stats['month_subs_2'] . '</b>;'; ?>
-                                </li>
-                                <li>
-                                    <?php echo Lang::t('_SUBSCRIPTION', 'course') . '&nbsp;' . Lang::t('_MONTH_' . ((int) $month_3 < 10 ? '0' : '') . (int) $month_3) . ': <b>' . $course_months_stats['month_subs_3'] . '</b>;'; ?>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="nofloat"></div>
-                    <!-- <div style="text-align:center;margin:1em;padding:1em;">
-                        <p>Statistics:&nbsp;<span id="courses_chart_buttons"></span></p>
-                        <div id="users_chart_display"></div>
-                    </div> --><br/>
-                    <!--				<div id="courses_tabview"></div>-->
                     <div class="graph graph--users js-graph-courses">
                         <div class="graph__nav">
                             <ul>
