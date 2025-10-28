@@ -1,26 +1,31 @@
 <?php
+
 namespace FormaLms\lib\Selectors\Multiuserselector\DataSelectors;
 
 require_once _adm_ . '/models/GroupmanagementAdm.php';
-class GroupDataSelector extends DataSelector{ 
+
+class GroupDataSelector extends DataSelector
+{
 
     const ADDITIONAL_COLS = [];
 
-    public function __construct() {
-     
+    public function __construct()
+    {
+
         $this->builder = new \GroupmanagementAdm();
         $this->name = 'GroupDataSelector';
 
         parent::__construct();
     }
 
-    public function getData($params = []) {
-      
+    public function getData($params = [])
+    {
+
         $columnsFilter = [];
-        $op = array_key_exists('op', $params) ? (string) $params['op'] : false;
+        $op = array_key_exists('op', $params) ? (string)$params['op'] : false;
         $columns = array_key_exists('columns', $params) ? $params['columns'] : [];
-        foreach($columns as $column) {
-            if($column['search']['value']!='') {
+        foreach ($columns as $column) {
+            if ($column['search']['value'] != '') {
                 $columnsFilter[$column['name']] = $column['search']['value'];
             }
         }
@@ -28,31 +33,31 @@ class GroupDataSelector extends DataSelector{
             case 'selectall':
                 return $this->_selectAll($params, $columnsFilter);
 
-             break;
+                break;
         }
 
-        
+
         $descendants = false; //(FormaLms\lib\Get::req('descendants', DOTY_INT, 0) > 0 ? true : false);
-        $startIndex = array_key_exists('start', $params) ? (int) $params['start'] : 0;
-        $results = array_key_exists('length', $params) ? (int) $params['length'] : \FormaLms\lib\Get::sett('visuItem', 25);
-        $rowsPerPage = array_key_exists('rowsPerPage', $params) ? (int) $params['rowsPerPage'] : $results;
-        $activeSearch = array_key_exists('active_search', $params) ? (int) $params['active_search'] : false;
-        
-        if(array_key_exists('order', $params)) {
+        $startIndex = array_key_exists('start', $params) ? (int)$params['start'] : 0;
+        $results = array_key_exists('length', $params) ? (int)$params['length'] : \FormaLms\lib\Get::sett('visuItem', 25);
+        $rowsPerPage = array_key_exists('rowsPerPage', $params) ? (int)$params['rowsPerPage'] : $results;
+        $activeSearch = array_key_exists('active_search', $params) ? (int)$params['active_search'] : false;
+
+        if (array_key_exists('order', $params)) {
 
             $order = $params['order'][0];
-            $sort = array_key_exists('column', $order) ? (string) $columns[$order['column']]['data'] != ''? (string) $columns[$order['column']]['data'] : '0' : '0';
-            $dir = array_key_exists('dir', $order) ? (string) $order['dir'] : 'asc'; 
+            $sort = array_key_exists('column', $order) ? (string)$columns[$order['column']]['data'] != '' ? (string)$columns[$order['column']]['data'] : '0' : '0';
+            $dir = array_key_exists('dir', $order) ? (string)$order['dir'] : 'asc';
         } else {
             $sort = '0';
             $dir = 'asc';
         }
-        $searchValue = array_key_exists('search', $params) ? (string) $params['search']['value'] : false;
+        $searchValue = array_key_exists('search', $params) ? (string)$params['search']['value'] : false;
 
-        $learning_filter = array_key_exists('learning_filter', $params) ? (string) $params['learning_filter'] : 'none'; 
+        $learning_filter = array_key_exists('learning_filter', $params) ? (string)$params['learning_filter'] : 'none';
         $total = $this->builder->getTotalGroups($searchValue, $learning_filter, $columnsFilter);
 
-        if($activeSearch) {
+        if ($activeSearch) {
             $results = $total;
             $rowsPerPage = $total;
         }
@@ -71,15 +76,16 @@ class GroupDataSelector extends DataSelector{
         $records = $this->mapData($list, $searchValue);
 
         $pagination['data'] = $records;
-     
-        if(array_key_exists('json_format', $params)) {
-            $pagination = $this->json->encode($pagination);
+
+        if (array_key_exists('json_format', $params)) {
+            $pagination = $this->serializer->encode($pagination, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         }
-        
+
         return $pagination;
     }
 
-    public function getColumns(){
+    public function getColumns()
+    {
 
         return [
             [
@@ -105,41 +111,47 @@ class GroupDataSelector extends DataSelector{
         ];
     }
 
-    public function getHiddenColumns(){
+    public function getHiddenColumns()
+    {
 
         $hiddenColumns = [];
-        foreach(self::ADDITIONAL_COLS as $additonalCol) {
-            
+        foreach (self::ADDITIONAL_COLS as $additonalCol) {
+
             $hiddenColumns[] = [
                 'data' => $additonalCol,
-                'title' => \Lang::t('_'.strtoupper($additonalCol), 'standard'),
+                'title' => \Lang::t('_' . strtoupper($additonalCol), 'standard'),
                 'sortable' => false,
                 'searchable' => false,
                 'search_field' => 'text',
                 'visible' => false
             ];
         }
-        
+
         return $hiddenColumns;
     }
 
-    protected function _selectAll($params = [], $columnsFilter = []){
+    protected function _selectAll($params = [], $columnsFilter = [])
+    {
 
-        $filter_text = array_key_exists('filter_text', $params) ? (string) $params['filter_text'] : '';
+        $filter_text = array_key_exists('filter_text', $params) ? (string)$params['filter_text'] : '';
         $output = $this->builder->getAllGroups($filter_text, true, $columnsFilter);
         $output = $this->builder->getAllGroupDetails($output);
-       
+
         return $output;
     }
 
-    public function getAllSelection($exclusions = []) {
+    public function getAllSelection($exclusions = [])
+    {
         $allSelection = $this->builder->getAllGroups($filter_text, true);
         return array_diff($allSelection, $exclusions);
     }
 
-    protected function _getDynamicFilter($input){}
+    protected function _getDynamicFilter($input)
+    {
+    }
 
-    protected function mapData($records, $filter = ''){
+    protected function mapData($records, $filter = '')
+    {
 
         $list = [];
         $acl_man = \FormaLms\lib\Forma::getAclManager();
@@ -151,7 +163,7 @@ class GroupDataSelector extends DataSelector{
                     $_description = substr($_description, 0, 97) . '...';
                 }
                 $list[] = [
-                    'id' => (int) $record->idst,
+                    'id' => (int)$record->idst,
                     'groupid' => highlightText($_groupid, $filter),
                     'description' => highlightText($_description, $filter),
                     'usercount' => $record->usercount,

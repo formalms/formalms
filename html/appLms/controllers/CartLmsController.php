@@ -37,8 +37,8 @@ class CartLmsController extends LmsController
         $this->path_course = $GLOBALS['where_files_relative'] . '/appLms/' . FormaLms\lib\Get::sett('pathcourse') . '/';
         $this->model = new CartLms();
 
-        require_once _base_ . '/lib/lib.json.php';
-        $this->json = new Services_JSON();
+        
+        
 
         $this->acl_man = \FormaLms\lib\Forma::getAclManager();
 
@@ -223,7 +223,7 @@ class CartLmsController extends LmsController
             'records' => $course_list,
         ];
 
-        echo $this->json->encode($result);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function emptyCart()
@@ -233,7 +233,7 @@ class CartLmsController extends LmsController
 
         $result['success'] = true;
 
-        echo $this->json->encode($result);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function delSelectedElement()
@@ -272,7 +272,7 @@ class CartLmsController extends LmsController
             'price' => $this->model->getTotalPrice(),
         ];
 
-        echo $this->json->encode($result);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function makeOrder()
@@ -402,7 +402,7 @@ class CartLmsController extends LmsController
             }
             Util::jump_to('index.php?r=cart/show&error=1');
         } else {
-            echo $this->json->encode($result);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         }
     }
 

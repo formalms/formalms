@@ -23,9 +23,7 @@ class KbAlms extends Model
 
     public function __construct()
     {
-        require_once _base_ . '/lib/lib.json.php';
         $this->db = \FormaLms\db\DbConn::getInstance();
-        $this->json = new Services_JSON();
         parent::__construct();
     }
 

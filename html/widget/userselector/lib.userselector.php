@@ -108,7 +108,7 @@ class UserselectorWidget extends Widget
     {
         require_once _base_ . '/lib/lib.userselector.php';
         $this->util = new UserSelectorUtil();
-        $this->json = new Services_JSON();
+        
 
         YuiLib::load('base,tabview,tree,datatable,selector');
         Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/lib.elem_selector.js', true, true);
@@ -159,7 +159,9 @@ class UserselectorWidget extends Widget
             case 'user':
             case 'group':
             case 'orgchart':
-            case 'fncrole': $selected_tab = $_check_tab; break;
+            case 'fncrole':
+                $selected_tab = $_check_tab;
+                break;
         }
 
         $_selection = [];
@@ -184,8 +186,8 @@ class UserselectorWidget extends Widget
             'show_orgchart_simple_selector' => $this->show_orgchart_simple_selector,
             'show_fncrole_selector' => $this->show_fncrole_selector,
             'selected_tab' => $selected_tab,
-            'use_form_input' => (bool) $this->use_form_input,
-            'separate_input' => (bool) $this->separate_input,
+            'use_form_input' => (bool)$this->use_form_input,
+            'separate_input' => (bool)$this->separate_input,
             'initial_selection' => $initial_selection,
             'ajax_url' => '../widget/ajax.widget.php?r=userselector/gettreedata', //fixed param
         ];
@@ -208,14 +210,14 @@ class UserselectorWidget extends Widget
                 'level' => Lang::t('_LEVEL', 'standard'),
             ];
             $f_list = $f_list + $fields;
-            $f_selected = $this->json->decode(\FormaLms\lib\FormaUser::getCurrentUser()->getPreference('ui.directory.custom_columns'));
+            $f_selected = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode(\FormaLms\lib\FormaUser::getCurrentUser()->getPreference('ui.directory.custom_columns'), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             if ($f_selected == false) {
                 $f_selected = ['email', 'lastenter', 'register_date'];
             }
 
             $js_arr = [];
             foreach ($f_list as $key => $value) {
-                $js_arr[] = $key . ': ' . $this->json->encode($value);
+                $js_arr[] = $key . ': ' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             }
             $f_list_js = '{' . implode(',', $js_arr) . '}';
 
@@ -250,7 +252,7 @@ class UserselectorWidget extends Widget
 
             $orgchart_config = new stdClass();
             $orgchart_config->root_node_id = $arr_idst['/oc_0'] . '_' . $arr_idst['/ocd_0']; //$acl_man->getGroupST('oc_0').'_'.$acl_man->getGroupST('ocd_0');
-            $orgchart_config->can_select_root = (bool) $this->can_select_root;
+            $orgchart_config->can_select_root = (bool)$this->can_select_root;
 
             $params['orgchart_config'] = $orgchart_config;
         }

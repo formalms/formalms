@@ -24,12 +24,10 @@ class KbAlmsController extends AlmsController
     public function init()
     {
         parent::init();
-        require_once _base_ . '/lib/lib.json.php';
 
         //Util::get_css();
 
         $this->model = new KbAlms();
-        $this->json = new Services_JSON();
 
         $this->permissions = [
             'view' => checkPerm('view', true, 'kb'),
@@ -293,7 +291,7 @@ class KbAlmsController extends AlmsController
             'records' => $array_comm,
         ];
 
-        $this->data = $this->json->encode($result);
+        $this->data = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         echo $this->data;
     }
 
@@ -327,7 +325,7 @@ class KbAlmsController extends AlmsController
             'records' => $data_arr['data'],
         ];
 
-        $data = $this->json->encode($result);
+        $data = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         echo $data;
     }
 
@@ -517,13 +515,13 @@ class KbAlmsController extends AlmsController
                         'initial' => $initial,
                     ];
                 }
-                echo $this->json->encode($output);
+                echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
              break;
 
             case 'getmodform':
                 if (!$this->permissions['mod']) {
                     $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-                    echo $this->json->encode($output);
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                     return;
                 }
@@ -567,7 +565,7 @@ class KbAlmsController extends AlmsController
                     ];
                 }
 
-                echo $this->json->encode($output);
+                echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
              break;
 
             case 'delete': $this->delfolder(); break;
@@ -580,7 +578,7 @@ class KbAlmsController extends AlmsController
                     $output['success'] = true;
                     $output['options'] = $this->_getNodeActions($id);
                 }
-                echo $this->json->encode($output);
+                echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         } //end switch command
     }
 
@@ -650,7 +648,7 @@ class KbAlmsController extends AlmsController
     {
         if (!$this->permissions['add']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -683,7 +681,7 @@ class KbAlmsController extends AlmsController
             }
         }
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     /**
@@ -693,7 +691,7 @@ class KbAlmsController extends AlmsController
     {
         if (!$this->permissions['mod']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -709,7 +707,7 @@ class KbAlmsController extends AlmsController
             $output['success'] = false;
             $output['message'] = Lang::t('_CONNECTION_ERROR');
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     /**
@@ -719,7 +717,7 @@ class KbAlmsController extends AlmsController
     {
         if (!$this->permissions['mod']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -734,7 +732,7 @@ class KbAlmsController extends AlmsController
             $output['success'] = false;
             $output['message'] = Lang::t('_CONNECTION_ERROR');
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     /**
@@ -744,7 +742,7 @@ class KbAlmsController extends AlmsController
     {
         if (!$this->permissions['del']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -754,7 +752,7 @@ class KbAlmsController extends AlmsController
         if ($id > 0) {
             $output['success'] = $this->model->deleteFolder($id, true);
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function test()
@@ -766,7 +764,7 @@ class KbAlmsController extends AlmsController
     {
         if (!$this->permissions['add']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }

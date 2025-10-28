@@ -165,7 +165,7 @@ function outPageView($link)
 
     $chartString = '<script type="text/javascript">$(document).ready(function () {';
     $chartString .= '
-    var dataset = ' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($dataset, 'json') . ";
+    var dataset = ' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($dataset, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . ";
     var backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--color-primary');
     var borderColor = getComputedStyle(document.documentElement).getPropertyValue('--color-primary');
         
@@ -178,7 +178,7 @@ function outPageView($link)
     const statsChart = new window.frontend.modules.Chart($(\"#statistic_chart\"), {
     type: 'bar',
     data: {
-        labels: " . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($labels, 'json') . ',
+        labels: " . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($labels, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . ',
         datasets: [ dataset ]
     },
     options: {

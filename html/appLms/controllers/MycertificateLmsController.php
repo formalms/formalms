@@ -13,16 +13,13 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/','lib.certificate.php');
+require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.certificate.php');
 
 class MycertificateLmsController extends LmsController
 {
     public const mod_name = 'mycertificate';
 
     protected $id_user;
-
-    /** @var Services_JSON */
-    protected $json;
 
     /** @var MycertificateLms */
     protected $model;
@@ -31,21 +28,18 @@ class MycertificateLmsController extends LmsController
 
     public function init()
     {
-
-     
         $this->id_user = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
-        $this->json = new Services_JSON();
         $this->model = new MycertificateLms($this->id_user);
         $this->certificate = new Certificate();
     }
 
     public function show()
     {
-        
-        include \FormaLms\lib\Forma::include(_lib_ . '/formatable/','include.php');
+
+        include \FormaLms\lib\Forma::include(_lib_ . '/formatable/', 'include.php');
         checkPerm('view', false, self::mod_name);
 
-       
+
         //TODO: EVT_OBJECT (§)
         //$event = new \appLms\Events\Lms\MyCertificateTabLoading();
         //TODO: EVT_LAUNCH (&)
@@ -57,7 +51,6 @@ class MycertificateLmsController extends LmsController
         $selected_tab = FormaLms\lib\Get::req('current_tab', DOTY_STRING, 'cert');
 
 
-
         $view = 'show';
 
         $eventResults = Events::trigger('lms.certificate.show', ['view' => $view]);
@@ -67,8 +60,8 @@ class MycertificateLmsController extends LmsController
 
         $this->render($view,
             [
-                'metacertificates' => $this->json->encode($metaCertificates),
-                'certa' => $this->json->encode(\Util::config('tables.columnsacert')),
+                'metacertificates' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($metaCertificates, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON),
+                'certa' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(\Util::config('tables.columnsacert'), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON),
                 'totalMetaCertificates' => $totalMetaCertificates,
                 'id_user' => $this->id_user,
                 'cert_columns' => $cert_columns,
@@ -132,7 +125,7 @@ class MycertificateLmsController extends LmsController
             'data' => $certificates,
         ];
 
-        echo $this->json->encode($result);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function downloadCert()
@@ -159,10 +152,10 @@ class MycertificateLmsController extends LmsController
 
         $eventResults = Events::trigger('lms.certificate.download.meta', compact('id_certificate', 'id_association', 'id_course', 'id_user'));
 
-        if($eventResults && array_key_exists('params', $eventResults)) {
+        if ($eventResults && array_key_exists('params', $eventResults)) {
             $params = array_merge($params, $eventResults['params']);
         }
-        
+
         $subs = $this->certificate->getSubstitutionArray($id_user, $id_course, $id_association);
         $rs = $this->certificate->send_certificate($id_certificate, $id_user, 0, $subs, true, false, $id_association, $params);
     }

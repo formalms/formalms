@@ -455,8 +455,8 @@ function select_media(&$out, &$lang)
         case 'audio':
         case 'video':
         case 'streaming':
-            require_once _base_ . '/lib/lib.json.php';
-            $json = new Services_JSON();
+            
+            
             if (!empty($media_url)) {
                 $code = getStreamingEmbed($media_url, false, $src);
             } else {
@@ -472,7 +472,7 @@ function select_media(&$out, &$lang)
             $good_path = $core_url . 'addons/players/';
             $code = str_replace($bad_path, $good_path, $code);
             $content = ['code' => $code];
-            $embed_code = $json->encode($content);
+            $embed_code = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($content, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             $res .= $form->getHidden('embed_code', 'embed_code', rawurlencode($embed_code));
             $res .= $src;
          break;

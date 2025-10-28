@@ -868,9 +868,9 @@ class AdminPreference
 
     public function __construct()
     {
-        require_once _base_ . '/lib/lib.json.php';
+        
 
-        $this->json = new Services_JSON();
+        
     }
 
     public function getSpecialModifyMask($idst, $lang_module = 'adminrules')
@@ -946,7 +946,7 @@ class AdminPreference
 
         while (list($path, $value) = sql_fetch_row($result)) {
             if ($path === _RULES_LANG) {
-                $res[$path] = $this->json->decode($value);
+                $res[$path] = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             } else {
                 $res[$path] = $value;
             }
@@ -967,7 +967,7 @@ class AdminPreference
 
         while (list($path, $value) = sql_fetch_row($result)) {
             if ($path === _RULES_LANG) {
-                $res[$path] = $this->json->decode($value);
+                $res[$path] = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             } else {
                 $res[$path] = $value;
             }

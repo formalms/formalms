@@ -36,15 +36,11 @@ class CourseLmsController extends LmsController
      */
     public array $permissions;
 
-    private Services_JSON $json;
-
     public function init()
     {
 
         require_once _adm_ . '/lib/lib.field.php';
-
-        /* @var Services_JSON json */
-        $this->json = new Services_JSON();
+        
         $this->_mvc_name = 'course';
         $this->permissions = [
             'view' => true,

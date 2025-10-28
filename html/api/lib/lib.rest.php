@@ -41,15 +41,17 @@ class RestAPI
         $output = '';
         $temp = ['error' => $error];
         switch ($type) {
-            case _REST_OUTPUT_XML:  	$output .= API::getXML($temp); break;
+            case _REST_OUTPUT_XML:
+                $output .= \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($temp, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_XML);
+                break;
             case _REST_OUTPUT_JSON:
-                $json = new Services_JSON();
-                $output .= $json->encode($temp);
-             break;
+
+                $output .= \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($temp, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
+                break;
             default:
                 // handler doesn't know how to format the output, so send raw string
                 $output .= $error;
-             break;
+                break;
         }
 
         return $output;
@@ -69,12 +71,15 @@ class RestAPI
         $f_msg = $message;
         $temp = ['debug' => $f_msg];
         switch ($type) {
-            case _REST_OUTPUT_XML:  $output .= API::getXML($temp); break;
+            case _REST_OUTPUT_XML:
+                $output .= \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($temp, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_XML);
+                break;
             case _REST_OUTPUT_JSON:
-                $json = new Services_JSON();
-                $output .= $json->encode($temp);
-             break;
-            default: $output .= $message; break; //handler doesn't know how to format the output, so send raw string
+                $output .= \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($temp, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
+                break;
+            default:
+                $output .= $message;
+                break; //handler doesn't know how to format the output, so send raw string
         }
 
         return $output;
@@ -93,12 +98,11 @@ class RestAPI
         $output = '';
         switch ($type) {
             case _REST_OUTPUT_XML:
-                $output .= API::getXML($arr);
-             break;
+                $output .= \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($arr, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_XML);
+                break;
             case _REST_OUTPUT_JSON:
-                $json = new Services_JSON();
-                $output .= $json->encode($arr);
-             break;
+                $output .= \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($arr, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
+                break;
             default:
                 $output .= '<error>Invalid type setting.</error>';
         }

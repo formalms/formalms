@@ -24,8 +24,6 @@ class LabelAlmsController extends AlmsController
     public function init()
     {
         parent::init();
-        require_once _base_ . '/lib/lib.json.php';
-        $this->json = new Services_JSON();
         $this->acl_man = \FormaLms\lib\Forma::getAclManager();
         $this->model = new LabelAlms();
         $this->permissions = [
@@ -40,7 +38,9 @@ class LabelAlmsController extends AlmsController
     {
         $message = '';
         switch ($code) {
-            case 'no permission': $message = ''; break;
+            case 'no permission':
+                $message = '';
+                break;
         }
 
         return $message;
@@ -104,23 +104,23 @@ class LabelAlmsController extends AlmsController
             }
 
             $list[] = ['id_common_label' => $value[LABEL_ID_COMMON],
-                            'title' => $value[LABEL_TITLE],
-                            'description' => $this->_formatDescription($value[LABEL_DESCRIPTION], 100),
-                            'position' => $position,
-                            'sequence' => $value[LABEL_SEQUENCE],
-                            'mod' => '<a href="index.php?r=alms/label/mod&amp;id_common_label=' . $value[LABEL_ID_COMMON] . '" title="' . Lang::t('_MOD', 'label') . '">' . FormaLms\lib\Get::img('standard/edit.png', Lang::t('_MOD', 'label')) . '</a>',
-                            'del' => 'ajax.adm_server.php?r=alms/label/dellabel&id_common_label=' . $value[LABEL_ID_COMMON], ];
+                'title' => $value[LABEL_TITLE],
+                'description' => $this->_formatDescription($value[LABEL_DESCRIPTION], 100),
+                'position' => $position,
+                'sequence' => $value[LABEL_SEQUENCE],
+                'mod' => '<a href="index.php?r=alms/label/mod&amp;id_common_label=' . $value[LABEL_ID_COMMON] . '" title="' . Lang::t('_MOD', 'label') . '">' . FormaLms\lib\Get::img('standard/edit.png', Lang::t('_MOD', 'label')) . '</a>',
+                'del' => 'ajax.adm_server.php?r=alms/label/dellabel&id_common_label=' . $value[LABEL_ID_COMMON],];
         }
 
         $result = ['totalRecords' => $total_label,
-                        'startIndex' => $start_index,
-                        'sort' => $sort,
-                        'dir' => $dir,
-                        'rowsPerPage' => $results,
-                        'results' => count($list),
-                        'records' => $list, ];
+            'startIndex' => $start_index,
+            'sort' => $sort,
+            'dir' => $dir,
+            'rowsPerPage' => $results,
+            'results' => count($list),
+            'records' => $list,];
 
-        echo $this->json->encode($result);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function move()
@@ -133,7 +133,7 @@ class LabelAlmsController extends AlmsController
             $re = $this->model->move_down($id_common_label);
         }
         $res = ['success' => $re];
-        echo $this->json->encode($res);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($res, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function add()
@@ -199,7 +199,7 @@ class LabelAlmsController extends AlmsController
         }
 
         $params = ['model' => $this->model,
-                        'all_languages' => $all_languages, ];
+            'all_languages' => $all_languages,];
 
         $this->render('add', $params);
     }
@@ -280,9 +280,9 @@ class LabelAlmsController extends AlmsController
         $label_info = $this->model->getLabelInfo($id_common_label);
 
         $params = ['model' => $this->model,
-                        'all_languages' => $all_languages,
-                        'label_info' => $label_info,
-                        'id_common_label' => $id_common_label, ];
+            'all_languages' => $all_languages,
+            'label_info' => $label_info,
+            'id_common_label' => $id_common_label,];
 
         $this->render('mod', $params);
     }
@@ -291,7 +291,7 @@ class LabelAlmsController extends AlmsController
     {
         if (!$this->permissions['del']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -300,7 +300,7 @@ class LabelAlmsController extends AlmsController
 
         $res = ['success' => $this->model->delLabel($id_common_label)];
 
-        $this->data = $this->json->encode($res);
+        $this->data = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($res, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
         echo $this->data;
     }

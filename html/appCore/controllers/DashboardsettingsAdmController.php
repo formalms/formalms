@@ -23,9 +23,6 @@ class DashboardsettingsAdmController extends AdmController
     /** @var DashboardsettingsAdm */
     protected $model;
 
-    /** @var Services_JSON */
-    protected $json;
-
     /** @var array */
     protected $permissions;
 
@@ -35,8 +32,8 @@ class DashboardsettingsAdmController extends AdmController
     public function init()
     {
         parent::init();
-        require_once _base_ . '/lib/lib.json.php';
-        $this->json = new Services_JSON();
+        
+        
         $this->model = new DashboardsettingsAdm();
 
         Util::get_js(FormaLms\lib\Get::rel_path('base') . '/addons/tiny_mce/tinymce.min.js', true, true);
@@ -193,7 +190,7 @@ class DashboardsettingsAdmController extends AdmController
             'data' => $data,
         ];
 
-        echo $this->json->encode($res);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($res,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         exit;
     }
 
@@ -390,7 +387,7 @@ class DashboardsettingsAdmController extends AdmController
         // ok, validation error, or failure
         header('Status: ' . $status[$code]);
 
-        return FormaLms\lib\Serializer\FormaSerializer::getInstance()->serialize($message, 'json');
+        return FormaLms\lib\Serializer\FormaSerializer::getInstance()->serialize($message, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function save()
@@ -422,7 +419,7 @@ class DashboardsettingsAdmController extends AdmController
             }
         }
 
-        echo $this->json->encode($response);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($response,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function uploadFile()
@@ -470,7 +467,7 @@ class DashboardsettingsAdmController extends AdmController
                 }
             }
         }
-        echo $this->json->encode($response);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($response,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         exit();
     }
 

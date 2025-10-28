@@ -41,10 +41,10 @@ if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         'title' => $lang->def('_COURSE_SUBSCRIPTION', 'catalogue'),
         'content' => str_replace(array_keys($subst), $subst, $string),
     ];
-    require_once _base_ . '/lib/lib.json.php';
+    
 
-    $json = new Services_JSON();
-    $output = $json->encode($value);
+    
+    $output = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     aout($output);
 } else {
     $op = FormaLms\lib\Get::req('op', DOTY_ALPHANUM, '');
@@ -86,9 +86,9 @@ if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 
             $value = ['code' => $code, 'button' => $buttons];
 
-            require_once _base_ . '/lib/lib.json.php';
-            $json = new Services_JSON();
-            $output = $json->encode($value);
+            
+            
+            $output = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             aout($output);
          break;
         case 'getCourseEditionsTable':
@@ -168,10 +168,10 @@ if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 
             $value = ['content' => $html, 'elem_id' => importVar('elem_id'), 'id_course' => importVar('id_course', false, 0)];
 
-            require_once _base_ . '/lib/lib.json.php';
+            
 
-            $json = new Services_JSON();
-            $output = $json->encode($value);
+            
+            $output = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             aout($output);
          break;
         // -------------------------------------------------------------------------------
@@ -220,10 +220,10 @@ if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                         'new_score' => $new_score,
                         'path_image' => getPathImage() . 'coursecatalogue/', ];
 
-            require_once _base_ . '/lib/lib.json.php';
+            
 
-            $json = new Services_JSON();
-            $output = $json->encode($value);
+            
+            $output = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             aout($output);
          break;
 
@@ -305,10 +305,10 @@ if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                             . '<input type="button" value="' . $lang->def('_UNDO') . '" onclick="destroyWindow(\'course_action_' . $id_course . '\')"  id="undo_course_action' . $$id_course . '" />',
                 ];
             }
-            require_once _base_ . '/lib/lib.json.php';
+            
 
-            $json = new Services_JSON();
-            $output = $json->encode($value);
+            
+            $output = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             aout($output);
          break;
         case 'course_action_confirm_edition':
@@ -344,10 +344,10 @@ if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                     'content' => getCourseEditionList(importVar('id_course')),
                 ];
             }
-            require_once _base_ . '/lib/lib.json.php';
+            
 
-            $json = new Services_JSON();
-            $output = $json->encode($value);
+            
+            $output = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             aout($output);
          break;
 
@@ -405,10 +405,10 @@ if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 'content' => $content,
             ];
 
-            require_once _base_ . '/lib/lib.json.php';
+            
 
-            $json = new Services_JSON();
-            $output = $json->encode($value);
+            
+            $output = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             aout($output);
 
             break;
@@ -456,10 +456,10 @@ if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 'content' => $content,
             ];
 
-            require_once _base_ . '/lib/lib.json.php';
+            
 
-            $json = new Services_JSON();
-            $output = $json->encode($value);
+            
+            $output = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             aout($output);
             break;
 
@@ -502,10 +502,10 @@ if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 'content' => $content,
             ];
 
-            require_once _base_ . '/lib/lib.json.php';
+            
 
-            $json = new Services_JSON();
-            $output = $json->encode($value);
+            
+            $output = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             aout($output);
          break;
         case 'course_materials':
@@ -568,10 +568,10 @@ if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 'content' => $html,
             ];
 
-            require_once _base_ . '/lib/lib.json.php';
+            
 
-            $json = new Services_JSON();
-            $output = $json->encode($value);
+            
+            $output = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             aout($output);
          break;
         case 'play_demo':
@@ -594,10 +594,10 @@ if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 'title' => $lang->def('_DEMO'),
                 'content' => getEmbedPlay('/appLms/' . FormaLms\lib\Get::sett('pathcourse'), $course_demo, $ext, '450', '450', false, false, '../../' . $GLOBALS['where_files_relative']),
             ];
-            require_once _base_ . '/lib/lib.json.php';
+            
 
-            $json = new Services_JSON();
-            $output = $json->encode($value);
+            
+            $output = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             aout($output);
          break;
         default:
@@ -612,10 +612,10 @@ if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 'content' => 'prova di creazione di una window',
             ];
 
-            require_once _base_ . '/lib/lib.json.php';
+            
 
-            $json = new Services_JSON();
-            $output = $json->encode($value);
+            
+            $output = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             aout($output);
          break;
     }

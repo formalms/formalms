@@ -46,7 +46,7 @@ return [
 |
 */
 
-'php_max_version' => '8.1.99',
+'php_max_version' => '8.2.99',
 
 /*
 |--------------------------------------------------------------------------
@@ -111,7 +111,7 @@ return [
 | Max mysql version suitable to platform
 |
 */
-  
+
 'max_mysql_version' => '8.1',
 
 /*

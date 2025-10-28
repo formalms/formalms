@@ -2561,8 +2561,8 @@ class FormaACLManager
         $inString = (implode(',', $idst) == '' ? 'NULL' : implode(',', $idst));
 
         $query = 'SELECT DISTINCT tgm.idstMember'
-            . '  FROM ' . $this->_getTableGroupMembers() . ' AS tgm'
-            . '  LEFT JOIN ' . $this->_getTableUser() . ' AS tu'
+            . '  FROM core_group_members AS tgm'
+            . '  LEFT JOIN core_user AS tu'
             . '    ON (tgm.idstMember = tu.idst)'
             . ' WHERE tgm.idst IN (' . $inString . ')'
             . "   AND tgm.filter = '" . $filter . "'"
@@ -2573,7 +2573,6 @@ class FormaACLManager
                 $query .= " AND tu.valid = '1'";
             }
         }
-
         $rs = $this->_executeQuery($query);
         $arrUsers = [];
         foreach ($rs as $row) {

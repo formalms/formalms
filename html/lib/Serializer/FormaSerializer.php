@@ -25,6 +25,9 @@ use Symfony\Component\Serializer\Serializer;
 
 class FormaSerializer extends Serializer
 {
+    const FORMAT_JSON = 'json';
+    const FORMAT_XML = 'xml';
+
     private static ?FormaSerializer $instance = null;
 
     public static function getInstance() : FormaSerializer

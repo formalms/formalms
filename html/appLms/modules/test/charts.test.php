@@ -89,10 +89,10 @@ class Test_Charts
 
     public function _setTestInfo()
     {
-        $json = new Services_JSON();
+        
         list($info) = sql_fetch_row(sql_query('SELECT chart_options FROM %lms_test WHERE idTest=' . $this->idTest));
         if ($info != '') {
-            $this->testInfo = $json->decode($info);
+            $this->testInfo = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($info, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         } else {
             $this->testInfo = new stdClass();
         }

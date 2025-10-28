@@ -36,7 +36,7 @@ class SubscriptionAlmsController extends AlmsController
     public function init()
     {
         checkPerm('subscribe', false, 'course', 'lms');
-        require_once _base_ . '/lib/lib.json.php';
+        
         require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.eventmanager.php');
 
         //Course info
@@ -45,7 +45,7 @@ class SubscriptionAlmsController extends AlmsController
         $this->id_date = FormaLms\lib\Get::req('id_date', DOTY_INT, 0);
 
         $this->model = new SubscriptionAlms($this->id_course, $this->id_edition, $this->id_date);
-        $this->json = new \Services_JSON();
+
         $this->acl_man = \FormaLms\lib\Forma::getAclManager();
         $this->db = \FormaLms\db\DbConn::getInstance();
 
@@ -170,13 +170,13 @@ class SubscriptionAlmsController extends AlmsController
             'language' => Lang::t('_LANGUAGE', 'standard'),
         ];
         $f_list = $f_list + $fields;
-        $f_selected = $this->json->decode(\FormaLms\lib\FormaUser::getCurrentUser()->getPreference('ui.directory.custom_columns'));
+        $f_selected = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode(\FormaLms\lib\FormaUser::getCurrentUser()->getPreference('ui.directory.custom_columns'), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         if ($f_selected == false) {
             $f_selected = ['email'];
         }
         $js_arr = [];
         foreach ($f_list as $key => $value) {
-            $js_arr[] = $key . ': ' . $this->json->encode($value);
+            $js_arr[] = $key . ': ' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         }
         $f_list_js = '{' . implode(',', $js_arr) . '}';
 
@@ -627,7 +627,7 @@ class SubscriptionAlmsController extends AlmsController
             'date_valid' => FormaLms\lib\Get::req('filter_date_valid', DOTY_STRING, ''),
         ];
         $output = array_values($this->model->getSubscriptionsList($filter));
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function getlist()
@@ -732,7 +732,7 @@ class SubscriptionAlmsController extends AlmsController
             'records' => array_values($list),
         ];
 
-        $this->data = $this->json->encode($result);
+        $this->data = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         echo $this->data;
     }
 
@@ -740,7 +740,7 @@ class SubscriptionAlmsController extends AlmsController
     {
         if (!$this->permissions['subscribe_course']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -762,7 +762,7 @@ class SubscriptionAlmsController extends AlmsController
             $res = ['success' => false];
         }
 
-        $this->data = $this->json->encode($res);
+        $this->data = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($res, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         echo $this->data;
     }
 
@@ -770,7 +770,7 @@ class SubscriptionAlmsController extends AlmsController
     {
         if (!$this->permissions['subscribe_course']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -804,7 +804,7 @@ class SubscriptionAlmsController extends AlmsController
             $output = ['success' => true, 'count' => $count, 'total' => $total, 'deleted' => $deleted];
         }
 
-        $this->data = $this->json->encode($output);
+        $this->data = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         echo $this->data;
     }
 
@@ -812,14 +812,14 @@ class SubscriptionAlmsController extends AlmsController
     {
         if (!$this->permissions['subscribe_course']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
 
         $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, 0);
         if ($id_user <= 0) {
-            echo $this->json->encode(['succes' => true]);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['succes' => true], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -830,7 +830,7 @@ class SubscriptionAlmsController extends AlmsController
         $col = FormaLms\lib\Get::req('col', DOTY_STRING, '');
 
         if ($new_value === $old_value) {
-            echo $this->json->encode(['succes' => true]);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['succes' => true], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         } else {
             $userModel = new UsermanagementAdm();
             $user = $userModel->getProfileData($id_user);
@@ -849,21 +849,21 @@ class SubscriptionAlmsController extends AlmsController
 
                     $level = $this->model->getUserLevel($id_user);
                     if (!isset($level_idst[$level])) {
-                        echo $this->json->encode(['succes' => false]);
+                        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['succes' => false], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
                         break;
                     }
                     $this->acl_man->removeFromGroup($level_idst[$level], $id_user);
 
                     if (!isset($level_idst[$new_value])) {
-                        echo $this->json->encode(['succes' => false]);
+                        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['succes' => false], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
                         break;
                     }
                     $this->acl_man->addToGroup($level_idst[$new_value], $id_user);
 
                     if ($this->model->updateUserLevel($id_user, $new_value)) {
-                        echo $this->json->encode(['succes' => true]);
+                        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['succes' => true], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
                     } else {
-                        echo $this->json->encode(['succes' => false]);
+                        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['succes' => false], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
                     }
 
                     break;
@@ -872,12 +872,12 @@ class SubscriptionAlmsController extends AlmsController
                     $status = $this->model->getUserStatusList();
 
                     if (!isset($status[$new_value])) {
-                        echo $this->json->encode(['succes' => false]);
+                        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['succes' => false], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
                         break;
                     }
 
                     if ($this->model->updateUserStatus($id_user, $new_value)) {
-                        echo $this->json->encode(['succes' => true]);
+                        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['succes' => true], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                         switch ((int)$new_value) {
                             case _CUS_SUSPEND:
@@ -930,28 +930,28 @@ class SubscriptionAlmsController extends AlmsController
 
                         Events::trigger('core.course.subscription.status.updated', ['user' => $user, 'status' => ['id' => $new_value, 'name' => $status[$new_value]], 'course' => $formaCourse->course_info]);
                     } else {
-                        echo $this->json->encode(['succes' => false]);
+                        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['succes' => false], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
                     }
 
                     break;
                 case 'date_begin':
                     if ($this->model->updateUserDateBeginValidity($id_user, Format::dateDb($new_value, 'date'))) {
-                        echo $this->json->encode(['succes' => true]);
+                        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['succes' => true], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
                     } else {
-                        echo $this->json->encode(['succes' => false]);
+                        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['succes' => false], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
                     }
 
                     break;
                 case 'date_expire':
                     if ($this->model->updateUserDateExpireValidity($id_user, Format::dateDb($new_value, 'date'))) {
-                        echo $this->json->encode(['succes' => true]);
+                        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['succes' => true], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
                     } else {
-                        echo $this->json->encode(['succes' => false]);
+                        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['succes' => false], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
                     }
 
                     break;
                 default:
-                    echo $this->json->encode(['succes' => false]);
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['succes' => false], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             }
         }
     }
@@ -960,7 +960,7 @@ class SubscriptionAlmsController extends AlmsController
     {
         if (!$this->permissions['subscribe_course']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -987,20 +987,20 @@ class SubscriptionAlmsController extends AlmsController
         $output['count'] = count($output_data); //this may be useless ...
         $output['users'] = $output_data;
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function fastsubscribe()
     {
         if (!$this->permissions['subscribe_course']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
         if (!$this->checkAdminLimit()) {
             $output = ['success' => false, 'message' => Lang::t('_SUBSCRIBE_LIMIT_REACHED', 'subscribe')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -1026,14 +1026,14 @@ class SubscriptionAlmsController extends AlmsController
 
         if ($id_user <= 0) {
             $output = ['success' => false, 'message' => $this->_getMessage('invalid user')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
 
         if (isset($admin_users) && array_search($id_user, $admin_users, false) === false && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() !== ADMIN_GROUP_GODADMIN) {
             $output = ['success' => false, 'message' => $this->_getMessage('invalid user')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         } elseif ($id_user) {
@@ -1118,7 +1118,7 @@ class SubscriptionAlmsController extends AlmsController
             }
 
             $output = ['success' => $result];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         }
     }
 
@@ -1144,7 +1144,7 @@ class SubscriptionAlmsController extends AlmsController
             } else {
                 $output .= ',';
             }
-            $output .= '{"value":' . $this->json->encode($id_level) . ',"label":' . $this->json->encode($level_translation) . '}';
+            $output .= '{"value":' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($id_level, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . ',"label":' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($level_translation, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . '}';
         }
         $output .= ']';
 
@@ -1162,7 +1162,7 @@ class SubscriptionAlmsController extends AlmsController
             } else {
                 $output .= ', ';
             }
-            $output .= '{"value":' . $this->json->encode($id_status) . ',"label":' . $this->json->encode($status_translation) . '}';
+            $output .= '{"value":' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($id_status, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . ',"label":' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($status_translation, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . '}';
         }
         $output .= ']';
 
@@ -1173,7 +1173,7 @@ class SubscriptionAlmsController extends AlmsController
     {
         if (!$this->permissions['subscribe_course']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -1184,7 +1184,7 @@ class SubscriptionAlmsController extends AlmsController
             $output['success'] = true;
             $output['header'] = Lang::t('_MOD', 'subscribe') . '&nbsp;';
             $output['body'] = '<p>' . Lang::t('_EMPTY_SELECTION', 'admin_directory') . '</p>';
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -1222,14 +1222,14 @@ class SubscriptionAlmsController extends AlmsController
 
         $output['__date_inputs'] = $GLOBALS['date_inputs'];
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function multimod()
     {
         if (!$this->permissions['subscribe_course']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -1374,7 +1374,7 @@ class SubscriptionAlmsController extends AlmsController
             }
         }
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function multiplesubscription()
@@ -2501,7 +2501,7 @@ class SubscriptionAlmsController extends AlmsController
             //--- USERS SELECTION IS CONFIRMED: now select editions (if any) ---------
             //check user selection
             $_selector = new UserSelector();
-            $json = new Services_JSON();
+            
             $_entity_selected = $_selector->getSelection($_POST);
             $user_selected = &$acl_man->getAllUsersFromSelection($_entity_selected);
 
@@ -2653,7 +2653,7 @@ class SubscriptionAlmsController extends AlmsController
                     'id_catalogue' => $id_catalogue,
                     'page_title_arr' => $page_title_arr,
                     'num_users_selected' => count($user_selected),
-                    '_sel_users' => $json->encode($user_selected),
+                    '_sel_users' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($user_selected, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON),
                     'tables' => $tables,
                 ]);
             } else {
@@ -2702,7 +2702,7 @@ class SubscriptionAlmsController extends AlmsController
             ];
             $user_select->addFormInfo(
                 Form::getHidden('is_updating', 'is_updating', 1) .
-                    Form::getHidden('id_catalogue', 'id_catalogue', $id_catalogue)
+                Form::getHidden('id_catalogue', 'id_catalogue', $id_catalogue)
             );
             $user_select->loadSelector(
                 Util::str_replace_once('&', '&amp;', $jump_url),
@@ -2719,7 +2719,7 @@ class SubscriptionAlmsController extends AlmsController
 
     public function cataloguesubscribesaveTask()
     {
-        require_once _base_ . '/lib/lib.json.php';
+        
 
         $back_url = 'index.php?modname=catalogue&op=catlist&of_platform=lms';
 
@@ -2747,8 +2747,8 @@ class SubscriptionAlmsController extends AlmsController
         }
 
         //"unzip" user selection from user selector
-        $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
-        $user_selection = $json->decode(FormaLms\lib\Get::req('user_selection', DOTY_STRING, '[]'));
+        
+        $user_selection = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode(FormaLms\lib\Get::req('user_selection', DOTY_STRING, '[]'), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
         if (!is_array($user_selection) || count($user_selection) <= 0) {
             $this->render('invalid', [
@@ -2912,7 +2912,7 @@ class SubscriptionAlmsController extends AlmsController
         if ($id_user <= 0 || $id_course <= 0) {
             $output['success'] = false;
             $output['message'] = UiFeedback::perror(Lang::t('_INVALID_DATA', 'standard')); //'Invalid input. COURSE: '.$id_course.'; USER: '.$id_user;
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -2933,7 +2933,7 @@ class SubscriptionAlmsController extends AlmsController
         if ($cinfo['course_type'] == 'classroom' && $classroom <= 0) {
             $output['success'] = false;
             $output['message'] = UIFeedback::pnotice(Lang::t('_CLASSROOM', 'standard') . ': ' . Lang::t('_EMPTY_SELECTION', 'standard'));
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -2944,7 +2944,7 @@ class SubscriptionAlmsController extends AlmsController
         if ($_model->isUserSubscribed($id_user)) {
             $output['success'] = false;
             $output['message'] = UIFeedback::pnotice(Lang::t('_USER_ALREADY_SUBSCRIBED', 'course') . ': ' . $userid);
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -2967,7 +2967,7 @@ class SubscriptionAlmsController extends AlmsController
         } else {
             $output['message'] = UIFeedback::pinfo(Lang::t('_GOTO_COURSE_T', 'course'));
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function show_inline_editorTask()
@@ -2982,7 +2982,7 @@ class SubscriptionAlmsController extends AlmsController
         require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
         if ($id_user <= 0) {
-            echo $this->json->encode(['success' => true]);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['success' => true], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -3000,7 +3000,7 @@ class SubscriptionAlmsController extends AlmsController
         }
 
         if ($new_value === $old_value) {
-            echo $this->json->encode(['success' => true]);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['success' => true], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         } else {
             switch ($col) {
                 case 'date_begin':
@@ -3032,7 +3032,7 @@ class SubscriptionAlmsController extends AlmsController
                         $output['new_value'] = Format::date($_new_date, 'date');
                     }
 
-                    echo $this->json->encode($output);
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                     break;
 
@@ -3066,7 +3066,7 @@ class SubscriptionAlmsController extends AlmsController
                         $output['new_value'] = Format::date($_new_date, 'date');
                     }
 
-                    echo $this->json->encode($output);
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                     break;
 
@@ -3086,12 +3086,12 @@ class SubscriptionAlmsController extends AlmsController
                         $output['new_value'] = Format::date($_new_date, 'date');
                     }
 
-                    echo $this->json->encode($output);
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                     break;
 
                 default:
-                    echo $this->json->encode(['success' => false]);
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['success' => false], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                     break;
             }
@@ -3108,7 +3108,7 @@ class SubscriptionAlmsController extends AlmsController
             return;
         }
         $res = $this->model->resetValidityDates($id_course, $id_edition, $id_user);
-        echo $this->json->encode(['success' => $res ? true : false]);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['success' => $res ? true : false], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     /****************************************************************************
@@ -3164,7 +3164,7 @@ class SubscriptionAlmsController extends AlmsController
     protected function _selectall_coursepath()
     {
         $output = array_values($this->model->getCoursePathSubscriptionsList(FormaLms\lib\Get::req('id_path', DOTY_INT, 0)));
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function getlist_coursepathTask()
@@ -3226,7 +3226,7 @@ class SubscriptionAlmsController extends AlmsController
             'records' => $list,
         ];
 
-        echo $this->json->encode($result);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function multimod_dialog_coursepathTask()
@@ -3243,7 +3243,7 @@ class SubscriptionAlmsController extends AlmsController
             $output['success'] = true;
             $output['header'] = Lang::t('_MOD', 'subscribe') . '&nbsp;';
             $output['body'] = '<p>' . Lang::t('_EMPTY_SELECTION', 'admin_directory') . '</p>';
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -3264,7 +3264,7 @@ class SubscriptionAlmsController extends AlmsController
 
         $output['__date_inputs'] = $GLOBALS['date_inputs'] ?? '';
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function reset_validity_dates_coursepathTask()
@@ -3276,7 +3276,7 @@ class SubscriptionAlmsController extends AlmsController
             return;
         }
         $res = $this->model->resetCoursepathValidityDates($id_path, $id_user);
-        echo $this->json->encode(['success' => $res ? true : false]);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['success' => $res ? true : false], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function multimod_coursepath()
@@ -3333,7 +3333,7 @@ class SubscriptionAlmsController extends AlmsController
             }
         }
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function multidel_coursepath()
@@ -3341,7 +3341,7 @@ class SubscriptionAlmsController extends AlmsController
         $id_path = FormaLms\lib\Get::req('id_path', DOTY_INT, 0);
         if ($id_path <= 0) {
             $output = ['success' => false];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -3357,7 +3357,7 @@ class SubscriptionAlmsController extends AlmsController
             $output = ['success' => $res];
         }
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function del_coursepathTask()
@@ -3368,14 +3368,14 @@ class SubscriptionAlmsController extends AlmsController
         $output = [];
         if ($id_path <= 0 || $id_user <= 0) {
             $output['success'] = false;
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
 
         $res = $this->model->unsubscribeFromCoursepath($id_path, $id_user);
         $output['success'] = $res ? true : false;
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function sel_users_coursepathTask()
@@ -3688,11 +3688,11 @@ class SubscriptionAlmsController extends AlmsController
         ];
         $GLOBALS['page']->add(
             getTitleArea($page_title, 'subscribe')
-                . '<div class="std_block">'
-                . Form::openForm('approve users', 'index.php?r=' . $this->link . '/approveusers')
-                . Form::getHidden('id_course', 'id_course', $id_course)
-                . Form::getHidden('edition_id', 'edition_id', $edition_id)
-                . Form::getHidden('is_classroom', 'is_classroom', $is_classroom),
+            . '<div class="std_block">'
+            . Form::openForm('approve users', 'index.php?r=' . $this->link . '/approveusers')
+            . Form::getHidden('id_course', 'id_course', $id_course)
+            . Form::getHidden('edition_id', 'edition_id', $edition_id)
+            . Form::getHidden('is_classroom', 'is_classroom', $is_classroom),
             'content'
         );
 
@@ -3793,28 +3793,28 @@ class SubscriptionAlmsController extends AlmsController
                     $content[] = '';
                 } else {
                     $content[] = Form::getInputRadio(
-                        'waiting_user_0_' . $id_user,
-                        'waiting_user[' . $id_user . ']',
-                        '0',
-                        false,
-                        ''
-                    ) . '<label class="access-only" for="waiting_user_0_' . $id_user . '">' . $users_name[$id_user][ACL_INFO_USERID] . '</label>';
+                            'waiting_user_0_' . $id_user,
+                            'waiting_user[' . $id_user . ']',
+                            '0',
+                            false,
+                            ''
+                        ) . '<label class="access-only" for="waiting_user_0_' . $id_user . '">' . $users_name[$id_user][ACL_INFO_USERID] . '</label>';
 
                     $content[] = Form::getInputRadio(
-                        'waiting_user_1_' . $id_user,
-                        'waiting_user[' . $id_user . ']',
-                        '1',
-                        false,
-                        ''
-                    ) . '<label class="access-only" for="waiting_user_1_' . $id_user . '">' . $users_name[$id_user][ACL_INFO_USERID] . '</label>';
+                            'waiting_user_1_' . $id_user,
+                            'waiting_user[' . $id_user . ']',
+                            '1',
+                            false,
+                            ''
+                        ) . '<label class="access-only" for="waiting_user_1_' . $id_user . '">' . $users_name[$id_user][ACL_INFO_USERID] . '</label>';
 
                     $content[] = Form::getInputRadio(
-                        'waiting_user_2_' . $id_user,
-                        'waiting_user[' . $id_user . ']',
-                        '2',
-                        true,
-                        ''
-                    ) . '<label class="access-only" for="waiting_user_1_' . $id_user . '">' . $users_name[$id_user][ACL_INFO_USERID] . '</label>';
+                            'waiting_user_2_' . $id_user,
+                            'waiting_user[' . $id_user . ']',
+                            '2',
+                            true,
+                            ''
+                        ) . '<label class="access-only" for="waiting_user_1_' . $id_user . '">' . $users_name[$id_user][ACL_INFO_USERID] . '</label>';
                 }
 
                 $tb->addBody($content);
@@ -3828,17 +3828,17 @@ class SubscriptionAlmsController extends AlmsController
 
         $GLOBALS['page']->add(
             $tb->getTable()
-                . '<br />'
-                . Form::openElementSpace()
-                . Form::getTextarea($lang->def('_SUBSCRIBE_ACCEPT'), 'subscribe_accept', 'subscribe_accept', $lang->def('_APPROVED_SUBSCRIBED_TEXT', 'email'))
-                . Form::getTextarea($lang->def('_SUBSCRIBE_REFUSE'), 'subscribe_refuse', 'subscribe_refuse', $lang->def('_DENY_SUBSCRIBED_TEXT', 'email'))
-                . Form::closeElementSpace()
-                . Form::openButtonSpace()
-                . '<br />'
-                . Form::getButton('subscribe', 'subscribe', $lang->def('_SAVE'))
-                . Form::getButton('cancelselector', 'cancelselector', $lang->def('_UNDO'))
-                . Form::closeButtonSpace()
-                . Form::closeForm(),
+            . '<br />'
+            . Form::openElementSpace()
+            . Form::getTextarea($lang->def('_SUBSCRIBE_ACCEPT'), 'subscribe_accept', 'subscribe_accept', $lang->def('_APPROVED_SUBSCRIBED_TEXT', 'email'))
+            . Form::getTextarea($lang->def('_SUBSCRIBE_REFUSE'), 'subscribe_refuse', 'subscribe_refuse', $lang->def('_DENY_SUBSCRIBED_TEXT', 'email'))
+            . Form::closeElementSpace()
+            . Form::openButtonSpace()
+            . '<br />'
+            . Form::getButton('subscribe', 'subscribe', $lang->def('_SAVE'))
+            . Form::getButton('cancelselector', 'cancelselector', $lang->def('_UNDO'))
+            . Form::closeButtonSpace()
+            . Form::closeForm(),
             'content'
         );
 
@@ -4166,7 +4166,7 @@ class SubscriptionAlmsController extends AlmsController
             $output['success'] = false;
         }
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     protected function _getUnsubscribeSelectAll()
@@ -4253,7 +4253,7 @@ class SubscriptionAlmsController extends AlmsController
         }
 
         $output = $this->model->getUnsubscribeRequestsAll($filter);
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function accept_unsubscribe_requestTask()
@@ -4280,7 +4280,7 @@ class SubscriptionAlmsController extends AlmsController
                 break;
         }
         $output = ['success' => $res ? true : false];
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function deny_unsubscribe_requestTask()
@@ -4307,7 +4307,7 @@ class SubscriptionAlmsController extends AlmsController
         }
 
         $output = ['success' => $res ? true : false];
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function accept_unsubscribe_request_multiTask()
@@ -4339,7 +4339,7 @@ class SubscriptionAlmsController extends AlmsController
         }
 
         $output = ['success' => $res ? true : false];
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function deny_unsubscribe_request_multiTask()
@@ -4371,6 +4371,6 @@ class SubscriptionAlmsController extends AlmsController
         }
 
         $output = ['success' => $res ? true : false];
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 }

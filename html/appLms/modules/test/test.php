@@ -891,8 +891,8 @@ function defmodality()
     $cat_info = [];
     if ($order_info != '') {
         require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.json.php');
-        $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
-        $arr = $json->decode($order_info);
+        
+        $arr = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($order_info, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         if (is_array($arr)) {
             foreach ($arr as $value) {
                 $cat_info[$value['id_category']] = $value['selected'];
@@ -983,8 +983,8 @@ function defmodality()
     $cust_info = [];
     if ($cf_info != '') {
         require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.json.php');
-        $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
-        $arr = $json->decode($cf_info);
+        
+        $arr = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($cf_info, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         if (is_array($arr)) {
             foreach ($arr as $value) {
                 $cust_info[$value['id_cf_son']] = $value['selected'];
@@ -1021,8 +1021,8 @@ function defmodality()
     /*
     $chart_options_decoded = new stdClass();
     if ($chart_options!="") {
-        $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
-        $decoded = $json->decode($chart_options);
+        
+        $decoded = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($chart_options, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
     $chart_options_decoded->use_charts = (isset($decoded['use_charts']) ? (bool)$decoded['use_charts'] : false);
     $chart_options_decoded->selected_chart = (isset($decoded['selected_chart']) ? (string)$decoded['selected_chart'] : 'column');
@@ -1188,7 +1188,7 @@ function updatemodality()
     checkPerm('view', false, 'storage');
 
     require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.json.php');
-    $json = new Services_JSON();
+    
     $lang = FormaLanguage::createInstance('test');
 
     $idTest = importVar('idTest', true, 0);
@@ -1210,7 +1210,7 @@ function updatemodality()
                 }
             }
         }
-        $order_info = $json->encode($arr);
+        $order_info = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($arr, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     $cf_info = '';
@@ -1223,7 +1223,7 @@ function updatemodality()
                 }
             }
         }
-        $cf_info = $json->encode($arr);
+        $cf_info = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($arr, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     $queryString = '

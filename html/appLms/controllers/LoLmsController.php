@@ -17,9 +17,6 @@ class LoLmsController extends LmsController
 {
     public $name = 'lo';
 
-    /** @var Services_JSON */
-    protected $json;
-
     /**
      * @var LoLms
      */
@@ -38,7 +35,7 @@ class LoLmsController extends LmsController
 
         $this->model->setTdb($this->idCourse);
 
-        $this->json = new Services_JSON();
+        
     }
 
     private function getFolders($idCourse, $idFolder = false)
@@ -133,7 +130,7 @@ class LoLmsController extends LmsController
         $responseData = [];
         $responseData['data'] = $this->getFolders($this->idCourse, $id);
         $responseData['currentState'] = serialize([$this->getCurrentState(0)]);
-        echo $this->json->encode($responseData);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($responseData,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         exit;
     }
 
@@ -141,7 +138,7 @@ class LoLmsController extends LmsController
     {
         $responseData = [];
         $responseData['data'] = $this->model->getFolderTree();
-        echo $this->json->encode($responseData);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($responseData,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         exit;
     }
 }

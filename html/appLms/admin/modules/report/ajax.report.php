@@ -53,8 +53,7 @@ switch ($op) {
         $output['button_ok'] = $lang->def('_SAVE');
         $output['button_undo'] = $lang->def('_UNDO');
 
-        $json = new Services_JSON();
-        aout($json->encode($output));
+        aout(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
      break;
 
     case 'show_recipients_window':
@@ -142,9 +141,7 @@ switch ($op) {
             $output['body'] = Lang::t('_NO_VALUE', 'user_managment');
         }
 
-        //$output['button_close'] = $lang->def('_CLOSE');
-        $json = new Services_JSON();
-        aout($json->encode($output));
+        aout(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
      break;
 
     case 'save_filter':
@@ -170,8 +167,7 @@ switch ($op) {
             $session->set('report_saved', $row[0]);
             $session->save();
         }
-        $json = new Services_JSON();
-        aout($json->encode($output));
+        aout(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
      break;
 
     case 'delete_filter':
@@ -182,8 +178,7 @@ switch ($op) {
         } else {
             $output['success'] = false;
         }
-        $json = new Services_JSON();
-        aout($json->encode($output));
+        aout(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
      break;
 
     case 'sched_enable':
@@ -198,8 +193,7 @@ switch ($op) {
             $success = sql_query($query);
         }
         $output['success'] = $success;
-        $json = new Services_JSON();
-        aout($json->encode($output));
+        aout(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
      break;
 
     case 'public_rep':
@@ -214,8 +208,7 @@ switch ($op) {
             $success = sql_query($query);
         }
                 $output['success'] = $success;
-        $json = new Services_JSON();
-        aout($json->encode($output));
+        aout(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
      break;
     default:
         break;

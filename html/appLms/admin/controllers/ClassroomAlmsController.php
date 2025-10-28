@@ -17,7 +17,6 @@ require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.upload.php');
 
 class ClassroomAlmsController extends AlmsController
 {
-    protected $json;
     protected $acl_man;
 
     /** @var int */
@@ -41,8 +40,7 @@ class ClassroomAlmsController extends AlmsController
     public function init()
     {
         checkPerm('view', false, 'course', 'lms');
-        require_once _base_ . '/lib/lib.json.php';
-        $this->json = new Services_JSON();
+        
         $this->acl_man = \FormaLms\lib\Forma::getAclManager();
         $this->idCourse = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
         $this->idDate = FormaLms\lib\Get::req('id_date', DOTY_INT, 0);
@@ -127,7 +125,7 @@ class ClassroomAlmsController extends AlmsController
             'records' => $array_edition,
         ];
 
-        $this->data = $this->json->encode($result);
+        $this->data = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
         echo $this->data;
     }
@@ -251,7 +249,7 @@ class ClassroomAlmsController extends AlmsController
                     }
 
                     $output = ['success' => true, 'nodes' => $result, 'initial' => ($initial == 1)];
-                    echo $this->json->encode($output);
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                 break;
 
@@ -275,7 +273,7 @@ class ClassroomAlmsController extends AlmsController
                         $result['new_name'] = stripslashes($new_name);
                     }
 
-                    echo $this->json->encode($result);
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                 break;
 
@@ -304,14 +302,14 @@ class ClassroomAlmsController extends AlmsController
                             ];
                         }
                     }
-                    echo $this->json->encode($result);
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                 break;
 
             case 'delete':
                     $node_id = FormaLms\lib\Get::req('node_id', DOTY_INT, 0);
                     $result = ['success' => $treecat->deleteTreeById($node_id)];
-                    echo $this->json->encode($result);
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                 break;
 
@@ -320,7 +318,7 @@ class ClassroomAlmsController extends AlmsController
                     $node_dest = FormaLms\lib\Get::req('node_dest', DOTY_INT, 0);
 
                     $result = ['success' => $treecat->move($node_id, $node_dest)];
-                    echo $this->json->encode($result);
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                 break;
 
@@ -336,7 +334,7 @@ class ClassroomAlmsController extends AlmsController
                     $node_options = $this->_getNodeActions($node_id, $is_leaf);
 
                     $result = ['success' => true, 'options' => $node_options, '_debug' => $count];
-                    echo $this->json->encode($result);
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                 break;
 
@@ -531,7 +529,7 @@ class ClassroomAlmsController extends AlmsController
             'action' => 'ajax.adm_server.php?r=' . $this->baseLinkClassroom . '/delclassroom&id_course=' . $this->model->getIdCourse() . '&id_date=' . $this->model->getIdDate(),
             'success' => true, ];
 
-        $this->data = $this->json->encode($res);
+        $this->data = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($res,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
         echo $this->data;
     }
@@ -562,7 +560,7 @@ class ClassroomAlmsController extends AlmsController
 
         $res = ['success' => $this->model->delClassroom($customFields)];
 
-        $this->data = $this->json->encode($res);
+        $this->data = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($res,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
         echo $this->data;
     }
@@ -576,7 +574,7 @@ class ClassroomAlmsController extends AlmsController
 
         $res = ['success' => $this->model->delCourse()];
 
-        $this->data = $this->json->encode($res);
+        $this->data = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($res,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
         echo $this->data;
     }
@@ -686,10 +684,6 @@ class ClassroomAlmsController extends AlmsController
 
     public function saveData()
     {
-        require_once _base_ . '/lib/lib.json.php';
-
-        $json = new Services_JSON();
-
         $field = FormaLms\lib\Get::req('col', DOTY_MIXED, false);
         $old_value = FormaLms\lib\Get::req('old_value', DOTY_MIXED, false);
         $new_value = FormaLms\lib\Get::req('new_value', DOTY_MIXED, false);
@@ -706,7 +700,7 @@ class ClassroomAlmsController extends AlmsController
                     $res = sql_query($query);
                 }
 
-                echo $json->encode(['success' => $res, 'new_value' => $new_value, 'old_value' => $old_value]);
+                echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['success' => $res, 'new_value' => $new_value, 'old_value' => $old_value], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
                 break;
 
             case 'code':
@@ -720,7 +714,7 @@ class ClassroomAlmsController extends AlmsController
                     $res = sql_query($query);
                 }
 
-                echo $json->encode(['success' => $res, 'new_value' => stripslashes($new_value), 'old_value' => stripslashes($old_value)]);
+                echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['success' => $res, 'new_value' => stripslashes($new_value), 'old_value' => stripslashes($old_value)], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
                 break;
         }
     }

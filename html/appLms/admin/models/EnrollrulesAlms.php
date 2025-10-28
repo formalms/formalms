@@ -26,7 +26,6 @@ class EnrollrulesAlms extends Model implements Accessible
     public function __construct()
     {
         parent::__construct();
-        $this->json = new Services_JSON();
         $this->db = \FormaLms\db\DbConn::getInstance();
         parent::__construct();
     }
@@ -150,7 +149,7 @@ class EnrollrulesAlms extends Model implements Accessible
 
     public function updateRuleCourseSelection($id_rule, $data_selection)
     {
-        $jselection = addslashes($this->json->encode($data_selection));
+        $jselection = addslashes(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($data_selection,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
         $query = 'UPDATE %adm_rules SET '
             . " course_list = '" . $jselection . "' "
             . ' WHERE id_rule = ' . (int) $id_rule;
@@ -187,7 +186,7 @@ class EnrollrulesAlms extends Model implements Accessible
 
         $res = [];
         while ($entity = $this->db->fetch_obj($result)) {
-            $entity->course_list = $this->json->decode($entity->course_list);
+            $entity->course_list = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($entity->course_list, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             $res[$entity->id_entity] = $entity;
         }
 
@@ -222,7 +221,7 @@ class EnrollrulesAlms extends Model implements Accessible
 
         while ($entity = $this->db->fetch_obj($result)) {
             //$entity->course_list = $this->json->decode($entity->course_list);
-            $entities_name[$entity->id_entity]->course_list = $this->json->decode($entity->course_list);
+            $entities_name[$entity->id_entity]->course_list = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($entity->course_list, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         }
 
         return $entities_name;
@@ -277,7 +276,7 @@ class EnrollrulesAlms extends Model implements Accessible
             'entitity_rule' => [],
         ];
         while ($entity = $this->db->fetch_obj($result)) {
-            $entity->course_list = $this->json->decode($entity->course_list);
+            $entity->course_list = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($entity->course_list, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             $res['entities'][] = $entity->id_entity;
             $res['entitity_rule'][] = $entity;
         }
@@ -287,7 +286,7 @@ class EnrollrulesAlms extends Model implements Accessible
 
     public function insertEntityRule($id_rule, $id_entity, $course_list)
     {
-        $json_list = addslashes($this->json->encode($course_list));
+        $json_list = addslashes(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($course_list,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
 
         $query = 'INSERT INTO %adm_rules_entity ( id_rule, id_entity, course_list ) '
             . ' VALUES ( ' . (int) $id_rule . ", '" . $id_entity . "', '" . $json_list . "' )";
@@ -297,7 +296,7 @@ class EnrollrulesAlms extends Model implements Accessible
 
     public function saveEntityRule($id_rule, $id_entity, $course_list)
     {
-        $json_list = addslashes($this->json->encode($course_list));
+        $json_list = addslashes(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($course_list,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
 
         $query = 'UPDATE %adm_rules_entity '
             . "SET course_list = '" . $json_list . "' "
@@ -337,7 +336,7 @@ class EnrollrulesAlms extends Model implements Accessible
         $result = $this->db->query($query);
         while ($entity = $this->db->fetch_obj($result)) {
             $rules[] = $entity->id_rule;
-            $entity_course_list = $this->json->decode($entity->course_list);
+            $entity_course_list = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($entity->course_list, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             $course_list = array_merge($course_list, $entity_course_list);
         }
 
@@ -359,7 +358,7 @@ class EnrollrulesAlms extends Model implements Accessible
         $result = $this->db->query($query);
         while ($entity = $this->db->fetch_obj($result)) {
             $rules[] = $entity->id_rule . '_' . $entity->id_entity;
-            $entity_course_list = $this->json->decode($entity->course_list);
+            $entity_course_list = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($entity->course_list, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             if (!isset($course_list[$entity->lang_code])) {
                 $course_list[$entity->lang_code] = [];
             }
@@ -394,7 +393,7 @@ class EnrollrulesAlms extends Model implements Accessible
         $result = $this->db->query($query);
         while ($entity = $this->db->fetch_obj($result)) {
             $rules[] = $entity->id_rule . '_' . $entity->id_entity;
-            $entity_course_list = $this->json->decode($entity->course_list);
+            $entity_course_list = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($entity->course_list, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             $course_list = array_merge($course_list, $entity_course_list);
         }
 
@@ -622,7 +621,7 @@ class EnrollrulesAlms extends Model implements Accessible
      */
     public function addLogEntry($log_action, $rules)
     {
-        $actions = addslashes($this->json->encode($rules));
+        $actions = addslashes(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($rules,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
         $query = 'INSERT INTO %adm_rules_log (id_log, log_action, log_time, applied) VALUES ('
             . ' NULL, '
             . "'" . $log_action . "', "

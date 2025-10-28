@@ -15,6 +15,7 @@ namespace Plugin\ConferenceBBB;
 
 use BigBlueButton;
 use Forma;
+use FormaLms\lib\Serializer\FormaSerializer;
 use FormaLms\lib\Session\SessionManager;
 use FormaLms\lib\Get;
 use stdClass;
@@ -55,11 +56,14 @@ class Conference extends \PluginConference
         $conf_key = '';
         for ($i = 0; $i < 8; ++$i) {
             switch (mt_rand(0, 2)) {
-                case '0': $conf_key .= chr(mt_rand(65, 90));
+                case '0':
+                    $conf_key .= chr(mt_rand(65, 90));
                 // no break
-                case '1': $conf_key .= chr(mt_rand(97, 122));
+                case '1':
+                    $conf_key .= chr(mt_rand(97, 122));
                 // no break
-                case '2': $conf_key .= mt_rand(0, 9);
+                case '2':
+                    $conf_key .= mt_rand(0, 9);
             }
         }
 
@@ -79,7 +83,7 @@ class Conference extends \PluginConference
         $user_email = $u_info[ACL_INFO_EMAIL];
         $confkey = self::generateConfKey();
         $audiovideosettings = 1;
-        $maxmikes = (int) Get::sett('bbb_max_mikes');
+        $maxmikes = (int)Get::sett('bbb_max_mikes');
         $extra_conf = [];
         $extra_conf['lobbyEnabled'] = false;
         $extra_conf['privateChatEnabled'] = false;
@@ -92,9 +96,6 @@ class Conference extends \PluginConference
         $extra_conf['autoHandsFreeOnAVLoad'] = false;
         $extra_conf['joinEmailRequired'] = false;
 
-        require_once _base_ . '/lib/lib.json.php';
-        $json = new \Services_JSON();
-
         //save in database the roomid for user login
         $insert_room = '
 		INSERT INTO ' . self::_getRoomTable() . "
@@ -106,7 +107,7 @@ class Conference extends \PluginConference
 			'" . $audiovideosettings . "',
 			'" . $maxmikes . "',
 			'',
-			'" . $json->encode($extra_conf) . "'
+			'" . FormaSerializer::getInstance()->encode($extra_conf, FormaSerializer::FORMAT_JSON) . "'
 		)";
 
         if (!sql_query($insert_room)) {
@@ -300,8 +301,8 @@ class Conference extends \PluginConference
      * The only purpose of this function is to send the message to the server, read the server answer,
      * discard the header and return the other content.
      *
-     * @param string $url        the server url
-     * @param string $port       the server port
+     * @param string $url the server url
+     * @param string $port the server port
      * @param string $get_params the get_params
      *
      * @return json
@@ -348,7 +349,7 @@ class Conference extends \PluginConference
 
     public static function _api_request($service, $method, $params, $parname = false)
     {
-        require_once _base_ . '/lib/lib.json.php';
+
         require_once _base_ . '/lib/lib.fsock_wrapper.php';
         $server = Get::sett('ConferenceBBB_server', false);
         $output = false;
@@ -356,7 +357,6 @@ class Conference extends \PluginConference
         if ($server && $service && $method) {
             $url = 'http://' . $server . '/api/' . $service . '/' . $method;
 
-            $json = new \Services_JSON();
             $fsock = new \FSock();
 
             //check user login
@@ -377,21 +377,21 @@ class Conference extends \PluginConference
                         _BBB_AUTH_CODE => $auth_code,
                         'Content-type' => 'application/x-www-form-urlencoded',
                     ];
-                    $post = $_parname . urlencode($json->encode($params));
+                    $post = $_parname . urlencode(FormaSerializer::getInstance()->encode($params, FormaSerializer::FORMAT_JSON));
                     $res_json = $fsock->post_request($url, Get::sett('ConferenceBBB_port', '80'), $post, $other_header);
                     if ($res_json) {
-                        $output = $json->decode($res_json);
+                        $output = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($res_json, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
                     }
                 }
             } else {
-                $post = $_parname . urlencode($json->encode($params));
+                $post = $_parname . urlencode(FormaSerializer::getInstance()->encode($params, FormaSerializer::FORMAT_JSON));
                 $other_header = ['Content-type' => 'application/x-www-form-urlencoded'];
                 if ($method != 'login') {
                     $other_header[_BBB_AUTH_CODE] = self::get_auth_code();
                 }
                 $res_json = $fsock->post_request($url, Get::sett('ConferenceBBB_port', '80'), $post, $other_header);
                 if ($res_json) {
-                    $output = $json->decode($res_json);
+                    $output = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($res_json, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
                 }
             }
         }
@@ -511,9 +511,7 @@ class Conference extends \PluginConference
         $res = self::_query($query);
         $info = self::nextRow($res);
 
-        require_once _base_ . '/lib/lib.json.php';
-        $json = new \Services_JSON();
-        $info_decoded = $json->decode($info['schedule_info']);
+        $info_decoded = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($info['schedule_info'], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
         $params = new stdClass();
 

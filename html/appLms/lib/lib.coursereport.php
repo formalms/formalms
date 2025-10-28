@@ -136,14 +136,6 @@ class CourseReportManager
         }
     }
 
-    public function removeDuplicatedReports($idCourse)
-    {
-        $report_man = new CourseReportManager($idCourse);
-        $org_tests = &$report_man->getTest();
-        foreach ($org_tests as $org_test) {
-        }
-    }
-
     public function testReportExists($idCourse, $idTest)
     {
         return count($this->getTestReports($idCourse, $idTest)) > 0;

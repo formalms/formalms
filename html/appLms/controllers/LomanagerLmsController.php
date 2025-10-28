@@ -17,9 +17,6 @@ class LomanagerLmsController extends LmsController
 {
     public $name = 'lo-manager';
 
-    /** @var Services_JSON */
-    protected $json;
-
     /**
      * @var LomanagerLms
      */
@@ -29,9 +26,9 @@ class LomanagerLmsController extends LmsController
 
     public function init()
     {
-        $this->idCourse = (int) $this->session->get('idCourse');
+        $this->idCourse = (int)$this->session->get('idCourse');
         checkPerm('view', false, 'storage');
-        $this->json = new Services_JSON();
+        
         $this->model = new LomanagerLms();
         $this->setTab();
     }
@@ -50,7 +47,7 @@ class LomanagerLmsController extends LmsController
     {
         $loData = array_values($this->model->getFolders($idCourse, $idFolder));
         $results = [];
-        if(count($loData)){
+        if (count($loData)) {
             switch ($loData[0]['typeId']) {
                 case LomanagerLms::ORGDIRDB:
                     $results = LomanagerorganizationLmsController::formatLoData($loData);
@@ -65,7 +62,7 @@ class LomanagerLmsController extends LmsController
             }
         }
 
-        
+
         if (!empty($loData)) {
             $eventData = Events::trigger(sprintf('lms.course_lo_%s.folder_listing', $loData[0]['typeId']), ['teacher' => true, 'idCourse' => $idCourse, 'idFolder' => $idFolder, 'learningObjects' => $results]);
             $results = $eventData['learningObjects'];
@@ -81,7 +78,7 @@ class LomanagerLmsController extends LmsController
 
     public function show()
     {
-        
+
         if (\FormaLms\lib\Forma::errorsExists()) {
             UIFeedback::error(\FormaLms\lib\Forma::getFormattedErrors(true));
         }
@@ -117,7 +114,7 @@ class LomanagerLmsController extends LmsController
 
     public function setCurrentTab()
     {
-        echo $this->json->encode(false);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(false, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         exit;
     }
 
@@ -127,7 +124,7 @@ class LomanagerLmsController extends LmsController
         $responseData = [];
         $responseData['data'] = $this->getFolders($this->idCourse, $id);
         $responseData['currentState'] = serialize([$this->getCurrentState(0)]);
-        echo $this->json->encode($responseData);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($responseData, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         exit;
     }
 
@@ -135,7 +132,7 @@ class LomanagerLmsController extends LmsController
     {
         $responseData = [];
         $responseData['data'] = $this->model->getFolderTree();
-        echo $this->json->encode($responseData);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($responseData, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         exit;
     }
 
@@ -154,7 +151,7 @@ class LomanagerLmsController extends LmsController
                 $responseData[] = ['success' => $res, 'id' => $id];
             }
         }
-        echo $this->json->encode($responseData);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($responseData, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         exit;
     }
 
@@ -162,7 +159,7 @@ class LomanagerLmsController extends LmsController
     {
         $id = FormaLms\lib\Get::req('id', DOTY_INT, false);
         $newName = urldecode(FormaLms\lib\Get::req('newName', DOTY_STRING, false));
-        echo $this->json->encode($this->model->renameFolder($id, $newName));
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($this->model->renameFolder($id, $newName), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         exit;
     }
 
@@ -180,7 +177,7 @@ class LomanagerLmsController extends LmsController
                 $responseData[] = ['success' => $res, 'id' => $id];
             }
         }
-        exit($this->json->encode($responseData));
+        exit(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($responseData, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
     }
 
     public function reorder()
@@ -196,7 +193,7 @@ class LomanagerLmsController extends LmsController
             $res = $this->model->reorder($id, $newParent, $newOrder ? $newOrder : null);
             $responseData = ['success' => $res, 'id' => $id];
         }
-        exit($this->json->encode($responseData));
+        exit(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($responseData, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
     }
 
     public function edit()
@@ -208,7 +205,7 @@ class LomanagerLmsController extends LmsController
         $saveName = $saveObj->getName('organization' . $this->idCourse, true);
         $saveObj->save($saveName, $this->model->getTreeView()->getState());
 
-        $folder = $this->model->getTdb()->getFolderById((string) $id);
+        $folder = $this->model->getTdb()->getFolderById((string)$id);
         $lo = createLO($folder->otherValues[REPOFIELDOBJECTTYPE]);
         $lo->edit($folder->otherValues[REPOFIELDIDRESOURCE], 'index.php?r=lms/lomanager/completeAction');
     }
@@ -220,10 +217,10 @@ class LomanagerLmsController extends LmsController
 
         if (!$folderName) {
             header('HTTP/1.1 400');
-            echo $this->json->encode(['error' => Lang::t('_NAME_REQUIRED', 'storage')]);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['error' => Lang::t('_NAME_REQUIRED', 'storage')], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         } else {
             $this->model->addFolderById($selectedNode, $folderName, $this->idCourse);
-            echo $this->json->encode(true);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(true, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         }
         exit;
     }
@@ -244,7 +241,7 @@ class LomanagerLmsController extends LmsController
                 }
             }
         }
-        exit($this->json->encode(true));
+        exit(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(true,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
     }
 
     public function completeAction()
@@ -257,7 +254,7 @@ class LomanagerLmsController extends LmsController
     {
         switch ($learningObject['type']) {
             case 'item':
-                $resource = \FormaLms\db\DbConn::getInstance()->query('SELECT  title, path FROM %lms_materials_lesson WHERE idLesson = ' . (int) $learningObject['resource']);
+                $resource = \FormaLms\db\DbConn::getInstance()->query('SELECT  title, path FROM %lms_materials_lesson WHERE idLesson = ' . (int)$learningObject['resource']);
 
                 $result = \FormaLms\db\DbConn::getInstance()->fetch_assoc($resource);
                 $fileTypeArray = explode('.', $result['path']);

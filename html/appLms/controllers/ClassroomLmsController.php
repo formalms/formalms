@@ -469,7 +469,7 @@ class ClassroomLmsController extends LmsController
 
         ob_start();
 
-        $json = new Services_JSON();
-        echo $json->encode($res);
+        
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($res, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 }

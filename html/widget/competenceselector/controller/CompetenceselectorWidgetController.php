@@ -21,8 +21,8 @@ class CompetenceselectorWidgetController extends Controller
 
     public function init()
     {
-        require_once _base_ . '/lib/lib.json.php';
-        $this->json = new Services_JSON();
+        
+        
         //$this->model = new CompetenceselectorWidgetModel();
         $this->competences_model = new CompetencesAdm();
     }
@@ -55,29 +55,29 @@ class CompetenceselectorWidgetController extends Controller
                         $output = array('success' => false);
                     }
                 } else {*/
-                    //extract node data
-                    $nodes = $this->competences_model->getCategories($node_id);
+                //extract node data
+                $nodes = $this->competences_model->getCategories($node_id);
 
-                    //if request is invalid, return error message ...
-                    if (!is_array($nodes)) {
-                        echo $this->json->encode(['success' => false]);
+                //if request is invalid, return error message ...
+                if (!is_array($nodes)) {
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['success' => false], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
-                        return;
-                    }
+                    return;
+                }
 
-                    //create actions for every node
-                    for ($i = 0; $i < count($nodes); ++$i) {
-                        $nodes[$i]['options'] = false;
-                    }
-                    //set output
-                    $output = [
-                        'success' => true,
-                        'nodes' => $nodes,
-                        'initial' => $initial,
-                    ];
+                //create actions for every node
+                for ($i = 0; $i < count($nodes); ++$i) {
+                    $nodes[$i]['options'] = false;
+                }
+                //set output
+                $output = [
+                    'success' => true,
+                    'nodes' => $nodes,
+                    'initial' => $initial,
+                ];
                 //}
-                echo $this->json->encode($output);
-             break;
+                echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
+                break;
         }
     }
 
@@ -151,6 +151,6 @@ class CompetenceselectorWidgetController extends Controller
             'records' => $output_results,
         ];
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 }

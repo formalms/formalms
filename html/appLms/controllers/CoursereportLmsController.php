@@ -40,8 +40,7 @@ class CoursereportLmsController extends LmsController
         $this->idCourse = (int)$this->session->get('idCourse');
 
         $this->courseReportManager = new CourseReportManager($this->idCourse);
-        /* @var Services_JSON json */
-        $this->json = new Services_JSON();
+        
         $this->_mvc_name = 'coursereport';
         $this->permissions = [
             'view' => true,
@@ -1094,7 +1093,7 @@ class CoursereportLmsController extends LmsController
             ],
         ];
 
-        echo $this->json->encode($resposeArray);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($resposeArray, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     /**
@@ -1102,7 +1101,7 @@ class CoursereportLmsController extends LmsController
      */
     public function getUserFieldsSelector() //array associativo
     {
-        echo $this->json->encode($this->completeFieldListArray);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($this->completeFieldListArray, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function setVisibleInDetail()
@@ -1126,7 +1125,7 @@ class CoursereportLmsController extends LmsController
             ];
         }
 
-        echo $this->json->encode($response);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($response, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function testreport()
@@ -3438,7 +3437,7 @@ class CoursereportLmsController extends LmsController
             }
         }
 
-        echo $this->json->encode($result);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function fileUploadQuestDetails()
@@ -3458,7 +3457,7 @@ class CoursereportLmsController extends LmsController
             }
         }
 
-        echo $this->json->encode($result);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function testQuestionOld()

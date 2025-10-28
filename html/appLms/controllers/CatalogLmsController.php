@@ -50,8 +50,6 @@ class CatalogLmsController extends LmsController
         $this->path_course = $GLOBALS['where_files_relative'] . '/appLms/' . FormaLms\lib\Get::sett('pathcourse') . '/';
         $this->model = new CatalogLms();
 
-        require_once _base_ . '/lib/lib.json.php';
-        $this->json = new Services_JSON();
         $this->_mvc_name = 'catalog';
         $this->acl_man = \FormaLms\lib\Forma::getAclManager();
     }
@@ -375,7 +373,7 @@ class CatalogLmsController extends LmsController
 
         $res = $this->model->subscribeCoursePathInfo($id_path);
 
-        echo $this->json->encode($res);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($res,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function chooseEdition()
@@ -633,7 +631,7 @@ class CatalogLmsController extends LmsController
 
         $res['message'] = UIFeedback::info(Lang::t('_SUBSCRIPTION_CORRECT', 'catalogue'), true);
 
-        echo $this->json->encode($res);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($res,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function addToCart()

@@ -103,7 +103,7 @@ if (isset($json)) {
     if (isset($GLOBALS['date_inputs']) && !empty($GLOBALS['date_inputs'])) {
         $output['__date_inputs'] = $GLOBALS['date_inputs'];
     }
-    echo $this->json->encode($output);
+    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 } else {
     echo getTitleArea($title);
     echo '<div class="std_block">';

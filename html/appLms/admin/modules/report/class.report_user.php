@@ -587,9 +587,8 @@ class Report_User extends Report
         $regset = Format::instance();
         $date_token = $regset->date_token;
 
-        $json = new Services_JSON();
-        $js_seldata = $json->encode($seldata);
-        $js_filter_cases = $json->encode($filter_cases);
+        $js_seldata = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($seldata, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
+        $js_filter_cases = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($filter_cases, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
         $out->add('<script type="text/javascript">' . "\n" .
             //'_temp_seldata='.$js_seldata.';'."\n".
@@ -944,10 +943,8 @@ class Report_User extends Report
 
         $prevdata = $reportTempData['columns_filter']['filters_list']; //array();
 
-        $json = new Services_JSON();
-
-        $js_prevdata = $json->encode($prevdata);
-        $js_optdata = str_replace("'", "\'", $json->encode($optdata));
+        $js_prevdata = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($prevdata, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
+        $js_optdata = str_replace("'", "\'", \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($optdata, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
 
         cout('<script type="text/javascript">' .
             'optdata_JSON=\'' . $js_optdata . '\';' .

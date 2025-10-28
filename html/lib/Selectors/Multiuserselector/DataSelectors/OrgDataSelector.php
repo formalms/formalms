@@ -1,4 +1,5 @@
 <?php
+
 namespace FormaLms\lib\Selectors\Multiuserselector\DataSelectors;
 
 
@@ -7,60 +8,63 @@ use FormaLms\lib\FolderTree\Extension\OrgDataNode;
 
 require_once _adm_ . '/models/UsermanagementAdm.php';
 require_once _base_ . '/widget/lib.widget.php';
-class OrgDataSelector extends DataSelector{ 
+
+class OrgDataSelector extends DataSelector
+{
 
     const ADDITIONAL_COLS = [];
 
+    protected $widgetBuilder;
 
-    public function __construct() {
-     
+    public function __construct()
+    {
+
         $this->builder = new \UsermanagementAdm();
         $this->widgetBuilder = new \Widget();
         $this->name = 'OrgDataSelector';
-     
+
 
         parent::__construct();
     }
 
-    public function getData($params = []) {
+    public function getData($params = [])
+    {
 
-        $useSerializer = false;
-        
-        $selected_nodes = array_key_exists('selected_nodes', $params) ? (array) $params['selected_nodes'] : [];
-        $useSerializer = true;
-        $node_id = array_key_exists('node_id', $params) ? (string) $params['node_id'] : '';
+        $selected_nodes = array_key_exists('selected_nodes', $params) ? (array)$params['selected_nodes'] : [];
+
+        $node_id = array_key_exists('node_id', $params) ? (string)$params['node_id'] : '';
         $buildRootNode = false;
-        if('' === $node_id) {
+        if ('' === $node_id) {
             $buildRootNode = true;
         }
         $idOrg = $this->_getIdOrgByNodeId($node_id);
-        $initial = array_key_exists('initial', $params) ? ((int) $params['initial'] > 0 ? true : false) : false;
+        $initial = array_key_exists('initial', $params) ? ((int)$params['initial'] > 0 ? true : false) : false;
         $output = [];
         $isSubadmin = false;
         $nodes = [];
-        
+
         $userlevelid = $this->builder->getUserLevel();
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             $orgTree = $this->builder->_getAdminOrgTree();
             $isSubadmin = true;
         }
-        
+
         $_conversion_table = $this->builder->getOrgchartIdstConversionTable();
-        
-        
+
+
         $results = $this->builder->buildOrgChartNodes($idOrg, false, false, true);
-        
-        foreach($results as $result) {
-            
+
+        foreach ($results as $result) {
+
             $index = $result['idOrg'];
-            if(!array_key_exists($index, $_conversion_table[0]) || !array_key_exists($index, $_conversion_table[1])) {
+            if (!array_key_exists($index, $_conversion_table[0]) || !array_key_exists($index, $_conversion_table[1])) {
                 continue;
             }
             $id = $_conversion_table[0][$index] . '_' . $_conversion_table[1][$index];
             $isNodeVisible = true;
             $codeLabel = $result['code'] ? "[" . $result['code'] . "] " : "";
             if ($isSubadmin) {
-                $isForbidden = !in_array( (int) $result['idOrg'], $orgTree, true);
+                $isForbidden = !in_array((int)$result['idOrg'], $orgTree, true);
                 $countSubnodes = $this->builder->_checkSubnodesVisibility($result['idOrg'], $result['iLeft'], $result['iRight'], $orgTree);
                 $hasVisibleSubnodes = ($countSubnodes > 0);
                 if ($isForbidden && !$hasVisibleSubnodes) {
@@ -71,7 +75,7 @@ class OrgDataSelector extends DataSelector{
                         //forbidden, but with visible valid subnodes: show it
                         $label = $codeLabel . $result['translation'];
                         $hasChildren = true;
-            
+
                     } else {
                         //not forbidden, check as normal
                         $label = $codeLabel . $result['translation'];
@@ -81,18 +85,18 @@ class OrgDataSelector extends DataSelector{
             } else {
                 $label = $codeLabel . $result['translation'];
                 $hasChildren = !(($result['iRight'] - $result['iLeft']) == 1);
-                
+
             }
             //set node for output
             if ($isNodeVisible) {
                 $nodes[] = new OrgDataNode($id, $label, $hasChildren);
             }
-        
+
         }
         //nella variabile c'è un array a 2 indici dove nel primo sono listati i grouppi con oc_ e nel secondo quelli con ocd_
         //l'array viene inziailizzato col nodo zero senza discendenti, il match avviene per chiave dei 2 array basata su idorg 
-   
-        if($buildRootNode) {
+
+        if ($buildRootNode) {
             $rootNode = new OrgDataNode($this->_getRootNodeId(), $this->getChartTitle(), true, true);
             $rootNode->setChildren($nodes);
             $nodes = [];
@@ -103,25 +107,21 @@ class OrgDataSelector extends DataSelector{
                 'data' => $nodes
             ];
 
-            if(count($selected_nodes)) {
+            if (count($selected_nodes)) {
                 $output['selected_nodes'] = $selected_nodes;
             }
-        } 
-               
-
-        if($useSerializer) {
-            return $this->serializer->serialize($output, 'json');
-        } else {
-            return $this->json->encode($output);
         }
 
+        return $this->serializer->serialize($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
-    public function getColumns(){
+    public function getColumns()
+    {
         return [];
     }
 
-    public function getHiddenColumns(){
+    public function getHiddenColumns()
+    {
         return [];
     }
 
@@ -163,9 +163,9 @@ class OrgDataSelector extends DataSelector{
         }
         $arr = explode('_', $node_id);
         $acl_man = \FormaLms\lib\Forma::getAclManager();;
-        $groupid = $acl_man->getGroupId((int) $arr[0]);
+        $groupid = $acl_man->getGroupId((int)$arr[0]);
 
-        return (int) str_replace('/oc_', '', $groupid);
+        return (int)str_replace('/oc_', '', $groupid);
     }
 
 
@@ -179,21 +179,28 @@ class OrgDataSelector extends DataSelector{
     }
 
 
-    protected function getChartTitle() {
+    protected function getChartTitle()
+    {
         return \FormaLms\lib\Get::sett('title_organigram_chart');
     }
 
-  
 
-    public function getAllSelection($exclusions = []) {
+    public function getAllSelection($exclusions = [])
+    {
         return [];
     }
 
 
-    protected function _selectAll($params = [], $columnsFilter = []){}
+    protected function _selectAll($params = [], $columnsFilter = [])
+    {
+    }
 
-    protected function _getDynamicFilter($input){}
+    protected function _getDynamicFilter($input)
+    {
+    }
 
-    protected function mapData($records, $filter = ''){}
+    protected function mapData($records, $filter = '')
+    {
+    }
 
 }

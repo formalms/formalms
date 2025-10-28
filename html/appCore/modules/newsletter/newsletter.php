@@ -109,9 +109,9 @@ function send_newsletter($send_id)
 {
     checkPerm('view');
 
-    require_once _base_ . '/lib/lib.json.php';
+    
 
-    $json = new Services_JSON();
+    
 
     $path = '/appCore/newsletter/';
 
@@ -142,7 +142,7 @@ function send_newsletter($send_id)
 
     $fromemail = $info['fromemail'];
     $sender = DomainHandler::getInstance()->getMailerField('sender_mail_system');
-    $file_array = $json->decode($info['file']);
+    $file_array = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($info['file'], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
     $attach = [];
 
@@ -328,10 +328,10 @@ function init_send()
     checkPerm('view');
 
     require_once _base_ . '/lib/lib.upload.php';
-    require_once _base_ . '/lib/lib.json.php';
+    
     $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
     $instance = 'newsletter';
-    $json = new Services_JSON();
+    
 
     $savefile = '';
     $max_file = FormaLms\lib\Get::req('file_number', DOTY_INT, 0);
@@ -379,7 +379,7 @@ function init_send()
     $q = sql_query($qtxt);
 
     $qtxt = 'INSERT INTO %adm_newsletter (sub, msg, fromemail, language, send_type, stime, file) ';
-    $qtxt .= "VALUES ('" . $sub . "', '" . $msg . "', '" . $fromemail . "', '" . $lang_selected . "', '" . $send_type . "', NOW(), '" . str_replace("'", "\'", $json->encode($savefile)) . "')";
+    $qtxt .= "VALUES ('" . $sub . "', '" . $msg . "', '" . $fromemail . "', '" . $lang_selected . "', '" . $send_type . "', NOW(), '" . str_replace("'", "\'", \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($savefile, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON)) . "')";
     $q = sql_query($qtxt); //echo sql_error();
 
     $qtxt = 'SELECT LAST_INSERT_ID() as last_id FROM %adm_newsletter';

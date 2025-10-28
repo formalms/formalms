@@ -31,8 +31,8 @@ class CompetenceselectorWidget extends Widget
 
     public function init()
     {
-        require_once _base_ . '/lib/lib.json.php';
-        $this->json = new Services_JSON();
+        
+        
 
         Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/lib.elem_selector.js', true, true);
         Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);

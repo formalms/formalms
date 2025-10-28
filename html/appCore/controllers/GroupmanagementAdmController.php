@@ -24,10 +24,10 @@ class GroupmanagementAdmController extends AdmController
     public function init()
     {
         parent::init();
-        require_once _base_ . '/lib/lib.json.php';
+        
         $this->db = \FormaLms\db\DbConn::getInstance();
         $this->model = new GroupmanagementAdm();
-        $this->json = new Services_JSON();
+        
         $this->permissions = [
             'view' => checkPerm('view', true, 'groupmanagement'),					//view module
             'add' => checkPerm('add', true, 'groupmanagement'),						//create groups
@@ -144,7 +144,7 @@ class GroupmanagementAdmController extends AdmController
             'records' => $records,
         ];
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     /*
@@ -155,14 +155,14 @@ class GroupmanagementAdmController extends AdmController
         //check permissions: we should have add privileges to create groups
         if (!$this->permissions['del']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
 
         $id = FormaLms\lib\Get::req('id', DOTY_INT, -1);
         $output['success'] = ($id > 0 ? $this->model->deleteGroup($id) : false);
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     /*
@@ -173,7 +173,7 @@ class GroupmanagementAdmController extends AdmController
         //check permissions: we should have add privileges to create groups
         if (!$this->permissions['mod']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -191,7 +191,7 @@ class GroupmanagementAdmController extends AdmController
             $output['success'] = false;
         }
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     /*
@@ -202,7 +202,7 @@ class GroupmanagementAdmController extends AdmController
         //check permissions: we should have add privileges to create groups
         if (!$this->permissions['mod']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -242,7 +242,7 @@ class GroupmanagementAdmController extends AdmController
             $output['success'] = false;
         }
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     /*
@@ -345,7 +345,7 @@ class GroupmanagementAdmController extends AdmController
         //check permissions: we should have add privileges to create groups
         if (!$this->permissions['add']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -359,7 +359,7 @@ class GroupmanagementAdmController extends AdmController
         $output['header'] = Lang::t('_ADD', 'standard');
         $output['body'] = $this->_getEditMask();
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function creategroup()
@@ -367,7 +367,7 @@ class GroupmanagementAdmController extends AdmController
         //check permissions: we should have add privileges to create groups
         if (!$this->permissions['mod']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -401,7 +401,7 @@ class GroupmanagementAdmController extends AdmController
             $output['success'] = false;
         }
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function groups_autocompleteTask()
@@ -421,7 +421,7 @@ class GroupmanagementAdmController extends AdmController
                 ];
             }
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function importusers_step1Task()
@@ -569,7 +569,7 @@ class GroupmanagementAdmController extends AdmController
             'records' => $output_results,
         ];
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function del_userTask()
@@ -577,7 +577,7 @@ class GroupmanagementAdmController extends AdmController
         //check permissions: we should have add privileges to create groups
         if (!$this->permissions['associate_user']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -587,7 +587,7 @@ class GroupmanagementAdmController extends AdmController
         $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, 0);
         if (!$id_group || !$id_user) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('invalid input')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -599,6 +599,6 @@ class GroupmanagementAdmController extends AdmController
         if (!$res) {
             $output['message'] = $this->_getErrorMessage('server error');
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 }

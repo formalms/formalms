@@ -53,7 +53,7 @@ if (isset($json)) {
         'header' => $_title,
         'body' => $_body,
     ];
-    echo $json->encode($params);
+    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($params, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 } else {
     echo getTitleArea($_title);
     echo $_body;

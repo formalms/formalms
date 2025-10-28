@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once _base_ . '/lib/lib.json.php';
+
 
 class TemplatelayoutAdmController extends AdmController
 {
@@ -24,7 +24,7 @@ class TemplatelayoutAdmController extends AdmController
     {
         parent::__construct('templatelayout');
         $this->model = new TemplateLayoutAdm();
-        $this->json = new Services_JSON();
+        
     }
 
     protected function _getTableStatus($paramName, $default = false)
@@ -81,7 +81,7 @@ class TemplatelayoutAdmController extends AdmController
             'records' => $templates,
         ];
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function deleteTask()
@@ -91,7 +91,7 @@ class TemplatelayoutAdmController extends AdmController
         if ($id > 0) {
             $output['success'] = $this->model->deleteTemplate($id);
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function createTask()

@@ -24,9 +24,8 @@ class PusermanagementLmsController extends UsermanagementAdmController
 
     public function init()
     {
-        require_once _base_ . '/lib/lib.json.php';
+        
         $this->model = new UsermanagementAdm();
-        $this->json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
         $this->numVarFields = 3;
         $this->sessionPrefix = 'pusermanagement';
         $this->permissions = [

@@ -39,10 +39,10 @@ class MessageLmsController extends LmsController
 
     public function init()
     {
-        require_once _base_ . '/lib/lib.json.php';
+        
         $this->db = \FormaLms\db\DbConn::getInstance();
         $this->model = new MessageLms();
-        $this->json = new Services_JSON();
+        
         $this->aclManager = \FormaLms\lib\Forma::getAcl()->getACLManager();
         $this->can_send = true; //checkPerm('send_all', true) || checkPerm('send_upper', true);
     }
@@ -109,6 +109,6 @@ class MessageLmsController extends LmsController
             $success = $this->model->deleteMessage($id);
         }
         $output = ['success' => $success];
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 }

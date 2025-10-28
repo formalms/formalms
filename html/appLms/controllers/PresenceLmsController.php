@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once _base_ . '/lib/lib.json.php';
+
 
 class PresenceLmsController extends LmsController
 {
@@ -27,7 +27,7 @@ class PresenceLmsController extends LmsController
     {
         $this->id_date = FormaLms\lib\Get::req('id_date', DOTY_INT, 0);
         $this->model = new PresenceLms($this->session->get('idCourse'), $this->id_date);
-        $this->json = new Services_JSON();
+        
         $this->permissions = [
             'view' => true,
         ];

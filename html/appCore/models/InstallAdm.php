@@ -1323,7 +1323,7 @@ class InstallAdm extends Model
 
     public function wrapResponse()
     {
-        return FormaLms\lib\Serializer\FormaSerializer::getInstance()->serialize($this->response, 'json');
+        return FormaLms\lib\Serializer\FormaSerializer::getInstance()->serialize($this->response, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
 

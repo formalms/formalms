@@ -26,10 +26,6 @@ class EnrollrulesAlmsController extends AlmsController
     public function __construct($mvc_name)
     {
         parent::__construct($mvc_name);
-
-        require_once _base_ . '/lib/lib.json.php';
-
-        $this->json = new Services_JSON();
         $this->model = new EnrollrulesAlms();
     }
 
@@ -95,7 +91,7 @@ class EnrollrulesAlmsController extends AlmsController
             'records' => array_values($rules),
         ];
 
-        echo $this->json->encode($result);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     /**
@@ -108,7 +104,7 @@ class EnrollrulesAlmsController extends AlmsController
         $result = [
             'success' => ($this->model->changeActivationState($id_rule) ? 'true' : 'false'),
         ];
-        echo $this->json->encode($result);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     /**
@@ -164,7 +160,7 @@ class EnrollrulesAlmsController extends AlmsController
             'records' => array_values($logs),
         ];
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     protected function logdetails()
@@ -186,7 +182,7 @@ class EnrollrulesAlmsController extends AlmsController
         $result = [
             'success' => ($this->model->rollbackLog($id_log) ? 'true' : 'false'),
         ];
-        echo $this->json->encode($result);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     /**
@@ -220,7 +216,7 @@ class EnrollrulesAlmsController extends AlmsController
         $result = [
             'success' => ($this->model->createRule($data) ? 'true' : 'false'),
         ];
-        echo $this->json->encode($result);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     /**
@@ -255,7 +251,7 @@ class EnrollrulesAlmsController extends AlmsController
         $result = [
             'success' => ($this->model->updateRule($data) ? 'true' : 'false'),
         ];
-        echo $this->json->encode($result);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     /**
@@ -268,7 +264,7 @@ class EnrollrulesAlmsController extends AlmsController
         $result = [
             'success' => ($this->model->deleteRule($id_rule) ? 'true' : 'false'),
         ];
-        echo $this->json->encode($result);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     /**
@@ -284,7 +280,7 @@ class EnrollrulesAlmsController extends AlmsController
         $tab = $this->model->getTab($rule->rule_type);
         $rule->rule_type_text = $types[$rule->rule_type];
 
-        $course_selection = $this->json->decode($rule->course_list);
+        $course_selection = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($rule->course_list, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
         $courselist = [];
         $coursepath = [];
@@ -327,9 +323,9 @@ class EnrollrulesAlmsController extends AlmsController
         $dir = FormaLms\lib\Get::req('dir', DOTY_MIXED, 'asc');
 
         $rule = $this->model->getRule($id_rule);
-        $course_selection = $this->json->decode($rule->course_list);
+        $course_selection = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($rule->course_list, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
-      
+
         $courselist = [];
         if (isset($course_selection)) {
             foreach ($course_selection as $i => $idc) {
@@ -369,7 +365,7 @@ class EnrollrulesAlmsController extends AlmsController
             'records' => array_values($rules),
         ];
 
-        echo $this->json->encode($result);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     protected function saverule()
@@ -425,7 +421,7 @@ class EnrollrulesAlmsController extends AlmsController
         }
         if (isset($_GET['load'])) {
             // Load old data
-            $course_selection = $this->json->decode($rule->course_list);
+            $course_selection = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($rule->course_list, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             if (isset($course_selection) && is_array($course_selection)) {
                 $course_selector->resetCourseSelection(array_flip($course_selection));
             }
@@ -495,7 +491,7 @@ class EnrollrulesAlmsController extends AlmsController
         $types = $this->model->ruleTypes();
         $rule->rule_type_text = $types[$rule->rule_type];
 
-        $course_selection = $this->json->decode($rule->course_list);
+        $course_selection = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($rule->course_list, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
         $courselist = [];
         $coursepath = [];
@@ -536,7 +532,7 @@ class EnrollrulesAlmsController extends AlmsController
         $dir = FormaLms\lib\Get::req('dir', DOTY_MIXED, 'asc');
 
         $rule = $this->model->getRule($id_rule);
-        $course_selection = $this->json->decode($rule->course_list);
+        $course_selection = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($rule->course_list, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
         $courselist = [];
         if (isset($course_selection)) {
@@ -574,7 +570,7 @@ class EnrollrulesAlmsController extends AlmsController
             'results' => $i,
             'records' => array_values($rules), ];
 
-        echo $this->json->encode($result);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     protected function savebaserule()
@@ -710,6 +706,6 @@ class EnrollrulesAlmsController extends AlmsController
         $result = [
             'success' => true,
         ];
-        echo $this->json->encode($result);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 }

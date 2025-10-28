@@ -289,8 +289,8 @@ require_once _base_ . '/lib/lib.upload.php';
 
 $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
 
-require_once _base_ . '/lib/lib.json.php';
-$json = new Services_JSON();
+
+
 
 $path = _files_ . '/tmp/';
 $qry = 'SELECT * FROM %lms_report_filter';

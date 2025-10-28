@@ -15,13 +15,12 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class PluginmanagerAdmController extends AdmController
 {
-    public Services_JSON $json;
     public PluginmanagerAdm $model;
 
     public function init()
     {
         $this->model = new PluginmanagerAdm();
-        $this->json = new Services_JSON();
+        
     }
 
     /**
@@ -54,12 +53,16 @@ class PluginmanagerAdmController extends AdmController
     public function showTask()
     {
         $this->checkAdminAccess();
-        
+
         $plugins = $this->model->getPlugins();
         $feedback = '';
         switch ($res = FormaLms\lib\Get::req('result', DOTY_ALPHANUM, '')) {
-            case 'ok': $feedback = Lang::t('_OPERATION_SUCCESSFUL', 'standard'); break;
-            case 'err': $feedback = Lang::t('_OPERATION_FAILURE', 'standard') . PHP_EOL . \FormaLms\lib\Forma::getFormattedErrors(true); break;
+            case 'ok':
+                $feedback = Lang::t('_OPERATION_SUCCESSFUL', 'standard');
+                break;
+            case 'err':
+                $feedback = Lang::t('_OPERATION_FAILURE', 'standard') . PHP_EOL . \FormaLms\lib\Forma::getFormattedErrors(true);
+                break;
             default:
         }
         $this->render('show', [
@@ -76,105 +79,105 @@ class PluginmanagerAdmController extends AdmController
 
         $plugins = $this->model->getPlugins();
 
-        echo $this->json->encode([
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode([
             'data' => array_values($plugins),
             'recordsTotal' => count($plugins),
             'recordsFiltered' => count($plugins),
-        ]);
+        ], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         exit;
     }
 
     public function install()
     {
         $this->checkAdminAccess();
-        
+
         $plugin = FormaLms\lib\Get::req('plugin');
         $res = $this->model->installPlugin($plugin, 0);
-        
+
         if ($res) {
             $this->clearLangCache();
         }
-        
+
         $this->redirectWithResult($plugin, $res);
     }
 
     public function uninstall()
     {
         $this->checkAdminAccess();
-        
+
         $plugin = FormaLms\lib\Get::req('plugin');
         $res = $this->model->uninstallPlugin($plugin);
-        
+
         if ($res) {
             $this->clearLangCache();
         }
-        
+
         $this->redirectWithResult($plugin, $res);
     }
 
     public function update()
     {
         $this->checkAdminAccess();
-        
+
         $plugin = FormaLms\lib\Get::req('plugin');
         $online = FormaLms\lib\Get::req('online', DOTY_BOOL, false);
 
         $res = $this->model->updatePlugin($plugin, $online);
-        
+
         if ($res) {
             $this->clearLangCache();
         }
-        
+
         $this->redirectWithResult($plugin, $res);
     }
 
     public function activate()
     {
         $this->checkAdminAccess();
-        
+
         $plugin = FormaLms\lib\Get::req('plugin');
         $res = $this->model->setupPlugin($plugin, 1);
-        
+
         if ($res) {
             $this->clearLangCache();
         }
-        
+
         $this->redirectWithResult($plugin, $res);
     }
 
     public function deactivate()
     {
         $this->checkAdminAccess();
-        
+
         $plugin = FormaLms\lib\Get::req('plugin');
         $res = $this->model->setupPlugin($plugin, 0);
-        
+
         if ($res) {
             $this->clearLangCache();
         }
-        
+
         $this->redirectWithResult($plugin, $res);
     }
 
     public function set_priority()
     {
         $this->checkAdminAccess();
-        
+
         $plugin = FormaLms\lib\Get::req('plugin');
         $priority = FormaLms\lib\Get::req('priority', DOTY_INT, 0);
         $res = $this->model->setPriority($plugin, $priority);
-        
+
         if ($res) {
             $this->clearLangCache();
         }
-        
+
         $this->redirectWithResult($plugin, $res);
     }
 
     public function showSettings()
     {
         $this->checkAdminAccess();
-        
+
         $plugin = FormaLms\lib\Get::req('plugin');
         $settingAdm = new SettingAdm();
         $pg_adm = new PluginmanagerAdm();
@@ -190,14 +193,14 @@ class PluginmanagerAdmController extends AdmController
     public function upload()
     {
         $this->checkAdminAccess();
-        
+
         $pg_adm = new PluginmanagerAdm();
         $result = $pg_adm->uploadPlugin($_FILES['plugin_file_upload']);
-        
+
         if ($result) {
             $this->clearLangCache();
         }
-        
+
         $resultParam = $result ? 'ok' : 'err';
         Util::jump_to('index.php?r=adm/pluginmanager/show&result=' . $resultParam);
     }
@@ -205,15 +208,15 @@ class PluginmanagerAdmController extends AdmController
     public function purge()
     {
         $this->checkAdminAccess();
-        
+
         $plugin = FormaLms\lib\Get::req('plugin');
         $pg_adm = new PluginmanagerAdm();
         $result = $pg_adm->delete_files($plugin);
-        
+
         if ($result) {
             $this->clearLangCache();
         }
-        
+
         $this->redirectWithResult($plugin, $result);
     }
 }

@@ -1494,8 +1494,8 @@ function showResult($object_test, $id_param)
 
         $array_question_number = [];
         [$random_question] = sql_fetch_row(sql_query('SELECT order_info FROM ' . $GLOBALS['prefix_lms'] . "_test WHERE idTest='" . $id_test . "'"));
-        $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
-        $json_random = $json->decode($random_question);
+        
+        $json_random = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($random_question, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         if (is_array($json_random)) {
             foreach ($json_random as $value) {
                 $array_question_number[$value['id_category']] = $value['selected'];
@@ -1558,7 +1558,7 @@ function showResult($object_test, $id_param)
     //--- if chart visualization enabled, then show it ---------------------------
 
     if ($test_info['chart_options'] !== '') {
-        $chart_options = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($test_info['chart_options'], 'json');
+        $chart_options = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($test_info['chart_options'], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     } else {
         $chart_options = [];
     }

@@ -944,7 +944,7 @@ class AdminPreference
 
         while (list($path, $value) = sql_fetch_row($result)) {
             if ($path === _RULES_LANG) {
-                $res[$path] = $this->json->decode($value);
+                $res[$path] = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             } else {
                 $res[$path] = $value;
             }
@@ -965,7 +965,7 @@ class AdminPreference
 
         while (list($path, $value) = sql_fetch_row($result)) {
             if ($path === _RULES_LANG) {
-                $res[$path] = $this->json->decode($value);
+                $res[$path] = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             } else {
                 $res[$path] = $value;
             }

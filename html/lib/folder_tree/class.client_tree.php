@@ -96,11 +96,11 @@ class ClientTree
     {
         $this->setOption('ajax_url', $this->serverUrl);
         $this->setOption('langs', $this->langs);
-        require_once _base_ . '/lib/lib.json.php';
-        $json = new Services_JSON();
+        
+        
         $arr_js = [];
         foreach ($this->options as $name => $option) {
-            $arr_js[] = $name . ':' . $json->encode($option);
+            $arr_js[] = $name . ':' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($option, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         }
 
         return '{' . implode(',', $arr_js) . '}';

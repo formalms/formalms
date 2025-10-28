@@ -119,10 +119,10 @@ class Get
                 break;
 
             case DOTY_JSONDECODE:
-                $value = FormaSerializer::getInstance()->decode($value, 'json');
+                $value = FormaSerializer::getInstance()->decode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
                 break;
             case DOTY_JSONENCODE:
-                $value = FormaSerializer::getInstance()->encode($value, 'json');
+                $value = FormaSerializer::getInstance()->encode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                 break;
             case DOTY_BOOL:

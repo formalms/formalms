@@ -43,7 +43,7 @@ if ($GLOBALS['where_files_relative'] != false) {
 ob_start();
 
 // load lms setting ------------------------------------------------------------------
-require_once _base_ . '/lib/lib.json.php';
+
 \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 //session_name('docebo_session');
 //session_start();

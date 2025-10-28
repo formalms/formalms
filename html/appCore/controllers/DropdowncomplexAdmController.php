@@ -13,17 +13,14 @@ use FormaLms\lib\Forma;
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-require_once _base_ . '/lib/lib.json.php';
+
 require_once Forma::inc(_adm_ . '/modules/field/class.dropdown_complex.php');
 
 class DropdowncomplexAdmController extends AdmController
 {
-    /** @var Services_JSON json */
-    protected $json;
-
     public function init()
     {
-        $this->json = new Services_JSON();
+        
         $this->_mvc_name = 'dropdowncomplex';
     }
 

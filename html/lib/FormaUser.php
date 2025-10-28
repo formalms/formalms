@@ -111,7 +111,7 @@ class FormaUser
         if ($session->has($sprefix . '_stlist')) {
 
             $data = $session->get($sprefix . '_stlist');
-            $this->arrst = FormaSerializer::getInstance()->decode($data,'json');
+            $this->arrst = FormaSerializer::getInstance()->decode($data,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         }
 
         $user_manager = new \FormaACLManager();
@@ -318,7 +318,7 @@ class FormaUser
         $session = Session\SessionManager::getInstance()->getSession();
         $session->set($this->sprefix . '_idst', $this->idst);
         $session->set($this->sprefix . '_username', $this->userid);
-        $session->set($this->sprefix . '_stlist', FormaSerializer::getInstance()->encode($this->arrst,'json'));
+        $session->set($this->sprefix . '_stlist', FormaSerializer::getInstance()->encode($this->arrst,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
         $session->set($this->sprefix . '_log_ip', $ip);
         $session->set('user', $this);
         $session->save();

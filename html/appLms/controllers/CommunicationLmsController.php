@@ -48,7 +48,6 @@ class CommunicationLmsController extends LmsController
     {
         YuiLib::load('base,tabview');
         Lang::init('course');
-        $this->json = new Services_JSON();
 
         $upd = new UpdatesLms();
         $this->info = $upd->communicationCounterUpdates();
@@ -129,7 +128,7 @@ class CommunicationLmsController extends LmsController
             'records' => $communications,
         ];
 
-        $this->data = $this->json->encode($result);
+        $this->data = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         echo $this->data;
     }
 
@@ -178,7 +177,7 @@ class CommunicationLmsController extends LmsController
             'records' => $communications,
         ];
 
-        $this->data = $this->json->encode($result);
+        $this->data = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         echo $this->data;
     }
 

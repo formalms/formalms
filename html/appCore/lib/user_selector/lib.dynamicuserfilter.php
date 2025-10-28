@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once _base_ . '/lib/lib.json.php';
+
 require_once _adm_ . '/lib/lib.field.php';
 require_once _adm_ . '/lib/user_selector/lib.otherfieldtypes.php';
 
@@ -40,7 +40,6 @@ class DynamicUserFilter
     {
         $this->id = $id;
         $this->db = \FormaLms\db\DbConn::getInstance();
-        $this->json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
     }
 
     public function init()
@@ -133,7 +132,7 @@ class DynamicUserFilter
         $_data = false;
         switch (gettype($data)) {
             case 'string':
-                $_data = $this->json->decode(urldecode($data));
+                $_data = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode(urldecode($data), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
              break;
             case 'array':
                 $_data = $data;
@@ -228,7 +227,7 @@ class DynamicUserFilter
         $a_obj = \FormaLms\lib\Forma::getAclManager();
         $fman = new FieldList();
 
-        $filter = $this->json->decode(stripslashes($f_arr));
+        $filter = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode(stripslashes($f_arr), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         $user_data_std = $a_obj->getUser($user_to_check, false);
         $user_data_extra = $fman->getUserFieldEntryData($user_to_check, false);
 
@@ -241,7 +240,7 @@ class DynamicUserFilter
 
         foreach ($conds as $cond) {
             $id_field = $cond['id_field'];
-            $params = $this->json->decode($cond['value']);
+            $params = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($cond['value'], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             if ($params == null) {
                 $params = $cond['value'];
             }
@@ -313,11 +312,11 @@ class DynamicUserFilter
 
     public function getConditions($param = false)
     {
-        $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
+        
 
         $f_arr = ($param ? $param : urldecode(stripslashes(FormaLms\lib\Get::req($this->id . '_input', DOTY_STRING, false))));
 
-        $filter = is_string($f_arr) ? $json->decode(stripslashes($f_arr)) : $f_arr;
+        $filter = is_string($f_arr) ? \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode(stripslashes($f_arr), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) : $f_arr;
         $conds = $filter['filters'];
 
         return $conds;
@@ -328,14 +327,14 @@ class DynamicUserFilter
         //retrieve all users matching given conditions
 
         $output = [];
-        $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
+        
         $a_obj = new FormaACLManager();
         $fman = new FieldList();
 
         $user_to_check = FormaLms\lib\Get::req('user', DOTY_INT, false);
-        $f_arr = ($param ? $param : urldecode(stripslashes(FormaLms\lib\Get::req($this->id . '_input', DOTY_STRING, false))));
+        $f_arr = ($param ?: urldecode(stripslashes(FormaLms\lib\Get::req($this->id . '_input', DOTY_STRING, false))));
 
-        $filter = is_string($f_arr) ? $json->decode(stripslashes($f_arr)) : $f_arr;
+        $filter = is_string($f_arr) ? \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode(stripslashes($f_arr), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) : $f_arr;
         $exclusive = $filter['exclusive'];
         $conds = $filter['filters'];
 
@@ -353,7 +352,7 @@ class DynamicUserFilter
         $other_conditions = [];
         foreach ($conds as $cond) {
             $id_field = $cond['id_field'];
-            $params = $json->decode($cond['value']);
+            $params = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($cond['value'], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             if ($params == null) {
                 $params = $cond['value'];
             }

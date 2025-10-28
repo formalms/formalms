@@ -637,14 +637,14 @@ class Field
 
     public function getClientClassObject()
     {
-        require_once _base_ . '/lib/lib.json.php';
-        $json = new Services_JSON();
+        
+        
         /*
         return 'YAHOO.dynamicFilter.renderTypes.get("'.$this->getFieldType().'", {'
-            .'_EQUAL:'.$json->encode(Lang::t('_EQUAL')).','
-            .'_CONTAINS:'.$json->encode(Lang::t('_CONTAINS')).','
-            .'_NOT_EQUAL:'.$json->encode(Lang::t('_NOT_EQUAL')).','
-            .'_NOT_CONTAINS:'.$json->encode(Lang::t('_NOT_CONTAINS'))
+            .'_EQUAL:'.\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(Lang::t('_EQUAL'), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON).','
+            .'_CONTAINS:'.\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(Lang::t('_CONTAINS'), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON).','
+            .'_NOT_EQUAL:'.\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(Lang::t('_NOT_EQUAL'), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON).','
+            .'_NOT_CONTAINS:'.\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(Lang::t('_NOT_CONTAINS'), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON)
             .'})';
         */
         return '
@@ -697,7 +697,7 @@ class Field
 
     public function checkUserField($value, $filter)
     {
-        require_once _base_ . '/lib/lib.json.php';
+        
 
         $output = false;
         switch ($filter['cond']) {

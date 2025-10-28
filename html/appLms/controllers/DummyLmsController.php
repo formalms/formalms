@@ -26,8 +26,8 @@ class DummyLmsController extends LmsController
 
     public function testdata()
     {
-        require_once _base_ . '/lib/lib.json.php';
-        $json = new Services_JSON();
+        
+        
 
         $nodes = [];
 
@@ -60,7 +60,7 @@ class DummyLmsController extends LmsController
         $data = ['success' => true, 'nodes' => $nodes];
 
         $this->render('testdata', [
-            'data' => $json->encode($data),
+            'data' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($data, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON),
         ]);
     }
 }

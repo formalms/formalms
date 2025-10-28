@@ -421,8 +421,8 @@ class DashboardAdm extends Model
 
     public function getUsersChartAccessDataJS($how_many_days)
     {
-        require_once _base_ . '/lib/lib.json.php';
-        $json = new Services_JSON();
+        
+        
         $output = [];
         $dates = [];
 
@@ -470,13 +470,13 @@ class DashboardAdm extends Model
             }
         }
 
-        return ['x_axis' => $json->encode($outputDates), 'y_axis' => $json->encode($outputCounts)];
+        return ['x_axis' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($outputDates, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON), 'y_axis' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($outputCounts, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON)];
     }
 
     public function getUsersChartRegisterDataJS($how_many_days)
     {
-        require_once _base_ . '/lib/lib.json.php';
-        $json = new Services_JSON();
+        
+        
         $output = [];
         $dates = [];
 
@@ -517,7 +517,7 @@ class DashboardAdm extends Model
             }
         }
 
-        return ['x_axis' => $json->encode($outputDates), 'y_axis' => $json->encode($outputCounts)];
+        return ['x_axis' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($outputDates, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON), 'y_axis' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($outputCounts, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON)];
     }
 
     public function getCoursesChartSubscriptionData($how_many_days)
@@ -657,8 +657,8 @@ class DashboardAdm extends Model
 
     public function getCoursesChartSubscriptionDataJS($how_many_days)
     {
-        require_once _base_ . '/lib/lib.json.php';
-        $json = new Services_JSON();
+        
+        
         $output = [];
         $dates = [];
 
@@ -704,13 +704,13 @@ class DashboardAdm extends Model
             }
         }
 
-        return ['x_axis' => $json->encode($outputDates), 'y_axis' => $json->encode($outputCounts)];
+        return ['x_axis' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($outputDates, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON), 'y_axis' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($outputCounts, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON)];
     }
 
     public function getCoursesChartStartAttendingDataJS($how_many_days)
     {
-        require_once _base_ . '/lib/lib.json.php';
-        $json = new Services_JSON();
+        
+        
         $output = [];
         $dates = [];
 
@@ -756,13 +756,13 @@ class DashboardAdm extends Model
             }
         }
 
-        return ['x_axis' => $json->encode($outputDates), 'y_axis' => $json->encode($outputCounts)];
+        return ['x_axis' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($outputDates, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON), 'y_axis' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($outputCounts, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON)];
     }
 
     public function getCoursesChartCompletedDataJS($how_many_days)
     {
-        require_once _base_ . '/lib/lib.json.php';
-        $json = new Services_JSON();
+        
+        
         $output = [];
         $dates = [];
 
@@ -808,7 +808,7 @@ class DashboardAdm extends Model
             }
         }
 
-        return ['x_axis' => $json->encode($outputDates), 'y_axis' => $json->encode($outputCounts)];
+        return ['x_axis' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($outputDates, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON), 'y_axis' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($outputCounts, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON)];
     }
 
     public function getDashBoardReportList()

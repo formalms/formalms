@@ -45,8 +45,6 @@ function forma_autoload($classname)
         // db
         'DbHelper' => _base_ . '/db/DbHelper.php',
 
-        'Services_JSON' => _lib_ . '/lib.json.php',
-
         // i18n
         'Lang' => _i18n_ . '/lib.lang.php',
         'FormaLanguage' => _i18n_ . '/lib.lang.php',

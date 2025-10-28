@@ -21,8 +21,8 @@ class KbLmsController extends LmsController
 
     public function init()
     {
-        require_once _base_ . '/lib/lib.json.php';
-        $this->json = new Services_JSON();
+        
+        
     }
 
     public function show()
@@ -95,7 +95,7 @@ class KbLmsController extends LmsController
         foreach ($parents as $p_id => $p_name) {
             if ($i < $p_tot) {
                 $bc = '&rsquo; <a href="#" id="folder_' . $p_id . '">' .
-                        $p_name . '</a>' . $bc;
+                    $p_name . '</a>' . $bc;
             } else {
                 $bc = '&rsquo; ' . $p_name . $bc;
             }
@@ -103,7 +103,7 @@ class KbLmsController extends LmsController
         }
 
         $bc = '<a href="index.php?r=kb/show" id="folder_0">' .
-                Lang::t('_ALL_CATEGORIES', 'kb') . '</a>' . $bc;
+            Lang::t('_ALL_CATEGORIES', 'kb') . '</a>' . $bc;
 
         foreach ($folder_arr['folders'] as $folder) {
             $sub = '';
@@ -127,7 +127,7 @@ class KbLmsController extends LmsController
         $res['folder_box'] = $fbox;
         $res['breadcrumbs'] = $bc;
 
-        echo $this->json->encode($res);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($res, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function getlist()
@@ -181,8 +181,8 @@ class KbLmsController extends LmsController
                     break;
             }
             $image = '<img src="' . getPathImage() . 'lobject/' . $img_type . '.png' . '" '
-                        . 'width="16px" alt="' . $img_type . '" '
-                        . 'title="' . $img_type . '" />';
+                . 'width="16px" alt="' . $img_type . '" '
+                . 'title="' . $img_type . '" />';
             $array_comm[$key]['r_type'] = $image;
         }
 
@@ -198,7 +198,7 @@ class KbLmsController extends LmsController
             'records' => $array_comm,
         ];
 
-        echo $this->json->encode($result);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function play()

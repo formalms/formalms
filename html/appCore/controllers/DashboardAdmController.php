@@ -28,8 +28,8 @@ class DashboardAdmController extends AdmController
     public function init()
     {
         parent::init();
-        require_once _base_ . '/lib/lib.json.php';
-        $this->json = new Services_JSON();
+        
+        
         $this->model = new DashboardAdm();
 
         YuiLib::load('autocomplete,tabview');
@@ -96,24 +96,24 @@ class DashboardAdmController extends AdmController
             'file_version' => \FormaLms\lib\Version\VersionChecker::getFileVersion(),
             'current_version' => \FormaLms\lib\Version\VersionChecker::getCurrentVersion(),
             'installed_version' => \FormaLms\lib\Version\VersionChecker::getInstalledVersion(),
-            'upgrade_trigger' => (bool) \FormaLms\lib\Version\VersionChecker::compareVersions(false)['upgradeTrigger'],
+            'upgrade_trigger' => (bool)\FormaLms\lib\Version\VersionChecker::compareVersions(false)['upgradeTrigger'],
             'user_stats' => $this->model->getUsersStats(),
 
             'course_stats' => $this->model->getCoursesStats(),
             'course_months_stats' => $this->model->getCoursesMonthsStats(),
 
-            'userdata_accesses' => $this->json->encode($this->model->getUsersChartAccessData($charts_num_days)),
+            'userdata_accesses' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($this->model->getUsersChartAccessData($charts_num_days), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON),
             'userdata_accesses_js' => $this->model->getUsersChartAccessDataJS($charts_num_days),
-            'userdata_registrations' => $this->json->encode($this->model->getUsersChartRegisterData($charts_num_days)),
+            'userdata_registrations' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($this->model->getUsersChartRegisterData($charts_num_days), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON),
             'userdata_registrations_js' => $this->model->getUsersChartRegisterDataJS($charts_num_days),
 
-            'coursedata_subscriptions' => $this->json->encode($this->model->getCoursesChartSubscriptionData($charts_num_days)),
+            'coursedata_subscriptions' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($this->model->getCoursesChartSubscriptionData($charts_num_days), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON),
             'coursedata_subscriptions_js' => $this->model->getCoursesChartSubscriptionDataJS($charts_num_days),
 
-            'coursedata_startattendings' => $this->json->encode($this->model->getCoursesChartStartAttendingData($charts_num_days)),
+            'coursedata_startattendings' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($this->model->getCoursesChartStartAttendingData($charts_num_days), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON),
             'coursedata_startattendings_js' => $this->model->getCoursesChartStartAttendingDataJS($charts_num_days),
 
-            'coursedata_completed' => $this->json->encode($this->model->getCoursesChartCompletedData($charts_num_days)),
+            'coursedata_completed' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($this->model->getCoursesChartCompletedData($charts_num_days), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON),
             'coursedata_completed_js' => $this->model->getCoursesChartCompletedDataJS($charts_num_days),
 
             'permissions' => $this->permissions,
@@ -125,13 +125,13 @@ class DashboardAdmController extends AdmController
     public function deactivate()
     {
         $output = ['success' => $this->model->deactivateFeeds()];
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function activate()
     {
         $output = ['success' => $this->model->activateFeeds()];
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function diagnostic_dialogTask()
@@ -155,7 +155,7 @@ class DashboardAdmController extends AdmController
 
     public function certificateTask()
     {
-        $json = new Services_JSON();
+        
         $body = '';
 
         $body .= Form::openForm('subscr_course_form', 'ajax.adm_server.php?r=adm/dashboard/findcertificate');
@@ -178,7 +178,7 @@ class DashboardAdmController extends AdmController
 
         $output['header'] = Lang::t('_CERTIFICATE', 'menu');
         $output['body'] = $body;
-        echo $json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function findcertificateTask()
@@ -212,14 +212,14 @@ class DashboardAdmController extends AdmController
         if ($id_user <= 0 || $id_course <= 0) {
             $output['success'] = false;
             $output['message'] = Lang::t('_INVALID_INPUT'); // International message
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
 
         $eventResults = Events::trigger('core.dashboard.certificate.released', ['id_user' => $id_user, 'id_course' => $id_course]);
 
-        if ($eventResults && array_key_exists('print',  $eventResults) && array_key_exists('relasable',  $eventResults)) {
+        if ($eventResults && array_key_exists('print', $eventResults) && array_key_exists('relasable', $eventResults)) {
             $print = $eventResults['print'];
             $relesable = $eventResults['relesable'];
         } else {
@@ -250,15 +250,15 @@ class DashboardAdmController extends AdmController
         $output['success'] = true;
         $output['message'] = '';
         $output['message'] .= '<b>' . Lang::t('_CERTIFICATE_VIEW_CAPTION', 'certificate') . ':</b> ' . (count($print) > 0
-            ? implode(', ', $print)
-            : Lang::t('_NONE', 'standard')
-        ) . '<br /><br />';
+                ? implode(', ', $print)
+                : Lang::t('_NONE', 'standard')
+            ) . '<br /><br />';
         $output['message'] .= '<b>' . Lang::t('_NEW_CERTIFICATE', 'certificate') . ':</b> ' . (count($relesable) > 0
-            ? implode(', ', $relesable)
-            : Lang::t('_NONE', 'standard')
-        ) . '<br /><br />';
+                ? implode(', ', $relesable)
+                : Lang::t('_NONE', 'standard')
+            ) . '<br /><br />';
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function exportformatTask()

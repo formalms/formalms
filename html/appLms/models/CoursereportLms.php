@@ -35,10 +35,6 @@ class CoursereportLms extends Model
     /**
      * @var int
      */
-    protected $idCourse;
-    /**
-     * @var int
-     */
     protected $idReport;
     /**
      * @var string
@@ -58,6 +54,7 @@ class CoursereportLms extends Model
      * @var ReportLms[]
      */
     protected $courseReports;
+    protected $idCourse;
 
     /**
      * CoursereportLms constructor.
@@ -70,6 +67,7 @@ class CoursereportLms extends Model
     public function __construct($idCourse, $idReport = null, $sourceOf = null, $idSource = null)
     {
         parent::__construct();
+
         $this->idCourse = $idCourse;
 
         $this->idReport = $idReport;
@@ -146,7 +144,7 @@ class CoursereportLms extends Model
 
         $stats_result = sql_query($query_stats);
         $stats = sql_fetch_assoc($stats_result);
-        
+
         // Ensure $stats is a valid array to prevent wrong evaluation records
         if (!is_array($stats)) {
             // If query failed or returned invalid data, initialize with safe defaults
@@ -165,12 +163,6 @@ class CoursereportLms extends Model
             $report_man->addFinalVoteToReport();
         }
 
-        // Handle case where only final vote exists
-        if ($tot_report === 1 && $final_score_report === 1) {
-            sql_query("DELETE FROM %lms_coursereport WHERE id_course = '" . (int)$this->idCourse . "'");
-            $tot_report = 0;
-        }
-
         // Parse existing test reports
         $included_test = [];
         $test_reports_string = $stats['test_reports'] ?? null;
@@ -183,9 +175,12 @@ class CoursereportLms extends Model
                 }
             }
         }
+
         // Manage test reports
+        $reports_modified = false;
         if ($tot_report === 0) {
             $report_man->initializeCourseReport($org_tests);
+            $reports_modified = true;
         } else {
             // Compare test IDs properly using normalized IDs
             $org_test_ids = $org_tests;
@@ -199,10 +194,14 @@ class CoursereportLms extends Model
                 if (!empty($test_to_del)) {
                     $report_man->delTestToReport($test_to_del);
                 }
+                $reports_modified = true;
             }
         }
 
-        $report_man->updateTestReport($org_tests);
+        // Only update test reports if they were modified
+        if ($reports_modified) {
+            $report_man->updateTestReport($org_tests);
+        }
 
         // Build final report query with proper escaping
         $query_report = "SELECT id_report FROM %lms_coursereport WHERE id_course = '" . (int)$this->idCourse . "'";

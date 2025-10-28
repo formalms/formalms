@@ -501,9 +501,9 @@ class TestManagement
             return $this->test_info['question_random_number'];
         }
         if ($this->test_info['order_type'] == 3 && $this->test_info['order_info']) {
-            require_once _base_ . '/lib/lib.json.php';
-            $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
-            $arr = $json->decode($this->test_info['order_info']);
+            
+            
+            $arr = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($this->test_info['order_info'], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             $total = 0;
             if (is_array($arr)) {
                 foreach ($arr as $value) {
@@ -514,9 +514,9 @@ class TestManagement
             return $total;
         }
         if ($this->test_info['order_type'] >= 4 && $this->test_info['cf_info']) {
-            require_once _base_ . '/lib/lib.json.php';
-            $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
-            $arr = $json->decode($this->test_info['cf_info']);
+            
+            
+            $arr = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($this->test_info['cf_info'], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             $total = 0;
             if (is_array($arr)) {
                 foreach ($arr as $value) {
@@ -586,9 +586,9 @@ class TestManagement
             if (!$this->test_info['display_type']) {
                 return 1;
             } else {
-                require_once _base_ . '/lib/lib.json.php';
-                $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
-                $arr = $json->decode($this->test_info['order_info']);
+                
+                
+                $arr = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($this->test_info['order_info'], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
                 $tot_page = 0;
                 foreach ($arr as $value) {
                     $tot_page += (int)$value['selected'];
@@ -1100,9 +1100,9 @@ class PlayTestManagement
                     break;
                 case '3':
                     // Random X quest on a set of selected categories, each of N(idCategory) quests
-                    require_once _base_ . '/lib/lib.json.php';
-                    $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
-                    $arr = $json->decode($order_info);
+                    
+                    
+                    $arr = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($order_info, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                     $queries = [];
                     if (is_array($arr)) {
@@ -1125,9 +1125,9 @@ class PlayTestManagement
                     break;
                 case '4':
                     // Random X quest on a set of selected categories, each of N(idCategory) quests
-                    require_once _base_ . '/lib/lib.json.php';
-                    $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
-                    $arr = $json->decode($cf_info);
+                    
+                    
+                    $arr = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($cf_info, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                     $queries = [];
                     if (is_array($arr)) {
@@ -1208,9 +1208,9 @@ class PlayTestManagement
                     }
 
                     // Random X quest on a set of selected categories, each of N(idCategory) quests
-                    require_once _base_ . '/lib/lib.json.php';
-                    $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
-                    $arr = $json->decode($order_info);
+                    
+                    
+                    $arr = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($order_info, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                     $queries = [];
                     if (is_array($arr)) {

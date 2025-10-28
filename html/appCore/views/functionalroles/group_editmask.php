@@ -81,7 +81,7 @@ if (isset($json)) {
         'header' => $title,
         'body' => $content,
     ];
-    echo $json->encode($params);
+    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($params, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 } else {
     echo '<h2>' . $title . '</h2>';
     echo $content;

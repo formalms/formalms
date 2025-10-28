@@ -25,9 +25,6 @@ class PrecompileLmsController extends LmsController
     {
         $this->model = new PrecompileLms();
 
-        require_once _base_ . '/lib/lib.json.php';
-        $this->json = new Services_JSON();
-
         $this->jump_url = 'index.php?r=' . $this->model->getHomeUrl();
     }
 

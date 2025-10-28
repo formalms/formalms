@@ -96,8 +96,8 @@ class Bbb_Manager
                             );
         */
         if ($res && $res->result) {
-            require_once _base_ . '/lib/lib.json.php';
-            $json = new Services_JSON();
+            
+            
 
             //save in database the roomid for user login
             $insert_room = '
@@ -109,8 +109,8 @@ class Bbb_Manager
 				'" . $display_name . "',
 				'" . $audiovideosettings . "',
 				'" . $maxmikes . "',
-				'" . $json->encode($res->response) . "',
-				'" . $json->encode($extra_conf) . "'
+				'" . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($res->response, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . "',
+				'" . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($extra_conf, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . "'
 			)";
 
             if (!sql_query($insert_room)) {
@@ -353,7 +353,7 @@ class Bbb_Manager
 
     public function _api_request($service, $method, $params, $parname = false)
     {
-        require_once _base_ . '/lib/lib.json.php';
+        
         require_once _base_ . '/lib/lib.fsock_wrapper.php';
         $server = FormaLms\lib\Get::sett('ConferenceBBB_server', false);
         $output = false;
@@ -361,7 +361,7 @@ class Bbb_Manager
         if ($server && $service && $method) {
             $url = 'http://' . $server . '/api/' . $service . '/' . $method;
 
-            $json = new Services_JSON();
+            
             $fsock = new FSock();
 
             //check user login
@@ -382,21 +382,21 @@ class Bbb_Manager
                         _BBB_AUTH_CODE => $auth_code,
                         'Content-type' => 'application/x-www-form-urlencoded',
                     ];
-                    $post = $_parname . urlencode($json->encode($params));
+                    $post = $_parname . urlencode(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($params, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
                     $res_json = $fsock->post_request($url, FormaLms\lib\Get::sett('ConferenceBBB_port', '80'), $post, $other_header);
                     if ($res_json) {
-                        $output = $json->decode($res_json);
+                        $output = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($res_json, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
                     }
                 }
             } else {
-                $post = $_parname . urlencode($json->encode($params));
+                $post = $_parname . urlencode(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($params, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
                 $other_header = ['Content-type' => 'application/x-www-form-urlencoded'];
                 if ($method != 'login') {
                     $other_header[_BBB_AUTH_CODE] = $this->get_auth_code();
                 }
                 $res_json = $fsock->post_request($url, FormaLms\lib\Get::sett('ConferenceBBB_port', '80'), $post, $other_header);
                 if ($res_json) {
-                    $output = $json->decode($res_json);
+                    $output = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($res_json, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
                 }
             }
         }
@@ -565,8 +565,8 @@ class Bbb_Manager
         $info = $this->nextRow($res);
 
         require_once _adm_ . '/lib/lib.json.php';
-        $json = new Services_JSON();
-        $info_decoded = $json->decode($info['schedule_info']);
+        
+        $info_decoded = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($info['schedule_info'], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
         $params = new stdClass();
 

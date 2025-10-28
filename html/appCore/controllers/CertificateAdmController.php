@@ -22,7 +22,7 @@ class CertificateAdmController extends AdmController
     {
         parent::init();
         require_once \FormaLms\lib\Forma::include(_base_ . '/lib/','lib.json.php');
-        $this->json = new Services_JSON();
+        
    
    
     }
@@ -63,7 +63,7 @@ class CertificateAdmController extends AdmController
 
                 if(defined('IS_AJAX'))
                 {
-                    echo $this->json->encode(['result' => $deletion_result]);
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['result' => $deletion_result],\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
                     exit;
                 }
 

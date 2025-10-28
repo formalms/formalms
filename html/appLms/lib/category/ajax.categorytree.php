@@ -13,14 +13,14 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once _base_ . '/lib/lib.json.php';
+
 require_once _lms_ . '/lib/category/class.categorytree.php';
 
 $op = FormaLms\lib\Get::req('op', DOTY_ALPHANUM);
 
 switch ($op) {
     case 'expand':
-        $json = new Services_JSON();
+
         $node_id = FormaLms\lib\Get::req('query', DOTY_INT, 0);
 
         $result = [];
@@ -35,7 +35,7 @@ switch ($op) {
             ]; //change this
         }
 
-        aout($json->encode($result));
+        aout(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
      break;
 
     case 'getaddnodeform':
@@ -47,8 +47,8 @@ switch ($op) {
       '<input type="hidden" name="op" value="add_folder" />' .
       '<input type="hidden" name="parent_id" value="' . $parent_id . '" />' .
       '<label for="newname">' . 'lang._NEW_FOLDER' . ':</label><input type="text" name="newname" /></form>';
-    $json = new Services_JSON();
-    aout($json->encode($output));
+
+    aout(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
    break;
 
     case 'add_folder':
@@ -59,8 +59,7 @@ switch ($op) {
         $output['label'] = 'label';
         $output['is_leaf'] = false;
 
-        $json = new Services_JSON();
-        aout($json->encode($output));
+        aout(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
      break;
 
     case 'add_element':
@@ -70,8 +69,8 @@ switch ($op) {
         $output = [];
 
         $output['success'] = true;
-        $json = new Services_JSON();
-        aout($json->encode($output));
+
+        aout(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
      break;
 
     case 'del_element':

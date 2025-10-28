@@ -127,8 +127,8 @@ switch ($command) {
             'records' => $courses,
         ];
 
-        $json = new Services_JSON();
-        aout($json->encode($output));
+        
+        aout(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
 
      break;
 
@@ -143,8 +143,8 @@ switch ($command) {
             $output['success'] = $man_course->deleteCourse($id_course);
         }
 
-        $json = new Services_JSON();
-        aout($json->encode($output));
+        
+        aout(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
      break;
 
     case 'set_name':
@@ -158,13 +158,13 @@ switch ($command) {
             }
         }
 
-        aout($json->encode($output));
+        aout(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
      break;
 
     case 'updateField':
-        require_once _base_ . '/lib/lib.json.php';
+        
 
-        $json = new Services_JSON();
+        
 
         $id_course = FormaLms\lib\Get::req('idCourse', DOTY_INT, false);
         $field = FormaLms\lib\Get::req('col', DOTY_MIXED, false);
@@ -183,7 +183,7 @@ switch ($command) {
                     $res = sql_query($query);
                 }
 
-                aout($json->encode(['success' => $res, 'new_value' => $new_value, 'old_value' => $old_value]));
+                aout(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['success' => $res, 'new_value' => $new_value, 'old_value' => $old_value], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
             break;
 
             case 'code':
@@ -197,7 +197,7 @@ switch ($command) {
                     $res = sql_query($query);
                 }
 
-                aout($json->encode(['success' => $res, 'new_value' => stripslashes($new_value), 'old_value' => stripslashes($old_value)]));
+                aout(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['success' => $res, 'new_value' => stripslashes($new_value), 'old_value' => stripslashes($old_value)], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
             break;
         }
     break;

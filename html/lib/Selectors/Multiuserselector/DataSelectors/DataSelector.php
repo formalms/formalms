@@ -1,7 +1,9 @@
 <?php
+
 namespace FormaLms\lib\Selectors\Multiuserselector\DataSelectors;
 
 use FormaLms\lib\Interfaces\DataSelectable;
+use FormaLms\lib\Serializer\FormaSerializer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -10,11 +12,12 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 
 
-require_once _base_ . '/lib/lib.json.php';
 require_once _base_ . '/i18n/lib.format.php';
 require_once _base_ . '/i18n/lib.lang.php';
 require_once _base_ . '/lib/layout/lib.layout.php';
-abstract class DataSelector implements DataSelectable { 
+
+abstract class DataSelector implements DataSelectable
+{
 
     const DYNAMIC_COLUMNS = false;
 
@@ -22,46 +25,34 @@ abstract class DataSelector implements DataSelectable {
 
     protected $builder;
 
-    protected $json;
+    protected FormaSerializer $serializer;
 
-    protected Serializer $serializer;
-
-    public function __construct() {
-        $this->json = new \Services_JSON(SERVICES_JSON_LOOSE_TYPE);
-        $encoders = [new JsonEncoder()];
-        $normalizers = [
-            new ArrayDenormalizer(),
-            new DateTimeNormalizer(),
-            new ObjectNormalizer(
-                null,
-                null,
-                null,
-                new ReflectionExtractor()
-            )];
-        $this->serializer = new Serializer($normalizers, $encoders);
-
-  
-
+    public function __construct()
+    {
+        $this->serializer = FormaSerializer::getInstance();
     }
 
-  
 
-    public function getName() : string  {
+    public function getName(): string
+    {
         return $this->name;
     }
 
-  
 
-    public function getData($params = []){
+    public function getData($params = [])
+    {
     }
 
-    public function getColumns(){
+    public function getColumns()
+    {
     }
 
-    public function getHiddenColumns(){
+    public function getHiddenColumns()
+    {
     }
 
-    public function getDynamicColumns(array $columns) : array {
+    public function getDynamicColumns(array $columns): array
+    {
         return [];
     }
 

@@ -31,7 +31,7 @@ class StepController
     {
         require_once _base_ . '/lib/lib.json.php';
         $json = new Services_JSON();
-        $array_j = $json->encode($res_arr);
+        $array_j = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($res_arr, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
         ob_clean();
         echo $array_j;

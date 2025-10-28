@@ -53,6 +53,7 @@ use FormaACLManager;
 use FormaLanguage;
 use FieldList;
 use Form;
+use FormaLms\lib\Serializer\FormaSerializer;
 use Format;
 use Get;
 use LabelAlms;
@@ -62,7 +63,6 @@ use OrganizationManagement;
 use ReportBox;
 use ReportTablePrinter;
 use Selector_Course;
-use Services_JSON;
 use UsermanagementAdm;
 use UserSelector;
 use Util;
@@ -311,7 +311,7 @@ class Report extends \ReportPlugin
 
             if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 $user_select->addFormInfo(
-                    Form::getCheckbox($lang->def('_REPORT_FOR_ALL'), 'all_users', 'all_users', 1, $reportTempData['rows_filter']['all_users']) . 
+                    Form::getCheckbox($lang->def('_REPORT_FOR_ALL'), 'all_users', 'all_users', 1, $reportTempData['rows_filter']['all_users']) .
                     Form::getBreakRow() .
                     Form::getHidden('org_chart_subdivision', 'org_chart_subdivision', $org_chart_subdivision) .
                     Form::getHidden('is_updating', 'is_updating', 1)
@@ -371,7 +371,7 @@ class Report extends \ReportPlugin
             $custom[] = ['id' => $key, 'label' => $val, 'selected' => false];
         }
 
-        
+
         if (!isset($reportTempData['columns_filter'])) {
             $reportDataTemp->set('columns_filter', [
                 'org_chart_subdivision' => 0,
@@ -503,7 +503,6 @@ class Report extends \ReportPlugin
 
         //example selection options
 
-        require_once _base_ . '/lib/lib.json.php';
 
         $seldata = $this->courses_filter_definition;
 
@@ -515,9 +514,9 @@ class Report extends \ReportPlugin
         $regset = Format::instance();
         $date_token = $regset->date_token;
 
-        $json = new Services_JSON();
-        $js_seldata = $json->encode($seldata);
-        $js_filter_cases = $json->encode($filter_cases);
+
+        $js_seldata = FormaSerializer::getInstance()->encode($seldata, FormaSerializer::FORMAT_JSON);
+        $js_filter_cases = FormaSerializer::getInstance()->encode($filter_cases, FormaSerializer::FORMAT_JSON);
 
         $out->add('<script type="text/javascript">' . "\n" .
             //'_temp_seldata='.$js_seldata.';'."\n".
@@ -766,7 +765,7 @@ class Report extends \ReportPlugin
         $sort_dir_dropdown = Form::getInputDropdown('', 'order_dir', 'order_dir', $dir_list, $dir_selected, '');
         $box->body .= Form::getDropdown(Lang::t('_ORDER_BY', 'standard'), 'order_by', 'order_by', $sort_list, $sort_selected, $sort_dir_dropdown);
 
-        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool) $ref['show_suspended']);
+        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool)$ref['show_suspended']);
 
         cout($box->get());
     }
@@ -841,10 +840,9 @@ class Report extends \ReportPlugin
 
         $prevdata = $ref['filters_list']; //array();
 
-        $json = new Services_JSON();
 
-        $js_prevdata = $json->encode($prevdata);
-        $js_optdata = str_replace("'", "\'", $json->encode($optdata));
+        $js_prevdata = FormaSerializer::getInstance()->encode($prevdata,FormaSerializer::FORMAT_JSON);
+        $js_optdata = str_replace("'", "\'", FormaSerializer::getInstance()->encode($optdata,FormaSerializer::FORMAT_JSON));
 
         cout('<script type="text/javascript">' .
             'optdata_JSON=\'' . $js_optdata . '\';' .
@@ -910,67 +908,67 @@ class Report extends \ReportPlugin
 
         switch ($op) {
             case 'send_mail_confirm':
-                    $subject = importVar('mail_object', false, '[' . $lang->def('_SUBJECT') . ']'); //'[No subject]');
-                    $body = importVar('mail_body', false, '');
-                    $acl_man = new FormaACLManager();
+                $subject = importVar('mail_object', false, '[' . $lang->def('_SUBJECT') . ']'); //'[No subject]');
+                $body = importVar('mail_body', false, '');
+                $acl_man = new FormaACLManager();
 
-                    $sender = FormaLms\lib\Get::sett('sender_event');
-                    $mail_recipients = unserialize(urldecode(FormaLms\lib\Get::req('mail_recipients', DOTY_STRING, '')));
+                $sender = FormaLms\lib\Get::sett('sender_event');
+                $mail_recipients = unserialize(urldecode(FormaLms\lib\Get::req('mail_recipients', DOTY_STRING, '')));
 
-                    // prepare intestation for email
-                    $from = 'From: ' . $sender . $GLOBALS['mail_br'];
-                    $header = 'MIME-Version: 1.0' . $GLOBALS['mail_br']
-                        . 'Content-type: text/html; charset=' . Lang::charset() . $GLOBALS['mail_br'];
-                    $header .= 'Return-Path: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
-                    //$header .= "Reply-To: " . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
-                    $header .= 'X-Sender: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
-                    $header .= 'X-Mailer: PHP/' . PHP_VERSION . $GLOBALS['mail_br'];
+                // prepare intestation for email
+                $from = 'From: ' . $sender . $GLOBALS['mail_br'];
+                $header = 'MIME-Version: 1.0' . $GLOBALS['mail_br']
+                    . 'Content-type: text/html; charset=' . Lang::charset() . $GLOBALS['mail_br'];
+                $header .= 'Return-Path: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
+                //$header .= "Reply-To: " . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
+                $header .= 'X-Sender: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
+                $header .= 'X-Mailer: PHP/' . PHP_VERSION . $GLOBALS['mail_br'];
 
-                    // send mail
-                    $arr_recipients = [];
-                    foreach ($mail_recipients as $recipient) {
-                        $rec_data = $acl_man->getUser($recipient, false);
-                        //mail($rec_data[ACL_INFO_EMAIL] , $subject, $body, $from.$header."\r\n");
-                        $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
-                    }
-                    $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
-                    $mailer->addReplyTo(FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br']);
-                    $mailer->SendMail($sender, $arr_recipients, $subject, $body);
+                // send mail
+                $arr_recipients = [];
+                foreach ($mail_recipients as $recipient) {
+                    $rec_data = $acl_man->getUser($recipient, false);
+                    //mail($rec_data[ACL_INFO_EMAIL] , $subject, $body, $from.$header."\r\n");
+                    $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
+                }
+                $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
+                $mailer->addReplyTo(FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br']);
+                $mailer->SendMail($sender, $arr_recipients, $subject, $body);
 
-                    $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
+                $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
 
-                    cout($this->_get_courses_query('html', null, $result));
+                cout($this->_get_courses_query('html', null, $result));
 
                 break;
 
             case 'send_mail':
-                    require_once _base_ . '/lib/lib.form.php';
-                    $mail_recipients = FormaLms\lib\Get::req('mail_recipients', DOTY_MIXED, []);
-                    cout(''//Form::openForm('course_selection', Util::str_replace_once('&', '&amp;', $jump_url))
-                        . Form::openElementSpace()
-                        . Form::getTextfield($lang->def('_SUBJECT'), 'mail_object', 'mail_object', 255)
-                        . Form::getTextarea($lang->def('_MAIL_BODY'), 'mail_body', 'mail_body')
-                        . Form::getHidden('mail_recipients', 'mail_recipients', urlencode(serialize($mail_recipients)))
-                        . Form::closeElementSpace()
-                        . Form::openButtonSpace()
-                        . Form::getButton('send_mail_confirm', 'send_mail_confirm', $lang->def('_SEND_MAIL'))
-                        . Form::getButton('undo_mail', 'undo_mail', $lang->def('_UNDO'))
-                        . Form::closeButtonSpace()
-                        //.Form::closeForm()
-                        . '</div>', 'content');
+                require_once _base_ . '/lib/lib.form.php';
+                $mail_recipients = FormaLms\lib\Get::req('mail_recipients', DOTY_MIXED, []);
+                cout(''//Form::openForm('course_selection', Util::str_replace_once('&', '&amp;', $jump_url))
+                    . Form::openElementSpace()
+                    . Form::getTextfield($lang->def('_SUBJECT'), 'mail_object', 'mail_object', 255)
+                    . Form::getTextarea($lang->def('_MAIL_BODY'), 'mail_body', 'mail_body')
+                    . Form::getHidden('mail_recipients', 'mail_recipients', urlencode(serialize($mail_recipients)))
+                    . Form::closeElementSpace()
+                    . Form::openButtonSpace()
+                    . Form::getButton('send_mail_confirm', 'send_mail_confirm', $lang->def('_SEND_MAIL'))
+                    . Form::getButton('undo_mail', 'undo_mail', $lang->def('_UNDO'))
+                    . Form::closeButtonSpace()
+                    //.Form::closeForm()
+                    . '</div>', 'content');
 
                 break;
 
             default:
-                    cout($this->_get_courses_query('html', $report_data, $other));
+                cout($this->_get_courses_query('html', $report_data, $other));
         }
     }
 
     /**
      * Return the output in the selected format for the report with the filters given.
      *
-     * @param string $type        output type
-     * @param array  $report_data a properly formatted list of rule to follow
+     * @param string $type output type
+     * @param array $report_data a properly formatted list of rule to follow
      * @param string $other
      *
      * @return string the properly formated report
@@ -993,7 +991,7 @@ class Report extends \ReportPlugin
         $course_man = new Man_Course();
 
         // read form _SESSION (XXX: change this) the report setting
-        $filter_userselection = (!$report_data && isset( $reportDataTemp['rows_filter']['users'])
+        $filter_userselection = (!$report_data && isset($reportDataTemp['rows_filter']['users'])
             ? $reportDataTemp['rows_filter']['users'] : $report_data['rows_filter']['users']);
 
         $filter_columns = (!$report_data && $reportDataTemp['columns_filter']
@@ -1130,7 +1128,7 @@ class Report extends \ReportPlugin
                 $filter_allcourses = false;
             }
         }
-        $show_classrooms_editions = isset($filter_columns['show_classrooms_editions']) ? (bool) $filter_columns['show_classrooms_editions'] : false;
+        $show_classrooms_editions = isset($filter_columns['show_classrooms_editions']) ? (bool)$filter_columns['show_classrooms_editions'] : false;
 
         $classrooms_editions_info = [];
         if ($show_classrooms_editions) {
@@ -1337,7 +1335,7 @@ class Report extends \ReportPlugin
             $date_now = Format::date(date('Y-m-d H:i:s'));
 
             reset($org_name);
-            foreach ($org_name  as $idst_group => $folder_name) {
+            foreach ($org_name as $idst_group => $folder_name) {
                 if ($type == 'html') {
                     cout('<div class="datasummary">'
                         . '<b>' . $lang->def('_FOLDER_NAME') . ' :</b> ' . $folder_name['name']
@@ -1405,18 +1403,18 @@ class Report extends \ReportPlugin
 
         switch ($type) {
             case _FILTER_INTEGER:
-                    if ($cmp1 == '') {
-                        $cmp1 = 0;
-                    }
-                    if ($cmp2 == '') {
-                        $cmp2 = 0;
-                    }
+                if ($cmp1 == '') {
+                    $cmp1 = 0;
+                }
+                if ($cmp2 == '') {
+                    $cmp2 = 0;
+                }
 
                 break;
 
             case _FILTER_DATE:
-                    $cmp1 = ($cmp1 != '' ? substr($cmp1, 0, 10) : 0);
-                    $cmp2 = ($cmp2 != '' ? substr($cmp2, 0, 10) : 0);
+                $cmp1 = ($cmp1 != '' ? substr($cmp1, 0, 10) : 0);
+                $cmp2 = ($cmp2 != '' ? substr($cmp2, 0, 10) : 0);
         }
 
         //make comparison
@@ -1647,9 +1645,9 @@ class Report extends \ReportPlugin
         //checkbox for mail
         if ($this->use_mail) {
             $th2[] = [
-            'style' => 'img-cell',
-            'value' => $this->_loadEmailIcon(),
-        ];
+                'style' => 'img-cell',
+                'value' => $this->_loadEmailIcon(),
+            ];
         }
 
         $th1 = [];
@@ -1699,52 +1697,52 @@ class Report extends \ReportPlugin
 
                     switch ($value['option']) {
                         case _COURSES_FILTER_SESSION_NUMBER:
-                                if (isset($session_list[$id_user . '_' . $id_course])) {
-                                    $temp = $this->_check($session_list[$id_user . '_' . $id_course], $value['value'], $value['sign'], _FILTER_INTEGER);
-                                }
+                            if (isset($session_list[$id_user . '_' . $id_course])) {
+                                $temp = $this->_check($session_list[$id_user . '_' . $id_course], $value['value'], $value['sign'], _FILTER_INTEGER);
+                            }
 
                             break;
 
                         case _COURSES_FILTER_SCORE_INIT:
-                                if (isset($score_start[$id_course][$id_user])) {
-                                    $temp = $this->_check($score_start[$id_course][$id_user]['score'], $value['value'], $value['sign'], _FILTER_INTEGER);
-                                }
+                            if (isset($score_start[$id_course][$id_user])) {
+                                $temp = $this->_check($score_start[$id_course][$id_user]['score'], $value['value'], $value['sign'], _FILTER_INTEGER);
+                            }
 
                             break;
 
                         case _COURSES_FILTER_SCORE_END:
-                                if (isset($score_final[$id_course][$id_user])) {
-                                    $temp = $this->_check($score_final[$id_course][$id_user]['score'], $value['value'], $value['sign'], _FILTER_INTEGER);
-                                }
+                            if (isset($score_final[$id_course][$id_user])) {
+                                $temp = $this->_check($score_final[$id_course][$id_user]['score'], $value['value'], $value['sign'], _FILTER_INTEGER);
+                            }
 
                             break;
 
                         case _COURSES_FILTER_INSCRIPTION_DATE:
-                                $temp = $this->_check($date_inscr, $value['value'], $value['sign'], _FILTER_DATE);
+                            $temp = $this->_check($date_inscr, $value['value'], $value['sign'], _FILTER_DATE);
 
                             break;
 
                         case _COURSES_FILTER_END_DATE:
-                                $temp = $this->_check($date_complete, $value['value'], $value['sign'], _FILTER_DATE);
+                            $temp = $this->_check($date_complete, $value['value'], $value['sign'], _FILTER_DATE);
 
                             break;
 
                         case _COURSES_FILTER_FIRSTACCESS_DATE:
-                                $temp = $this->_check($date_first_access, $value['value'], $value['sign'], _FILTER_DATE);
+                            $temp = $this->_check($date_first_access, $value['value'], $value['sign'], _FILTER_DATE);
 
                             break;
 
                         case _COURSES_FILTER_LASTACCESS_DATE:
-                                if (isset($lastaccess_list[$id_user . '_' . $id_course])) {
-                                    $temp = $this->_check($lastaccess_list[$id_user . '_' . $id_course], $value['value'], $value['sign'], _FILTER_DATE);
-                                }
+                            if (isset($lastaccess_list[$id_user . '_' . $id_course])) {
+                                $temp = $this->_check($lastaccess_list[$id_user . '_' . $id_course], $value['value'], $value['sign'], _FILTER_DATE);
+                            }
 
                             break;
 
                         case _COURSES_FILTER_SCORE_COURSE:
-                                if (isset($score_course[$id_user][$id_course])) {
-                                    $temp = $this->_check($score_course[$id_user][$id_course]['score'], $value['value'], $value['sign'], _FILTER_INTEGER);
-                                }
+                            if (isset($score_course[$id_user][$id_course])) {
+                                $temp = $this->_check($score_course[$id_user][$id_course]['score'], $value['value'], $value['sign'], _FILTER_INTEGER);
+                            }
 
                             break;
                     }
@@ -1887,20 +1885,20 @@ class Report extends \ReportPlugin
 
                 if (in_array('_TH_USER_START_SCORE', $cols)) {
                     $row[] = (isset($score_start[$id_course][$id_user])
-                    ? $score_start[$id_course][$id_user]['score'] . ' / ' . $score_start[$id_course][$id_user]['max_score']
-                    : '');
+                        ? $score_start[$id_course][$id_user]['score'] . ' / ' . $score_start[$id_course][$id_user]['max_score']
+                        : '');
                 }
 
                 if (in_array('_TH_USER_FINAL_SCORE', $cols)) {
                     $row[] = (isset($score_final[$id_course][$id_user])
-                    ? $score_final[$id_course][$id_user]['score'] . ' / ' . $score_final[$id_course][$id_user]['max_score']
-                    : '');
+                        ? $score_final[$id_course][$id_user]['score'] . ' / ' . $score_final[$id_course][$id_user]['max_score']
+                        : '');
                 }
 
                 if (in_array('_TH_USER_COURSE_SCORE', $cols)) {
                     $row[] = (isset($score_course[$id_user][$id_course])
-                    ? $score_course[$id_user][$id_course]['score'] . ' / ' . $score_course[$id_user][$id_course]['max_score']
-                    : '');
+                        ? $score_course[$id_user][$id_course]['score'] . ' / ' . $score_course[$id_user][$id_course]['max_score']
+                        : '');
                 }
 
                 if (in_array('_TH_USER_NUMBER_SESSION', $cols)) {
@@ -1909,9 +1907,9 @@ class Report extends \ReportPlugin
 
                 if (in_array('_TH_USER_ELAPSED_TIME', $cols)) {
                     $row[] = (isset($time_list[$id_user . '_' . $id_course]) ?
-                    substr('0' . ((int) ($time_list[$id_user . '_' . $id_course] / 3600)), -2) . 'h '
-                    . substr('0' . ((int) (($time_list[$id_user . '_' . $id_course] % 3600) / 60)), -2) . 'm '
-                    . substr('0' . ((int) ($time_list[$id_user . '_' . $id_course] % 60)), -2) . 's ' : '&nbsp;');
+                        substr('0' . ((int)($time_list[$id_user . '_' . $id_course] / 3600)), -2) . 'h '
+                        . substr('0' . ((int)(($time_list[$id_user . '_' . $id_course] % 3600) / 60)), -2) . 'm '
+                        . substr('0' . ((int)($time_list[$id_user . '_' . $id_course] % 60)), -2) . 's ' : '&nbsp;');
                 }
 
                 if (in_array('_TH_ESTIMATED_TIME', $cols)) {
@@ -2016,61 +2014,61 @@ class Report extends \ReportPlugin
 
         switch ($op) {
             case 'send_mail_confirm':
-                    $subject = importVar('mail_object', false, '[' . $lang->def('_SUBJECT') . ']'); //'[No subject]');
-                    $body = importVar('mail_body', false, '');
-                    $acl_man = new FormaACLManager();
+                $subject = importVar('mail_object', false, '[' . $lang->def('_SUBJECT') . ']'); //'[No subject]');
+                $body = importVar('mail_body', false, '');
+                $acl_man = new FormaACLManager();
 
-                    $sender = FormaLms\lib\Get::sett('sender_event');
-                    $mail_recipients = unserialize(urldecode(FormaLms\lib\Get::req('mail_recipients', DOTY_STRING, '')));
+                $sender = FormaLms\lib\Get::sett('sender_event');
+                $mail_recipients = unserialize(urldecode(FormaLms\lib\Get::req('mail_recipients', DOTY_STRING, '')));
 
-                    // prepare intestation for email
-                    $from = 'From: ' . $sender . $GLOBALS['mail_br'];
-                    $header = 'MIME-Version: 1.0' . $GLOBALS['mail_br']
-                        . 'Content-type: text/html; charset=' . Lang::charset() . $GLOBALS['mail_br'];
-                    $header .= 'Return-Path: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
-                    //$header .= "Reply-To: " . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
-                    $header .= 'X-Sender: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
-                    $header .= 'X-Mailer: PHP/' . PHP_VERSION . $GLOBALS['mail_br'];
+                // prepare intestation for email
+                $from = 'From: ' . $sender . $GLOBALS['mail_br'];
+                $header = 'MIME-Version: 1.0' . $GLOBALS['mail_br']
+                    . 'Content-type: text/html; charset=' . Lang::charset() . $GLOBALS['mail_br'];
+                $header .= 'Return-Path: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
+                //$header .= "Reply-To: " . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
+                $header .= 'X-Sender: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
+                $header .= 'X-Mailer: PHP/' . PHP_VERSION . $GLOBALS['mail_br'];
 
-                    // send mail
-                    $arr_recipients = [];
-                    foreach ($mail_recipients as $recipient) {
-                        $rec_data = $acl_man->getUser($recipient, false);
-                        //mail($rec_data[ACL_INFO_EMAIL] , $subject, $body, $from.$header."\r\n");
-                        $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
-                    }
-                    $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
-                    $mailer->addReplyTo(FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br']);
-                    $mailer->SendMail($sender, $arr_recipients, $subject, $body);
+                // send mail
+                $arr_recipients = [];
+                foreach ($mail_recipients as $recipient) {
+                    $rec_data = $acl_man->getUser($recipient, false);
+                    //mail($rec_data[ACL_INFO_EMAIL] , $subject, $body, $from.$header."\r\n");
+                    $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
+                }
+                $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
+                $mailer->addReplyTo(FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br']);
+                $mailer->SendMail($sender, $arr_recipients, $subject, $body);
 
-                    $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
+                $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
 
-                    //$this->show_report($alluser, $jump_url, $org_chart_subdivision, $day_from_subscription, $day_until_course_end, $date_until_course_end, $report_type, $course_selected, $user_selected);
-                    cout($this->_get_competences_query('html', null, $result));
+                //$this->show_report($alluser, $jump_url, $org_chart_subdivision, $day_from_subscription, $day_until_course_end, $date_until_course_end, $report_type, $course_selected, $user_selected);
+                cout($this->_get_competences_query('html', null, $result));
 
                 break;
 
             case 'send_mail':
-                    require_once _base_ . '/lib/lib.form.php';
-                    $mail_recipients = FormaLms\lib\Get::req('mail_recipients', DOTY_MIXED, []);
-                    cout(
-                        ''//Form::openForm('course_selection', Util::str_replace_once('&', '&amp;', $jump_url))
-                        . Form::openElementSpace()
-                        . Form::getTextfield($lang->def('_SUBJECT'), 'mail_object', 'mail_object', 255)
-                        . Form::getTextarea($lang->def('_MAIL_BODY'), 'mail_body', 'mail_body')
-                        . Form::getHidden('mail_recipients', 'mail_recipients', urlencode(serialize($mail_recipients)))
-                        . Form::closeElementSpace()
-                        . Form::openButtonSpace()
-                        . Form::getButton('send_mail_confirm', 'send_mail_confirm', $lang->def('_SEND_MAIL'))
-                        . Form::getButton('undo_mail', 'undo_mail', $lang->def('_UNDO'))
-                        . Form::closeButtonSpace()
-                        //.Form::closeForm()
-                        . '</div>', 'content');
+                require_once _base_ . '/lib/lib.form.php';
+                $mail_recipients = FormaLms\lib\Get::req('mail_recipients', DOTY_MIXED, []);
+                cout(
+                    ''//Form::openForm('course_selection', Util::str_replace_once('&', '&amp;', $jump_url))
+                    . Form::openElementSpace()
+                    . Form::getTextfield($lang->def('_SUBJECT'), 'mail_object', 'mail_object', 255)
+                    . Form::getTextarea($lang->def('_MAIL_BODY'), 'mail_body', 'mail_body')
+                    . Form::getHidden('mail_recipients', 'mail_recipients', urlencode(serialize($mail_recipients)))
+                    . Form::closeElementSpace()
+                    . Form::openButtonSpace()
+                    . Form::getButton('send_mail_confirm', 'send_mail_confirm', $lang->def('_SEND_MAIL'))
+                    . Form::getButton('undo_mail', 'undo_mail', $lang->def('_UNDO'))
+                    . Form::closeButtonSpace()
+                    //.Form::closeForm()
+                    . '</div>', 'content');
 
                 break;
 
             default:
-                    cout($this->_get_competences_query('html', $report_data, $other));
+                cout($this->_get_competences_query('html', $report_data, $other));
         }
         //cout( $this->_get_competences_query() );
     }
@@ -2175,7 +2173,7 @@ class Report extends \ReportPlugin
         $buffer->closeHeader();
         $buffer->openBody();
         //check all data row and print them
-        foreach ($arr_data  as $id_user => $ucomps) {
+        foreach ($arr_data as $id_user => $ucomps) {
             $is_valid = true;
 
             $satisfied = 0;
@@ -2318,7 +2316,7 @@ class Report extends \ReportPlugin
             Util::jump_to($back_url);
         }
 
-    
+
         $ref = &$reportDataTemp['columns_filter'];
         $selector = new Selector_Course();
         if (isset($_POST['update_tempdata'])) {
@@ -2340,7 +2338,7 @@ class Report extends \ReportPlugin
             $reportDataTemp->set('columns_filter', $temp); //$ref = $temp;
             $reportDataTemp->save();
         } else {
-       
+
 
             if (!isset($reportDataTemp['columns_filter'])) {
                 $reportDataTemp->set('columns_filter', [//$ref = array(
@@ -2494,7 +2492,7 @@ class Report extends \ReportPlugin
         $sort_dir_dropdown = Form::getInputDropdown('', 'order_dir', 'order_dir', $dir_list, $dir_selected, '');
         $box->body .= Form::getDropdown(Lang::t('_ORDER_BY', 'standard'), 'order_by', 'order_by', $sort_list, $sort_selected, $sort_dir_dropdown);
 
-        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool) $ref['show_suspended']);
+        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool)$ref['show_suspended']);
 
         cout($box->get());
     }
@@ -2519,60 +2517,60 @@ class Report extends \ReportPlugin
 
         switch ($op) {
             case 'send_mail_confirm':
-                    $subject = importVar('mail_object', false, '[' . $lang->def('_SUBJECT') . ']'); //'[No subject]');
-                    $body = importVar('mail_body', false, '');
-                    $acl_man = new FormaACLManager();
-                    $sender = FormaLms\lib\Get::sett('sender_event');
-                    $mail_recipients = unserialize(urldecode(FormaLms\lib\Get::req('mail_recipients', DOTY_STRING, '')));
+                $subject = importVar('mail_object', false, '[' . $lang->def('_SUBJECT') . ']'); //'[No subject]');
+                $body = importVar('mail_body', false, '');
+                $acl_man = new FormaACLManager();
+                $sender = FormaLms\lib\Get::sett('sender_event');
+                $mail_recipients = unserialize(urldecode(FormaLms\lib\Get::req('mail_recipients', DOTY_STRING, '')));
 
-                    // prepare intestation for email
-                    $from = 'From: ' . $sender . $GLOBALS['mail_br'];
-                    $header = 'MIME-Version: 1.0' . $GLOBALS['mail_br']
-                        . 'Content-type: text/html; charset=' . Lang::charset() . $GLOBALS['mail_br'];
-                    $header .= 'Return-Path: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
-                    //$header .= "Reply-To: " . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
-                    $header .= 'X-Sender: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
-                    $header .= 'X-Mailer: PHP/' . PHP_VERSION . $GLOBALS['mail_br'];
+                // prepare intestation for email
+                $from = 'From: ' . $sender . $GLOBALS['mail_br'];
+                $header = 'MIME-Version: 1.0' . $GLOBALS['mail_br']
+                    . 'Content-type: text/html; charset=' . Lang::charset() . $GLOBALS['mail_br'];
+                $header .= 'Return-Path: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
+                //$header .= "Reply-To: " . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
+                $header .= 'X-Sender: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
+                $header .= 'X-Mailer: PHP/' . PHP_VERSION . $GLOBALS['mail_br'];
 
-                    // send mail
-                    $arr_recipients = [];
-                    foreach ($mail_recipients as $recipient) {
-                        $rec_data = $acl_man->getUser($recipient, false);
-                        //mail($rec_data[ACL_INFO_EMAIL] , $subject, $body, $from.$header."\r\n");
-                        $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
-                    }
-                    $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
-                    $mailer->addReplyTo(FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br']);
-                    $mailer->SendMail($sender, $arr_recipients, $subject, $body);
+                // send mail
+                $arr_recipients = [];
+                foreach ($mail_recipients as $recipient) {
+                    $rec_data = $acl_man->getUser($recipient, false);
+                    //mail($rec_data[ACL_INFO_EMAIL] , $subject, $body, $from.$header."\r\n");
+                    $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
+                }
+                $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
+                $mailer->addReplyTo(FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br']);
+                $mailer->SendMail($sender, $arr_recipients, $subject, $body);
 
-                    $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
+                $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
 
-                    //$this->show_report($alluser, $jump_url, $org_chart_subdivision, $day_from_subscription, $day_until_course_end, $date_until_course_end, $report_type, $course_selected, $user_selected);
-                    cout($this->_get_delay_query('html', null, $result));
+                //$this->show_report($alluser, $jump_url, $org_chart_subdivision, $day_from_subscription, $day_until_course_end, $date_until_course_end, $report_type, $course_selected, $user_selected);
+                cout($this->_get_delay_query('html', null, $result));
 
                 break;
 
             case 'send_mail':
-                    require_once _base_ . '/lib/lib.form.php';
-                    $mail_recipients = FormaLms\lib\Get::req('mail_recipients', DOTY_MIXED, []);
-                    cout(
-                        ''//Form::openForm('course_selection', Util::str_replace_once('&', '&amp;', $jump_url))
-                        . Form::openElementSpace()
-                        . Form::getTextfield($lang->def('_SUBJECT'), 'mail_object', 'mail_object', 255)
-                        . Form::getTextarea($lang->def('_MAIL_BODY'), 'mail_body', 'mail_body')
-                        . Form::getHidden('mail_recipients', 'mail_recipients', urlencode(serialize($mail_recipients)))
-                        . Form::closeElementSpace()
-                        . Form::openButtonSpace()
-                        . Form::getButton('send_mail_confirm', 'send_mail_confirm', $lang->def('_SEND_MAIL'))
-                        . Form::getButton('undo_mail', 'undo_mail', $lang->def('_UNDO'))
-                        . Form::closeButtonSpace()
-                        //.Form::closeForm()
-                        . '</div>', 'content');
+                require_once _base_ . '/lib/lib.form.php';
+                $mail_recipients = FormaLms\lib\Get::req('mail_recipients', DOTY_MIXED, []);
+                cout(
+                    ''//Form::openForm('course_selection', Util::str_replace_once('&', '&amp;', $jump_url))
+                    . Form::openElementSpace()
+                    . Form::getTextfield($lang->def('_SUBJECT'), 'mail_object', 'mail_object', 255)
+                    . Form::getTextarea($lang->def('_MAIL_BODY'), 'mail_body', 'mail_body')
+                    . Form::getHidden('mail_recipients', 'mail_recipients', urlencode(serialize($mail_recipients)))
+                    . Form::closeElementSpace()
+                    . Form::openButtonSpace()
+                    . Form::getButton('send_mail_confirm', 'send_mail_confirm', $lang->def('_SEND_MAIL'))
+                    . Form::getButton('undo_mail', 'undo_mail', $lang->def('_UNDO'))
+                    . Form::closeButtonSpace()
+                    //.Form::closeForm()
+                    . '</div>', 'content');
 
                 break;
 
             default:
-                    cout($this->_get_delay_query('html', $report_data, $other));
+                cout($this->_get_delay_query('html', $report_data, $other));
         }
     }
 
@@ -2603,7 +2601,7 @@ class Report extends \ReportPlugin
 
         $order_by = (isset($cdata['order_by']) ? $cdata['order_by'] : 'userid');
         $order_dir = (isset($cdata['order_dir']) ? $cdata['order_dir'] : 'asc');
-        $show_suspended = (isset($cdata['show_suspended']) ? (bool) $cdata['show_suspended'] : false);
+        $show_suspended = (isset($cdata['show_suspended']) ? (bool)$cdata['show_suspended'] : false);
 
         if (!$alluser) {
             $user_selected = &$acl_man->getAllUsersFromIdst($rdata['users']);
@@ -2871,28 +2869,28 @@ class Report extends \ReportPlugin
                         if (($delay_row['select'] && in_array($index, $showed_cols)) || !$delay_row['select']) {
                             switch ($index) {
                                 case 'level':
-                                        if ($user_levels_trans === false) {
-                                            require_once _lms_ . '/lib/lib.levels.php';
-                                            $clevels = new CourseLevel();
-                                            $user_levels_trans = $clevels->getLevels();
-                                            unset($clevels);
-                                        }
-                                        $line[] = ['style' => 'align-center', 'value' => $user_levels_trans[$user_info['level']]];
+                                    if ($user_levels_trans === false) {
+                                        require_once _lms_ . '/lib/lib.levels.php';
+                                        $clevels = new CourseLevel();
+                                        $user_levels_trans = $clevels->getLevels();
+                                        unset($clevels);
+                                    }
+                                    $line[] = ['style' => 'align-center', 'value' => $user_levels_trans[$user_info['level']]];
 
                                     break;
                                 case 'status':
-                                        $line[] = ['style' => 'align-center', 'value' => $this->status_u[$user_info['status']]];
+                                    $line[] = ['style' => 'align-center', 'value' => $this->status_u[$user_info['status']]];
 
                                     break;
                                 case 'date_subscription':
                                 case 'date_first_access':
                                 case 'date_last_access':
                                 case 'date_complete':
-                                        if (!$user_info[$index] || $user_info[$index] == '') {
-                                            $line[] = '';
-                                        } else {
-                                            $line[] = ['style' => 'align-center', 'value' => Format::date($user_info[$index], 'datetime')];
-                                        }
+                                    if (!$user_info[$index] || $user_info[$index] == '') {
+                                        $line[] = '';
+                                    } else {
+                                        $line[] = ['style' => 'align-center', 'value' => Format::date($user_info[$index], 'datetime')];
+                                    }
 
                                     break;
                                 case 'email':
@@ -2996,7 +2994,7 @@ class Report extends \ReportPlugin
             $reportTempData->set('columns_filter', $temp);
             $reportTempData->save();
         } else {
- 
+
             //get users' custom fields
             require_once _adm_ . '/lib/lib.field.php';
             $fman = new FieldList();
@@ -3142,15 +3140,15 @@ class Report extends \ReportPlugin
             $ftitle = '';
             switch ($fid) {
                 case 'user':
-                        $ftitle = Lang::t('_USER_CUSTOM_FIELDS', 'report');
+                    $ftitle = Lang::t('_USER_CUSTOM_FIELDS', 'report');
 
                     break;
                 case 'course':
-                        $ftitle = Lang::t('_COURSE_FIELDS', 'report');
+                    $ftitle = Lang::t('_COURSE_FIELDS', 'report');
 
                     break;
                 case 'lo':
-                        $ftitle = Lang::t('_LEARNING_OBJECTS', 'standard');
+                    $ftitle = Lang::t('_LEARNING_OBJECTS', 'standard');
 
                     break;
             }
@@ -3189,7 +3187,7 @@ class Report extends \ReportPlugin
         $sort_dir_dropdown = Form::getInputDropdown('', 'order_dir', 'order_dir', $dir_list, $dir_selected, '');
         $box->body .= Form::getDropdown(Lang::t('_ORDER_BY', 'standard'), 'order_by', 'order_by', $sort_list, $sort_selected, $sort_dir_dropdown);
 
-        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool) $ref['show_suspended']);
+        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool)$ref['show_suspended']);
 
         cout($box->get(), 'content');
     }
@@ -3212,60 +3210,60 @@ class Report extends \ReportPlugin
 
         switch ($op) {
             case 'send_mail_confirm':
-                    $subject = importVar('mail_object', false, '[' . $lang->def('_SUBJECT') . ']'); //'[No subject]');
-                    $body = importVar('mail_body', false, '');
-                    $acl_man = new FormaACLManager();
-                    $sender = FormaLms\lib\Get::sett('sender_event');
+                $subject = importVar('mail_object', false, '[' . $lang->def('_SUBJECT') . ']'); //'[No subject]');
+                $body = importVar('mail_body', false, '');
+                $acl_man = new FormaACLManager();
+                $sender = FormaLms\lib\Get::sett('sender_event');
 
-                    $mail_recipients = unserialize(urldecode(FormaLms\lib\Get::req('mail_recipients', DOTY_STRING, '')));
+                $mail_recipients = unserialize(urldecode(FormaLms\lib\Get::req('mail_recipients', DOTY_STRING, '')));
 
-                    // prepare intestation for email
-                    $from = 'From: ' . $sender . $GLOBALS['mail_br'];
-                    $header = 'MIME-Version: 1.0' . $GLOBALS['mail_br']
-                        . 'Content-type: text/html; charset=' . Lang::charset() . $GLOBALS['mail_br'];
-                    $header .= 'Return-Path: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
-                    //$header .= "Reply-To: " . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
-                    $header .= 'X-Sender: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
-                    $header .= 'X-Mailer: PHP/' . PHP_VERSION . $GLOBALS['mail_br'];
+                // prepare intestation for email
+                $from = 'From: ' . $sender . $GLOBALS['mail_br'];
+                $header = 'MIME-Version: 1.0' . $GLOBALS['mail_br']
+                    . 'Content-type: text/html; charset=' . Lang::charset() . $GLOBALS['mail_br'];
+                $header .= 'Return-Path: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
+                //$header .= "Reply-To: " . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
+                $header .= 'X-Sender: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
+                $header .= 'X-Mailer: PHP/' . PHP_VERSION . $GLOBALS['mail_br'];
 
-                    // send mail
-                    $arr_recipients = [];
-                    foreach ($mail_recipients as $recipient) {
-                        $rec_data = $acl_man->getUser($recipient, false);
-                        //mail($rec_data[ACL_INFO_EMAIL] , $subject, $body, $from.$header."\r\n");
-                        $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
-                    }
-                    $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
-                    $mailer->addReplyTo(FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br']);
-                    $mailer->SendMail($sender, $arr_recipients, $subject, $body);
+                // send mail
+                $arr_recipients = [];
+                foreach ($mail_recipients as $recipient) {
+                    $rec_data = $acl_man->getUser($recipient, false);
+                    //mail($rec_data[ACL_INFO_EMAIL] , $subject, $body, $from.$header."\r\n");
+                    $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
+                }
+                $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
+                $mailer->addReplyTo(FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br']);
+                $mailer->SendMail($sender, $arr_recipients, $subject, $body);
 
-                    $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
+                $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
 
-                    cout($this->_get_LO_query('html', null, $result));
+                cout($this->_get_LO_query('html', null, $result));
 
                 break;
 
             case 'send_mail':
-                    require_once _base_ . '/lib/lib.form.php';
-                    $mail_recipients = FormaLms\lib\Get::req('mail_recipients', DOTY_MIXED, []);
-                    cout(
-                        ''//Form::openForm('course_selection', Util::str_replace_once('&', '&amp;', $jump_url))
-                        . Form::openElementSpace()
-                        . Form::getTextfield($lang->def('_SUBJECT'), 'mail_object', 'mail_object', 255)
-                        . Form::getTextarea($lang->def('_MAIL_BODY'), 'mail_body', 'mail_body')
-                        . Form::getHidden('mail_recipients', 'mail_recipients', urlencode(serialize($mail_recipients)))
-                        . Form::closeElementSpace()
-                        . Form::openButtonSpace()
-                        . Form::getButton('send_mail_confirm', 'send_mail_confirm', $lang->def('_SEND_MAIL'))
-                        . Form::getButton('undo_mail', 'undo_mail', $lang->def('_UNDO'))
-                        . Form::closeButtonSpace()
-                        //.Form::closeForm()
-                        . '</div>', 'content');
+                require_once _base_ . '/lib/lib.form.php';
+                $mail_recipients = FormaLms\lib\Get::req('mail_recipients', DOTY_MIXED, []);
+                cout(
+                    ''//Form::openForm('course_selection', Util::str_replace_once('&', '&amp;', $jump_url))
+                    . Form::openElementSpace()
+                    . Form::getTextfield($lang->def('_SUBJECT'), 'mail_object', 'mail_object', 255)
+                    . Form::getTextarea($lang->def('_MAIL_BODY'), 'mail_body', 'mail_body')
+                    . Form::getHidden('mail_recipients', 'mail_recipients', urlencode(serialize($mail_recipients)))
+                    . Form::closeElementSpace()
+                    . Form::openButtonSpace()
+                    . Form::getButton('send_mail_confirm', 'send_mail_confirm', $lang->def('_SEND_MAIL'))
+                    . Form::getButton('undo_mail', 'undo_mail', $lang->def('_UNDO'))
+                    . Form::closeButtonSpace()
+                    //.Form::closeForm()
+                    . '</div>', 'content');
 
                 break;
 
             default:
-                    cout($this->_get_LO_query('html', $report_data, $other));
+                cout($this->_get_LO_query('html', $report_data, $other));
         }
     }
 
@@ -3314,7 +3312,7 @@ class Report extends \ReportPlugin
         $customcols = &$_cols['custom_fields'];
         $order_by = isset($_cols['order_by']) ? $_cols['order_by'] : 'userid';
         $order_dir = isset($_cols['order_dir']) ? $_cols['order_dir'] : 'asc';
-        $suspended = isset($_cols['show_suspended']) ? (bool) $_cols['show_suspended'] : false;
+        $suspended = isset($_cols['show_suspended']) ? (bool)$_cols['show_suspended'] : false;
         if ($all_users) {
             $users = &$acl_man->getAllUsersIdst();
         } else {
@@ -3342,16 +3340,16 @@ class Report extends \ReportPlugin
         foreach ($milestones as $val) {
             switch ($val) {
                 case _MILESTONE_NONE:
-                        $tempmilestones[] = "''";
-                        $tempmilestones[] = "'-'";
+                    $tempmilestones[] = "''";
+                    $tempmilestones[] = "'-'";
 
                     break;
                 case _MILESTONE_START:
-                        $tempmilestones[] = "'start'";
+                    $tempmilestones[] = "'start'";
 
                     break;
                 case _MILESTONE_END:
-                        $tempmilestones[] = "'end'";
+                    $tempmilestones[] = "'end'";
 
                     break;
             }
@@ -3388,7 +3386,7 @@ class Report extends \ReportPlugin
             if ($val['selected']) {
                 ++$colspans['user'];
                 $temp_head2[] = $val['label'];
-                $field_values[$val['id']] = $fman->fieldValue((int) $val['id'], $users);
+                $field_values[$val['id']] = $fman->fieldValue((int)$val['id'], $users);
             }
         }
 
@@ -3411,8 +3409,8 @@ class Report extends \ReportPlugin
                 if (in_array($val['key'], $showed)) {
                     switch ($val['key']) { //manages exceptions through switch
                         case 'user_name':
-                                $head2[] = Lang::t('_LASTNAME', 'standard');
-                                $head2[] = Lang::t('_FIRSTNAME', 'standard');
+                            $head2[] = Lang::t('_LASTNAME', 'standard');
+                            $head2[] = Lang::t('_FIRSTNAME', 'standard');
 
                             break;
                         default:
@@ -3557,126 +3555,126 @@ class Report extends \ReportPlugin
                         $temp[] = $acl_man->relativeId($row['userid']);
                         break;
                     case 'user_name':
-                            if (in_array($val['key'], $showed)) {
-                                $temp[] = $row['lastname'];
-                                $temp[] = $row['firstname'];
-                            }
+                        if (in_array($val['key'], $showed)) {
+                            $temp[] = $row['lastname'];
+                            $temp[] = $row['firstname'];
+                        }
 
                         break;
                     case 'email':
-                            if (in_array($val['key'], $showed)) {
-                                $temp[] = $row['email'];
-                            }
+                        if (in_array($val['key'], $showed)) {
+                            $temp[] = $row['email'];
+                        }
 
                         break;
                     case 'suspended':
-                            if (in_array($val['key'], $showed)) {
-                                $temp[] = ($row['valid'] > 0 ? Lang::t('_NO', 'standard') : Lang::t('_YES', 'standard'));
-                            }
+                        if (in_array($val['key'], $showed)) {
+                            $temp[] = ($row['valid'] > 0 ? Lang::t('_NO', 'standard') : Lang::t('_YES', 'standard'));
+                        }
 
                         break;
                     case '_CUSTOM_FIELDS_':
-                            foreach ($customcols as $field) {
-                                if ($field['selected']) {
-                                    if (isset($field_values[$field['id']][$row['user_st']])) {
-                                        $temp[] = $field_values[$field['id']][$row['user_st']];
-                                    } else {
-                                        $temp[] = '';
-                                    }
+                        foreach ($customcols as $field) {
+                            if ($field['selected']) {
+                                if (isset($field_values[$field['id']][$row['user_st']])) {
+                                    $temp[] = $field_values[$field['id']][$row['user_st']];
+                                } else {
+                                    $temp[] = '';
                                 }
                             }
+                        }
 
                         break;
                     case 'course_code':
                         $temp[] = $row['code'];
                         break;
                     case 'course_name':
-                            if (in_array($val['key'], $showed)) {
-                                $temp[] = $row['name'];
-                            }
+                        if (in_array($val['key'], $showed)) {
+                            $temp[] = $row['name'];
+                        }
 
                         break;
                     case 'course_status':
-                            if (in_array($val['key'], $showed)) {
-                                $temp[] = $this->_convertStatusCourse($row['course_status']);
-                            }
+                        if (in_array($val['key'], $showed)) {
+                            $temp[] = $this->_convertStatusCourse($row['course_status']);
+                        }
 
                         break;
                     case 'lo_type':
-                            if (in_array($val['key'], $showed)) {
-                                $temp[] = isset($LO_types[$row['objectType']]) ? $LO_types[$row['objectType']] : '';
-                            }
+                        if (in_array($val['key'], $showed)) {
+                            $temp[] = isset($LO_types[$row['objectType']]) ? $LO_types[$row['objectType']] : '';
+                        }
 
                         break;
                     case 'lo_name':
-                            if (in_array($val['key'], $showed)) {
-                                $temp[] = $row['title'];
-                            }
+                        if (in_array($val['key'], $showed)) {
+                            $temp[] = $row['title'];
+                        }
 
                         break;
                     case 'lo_milestone':
-                            if (in_array($val['key'], $showed)) {
-                                $temp[] = $row['milestone'];
-                            }
+                        if (in_array($val['key'], $showed)) {
+                            $temp[] = $row['milestone'];
+                        }
 
                         break;
                     case 'firstAttempt':
-                            if (in_array($val['key'], $showed)) {
-                                $temp[] = $this->_convertDate($row['firstAttempt']);
-                            }
+                        if (in_array($val['key'], $showed)) {
+                            $temp[] = $this->_convertDate($row['firstAttempt']);
+                        }
 
                         break;
                     case 'lastAttempt':
-                            if (in_array($val['key'], $showed)) {
-                                $temp[] = $this->_convertDate($row['dateAttempt']);
-                            }
+                        if (in_array($val['key'], $showed)) {
+                            $temp[] = $this->_convertDate($row['dateAttempt']);
+                        }
 
                         break;
                     case 'lo_status':
-                            if (in_array($val['key'], $showed)) {
-                                $temp[] = Lang::t($row['status'], 'storage');
-                            }
+                        if (in_array($val['key'], $showed)) {
+                            $temp[] = Lang::t($row['status'], 'storage');
+                        }
 
                         break;
                     case 'lo_score':
-                            if (in_array($val['key'], $showed)) {
-                                switch ($row['objectType']) {
-                                    case 'test':
-                                            if (isset($score_arr['test'][$row['idOrg']][$row['user_st']])) {
-                                                $score_val = $score_arr['test'][$row['idOrg']][$row['user_st']];
-                                            } else {
-                                                $score_val = '0';
-                                            }
-                                            $temp[] = $score_val;
+                        if (in_array($val['key'], $showed)) {
+                            switch ($row['objectType']) {
+                                case 'test':
+                                    if (isset($score_arr['test'][$row['idOrg']][$row['user_st']])) {
+                                        $score_val = $score_arr['test'][$row['idOrg']][$row['user_st']];
+                                    } else {
+                                        $score_val = '0';
+                                    }
+                                    $temp[] = $score_val;
 
-                                        break;
+                                    break;
 
-                                    case 'scormorg' :
-                                            if (isset($score_arr['scorm'][$row['idOrg']][$row['user_st']])) {
-                                                $score_val = $score_arr['scorm'][$row['idOrg']][$row['user_st']];
-                                            } else {
-                                                $score_val = '0';
-                                            }
-                                            $temp[] = $score_val;
+                                case 'scormorg' :
+                                    if (isset($score_arr['scorm'][$row['idOrg']][$row['user_st']])) {
+                                        $score_val = $score_arr['scorm'][$row['idOrg']][$row['user_st']];
+                                    } else {
+                                        $score_val = '0';
+                                    }
+                                    $temp[] = $score_val;
 
-                                        break;
+                                    break;
 
-                                    default:
-                                            $temp[] = '';
+                                default:
+                                    $temp[] = '';
 
-                                        break;
-                                }
+                                    break;
                             }
+                        }
 
                         break;
                     case 'lo_total_time':
-                            $temp[] = $total_time_arr['scorm'][$row['idOrg']][$row['user_st']];
+                        $temp[] = $total_time_arr['scorm'][$row['idOrg']][$row['user_st']];
 
                         break;
                     default:
-                            if (in_array($val['key'], $showed)) {
-                                $temp[] = '';
-                            }
+                        if (in_array($val['key'], $showed)) {
+                            $temp[] = '';
+                        }
 
                         break;
                 }
@@ -3958,7 +3956,7 @@ class Report extends \ReportPlugin
 
             if ($this->use_mail) {
                 $line[] = '<div class="align_center">' .
-                Form::getInputCheckbox('mail_' . $obj->idUser, 'mail_recipients[]', $obj->idUser, isset($_POST['select_all']), '') . '</div>';
+                    Form::getInputCheckbox('mail_' . $obj->idUser, 'mail_recipients[]', $obj->idUser, isset($_POST['select_all']), '') . '</div>';
             }
 
             $buffer->addLine($line);
@@ -4238,7 +4236,7 @@ class Report extends \ReportPlugin
 
             if ($this->use_mail) {
                 $line[] = '<div class="align_center">' .
-                Form::getInputCheckbox('mail_' . $obj->idUser, 'mail_recipients[]', $obj->idUser, isset($_POST['select_all']), '') . '</div>';
+                    Form::getInputCheckbox('mail_' . $obj->idUser, 'mail_recipients[]', $obj->idUser, isset($_POST['select_all']), '') . '</div>';
             }
 
             $buffer->addLine($line);
@@ -4252,7 +4250,7 @@ class Report extends \ReportPlugin
     }
 
     // +++++++++++++++++++++++++++++++++
-//     TEST STAT report functions
+    //     TEST STAT report functions
     // +++++++++++++++++++++++++++++++++
     public function get_TESTSTAT_filter()
     {
@@ -4426,15 +4424,15 @@ class Report extends \ReportPlugin
             $ftitle = '';
             switch ($fid) {
                 case 'user':
-                        $ftitle = Lang::t('_USER_CUSTOM_FIELDS', 'report');
+                    $ftitle = Lang::t('_USER_CUSTOM_FIELDS', 'report');
 
                     break;
                 case 'course':
-                        $ftitle = Lang::t('_COURSE_FIELDS', 'report');
+                    $ftitle = Lang::t('_COURSE_FIELDS', 'report');
 
                     break;
                 case 'lo':
-                        $ftitle = Lang::t('_LEARNING_OBJECTS', 'standard');
+                    $ftitle = Lang::t('_LEARNING_OBJECTS', 'standard');
 
                     break;
             }
@@ -4473,7 +4471,7 @@ class Report extends \ReportPlugin
         $sort_dir_dropdown = Form::getInputDropdown('', 'order_dir', 'order_dir', $dir_list, $dir_selected, '');
         $box->body .= Form::getDropdown(Lang::t('_ORDER_BY', 'standard'), 'order_by', 'order_by', $sort_list, $sort_selected, $sort_dir_dropdown);
 
-        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool) $ref['show_suspended']);
+        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool)$ref['show_suspended']);
 
         cout($box->get(), 'content');
     }
@@ -4496,60 +4494,60 @@ class Report extends \ReportPlugin
 
         switch ($op) {
             case 'send_mail_confirm':
-                    $subject = importVar('mail_object', false, '[' . $lang->def('_SUBJECT') . ']'); //'[No subject]');
-                    $body = importVar('mail_body', false, '');
-                    $acl_man = new FormaACLManager();
-                    $sender = FormaLms\lib\Get::sett('sender_event');
+                $subject = importVar('mail_object', false, '[' . $lang->def('_SUBJECT') . ']'); //'[No subject]');
+                $body = importVar('mail_body', false, '');
+                $acl_man = new FormaACLManager();
+                $sender = FormaLms\lib\Get::sett('sender_event');
 
-                    $mail_recipients = unserialize(urldecode(FormaLms\lib\Get::req('mail_recipients', DOTY_STRING, '')));
+                $mail_recipients = unserialize(urldecode(FormaLms\lib\Get::req('mail_recipients', DOTY_STRING, '')));
 
-                    // prepare intestation for email
-                    $from = 'From: ' . $sender . $GLOBALS['mail_br'];
-                    $header = 'MIME-Version: 1.0' . $GLOBALS['mail_br']
-                        . 'Content-type: text/html; charset=' . Lang::charset() . $GLOBALS['mail_br'];
-                    $header .= 'Return-Path: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
-                    //$header .= "Reply-To: " . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
-                    $header .= 'X-Sender: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
-                    $header .= 'X-Mailer: PHP/' . PHP_VERSION . $GLOBALS['mail_br'];
+                // prepare intestation for email
+                $from = 'From: ' . $sender . $GLOBALS['mail_br'];
+                $header = 'MIME-Version: 1.0' . $GLOBALS['mail_br']
+                    . 'Content-type: text/html; charset=' . Lang::charset() . $GLOBALS['mail_br'];
+                $header .= 'Return-Path: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
+                //$header .= "Reply-To: " . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
+                $header .= 'X-Sender: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
+                $header .= 'X-Mailer: PHP/' . PHP_VERSION . $GLOBALS['mail_br'];
 
-                    // send mail
-                    $arr_recipients = [];
-                    foreach ($mail_recipients as $recipient) {
-                        $rec_data = $acl_man->getUser($recipient, false);
-                        //mail($rec_data[ACL_INFO_EMAIL] , $subject, $body, $from.$header."\r\n");
-                        $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
-                    }
-                    $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
-                    $mailer->addReplyTo(FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br']);
-                    $mailer->SendMail($sender, $arr_recipients, $subject, $body);
+                // send mail
+                $arr_recipients = [];
+                foreach ($mail_recipients as $recipient) {
+                    $rec_data = $acl_man->getUser($recipient, false);
+                    //mail($rec_data[ACL_INFO_EMAIL] , $subject, $body, $from.$header."\r\n");
+                    $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
+                }
+                $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
+                $mailer->addReplyTo(FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br']);
+                $mailer->SendMail($sender, $arr_recipients, $subject, $body);
 
-                    $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
+                $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
 
-                    cout($this->_get_TESTSTAT_query('html', null, $result));
+                cout($this->_get_TESTSTAT_query('html', null, $result));
 
                 break;
 
             case 'send_mail':
-                    require_once _base_ . '/lib/lib.form.php';
-                    $mail_recipients = FormaLms\lib\Get::req('mail_recipients', DOTY_MIXED, []);
-                    cout(
-                        ''//Form::openForm('course_selection', Util::str_replace_once('&', '&amp;', $jump_url))
-                        . Form::openElementSpace()
-                        . Form::getTextfield($lang->def('_SUBJECT'), 'mail_object', 'mail_object', 255)
-                        . Form::getTextarea($lang->def('_MAIL_BODY'), 'mail_body', 'mail_body')
-                        . Form::getHidden('mail_recipients', 'mail_recipients', urlencode(serialize($mail_recipients)))
-                        . Form::closeElementSpace()
-                        . Form::openButtonSpace()
-                        . Form::getButton('send_mail_confirm', 'send_mail_confirm', $lang->def('_SEND_MAIL'))
-                        . Form::getButton('undo_mail', 'undo_mail', $lang->def('_UNDO'))
-                        . Form::closeButtonSpace()
-                        //.Form::closeForm()
-                        . '</div>', 'content');
+                require_once _base_ . '/lib/lib.form.php';
+                $mail_recipients = FormaLms\lib\Get::req('mail_recipients', DOTY_MIXED, []);
+                cout(
+                    ''//Form::openForm('course_selection', Util::str_replace_once('&', '&amp;', $jump_url))
+                    . Form::openElementSpace()
+                    . Form::getTextfield($lang->def('_SUBJECT'), 'mail_object', 'mail_object', 255)
+                    . Form::getTextarea($lang->def('_MAIL_BODY'), 'mail_body', 'mail_body')
+                    . Form::getHidden('mail_recipients', 'mail_recipients', urlencode(serialize($mail_recipients)))
+                    . Form::closeElementSpace()
+                    . Form::openButtonSpace()
+                    . Form::getButton('send_mail_confirm', 'send_mail_confirm', $lang->def('_SEND_MAIL'))
+                    . Form::getButton('undo_mail', 'undo_mail', $lang->def('_UNDO'))
+                    . Form::closeButtonSpace()
+                    //.Form::closeForm()
+                    . '</div>', 'content');
 
                 break;
 
             default:
-                    cout($this->_get_TESTSTAT_query('html', $report_data, $other));
+                cout($this->_get_TESTSTAT_query('html', $report_data, $other));
         }
     }
 
@@ -4585,7 +4583,7 @@ class Report extends \ReportPlugin
         $customcols = &$_cols['custom_fields'];
         $order_by = isset($_cols['order_by']) ? $_cols['order_by'] : 'userid';
         $order_dir = isset($_cols['order_dir']) ? $_cols['order_dir'] : 'asc';
-        $suspended = isset($_cols['show_suspended']) ? (bool) $_cols['show_suspended'] : false;
+        $suspended = isset($_cols['show_suspended']) ? (bool)$_cols['show_suspended'] : false;
         if ($all_users) {
             $users = &$acl_man->getAllUsersIdst();
         } else {
@@ -4601,16 +4599,16 @@ class Report extends \ReportPlugin
         foreach ($milestones as $val) {
             switch ($val) {
                 case _MILESTONE_NONE:
-                        $tempmilestones[] = "''";
-                        $tempmilestones[] = "'-'";
+                    $tempmilestones[] = "''";
+                    $tempmilestones[] = "'-'";
 
                     break;
                 case _MILESTONE_START:
-                        $tempmilestones[] = "'start'";
+                    $tempmilestones[] = "'start'";
 
                     break;
                 case _MILESTONE_END:
-                        $tempmilestones[] = "'end'";
+                    $tempmilestones[] = "'end'";
 
                     break;
             }
@@ -4647,7 +4645,7 @@ class Report extends \ReportPlugin
             if ($val['selected']) {
                 ++$colspans['user'];
                 $temp_head2[] = $val['label'];
-                $field_values[$val['id']] = $fman->fieldValue((int) $val['id'], $users);
+                $field_values[$val['id']] = $fman->fieldValue((int)$val['id'], $users);
             }
         }
 
@@ -4670,8 +4668,8 @@ class Report extends \ReportPlugin
                 if (in_array($val['key'], $showed)) {
                     switch ($val['key']) { //manages exceptions through switch
                         case 'user_name':
-                                $head2[] = Lang::t('_LASTNAME', 'standard');
-                                $head2[] = Lang::t('_FIRSTNAME', 'standard');
+                            $head2[] = Lang::t('_LASTNAME', 'standard');
+                            $head2[] = Lang::t('_FIRSTNAME', 'standard');
 
                             break;
                         default:
@@ -4819,77 +4817,77 @@ class Report extends \ReportPlugin
                         $temp[] = $acl_man->relativeId($row['userid']);
                         break;
                     case 'user_name':
-                            if (in_array($val['key'], $showed)) {
-                                $temp[] = $row['lastname'];
-                                $temp[] = $row['firstname'];
-                            }
+                        if (in_array($val['key'], $showed)) {
+                            $temp[] = $row['lastname'];
+                            $temp[] = $row['firstname'];
+                        }
 
                         break;
                     case 'email':
-                            if (in_array($val['key'], $showed)) {
-                                $temp[] = $row['email'];
-                            }
+                        if (in_array($val['key'], $showed)) {
+                            $temp[] = $row['email'];
+                        }
 
                         break;
                     case 'suspended':
-                            if (in_array($val['key'], $showed)) {
-                                $temp[] = ($row['valid'] > 0 ? Lang::t('_NO', 'standard') : Lang::t('_YES', 'standard'));
-                            }
+                        if (in_array($val['key'], $showed)) {
+                            $temp[] = ($row['valid'] > 0 ? Lang::t('_NO', 'standard') : Lang::t('_YES', 'standard'));
+                        }
 
                         break;
                     case '_CUSTOM_FIELDS_':
-                            foreach ($customcols as $field) {
-                                if ($field['selected']) {
-                                    if (isset($field_values[$field['id']][$row['user_st']])) {
-                                        $temp[] = $field_values[$field['id']][$row['user_st']];
-                                    } else {
-                                        $temp[] = '';
-                                    }
+                        foreach ($customcols as $field) {
+                            if ($field['selected']) {
+                                if (isset($field_values[$field['id']][$row['user_st']])) {
+                                    $temp[] = $field_values[$field['id']][$row['user_st']];
+                                } else {
+                                    $temp[] = '';
                                 }
                             }
+                        }
 
                         break;
                     case 'course_code':
                         $temp[] = $row['code'];
                         break;
                     case 'course_name':
-                            if (in_array($val['key'], $showed)) {
-                                $temp[] = $row['name'];
-                            }
+                        if (in_array($val['key'], $showed)) {
+                            $temp[] = $row['name'];
+                        }
 
                         break;
                     case 'course_status':
-                            if (in_array($val['key'], $showed)) {
-                                $temp[] = $this->_convertStatusCourse($row['course_status']);
-                            }
+                        if (in_array($val['key'], $showed)) {
+                            $temp[] = $this->_convertStatusCourse($row['course_status']);
+                        }
 
                         break;
                     case 'lo_name':
-                            if (in_array($val['key'], $showed)) {
-                                $temp[] = $row['title'];
-                            }
+                        if (in_array($val['key'], $showed)) {
+                            $temp[] = $row['title'];
+                        }
 
                         break;
                     case 'lo_date':
-                            if (in_array($val['key'], $showed)) {
-                                $temp[] = $this->_convertDate($row['date_attempt']);
-                            }
+                        if (in_array($val['key'], $showed)) {
+                            $temp[] = $this->_convertDate($row['date_attempt']);
+                        }
 
                         break;
                     case 'lo_status':
-                            if (in_array($val['key'], $showed)) {
-                                $temp[] = Lang::t($row['status'], 'storage');
-                            }
+                        if (in_array($val['key'], $showed)) {
+                            $temp[] = Lang::t($row['status'], 'storage');
+                        }
 
                         break;
                     case 'lo_score':
-                            if (in_array($val['key'], $showed)) {
-                                $temp[] = $row['score'];
-                            }
+                        if (in_array($val['key'], $showed)) {
+                            $temp[] = $row['score'];
+                        }
 
                         break;
                     default:
-                         /*if (in_array($val['key'], $showed)) $temp[]='';*/
+                        /*if (in_array($val['key'], $showed)) $temp[]='';*/
 
                         break;
                 }

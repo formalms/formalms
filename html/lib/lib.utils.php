@@ -257,9 +257,9 @@ class Util
         if (defined('IS_AJAX')) {
             // ajax request, json response
             $value = ['fatal' => $msg];
-            require_once _base_ . '/lib/lib.json.php';
-            $json = new Services_JSON();
-            $msg = $json->encode($value);
+
+
+            $msg = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         } else {
             // Browser request, html response
             $msg = '<p style="">'
@@ -479,7 +479,7 @@ class Util
      */
     public static function serialize($string)
     {
-        return \FormaLms\lib\Serializer\FormaSerializer::getInstance()->serialize($string,'json');
+        return \FormaLms\lib\Serializer\FormaSerializer::getInstance()->serialize($string,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     /**

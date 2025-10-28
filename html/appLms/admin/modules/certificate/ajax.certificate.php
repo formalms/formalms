@@ -17,7 +17,7 @@ if (!defined('IN_FORMA')) {
 
 require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.certificate.php');
 
-$json = new Services_JSON();
+
 $op = importVar('op', false, '');
 
 switch ($op) {
@@ -36,8 +36,8 @@ switch ($op) {
         $output['head'] = $head;
         $output['body'] = $body;
 
-        aout($json->encode($output));
-     break;
+        aout(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
+        break;
 
     case 'print':
         $output = ['success' => false];
@@ -70,8 +70,8 @@ switch ($op) {
         }
         ob_clean();
         ob_start();
-        aout($json->encode($output));
-     break;
+        aout(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
+        break;
 
     default:
 }
