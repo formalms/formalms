@@ -299,10 +299,16 @@ class CoursereportLms extends Model
         $ids = array_values(array_unique($ids));
 
         // Validate against existing tests to avoid phantom IDs
+        // IMPORTANT: Only filter out invalid IDs, but don't empty the entire list if validation fails
         if (!empty($ids)) {
             $gtm = new GroupTestManagement();
             $info = $gtm->getTestInfo($ids);
-            $ids = array_values(array_intersect($ids, array_keys($info)));
+            // Only apply intersection if we got valid test info back
+            // If getTestInfo returns empty array, keep original IDs to avoid accidental mass deletion
+            if (!empty($info)) {
+                $ids = array_values(array_intersect($ids, array_keys($info)));
+            }
+            // If $info is empty but $ids was not, something went wrong - keep original $ids for safety
         }
 
         return $ids;

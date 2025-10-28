@@ -65,7 +65,7 @@ class CourseReportManager
         require_once \FormaLms\lib\Forma::include(_lms_ . '/class.module/', 'learning.test.php');
 
         $org_man = new OrganizationManagement($this->idCourse);
-        $tests = $org_man->getAllLoAbsoluteIdWhereType(Learning_Test::getTestTypes());
+        $tests = $org_man->getAllLoAbsoluteIdWhereType(Learning_Test::getTestTypes(), $this->idCourse);
 
         return $tests;
     }
