@@ -15,7 +15,6 @@ namespace FormaLms\lib\Serializer;
 
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
@@ -42,7 +41,7 @@ class FormaSerializer extends Serializer
 
     public function __construct()
     {
-        $encoders = [new XmlEncoder(), new JsonEncoder()];
+        $encoders = [new XmlEncoder(), new SafeJsonEncoder()];
         $normalizers = [
             new ArrayDenormalizer(),
             new DateTimeNormalizer(),
