@@ -864,7 +864,6 @@ define('_RULES_LANG', 'admin_rules.user_lang_assigned');
 
 class AdminPreference
 {
-    public $json;
 
     public function __construct()
     {

@@ -16,7 +16,6 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 class UserselectorWidgetController extends Controller
 {
     protected $model = null;
-    protected $json = null;
     public FunctionalrolesAdm $fncrole_model;
     public GroupmanagementAdm $group_model;
     public UsermanagementAdm $user_model;

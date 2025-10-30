@@ -22,7 +22,6 @@ class CoursestatsLmsController extends LmsController
 {
     /** @var CoursestatsLms */
     protected $model;
-    protected $json;
     protected $permissions;
 
     protected $idCourse;

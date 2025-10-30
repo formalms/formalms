@@ -21,8 +21,6 @@ class CompetenceselectorWidget extends Widget
     public $show_descendants = false;
     public $selection = [];
 
-    protected $json = null;
-
     public function __construct()
     {
         parent::__construct();

@@ -16,7 +16,6 @@ defined('IN_FORMA') or exit('Direct access is forbidden');
 class CompetencesAdmController extends AdmController
 {
     protected $model;
-    protected $json;
 
     protected $base_link_course;
     protected $base_link_competence;
@@ -475,7 +474,7 @@ class CompetencesAdmController extends AdmController
         $this->render('category_editmask', [
             'title' => Lang::t('_NEW_CATEGORY', 'competences'),
             'id_parent' => $id_parent,
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 
@@ -507,7 +506,7 @@ class CompetencesAdmController extends AdmController
             'title' => Lang::t('_MOD', 'competences'),
             'id_category' => $id_category,
             'category_langs' => $info->langs,
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 

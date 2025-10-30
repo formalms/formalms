@@ -17,7 +17,6 @@ class GamesLmsController extends LmsController
 {
     public $name = 'games';
     protected $_default_action = 'show';
-    protected $json = null;
 
     protected $info = false;
     public $data;

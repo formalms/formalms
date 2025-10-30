@@ -18,7 +18,6 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 class PresenceLmsController extends LmsController
 {
     protected $model;
-    protected $json;
     protected $permissions;
 
     protected $id_date;

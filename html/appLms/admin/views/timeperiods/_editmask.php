@@ -26,7 +26,7 @@ if (isset($id)) {
 $output .= Form::closeForm();
 
 //if json is requested, format the output
-if ($json) {
+if (isset($json)) {
     $output = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 }
 

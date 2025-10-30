@@ -41,7 +41,7 @@ foreach ($competences_info as $id_competence => $cinfo) {
 $html .= '</ul></div>';
 $html .= '</div>';
 
-if ($json) {
+if (isset($json)) {
     $output = [
         'success' => true,
         'header' => $title,

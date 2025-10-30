@@ -27,7 +27,6 @@ class CatalogLmsController extends LmsController
 
     /** @var CatalogLms */
     public $model;
-    public $json;
     /** @var FormaACLManager */
     public $acl_man;
 

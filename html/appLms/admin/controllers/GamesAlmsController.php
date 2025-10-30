@@ -16,7 +16,6 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 class GamesAlmsController extends AlmsController
 {
     protected $model = null;
-    protected $json = null;
     protected $permissions = null;
     public $data;
 

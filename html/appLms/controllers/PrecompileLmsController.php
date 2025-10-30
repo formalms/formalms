@@ -18,7 +18,6 @@ class PrecompileLmsController extends LmsController
     public $name = 'precompile';
 
     protected $model;
-    protected $json;
     protected $jump_url;
 
     public function init()

@@ -19,7 +19,6 @@ define('_DOCEBO_CORP_BLOG_FEED_ID', 3);
 class DashboardAdmController extends AdmController
 {
     protected $model;
-    protected $json;
     protected $permissions;
 
     /*
@@ -141,7 +140,7 @@ class DashboardAdmController extends AdmController
             'php_conf' => ini_get_all(),
             'sql_server_info' => sql_get_server_info(),
             'sql_additional_info' => $this->model->getSqlInfo(),
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 
@@ -149,7 +148,7 @@ class DashboardAdmController extends AdmController
     {
         $this->render('user_status_dialog', [
             'title' => Lang::t('_PROFILE', 'profile'),
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 
@@ -265,7 +264,7 @@ class DashboardAdmController extends AdmController
     {
         $this->render('export_dialog', [
             'id_report' => FormaLms\lib\Get::req('id_report', DOTY_INT, true),
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 }

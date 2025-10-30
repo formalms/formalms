@@ -19,7 +19,6 @@ class TemplatelayoutAdm extends Model
 {
     protected $db;
     protected $aclManager;
-    protected $json;
 
     public function __construct()
     {

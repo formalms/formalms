@@ -17,7 +17,6 @@ class KbLmsController extends LmsController
 {
     public $name = 'kb';
     protected $_default_action = 'show';
-    protected $json;
 
     public function init()
     {

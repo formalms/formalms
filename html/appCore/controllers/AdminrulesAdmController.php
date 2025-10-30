@@ -16,7 +16,6 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 class AdminrulesAdmController extends AdmController
 {
     public $model;
-    public $json;
     public $acl_man;
 
     public function init()

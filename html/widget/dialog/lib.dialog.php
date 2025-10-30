@@ -49,9 +49,6 @@ class DialogWidget extends Widget
     //calling events
     public $callEvents = false;
 
-    //internal fields
-    protected $json = null;
-
     /**
      * Constructor.
      *

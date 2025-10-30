@@ -17,7 +17,6 @@ class EnrollrulesAlmsController extends AlmsController
 {
     public $name = 'classroom';
 
-    protected $json;
     protected $acl_man;
 
     protected $data;

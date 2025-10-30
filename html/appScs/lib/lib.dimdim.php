@@ -588,8 +588,6 @@ class DimDim_Manager
         $query = 'SELECT * FROM ' . $this->_getRoomTable() . " WHERE idConference = '" . $idConference . "'";
         $res = $this->_query($query);
         $info = $this->nextRow($res);
-
-        require_once _adm_ . '/lib/lib.json.php';
         
         $info_decoded = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($info['schedule_info'], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 

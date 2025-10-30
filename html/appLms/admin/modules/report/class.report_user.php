@@ -575,8 +575,6 @@ class Report_User extends Report
 
         //example selection options
 
-        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.json.php');
-
         $seldata = $this->courses_filter_definition;
 
         $filter_cases = [

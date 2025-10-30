@@ -834,7 +834,6 @@ function defmodality()
     $lang = FormaLanguage::createInstance('test');
 
     require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
-    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.json.php');
 
     $idTest = importVar('idTest', true, 0);
     $db = \FormaLms\db\DbConn::getInstance();
@@ -890,7 +889,6 @@ function defmodality()
 
     $cat_info = [];
     if ($order_info != '') {
-        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.json.php');
         
         $arr = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($order_info, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         if (is_array($arr)) {
@@ -982,7 +980,6 @@ function defmodality()
 
     $cust_info = [];
     if ($cf_info != '') {
-        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.json.php');
         
         $arr = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($cf_info, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         if (is_array($arr)) {
@@ -1186,8 +1183,6 @@ function defmodality()
 function updatemodality()
 {
     checkPerm('view', false, 'storage');
-
-    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.json.php');
     
     $lang = FormaLanguage::createInstance('test');
 
@@ -2318,7 +2313,6 @@ function coursereportMan()
     $lang = FormaLanguage::createInstance('test');
 
     require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
-    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.json.php');
 
     $idTest = importVar('idTest', true, 0);
 

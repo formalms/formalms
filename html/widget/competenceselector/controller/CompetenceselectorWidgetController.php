@@ -17,7 +17,6 @@ class CompetenceselectorWidgetController extends Controller
 {
     protected $model = null;
     protected $competences_model = null;
-    protected $json = null;
 
     public function init()
     {

@@ -18,7 +18,6 @@ defined('IN_FORMA') or exit('Direct access is forbidden');
 
 class CourseAlmsController extends AlmsController
 {
-    protected $json;
     protected $acl_man;
     /** @var CourseAlms */
     protected $model;

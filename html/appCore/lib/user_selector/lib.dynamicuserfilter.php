@@ -34,7 +34,6 @@ class DynamicUserFilter
     protected $_use_other_fields = true;
 
     protected $db;
-    protected $json;
 
     public function __construct($id)
     {

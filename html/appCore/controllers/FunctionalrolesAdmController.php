@@ -16,7 +16,6 @@ defined('IN_FORMA') or exit('Direct access is forbidden');
 class FunctionalrolesAdmController extends AdmController
 {
     protected $model;
-    protected $json;
     protected $permissions;
 
     /*
@@ -274,7 +273,7 @@ class FunctionalrolesAdmController extends AdmController
         $this->render('fncrole_editmask', [
             'title' => Lang::t('_ADD', 'fncroles'),
             'groups_list' => $this->model->getGroupsDropdownList(),
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 
@@ -308,7 +307,7 @@ class FunctionalrolesAdmController extends AdmController
             'id_group' => $info->id_group,
             'fncrole_langs' => $info->langs,
             'groups_list' => $this->model->getGroupsDropdownList(),
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 
@@ -324,7 +323,7 @@ class FunctionalrolesAdmController extends AdmController
 
         $this->render('group_editmask', [
             'title' => Lang::t('_ADD', 'fncroles'),
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 
@@ -356,7 +355,7 @@ class FunctionalrolesAdmController extends AdmController
             'title' => Lang::t('_MOD', 'fncroles'),
             'id_group' => $id_group,
             'group_langs' => $info->langs,
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 
@@ -1341,7 +1340,7 @@ class FunctionalrolesAdmController extends AdmController
             'language' => Lang::get(),
             'competences_info' => $competences_info,
             'courses_info' => $courses_info,
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 

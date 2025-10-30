@@ -18,7 +18,6 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 class TemplatelayoutAdmController extends AdmController
 {
     protected $model;
-    protected $json;
 
     public function __construct()
     {

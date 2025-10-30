@@ -17,7 +17,6 @@ class PrivacypolicyAdmController extends AdmController
 {
     protected $db = null;
     protected $model = null;
-    protected $json = null;
     protected $permissions;
     public $link = 'adm/privacypolicy';
 

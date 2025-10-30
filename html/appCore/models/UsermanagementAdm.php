@@ -19,7 +19,6 @@ class UsermanagementAdm extends Model implements Accessible
 {
     protected $db;
     protected $aclManager;
-    protected $json;
     protected $sessionPrefix;
 
 

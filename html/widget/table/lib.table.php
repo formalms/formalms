@@ -78,8 +78,6 @@ class TableWidget extends Widget
      */
     public $show = 'static';
 
-    protected $json = null;
-
     /**
      * Constructor.
      *

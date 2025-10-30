@@ -18,7 +18,6 @@ class LangAdmController extends AdmController
     public const IMPORT_TYPE_CORE = 'core';
     public const IMPORT_TYPE_FILE = 'file';
 
-    protected $json;
     /** @var LangAdm */
     protected $model;
 

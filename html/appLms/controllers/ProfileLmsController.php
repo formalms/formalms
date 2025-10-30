@@ -24,7 +24,6 @@ class ProfileLmsController extends LmsController
 {
     protected $db;
     protected $model;
-    protected $json;
     protected $aclManager;
 
     protected $max_dim_avatar;

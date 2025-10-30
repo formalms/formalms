@@ -21,7 +21,7 @@ define('GROUP_FIELD_INHERIT', 'Inherit');
 class UsermanagementAdmController extends AdmController
 {
     protected $model;
-    protected $json;
+
     protected $numVarFields;
     protected $sessionPrefix;
     protected $permissions;
@@ -1487,7 +1487,7 @@ class UsermanagementAdmController extends AdmController
         $this->render('add_folder', [
             'id_parent' => $id_parent,
             'title' => Lang::t('_ORGCHART_ADDNODE', 'organization_chart'),
-            'json' => $this->json,
+            'json' => true,
             'template_array' => $template_array,
             'default_template' => $template_id,
         ]);
@@ -2230,7 +2230,7 @@ class UsermanagementAdmController extends AdmController
 
         $this->render('changepwd', [
             'title' => Lang::t('_CHANGEPASSWORD', 'profile'),
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 
@@ -2689,7 +2689,7 @@ class UsermanagementAdmController extends AdmController
             'title' => Lang::t('_DETAILS', 'standard') . ': ' . $this->model->getUserId($id_user),
             'profile' => $profile,
             'model' => $this->model,
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 
@@ -2770,7 +2770,7 @@ class UsermanagementAdmController extends AdmController
             'id_user' => $id_user,
             'title' => Lang::t('_DETAILS', 'standard') . ': ' . $userid,
             'fields' => $fman,
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 
@@ -3019,7 +3019,7 @@ class UsermanagementAdmController extends AdmController
             'fields_mask' => $fields_mask,
             'fields_to_exclude' => is_array($fields_to_exclude) ? $fields_to_exclude : [],
             'info' => $info,
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 

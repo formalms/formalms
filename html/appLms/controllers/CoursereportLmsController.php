@@ -13,7 +13,6 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.json.php');
 require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/lib.field.php');
 require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.coursereport.php');
 
@@ -27,8 +26,6 @@ class CoursereportLmsController extends LmsController
 
     /** @var int */
     protected $idCourse;
-
-    protected $json;
 
     protected $permissions;
 
@@ -1282,7 +1279,6 @@ class CoursereportLmsController extends LmsController
         require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.test.php');
         require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
         require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.table.php');
-        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.json.php');
 
         // XXX: Initializaing
         $idTest = importVar('id_test', true, 0);

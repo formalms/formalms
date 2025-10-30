@@ -13,7 +13,6 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.json.php');
 require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.user_profile.php');
 require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/lib.myfiles.php');
 

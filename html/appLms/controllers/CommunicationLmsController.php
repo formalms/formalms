@@ -18,7 +18,6 @@ class CommunicationLmsController extends LmsController
     public $name = 'communication';
 
     protected $_default_action = 'show';
-    protected $json = null;
 
     protected $info = false;
     public $data;

@@ -15,7 +15,6 @@ defined('IN_FORMA') or exit('Direct access is forbidden');
 
 class LabelAlmsController extends AlmsController
 {
-    protected $json;
     protected $acl_man;
     protected $model;
     protected $permissions;

@@ -15,16 +15,9 @@ defined('IN_FORMA') or exit('Direct access is forbidden');
 
 class CertificateAdmController extends AdmController
 {
-
-    protected $json;
-
     public function init()
     {
         parent::init();
-        require_once \FormaLms\lib\Forma::include(_base_ . '/lib/','lib.json.php');
-        
-   
-   
     }
 
 

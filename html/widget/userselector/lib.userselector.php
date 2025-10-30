@@ -93,7 +93,6 @@ class UserselectorWidget extends Widget
     public $nFields = 3;
 
     protected $util = null;
-    protected $json = null;
 
     public function __construct()
     {

@@ -17,7 +17,6 @@ class CommunicationAlmsController extends AlmsController
 {
     /** @var CommunicationAlms */
     protected $model = null;
-    protected $json = null;
     protected $permissions = null;
     public $data;
 

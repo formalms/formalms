@@ -16,7 +16,6 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 class KbAlmsController extends AlmsController
 {
     protected $model = null;
-    protected $json = null;
     protected $permissions = null;
     public $show_actions = true;
     public $data;
@@ -777,7 +776,7 @@ class KbAlmsController extends AlmsController
         $this->render('add_folder', [
             'id_parent' => $id_parent,
             'title' => Lang::t('_ORGCHART_ADDNODE', 'organization_chart'),
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 }

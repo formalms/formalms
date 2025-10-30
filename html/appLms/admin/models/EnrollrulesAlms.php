@@ -21,7 +21,6 @@ class EnrollrulesAlms extends Model implements Accessible
     protected $sortable = ['title', 'lang_code', 'creation_date'];
 
     protected $db = false;
-    protected $json = false;
 
     public function __construct()
     {
@@ -220,7 +219,7 @@ class EnrollrulesAlms extends Model implements Accessible
         $result = $this->db->query($query);
 
         while ($entity = $this->db->fetch_obj($result)) {
-            //$entity->course_list = $this->json->decode($entity->course_list);
+            //$entity->course_list = true->decode($entity->course_list);
             $entities_name[$entity->id_entity]->course_list = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($entity->course_list, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         }
 

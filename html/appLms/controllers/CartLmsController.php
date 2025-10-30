@@ -22,7 +22,6 @@ class CartLmsController extends LmsController
     protected $_default_action = 'show';
 
     public $model;
-    public $json;
     public $acl_man;
 
     public function isTabActive($tab_name)

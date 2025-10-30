@@ -15,7 +15,6 @@ defined('IN_FORMA') or exit('Direct access is forbidden');
 
 class QuestcategoryAlmsController extends AlmsController
 {
-    protected $json;
     protected $model;
     protected $permissions;
 
@@ -147,7 +146,7 @@ class QuestcategoryAlmsController extends AlmsController
         }
 
         $this->render('editmask', [
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 
@@ -205,7 +204,7 @@ class QuestcategoryAlmsController extends AlmsController
             'id_questcategory' => $id_questcategory,
             'name' => $info->name,
             'description' => $info->description,
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 

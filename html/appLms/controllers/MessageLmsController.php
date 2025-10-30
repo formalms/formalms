@@ -30,7 +30,6 @@ class MessageLmsController extends LmsController
 {
     protected $db;
     protected $model;
-    protected $json;
     protected $aclManager;
     /**
      * @var true

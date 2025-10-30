@@ -16,7 +16,6 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 class AdminmanagerAdmController extends AdmController
 {
     protected $model;
-    protected $json;
     protected $acl_man;
     protected $permissions;
 

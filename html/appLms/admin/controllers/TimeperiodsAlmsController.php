@@ -16,7 +16,6 @@ defined('IN_FORMA') or exit('Direct access is forbidden');
 class TimeperiodsAlmsController extends AlmsController
 {
     protected $model;
-    protected $json;
     protected $permissions;
 
     /*
@@ -132,7 +131,7 @@ class TimeperiodsAlmsController extends AlmsController
         }
 
         $this->render('add', [
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 
@@ -166,7 +165,7 @@ class TimeperiodsAlmsController extends AlmsController
                 'title' => $record->title,
                 'start_date' => $record->start_date,
                 'end_date' => $record->end_date,
-                'json' => $this->json,
+                'json' => true,
             ]);
         }
     }

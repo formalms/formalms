@@ -41,7 +41,6 @@ class TreeWidget extends Widget
 
     public $runtime = false;
 
-    protected $json;
     protected $options = [];
 
     public function __construct()

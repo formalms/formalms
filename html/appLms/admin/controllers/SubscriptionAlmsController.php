@@ -19,7 +19,6 @@ class SubscriptionAlmsController extends AlmsController
 {
     /** @var SubscriptionAlms */
     protected $model;
-    protected $json;
     protected $acl_man;
     protected $id_course;
     protected $id_edition;
@@ -2885,7 +2884,7 @@ class SubscriptionAlmsController extends AlmsController
             'title' => Lang::t('_SUBSCRIBE', 'subscribe'),
             'levels' => $subscribe_man->getUserLevel(),
             'selected_level' => 3, //student level
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 

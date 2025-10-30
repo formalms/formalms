@@ -23,7 +23,6 @@ defined('IN_FORMA') or exit('Direct access is forbidden');
  */
 class LocationAlmsController extends AlmsController
 {
-    protected $json = false;
     protected $model = false;
     protected $perm = [];
 

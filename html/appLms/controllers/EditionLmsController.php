@@ -15,7 +15,6 @@ class EditionLmsController extends LmsController
 {
     public $name = 'classroom';
 
-    protected $json;
     protected $acl_man;
 
     protected $data;

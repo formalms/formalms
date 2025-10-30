@@ -29,8 +29,6 @@ class TableView
     protected $otherOptions = [];
     protected $jsLanguages = [];
 
-    protected $json = null;
-
     protected $formatters = [];
 
     protected $html_before = '';
