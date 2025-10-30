@@ -1318,8 +1318,8 @@ class CoursereportLmsController extends LmsController
         //==========================================================================================
         // XXX: Reset track of user
         if (isset($_POST['reset_track'])) {
-            $re = $this->saveTestUpdate($idTest, $testMan);
-            $idUser = reset($_POST['reset_track']);
+            //$re = $this->saveTestUpdate($idTest, $testMan);
+            $idUser = array_key_first($_POST['reset_track']);
 
             $userInfo = $aclMan->getUser($idUser, false);
 
