@@ -125,7 +125,7 @@ class CoursestatsLmsController extends LmsController
             } else {
                 $output .= ', ';
             }
-            $output .= '{"value":' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($id_status) . ',"label":' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($status_translation,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . '}';
+            $output .= '{"value":' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($id_status,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . ',"label":' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($status_translation,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . '}';
         }
         $output .= ']';
 
