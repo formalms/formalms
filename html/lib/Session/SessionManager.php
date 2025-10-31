@@ -188,7 +188,8 @@ class SessionManager
 
         // Se non c'è referrer/origin, usa l'hostname corrente (navigazione diretta)
         // Questo mantiene il comportamento originale per navigazione diretta
-        $hostname = !empty($referrerHost) ? $referrerHost : $request->getHost();
+        // In CLI context (e.g., cache:clear), getHost() returns null, so use 'localhost' as default
+        $hostname = !empty($referrerHost) ? $referrerHost : ($request->getHost() ?? 'localhost');
 
         // Ottieni la configurazione SameSite dal config
         $sameSiteConfig = \FormaLms\lib\Get::cfg('session.sameSite', '');
