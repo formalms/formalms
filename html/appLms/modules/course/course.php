@@ -1538,7 +1538,7 @@ function downloadMaterials()
         $from_edition = ' FROM %lms_course_edition';
         $where_edition = " WHERE idCourseEdition = '" . $edition_id . "' ";
 
-        list($file) = sql_fetch_row(sql_query($select_edition . $from_edition . $where_edition));
+        [$file] = sql_fetch_row(sql_query($select_edition . $from_edition . $where_edition));
     }
     require_once _base_ . '/lib/lib.download.php';
     $ext = end(explode('.', $file));

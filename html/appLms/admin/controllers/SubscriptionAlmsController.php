@@ -824,8 +824,8 @@ class SubscriptionAlmsController extends AlmsController
         }
 
         //Update info
-        $new_value = FormaLms\lib\Get::req('new_value', DOTY_STRING, ''); //DOTY_MIXED  DOTY_INT
-        $old_value = FormaLms\lib\Get::req('old_value', DOTY_STRING, ''); //DOTY_MIXED  DOTY_INT
+        $new_value = (int)FormaLms\lib\Get::req('new_value', DOTY_STRING, ''); //DOTY_MIXED  DOTY_INT
+        $old_value = (int)FormaLms\lib\Get::req('old_value', DOTY_STRING, ''); //DOTY_MIXED  DOTY_INT
         $col = FormaLms\lib\Get::req('col', DOTY_STRING, '');
 
         if ($new_value === $old_value) {
@@ -841,7 +841,7 @@ class SubscriptionAlmsController extends AlmsController
                 case 'level':
                     require_once _lms_ . '/lib/lib.course.php';
 
-                    $level_idst = &$formaCourse->getCourseLevel($this->id_course);
+                    $level_idst = $formaCourse->getCourseLevel($this->id_course);
                     if (count($level_idst) == 0 || $level_idst[1] == '') {
                         $level_idst = FormaCourse::createCourseLevel($this->id_course);
                     }
@@ -907,8 +907,7 @@ class SubscriptionAlmsController extends AlmsController
                                 $permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
                                 $permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
 
-                                $course_man = new Man_Course();
-                                $recipients = $course_man->getIdUserOfLevel($this->id_course, '6');
+                                $recipients = Man_Course::getIdUserOfLevel($this->id_course, '6');
 
                                 $recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_godadmin));
                                 $recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_admin));

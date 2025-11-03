@@ -2680,11 +2680,39 @@ function logIntoCourse($idCourse, $gotofirst_page = true)
     }
     $session->remove('direct_play');
 
+    require_once _lms_ . '/lib/lib.course.php';
+    $formaCourse = new FormaCourse($idCourse);
+
     $re_course = sql_query('
 	SELECT level, status, waiting
 	FROM %lms_courseuser
 	WHERE idCourse = ' . (int) $idCourse . ' AND idUser = ' . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getId() . '');
     [$level_c, $status_user, $waiting_user] = sql_fetch_row($re_course);
+
+    // Check and align user level with course level groups
+    $level_idst = $formaCourse->getCourseLevel($idCourse);
+    if (count($level_idst) == 0 || $level_idst[1] == '') {
+        $level_idst = FormaCourse::createCourseLevel($idCourse);
+    }
+
+    $id_user = (int) \FormaLms\lib\FormaUser::getCurrentUser()->getId();
+
+    // Check if user is in the correct level group
+    if (isset($level_idst[$level_c])) {
+        $user_groups = Forma::getAcl()->getUserGroupsST($id_user);
+        $is_in_correct_group = in_array($level_idst[$level_c], $user_groups);
+
+        if (!$is_in_correct_group) {
+            // Remove user from all level groups for this course
+            foreach ($level_idst as $level_group_id) {
+                if (!empty($level_group_id) && in_array($level_group_id, $user_groups)) {
+                    \FormaLms\lib\Forma::getAclManager()->removeFromGroup($level_group_id, $id_user);
+                }
+            }
+            // Add user to the correct level group
+            \FormaLms\lib\Forma::getAclManager()->addToGroup($level_idst[$level_c], $id_user);
+        }
+    }
 
     \FormaLms\lib\Forma::setCourse($idCourse);
     $course_info = \FormaLms\lib\Forma::course()->getAllInfo();

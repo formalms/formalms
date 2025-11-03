@@ -66,12 +66,11 @@
                                         <div class="alert alert-danger text-center">{{ Lang_translate('_DASHBOARD_BLOCKCERTIFICATES_NO_RECORDS', 'dashboard') }}</div>
                                     {% endif %}
                                 {% endif %}
-
-                                {% if block.data.show_button %}
-                                    <a class="forma-button forma-button--primary forma-button--full d-button--cert text-center" title="" href="{{ block.link }}">
-                                        <span class="forma-button__label">{{ Lang_translate('_MY_CERTIFICATE', 'menu_over') }}</span>
-                                    </a>
-                                {% endif %}
+                            {% endif %}
+                            {% if block.data.show_button %}
+                                <a class="forma-button forma-button--primary forma-button--full d-button--cert text-center" title="" href="{{ block.link }}">
+                                    <span class="forma-button__label">{{ Lang_translate('_MY_CERTIFICATE', 'menu_over') }}</span>
+                                </a>
                             {% endif %}
                         </div>
                     </div>
