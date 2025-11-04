@@ -2713,10 +2713,11 @@ function logIntoCourse($idCourse, $gotofirst_page = true)
             \FormaLms\lib\Forma::getAclManager()->addToGroup($level_idst[$level_c], $id_user);
         }
     } // Fix incorrect level to learning course user
-    else if ($fixedLevel = array_search($level_c, $level_idst)) {
-        $re = (new CourseSubscribe_Manager())->updateUserLeveInCourse($id_user, $idCourse, $fixedLevel);
+    else if ($level_c = array_search($level_c, $level_idst)) {
+        $re = (new CourseSubscribe_Manager())->updateUserLeveInCourse($id_user, $idCourse, $level_c);
     } else {
-        $re = (new CourseSubscribe_Manager())->updateUserLeveInCourse($id_user, $idCourse, CourseLevel::COURSE_LEVEL_STUDENT);
+        $level_c = CourseLevel::COURSE_LEVEL_STUDENT;
+        $re = (new CourseSubscribe_Manager())->updateUserLeveInCourse($id_user, $idCourse, $level_c);
     }
 
     \FormaLms\lib\Forma::setCourse($idCourse);
