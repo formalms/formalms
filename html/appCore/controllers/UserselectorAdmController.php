@@ -234,7 +234,7 @@ class UserselectorAdmController extends AdmController
         if (method_exists($this, $responseMethod)) {
             $this->$responseMethod($result);
         } else {
-            throw new Exception('$responseMethod not implemented');
+            throw new Exception("$responseMethod not implemented");
         }
     }
 

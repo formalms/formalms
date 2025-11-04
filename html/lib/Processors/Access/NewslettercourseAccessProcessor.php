@@ -18,5 +18,14 @@ class NewslettercourseAccessProcessor extends NewsletterAccessProcessor
 
     public const NAME = 'newslettercourse';
 
+    public function setAccessList($resourceId, array $selection) : self {
+
+        $this->accessModel->setAccessList($resourceId, $selection, $this->session->get('idCourse'));
+        $back_url = 'index.php?modname=newsletter&amp;op=summary&amp;tot=' . $this->accessModel->getTotalSent() . '&amp;id_send=' . $resourceId;
+       
+        $this->setRedirect(str_replace('&amp;', '&', $back_url));
+        return $this;
+        
+    }
 
 }
