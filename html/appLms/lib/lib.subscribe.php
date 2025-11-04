@@ -408,7 +408,8 @@ class CourseSubscribe_Manager
         $date_expire_validity = false,
         $overbooking = 0,
         $source = 'admin'
-    ) {
+    )
+    {
         if ($this->controlSubscription($id_user, $id_course)) {
             return true;
         }
@@ -584,66 +585,70 @@ class CourseSubscribe_Manager
 
     public function updateUserLeveInCourse($id_user, $id_course, $new_level)
     {
-        $new_data = ['level' => $new_level];
+        $res = false;
 
-        $data = Events::trigger('lms.course_user.updating', [
-            'id_user' => $id_user,
-            'id_course' => $id_course,
-            'new_data' => $new_data,
-        ]);
+        if (in_array($new_level, CourseLevel::COURSE_LEVELS)) {
+            $new_data = ['level' => $new_level];
 
-        $new_level = $data['new_data']['level'];
-
-        $query_lvl = 'SELECT idUser, level'
-            . ' FROM ' . $this->subscribe_table
-            . ' WHERE idCourse = ' . (int)$id_course
-            . ' AND idUser ';
-
-        $query = 'UPDATE ' . $this->subscribe_table
-            . ' SET level = ' . (int)$new_level
-            . ' WHERE idCourse = ' . (int)$id_course
-            . ' AND idUser ';
-
-        if (is_array($id_user)) {
-            $query .= ' IN (' . implode(',', $id_user) . ')';
-            $query_lvl .= ' IN (' . implode(',', $id_user) . ')';
-        } else {
-            $query .= ' = ' . (int)$id_user;
-            $query_lvl .= ' = ' . (int)$id_user;
-            $id_user = [$id_user];
-        }
-
-        $result = $this->db->query($query_lvl);
-        $old_level = [];
-
-        foreach ($result as $row) {
-
-            $old_level[$row['idUser']] = $row['level'];
-        }
-
-        $res = $this->db->query($query);
-
-        if ($res) {
-            require_once _lms_ . '/lib/lib.course.php';
-
-            $formaCourse = new FormaCourse($id_course);
-
-            $level_idst = &$formaCourse->getCourseLevel($id_course);
-            if (count($level_idst) == 0 || $level_idst[1] == '') {
-                $level_idst = FormaCourse::createCourseLevel($id_course);
-            }
-
-            foreach ($id_user as $id_user_t) {
-
-                $this->acl_man->removeFromGroup($level_idst[$old_level[$id_user_t]], $id_user_t);
-                $this->acl_man->addToGroup($level_idst[$new_level], $id_user_t);
-            }
-
-            Events::trigger('lms.course_user.updated', [
+            $data = Events::trigger('lms.course_user.updating', [
                 'id_user' => $id_user,
                 'id_course' => $id_course,
                 'new_data' => $new_data,
             ]);
+
+            $new_level = $data['new_data']['level'];
+
+            $query_lvl = 'SELECT idUser, level'
+                . ' FROM ' . $this->subscribe_table
+                . ' WHERE idCourse = ' . (int)$id_course
+                . ' AND idUser ';
+
+            $query = 'UPDATE ' . $this->subscribe_table
+                . ' SET level = ' . (int)$new_level
+                . ' WHERE idCourse = ' . (int)$id_course
+                . ' AND idUser ';
+
+            if (is_array($id_user)) {
+                $query .= ' IN (' . implode(',', $id_user) . ')';
+                $query_lvl .= ' IN (' . implode(',', $id_user) . ')';
+            } else {
+                $query .= ' = ' . (int)$id_user;
+                $query_lvl .= ' = ' . (int)$id_user;
+                $id_user = [$id_user];
+            }
+
+            $result = $this->db->query($query_lvl);
+            $old_level = [];
+
+            foreach ($result as $row) {
+
+                $old_level[$row['idUser']] = $row['level'];
+            }
+
+            $res = $this->db->query($query);
+
+            if ($res) {
+                require_once _lms_ . '/lib/lib.course.php';
+
+                $formaCourse = new FormaCourse($id_course);
+
+                $level_idst = &$formaCourse->getCourseLevel($id_course);
+                if (count($level_idst) == 0 || $level_idst[1] == '') {
+                    $level_idst = FormaCourse::createCourseLevel($id_course);
+                }
+
+                foreach ($id_user as $id_user_t) {
+
+                    $this->acl_man->removeFromGroup($level_idst[$old_level[$id_user_t]], $id_user_t);
+                    $this->acl_man->addToGroup($level_idst[$new_level], $id_user_t);
+                }
+
+                Events::trigger('lms.course_user.updated', [
+                    'id_user' => $id_user,
+                    'id_course' => $id_course,
+                    'new_data' => $new_data,
+                ]);
+            }
         }
 
         return $res;
@@ -1121,17 +1126,7 @@ class CourseSubscribe_Management
 
                 $re &= $this->_query($query);
             } elseif ($user_level[$id_user] != $lv) {
-                $old_lv = $user_level[$id_user];
-
-                $this->acl_man->removeFromGroup($group_levels[$old_lv], $id_user);
-                $this->acl_man->addToGroup($group_levels[$lv], $id_user);
-
-                $query = '
-				UPDATE ' . $GLOBALS['prefix_lms'] . "_courseuser
-				SET level = '" . $lv . "'
-				WHERE idUser = '" . $id_user . "' AND
-						idCourse = '" . $id_course . "'";
-                $re &= $this->_query($query);
+                $re = (new CourseSubscribe_Manager())->updateUserLeveInCourse($id_user, $id_course, $lv);
             }
         }
 
@@ -1166,16 +1161,7 @@ class CourseSubscribe_Management
                 $this->acl_man->addToGroup($group_levels[$lv], $id_user);
                 $subscriptionAlms->subscribeUser($id_user, $group_levels[$lv], $waiting, false, false, 0, $source);
             } else {
-                $old_lv = $user_level[$id_user];
-
-                $this->acl_man->removeFromGroup($group_levels[$old_lv], $id_user);
-                $this->acl_man->addToGroup($group_levels[$lv], $id_user);
-
-                $query = '
-				UPDATE ' . $GLOBALS['prefix_lms'] . "_courseuser
-				SET level = '" . $lv . "'
-				WHERE idUser = '" . $id_user . "' AND idCourse = '" . $id_course . "'";
-                $re &= $this->_query($query);
+                $re = (new CourseSubscribe_Manager())->updateUserLeveInCourse($id_user, $id_course, $lv);
             }
         }
 
@@ -1360,71 +1346,6 @@ class CourseSubscribe_Management
         return $re;
     }
 
-    // if there is edition ----------------------------------------------------------
-
-    /**
-     * Subscribe a group of users(N) to a course edition(1).
-     *
-     * @param array $arr_user the id of the users
-     * @param int $id_course the id of the course
-     * @param mixed $levels a array defined in this way
-     *                         array( id_user => lv_number, ... )
-     *                         or else a level_number that is used for all the users
-     *
-     * @return bool true if success, false otherwise
-     */
-    public function subscribeEditionUsers($arr_users, $id_edition, $levels, $id_course = false)
-    {
-        if (empty($arr_users)) {
-            return true;
-        }
-        if ($id_course == false) {
-            require_once _lms_ . '/lib/lib.course.php';
-
-            $man = new Man_Course();
-            $info = $man->getEditionInfo($id_edition);
-            $id_course = $info['idCourse'];
-        }
-
-        $re = true;
-        $acl_man = \FormaLms\lib\Forma::getAclManager();
-        $group_levels = &$this->course_man->getCourseIdstGroupLevel($id_course);
-        $user_level = $this->course_man->getLevelsOfUsers($id_course, $arr_users);
-
-        $edition_group = $acl_man->getGroupST('/lms/course_edition/' . $id_edition . '/subscribed');
-        if ($edition_group === false) {
-            $edition_group = $acl_man->registerGroup('/lms/course_edition/' . $id_edition . '/subscribed', 'all the user of a course edition', true, 'course');
-        }
-        foreach ($arr_users as $id_user) {
-            $lv = (is_array($levels) ? $levels[$id_user] : $levels);
-            if (!isset($user_level[$id_user])) {
-                $this->acl_man->addToGroup($group_levels[$lv], $id_user);
-                $this->acl_man->addToGroup($edition_group, $id_user);
-
-                $query = 'INSERT INTO ' . $GLOBALS['prefix_lms'] . "_courseuser
-				( idUser, idCourse, edition_id, level, waiting, subscribed_by, date_inscr ) VALUES
-				( '" . $id_user . "', '" . $id_course . "', '" . $id_edition . "', '" . $lv . "', '0', '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "', '" . date('Y-m-d H:i:s') . "' )";
-
-                $re &= $this->_query($query);
-            } else {
-                $old_lv = $user_level[$id_user];
-
-                $this->acl_man->removeFromGroup($group_levels[$old_lv], $id_user);
-                $this->acl_man->addToGroup($group_levels[$lv], $id_user);
-
-                $query = '
-				UPDATE ' . $GLOBALS['prefix_lms'] . "_courseuser
-				SET level = '" . $lv . "'
-				WHERE idUser = '" . $id_user . "'
-					AND idCourse = '" . $id_course . "'
-					AND edition_id = '" . $id_edition . "'";
-                $re &= $this->_query($query);
-            }
-        }
-
-        return $re;
-    }
-
     // special subscribe for connector ----------------------------------------------
 
     /**
@@ -1457,17 +1378,7 @@ class CourseSubscribe_Management
             if ($import_from !== $connection) {
                 return 'jump';
             }
-
-            if ($old_lv != $level) {
-                $this->acl_man->removeFromGroup($group_levels[$old_lv], $id_user);
-                $this->acl_man->addToGroup($group_levels[$level], $id_user);
-            }
-            $query = '
-			UPDATE ' . $GLOBALS['prefix_lms'] . "_courseuser
-			SET level = '" . $level . "'
-			WHERE idUser = '" . $id_user . "' AND
-					idCourse = '" . $id_course . "'";
-            $re &= $this->_query($query);
+            $re = (new CourseSubscribe_Manager())->updateUserLeveInCourse($id_user, $id_course, $level);
         }
 
         return $re;

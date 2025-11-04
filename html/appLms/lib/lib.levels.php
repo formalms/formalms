@@ -23,18 +23,20 @@ class CourseLevel
     public const COURSE_LEVEL_GHOST = 2;
     public const COURSE_LEVEL_GUEST = 1;
 
+    public const COURSE_LEVELS = [self::COURSE_LEVEL_ADMIN, self::COURSE_LEVEL_TEACHER, self::COURSE_LEVEL_MENTOR, self::COURSE_LEVEL_TUTOR, self::COURSE_LEVEL_STUDENT, self::COURSE_LEVEL_GHOST, self::COURSE_LEVEL_GUEST];
+
     public static function getTranslatedLevels($op = '')
     {
 
 
         return [
-            7 => Lang::t('_LEVEL_7','levels'),		//'Admin'
-            6 => Lang::t('_LEVEL_6','levels'),		//'Prof'
-            5 => Lang::t('_LEVEL_5','levels'),		//'Mentor'
-            4 => Lang::t('_LEVEL_4','levels'),		//'Tutor'
-            3 => Lang::t('_LEVEL_3','levels'),		//'Studente'
-            2 => Lang::t('_LEVEL_2','levels'),		//'Ghost' (no track)
-            1 => Lang::t('_LEVEL_1','levels'),		//'Guest'
+            7 => Lang::t('_LEVEL_7', 'levels'),        //'Admin'
+            6 => Lang::t('_LEVEL_6', 'levels'),        //'Prof'
+            5 => Lang::t('_LEVEL_5', 'levels'),        //'Mentor'
+            4 => Lang::t('_LEVEL_4', 'levels'),        //'Tutor'
+            3 => Lang::t('_LEVEL_3', 'levels'),        //'Studente'
+            2 => Lang::t('_LEVEL_2', 'levels'),        //'Ghost' (no track)
+            1 => Lang::t('_LEVEL_1', 'levels'),        //'Guest'
         ];
     }
 
@@ -53,7 +55,7 @@ class CourseLevel
 
     public function isTeacher($level)
     {
-        $res = ((int) $level === self::COURSE_LEVEL_TEACHER ? true : false);
+        $res = ((int)$level === self::COURSE_LEVEL_TEACHER ? true : false);
 
         return $res;
     }
