@@ -3163,6 +3163,7 @@ you have been unsubscribed from the course ([course_code]) - [course]]]></key>
         <key id="test&amp;_TEST_MM4_SHOWTOT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Show final score (if it's calculable)]]></key>
         <key id="test&amp;_TEST_MM_FIVE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Manage your test in Gradebook Management]]></key>
         <key id="test&amp;_TEST_MM_FOUR" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[3 - Details shown at the end of attempt]]></key>
+        <key id="test&amp;_TEST_MM4_SHOWQUESTSCORE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Show score in every single question]]></key>
         <key id="test&amp;_TEST_MM_ONE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[1 - Set questions visualization]]></key>
         <key id="test&amp;_TEST_MM_TWO" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[2 - Set attempts options]]></key>
         <key id="test&amp;_TEST_MODALITY" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Test options]]></key>
