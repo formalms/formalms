@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     @ORM\Index(name="id_certificate_idx", columns={"id_certificate"}),
  *     @ORM\Index(name="id_course_idx", columns={"id_course"}),
  *     @ORM\Index(name="id_user_idx", columns={"id_user"})
- * })
+ * }, uniqueConstraints={@ORM\UniqueConstraint(name="uniqueCertKey", columns={"id_certificate", "id_course", "id_user"})})
  * @ORM\Entity
  */
 class LearningCertificateAssign
@@ -67,6 +67,4 @@ class LearningCertificateAssign
      * @ORM\Column(name="cert_file", type="string", length=255, nullable=false)
      */
     private $certFile = '';
-
-
 }
