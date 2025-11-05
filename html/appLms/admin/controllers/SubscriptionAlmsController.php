@@ -809,149 +809,141 @@ class SubscriptionAlmsController extends AlmsController
 
     public function update()
     {
+        $output = ['succes' => false];
+
         if (!$this->permissions['subscribe_course']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
-
-            return;
-        }
-
-        $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, 0);
-        if ($id_user <= 0) {
-            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['succes' => true], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
-
-            return;
-        }
-
-        //Update info
-        $new_value = (int)FormaLms\lib\Get::req('new_value', DOTY_STRING, ''); //DOTY_MIXED  DOTY_INT
-        $old_value = (int)FormaLms\lib\Get::req('old_value', DOTY_STRING, ''); //DOTY_MIXED  DOTY_INT
-        $col = FormaLms\lib\Get::req('col', DOTY_STRING, '');
-
-        if ($new_value === $old_value) {
-            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['succes' => true], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
+        } elseif (($id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, 0)) <= 0) {
+            $output = ['succes' => true];
         } else {
-            $userModel = new UsermanagementAdm();
-            $user = $userModel->getProfileData($id_user);
+            //Update info
+            $new_value = (int)FormaLms\lib\Get::req('new_value', DOTY_STRING, ''); //DOTY_MIXED  DOTY_INT
+            $old_value = (int)FormaLms\lib\Get::req('old_value', DOTY_STRING, ''); //DOTY_MIXED  DOTY_INT
+            $col = FormaLms\lib\Get::req('col', DOTY_STRING, '');
 
-            require_once _lms_ . '/lib/lib.course.php';
-            $formaCourse = new FormaCourse($this->id_course);
+            if ($new_value === $old_value) {
+                $output = ['succes' => true];
+            } else {
+                $userModel = new UsermanagementAdm();
+                $user = $userModel->getProfileData($id_user);
 
-            switch ($col) {
-                case 'level':
-                    require_once _lms_ . '/lib/lib.course.php';
+                require_once _lms_ . '/lib/lib.course.php';
+                $formaCourse = new FormaCourse($this->id_course);
 
-                    $level_idst = $formaCourse->getCourseLevel($this->id_course);
-                    if (count($level_idst) == 0 || $level_idst[1] == '') {
-                        $level_idst = FormaCourse::createCourseLevel($this->id_course);
-                    }
+                switch ($col) {
+                    case 'level':
+                        require_once _lms_ . '/lib/lib.course.php';
 
-                    $level = $this->model->getUserLevel($id_user);
-                    if (!isset($level_idst[$level])) {
-                        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['succes' => false], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
-                        break;
-                    }
-                    $this->acl_man->removeFromGroup($level_idst[$level], $id_user);
-
-                    if (!isset($level_idst[$new_value])) {
-                        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['succes' => false], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
-                        break;
-                    }
-                    $this->acl_man->addToGroup($level_idst[$new_value], $id_user);
-
-                    if ($this->model->updateUserLevel($id_user, $new_value)) {
-                        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['succes' => true], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
-                    } else {
-                        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['succes' => false], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
-                    }
-
-                    break;
-
-                case 'status':
-                    $status = $this->model->getUserStatusList();
-
-                    if (!isset($status[$new_value])) {
-                        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['succes' => false], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
-                        break;
-                    }
-
-                    if ($this->model->updateUserStatus($id_user, $new_value)) {
-                        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['succes' => true], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
-
-                        switch ((int)$new_value) {
-                            case _CUS_SUSPEND:
-                                require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.eventmanager.php');
-
-                                $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($id_user, false);
-
-                                $userid = \FormaLms\lib\Forma::getAclManager()->relativeId($uinfo[ACL_INFO_USERID]);
-
-                                $array_subst = [
-                                    '[url]' => FormaLms\lib\Get::site_url(),
-                                    '[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
-                                    '[lastname]' => $uinfo[ACL_INFO_LASTNAME],
-                                    '[username]' => $userid,
-                                    '[course]' => $formaCourse->course_info['name'],
-                                ];
-
-                                // message to user that is odified
-                                $msg_composer = new EventMessageComposer();
-
-                                $msg_composer->setSubjectLangText('email', '_EVENT_COURSE_EVENT_SUSPENDED_USER_SBJ', false);
-                                $msg_composer->setBodyLangText('email', '_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT', $array_subst);
-
-                                $msg_composer->setBodyLangText('sms', '_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT_SMS', $array_subst);
-
-                                $acl_manager = \FormaLms\lib\Forma::getAclManager();
-
-                                $permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
-                                $permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
-
-                                $recipients = Man_Course::getIdUserOfLevel($this->id_course, '6');
-
-                                $recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_godadmin));
-                                $recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_admin));
-
-                                createNewAlert(
-                                    'UserCourseSuspendedSuperAdmin',
-                                    'directory',
-                                    'edit',
-                                    '1',
-                                    'User ' . $userid . ' was suspended',
-                                    $recipients,
-                                    $msg_composer
-                                );
-
-                                break;
-                            default:
+                        $level_idst = $formaCourse->getCourseLevel($this->id_course);
+                        if (count($level_idst) == 0 || $level_idst[1] == '') {
+                            $level_idst = FormaCourse::createCourseLevel($this->id_course);
                         }
 
-                        Events::trigger('core.course.subscription.status.updated', ['user' => $user, 'status' => ['id' => $new_value, 'name' => $status[$new_value]], 'course' => $formaCourse->course_info]);
-                    } else {
-                        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['succes' => false], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
-                    }
+                        $level = $this->model->getUserLevel($id_user);
+                        $this->acl_man->removeFromGroup($level_idst[$level], $id_user);
 
-                    break;
-                case 'date_begin':
-                    if ($this->model->updateUserDateBeginValidity($id_user, Format::dateDb($new_value, 'date'))) {
-                        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['succes' => true], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
-                    } else {
-                        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['succes' => false], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
-                    }
+                        if (!isset($level_idst[$new_value])) {
+                            $output = ['succes' => false];
+                            break;
+                        }
+                        $this->acl_man->addToGroup($level_idst[$new_value], $id_user);
 
-                    break;
-                case 'date_expire':
-                    if ($this->model->updateUserDateExpireValidity($id_user, Format::dateDb($new_value, 'date'))) {
-                        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['succes' => true], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
-                    } else {
-                        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['succes' => false], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
-                    }
+                        if ($this->model->updateUserLevel($id_user, $new_value)) {
+                            $output = ['succes' => true];
+                        } else {
+                            $output = ['succes' => false];
+                        }
 
-                    break;
-                default:
-                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['succes' => false], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
+                        break;
+
+                    case 'status':
+                        $status = $this->model->getUserStatusList();
+
+                        if (!isset($status[$new_value])) {
+                            $output = ['succes' => false];
+                            break;
+                        }
+
+                        if ($this->model->updateUserStatus($id_user, $new_value)) {
+                            $output = ['succes' => true];
+
+                            switch ((int)$new_value) {
+                                case _CUS_SUSPEND:
+                                    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.eventmanager.php');
+
+                                    $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($id_user, false);
+
+                                    $userid = \FormaLms\lib\Forma::getAclManager()->relativeId($uinfo[ACL_INFO_USERID]);
+
+                                    $array_subst = [
+                                        '[url]' => FormaLms\lib\Get::site_url(),
+                                        '[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
+                                        '[lastname]' => $uinfo[ACL_INFO_LASTNAME],
+                                        '[username]' => $userid,
+                                        '[course]' => $formaCourse->course_info['name'],
+                                    ];
+
+                                    // message to user that is odified
+                                    $msg_composer = new EventMessageComposer();
+
+                                    $msg_composer->setSubjectLangText('email', '_EVENT_COURSE_EVENT_SUSPENDED_USER_SBJ', false);
+                                    $msg_composer->setBodyLangText('email', '_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT', $array_subst);
+
+                                    $msg_composer->setBodyLangText('sms', '_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT_SMS', $array_subst);
+
+                                    $acl_manager = \FormaLms\lib\Forma::getAclManager();
+
+                                    $permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
+                                    $permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
+
+                                    $recipients = Man_Course::getIdUserOfLevel($this->id_course, '6');
+
+                                    $recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_godadmin));
+                                    $recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_admin));
+
+                                    createNewAlert(
+                                        'UserCourseSuspendedSuperAdmin',
+                                        'directory',
+                                        'edit',
+                                        '1',
+                                        'User ' . $userid . ' was suspended',
+                                        $recipients,
+                                        $msg_composer
+                                    );
+
+                                    break;
+                                default:
+                            }
+
+                            Events::trigger('core.course.subscription.status.updated', ['user' => $user, 'status' => ['id' => $new_value, 'name' => $status[$new_value]], 'course' => $formaCourse->course_info]);
+                        } else {
+                            $output = ['succes' => false];
+                        }
+
+                        break;
+                    case 'date_begin':
+                        if ($this->model->updateUserDateBeginValidity($id_user, Format::dateDb($new_value, 'date'))) {
+                            $output = ['succes' => true];
+                        } else {
+                            $output = ['succes' => false];
+                        }
+
+                        break;
+                    case 'date_expire':
+                        if ($this->model->updateUserDateExpireValidity($id_user, Format::dateDb($new_value, 'date'))) {
+                            $output = ['succes' => true];
+                        } else {
+                            $output = ['succes' => false];
+                        }
+
+                        break;
+                    default:
+                        $output = ['succes' => false];
+                }
             }
         }
+
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function fastadd()

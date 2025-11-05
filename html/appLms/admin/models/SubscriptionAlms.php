@@ -1842,10 +1842,53 @@ class SubscriptionAlms extends Model implements Accessible
 
                 $this->setIdCourse($course_id);
                 $this->setIdDate($date_id);
-                $this->subscribeUser($user_id,3, 0, false, false, $courseSubscribe->allowOverbooking($id_course));
+                $this->subscribeUser($user_id, 3, 0, false, false, $courseSubscribe->allowOverbooking($id_course));
             }
         }
 
         return true;
+    }
+
+    public function fixUserSubscritionLevels()
+    {
+        require_once _lms_ . '/lib/lib.course.php';
+        $results = sql_query('SELECT idCourse, idUser, level FROM learning_courseuser WHERE level > ' . CourseLevel::COURSE_LEVEL_ADMIN);
+
+        foreach ($results as $row) {
+            $idCourse = (int)$row['idCourse'];
+            $id_user = (int)$row['idUser'];
+            $level_c = (int)$row['level'];
+
+            $formaCourse = new FormaCourse($idCourse);
+
+            // Check and align user level with course level groups
+            $level_idst = $formaCourse->getCourseLevel($idCourse);
+            if (count($level_idst) == 0 || $level_idst[1] == '') {
+                $level_idst = FormaCourse::createCourseLevel($idCourse);
+            }
+
+            // Check if user is in the correct level group
+            if (isset($level_idst[$level_c])) {
+                $user_groups = Forma::getAcl()->getUserGroupsST($id_user);
+                $is_in_correct_group = in_array($level_idst[$level_c], $user_groups);
+
+                if (!$is_in_correct_group) {
+                    // Remove user from all level groups for this course
+                    foreach ($level_idst as $level_group_id) {
+                        if (!empty($level_group_id) && in_array($level_group_id, $user_groups)) {
+                            \FormaLms\lib\Forma::getAclManager()->removeFromGroup($level_group_id, $id_user);
+                        }
+                    }
+                    // Add user to the correct level group
+                    \FormaLms\lib\Forma::getAclManager()->addToGroup($level_idst[$level_c], $id_user);
+                }
+            } // Fix incorrect level to learning course user
+            else if ($level_c = array_search($level_c, $level_idst)) {
+                $re = (new CourseSubscribe_Manager())->updateUserLeveInCourse($id_user, $idCourse, $level_c);
+            } else {
+                $level_c = CourseLevel::COURSE_LEVEL_STUDENT;
+                $re = (new CourseSubscribe_Manager())->updateUserLeveInCourse($id_user, $idCourse, $level_c);
+            }
+        }
     }
 }
