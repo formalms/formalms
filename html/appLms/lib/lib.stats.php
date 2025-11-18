@@ -26,7 +26,8 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  **/
 function renderProgress($tot_complete, $tot_failed, $total, $show_title = false)
 {
-    //if($total == 0) return '';
+    $total = (int)$total;
+    if ($total === 0) return '';
     $perc_complete = round(($tot_complete / $total) * 100, 2);
     $perc_failed = round(($tot_failed / $total) * 100, 2);
 
