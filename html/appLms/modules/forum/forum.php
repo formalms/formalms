@@ -859,9 +859,13 @@ function modforumaccess()
     $user_select->show_group_selector = true;
     $user_select->show_orgchart_selector = false;
     $user_select->show_fncrole_selector = false;
-    $user_select->learning_filter = 'course';
+
 
     $user_select->nFields = 0;
+
+    if ($idCourse > 0) {
+        $user_select->learning_filter = 'course';
+    }
 
     if (isset($_POST['cancelselector'])) {
         Util::jump_to('index.php?modname=forum&amp;op=forum');
