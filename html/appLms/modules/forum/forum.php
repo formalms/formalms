@@ -1956,10 +1956,8 @@ function message()
     require_once _base_ . '/lib/lib.table.php';
     require_once _base_ . '/lib/lib.form.php';
     require_once _base_ . '/lib/lib.user_profile.php';
-    require_once _adm_ . '/lib/lib.tags.php';
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-   // $tags = new Tags('lms_forum');
-    //$tags->setupJs('a[id^=handler-tags-]', 'a[id^=private-handler-tags-]');
+
 
     require_once _base_ . '/lib/lib.dialog.php';
     setupHrefDialogBox('a[href*=delmessage]');
@@ -2068,13 +2066,9 @@ function message()
         if ($record['modified_by'] != 0) {
             $authors[$record['modified_by']] = $record['modified_by'];
         }
-        $tag_resource_list[] = $record['idMessage'];
     }
     $authors_names = &$acl_man->getUsers($authors);
     $level_name = CourseLevel::getLevels();
-
-    //tags
-   // $tags->loadResourcesTags($tag_resource_list);
 
     // Retriving level and number of post of the authors
     if (!empty($authors)) {
@@ -2168,13 +2162,6 @@ function message()
             $msgtext .= '<div class="forum_post_title">' . $lang->def('_SUBJECT') . ' : ' . $message_info['title'];
 
             $strip_text = strip_tags($message_info['textof']);
-            $msgtext .= '<div class="tags align-right">'
-                . $tags->showTags($id_message,
-                    'tags-',
-                    $message_info['title'],
-                    substr($strip_text, 0, 200) . (strlen($strip_text) > 200 ? '...' : ''),
-                    'index.php?modname=forum&op=message&idThread=' . $id_thread . '&ini=' . $ini_page . '#' . $id_message)
-                . '</div>';
 
             $msgtext .= '</div>';
 
