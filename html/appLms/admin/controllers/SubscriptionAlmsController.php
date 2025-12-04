@@ -474,6 +474,13 @@ class SubscriptionAlmsController extends AlmsController
         $date_begin_validity = FormaLms\lib\Get::req('set_date_begin_validity', DOTY_STRING, '');
         $date_expire_validity = FormaLms\lib\Get::req('set_date_expire_validity', DOTY_STRING, '');
 
+        if ($date_begin_validity) {
+            $date_begin_validity = Format::dateDb($date_begin_validity, 'date');
+        }
+        if ($date_expire_validity) {
+            $date_expire_validity = Format::dateDb($date_expire_validity, 'date');
+        }
+
         $can_subscribe = true;
         $subscribe_method = $course_info['subscribe_method'];
         if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
@@ -817,8 +824,8 @@ class SubscriptionAlmsController extends AlmsController
             $output = ['succes' => true];
         } else {
             //Update info
-            $new_value = (int)FormaLms\lib\Get::req('new_value', DOTY_STRING, ''); //DOTY_MIXED  DOTY_INT
-            $old_value = (int)FormaLms\lib\Get::req('old_value', DOTY_STRING, ''); //DOTY_MIXED  DOTY_INT
+            $new_value = FormaLms\lib\Get::req('new_value', DOTY_STRING, ''); //DOTY_MIXED  DOTY_INT
+            $old_value = FormaLms\lib\Get::req('old_value', DOTY_STRING, ''); //DOTY_MIXED  DOTY_INT
             $col = FormaLms\lib\Get::req('col', DOTY_STRING, '');
 
             if ($new_value === $old_value) {
@@ -833,7 +840,7 @@ class SubscriptionAlmsController extends AlmsController
                 switch ($col) {
                     case 'level':
                         require_once _lms_ . '/lib/lib.course.php';
-
+                        $new_value = (int)$new_value;
                         $level_idst = $formaCourse->getCourseLevel($this->id_course);
                         if (count($level_idst) == 0 || $level_idst[1] == '') {
                             $level_idst = FormaCourse::createCourseLevel($this->id_course);
@@ -857,6 +864,8 @@ class SubscriptionAlmsController extends AlmsController
                         break;
 
                     case 'status':
+                        $new_value = (int)$new_value;
+
                         $status = $this->model->getUserStatusList();
 
                         if (!isset($status[$new_value])) {
