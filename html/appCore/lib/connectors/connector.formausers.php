@@ -690,7 +690,7 @@ class FormaConnectorFormaUsers extends FormaConnector
                 false,
                 false,
                 false,
-                true,
+                false,
                 '',
                 false, //facebook_id
                 false, //twitter_id
