@@ -3750,7 +3750,7 @@ class SubscriptionAlmsController extends AlmsController
         $content_h[] = $lang->def('_DENY');
         $content_h[] = $lang->def('_WAIT');
         $tb->addHead($content_h, $type_h);
-
+        $field = new FieldList();
         if (is_array($waiting_users['users_info'])) {
             reset($waiting_users['users_info']);
             foreach ($waiting_users['users_info'] as $id_user => $info) {
@@ -3758,9 +3758,12 @@ class SubscriptionAlmsController extends AlmsController
                 $subscribed = ($users_name[$id_sub_by][ACL_INFO_LASTNAME] . '' . $users_name[$id_sub_by][ACL_INFO_FIRSTNAME] != ''
                     ? $users_name[$id_sub_by][ACL_INFO_LASTNAME] . ' ' . $users_name[$id_sub_by][ACL_INFO_FIRSTNAME]
                     : $acl_man->relativeId($users_name[$id_sub_by][ACL_INFO_USERID]));
-                $more = (isset($_GET['id_user']) && $_GET['id_user'] == $id_user
-                    ? '<a href="index.php?r=' . $this->link . '/waitinguser&amp;id_course=' . $id_course . $ed_url_param . '"><img src="' . getPathImage() . 'standard/menu_open.png"></a> '
-                    : '<a href="index.php?r=' . $this->link . '/waitinguser&amp;id_course=' . $id_course . $ed_url_param . '&amp;id_user=' . $id_user . '"><img src="' . getPathImage() . 'standard/menu_closed.png"></a> ');
+                $more = '<button type="button"
+                            class="js-toggle-user"
+                            data-user="' . (int)$id_user . '"
+                            aria-expanded="false">
+                            <img src="' . getPathImage() . 'standard/menu_closed.png">
+                        </button> ';
 
                 $is_overbooking = false;
                 if ($is_classroom) {
@@ -3817,14 +3820,15 @@ class SubscriptionAlmsController extends AlmsController
                 }
 
                 $tb->addBody($content);
-                if (isset($_GET['id_user']) && $id_user == $_GET['id_user']) {
-                    $field = new FieldList();
-                    $info = $field->playFieldsForUser($id_user, false, true);
-                    $tb->addBodyExpanded(($info != '' ? $info : $lang->def('_NO_EXTRAINFO_AVAILABLE')), 'user_specific_info');
-                }
+                $info = $field->playFieldsForUser($id_user, false, true);
+                $tb->addBodyExpanded(
+                    '<div class="user-extra-info" id="user-extra-' . (int)$id_user . '" style="display:none">'
+                        . ($info != '' ? $info : $lang->def('_NO_EXTRAINFO_AVAILABLE'))
+                        . '</div>',
+                    'user_specific_info'
+                );
             }
-        }
-
+       }
         $GLOBALS['page']->add(
             $tb->getTable()
             . '<br />'
@@ -3838,6 +3842,35 @@ class SubscriptionAlmsController extends AlmsController
             . Form::getButton('cancelselector', 'cancelselector', $lang->def('_UNDO'))
             . Form::closeButtonSpace()
             . Form::closeForm(),
+            'content'
+        );
+
+        $GLOBALS['page']->add(
+            <<<'HTML'
+            <script>
+            document.addEventListener('click', function (e) {
+            const btn = e.target.closest('.js-toggle-user');
+            if (!btn) return;
+
+            const userId = btn.dataset.user;
+            const box = document.getElementById('user-extra-' + userId);
+            if (!box) return;
+
+            const img = btn.querySelector('img');
+            const opened = box.style.display === 'block';
+
+            box.style.display = opened ? 'none' : 'block';
+            btn.setAttribute('aria-expanded', opened ? 'false' : 'true');
+
+            if (img) {
+                img.src = img.src.replace(
+                opened ? 'menu_open' : 'menu_closed',
+                opened ? 'menu_closed' : 'menu_open'
+                );
+            }
+            });
+            </script>
+            HTML,
             'content'
         );
 
