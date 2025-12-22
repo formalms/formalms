@@ -210,9 +210,18 @@ function getReportRecipients($id_rep)
         }
     }
 
+    $unique = [];
+    foreach ($output as $r) {
+        $email = strtolower(trim($r['email'] ?? ''));
+        if ($email === '') {
+            continue;
+        }
+        $unique[$email] = $r;
+    }
+
     return [
-        'recipients' => array_unique($output),
-        'schedules' => $selected_schedules,
+        'recipients' => array_values($unique),
+        'schedules'  => $selected_schedules,
     ];
 }
 
