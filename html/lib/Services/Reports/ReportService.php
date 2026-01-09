@@ -82,7 +82,7 @@ class ReportService implements Accessible
                 break;
         }
         $reportTempData[$filter][$keyUsers] = $selection;
-        $reportTempData[$filter][$keyAll] = (\FormaLms\lib\Get::req('all_users', DOTY_INT, 0) > 0 ? true : false);
+        $reportTempData[$filter][$keyAll] = (\FormaLms\lib\Get::req('all_idst', DOTY_INT, 0) > 0 ? true : false);
         //non utilizzato la selezione viene inviata per intero
         $reportTempData['id_report'] = $this->reportType;
         $this->session->set(self::_REPORT_SESSION, $reportTempData);
