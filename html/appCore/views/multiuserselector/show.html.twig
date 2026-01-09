@@ -6,14 +6,19 @@
     {{ Form_getHidden('id','id',  instanceId ) }}
 
     {% if showSelectAll %}
-        <div style="display: block; margin-top: 5%;"/>
+        <div style="display: block; margin-top: 2%;"/>
         {{ Form_getOpenCombo( Lang_translate('_SHOW_INSTANCE')) }}
         {{ Form_getRadio(Lang_translate('_SHOW_INSTANCE_ALL'), 'everyone', 'all_idst','1', (selectAllValue == 1)) }}
         {{ Form_getRadio(Lang_translate('_SHOW_INSTANCE_ONLY'), 'not_everyone', 'all_idst','0', (selectAllValue == 0)) }}
         {{ Form_getCloseCombo() }}
         </div>
     {% endif %}
-<div id="multiuserselector_tab" style='margin-top:5%;'>
+    {% if showSuspended %}
+        <div style="display: block; margin-top: 2%;"/>
+            {{ Form_getCheckbox(Lang_translate('_SHOW_SUSPENDED','organization_chart'), 'show_suspended', 'show_suspended','1', (showSuspended == 1)) }}
+        </div>
+    {% endif %}
+<div id="multiuserselector_tab" style='margin-top:2%;'>
     <ul class="nav nav-tabs">
         {% for tabValue,tab in tabs %}
             {% if tab %}
