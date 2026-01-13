@@ -1790,13 +1790,112 @@ class Report_User extends Report
         $buffer->addHeader($th2);
         $buffer->closeHeader();
 
-        $re_course_user = sql_query($query_course_user);
+        $re_course_user_result = sql_query($query_course_user);
+
+        // Converti result set in array per permettere pre-caricamento e iterazione
+        $re_course_user = [];
+        foreach ($re_course_user_result as $row) {
+            $re_course_user[] = $row;
+        }
 
         $i = 0;
         $count_rows = 0;
 
         $buffer->openBody();
         $exclusive = ($filter_columns['filter_exclusive'] == 1 ? true : false); //1 if exclusive, 0 if inclusive
+
+        // ==================== PRE-CARICAMENTO PERCENTUALI COMPLETAMENTO LO ====================
+        // Ottimizzazione: pre-carica tutti i dati di completamento per evitare N+1 query
+        $preloaded_lo_percentages = [];
+        $need_lo_percentage = in_array('_TH_PERC_LO', $cols) || in_array('_TH_PERC_LO_GRAPH', $cols);
+
+        if ($need_lo_percentage && !empty($re_course_user)) {
+            // 1. Raccogli tutti i corsi e utenti unici
+            $unique_courses = [];
+            $user_course_pairs = [];
+            foreach ($re_course_user as $row) {
+                $unique_courses[$row['idCourse']] = true;
+                $user_course_pairs[$row['idUser'] . '_' . $row['idCourse']] = [
+                    'user' => $row['idUser'],
+                    'course' => $row['idCourse']
+                ];
+            }
+            $course_ids = array_keys($unique_courses);
+
+            // 2. Pre-carica gli item conteggiabili per ogni corso (visible=1, idResource<>0)
+            $course_items = [];
+            if (!empty($course_ids)) {
+                $items_query = "SELECT idCourse, GROUP_CONCAT(idOrg) as items
+                                FROM %lms_organization
+                                WHERE idCourse IN (" . implode(',', array_map('intval', $course_ids)) . ")
+                                AND idResource <> 0 AND visible = '1'
+                                GROUP BY idCourse";
+                $items_result = sql_query($items_query);
+                if ($items_result) {
+                    foreach ($items_result as $irow) {
+                        $course_items[$irow['idCourse']] = !empty($irow['items']) ? explode(',', $irow['items']) : [];
+                    }
+                }
+            }
+
+            // 3. Pre-carica conteggi completamento per tutte le combinazioni utente-corso
+            // Query batch per completed/passed
+            $completion_counts = [];
+            $failed_counts = [];
+
+            if (!empty($user_course_pairs)) {
+                // Costruisci tuple (idUser, idCourse) per query IN - molto più efficiente di tanti OR
+                $tuples = [];
+                foreach ($user_course_pairs as $pair) {
+                    $tuples[] = "(" . (int)$pair['user'] . "," . (int)$pair['course'] . ")";
+                }
+                $tuples_str = implode(',', $tuples);
+
+                // Query per completed/passed usando tuple IN
+                $completed_query = "SELECT ct.idUser, org.idCourse, COUNT(DISTINCT ct.idReference) as cnt
+                                    FROM %lms_commontrack ct
+                                    JOIN %lms_organization org ON ct.idReference = org.idOrg
+                                    WHERE org.idResource <> 0 AND org.visible = '1'
+                                    AND ct.status IN ('completed', 'passed')
+                                    AND (ct.idUser, org.idCourse) IN ({$tuples_str})
+                                    GROUP BY ct.idUser, org.idCourse";
+                $completed_result = sql_query($completed_query);
+                if ($completed_result) {
+                    foreach ($completed_result as $crow) {
+                        $completion_counts[$crow['idUser'] . '_' . $crow['idCourse']] = (int)$crow['cnt'];
+                    }
+                }
+
+                // Query per failed usando tuple IN
+                $failed_query = "SELECT ct.idUser, org.idCourse, COUNT(DISTINCT ct.idReference) as cnt
+                                 FROM %lms_commontrack ct
+                                 JOIN %lms_organization org ON ct.idReference = org.idOrg
+                                 WHERE org.idResource <> 0 AND org.visible = '1'
+                                 AND ct.status = 'failed'
+                                 AND (ct.idUser, org.idCourse) IN ({$tuples_str})
+                                 GROUP BY ct.idUser, org.idCourse";
+                $failed_result = sql_query($failed_query);
+                if ($failed_result) {
+                    foreach ($failed_result as $frow) {
+                        $failed_counts[$frow['idUser'] . '_' . $frow['idCourse']] = (int)$frow['cnt'];
+                    }
+                }
+            }
+
+            // 4. Calcola percentuali per ogni combinazione utente-corso
+            foreach ($user_course_pairs as $key => $pair) {
+                $total = isset($course_items[$pair['course']]) ? count($course_items[$pair['course']]) : 0;
+                $completed = $completion_counts[$key] ?? 0;
+                $failed = $failed_counts[$key] ?? 0;
+
+                $preloaded_lo_percentages[$key] = [
+                    'complete_percentage' => $total > 0 ? round(($completed / $total) * 100, 2) : 0,
+                    'failed_percentage' => $total > 0 ? round(($failed / $total) * 100, 2) : 0
+                ];
+            }
+        }
+        // ==================== FINE PRE-CARICAMENTO ====================
+
         // SELECT cu.idUser, c.code, c.idCourse, c.idCategory, c.name, c.status AS course_status, cu.level,  cu.status, cu.date_inscr, cu.date_first_access, cu.date_complete,
         //c.mediumTime, c.course_type, c.credits,  u.userid, u.firstname, u.lastname, u.email, u.register_date, u.valid  FROM  %lms_courseuser AS cu JOIN %lms_course AS c JOIN %adm_user as u  ON (cu.idCourse = c.idCourse AND cu.idUser = u.idst)  WHERE u.valid = 1 = 1 AND cu.idUser
         foreach ($re_course_user as $row) {
@@ -2077,9 +2176,9 @@ class Report_User extends Report
                 }
 
                 if (in_array('_TH_PERC_LO', $cols) || in_array('_TH_PERC_LO_GRAPH', $cols)) {
-
-                    $courseAlms = new CourseAlms();
-                    $courseStats = $courseAlms->getCourseCompletedPercentage($id_course, $id_user);
+                    // Usa dati pre-caricati invece di chiamare getCourseCompletedPercentage() per ogni riga
+                    $lo_key = $id_user . '_' . $id_course;
+                    $courseStats = $preloaded_lo_percentages[$lo_key] ?? ['complete_percentage' => 0, 'failed_percentage' => 0];
 
                     if (in_array('_TH_PERC_LO', $cols)) {
 
@@ -2093,15 +2192,15 @@ class Report_User extends Report
 
                         $list_mat = $this->listLoCompleted($id_user, $id_course);
 
-                        $row[] = '  
-        
+                        $row[] = '
+
                                  <div class="progress" style=" cursor: pointer;">
                                       <div class="progress-bar progress-bar-' . $str_color_bar . '"
-                                           role="progressbar" 
-                                           aria-valuenow="' . $courseStats['complete_percentage'] . '" 
-                                           aria-valuemin="0" 
-                                           aria-valuemax="100" 
-                                           style="width: ' . $courseStats['complete_percentage'] . '%;"                        
+                                           role="progressbar"
+                                           aria-valuenow="' . $courseStats['complete_percentage'] . '"
+                                           aria-valuemin="0"
+                                           aria-valuemax="100"
+                                           style="width: ' . $courseStats['complete_percentage'] . '%;"
                                             >
                                         <span class="sr-only" >&nbsp;</span>
                                       </div>

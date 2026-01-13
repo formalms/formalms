@@ -507,9 +507,13 @@ class Report extends \ReportPlugin
                 $tot_users = 0;
                 $course_stats = [];
 
+                // Pre-carica utenti di tutti i gruppi in batch (ottimizzazione N+1)
+                $allGroupUsers = $this->preloadGroupUsers(array_values($selection));
+
                 //for each group, retrieve label and user statistics
                 foreach ($selection as $dir_id => $group_id) {
-                    $group_users = $acl->getGroupAllUser($group_id);
+                    // Usa dati pre-caricati invece di query singola per gruppo
+                    $group_users = isset($allGroupUsers[$group_id]) ? $allGroupUsers[$group_id] : [];
                     if ($userlevelid != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                         $group_users = array_intersect($group_users, $admin_users);
                     }
@@ -1312,8 +1316,12 @@ class Report extends \ReportPlugin
                 $tot_users = 0;
                 $buffer->openBody();
 
+                // Pre-carica utenti di tutti i gruppi in batch (ottimizzazione N+1)
+                $allGroupUsers = $this->preloadGroupUsers(array_values($selection));
+
                 foreach ($selection as $dir_id => $group_id) {
-                    $group_users = $acl->getGroupAllUser($group_id);
+                    // Usa dati pre-caricati invece di query singola per gruppo
+                    $group_users = isset($allGroupUsers[$group_id]) ? $allGroupUsers[$group_id] : [];
                     if ($userlevelid != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                         $group_users = array_intersect($group_users, $admin_users);
                     }
@@ -1679,8 +1687,13 @@ class Report extends \ReportPlugin
                 $tot_users = 0;
                 $tot_total = 0;
                 $buffer->openBody();
+
+                // Pre-carica utenti di tutti i gruppi in batch (ottimizzazione N+1)
+                $allGroupUsers = $this->preloadGroupUsers($selection);
+
                 foreach ($selection as $group) {
-                    $group_users = $acl->getGroupAllUser($group);
+                    // Usa dati pre-caricati invece di query singola per gruppo
+                    $group_users = isset($allGroupUsers[$group]) ? $allGroupUsers[$group] : [];
                     if ($userlevelid != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                         $group_users = array_intersect($group_users, $admin_users);
                     }

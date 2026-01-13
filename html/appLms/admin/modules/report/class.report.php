@@ -40,6 +40,24 @@ class Report
 
     protected $lang;
 
+    /**
+     * Cache dei dati elaborati per la richiesta corrente
+     * @var array
+     */
+    protected $requestCache = [];
+
+    /**
+     * Cache delle query per evitare duplicati
+     * @var array
+     */
+    protected $queryCache = [];
+
+    /**
+     * Flag per abilitare/disabilitare cache
+     * @var bool
+     */
+    protected $cacheEnabled = true;
+
     public const _REPORT_SESSION = 'report_tempdata';
     public const _RS_ID = 'id_report';
     public const _RS_ROWS_FILTER = 'rows_filter';
@@ -178,6 +196,173 @@ class Report
     {
         return $this->_get_data('xls', $cat, $report_data);
     }
+
+    // ==================== CACHE METHODS ====================
+
+    /**
+     * Genera hash univoco basato su filtri e parametri
+     * @param string $cat Categoria colonne
+     * @param mixed $report_data Dati del report
+     * @return string Hash MD5
+     */
+    protected function generateCacheKey($cat, $report_data = null)
+    {
+        $keyData = [
+            'cat' => $cat,
+            'report_data' => $report_data,
+            'class' => get_class($this),
+            'id_report' => $this->id_report,
+        ];
+
+        return md5(serialize($keyData));
+    }
+
+    /**
+     * Verifica se esistono dati in cache
+     * @param string $key Chiave cache
+     * @return bool
+     */
+    protected function hasCache($key)
+    {
+        return $this->cacheEnabled && isset($this->requestCache[$key]);
+    }
+
+    /**
+     * Recupera dati dalla cache
+     * @param string $key Chiave cache
+     * @return mixed|null
+     */
+    protected function getCache($key)
+    {
+        return $this->hasCache($key) ? $this->requestCache[$key] : null;
+    }
+
+    /**
+     * Salva dati in cache
+     * @param string $key Chiave cache
+     * @param mixed $data Dati da salvare
+     * @return void
+     */
+    protected function setCache($key, $data)
+    {
+        if ($this->cacheEnabled) {
+            $this->requestCache[$key] = $data;
+        }
+    }
+
+    /**
+     * Pulisce la cache
+     * @return void
+     */
+    public function clearCache()
+    {
+        $this->requestCache = [];
+        $this->queryCache = [];
+    }
+
+    /**
+     * Esegue query con caching automatico per evitare duplicati
+     * @param string $query SQL query
+     * @param string|null $cacheKey Chiave identificativa opzionale
+     * @return array Risultato query come array
+     */
+    protected function cachedQuery($query, $cacheKey = null)
+    {
+        $key = $cacheKey ?: md5($query);
+
+        if (isset($this->queryCache[$key])) {
+            return $this->queryCache[$key];
+        }
+
+        $result = sql_query($query);
+        $data = [];
+
+        if ($result) {
+            while ($row = sql_fetch_assoc($result)) {
+                $data[] = $row;
+            }
+        }
+
+        $this->queryCache[$key] = $data;
+
+        return $data;
+    }
+
+    /**
+     * Esegue query con caching e restituisce array di singola colonna
+     * @param string $query SQL query
+     * @param string $column Nome colonna da estrarre
+     * @param string|null $cacheKey Chiave identificativa opzionale
+     * @return array Array di valori della colonna
+     */
+    protected function cachedQueryColumn($query, $column, $cacheKey = null)
+    {
+        $rows = $this->cachedQuery($query, $cacheKey);
+        $result = [];
+
+        foreach ($rows as $row) {
+            if (isset($row[$column])) {
+                $result[] = $row[$column];
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Recupera tutti gli ID corso con caching
+     * @return array
+     */
+    protected function getAllCourseIds()
+    {
+        return $this->cachedQueryColumn(
+            'SELECT idCourse FROM %lms_course',
+            'idCourse',
+            'all_course_ids'
+        );
+    }
+
+    /**
+     * Pre-carica utenti di multipli gruppi in batch (risolve N+1)
+     * @param array $groupIds Array di ID gruppi
+     * @return array Array associativo [group_id => [user_ids]]
+     */
+    protected function preloadGroupUsers(array $groupIds)
+    {
+        if (empty($groupIds)) {
+            return [];
+        }
+
+        $cacheKey = 'group_users_' . md5(serialize($groupIds));
+
+        if ($this->hasCache($cacheKey)) {
+            return $this->getCache($cacheKey);
+        }
+
+        $groupUsers = [];
+        $prefix = $GLOBALS['prefix_fw'];
+
+        $query = "SELECT idst, idstMember
+                  FROM {$prefix}_group_members
+                  WHERE idst IN (" . implode(',', array_map('intval', $groupIds)) . ')';
+
+        $result = sql_query($query);
+        if ($result) {
+            while ($row = sql_fetch_assoc($result)) {
+                $gid = $row['idst'];
+                if (!isset($groupUsers[$gid])) {
+                    $groupUsers[$gid] = [];
+                }
+                $groupUsers[$gid][] = $row['idstMember'];
+            }
+        }
+
+        $this->setCache($cacheKey, $groupUsers);
+
+        return $groupUsers;
+    }
+
+    // ==================== END CACHE METHODS ====================
 
     /**
      * load the report info into the class variables.

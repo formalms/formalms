@@ -15,9 +15,7 @@ function sql_query($query, $conn = false)
 
     // Normalize UTF-8 to NFC (composed form) to fix macOS NFD encoding issues
     // SQL keywords and syntax are ASCII, so only string values are affected
-    if (class_exists('Normalizer')) {
-        $query = \Normalizer::normalize($query, \Normalizer::FORM_C);
-    }
+    $query = \Normalizer::normalize($query, \Normalizer::FORM_C);
 
     $db = \FormaLms\db\DbConn::getInstance();
     $re = $db->query($query);

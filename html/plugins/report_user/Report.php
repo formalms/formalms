@@ -1038,11 +1038,7 @@ class Report extends \ReportPlugin
             $admin_allcourses = false;
             $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             if (!$filter_allcourses) {
-                $rs = sql_query('SELECT idCourse FROM %lms_course');
-                $course_selected = [];
-                while (list($id_course) = sql_fetch_row($rs)) {
-                    $course_selected[] = $id_course;
-                }
+                $course_selected = $this->getAllCourseIds();
             }
 
             if (isset($admin_courses['course'][0])) {
@@ -1072,11 +1068,7 @@ class Report extends \ReportPlugin
                 }
 
                 if (!empty($admin_courses['course'])) {
-                    $rs = sql_query('SELECT idCourse FROM %lms_course');
-                    $course_selected = [];
-                    while (list($id_course) = sql_fetch_row($rs)) {
-                        $course_selected[] = $id_course;
-                    }
+                    $course_selected = $this->getAllCourseIds();
                     $_clist = array_values($admin_courses['course']);
                     $course_selected = array_intersect($course_selected, $_clist);
                 } else {
@@ -1103,11 +1095,7 @@ class Report extends \ReportPlugin
                 $admin_courses['course'] = array_merge($admin_courses['course'], $array_courses);
 
                 if (!empty($admin_courses['course'])) {
-                    $rs = sql_query('SELECT idCourse FROM %lms_course');
-                    $course_selected = [];
-                    while (list($id_course) = sql_fetch_row($rs)) {
-                        $course_selected[] = $id_course;
-                    }
+                    $course_selected = $this->getAllCourseIds();
                     $_clist = array_values($admin_courses['course']);
                     $course_selected = array_intersect($course_selected, $_clist);
                 } else {
@@ -1479,6 +1467,39 @@ class Report extends \ReportPlugin
         require_once _lms_ . '/admin/models/LabelAlms.php';
         $label_model = new LabelAlms();
 
+        // Pre-carica tutte le course labels in batch (ottimizzazione N+1)
+        $preloaded_course_labels = [];
+        $preloaded_label_info = [];
+        if (in_array('_TH_COURSELABEL', $cols) && !empty($filter_courseselection)) {
+            // Recupera tutte le associazioni corso-label in una query
+            $label_query = 'SELECT id_course, id_common_label FROM %lms_label_course
+                            WHERE id_course IN (' . implode(',', array_map('intval', $filter_courseselection)) . ')';
+            $label_res = sql_query($label_query);
+            $label_ids_to_load = [];
+            while ($label_row = sql_fetch_assoc($label_res)) {
+                $preloaded_course_labels[$label_row['id_course']] = $label_row['id_common_label'];
+                $label_ids_to_load[$label_row['id_common_label']] = true;
+            }
+            // Recupera tutte le info delle label in una query
+            if (!empty($label_ids_to_load)) {
+                $info_query = 'SELECT id_common_label, lang_code, title, description, file_name
+                               FROM %lms_label WHERE id_common_label IN (' . implode(',', array_keys($label_ids_to_load)) . ')';
+                $info_res = sql_query($info_query);
+                while ($info_row = sql_fetch_assoc($info_res)) {
+                    $lid = $info_row['id_common_label'];
+                    $lang_code = $info_row['lang_code'];
+                    if (!isset($preloaded_label_info[$lid])) {
+                        $preloaded_label_info[$lid] = [];
+                    }
+                    $preloaded_label_info[$lid][$lang_code] = [
+                        LABEL_TITLE => $info_row['title'],
+                        LABEL_DESCRIPTION => $info_row['description'],
+                        LABEL_FILE_NAME => $info_row['file_name'],
+                    ];
+                }
+            }
+        }
+
         $buffer->openTable($lang->def('_RU_CAPTION'), $lang->def('_RU_CAPTION'));
 
         $th1 = [];
@@ -1518,15 +1539,38 @@ class Report extends \ReportPlugin
         $_users = $aclManager->getAllUsersFromSelection($filter_rows);
         $fman = new FieldList();
         $field_values = [];
-        $customcols = &$filter_columns['custom_fields'];
-        $num_row = 0;
-        foreach ($customcols as $the_idField) {
-            list($exists) = sql_fetch_row(sql_query('Select idField from core_field where idField=' . $the_idField['id']));
-            if ($exists == null) {
-                $customcols[$num_row]['selected'] = false;
-            }
 
-            ++$num_row;
+        // Pre-carica tutti gli user folders in batch (ottimizzazione N+1)
+        $preloaded_user_folders = [];
+        if (in_array('_TH_ORGANIZATION_CHART', $cols) && !empty($_users)) {
+            require_once _adm_ . '/models/UsermanagementAdm.php';
+            $umodel_preload = new UsermanagementAdm();
+            foreach ($_users as $uid) {
+                $preloaded_user_folders[$uid] = $umodel_preload->getUserFolders($uid);
+            }
+            unset($umodel_preload);
+        }
+
+        $customcols = &$filter_columns['custom_fields'];
+
+        // Validazione custom fields in batch (ottimizzazione N+1)
+        if (!empty($customcols)) {
+            $field_ids = array_column($customcols, 'id');
+            $valid_fields = [];
+            if (!empty($field_ids)) {
+                $field_check_query = 'SELECT idField FROM %adm_field WHERE idField IN (' . implode(',', array_map('intval', $field_ids)) . ')';
+                $field_check_res = sql_query($field_check_query);
+                if ($field_check_res) {
+                    while ($frow = sql_fetch_row($field_check_res)) {
+                        $valid_fields[$frow[0]] = true;
+                    }
+                }
+            }
+            foreach ($customcols as $num_row => $the_idField) {
+                if (!isset($valid_fields[$the_idField['id']])) {
+                    $customcols[$num_row]['selected'] = false;
+                }
+            }
         }
 
         $custom_list = [];
@@ -1781,22 +1825,10 @@ class Report extends \ReportPlugin
                     $row[] = $valid ? Lang::t('_NO', 'standard') : Lang::t('_YES', 'standard');
                 }
 
-                require_once _adm_ . '/models/UsermanagementAdm.php';
-                $umodel = new UsermanagementAdm();
-                $folders = $umodel->getUserFolders($id_user);
-                $organization_chart = '';
-
-                $first = true;
-                foreach ($folders as $keyFolder => $valueFolder) {
-                    if ($first) {
-                        $organization_chart = '' . $valueFolder;
-                        $first = false;
-                    } else {
-                        $organization_chart .= '</br>' . $valueFolder;
-                    }
-                }
-
+                // Usa dati pre-caricati invece di query per ogni riga
                 if (in_array('_TH_ORGANIZATION_CHART', $cols)) {
+                    $folders = isset($preloaded_user_folders[$id_user]) ? $preloaded_user_folders[$id_user] : [];
+                    $organization_chart = implode('</br>', $folders);
                     $row[] = $organization_chart;
                 }
 
@@ -1823,13 +1855,15 @@ class Report extends \ReportPlugin
                     $row[] = isset($course_types_trans[$course_type]) ? $course_types_trans[$course_type] : '';
                 }
                 if (in_array('_TH_COURSELABEL', $cols)) {
-                    $course_label_id = $label_model->getCourseLabel($id_course);
-                    if ($course_label_id > 0) {
-                        $arr_course_label = $label_model->getLabelInfo($course_label_id);
-                        $row[] = $arr_course_label [Lang::get()][LABEL_TITLE];
-                    } else {
-                        $row[] = '';
+                    // Usa dati pre-caricati invece di query per ogni riga
+                    $label_title = '';
+                    if (isset($preloaded_course_labels[$id_course])) {
+                        $course_label_id = $preloaded_course_labels[$id_course];
+                        if (isset($preloaded_label_info[$course_label_id][Lang::get()][LABEL_TITLE])) {
+                            $label_title = $preloaded_label_info[$course_label_id][Lang::get()][LABEL_TITLE];
+                        }
                     }
+                    $row[] = $label_title;
                 }
                 if (in_array('_TH_COURSEPATH', $cols)) {
                     $row[] = $category_path_list[$id_category];
@@ -2686,12 +2720,17 @@ class Report extends \ReportPlugin
                     break;
             }
 
+            // Query ottimizzata con JOIN per evitare query N+1 su date_end
             $query_course_user = '
                 SELECT cu.idUser, cu.idCourse, cu.edition_id, cu.date_inscr, cu.date_first_access,
                 cu.date_complete, cu.status, cu.level,
-                u.userid, u.firstname, u.lastname, u.email, u.valid
-                FROM %lms_courseuser AS cu ' .
-                ' JOIN ' . $GLOBALS['prefix_fw'] . '_user as u ON cu.idUser = u.idst
+                u.userid, u.firstname, u.lastname, u.email, u.valid,
+                c.date_end AS course_date_end, c.code AS course_code, c.name AS course_name,
+                ce.date_end AS edition_date_end
+                FROM %lms_courseuser AS cu
+                JOIN ' . $GLOBALS['prefix_fw'] . '_user as u ON cu.idUser = u.idst
+                JOIN %lms_course as c ON cu.idCourse = c.idCourse
+                LEFT JOIN %lms_course_edition as ce ON cu.edition_id = ce.idCourseEdition
                 WHERE cu.idCourse > 0 ' . $query_show_suspended .
                 ($alluser ? '' : ' AND cu.idUser IN ( ' . implode(',', $user_selected) . ' ) ') .
                 ($all_courses ? '' : ' AND cu.idCourse IN (' . implode(',', $course_selected) . ')')
@@ -2702,8 +2741,25 @@ class Report extends \ReportPlugin
             $element_to_print = [];
             $courses_codes = [];
 
-            while (list($id_u, $id_c, $id_e, $date_inscr, $date_first_access, $date_complete, $status, $level,
-                $date_last_access, $u_userid, $u_firstname, $u_lastname, $u_email, $u_valid) = sql_fetch_row($re_course_user)) {
+            while ($delay_row = sql_fetch_assoc($re_course_user)) {
+                $id_u = $delay_row['idUser'];
+                $id_c = $delay_row['idCourse'];
+                $id_e = $delay_row['edition_id'];
+                $date_inscr = $delay_row['date_inscr'];
+                $date_first_access = $delay_row['date_first_access'];
+                $date_complete = $delay_row['date_complete'];
+                $status = $delay_row['status'];
+                $level = $delay_row['level'];
+                $u_userid = $delay_row['userid'];
+                $u_firstname = $delay_row['firstname'];
+                $u_lastname = $delay_row['lastname'];
+                $u_email = $delay_row['email'];
+                $u_valid = $delay_row['valid'];
+                // Dati pre-caricati dal JOIN
+                $preloaded_course_date_end = $delay_row['course_date_end'];
+                $preloaded_edition_date_end = $delay_row['edition_date_end'];
+                $preloaded_course_code = $delay_row['course_code'];
+                $preloaded_course_name = $delay_row['course_name'];
                 if ($level == '3') { //$report_type === 'course_started' && $level == '3') {
                     $user_check = false;
                     $now_timestamp = mktime('0', '0', '0', date('m'), date('d'), date('Y'));
@@ -2728,20 +2784,9 @@ class Report extends \ReportPlugin
 
                     if ($day_until_course_end) {
                         if ($status_condition) {
-                            if ($id_e > 0) {
-                                $query = 'SELECT date_end'
-                                    . ' FROM %lms_course_edition'
-                                    . " WHERE idCourseEdition = '" . $id_e . "'";
-                                list($date_end) = sql_fetch_row(sql_query($query));
-                                $user_timestamp = mktime('0', '0', '0', $date_end[5] . $date_end[6], ($date_end[8] . $date_end[9]) - $day_until_course_end, $date_end[0] . $date_end[1] . $date_end[2] . $date_end[3]);
-                                if ($user_timestamp < $now_timestamp) {
-                                    $user_check = true;
-                                }
-                            } else {
-                                $query = 'SELECT date_end'
-                                    . ' FROM %lms_course'
-                                    . " WHERE idCourse = '" . $id_c . "'";
-                                list($date_end) = sql_fetch_row(sql_query($query));
+                            // Usa dati pre-caricati dal JOIN invece di query
+                            $date_end = ($id_e > 0 && $preloaded_edition_date_end) ? $preloaded_edition_date_end : $preloaded_course_date_end;
+                            if ($date_end) {
                                 $user_timestamp = mktime('0', '0', '0', $date_end[5] . $date_end[6], ($date_end[8] . $date_end[9]) - $day_until_course_end, $date_end[0] . $date_end[1] . $date_end[2] . $date_end[3]);
                                 if ($user_timestamp < $now_timestamp) {
                                     $user_check = true;
@@ -2752,24 +2797,10 @@ class Report extends \ReportPlugin
 
                     if ($date_until_course_end) {
                         if ($status_condition) {
-                            if ($id_e > 0) {
-                                $query = 'SELECT COUNT(*)'
-                                    . ' FROM %lms_course_edition'
-                                    . " WHERE idCourseEdition = '" . $id_e . "'"
-                                    . " AND date_end < '" . Format::dateDb($date_until_course_end, 'date') . "'";
-                                list($control) = sql_fetch_row(sql_query($query));
-                                if ($control) {
-                                    $user_check = true;
-                                }
-                            } else {
-                                $query = 'SELECT COUNT(*)'
-                                    . ' FROM %lms_course'
-                                    . " WHERE idCourse = '" . $id_c . "'"
-                                    . " AND date_end < '" . Format::dateDb($date_until_course_end, 'date') . "'";
-                                list($control) = sql_fetch_row(sql_query($query));
-                                if ($control) {
-                                    $user_check = true;
-                                }
+                            // Usa dati pre-caricati dal JOIN invece di query
+                            $date_end = ($id_e > 0 && $preloaded_edition_date_end) ? $preloaded_edition_date_end : $preloaded_course_date_end;
+                            if ($date_end && $date_end < Format::dateDb($date_until_course_end, 'date')) {
+                                $user_check = true;
                             }
                         }
                     }
@@ -2781,7 +2812,11 @@ class Report extends \ReportPlugin
                     }
 
                     if ($user_check) {
-                        $course_info = $course_man->getCourseInfo($id_c);
+                        // Usa dati pre-caricati dal JOIN invece di getCourseInfo()
+                        $course_info = [
+                            'name' => $preloaded_course_name,
+                            'code' => $preloaded_course_code,
+                        ];
                         //$user_detail = $acl_man->getUser($id_u, false);
 
                         $element_to_print[$id_c]['name'] = $course_info['name'];
