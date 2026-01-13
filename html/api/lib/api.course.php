@@ -1454,7 +1454,7 @@ class Course_API extends API
         $dayExists = array_search($idDay, array_column($arrayDays, 'id'));
 
 
-        if ($dayExists) {
+        if ($dayExists !== false) {
             //unset($arrayDays[$idDay]);
             $result = $model->classroom_man->removeDateDay($idDate, [
                 [

@@ -239,31 +239,48 @@ class PDF extends TCPDF
 
     /**
      * Process HTML content for PDF generation
-     * 
+     *
      * @param string $html Original HTML content
      * @return string Processed HTML content
      */
     private function processHtmlContent($html)
     {
-        $doc = new DOMDocument('1.0', $this->encoding);
-        $doc->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', $this->encoding));
-
-        // Process image paths
-        $xpath = new DOMXPath($doc);
-        $nodelist = $xpath->query('//img');
-
-        foreach ($nodelist as $node) {
-            $value = $node->attributes->getNamedItem('src')->nodeValue;
-            $value = str_replace(' ', '%20', $value);
-
-            $pathExplode = explode('/files/', $value);
-            if ($pathExplode) {
-                $value = str_replace($pathExplode[0], '', $value);
-            }
-            $node->attributes->getNamedItem('src')->nodeValue = $value;
+        // Ensure the string is valid UTF-8
+        if (!mb_check_encoding($html, 'UTF-8')) {
+            $html = mb_convert_encoding($html, 'UTF-8', 'auto');
         }
 
-        return $doc->saveHTML();
+        // Replace non-unicode fonts with dejavusans to support accented characters
+        // helvetica, arial, times, etc. in TCPDF do not support full UTF-8
+        $html = preg_replace(
+            '/font-family:\s*["\']?(helvetica|arial|verdana|tahoma|georgia|times new roman|times)["\']?(\s*,\s*[^;]+)?;/i',
+            'font-family: dejavusans;',
+            $html
+        );
+
+        // Process image paths using regex to avoid DOMDocument encoding issues
+        $html = preg_replace_callback(
+            '/<img([^>]*)\ssrc=["\']([^"\']+)["\']([^>]*)>/i',
+            function ($matches) {
+                $beforeSrc = $matches[1];
+                $src = $matches[2];
+                $afterSrc = $matches[3];
+
+                // URL encode spaces
+                $src = str_replace(' ', '%20', $src);
+
+                // Remove base path before /files/
+                $pathExplode = explode('/files/', $src);
+                if (count($pathExplode) > 1) {
+                    $src = '/files/' . $pathExplode[1];
+                }
+
+                return '<img' . $beforeSrc . ' src="' . $src . '"' . $afterSrc . '>';
+            },
+            $html
+        );
+
+        return $html;
     }
 
     /**
