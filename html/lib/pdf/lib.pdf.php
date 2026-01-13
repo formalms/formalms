@@ -250,14 +250,6 @@ class PDF extends TCPDF
             $html = mb_convert_encoding($html, 'UTF-8', 'auto');
         }
 
-        // Replace non-unicode fonts with dejavusans to support accented characters
-        // helvetica, arial, times, etc. in TCPDF do not support full UTF-8
-        $html = preg_replace(
-            '/font-family:\s*["\']?(helvetica|arial|verdana|tahoma|georgia|times new roman|times)["\']?(\s*,\s*[^;]+)?;/i',
-            'font-family: dejavusans;',
-            $html
-        );
-
         // Process image paths using regex to avoid DOMDocument encoding issues
         $html = preg_replace_callback(
             '/<img([^>]*)\ssrc=["\']([^"\']+)["\']([^>]*)>/i',
