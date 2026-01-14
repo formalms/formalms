@@ -797,7 +797,7 @@ function statitem()
         $group_all_members = $aclManager->getGroupAllUser($group_filter);
     }
     //apply sub admin filters, if needed
-    if ($view_all_perm && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == '/framework/level/admin') {
+    if (!$view_all_perm && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == '/framework/level/admin') {
         //filter users
         require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.preference.php');
         $ctrlManager = new ControllerPreference();
