@@ -2992,7 +2992,7 @@ class FormaACLManager
         $res = [];
         $i = 0;
         foreach ($rs as $row) {
-            $arrGroups[] = $row['idstMember'];
+            $res[] = $row['idstMember'];
         }
 
         return $res;
