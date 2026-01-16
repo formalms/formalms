@@ -172,7 +172,7 @@ class CourseSubscribe_Manager
                         break;
 
                     case 3:  //not expired without expiring date
-                        $query .= " AND (s.date_expire IS NULL OR s.date_expire='')";
+                        $query .= " AND (s.date_expire_validity IS NULL)";
                         break;
 
                     case 0:
@@ -258,7 +258,7 @@ class CourseSubscribe_Manager
                         break;
 
                     case 3:  //not expired without expiring date
-                        $query .= " AND (s.date_expire_validity IS NULL OR s.date_expire_validity='') ";
+                        $query .= " AND (s.date_expire_validity IS NULL) ";
                         break;
 
                     default:
