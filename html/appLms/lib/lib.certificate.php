@@ -896,7 +896,8 @@ class Certificate
             $queryAssign = 'INSERT INTO %lms_certificate_assign '
                 . ' ( id_certificate, id_course, id_user, on_date, cert_file ) '
                 . ' VALUES '
-                . " ( '" . $id_certificate . "', '" . $id_course . "', '" . $id_user . "', '" . $the_date . "', '" . addslashes($cert_file) . "' ) ";
+                . " ( '" . $id_certificate . "', '" . $id_course . "', '" . $id_user . "', '" . $the_date . "', '" . addslashes($cert_file) . "' ) "
+                . " ON DUPLICATE KEY UPDATE on_date = VALUES(on_date), cert_file = VALUES(cert_file) ";
         } else {
             $queryAssign = 'UPDATE ' . $aggCertLib->table_assign_agg_cert
                 . " SET on_date = '" . $the_date
