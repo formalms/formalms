@@ -83,11 +83,13 @@ function load_filter($id, $tempdata = false, $update = false)
 function openreport($idrep = false)
 {
     $lang = FormaLanguage::createInstance('report');
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
     if ($idrep != false && $idrep > 0) {
         $id_report = $idrep;
     } else {
-        $id_report = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get(_REPORT_SESSION)['id_report'];
+        $reportTempData = $session->get(_REPORT_SESSION);
+        $id_report = (is_array($reportTempData) && isset($reportTempData['id_report'])) ? $reportTempData['id_report'] : false;
 
         if ($id_report != false && $idrep > 0) {
             load_filter($idrep, true, false);
@@ -578,6 +580,10 @@ function report_rows_filter()
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $reportTempData = $session->get(_REPORT_SESSION);
 
+    if (!is_array($reportTempData)) {
+        $reportTempData = [];
+    }
+
     if (FormaLms\lib\Get::req('set_category', DOTY_INT, 0) == 1) {
         if (FormaLms\lib\Get::req('report_name', DOTY_STRING, '') == '') {
             Util::jump_to('index.php?modname=report&op=report_category&err=noname');
@@ -586,11 +592,16 @@ function report_rows_filter()
         $reportTempData['report_name'] = FormaLms\lib\Get::req('report_name', DOTY_STRING, false);
         $session->set(_REPORT_SESSION, $reportTempData);
         $session->save();
-    }   
+    }
 
     $selectionType = (isset($_POST) && array_key_exists('selection_type', $_POST)) ? $_POST['selection_type'] : null;
-    
+
     $obj_report = openreport();
+
+    if (!$obj_report) {
+        return Util::jump_to('index.php?modname=report&op=reportlist');
+    }
+
     $obj_report->back_url = 'index.php?modname=report&op=report_category';
     $obj_report->jump_url = 'index.php?modname=report&op=report_rows_filter';
     $obj_report->next_url = 'index.php?modname=report&op=report_sel_columns';
@@ -646,6 +657,11 @@ function report_sel_columns()
 
     $lang = FormaLanguage::createInstance('report');
     $obj_report = openreport();
+
+    if (!$obj_report) {
+        return Util::jump_to('index.php?modname=report&op=reportlist');
+    }
+
     $temp = $obj_report->get_columns_categories();
 
     cout(getTitleArea([
@@ -674,6 +690,11 @@ function report_columns_filter()
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $reportTempData = $session->get(_REPORT_SESSION);
+
+    if (!is_array($reportTempData)) {
+        $reportTempData = [];
+    }
+
     if (isset($_POST['columns_filter'])) {
         $reportTempData['columns_filter_category'] = $_POST['columns_filter'];
         $session->set(_REPORT_SESSION, $reportTempData);
@@ -683,6 +704,11 @@ function report_columns_filter()
     $lang = FormaLanguage::createInstance('report');
 
     $obj_report = openreport();
+
+    if (!$obj_report) {
+        return Util::jump_to('index.php?modname=report&op=reportlist');
+    }
+
     $obj_report->back_url = 'index.php?modname=report&op=report_sel_columns';
     $obj_report->jump_url = 'index.php?modname=report&op=report_columns_filter';
     $obj_report->next_url = 'index.php?modname=report&op=report_save';
@@ -734,7 +760,18 @@ function report_save_filter()
     checkPerm('mod');
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+    $idrep = FormaLms\lib\Get::req('modid', DOTY_INT, false);
     $reportTempData = $session->get(_REPORT_SESSION);
+
+    if (!is_array($reportTempData) && $idrep) {
+        load_filter($idrep, true);
+        $reportTempData = $session->get(_REPORT_SESSION);
+    }
+
+    if (!is_array($reportTempData)) {
+        return Util::jump_to('index.php?modname=report&op=reportlist');
+    }
+
     $report_id = $reportTempData['id_report'];
     $report_name = $reportTempData['report_name'];
     $nosave = FormaLms\lib\Get::req('nosave', DOTY_INT, 0);
@@ -793,11 +830,15 @@ function report_show_results($idrep = false)
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     if ($idrep == false) {
-        if (empty($session->get(_REPORT_SESSION))) {
+        $reportTempData = $session->get(_REPORT_SESSION);
+        if (empty($reportTempData)) {
             $reportTempData = $session->get('report');
-        } else {
-            $reportTempData = $session->get(_REPORT_SESSION);
         }
+
+        if (!is_array($reportTempData) || !isset($reportTempData['id_report'])) {
+            return Util::jump_to('index.php?modname=report&op=reportlist');
+        }
+
         $id_report = $reportTempData['id_report'];
         $res = sql_query('SELECT class_name, file_name FROM %lms_report WHERE id_report=' . $id_report . ' AND enabled=1');
         $author = 0;
@@ -813,7 +854,7 @@ function report_show_results($idrep = false)
                 $obj_report = $pg->get_plugin($class_name, [$idrep]);
             }
         } else {
-            reportlist();
+            return Util::jump_to('index.php?modname=report&op=reportlist');
         }
     } else {
         checkReport($idrep);
@@ -842,6 +883,10 @@ function report_show_results($idrep = false)
             $pg = new PluginManager('Report');
             $obj_report = $pg->get_plugin($class_name, [$idrep]);
         }
+    }
+
+    if (!isset($obj_report) || !is_object($obj_report)) {
+        return Util::jump_to('index.php?modname=report&op=reportlist');
     }
 
     $obj_report->back_url = $start_url;
@@ -1059,9 +1104,17 @@ function report_modify_rows()
     $lang = FormaLanguage::createInstance('report');
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
+    $idrep = FormaLms\lib\Get::req('modid', DOTY_INT, false);
     $reportTempData = $session->get(_REPORT_SESSION);
 
-    $idrep = FormaLms\lib\Get::req('modid', DOTY_INT, false);
+    if (!is_array($reportTempData) && $idrep) {
+        load_filter($idrep, true);
+        $reportTempData = $session->get(_REPORT_SESSION);
+    }
+
+    if (!is_array($reportTempData)) {
+        $reportTempData = [];
+    }
 
     if (FormaLms\lib\Get::req('mod_name', DOTY_INT, 0) == 1) {
         $reportTempData['report_name'] = FormaLms\lib\Get::req('report_name', DOTY_STRING, false);
@@ -1070,6 +1123,11 @@ function report_modify_rows()
     }
 
     $obj_report = openreport();
+
+    if (!$obj_report) {
+        return Util::jump_to('index.php?modname=report&op=reportlist');
+    }
+
     $obj_report->back_url = 'index.php?modname=report&op=modify_name&modid=' . $idrep;
     $obj_report->jump_url = 'index.php?modname=report&op=modify_rows&modid=' . $idrep;
     $obj_report->next_url = 'index.php?modname=report&op=modify_cols&modid=' . $idrep;
@@ -1116,17 +1174,32 @@ function report_modify_columns()
 
     require_once _base_ . '/lib/lib.form.php';
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+
+    $idrep = FormaLms\lib\Get::req('modid', DOTY_INT, false);
     $reportTempData = $session->get(_REPORT_SESSION);
+
+    if (!is_array($reportTempData) && $idrep) {
+        load_filter($idrep, true);
+        $reportTempData = $session->get(_REPORT_SESSION);
+    }
+
+    if (!is_array($reportTempData)) {
+        $reportTempData = [];
+    }
+
     if (isset($_POST['columns_filter'])) {
         $reportTempData['columns_filter_category'] = $_POST['columns_filter'];
         $session->set(_REPORT_SESSION, $reportTempData);
         $session->save();
     }
 
-    $idrep = FormaLms\lib\Get::req('modid', DOTY_INT, false);
     $lang = FormaLanguage::createInstance('report');
 
     $obj_report = openreport();
+
+    if (!$obj_report) {
+        return Util::jump_to('index.php?modname=report&op=reportlist');
+    }
 
     $obj_report->back_url = 'index.php?modname=report&op=modify_rows&modid=' . $idrep;
     $obj_report->jump_url = 'index.php?modname=report&op=modify_cols&modid=' . $idrep;

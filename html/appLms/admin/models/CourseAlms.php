@@ -1726,7 +1726,7 @@ class CourseAlms extends Model
         if (count($usersFilterIds)) {
             $query .= 'AND u.idst in (' . implode(',', $usersFilterIds) . ')';
         }
-        $eventResults = Events::trigger('core.course.certifcate.query', compact('query', 'usersFilterIds', 'id_certificate', 'id_course'));
+        $eventResults = Events::trigger('core.course.certificate.query', compact('query', 'usersFilterIds', 'id_certificate', 'id_course'));
 
         $query = $eventResults['query'];
 
