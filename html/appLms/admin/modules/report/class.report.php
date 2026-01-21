@@ -175,9 +175,29 @@ class Report
     {
         $reportTempData = $this->session->get(self::_REPORT_SESSION);
         if (!$cat) {
-            $cat = $reportTempData['columns_filter_category'];
+            $cat = $reportTempData['columns_filter_category'] ?? null;
         }
-        $name_func = $this->columns_categories[$cat]['get_data'];
+
+        // Validate category
+        if (empty($cat)) {
+            throw new \InvalidArgumentException(
+                'Report export error: columns_filter_category is empty or not set'
+            );
+        }
+
+        if (!isset($this->columns_categories[$cat])) {
+            throw new \InvalidArgumentException(
+                sprintf('Report export error: invalid category "%s" not found in columns_categories', $cat)
+            );
+        }
+
+        $name_func = $this->columns_categories[$cat]['get_data'] ?? null;
+
+        if (!is_string($name_func) || empty($name_func)) {
+            throw new \InvalidArgumentException(
+                sprintf('Report export error: get_data method for category "%s" is not a valid string', $cat)
+            );
+        }
 
         return $this->$name_func($type, $report_data);
     }

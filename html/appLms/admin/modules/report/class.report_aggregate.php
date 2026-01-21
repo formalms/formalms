@@ -1426,7 +1426,7 @@ class Report_Aggregate extends Report
         if (isset($_POST['update_tempdata'])) {
             $reportTempData['columns_filter']['years'] = FormaLms\lib\Get::req('years', DOTY_INT, 1);
         }
-        $this->session->save(self::_REPORT_SESSION, $reportTempData);
+        $this->session->set(self::_REPORT_SESSION, $reportTempData);
         $this->session->save();
 
         //back to columns category selection

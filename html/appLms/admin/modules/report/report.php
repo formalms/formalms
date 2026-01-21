@@ -27,14 +27,84 @@ define('_RS_ROWS_FILTER', 'rows_filter');
 define('_RS_COLS_FILTER', 'columns_filter');
 define('_RS_COLS_CATEGORY', 'columns_filter_category');
 
+/**
+ * Encode report filter data to JSON format
+ *
+ * @param array $data The data to encode
+ * @return string JSON encoded string
+ *
+ * @since 4.2.0 Changed from serialize() to json_encode() for better UTF-8 support and interoperability
+ */
 function _encode($data)
 {
-    return serialize($data);
-} //{ return urlencode(Util::serialize($data)); }
-function _decode($data)
+    return json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+}
+
+/**
+ * Decode report filter data from JSON or serialized format (legacy support)
+ *
+ * @param string $jsonData JSON data (preferred)
+ * @param string|null $serializedData Legacy serialized data (fallback, deprecated)
+ * @return array|null Decoded data or null on failure
+ *
+ * @since 4.2.0 Added JSON support as primary format
+ * @internal The $serializedData parameter is deprecated since 4.2.0 and will be removed in 5.0.0
+ */
+function _decode($jsonData, $serializedData = null)
 {
-    return unserialize($data);
-} //{ return Util::unserialize(urldecode($data)); }
+    // If JSON data is available and valid, use it
+    if (!empty($jsonData)) {
+        $result = json_decode($jsonData, true);
+        if ($result !== null || json_last_error() === JSON_ERROR_NONE) {
+            return $result;
+        }
+    }
+
+    // @deprecated Since 4.2.0 - Fallback to serialized data (legacy support), will be removed in 5.0.0
+    if (!empty($serializedData)) {
+        @trigger_error(
+            'Reading report filter from serialized format (filter_data column) is deprecated since 4.2.0. ' .
+            'Data will be auto-migrated to JSON format (filter_data_json column).',
+            E_USER_DEPRECATED
+        );
+        $result = @unserialize($serializedData);
+        if ($result !== false) {
+            return $result;
+        }
+    }
+
+    // @deprecated Since 4.2.0 - Auto-detect serialized PHP in jsonData param (legacy support)
+    if (!empty($jsonData) && preg_match('/^[aOsbidn]:/', $jsonData)) {
+        @trigger_error(
+            'Detected serialized PHP data in JSON parameter. This legacy format is deprecated since 4.2.0.',
+            E_USER_DEPRECATED
+        );
+        $result = @unserialize($jsonData);
+        if ($result !== false) {
+            return $result;
+        }
+    }
+
+    return null;
+}
+
+/**
+ * Migrate serialized data to JSON and persist to database
+ *
+ * @param int $idFilter The filter ID
+ * @param array $data The decoded data to migrate
+ * @return bool True on success
+ */
+function _migrate_filter_to_json($idFilter, $data)
+{
+    $jsonData = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    if ($jsonData === false) {
+        return false;
+    }
+
+    $query = "UPDATE %lms_report_filter SET filter_data_json = '" . addslashes($jsonData) . "' WHERE id_filter = " . (int)$idFilter;
+    return sql_query($query) !== false;
+}
 
 function unload_filter($temp = false)
 {
@@ -63,7 +133,17 @@ function load_filter($id, $tempdata = false, $update = false)
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
     $row = sql_fetch_assoc(sql_query("SELECT * FROM %lms_report_filter WHERE id_filter=$id"));
-    $temp = unserialize($row['filter_data']);
+
+    // Use JSON column if available, otherwise fallback to serialized data
+    $jsonData = isset($row['filter_data_json']) ? $row['filter_data_json'] : null;
+    $serializedData = isset($row['filter_data']) ? $row['filter_data'] : null;
+    $temp = _decode($jsonData, $serializedData);
+
+    // Migrate to JSON if not already done
+    if (empty($jsonData) && !empty($temp)) {
+        _migrate_filter_to_json($id, $temp);
+    }
+
     if ($tempdata) {
         $session->set(_REPORT_SESSION, $temp);
     }
@@ -860,7 +940,7 @@ function report_show_results($idrep = false)
         checkReport($idrep);
         /// find main class report filename and report info
         $query_report = "
-		SELECT r.class_name, r.file_name, r.report_name, f.filter_name, f.filter_data, f.author
+		SELECT r.class_name, r.file_name, r.report_name, f.filter_name, f.filter_data, f.filter_data_json, f.author, f.id_filter
 		FROM %lms_report AS r
 			JOIN %lms_report_filter AS f
 			ON ( r.id_report = f.id_report )
@@ -874,7 +954,7 @@ function report_show_results($idrep = false)
         }
 
         // create the report object
-        list($class_name, $file_name, $report_name, $filter_name, $filter_data, $author) = sql_fetch_row($re_report);
+        list($class_name, $file_name, $report_name, $filter_name, $filter_data, $filter_data_json, $author, $id_filter) = sql_fetch_row($re_report);
         //when file name set use old style
         if ($file_name) {
             require_once \FormaLms\lib\Forma::inc(_lms_ . '/admin/modules/report/' . $file_name);
@@ -896,9 +976,27 @@ function report_show_results($idrep = false)
         $filter_name = ($filter_name ? $lang->def($filter_name) : '');
     }
 
-    $data = _decode($filter_data);
+    // Use JSON column if available, otherwise fallback to serialized data
+    $data = _decode($filter_data_json, $filter_data);
 
+    // Migrate to JSON if not already done
+    if (empty($filter_data_json) && !empty($data) && isset($id_filter)) {
+        _migrate_filter_to_json($id_filter, $data);
+    }
+
+    // Validate decoded data before export
     if ($download != false) {
+        if (!is_array($data)) {
+            throw new \InvalidArgumentException(
+                'Report export error: invalid report data format'
+            );
+        }
+        if (!isset($data['columns_filter_category']) || empty($data['columns_filter_category'])) {
+            throw new \InvalidArgumentException(
+                'Report export error: columns_filter_category is missing or empty in report data'
+            );
+        }
+
         $export_filename = 'report_' . $filter_name . '_' . date('d_m_Y');
         switch ($download) {
             case 'htm':
