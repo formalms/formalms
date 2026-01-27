@@ -346,6 +346,14 @@ class FieldList
         $acl = new FormaACL();
         if ($manual_id_field === false) {
             $user_groups = $acl->getUserGroupsST($id_user);
+
+            // Add ancestor ocd groups for proper field inheritance from parent org chart nodes
+            require_once _adm_ . '/models/UsermanagementAdm.php';
+            $uma = new UsermanagementAdm();
+            $ancestor_ocd_groups = $uma->getUserAncestorOcdGroups($id_user);
+            if (!empty($ancestor_ocd_groups)) {
+                $user_groups = array_unique(array_merge($user_groups, $ancestor_ocd_groups));
+            }
         }
 
         if (count($user_groups) > 2 && isset($user_groups[1]) && isset($user_groups[2])) {
@@ -411,6 +419,21 @@ class FieldList
     {
         $acl = new FormaACL();
         $all_user_groups = $acl->getMultipleUserGroupsST($id_user_list);
+
+        // Add ancestor ocd groups for proper field inheritance from parent org chart nodes
+        require_once _adm_ . '/models/UsermanagementAdm.php';
+        $uma = new UsermanagementAdm();
+        foreach ($id_user_list as $id_user) {
+            $ancestor_ocd_groups = $uma->getUserAncestorOcdGroups($id_user);
+            if (!empty($ancestor_ocd_groups)) {
+                if (!isset($all_user_groups[$id_user])) {
+                    $all_user_groups[$id_user] = [];
+                }
+                $all_user_groups[$id_user] = array_unique(
+                    array_merge($all_user_groups[$id_user], $ancestor_ocd_groups)
+                );
+            }
+        }
 
         $query = 'SELECT ft.id_common, ft.type_field, ftt.type_file, ftt.type_class, ft.translation, gft.mandatory, gft.useraccess, gft.idst AS group_idst '
             . 'FROM ' . $this->getFieldTable() . ' AS ft '

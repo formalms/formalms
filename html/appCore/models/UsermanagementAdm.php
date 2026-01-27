@@ -3614,6 +3614,58 @@ class UsermanagementAdm extends Model implements Accessible
         return $output;
     }
 
+    /**
+     * Get all ancestor ocd groups for a user based on their org chart membership.
+     * Used for proper field inheritance from parent nodes when fields are assigned
+     * with the "descendants" option.
+     *
+     * @param int $idst_user User's security token
+     *
+     * @return array Array of idst_ocd from all ancestor folders
+     */
+    public function getUserAncestorOcdGroups($idst_user)
+    {
+        $ocd_groups = [];
+
+        // 1. Get user's oc_* groups (their folder memberships) and corresponding folder info
+        $query = "SELECT g.groupid, oct.idOrg, oct.idst_ocd
+                  FROM %adm_group_members AS gm
+                  JOIN %adm_group AS g ON (gm.idst = g.idst)
+                  JOIN %adm_org_chart_tree AS oct ON (g.idst = oct.idst_oc)
+                  WHERE gm.idstMember = " . (int) $idst_user;
+        $res = $this->db->query($query);
+
+        if (!$res || $this->db->num_rows($res) == 0) {
+            return $ocd_groups;
+        }
+
+        // 2. Collect folder IDs
+        $folder_ids = [];
+        foreach ($res as $row) {
+            $folder_ids[] = (int) $row['idOrg'];
+        }
+
+        if (empty($folder_ids)) {
+            return $ocd_groups;
+        }
+
+        // 3. For each folder, get all ancestors and their ocd groups using Nested Sets
+        foreach ($folder_ids as $idOrg) {
+            $query_ancestors = "SELECT parent.idst_ocd
+                               FROM %adm_org_chart_tree AS node
+                               JOIN %adm_org_chart_tree AS parent
+                                 ON node.iLeft >= parent.iLeft AND node.iLeft <= parent.iRight
+                               WHERE node.idOrg = " . (int) $idOrg . "
+                                 AND parent.idst_ocd > 0";
+            $res_ancestors = $this->db->query($query_ancestors);
+
+            foreach ($res_ancestors as $row) {
+                $ocd_groups[] = (int) $row['idst_ocd'];
+            }
+        }
+
+        return array_unique($ocd_groups);
+    }
 
     public function getAccessList($resourceId): array
     {
