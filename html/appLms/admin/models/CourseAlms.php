@@ -1741,7 +1741,7 @@ class CourseAlms extends Model
 
             foreach ($res as $row) {
                 $idst = $row['idst'];
-            $idRecord = $row['idRecord'];
+                $idRecord = $row['idRecord'];
                 $userid = $row['userid'];
                 $firstname = $row['firstname'];
                 $lastname = $row['lastname'];

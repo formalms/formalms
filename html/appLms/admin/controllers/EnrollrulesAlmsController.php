@@ -591,10 +591,7 @@ class EnrollrulesAlmsController extends AlmsController
             $id_entity = $curr_entity->id_entity;
 
             $course_list = [];
-            $courses = [];
-            if (isset($_POST['entity_course'][$id_entity])) {
-                $courses = $_POST['entity_course'][$id_entity];
-            }
+            $courses = $_POST['entity_course'][$id_entity] ?? [];
             foreach ($courses as $id_c => $v) {
                 $course_list[] = (int) str_replace('course_', '', $id_c);
             }
