@@ -219,7 +219,13 @@ class EnrollrulesAlms extends Model implements Accessible
         $result = $this->db->query($query);
 
         while ($entity = $this->db->fetch_obj($result)) {
-            //$entity->course_list = true->decode($entity->course_list);
+            if (!isset($entities_name[$entity->id_entity])) {
+                $ename = new stdClass();
+                $ename->id_entity = $entity->id_entity;
+                $ename->title = $entity->id_entity;
+                $ename->course_list = [];
+                $entities_name[$ename->id_entity] = $ename;
+            }
             $entities_name[$entity->id_entity]->course_list = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($entity->course_list, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         }
 
@@ -353,7 +359,8 @@ class EnrollrulesAlms extends Model implements Accessible
             . 'FROM %adm_rules AS r JOIN %adm_rules_entity AS re '
             . ' ON (r.id_rule = re.id_rule) '
             . "WHERE r.rule_type <> 'base' "
-            . " AND id_entity IN ( '" . implode("','", $id_entities) . "' ) ";
+            . " AND id_entity IN ( '" . implode("','", $id_entities) . "' ) "
+            . ' AND r.rule_active = 1';
         $result = $this->db->query($query);
         while ($entity = $this->db->fetch_obj($result)) {
             $rules[] = $entity->id_rule . '_' . $entity->id_entity;
@@ -388,7 +395,8 @@ class EnrollrulesAlms extends Model implements Accessible
             . 'FROM %adm_rules AS r JOIN %adm_rules_entity AS re '
             . ' ON (r.id_rule = re.id_rule) '
             . "WHERE r.rule_type = 'base' "
-            . " AND ( re.id_entity = 'all' OR re.id_entity = '" . $language . "' ) ";
+            . " AND ( re.id_entity = 'all' OR re.id_entity = '" . $language . "' ) "
+            . ' AND r.rule_active = 1';
         $result = $this->db->query($query);
         while ($entity = $this->db->fetch_obj($result)) {
             $rules[] = $entity->id_rule . '_' . $entity->id_entity;
