@@ -1221,10 +1221,10 @@ class User_API extends API
     {
         $id_org = $params['id_org'];
 
-        $output = [];
-        $output['message'] = 'remove org: ' . $id_org;
-
-        $output['success'] = true;
+        $output = [
+            'success' => true,
+            'message' => 'remove org: ' . $id_org
+        ];
 
         if (empty($id_org)) {
             $output['success'] = false;
@@ -1331,10 +1331,7 @@ class User_API extends API
                 break;
 
             case 'customfields':
-                $tmp_lang = false; //if not specified, use default language
-                if (isset($params['language'])) {
-                    $tmp_lang = $params['language'];
-                } //check if a language has been specified
+                $tmp_lang = $params['language'] ?? false; //check if a language has been specified
                 $res = $this->getCustomFields($tmp_lang);
                 if ($res != false) {
                     $output = ['success' => true, 'custom_fields' => $res];
@@ -1385,7 +1382,12 @@ class User_API extends API
                 if (!$idst) {
                     $output = ['success' => false, 'message' => 'Error: invalid userid: ' . $params['userid'] . '.'];
                 } else {
-                    $output = $this->getUserDetails($idst);
+                    $res = $this->getUserDetails([$idst]);
+                    if (!$res) {
+                        $output = ['success' => false, 'message' => 'Error: unable to retrieve user details.'];
+                    } else {
+                        $output = ['success' => true, 'details' => $res];
+                    }
                 }
                 break;
 
