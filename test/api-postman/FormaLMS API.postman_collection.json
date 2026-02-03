@@ -3471,8 +3471,22 @@
 										},
 										{
 											"key": "valid",
-											"value": "true",
+											"value": "1",
 											"type": "text"
+										},
+										{
+											"key": "orgchart_code",
+											"value": "",
+											"description": "Branch codes separated by ;",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "_customfields[ID_CAMPO]",
+											"value": "",
+											"description": "Use /user/customfields to get IDs. E.g. _customfields[1]",
+											"type": "text",
+											"disabled": true
 										}
 									]
 								},
@@ -3563,6 +3577,34 @@
 										{
 											"key": "lastenter",
 											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "valid",
+											"value": "1",
+											"description": "1 to recover, 0 to suspend",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "orgchart",
+											"value": "",
+											"description": "Branch names separated by ;",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "orgchart_code",
+											"value": "",
+											"description": "Branch codes separated by ;",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "_customfields[ID_CAMPO]",
+											"value": "",
+											"description": "Use /user/customfields to get IDs. E.g. _customfields[1]",
 											"type": "text",
 											"disabled": true
 										}
@@ -3875,6 +3917,34 @@
 										{
 											"key": "lastenter",
 											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "valid",
+											"value": "1",
+											"description": "1 to recover, 0 to suspend",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "orgchart",
+											"value": "",
+											"description": "Branch names separated by ;",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "orgchart_code",
+											"value": "",
+											"description": "Branch codes separated by ;",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "_customfields[ID_CAMPO]",
+											"value": "",
+											"description": "Use /user/customfields to get IDs. E.g. _customfields[1]",
 											"type": "text",
 											"disabled": true
 										}
