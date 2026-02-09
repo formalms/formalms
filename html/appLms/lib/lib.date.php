@@ -177,6 +177,7 @@ class DateManager
             . " '" . $unsubscribe_date_limit . "','" . CalendarManager::generateUniqueCalendarId() . "')";
         //." VALUES (".$id_course.", '".Util::strip_slashes($code)."', '".Util::strip_slashes($name)."', '".Util::strip_slashes($description)."', '".$medium_time."', ".(int)$max_par.", '".Util::strip_slashes($price)."', ".$overbooking.", ".$test_type.", ".$status.")";
 
+
         $result = sql_query($query);
 
         if ($result) {
@@ -329,7 +330,7 @@ class DateManager
         return $res;
     }
 
-    public function getCourseDate($id_course, $all = true, $ini = 0, $num_element = 0)
+    public function getCourseDate($id_course, $all = true, $ini = 0, $num_element = 0, $includeEmpty = false)
     {
         $res = [];
 
@@ -355,7 +356,7 @@ class DateManager
         $result = sql_query($query);
 
         foreach ($result as $row) {
-            if (!empty($row['date_begin']) && (strcmp($row['date_begin'], date('Y-m-d H:i:s')) > 0 || $all)) {
+            if (($includeEmpty && empty($row['date_begin'])) || (!empty($row['date_begin']) && (strcmp($row['date_begin'], date('Y-m-d H:i:s')) > 0 || $all))) {
                 $row['classroom'] = $this->getDateClassrooms($row['id_date']);
 
                 if ($row['user_subscribed'] > 1) {

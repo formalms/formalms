@@ -143,11 +143,11 @@ class Course_API extends API
 
         $idDate = $params['id_date'] ?? '';
 
-        $response = ['success' => true, 'data' => $idDate];
+        $response = ['success' => true, 'data' => $idDate, 'course_id' => $courseId];
 
         $model = new ClassroomAlms($courseId, $idDate);
 
-        $dates = $model->classroom_man->getCourseDate($courseId);
+        $dates = $model->classroom_man->getCourseDate($courseId, true, 0, 0, true);
 
         if (!array_key_exists($idDate, $dates)) {
             $response['success'] = false;
@@ -1234,18 +1234,18 @@ class Course_API extends API
 
         $res = $classroomManager->insDate(
             $courseId,
-            $params['classroom_code'] ? $params['classroom_code'] : false,
-            $params['classroom_name'] ? $params['classroom_name'] : false,
-            $params['classroom_descr'] ? $params['classroom_descr'] : false,
-            $params['classroom_medium_time'] ? $params['classroom_medium_time'] : false,
-            $params['classroom_max_users'] ? $params['classroom_max_users'] : false,
-            $params['classroom_price'] ? $params['classroom_price'] : false,
-            $params['classroom_allow_overbooking'] ? $params['classroom_allow_overbooking'] : false,
-            $params['classroom_status'] ? $params['classroom_status'] : 0,
-            $params['classroom_test_type'] ? $params['classroom_test_type'] : 0,
-            $params['classroom_sub_start_date'] ? $params['classroom_sub_start_date'] : null,
-            $params['classroom_sub_end_date'] ? $params['classroom_sub_end_date'] : null,
-            $params['classroom_unsubscribe_date_limit'] ? $params['classroom_unsubscribe_date_limit'] : false
+            $params['classroom_code'] ?: false,
+            $params['classroom_name'] ?: false,
+            $params['classroom_descr'] ?: false,
+            $params['classroom_medium_time'] ?: false,
+            $params['classroom_max_users'] ?: false,
+            $params['classroom_price'] ?: false,
+            $params['classroom_allow_overbooking'] ?: false,
+            $params['classroom_status'] ?: 0,
+            $params['classroom_test_type'] ?: 0,
+            $params['classroom_sub_start_date'] ?: null,
+            $params['classroom_sub_end_date'] ?: null,
+            $params['classroom_unsubscribe_date_limit'] ?: false
         );
 
         if ($res) {
@@ -1337,6 +1337,7 @@ class Course_API extends API
         if (!$response['success']) {
             return $response;
         }
+
 
         $error = false;
 
@@ -1501,93 +1502,93 @@ class Course_API extends API
 
         $course = new CourseAlms();
         $course_info = $course->getInfo($courseId);
-        $params['advance'] = $params['advance'] ? $params['advance'] : $course_info['advance'];
+        $params['advance'] = $params['advance'] ?: $course_info['advance'];
         $params['allow_overbooking'] = $params['allow_overbooking'] ? 1 : 0;
-        $params['allow_overbooking'] = $params['allow_overbooking'] ? $params['allow_overbooking'] : $course_info['allow_overbooking'];
+        $params['allow_overbooking'] = $params['allow_overbooking'] ?: $course_info['allow_overbooking'];
         if (empty($params['allow_overbooking'])) {
             unset($params['allow_overbooking']);
         }
         $params['auto_unsubscribe'] = $params['auto_unsubscribe'] ? 1 : 0;
-        $params['auto_unsubscribe'] = $params['auto_unsubscribe'] ? $params['auto_unsubscribe'] : $course_info['auto_unsubscribe'];
+        $params['auto_unsubscribe'] = $params['auto_unsubscribe'] ?: $course_info['auto_unsubscribe'];
         if (empty($params['auto_unsubscribe'])) {
             unset($params['auto_unsubscribe']);
         }
-        $params['can_subscribe'] = $params['can_subscribe'] ? $params['can_subscribe'] : $course_info['can_subscribe'];
+        $params['can_subscribe'] = $params['can_subscribe'] ?: $course_info['can_subscribe'];
         $params['course_advanced'] = $params['course_advanced'] ? 1 : 0;
-        $params['course_advanced'] = $params['course_advanced'] ? $params['course_advanced'] : $course_info['show_extra_info'];
+        $params['course_advanced'] = $params['course_advanced'] ?: $course_info['show_extra_info'];
         if (empty($params['course_advanced'])) {
             unset($params['course_advanced']);
         }
-        $params['course_autoregistration_code'] = $params['course_autoregistration_code'] ? $params['course_autoregistration_code'] : $course_info['autoregistration_code'];
-        $params['course_code'] = $params['course_code'] ? $params['course_code'] : $course_info['code'];
-        $params['course_date_begin'] = $params['course_date_begin'] ? $params['course_date_begin'] : false;
-        $params['course_date_end'] = $params['course_date_end'] ? $params['course_date_end'] : false;
-        $params['course_day_of'] = $params['course_day_of'] ? $params['course_day_of'] : $course_info['valid_time'];
-        $params['course_descr'] = $params['course_descr'] ? $params['course_descr'] : $course_info['description'];
-        $params['course_difficult'] = $params['course_difficult'] ? $params['course_difficult'] : $course_info['difficult'];
+        $params['course_autoregistration_code'] = $params['course_autoregistration_code'] ?: $course_info['autoregistration_code'];
+        $params['course_code'] = $params['course_code'] ?: $course_info['code'];
+        $params['course_date_begin'] = $params['course_date_begin'] ?: false;
+        $params['course_date_end'] = $params['course_date_end'] ?: false;
+        $params['course_day_of'] = $params['course_day_of'] ?: $course_info['valid_time'];
+        $params['course_descr'] = $params['course_descr'] ?: $course_info['description'];
+        $params['course_difficult'] = $params['course_difficult'] ?: $course_info['difficult'];
         $params['course_edition'] = $params['course_edition'] ? 1 : 0;
-        $params['course_edition'] = $params['course_edition'] ? $params['course_edition'] : $course_info['course_edition'];
+        $params['course_edition'] = $params['course_edition'] ?: $course_info['course_edition'];
         if (empty($params['course_edition'])) {
             unset($params['course_edition']);
         }
         $params['course_em'] = $params['close_lo_perm'] ? 1 : 0;
-        $params['course_em'] = $params['course_em'] ? $params['course_em'] : $course_info['permCloseLO'];
+        $params['course_em'] = $params['course_em'] ?: $course_info['permCloseLO'];
         if (empty($params['course_em'])) {
             unset($params['course_em']);
         }
-        $params['course_lang'] = $params['course_lang'] ? $params['course_lang'] : $course_info['lang_code'];
-        $params['course_medium_time'] = $params['course_medium_time'] ? $params['course_medium_time'] : $course_info['mediumTime'];
-        $params['send_calendar'] = $params['send_calendar'] ? $params['send_calendar'] : $course_info['sendCalendar'];
-        $params['course_name'] = $params['course_name'] ? $params['course_name'] : $course_info['name'];
-        $params['course_prize'] = $params['course_price'] ? $params['course_price'] : $course_info['prize'];
+        $params['course_lang'] = $params['course_lang'] ?: $course_info['lang_code'];
+        $params['course_medium_time'] = $params['course_medium_time'] ?: $course_info['mediumTime'];
+        $params['send_calendar'] = $params['send_calendar'] ?: $course_info['sendCalendar'];
+        $params['course_name'] = $params['course_name'] ?: $course_info['name'];
+        $params['course_prize'] = $params['course_price'] ?: $course_info['prize'];
         $params['course_progress'] = $params['course_progress'] ? 1 : 0;
-        $params['course_progress'] = $params['course_progress'] ? $params['course_progress'] : $course_info['show_progress'];
+        $params['course_progress'] = $params['course_progress'] ?: $course_info['show_progress'];
         if (empty($params['course_progress'])) {
             unset($params['course_progress']);
         }
-        $params['course_quota'] = $params['course_quota'] ? $params['course_quota'] : $course_info['course_quota'];
+        $params['course_quota'] = $params['course_quota'] ?: $course_info['course_quota'];
         $params['course_sell'] = $params['course_sell'] ? 1 : 0;
-        $params['course_sell'] = $params['course_sell'] ? $params['course_sell'] : $course_info['selling'];
+        $params['course_sell'] = $params['course_sell'] ?: $course_info['selling'];
         if (empty($params['course_sell'])) {
             unset($params['course_sell']);
         }
-        $params['course_show_rules'] = $params['course_show_rules'] ? $params['course_show_rules'] : $course_info['show_rules'];
-        $params['course_sponsor_link'] = $params['course_sponsor_link'] ? $params['course_sponsor_link'] : $course_info['linkSponsor'];
-        $params['course_status'] = $params['course_status'] ? $params['course_status'] : $course_info['status'];
-        $params['course_subs'] = $params['course_subs'] ? $params['course_subs'] : $course_info['subscribe_method'];
+        $params['course_show_rules'] = $params['course_show_rules'] ?: $course_info['show_rules'];
+        $params['course_sponsor_link'] = $params['course_sponsor_link'] ?: $course_info['linkSponsor'];
+        $params['course_status'] = $params['course_status'] ?: $course_info['status'];
+        $params['course_subs'] = $params['course_subs'] ?: $course_info['subscribe_method'];
         $params['course_time'] = $params['course_time'] ? 1 : 0;
-        $params['course_time'] = $params['course_time'] ? $params['course_time'] : $course_info['show_time'];
+        $params['course_time'] = $params['course_time'] ?: $course_info['show_time'];
         if (empty($params['course_time'])) {
             unset($params['course_time']);
         }
-        $params['course_type'] = $params['course_type'] ? $params['course_type'] : $course_info['course_type'];
-        $params['credits'] = $params['credits'] ? $params['credits'] : $course_info['credits'];
+        $params['course_type'] = $params['course_type'] ?: $course_info['course_type'];
+        $params['credits'] = $params['credits'] ?: $course_info['credits'];
         $params['direct_play'] = $params['direct_play'] ? 1 : 0;
-        $params['direct_play'] = $params['direct_play'] ? $params['direct_play'] : $course_info['direct_play'];
+        $params['direct_play'] = $params['direct_play'] ?: $course_info['direct_play'];
         if (empty($params['direct_play'])) {
             unset($params['direct_play']);
         }
-        $params['idCategory'] = $params['idCategory'] ? $params['idCategory'] : $course_info['idCategory'];
+        $params['idCategory'] = $params['idCategory'] ?: $course_info['idCategory'];
         $params['inherit_quota'] = $params['inherit_quota'] ? 1 : 0;
-        $params['inherit_quota'] = $params['inherit_quota'] ? $params['inherit_quota'] : $course_info['inherit_quota'];
+        $params['inherit_quota'] = $params['inherit_quota'] ?: $course_info['inherit_quota'];
         if (empty($params['inherit_quota'])) {
             unset($params['inherit_quota']);
         }
-        $params['max_num_subscribe'] = $params['max_num_subscribe'] ? $params['max_num_subscribe'] : $course_info['max_num_subscribe'];
-        $params['min_num_subscribe'] = $params['min_num_subscribe'] ? $params['min_num_subscribe'] : $course_info['min_num_subscribe'];
-        $params['random_course_autoregistration_code'] = $params['random_course_autoregistration_code'] ? $params['random_course_autoregistration_code'] : false;
+        $params['max_num_subscribe'] = $params['max_num_subscribe'] ?: $course_info['max_num_subscribe'];
+        $params['min_num_subscribe'] = $params['min_num_subscribe'] ?: $course_info['min_num_subscribe'];
+        $params['random_course_autoregistration_code'] = $params['random_course_autoregistration_code'] ?: false;
         $params['show_result'] = $params['show_result'] ? 1 : 0;
-        $params['show_result'] = $params['show_result'] ? $params['show_result'] : $course_info['show_result'];
+        $params['show_result'] = $params['show_result'] ?: $course_info['show_result'];
         if (empty($params['show_result'])) {
             unset($params['show_result']);
         }
         $params['show_who_online'] = $params['show_who_online'] ? 1 : 0;
-        $params['show_who_online'] = $params['show_who_online'] ? $params['show_who_online'] : $course_info['show_who_online'];
-        $params['sub_end_date'] = $params['sub_end_date'] ? $params['sub_end_date'] : $course_info['sub_end_date'];
-        $params['sub_start_date'] = $params['sub_start_date'] ? $params['sub_start_date'] : $course_info['sub_start_date'];
-        $params['unsubscribe_date_limit'] = $params['unsubscribe_date_limit'] ? $params['unsubscribe_date_limit'] : $course_info['unsubscribe_date_limit'];
+        $params['show_who_online'] = $params['show_who_online'] ?: $course_info['show_who_online'];
+        $params['sub_end_date'] = $params['sub_end_date'] ?: $course_info['sub_end_date'];
+        $params['sub_start_date'] = $params['sub_start_date'] ?: $course_info['sub_start_date'];
+        $params['unsubscribe_date_limit'] = $params['unsubscribe_date_limit'] ?: $course_info['unsubscribe_date_limit'];
         $params['use_logo_in_courselist'] = $params['use_logo_in_courselist'] ? 1 : 0;
-        $params['use_logo_in_courselist'] = $params['use_logo_in_courselist'] ? $params['use_logo_in_courselist'] : $course_info['use_logo_in_courselist'];
+        $params['use_logo_in_courselist'] = $params['use_logo_in_courselist'] ?: $course_info['use_logo_in_courselist'];
         if (empty($params['use_logo_in_courselist'])) {
             unset($params['use_logo_in_courselist']);
         }
@@ -2414,7 +2415,7 @@ class Course_API extends API
         $response = [];
         $courseResponse = [];
 
-        $idUsers = $params['id_user'] ? $params['id_user'] : $params['id_users'];
+        $idUsers = $params['id_user'] ?: $params['id_users'];
 
         // recupera TRACK della risposta del test
         $db = \FormaLms\db\DbConn::getInstance();
