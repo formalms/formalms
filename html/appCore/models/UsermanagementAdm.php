@@ -649,8 +649,9 @@ class UsermanagementAdm extends Model implements Accessible
                                 $countries = [];
                                 foreach ($res_countries as $crow) {
                                     //while ($crow = $this->db->fetch_obj($res_countries)) {
-                                    $countries[$crow->id_country] = $crow['name_country'];
+                                    $countries[$crow ['id_country']] = $crow['name_country'];
                                 }
+
                             }
                             if (isset($countries[$frow['user_entry']])) {
                                 $field_value = $countries[$frow['user_entry']];

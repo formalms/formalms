@@ -167,7 +167,12 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
         $midnight = new DateTime('midnight');
         $midnight = date_format($midnight, 'Y-m-d H:i:s');
 
-        $conditions[] = "(c.date_end >= '$midnight')";
+        $conditions[] = "(
+                            c.date_end IS NULL
+                            OR c.date_end = '0000-00-00'
+                            OR c.date_end >= '$midnight'
+                        )";
+
 
         $excludePathcourse = $this->excludePathCourse();
 

@@ -686,6 +686,7 @@ class FieldList
                         break;
                     case 'country':
                         $result[$id_user][$id_field] = $countryFields[(int)$value] ?? '';
+                        break;
                     default:
                         if (array_key_exists((int)$id_field, $sons_arr)) {
                             $result[$id_user][$id_field] = $sons_arr[(int)$id_field][(int)$value] ?? '';
