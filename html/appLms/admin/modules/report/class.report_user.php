@@ -3827,8 +3827,15 @@ class Report_User extends Report
         $res = sql_query($query);
         foreach ($res as $row) {
             $score_arr['scorm'][$row['idOrg']][$row['idUser']] = $row['score_raw'];
-            $total_time_arr['scorm'][$row['idOrg']][$row['idUser']] = $row['total_time'];
+            // [OLD METHOD] $total_time_arr['scorm'][$row['idOrg']][$row['idUser']] = $row['total_time'];
         }
+    
+        // Get array lo_types in DB
+        $res = sql_query('SELECT objectType, classNameTrack, fileNameTrack FROM %lms_lo_types');
+        while (list($objectType, $classNameTrack, $objecfileNameTracktType) = sql_fetch_row($res)) {
+            $arr_lo_types[$objectType]['classNameTrack'] = $classNameTrack;
+            $arr_lo_types[$objectType]['objecfileNameTracktType'] = $objecfileNameTracktType;
+        }  
 
         $buffer->openBody();
 
@@ -4011,8 +4018,10 @@ class Report_User extends Report
 
                         break;
                     case 'lo_total_time':
-                        $temp[] = $total_time_arr['scorm'][$row['idOrg']][$row['user_st']];
-
+                        // [OLD METHOD] $temp[] = $total_time_arr['scorm'][$row['idOrg']][$row['user_st']];
+                        // Get total time for LO --> Function in file appLms/class.module/track.xxx.php or in plugin Features/appLms/class.module/track.xxx.php
+                        require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/'.$arr_lo_types[$row['objectType']]['objecfileNameTracktType']);
+                        $temp[] = $arr_lo_types[$row['objectType']]['classNameTrack']::getTotalTime($row['idResource'], $row['user_st']);
                         break;
                     default:
                         if (in_array($val['key'], $showed)) {

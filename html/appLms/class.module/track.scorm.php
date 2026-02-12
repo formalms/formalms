@@ -148,7 +148,7 @@ class Track_ScormOrg extends Track_Object
         return false;
     }
 
-    public function getHistory()
+    public static function getHistory($idReference, $idUser)
     {
         $query = <<<SQL
 SELECT
@@ -160,7 +160,7 @@ SELECT
     sth.lesson_status AS status
 FROM %lms_scorm_tracking_history sth
 	INNER JOIN %lms_scorm_tracking st ON sth.idscorm_tracking = st.idscorm_tracking
-WHERE st.idReference = {$this->idReference} AND st.idUser = {$this->idUser}
+WHERE st.idReference = {$idReference} AND st.idUser = {$idUser}
 ORDER BY sth.date_action ASC
 SQL;
 
@@ -174,13 +174,14 @@ SQL;
         return $history;
     }
 
-    public function getTotalTime()
+    public static function getTotalTime($idResource, $idUser)
     {
         $query = <<<SQL
 SELECT TIME_FORMAT(SUM(COALESCE(TIME_TO_SEC(sth.session_time), 0)), "%H:%i:%s") AS total_time
 FROM %lms_scorm_tracking_history sth
 	INNER JOIN %lms_scorm_tracking st ON sth.idscorm_tracking = st.idscorm_tracking
-WHERE st.idReference = {$this->idReference} AND st.idUser = {$this->idUser}
+    JOIN %lms_organization lo ON ( lo.objectType = 'scormorg' AND lo.idOrg = st.idReference ) 
+WHERE lo.idResource = {$idResource} AND st.idUser = {$idUser}
 LIMIT 1
 SQL;
 

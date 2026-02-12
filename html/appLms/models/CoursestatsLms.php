@@ -324,7 +324,16 @@ class CoursestatsLms extends Model
                 $history_table_html .= '</table>';
                 $obj['score'] = $scores[$obj['idOrg']] ?? '';
                 $obj['history'] = !empty($history) ? $history_table_html : ''; // by marco array sessioni
-                $obj['totaltime'] = $this->getUserScormHistoryTrackTotaltime($id_user, $obj['idOrg']);
+                
+                // Get array lo_types in DB
+                $res = sql_query('SELECT objectType, classNameTrack, fileNameTrack FROM %lms_lo_types');
+                while (list($objectType, $classNameTrack, $objecfileNameTracktType) = sql_fetch_row($res)) {
+                    $arr_lo_types[$objectType]['classNameTrack'] = $classNameTrack;
+                    $arr_lo_types[$objectType]['objecfileNameTracktType'] = $objecfileNameTracktType;
+                }
+                // Get total time for LO
+                require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/'.$arr_lo_types[$obj['objectType']]['objecfileNameTracktType']);
+                $obj['totaltime'] = $arr_lo_types[$obj['objectType']]['classNameTrack']::getTotalTime($obj['idResource'], $id_user);
 
                 if (!empty($history)) {
                     $seconds_diff = strtotime('1970-01-01 ' . end($history)[3] . ' UTC');
