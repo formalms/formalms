@@ -2172,7 +2172,7 @@ class Report_User extends Report
                 }
 
                 if (in_array('_TH_ESTIMATED_TIME', $cols)) {
-                    $row[] = $medium_time . 'h';
+                    $row[] = $medium_time;
                 }
 
                 if (in_array('_TH_PERC_LO', $cols) || in_array('_TH_PERC_LO_GRAPH', $cols)) {
