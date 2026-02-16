@@ -1757,14 +1757,15 @@ class Report_User extends Report
         }
 
         // Luca
+        $colspanLO = 0;
         if (in_array('_TH_PERC_LO', $cols)) {
             $th2[] = $lang->def('_PERCENTAGE');
-            isset($colspanLO) ? ++$colspanLO : 1;
+            ++$colspanLO;
         }
 
         if (in_array('_TH_PERC_LO_GRAPH', $cols)) {
             $th2[] = $lang->def('_GRAPHIC_REPORT') . '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  ';
-            isset($colspanLO) ? ++$colspanLO : 1;
+            ++$colspanLO;
         }
 
         //checkbox for mail
@@ -1783,7 +1784,9 @@ class Report_User extends Report
         }
 
         // Luca
-        $th1[] = ['colspan' => $colspanLO ?? null, 'value' => $lang->def('_PROGRESS')];
+        if ($colspanLO > 0) {
+            $th1[] = ['colspan' => $colspanLO, 'value' => $lang->def('_PROGRESS')];
+        }
 
         $buffer->openHeader();
         $buffer->addHeader($th1);
