@@ -61,6 +61,11 @@ function _decode(&$jsonData, $serializedData = null)
         if ($result !== false) {
             return $result;
         }
+        // Attempt to repair corrupted byte counts (e.g. caused by UTF-8 encoding changes)
+        $result = _unserialize_repair($serializedData);
+        if ($result !== false && $result !== null) {
+            return $result;
+        }
     }
 
     // @deprecated Since 4.2.0 - Auto-detect serialized PHP in jsonData param (legacy support)
@@ -73,9 +78,38 @@ function _decode(&$jsonData, $serializedData = null)
         if ($result !== false) {
             return $result;
         }
+        // Attempt to repair corrupted byte counts
+        $result = _unserialize_repair($jsonData);
+        if ($result !== false && $result !== null) {
+            return $result;
+        }
     }
 
     return null;
+}
+
+/**
+ * Attempt to repair and unserialize a corrupted PHP serialized string.
+ * Fixes byte count mismatches caused by multibyte character encoding changes (e.g. Latin-1 to UTF-8).
+ *
+ * @param string $data The corrupted serialized string
+ * @return mixed The unserialized data, or false on failure
+ */
+function _unserialize_repair($data)
+{
+    $repaired = preg_replace_callback(
+        '/s:(\d+):"(.*?)";/s',
+        function ($matches) {
+            return 's:' . strlen($matches[2]) . ':"' . $matches[2] . '";';
+        },
+        $data
+    );
+
+    if ($repaired === null || $repaired === $data) {
+        return false;
+    }
+
+    return @unserialize($repaired);
 }
 
 $rep_cat = FormaLms\lib\Get::req('rep_cat', DOTY_ALPHANUM, false);
