@@ -852,6 +852,51 @@ class FormaUser
     }
 
     /**
+     * Ensures the user is a member of the base organization chart groups (/oc_0, /ocd_0).
+     * This repairs missing group memberships that prevent access to public LMS roles.
+     */
+    public function ensureBaseGroupMembership()
+    {
+        if ($this->isAnonymous() || !$this->idst) {
+            return;
+        }
+
+        $aclManager = \FormaLms\lib\Forma::getAcl()->getACLManager();
+
+        // Get the /oc_0 (registered users) and /ocd_0 (registered + descendants) group IDs
+        $oc0_idst = $aclManager->getGroupST('/oc_0');
+        $ocd0_idst = $aclManager->getGroupST('/ocd_0');
+
+        if (!$oc0_idst || !$ocd0_idst) {
+            return;
+        }
+
+        // Check membership in /oc_0
+        $query = 'SELECT COUNT(*) FROM %adm_group_members'
+            . ' WHERE idst = ' . (int) $oc0_idst
+            . ' AND idstMember = ' . (int) $this->idst;
+        $result = sql_query($query);
+        if ($result) {
+            [$count] = sql_fetch_row($result);
+            if ((int) $count === 0) {
+                $aclManager->addToGroup($oc0_idst, $this->idst);
+            }
+        }
+
+        // Check membership in /ocd_0
+        $query = 'SELECT COUNT(*) FROM %adm_group_members'
+            . ' WHERE idst = ' . (int) $ocd0_idst
+            . ' AND idstMember = ' . (int) $this->idst;
+        $result = sql_query($query);
+        if ($result) {
+            [$count] = sql_fetch_row($result);
+            if ((int) $count === 0) {
+                $aclManager->addToGroup($ocd0_idst, $this->idst);
+            }
+        }
+    }
+
+    /**
      * @return 0 if the user password is not elapsed, 1 if the password is elapsed or a force change is
      */
     public function isPasswordElapsed()

@@ -17,7 +17,14 @@ class CertificateAdmController extends AdmController
 {
     public function init()
     {
-        parent::init();
+        // Accept framework-level certificate permissions OR LMS-level course permissions.
+        // Both deleteMass and downloadMass are called from the LMS course certificate list
+        // (CourseAlmsController::list_certificate), so users with LMS course admin permissions
+        // should be allowed access.
+        if (!checkPerm('view', true, $this->_mvc_name, 'framework')
+            && !checkPerm('view', true, 'course', 'lms')) {
+            exit("You can't access");
+        }
     }
 
 
