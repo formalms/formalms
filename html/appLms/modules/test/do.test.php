@@ -1835,17 +1835,23 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
             $quest_see[] = $id_q;
         }
 
-        $query_question = "
-		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.idCategory 
-		FROM %lms_testquest AS q JOIN %lms_quest_type AS t
-		WHERE q.idTest = '" . $idTest . "' AND q.type_quest = t.type_quest AND  q.idQuest IN (" . implode(',', $quest_see) . ')
-		ORDER BY q.sequence';
-    } else {
-        $query_question = "
-		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.idCategory 
-		FROM %lms_testquest AS q JOIN %lms_quest_type AS t
-		WHERE q.idTest = '" . $idTest . "' AND q.type_quest = t.type_quest 
-		ORDER BY q.sequence";
+        if (empty($quest_see)) {
+
+            $query_question = "
+        SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.idCategory 
+        FROM %lms_testquest AS q JOIN %lms_quest_type AS t
+        WHERE q.idTest = '" . $idTest . "'
+          AND q.type_quest = t.type_quest
+        ORDER BY q.sequence";
+        } else {
+            $query_question = "
+        SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.idCategory 
+        FROM %lms_testquest AS q JOIN %lms_quest_type AS t
+        WHERE q.idTest = '" . $idTest . "'
+          AND q.type_quest = t.type_quest
+          AND q.idQuest IN (" . implode(',', $quest_see) . ")
+        ORDER BY q.sequence";
+        }
     }
 
     $reQuest = sql_query($query_question);
@@ -1986,7 +1992,7 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
                 $GLOBALS['page']->add($str, 'content');
             }
 
-            while (list($id_cat, $name_cat) = each($categories)) {
+            foreach ($categories as $id_cat => $name_cat) {
                 $str = $name_cat . ', ' . $lang->def('_TEST_SCORES') . ': '
                     . (isset($point_do_cat[$id_cat]) ? $point_do_cat[$id_cat] : 0) . '<br />';
                 if ($mvc) {
@@ -1994,7 +2000,7 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
                 } else {
                     $GLOBALS['page']->add($str, 'content');
                 }
-            }
+            }   
         }
     }
     $str = '<br /><br /><div class="test_answer_space">' . $report_test . '</div>';
