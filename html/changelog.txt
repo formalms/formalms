@@ -2,6 +2,147 @@ FORMA LMS
 RELEASE CHANGELOG
 
 ---------------------------------------------------------------------------------------
+forma.lms 4.1.38
+---------------------------------------------------------------------------------------
+Release date: 2026 February
+
+
+- #      - fix error in user_report
+- #      - chore: bump version to 4.1.38
+- #      - fix: auto-repair base group membership at login and fix certificate deletion permissions
+- #      - remove typo in lang
+- #      - fix: add fallback repair for corrupted serialized report filter data (UTF-8 byte count mismatch)
+- #      - fix(report): hide progress column when progress checkboxes are unchecked
+- #      - fix(report): remove incorrect 'h' suffix from estimated time in user report
+- #      - Implement getTotalTime() function for learning objects in plugin system
+- #      - fix custom field in case 'country' 
+- #      - fix dashboard course
+- #      - fix(api): allow addDay to find dates without days in validateIdDateExistsInCourseFromParams
+- #      - fix(certificate): handle missing certificate data for record downloads
+- #      - update(api-postman): add disabled fields for org chart and custom fields to Postman collection
+- #      - fix(api): improve response handling and streamline code
+- #      - fix(enrollrules): simplify course list retrieval and correct indentation
+- #      - fix(enrollrules): fix PHP fatal error and inactive rule being executed
+- #      - fix(orgchart): Fix custom field inheritance for descendant nodes
+- #      - fix(reports): resolve CSV export error and migrate filter_data to JSON
+- #      - Add script to fix orphan certificates in formalms
+- #      - Improve session handling in reports
+- #      - handle duplicate certificate assignments in `lib.certificate.php` by adding `ON DUPLICATE KEY UPDATE` to ensure updates on existing records instead of duplicates
+- #      - fix(subscriptions): filter expire date validity
+- #      - fix(coreRole): right variables for members group
+- #      - fix(stats): fix assigned users filter in statitem()
+- #      - Enhance report performance with preloaded data and caching
+- #      - Normalize UTF-8 strings in `DbHelper.php` to fix macOS NFD issues; remove redundant font substitution logic from `lib.pdf.php`.
+- #      - Fix strict comparison in `api.course.php` to handle `array_search` properly. 
+- #      - Enhance `processHtmlContent` in `lib.pdf.php` for better UTF-8 handling, font substitution, and image path processing.
+- #      - Refactor hostname handling in `SessionManager` to fix CLI exceptions and improve robustness
+- #      - chore(userSelector): add suspended flag
+- #      - Add "Show Suspended" checkbox and adjust spacing in multiuser selector view.
+- #      - Replace `list()` syntax with shorthand array destructuring for cleaner code. 
+- #      - Update `ReportService` to use the correct parameter name (`all_idst`) for consistency.
+- #      - Fix report cron mail delivery to multiple users
+- #      - fix(groups): remove admin preference filter with filter course selector
+- #      - fix(subscription): prevent reload on waiting users toggle
+- #      - fix date_begin_validity and date_expire_validity in SubscriptionAlmsController.php
+- #      - adjust user connector parameter for default values
+- #      - fix message in forum.php
+- #      - fix bug userselector in forum.php
+- #      - fix bug in lib.stats.php
+- #      - restored gradebook management module
+- #      - fix(user): edit username with space
+- #      - fix(certificates): add unique key for certificates
+- #      - fix(translations): test translations
+- #      - review subscription update function 
+- #      - fix wrong level in learning_courseuser
+- #      - fix(newsletter): avoid send newsletter course to all users of the platform
+- #      - fix course level session when we fix user course level
+- #      - Enforce consistent spacing and type casting across course and subscription libraries. 
+- #      - Add COURSE_LEVELS constant for better level validation and improve user level update logic in course subscriptions.
+- #      - Add in logIntoCourse level check
+- #      - update composer libreries
+- #      - Refactor certificate button rendering 
+- #      - Enforce type casting in subscription controller and align course level groups with user roles 
+- #      - Enhance checkbox value handling in dashboard settings.
+- #      - fix json_encode
+- #      - Improve session hostname fallback for CLI context and fix JSON encoding in course stats
+- #      - fix delete track
+- #      - complete json review
+- #      - improve json serializer
+- #      - Refactor certificate block rendering: optimize HTML structure, enhance conditional logic, and format JavaScript function for clarity.
+- #      - Enhance course report test handling: pass `idCourse` to `getAllLoAbsoluteIdWhereType` and improve test ID validation logic to prevent accidental deletions.
+- #      - review json serializer
+- #      - remove duplicate graphic in dashboard
+- #      - review report course
+- #      - remove org_chart_subdivision in report course
+- #      - Cast `used_space` to float in `getUsedSpace` method to ensure proper type consistency.
+- #      - fix ghost tests
+- #      - Refactor language queries to use universal SQL functions and improve data handling.
+- #      - fix query on hour end in CourseAlms 
+- #      - Fix query for delete languages
+- #      - Refactor test ID normalization and improve cleanup logic in CourseReportLms.
+- #      - fix course status in user report
+- #      - fix insert in addFolder
+- #      - fix upgrader html
+- #      - fix upgrader checked files
+- #      - fix file order in csv connector
+- #      - feat(events): add and remove and update several events to handle plugin effects
+- #      - fix exception during cleanupUserNotEnrolledInClassroomDates in upgrade
+- #      - Fix course report data.
+- #      - fix upgrader migration management 
+- #      - add migration to align public forum 
+- #      - update cleanupUsersNotEnrolledInClassroomDates -> Sync classroom course enrollments with their dates: remove users not enrolled in any date, enroll users in main course if enrolled in dates
+- #      - migration creation to replace public_forum with forum in the core_role table
+- #      - fix error in remove user query
+- #      - fix error in coursereport
+- #      - hide info mycertificate in view
+- #      - fix welcome widget
+- #      - fix access to learning object
+- #      - fix coursereport orphane learning objects 
+- #      - improve coursereport loading 
+- #      - replace a lot of while cycle instead foreach to improve cycle speed
+- #      - increase version
+- #      - review template layout controller and model
+- #      - fix user selector 
+- #      - improve performance about 5,6x in UsermanagementAdm.php
+- #      - fix course button in course.html.twig 
+- #      - fix unread communication in DashboardBlock
+- #      - Fix login_redirect
+- #      - fix delUser
+- #      - fix report
+- #      - fix parameter passed over delUser
+- #      - fix login input typo 
+- #      - fix certificate input typo
+- #      - fix classroom dates in database without days 
+- #      - fix orphan classroom users in learning_courseuser without record in learning_course_date_user 
+- #      - add migration to remove orphan classroom users in learning_courseuser 
+- #      - add sanitize filename for all download files
+- #      - fix order node by translations
+- #      - fix data in deleteMass
+- #      - fix classroom error
+- #      - fix(sso) 
+- #      - fix sso time check
+- #      - fix migration namespace
+- #      - fix argument in authentication
+- #      - add events for subscribe and certificates
+- #      - increase forma version.php
+- #      - fix(connector.formausers.php) : fix send email for existing users
+- #      - fix(reportCourses): right selection for users in org node
+- #      - fix delete mass certificate
+- #      - add _call magic method for controllers
+- #      - add course stats events
+- #      - fix user selector moving request from GET to POST to resolve "uri param to long" when uri params are a lot.
+- #      - update core_connection
+- #      - add git workflow rules
+- #      - add sources
+- #      - fix list certificate
+- #      - fix download cert in lib.certificate
+- #      - add events
+- #      - fix iotask
+- #      - Fix user creation language
+- #      - Fix default language
+- #      - Fix User Language
+
+---------------------------------------------------------------------------------------
 forma.lms 4.1.18
 ---------------------------------------------------------------------------------------
 Release date: 2025 July
