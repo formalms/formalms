@@ -490,7 +490,7 @@ function statuserfilter()
         }
 
         if (array_key_exists('type_h', $eventResults)) {
-            $content_h = $eventResults['type_h'];
+            $type_h = $eventResults['type_h'];
         }
     }
 
@@ -530,9 +530,9 @@ function statuserfilter()
 
                 $eventResults = Events::trigger('lms.stats.userfilter', ['user_course_info' => $user_course_info, 'idst' => $idst]);
 
-                if ($eventResults && array_key_exists('content_h', $eventResults)) {
+                if ($eventResults && array_key_exists('content_body', $eventResults)) {
 
-                    $link = $eventResults['link'];
+                    $link = $eventResults['content_body'];
                 }
                 if (isset($_POST['start_filter']) && $_POST['start_filter'] = 1) {
                     if ($totComplete) {
