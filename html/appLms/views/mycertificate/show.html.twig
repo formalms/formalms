@@ -34,16 +34,23 @@
             </table>
         </div><!-- close tabs -->
 
-        <div role="tabpanel" class="tab-pane fade in " id="meta">
+        <div role="tabpanel" class="tab-pane fade {{ selected_tab == 'meta' ? 'active in' : '' }}" id="meta">
             <table class="table table-striped table-bordered display" style="width:100%" id="mymetacertificates">
+                <thead>
+                    <tr>
+                        <th>{{ Lang_translate('_DATE', 'certificate') }}</th>
+                        <th>{{ Lang_translate('_CODE', 'certificate') }}</th>
+                        <th>{{ Lang_translate('_NAME', 'certificate') }}</th>
+                        <th>{{ Lang_translate('_DOWNLOAD', 'certificate') }}</th>
+                    </tr>
+                </thead>
             </table>
-        </div> <!-- close tabs -->
+        </div>
     </div> <!-- close content -->
 </div>
 
 <script>
     $("body").on("click", "#pdf_download", function () {
-        // Utilizzo della funzione di traduzione JavaScript
         $(this).attr("title", "{{ Lang_translate('_DOWNLOAD') }}");
         $(this).html("<span>{{ Lang_translate('_DOWNLOAD') }}</span>");
     });
@@ -70,11 +77,23 @@
             language: languageObj
         });
 
-        var metacert_tb = $('#mymetacertificates').FormaTable({
+        $('#mymetacertificates').FormaTable({
             data: {{ metacertificates|raw }},
-            columns:{{ cert_columns | raw }},
+            columns: [
+                { data: 'on_date' },
+                { data: 'code' },
+                { data: 'cert_name' },
+                { data: 'download', orderable: false }
+            ],
             language: languageObj,
-            info: false
+            info: false,
+            scrollX: true,
+            width: "100%",
+            autoWidth: false
+        });
+
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
         });
     });
 </script>

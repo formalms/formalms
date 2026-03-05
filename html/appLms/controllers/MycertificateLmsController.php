@@ -35,7 +35,6 @@ class MycertificateLmsController extends LmsController
 
     public function show()
     {
-
         include \FormaLms\lib\Forma::include(_lib_ . '/formatable/', 'include.php');
         checkPerm('view', false, self::mod_name);
 
@@ -48,26 +47,25 @@ class MycertificateLmsController extends LmsController
         $metaCertificates = $this->model->getMyMetaCertificates();
         $totalMetaCertificates = count($metaCertificates);
         $cert_columns = Util::config('tables.mycert_columns');
+
+        $meta_columns = \Util::config('tables.columnsacert');
+
         $selected_tab = FormaLms\lib\Get::req('current_tab', DOTY_STRING, 'cert');
 
 
         $view = 'show';
-
         $eventResults = Events::trigger('lms.certificate.show', ['view' => $view]);
-
         $view = $eventResults['view'];
 
+        $this->render($view, [
+            'metacertificates' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($metaCertificates, 'json'),
+            'metacert_columns' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($meta_columns, 'json'),
+            'totalMetaCertificates' => $totalMetaCertificates,
+            'id_user' => $this->id_user,
+            'cert_columns' => $cert_columns,
+            'selected_tab' => $selected_tab]);
 
-        $this->render($view,
-            [
-                'metacertificates' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($metaCertificates, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON),
-                'certa' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(\Util::config('tables.columnsacert'), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON),
-                'totalMetaCertificates' => $totalMetaCertificates,
-                'id_user' => $this->id_user,
-                'cert_columns' => $cert_columns,
-                'selected_tab' => $selected_tab]);
-
-        /*
+            /*
                 //NEW Event Method
                 $tabs = array();
                 $eventTabs = Events::trigger('lms.mycertificatetab.loading', [
@@ -79,6 +77,7 @@ class MycertificateLmsController extends LmsController
                     'additionalTabs' => $additionalTabs
                 ]);
         */
+
     }
 
     public function getMyCertificates()

@@ -119,31 +119,34 @@ class MycertificateLms extends Model
      */
     public function getMyMetaCertificates()
     {
+
         $query = "SELECT 
                 c.id_certificate,
                 aca.idAssociation, 
                 c.code, 
-                c.name, 
+                c.name as cert_name, 
                 IF(aca.on_date IS NOT NULL, DATE_FORMAT(aca.on_date,'%Y/%m/%d'), '') as 'on_date',
                 aca.cert_file, 
                 '' as 'course_name', 
-                cp.path_name
+                cp.path_name as 'path_name'
             FROM %lms_certificate AS c
             INNER JOIN %lms_aggregated_cert_assign aca ON c.id_certificate = aca.idCertificate
-            INNER JOIN %lms_aggregated_cert_coursepath acc ON aca.idAssociation = acc.idAssociation AND acc.idUser = acc.idUser
+            INNER JOIN %lms_aggregated_cert_coursepath acc ON aca.idAssociation = acc.idAssociation AND acc.idUser = aca.idUser
             INNER JOIN %lms_coursepath cp ON acc.idCoursePath = cp.id_path
             WHERE aca.idUser = " . (int)$this->id_user . ' ORDER BY c.id_certificate ASC';
 
         $result = sql_query($query);
-        $currentIdCert = 0;
-        $index = 0;
         $arrAggregatedCerts = [];
+        $index = 0;
+        $currentIdCert = 0;
+
         foreach ($result as $row) {
             if ($currentIdCert !== (int)$row['idAssociation'] . $row['id_certificate']) {
                 $arrAggregatedCerts[$index] = $row;
-                ++$index;
+                $arrAggregatedCerts[$index]['download'] = $this->_getMetaDownloadLink($row);
+                $index++;
             } else {
-                $arrAggregatedCerts[$index - 1]['path_name'] = $arrAggregatedCerts[$index - 1]['path_name'] . ' | ' . $row['path_name'];
+                $arrAggregatedCerts[$index - 1]['path_name'] .= ' | ' . $row['path_name'];
             }
             $currentIdCert = (int)$row['idAssociation'] . $row['id_certificate'];
         }
@@ -153,7 +156,7 @@ class MycertificateLms extends Model
                 c.id_certificate, 
                 aca.idAssociation, 
                 c.code, 
-                c.name, 
+                c.name as cert_name, 
                 IF(aca.on_date IS NOT NULL, DATE_FORMAT(aca.on_date,'%Y/%m/%d'), '') as 'on_date',
                 aca.cert_file, 
                 cc.name as 'course_name', 
@@ -167,21 +170,29 @@ class MycertificateLms extends Model
 
         $result = sql_query($query);
 
-        $currentIdCert = 0;
         foreach ($result as $row) {
-            if (!$row['subscribed'] && empty($row['cert_file'])) {
-                continue;
-            }
+            if (!$row['subscribed'] && empty($row['cert_file'])) continue;
+
             if ($currentIdCert != (int)$row['idAssociation'] . $row['id_certificate']) {
+                $row['download'] = $this->_getMetaDownloadLink($row);
                 $arrAggregatedCerts[$index] = $row;
-                ++$index;
+                $index++;
             } else {
-                $arrAggregatedCerts[$index - 1]['course_name'] = $arrAggregatedCerts[$index - 1]['course_name'] . ' | ' . $row['course_name'];
+                $arrAggregatedCerts[$index - 1]['course_name'] .= ' | ' . $row['course_name'];
             }
             $currentIdCert = (int)$row['idAssociation'] . $row['id_certificate'];
         }
 
-        return $arrAggregatedCerts;
+        return array_values($arrAggregatedCerts);
+    }
+
+
+    private function _getMetaDownloadLink($row)
+    {
+        if (empty($row['cert_file'])) return '';
+        $downloadUrl = '?r=mycertificate/downloadMetaCert&id_certificate=' . $row['id_certificate'] . '&id_association=' . $row['idAssociation'];
+        $linkTitle = Lang::t('_DOWNLOAD', 'certificate');
+        return '<a class="ico-wt-sprite subs_pdf" href="' . $downloadUrl . '" target="_blank" title="' . $linkTitle . '"><span>' . $linkTitle . '</span></a>';
     }
 
     public function countAggrCertsToRelease()
