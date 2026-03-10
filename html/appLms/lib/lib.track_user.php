@@ -37,19 +37,30 @@ class TrackUser
 
         sql_query('UPDATE %lms_tracksession SET active = 0 WHERE idUser = ' . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . ' and active = 1');
 
-        sql_query("INSERT INTO %lms_tracksession 
-		( idCourse, idUser, session_id, enterTime, lastTime, ip_address, active ) VALUES ( 
-			'" . $session->get('idCourse') . "', 
+        $query_insert = "INSERT INTO %lms_tracksession
+		( idCourse, idUser, session_id, enterTime, lastTime, ip_address, active ) VALUES (
+			'" . $session->get('idCourse') . "',
 			'" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "',
 			'',
 			'" . $now . "',
 			'" . $now . "',
 			'" . $_SERVER['REMOTE_ADDR'] . "',
-			1 ) ");
+			1 ) ";
+        $result_insert = sql_query($query_insert);
+
+        if (!$result_insert) {
+            error_log('[TRACKING_DEBUG] INSERT tracksession failed - sql_error: ' . sql_error()
+                . ' | idCourse: ' . $session->get('idCourse')
+                . ' | idUser: ' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
+        }
+
         list($id) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
         if ($id) {
             $session->set('id_enter_course', $id);
             $session->save();
+        } else {
+            error_log('[TRACKING_DEBUG] LAST_INSERT_ID returned empty after tracksession insert'
+                . ' | insert result: ' . var_export($result_insert, true));
         }
     }
 
@@ -62,29 +73,48 @@ class TrackUser
         }
 
         $now = date('Y-m-d H:i:s');
-        sql_query('
-		UPDATE ' . $GLOBALS['prefix_lms'] . "_tracksession 
-		SET numOp = numOp+1, 
-			lastFunction = '" . $mod_name . "', 
-			lastOp = '" . $mode . "', 
+        $id_enter_course = $session->get('id_enter_course');
+
+        $query_update = '
+		UPDATE ' . $GLOBALS['prefix_lms'] . "_tracksession
+		SET numOp = numOp+1,
+			lastFunction = '" . $mod_name . "',
+			lastOp = '" . $mode . "',
 			lastTime = '" . $now . "',
 			ip_address = '" . $_SERVER['REMOTE_ADDR'] . "'
-		WHERE idEnter = '" . $session->get('id_enter_course') . "' "
-            . "AND idCourse = '" . $id_course . "' AND idUser = '" . $id_user . "'");
+		WHERE idEnter = '" . $id_enter_course . "' "
+            . "AND idCourse = '" . $id_course . "' AND idUser = '" . $id_user . "'";
+        $result_update = sql_query($query_update);
+
+        if (!$result_update) {
+            error_log('[TRACKING_DEBUG] UPDATE tracksession failed - sql_error: ' . sql_error()
+                . ' | id_enter_course: ' . var_export($id_enter_course, true)
+                . ' | id_course: ' . $id_course . ' | id_user: ' . $id_user);
+        }
 
         if (FormaLms\lib\Get::sett('tracking') == 'on' && $session->get('levelCourse') != '2') {
             $query_track = "
 			INSERT INTO %lms_trackingeneral
-			( idUser, idEnter, idCourse, function, type, timeof, session_id, ip ) VALUES (
-				'" . $id_user . "',
-				'" . $session->get('id_enter_course') . "',
-				'" . $id_course . "',
+			( `idUser`, `idEnter`, `idCourse`, `function`, `type`, `timeof`, `session_id`, `ip` ) VALUES (
+				'" . (int) $id_user . "',
+				'" . (int) $id_enter_course . "',
+				'" . (int) $id_course . "',
 				'" . $mod_name . "',
 				'" . $mode . "',
 				'" . $now . "',
 				'',
 				'" . $_SERVER['REMOTE_ADDR'] . "' )";
-            sql_query($query_track);
+            $result = sql_query($query_track);
+
+            if (!$result) {
+                error_log('[TRACKING_DEBUG] INSERT trackingeneral failed - sql_error: ' . sql_error());
+                error_log('[TRACKING_DEBUG] Query: ' . $query_track);
+                error_log('[TRACKING_DEBUG] id_enter_course: ' . var_export($id_enter_course, true)
+                    . ' | levelCourse: ' . $session->get('levelCourse'));
+            }
+        } else {
+            error_log('[TRACKING_DEBUG] Tracking skipped - tracking_sett: '
+                . FormaLms\lib\Get::sett('tracking') . ' | levelCourse: ' . $session->get('levelCourse'));
         }
     }
 

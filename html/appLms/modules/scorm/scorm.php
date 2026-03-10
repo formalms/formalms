@@ -90,7 +90,7 @@ function insitem()
         Util::jump_to('' . $back_url . '&create_result=0');
     }
     $path = str_replace('\\', '/', '/' . _folder_lms_ . '/' . FormaLms\lib\Get::sett('pathscorm'));
-    $savefile = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . '_' . rand(0, 100) . '_' . time() . '_' . $_FILES['attach']['name'];
+    $savefile = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . '_' . rand(0, 100) . '_' . time() . '_' . Util::sanitizeFilename($_FILES['attach']['name']);
     if (!file_exists(_files_ . $path . $savefile)) {
         sl_open_fileoperations();
         if (!sl_upload($_FILES['attach']['tmp_name'], $path . $savefile)) {

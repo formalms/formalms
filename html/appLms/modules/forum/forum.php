@@ -1431,7 +1431,7 @@ function save_file($file)
     $path = '/appLms/' . FormaLms\lib\Get::sett('pathforum');
 
     if ($file['name'] != '') {
-        $savefile = $idCourse . '_' . rand(0, 100) . '_' . time() . '_' . $file['name'];
+        $savefile = $idCourse . '_' . rand(0, 100) . '_' . time() . '_' . Util::sanitizeFilename($file['name']);
         if (!file_exists(_files_ . $path . $savefile)) {
             sl_open_fileoperations();
             if (!sl_upload($file['tmp_name'], $path . $savefile)) {

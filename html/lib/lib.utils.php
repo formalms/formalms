@@ -33,6 +33,30 @@ class Util
 {
     protected static $_js_loaded = [];
 
+    public static function sanitizeFilename(string $filename): string
+    {
+        $extension = pathinfo($filename, PATHINFO_EXTENSION);
+        $name = pathinfo($filename, PATHINFO_FILENAME);
+
+        $transliterated = @iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $name);
+        if ($transliterated !== false) {
+            $name = $transliterated;
+        }
+
+        $name = preg_replace('/\s+/', '_', $name);
+        $name = preg_replace('/[^a-zA-Z0-9_-]/', '', $name);
+
+        if (empty($name)) {
+            $name = 'file_' . time();
+        }
+
+        if ($extension) {
+            $extension = preg_replace('/[^a-zA-Z0-9]/', '', $extension);
+        }
+
+        return $extension ? $name . '.' . $extension : $name;
+    }
+
     public static function purge($html)
     {
         return addslashes(strip_tags($html));
