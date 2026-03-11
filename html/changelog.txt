@@ -2,6 +2,18 @@ FORMA LMS
 RELEASE CHANGELOG
 
 ---------------------------------------------------------------------------------------
+forma.lms 4.1.39
+---------------------------------------------------------------------------------------
+Release date: 2026 March
+
+
+- #      - fix(migrations): add safety checks for file rename and optimize ALTER TABLE
+- #      - fix(tracking/file upload): enhance validation and error handling for tracking/logs and sanitize file uploads
+- #      - fix render tab metacertificate
+- #      - fix(statUser): event handling
+- #      - chore: bump version to 4.1.39
+
+---------------------------------------------------------------------------------------
 forma.lms 4.1.38
 ---------------------------------------------------------------------------------------
 Release date: 2026 February
