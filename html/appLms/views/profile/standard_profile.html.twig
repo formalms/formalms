@@ -125,11 +125,13 @@
           input.value = div.textContent.trim();
           input.id = div.id;
           if (div.id.includes('field')){
-            let match = div.id.match(/\d+/);
-            let number = match ? match[0] : "";
-
-            // Assegna il nome con il formato desiderato
-            input.name = `field_textfield[${number}]`;
+            let match = div.id.match(/^field_(.+)_(\d+)$/);
+            if (match) {
+              input.name = `field_${match[1]}[${match[2]}]`;
+            } else {
+              let numMatch = div.id.match(/\d+/);
+              input.name = `field_textfield[${numMatch ? numMatch[0] : ""}]`;
+            }
           }
           else{
             input.name = div.id;
