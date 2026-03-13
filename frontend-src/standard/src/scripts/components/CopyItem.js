@@ -85,14 +85,24 @@ class CopyItem {
       document.querySelectorAll('.is-ready-for-copy').forEach((item) => {
          ids.push(item.getAttribute('data-id'));
       });
-      axios.get(_this.getApiUrl('copy', { ids: ids, newtype, type: this.currentType })).then(() => {
-         const container = document.querySelector('*[data-container=' + newtype + ']');
+      axios.get(_this.getApiUrl('copy', { ids: ids, newtype, type: this.currentType })).then((response) => {
+         const data = response.data;
          _this.toggleBlockCopyClick();
+         if (data && data.success === false) {
+            _this.closeOverlay();
+            const message = data.message || 'Copy operation failed';
+            alert(message);
+            return;
+         }
+         const container = document.querySelector('*[data-container=' + newtype + ']');
          _this.closeOverlay();
          document.querySelector('.tab-link[data-type="' + newtype + '"]').click();
          container.querySelector('.ft-is-root').click();
       }).catch( (error) => {
+         _this.toggleBlockCopyClick();
+         _this.closeOverlay();
          console.log(error);
+         alert('Copy operation failed');
       });
    }
 

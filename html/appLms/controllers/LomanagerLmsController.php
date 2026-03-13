@@ -229,6 +229,7 @@ class LomanagerLmsController extends LmsController
     {
         $fromType = FormaLms\lib\Get::req('type', DOTY_STRING, false);
         $newtype = FormaLms\lib\Get::req('newtype', DOTY_STRING, false);
+        $success = true;
 
         if ($ids = FormaLms\lib\Get::req('ids', DOTY_MIXED, false)) {
             $ids_arr = explode(',', $ids);
@@ -236,12 +237,23 @@ class LomanagerLmsController extends LmsController
             foreach ($ids_arr as $id) {
                 if ($id > 0 && $this->model->copy($id, $fromType)) {
                     $this->model->setTdb($newtype);
-                    $this->model->paste(0);
+                    $result = $this->model->paste(0);
+                    if (!$result) {
+                        $success = false;
+                    }
                     $this->model->setTdb($fromType);
+                } elseif ($id > 0) {
+                    $success = false;
                 }
             }
         }
-        exit(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(true,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
+
+        $response = ['success' => $success];
+        if (!$success && \FormaLms\lib\Forma::errorsExists()) {
+            $response['message'] = \FormaLms\lib\Forma::getFormattedErrors(true);
+        }
+
+        exit(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($response, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
     }
 
     public function completeAction()

@@ -61,6 +61,8 @@
  * Date: 2023-08-28T13:37Z
  */
 
+/*! Axios v1.13.6 Copyright (c) 2026 Matt Zabriskie and contributors */
+
 /*! Buttons for DataTables 2.4.2
  * © SpryMedia Ltd - datatables.net/license
  */
@@ -73,7 +75,7 @@
  * © SpryMedia Ltd - datatables.net/license/mit
  */
 
-/*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
+/*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */
 
 /**
  * Twig.js

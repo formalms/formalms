@@ -181,6 +181,9 @@ class LomanagerLms extends Model
         $saveObj = new Session_Save();
         $saveName = $saveObj->getName('crepo', true);
         $folder = $this->tdb->getFolderById((string)$id);
+        if ($folder === null) {
+            return false;
+        }
         $saveData = [
             'repo' => $fromType,
             'id' => $id,
@@ -198,10 +201,13 @@ class LomanagerLms extends Model
         require_once _adm_ . '/lib/lib.sessionsave.php';
         $saveObj = new Session_Save();
         if ($saveObj->nameExists('crepo')) {
-            $saveData = &$saveObj->load('crepo');
+            $saveData = $saveObj->load('crepo');
 
             if ($saveData['objectType']) {
                 $lo = createLO($saveData['objectType']);
+                if ($lo === false) {
+                    return false;
+                }
                 $idResource = $lo->copy((int)$saveData['idResource']);
                 if ($idResource != 0) {
                     $idReference = $this->tdb->addItem($folderId,
