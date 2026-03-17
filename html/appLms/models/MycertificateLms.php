@@ -189,8 +189,7 @@ class MycertificateLms extends Model
 
     private function _getMetaDownloadLink($row)
     {
-        if (empty($row['cert_file'])) return '';
-        $downloadUrl = '?r=mycertificate/downloadMetaCert&id_certificate=' . $row['id_certificate'] . '&id_association=' . $row['idAssociation'];
+        $downloadUrl = '?r=mycertificate/downloadMetaCert&id_certificate=' . $row['id_certificate'] . '&id_association=' . $row['idAssociation'] . '&aggCert=1';
         $linkTitle = Lang::t('_DOWNLOAD', 'certificate');
         return '<a class="ico-wt-sprite subs_pdf" href="' . $downloadUrl . '" target="_blank" title="' . $linkTitle . '"><span>' . $linkTitle . '</span></a>';
     }

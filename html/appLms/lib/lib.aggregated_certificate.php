@@ -979,12 +979,13 @@ class AggregatedCertificate implements Accessible
     public function releaseNewCertificate($id_user, $id_certificate, $id_association)
     {
         $query = 'INSERT INTO ' . $this->table_assign_agg_cert
-            . ' ( idUser, idCertificate, idAssociation ) '
+            . ' ( idUser, idCertificate, idAssociation, on_date ) '
             . ' VALUES '
             . ' ( '
             . intval($id_user) . ','
             . intval($id_certificate) . ', '
-            . intval($id_association)
+            . intval($id_association) . ', '
+            . "NOW()"
             . ') ';
         $rs = sql_query($query);
 
