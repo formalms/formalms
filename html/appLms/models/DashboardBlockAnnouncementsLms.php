@@ -83,10 +83,13 @@ class DashboardBlockAnnouncementsLms extends DashboardBlockLms
         if (count($learning_path_enroll) > 1 && FormaLms\lib\Get::sett('on_path_in_mycourses') == 'off') {
             $exclude_path_course = 'select idCourse from learning_courseuser where idUser=' . \FormaLms\lib\FormaUser::getCurrentUser()->getId() . ' and level <= 3 and idCourse in (' . implode(',', $learning_path_enroll) . ')';
             $rs = $this->db->query($exclude_path_course);
+            $excl = [];
             foreach ($rs as $data) {
                 $excl[] = $data['idCourse'];
             }
-            $exclude_pathcourse = ' and c.idCourse not in (' . implode(',', $excl) . ' )';
+            if (!empty($excl)) {
+                $exclude_pathcourse = ' and c.idCourse not in (' . implode(',', $excl) . ' )';
+            }
         }
 
         $query = 'SELECT c.idCourse'
