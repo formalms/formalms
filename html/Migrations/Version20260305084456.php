@@ -129,6 +129,9 @@ final class Version20260305084456 extends AbstractMigration
                     continue;
                 }
                 $this->write(sprintf('    RENAMED DIR: %s -> %s', $oldPath, $newPath));
+            } elseif (is_dir($newFullPath)) {
+                // Directory was already renamed by a previous record with the same path
+                $this->write(sprintf('    ALREADY RENAMED: %s -> %s', $oldPath, $newPath));
             } else {
                 $this->write(sprintf('    SKIP (not found on disk): %s', $oldPath));
                 continue;
@@ -147,9 +150,10 @@ final class Version20260305084456 extends AbstractMigration
                 }
             }
 
+            // Update ALL records sharing this path, not just the current one
             $this->connection->executeStatement(
-                'UPDATE learning_scorm_package SET path = ? WHERE idscorm_package = ?',
-                [$newPath, $row['idscorm_package']]
+                'UPDATE learning_scorm_package SET path = ? WHERE path = ?',
+                [$newPath, $oldPath]
             );
         }
     }
