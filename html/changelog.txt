@@ -2,6 +2,18 @@ FORMA LMS
 RELEASE CHANGELOG
 
 ---------------------------------------------------------------------------------------
+forma.lms 4.1.40
+---------------------------------------------------------------------------------------
+Release date: 2026 March
+
+
+- #      - fix(migrations): resolve stale non-ASCII paths in SCORM package migration
+- #      - fix findEnrolledCourses in DashboardBlockAnnouncementsLms
+- #      - fix(metacertificate): fix date and download in MycertificateLms
+- #      - fix: move query outside foreach in coursestatsLms
+- #      - chore: bump version to 4.1.40
+
+---------------------------------------------------------------------------------------
 forma.lms 4.1.39
 ---------------------------------------------------------------------------------------
 Release date: 2026 March
