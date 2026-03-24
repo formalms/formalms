@@ -140,11 +140,11 @@ class LearningCourse
     private $courseDemo = '';
 
     /**
-     * @var int
+     * @var float
      *
-     * @ORM\Column(name="mediumTime", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\Column(name="mediumTime", type="decimal", precision=10, scale=2, nullable=false, options={"unsigned"=true, "default"="0.00"})
      */
-    private $mediumtime = '0';
+    private $mediumtime = '0.00';
 
     /**
      * @var bool

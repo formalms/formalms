@@ -157,6 +157,7 @@ class CourseReportManager
 
     public function updateTestReport($id_tests)
     {
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.test.php');
         $test_man = new GroupTestManagement();
         $tests_list = $test_man->getTestInfo($id_tests);
         foreach ($tests_list as $id_test => $test_info) {

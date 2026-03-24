@@ -1743,6 +1743,15 @@ function updatepoint()
         return;
     }
 
+    // Sync updated scores to learning_coursereport
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+    $idCourse = (int)$session->get('idCourse');
+    if ($idCourse > 0) {
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.coursereport.php');
+        $reportMan = new CourseReportManager($idCourse);
+        $reportMan->updateTestReport([$idTest]);
+    }
+
     Util::jump_to('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $url_coded);
 }
 

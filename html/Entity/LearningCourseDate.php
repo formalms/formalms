@@ -93,11 +93,11 @@ class LearningCourseDate
     private $status = '0';
 
     /**
-     * @var int
+     * @var float
      *
-     * @ORM\Column(name="medium_time", type="integer", nullable=false)
+     * @ORM\Column(name="medium_time", type="decimal", precision=10, scale=2, nullable=false, options={"default"="0.00"})
      */
-    private $mediumTime = '0';
+    private $mediumTime = '0.00';
 
     /**
      * @var \DateTime
