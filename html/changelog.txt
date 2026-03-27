@@ -2,6 +2,16 @@ FORMA LMS
 RELEASE CHANGELOG
 
 ---------------------------------------------------------------------------------------
+forma.lms 4.1.41
+---------------------------------------------------------------------------------------
+Release date: 2026 March
+
+
+- #      - fix(report): handle unsaved report filters and ensure JSON migration consistency
+- #      - fix(report): fix export of unsaved report filters (nosave mode)
+- #      - chore: bump version to 4.1.41
+
+---------------------------------------------------------------------------------------
 forma.lms 4.1.40
 ---------------------------------------------------------------------------------------
 Release date: 2026 March
