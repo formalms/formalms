@@ -1004,18 +1004,24 @@ function report_show_results($idrep = false)
     }
 
     $obj_report->back_url = $start_url;
-    $obj_report->jump_url = 'index.php?modname=report&op=show_results&idrep=' . $idrep;
+    $obj_report->jump_url = 'index.php?modname=report&op=show_results&idrep=' . $idrep
+        . ($idrep == false ? '&nosave=1' : '');
 
     if ($author == 0) {
         $filter_name = ($filter_name ? $lang->def($filter_name) : '');
     }
 
-    // Use JSON column if available, otherwise fallback to serialized data
-    $data = _decode($filter_data_json, $filter_data);
+    if ($idrep == false) {
+        // Unsaved report: filter data is already in session as an array
+        $data = $reportTempData;
+    } else {
+        // Saved report: decode from database columns
+        $data = _decode($filter_data_json, $filter_data);
 
-    // Migrate to JSON if not already done
-    if (empty($filter_data_json) && !empty($data) && isset($id_filter)) {
-        _migrate_filter_to_json($id_filter, $data);
+        // Migrate to JSON if not already done
+        if (empty($filter_data_json) && !empty($data) && isset($id_filter)) {
+            _migrate_filter_to_json($id_filter, $data);
+        }
     }
 
     // Validate decoded data before export
