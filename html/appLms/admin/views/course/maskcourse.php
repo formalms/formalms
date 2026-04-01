@@ -31,11 +31,15 @@ $htmlData = '';
         $htmlData .= (Form::getLineBox(Lang::t('_COURSE_TYPE', 'course'), $course_type['classroom'])
             . Form::getHidden('course_type', 'course_type', 'classroom'));
     } elseif ($course['course_edition'] > 0 && $has_editions_or_classrooms) {
-        //this is a classroom course with editions
+        //this is an edition course with editions
         $htmlData .= (Form::getLineBox(Lang::t('_COURSE_TYPE', 'course'), $course_type['edition'])
             . Form::getHidden('course_type', 'course_type', 'edition'));
+    } elseif ($id_course !== false && $has_enrolled_users) {
+        //course has enrolled users, block type change
+        $current_type_key = $course['course_edition'] > 0 ? 'edition' : $course['course_type'];
+        $htmlData .= (Form::getLineBox(Lang::t('_COURSE_TYPE', 'course'), $course_type[$current_type_key])
+            . Form::getHidden('course_type', 'course_type', $current_type_key));
     } else {
-        //echo Form::getDropdown(Lang::t('_COURSE_TYPE', 'course'), 'course_type', 'course_type', $course_type, $course['course_type']);
         $htmlData .= (Form::getDropdown(Lang::t('_COURSE_TYPE', 'course'), 'course_type', 'course_type', $course_type, $id_course === false ? 'elearning' : $course['course_type']));
     }
     $htmlData .= (Form::getDropdown(Lang::t('_STATUS', 'course'), 'course_status', 'course_status', $status, $course['status'])
