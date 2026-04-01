@@ -890,6 +890,18 @@ class CourseAlms extends Model
             return $res;
         }
 
+        // Block course type change if users are enrolled
+        $current_course_info = $this->getInfo($id_course);
+        if ($current_course_info) {
+            $current_type = $current_course_info['course_type'];
+            $new_type = $data_params['course_type'];
+            // Also account for edition flag: current course_edition=1 means effective type is 'elearning'
+            // but the form sends 'edition' which gets resolved to 'elearning' + course_edition=1 in the controller
+            if ($current_type !== $new_type && $this->hasEnrolledUsers($id_course)) {
+                return ['err' => '_err_course_type_change_has_enrolled_users'];
+            }
+        }
+
         // restriction on course status ------------------------------------------
         $user_status = 0;
         if (isset($data_params['user_status'])) {
