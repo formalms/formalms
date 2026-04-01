@@ -1495,6 +1495,18 @@ class CourseAlms extends Model
         return false;
     }
 
+    public function hasEnrolledUsers($id_course)
+    {
+        $query = "SELECT COUNT(*) as cnt FROM %lms_courseuser WHERE idCourse = " . (int)$id_course;
+        $result = sql_query($query);
+        if ($result) {
+            $row = sql_fetch_assoc($result);
+            return (int)$row['cnt'] > 0;
+        }
+
+        return false;
+    }
+
     public function getInfo($id_course = false, $id_edition = false, $id_date = false)
     {
         $_id_course = ($id_course ?: $this->id_course);
