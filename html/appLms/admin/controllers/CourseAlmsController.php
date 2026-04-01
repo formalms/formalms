@@ -1465,6 +1465,12 @@ class CourseAlmsController extends AlmsController
             $params['has_editions_or_classrooms'] = $this->model->hasEditionsOrClassrooms($id_course);
         }
 
+        if ($id_course == false) {
+            $params['has_enrolled_users'] = false;
+        } else {
+            $params['has_enrolled_users'] = $this->model->hasEnrolledUsers($id_course);
+        }
+
         if ($params['course']['hour_begin'] != '-1') {
             $hb_sel = (int)substr($params['course']['hour_begin'], 0, 2);
             $qb_sel = substr($params['course']['hour_begin'], 3, 2);
