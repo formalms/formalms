@@ -152,7 +152,7 @@ $htmlData = '';
             . Form::getInputDropdown('dropdown_nw', 'hour_end_quarter', 'hour_end[quarter]', $quarter, $qe_sel, '')
         )
         . Form::getTextfield(Lang::t('_DAY_OF_VALIDITY', 'course'), 'course_day_of', 'course_day_of', '10', $course['valid_time'])
-        . Form::getTextfield(Lang::t('_MEDIUM_TIME', 'course'), 'course_medium_time', 'course_medium_time', '10', str_replace('.', ',', $course['mediumTime']))
+        . Form::getTextfield(Lang::t('_MEDIUM_TIME', 'course'), 'course_medium_time', 'course_medium_time', '10', rtrim(rtrim(str_replace('.', ',', $course['mediumTime']), '0'), ','))
         . Form::getCheckbox(Lang::t('_SEND_CALENDAR', 'course'), 'send_calendar', 'send_calendar', 1, $course['sendCalendar'])
         . Form::getCloseFieldset()
 
