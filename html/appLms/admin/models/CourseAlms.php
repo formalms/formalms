@@ -668,7 +668,7 @@ class CourseAlms extends Model
             img_othermaterial   = '" . $file_othermaterial . "',
             course_demo         = '" . $file_demo . "',
 
-            mediumTime          = '" . $data_params['course_medium_time'] . "',
+            mediumTime          = '" . str_replace(',', '.', $data_params['course_medium_time']) . "',
             sendCalendar        = '" . (isset($data_params['send_calendar']) ? 1 : 0) . "',
             calendarId          = '" . CalendarManager::generateUniqueCalendarId() . "',
             permCloseLO         = '" . $data_params['course_em'] . "',
@@ -1050,7 +1050,7 @@ class CourseAlms extends Model
             img_othermaterial   = '" . $file_othermaterial . "',
             course_demo         = '" . $file_demo . "',
 
-            mediumTime          = '" . $data_params['course_medium_time'] . "',
+            mediumTime          = '" . str_replace(',', '.', $data_params['course_medium_time']) . "',
             sendCalendar        = '" . (isset($data_params['send_calendar']) ? 1 : 0) . "',
             permCloseLO         = '" . $data_params['course_em'] . "',
             userStatusOp        = '" . $user_status . "',
