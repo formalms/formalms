@@ -477,6 +477,23 @@ class Field_Dropdown extends Field
         if (!isset($_POST['field_' . static::getFieldType()][$this->id_common])) {
             return true;
         }
+
+        $value = $_POST['field_' . static::getFieldType()][$this->id_common];
+
+        if ($value !== '' && !is_numeric($value)) {
+            $re_opt = sql_query('
+			SELECT id_common_son
+			FROM ' . $this->_getElementTable() . "
+			WHERE idField = '" . (int) $this->id_common . "'
+				AND lang_code = '" . Lang::get() . "'
+				AND translation = '" . addslashes($value) . "'");
+            [$id_common_son] = sql_fetch_row($re_opt);
+            if ($id_common_son === null) {
+                return true;
+            }
+            $value = $id_common_son;
+        }
+
         $re_entry = sql_query('
 		SELECT user_entry
 		FROM ' . $this->_getUserEntryTable() . "
@@ -490,7 +507,7 @@ class Field_Dropdown extends Field
             }
             if (!sql_query('
 			UPDATE ' . $this->_getUserEntryTable() . "
-			SET user_entry = '" . $_POST['field_' . static::getFieldType()][$this->id_common] . "'
+			SET user_entry = '" . $value . "'
 			WHERE id_user = '" . $id_user . "' AND
 			id_common = '" . (int) $this->id_common . "' AND
 			id_common_son = '0'")) {
@@ -503,7 +520,7 @@ class Field_Dropdown extends Field
 			(	'" . $id_user . "',
 				'" . (int) $this->id_common . "',
 				'0',
-				'" . $_POST['field_' . static::getFieldType()][$this->id_common] . "')")) {
+				'" . $value . "')")) {
                 return false;
             }
         }
