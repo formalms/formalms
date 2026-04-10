@@ -6,13 +6,16 @@ forma.lms 4.1.42
 ---------------------------------------------------------------------------------------
 Release date: 2026 April
 
-
+- #      - fix field value error on profile save
+- #      - remove classroom edition
+- #      - feat(course): lock course type dropdown when enrolled users exist
+- #      - feat(course): pass has_enrolled_users to course mask view
+- #      - feat(course): block course type change in upCourse() when users are enrolled
+- #      - feat(course): add hasEnrolledUsers() method to CourseAlms model
+- #      - fix(lomanager): fix LO copy from organization to homerepo with SCORM DB-only copy
+- #      - fix: correct POST field types in user profile
 - #      - fix: change decimal separator from dot to comma
 - #      - fix: add rtrim in medium_time
-- #      - feat(course): add hasEnrolledUsers() method to CourseAlms model
-- #      - feat(course): block course type change in upCourse() when users are enrolled
-- #      - feat(course): pass has_enrolled_users to course mask view
-- #      - feat(course): lock course type dropdown when enrolled users exist
 - #      - chore: bump version to 4.1.42
 
 ---------------------------------------------------------------------------------------
