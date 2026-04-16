@@ -2,6 +2,16 @@ FORMA LMS
 RELEASE CHANGELOG
 
 ---------------------------------------------------------------------------------------
+forma.lms 4.1.43
+---------------------------------------------------------------------------------------
+Release date: 2026 April
+
+- #      - fix(migrations): safe SCORM path repair without DB/filesystem drift
+- #      - fix(migrations): Version20260319120000 now verifies filesystem before updating DB
+- #      - feat(migrations): Version20260416103000 repairs residual SCORM path drift (non-ASCII, spaces, dots) by scanning both DB and disk
+- #      - chore: bump version to 4.1.43
+
+---------------------------------------------------------------------------------------
 forma.lms 4.1.42
 ---------------------------------------------------------------------------------------
 Release date: 2026 April
