@@ -119,20 +119,17 @@ class PrivacypolicyAdm extends Model
 
     public function deletePolicy($id_policy)
     {
-        $output = false;
-
         $query = 'DELETE FROM %adm_privacypolicy WHERE id_policy = ' . (int) $id_policy . ' LIMIT 1';
         $res = $this->db->query($query);
 
         if ($res) {
             $query_lang = 'DELETE FROM %adm_privacypolicy_lang WHERE id_policy=' . (int) $id_policy;
-            $res_lang = $this->db->query($query);
+            $res_lang = $this->db->query($query_lang);
 
-            $output = true;
-            //delete associations ...
+            $query_org_chart = 'UPDATE core_org_chart_tree set associated_policy = null where associated_policy='. (int) $id_policy;
+            $res_org_chart =  $this->db->query($query_org_chart);
         }
-
-        return $output;
+        return $res && $res_lang && $res_org_chart;
     }
 
     public function createPolicy($name, $translations)
@@ -146,7 +143,7 @@ class PrivacypolicyAdm extends Model
         $output = false;
         $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangCode();
 
-        $query = "INSERT INTO %adm_privacypolicy (name) VALUES ('" . $name . "')";
+        $query = "INSERT INTO %adm_privacypolicy (name, lastedit_date, validity_date) VALUES ('" . $name . "','". date('Y-m-d H:i:s'). "','".  date('Y-m-d H:i:s') ."')";
         $res = $this->db->query($query);
         if ($res) {
             $id_policy = $this->db->insert_id();

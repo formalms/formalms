@@ -15,7 +15,6 @@ class EditionLmsController extends LmsController
 {
     public $name = 'classroom';
 
-    protected $json;
     protected $acl_man;
 
     protected $data;
@@ -24,9 +23,9 @@ class EditionLmsController extends LmsController
     {
         parent::__construct($mvc_name);
 
-        require_once _base_ . '/lib/lib.json.php';
+        
 
-        $this->json = new Services_JSON();
+        
         $this->acl_man = \FormaLms\lib\Forma::getAclManager();
     }
 
@@ -56,14 +55,14 @@ class EditionLmsController extends LmsController
         $array_edition = $model->loadEdition($start_index, $results, $sort, $dir);
 
         $result = ['totalRecords' => $total_edition,
-                            'startIndex' => $start_index,
-                            'sort' => $sort,
-                            'dir' => $dir,
-                            'rowsPerPage' => $results,
-                            'results' => count($array_edition),
-                            'records' => $array_edition, ];
+            'startIndex' => $start_index,
+            'sort' => $sort,
+            'dir' => $dir,
+            'rowsPerPage' => $results,
+            'results' => count($array_edition),
+            'records' => $array_edition,];
 
-        $this->data = $this->json->encode($result);
+        $this->data = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
         echo $this->data;
     }
@@ -123,7 +122,7 @@ class EditionLmsController extends LmsController
 
         $res = ['success' => $model->delEdition()];
 
-        $this->data = $this->json->encode($res);
+        $this->data = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($res, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
         echo $this->data;
     }

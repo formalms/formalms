@@ -1,0 +1,347 @@
+<style>
+    thead input {
+        width: 100%;
+    }
+
+    .actionButtons {
+        float: left;
+        padding: 1%;
+        margin: 0 1%;
+    }
+
+    .custom {
+        background-color: yellow;
+    }
+
+    .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody>table>tbody>tr>td{text-align:left;}
+
+    th.select-checkbox {
+    pointer-events: none;
+}
+
+
+</style>
+
+
+<script>
+    // used from certificate.js
+    var ajax_url="ajax.adm_server.php?plf=lms&mn=certificate";
+    var _CLOSE="' . Lang::t('_CLOSE') . '";
+    var _STOP="' . Lang::t('_STOP') . '";
+    var glob_id_certificate = 0;
+    var glob_id_course = ' . (int)$id_course . ';
+</script>
+
+{{ Get_title({
+    'index.php?r=alms/course/show' : Lang_translate('_CERTIFICATE_ASSIGN_STATUS', 'course'),
+    '':course_name
+}, false) }}
+
+<div class="actionsContainer">
+    <a id="print_selected_button_1" class="actionButtons" href="javascript:generate_all_certificate();">
+    {{ Get_img('course/certificate.png', Lang_translate('_GENERATE_ALL_SELECTED', 'certificate')) }}
+    {{ Lang_translate('_GENERATE_ALL_SELECTED', 'certificate') }}
+</a>
+<a id="download_selected_button_1" class="actionButtons" href="javascript:download_all_certificate();">
+ {{ Get_img('standard/download.png', Lang_translate('_DOWNLOAD_ALL_SELECTED', 'certificate')) }}
+    {{ Lang_translate('_DOWNLOAD_ALL_SELECTED', 'certificate') }}
+</a>
+<a id="delete_selected_button_1" class="actionButtons" href="javascript:delete_all_certificates();">
+ {{ Get_img('standard/delete.png', Lang_translate('_DELETE_ALL_SELECTED', 'certificate')) }}
+  {{ Lang_translate('_DELETE_ALL_SELECTED', 'certificate') }}
+</a>
+</div>
+
+
+<div class='container-back'>
+
+<a href="{{ url }}"> {{ Lang_translate('_BACK', 'standard') }} </a>
+
+
+<input type='hidden' id='show_search' value='false'>
+<input type='hidden' id='sel_all' value='false'>
+
+<div class='std_block' style="width:95%; margin:auto; display:block">
+    <table id='table_certificate'  data-id_course=" {{ id_course }}"
+        data-id_certificate=" {{ id_certificate }}" class='table table-striped table-bordered'
+        style='width:100%'>
+    </table>
+    <script type="text/javascript">
+        let currentUrl = window.location.href;
+        let modalDeletion = new window.frontend.modules.Modal('confirm-deletion','#admcontainer');
+
+
+        $.extend(jQuery.fn.dataTableExt.oSort, {
+            "date-euro-pre": function(a) {
+                var x;
+
+                if ($.trim(a) !== '') {
+                    var frDatea = $.trim(a).split(' ');
+                    var frTimea = (undefined != frDatea[1]) ? frDatea[1].split(':') : [00, 00, 00];
+                    var frDatea2 = frDatea[0].split('-');
+                    x = (frDatea2[2] + frDatea2[1] + frDatea2[0] + frTimea[0] + frTimea[1] + ((undefined != frTimea[2]) ? frTimea[2] : 0)) * 1;
+                } else {
+                    x = Infinity;
+                }
+
+                return x;
+            },
+
+            "date-euro-asc": function(a, b) {
+                return a - b;
+            },
+
+            "date-euro-desc": function(a, b) {
+                return b - a;
+            }
+        });
+
+        let columns = {{ columns | json_encode(constant('JSON_HEX_APOS')) | raw }};
+        let statuses = {{ statuses | json_encode(constant('JSON_HEX_APOS')) | raw }}; 
+
+        columns.forEach(function(column) {
+              if(column.data == 'status') 
+                  column.render = function(data, type, row) {
+                          return statuses[data];
+                  }
+                          
+        });
+
+        var id_course = $('#table_certificate').data('id_course');
+        let rel ='table_certificate';
+        let targetPage = getPageNumber();
+        let cert_table = new window.frontend.modules.FormaTable('#table_certificate', {
+            margin: '0 auto',
+            scrollX: true,
+            rowId: function(row) {
+                                return row.id_user + '-' + row.id_certificate;
+
+            },
+            deferRender: true,
+            data: {{ data_certificate | json_encode(constant('JSON_HEX_APOS')) | raw }},
+            select: {
+                style: 'multi',
+                all: true
+            },
+            columns: columns,
+            paging: true,
+            pageLength:10,
+            pagingType: 'full_numbers',
+            language: {
+                'sInfo': '{{ Lang_translate("_FROM", "standard") }}  _START_  {{ Lang_translate("_TO", "standard") }} _END_ {{ Lang_translate("_OF", "standard") }}   _TOTAL_ {{ Lang_translate("_CERTIFICATE", "menu") }} {{ Lang_translate("_TOTAL", "standard") }}',
+                'infoEmpty': '',
+                'sEmptyTable': '{{ Lang_translate("_NO_CERTIFICATE_AVAILABLE", "certificate") }}'
+            },
+            dom: 'Bfrtip',
+            stateSave: true,
+            buttons: [{
+                    extend: 'colvis',
+                    text: '{{ Lang_translate("_CHANGEPOLICY", "profile") }}',
+                    className: 'btn btn-default',
+                    collectionLayout: 'dropdown-menu',
+                    columns: function (idx, data, node) {
+                            return idx > 2 && idx < columns.length - 2;
+                    }
+                }
+            ]
+        });
+        cert_table.DataTable.page(targetPage).draw('page');
+        //deselect all rows since savestate is true
+        cert_table.DataTable.rows().deselect();
+
+
+
+        function print_certificate(id_user, id_course, id_certificate) {
+            var posting = $.get(
+                'index.php', {
+                    modname: 'certificate',
+                    of_platform: 'lms',
+                    op: 'print_certificate',
+                    certificate_id: id_certificate,
+                    course_id: id_course,
+                    user_id: id_user
+                }
+            );
+            posting.done(function(responseText) {
+                window.location.href = reloadCertificatePage();
+            });
+            posting.fail(function() {
+                alert("Error generating certificate: " + id_certificate + " - " + id_course + " - " + id_user);
+            })
+        }
+
+        function generate_all_certificate() {
+
+            if (cert_table.DataTable.rows('.selected').length == 0) return
+
+            $.each(cert_table.DataTable.rows('.selected').data(), function(index, value) {
+                push_arr_id_users(value.id_user);
+                push_arr_id_certificates(value.id_certificate);
+                push_arr_course_id(id_course);
+            });
+
+            // update current URL to match current dt table page.
+            history.pushState({}, '', reloadCertificatePage());
+
+            set_signature('{{ Util_getSignature() }}');
+            send_print(null, {
+                scope: null,
+                type: "total"
+            });
+
+        }
+
+         document.querySelector('#table_certificate').addEventListener('click', function(event) {
+             const deleteButton = event.target.closest('.delete_certificate');
+             if (deleteButton) {
+                 event.preventDefault();
+                 modalDeletion.Title = '{{Lang_translate("_DELETE_CERTIFICATE", "standard")}}';
+                 modalDeletion.Content = `<form class="single_certificate_deletion"  action="` + deleteButton.href + `">
+                                            <input type="hidden" id="authentic_request_popup_form" name="authentic_request" value="{{ Util_getSignature() }}">
+                                            <h2>{{ Lang_translate('_AREYOUSURE') }}</h2>
+                                            <div class="alert" role="alert"></div>
+                                           <input class="btn btn-danger" type="submit" value="{{ Lang_translate('_CONFIRM') }}">
+                                        </form>`;
+                 runAjax();
+             }
+         });
+
+
+
+        function download_all_certificate() {
+            var newarray = [];
+            $.each(cert_table.DataTable.rows('.selected').data(), function(index, value) {
+                var id_user = value.id_user;
+                var id_certificate = value.id_certificate;
+
+                newarray.push(id_user + "-" + id_certificate + "-" + id_course);
+            });
+
+            var strRows = newarray.join();
+            if (strRows !== "") {
+                downloadForm(strRows);
+            }
+            return
+
+
+        }
+
+        function downloadForm(strRows){
+            var downloadF = `<form class="certificate_download" action="ajax.adm_server.php?r=adm/certificate/downloadMass" method="POST">
+                <input type="hidden" id="authentic_request" name="authentic_request" value="{{ Util_getSignature() }}">
+                <input type="hidden" id= "str_rows" name="str_rows" value="${strRows}">
+            </form>`;
+            document.body.insertAdjacentHTML('beforeend', downloadF);
+            var form = document.querySelector('form');
+            form.submit();
+            document.body.removeChild(form);
+        }
+
+
+        function delete_all_certificates() {
+
+            var newarray = [];
+
+            $.each(cert_table.DataTable.rows('.selected').data(), function(index, value) {
+
+                console.log(value);
+                var idRow = value.idRecord;
+          
+                newarray.push(idRow);
+             
+            });
+            var strRows = newarray.join();
+
+            if (strRows == "") return
+            modalDeletion.Title = '{{Lang_translate("_DELETE_CERTIFICATE", "standard")}}';
+            modalDeletion.Content = deleteForm(strRows)
+            runAjax();
+
+        }
+
+        function deleteForm(idRows) {
+            return `<form class="single_certificate_deletion" action="ajax.adm_server.php?r=adm/certificate/deleteMass" method="POST">
+                <input type="hidden" id="authentic_request_popup_form" name="authentic_request" value="{{ Util_getSignature() }}">
+                <input type="hidden" name="id" value="${idRows}">
+                <h2>{{ Lang_translate('_AREYOUSURE') }}</h2>
+                <div class="alert" role="alert"></div>
+                <input class="btn btn-danger" type="submit" value="{{ Lang_translate('_CONFIRM') }}">
+            </form>`;
+        }
+
+
+        function runAjax() {
+                modalDeletion.Open(() => {
+            
+                    const interval = setInterval(() => {
+                    const modal = document.querySelector('#easy-modal'); 
+
+                        if (modal) {
+                        clearInterval(interval); 
+
+                    
+                        const form = modal.querySelector('form');
+                        if (form) {
+                            form.addEventListener('submit', async (event) => {
+                            event.preventDefault();
+                            
+                            const url = form.action;
+
+                        
+                            const formData = new FormData(form);
+                            const submitButton = form.querySelector('input[type="submit"]');
+                            if (submitButton) {
+                                submitButton.disabled = true;
+                        
+                            }
+
+                            try {
+                            
+                                const response = await fetch(url, {
+                                method: 'POST',
+                                body: formData,
+                                });
+
+                                if (response.ok) {
+                                    const dataresult = await response.json();
+                                    if(dataresult.result) {
+                                        window.location.href = reloadCertificatePage();
+                                    }
+                                
+                                } else {
+                                    console.error('Error');
+                                }
+                            } catch (error) {
+                                console.error('Error AJAX:', error);
+                            } finally {
+                               
+                                if (submitButton) {
+                                    submitButton.disabled = false;
+                                }
+                            }
+                        
+                            });
+                        }
+                        }
+                    }, 100); 
+                
+                }); 
+            }
+            
+            function getPageNumber() {
+                let urlParams = new URLSearchParams(window.location.search);
+                let pageNumber = urlParams.get('dt_page');
+                let page = parseInt(pageNumber);
+                return isNaN(page) ? 0 : page;
+            }
+
+
+            function reloadCertificatePage(){
+                let currentPage = cert_table.DataTable.page();
+                let currentUrl = new URL(window.location.href);
+                currentUrl.searchParams.set('dt_page', currentPage);
+                return currentUrl.toString();
+            }
+
+    </script>
+

@@ -236,7 +236,7 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
         $rs = $this->db->query($query);
 
         $result = [];
-        while ($data = $this->db->fetch_assoc($rs)) {
+        foreach ($rs as $data) {
             $reservationData = $this->getDataFromReservation($data);
 
             $result[] = $reservationData;

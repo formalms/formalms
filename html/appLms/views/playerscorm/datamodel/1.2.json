@@ -1,0 +1,380 @@
+{
+    "cmi": {
+        "index": "no",
+        "item": "no",
+        "_children": {
+            "item": "yes",
+            "mandatory": "yes",
+            "type": "characterstring",
+            "permission": "readonly",
+            "text": "version,core,launch_data,suspend_data,comments,comments_from_lms,objectives,student_data,studente_preference,interactions"
+        },
+        "_version": {
+            "item": "yes",
+            "mandatory": "yes",
+            "type": "characterstring",
+            "permission": "readonly",
+            "text": "3.4"
+        },
+        "core": {
+            "index": "no",
+            "item": "no",
+            "_children": {
+                "item": "yes",
+                "mandatory": "yes",
+                "type": "characterstring",
+                "permission": "readonly",
+                "text": "student_id,student_name,lesson_location,credit,lesson_status,entry,score,total_time,lesson_mode,exit,session_time"
+            },
+            "student_id": {
+                "item": "yes",
+                "mandatory": "yes",
+                "type": "CMIIdentifier",
+                "permission": "readonly"
+            },
+            "student_name": {
+                "item": "yes",
+                "mandatory": "yes",
+                "type": "CMIString255",
+                "permission": "readonly",
+                "dbRef": "user_name"
+            },
+            "lesson_location": {
+                "item": "yes",
+                "mandatory": "yes",
+                "type": "CMIString255",
+                "permission": "readwrite",
+                "dbRef": "lesson_location"
+            },
+            "credit": {
+                "item": "yes",
+                "mandatory": "yes",
+                "type": "CMIVocabulary",
+                "subtype": "Credit",
+                "permission": "readonly",
+                "dbRef": "credit"
+            },
+            "lesson_status": {
+                "item": "yes",
+                "mandatory": "yes",
+                "type": "CMIVocabulary",
+                "subtype": "Status",
+                "permission": "readwrite",
+                "dbRef": "lesson_status"
+            },
+            "entry": {
+                "item": "yes",
+                "mandatory": "yes",
+                "type": "CMIVocabulary",
+                "subtype": "Entry",
+                "permission": "readonly",
+                "dbRef": "entry"
+            },
+            "score": {
+                "index": "no",
+                "item": "no",
+                "_children": {
+                    "item": "yes",
+                    "mandatory": "yes",
+                    "type": "characterstring",
+                    "permission": "readonly",
+                    "text": "raw,min,max"
+                },
+                "raw": {
+                    "item": "yes",
+                    "mandatory": "yes",
+                    "type": "CMIDecimal,CMIBlank",
+                    "permission": "readwrite",
+                    "dbRef": "score_raw"
+                },
+                "max": {
+                    "item": "yes",
+                    "mandatory": "no",
+                    "type": "CMIDecimal,CMIBlank",
+                    "permission": "readwrite",
+                    "dbRef": "score_max"
+                },
+                "min": {
+                    "item": "yes",
+                    "mandatory": "no",
+                    "type": "CMIDecimal,CMIBlank",
+                    "permission": "readwrite",
+                    "dbRef": "score_min"
+                }
+            },
+            "total_time": {
+                "item": "yes",
+                "mandatory": "yes",
+                "type": "CMITimespan",
+                "permission": "readonly",
+                "dbRef": "total_time"
+            },
+            "lesson_mode": {
+                "item": "yes",
+                "mandatory": "no",
+                "type": "CMIVocabulary",
+                "subtype": "Mode",
+                "permission": "readonly",
+                "dbRef": "lesson_mode"
+            },
+            "exit": {
+                "item": "yes",
+                "mandatory": "yes",
+                "type": "CMIVocabulary",
+                "subtype": "Exit",
+                "permission": "writeonly",
+                "dbRef": "exit"
+            },
+            "session_time": {
+                "item": "yes",
+                "mandatory": "yes",
+                "type": "CMITimespan",
+                "permission": "writeonly",
+                "dbRef": "session_time"
+            }
+        },
+        "suspend_data": {
+            "item": "yes",
+            "mandatory": "yes",
+            "type": "CMIString4096",
+            "permission": "readwrite",
+            "dbRef": "suspend_data"
+        },
+        "launch_data": {
+            "item": "yes",
+            "mandatory": "yes",
+            "type": "CMIString4096",
+            "permission": "readonly",
+            "dbRef": "launch_data"
+        },
+        "comments": {
+            "item": "yes",
+            "mandatory": "no",
+            "type": "CMIString4096",
+            "permission": "readwrite",
+            "dbRef": "comments"
+        },
+        "comments_from_lms": {
+            "item": "yes",
+            "mandatory": "no",
+            "type": "CMIString4096",
+            "permission": "readonly",
+            "dbRef": "comments_from_lms"
+        },
+        "objectives": {
+            "index": "yes",
+            "item": "no",
+            "_children": {
+                "item": "yes",
+                "mandatory": "yes",
+                "type": "characterstring",
+                "permission": "readonly",
+                "text": "id,score,status"
+            },
+            "_index": {
+                "id": {
+                    "item": "yes",
+                    "mandatory": "no",
+                    "type": "CMIIdentifier",
+                    "permission": "readwrite"
+                },
+                "score": {
+                    "index": "no",
+                    "item": "no",
+                    "_children": {
+                        "item": "yes",
+                        "mandatory": "yes",
+                        "type": "characterstring",
+                        "permission": "readonly",
+                        "text": "raw,max,min"
+                    },
+                    "raw": {
+                        "item": "yes",
+                        "mandatory": "no",
+                        "type": "CMIDecimal,CMIBlank",
+                        "permission": "readwrite"
+                    },
+                    "max": {
+                        "item": "yes",
+                        "mandatory": "no",
+                        "type": "CMIDecimal,CMIBlank",
+                        "permission": "readwrite"
+                    },
+                    "min": {
+                        "item": "yes",
+                        "mandatory": "no",
+                        "type": "CMIDecimal,CMIBlank",
+                        "permission": "readwrite"
+                    }
+                },
+                "status": {
+                    "item": "yes",
+                    "mandatory": "no",
+                    "type": "CMIVocabulary",
+                    "subtype": "Status",
+                    "permission": "readwrite"
+                }
+            }
+        },
+        "student_data": {
+            "index": "no",
+            "item": "no",
+            "_children": {
+                "item": "yes",
+                "mandatory": "yes",
+                "type": "characterstring",
+                "permission": "readonly",
+                "text": "mastery_score,max_time_allowed,time_limit_action"
+            },
+            "mastery_score": {
+                "item": "yes",
+                "mandatory": "no",
+                "type": "CMIDecimal",
+                "permission": "readonly"
+            },
+            "max_time_allowed": {
+                "item": "yes",
+                "mandatory": "no",
+                "type": "CMITimespan",
+                "permission": "readonly"
+            },
+            "time_limit_action": {
+                "item": "yes",
+                "mandatory": "no",
+                "type": "CMIVocabulary",
+                "subtype": "TimeLimitAction",
+                "permission": "readonly"
+            }
+        },
+        "student_preference": {
+            "index": "no",
+            "item": "no",
+            "_children": {
+                "item": "yes",
+                "mandatory": "yes",
+                "type": "characterstring",
+                "permission": "readonly",
+                "text": "audio,language,speed,text"
+            },
+            "audio": {
+                "item": "yes",
+                "mandatory": "no",
+                "type": "CMIInteger",
+                "permission": "readwrite"
+            },
+            "language": {
+                "item": "yes",
+                "mandatory": "no",
+                "type": "CMIString255",
+                "permission": "readwrite"
+            },
+            "speed": {
+                "item": "yes",
+                "mandatory": "no",
+                "type": "CMIString255",
+                "permission": "readwrite"
+            },
+            "text": {
+                "item": "yes",
+                "mandatory": "no",
+                "type": "CMIString255",
+                "permission": "readwrite"
+            }
+        },
+        "interactions": {
+            "index": "yes",
+            "item": "no",
+            "_children": {
+                "item": "yes",
+                "mandatory": "yes",
+                "type": "characterstring",
+                "permission": "readonly",
+                "text": "id,objectives,time,type,correct_responses,weighting,student_response,result,latency"
+            },
+            "_index": {
+                "id": {
+                    "item": "yes",
+                    "mandatory": "no",
+                    "type": "CMIIdentifier",
+                    "permission": "writeonly"
+                },
+                "objectives": {
+                    "index": "yes",
+                    "item": "no",
+                    "_children": {
+                        "item": "yes",
+                        "mandatory": "yes",
+                        "type": "characterstring",
+                        "permission": "readonly",
+                        "text": "id"
+                    },
+                    "_index": {
+                        "id": {
+                            "item": "yes",
+                            "mandatory": "no",
+                            "type": "CMIIdentifier",
+                            "permission": "writeonly"
+                        }
+                    }
+                },
+                "time": {
+                    "item": "yes",
+                    "mandatory": "no",
+                    "type": "CMITime",
+                    "permission": "writeonly"
+                },
+                "type": {
+                    "item": "yes",
+                    "mandatory": "no",
+                    "type": "CMIVocabulary",
+                    "subtype": "Interaction",
+                    "permission": "writeonly"
+                },
+                "correct_responses": {
+                    "index": "yes",
+                    "item": "no",
+                    "_children": {
+                        "item": "yes",
+                        "mandatory": "yes",
+                        "type": "characterstring",
+                        "permission": "readonly",
+                        "text": "pattern"
+                    },
+                    "_index": {
+                        "pattern": {
+                            "item": "yes",
+                            "mandatory": "no",
+                            "type": "CMIFeedback",
+                            "permission": "writeonly"
+                        }
+                    }
+                },
+                "weighting": {
+                    "item": "yes",
+                    "mandatory": "no",
+                    "type": "CMIDecimal",
+                    "permission": "writeonly"
+                },
+                "student_response": {
+                    "item": "yes",
+                    "mandatory": "no",
+                    "type": "CMIFeedback",
+                    "permission": "writeonly"
+                },
+                "result": {
+                    "item": "yes",
+                    "mandatory": "no",
+                    "type": "CMIVocabulary",
+                    "subtype": "Result",
+                    "permission": "writeonly"
+                },
+                "latency": {
+                    "item": "yes",
+                    "mandatory": "no",
+                    "type": "CMITimespan",
+                    "permission": "writeonly"
+                }
+            }
+        }
+    }
+}

@@ -18,7 +18,6 @@ class LangAdmController extends AdmController
     public const IMPORT_TYPE_CORE = 'core';
     public const IMPORT_TYPE_FILE = 'file';
 
-    protected $json;
     /** @var LangAdm */
     protected $model;
 
@@ -27,8 +26,6 @@ class LangAdmController extends AdmController
     public function init()
     {
         parent::init();
-
-        $this->json = new Services_JSON();
         $this->model = new LangAdm();
         $this->perm = [
             'view' => checkPerm('view', true, 'lang', 'framework'),
@@ -47,11 +44,11 @@ class LangAdmController extends AdmController
         $sort = 'lang_code';
         switch ($dir) {
             case 'desc':
-                    $dir = 'desc';
+                $dir = 'desc';
 
                 break;
             default:
-                    $dir = 'asc';
+                $dir = 'asc';
 
                 break;
         }
@@ -91,11 +88,11 @@ class LangAdmController extends AdmController
         }
         switch ($dir) {
             case 'desc':
-                    $dir = 'desc';
+                $dir = 'desc';
 
                 break;
             default:
-                    $dir = 'asc';
+                $dir = 'asc';
 
                 break;
         }
@@ -120,7 +117,7 @@ class LangAdmController extends AdmController
             'results' => count($lang_list),
             'records' => array_values($lang_list),
         ];
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function addmask()
@@ -139,7 +136,7 @@ class LangAdmController extends AdmController
             'body' => ob_get_clean(),
         ];
         @ob_start();
-        echo $this->json->encode($params);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($params, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function insertlang()
@@ -151,7 +148,7 @@ class LangAdmController extends AdmController
 
         if ($lang_code == '') {
             $result = ['success' => false, 'message' => Lang::t('_NO_TITLE', 'standard')];
-            echo $this->json->encode($result);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -161,7 +158,7 @@ class LangAdmController extends AdmController
             'success' => $re,
             'message' => ($re ? '' : Lang::t('_OPERATION_FAILED', 'standard')),
         ];
-        echo $this->json->encode($result);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function updatelang()
@@ -177,8 +174,8 @@ class LangAdmController extends AdmController
             'success' => $re,
             'message' => ($re ? '' : Lang::t('_OPERATION_FAILED', 'standard')),
         ];
-        
-        echo $this->json->encode($result);
+
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function mod()
@@ -193,7 +190,7 @@ class LangAdmController extends AdmController
             'body' => ob_get_clean(),
         ];
         @ob_start();
-        echo $this->json->encode($params);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($params,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function savemask()
@@ -212,7 +209,7 @@ class LangAdmController extends AdmController
             'body' => ob_get_clean(),
         ];
         @ob_start();
-        echo $this->json->encode($params);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($params,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function delTask()
@@ -220,6 +217,7 @@ class LangAdmController extends AdmController
         $lang_code = FormaLms\lib\Get::req('lang_code', DOTY_STRING, '');
 
         $re = false;
+
         if ($lang_code != '') {
             $re = $this->model->delLanguage($lang_code);
         }
@@ -227,10 +225,10 @@ class LangAdmController extends AdmController
             'success' => $re,
             'message' => ($re ? '' : Lang::t('_OPERATION_FAILED', 'standard')),
         ];
-        if ($re){
+        if ($re) {
             \FormaLms\lib\Cache\Lang\LangCache::getInstance()->clear();
         }
-        echo $this->json->encode($result);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function exportTask()
@@ -262,8 +260,8 @@ class LangAdmController extends AdmController
     {
         $importType = FormaLms\lib\Get::req('import_type', DOTY_STRING, false);
         $undo = FormaLms\lib\Get::req('undo', DOTY_STRING, false);
-        $overwrite = (bool) FormaLms\lib\Get::req('overwrite', DOTY_INT, 0);
-        $noadd_miss = (bool) FormaLms\lib\Get::req('noadd_miss', DOTY_INT, 0);
+        $overwrite = (bool)FormaLms\lib\Get::req('overwrite', DOTY_INT, 0);
+        $noadd_miss = (bool)FormaLms\lib\Get::req('noadd_miss', DOTY_INT, 0);
         $langFile = FormaLms\lib\Get::req('lang_id', DOTY_STRING, '');
 
         if (!empty($undo)) {
@@ -323,7 +321,7 @@ class LangAdmController extends AdmController
         $id_text = FormaLms\lib\Get::req('id_text', DOTY_INT, 0);
 
         if ($id_text <= 0) {
-            echo $this->json->encode(['success' => false]);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['success' => false],\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -335,22 +333,22 @@ class LangAdmController extends AdmController
         $language = FormaLms\lib\Get::req('language', DOTY_STRING, Lang::get());
 
         if ($newValue === $oldValue) {
-            echo $this->json->encode(['success' => true]);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['success' => true],\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         } else {
             switch ($column) {
                 case 'translation_text':
-                        $res = $this->model->saveTranslation($id_text, $language, $newValue);
-                        $output = ['success' => $res ? true : false];
-                        if ($res) {
-                            \FormaLms\lib\Cache\Lang\LangCache::getInstance()->clear();
-                            $output['new_value'] = stripslashes($newValue);
-                        }
-                        echo $this->json->encode($output);
+                    $res = $this->model->saveTranslation($id_text, $language, $newValue);
+                    $output = ['success' => $res ? true : false];
+                    if ($res) {
+                        \FormaLms\lib\Cache\Lang\LangCache::getInstance()->clear();
+                        $output['new_value'] = stripslashes($newValue);
+                    }
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                     break;
 
                 default:
-                        echo $this->json->encode(['success' => false]);
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['success' => false],\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                     break;
             }
@@ -486,7 +484,7 @@ class LangAdmController extends AdmController
             'data' => $lang_list,
         ];
 
-        echo $this->json->encode($res);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($res,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     /**
@@ -505,11 +503,11 @@ class LangAdmController extends AdmController
             'new_value' => $new_value,
             'old_value' => $old_value,
         ];
-        if ($re){
+        if ($re) {
             \FormaLms\lib\Cache\Lang\LangCache::getInstance()->clear();
         }
 
-        echo $this->json->encode($res);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($res,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function translatemask()
@@ -525,7 +523,7 @@ class LangAdmController extends AdmController
             'body' => ob_get_clean(),
         ];
         @ob_start();
-        echo $this->json->encode($params);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($params,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function insertkey()
@@ -549,10 +547,10 @@ class LangAdmController extends AdmController
             'success' => ($re ? true : false),
             'message' => ($re ? Lang::t('_OPERATION_SUCCESSFUL', 'admin_lang') : Lang::t('_OPERATION_FAILURE', 'admin_lang')),
         ];
-        if ($re){
+        if ($re) {
             \FormaLms\lib\Cache\Lang\LangCache::getInstance()->clear();
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function resetKey()
@@ -569,10 +567,10 @@ class LangAdmController extends AdmController
             'success' => ($re ? true : false),
             'message' => ($re ? Lang::t('_OPERATION_SUCCESSFUL', 'admin_lang') : Lang::t('_OPERATION_FAILURE', 'admin_lang')),
         ];
-        if ($re){
+        if ($re) {
             \FormaLms\lib\Cache\Lang\LangCache::getInstance()->clear();
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function deleteKeyTask()
@@ -584,11 +582,11 @@ class LangAdmController extends AdmController
             'success' => $re,
             'message' => ($re ? Lang::t('_OPERATION_SUCCESSFUL', 'admin_lang') : Lang::t('_UNABLE_TO_DELETE', 'standard')),
         ];
-        if ($re){
+        if ($re) {
             \FormaLms\lib\Cache\Lang\LangCache::getInstance()->clear();
         }
 
-        echo $this->json->encode($res);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($res,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function diffTask()
@@ -628,7 +626,7 @@ class LangAdmController extends AdmController
             }
         }
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     private function getFileSystemCoreLanguages()

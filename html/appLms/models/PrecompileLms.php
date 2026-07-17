@@ -174,15 +174,20 @@ class PrecompileLms extends Model
             $id_policy = $pinfo->id_policy;
         }
 
+
         //read value in DB
         $output = false;
-        //$query = "SELECT privacy_policy FROM %adm_user WHERE idst = ".(int)$id_user; // Old Method
         $query = 'SELECT ppu.id_policy, ppu.accept_date, pp.validity_date
 				FROM core_privacypolicy_user AS ppu, core_privacypolicy AS pp
 				WHERE ppu.id_policy = pp.id_policy
-				AND ppu.accept_date > pp.validity_date
-				AND ppu.idst = ' . (int) $id_user . '
+				AND (pp.validity_date IS NULL OR ppu.accept_date > pp.validity_date) 
+	    		AND ppu.idst = ' . (int) $id_user . '
 				AND ppu.id_policy= ' . (int) $id_policy;
+
+
+        if ($this->rejectPresent()) { // in case of not migrated DB otherwise none can enter
+            $query .=' AND ppu.reject_date IS NULL';
+        }
 
         $res = $this->db->query($query);
         if ($res && $this->db->num_rows($res) > 0) {
@@ -193,6 +198,15 @@ class PrecompileLms extends Model
         }
 
         return $output;
+    }
+
+    private function rejectPresent(){
+        $table_name = 'core_privacypolicy_user';
+        $column_name = 'reject_date';
+        $sql = "SHOW COLUMNS FROM $table_name LIKE '$column_name'";
+        $r = sql_query($sql);
+        return (sql_num_rows($r) > 0);
+
     }
 
     public function getHomeUrl()
@@ -235,5 +249,13 @@ class PrecompileLms extends Model
         list($n) = sql_fetch_row(sql_query($q));
 
         return $n;
+    }
+
+    public function revokePolicy($id_policy){
+        $now = new DateTime();
+        $reject_date = $now->format('Y-m-d H:i:s');
+        $sql = "UPDATE core_privacypolicy_user SET reject_date = '$reject_date' WHERE id=$id_policy";
+        $ret = sql_query($sql);
+        return $ret;
     }
 }

@@ -17,17 +17,16 @@ class CommunicationAlmsController extends AlmsController
 {
     /** @var CommunicationAlms */
     protected $model = null;
-    protected $json = null;
     protected $permissions = null;
     public $data;
 
     public function init()
     {
         parent::init();
-        require_once _base_ . '/lib/lib.json.php';
+        
 
         $this->model = new CommunicationAlms();
-        $this->json = new Services_JSON();
+        
         $this->permissions = [
             'view' => checkPerm('view', true, 'communication', 'lms'),
             'add' => checkPerm('mod', true, 'communication', 'lms'),
@@ -196,7 +195,7 @@ class CommunicationAlmsController extends AlmsController
             'records' => $array_comm,
         ];
 
-        $this->data = $this->json->encode($result);
+        $this->data = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         echo $this->data;
     }
 
@@ -285,8 +284,8 @@ class CommunicationAlmsController extends AlmsController
             $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangcode();
             foreach ($lang_codes as $lang_code) {
                 $data['langs'][$lang_code] = [
-                    'title' => (isset($titles[$lang_code]) ? $titles[$lang_code] : ''),
-                    'description' => (isset($descriptions[$lang_code]) ? $descriptions[$lang_code] : ''),
+                    'title' => (!empty($titles[$lang_code]) ? $titles[$lang_code] : Lang::t('_NOTITLE', 'standard', false, $lang_code)),
+                    'description' => (!empty($descriptions[$lang_code]) ? $descriptions[$lang_code] : ''),
                 ];
             }
         }
@@ -471,8 +470,8 @@ class CommunicationAlmsController extends AlmsController
             $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangcode();
             foreach ($lang_codes as $lang_code) {
                 $data['langs'][$lang_code] = [
-                    'title' => (isset($titles[$lang_code]) ? $titles[$lang_code] : ''),
-                    'description' => (isset($descriptions[$lang_code]) ? $descriptions[$lang_code] : ''),
+                    'title' => (!empty($titles[$lang_code]) ? $titles[$lang_code] : Lang::t('_NOTITLE', 'standard', false, $lang_code)),
+                    'description' => (!empty($descriptions[$lang_code]) ? $descriptions[$lang_code] : ''),
                 ];
             }
         }
@@ -511,8 +510,8 @@ class CommunicationAlmsController extends AlmsController
             $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangcode();
             foreach ($lang_codes as $lang_code) {
                 $data['langs'][$lang_code] = [
-                    'title' => (isset($titles[$lang_code]) ? $titles[$lang_code] : ''),
-                    'description' => (isset($descriptions[$lang_code]) ? $descriptions[$lang_code] : ''),
+                    'title' => (!empty($titles[$lang_code]) ? $titles[$lang_code] : Lang::t('_NOTITLE', 'standard', false, $lang_code)),
+                    'description' => (!empty($descriptions[$lang_code]) ? $descriptions[$lang_code] : ''),
                 ];
             }
         }
@@ -576,7 +575,7 @@ class CommunicationAlmsController extends AlmsController
     {
         if (!$this->permissions['del']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -618,7 +617,7 @@ class CommunicationAlmsController extends AlmsController
             $output['success'] = false;
         }
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     /**
@@ -913,7 +912,7 @@ class CommunicationAlmsController extends AlmsController
 
                     //if request is invalid, return error message ...
                     if (!is_array($nodes)) {
-                        echo $this->json->encode(['success' => false]);
+                        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['success' => false],\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                         return;
                     }
@@ -929,7 +928,7 @@ class CommunicationAlmsController extends AlmsController
                         'initial' => $initial,
                     ];
                 }
-                echo $this->json->encode($output);
+                echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
                 break;
 
             case 'set_selected_node':
@@ -940,7 +939,7 @@ class CommunicationAlmsController extends AlmsController
                 //check permissions
                 if (!$this->permissions['mod']) {
                     $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-                    echo $this->json->encode($output);
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                     return;
                 }
@@ -950,14 +949,14 @@ class CommunicationAlmsController extends AlmsController
                 if ($id > 0) {
                     $output['success'] = $this->model->deleteCategory($id);
                 }
-                echo $this->json->encode($output);
+                echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
                 break;
 
             case 'movefolder':
                 //check permissions
                 if (!$this->permissions['mod']) {
                     $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-                    echo $this->json->encode($output);
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                     return;
                 }
@@ -1008,7 +1007,7 @@ class CommunicationAlmsController extends AlmsController
         //check permissions
         if (!$this->permissions['add']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -1064,7 +1063,7 @@ class CommunicationAlmsController extends AlmsController
                 'message' => UIFeedback::perror($this->_getMessage('create category')),
             ];
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function updateCategory()
@@ -1113,7 +1112,7 @@ class CommunicationAlmsController extends AlmsController
         //check permissions
         if (!$this->permissions['mod']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -1126,7 +1125,7 @@ class CommunicationAlmsController extends AlmsController
         if ($src <= 0 || $dest < 0) {
             $output['success'] = false;
             $output['message'] = UIFeedback::perror($this->_getMessage('invalid category'));
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -1136,7 +1135,7 @@ class CommunicationAlmsController extends AlmsController
         if (!$res) {
             $output['message'] = UIFeedback::perror($this->_getMessage('move category'));
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function showCategories()

@@ -15,7 +15,6 @@ class EditionAlmsController extends AlmsController
 {
     public $name = 'classroom';
 
-    protected $json;
     protected $acl_man;
 
     protected $data;
@@ -29,9 +28,6 @@ class EditionAlmsController extends AlmsController
     public function init()
     {
         checkPerm('view', false, 'course', 'lms');
-        require_once _base_ . '/lib/lib.json.php';
-
-        $this->json = new Services_JSON();
         $this->acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $this->base_link_course = 'alms/course';
@@ -108,7 +104,7 @@ class EditionAlmsController extends AlmsController
                             'results' => count($array_edition),
                             'records' => $array_edition, ];
 
-        $this->data = $this->json->encode($result);
+        $this->data = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
         echo $this->data;
     }
@@ -190,7 +186,7 @@ class EditionAlmsController extends AlmsController
     {
         if (!$this->permissions['del']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -207,7 +203,7 @@ class EditionAlmsController extends AlmsController
 
         $res = ['success' => $model->delEdition()];
 
-        $this->data = $this->json->encode($res);
+        $this->data = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($res,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
         echo $this->data;
     }

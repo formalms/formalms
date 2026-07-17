@@ -105,7 +105,7 @@ class ElearningLms extends Model
 
         $commonLabel = $this->session->get('id_common_label');
 
-        $query = 'SELECT c.idCourse, c.course_type, c.idCategory, c.code, c.name, c.description, c.box_description, c.difficult,  c.status, c.level_show_user, '
+        $query = 'SELECT c.idCourse, c.course_type, c.idCategory, cat.path as nameCategory, c.code, c.name, c.description, c.box_description, c.difficult,  c.status, c.level_show_user, '
             . '	  c.course_edition, c.sub_start_date, c.sub_end_date, '
             . '    c.max_num_subscribe, c.create_date, '
             . '    c.direct_play, c.img_othermaterial, c.course_demo, c.use_logo_in_courselist, c.img_course, c.lang_code, '
@@ -123,33 +123,43 @@ class ElearningLms extends Model
             . ' ORDER BY ' . $this->_resolveOrder(['cu', 'c']);
 
         $rs = $db->query($query);
-        require_once _adm_ . '/lib/lib.customfield.php';
-        $cf = new CustomFieldList();
-        $cf->setFieldArea('COURSE');
-        $has_custom = ($cf->getNumberFieldbyArea() > 0);
-
+        //var_dump($query);
         $result = [];
-        $courses = [];
+
         foreach ($rs as $data) {
             $data['enrolled'] = 0;
             $data['numof_waiting'] = 0;
             $data['first_lo_type'] = false;
-            $data['nameCategory'] = $this->getCategory($data['idCategory']);
-            if ($has_custom) {
-                $data['custom_fields'] = $cf->playFieldsFlat($data['idCourse']);
-            }
 
-            $courses[] = $data['idCourse'];
             $result[$data['idCourse']] = $data;
         }
 
-        if (!empty($courses)) {
+        $idCourses = array_keys($result);
+
+        require_once \FormaLms\lib\Forma::include(_adm_ . '/lib/', 'lib.customfield.php');
+        $cf = new CustomFieldList();
+        $cf->setFieldArea('COURSE');
+        $has_custom = ($cf->getNumberFieldbyArea() > 0);
+
+        if ($has_custom && !empty($idCourses)) {
+            $custom_fields = $cf->playFieldsFlat($idCourses);
+
+            foreach ($custom_fields as $idCourse => $values) {
+                if (isset($result[$idCourse])) {
+                    $result[$idCourse]['custom_fields'] = $values;
+                }
+            }
+        }
+
+        if (!empty($result)) {
+
+            $courseSelector = implode(',', $idCourses);
             // find subscriptions
             $re_enrolled = $db->query(
                 'SELECT c.idCourse, COUNT(*) as numof_associated, SUM(waiting) as numof_waiting'
                 . ' FROM %lms_course AS c '
                 . ' JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse) '
-                . ' WHERE c.idCourse IN (' . implode(',', $courses) . ') '
+                . ' WHERE c.idCourse IN (' . $courseSelector . ') '
                 . ' GROUP BY c.idCourse'
             );
             foreach ($re_enrolled as $data) {
@@ -159,7 +169,7 @@ class ElearningLms extends Model
 
             //3562 Grifo multimedia - LR
             $query_lo = "select org.idOrg, org.idCourse, org.objectType from (SELECT o.idOrg, o.idCourse, o.objectType 
-                          FROM %lms_organization AS o WHERE o.objectType != '' AND o.idCourse IN (" . implode(',', $courses) . ') ORDER BY o.path) as org 
+                          FROM %lms_organization AS o WHERE o.objectType != '' AND o.idCourse IN (" . $courseSelector . ') ORDER BY o.path) as org 
                           GROUP BY org.idCourse ';
             // find first LO type
             $re_firstlo = $db->query($query_lo);
@@ -168,8 +178,10 @@ class ElearningLms extends Model
             }
         }
 
+
         return $result;
     }
+
 
     public function getFilterYears($id_user)
     {
@@ -178,7 +190,7 @@ class ElearningLms extends Model
 
         $query = 'SELECT DISTINCT YEAR(cu.date_inscr) AS inscr_year '
             . ' FROM %lms_courseuser AS cu '
-            . ' WHERE cu.idUser = ' . (int) $id_user
+            . ' WHERE cu.idUser = ' . (int)$id_user
             . ' ORDER BY inscr_year ASC';
 
         $res = $db->query($query);
@@ -204,7 +216,7 @@ class ElearningLms extends Model
 
         $db = \FormaLms\db\DbConn::getInstance();
 
-        $query = 'SELECT DISTINCT status AS status_course  FROM learning_courseuser WHERE learning_courseuser.idUser = ' . (int) $id_user;
+        $query = 'SELECT DISTINCT status AS status_course  FROM learning_courseuser WHERE learning_courseuser.idUser = ' . (int)$id_user;
 
         $res = $db->query($query);
         if ($res && $db->num_rows($res) > 0) {
@@ -278,13 +290,14 @@ class ElearningLms extends Model
         $res = $db->query($query);
         $path = '';
         if ($res && $db->num_rows($res) > 0) {
-            list($path) = $db->fetch_row($res);
+            [$path] = $db->fetch_row($res);
         }
 
         return $path;
     }
+
     static public function getFilterCourseType(): array
     {
-        return ['all'=>Lang::t('_ALL_COURSE_TYPE', 'course'), 'elearning'=>Lang::t('_COURSE_TYPE_ELEARNING', 'course'),  'classroom' => Lang::t('_CLASSROOM_COURSE', 'cart') ];
+        return ['all' => Lang::t('_ALL_COURSE_TYPE', 'course'), 'elearning' => Lang::t('_COURSE_TYPE_ELEARNING', 'course'), 'classroom' => Lang::t('_CLASSROOM_COURSE', 'cart')];
     }
 }

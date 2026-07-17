@@ -349,14 +349,14 @@ class QuestBank_Selector
 
     public function __construct()
     {
-        $this->lang = &FormaLanguage::createInstance('test', 'lms');
+
         $this->form = new Form();
         $this->qb_man = new QuestBankMan();
 
         $this->all_category = $this->qb_man->getCategoryList(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         //#2269 see it2.php.net/array_unshift#78238
-        //array_unshift($this->all_category, $this->lang->def('_ALL_QUEST_CATEGORY'));
-        $aany_cat = [0 => $this->lang->def('_ALL_QUEST_CATEGORY')];
+        //array_unshift($this->all_category, Lang::t('_ALL_QUEST_CATEGORY','test'));
+        $aany_cat = [0 => Lang::t('_ALL_QUEST_CATEGORY','test')];
         $this->all_category = $aany_cat + $this->all_category;
 
         //todo translate any
@@ -372,31 +372,31 @@ class QuestBank_Selector
             //$this->all_categories[$key]['cat']=$cat;
         }
         //#2269 see it2.php.net/array_unshift#78238
-        //array_unshift($this->all_category, $this->lang->def('_ALL_QUEST_CATEGORY'));
-        //$aany_cat=array(0=>$this->lang->def('_ALL_QUEST_CATEGORY'));
+        //array_unshift($this->all_category, Lang::t('_ALL_QUEST_CATEGORY','test'));
+        //$aany_cat=array(0=>Lang::t('_ALL_QUEST_CATEGORY','test'));
         // $this->all_categories = $aany_cat + $this->all_category;
 
         $this->all_difficult = [
-            0 => $this->lang->def('_ALL_DIFFICULT'),
-            5 => $this->lang->def('_VERY_HARD'),
-            4 => $this->lang->def('_HARD'),
-            3 => $this->lang->def('_DIFFICULT_MEDIUM'),
-            2 => $this->lang->def('_DIFFICULT_EASY'),
-            1 => $this->lang->def('_DIFFICULT_VERYEASY'),
+            0 => Lang::t('_ALL_DIFFICULT','test'),
+            5 => Lang::t('_VERY_HARD','test'),
+            4 => Lang::t('_HARD','test'),
+            3 => Lang::t('_DIFFICULT_MEDIUM','test'),
+            2 => Lang::t('_DIFFICULT_EASY','test'),
+            1 => Lang::t('_DIFFICULT_VERYEASY','test'),
         ];
 
         $this->all_quest_type = [];
-        $this->all_quest_type[0] = $this->lang->def('_ALL_QUEST_TYPE');
-        $this->all_quest_type_long[0] = $this->lang->def('_ALL_QUEST_TYPE');
+        $this->all_quest_type[0] = Lang::t('_ALL_QUEST_TYPE','test');
+        $this->all_quest_type_long[0] = Lang::t('_ALL_QUEST_TYPE','test');
         $re_type = sql_query('
 		SELECT type_quest
 		FROM %lms_quest_type
 		ORDER BY sequence');
         while (list($type_quest) = sql_fetch_row($re_type)) {
-            $this->all_quest_type[$type_quest] = $this->lang->def('_QUEST_ACRN_' . strtoupper($type_quest));
-            //.' - '.$this->lang->def('_QUEST_'.strtoupper($type_quest));
-            $this->all_quest_type_long[$type_quest] = $this->lang->def('_QUEST_ACRN_' . strtoupper($type_quest))
-                . ' - ' . $this->lang->def('_QUEST_' . strtoupper($type_quest));
+            $this->all_quest_type[$type_quest] = Lang::t('_QUEST_ACRN_' . strtoupper($type_quest),'test');
+            //.' - '.Lang::t('_QUEST_'.strtoupper($type_quest));
+            $this->all_quest_type_long[$type_quest] = Lang::t('_QUEST_ACRN_' . strtoupper($type_quest),'test')
+                . ' - ' . Lang::t('_QUEST_' . strtoupper($type_quest),'test');
         }
 
         $this->mod_action = checkPerm('mod', true);		//TODO: check user permissions
@@ -429,29 +429,29 @@ class QuestBank_Selector
 
         $str .= 'var QB_DEF = {'
                 . 'checkbox_sel:"",'
-                . 'title_quest:"' . addslashes($this->lang->def('_TITLE')) . '",'
-                . 'quest_category:"' . addslashes($this->lang->def('_TEST_QUEST_CATEGORY')) . '",'
-                . 'difficult:"' . addslashes($this->lang->def('_DIFFICULTY')) . '",'
+                . 'title_quest:"' . addslashes(Lang::t('_TITLE','test')) . '",'
+                . 'quest_category:"' . addslashes(Lang::t('_TEST_QUEST_CATEGORY','test')) . '",'
+                . 'difficult:"' . addslashes(Lang::t('_DIFFICULTY','test')) . '",'
                 . 'sequence:"' . addslashes('#') . '",'
-                . 'type_quest:"' . addslashes($this->lang->def('_TYPE')) . '",'
-                . 'mod_quest:"' . addslashes($this->lang->def('_MOD')) . '",'
-                . 'del_quest:"' . addslashes($this->lang->def('_DEL')) . '",'
-                . 'mod_quest_img:"<img src=\"' . getPathImage() . '/standard/edit.png\" alt=\"' . $this->lang->def('_MOD') . '\" />",'
-                . 'del_quest_img:"<img src=\"' . getPathImage() . '/standard/delete.png\" alt=\"' . $this->lang->def('_DEL') . '\" />",'
+                . 'type_quest:"' . addslashes(Lang::t('_TYPE','test')) . '",'
+                . 'mod_quest:"' . addslashes(Lang::t('_MOD','test')) . '",'
+                . 'del_quest:"' . addslashes(Lang::t('_DEL','test')) . '",'
+                . 'mod_quest_img:"<img src=\"' . getPathImage() . '/standard/edit.png\" alt=\"' . Lang::t('_MOD','test') . '\" />",'
+                . 'del_quest_img:"<img src=\"' . getPathImage() . '/standard/delete.png\" alt=\"' . Lang::t('_DEL','test') . '\" />",'
 
-                . 'del_quest:"' . addslashes($this->lang->def('_DEL')) . '",'
-                . 'del_confirm:"' . addslashes($this->lang->def('_AREYOUSURE')) . '",'
+                . 'del_quest:"' . addslashes(Lang::t('_DEL','test')) . '",'
+                . 'del_confirm:"' . addslashes(Lang::t('_AREYOUSURE','test')) . '",'
 
-                . 'yes:"' . addslashes($this->lang->def('_YES')) . '",'
-                . 'undo:"' . addslashes($this->lang->def('_UNDO')) . '",'
+                . 'yes:"' . addslashes(Lang::t('_YES','test')) . '",'
+                . 'undo:"' . addslashes(Lang::t('_UNDO','test')) . '",'
 
-                . 'prev:"' . addslashes($this->lang->def('_PREV')) . '",'
-                . 'next:"' . addslashes($this->lang->def('_NEXT')) . '"'
+                . 'prev:"' . addslashes(Lang::t('_PREV','test')) . '",'
+                . 'next:"' . addslashes(Lang::t('_NEXT','test')) . '"'
             . '};';
 
         $str .= 'var QB_CATEGORIES = new Array(); ';
         if (count($this->all_category) > 1) {
-            $str .= ' QB_CATEGORIES[0] = "' . addslashes($this->lang->def('_NONE')) . '"; ';
+            $str .= ' QB_CATEGORIES[0] = "' . addslashes(Lang::t('_NONE','test')) . '"; ';
             foreach ($this->all_category as $idc => $namec) {
                 if ($idc != 0) {
                     $str .= 'QB_CATEGORIES[' . $idc . "] = '" . addslashes($namec) . "'; ";
@@ -484,7 +484,7 @@ class QuestBank_Selector
 
             $categoria = $namec['name'];
             $extrastr .= ' acat = new Array(); ';
-            $extrastr .= ' acat[0] = "' . addslashes($this->lang->def('_NONE')) . '";';
+            $extrastr .= ' acat[0] = "' . addslashes(Lang::t('_NONE','test')) . '";';
             foreach ($namec['cat'] as $key => $value) {
                 if ($key != 0) {
                     $extrastr .= ' acat[' . $key . "] = '" . addslashes($value) . "'; ";
@@ -508,11 +508,11 @@ class QuestBank_Selector
 
     public function get_filter()
     {
-        $str = $this->form->getOpenFieldset($this->lang->def('_SEARCH'), 'fieldset_search_quest');
+        $str = $this->form->getOpenFieldset(Lang::t('_SEARCH','test'), 'fieldset_search_quest');
 
         //se altro oltre any ...
         if (count($this->all_category) > 1) {
-            $str .= $this->form->getDropdown($this->lang->def('_TEST_QUEST_CATEGORY'),
+            $str .= $this->form->getDropdown(Lang::t('_TEST_QUEST_CATEGORY','test'),
                                 'quest_category',
                                 'quest_category',
                                 $this->all_category,
@@ -528,13 +528,13 @@ class QuestBank_Selector
             }
         }
 
-        $str .= $this->form->getDropdown($this->lang->def('_DIFFICULTY'),
+        $str .= $this->form->getDropdown(Lang::t('_DIFFICULTY','test'),
                                 'quest_difficult',
                                 'quest_difficult',
                                 $this->all_difficult,
                                 FormaLms\lib\Get::req('quest_difficult', DOTY_INT))
 
-            . $this->form->getDropdown($this->lang->def('_TYPE'),
+            . $this->form->getDropdown(Lang::t('_TYPE','test'),
                                 'quest_type',
                                 'quest_type',
                                 $this->all_quest_type_long,
@@ -543,13 +543,13 @@ class QuestBank_Selector
             . $this->form->openButtonSpace('search_button')
             . $this->form->getButton('quest_reset',
                                 'quest_reset',
-                                $this->lang->def('_UNDO'),
+                                Lang::t('_UNDO','test'),
                                 false,
                                 ' style="visibility: hidden;" ')
 
             . $this->form->getButton('quest_search',
                                 'quest_search',
-                                $this->lang->def('_SEARCH'))
+                                Lang::t('_SEARCH','test'))
             . $this->form->closeButtonSpace()
 
             . $this->form->getCloseFieldset('');
@@ -563,14 +563,14 @@ class QuestBank_Selector
         $str .= '<div id="dialog_container"></div>';
         $str .= '<div id="paginator_head"></div>';
         $str .= '<div class="selector_options" style="position: relative;">'
-            . '[ <a id="select_all" href="#">' . $this->lang->def('_SELECT_ALL') . '</a>'
-                . ' | ' . '<a id="select_page" href="#">' . $this->lang->def('_SELECT_PAGE') . '</a> ]'
+            . '[ <a id="select_all" href="#">' . Lang::t('_SELECT_ALL','test') . '</a>'
+                . ' | ' . '<a id="select_page" href="#">' . Lang::t('_SELECT_PAGE','test') . '</a> ]'
 
-            . ' [ <a id="deselect_all" href="#">' . $this->lang->def('_UNSELECT_ALL') . '</a>'
-                . ' | ' . '<a id="deselect_page" href="#">' . $this->lang->def('_DESELECT_PAGE') . '</a> ]'
+            . ' [ <a id="deselect_all" href="#">' . Lang::t('_UNSELECT_ALL','test') . '</a>'
+                . ' | ' . '<a id="deselect_page" href="#">' . Lang::t('_DESELECT_PAGE','test') . '</a> ]'
 
             . '<div class="current_selection" style="position:absolute; right: 10px; top:2px;">'
-            . $this->lang->def('_CURRENT_SELECTION_COUNT') . ' : <span id="current_selected" href="#">0</span>'
+            . Lang::t('_CURRENT_SELECTION_COUNT','test') . ' : <span id="current_selected" href="#">0</span>'
             . '</div>'
 
             . '</div>';

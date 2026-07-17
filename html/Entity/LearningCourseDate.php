@@ -9,7 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * LearningCourseDate
  *
- * @ORM\Table(name="learning_course_date", indexes={@ORM\Index(name="id_course", columns={"id_course"})})
+ * @ORM\Table(name="learning_course_date", indexes={
+ *      @ORM\Index(name="id_course", columns={"id_course"}),
+ *      @ORM\Index(name="idx_course_date_unsubscribe", columns={"unsubscribe_date_limit"})
+ *  })
  * @ORM\Entity
  */
 class LearningCourseDate
@@ -90,11 +93,11 @@ class LearningCourseDate
     private $status = '0';
 
     /**
-     * @var int
+     * @var float
      *
-     * @ORM\Column(name="medium_time", type="integer", nullable=false)
+     * @ORM\Column(name="medium_time", type="decimal", precision=10, scale=2, nullable=false, options={"default"="0.00"})
      */
-    private $mediumTime = '0';
+    private $mediumTime = '0.00';
 
     /**
      * @var \DateTime

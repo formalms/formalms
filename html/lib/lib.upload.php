@@ -400,7 +400,9 @@ function sl_unlink($path)
             return true;
         }
 
+        //return @unlink(_files_ . $path);
         return @unlink(_files_ . $path);
+
     } else {
         //TODO: EVT_OBJECT (§)
         //$event = new \appCore\Events\Core\FileSystem\UnlinkEvent($path);

@@ -42,16 +42,13 @@ function groups()
     $cont_h = [$lang->def('_NAME'), $lang->def('_DESCRIPTION')];
     if ($subs_perm) {
         $type_h[] = 'image';
-        $cont_h[] = '<img src="' . getPathImage() . 'standard/moduser.png" alt="' . $lang->def('_ALT_SUBSCRIBE') . '" '
-                        . 'title="' . $lang->def('_SUBSCRIBE_USER') . '" />';
+        $cont_h[] = FormaLms\lib\Get::sprite('subs_mod', $lang->def('_SUBSCRIBE_USER'));
     }
     if ($mod_perm) {
         $type_h[] = 'image';
         $type_h[] = 'image';
-        $cont_h[] = '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . '" '
-            . 'title="' . $lang->def('_MOD') . '" />';
-        $cont_h[] = '<img src="' . getPathImage() . 'standard/delete.png" alt="' . $lang->def('_DEL') . '" '
-            . 'title="' . $lang->def('_DEL') . '" />';
+        $cont_h[] = FormaLms\lib\Get::sprite('subs_mod', $lang->def('_MOD'));
+        $cont_h[] = FormaLms\lib\Get::sprite('subs_del', $lang->def('_DEL'));
     }
     $tb->setColsStyle($type_h);
     $tb->addHead($cont_h);
@@ -65,15 +62,15 @@ function groups()
                 if ($subs_perm) {
                     $cont[] = '<a href="/appCore/index.php?r=adm/userselector/show&instance=learninggroup&amp;id='.$id_group .'&amp;load=1&amp;tab_filters[]=user"'
                             . 'title="' . $lang->def('_ASSIGN_USERS') . ' : ' . strip_tags($group_id) . '">'
-                        . '<img src="' . getPathImage() . 'standard/moduser.png" alt="' . $lang->def('_ASSIGN_USERS') . '"  /></a>';
+                        . FormaLms\lib\Get::sprite('subs_users', $lang->def('_ASSIGN_USERS')) . '</a>';
                 }
                 if ($mod_perm) {
                     $cont[] = '<a href="index.php?modname=groups&amp;op=editgroup&amp;id_group=' . $id_group . '" '
                             . 'title="' . $lang->def('_MOD') . ' : ' . strip_tags($group_id) . '">'
-                        . '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . '"  /></a>';
+                        . FormaLms\lib\Get::sprite('subs_mod', $lang->def('_MOD')) . '</a>';
                     $cont[] = '<a href="index.php?modname=groups&amp;op=delgroup&amp;id_group=' . $id_group . '" '
                             . 'title="' . $lang->def('_DEL') . ' : ' . strip_tags($group_id) . '">'
-                        . '<img src="' . getPathImage() . 'standard/delete.png" alt="' . $lang->def('_DEL') . '" /></a>';
+                        . FormaLms\lib\Get::sprite('subs_del', $lang->def('_DEL')) . '</a>';
                 }
                 $tb->addBody($cont);
             }
@@ -84,8 +81,7 @@ function groups()
         setupHrefDialogBox('a[href*=delgroup]');
 
         $tb->addActionAdd('<a href="index.php?modname=groups&amp;op=editgroup">'
-                        . '<img src="' . getPathImage() . 'standard/add.png" alt="' . $lang->def('_ADD') . '"  /> '
-                        . $lang->def('_NEW') . '</a>');
+                        . FormaLms\lib\Get::sprite('subs_add', $lang->def('_NEW')) . '</a>');
     }
     // output
     $GLOBALS['page']->add(

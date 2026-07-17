@@ -12,7 +12,10 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="learning_organization", indexes={
  *      @ORM\Index(name="path", columns={"path"}), 
  *      @ORM\Index(name="idParent", columns={"idParent"}),
- *      @ORM\Index(name="objecttype_idrtesourse_idx", columns={"objectType","idResource"})
+ *      @ORM\Index(name="objecttype_idrtesourse_idx", columns={"objectType","idResource"}),
+ *      @ORM\Index(name="idx_lo_main", columns={"idCourse", "idResource", "visible", "dateInsert"}),
+ *      @ORM\Index(name="idx_lo_join",columns={"idOrg"}),
+ *      @ORM\Index( name="idx_lo_composite", columns={"idCourse", "idResource", "visible", "dateInsert", "idOrg"})
  * })
  * @ORM\Entity
  */

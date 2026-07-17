@@ -331,7 +331,7 @@ function insadvice()
     }
     
     // Fix Vulnerability CVE-2023-46693
-    $_REQUEST['title'] = FormaLms\lib\Get::filter($_REQUEST['title'], DOTY_ALPHANUM);
+    $_REQUEST['title'] = filter_var(FormaLms\lib\Get::filter($_REQUEST['title'], DOTY_STRING), FILTER_SANITIZE_SPECIAL_CHARS);
 
     $queryIns = '
 		INSERT INTO ' . $GLOBALS['prefix_lms'] . "_advice

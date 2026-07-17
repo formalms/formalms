@@ -16,7 +16,6 @@ defined('IN_FORMA') or exit('Direct access is forbidden');
 class CompetencesAdmController extends AdmController
 {
     protected $model;
-    protected $json;
 
     protected $base_link_course;
     protected $base_link_competence;
@@ -29,18 +28,18 @@ class CompetencesAdmController extends AdmController
     public function init()
     {
         parent::init();
-        require_once _base_ . '/lib/lib.json.php';
-        $this->json = new Services_JSON();
+        
+        
         $this->model = new CompetencesAdm();
 
         $this->base_link_course = 'alms/course';
         $this->base_link_competence = 'adm/competences';
 
         $this->permissions = [
-            'view' => checkPerm('view', true, 'competences'),			//view module
-            'add' => checkPerm('mod', true, 'competences'),			//create competences
-            'mod' => checkPerm('mod', true, 'competences'),			//edit competences, create/edit/remove categories
-            'del' => checkPerm('mod', true, 'competences'),			//delete competences
+            'view' => checkPerm('view', true, 'competences'),            //view module
+            'add' => checkPerm('mod', true, 'competences'),            //create competences
+            'mod' => checkPerm('mod', true, 'competences'),            //edit competences, create/edit/remove categories
+            'del' => checkPerm('mod', true, 'competences'),            //delete competences
             'associate_user' => checkPerm('associate_user', true, 'competences'), //manage users for competence
         ];
     }
@@ -51,12 +50,24 @@ class CompetencesAdmController extends AdmController
         $message = '';
 
         switch ($code) {
-            case 'no permission':		$message = "You don't have permission to do this."; break;
-            case 'invalid category':	$message = Lang::t('_INVALID_CATEGORY', 'competences'); break;
-            case 'invalid competence':	$message = Lang::t('_INVALID_COMPETENCE', 'fncroles'); break;
-            case 'invalid course':		$message = Lang::t('_INVALID_COURSE', 'competences'); break;
-            case 'no users':			$message = Lang::t('_NO_USERS', 'competences'); break;
-            default:					$message = Lang::t('_OPERATION_FAILURE', 'standard'); break;
+            case 'no permission':
+                $message = "You don't have permission to do this.";
+                break;
+            case 'invalid category':
+                $message = Lang::t('_INVALID_CATEGORY', 'competences');
+                break;
+            case 'invalid competence':
+                $message = Lang::t('_INVALID_COMPETENCE', 'fncroles');
+                break;
+            case 'invalid course':
+                $message = Lang::t('_INVALID_COURSE', 'competences');
+                break;
+            case 'no users':
+                $message = Lang::t('_NO_USERS', 'competences');
+                break;
+            default:
+                $message = Lang::t('_OPERATION_FAILURE', 'standard');
+                break;
         }
 
         return $message;
@@ -244,8 +255,8 @@ class CompetencesAdmController extends AdmController
             'rowsPerPage' => $this->_getFromSession('rowsPerPage', FormaLms\lib\Get::sett('visuItem', 25)),
             'sort' => $this->_getFromSession('sort', 0),
             'dir' => $this->_getFromSession('dir', 'asc'),
-            'typologies' => $this->json->encode($arr_typologies),
-            'types' => $this->json->encode($arr_types),
+            'typologies' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($arr_typologies, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON),
+            'types' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($arr_types, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON),
             'typologies_dropdown' => $typologies_dropdown,
             'types_dropdown' => $types_dropdown,
         ]);
@@ -284,7 +295,7 @@ class CompetencesAdmController extends AdmController
 
                     //if request is invalid, return error message ...
                     if (!is_array($nodes)) {
-                        echo $this->json->encode(['success' => false]);
+                        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['success' => false], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                         return;
                     }
@@ -300,18 +311,18 @@ class CompetencesAdmController extends AdmController
                         'initial' => $initial,
                     ];
                 }
-                echo $this->json->encode($output);
-             break;
+                echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
+                break;
 
             case 'set_selected_node':
                 $this->_setInSession('selected_node', FormaLms\lib\Get::Req('node_id', DOTY_INT, 0));
-             break;
+                break;
 
             case 'delete':
                 //check permissions
                 if (!$this->permissions['mod']) {
                     $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-                    echo $this->json->encode($output);
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                     return;
                 }
@@ -321,20 +332,20 @@ class CompetencesAdmController extends AdmController
                 if ($id > 0) {
                     $output['success'] = $this->model->deleteCategory($id);
                 }
-                echo $this->json->encode($output);
-             break;
+                echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
+                break;
 
             case 'movefolder':
                 //check permissions
                 if (!$this->permissions['mod']) {
                     $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-                    echo $this->json->encode($output);
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                     return;
                 }
 
                 $this->move_categoryTask();
-             break;
+                break;
         }
     }
 
@@ -421,7 +432,7 @@ class CompetencesAdmController extends AdmController
                     'id_typology' => $record->typology,
                     'id_type' => $record->type,
                     'users' => $record->users,
-                    'del' => 'ajax.adm_server.php?r=' . $this->base_link_competence . '/del_competence&id=' . (int) $record->id_competence,
+                    'del' => 'ajax.adm_server.php?r=' . $this->base_link_competence . '/del_competence&id=' . (int)$record->id_competence,
                 ];
             }
         }
@@ -436,7 +447,7 @@ class CompetencesAdmController extends AdmController
             'records' => $output_results,
         ];
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function add_categoryTask()
@@ -444,7 +455,7 @@ class CompetencesAdmController extends AdmController
         //check permissions
         if (!$this->permissions['add']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -455,7 +466,7 @@ class CompetencesAdmController extends AdmController
                 'success' => false,
                 'message' => UIFeedback::perror($this->_getErrorMessage('invalid category')),
             ];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -463,7 +474,7 @@ class CompetencesAdmController extends AdmController
         $this->render('category_editmask', [
             'title' => Lang::t('_NEW_CATEGORY', 'competences'),
             'id_parent' => $id_parent,
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 
@@ -472,7 +483,7 @@ class CompetencesAdmController extends AdmController
         //check permissions
         if (!$this->permissions['mod']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -483,7 +494,7 @@ class CompetencesAdmController extends AdmController
                 'success' => false,
                 'message' => UIFeedback::perror($this->_getErrorMessage('invalid category')),
             ];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -495,7 +506,7 @@ class CompetencesAdmController extends AdmController
             'title' => Lang::t('_MOD', 'competences'),
             'id_category' => $id_category,
             'category_langs' => $info->langs,
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 
@@ -567,7 +578,7 @@ class CompetencesAdmController extends AdmController
         //check permissions
         if (!$this->permissions['add']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -579,7 +590,7 @@ class CompetencesAdmController extends AdmController
                 'success' => false,
                 'message' => UIFeedback::perror($this->_getErrorMessage('invalid category')),
             ];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -621,7 +632,7 @@ class CompetencesAdmController extends AdmController
                 'message' => UIFeedback::perror($this->_getErrorMessage('create category')),
             ];
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function mod_category_actionTask()
@@ -629,7 +640,7 @@ class CompetencesAdmController extends AdmController
         //check permissions
         if (!$this->permissions['mod']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -641,7 +652,7 @@ class CompetencesAdmController extends AdmController
                 'success' => false,
                 'message' => UIFeedback::perror($this->_getErrorMessage('invalid category')),
             ];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -675,7 +686,7 @@ class CompetencesAdmController extends AdmController
                 'message' => UIFeedback::perror($this->_getErrorMessage('edit category')),
             ];
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function move_categoryTask()
@@ -683,7 +694,7 @@ class CompetencesAdmController extends AdmController
         //check permissions
         if (!$this->permissions['mod']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -696,7 +707,7 @@ class CompetencesAdmController extends AdmController
         if ($src <= 0 || $dest < 0) {
             $output['success'] = false;
             $output['message'] = UIFeedback::perror($this->_getErrorMessage('invalid category'));
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -706,7 +717,7 @@ class CompetencesAdmController extends AdmController
         if (!$res) {
             $output['message'] = UIFeedback::perror($this->_getErrorMessage('move category'));
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function add_competence_actionTask()
@@ -813,7 +824,7 @@ class CompetencesAdmController extends AdmController
         //check permissions
         if (!$this->permissions['del']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -821,7 +832,7 @@ class CompetencesAdmController extends AdmController
         //check associations with course
         if ($this->model->getCompetenceCoursesTotal(FormaLms\lib\Get::req('id', DOTY_INT, -1)) > 0) {
             $output = ['success' => false, 'message' => UIFeedback::perror(Lang::t('_WITH_COURSE_ASSOCIATIONS', 'competences'))];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -829,7 +840,7 @@ class CompetencesAdmController extends AdmController
         //check associations with fncrole
         if ($this->model->getCompetenceFncRolesTotal(FormaLms\lib\Get::req('id', DOTY_INT, -1)) > 0) {
             $output = ['success' => false, 'message' => UIFeedback::perror(Lang::t('_WITH_FNCROLE_ASSOCIATIONS', 'competences'))];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -837,7 +848,7 @@ class CompetencesAdmController extends AdmController
         //check associations with user
         if ($this->model->getCompetenceUsersTotal(FormaLms\lib\Get::req('id', DOTY_INT, -1)) > 0) {
             $output = ['success' => false, 'message' => UIFeedback::perror(Lang::t('_WITH_USER_ASSOCIATIONS', 'competences'))];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -847,7 +858,7 @@ class CompetencesAdmController extends AdmController
         if ($id > 0) {
             $output['success'] = $this->model->deleteCompetence($id);
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function show_usersTask()
@@ -874,14 +885,14 @@ class CompetencesAdmController extends AdmController
         switch (FormaLms\lib\Get::req('res', DOTY_STRING, '')) {
             case 'no_users':
                 $result_message = UIFeedback::notice(Lang::t('_OPERATION_FAILURE', 'standard'), true);
-             break;
+                break;
             case 'invalid_competence_type':
                 $result_message = UIFeedback::error(Lang::t('_OPERATION_FAILURE', 'standard'), true);
-             break;
+                break;
             case 'ok_assign':
                 $count = FormaLms\lib\Get::req('count', DOTY_INT, -1);
                 $result_message = UIFeedback::info(Lang::t('_OPERATION_SUCCESSFUL', 'standard'), true);
-             break;
+                break;
         }
 
         //render view
@@ -898,7 +909,7 @@ class CompetencesAdmController extends AdmController
         //check permissions
         if (!$this->permissions['associate_user']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -951,7 +962,7 @@ class CompetencesAdmController extends AdmController
                     //'date_expire' => $_date_expire,
                     //'is_required' => (in_array($user->id_user, $required_users) ? '1' : '0'),
                     'score' => $user->score_got,
-                    'unassign' => 'ajax.adm_server.php?r=' . $this->base_link_competence . '/unassign_user&id_competence=' . (int) $id_competence . '&id_user=' . (int) $user->id_user,
+                    'unassign' => 'ajax.adm_server.php?r=' . $this->base_link_competence . '/unassign_user&id_competence=' . (int)$id_competence . '&id_user=' . (int)$user->id_user,
                 ];
             }
         }
@@ -966,7 +977,7 @@ class CompetencesAdmController extends AdmController
             'records' => $output_results,
         ];
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function assign_users()
@@ -991,8 +1002,8 @@ class CompetencesAdmController extends AdmController
         }
 
         //navigation urls
-        $back_url = 'index.php?r=' . $this->base_link_competence . '/show_users&id=' . (int) $id_competence;
-        $jump_url = 'index.php?r=' . $this->base_link_competence . '/assign_users&id=' . (int) $id_competence;
+        $back_url = 'index.php?r=' . $this->base_link_competence . '/show_users&id=' . (int)$id_competence;
+        $jump_url = 'index.php?r=' . $this->base_link_competence . '/assign_users&id=' . (int)$id_competence;
 
         //competence details
         $info = $this->model->getCompetenceInfo($id_competence);
@@ -1028,7 +1039,7 @@ class CompetencesAdmController extends AdmController
             if (empty($_new_users)) {
                 $res = $this->model->removeCompetenceUsers($id_competence, $_old_users, true);
                 $message = $res ? 'ok_assign' : 'err_assign';
-                Util::jump_to('index.php?r=' . $this->base_link_competence . '/show_users&id=' . (int) $id_competence . '&res=' . $message);
+                Util::jump_to('index.php?r=' . $this->base_link_competence . '/show_users&id=' . (int)$id_competence . '&res=' . $message);
             }
 
             //assign scores, if the competence type is 'score' (otherwise assign directly score 1 and go back)
@@ -1060,7 +1071,7 @@ class CompetencesAdmController extends AdmController
 
                         $line[] = $acl_man->relativeId($_user_data[$id_user]->userid);
                         $line[] = $_user_data[$id_user]->lastname . ' ' . $_user_data[$id_user]->firstname;
-                        $line[] = Form::getInputTextfield('textfield', 'assign_score_' . $id_user, 'assign_score[' . $id_user . ']', $_std_score, '', 255, '');
+                        $line[] = Form::getInputTextfield('textfield', 'assign_score_' . $id_user, 'assign_score[' . $id_user . ']', $_std_score, 255, '');
 
                         $table->addBody($line);
                     }
@@ -1068,7 +1079,7 @@ class CompetencesAdmController extends AdmController
 
                 $foot = [];
                 $foot[] = ['label' => '<b>' . Lang::t('_TOTAL', 'standard') . ': ' . count($_new_users) . '</b>', 'colspan' => 2];
-                $foot[] = Form::getInputTextfield('textfield', '_score_', '_score_', $_std_score, '', 255, '') . '<br />'
+                $foot[] = Form::getInputTextfield('textfield', '_score_', '_score_', $_std_score, 255, '') . '<br />'
                     . Form::getButton('set_score', false, Lang::t('_SET', 'standard'))
                     . Form::getButton('reset_score', false, Lang::t('_RESET', 'standard'));
 
@@ -1091,7 +1102,7 @@ class CompetencesAdmController extends AdmController
                 $res1 = $this->model->assignCompetenceUsers($id_competence, $data, true);
                 $res2 = $this->model->removeCompetenceUsers($id_competence, $_old_users, true);
                 $message = $res1 && $res2 ? 'ok_assign' : 'err_assign';
-                Util::jump_to('index.php?r=' . $this->base_link_competence . '/show_users&id=' . (int) $id_competence . '&res=' . $message);
+                Util::jump_to('index.php?r=' . $this->base_link_competence . '/show_users&id=' . (int)$id_competence . '&res=' . $message);
             }
         } else {
             //--- USER SELECTION IS IN PROGRESS: show selector -----------------------
@@ -1162,8 +1173,8 @@ class CompetencesAdmController extends AdmController
         $remove = FormaLms\lib\Get::req('del_selection', DOTY_STRING, '');
         $allValue = FormaLms\lib\Get::req('_score_', DOTY_INT, 0);
 
-        if($allValue) {
-            foreach($assign as $userId => $assigned_user) {
+        if ($allValue) {
+            foreach ($assign as $userId => $assigned_user) {
                 $assign[$userId] = $allValue;
             }
         }
@@ -1175,7 +1186,7 @@ class CompetencesAdmController extends AdmController
         //$tracked = $this->model->trackOperation();
 
         $message = $res1 && $res2 ? 'ok_assign' : 'err_assign';
-        Util::jump_to('index.php?r=' . $this->base_link_competence . '/show_users&id=' . (int) $id_competence . '&res=' . $message);
+        Util::jump_to('index.php?r=' . $this->base_link_competence . '/show_users&id=' . (int)$id_competence . '&res=' . $message);
     }
 
     public function user_history()
@@ -1208,7 +1219,7 @@ class CompetencesAdmController extends AdmController
         //check permissions
         if (!$this->permissions['associate_user']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -1219,7 +1230,7 @@ class CompetencesAdmController extends AdmController
                 'success' => false,
                 'message' => UIFeedback::perror($this->_getErrorMessage('invalid competence')),
             ];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -1230,7 +1241,7 @@ class CompetencesAdmController extends AdmController
                 'success' => false,
                 'message' => UIFeedback::perror($this->_getErrorMessage('invalid user')),
             ];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -1241,7 +1252,7 @@ class CompetencesAdmController extends AdmController
             $output['message'] = Lang::t('_ERROR_WHILE_SAVING', 'standard');
         }
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function mod_usersTask()
@@ -1264,7 +1275,7 @@ class CompetencesAdmController extends AdmController
             return;
         }
 
-        $back_url = 'index.php?r=' . $this->base_link_competence . '/show_users&id=' . (int) $id_competence;
+        $back_url = 'index.php?r=' . $this->base_link_competence . '/show_users&id=' . (int)$id_competence;
 
         //competence details
         $info = $this->model->getCompetenceInfo($id_competence);
@@ -1323,7 +1334,6 @@ class CompetencesAdmController extends AdmController
                     'assign_score_' . $id_user,
                     'assign_score[' . $id_user . ']',
                     $competence_users[$id_user]->score_got,
-                    '',
                     255,
                     ''
                 );
@@ -1333,7 +1343,7 @@ class CompetencesAdmController extends AdmController
 
             $foot = [];
             $foot[] = ['label' => '<b>' . Lang::t('_TOTAL', 'standard') . ': ' . count($users) . '</b>', 'colspan' => 2];
-            $foot[] = Form::getInputTextfield('textfield', '_score_', '_score_', $_std_score, '', 255, '') . '<br />'
+            $foot[] = Form::getInputTextfield('textfield', '_score_', '_score_', $_std_score, 255, '') . '<br />'
                 . Form::getButton('set_score', false, Lang::t('_SET', 'standard'))
                 . Form::getButton('reset_score', false, Lang::t('_RESET', 'standard'));
 
@@ -1349,7 +1359,7 @@ class CompetencesAdmController extends AdmController
             ]);
         } else {
             $message = '';
-            Util::jump_to('index.php?r=' . $this->base_link_competence . '/show_users&id=' . (int) $id_competence . '&res=' . $message);
+            Util::jump_to('index.php?r=' . $this->base_link_competence . '/show_users&id=' . (int)$id_competence . '&res=' . $message);
         }
     }
 
@@ -1373,7 +1383,7 @@ class CompetencesAdmController extends AdmController
             return;
         }
 
-        $back_url = 'index.php?r=' . $this->base_link_competence . '/show_users&id=' . (int) $id_competence;
+        $back_url = 'index.php?r=' . $this->base_link_competence . '/show_users&id=' . (int)$id_competence;
 
         //competence details
         $info = $this->model->getCompetenceInfo($id_competence);
@@ -1403,7 +1413,7 @@ class CompetencesAdmController extends AdmController
             }
         }
 
-        Util::jump_to($back_url . '&res=ok_assign&count=' . (int) $count);
+        Util::jump_to($back_url . '&res=ok_assign&count=' . (int)$count);
     }
 
     public function change_user_scoreTask()
@@ -1411,7 +1421,7 @@ class CompetencesAdmController extends AdmController
         //check permissions
         if (!$this->permissions['associate_user']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -1425,14 +1435,14 @@ class CompetencesAdmController extends AdmController
 
         if ($id_user <= 0) {
             $output['success'] = false;
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
 
         if ($id_competence <= 0) {
             $output['success'] = false;
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -1448,7 +1458,7 @@ class CompetencesAdmController extends AdmController
             }
         }
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     /*
@@ -1478,8 +1488,12 @@ class CompetencesAdmController extends AdmController
         $res = FormaLms\lib\Get::req('res', DOTY_ALPHANUM, '');
         $result_message = '';
         switch ($res) {
-            case 'ok_competences': $result_message = Lang::t('_OPERATION_SUCCESSFUL', 'standard'); break;
-            case 'err_competences': $result_message = Lang::t('_OPERATION_FAILURE', 'standard'); break;
+            case 'ok_competences':
+                $result_message = Lang::t('_OPERATION_SUCCESSFUL', 'standard');
+                break;
+            case 'err_competences':
+                $result_message = Lang::t('_OPERATION_FAILURE', 'standard');
+                break;
         }
 
         $this->render('man_course', [
@@ -1510,8 +1524,8 @@ class CompetencesAdmController extends AdmController
         }
 
         //navigation urls
-        $back_url = 'index.php?r=' . $this->base_link_competence . '/man_course&id_course=' . (int) $id_course;
-        $jump_url = 'index.php?r=' . $this->base_link_competence . '/assign_to_course&id_course=' . (int) $id_course;
+        $back_url = 'index.php?r=' . $this->base_link_competence . '/man_course&id_course=' . (int)$id_course;
+        $jump_url = 'index.php?r=' . $this->base_link_competence . '/assign_to_course&id_course=' . (int)$id_course;
 
         //selector commands
         $save = FormaLms\lib\Get::req('save', DOTY_MIXED, false);
@@ -1558,7 +1572,7 @@ class CompetencesAdmController extends AdmController
                     $line[] = $competence->langs[$lang_code]['name'];
                     $line[] = $competence->langs[$lang_code]['description'];
                     $line[] = $competence->typology;
-                    $line[] = Form::getInputTextfield('textfield', 'score_assigned_' . $id, 'score_assigned[' . $id . ']', $std_value, '', 255, '');
+                    $line[] = Form::getInputTextfield('textfield', 'score_assigned_' . $id, 'score_assigned[' . $id . ']', $std_value, 255, '');
                     $table->addBody($line);
                 }
             }
@@ -1566,9 +1580,9 @@ class CompetencesAdmController extends AdmController
             if ($counter > 0) {
                 $foot = [
                     ['colspan' => 3, 'label' => ''],
-                    Form::getInputTextfield('textfield', 'score_assigned', false, $std_value, '', 255, '') . '<br />'
-                        . Form::getButton('set_score', 'set_score', Lang::t('_SET', 'standard'), false, '', true, false)
-                        . Form::getButton('reset_score', 'reset_score', Lang::t('_RESET', 'standard'), false, '', true, false),
+                    Form::getInputTextfield('textfield', 'score_assigned', false, $std_value, 255, '') . '<br />'
+                    . Form::getButton('set_score', 'set_score', Lang::t('_SET', 'standard'), false, '', true, false)
+                    . Form::getButton('reset_score', 'reset_score', Lang::t('_RESET', 'standard'), false, '', true, false),
                 ];
                 $table->addFoot($foot);
 
@@ -1632,7 +1646,7 @@ class CompetencesAdmController extends AdmController
         }
 
         //set back url
-        $back_url = 'index.php?r=' . $this->base_link_competence . '/man_course&id_course=' . (int) $id_course;
+        $back_url = 'index.php?r=' . $this->base_link_competence . '/man_course&id_course=' . (int)$id_course;
 
         //form commands
         $save = FormaLms\lib\Get::req('save', DOTY_MIXED, false);
@@ -1715,7 +1729,7 @@ class CompetencesAdmController extends AdmController
                     'typology' => $record->typology,
                     'type' => $record->type,
                     'score' => $record->score,
-                    'del' => 'ajax.adm_server.php?r=' . $this->base_link_competence . '/del_course_competence&id_course=' . (int) $id_course . '&id_competence=' . (int) $record->id_competence,
+                    'del' => 'ajax.adm_server.php?r=' . $this->base_link_competence . '/del_course_competence&id_course=' . (int)$id_course . '&id_competence=' . (int)$record->id_competence,
                 ];
             }
         }
@@ -1730,7 +1744,7 @@ class CompetencesAdmController extends AdmController
             'records' => $output_results,
         ];
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     /*
@@ -1748,7 +1762,7 @@ class CompetencesAdmController extends AdmController
             return;
         }
 
-        $back_url = 'index.php?r=' . $this->base_link_competence . '/man_course&id_course=' . (int) $id_course;
+        $back_url = 'index.php?r=' . $this->base_link_competence . '/man_course&id_course=' . (int)$id_course;
         $arr_competences = $this->model->getCourseCompetences($id_course);
 
         require_once _base_ . '/lib/lib.table.php';
@@ -1778,7 +1792,7 @@ class CompetencesAdmController extends AdmController
                 $line[] = $competence->langs[$lang_code]['name'];
                 $line[] = $competence->langs[$lang_code]['description'];
                 $line[] = $competence->typology;
-                $line[] = Form::getInputTextfield('textfield', 'score_assigned_' . $id, 'score_assigned[' . $id . ']', $std_value, '', 255, '');
+                $line[] = Form::getInputTextfield('textfield', 'score_assigned_' . $id, 'score_assigned[' . $id . ']', $std_value, 255, '');
                 $table->addBody($line);
             }
         }
@@ -1786,9 +1800,9 @@ class CompetencesAdmController extends AdmController
         if ($counter > 0) {
             $foot = [
                 ['colspan' => 3, 'label' => ''],
-                Form::getInputTextfield('textfield', 'score_assigned', false, $std_value, '', 255, '') . '<br />'
-                    . Form::getButton('set_score', 'set_score', Lang::t('_SET', 'standard'), false, '', true, false)
-                    . Form::getButton('reset_score', 'reset_score', Lang::t('_RESET', 'standard'), false, '', true, false),
+                Form::getInputTextfield('textfield', 'score_assigned', false, $std_value, 255, '') . '<br />'
+                . Form::getButton('set_score', 'set_score', Lang::t('_SET', 'standard'), false, '', true, false)
+                . Form::getButton('reset_score', 'reset_score', Lang::t('_RESET', 'standard'), false, '', true, false),
             ];
             $table->addFoot($foot);
 
@@ -1822,7 +1836,7 @@ class CompetencesAdmController extends AdmController
         }
 
         //set back url
-        $back_url = 'index.php?r=' . $this->base_link_competence . '/man_course&id_course=' . (int) $id_course;
+        $back_url = 'index.php?r=' . $this->base_link_competence . '/man_course&id_course=' . (int)$id_course;
 
         //form commands
         $save = FormaLms\lib\Get::req('save', DOTY_MIXED, false);
@@ -1854,14 +1868,14 @@ class CompetencesAdmController extends AdmController
             $output['success'] = false;
             $output['message'] = UIFeedback::perror($message_text);
         } else {
-            $res = $this->model->deleteCourseCompetences((int) $id_course, (int) $id_competence);
+            $res = $this->model->deleteCourseCompetences((int)$id_course, (int)$id_competence);
             $output['success'] = $res ? true : false;
             if (!$res) {
                 $output['message'] = UIFeedback::perror($this->_getErrorMessage('remove course competence'));
             }
         }
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function view_competence_reportTask()
@@ -1951,7 +1965,7 @@ class CompetencesAdmController extends AdmController
                 ];
             }
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function inline_editTask()
@@ -1959,7 +1973,7 @@ class CompetencesAdmController extends AdmController
         $id_competence = FormaLms\lib\Get::req('id_competence', DOTY_INT, 0);
 
         if ($id_competence <= 0) {
-            echo $this->json->encode(['success' => true]);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['success' => true], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -1971,7 +1985,7 @@ class CompetencesAdmController extends AdmController
         $language = FormaLms\lib\Get::req('language', DOTY_STRING, Lang::get());
 
         if ($new_value === $old_value) {
-            echo $this->json->encode(['success' => true]);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['success' => true], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         } else {
             switch ($column) {
                 case 'name':
@@ -1980,8 +1994,8 @@ class CompetencesAdmController extends AdmController
                     if ($res) {
                         $output['new_value'] = stripslashes($new_value);
                     }
-                    echo $this->json->encode($output);
-                 break;
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
+                    break;
 
                 case 'description':
                     $res = $this->model->updateCompetenceDescription($id_competence, $new_value, $language);
@@ -1989,8 +2003,8 @@ class CompetencesAdmController extends AdmController
                     if ($res) {
                         $output['new_value'] = stripslashes($new_value);
                     }
-                    echo $this->json->encode($output);
-                 break;
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
+                    break;
 
                 case 'typology':
                     $res = $this->model->updateCompetenceTypology($id_competence, $new_value);
@@ -1999,8 +2013,8 @@ class CompetencesAdmController extends AdmController
                         $typologies = $this->model->getCompetenceTypologies();
                         $output['new_value'] = $typologies[$new_value];
                     }
-                    echo $this->json->encode($output);
-                 break;
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
+                    break;
 
                 case 'type':
                     $res = $this->model->updateCompetenceType($id_competence, $new_value);
@@ -2009,12 +2023,12 @@ class CompetencesAdmController extends AdmController
                         $types = $this->model->getCompetenceTypes();
                         $output['new_value'] = $types[$new_value];
                     }
-                    echo $this->json->encode($output);
-                 break;
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
+                    break;
 
                 default:
-                    echo $this->json->encode(['success' => false]);
-                 break;
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['success' => false], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
+                    break;
             }
         }
     }

@@ -16,15 +16,14 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 class UserselectorWidgetController extends Controller
 {
     protected $model = null;
-    protected $json = null;
     public FunctionalrolesAdm $fncrole_model;
     public GroupmanagementAdm $group_model;
     public UsermanagementAdm $user_model;
 
     public function init()
     {
-        require_once _base_ . '/lib/lib.json.php';
-        $this->json = new Services_JSON();
+        
+        
         $this->user_model = new UsermanagementAdm();
         $this->group_model = new GroupmanagementAdm();
         $this->fncrole_model = new FunctionalrolesAdm();
@@ -50,7 +49,7 @@ class UserselectorWidgetController extends Controller
             $searchFilter['dyn_filter'] = $dyn_filter;
         }
         $output = $this->user_model->getAllUsers($idOrg, $descendants, $searchFilter, true, $learning_filter);
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     /*
@@ -59,9 +58,9 @@ class UserselectorWidgetController extends Controller
     protected function _getDynamicFilter($input)
     {
         $output = false;
-        $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
+        
         if (is_string($input) && $input != '') {
-            $dyn_data = $json->decode(urldecode(stripslashes($input))); //decode the filter json string
+            $dyn_data = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode(urldecode(stripslashes($input)), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON); //decode the filter json string
             //die($input."\n\n".urldecode(stripslashes($input))."\n\n".'<pre>'.print_r($dyn_data, true).'</pre>');
             if (isset($dyn_data['exclusive']) && isset($dyn_data['filters'])) { //required fields
                 if (count($dyn_data['filters']) > 0) { //there must be any filter selected
@@ -201,7 +200,7 @@ class UserselectorWidgetController extends Controller
             'records' => $output_results,
         ];
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     //--- GROUP SELECTOR FUNCTIONS -----------------------------------------------
@@ -210,7 +209,7 @@ class UserselectorWidgetController extends Controller
     {
         $filter = FormaLms\lib\Get::req('filter_text', DOTY_STRING, '');
         $output = $this->group_model->getAllGroups($filter, true);
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function getgrouptabledataTask()
@@ -270,7 +269,7 @@ class UserselectorWidgetController extends Controller
             'records' => $records,
         ];
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     //--- ORGCHART SELECTOR FUNCTIONS --------------------------------------------
@@ -363,7 +362,7 @@ class UserselectorWidgetController extends Controller
                         'initial' => $initial,
                     ];
                 }
-                echo $this->json->encode($output);
+                echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
                 break;
 
             case 'set_selected_node':
@@ -375,7 +374,7 @@ class UserselectorWidgetController extends Controller
         /*$node_id = FormaLms\lib\Get::req('id', DOTY_INT, -1);
         if ($node_id >= 0) {
             $output = $this->user_model->getNodesById($node_id);
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         }*/
     }
 
@@ -385,7 +384,7 @@ class UserselectorWidgetController extends Controller
     {
         $filter = FormaLms\lib\Get::req('filter_text', DOTY_STRING, '');
         $output = $this->fncrole_model->getAllFunctionalRoles($filter, true);
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function getfncroletabledataTask()
@@ -444,6 +443,6 @@ class UserselectorWidgetController extends Controller
             'records' => $records,
         ];
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 }

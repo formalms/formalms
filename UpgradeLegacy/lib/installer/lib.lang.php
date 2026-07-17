@@ -150,7 +150,7 @@ class Lang
             $res['btn'] = Lang::t('_NEXT') . ' &raquo;';
             require_once _base_ . '/lib/lib.json.php';
             $json = new Services_JSON();
-            echo $json->encode($res);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($res, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             //session_write_close();
             exit();
         }

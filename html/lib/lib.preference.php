@@ -126,7 +126,7 @@ class UserPreferencesDb
 
         $preference = [];
         if (sql_num_rows($re_preference) > 0) {
-            list($path_name, $label, $default_value, $type, $visible, $load_at_startup) = sql_fetch_row($re_preference);
+            [$path_name, $label, $default_value, $type, $visible, $load_at_startup] = sql_fetch_row($re_preference);
             $preference = [
                 'path_name' => $path_name,
                 'label' => $label,
@@ -159,7 +159,7 @@ class UserPreferencesDb
 
         $preference = [];
         if (sql_num_rows($re_preference) > 0) {
-            list($default_value) = sql_fetch_row($re_preference);
+            [$default_value] = sql_fetch_row($re_preference);
 
             return $default_value;
         } else {
@@ -259,7 +259,7 @@ class UserPreferencesDb
         $re_preference = $this->_executeQuery($query_preference);
 
         if (sql_num_rows($re_preference) > 0) {
-            list($value) = sql_fetch_row($re_preference);
+            [$value] = sql_fetch_row($re_preference);
 
             return $value;
         } else {
@@ -488,7 +488,7 @@ class UserPreferences
      */
     public function __construct($id_user, $db_conn = null)
     {
-        $acl_man = new FormaACLManager();
+        $acl_man = FormaACLManager::getInstance();
 
         $this->id_user = $id_user;
 
@@ -503,6 +503,7 @@ class UserPreferences
         // Load startup
         $this->_preferences = $this->_up_db->getFilteredUserValue($id_user, false, true, false);
         $this->_preferences['ui.lang_code'] = $this->getLanguageCode();
+        $this->_preferences['user_rules.user_quota_used'] = $this->getUploadedFileSize();
 
         $this->_admin_preference = new AdminPreference();
     }
@@ -586,6 +587,12 @@ class UserPreferences
         }
 
         return true;
+    }
+
+    public function getUploadedFileSize(){
+        $q = "SELECT SUM(size) as tot FROM %adm_user_file WHERE user_idst=".$this->id_user;
+        $ret = sql_fetch_row(sql_query($q));
+        return is_countable($ret) ? $ret[0] : false;
     }
 
     /**
@@ -721,29 +728,24 @@ class UserPreferences
     {
         require_once _base_ . '/lib/lib.form.php';
         $lang = FormaLanguage::createInstance('preferences', 'framework');
-
         $preferences = $this->_up_db->getFullPreferences($this->id_user, $only_visible, false, $base_path);
-
         $html = [];
         foreach ($preferences as $pref) {
             // Navigation trought the preferences
             // array( 'path_name', 'label', 'default_value', 'type', 'visible', 'load_at_startup', 'user_value' )
             switch ($pref['type']) {
                 case 'language':
-                    //drop down language
-                    $lang_sel = $this->getLanguage();
-
-                    $langs_var = \FormaLms\lib\Forma::langManager()->getAllLangCode();
-                    $langs = [];
-                    foreach ($langs_var as $k => $v) {
-                        $langs[$k] = $v;
+                    if(!$this->id_user){
+                        $selected = array_search(Lang::getDefault(), FormaLms\lib\Forma::langManager()->getAllLangCode());
                     }
-                    /* XXX: remove when alll lang ready*/
-                    $html[$pref['path_name']] = Form::getDropdown($lang->def($pref['label']),
+                    else{
+                        $selected = array_search($this->getLanguage(), FormaLms\lib\Forma::langManager()->getAllLangCode());
+                    }
+                    $html[$pref['path_name']] = Form::getDropdown(Lang::t('_LANGUAGE','standard'),
                         $this->base_name . '_' . $pref['path_name'],
                         $this->base_name . '[' . $pref['path_name'] . ']',
-                        $langs,
-                        array_search($lang_sel, $langs));
+                        FormaLms\lib\Forma::langManager()->getAllLangCode(),
+                        $selected,'','','autocomplete=language');
                     break;
                 case 'template':
                     //drop down template
@@ -862,13 +864,12 @@ define('_RULES_LANG', 'admin_rules.user_lang_assigned');
 
 class AdminPreference
 {
-    public $json;
 
     public function __construct()
     {
-        require_once _base_ . '/lib/lib.json.php';
+        
 
-        $this->json = new Services_JSON();
+        
     }
 
     public function getSpecialModifyMask($idst, $lang_module = 'adminrules')
@@ -921,7 +922,7 @@ class AdminPreference
             . " WHERE idstMember = '" . $idst . "'"
             . ' AND idst IN (' . implode(',', $this->idstGroup()) . ')';
 
-        list($res) = sql_fetch_row(sql_query($query));
+        [$res] = sql_fetch_row(sql_query($query));
 
         if (!$res) {
             $res = 0;
@@ -944,7 +945,7 @@ class AdminPreference
 
         while (list($path, $value) = sql_fetch_row($result)) {
             if ($path === _RULES_LANG) {
-                $res[$path] = $this->json->decode($value);
+                $res[$path] = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             } else {
                 $res[$path] = $value;
             }
@@ -965,7 +966,7 @@ class AdminPreference
 
         while (list($path, $value) = sql_fetch_row($result)) {
             if ($path === _RULES_LANG) {
-                $res[$path] = $this->json->decode($value);
+                $res[$path] = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             } else {
                 $res[$path] = $value;
             }
@@ -1645,7 +1646,7 @@ class ControllerPreference extends AdminPreference
     {
         $ctrl_users = [];
         $admin_users = $this->getAdminUsers($id_controller);
-        $admin_users[] = $id_controller;
+        $admin_users[] = (int) $id_controller;
         $ctrl_users = array_unique($admin_users);
 
         return $ctrl_users;

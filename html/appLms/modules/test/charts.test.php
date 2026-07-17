@@ -37,7 +37,7 @@ class Test_Charts
     public $chart = null;
     public $table = null;
     public $testInfo = null;
-    public $lang = null;
+
 
     public $fontPath = '';
     public $imagePath = '';
@@ -60,7 +60,7 @@ class Test_Charts
         $this->imagePath = $GLOBALS['where_files_relative'] . '/tmp/';
         $this->valid = true;
 
-        $this->lang = &FormaLanguage::createInstance('test', 'lms');
+
         $this->_setTestInfo();
         $this->table = new TypeOne();
 
@@ -89,10 +89,10 @@ class Test_Charts
 
     public function _setTestInfo()
     {
-        $json = new Services_JSON();
+        
         list($info) = sql_fetch_row(sql_query('SELECT chart_options FROM %lms_test WHERE idTest=' . $this->idTest));
         if ($info != '') {
-            $this->testInfo = $json->decode($info);
+            $this->testInfo = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($info, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         } else {
             $this->testInfo = new stdClass();
         }
@@ -384,8 +384,8 @@ class Test_Charts
         $this->dataSet->AddSerie('avg_serie');
         $this->dataSet->SetAbsciseLabelSerie('categories');
 
-        $this->dataSet->SetSerieName($this->lang->def('_USER_LEGEND_RADARCHART'), 'user_serie');
-        $this->dataSet->SetSerieName($this->lang->def('_AVERAGE_LEGEND_RADARCHART'), 'avg_serie');
+        $this->dataSet->SetSerieName(Lang::t('_USER_LEGEND_RADARCHART','test'), 'user_serie');
+        $this->dataSet->SetSerieName(Lang::t('_AVERAGE_LEGEND_RADARCHART','test'), 'avg_serie');
 
         // Initialise the graph
         $this->_openChart();
@@ -420,7 +420,7 @@ class Test_Charts
         $this->_setChartTitle();
 
         //set table
-        $cont_h = ['', $this->lang->def('_USER_TESTSCORE'), $this->lang->def('_AVERAGE_TESTSCORE')];
+        $cont_h = ['', Lang::t('_USER_TESTSCORE','test'), Lang::t('_AVERAGE_TESTSCORE','test')];
         $type_h = ['', 'align_center', 'align_center'];
         $this->table->addHead($cont_h, $type_h);
         foreach ($user_values as $idCategory => $value) {
@@ -486,7 +486,7 @@ class Test_Charts
         $this->_setChartTitle();
 
         //set table
-        $cont_h = ['', $this->lang->def('_USER_TESTSCORE'), $this->lang->def('_AVERAGE_TESTSCORE')];
+        $cont_h = ['', Lang::t('_USER_TESTSCORE','test'), Lang::t('_AVERAGE_TESTSCORE','test')];
         $type_h = ['', 'align_center', 'align_center'];
         $this->table->addHead($cont_h, $type_h);
         foreach ($user_values as $idCategory => $value) {
@@ -551,8 +551,8 @@ class Test_Charts
         $this->dataSet->AddPoint($values_1, 'serie_1');
         $this->dataSet->AddPoint($values_2, 'serie_2');
         $this->dataSet->AddAllSeries();
-        $this->dataSet->SetSerieName($this->lang->def('_FREQUENCY'), 'serie_1');
-        $this->dataSet->SetSerieName($this->lang->def('_EFFICACY'), 'serie_2');
+        $this->dataSet->SetSerieName(Lang::t('_FREQUENCY','test'), 'serie_1');
+        $this->dataSet->SetSerieName(Lang::t('_EFFICACY','test'), 'serie_2');
         $this->dataSet->AddPoint($cat_names, 'labels');
         $this->dataSet->SetAbsciseLabelSerie('labels');
 
@@ -574,13 +574,13 @@ class Test_Charts
         //set table
         $this->table->addHead($cont_h, $type_h);
         //frequency values
-        $frequency = [$this->lang->def('_FREQUENCY')];
+        $frequency = [Lang::t('_FREQUENCY','test')];
         foreach ($values_1 as $value) {
             $frequency[] = $value;
         }
         $this->table->addBody($frequency);
         //efficacy values
-        $efficacy = [$this->lang->def('_EFFICACY')];
+        $efficacy = [Lang::t('_EFFICACY','test')];
         foreach ($values_2 as $value) {
             $efficacy[] = $value;
         }
@@ -632,7 +632,7 @@ class Test_Charts
         $this->_setChartTitle();
 
         //set table
-        $cont_h = ['', $this->lang->def('_USER_TESTSCORE'), $this->lang->def('_AVERAGE_TESTSCORE')];
+        $cont_h = ['', Lang::t('_USER_TESTSCORE','test'), Lang::t('_AVERAGE_TESTSCORE','test')];
         $type_h = ['', 'align_center', 'align_center'];
         $this->table->addHead($cont_h, $type_h);
         foreach ($user_values as $idCategory => $value) {
@@ -672,7 +672,7 @@ class Test_Charts
 
         if ($print) {
             cout('<div class="align_center">', 'content');
-            cout('<img src="' . $filename . '" alt="' . $this->lang->def('_UNABLE_TO_DISPLAY_CHART') . '" />', 'content');
+            cout('<img src="' . $filename . '" alt="' . Lang::t('_UNABLE_TO_DISPLAY_CHART','test') . '" />', 'content');
             cout('<br /><br /><div>' . $this->renderTable() . '</div>', 'content');
             cout('</div>', 'content');
         } else {

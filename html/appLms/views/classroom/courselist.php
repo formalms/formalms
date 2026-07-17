@@ -1,10 +1,3 @@
-<?php if ($use_label) { ?>
-<div style="position:absolute;right:1%;top:30px;">
-	<a href="index.php?r=classroom/show&id_common_label=-2">
-		<span>&lsaquo;&lsaquo;<?php echo Lang::t('_BACK_TO_LABEL', 'course'); ?></span>
-	</a>
-</div>
-<?php } ?>
 <?php if (empty($courselist)) { ?>
 
 	<p><?php echo Lang::t('_NO_CONTENT', 'standard'); ?></p>

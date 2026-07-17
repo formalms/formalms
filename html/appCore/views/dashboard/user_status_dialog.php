@@ -29,7 +29,7 @@ if (isset($json)) {
     $output = [];
     $output['header'] = $title;
     $output['body'] = $body;
-    echo $json->encode($output);
+    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 } else {
     echo getTitleArea($title);
     echo '<div class="std_block">';

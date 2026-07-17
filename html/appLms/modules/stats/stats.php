@@ -23,8 +23,7 @@ class StatOrg_TreeDb extends OrgDirDb
                     . '   AND ' . $prefix . '_organization_access.kind = \'group\' )';
             } /*.' LEFT JOIN '.$prefix.'_coursegroupuser'
             .' ON ('.$prefix."_organization_access.kind = 'group'"
-            .'     AND '.$prefix.'_organization_access.value = '.$prefix.'_coursegroupuser.idGroup )';*/
-            else {
+            .'     AND '.$prefix.'_organization_access.value = '.$prefix.'_coursegroupuser.idGroup )';*/ else {
                 return ' LEFT JOIN ' . $prefix . '_organization_access'
                     . ' ON ( ' . $tname . '.idOrg = ' . $prefix . '_organization_access.idOrgAccess '
                     . '   AND ' . $prefix . '_organization_access.kind = \'group\' )';
@@ -120,9 +119,7 @@ class StatOrg_TreeView extends Org_TreeView
     public $kindOfView = ONEUSERVIEW;
     public $stat_idUser;
 
-    public function extendedParsing($arrayState, $arrayExpand, $arrayCompress)
-    {
-    }
+    public function extendedParsing($arrayState, $arrayExpand, $arrayCompress) {}
 
     public function printElement(&$stack, $level)
     {
@@ -156,21 +153,26 @@ class StatOrg_TreeView extends Org_TreeView
                 require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/track.object.php');
                 $status = Track_Object::getStatusFromId(
                     $stack[$level]['folder']->id,
-                    $this->stat_idUser);
+                    $this->stat_idUser
+                );
 
                 return printReport($status, true, ($arrData[1] !== '' ? true : false));
             } else {
                 $this->tdb->stat_filter_on_items = true;
-                $totC = getSubStatStatusCount($this->stat_idUser,
+                $totC = getSubStatStatusCount(
+                    $this->stat_idUser,
                     $this->tdb->idCourse,
                     ['completed', 'passed'],
                     $stack[$level]['folder'],
-                    $this->tdb);
-                $totF = getSubStatStatusCount($this->stat_idUser,
+                    $this->tdb
+                );
+                $totF = getSubStatStatusCount(
+                    $this->stat_idUser,
                     $this->tdb->idCourse,
                     ['failed'],
                     $stack[$level]['folder'],
-                    $this->tdb);
+                    $this->tdb
+                );
                 $tot = count($this->tdb->getDescendantsId($stack[$level]['folder']));
                 $this->tdb->stat_filter_on_items = true;
                 $out = '<div class="fright" >';
@@ -282,7 +284,7 @@ function statuserfilter()
     $status_filter = FormaLms\lib\Get::req('status_filter', DOTY_INT, STATFILTER_ALL_STATUS);
     $editions_filter = FormaLms\lib\Get::req('editions_filter', DOTY_INT, STATFILTER_ALL_EDITION);
     $date_filter = FormaLms\lib\Get::req('date_filter', DOTY_INT, STATFILTER_ALL_EDITION);
-    $user_filter = FormaLms\lib\Get::req('user_filter', DOTY_MIXED, '');
+    $user_filter['search'] = FormaLms\lib\Get::req('user_filter', DOTY_MIXED, '');
 
     $cs = new CourseSubscribe_Manager();
     /*
@@ -305,7 +307,7 @@ function statuserfilter()
     }
     $aclManager->setContext($std_content);
 
-    $out->add(Form::getTextField(Lang::t('_FULLNAME', 'standard'), 'user_filter', 'user_filter', 255, $user_filter));
+    $out->add(Form::getTextField(Lang::t('_FULLNAME', 'standard'), 'user_filter', 'user_filter', 255, $user_filter['search']));
 
     $out->add(Form::getDropdown(
         $lang->def('_GROUPS'),
@@ -361,7 +363,8 @@ function statuserfilter()
             'editions_filter',
             'editions_filter',
             $arr_editions,
-            $editions_filter));
+            $editions_filter
+        ));
     }
     //--- filter on class ------------------------------------------------------
 
@@ -403,7 +406,8 @@ function statuserfilter()
             'date_filter',
             'date_filter',
             $arr_date,
-            $date_filter));
+            $date_filter
+        ));
     }
 
     //------------------------------------------------------------------------------
@@ -433,13 +437,22 @@ function statuserfilter()
     if ($group_filter != STATFILTER_ALL_GROUP) {
         $group_all_members = $aclManager->getGroupAllUser($group_filter);
     }
+
+    //apply sub admin filters, if needed
+    if (!$view_all_perm && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == '/framework/level/admin') {
+        //filter users
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.preference.php');
+        $ctrlManager = new ControllerPreference();
+        $user_filter['ctrl_users']  = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
+    }
+
     $students = getSubscribedInfo(
         (int)$idCourse,
         false,
         $lev,
         true,
         ($status_filter != STATFILTER_ALL_STATUS ? $status_filter : false),
-        ($editions_filter != STATFILTER_ALL_EDITION ? $editions_filter : false),//false,
+        ($editions_filter != STATFILTER_ALL_EDITION ? $editions_filter : false), //false,
         true,
         $user_filter,
         $group_all_members,
@@ -447,30 +460,18 @@ function statuserfilter()
         ($date_filter != STATFILTER_ALL_EDITION ? $date_filter : false)
     );
 
-    $query = 'SELECT COUNT(*)'
+    $query = 'SELECT COUNT(*) as total_count'
         . ' FROM %lms_courseuser AS cu'
         . ($user_filter !== '' ? ' JOIN ' . $GLOBALS['prefix_fw'] . '_user AS u ON u.idst = cu.idUser' : '')
         . ' WHERE cu.idCourse = ' . (int)$idCourse
         . ($status_filter != STATFILTER_ALL_STATUS ? " AND cu.status = '" . $status_filter . "'" : '')
-        . ($user_filter !== '' ? " AND (u.firstname LIKE '%" . $user_filter . "%' OR u.lastname LIKE '%" . $user_filter . "%' OR u.userid LIKE '%" . $user_filter . "%')" : '')
+        . ($user_filter['search'] !== '' ? " AND (u.firstname LIKE '%" . $user_filter['search'] . "%' OR u.lastname LIKE '%" . $user_filter['search'] . "%' OR u.userid LIKE '%" . $user_filter['search'] . "%')" : '')
+        . (isset($user_filter['ctrl_users']) && $user_filter['ctrl_users'] != '' ? " AND u.idst IN (" . implode(',', $user_filter['ctrl_users']) . ")" : '')
         . ($group_all_members !== false ? ' AND c.idUser IN (' . implode(',', $group_all_members) . ')' : '');
+    $r = sql_fetch_assoc(sql_query($query));
+    $total_user = $r['total_count'];
 
-    [$total_user] = sql_fetch_row(sql_query($query));
 
-    //apply sub admin filters, if needed
-    if (!$view_all_perm && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == '/framework/level/admin') {
-        //filter users
-        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.preference.php');
-        $ctrlManager = new ControllerPreference();
-        $ctrl_users = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
-        foreach ($students as $idst => $user_course_info) {
-            if (!in_array($idst, $ctrl_users)) {
-                // Elimino gli studenti non amministrati
-                unset($students[$idst]);
-            }
-        }
-        $total_user = count($students);
-    }
 
     $content_h = [
         $lang->def('_USERNAME'),
@@ -481,25 +482,24 @@ function statuserfilter()
     ];
     $type_h = ['', '', 'image', 'image', 'image'];
 
+    $eventResults = Events::trigger('lms.stats.userfilter.table', compact('content_h', 'type_h'));
+
+    if ($eventResults) {
+        if (array_key_exists('content_h', $eventResults)) {
+            $content_h = $eventResults['content_h'];
+        }
+
+        if (array_key_exists('type_h', $eventResults)) {
+            $type_h = $eventResults['type_h'];
+        }
+    }
+
     $tabStat->setColsStyle($type_h);
     $tabStat->addHead($content_h);
 
     $aclManager = \FormaLms\lib\Forma::getAclManager();;
     $acl = \FormaLms\lib\Forma::getAcl();
 
-    //apply sub admin filters, if needed
-    if ($view_all_perm && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == '/framework/level/admin') {
-        //filter users
-        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.preference.php');
-        $ctrlManager = new ControllerPreference();
-        $ctrl_users = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
-        foreach ($students as $idst => $user_course_info) {
-            if (!in_array($idst, $ctrl_users)) {
-                // Elimino gli studenti non amministrati
-                unset($students[$idst]);
-            }
-        }
-    }
 
     // search memebers of the selected group
 
@@ -508,28 +508,45 @@ function statuserfilter()
             $user_info = $aclManager->getUser($idst, false);
 
             if ($user_info != false) {
-                $totItems = getNumCourseItems((int)$idCourse,
+                $totItems = getNumCourseItems(
+                    (int)$idCourse,
                     false,
                     $idst,
-                    false);
-                $totComplete = getStatStatusCount($idst,
+                    false
+                );
+                $totComplete = getStatStatusCount(
+                    $idst,
                     (int)$idCourse,
                     ['completed', 'passed']
                 );
-                $totFailed = getStatStatusCount($idst,
+                $totFailed = getStatStatusCount(
+                    $idst,
                     (int)$idCourse,
                     ['failed']
                 );
                 $stat_status = $cs->getUserStatusTr($user_course_info['status']);
 
+                $link = '';
+
+                $eventResults = Events::trigger('lms.stats.userfilter', ['user_course_info' => $user_course_info, 'idst' => $idst]);
+
+                if ($eventResults && array_key_exists('content_body', $eventResults)) {
+
+                    $link = $eventResults['content_body'];
+                }
                 if (isset($_POST['start_filter']) && $_POST['start_filter'] = 1) {
                     if ($totComplete) {
                         // now print entry
-                        $content = ['<a href="index.php?modname=stats&amp;op=statoneuser&amp;idUser=' . $idst . '" >'
-                            . $aclManager->relativeId($user_info[ACL_INFO_USERID]) . '</a>',
-                            $user_info[ACL_INFO_LASTNAME] . '&nbsp;' . $user_info[ACL_INFO_FIRSTNAME],
-                            '<a href="index.php?modname=stats&amp;op=modstatus&amp;idUser=' . $idst . '">'
-                            . $stat_status . '</a>',];
+                        $content = [
+                            '<a href="index.php?modname=stats&amp;op=statoneuser&amp;idUser=' . $idst . '" >'
+                                . $aclManager->relativeId($user_info[ACL_INFO_USERID]) . '</a>',
+                            $user_info[ACL_INFO_LASTNAME] . '&nbsp;' . $user_info[ACL_INFO_FIRSTNAME]];
+
+                        if(!empty($link)) {
+                            $content[] = $link;
+                        }
+                         $content[] =  '<a href="index.php?modname=stats&amp;op=modstatus&amp;idUser=' . $idst . '">'
+                                . $stat_status . '</a>';
 
                         $content[] = $totComplete . '/' . $totFailed . '/' . $totItems;
                         $content[] = renderProgress($totComplete, $totFailed, $totItems);
@@ -537,11 +554,16 @@ function statuserfilter()
                     }
                 } else {
                     // now print entry
-                    $content = ['<a href="index.php?modname=stats&amp;op=statoneuser&amp;idUser=' . $idst . '" >'
-                        . $aclManager->relativeId($user_info[ACL_INFO_USERID]) . '</a>',
-                        $user_info[ACL_INFO_LASTNAME] . '&nbsp;' . $user_info[ACL_INFO_FIRSTNAME],
-                        '<a href="index.php?modname=stats&amp;op=modstatus&amp;idUser=' . $idst . '">'
-                        . $stat_status . '</a>',];
+                     $content = [
+                            '<a href="index.php?modname=stats&amp;op=statoneuser&amp;idUser=' . $idst . '" >'
+                                . $aclManager->relativeId($user_info[ACL_INFO_USERID]) . '</a>',
+                            $user_info[ACL_INFO_LASTNAME] . '&nbsp;' . $user_info[ACL_INFO_FIRSTNAME]];
+
+                        if(!empty($link)) {
+                            $content[] = $link;
+                        }
+                         $content[] =  '<a href="index.php?modname=stats&amp;op=modstatus&amp;idUser=' . $idst . '">'
+                                . $stat_status . '</a>';
 
                     $content[] = $totComplete . '/' . $totFailed . '/' . $totItems;
                     $content[] = renderProgress($totComplete, $totFailed, $totItems);
@@ -597,7 +619,8 @@ function statoneuser()
     $values = $item->otherValues;
 
     $param = $treeView->printState(false);
-    $arrBack_Url = ['address' => 'index.php?modname=stats&op=statoneuser&idUser=' . $treeView->stat_idUser,
+    $arrBack_Url = [
+        'address' => 'index.php?modname=stats&op=statoneuser&idUser=' . $treeView->stat_idUser,
         'end_address' => 'index.php?modname=stats&op=statoneuser&idUser=' . $treeView->stat_idUser,
         'param' => $param,
     ];
@@ -607,11 +630,13 @@ function statoneuser()
     $idTrack = Track_Object::getIdTrackFromCommon($treeView->getSelectedFolderId(), $treeView->stat_idUser);
 
     if ($idTrack) {
-        $lo = createLOTrack($idTrack,
+        $lo = createLOTrack(
+            $idTrack,
             $values[REPOFIELDOBJECTTYPE],
             $values[REPOFIELDIDRESOURCE],
             $values[ORGFIELDIDPARAM],
-            $arrBack_Url);
+            $arrBack_Url
+        );
 
         if ($lo !== false) {
             $GLOBALS['wrong_way_to_pass_parameter'] = $lo->idReference; //$values[REPOFIELDIDRESOURCE];
@@ -681,7 +706,8 @@ function statcourse()
         'group_filter',
         'group_filter',
         $arr_groups,
-        $group_filter));
+        $group_filter
+    ));
 
     $out->add(Form::getButton('gofilter', 'gofilter', $lang->def('_SEARCH')));
 
@@ -698,15 +724,18 @@ function statcourse()
         $values = $item->otherValues;
 
         $param = $treeView->printState(false);
-        $arrBack_Url = ['address' => 'index.php?modname=stats&op=statcourse',
+        $arrBack_Url = [
+            'address' => 'index.php?modname=stats&op=statcourse',
             'end_address' => 'index.php?modname=stats&op=statcourse',
             'param' => $param,
         ];
-        $lo = createLOTrack(null,
+        $lo = createLOTrack(
+            null,
             $values[REPOFIELDOBJECTTYPE],
             $values[REPOFIELDIDRESOURCE],
             $values[ORGFIELDIDPARAM],
-            $arrBack_Url);
+            $arrBack_Url
+        );
 
         if ($lo !== false) {
             $out->add($lo->loadObjectReport());
@@ -750,7 +779,7 @@ function statitem()
 
     $group_filter = FormaLms\lib\Get::req('group_filter', DOTY_INT, -1);
     $status_filter = FormaLms\lib\Get::req('status_filter', DOTY_INT, -1);
-    $user_filter = FormaLms\lib\Get::req('user_filter', DOTY_MIXED, '');
+    $user_filter['search'] = FormaLms\lib\Get::req('user_filter', DOTY_MIXED, '');
     $editions_filter = 0;
 
 
@@ -767,42 +796,38 @@ function statitem()
     if ($group_filter != '-1') {
         $group_all_members = $aclManager->getGroupAllUser($group_filter);
     }
+    //apply sub admin filters, if needed
+    if (!$view_all_perm && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == '/framework/level/admin') {
+        //filter users
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.preference.php');
+        $ctrlManager = new ControllerPreference();
+        $user_filter['ctrl_users'] = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
+    }
+
     $students = getSubscribedInfo(
         (int)$idCourse,
         false,
         $lev,
         true,
         ($status_filter != -1 ? $status_filter : false),
-        ($editions_filter != -1 ? $editions_filter : false),//false,
+        ($editions_filter != -1 ? $editions_filter : false), //false,
         true,
         $user_filter,
         $group_all_members,
-        $limit);
+        $limit
+    );
 
-    $query = 'SELECT COUNT(*)'
+    $query = 'SELECT COUNT(*) as total_count'
         . ' FROM %lms_courseuser AS cu'
         . ($user_filter !== '' ? ' JOIN ' . $GLOBALS['prefix_fw'] . '_user AS u ON u.idst = cu.idUser' : '')
         . ' WHERE cu.idCourse = ' . (int)$idCourse
         . ($status_filter != -1 ? " AND cu.status = '" . $status_filter . "'" : '')
-        . ($user_filter !== '' ? " AND (u.firstname LIKE '%" . $user_filter . "%' OR u.lastname LIKE '%" . $user_filter . "%' OR u.userid LIKE '%" . $user_filter . "%')" : '')
+        . ($user_filter['search'] !== '' ? " AND (u.firstname LIKE '%" . $user_filter['search'] . "%' OR u.lastname LIKE '%" . $user_filter['search'] . "%' OR u.userid LIKE '%" . $user_filter['search'] . "%')" : '')
+        . (isset($user_filter['ctrl_users']) && $user_filter['ctrl_users'] != '' ? " AND u.idst IN (" . implode(',', $user_filter['ctrl_users']) . ")" : '')
         . ($group_all_members !== false ? ' AND c.idUser IN (' . implode(',', $group_all_members) . ')' : '');
+    $r = sql_fetch_assoc(sql_query($query));
+    $total_user = $r['total_count'];
 
-    [$total_user] = sql_fetch_row(sql_query($query));
-
-    //apply sub admin filters, if needed
-    if ($view_all_perm && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == '/framework/level/admin') {
-        //filter users
-        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.preference.php');
-        $ctrlManager = new ControllerPreference();
-        $ctrl_users = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
-        foreach ($students as $idst => $user_course_info) {
-            if (!in_array($idst, $ctrl_users)) {
-                // Elimino gli studenti non amministrati
-                unset($students[$idst]);
-            }
-        }
-        $total_user = count($students);
-    }
 
     // get idst of the access in item
     $query = 'SELECT value FROM %lms_organization_access'
@@ -863,8 +888,8 @@ function statitem()
 
         $out->add(
             Form::openButtonSpace()
-            . Form::getButton('back', 'back', $lang->def('_BACK'))
-            . Form::closeButtonSpace()
+                . Form::getButton('back', 'back', $lang->def('_BACK'))
+                . Form::closeButtonSpace()
         );
     } else {
         $arr_idst = $aclManager->getBasePathGroupST('/lms/course/' . (int)$idCourse . '/group');
@@ -882,17 +907,19 @@ function statitem()
 
         $aclManager->setContext($std_content);
 
-        $out->add(Form::getTextField(Lang::t('_FULLNAME', 'standard'), 'user_filter', 'user_filter', 255, $user_filter));
+        $out->add(Form::getTextField(Lang::t('_FULLNAME', 'standard'), 'user_filter', 'user_filter', 255, $user_filter['search']));
 
         $out->add(Form::getDropdown(
             $lang->def('_GROUPS'),
             'group_filter',
             'group_filter',
             $arr_groups,
-            $group_filter));
+            $group_filter
+        ));
 
         // ------ Filter on status
-        $arr_status = [-1 => $lang->def('_FILTERSTATUSSELECTONEOPTION'),
+        $arr_status = [
+            -1 => $lang->def('_FILTERSTATUSSELECTONEOPTION'),
             _CUS_SUBSCRIBED => $lang->def('_USER_STATUS_SUBS'),
             _CUS_BEGIN => $lang->def('_USER_STATUS_BEGIN'),
             _CUS_END => $lang->def('_END'),
@@ -903,7 +930,8 @@ function statitem()
             'status_filter',
             'status_filter',
             $arr_status,
-            $status_filter));
+            $status_filter
+        ));
 
         $out->add(Form::getButton('gofilter', 'gofilter', $lang->def('_SEARCH')));
 
@@ -928,12 +956,14 @@ function statitem()
                 if (count($arr_access) === 0 || count(array_intersect($arr_access, $arr_allst)) > 0) {
                     $status = Track_Object::getStatusFromId(
                         $idItem,
-                        $idst);
+                        $idst
+                    );
                     // NOTE: How to get stat_status for users?
                     $stat_status = $cs->getUserStatusTr($user_course_info['status']);
                     $tabStat->addBody(
-                        ['<a href="index.php?modname=stats&amp;op=statoneuseroneitem&amp;idUser=' . $idst . '&amp;idItem=' . $idItem . '" >'
-                            . $aclManager->relativeId($user_info[ACL_INFO_USERID]) . '</a>',
+                        [
+                            '<a href="index.php?modname=stats&amp;op=statoneuseroneitem&amp;idUser=' . $idst . '&amp;idItem=' . $idItem . '" >'
+                                . $aclManager->relativeId($user_info[ACL_INFO_USERID]) . '</a>',
                             $user_info[ACL_INFO_LASTNAME] . '&nbsp;' . $user_info[ACL_INFO_FIRSTNAME],
                             $stat_status,
                             printReport($status, true),
@@ -961,9 +991,9 @@ function statitem()
         if (sql_num_rows($result) && $objectType == 'poll') {
             $out->add(
                 Form::openButtonSpace()
-                . '<br/>'
-                . Form::getButton('view_open_quest', 'view_open_quest', $lang->def('_VIEW_OPEN_QUEST'))
-                . Form::closeButtonSpace()
+                    . '<br/>'
+                    . Form::getButton('view_open_quest', 'view_open_quest', $lang->def('_VIEW_OPEN_QUEST'))
+                    . Form::closeButtonSpace()
             );
         }
     }
@@ -1035,9 +1065,11 @@ function statoneuseroneitem()
         . ' alt="' . $objectType . '" />' . $titleLO
         . '</div>');
 
-    $loTrack = createLOTrackShort($idItem,
+    $loTrack = createLOTrackShort(
+        $idItem,
         $idst_user,
-        'index.php?modname=stats&op=statitem&idItem=' . $idItem);
+        'index.php?modname=stats&op=statitem&idItem=' . $idItem
+    );
     if ($loTrack === false) {
         $out->add($lang->def('_STATNOTRACKFORUSER'));
     } else {
@@ -1086,9 +1118,11 @@ function statoneuseroneitemdetails()
         . $lang->def('_STATSFORITEM') . ' <img src="' . getPathImage() . 'lobject/' . $objectType . '.gif"'
         . ' alt="' . $objectType . '" />' . $titleLO
         . '</div>');
-    $loTrack = createLOTrackShort($idItem,
+    $loTrack = createLOTrackShort(
+        $idItem,
         $idst_user,
-        'index.php?modname=stats&op=statitem&idItem=' . $idItem);
+        'index.php?modname=stats&op=statitem&idItem=' . $idItem
+    );
     if ($loTrack === false) {
         $out->add($lang->def('_STATNOTRACKFORUSER'));
     } else {
@@ -1137,9 +1171,11 @@ function statoneuseroneitemhistory()
         . $lang->def('_STATSFORITEM') . ' <img src="' . getPathImage() . 'lobject/' . $objectType . '.gif"'
         . ' alt="' . $objectType . '" />' . $titleLO
         . '</div>');
-    $loTrack = createLOTrackShort($idItem,
+    $loTrack = createLOTrackShort(
+        $idItem,
         $idst_user,
-        'index.php?modname=stats&op=statitem&idItem=' . $idItem);
+        'index.php?modname=stats&op=statitem&idItem=' . $idItem
+    );
     if ($loTrack === false) {
         $out->add($lang->def('_STATNOTRACKFORUSER'));
     } else {
@@ -1188,7 +1224,8 @@ function modstatus()
         'status',
         'status',
         $arr_status,
-        $status));
+        $status
+    ));
 
     $out->add(Form::getButton('gofilter', 'gofilter', $lang->def('_SAVE')));
     $out->add(Form::closeForm());
@@ -1291,4 +1328,8 @@ switch ($GLOBALS['op']) {  // --------------------------------------------------
     case 'export_txt':
         exportTxt();
         break;
+
+    default:
+        Events::trigger('lms.stats.option', ['op' => $GLOBALS['op']]);
+    break;
 }

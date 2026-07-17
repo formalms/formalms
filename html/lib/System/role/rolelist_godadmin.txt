@@ -94,3 +94,4 @@
 /lms/course/public/public_forum/add
 /lms/course/public/public_forum/del
 /lms/course/public/public_forum/mod
+/lms/course/public/dashboard/view

@@ -1,0 +1,36 @@
+<html>
+<head>
+    <title>Precompile</title>
+</head>
+<body>
+{{ Template_getTitleArea(Lang_translate('_PRECOMPILE', 'standard')) | raw }}
+<div class="std_block">
+    {{ result_message }}
+    {{ Form_openForm('precompile_form', 'index.php?r=precompile/set', null, null, 'multipart/form-data') }}
+
+    {%if not fields_checked and request_mandatory_fields_compilation == 'on' %}
+        {% for id_field,m_field in fieldlist.getUserMandatoryFields(id_user) %}
+            {{ fieldlist.playFieldForUser(id_user,id_field,false,true) | raw }}
+        {% endfor %}
+    {% endif %}
+
+    {{ Form_getBreakRow() }}
+    {% if not policy_checked %}
+        <div class="boxed">
+            <p class="privacy_policy">
+                {{ policy_text | raw }}
+            </p>
+            {{ Form_getBreakRow() }}
+            <div class="align-center">
+                {{ Form_getHidden('policy_id', 'policy_id', policy_id) | raw }}
+                {{ Form_getCheckbox(Lang_translate('_ACCEPT', 'register'), 'accept_policy', 'accept_policy', 1, false) | raw }}
+            </div>
+        </div>
+    {% endif %}
+    {{ Form_openButtonSpace() | raw }}
+    {{ Form_getButton('save', 'save', Lang_translate('_SAVE', 'standard')) | raw }}
+    {{ Form_closeButtonSpace() | raw }}
+    {{ Form_closeForm() | raw }}
+</div>
+</body>
+</html>

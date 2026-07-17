@@ -23,4 +23,4 @@ $output = [
     'header' => Lang::t('_ADD', 'enrolluser'),
     'body' => $body,
 ];
-echo $this->json->encode($output);
+echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);

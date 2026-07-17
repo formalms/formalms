@@ -21,7 +21,7 @@ define('GROUP_FIELD_INHERIT', 'Inherit');
 class UsermanagementAdmController extends AdmController
 {
     protected $model;
-    protected $json;
+
     protected $numVarFields;
     protected $sessionPrefix;
     protected $permissions;
@@ -32,9 +32,8 @@ class UsermanagementAdmController extends AdmController
     public function init()
     {
         parent::init();
-        require_once _base_ . '/lib/lib.json.php';
+        
         $this->model = new UsermanagementAdm();
-        $this->json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
         $this->numVarFields = 3;
         $this->sessionPrefix = 'usermanagement';
         $this->permissions = [
@@ -70,7 +69,7 @@ class UsermanagementAdmController extends AdmController
     protected function _setSessionValue($index, $value)
     {
         $this->session->set($this->sessionPrefix . '_' . $index, $value);
-      //  $this->session->save(); //commented since it can randomly lose references, set is enough because session is treated as singleton
+        //  $this->session->save(); //commented since it can randomly lose references, set is enough because session is treated as singleton
     }
 
     protected function _getSessionValue($index, $default = false)
@@ -101,8 +100,8 @@ class UsermanagementAdmController extends AdmController
                 break;
             case 'password mismatch':
                 $message = Lang::t('PASSWRONG', 'register');
-                //...
-                // no break
+            //...
+            // no break
             case '':
                 $message = '';
                 break;
@@ -129,14 +128,14 @@ class UsermanagementAdmController extends AdmController
             'language' => Lang::t('_LANGUAGE', 'standard'),
         ];
         $f_list = $f_list + $fields;
-        $f_selected = $this->json->decode(\FormaLms\lib\FormaUser::getCurrentUser()->getPreference('ui.directory.custom_columns'));
+        $f_selected = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode(\FormaLms\lib\FormaUser::getCurrentUser()->getPreference('ui.directory.custom_columns'), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         if ($f_selected == false) {
             $f_selected = ['level', 'email', 'lastenter', 'register_date'];
         }
 
         $js_arr = [];
         foreach ($f_list as $key => $value) {
-            $js_arr[] = $key . ': ' . $this->json->encode($value);
+            $js_arr[] = $key . ': ' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         }
         $f_list_js = '{' . implode(',', $js_arr) . '}';
 
@@ -218,7 +217,7 @@ class UsermanagementAdmController extends AdmController
     {
         $output = false;
         if (is_string($input) && $input != '') {
-            $dyn_data = $this->json->decode(urldecode(stripslashes($input))); //decode the filter json string
+            $dyn_data = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode(urldecode(stripslashes($input)), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON); //decode the filter json string
             if (isset($dyn_data['exclusive']) && isset($dyn_data['filters'])) { //required fields
                 if (count($dyn_data['filters']) > 0) { //there must be any filter selected
                     $output = $dyn_data;
@@ -234,7 +233,7 @@ class UsermanagementAdmController extends AdmController
         //check permissions
         if (!$this->permissions['view_user']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -260,7 +259,7 @@ class UsermanagementAdmController extends AdmController
         $var_fields = FormaLms\lib\Get::req('_dyn_field', DOTY_MIXED, []);
         if (stristr($sort, '_dyn_field_') !== false) {
             $index = str_replace('_dyn_field_', '', $sort);
-            $sort = $var_fields[(int) $index];
+            $sort = $var_fields[(int)$index];
         }
 
         if (FormaLms\lib\Get::req('select_node', DOTY_INT, 0)) {
@@ -310,7 +309,7 @@ class UsermanagementAdmController extends AdmController
             $user_entry_data = $fman->getUsersFieldEntryData(array_keys($list));
             foreach ($list as $idst => $record) {
                 $record_row = [
-                    'id' => (int) $record['idst'],
+                    'id' => (int)$record['idst'],
                     'userid' => Layout::highlight($acl_man->relativeId($record['userid']), $filter_text),
                     'firstname' => Layout::highlight($record['firstname'], $filter_text),
                     'lastname' => Layout::highlight($record['lastname'], $filter_text),
@@ -318,9 +317,9 @@ class UsermanagementAdmController extends AdmController
                     'register_date' => Format::date($record['register_date'], 'datetime'),
                     'lastenter' => Format::date($record['lastenter'], 'datetime'),
                     'unassoc' => $idOrg > 0 ? (!empty($record['is_descendant']) ? 0 : 1) : -1,
-                    'valid' => (int) $record['valid'] > 0 ? 1 : 0,
-                    'mod' => 'ajax.adm_server.php?r=' . $this->link . '/moduser&id=' . (int) $idst,
-                    'del' => ($idst != $current_user) ? 'ajax.adm_server.php?r=' . $this->link . '/deluser&id=' . (int) $idst : false,
+                    'valid' => (int)$record['valid'] > 0 ? 1 : 0,
+                    'mod' => 'ajax.adm_server.php?r=' . $this->link . '/moduser&id=' . (int)$idst,
+                    'del' => ($idst != $current_user) ? 'ajax.adm_server.php?r=' . $this->link . '/deluser&id=' . (int)$idst : false,
                 ];
 
                 foreach ($var_fields as $i => $value) {
@@ -345,7 +344,7 @@ class UsermanagementAdmController extends AdmController
                         $content = Format::date(substr($content, 0, 10), 'date');
                     }
                     if ($name == '_custom_' . $value) {
-                        $content = $user_entry_data[(int) $record['idst']][$value];
+                        $content = $user_entry_data[(int)$record['idst']][$value];
                     }
                     $record_row['_dyn_field_' . $i] = $content;
                 }
@@ -371,7 +370,7 @@ class UsermanagementAdmController extends AdmController
         //\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementShowEvent::EVENT_NAME, $event);
         //$output['records'] = $event->getUsers();
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     protected function _getUserEditMask($idst = false)
@@ -429,9 +428,9 @@ class UsermanagementAdmController extends AdmController
         if ($this->_issetSessionValue('selected_node') && $this->_getSessionValue('selected_node') != 0 && !$is_editing) {
             $arr_idst = [];
             $tmp = $acl_man->getGroup(false, '/oc_' . $this->session->get('usermanagement_selected_node'));
-            $arr_idst[] = $tmp[0];
+            $arr_idst[] = $tmp[0] ?? [];
             $tmp = $acl_man->getGroup(false, '/ocd_' . $this->session->get('usermanagement_selected_node'));
-            $arr_idst[] = $tmp[0];
+            $arr_idst[] = $tmp[0] ?? [];
             $acl = \FormaLms\lib\Forma::getAcl();
             $arr_idst = $acl->getArrSTGroupsST($arr_idst);
         }
@@ -468,7 +467,7 @@ class UsermanagementAdmController extends AdmController
         //check permissions
         if (!$this->permissions['add_user']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -481,7 +480,7 @@ class UsermanagementAdmController extends AdmController
         if (isset($GLOBALS['date_inputs']) && !empty($GLOBALS['date_inputs'])) {
             $output['__date_inputs'] = $GLOBALS['date_inputs'];
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     protected function echoResult($output)
@@ -500,7 +499,7 @@ class UsermanagementAdmController extends AdmController
             }
         }
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function createuser_action()
@@ -572,7 +571,7 @@ class UsermanagementAdmController extends AdmController
 
         $folders = FormaLms\lib\Get::req('sel', DOTY_MIXED, false);
 
-        $idst = $this->model->createUser($userdata, $folders);
+        $idst = $this->model->createUser($userdata, $folders, 'admin');
         if (is_numeric($idst) && $idst > 0) {
             $output['success'] = true;
             $output['idst'] = $idst;
@@ -618,7 +617,7 @@ class UsermanagementAdmController extends AdmController
                 $pref = $admin_pref->getAdminRules(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if ($pref['admin_rules.limit_user_insert'] == 'on') {
                     $user_pref = new UserPreferences(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
-                    $user_created_count = (int) $user_pref->getPreference('user_created_count');
+                    $user_created_count = (int)$user_pref->getPreference('user_created_count');
                     ++$user_created_count;
                     $user_pref->setPreference('user_created_count', $user_created_count);
                     if ($user_created_count >= $pref['admin_rules.max_user_insert']) {
@@ -640,7 +639,7 @@ class UsermanagementAdmController extends AdmController
         //check permissions
         if (!$this->permissions['mod_user']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -658,7 +657,7 @@ class UsermanagementAdmController extends AdmController
         } else {
             $output = ['success' => false, 'message' => 'invalid user id'];
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function moduser_action()
@@ -666,14 +665,14 @@ class UsermanagementAdmController extends AdmController
         //check permissions
         if (!$this->permissions['mod_user']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
 
         $idst = FormaLms\lib\Get::req('idst', DOTY_INT, -1);
         if ($idst <= 0) {
-            echo $this->json->encode(['success' => false, 'message' => 'invalid user id']);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['success' => false, 'message' => 'invalid user id'], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -693,7 +692,7 @@ class UsermanagementAdmController extends AdmController
         }
 
         if (!$check_pwd) {
-            echo $this->json->encode(['success' => false, 'message' => 'invalid password']);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['success' => false, 'message' => 'invalid password'], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -772,7 +771,7 @@ class UsermanagementAdmController extends AdmController
             $msg_composer
         );
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function deluser()
@@ -780,7 +779,7 @@ class UsermanagementAdmController extends AdmController
         //check permissions
         if (!$this->permissions['del_user']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -794,7 +793,7 @@ class UsermanagementAdmController extends AdmController
         if ($id_user > 0) {
             if ($id_user == \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()) {
                 $output = ['success' => false, 'message' => $this->_getErrorMessage('cannot self delete')];
-                echo $this->json->encode($output);
+                echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                 return;
             }
@@ -803,7 +802,7 @@ class UsermanagementAdmController extends AdmController
 
             if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() === ADMIN_GROUP_ADMIN && $userToDelete->getUserLevelId() === ADMIN_GROUP_GODADMIN) {
                 $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-                echo $this->json->encode($output);
+                echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                 return;
             }
@@ -819,7 +818,7 @@ class UsermanagementAdmController extends AdmController
                     $pref = $admin_pref->getAdminRules(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                     if ($pref['admin_rules.limit_user_insert'] == 'on') {
                         $user_pref = new UserPreferences(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
-                        $user_created_count = (int) $user_pref->getPreference('user_created_count');
+                        $user_created_count = (int)$user_pref->getPreference('user_created_count');
                         $user_created_count = $user_created_count - 1;
                         $user_pref->setPreference('user_created_count', $user_created_count);
                     }
@@ -836,7 +835,7 @@ class UsermanagementAdmController extends AdmController
         } else {
             $output = ['success' => false, 'message' => 'invalid input'];
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function retrieveUserWithRoleInfo($userId)
@@ -856,7 +855,7 @@ class UsermanagementAdmController extends AdmController
         //check permissions
         if (!$this->permissions['del_user']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -877,7 +876,7 @@ class UsermanagementAdmController extends AdmController
                 $users[] = $userToDelete;
                 if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() === ADMIN_GROUP_ADMIN && $userToDelete->getUserLevelId() === ADMIN_GROUP_GODADMIN) {
                     $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-                    echo $this->json->encode($output);
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                     return;
                 }
@@ -905,7 +904,7 @@ class UsermanagementAdmController extends AdmController
                     $pref = $admin_pref->getAdminRules(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                     if ($pref['admin_rules.limit_user_insert'] == 'on') {
                         $user_pref = new UserPreferences(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
-                        $user_created_count = (int) $user_pref->getPreference('user_created_count');
+                        $user_created_count = (int)$user_pref->getPreference('user_created_count');
                         $user_created_count = $user_created_count - $count_users;
                         $user_pref->setPreference('user_created_count', $user_created_count);
                     }
@@ -918,7 +917,7 @@ class UsermanagementAdmController extends AdmController
             $output['success'] = false;
             $output['message'] = 'invalid users specification';
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function suspend()
@@ -926,7 +925,7 @@ class UsermanagementAdmController extends AdmController
         //check permissions
         if (!$this->permissions['mod_user']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -1007,7 +1006,7 @@ class UsermanagementAdmController extends AdmController
             $output['success'] = false;
             $output['message'] = Lang::t('_INVALID_USER', 'admin_directory');
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function multisuspend()
@@ -1015,7 +1014,7 @@ class UsermanagementAdmController extends AdmController
         //check permissions
         if (!$this->permissions['mod_user']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -1099,7 +1098,7 @@ class UsermanagementAdmController extends AdmController
             $output['success'] = false;
             $output['message'] = Lang::t('_EMPTY_SELECTION', 'admin_directory');
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function multigenpwd()
@@ -1107,7 +1106,7 @@ class UsermanagementAdmController extends AdmController
         //check permissions
         if (!$this->permissions['mod_user']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -1129,7 +1128,7 @@ class UsermanagementAdmController extends AdmController
             $output['success'] = false;
             $output['message'] = Lang::t('_EMPTY_SELECTION', 'admin_directory');
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function selectall()
@@ -1146,7 +1145,7 @@ class UsermanagementAdmController extends AdmController
             $searchFilter['dyn_filter'] = $dyn_filter;
         }
         $output = $this->model->getAllUsers($idOrg, $descendants, $searchFilter, true);
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     protected function _assignActions(&$nodes)
@@ -1171,7 +1170,7 @@ class UsermanagementAdmController extends AdmController
                 //check permissions
                 if (!$this->permissions['view_org']) {
                     $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-                    echo $this->json->encode($output);
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                     return;
                 }
@@ -1209,7 +1208,7 @@ class UsermanagementAdmController extends AdmController
                         'initial' => $initial,
                     ];
                 }
-                echo $this->json->encode($output);
+                echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                 break;
 
@@ -1223,7 +1222,7 @@ class UsermanagementAdmController extends AdmController
                 //check permissions
                 if (!$this->permissions['del_org']) {
                     $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-                    echo $this->json->encode($output);
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                     return;
                 }
@@ -1236,7 +1235,7 @@ class UsermanagementAdmController extends AdmController
                 //check permissions
                 if (!$this->permissions['mod_org']) {
                     $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-                    echo $this->json->encode($output);
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                     return;
                 }
@@ -1304,7 +1303,7 @@ class UsermanagementAdmController extends AdmController
                     ];
                 }
 
-                echo $this->json->encode($output);
+                echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                 break;
 
@@ -1312,7 +1311,7 @@ class UsermanagementAdmController extends AdmController
                 //check permissions
                 if (!$this->permissions['mod_org']) {
                     $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-                    echo $this->json->encode($output);
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                     return;
                 }
@@ -1325,7 +1324,7 @@ class UsermanagementAdmController extends AdmController
                 //check permissions
                 if (!$this->permissions['view_org']) {
                     $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-                    echo $this->json->encode($output);
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                     return;
                 }
@@ -1338,7 +1337,7 @@ class UsermanagementAdmController extends AdmController
                     $output['success'] = true;
                     $output['options'] = $this->_getNodeActions($id);
                 }
-                echo $this->json->encode($output);
+                echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                 break;
 
@@ -1346,7 +1345,7 @@ class UsermanagementAdmController extends AdmController
                 //check permissions
                 if (!$this->permissions['mod_org']) {
                     $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-                    echo $this->json->encode($output);
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                     return;
                 }
@@ -1360,28 +1359,28 @@ class UsermanagementAdmController extends AdmController
                 } else {
                     $output['success'] = false;
                 }
-                echo $this->json->encode($output);
+                echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                 break;
 
             default:
                 $output = [];
                 $output['success'] = false;
-                echo $this->json->encode($output);
+                echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         } // end switch
     }
 
     protected function _getNodeActions($node)
     {
         if (is_numeric($node)) { //if we have the id of the node, extract data
-            require_once _base_ . '/lib/lib.json.php';
+            
             $model = new UsermanagementAdm();
             $nodedata = $model->getFolderById($node);
             $node = [
                 'id' => $nodedata->idOrg,
                 'label' => $model->getFolderTranslation($nodedata->idOrg, Lang::get()),
                 'is_leaf' => (($nodedata->iRight - $nodedata->iLeft) == 1),
-                'count_content' => (int) (($nodedata->iRight - $nodedata->iLeft - 1) / 2),
+                'count_content' => (int)(($nodedata->iRight - $nodedata->iLeft - 1) / 2),
             ];
         }
         if (!is_array($node)) {
@@ -1402,7 +1401,7 @@ class UsermanagementAdmController extends AdmController
                     'id' => 'moduser_' . $id_action,
                     'command' => 'moduser',
                     'icon' => 'standard/moduser.png',
-                    'href' => 'index.php?r=adm/userselector/show&instance=orgnode&tab_filters[]=user&id=' . $id_action,
+                    'href' => 'index.php?r=adm/userselector/show&instance=orgnode&tab_filters[]=user&showSuspended=1&id=' . $id_action,
                     'alt' => Lang::t('_ASSIGN_USERS', 'organization_chart'),
                 ];
             } else {
@@ -1470,7 +1469,7 @@ class UsermanagementAdmController extends AdmController
         //check permissions
         if (!$this->permissions['add_org']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -1485,11 +1484,10 @@ class UsermanagementAdmController extends AdmController
         $template_id = array_search($template, $template_array);
 
 
-
         $this->render('add_folder', [
             'id_parent' => $id_parent,
             'title' => Lang::t('_ORGCHART_ADDNODE', 'organization_chart'),
-            'json' => $this->json,
+            'json' => true,
             'template_array' => $template_array,
             'default_template' => $template_id,
         ]);
@@ -1500,7 +1498,7 @@ class UsermanagementAdmController extends AdmController
         //check permissions
         if (!$this->permissions['add_org']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -1555,7 +1553,7 @@ class UsermanagementAdmController extends AdmController
             }
         }
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function delfolder()
@@ -1563,7 +1561,7 @@ class UsermanagementAdmController extends AdmController
         //check permissions
         if (!$this->permissions['del_org']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -1580,7 +1578,7 @@ class UsermanagementAdmController extends AdmController
 
             Events::trigger('core.orgchart.deleted', ['node' => $node]);
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     protected function _formatFolderCode($id, $code)
@@ -1589,7 +1587,7 @@ class UsermanagementAdmController extends AdmController
             return '';
         }
 
-        return '<span id="orgchart_code_' . (int) $id . '">[' . $code . ']&nbsp;</span>';
+        return '<span id="orgchart_code_' . (int)$id . '">[' . $code . ']&nbsp;</span>';
     }
 
     public function modfolder()
@@ -1597,7 +1595,7 @@ class UsermanagementAdmController extends AdmController
         //check permissions
         if (!$this->permissions['mod_org']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -1640,7 +1638,7 @@ class UsermanagementAdmController extends AdmController
             $output['success'] = false;
             $output['message'] = Lang::t('_CONNECTION_ERROR');
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function modrootfolder()
@@ -1648,7 +1646,7 @@ class UsermanagementAdmController extends AdmController
         //check permissions
         if (!$this->permissions['mod_org']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -1663,7 +1661,7 @@ class UsermanagementAdmController extends AdmController
             $output['success'] = false;
             $output['message'] = $this->_getErrorMessage('mod folder');
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function assignuser()
@@ -1697,24 +1695,13 @@ class UsermanagementAdmController extends AdmController
                 $selection = $selector->getSelection($_POST);
 
                 require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.user_profile.php');
-                require_once _adm_ . '/modules/org_chart/tree.org_chart.php';
-                $treedborgdb = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
 
-                if (FormaLms\lib\Get::sett('orgchart_singlenode', 'off') == 'on') {
-                    $alreadyassigned = [];
-                    foreach ($selection as $sel_user) {
-                        $user_org = $this->model->getUserFolders($sel_user);
-                        $folder_id = $treedborgdb->getFoldersIdFromIdst(array_keys($user_org));
-                        if (count($folder_id) && (count($folder_id) > 1 || $id != reset($folder_id))) {
-                            $alreadyassigned[] = $sel_user;
-                        }
-                    }
-                    if (count($alreadyassigned)) {
-                        Util::jump_to($next_url . '&res=err_alreadyassigned&count=' . count($alreadyassigned) . '&id_first=' . $alreadyassigned[0]);
-                    }
-                }
 
                 $res = $this->model->assignUsers($id, $selection);
+
+                if (is_array($res) && !$res['success']) {
+                    Util::jump_to($next_url . '&res=err_alreadyassigned&count=' . $res['count_assigned'] . '&id_first=' . $res['already_assigned']);
+                }
 
                 $model = new UsermanagementAdm();
                 $users = [];
@@ -1793,7 +1780,7 @@ class UsermanagementAdmController extends AdmController
                 }
                 $selector->addFormInfo(
                     Form::getHidden('is_updating', 'is_updating', 1) .
-                        Form::getHidden('id', 'id', $id)
+                    Form::getHidden('id', 'id', $id)
                 );
                 $selector->loadSelector(
                     Util::str_replace_once('&', '&amp;', $jump_url),
@@ -1906,7 +1893,7 @@ class UsermanagementAdmController extends AdmController
         ];
         //$this->render('assign_fields', $params);
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function assignfields_action()
@@ -1974,15 +1961,17 @@ class UsermanagementAdmController extends AdmController
             $new_fields[] = $this->getFieldGroupById($idst);
         }
 
-        //TODO: EVT_OBJECT (§)
-        //$event = new \appCore\Events\Core\User\UsersManagementOrgChartEditNodeFieldsEvent();
-        //$event->setNode($nodedata);
-        //$event->setFields($new_fields);
-        //TODO: EVT_LAUNCH (&)
-        //\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartEditNodeFieldsEvent::EVENT_NAME, $event);
+        Events::trigger('core.orgchart.field_assigned', [
+            'idOrg' => $id_org,
+            'fields_use' => $fields_use,
+            'fields_inherit' => $fields_inherit,
+            'fields_mandatory' => $fields_mandatory,
+            'fields_invisible' => $fields_invisible,
+            'fields_userinherit' => $fields_userinherit
+        ]);
 
         $output = ['success' => true, 'total' => count($fields_use), 'done' => $count];
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function assoc()
@@ -1990,7 +1979,7 @@ class UsermanagementAdmController extends AdmController
         //check permissions
         if (!$this->permissions['associate_user']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -2008,15 +1997,20 @@ class UsermanagementAdmController extends AdmController
             $success = true;
 
             // apply enroll rules
-            $lang_code = $acl_man->getSettingValueOfUsers('ui.language', [$id_user]);
-            $lang_code = ($lang_code ?: Lang::getDefault());
+            $userLanguages = $acl_man->getSettingValueOfUsers('ui.language', [$id_user]);
+            $lang_code = !empty($userLanguages) && in_array($id_user, $userLanguages) && $userLanguages[$id_user] ? $userLanguages[$id_user] : null;
+
+            $enabledLanguages = Lang::getEnabledLanguages();
+            if (!$lang_code || !in_array($lang_code, $enabledLanguages)) {
+                $lang_code = Lang::getDefault();
+            }
 
             $enrollrules = new EnrollrulesAlms();
             $enrollrules->applyRules('_USER_ASSIGNED_TO_TREE', [$id_user], $lang_code, $id_org);
             $enrollrules->applyRulesMultiLang('_USER_ASSIGNED_TO_TREE', [$id_user], $id_org);
         }
         $output = ['success' => $success];
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     private function getFieldGroupById($idst)
@@ -2032,7 +2026,7 @@ class UsermanagementAdmController extends AdmController
         //check permissions
         if (!$this->permissions['associate_user']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -2098,7 +2092,7 @@ class UsermanagementAdmController extends AdmController
             );
         }
         $output = ['success' => $success];
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function multiunassoc()
@@ -2106,7 +2100,7 @@ class UsermanagementAdmController extends AdmController
         //check permissions
         if (!$this->permissions['associate_user']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -2184,7 +2178,7 @@ class UsermanagementAdmController extends AdmController
                 );
             }
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function movefolder()
@@ -2192,7 +2186,7 @@ class UsermanagementAdmController extends AdmController
         //check permissions
         if (!$this->permissions['mod_org']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -2213,7 +2207,7 @@ class UsermanagementAdmController extends AdmController
         }
 
         $output = ['success' => $success];
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function changepwdTask()
@@ -2221,7 +2215,7 @@ class UsermanagementAdmController extends AdmController
         //check permissions
         if (!$this->permissions['mod_user']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -2229,14 +2223,14 @@ class UsermanagementAdmController extends AdmController
         if (FormaLms\lib\Get::cfg('demo_mode')) {
             $output['success'] = false;
             $output['message'] = UIFeedback::perror('Cannot mod password during demo mode.');
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
 
         $this->render('changepwd', [
             'title' => Lang::t('_CHANGEPASSWORD', 'profile'),
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 
@@ -2245,7 +2239,7 @@ class UsermanagementAdmController extends AdmController
         //check permissions
         if (!$this->permissions['mod_user']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -2253,7 +2247,7 @@ class UsermanagementAdmController extends AdmController
         if (FormaLms\lib\Get::cfg('demo_mode')) {
             $output['success'] = false;
             $output['message'] = UIFeedback::perror('Cannot mod password during demo mode.');
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -2269,7 +2263,7 @@ class UsermanagementAdmController extends AdmController
         if ($new_password == '' || $confirm_password == '') {
             $output['success'] = false;
             $output['message'] = UIFeedback::perror(Lang::t('_REG_PASS_MIN_CHAR', 'register', ['[min_char]' => 1]));
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -2277,7 +2271,7 @@ class UsermanagementAdmController extends AdmController
         if ($new_password != $confirm_password) {
             $output['success'] = false;
             $output['message'] = UIFeedback::perror(Lang::t('_ERR_PASSWORD_NO_MATCH', 'register'));
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -2286,7 +2280,7 @@ class UsermanagementAdmController extends AdmController
             if ($userid == '') {
                 $output['success'] = false;
                 $output['message'] = UIFeedback::perror(Lang::t('_ERR_INVALID_USER', 'register'));
-                echo $this->json->encode($output);
+                echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                 return;
             }
@@ -2294,7 +2288,7 @@ class UsermanagementAdmController extends AdmController
             if ($idst === false) {
                 $output['success'] = false;
                 $output['message'] = UIFeedback::perror(Lang::t('_ERR_INVALID_USER', 'register'));
-                echo $this->json->encode($output);
+                echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                 return;
             }
@@ -2305,7 +2299,7 @@ class UsermanagementAdmController extends AdmController
                 if (!$idst) {
                     $output['success'] = false;
                     $output['message'] = UIFeedback::perror(Lang::t('_OPERATION_FAILURE', 'standard'));
-                    echo $this->json->encode($output);
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                     return;
                 }
@@ -2320,7 +2314,7 @@ class UsermanagementAdmController extends AdmController
             $output['success'] = false;
             $output['message'] = UIFeedback::perror(Lang::t('_OPERATION_FAILURE', 'standard') . ': <b>' . $userid . '</b>');
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function users_autocompleteTask()
@@ -2329,19 +2323,9 @@ class UsermanagementAdmController extends AdmController
         $results = FormaLms\lib\Get::Req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem', 25));
         $output = ['users' => []];
         if ($query != '') {
-            $users = $this->model->searchUsersByUserid($query, $results, true);
-            $acl_man = \FormaLms\lib\Forma::getAclManager();
-            foreach ($users as $user) {
-                $_userid = $acl_man->relativeId($user->userid);
-                $output['users'][] = [
-                    'idst' => $user->idst,
-                    'userid' => $_userid,
-                    'userid_highlight' => Layout::highlight($_userid, $query),
-                    'name' => $user->lastname . ' ' . $user->firstname,
-                ];
-            }
+            $output['users'] = $this->model->searchUsersByUserid($query, $results, true);
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function importusers()
@@ -2606,7 +2590,6 @@ class UsermanagementAdmController extends AdmController
         $head[] = $this->_formatCsvValue(Lang::t('_FIRSTNAME', 'standard'), $delimiter);
         $head[] = $this->_formatCsvValue(Lang::t('_LASTNAME', 'standard'), $delimiter);
         $head[] = $this->_formatCsvValue(Lang::t('_EMAIL', 'standard'), $delimiter);
-        $head[] = $this->_formatCsvValue(Lang::t('_SIGNATURE', 'standard'), $delimiter);
         $head[] = $this->_formatCsvValue(Lang::t('_REGISTER_DATE', 'standard'), $delimiter);
         $head[] = $this->_formatCsvValue(Lang::t('_LAST_ENTER', 'standard'), $delimiter);
         foreach ($field_list as $id_field => $field_translation) {
@@ -2619,7 +2602,7 @@ class UsermanagementAdmController extends AdmController
             $arr_users = explode(',', $users);
             $arr_users = array_map(
                 function ($value) {
-                    return (int) $value;
+                    return (int)$value;
                 },
                 $arr_users
             );
@@ -2632,7 +2615,6 @@ class UsermanagementAdmController extends AdmController
                     $row[] = $detail->firstname;
                     $row[] = $detail->lastname;
                     $row[] = $detail->email;
-                    $row[] = $detail->signature;
                     $row[] = $detail->register_date;
                     $row[] = $detail->lastenter;
 
@@ -2659,7 +2641,7 @@ class UsermanagementAdmController extends AdmController
         //check permissions
         if (!$this->permissions['view_user']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -2677,17 +2659,17 @@ class UsermanagementAdmController extends AdmController
 
             //neither userid is valid: return error
             if (!$id_user) {
-                echo $this->json->encode([
+                echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode([
                     'success' => false,
                     'message' => Lang::t('_INVALID_USER', 'admin_directory'),
-                ]);
+                ], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                 return;
             }
         }
 
         $profile = new UserProfile($id_user);
-        $profile->init('profile', 'framework', 'r=' . $this->link . '/editprofile&id_user=' . (int) $id_user, 'ap');
+        $profile->init('profile', 'framework', 'r=' . $this->link . '/editprofile&id_user=' . (int)$id_user, 'ap');
         $admin_can_mod = ($this->permissions['mod_user'] && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_ADMIN);
         if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN || $admin_can_mod) {
             $profile->enableGodMode();
@@ -2707,7 +2689,7 @@ class UsermanagementAdmController extends AdmController
             'title' => Lang::t('_DETAILS', 'standard') . ': ' . $this->model->getUserId($id_user),
             'profile' => $profile,
             'model' => $this->model,
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 
@@ -2716,7 +2698,7 @@ class UsermanagementAdmController extends AdmController
         //check permissions
         if (!$this->permissions['mod_user']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -2726,7 +2708,7 @@ class UsermanagementAdmController extends AdmController
         $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, -1);
         if ($id_user > 0) {
             $profile = new UserProfile($id_user);
-            $profile->init('profile', 'framework', 'r=' . $this->link . '/editprofile&id_user=' . (int) $id_user, 'ap');
+            $profile->init('profile', 'framework', 'r=' . $this->link . '/editprofile&id_user=' . (int)$id_user, 'ap');
             if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
                 $profile->enableGodMode();
             }
@@ -2772,7 +2754,7 @@ class UsermanagementAdmController extends AdmController
         //check permissions
         if (!$this->permissions['view_user']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -2788,7 +2770,7 @@ class UsermanagementAdmController extends AdmController
             'id_user' => $id_user,
             'title' => Lang::t('_DETAILS', 'standard') . ': ' . $userid,
             'fields' => $fman,
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 
@@ -2797,7 +2779,7 @@ class UsermanagementAdmController extends AdmController
         //check permissions
         if (!$this->permissions['view_user']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -2827,35 +2809,17 @@ class UsermanagementAdmController extends AdmController
 
         $list = $this->model->getDeletedUsersList($pagination, $filter);
 
-        //format models' data
-        $records = [];
-        $acl_man = \FormaLms\lib\Forma::getAclManager();
-        if (is_array($list)) {
-            foreach ($list as $record) {
-                $_userid = $acl_man->relativeId($record->userid);
-                $records[] = [
-                    'id' => (int) $record->idst,
-                    'userid' => Layout::highlight($_userid, $filter),
-                    'firstname' => Layout::highlight($record->firstname, $filter),
-                    'lastname' => Layout::highlight($record->lastname, $filter),
-                    'email' => Layout::highlight($record->email, $filter),
-                    'deletion_date' => Format::date($record->deletion_date, 'datetime'),
-                    'deleted_by' => $acl_man->relativeId($record->deleted_by),
-                ];
-            }
-        }
-
         $output = [
             'startIndex' => $startIndex,
-            'recordsReturned' => count($records),
+            'recordsReturned' => count($list),
             'sort' => $sort,
             'dir' => $dir,
             'totalRecords' => $total,
             'pageSize' => $rowsPerPage,
-            'records' => $records,
+            'records' => $list,
         ];
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function getwaitinguserstabledataTask()
@@ -2863,7 +2827,7 @@ class UsermanagementAdmController extends AdmController
         //check permissions
         if (!$this->permissions['approve_waiting_user']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -2872,7 +2836,7 @@ class UsermanagementAdmController extends AdmController
         if ($op == 'selectall') {
             $filter = FormaLms\lib\Get::req('filter', DOTY_STRING, '');
             $output = $this->model->getWaitingUsersIds($filter);
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -2900,40 +2864,19 @@ class UsermanagementAdmController extends AdmController
             'dir' => $dir,
         ];
 
-        $list = $this->model->getWaitingUsersList($pagination, $filter);
-
-        //format models' data
-        $records = [];
-        $acl_man = \FormaLms\lib\Forma::getAclManager();
-        if (is_array($list)) {
-            foreach ($list as $record) {
-                $_userid = $acl_man->relativeId($record->userid);
-                $_inserted_by = $record->inserted_by != '' ? $acl_man->relativeId($record->inserted_by) : '';
-                $records[] = [
-                    'id' => (int) $record->idst,
-                    'userid' => Layout::highlight($_userid, $filter),
-                    'firstname' => Layout::highlight($record->firstname, $filter),
-                    'lastname' => Layout::highlight($record->lastname, $filter),
-                    'email' => Layout::highlight($record->email, $filter),
-                    'confirmed' => Layout::highlight($record->confirmed, $filter),
-                    'insert_date' => Format::date($record->insert_date, 'datetime'),
-                    'inserted_by' => $_inserted_by,
-                    'del' => 'ajax.adm_server.php?r=' . $this->link . '/delete_waiting&id_user=' . (int) $record->idst,
-                ];
-            }
-        }
+        $list = $this->model->getWaitingUsersList($pagination, $filter, $this->link);
 
         $output = [
             'startIndex' => $startIndex,
-            'recordsReturned' => count($records),
+            'recordsReturned' => count($list),
             'sort' => $sort,
             'dir' => $dir,
             'totalRecords' => $total,
             'pageSize' => $rowsPerPage,
-            'records' => $records,
+            'records' => $list,
         ];
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function confirm_waitingTask()
@@ -2941,7 +2884,7 @@ class UsermanagementAdmController extends AdmController
         //check permissions
         if (!$this->permissions['approve_waiting_user']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -2959,7 +2902,7 @@ class UsermanagementAdmController extends AdmController
         if (!is_array($arr_users) || empty($arr_users)) {
             $output['success'] = false;
             $output['message'] = UIFeedback::pnotice(Lang::t('_NO_USERS_SPECIFIED', 'admin_directory'));
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -2971,7 +2914,7 @@ class UsermanagementAdmController extends AdmController
             $output['success'] = false;
             $output['message'] = UIFeedback::perror(Lang::t('_OPERATION_FAILURE', 'standard'));
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function delete_waitingTask()
@@ -2979,7 +2922,7 @@ class UsermanagementAdmController extends AdmController
         //check permissions
         if (!$this->permissions['approve_waiting_user']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -2997,7 +2940,7 @@ class UsermanagementAdmController extends AdmController
         if (!is_array($arr_users) || empty($arr_users)) {
             $output['success'] = false;
             $output['message'] = UIFeedback::pnotice(Lang::t('_NO_USERS_SPECIFIED', 'admin_directory'));
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -3009,14 +2952,14 @@ class UsermanagementAdmController extends AdmController
             $output['success'] = false;
             $output['message'] = UIFeedback::perror(Lang::t('_OPERATION_FAILURE', 'standard'));
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function multimodTask()
     {
         if (!$this->permissions['mod_user']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -3029,7 +2972,7 @@ class UsermanagementAdmController extends AdmController
                 'header' => $title,
                 'body' => Lang::t('_EMPTY_SELECTION', 'admin_directory'),
             ];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -3076,7 +3019,7 @@ class UsermanagementAdmController extends AdmController
             'fields_mask' => $fields_mask,
             'fields_to_exclude' => is_array($fields_to_exclude) ? $fields_to_exclude : [],
             'info' => $info,
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 
@@ -3084,7 +3027,7 @@ class UsermanagementAdmController extends AdmController
     {
         if (!$this->permissions['mod_user']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -3094,14 +3037,14 @@ class UsermanagementAdmController extends AdmController
         $users_str = FormaLms\lib\Get::req('users', DOTY_STRING, '');
         if (!$users_str) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('invalid input')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
         $users = explode(',', $users_str);
         if (empty($users)) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('invalid input')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -3133,7 +3076,7 @@ class UsermanagementAdmController extends AdmController
                 $info->password = $pwd_1;
             } else {
                 $output = ['success' => false, 'message' => $this->_getErrorMessage('password mismatch')];
-                echo $this->json->encode($output);
+                echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                 return;
             }
@@ -3287,7 +3230,7 @@ class UsermanagementAdmController extends AdmController
         } else {
             $output = ['success' => true, 'update' => $count_updated];
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function gettreedata_create()
@@ -3299,7 +3242,7 @@ class UsermanagementAdmController extends AdmController
                 //check permissions
                 if (!$this->permissions['view_org']) {
                     $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-                    echo $this->json->encode($output);
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                     return;
                 }
@@ -3333,7 +3276,7 @@ class UsermanagementAdmController extends AdmController
                         'initial' => $initial,
                     ];
                 }
-                echo $this->json->encode($output);
+                echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                 break;
 
@@ -3343,7 +3286,7 @@ class UsermanagementAdmController extends AdmController
             default:
                 $output = [];
                 $output['success'] = false;
-                echo $this->json->encode($output);
+                echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         } // end switch
     }
 

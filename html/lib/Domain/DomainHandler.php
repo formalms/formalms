@@ -67,10 +67,12 @@ class DomainHandler
     }
 
     public function setTemplateInfo($templateName) {
-        $this->templateInfo = new TemplateInfo($templateName);
-        $this->session->set('template_info', $this->templateInfo);
-        //retrocompatibilità
-        $this->session->set('template', $templateName);
+        if (!empty($templateName)) {
+            $this->templateInfo = new TemplateInfo($templateName);
+            $this->session->set('template_info', $this->templateInfo);
+            //retrocompatibilità
+            $this->session->set('template', $templateName);
+        }
         return $this;
     }
 

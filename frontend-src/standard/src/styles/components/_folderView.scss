@@ -39,6 +39,14 @@
 
   .folderView__copyOverlay__content & {
     height: 48px;
+
+    &:hover {
+      background-color: rgba(0,0,0,.1);
+    }
+  
+    &:last-child {
+      border-bottom: none;
+    }
   }
 
   &:focus-within {
@@ -70,6 +78,10 @@
 .folderView__label {
   pointer-events: none;
   padding: 10px;
+}
+
+.folderView__label > img {
+  padding-left: 4px;
 }
 
 @media only screen and (max-width: 600px) {
@@ -105,10 +117,12 @@
   top: 8px;
   right: -100%;
   transition: all .5s ease-in-out;
+  visibility: hidden;
 
   .fv-is-selected & {
     right: 0;
     transition: all .5s ease-in-out;
+    visibility: visible;
   }
 
   .sortable-chosen & {
@@ -388,7 +402,7 @@ a.fv-is-delete {
 
 .folderView__copyOverlay__close {
   position: absolute;
-  top: 0;
+  // top: 0;
   right: 0;
   background: {
     image: url('images/folderView/icon-delete.svg');

@@ -53,7 +53,7 @@ function send_print(e, args) {
                 modal: true,
                 close: false,
                 visible: false,
-                buttons: [ {id: 'dialog_print_certificate', text: _STOP, handler: handleStopEvent} ]
+                buttons: [ {id: 'dialog_print_certificate', text: 'STOP', handler: handleStopEvent} ]
             });
 
             glob_dialog.setHeader(res.head);
@@ -102,7 +102,7 @@ function initializeSingleSelection(o, skipDialog) {
 function finalizeSelection() {
     all_finished = true;
     glob_dialog.cfg.queueProperty("buttons", [
-		{ text: _CLOSE, handler: force_reload }
+		{ text: _close, handler: force_reload }
     ]);
     glob_dialog.render();
 }
@@ -146,7 +146,7 @@ function do_printing(id_certificate, id_course, id_user, totnum)
             if (res.success)
             {
                 el.className = "green";
-                el.innerHTML += _SUCCESS;
+                el.innerHTML += '_SUCCESS';
                 successful_printed.push(res.printed);
             }
             else
@@ -180,24 +180,17 @@ function do_printing(id_certificate, id_course, id_user, totnum)
 }
 
 function force_reload() {
-    //window.location.href = reload_url;
     try {
         var tform = document.createElement("FORM");
         tform.method = "POST";
-        tform.action = reload_url;
+        tform.action = window.location.href;
 
         var authentic_request = document.createElement("INPUT");
         authentic_request.type = "hidden";
         authentic_request.name = "authentic_request";
-        //authentic_request.value = YAHOO.util.Dom.get("authentic_request_certificates_emission").value;
         authentic_request.value = signature;
-        
-
         tform.appendChild(authentic_request);
-
-
         document.body.appendChild(tform);
-
         tform.submit();
     } catch(e) { alert(e); }
 }

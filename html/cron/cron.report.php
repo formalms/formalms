@@ -46,7 +46,7 @@ $GLOBALS['user_roles'][$roleid] = true;
 $roleid = '/admin/view_all';
 $GLOBALS['user_roles'][$roleid] = true;
 
-Lang::set('english');
+Lang::set(Lang::getDefault());
 
 function getEmailForSchedule($schedule): array
 {
@@ -210,9 +210,18 @@ function getReportRecipients($id_rep)
         }
     }
 
+    $unique = [];
+    foreach ($output as $r) {
+        $email = strtolower(trim($r['email'] ?? ''));
+        if ($email === '') {
+            continue;
+        }
+        $unique[$email] = $r;
+    }
+
     return [
-        'recipients' => array_unique($output),
-        'schedules' => $selected_schedules,
+        'recipients' => array_values($unique),
+        'schedules'  => $selected_schedules,
     ];
 }
 
@@ -289,8 +298,8 @@ require_once _base_ . '/lib/lib.upload.php';
 
 $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
 
-require_once _base_ . '/lib/lib.json.php';
-$json = new Services_JSON();
+
+
 
 $path = _files_ . '/tmp/';
 $qry = 'SELECT * FROM %lms_report_filter';
@@ -318,7 +327,27 @@ if ($lock_stream) {
 
             $schedules = $recipients_data['schedules'];
 
-            $data = unserialize($row['filter_data']);
+            // Use JSON column if available, otherwise fallback to serialized data (legacy)
+            // @since 4.2.0 - Primary storage is now filter_data_json (JSON format)
+            $jsonData = isset($row['filter_data_json']) ? $row['filter_data_json'] : null;
+            $serializedData = isset($row['filter_data']) ? $row['filter_data'] : null;
+
+            $data = null;
+            if (!empty($jsonData)) {
+                $data = json_decode($jsonData, true);
+            }
+            // @deprecated Since 4.2.0 - Fallback to serialized data, will be removed in 5.0.0
+            if ($data === null && !empty($serializedData)) {
+                $data = @unserialize($serializedData);
+                // Auto-migrate to JSON if decode was successful
+                if ($data !== false && !empty($row['id_filter'])) {
+                    $migrateJson = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+                    if ($migrateJson !== false) {
+                        sql_query("UPDATE %lms_report_filter SET filter_data_json = '" . addslashes($migrateJson) . "' WHERE id_filter = " . (int)$row['id_filter']);
+                        report_log('Migrated filter ID ' . $row['id_filter'] . ' from serialized to JSON format');
+                    }
+                }
+            }
 
             $query_report = 'SELECT class_name, file_name, report_name '
                 . ' FROM %lms_report '

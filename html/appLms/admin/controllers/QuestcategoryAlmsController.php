@@ -15,15 +15,12 @@ defined('IN_FORMA') or exit('Direct access is forbidden');
 
 class QuestcategoryAlmsController extends AlmsController
 {
-    protected $json;
     protected $model;
     protected $permissions;
 
     public function init()
     {
         parent::init();
-        require_once _base_ . '/lib/lib.json.php';
-        $this->json = new Services_JSON();
         $this->model = new QuestcategoryAlms();
         $this->permissions = [
             'view' => checkPerm('view', true, 'questcategory', 'lms'),
@@ -136,20 +133,20 @@ class QuestcategoryAlmsController extends AlmsController
             'records' => $output_results,
         ];
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function createTask()
     {
         if (!$this->permissions['add']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
 
         $this->render('editmask', [
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 
@@ -157,7 +154,7 @@ class QuestcategoryAlmsController extends AlmsController
     {
         if (!$this->permissions['add']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -166,7 +163,7 @@ class QuestcategoryAlmsController extends AlmsController
         $description = FormaLms\lib\Get::req('description', DOTY_STRING, '');
         if ($name == '') {
             $output = ['success' => false, 'message' => $this->_getMessage('invalid input')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -182,14 +179,14 @@ class QuestcategoryAlmsController extends AlmsController
         } else {
             $output['new_id'] = (int) $res;
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function editTask()
     {
         if (!$this->permissions['mod']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -197,7 +194,7 @@ class QuestcategoryAlmsController extends AlmsController
         $id_questcategory = FormaLms\lib\Get::req('id', DOTY_INT, 0);
         if ($id_questcategory <= 0) {
             $output = ['success' => false, 'message' => $this->_getMessage('invalid input')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -207,7 +204,7 @@ class QuestcategoryAlmsController extends AlmsController
             'id_questcategory' => $id_questcategory,
             'name' => $info->name,
             'description' => $info->description,
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 
@@ -215,7 +212,7 @@ class QuestcategoryAlmsController extends AlmsController
     {
         if (!$this->permissions['mod']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -225,7 +222,7 @@ class QuestcategoryAlmsController extends AlmsController
         $description = FormaLms\lib\Get::req('description', DOTY_STRING, '');
         if ($id_questcategory <= 0 || $name == '') {
             $output = ['success' => false, 'message' => $this->_getMessage('invalid input')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -239,14 +236,14 @@ class QuestcategoryAlmsController extends AlmsController
         if (!$res) {
             $output['message'] = $this->_getMessage('edit error');
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function deleteTask()
     {
         if (!$this->permissions['del']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -254,7 +251,7 @@ class QuestcategoryAlmsController extends AlmsController
         $id_questcategory = FormaLms\lib\Get::req('id', DOTY_INT, 0);
         if ($id_questcategory <= 0) {
             $output = ['success' => false, 'message' => $this->_getMessage('invalid input')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -264,7 +261,7 @@ class QuestcategoryAlmsController extends AlmsController
 
         if ($used_poll > 0 || $used_test > 0) {
             $output = ['success' => false, 'message' => $this->_getMessage('category in use')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -272,6 +269,6 @@ class QuestcategoryAlmsController extends AlmsController
         $res = $this->model->deleteQuestCategory($id_questcategory);
         $output = ['success' => $res ? true : false];
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 }

@@ -439,11 +439,6 @@
         <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[הצגה, בתוצאות חיפוש תכולת הספריה, גם של אובייקטים שאינם לגמרי מקוטלגים.]]></key>
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[הפעל עריכת שפות (בשימוש לאיתור תקלות)]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[יש צורך בשם פרטי ושם משפחה על מנת להירשם]]></key>
-        <key id="configuration&amp;_LDAP" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[LDAP]]></key>
-        <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[פורט LDAP (בדרך כלל 389)]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[כתובת שרת LDAP]]></key>
-        <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[הפעל אימות LDAP]]></key>
-        <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[שם משתמש עבור משתמש LDAP, כתוב user$ עבור שם המשתמש.]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[הגדרות "magic_quotes_gpc"]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[שולח דואל הרשמה וסיסמה אבודה]]></key>
         <key id="configuration&amp;_MAIN_OPTIONS" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[אפשרויות ראשיות]]></key>
@@ -564,9 +559,7 @@
         <key id="configuration&amp;_UPLOAD_MAX_FILESIZE" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[הגדרות "upload_max_filesize"]]></key>
         <key id="configuration&amp;_URL" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[כתובת אתר עם גמר /]]></key>
         <key id="configuration&amp;_URL_CHECKIN_TELESKILL" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[קישור עבור התחברות]]></key>
-        <key id="configuration&amp;_URL_VIDEOCONFERENCE_TELESKILL" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[קישור עבור ועידת וידאו]]></key>
-        <key id="configuration&amp;_USEFULL_ONLY_IF" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[קח בחשבון פרמטר זה רק אם אתה צריך לאמת דרך LDAP]]></key>
-        <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[בקש מהמשתמש לבחור סיסמה שונה מ X הסיסמאות האחרונו שהיו בשימוש.]]></key>
+        <key id="configuration&amp;_URL_VIDEOCONFERENCE_TELESKILL" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[קישור עבור ועידת וידאו]]></key>        <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[בקש מהמשתמש לבחור סיסמה שונה מ X הסיסמאות האחרונו שהיו בשימוש.]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[מיכסת דיסק (MB) עבור אזור הקבצים שלי של כל משתמש]]></key>
         <key id="configuration&amp;_USE_ADVANCED_FORM" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[השתמש בטופס רישום מתקדם]]></key>
         <key id="configuration&amp;_USE_DIMDIM_API" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[להשתמש ב- Api DimDim במקום בממשק קישור]]></key>
@@ -1279,7 +1272,6 @@ Otherwise, you must register in our system, following this link: <br />
 כדי לשנות את המילים, עבור אל ניהול / ניהול שפה, חפש <b> כניסה </ b> וערוך את המקשים <b> _INTRO_STD_TEXT_TITLE </ b> ו- <b> _INTRO_STD_TEXT </ b>]]></key>
         <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[forma.lms היא פלטפורמת קוד פתוח e-learning (LMS ו- LCMS) המשמשים בשוקי חברות להשכלה גבוהה]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[עבור לטופס ההתחברות]]></key>
-        <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[אימות LDAP פעיל, פונקציונליות לא זמינה, אנא פנה למנהלן]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[התחברות]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[התחברות נגישה]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[התחברות]]></key>

@@ -70,7 +70,6 @@ class CoursepathLmsController extends LmsController
         $filter_year = FormaLms\lib\Get::req('filter_year', DOTY_INT, '');
         $filter_status = FormaLms\lib\Get::req('filter_status', DOTY_STRING, '');
 
-        $conditions = '';
         if (!empty($filter_text)) {
             $conditions[] = "cp.path_name LIKE '%" . addslashes($filter_text) . "%'";
         }

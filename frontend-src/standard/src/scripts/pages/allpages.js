@@ -4,6 +4,8 @@ require('../modules/slider-menu');
 require('../modules/text-editor');
 require('../modules/modal-accordion');
 require('../../plugins/select2totree/js/select2totree');
+
+import { changeSons, disableSon, initDropdownComplex } from '../../plugins/dropdowncomplex/js/dropdowncomplex';
 // eslint-disable-next-line no-unused-vars
 import * as TwigExtensions from './../helpers/TwigHelpers';
 import {InfoCourse} from '../modules/InfoCourse';
@@ -32,6 +34,7 @@ var Page = (function () {
     
     window.frontend.modules = {};
     window.frontend.helpers = {};
+    window.frontend.functions = {};
     window.TeacherLearningObject = TeacherLearningObject;
     window.StudentLearningObject = StudentLearningObject;
     window.frontend.modules.LearningObject = LearningObject;
@@ -47,7 +50,10 @@ var Page = (function () {
     window.frontend.modules.Moment = Moment;
     window.frontend.modules.DrawRadialProgress = DrawRadialProgress;
     window.frontend.helpers.Lang = Lang;
-
+    
+    window.frontend.functions.change_sons = changeSons;
+    window.frontend.functions.disable_son = disableSon;
+    window.frontend.functions.initDropdownComplex = initDropdownComplex;
    
     window.frontend.helpers.Axios = Axios;
 

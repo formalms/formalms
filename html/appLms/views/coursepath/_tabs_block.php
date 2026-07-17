@@ -40,7 +40,7 @@
 
  <!-- DIV CONTENT COURSE-LIST  -->       
 <div  class="col-md-12" id="div_course">
-    <br><p align="center"><img src='<?php echo Layout::path(); ?>images/standard/loadbar.gif'></p>
+    <br><p align="center"><span><img src='<?php echo Layout::path(); ?>images/standard/loadbar.gif'>&nbsp;<span><?php echo Lang::t('_LOADING', 'standard') ?></span></p>
 </div>
  
 
@@ -78,7 +78,7 @@
         var status = $('.js-label-menu-filter.selected').attr('data-value');
 
 
-        $("#div_course").html("<br><p align='center'><img src='<?php echo Layout::path(); ?>images/standard/loadbar.gif'></p>");
+        $("#div_course").html("<br><p align='center'><img src='<?php echo Layout::path(); ?>images/standard/loadbar.gif'>&nbsp;<span><?php echo Lang::t('_LOADING', 'standard') ?></span></p>");
         var posting = $.get( 'ajax.server.php',
                     {r: 'coursepath/all',
                      rnd:'<?php echo time(); ?>',

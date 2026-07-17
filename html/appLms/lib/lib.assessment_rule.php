@@ -198,7 +198,7 @@ class AssessmentRuleManager
 
     public function setRulesFromScore($score_arr)
     {
-        require_once _base_ . '/lib/lib.json.php';
+        
         require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
         $res = true;
@@ -220,15 +220,15 @@ class AssessmentRuleManager
 
         $q = $this->db->query($qtxt);
 
-        $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
+        
         $csm = new CourseSubscribe_Management();
         $cmpman = new CompetencesAdm();
 
         $feedback_txt = [];
         $levelCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('levelCourse');
         while ($row = $this->db->fetch_assoc($q)) {
-            $course_arr = $json->decode($row['courses_list']);
-            $competence_arr = $json->decode($row['competences_list']);
+            $course_arr = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($row['courses_list'], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
+            $competence_arr = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($row['competences_list'], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             $feedback_txt[] = $row['feedback_txt'];
 

@@ -29,7 +29,7 @@
            {% if block.communication is empty %}
                         {{ Lang_translate('_NO_COMMUNICATION', 'standard') }}
             {% else %}
-              
+
                  
                     {% for c in block.communication %}
                         <div class="d-communication__item  {{ subclass }}" style="position: relative">
@@ -70,7 +70,7 @@
                 {% if block.data.show_button %}
                 <div class="d-communication__button_wrapper">
                     <a class="forma-button   d-button--cert text-center" title="" href="{{ block.link }}">
-                        <span class="forma-button__label">{{ Lang_translate('_COMMUNICATIONS', 'standard') }}</span>
+                        <span class="forma-button__label">{{ Lang_translate('_READ_ALL', 'communication') }}</span>
                     </a>
                 </div>
                 {% endif %}

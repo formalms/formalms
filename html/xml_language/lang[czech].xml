@@ -423,11 +423,6 @@
         <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2020-09-15 14:47:07"><![CDATA[Ukázat na ve výsledcích z vyhledávaní v obsahu knihovny také předměty, které nejsou zcela roztřídeny]]></key>
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2020-09-15 14:47:07"><![CDATA[Aktivovat úpravy jazyků (pro ladění)]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2020-09-15 14:47:07"><![CDATA[Jméno a příjmení jsou povinné pro registraci]]></key>
-        <key id="configuration&amp;_LDAP" attributes="" save_date="2020-09-15 14:47:07"><![CDATA[LDAP]]></key>
-        <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2020-09-15 14:47:07"><![CDATA[LDAP port (obvykle 389)]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2020-09-15 14:47:07"><![CDATA[LDAP server]]></key>
-        <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2020-09-15 14:47:07"><![CDATA[Aktivovat LDAP autorizaci]]></key>
-        <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2020-09-15 14:47:07"><![CDATA[Uživatelské jméno pro LDAP uživatele, použijte $user pro uživatelské jméno.<br />Např. $user@domain2.domain1 (Pro: W2k3)]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2020-09-15 14:47:07"><![CDATA[Konfigurace funkce "magic_quotes_gpc"]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2020-09-15 14:47:07"><![CDATA[Registrace a odesílání emalů se ztracenými hesly]]></key>
         <key id="configuration&amp;_MAIN_OPTIONS" attributes="" save_date="2020-09-15 14:47:07"><![CDATA[Hlavní možnosti]]></key>
@@ -545,7 +540,6 @@
         <key id="configuration&amp;_URL" attributes="" save_date="2020-09-15 14:47:07"><![CDATA[Konec adresy URL webových stránek s /]]></key>
         <key id="configuration&amp;_URL_CHECKIN_TELESKILL" attributes="" save_date="2020-09-15 14:47:07"><![CDATA[URL pro zápis]]></key>
         <key id="configuration&amp;_URL_VIDEOCONFERENCE_TELESKILL" attributes="" save_date="2020-09-15 14:47:07"><![CDATA[URL pro videokonferenci]]></key>
-        <key id="configuration&amp;_USEFULL_ONLY_IF" attributes="" save_date="2020-09-15 14:47:07"><![CDATA[Zvažte tento parametr pouze v případě, že potřebujete ověřit přes LDAP]]></key>
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2020-09-15 14:47:07"><![CDATA[Požádat uživatele, aby si zvolili heslo odlišné od posledních X hesel]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2020-09-15 14:47:07"><![CDATA[Místo na disku (v MB) pro soubory každého uživatele]]></key>
         <key id="configuration&amp;_USE_ADVANCED_FORM" attributes="" save_date="2020-09-15 14:47:07"><![CDATA[Použít pokročilý registrační formulář]]></key>
@@ -1252,9 +1246,7 @@ Password: [password]]]></key>
 <br/>
 Pro změnu těchto slov jděte do Správy Administrace/Jazyků, vyhledejte <b>login</b> a upravte  klíč <b>_INTRO_STD_TEXT</b>]]></key>
         <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2020-09-15 14:47:07"><![CDATA[forma.lms je Open Source e-studijní platforma (LMS a LCMS) používaná v korporačních a univerzitních trzích.]]></key>
-        <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2020-09-15 14:47:07"><![CDATA[Přejít na přihlašovací formulář]]></key>
-        <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2020-09-15 14:47:07"><![CDATA[LDAP autorizace je aktivní, funkčnost nedostupná obraťte na správce]]></key>
-        <key id="login&amp;_LOGIN" attributes="" save_date="2020-09-15 14:47:07"><![CDATA[Přihlášení]]></key>
+        <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2020-09-15 14:47:07"><![CDATA[Přejít na přihlašovací formulář]]></key>        <key id="login&amp;_LOGIN" attributes="" save_date="2020-09-15 14:47:07"><![CDATA[Přihlášení]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2020-09-15 14:47:07"><![CDATA[Přístupné přihlášení]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2020-09-15 14:47:07"><![CDATA[Přihlášení]]></key>
         <key id="login&amp;_LOGIN_WITH" attributes="" save_date="2020-09-15 14:47:07"><![CDATA[Přihlásit se s]]></key>

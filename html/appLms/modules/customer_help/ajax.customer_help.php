@@ -16,7 +16,7 @@ use FormaLms\lib\Domain\DomainHandler;
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once _base_ . '/lib/lib.json.php';
+
 
 $msg_find = '';
 
@@ -66,8 +66,8 @@ switch ($op) {
                 'body' => $body,
             ];
 
-            $json = new Services_JSON();
-            aout($json->encode($output));
+            
+            aout(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
 
         break;
 
@@ -133,8 +133,8 @@ switch ($op) {
             if (!$res) {
                 $output['message'] = UIFeedback::perror(Lang::t('_OPERATION_FAILURE', 'menu'));
             }
-            $json = new Services_JSON();
-            aout($json->encode($output));
+            
+            aout(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
 
         break;
 

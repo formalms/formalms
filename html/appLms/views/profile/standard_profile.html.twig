@@ -1,0 +1,168 @@
+{{ Form_openForm('mod_profile_form', 'index.php?r=lms/profile/show&ap=saveinfo', false, 'post', 'multipart/form-data') }}
+<div class="section-course user-profile">
+  <div class="page-subtitle">
+    {{name}}
+    {% block modify_profile %}
+    {% endblock %}
+  </div>
+  <div class="row">
+    <div class="col-sm-4 profile__firstcolumn--special">
+      <div class="box-title">{{ Lang_translate('_PROFILE', 'profile') }}</div>
+      <div class="col-sm-4 user-profile__column user-profile__column--minwidth">
+        <div class="user-profile__infocontainer">
+          <div>
+            {% block user_profile_data  %}
+              <div class="user-profile__content">
+                <div class="course-info__label">{{ Lang_translate('_USERNAME', 'course') }}</div>
+                <div id="userid" class="course-info__value text--gray">{{user.username|slice(1)}}</div>
+              </div>
+
+              <div class="user-profile__content">
+                <div class="course-info__label">{{ Lang_translate('_FIRSTNAME', 'standard') }}</div>
+                <div id="up_firstname" class="course-info__value text--gray">{{user.firstname}}</div>
+              </div>
+
+              <div class="user-profile__content">
+                <div class="course-info__label">{{ Lang_translate('_LASTNAME', 'standard') }}</div>
+                <div id="up_lastname" class="course-info__value text--gray">{{user.lastname}}</div>
+              </div>
+            {%  endblock %}
+          </div>
+
+
+            <div class="user-profile__imgcontainer">
+              <div class="user-profile__content">
+                <div class="course-info__label">{{ Lang_translate('_AVATAR', 'standard') }}</div>
+                {% block avatar %}
+                  {% if user.avatar != '' %}
+                    <img class="user-profile__img" src="{{user.avatar}}" alt="{{name}}" />
+                  {% else %}
+                    <img class="user-profile__img" src="{{templatePath}}/static/images/icons/top-menu/icon--profile.svg" alt="{{name}}" />
+                  {% endif %}
+                  <br>
+                {% endblock %}
+              </div>
+            </div>
+
+        </div>
+
+        <div class="course-info__label">{{ Lang_translate('_EMAIL', 'standard') }}</div>
+        <div class="course-info__value text--gray">
+          <div id="up_email"><a class="user-profile__namelink" href="mailto:{{user.email}}" target="_blank">{{user.email}}</a></div>
+        </div>
+        <br>
+        <label for="user_preference_ui.language" class="course-info__label">{{ Lang_translate('_LANGUAGE','standard') }}</label>
+        <input type="hidden" name="special" value="changelang">
+        <select class="form-control dropdown" name="new_lang">
+          {% for langs in preference %}
+            <option {% if langs == curLang %}selected{% endif %}>{{ langs }}</option>
+          {% endfor %}
+        </select>
+        {% block message  %}
+          {% if can_access_messages %}
+              <a class="forma-button user-profile__cta" href="{{ route.message.url }}&idst={{ user.idst }}&signature={{ Util_getSignature() }}&sop=unregistercourse">
+                {{Lang_translate('_MESSAGE','course')}}
+              </a>
+          {% endif %}
+        {% endblock %}
+        {% block extendedProfile_user %}
+        {% endblock %}
+      </div>
+    </div>
+
+    <div class="col-sm-4">
+      <div class="user-profile__column">
+        <div class="box-title">{{ Lang_translate('_COMMUNITY', 'profile') }}</div>
+        <div class="user-profile__content">
+          <div class="course-info__label">{{ Lang_translate('_REGISTER_DATE', 'profile') }}</div>
+          <div class="course-info__value text--gray">{{user.registerDate}}</div>
+        </div>
+        <div class="user-profile__content">
+          <div class="course-info__label">{{ Lang_translate('_FORUM_MESSAGE', 'profile') }}</div>
+          <div class="course-info__value text--gray">{{userStats.forum_post}}</div>
+        </div>
+        <div class="user-profile__content">
+          <div class="course-info__label">{{ Lang_translate('_LOADED_FILE', 'standard') }}</div>
+          <div class="course-info__value text--gray">{{userStats.loaded_file}}</div>
+        </div>
+      </div>
+
+      <div class="user-profile__column">
+        <div class="box-title">{{ Lang_translate('_LAST_PROFILE_VIEW', 'profile') }}</div>
+        <div class="course-info__value text--gray">
+          {% for user in lastViews %}
+            <a href="#" class="user-profile__namelink">{{ user.username }}</a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% block extendedProfile_teacher %}
+    {% endblock %}
+  </div>
+  <div id="formButton" class="form_elem_button" style="display: none">
+    <input type="submit" class="button btn btn-default" id="save" name="save" value="Salva modifiche">
+    <input type="button" class="button btn btn-default" id="undo" name="undo" value="Annulla">
+  </div>
+</div>
+{{ Form_closeForm() }}
+
+
+<script>
+
+
+
+  document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("linkModifica").addEventListener("click", function() {
+
+      // Array di ID dei div da trasformare in input
+      let divs = document.querySelectorAll("div[id*='up_'], div[id*='field_']");
+      document.getElementById("formButton").style.display = "block";
+      // Trasforma ogni div in un input
+      divs.forEach(div => {
+        if (div.tagName.toLowerCase() === "div") {
+          let input = document.createElement("input");
+          input.type = "text";
+          input.value = div.textContent.trim();
+          input.id = div.id;
+          if (div.id.includes('field')){
+            let match = div.id.match(/^field_(.+)_(\d+)$/);
+            if (match) {
+              input.name = `field_${match[1]}[${match[2]}]`;
+            } else {
+              let numMatch = div.id.match(/\d+/);
+              input.name = `field_textfield[${numMatch ? numMatch[0] : ""}]`;
+            }
+          }
+          else{
+            input.name = div.id;
+          }
+          input.classList.add("form-control","textfield");
+          div.parentNode.replaceChild(input, div);
+        };
+
+      });
+
+      document.getElementById("undo").addEventListener("click", function() {
+        // Nasconde il pulsante del form
+        document.getElementById("formButton").style.display = "none";
+        // Seleziona tutti gli input con ID contenente "_mod"
+        let inputs = document.querySelectorAll("input[id*='up_'], input[id*='field_']");
+
+        // Trasforma ogni input in un div
+        inputs.forEach(input => {
+          if (input.tagName.toLowerCase() === "input") {
+            let div = document.createElement("div");
+            div.id = input.id;
+            div.textContent = input.value.trim(); // Usa textContent invece di value
+            input.parentNode.replaceChild(div, input);
+          }
+        });
+      });
+
+    });
+  });
+
+</script>
+
+
+

@@ -14,6 +14,7 @@ class ContextMenu {
 
     _this.container = target.closest('*[data-container]');
     _this.type = _this.container.getAttribute('data-container');
+    _this.controller = _this.container.getAttribute('data-controller');
   }
 
   set(selector) {
@@ -27,14 +28,20 @@ class ContextMenu {
       _this.setContainerByTarget(target);
       _this.currentEls = [];
 
-      if(target.classList.contains('folderTree__link')) { // se clicco su una voce del folder tree
-        _this.currentEls = Array.prototype.slice.call(_this.container.querySelectorAll('.ft-is-selected'));
-      } else {
+      if(!target.classList.contains('folderTree__link')) { // se clicco su una voce del folder tree
         _this.currentEls = Array.prototype.slice.call(_this.container.querySelectorAll('.fv-is-selected'));
-      }
 
+        if(!target.closest('.folderView__li').classList.contains('fv-is-selected')) {
+          _this.currentEls.forEach(item => {
+            item.classList.remove('fv-is-selected');
+          });
+          target.closest('.folderView__li').classList.add('fv-is-selected');
+          _this.currentEls = Array.prototype.slice.call(_this.container.querySelectorAll('.fv-is-selected'));
+        }
+      }
+      
       // ? The object on which the actions of the context menu affect must be the object the menu is linked to, not the selected items
-      const targetFound = _this.currentEls.find(element => element.getAttribute('data-id') === target.getAttribute('data-id'));
+      const targetFound = _this.currentEls.find(element => element.getAttribute('data-id') === target.closest('li').getAttribute('data-id'));
       if(!targetFound) {
         _this.currentEls.push(target);
       }
@@ -49,14 +56,15 @@ class ContextMenu {
       }
 
       const renameBtn = {
-        text: Lang.Translation('_RENAME', 'learningObjectContextMenu'),
+        text: Lang.Translation('_RENAME', 'learning_object_context_menu'),
         onClick() {
+          const renameParent = target.closest('.folderTree__li') ? target : target.closest('.folderView__li');
           const renameOrig = document.querySelector('.folderTree__rename');
           const rename = renameOrig.cloneNode(true);
           const renameInput = rename.querySelector('.folderTree__rename__input');
 
           const btn = rename.querySelector('.js-ft-rename-el');
-          const inputRename = rename.querySelector('.folderTree__rename__input');
+          const btnCancel = rename.querySelector('.js-ft-cancel-el');
 
           if (btn) {
             btn.addEventListener('click', () => {
@@ -64,27 +72,36 @@ class ContextMenu {
             });
           }
 
-          if (inputRename) {
-            inputRename.addEventListener('keyup', (e) => {
-              if (e.keyCode === 13) {
-                _this.renameEl();
-                e.preventDefault();
+          if (btnCancel) {
+            btnCancel.addEventListener('click', () => {
+              renameInput.blur();
+              rename.classList.remove('is-show');
+            });
+          }
+
+          if (renameInput) {
+            renameInput.addEventListener('keyup', (e) => {
+              switch (e.key) {
+                case 'Enter':
+                  _this.renameEl();
+                  e.preventDefault();
+                  break;
+                case 'Esc':
+                case 'Escape':
+                  renameInput.blur();
+                  rename.classList.remove('is-show');
+                  break;
               }
             });
           }
 
           if (target.classList.contains('folderTree__rename__input') === false) {
-            if (target.hasAttribute('data-id')) {
-              target.classList.add('ft-no-click');
-              target.appendChild(rename);
-            } else {
-              target.parentNode.classList.add('ft-no-click');
-              target.parentNode.appendChild(rename);
-            }
+            renameParent.classList.add('ft-no-click');
+            renameParent.appendChild(rename);
             rename.classList.add('is-show');  
             renameInput.focus();
-            renameInput.value = target.getElementsByTagName('span')[0].outerText;
-            renameInput.setAttribute('value', target.getElementsByTagName('span').outerText);
+            renameInput.value = renameParent.getElementsByTagName('span')[0].outerText;
+            renameInput.setAttribute('value', renameParent.getElementsByTagName('span')[0].outerText);
 
             // Rendo tutti gli elementi non cliccabili se sono in modalità rinomina
             const elsNotClick = _this.container.querySelectorAll('.ft-no-click');
@@ -115,51 +132,37 @@ class ContextMenu {
       };
 
       const copyBtn = {
-        text: Lang.Translation('_COPY', 'learningObjectContextMenu'),
+        text: Lang.Translation('_COPY', 'learning_object_context_menu'),
         onClick() {
           _this.currentElsIds.forEach((id) => {
-            _this.container.querySelector('li[data-id="' + parseInt(id) + '"]').classList.add('is-ready-for-copy');
+            target.closest('.folderView__li').querySelector('div[data-id="' + parseInt(id) + '"]').classList.add('is-ready-for-copy');
           });
           document.querySelector('.folderView__copyOverlay').classList.add('is-shown');
         }
       };
 
       const deleteBtn = {
-        text: Lang.Translation('_DELETE', 'learningObjectContextMenu'),
+        text: Lang.Translation('_DELETE', 'learning_object_context_menu'),
         onClick() {
           let objectsNames = [];
           _this.currentEls.forEach(element => {
             if(element.classList.contains('folderTree__link')) {
               objectsNames.push(element.querySelector('span').outerText);
             } else {
-              objectsNames.push(element.querySelector('.folderView__el span').outerText);
+              objectsNames.push(element.closest('.folderView__li').querySelector('.folderView__el span').outerText);
             }
           });
           let deleteElements;
           if (objectsNames.length === 1) {
-            deleteElements = Lang.Translation('_DELETE_ELEMENT', 'learningObjectContextMenu').replace('[objectName]', objectsNames.join(','));
+            deleteElements = Lang.Translation('_DELETE_ELEMENT', 'learning_object_context_menu').replace('[objectName]', objectsNames.join(','));
           } else {
-            deleteElements = Lang.Translation('_DELETE_ELEMENTS', 'learningObjectContextMenu').replace('[objectNames]', objectsNames.join(','));
+            deleteElements = Lang.Translation('_DELETE_ELEMENTS', 'learning_object_context_menu').replace('[objectNames]', objectsNames.join(','));
           }
           if (confirm(deleteElements)) {
             const deleteData = _this.getApiUrl('delete', { ids: _this.currentElsIds });
 
             axios.get(deleteData).then(() => {
               _this.currentElsIds.forEach((elId) => {
-                const elTree = _this.container.querySelector('.folderTree__li[data-id="' + elId + '"]');
-                if (elTree) {
-                  const ul = elTree.parentNode;
-                  elTree.remove();
-
-                  if (!ul.querySelector('li')) {
-                    ul.remove();
-                  }
-                }
-                const el = _this.container.querySelector('.folderView__li[data-id="' + elId + '"]');
-                if (el) {
-                  el.remove();
-                  document.querySelector('.context-menu').classList.remove('menu-visible');
-                }
                 // dispatch deletedItem event
                 _this.container.dispatchEvent(new CustomEvent('deleteTreeItem', {
                   detail: { selectedId: elId, }
@@ -172,7 +175,15 @@ class ContextMenu {
         }
       };
 
-      const foundFolder = _this.currentEls.find(element => element.classList.contains('js-folderView-folder'));
+      // Cancel current renameInput on right click
+      if (_this.container.querySelector('.folderTree__rename.is-show') !== null) {
+        const rename = _this.container.querySelector('.folderTree__rename.is-show');
+        const renameInput = rename.querySelector('.folderTree__rename__input');
+        renameInput.blur();
+        rename.classList.remove('is-show');
+      }
+
+      const foundFolder = _this.currentEls.find(element => (element.classList.contains('js-folderView-folder') || element.classList.contains('ft-is-folder')));
       let buttons = [];
       if(_this.currentElsIds.length <= 1) {
         buttons.push(renameBtn);
@@ -204,6 +215,12 @@ class ContextMenu {
     const elId = el.getAttribute('data-id');
     const renameData = _this.getApiUrl('rename', { id: elId, newName: encodeURIComponent(value) });
 
+    if (input.value == null || input.value.toString().trim() == '' || value == el.getElementsByTagName('span')[0].outerText) {
+      input.blur();
+      rename.classList.remove('is-show');
+      return;
+    }
+
     axios.get(renameData).then((res) => {
       if (res) {
         rename.classList.remove('is-show');
@@ -226,7 +243,7 @@ class ContextMenu {
   }
 
   getApiUrl(action, params) {
-    let url = `${this.baseApiUrl}/${action}`;
+    let url = `${window.frontend.config.url.appLms}/index.php?r=lms/${this.controller}/${action}`;
     if (!params) {
       params = {};
     }

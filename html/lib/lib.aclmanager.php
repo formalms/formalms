@@ -30,17 +30,16 @@ define('ACL_INFO_LASTNAME', 3);
 define('ACL_INFO_PASS', 4);
 define('ACL_INFO_EMAIL', 5);
 define('ACL_INFO_AVATAR', 6);
-define('ACL_INFO_SIGNATURE', 7);
-define('ACL_INFO_VALID', 10);
-define('ACL_INFO_PWD_EXPIRE_AT', 11);
-define('ACL_INFO_REGISTER_DATE', 12);
-define('ACL_INFO_LASTENTER', 13);
-define('ACL_INFO_FORCE_CHANGE', 14);
-define('ACL_INFO_FACEBOOK_ID', 15);
-define('ACL_INFO_TWITTER_ID', 16);
-define('ACL_INFO_LINKEDIN_ID', 17);
-define('ACL_INFO_GOOGLE_ID', 18);
-define('ACL_INFO_PRIVACY_POLICY', 19);
+define('ACL_INFO_VALID', 9);
+define('ACL_INFO_PWD_EXPIRE_AT', 10);
+define('ACL_INFO_REGISTER_DATE', 11);
+define('ACL_INFO_LASTENTER', 12);
+define('ACL_INFO_FORCE_CHANGE', 13);
+define('ACL_INFO_FACEBOOK_ID', 14);
+define('ACL_INFO_TWITTER_ID', 15);
+define('ACL_INFO_LINKEDIN_ID', 16);
+define('ACL_INFO_GOOGLE_ID', 17);
+define('ACL_INFO_PRIVACY_POLICY', 18);
 
 define('ACL_INFO_GROUPID', 1);
 define('ACL_INFO_GROUPDESCRIPTION', 2);
@@ -69,6 +68,7 @@ define('ADMIN_GROUP_USER', '/framework/level/user');
  */
 class FormaACLManager
 {
+    private static $instance = null;
     /** the actual context for acl management */
     public $context = '';
     /** the connection to database */
@@ -198,6 +198,14 @@ class FormaACLManager
             . ' ( idst ) VALUES ( null )'; //TODO NO_Strict_MODE: to be confirmed
 
         return $this->_executeInsert($query);
+    }
+
+    public static function getInstance()
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+        return self::$instance;
     }
 
     /**
@@ -502,16 +510,28 @@ class FormaACLManager
      * @param string $pass the password in clear text
      * @param string $email the email address
      * @param string $avatar the path of the avatar image
-     * @param string $signature the signature
      * @param bool $alredy_encripted if the password is alredy encrypted
      * @param int $idst the idst for the new user
      *
      * @return int the security token
      */
-    public function registerUser($userid, $firstname, $lastname,
-                                 $pass, $email, $avatar,
-                                 $signature, $alredy_encripted = false, $idst = false, $pwd_expire_at = '', $force_change = '',
-                                 $facebook_id = false, $twitter_id = false, $linkedin_id = false, $google_id = false)
+    public function registerUser(
+        $userid,
+        $firstname,
+        $lastname,
+        $pass,
+        $email,
+        $avatar,
+        $alredy_encripted = false,
+        $idst = false,
+        $pwd_expire_at = '',
+        $force_change = '',
+        $facebook_id = false,
+        $twitter_id = false,
+        $linkedin_id = false,
+        $google_id = false,
+        $source = 'registration'
+    )
     {
         if ($idst === false) {
             $idst = $this->_createST();
@@ -533,7 +553,6 @@ class FormaACLManager
             ACL_INFO_PASS => $pass,
             ACL_INFO_EMAIL => $email,
             ACL_INFO_AVATAR => $avatar,
-            ACL_INFO_SIGNATURE => $signature,
             ACL_INFO_PWD_EXPIRE_AT => $pwd_expire_at,
             ACL_INFO_FORCE_CHANGE => $force_change,
             ACL_INFO_FACEBOOK_ID => $facebook_id,
@@ -544,6 +563,7 @@ class FormaACLManager
 
         $data = Events::trigger('core.user.creating', [
             'userdata' => $userdata,
+            'source' => $source,
         ]);
 
         $userdata = $data['userdata'];
@@ -555,7 +575,6 @@ class FormaACLManager
         $pass = $userdata[ACL_INFO_PASS];
         $email = $userdata[ACL_INFO_EMAIL];
         $avatar = $userdata[ACL_INFO_AVATAR];
-        $signature = $userdata[ACL_INFO_SIGNATURE];
         $pwd_expire_at = $userdata[ACL_INFO_PWD_EXPIRE_AT];
         $force_change = $userdata[ACL_INFO_FORCE_CHANGE];
         $facebook_id = $userdata[ACL_INFO_FACEBOOK_ID];
@@ -564,13 +583,13 @@ class FormaACLManager
         $google_id = $userdata[ACL_INFO_GOOGLE_ID];
 
         $query = 'INSERT INTO ' . $this->_getTableUser()
-            . ' (idst, userid, firstname, lastname, pass, email, avatar, signature, pwd_expire_at, '
+            . ' (idst, userid, firstname, lastname, pass, email, avatar, pwd_expire_at, '
             . '  register_date, '
             . ($force_change !== '' ? 'force_change, ' : '')
             . 'facebook_id, twitter_id, linkedin_id, google_id) '
             . ' VALUES ( "' . $idst . '", "' . $userid . '", "' . $firstname . '", "' . $lastname . '", '
             . ' "' . ($alredy_encripted === true ? $pass : $this->encrypt($pass)) . '", '
-            . ' "' . $email . '", "' . $avatar . '", "' . $signature . '", "' . $pwd_expire_at . '", "' . date('Y-m-d H:i:s') . '", '
+            . ' "' . $email . '", "' . $avatar . '", "' . $pwd_expire_at . '", "' . date('Y-m-d H:i:s') . '", '
             . ($force_change !== '' ? ' "' . ((int)$force_change > 0 ? '1' : '0') . '", ' : '')
             . (!empty($facebook_id) ? ' "' . $facebook_id . ' "' : 'NULL') . ', '
             . (!empty($twitter_id) ? ' "' . $twitter_id . ' "' : 'NULL') . ', '
@@ -588,7 +607,7 @@ class FormaACLManager
             $userdata = $this->getUser($idst, false);
 
             if ($userdata) {
-                Events::trigger('core.user.created', ['idst' => $idst, 'userdata' => $userdata]);
+                Events::trigger('core.user.created', ['idst' => $idst, 'userdata' => $userdata, 'source' => $source,]);
             }
 
             return $idst;
@@ -610,8 +629,20 @@ class FormaACLManager
      *
      * @return int the security token
      */
-    public function registerTempUser($userid, $firstname, $lastname, $pass, $email, $random_code, $create_by_admin = 0,
-                                     $facebook_id = '', $twitter_id = '', $linkedin_id = '', $google_id = '', $avatar = '')
+    public function registerTempUser(
+        $userid,
+        $firstname,
+        $lastname,
+        $pass,
+        $email,
+        $random_code,
+        $create_by_admin = 0,
+        $facebook_id = '',
+        $twitter_id = '',
+        $linkedin_id = '',
+        $google_id = '',
+        $avatar = ''
+    )
     {
         $idst = $this->_createST();
         $userid = $this->absoluteId($userid);
@@ -668,7 +699,7 @@ class FormaACLManager
      * @param string $email the email of the user
      *
      * @return mixed array with user informations with numeric keys:
-     *               - idst, userid, firstname, lastname, pass, email, avatar, signature
+     *               - idst, userid, firstname, lastname, pass, email, avatar,
      *               - FALSE if user is not found
      */
     public function getTempUserByEmail($email)
@@ -692,7 +723,7 @@ class FormaACLManager
      * @param bool $only_confirmed if true only user that have confirmed is displayed
      *
      * @return mixed array with user informations with numeric keys:
-     *               - idst, userid, firstname, lastname, pass, email, avatar, signature
+     *               - idst, userid, firstname, lastname, pass, email, avatar,
      *               - FALSE if user is not found
      */
     public function &getTempUsers($array_idst = false, $only_confirmed = false)
@@ -749,7 +780,7 @@ class FormaACLManager
             $query .= ' WHERE confirmed = 1';
         }
         $rs = $this->_executeQuery($query);
-        list($num) = sql_fetch_row($rs);
+        [$num] = sql_fetch_row($rs);
 
         return $num;
     }
@@ -847,15 +878,25 @@ class FormaACLManager
      * @param string $pass the password in clear text
      * @param string $email the email address
      * @param string $avatar the path of the avatar image
-     * @param string $signature the signature
-     * @param string $lastenter the date of the user last login
      *
      * @return true if success, FALSE otherwise
      */
-    public function updateUser($idst, $userid = false, $firstname = false, $lastname = false,
-                               $pass = false, $email = false, $avatar = false,
-                               $signature = false, $lastenter = false, $resume = false, $force_change = '',
-                               $facebook_id = false, $twitter_id = false, $linkedin_id = false, $google_id = false)
+    public function updateUser(
+        $idst,
+        $userid = false,
+        $firstname = false,
+        $lastname = false,
+        $pass = false,
+        $email = false,
+        $avatar = false,
+        $lastenter = false,
+        $resume = false,
+        $force_change = '',
+        $facebook_id = false,
+        $twitter_id = false,
+        $linkedin_id = false,
+        $google_id = false
+    )
     {
         $old_userdata = $this->getUser($idst, null);
 
@@ -880,9 +921,6 @@ class FormaACLManager
         }
         if ($avatar !== false) {
             $new_userdata[ACL_INFO_AVATAR] = $avatar;
-        }
-        if ($signature !== false) {
-            $new_userdata[ACL_INFO_SIGNATURE] = $signature;
         }
         if ($lastenter !== false) {
             $new_userdata[ACL_INFO_LASTENTER] = $lastenter;
@@ -915,9 +953,19 @@ class FormaACLManager
         $new_userdata = $data['new_userdata'];
 
         $arrSET = [];
-        if (array_key_exists(ACL_INFO_USERID, $new_userdata)) {
+
+
+        if (
+            array_key_exists(ACL_INFO_USERID, $new_userdata) &&
+            (
+                preg_replace('/\s+/', '', $new_userdata[ACL_INFO_USERID]) != preg_replace('/\s+/', '', $old_userdata[ACL_INFO_USERID])
+                ||
+                (strpos($new_userdata[ACL_INFO_USERID], ' ') === false && strpos($old_userdata[ACL_INFO_USERID], ' ') !== false)
+            )
+        ) {
             $arrSET['userid'] = $new_userdata[ACL_INFO_USERID];
         }
+        
         if (array_key_exists(ACL_INFO_FIRSTNAME, $new_userdata)) {
             $arrSET['firstname'] = $new_userdata[ACL_INFO_FIRSTNAME];
         }
@@ -935,9 +983,6 @@ class FormaACLManager
         }
         if (array_key_exists(ACL_INFO_AVATAR, $new_userdata)) {
             $arrSET['avatar'] = $new_userdata[ACL_INFO_AVATAR];
-        }
-        if (array_key_exists(ACL_INFO_SIGNATURE, $new_userdata)) {
-            $arrSET['signature'] = $new_userdata[ACL_INFO_SIGNATURE];
         }
         if (array_key_exists(ACL_INFO_LASTENTER, $new_userdata)) {
             $arrSET['lastenter'] = $new_userdata[ACL_INFO_LASTENTER];
@@ -1079,7 +1124,7 @@ class FormaACLManager
             $control = $this->insertIntoDeleteUserTable($idst);
         } else {
             $control = true;
-        }//modname=directory&op=org_chart
+        } //modname=directory&op=org_chart
 
         $result = false;
 
@@ -1128,11 +1173,11 @@ class FormaACLManager
             " WHERE idst = '" . $idst_user . "'";
 
         $result = sql_query($query);
-        list($idst, $userid, $firstname, $lastname, $pass, $email, $avatar, $signature, $level, $lastenter, $valid, $pwd_expire_at, $register_date) = sql_fetch_row($result);
+        [$idst, $userid, $firstname, $lastname, $pass, $email, $avatar, $level, $lastenter, $valid, $pwd_expire_at, $register_date] = sql_fetch_row($result);
 
         $insert_query = 'INSERT INTO ' . $this->_getTableUserDeleted() . ' ' .
-            ' (id_deletion, idst, userid, firstname, lastname, pass, email, avatar, signature, level, lastenter, valid, pwd_expire_at, register_date, deletion_date, deleted_by)' .
-            " VALUES ('', '" . (int)$idst . "', '" . addslashes($userid) . "', '" . addslashes($firstname) . "', '" . addslashes($lastname) . "', '" . addslashes($pass) . "', '" . addslashes($email) . "', '" . addslashes($avatar) . "', '" . addslashes($signature) . "', '" . $level . "', '" . $lastenter . "', '" . $valid . "', '" . $pwd_expire_at . "', '" . $register_date . "', '" . date('Y-m-d H:i:s') . "','" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "')";
+            ' (id_deletion, idst, userid, firstname, lastname, pass, email, avatar, level, lastenter, valid, pwd_expire_at, register_date, deletion_date, deleted_by)' .
+            " VALUES ('', '" . (int)$idst . "', '" . addslashes($userid) . "', '" . addslashes($firstname) . "', '" . addslashes($lastname) . "', '" . addslashes($pass) . "', '" . addslashes($email) . "', '" . addslashes($avatar) . "', '" . $level . "', '" . $lastenter . "', '" . $valid . "', '" . $pwd_expire_at . "', '" . $register_date . "', '" . date('Y-m-d H:i:s') . "','" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "')";
 
         $insert_result = sql_query($insert_query);
 
@@ -1303,20 +1348,14 @@ class FormaACLManager
      *                       $idst is assigned
      *
      * @return mixed array with user informations with numeric keys:
-     *               - idst, userid, firstname, lastname, pass, email, avatar, signature,
+     *               - idst, userid, firstname, lastname, pass, email, avatar, ,
      *               level, lastenter, valid, pwd_expire_at, register_date
      *               - FALSE if user is not found
      */
     public function getUser($idst, $userid)
     {
         // ha tanti parametri in più rispetto alla vecchia installazione... (3)
-        /*** dupplicate ***
-         * $query = "SELECT idst, userid, firstname, lastname, pass, email, avatar, signature,"
-         * ." level, lastenter, valid, pwd_expire_at, register_date, lastenter, force_change,
-         * facebook_id, twitter_id, linkedin_id, google_id, privacy_policy "
-         * ." FROM ".$this->_getTableUser();
-         ***/
-        $query = 'SELECT idst, userid, firstname, lastname, pass, email, avatar, signature,'
+        $query = 'SELECT idst, userid, firstname, lastname, pass, email, avatar, '
             . ' level, lastenter, valid, pwd_expire_at, register_date, lastenter '
             . ', force_change, facebook_id, twitter_id, linkedin_id, google_id, privacy_policy '
             . ' FROM ' . $this->_getTableUser();
@@ -1329,7 +1368,9 @@ class FormaACLManager
             return false;
         }
 
-        $rs = $this->_executeQuery($query);
+
+        $rs = sql_query($query);
+
         if (sql_num_rows($rs) > 0) {
             return sql_fetch_row($rs);
         } else {
@@ -1379,12 +1420,12 @@ class FormaACLManager
      * @param string $email the email of the user
      *
      * @return mixed array with user informations with numeric keys:
-     *               - idst, userid, firstname, lastname, pass, email, avatar, signature
+     *               - idst, userid, firstname, lastname, pass, email, avatar,
      *               - FALSE if user is not found
      */
     public function getUserByEmail($email)
     {
-        $query = 'SELECT idst, userid, firstname, lastname, pass, email, avatar, signature,'
+        $query = 'SELECT idst, userid, firstname, lastname, pass, email, avatar, '
             . ' level, lastenter, valid, pwd_expire_at, register_date, lastenter'
             . ' FROM ' . $this->_getTableUser()
             . " WHERE email = '" . $email . "'";
@@ -1415,9 +1456,9 @@ class FormaACLManager
     {
         $res = false;
 
-        $fields = 'idst, userid, firstname, lastname, pass, email, avatar, signature,
-			level, lastenter, valid, pwd_expire_at, register_date, lastenter, force_change,
-			facebook_id, twitter_id, linkedin_id, google_id, privacy_policy ';
+        $fields = 'idst, userid, firstname, lastname, pass, email, avatar, level, 
+                   lastenter, valid, pwd_expire_at, register_date, lastenter, force_change,
+			       facebook_id, twitter_id, linkedin_id, google_id, privacy_policy ';
         $qtxt = 'SELECT ' . $fields . ' FROM ' . $this->_getTableUser() . ' ' .
             'WHERE ' . $field_name . " = '" . sql_escape_string($field_val) . "'";
 
@@ -1459,7 +1500,7 @@ class FormaACLManager
      * @param array $array_idst the security token of the users to get
      *
      * @return mixed array with user informations with numeric keys:
-     *               - idst, userid, firstname, lastname, pass, email, avatar, signature
+     *               - idst, userid, firstname, lastname, pass, email, avatar,
      *               - FALSE if user is not found
      */
     public function getUsers($array_idst, $customField = false)
@@ -1476,7 +1517,7 @@ class FormaACLManager
             }
         }
 
-        $query = 'SELECT idst, userid, firstname, lastname, pass, email, avatar, signature,'
+        $query = 'SELECT idst, userid, firstname, lastname, pass, email, avatar, '
             . ' level, lastenter, valid, pwd_expire_at, register_date, lastenter'
             . ' FROM ' . $this->_getTableUser()
             . ' WHERE idst IN (' . implode(',', $array_idst) . ') '
@@ -1492,10 +1533,40 @@ class FormaACLManager
         return $users_info;
     }
 
+    public function getUsersAssociative($array_idst, $customField = false)
+    {
+        $users_info = [];
+
+        if (!is_array($array_idst)) {
+            $array_idst = [];
+        }
+
+        foreach ($array_idst as $index => $idst) {
+            if (!is_numeric($idst)) {
+                unset($array_idst[$index]);
+            }
+        }
+
+        $query = 'SELECT idst, userid, firstname, lastname, pass, email, avatar, '
+            . ' level, lastenter, valid, pwd_expire_at, register_date'
+            . ' FROM ' . $this->_getTableUser()
+            . ' WHERE idst IN (' . implode(',', $array_idst) . ') '
+            . ' ORDER BY lastname, firstname, userid';
+        $rs = $this->_executeQuery($query);
+
+        foreach ($rs as $row) {
+
+            $users_info[$row['idst']] = $row;
+        }
+
+
+        return $users_info;
+    }
+
     public function getUsersMappedData($array_idst)
     {
         $responseUsers = [];
-        $users = $this->getUsers($array_idst);
+        $users = $this->getUsersAssociative($array_idst);
 
         foreach ($users as $user) {
             $responseUsers[] = $this->getUserMappedData($user);
@@ -1510,16 +1581,17 @@ class FormaACLManager
 
         $acl_man = \FormaLms\lib\Forma::getAclManager();
 
-        $responseUser['idst'] = $user[ACL_INFO_IDST];
+        $responseUser['idst'] = $user['idst'];
         $responseUser['name'] = $acl_man->getConvertedUserName($user);
-        $responseUser['username'] = $user[ACL_INFO_USERID];
-        $responseUser['firstname'] = $user[ACL_INFO_FIRSTNAME];
-        $responseUser['lastname'] = $user[ACL_INFO_LASTNAME];
-        $responseUser['email'] = $user[ACL_INFO_EMAIL];
-        $responseUser['avatar'] = !empty($user[ACL_INFO_AVATAR]) ? $path . $user[ACL_INFO_AVATAR] : '';
-        $responseUser['biography'] = $user[ACL_INFO_SIGNATURE];
-        $responseUser['profile'] = 'index.php?modname=course&amp;op=viewprofile&amp;id_user=' . $user[ACL_INFO_IDST];
-        $responseUser['registerDate'] = $user[ACL_INFO_REGISTER_DATE];
+        $responseUser['username'] = $user['userid'];
+        $responseUser['firstname'] = $user['firstname'];
+        $responseUser['lastname'] = $user['lastname'];
+        $responseUser['email'] = $user['email'];
+        $responseUser['avatar'] = !empty($user['avatar']) ? $path . $user['avatar'] : '';
+        $responseUser['profile'] = 'index.php?modname=course&amp;op=viewprofile&amp;id_user=' . $user['idst'];
+        $responseUser['registerDate'] = $user['register_date'];
+        $responseUser['lastenter'] = $user['lastenter'];
+        $responseUser['pwdExpireAt'] = $user['pwd_expire_at'];
 
         return $responseUser;
     }
@@ -1606,7 +1678,7 @@ class FormaACLManager
     public function getSettingValueAndInfoOfUsers($sett_name, $arr_idst = false, $get_null = false)
     {
         $query = '
-		SELECT u.idst, u.userid, u.firstname, u.lastname, u.pass, u.email, u.avatar, u.signature , us.value
+		SELECT u.idst, u.userid, u.firstname, u.lastname, u.pass, u.email, u.avatar, us.value
 		FROM ' . $this->_getTableUser() . ' AS u ';
         if ($get_null !== false) {
             $query .= ' LEFT JOIN ' . $this->_getTableSettingUser() . ' AS us '
@@ -1725,7 +1797,7 @@ class FormaACLManager
      *                           used as an additional filter
      *
      * @return mixed array with user informations with numeric keys:
-     *               - idst, userid, firstname, lastname, pass, email, avatar, signature
+     *               - idst, userid, firstname, lastname, pass, email, avatar,
      *               - FALSE if user is not found
      */
     public function getUsersByLanguage($language, $array_idst = false)
@@ -1819,7 +1891,7 @@ class FormaACLManager
                 . ' FROM ' . $this->_getTableGroup()
                 . ' WHERE idst = ' . (int)$idst;
             $rs = $this->_executeQuery($query);
-            list($groupid) = sql_fetch_row($rs);
+            [$groupid] = sql_fetch_row($rs);
 
             return $groupid;
         } else {
@@ -1993,9 +2065,9 @@ class FormaACLManager
 		FROM ' . $this->_getTableUserOfGroupWaiting() . "
 		WHERE idst_user = '" . (int)$idst . "'";
         $rs = $this->_executeQuery($query);
-        $idst_user = [];
-        while (list($id) = sql_fetch_row($rs)) {
-            $idst_group[$id] = $id;
+        $idst_group = [];
+        foreach ($rs as $row) {
+            $idst_group[$row['idst_group']] = $row['idst_group'];
         }
 
         return $idst_group;
@@ -2044,8 +2116,9 @@ class FormaACLManager
         if (sql_num_rows($rs) == 0) {
             return $role_list;
         }
-        while (list($idst, $roleid) = sql_fetch_row($rs)) {
-            $role_list[$idst] = $roleid;
+
+        foreach ($rs as $row) {
+            $role_list[$row['idst']] = $row['roleid'];
         }
 
         return $role_list;
@@ -2074,8 +2147,8 @@ class FormaACLManager
         if (sql_num_rows($rs) == 0) {
             return $role_list;
         }
-        while (list($idst, $roleid) = sql_fetch_row($rs)) {
-            $role_list[$idst] = $roleid;
+        foreach ($rs as $row) {
+            $role_list[$row['idst']] = $row['roleid'];
         }
 
         return $role_list;
@@ -2111,12 +2184,12 @@ class FormaACLManager
         if (count($values) > 0) {
             $query = 'INSERT IGNORE INTO ' . $this->_getTableGroupMembers()
                 . ' (idst, idstMember, filter) VALUES '
-                //." ('".$idst."','".$idstMember."','".$filter."')";
                 . implode(',', $values);
 
-            return $this->_executeQuery($query);
-
+            $result = $this->_executeQuery($query);
             Events::trigger('core.orgchart_user.assigned', ['idst' => $idst, 'idstMember' => $idstMember]);
+
+            return $result;
         } else {
             return false;
         }
@@ -2440,8 +2513,10 @@ class FormaACLManager
      */
     public function getGroupMembers($idst, $filter = '')
     {
-        return array_merge($this->getGroupUMembers($idst, $filter),
-            $this->getGroupGMembers($idst, $filter));
+        return array_merge(
+            $this->getGroupUMembers($idst, $filter),
+            $this->getGroupGMembers($idst, $filter)
+        );
     }
 
     public function getGroupUMembersNumber($idst, $filter = '')
@@ -2466,7 +2541,7 @@ class FormaACLManager
 
         $rs = $this->_executeQuery($query);
 
-        list($numer) = sql_fetch_row($rs);
+        [$numer] = sql_fetch_row($rs);
 
         return (int)$numer;
     }
@@ -2474,7 +2549,7 @@ class FormaACLManager
     /**
      * search users member of a group (or an array of groups).
      *
-     * @param int $idst scurity token of the group
+     * @param int|array $idst scurity token of the group
      * @param string $filter (Optional). Filter to applay.
      *
      * @return array array of security token of users contained in group
@@ -2494,8 +2569,8 @@ class FormaACLManager
         $inString = (implode(',', $idst) == '' ? 'NULL' : implode(',', $idst));
 
         $query = 'SELECT DISTINCT tgm.idstMember'
-            . '  FROM ' . $this->_getTableGroupMembers() . ' AS tgm'
-            . '  LEFT JOIN ' . $this->_getTableUser() . ' AS tu'
+            . '  FROM core_group_members AS tgm'
+            . '  LEFT JOIN core_user AS tu'
             . '    ON (tgm.idstMember = tu.idst)'
             . ' WHERE tgm.idst IN (' . $inString . ')'
             . "   AND tgm.filter = '" . $filter . "'"
@@ -2506,12 +2581,10 @@ class FormaACLManager
                 $query .= " AND tu.valid = '1'";
             }
         }
-
-
         $rs = $this->_executeQuery($query);
         $arrUsers = [];
-        while (list($idst) = sql_fetch_row($rs)) {
-            $arrUsers[] = (int)$idst;
+        foreach ($rs as $row) {
+            $arrUsers[] = $row['idstMember'];
         }
 
         return $arrUsers;
@@ -2520,24 +2593,37 @@ class FormaACLManager
     /**
      * search groups member of a group.
      *
-     * @param int $idst scurity token of the group
+     * @param int|array $idst scurity token of the group
      * @param string $filter (Optional). Filter to applay.
      *
      * @return array array of security token of groups contained in group
      */
     public function getGroupGMembers($idst, $filter = '')
     {
-        if (is_array($idst)) {
-            foreach ($idst as $index => $vidst) {
-                if (!is_numeric($vidst)) {
-                    unset($idst[$index]);
-                }
-            }
-        } elseif (!is_array($idst)) {
-            $idst = [(int)$idst];
+        // Input validation and normalization
+        if (empty($idst)) {
+            return [];
         }
 
-        $inString = (implode(',', $idst) == '' ? 'NULL' : implode(',', $idst));
+        if (is_array($idst)) {
+            // Filter and validate numeric values
+            $idst = array_filter(array_map('intval', $idst), function ($val) {
+                return $val > 0;
+            });
+            if (empty($idst)) {
+                return [];
+            }
+        } else {
+            $idst = [(int)$idst];
+            if ($idst[0] <= 0) {
+                return [];
+            }
+        }
+
+        // Sanitize filter parameter to prevent SQL injection
+        $filter = sql_escape_string($filter);
+
+        $inString = implode(',', $idst);
 
         $query = 'SELECT tgm.idstMember'
             . '  FROM ' . $this->_getTableGroupMembers() . ' AS tgm'
@@ -2546,10 +2632,12 @@ class FormaACLManager
             . ' WHERE tgm.idst IN (' . $inString . ')'
             . "   AND tgm.filter = '" . $filter . "'"
             . '   AND NOT ISNULL(tg.idst)';
+
         $rs = $this->_executeQuery($query);
         $arrGroups = [];
-        while (list($idst) = sql_fetch_row($rs)) {
-            $arrGroups[] = (int)$idst;
+
+        foreach ($rs as $row) {
+            $arrGroups[] = $row['idstMember'];
         }
 
         return $arrGroups;
@@ -2565,108 +2653,193 @@ class FormaACLManager
      **/
     public function getGroupGDescendants($idst, $filter = '')
     {
-        /*$arrST = $this->getGroupGMembers( $idst );
-        // search in groups
-        $count = 0;
-        while( $count < count( $arrST ) ) {
-            $idST = $arrST[$count];
-            $arrResult = $this->getGroupGMembers( $idST, $filter );
-            $arrST = array_merge( $arrST, array_diff($arrResult, $arrST ));
-            $count++;
+        // Input validation and normalization
+        if (empty($idst)) {
+            return [];
         }
-        return $arrST;*/
+
+        // Sanitize filter parameter to prevent SQL injection
+        $filter = sql_escape_string($filter);
+
+        // Normalize input to array and validate numeric values
         if (!is_array($idst)) {
-            $arrST = [$idst];
-            $new_st = [$idst];
+            $idst = [(int)$idst];
         } else {
-            $arrST = $idst;
-            $new_st = $idst;
+            $idst = array_filter(array_map('intval', $idst), function ($val) {
+                return $val > 0;
+            });
+            if (empty($idst)) {
+                return [];
+            }
         }
 
-        $loop_check = 0;
-        do {
-            ++$loop_check;
-            $new_st = $this->getGroupGMembers($new_st, $filter);
-            if (!empty($new_st)) {
-                $arrST = array_merge($arrST, array_diff($new_st, $arrST));
-            }
-        } while (!empty($new_st) && ($loop_check < 50));
+        // Use associative array for O(1) lookups instead of array_diff
+        $visited = array_flip($idst);
+        $queue = $idst;
+        $processed = [];
 
-        return $arrST;
+        // Breadth-first search with cycle detection
+        while (!empty($queue)) {
+            // Process current batch to reduce database queries
+            $current_batch = array_splice($queue, 0, min(50, count($queue))); // Process in batches of 100
+            $batch_key = implode(',', $current_batch);
+
+            // Skip if we've already processed this exact batch
+            if (isset($processed[$batch_key])) {
+                continue;
+            }
+            $processed[$batch_key] = true;
+
+            $new_groups = $this->getGroupGMembers($current_batch, $filter);
+
+            if (!empty($new_groups)) {
+                foreach ($new_groups as $group_id) {
+                    if (!isset($visited[$group_id])) {
+                        $visited[$group_id] = true;
+                        $queue[] = $group_id;
+                    }
+                }
+            }
+
+            // Safety check to prevent infinite loops
+            if (count($visited) > 10000) {
+                error_log("Warning: getGroupGDescendants exceeded maximum group limit, possible circular reference");
+                break;
+            }
+        }
+
+        return array_keys($visited);
     }
 
     public function getAllGroupsFromSelection($array_idst)
     {
         $array_idst = $this->getGroupsFromMixedIdst($array_idst);
 
-        $array_ocd = [];
-        $array_oc = [];
-
-        $query = 'SELECT idst'
-            . ' FROM %adm_group'
-            . " WHERE groupid = '/oc_0'";
-
-        list($idst) = sql_fetch_row(sql_query($query));
-        $array_oc[$idst] = $idst;
-
-        $query = 'SELECT idst'
-            . ' FROM %adm_group'
-            . " WHERE groupid = '/ocd_0'";
-
-        list($idst) = sql_fetch_row(sql_query($query));
-        $array_ocd[$idst] = $idst;
-
-        $query = 'SELECT idst_oc, idst_ocd'
-            . ' FROM %adm_org_chart_tree';
-
-        $result = sql_query($query);
-
-        while (list($idst_oc, $idst_ocd) = sql_fetch_row($result)) {
-            $array_ocd[$idst_ocd] = $idst_ocd;
-            $array_oc[$idst_oc] = $idst_oc;
+        if (empty($array_idst)) {
+            return [];
         }
 
-        $res = [];
+        // Cache for org chart data to avoid repeated queries
 
-        foreach ($array_idst as $id_group) {
-            if (isset($array_oc[$id_group])) {
-                $res[$id_group] = $id_group;
+        $org_chart_cache = [
+            'array_ocd' => [],
+            'array_oc' => [],
+            'tree_data' => []
+        ];
+
+        // Get org chart root groups in single queries
+        $query = 'SELECT idst, groupid FROM %adm_group WHERE groupid IN (\'/oc_0\', \'/ocd_0\')';
+        $result = sql_query($query);
+        foreach ($result as $row) {
+            if ($row['groupid'] === '/oc_0') {
+                $org_chart_cache['array_oc'][$row['idst']] = $row['idst'];
+            } else {
+                $org_chart_cache['array_ocd'][$row['idst']] = $row['idst'];
             }
-            if (isset($array_ocd[$id_group])) {
-                $query = 'SELECT iLeft, iRight'
-                    . ' FROM %adm_org_chart_tree'
-                    . ' WHERE idst_ocd = ' . (int)$id_group;
+        }
 
-                list($i_left, $i_right) = sql_fetch_row(sql_query($query));
+        // Get all org chart tree data at once
+        $query = 'SELECT idst_oc, idst_ocd, iLeft, iRight FROM %adm_org_chart_tree';
+        $result = sql_query($query);
+        foreach ($result as $row) {
+            $org_chart_cache['array_ocd'][$row['idst_ocd']] = $row['idst_ocd'];
+            $org_chart_cache['array_oc'][$row['idst_oc']] = $row['idst_oc'];
+            $org_chart_cache['tree_data'][$row['idst_ocd']] = [
+                'iLeft' => $row['iLeft'],
+                'iRight' => $row['iRight'],
+                'idst_oc' => $row['idst_oc']
+            ];
+        }
 
-                $query = 'SELECT idst_oc, idst_ocd'
-                    . ' FROM %adm_org_chart_tree'
-                    . ' WHERE iLeft >= ' . $i_left
-                    . ' AND iRight <= ' . $i_right;
 
-                $result = sql_query($query);
-                while (list($idst_oc, $idst_ocd) = sql_fetch_row($result)) {
-                    $res[$idst_oc] = $idst_oc;
-                    $res[$idst_ocd] = $idst_ocd;
-                }
+        $res = [];
+        $ocd_groups_to_process = [];
+
+        // First pass: identify groups and collect OCD groups
+        foreach ($array_idst as $id_group) {
+            $id_group = (int)$id_group;
+            if ($id_group <= 0) continue;
+
+            if (isset($org_chart_cache['array_oc'][$id_group])) {
+                $res[$id_group] = $id_group;
+            } elseif (isset($org_chart_cache['array_ocd'][$id_group])) {
+                $ocd_groups_to_process[] = $id_group;
             } else {
                 $res[$id_group] = $id_group;
+            }
+        }
 
-                $query = 'SELECT idstMember'
-                    . ' FROM %adm_group_members'
-                    . ' WHERE idst = ' . (int)$id_group
-                    . ' AND idstMember IN'
-                    . ' ('
-                    . ' SELECT idst'
-                    . ' FROM %adm_group'
-                    . ' )';
+        // Process OCD groups in batch
+        if (!empty($ocd_groups_to_process)) {
+            foreach ($ocd_groups_to_process as $id_group) {
+                if (isset($org_chart_cache['tree_data'][$id_group])) {
+                    $tree_info = $org_chart_cache['tree_data'][$id_group];
 
-                $result = sql_query($query);
-                while (list($idst) = sql_fetch_row($result)) {
-                    $tmp = $this->getAllGroupsFromSelection([$idst]);
-                    foreach ($tmp as $idst_t) {
-                        $res[$idst_t] = $idst_t;
+                    // Get all descendants in single query
+                    $query = 'SELECT idst_oc, idst_ocd'
+                        . ' FROM %adm_org_chart_tree'
+                        . ' WHERE iLeft >= ' . (int)$tree_info['iLeft']
+                        . ' AND iRight <= ' . (int)$tree_info['iRight'];
+
+                    $result = sql_query($query);
+                    foreach ($result as $row) {
+                        $res[(int)$row['idst_oc']] = (int)$row['idst_oc'];
+                        $res[(int)$row['idst_ocd']] = (int)$row['idst_ocd'];
                     }
+                }
+            }
+        }
+
+        // Handle regular groups (non-org chart) - get all group members at once
+        $regular_groups = array_diff_key(array_flip($array_idst), $org_chart_cache['array_oc'], $org_chart_cache['array_ocd']);
+        if (!empty($regular_groups)) {
+            $regular_group_ids = array_keys($regular_groups);
+            $in_string = implode(',', array_map('intval', $regular_group_ids));
+
+            // Get all group members in single query instead of recursion
+            $query = 'WITH RECURSIVE group_descendants AS ('
+                . ' SELECT idst, idstMember FROM %adm_group_members'
+                . ' WHERE idst IN (' . $in_string . ')'
+                . ' AND idstMember IN (SELECT idst FROM %adm_group)'
+                . ' UNION ALL'
+                . ' SELECT gm.idst, gm.idstMember FROM %adm_group_members gm'
+                . ' INNER JOIN group_descendants gd ON gd.idstMember = gm.idst'
+                . ' WHERE gm.idstMember IN (SELECT idst FROM %adm_group)'
+                . ') SELECT DISTINCT idstMember FROM group_descendants';
+
+            // Fallback for databases that don't support CTEs like Mysql 5.7
+            $result = sql_query($query);
+            if (!$result) {
+                // Use iterative approach instead of recursion
+                $to_process = $regular_group_ids;
+                $processed = [];
+
+                while (!empty($to_process)) {
+                    $current_batch = array_splice($to_process, 0, 100);
+                    $batch_string = implode(',', array_map('intval', $current_batch));
+
+                    foreach ($current_batch as $group_id) {
+                        $res[$group_id] = $group_id;
+                        $processed[$group_id] = true;
+                    }
+
+                    $query = 'SELECT idstMember FROM %adm_group_members'
+                        . ' WHERE idst IN (' . $batch_string . ')'
+                        . ' AND idstMember IN (SELECT idst FROM %adm_group)';
+
+                    $result = sql_query($query);
+                    foreach ($result as $row) {
+                        if (!isset($res[(int)$row['idstMember']])) {
+                        };
+                        $res[(int)$row['idstMember']] = (int)$row['idstMember'];
+                        if (!isset($processed[(int)$row['idstMember']])) {
+                            $to_process[] = (int)$row['idstMember'];
+                        }
+                    }
+                }
+            } else {
+                foreach ($result as $row) {
+                    $res[(int)$row['idstMember']] = (int)$row['idstMember'];
                 }
             }
         }
@@ -2677,7 +2850,7 @@ class FormaACLManager
     /**
      * get all users of a group (search in subgroups).
      *
-     * @param int $idst idst of the group
+     * @param int|array $idst idst of the group
      * @param string $filter (Optional). Filter to applay.
      *
      * @return mixed array of users of the group or FALSE
@@ -2794,9 +2967,9 @@ class FormaACLManager
             . " WHERE idst = '" . $idst . "'";
         $rs = $this->_executeQuery($query);
         $arrGroups = [];
-        $i = 0;
-        while (list($idstMember) = sql_fetch_row($rs)) {
-            $arrGroups[] = (int)$idstMember;
+
+        foreach ($rs as $row) {
+            $arrGroups[] = $row['idstMember'];
         }
 
         return $arrGroups;
@@ -2818,8 +2991,8 @@ class FormaACLManager
         $rs = $this->_executeQuery($query);
         $res = [];
         $i = 0;
-        while (list($idstMember) = sql_fetch_row($rs)) {
-            $res[] = (int)$idstMember;
+        foreach ($rs as $row) {
+            $res[] = $row['idstMember'];
         }
 
         return $res;
@@ -2836,8 +3009,8 @@ class FormaACLManager
         $rs = $this->_executeQuery($query);
         $res = [];
         $i = 0;
-        while (list($idstMember) = sql_fetch_row($rs)) {
-            $res[] = (int)$idstMember;
+        foreach ($rs as $row) {
+            $res[] = $row['idstMember'];
         }
         $guser = $this->getGroupAllUser($res);
         $res = array_merge($res, $guser);
@@ -2968,15 +3141,15 @@ class FormaACLManager
         $inString = (implode(',', $arr_idst) == '' ? 'NULL' : implode(',', $arr_idst));
 
         $query = ' SELECT u.idst '
-            . ' FROM ' . $this->_getTableUser() . ' AS u'
+            . ' FROM core_user AS u'
             . ' WHERE u.idst IN ( ' . $inString . ' )';
         $rs = $this->_executeQuery($query);
         $arr_user = [];
         if (!$rs) {
             return $arr_user;
         }
-        while (list($idst) = sql_fetch_row($rs)) {
-            $arr_user[] = (int)$idst;
+        foreach ($rs as $row) {
+            $arr_user[] = $row['idst'];
         }
 
         return $arr_user;
@@ -3007,8 +3180,8 @@ class FormaACLManager
         if (!$rs) {
             return $arr_groups;
         }
-        while (list($idst) = sql_fetch_row($rs)) {
-            $arr_groups[] = (int)$idst;
+        foreach ($rs as $row) {
+            $arr_groups[] = $row['idst'];
         }
 
         return $arr_groups;
@@ -3073,8 +3246,9 @@ class FormaACLManager
         }
 
         $q = $this->_executeQuery($qtxt);
+        $res = [];
         if (($q) && (sql_num_rows($q) > 0)) {
-            while ($row = sql_fetch_assoc($q)) {
+            foreach ($q as $row) {
                 $roleid = $row['roleid'];
 
                 if ($path_end !== false) {
@@ -3084,7 +3258,7 @@ class FormaACLManager
                 }
 
                 $role_info = trim(substr($role_info, strlen($path_start)), '/');
-                if (strpos($role_info, '/') !== false) {
+                if (str_contains($role_info, '/')) {
                     $tmp_arr = explode('/', $role_info);
                     $role_info = $tmp_arr[0];
                     unset($tmp_arr);
@@ -3107,7 +3281,6 @@ class FormaACLManager
         $res[ACL_INFO_PASS] = 'pass';
         $res[ACL_INFO_EMAIL] = 'email';
         $res[ACL_INFO_AVATAR] = 'avatar';
-        $res[ACL_INFO_SIGNATURE] = 'signature';
         $res[ACL_INFO_VALID] = 'valid';
         $res[ACL_INFO_PWD_EXPIRE_AT] = 'pwd_expire_at';
         $res[ACL_INFO_REGISTER_DATE] = 'register_date';
@@ -3127,11 +3300,11 @@ class FormaACLManager
         $qtxt = $this->_getSearchUsersQuery($internal_fields, $extra_fields, $idst_filter, $ini, $vis_item);
         // echo $qtxt;
 
-        $q = $this->_executeQuery($qtxt);
+        $result = $this->_executeQuery($qtxt);
 
-        if (($q) && (sql_num_rows($q) > 0)) {
-            while ($row = sql_fetch_row($q)) {
-                $res[] = $row[ACL_INFO_IDST];
+        if ($result && is_iterable($result)) {
+            foreach ($result as $row) {
+                $res[] = $row['idst'];
             }
         }
 
@@ -3146,7 +3319,7 @@ class FormaACLManager
         $q = $this->_executeQuery($qtxt);
 
         if ($q) {
-            list($tot) = sql_fetch_row($q);
+            [$tot] = sql_fetch_row($q);
             $res = $tot;
         }
 
@@ -3257,7 +3430,7 @@ class FormaACLManager
         $temp = false;
 
         switch (gettype($paths)) {
-            case 'string' :
+            case 'string':
                 $temp = [$paths];
 
                 break;
@@ -3279,8 +3452,8 @@ class FormaACLManager
                 . " WHERE g.groupid IN ( '" . implode("','", $temp) . "' )";
 
             $res = $db->query($query);
-            while (list($idst) = $db->fetch_row($res)) {
-                $output[] = $idst;
+            foreach ($res as $row) {
+                $output[] = $row['idst'];
             }
         } else {
             $output = false;
@@ -3317,14 +3490,14 @@ class FormaACLManager
     {
         $pass = '';
         for ($a = 0; $a < 10; ++$a) {
-            $seed = mt_rand(0, 15);
+            $seed = random_int(0, 15);
 
             if ($seed > 10) {
-                $pass .= mt_rand(0, 9);
+                $pass .= random_int(0, 9);
             } elseif ($seed > 5) {
-                $pass .= chr(mt_rand(65, 90));
+                $pass .= chr(random_int(65, 90));
             } else {
-                $pass .= chr(mt_rand(97, 122));
+                $pass .= chr(random_int(97, 122));
             }
         }
 
@@ -3338,9 +3511,10 @@ class FormaACLManager
         return $this->_executeQuery($query);
     }
 
-    public function removeAdminFromCoreTree(int $idst) {
+    public function removeAdminFromCoreTree(int $idst)
+    {
 
-        return (bool) $this->_executeQuery('DELETE FROM %adm_admin_tree where idstAdmin = '.$idst);
+        return (bool)$this->_executeQuery('DELETE FROM %adm_admin_tree where idstAdmin = ' . $idst);
     }
 } //END ACLManagaer class
 
@@ -3356,7 +3530,7 @@ class PeopleDataRetriever extends DataRetriever
     public $field_filter = [];
     public $custom_join = [];
     public $custom_where = [];
-    public FormaACLManager $ACLManager;
+    public FormaACLManager $aclManager;
 
     public function __construct($dbconn = false, $prefix = false)
     {
@@ -3446,7 +3620,7 @@ class PeopleDataRetriever extends DataRetriever
 
     public function getRows($startRow = false, $numRows = false)
     {
-        $query = 'SELECT idst, userid, firstname, lastname, email, valid, signature FROM %adm_user ';
+        $query = 'SELECT idst, userid, firstname, lastname, email, valid  FROM %adm_user ';
         foreach ($this->custom_join as $add_join) {
             $query .= $add_join;
         }
@@ -3554,7 +3728,7 @@ class PeopleDataRetriever extends DataRetriever
         if ($rs === false) {
             return 0;
         }
-        list($count) = sql_fetch_row($rs);
+        [$count] = sql_fetch_row($rs);
 
         return $count;
     }
@@ -3655,7 +3829,7 @@ class GroupDataRetriever extends DataRetriever
         if ($rs === false) {
             return 0;
         }
-        list($count) = sql_fetch_row($rs);
+        [$count] = sql_fetch_row($rs);
 
         return $count;
     }
@@ -3686,11 +3860,8 @@ class GroupMembersDataRetriever extends DataRetriever
 {
     public $aclManager = null;
 
-    public $idstGroup;
-
-    public function __construct($idstGroup, $dbconn = false, $prefix = false)
+    public function __construct(public $idstGroup, $dbconn = false, $prefix = false)
     {
-        $this->idstGroup = $idstGroup;
         parent::__construct($dbconn, $prefix);
         $this->aclManager = new FormaACLManager($dbconn, $prefix);
     }
@@ -3742,12 +3913,8 @@ class GroupMembersDataRetriever extends DataRetriever
         if ($rs === false) {
             return 0;
         }
-        list($count) = sql_fetch_row($rs);
+        [$count] = sql_fetch_row($rs);
 
         return $count;
     }
-
-
-   
-
 }

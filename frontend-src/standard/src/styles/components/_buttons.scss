@@ -497,8 +497,14 @@ a.btn.btn-default {
   border-color: transparent !important;
   &:hover {
     color:  var(--color-action-button-text);
+    border: 1px solid transparent !important;
   }
   &:active {
     color:  var(--color-action-button-text);
   }
+}
+
+.dropdown.open .create-object-button {
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125) !important;
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125) !important;
 }

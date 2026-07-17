@@ -358,7 +358,7 @@ class OrgDirDb extends RepoDirDb implements Accessible
         $this->org_idUser = 0;
         $this->org_idAuthor = 0;
         $this->org_version = '';
-        $this->org_difficult = null;
+        $this->org_difficult = '';
         $this->org_description = '';
         $this->org_language = '';
         $this->org_resource = '';
@@ -1044,6 +1044,11 @@ class OrgDirDb extends RepoDirDb implements Accessible
             sql_query($query);
 
             foreach ($selection as $idst_element) {
+                // Skip inserting records with value=0 to prevent making LO inaccessible to all users
+                if ((int) $idst_element === 0) {
+                    continue;
+                }
+                
                 if (array_search($idst_element, $id_groups) !== false) {
                     $type = 'group';
                 } else {
@@ -1117,67 +1122,67 @@ class Org_TreeView extends RepoTreeView
 
     public function _getAddLabel()
     {
-        return $this->lang->def('_NEW_FOLDER');
+        return Lang::t('_NEW_FOLDER','treeview');
     }
 
     public function _getAddAlt()
     {
-        return $this->lang->def('_NEW_FOLDER');
+        return Lang::t('_NEW_FOLDER','treeview');
     }
 
     public function _getFolderNameLabel()
     {
-        return $this->lang->def('_NAME');
+        return Lang::t('_NAME','treeview');
     }
 
     public function _getCreateLabel()
     {
-        return $this->lang->def('_NEW_FOLDER');
+        return Lang::t('_NEW_FOLDER','treeview');
     }
 
     public function _getCreateAlt()
     {
-        return $this->lang->def('_NEW_FOLDER');
+        return Lang::t('_NEW_FOLDER','treeview');
     }
 
     public function _getOpUpTitle()
     {
-        return $this->lang->def('_MOVE_UP');
+        return Lang::t('_MOVE_UP','treeview');
     }
 
     public function _getOpDownTitle()
     {
-        return $this->lang->def('_MOVE_DOWN');
+        return Lang::t('_MOVE_DOWN','treeview');
     }
 
     public function _getOpPlayTitle()
     {
-        return $this->lang->def('_DETAILS');
+        return Lang::t('_DETAILS','treeview');
     }
 
     public function _getPropertiesTitle()
     {
-        return $this->lang->def('_PROPERTIES');
+        return Lang::t('_PROPERTIES','treeview');
     }
 
     public function _getCategorizeTitle()
     {
-        return $this->lang->def('_CATEGORIZE');
+        return Lang::t('_CATEGORIZE','treeview');
     }
 
     public function _getAccessTitle()
     {
-        return $this->lang->def('_ORG_ACCESS');
+        return Lang::t('_ORG_ACCESS','treeview');
     }
 
     public function _getOpLockedTitle()
     {
-        return $this->lang->def('_ORGLOCKEDTITLE');
+        return Lang::t('_ORGLOCKEDTITLE','treeview');
     }
 
     public function _getShowResultsTitle()
     {
-        return $this->lang->def('_SHOW_RESULTS');
+        return Lang::t('_SHOW_RESULTS','treeview');
     }
 
     public function _getPropertiesImg()
@@ -1736,7 +1741,7 @@ class Org_TreeView extends RepoTreeView
     public function getChildrensDataById($id)
     {
         $root_folder = $this->tdb->getFolderById($id);
-        $childrens = $this->tdb->getChildrensIdById($root_folder->id);
+        $childrens = isset($root_folder) ? $this->tdb->getChildrensIdById($root_folder->id) : [];
 
         return $this->getLoData($childrens);
     }
@@ -2001,7 +2006,7 @@ class Org_TreeView extends RepoTreeView
                 $node['childCount'] = (int) $this->countChildren($folder->id);
             }
 
-            $node['autoplay'] = (bool)getLOParam($folder->otherValues[ORGFIELDIDPARAM],'autoplay');
+            $node['autoplay'] = isset($folder->otherValues[ORGFIELDIDPARAM]) ? (bool)getLOParam($folder->otherValues[ORGFIELDIDPARAM],'autoplay') : false;
 
             $res[$idLo] = $node;
         }

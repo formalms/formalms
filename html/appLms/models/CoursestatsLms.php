@@ -122,10 +122,13 @@ class CoursestatsLms extends Model
                     }
                 }
             }
-
             $where = '';
             if (isset($pagination['search']) && $pagination['search'] != '') {
-                $where = " AND (u.userid LIKE '%" . $pagination['search'] . "%' OR u.firstname LIKE '%" . $pagination['search'] . "%' OR u.lastname LIKE '%" . $pagination['search'] . "%') ";
+                $where .= " AND (u.userid LIKE '%" . $pagination['search'] . "%' OR u.firstname LIKE '%" . $pagination['search'] . "%' OR u.lastname LIKE '%" . $pagination['search'] . "%') ";
+            }
+
+            if (isset($pagination['ctrl_user']) && $pagination['ctrl_user'] != '') {
+                $where .= ' AND cu.idUser IN (' . implode(',', $pagination['ctrl_user']). ')';
             }
         }
 
@@ -173,15 +176,19 @@ class CoursestatsLms extends Model
         $query = 'SELECT COUNT(*) '
             . ' FROM ' . $this->tables['courseuser'] . ' as cu '
             . ' JOIN ' . $this->tables['user'] . ' as u '
-            . ' ON (cu.idUser = u.idst AND cu.idCourse=' . (int)$id_course . ') ';
+            . ' ON (cu.idUser = u.idst AND cu.idCourse=' . (int)$id_course . ') WHERE 1=1 ';
 
         if ($filtered) {
-            $where = 'WHERE 1=1';
             if (isset($filter['search']) && $filter['search'] != '') {
                 $where = " AND (u.userid LIKE '%" . $filter['search'] . "%' OR u.firstname LIKE '%" . $filter['search'] . "%' OR u.lastname LIKE '%" . $filter['search'] . "%') ";
             }
             $query .= $where;
         }
+        //apply sub admin filters, if needed
+        if (isset($filter['ctrl_user']) && $filter['ctrl_user'] != '' ) {
+            $query .= ' AND cu.idUser IN (' . implode(',', $filter['ctrl_user']). ')';
+        }
+
 
         $res = $this->db->query($query);
         if ($res) {
@@ -282,6 +289,14 @@ class CoursestatsLms extends Model
 
             require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/track.object.php');
 
+            // Get array lo_types in DB (outside foreach to avoid overwriting $res and repeated queries)
+            $arr_lo_types = [];
+            $res_lo_types = sql_query('SELECT objectType, classNameTrack, fileNameTrack FROM %lms_lo_types');
+            while (list($objectType, $classNameTrack, $fileNameTrack) = sql_fetch_row($res_lo_types)) {
+                $arr_lo_types[$objectType]['classNameTrack'] = $classNameTrack;
+                $arr_lo_types[$objectType]['fileNameTrack'] = $fileNameTrack;
+            }
+
             foreach ($res as $obj) {
                 if (((bool)$obj['visible'] === false) && $export) {
                     //it's a hidden obj, skip it only for export data
@@ -317,7 +332,15 @@ class CoursestatsLms extends Model
                 $history_table_html .= '</table>';
                 $obj['score'] = $scores[$obj['idOrg']] ?? '';
                 $obj['history'] = !empty($history) ? $history_table_html : ''; // by marco array sessioni
-                $obj['totaltime'] = $this->getUserScormHistoryTrackTotaltime($id_user, $obj['idOrg']);
+
+                // Get total time for LO
+                $lo_type_info = $arr_lo_types[$obj['objectType']] ?? null;
+                if (!empty($lo_type_info['fileNameTrack']) && !empty($lo_type_info['classNameTrack'])) {
+                    require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/' . $lo_type_info['fileNameTrack']);
+                    $obj['totaltime'] = $lo_type_info['classNameTrack']::getTotalTime($obj['idResource'], $id_user);
+                } else {
+                    $obj['totaltime'] = null;
+                }
 
                 if (!empty($history)) {
                     $seconds_diff = strtotime('1970-01-01 ' . end($history)[3] . ' UTC');

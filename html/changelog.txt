@@ -2,89 +2,557 @@ FORMA LMS
 RELEASE CHANGELOG
 
 ---------------------------------------------------------------------------------------
-forma.lms 4.0.19
+forma.lms 4.1.43
+---------------------------------------------------------------------------------------
+Release date: 2026 April
+
+- #      - fix(migrations): safe SCORM path repair without DB/filesystem drift
+- #      - fix(migrations): Version20260319120000 now verifies filesystem before updating DB
+- #      - feat(migrations): Version20260416103000 repairs residual SCORM path drift (non-ASCII, spaces, dots) by scanning both DB and disk
+- #      - chore: bump version to 4.1.43
+
+---------------------------------------------------------------------------------------
+forma.lms 4.1.42
+---------------------------------------------------------------------------------------
+Release date: 2026 April
+
+- #      - fix field value error on profile save
+- #      - remove classroom edition
+- #      - feat(course): lock course type dropdown when enrolled users exist
+- #      - feat(course): pass has_enrolled_users to course mask view
+- #      - feat(course): block course type change in upCourse() when users are enrolled
+- #      - feat(course): add hasEnrolledUsers() method to CourseAlms model
+- #      - fix(lomanager): fix LO copy from organization to homerepo with SCORM DB-only copy
+- #      - fix: correct POST field types in user profile
+- #      - fix: change decimal separator from dot to comma
+- #      - fix: add rtrim in medium_time
+- #      - chore: bump version to 4.1.42
+
+---------------------------------------------------------------------------------------
+forma.lms 4.1.41
+---------------------------------------------------------------------------------------
+Release date: 2026 March
+
+
+- #      - fix: update point in test.php and set medium_time decimal in learning_course and learning_course_date
+- #      - fix: add missing lib.course.php include in CoursereportLmsController
+- #      - fix(report): handle unsaved report filters and ensure JSON migration consistency
+- #      - fix(report): fix export of unsaved report filters (nosave mode)
+- #      - chore: bump version to 4.1.41
+
+---------------------------------------------------------------------------------------
+forma.lms 4.1.40
+---------------------------------------------------------------------------------------
+Release date: 2026 March
+
+
+- #      - fix(migrations): resolve stale non-ASCII paths in SCORM package migration
+- #      - fix findEnrolledCourses in DashboardBlockAnnouncementsLms
+- #      - fix(metacertificate): fix date and download in MycertificateLms
+- #      - fix: move query outside foreach in coursestatsLms
+- #      - chore: bump version to 4.1.40
+
+---------------------------------------------------------------------------------------
+forma.lms 4.1.39
+---------------------------------------------------------------------------------------
+Release date: 2026 March
+
+
+- #      - fix(migrations): add safety checks for file rename and optimize ALTER TABLE
+- #      - fix(tracking/file upload): enhance validation and error handling for tracking/logs and sanitize file uploads
+- #      - fix render tab metacertificate
+- #      - fix(statUser): event handling
+- #      - chore: bump version to 4.1.39
+
+---------------------------------------------------------------------------------------
+forma.lms 4.1.38
+---------------------------------------------------------------------------------------
+Release date: 2026 February
+
+
+- #      - fix error in user_report
+- #      - chore: bump version to 4.1.38
+- #      - fix: auto-repair base group membership at login and fix certificate deletion permissions
+- #      - remove typo in lang
+- #      - fix: add fallback repair for corrupted serialized report filter data (UTF-8 byte count mismatch)
+- #      - fix(report): hide progress column when progress checkboxes are unchecked
+- #      - fix(report): remove incorrect 'h' suffix from estimated time in user report
+- #      - Implement getTotalTime() function for learning objects in plugin system
+- #      - fix custom field in case 'country' 
+- #      - fix dashboard course
+- #      - fix(api): allow addDay to find dates without days in validateIdDateExistsInCourseFromParams
+- #      - fix(certificate): handle missing certificate data for record downloads
+- #      - update(api-postman): add disabled fields for org chart and custom fields to Postman collection
+- #      - fix(api): improve response handling and streamline code
+- #      - fix(enrollrules): simplify course list retrieval and correct indentation
+- #      - fix(enrollrules): fix PHP fatal error and inactive rule being executed
+- #      - fix(orgchart): Fix custom field inheritance for descendant nodes
+- #      - fix(reports): resolve CSV export error and migrate filter_data to JSON
+- #      - Add script to fix orphan certificates in formalms
+- #      - Improve session handling in reports
+- #      - handle duplicate certificate assignments in `lib.certificate.php` by adding `ON DUPLICATE KEY UPDATE` to ensure updates on existing records instead of duplicates
+- #      - fix(subscriptions): filter expire date validity
+- #      - fix(coreRole): right variables for members group
+- #      - fix(stats): fix assigned users filter in statitem()
+- #      - Enhance report performance with preloaded data and caching
+- #      - Normalize UTF-8 strings in `DbHelper.php` to fix macOS NFD issues; remove redundant font substitution logic from `lib.pdf.php`.
+- #      - Fix strict comparison in `api.course.php` to handle `array_search` properly. 
+- #      - Enhance `processHtmlContent` in `lib.pdf.php` for better UTF-8 handling, font substitution, and image path processing.
+- #      - Refactor hostname handling in `SessionManager` to fix CLI exceptions and improve robustness
+- #      - chore(userSelector): add suspended flag
+- #      - Add "Show Suspended" checkbox and adjust spacing in multiuser selector view.
+- #      - Replace `list()` syntax with shorthand array destructuring for cleaner code. 
+- #      - Update `ReportService` to use the correct parameter name (`all_idst`) for consistency.
+- #      - Fix report cron mail delivery to multiple users
+- #      - fix(groups): remove admin preference filter with filter course selector
+- #      - fix(subscription): prevent reload on waiting users toggle
+- #      - fix date_begin_validity and date_expire_validity in SubscriptionAlmsController.php
+- #      - adjust user connector parameter for default values
+- #      - fix message in forum.php
+- #      - fix bug userselector in forum.php
+- #      - fix bug in lib.stats.php
+- #      - restored gradebook management module
+- #      - fix(user): edit username with space
+- #      - fix(certificates): add unique key for certificates
+- #      - fix(translations): test translations
+- #      - review subscription update function 
+- #      - fix wrong level in learning_courseuser
+- #      - fix(newsletter): avoid send newsletter course to all users of the platform
+- #      - fix course level session when we fix user course level
+- #      - Enforce consistent spacing and type casting across course and subscription libraries. 
+- #      - Add COURSE_LEVELS constant for better level validation and improve user level update logic in course subscriptions.
+- #      - Add in logIntoCourse level check
+- #      - update composer libreries
+- #      - Refactor certificate button rendering 
+- #      - Enforce type casting in subscription controller and align course level groups with user roles 
+- #      - Enhance checkbox value handling in dashboard settings.
+- #      - fix json_encode
+- #      - Improve session hostname fallback for CLI context and fix JSON encoding in course stats
+- #      - fix delete track
+- #      - complete json review
+- #      - improve json serializer
+- #      - Refactor certificate block rendering: optimize HTML structure, enhance conditional logic, and format JavaScript function for clarity.
+- #      - Enhance course report test handling: pass `idCourse` to `getAllLoAbsoluteIdWhereType` and improve test ID validation logic to prevent accidental deletions.
+- #      - review json serializer
+- #      - remove duplicate graphic in dashboard
+- #      - review report course
+- #      - remove org_chart_subdivision in report course
+- #      - Cast `used_space` to float in `getUsedSpace` method to ensure proper type consistency.
+- #      - fix ghost tests
+- #      - Refactor language queries to use universal SQL functions and improve data handling.
+- #      - fix query on hour end in CourseAlms 
+- #      - Fix query for delete languages
+- #      - Refactor test ID normalization and improve cleanup logic in CourseReportLms.
+- #      - fix course status in user report
+- #      - fix insert in addFolder
+- #      - fix upgrader html
+- #      - fix upgrader checked files
+- #      - fix file order in csv connector
+- #      - feat(events): add and remove and update several events to handle plugin effects
+- #      - fix exception during cleanupUserNotEnrolledInClassroomDates in upgrade
+- #      - Fix course report data.
+- #      - fix upgrader migration management 
+- #      - add migration to align public forum 
+- #      - update cleanupUsersNotEnrolledInClassroomDates -> Sync classroom course enrollments with their dates: remove users not enrolled in any date, enroll users in main course if enrolled in dates
+- #      - migration creation to replace public_forum with forum in the core_role table
+- #      - fix error in remove user query
+- #      - fix error in coursereport
+- #      - hide info mycertificate in view
+- #      - fix welcome widget
+- #      - fix access to learning object
+- #      - fix coursereport orphane learning objects 
+- #      - improve coursereport loading 
+- #      - replace a lot of while cycle instead foreach to improve cycle speed
+- #      - increase version
+- #      - review template layout controller and model
+- #      - fix user selector 
+- #      - improve performance about 5,6x in UsermanagementAdm.php
+- #      - fix course button in course.html.twig 
+- #      - fix unread communication in DashboardBlock
+- #      - Fix login_redirect
+- #      - fix delUser
+- #      - fix report
+- #      - fix parameter passed over delUser
+- #      - fix login input typo 
+- #      - fix certificate input typo
+- #      - fix classroom dates in database without days 
+- #      - fix orphan classroom users in learning_courseuser without record in learning_course_date_user 
+- #      - add migration to remove orphan classroom users in learning_courseuser 
+- #      - add sanitize filename for all download files
+- #      - fix order node by translations
+- #      - fix data in deleteMass
+- #      - fix classroom error
+- #      - fix(sso) 
+- #      - fix sso time check
+- #      - fix migration namespace
+- #      - fix argument in authentication
+- #      - add events for subscribe and certificates
+- #      - increase forma version.php
+- #      - fix(connector.formausers.php) : fix send email for existing users
+- #      - fix(reportCourses): right selection for users in org node
+- #      - fix delete mass certificate
+- #      - add _call magic method for controllers
+- #      - add course stats events
+- #      - fix user selector moving request from GET to POST to resolve "uri param to long" when uri params are a lot.
+- #      - update core_connection
+- #      - add git workflow rules
+- #      - add sources
+- #      - fix list certificate
+- #      - fix download cert in lib.certificate
+- #      - add events
+- #      - fix iotask
+- #      - Fix user creation language
+- #      - Fix default language
+- #      - Fix User Language
+
+---------------------------------------------------------------------------------------
+forma.lms 4.1.18
 ---------------------------------------------------------------------------------------
 Release date: 2025 July
 
-- #     - fix check if set HTTP_X_FORWARDED_FOR  before use
-- #     - add div and css class to course-box__title for course name into course box
-- #     - fix course block rendering  if "use_course_label" is on
-- #     - fix download if file not exists
-- #     - Upgrade legacy to version 3.3.26 + SQL_MODE from NO_AUTO_CREATE_USER to NO_ENGINE_SUBSTITUTION
-- #     - Fix Test with feedback: error 500
-- #     - Include column filters in search query during global search.
-- #     - Prevent column search event during global search.
-- #     - added search timeout and enabled search on submit button
-- #     - fix column in import subscription
-- #     - update german translate
-- #     - fix exception in HomepageAdmController.php 
-- #     - fix base url management in Get::site_url function 
-- #     - fix base url management in getCurrentDomain function
-- #     - fix catalogue subscription email
-- #     - fix and refactor course userCanUnsubscribe function 
-- #     - fix dashboard block calendar
-- #     - fix group query
-- #     - fix exception BaseCache::__wakeup()
-- #     - add lang cache to config
-- #     - fix lang translate month
-- #     - fix CourseLms
-- #     - implement API for multiple users
-- #     - improve course date begin and date end management
-- #     - fix date translate
-- #     - add clear lang cache
-- #     - fix lang load when new lang is installed
-- #     - Implement Abstract BaseCache to extends cache for generic use
-- #     - complete lang cache implementation
-- #     - wip implementation
-- #     - Fix dashboard exception
-- #     - add show_custom_fields to usersList API to return custom fields data in users list
-- #     - fix in API userDetails to show custom fields that user cannot view.
-- #     - add getCategories API
-- #     - Change SQL_MODE from NO_AUTO_CREATE_USER to NO_ENGINE_SUBSTITUTION for mysql 8.0 compatibility
-- #     - fix field_access_list in  lib.user_profile
-- #     - Add event "core.users.changestatus" in suspend/unsuspend user/users
-- #     - Fix myMetaCertificate function that does not return correct rows when i've two meta certificate that use the same idCertificate
-- #     - preg_match does not fall in catch branch in case of time format different from PT time; managed with if instruction.
-- #     - fix DbConn::getInstance to solve automatically the connection and not using external connection link
-- #     - Implement db factory interface 
-- #     - activate Plugin namespace
-- #     - fix coursereport
-- #     - replace old require with forma::include
-- #     - fix getDateSubscribed to get correct user for teacher
-- #     - fix(dateTimeLocal): empty values
-- #     - Fix actual space in CourseLmsController
-- #     - fix(bonusScore): put all statuses in scores query
-- #     - fix access to courses and lo objs
-- #     - fix data_end in courseAlms
-- #     - fix session save on org chart
-- #     - fix migration namespace
-- #     - fix api getAnswerQuest 
-- #     - fix gift import order
-- #     - fix create course date_begin, date_end to set NULL when parameters are blank
-- #     - fix create and update course hour_begin, hour_end when parameters are blank
-- #     - add Migration to update wrong hour_begin, hour_end setted to ':'
-- #     - replace migration to update single column
-- #     - fix classroom update on API
-- #     - fix accessSelection in UserselectorAdmController
-- #     - fix update classroom to manage textfield update
-- #     - fix location api
-- #     - fix dashboard block
-- #     - fix error in dashboard when permissions are not set.
-- #     - fix day custom field api
-- #     - fix duplicate answer in class choices
-- #     - fix api getAnswerTest to get one only couple idAnswer , idQuest
-- #     - fix(catalogue): complete access for superadmin in any condition
-- #     - chore(admins): delete from admin tree reference if admin changed level or is deleted
-- #     - fix send mail to moderators during import into course
-- #     - fix waiting approval entering courses
-- #     - fix can enter course in catalogue by date interval
+- #      - Fixed Avatar User
+- #      - fix getTreeCategoryAsArray and recipient in FormaMailer
+- #      - Add migration for replacing class in core_connector
+- #      - Fix include
+- #      - add unique key for setting: name and pack
+- #      - add event custom fields registration validation and registration opt__in
+- #      - add event showing customfield and refine migrations
+- #      - chore(homepage): add event for register ulrs
+- #      - Fix translations and profile
+- #      - add export-events-readme in makefile to generate events file. 
+- #      - Review readme file 
+- #      - add EVENTS.md to show all events
+- #      - fix for conditional certificates
+- #      - fix correct user lang translation adding fallback to default if user does not have one
+- #      - review and fix pdf generation
+- #      - fix duplicate course error when someone learning object give error during duplicate.
+- #      - updated css related to coursepath title
+- #      - fixed issue related to privacy policy + required user profile fields
+- #      - update composer libraries
+- #      - frontend build
+- #      - Plugin Manager refactor 
+- #      - Add clear lang cache in every function ...install, update and so forth
+- #      - remove Ldap translate
+- #      - chore(sso): separate values of config and maximum range for time
+- #      - fix installer block install on unsupported PHP version and update error message
+- #      - fix test randomization issue that gives exception
+- #      - fix(userManagemente): order by custom field
+- #      - add cookie config to template
+- #      - implement cookie samesite management in session manager
+- #      - fix certificate link title
+- #      - fix duplicated courses in course list
+- #      - fix download certificate
+- #      - fix redirect and implement trailing slash to rel_path function
+- #      - elearninglms find all performance improve
+- #      - Fix many call to server user search into Formatable:  * Search timeout  * Include column filters in search query during global search.  * Prevent column search event during global search.
+- #      - fix check if set HTTP_X_FORWARDED_FOR before use
+- #      - add div and css class to course-box__title for course name into course box
+- #      - fix download if file not exists
+- #      - Fix Test with feedback: error 500
+- #      - Upgrade legacy to version 3.3.26 + SQL_MODE from NO_AUTO_CREATE_USER to NO_ENGINE_SUBSTITUTION
+- #      - fix download certs
+- #      - certificate delete refactor
+- #      - fix(events): legacy and console handling
+- #      - fix title in advice
+- #      - chore(views): add content block to dashboard and cataog
+- #      - fix dashboard classroom course date
+- #      - WIP review for performance index
+- #      - fix(db): collation for stored procedures
+- #      - fix(elearning): dynamic height course box
+- #      - add render event
+- #      - fix api course report
+- #      - upgrade version
+- #      - implement getCourseReport API - implement addOrUpdateScoreToReport
+- #      - fix StoreDirect case '0'
+- #      - fix(cron): default lang cron report
+- #      - fix(report): lang construct
+- #      - migration to recover sso_token
+- #      - fix sso remove
+- #      - fix(orgChart): node exclusive user assign
+- #      - fix newpwd error
+- #      - fix api course detail
+- #      - fix api course detail
+- #      - add getCourse to course api
+- #      - fix catalogue subscription email
+- #      - fix column in import subscription
+- #      - update german translate
+- #      - fix exception in HomepageAdmController.php - fix base url management in Get::site_url function - fix base url management in getCurrentDomain function
+- #      - fix catalogue subscription email
+- #      - Remove space in front of "_ADDLINK"
+- #      - Fix PHP warnings
+- #      - Revert "Fix PHP warning"
+- #      - Fix PHP warning
+- #      - Vertical align icons and remove "_" on hover ending
+- #      - Fix translation of _NONE on Functional Roles
+- #      - Reset openedIds when switching Courses on LMS
+- #      - Fix selectedId when switching between courses
+- #      - Change loadbar style to replicate YUI2 DataTable loadbar
+- #      - Fix creation issue when changing course
+- #      - Add loading text on courselist
+- #      - Fix CSS style for moderated registration
+- #      - Disable break word on _GO_TO_HOME button after registration
+- #      - Validate empty fields on DB instead of pre-load values on UI
+- #      - Add "table_selection" class for select on bottom
+- #      - Add placeholder and fix padding on "Select:" on "Waiting users" page
+- #      - Translate YUI2 DataTable
+- #      - Add missing translations for DataTables
+- #      - Add placeholder on user subscription to course
+- #      - Centralize deleteTreeItem handling
+- #      - Improve FolderView operations
+- #      - Replace Yahoo modal (YUI2) by Bootstrap one
+- #      - Copy operation improvements on LO mgmt
+- #      - Revert "Fix Browser Console exception on loading LO folders"
+- #      - Fix Browser Console exception on loading LO folders
+- #      - Fix PHP warning when creating LO folder on course
+- #      - Fix PHP8 warning about explode / Remove Copy on folders on LO
+- #      - Add data-controller attr to LO container
+- #      - Disable ordering on first column and fix select all checkbox
+- #      - Fix translation of "Assign users" on groupmanagement.js
+- #      - Show underline only over text
+- #      - Revert "Replace img by sprite on subs_users column on Courses"
+- #      - Replace img by sprites
+- #      - Replace img by sprite on subs_users column on Courses
+- #      - Add placeholder for search field on Usermgmt dashpage
+- #      - Disable drag and drop on element while renaming
+- #      - Update ContextMenu.js
+- #      - Change cursor on drag-and-drop
+- #      - Replace deprecated keyCode
+- #      - Improve create folder on LMS area
+- #      - Improve rename parent detection
+- #      - Do not rename LO item if empty
+- #      - Fix context menu rename
+- #      - Remove default text
+- #      - Remove duplicate elements
+- #      - Fix delete/copy on right click on menu-actions
+- #      - Add loading effect while creating folder
+- #      - Fix "Create new" Folder align on LMS area
+- #      - Do not allow HTML chars on LMS classroom course events
+- #      - Forum fixes
+- #      - Remove << from _BACK at register/login page
+- #      - Revert BACK to UNDO in classroom-dates.html.twig
+- #      - Recompile template
+- #      - Add search placeholder for courses and cert mgmt
+- #      - @eduardomozart Normalize UTF-8 strings on certificates and Enable border on tables
+- #      - #20227;  corrected destination path;
+- #      - #20226: managed case array[0] = "";
+- #      - update certificate generation
+- #      - update composer packages
+- #      - #20225 Missing  curly bracket screws up the whole file
+- #      - Revert unecessary fixes
+- #      - Fix: forum.php tags add and delete thread message
+- #      - Fix SQL variable query on forum.php
+- #      - Fix SQL command alignment
+- #      - Revert title style
+- #      - Revert _UNDO to _BACK but remove << of it
+- #      - Fix empty title handling and forum notification sent
+- #      - Use padding instead of &nbsp on error messages
+- #      - Remove calendar edit button for users with no edit access
+- #      - Fix def_dialog load on LMS
+- #      - Align labels and avoid opening multiple modals on calendar events
+- #      - Centralize tab-menu on System Settings and course LMS
+- #      - Create "Click" button border effect when opening "Create new" menu on LMS
+- #      - Fix adjustment of user profile view
+- #      - Remove duplicate feedback container
+- #      - Fix create-object-menu distortion on LMS
+- #      - Make "Rename" button same width/height of other LMS buttons
+- #      - Add hover effect to "Create new" dropdown on LMS
+- #      - Fix "Copy element in" modal
+- #      - CSS fixes
+- #      - Translate hover actions on LMS of Teacher area
+- #      - Do not allow create empty Codes
+- #      - Improvements to code lib
+- #      - Bugfixes/Improvements on Communications modal/titles
+- #      - Replace generic string by specific translation string when adding a new meta-certificate
+- #      - Style select dropdown with Bootstrap
+- #      - Replace static string by translation
+- #      - fix and refactor course userCanUnsubscribe function 
+- #      - fix dashboard block calendar
+- #      - fix homepage SSO login
+- #      - fix(orgNode): import csv orgchart view for users with groups associated
+- #      - fix api userdetails
+- #      - fix query in getStatStatusCount
+- #      - fix api userdetails - fix catalogue subscription email
+- #      - Improving Accessibility: removed "ALT" attributes in function getInputTextField and getInputPassword. Refactored all calls to getInput...
+- #      - LMS user profile editing
+- #      - LMS user profile editing
+- #      - learning path fixes
+- #      - update version
+- #      - fix exception BaseCache::__wakeup()
+- #      - add lang cache to config
+- #      - fix date translate
+- #      - add clear lang cache
+- #      - fix lang load when new lang is installed
+- #      - Implement Abstract BaseCache to extends cache for generic use
+- #      - remove old FormaLanguage usage
+- #      - complete lang cache implementation
+- #      - wip implementation
+- #      - fix report test final vole
+- #      - Fix dashboard exception
+- #      - Change SQL_MODE from NO_AUTO_CREATE_USER to NO_ENGINE_SUBSTITUTION for mysql 8.0 compatibility
+- #      - improve course date begin and date end management
+- #      - Add event "core.users.changestatus" in suspend/unsuspend user/users
+- #      - Fix myMetaCertificate function that does not return correct rows when i've two meta certificate that use the same idCertificate
+- #      - Align entities to current database version and review - Add more indexes to improve page loading performance - increase core version
+- #      - switched get ajax call in post ajax call for heavy operations (the ones that can involve more than 256 char). Cleaned code
+- #      - fix DbConn::getInstance to solve automatically the connection and not using external connection link
+- #      - other fixes on list certificate
+- #      - add fixes for list certifcate
+- #      - fix redraw datatable certificate on events
+- #      - fix factory
+- #      - preg_match does not fall in catch branch in case of time format different from PT time; managed with if instruction.
+- #      - adding index on learning_trackingeneral
+- #      - fixed some issues related to instance formatabe used in certificate view
+- #      - Resolution of bug #20234 regarding the dynamic display of table rows
+- #      - fix(dateTimeLocal): empty values
+- #      - fix dynamic filter and visbility columns certificate
+- #      - fix certificates
+- #      - Fix actual space in CourseLmsController
+- #      - fixed regression
+- #      - fixed typo
+- #      - deleted fixed the parameter passed trough the call and deleted unuseful code.
+- #      - fix absolute path calculate
+- #      - fix(dropdwonComplex): bounds and events for dialogs
+- #      - fix(bonusScore): put all statuses in scores query
+- #      - fix access to courses and lo objs
+- #      - fix data_end in courseAlms
+- #      - fix session save on org chart
+- #      - Implement db factory interface 
+- #      - activate Plugin namespace
+- #      - fix migration namespace
+- #      - fix api getAnswerQuest 
+- #      - fix gift import order
+- #      - fix create course date_begin, date_end to set NULL when parameters are blank 
+- #      - fix create and update course hour_begin, hour_end when parameters are blank 
+- #      - add Migration to update wrong hour_begin, hour_end setted to ':'
+- #      - replace migration to update single column
+- #      - fix classroom update on API
+- #      - fix accessSelection in UserselectorAdmControlloer
+- #      - fix update classroom to manage textfield update
+- #      - fix location api
+- #      - fix dashboard block
+- #      - fix error in dashboard when permissions are not set.
+- #      - re-addedd translation
+- #      - report copy
+- #      - fix drodown complex views
+- #      - fix multi certificate delte mass
+- #      - fix js main
+- #      - add dropdwon complex and copy to core
+- #      - Updated the precompile view due to a display error
+- #      - fix day custom field api
+- #      - fixed report
+- #      - chire(userSelector): add custom fileds in fileds visibility
+- #      - Changes made for merge request
+- #      - fix duplicate answer in class choices
+- #      - Alignment fixes
+- #      - Add icon for SQL format on folderTree
+- #      - Unreadable hyperlink text on course box
+- #      - adjust formatable for flat selection and remove ol list certificate
+- #      - fix rendering list certificate
+- #      - Removed useful code parts for the operation of the presences assignment plugin from the controller.
+- #      - handling certificateadmcontroller
+- #      - Added XML file in the plugin
+- #      - refactor list_certificate
+- #      - fix(catalogue): complete access for superadmin in any condition
+- #      - add show_custom_fields to usersList API to return custom fields data in users list
+- #      - fix in API userDetails to show custom fields that user cannot view.
+- #      - chore(admins): delete from admin tree reference if admin changed level or is deleted
+- #      - fix send mail to moderators during import into course
+- #      - fix waiting approval entering courses
+- #      - fix can enter course in catalogue by date interval
+- #      - Replacement of keys in the language XML file
+- #      - Added keys in the language XML file
+- #      - changed the function to get the date days
+- #      - Conversion of the presences view to Twig
+- #      - Revert "Remove << from _BACK at register/login page"
+- #      - Remove << from _BACK at register/login page
+- #      - Revert "Bugfixes/Improvements compilation"
+- #      - Bugfixes/Improvements compilation
 
+---------------------------------------------------------------------------------------
+forma.lms 4.1.0
+---------------------------------------------------------------------------------------
+Release date: 2024 october
+
+- #     - The menu by which a org chart node is selected for importing user does not show nodes with level > 2
+- #     - Entering each Course Statistic as platform admin with assigned users I cannot see my users in case role > student
+- #     - fix registerUser function call.after signature remove
+- #     - resolve migration
+- #     - features: remove some modules
+- #     - Adding image to course path fixed
+- #     - Rename migration and rename procedure
+- #     - configuration setting to switch from scorm player standard (aka legacy) to new player (ng = next generation)
+- #     - Changes made for merge request  
+- #     - Sometime gets string, sometime gets array....
+- #     - Corrected destination path;
+- #     - Managed case array[0] = "";
+- #     - Missing  curly bracket screws up the whole file
+- #     - fix helper tool drop_field_if_exists error
+- #     - add getCategories API
+- #     - add idsts variable for multiple users in user/userdetails 
+- #     - add idsts variable for multiple users in user/mycourses
+- #     - implement API for multiple users
+- #     - Conversion to twig #1
+- #     - fixed bug data error in communication
+- #     - removed send cc (besides in the related javascript that sends the request is not managed)
+- #     - Fix bug percorsi formativi report
+- #     - Upgrade legacy compatibility PHP 8.1
+- #     - Fix for template version check.
+- #     - fix template loading flow and check compatibilty
+- #     - Aggiornamento processi iscrizione percorsi formativi con invio email di avviso
+- #     - Modifiche dimensione logo immagine
+- #     - Aggiunto livello nell'elenco degli iscritti al percorso formativo
+- #     - Logo Percorsi formativi
+- #     - Non mostrare il pulsante Espandi / Condensa
+- #     - Fix bug iscrizione a percorso formativo
+- #     - Aggiunta scelta livello utente nei percosi formativi
+- #     - review # fixing unsubscribe procedure for learning course path
+- #     - fixing some instructions that generates warning o notice in error_log
+- #     - fixed querys
+- #     - fixed course class call
+- #     - fixed search in coursepath
+- #     - Scorm player 
+- #     - fix bug parameters in question.js
+- #     - Fix initialize query in scorm player
+- #     - Fix bug con aggiunta di nuove implementazioni
+- #     - Fix error in multi-Sco Scorm
+- #     - update translations
+- #     - fixed translations
+- #     - Update scorm player to last version
+- #     - add dashboard permission
+- #     - remove undo button in add category
+- #     - Re-added dropping of signature field
+- #     - fix core settings reported in new tables
+- #     - Upgrade Legacy version formalms 3.3.22
+- #     - Fixed saving image on coursepath description
+- #     - added user profile pictures update/delete
+- #     - fix for online users
+- #     - remove amp; form Url string in locationcontroller
+- #     - minor fixed on communication dashboard widget, deleting unused code, fixed bugs on mail configuration related do SQL server 8.0
+- #     - Added password rule check on forget password feature on login page
+- #     - fix because of dropping of "signature" user field
+- #     - added function to enable access even in reject_date not present in core_privacypolicy_user table
+- #     - addedd management of privacy policy
+- #     - new user profile
+- #     - new front end user profile management
+- #     - new user profle management
+- #     - fix prerequistes in suspension LO with incomplete selfrequisite 
+- #     - fix migration privacy policy menu
+- #     - fix css
+- #     - frontend fix
+- #     - fix to course menu
+- #     - removing classes, libraries and tables of obsolete wiki, calendar, notepad and project modules
+- #     - migration creation to replace public_forum with forum in the core_role table
+- #     - management public_forum by forum
+- #     - remove ldap and news for dashboard block
+- #     - remove use label in all controllers and views
+- #     - remove functionality sms
+- #     - removed commented parts and variable names in camelCase
+- #     - remove label, news,competitions
 
 ---------------------------------------------------------------------------------------
 forma.lms 4.0.11
 ---------------------------------------------------------------------------------------
 Release date: 2024 October
-
 - #     - add translate and fix keys form cron.report
 - #     - fix absolute path calculate
 - #     - fix right join coursereports for not test items
@@ -106,7 +574,6 @@ Release date: 2024 October
 - #     - fix api authentication not neded for explicit route
 - #     - Fix autoplay object
 - #     - fix Man_course in certificate.php
-
 
 ---------------------------------------------------------------------------------------
 forma.lms 4.0.10
@@ -142,8 +609,6 @@ Release date: 2024 july
 - #      -fix coursereport
 - #      -fix lang and remove migration
 - #      -fix procedure
-- #      -fix migrations
-- #      -fix migrations
 - #      -fixing unsubscribe procedure for learning course path
 - #      -added helper function for checking field existence
 - #      -Fix select data order by translation
@@ -163,7 +628,6 @@ Release date: 2024 july
 - #      -fix migration for perms
 - #      -set mysql session variable group_concat_max_len  for big selection of users
 - #      -fix coursestats timeToSec function
-- #      -fix migrations
 - #      -increase bootstrap Boot::Init logic to load dynamically custom sequence from constants - Fix doctrine migration when doctrine has executed from command line
 - #      -fix from 3323
 - #      -update CoursereportManager
@@ -304,7 +768,6 @@ forma.lms 4.0.7
 - #      - # 20191: wrong method refereer
 - #      - # Added new SECURITY Tab; added strong password definition policies; changed password feedback dialog when user defines new password. Fixed some issue in password check;  password check procedure now in just one place. Deleted rubbish.
 - #      - fix scorm time parser
-- #      - update version
 - #      - fix scorm sessiontime count
 - #      - fix sql fetch row on result
 - #      - fix report excluding all idst selected
@@ -610,7 +1073,6 @@ Release date: 2023 july
 - #      - fix certificate list
 - #      - fix forum and warning in orglib
 - #      - fix learning object
-- #      - fix dashboard blocks
 - #      - fix installer and upgrader
 - #      - fixes buttons search
 - #      - put "register and "lost password links under "local" login part
@@ -800,7 +1262,6 @@ Release date: 2023 july
 - #      - fix PluginManagerAdm warnings
 - #      - remove unused functions
 - #      - fix create user
-- #      - frontend build
 - #      - finish userselector area lms
 - #      - add userselector to area lms menu
 - #      - fix grid object count
@@ -1168,7 +1629,6 @@ Release date: 2023 january
 - #      - fix course stats ajax url
 - #      - various fix on dashboard blocks
 - #      - fix language and attachment link report
-- #      - fix dashboard block calendar enabling actions
 - #      - fix order posflat on building multilevel object stats tree using dynamic id based on table
 - #      - fix warnings - fix function static
 - #      - fix messages

@@ -143,15 +143,25 @@ class HomepageAdm extends Model
             }
         }
 
+        // Ottieni la lingua dell'utente con controllo delle lingue abilitate
+        $id_user = $user_info[ACL_INFO_IDST];
+        $userLanguages = $acl_man->getSettingValueOfUsers('ui.language', [$id_user]);
+        $userLanguage = !empty($userLanguages) && in_array($id_user, $userLanguages) && $userLanguages[$id_user] ? $userLanguages[$id_user] : null;
+
+        $enabledLanguages = Lang::getEnabledLanguages();
+        if (!$userLanguage || !in_array($userLanguage, $enabledLanguages)) {
+            $userLanguage = Lang::getDefault();
+        }
+
         $sender = DomainHandler::getInstance()->getMailerField('sender_mail_system');
         $recipients = $user_info[ACL_INFO_EMAIL];
-        $subject = Lang::t('_LOST_USERID_TITLE', 'register', [], $acl_man->getSettingValueOfUsers('ui.language', [$user_info[ACL_INFO_IDST]])[$user_info[ACL_INFO_IDST]]);
+        $subject = Lang::t('_LOST_USERID_TITLE', 'register', [], $userLanguage);
         $body = Lang::t('_LOST_USERID_MAILTEXT', 'register', [
             '[date_request]' => date('d-m-Y'),
             '[url]' => FormaLms\lib\Get::site_url(),
             '[dynamic_link]' => getCurrentDomain($reg_code) ?: FormaLms\lib\Get::site_url(),
             '[userid]' => $acl_man->relativeId($user_info[ACL_INFO_USERID]),
-        ], $acl_man->getSettingValueOfUsers('ui.language', [$user_info[ACL_INFO_IDST]])[$user_info[ACL_INFO_IDST]]);
+        ], $userLanguage);
         $params = [MAIL_SENDER_ACLNAME => DomainHandler::getInstance()->getMailerField('sender_name_system')];
         $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
         if ($mailer->SendMail([$recipients], $subject, $body, $sender, [], $params)) {
@@ -198,15 +208,25 @@ class HomepageAdm extends Model
 
         $url = getCurrentDomain($reg_code) ?: FormaLms\lib\Get::site_url();
 
+        // Ottieni la lingua dell'utente con controllo delle lingue abilitate
+        $id_user = $user_info[ACL_INFO_IDST];
+        $userLanguages = $acl_man->getSettingValueOfUsers('ui.language', [$id_user]);
+        $userLanguage = !empty($userLanguages) && in_array($id_user, $userLanguages) && $userLanguages[$id_user] ? $userLanguages[$id_user] : null;
+
+        $enabledLanguages = Lang::getEnabledLanguages();
+        if (!$userLanguage || !in_array($userLanguage, $enabledLanguages)) {
+            $userLanguage = Lang::getDefault();
+        }
+
         $sender = DomainHandler::getInstance()->getMailerField('sender_mail_system');
         $sender_name = DomainHandler::getInstance()->getMailerField('sender_name_system');
         $recipients = $user_info[ACL_INFO_EMAIL];
-        $subject = Lang::t('_LOST_PWD_TITLE', 'register', [], $acl_man->getSettingValueOfUsers('ui.language', [$user_info[ACL_INFO_IDST]])[$user_info[ACL_INFO_IDST]]);
+        $subject = Lang::t('_LOST_PWD_TITLE', 'register', [], $userLanguage);
         $body = Lang::t('_LOST_PWD_MAILTEXT', 'register', [
             '[link]' => FormaLms\lib\Get::site_url() . 'index.php?r=' . _newpwd_ . '&code=' . $code,
             '[dynamic_link]' => $url . 'index.php?r=' . _newpwd_ . '&code=' . $code,
             '[userid]' => $acl_man->relativeId($user_info[ACL_INFO_USERID]),
-        ], $acl_man->getSettingValueOfUsers('ui.language', [$user_info[ACL_INFO_IDST]])[$user_info[ACL_INFO_IDST]]);
+        ], $userLanguage);
         $params = [MAIL_SENDER_ACLNAME => $sender_name];
 
         $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
@@ -232,24 +252,35 @@ class HomepageAdm extends Model
 
     public function getNewPwdOptions()
     {
-        return [
-            'pass_max_time_valid' => $this->options->getOption('pass_max_time_valid'),
-            'pass_min_char' => $this->options->getOption('pass_min_char'),
-            'pass_alfanumeric' => $this->options->getOption('pass_alfanumeric'),
-        ];
+        $options['pass_max_time_valid'] = $this->options->getOption('pass_max_time_valid');
+        $options['pass_min_char'] =  $this->options->getOption('pass_min_char');
+        $options['pass_alfanumeric'] = $this->options->getOption('pass_alfanumeric');
+        $options['user_pwd_history_length'] = $this->options->getOption('user_pwd_history_length');
+        $options['pass_min_uppercase'] = $this->options->getOption('pass_min_uppercase');
+        $options['pass_min_lowercase'] = $this->options->getOption('pass_min_lowercase');
+        $options['pass_min_digit'] = $this->options->getOption('pass_min_digit');
+        $options['pass_special_char'] = $this->options->getOption('pass_special_char');
+        return $options;
     }
 
     public function checkNewPwdValidity($pwd, $retype)
     {
         if ($pwd !== $retype) {
-            return PASSWORD_MISMATCHING;
-        }
-        if (strlen($pwd) < $this->options->getOption('pass_min_char')) {
-            return PASSWORD_TOO_SHORT;
-        }
-        if ($this->options->getOption('pass_alfanumeric') == 'on' &&
-                (!preg_match('/[a-z]/i', $pwd) || !preg_match('/[0-9]/', $pwd))) {
-            return PASSWORD_MUST_BE_ALPHA;
+            return [
+                'error' => true,
+                'msg' => [Lang::t('_ERR_PASSWORD_NO_MATCH','register')]
+            ];
+        } else {
+            require_once _lib_ .'/lib.password.php';
+            $chk_pswd = PasswordPolicies::check($pwd);
+            if (!$chk_pswd->valid()) {
+                return [
+                    'error' => true,
+                    'msg' => $chk_pswd->messages()
+                ];
+            } else {
+                return ['error' => false];
+            }
         }
     }
 

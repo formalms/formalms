@@ -139,7 +139,7 @@ function certificate()
         . '<div class="quick_search_form">
             <div>
                 <div class="simple_search_box">'
-        . Form::getInputTextfield('search_t', 'filter_text', 'filter_text', FormaLms\lib\Get::req('filter_text', DOTY_MIXED, ''), '', 255, '')
+        . Form::getInputTextfield('search_t', 'filter_text', 'filter_text', FormaLms\lib\Get::req('filter_text', DOTY_MIXED, ''),  255, 'placeholder="' . Lang::t('_SEARCH', 'standard') . '"')
         . Form::getButton('filter_set', 'filter_set', Lang::t('_SEARCH', 'standard'), 'search_b')
         . Form::getButton('filter_reset', 'filter_reset', Lang::t('_RESET', 'standard'), 'reset_b')
         . '</div>
@@ -184,9 +184,10 @@ function list_element_certificate()
         $lang->def('_STRUCTURE_CERTIFICATE'),
     ];
 
-    $out->add(getTitleArea($page_title, 'certificate')
-        . '<div class="std_block">'
-        . getBackUi('index.php?modname=certificate&amp;op=certificate', $lang->def('_BACK'))
+    $out->add(
+        getTitleArea($page_title, 'certificate')
+            . '<div class="std_block">'
+            . getBackUi('index.php?modname=certificate&amp;op=certificate', $lang->def('_BACK'))
     );
 
     if (isset($_GET['result'])) {
@@ -222,10 +223,12 @@ function list_element_certificate()
         . $form->getRadio($lang->def('_PORTRAIT'), 'portrait', 'orientation', 'P', ($orientation == 'P'))
         . $form->getRadio($lang->def('_LANDSCAPE'), 'landscape', 'orientation', 'L', ($orientation == 'L'))
 
-        . $form->getExtendedFilefield($lang->def('_BACK_IMAGE'),
+        . $form->getExtendedFilefield(
+            $lang->def('_BACK_IMAGE'),
             'bgimage',
             'bgimage',
-            $bgimage)
+            $bgimage
+        )
 
         . $form->closeElementSpace()
         . $form->openButtonSpace()
@@ -255,6 +258,12 @@ function list_element_certificate()
             } // end foreach
         } // end if
     }
+
+    $eventResults = Events::trigger('core.certificate.elements.list', ['table' => $tb]);
+
+    if ($eventResults && array_key_exists('table', $eventResults)) {
+        $tb = $eventResults['table'];
+    }
     $out->add($tb->getTable());
 
     $out->add('</div>');
@@ -264,15 +273,17 @@ function manageCertificateFile($new_file_id, $old_file, $path, $delete_old, $is_
 {
     require_once _base_ . '/lib/lib.upload.php';
     $arr_new_file = (isset($_FILES[$new_file_id]) && $_FILES[$new_file_id]['tmp_name'] != '' ? $_FILES[$new_file_id] : false);
-    $return = ['filename' => $old_file,
+    $return = [
+        'filename' => $old_file,
         'new_size' => 0,
         'old_size' => 0,
         'error' => false,
-        'quota_exceeded' => false, ];
+        'quota_exceeded' => false,
+    ];
     sl_open_fileoperations();
     if (($delete_old || $arr_new_file !== false) && $old_file != '') {
         sl_unlink($path . $old_file);
-    }// the flag for file delete is checked or a new file was uploaded ---------------------
+    } // the flag for file delete is checked or a new file was uploaded ---------------------
 
     if (!empty($arr_new_file)) {
         // if present load the new file --------------------------------------------------------
@@ -325,12 +336,13 @@ function editcertificate($load = false)
         'index.php?modname=certificate&amp;op=certificate' => $lang->def('_TITLE_CERTIFICATE'),
         ($load ? $lang->def('_MOD') : $lang->def('_NEW_CERTIFICATE')),
     ];
-    $out->add(getTitleArea($page_title, 'certificate')
-        . '<div class="std_block">'
-        . getBackUi('index.php?modname=certificate&amp;op=certificate', $lang->def('_BACK'))
+    $out->add(
+        getTitleArea($page_title, 'certificate')
+            . '<div class="std_block">'
+            . getBackUi('index.php?modname=certificate&amp;op=certificate', $lang->def('_BACK'))
 
-        . $form->openForm('adviceform', 'index.php?modname=certificate&amp;op=savecertificate')
-        . $form->getHidden('of_platform', 'of_platform', 'lms')
+            . $form->openForm('adviceform', 'index.php?modname=certificate&amp;op=savecertificate')
+            . $form->getHidden('of_platform', 'of_platform', 'lms')
     );
     if ($load) {
         $out->add($form->getHidden('id_certificate', 'id_certificate', $id_certificate)
@@ -338,25 +350,27 @@ function editcertificate($load = false)
     }
     $out->add(
         $form->openElementSpace()
-        . $form->getTextfield($lang->def('_CODE'), 'code', 'code', 255, $code)
-        . $form->getTextfield($lang->def('_NAME'), 'name', 'name', 255, $name)
+            . $form->getTextfield($lang->def('_CODE'), 'code', 'code', 255, $code)
+            . $form->getTextfield($lang->def('_NAME'), 'name', 'name', 255, $name)
 
-        . Form::getDropdown($lang->def('_BASE_LANGUAGE'),
-            'base_language',
-            'base_language',
-            $languages,
-            $base_language)
+            . Form::getDropdown(
+                $lang->def('_BASE_LANGUAGE'),
+                'base_language',
+                'base_language',
+                $languages,
+                $base_language
+            )
 
-        . $form->getCheckbox($lang->def('_USER_RELEASE'), 'user_release', 'user_release', '1', $user_release)
+            . $form->getCheckbox($lang->def('_USER_RELEASE'), 'user_release', 'user_release', '1', $user_release)
 
-        . $form->getTextarea($lang->def('_DESCRIPTION'), 'descr', 'descr', $descr)
-        . $form->closeElementSpace()
-        . $form->openButtonSpace()
-        . $form->getButton('certificate', 'certificate', ($load ? $lang->def('_SAVE') : $lang->def('_INSERT')))
-        . $form->getButton('undo', 'undo', $lang->def('_UNDO'))
-        . $form->closeButtonSpace()
-        . $form->closeForm()
-        . '</div>'
+            . $form->getTextarea($lang->def('_DESCRIPTION'), 'descr', 'descr', $descr)
+            . $form->closeElementSpace()
+            . $form->openButtonSpace()
+            . $form->getButton('certificate', 'certificate', ($load ? $lang->def('_SAVE') : $lang->def('_INSERT')))
+            . $form->getButton('undo', 'undo', $lang->def('_UNDO'))
+            . $form->closeButtonSpace()
+            . $form->closeForm()
+            . '</div>'
     );
 }
 
@@ -378,10 +392,12 @@ function savecertificate()
         $path = '/appLms/certificate/';
         $path = $path . (substr($path, -1) != '/' && substr($path, -1) != '\\' ? '/' : '');
 
-        $bgimage = manageCertificateFile('bgimage',
+        $bgimage = manageCertificateFile(
+            'bgimage',
             $_POST['old_bgimage'],
             $path,
-            isset($_POST['file_to_del']['bgimage']));
+            isset($_POST['file_to_del']['bgimage'])
+        );
         if (!$bgimage) {
             $bgimage = '';
         }
@@ -458,7 +474,7 @@ function delcertificate()
         if (!sql_query($query_certificate)) {
             Util::jump_to('index.php?modname=certificate&op=certificate&result=err_del');
         } else {
-            Events::trigger('lms.certificate.created', ['id_certificate' => $id_certificate, 'certificate_info' => $certificate_info]);
+            Events::trigger('lms.certificate.deleted', ['id_certificate' => $id_certificate, 'certificate_info' => $certificate_info]);
 
             Util::jump_to('index.php?modname=certificate&op=certificate&result=ok');
         }
@@ -475,18 +491,22 @@ function delcertificate()
         ];
         $GLOBALS['page']->add(
             getTitleArea($page_title, 'certificate')
-            . '<div class="std_block">'
-            . $form->openForm('del_certificate', 'index.php?modname=certificate&amp;op=delcertificate')
-            . $form->getHidden('of_platform', 'of_platform', 'lms')
-            . $form->getHidden('id_certificate', 'id_certificate', $id_certificate)
-            . getDeleteUi($lang->def('_AREYOUSURE'),
-                '<span>' . $lang->def('_NAME') . ' : </span>' . $name . '<br />'
-                . '<span>' . $lang->def('_DESCRIPTION') . ' : </span>' . $descr,
-                false,
-                'confirm',
-                'undo')
-            . $form->closeForm()
-            . '</div>', 'content');
+                . '<div class="std_block">'
+                . $form->openForm('del_certificate', 'index.php?modname=certificate&amp;op=delcertificate')
+                . $form->getHidden('of_platform', 'of_platform', 'lms')
+                . $form->getHidden('id_certificate', 'id_certificate', $id_certificate)
+                . getDeleteUi(
+                    $lang->def('_AREYOUSURE'),
+                    '<span>' . $lang->def('_NAME') . ' : </span>' . $name . '<br />'
+                        . '<span>' . $lang->def('_DESCRIPTION') . ' : </span>' . $descr,
+                    false,
+                    'confirm',
+                    'undo'
+                )
+                . $form->closeForm()
+                . '</div>',
+            'content'
+        );
     }
 }
 
@@ -521,8 +541,8 @@ function report_certificate()
                 'index.php?modname=certificate&amp;op=certificate' => $lang->def('_TITLE_CERTIFICATE'),
                 $lang->def('_COURSES'),
             ])
-            . '<div class="std_block">'
-            . getBackUi('index.php?modname=certificate&amp;op=certificate', $lang->def('_BACK'))
+                . '<div class="std_block">'
+                . getBackUi('index.php?modname=certificate&amp;op=certificate', $lang->def('_BACK'))
         );
 
         $tb = new Table(FormaLms\lib\Get::sett('visuItem'), $lang->def('_CHOOSE_COURSE'), $lang->def('_COURSE_LIST'));
@@ -541,7 +561,7 @@ function report_certificate()
             $cont = [
                 $course_info['code'],
                 '<a href="index.php?r=alms/course/list_certificate&amp;id_certificate=' . $id_certificate . '&amp;id_course=' . $course_id . '&amp;from=manage">'
-                . $course_info['name'] . '</a>',
+                    . $course_info['name'] . '</a>',
                 $certificate->getNumberOfCertificateForCourse($id_certificate, $course_info['idCourse']),
             ];
             $tb->addBody($cont);
@@ -554,7 +574,7 @@ function report_certificate()
     } else {
         $out->add(
             getTitleArea($lang->def('_CERTIFICATE_REPORT'), 'certificate')
-            . '<div class="std_block">'
+                . '<div class="std_block">'
         );
 
         if (isset($_POST['toggle_filter'])) {
@@ -564,16 +584,17 @@ function report_certificate()
 
         $out->add(
             $form->openForm('certificate_filter', 'index.php?modname=certificate&amp;op=report_certificate')
-            . $form->getHidden('of_platform', 'of_platform', 'lms')
-            . $form->openElementSpace()
-            . $form->getTextfield($lang->def('_NAME'), 'name_filter', 'name_filter', '255', (isset($_POST['name_filter']) && $_POST['name_filter'] !== '' ? $_POST['name_filter'] : ''))
-            . $form->getTextfield($lang->def('_CODE'), 'code_filter', 'code_filter', '255', (isset($_POST['code_filter']) && $_POST['code_filter'] !== '' ? $_POST['code_filter'] : ''))
-            . $form->closeElementSpace()
-            . $form->openButtonSpace()
-            . $form->getButton('filter', 'filter', $lang->def('_FILTER'))
-            . $form->getButton('toggle_filter', 'toggle_filter', $lang->def('_TOGGLE_FILTER'))
-            . $form->closeButtonSpace()
-            . $form->closeForm());
+                . $form->getHidden('of_platform', 'of_platform', 'lms')
+                . $form->openElementSpace()
+                . $form->getTextfield($lang->def('_NAME'), 'name_filter', 'name_filter', '255', (isset($_POST['name_filter']) && $_POST['name_filter'] !== '' ? $_POST['name_filter'] : ''))
+                . $form->getTextfield($lang->def('_CODE'), 'code_filter', 'code_filter', '255', (isset($_POST['code_filter']) && $_POST['code_filter'] !== '' ? $_POST['code_filter'] : ''))
+                . $form->closeElementSpace()
+                . $form->openButtonSpace()
+                . $form->getButton('filter', 'filter', $lang->def('_FILTER'))
+                . $form->getButton('toggle_filter', 'toggle_filter', $lang->def('_TOGGLE_FILTER'))
+                . $form->closeButtonSpace()
+                . $form->closeForm()
+        );
 
         if (isset($_POST['filter'])) {
             if ($_POST['name_filter'] !== '' && $_POST['code_filter'] !== '') {
@@ -603,7 +624,7 @@ function report_certificate()
             $cont = [
                 $info_certificate[CERT_CODE],
                 '<a href="index.php?modname=certificate&amp;op=report_certificate&amp;id_certificate=' . $info_certificate[CERT_ID] . '">'
-                . $info_certificate[CERT_NAME] . '</a>',
+                    . $info_certificate[CERT_NAME] . '</a>',
                 $info_certificate[CERT_DESCR],
             ];
             $tb->addBody($cont);
@@ -612,6 +633,8 @@ function report_certificate()
     }
 }
 
+
+//DEPRECATED moved to certificateAdmController delete
 function del_report_certificate()
 {
     checkPerm('view');
@@ -632,6 +655,7 @@ function del_report_certificate()
     $certificate_info = [];
     $certificate_info = $certificate->getCertificateInfo($id_certificate);
 
+ 
     $c_infos = $certificate->getInfoForCourseCertificate($id_course, $id_certificate, $id_user);
     $certificate_info = current($c_infos);
 
@@ -650,11 +674,11 @@ function del_report_certificate()
                 $id_certificate = 0;
             }
             if ($deletion_result) {
-                
+
                 Events::trigger('lms.certificate_user.deleted', [
-                    'id_certificate' => $certificate_info[CERT_ID], 
-                    'certificate_info' => $certificate_info, 
-                    'id_user' => $id_user, 
+                    'id_certificate' => $certificate_info[CERT_ID],
+                    'certificate_info' => $certificate_info,
+                    'id_user' => $id_user,
                     'id_course' => $id_course
                 ]);
 
@@ -695,6 +719,7 @@ function send_zip_certificates()
         }
 
         $sendname = $info_report[ASSIGN_CERT_SENDNAME];
+        $sendname = Certificate::sanitizeFilename($sendname);
         copy(_files_ . '/appLms/certificate/' . $file, _files_ . '/tmp/' . $sendname);
         $files[] = '/tmp/' . $sendname;
     }
@@ -717,6 +742,18 @@ function send_certificate()
     $id_course = importVar('course_id', true, 0);
     $id_user = importVar('user_id', true, 0);
 
+    $idRecord = importVar('id', true, 0);
+    if ($idRecord) {
+        $certificate = new Certificate();
+        $records = $certificate->fetchAssignedCertificates([$idRecord]);
+        if (!empty($records[$idRecord])) {
+            $record = $records[$idRecord];
+            $id_certificate = $record['id_certificate'];
+            $id_course = $record['id_course'];
+            $id_user = $record['id_user'];
+        }
+    }
+
     $certificate = new Certificate();
 
     $report_info = [];
@@ -725,6 +762,7 @@ function send_certificate()
 
     $file = $info_report[ASSIGN_CERT_FILE];
     $sendname = $info_report[ASSIGN_CERT_SENDNAME];
+    $sendname = Certificate::sanitizeFilename($sendname);
 
     //recognize mime type
     $expFileName = explode('.', $file);
@@ -736,17 +774,21 @@ function send_certificate()
 
 function print_certificate()
 {
+    $params = [];
     require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.certificate.php');
     require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.download.php');
 
     $id_certificate = importVar('certificate_id', true, 0);
     $id_course = importVar('course_id', true, 0);
     $id_user = importVar('user_id', true, 0);
+    $idAssociation = importVar('idAssociation', true, 0);
 
     $cert = new Certificate();
 
     $subs = $cert->getSubstitutionArray($id_user, $id_course);
-    $cert->send_certificate($id_certificate, $id_user, $id_course, $subs, false, true);
+
+
+    $cert->send_certificate($id_certificate, $id_user, $id_course, $subs, false, true, $idAssociation);
 }
 
 function preview()
@@ -761,6 +803,9 @@ function preview()
     $cert->send_preview_certificate($id_certificate, []);
 }
 
+/**
+ * @TODO refactor using new autoincrement id
+ */
 function gen_zip_cert()
 {
     require_once _base_ . '/' . _folder_lms_ . '/lib/lib.certificate.php';
@@ -792,6 +837,7 @@ function gen_zip_cert()
         }
 
         $sendname = $info_report[ASSIGN_CERT_SENDNAME];
+        $sendname = Certificate::sanitizeFilename($sendname);
         $copyResult = copy(_files_ . '/appLms/certificate/' . $file, _files_ . '/tmp/' . $sendname);
         if ($copyResult) {
             $files[] = _files_ . '/tmp/' . $sendname;
@@ -861,5 +907,7 @@ function certificateDispatch($op)
             preview();
             break;
         default:
+            Events::trigger('lms.certificate.dispatch',['op' => $op]);
+        break;
     }
 }

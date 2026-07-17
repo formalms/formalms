@@ -826,7 +826,7 @@ class FormaImport
                 // any element array is
                 // array( dst_colnameX => pk1, dst_colnameY => pk2 )
 
-                for ($index = 0; $index < count($this->import_map); ++$index) {
+                for ($index = 0; $index < count($this->import_map ?? []); ++$index) {
                     if ($this->import_map[$index]['map'] != FORMAIMPORT_IGNORE) {
                         $insrow[$this->import_map[$index]['map']] = $row[$index];
                         if (isset($this->import_map[$index]['pk'])) {

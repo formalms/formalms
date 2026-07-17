@@ -493,11 +493,6 @@
         <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[Visa, i resultatsdelen av innehållssökningen, också objekt som inte är full kategoriserade]]></key>
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[Aktivera språkeditering editing (använd för debugging)]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[Förnamn och Efternamn krävs för registrering]]></key>
-        <key id="configuration&amp;_LDAP" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[LDAP]]></key>
-        <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[LDAP port (vanligen 389)]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[LDAP server address]]></key>
-        <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[Aktivera LDAP autentisering]]></key>
-        <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[Användarnamn för LDAP användare, använd $user för användarnamnet.<br />Ex. $user@domain2.domain1 (for: W2k3)]]></key>
         <key id="configuration&amp;_LIST_DB_UPGRADES" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[DB SQL scripts log]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[Konfigurera "magic_quotes_gpc"]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[Registreringar och förlorade lösenords e-postsändare]]></key>
@@ -649,7 +644,6 @@
         <key id="configuration&amp;_URL" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[Webbplats URL inklusive sista /]]></key>
         <key id="configuration&amp;_URL_CHECKIN_TELESKILL" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[URL för check-in]]></key>
         <key id="configuration&amp;_URL_VIDEOCONFERENCE_TELESKILL" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[URL för videokonferens]]></key>
-        <key id="configuration&amp;_USEFULL_ONLY_IF" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[Beakta danna parameter endast om du måste autentisera via LDAP]]></key>
         <key id="configuration&amp;_USERS_ALREADY_ASSIGNED" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[redan tilldelade användare]]></key>
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[Be användaren välja ett lösenord som skiljer sig från de förra X lösenorden]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[Diskkvota (i MB) för varje användares Mina Filer område]]></key>
@@ -1405,7 +1399,6 @@ Lösenord: [password]]]></key>
 För att ändra på dessa ord var vänlig och gå till Admin/språkhantering, sök efter  <b>login</b> och editera nycklarna <b>_INTRO_STD_TEXT_TITLE</b> och <b>_INTRO_STD_TEXT</b>]]></key>
         <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[forma.lms är en öppen källkods e-lärnings platform (LMS och LCMS) som används i företags och högre utbildningsmarknaden.]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[Hoppa till inloggningsblanketten]]></key>
-        <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[LDAP autentisering är aktiv, funktionalitet otillgänglig var vänlig och kontakta din administrator]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[Login]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[Tillgänglig Login]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2020-09-15 14:47:23"><![CDATA[Login]]></key>

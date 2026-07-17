@@ -15,6 +15,25 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class CoreMenu
 {
+    // Constants for addMenu $menu array keys
+    const MENU_NAME = 'name';
+    const MENU_IMAGE = 'image';
+    const MENU_IS_ACTIVE = 'isActive';
+    const MENU_COLLAPSE = 'collapse';
+    const MENU_ID_PARENT = 'idParent';
+    const MENU_OF_PLATFORM = 'ofPlatform';
+    const MENU_SEQUENCE = 'sequence';
+    
+    // Constants for addMenu $menuUnder array keys
+    const MENU_UNDER_DEFAULT_NAME = 'defaultName';
+    const MENU_UNDER_MODULE_NAME = 'moduleName';
+    const MENU_UNDER_ASSOCIATED_TOKEN = 'associatedToken';
+    const MENU_UNDER_OF_PLATFORM = 'ofPlatform';
+    const MENU_UNDER_SEQUENCE = 'sequence';
+    const MENU_UNDER_CLASS_FILE = 'classFile';
+    const MENU_UNDER_CLASS_NAME = 'className';
+    const MENU_UNDER_MVC_PATH = 'mvcPath';
+
     public static function getList($platform, $only_active = true)
     {
         if (!is_array($platform)) {
@@ -209,53 +228,54 @@ SQL;
     }
 
     /**
-     * Add new menu item and create the required role.
+     * Add new menu item and create the required role using the plug-in ID reference.
      *
-     * @param array $menu
-     *                                string $name
-     *                                string|null $image
-     *                                int|null $sequence
-     *                                bool|null $isActive
-     *                                bool|null $collapse
-     *                                int|null $idParent
-     *                                string|null $ofPlatform
-     * @param array|null $menuUnder
-     *                                string $defaultName
-     *                                string $moduleName
-     *                                string $associatedToken
-     *                                string|null $defaultOp
-     *                                string|null $ofPlatform
-     *                                int|null $sequence
-     *                                string|null $classFile
-     *                                string|null $className
-     *                                string|null $mvcPath
-     * @param array $roleMembers
-     * @param int|null $idPlugin
+     * @param array $menu Associative array with the following keys:
+     *                    - 'name' (string): Menu name
+     *                    - 'image' (string|null): Image path (optional)
+     *                    - 'sequence' (int|null): Display order (optional)
+     *                    - 'isActive' (bool|null): Active/inactive state (optional)
+     *                    - 'collapse' (bool|null): Whether the menu is collapsible (optional)
+     *                    - 'idParent' (int|null): Parent menu ID (optional)
+     *                    - 'ofPlatform' (string|null): Platform reference (optional)
      *
-     * @return int|false
+     * @param array|null $menuUnder Associative array with the following keys (optional):
+     *                              - 'defaultName' (string): Default name
+     *                              - 'moduleName' (string): Module name
+     *                              - 'associatedToken' (string): Associated token
+     *                              - 'defaultOp' (string|null): Default operation (optional)
+     *                              - 'ofPlatform' (string|null): Platform reference (optional)
+     *                              - 'sequence' (int|null): Display order (optional)
+     *                              - 'classFile' (string|null): Class file path (optional)
+     *                              - 'className' (string|null): Class name (optional)
+     *                              - 'mvcPath' (string|null): MVC path (optional)
+     *
+     * @param array $roleMembers Array of role members
+     *
+     * @return int|false The created menu ID or false on failure
      */
     public static function addMenu($menu, $menuUnder = null, $roleMembers = [], $idPlugin = null)
     {
         $values = [];
-        $values['name'] = "'{$menu['name']}'";
-        $values['image'] = isset($menu['image']) ? "'{$menu['image']}'" : "''";
-        if (isset($menu['isActive'])) {
-            $values['is_active'] = $menu['isActive'] ? "'true'" : "'false'";
+        $values['name'] = "'{$menu[self::MENU_NAME]}'";
+        $values['image'] = isset($menu[self::MENU_IMAGE]) ? "'{$menu[self::MENU_IMAGE]}'" : "''";
+        if (isset($menu[self::MENU_IS_ACTIVE])) {
+            $values['is_active'] = $menu[self::MENU_IS_ACTIVE] ? "'true'" : "'false'";
         }
-        if (isset($menu['collapse'])) {
-            $values['collapse'] = $menu['collapse'] ? "'true'" : "'false'";
+        if (isset($menu[self::MENU_COLLAPSE])) {
+            $values['collapse'] = $menu[self::MENU_COLLAPSE] ? "'true'" : "'false'";
         }
-        if (isset($menu['idParent'])) {
-            $values['idParent'] = $menu['idParent'];
+        if (isset($menu[self::MENU_ID_PARENT])) {
+            $values['idParent'] = $menu[self::MENU_ID_PARENT];
         }
-        if (isset($menu['ofPlatform'])) {
-            $values['of_platform'] = "'{$menu['ofPlatform']}'";
+        if (isset($menu[self::MENU_OF_PLATFORM])) {
+            $values['of_platform'] = "'{$menu[self::MENU_OF_PLATFORM]}'";
         }
         if (!is_null($idPlugin)) {
             $values['idPlugin'] = $idPlugin;
         }
-        if (isset($menu['sequence'])) {
-            $values['sequence'] = $menu['sequence'];
+        if (isset($menu[self::MENU_SEQUENCE])) {
+            $values['sequence'] = $menu[self::MENU_SEQUENCE];
         } else {
             $of_platform = $values['of_platform'];
             $querySequence = "SELECT  max(sequence) max_sequence, of_platform FROM %adm_menu WHERE  of_platform = $of_platform GROUP BY of_platform";
@@ -282,23 +302,23 @@ SQL;
         if ($menuUnder) {
             $values = [];
             $values['idMenu'] = $id;
-            $values['default_name'] = "'{$menuUnder['defaultName']}'";
-            $values['module_name'] = "'{$menuUnder['moduleName']}'";
-            $values['associated_token'] = "'{$menuUnder['associatedToken']}'";
-            if (isset($menuUnder['ofPlatform'])) {
-                $values['of_platform'] = "'{$menuUnder['ofPlatform']}'";
+            $values['default_name'] = "'{$menuUnder[self::MENU_UNDER_DEFAULT_NAME]}'";
+            $values['module_name'] = "'{$menuUnder[self::MENU_UNDER_MODULE_NAME]}'";
+            $values['associated_token'] = "'{$menuUnder[self::MENU_UNDER_ASSOCIATED_TOKEN]}'";
+            if (isset($menuUnder[self::MENU_UNDER_OF_PLATFORM])) {
+                $values['of_platform'] = "'{$menuUnder[self::MENU_UNDER_OF_PLATFORM]}'";
             }
-            if (isset($menuUnder['sequence'])) {
-                $values['sequence'] = $menuUnder['sequence'];
+            if (isset($menuUnder[self::MENU_UNDER_SEQUENCE])) {
+                $values['sequence'] = $menuUnder[self::MENU_UNDER_SEQUENCE];
             }
-            if (isset($menuUnder['classFile'])) {
-                $values['class_file'] = "'{$menuUnder['classFile']}'";
+            if (isset($menuUnder[self::MENU_UNDER_CLASS_FILE])) {
+                $values['class_file'] = "'{$menuUnder[self::MENU_UNDER_CLASS_FILE]}'";
             }
-            if (isset($menuUnder['className'])) {
-                $values['class_name'] = "'{$menuUnder['className']}'";
+            if (isset($menuUnder[self::MENU_UNDER_CLASS_NAME])) {
+                $values['class_name'] = "'{$menuUnder[self::MENU_UNDER_CLASS_NAME]}'";
             }
-            if (isset($menuUnder['mvcPath'])) {
-                $values['mvc_path'] = "'{$menuUnder['mvcPath']}'";
+            if (isset($menuUnder[self::MENU_UNDER_MVC_PATH])) {
+                $values['mvc_path'] = "'{$menuUnder[self::MENU_UNDER_MVC_PATH]}'";
             }
 
             $query = 'INSERT INTO %adm_menu_under (' . implode(', ', array_keys($values)) . ') VALUE (' . implode(', ', array_values($values)) . ')';
@@ -309,7 +329,7 @@ SQL;
                 return false;
             }
 
-            $role = self::role($menuUnder['ofPlatform'], $menuUnder['moduleName'], $menuUnder['associatedToken']);
+            $role = self::role($menuUnder[self::MENU_UNDER_OF_PLATFORM], $menuUnder[self::MENU_UNDER_MODULE_NAME], $menuUnder[self::MENU_UNDER_ASSOCIATED_TOKEN]);
             $am = \FormaLms\lib\Forma::getAclManager();;
             $role_info = $am->getRole(false, $role);
             if (empty($role_info)) {
@@ -345,7 +365,7 @@ SQL;
      * @param int $idPlugin
      *
      * @return void
-     * @deprecated
+     * @deprecated will be removed in future 4.2.x
      *
      */
     public static function addMenuChild($name, $mvcPath, $of_platform, $under_of_platform, $parent = false, $icon = '', $is_active = true, $idPlugin = null)

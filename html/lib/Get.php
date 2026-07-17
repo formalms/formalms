@@ -119,10 +119,10 @@ class Get
                 break;
 
             case DOTY_JSONDECODE:
-                $value = FormaSerializer::getInstance()->decode($value, 'json');
+                $value = FormaSerializer::getInstance()->decode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
                 break;
             case DOTY_JSONENCODE:
-                $value = FormaSerializer::getInstance()->encode($value, 'json');
+                $value = FormaSerializer::getInstance()->encode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                 break;
             case DOTY_BOOL:
@@ -368,9 +368,8 @@ class Get
      *
      * @return string the relative path
      */
-    public static function rel_path($to = false)
+    public static function rel_path($to = false, $trailingSlash = false)
     {
-        // where are we ?
         if ($to === false) {
             if (defined('CORE')) {
                 $to = 'adm';
@@ -384,8 +383,17 @@ class Get
         $path = _deeppath_
             . str_replace(_base_, '.', constant('_' . $to . '_'));
 
-        return str_replace(['//', '\\/', '/./'], '/', $path);
+        $path = str_replace(['//', '\\/', '/./'], '/', $path);
+
+        if ($trailingSlash) {
+            $path = rtrim($path, '/') . '/';
+        } else {
+            $path = rtrim($path, '/');
+        }
+
+        return $path;
     }
+
 
     /**
      * Return the absolute path of the platform.
@@ -755,7 +763,12 @@ class Get
      */
     public static function user_agent()
     {
-        $agent = strtolower($_SERVER['HTTP_USER_AGENT']);
+        if (array_key_exists('HTTP_USER_AGENT', $_SERVER)) {
+            $agent = $_SERVER['HTTP_USER_AGENT'];
+        } else {
+            return 'unknown';
+        }
+
         $known_browser_arr = explode(' ', 'firefox netscape konqueror epiphany mozilla safari opera mosaic lynx amaya omniweb msie chrome iphone');
         $required = [
             'firefox' => ['gecko', 'mozilla', 'firefox'],

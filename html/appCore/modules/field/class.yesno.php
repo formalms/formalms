@@ -573,7 +573,7 @@ class Field_YesNo extends Field
              break;
 
             case '':
-            case '0':
+            case '2':
             case 'no':
             case 'null':
             case 'false':
@@ -640,7 +640,7 @@ class Field_YesNo extends Field
              break;
 
             case '':
-            case '0':
+            case '2':
             case 'no':
             case 'null':
             case 'false':

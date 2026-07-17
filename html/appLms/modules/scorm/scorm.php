@@ -90,7 +90,7 @@ function insitem()
         Util::jump_to('' . $back_url . '&create_result=0');
     }
     $path = str_replace('\\', '/', '/' . _folder_lms_ . '/' . FormaLms\lib\Get::sett('pathscorm'));
-    $savefile = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . '_' . rand(0, 100) . '_' . time() . '_' . $_FILES['attach']['name'];
+    $savefile = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . '_' . rand(0, 100) . '_' . time() . '_' . Util::sanitizeFilename($_FILES['attach']['name']);
     if (!file_exists(_files_ . $path . $savefile)) {
         sl_open_fileoperations();
         if (!sl_upload($_FILES['attach']['tmp_name'], $path . $savefile)) {
@@ -256,7 +256,7 @@ function moditem($object_item)
     $query = 'SELECT idOrg ' .
         ' FROM %lms_organization ' .
         ' WHERE idResource = ' . (int) $object_item->id . " AND objectType = 'scormorg' ";
-    list($id_reference) = sql_fetch_row(sql_query($query));
+    [$id_reference] = sql_fetch_row(sql_query($query));
 
     require_once \FormaLms\lib\Forma::inc(_lib_ . '/lib.table.php');
     $tb = new Table();
@@ -330,7 +330,7 @@ function _scorm_deleteitem($idscorm_package, $idscorm_organization, $erasetrackc
         $rs = sql_query('SELECT path FROM ' . $GLOBALS['prefix_lms'] . "_scorm_package WHERE idscorm_package='" . (int) $idscorm_package . "'")
         or exit(sql_error());
 
-        list($path) = sql_fetch_row($rs);
+        [$path] = sql_fetch_row($rs);
         $scopath = str_replace('\\', '/', _files_ . '/appLms/' . FormaLms\lib\Get::sett('pathscorm'));
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $idCourse = $session->get('idCourse');
@@ -373,7 +373,7 @@ function _scorm_copyitem($idscorm_package, $idscorm_organization)
         return false;
     }
 
-    list($path) = sql_fetch_row($rs);
+    [$path] = sql_fetch_row($rs);
     $scopath = str_replace('\\', '/', _files_ . '/appLms/' . FormaLms\lib\Get::sett('pathscorm'));
 
     /* copy package record */
@@ -416,15 +416,20 @@ function _scorm_copyitem($idscorm_package, $idscorm_organization)
                 ."   FROM ".$GLOBALS['prefix_lms']."_scorm_resources "
                 ."  WHERE idscorm_package='".(int)$idscorm_package."'");*/
 
+    /* Try DB-only copy of organizations and items (no filesystem dependency) */
+    $db_copy_result = _scorm_copyitem_from_db($idscorm_organization, $new_idscorm_package, $idscorm_package);
+    if ($db_copy_result !== false) {
+        return $db_copy_result;
+    }
+
+    /* Fallback: try manifest-based copy if DB-only copy failed */
     $cpm = new CPManager();
-    // try to open content package
     if (!$cpm->Open($scopath . $path)) {
         \FormaLms\lib\Forma::addError('Error: ' . $cpm->errText . ' [' . $cpm->errCode . ']');
 
         return false;
     }
 
-    // and parse the manifest
     if (!$cpm->ParseManifest()) {
         \FormaLms\lib\Forma::addError('Error: ' . $cpm->errText . ' [' . $cpm->errCode . ']');
 
@@ -432,19 +437,12 @@ function _scorm_copyitem($idscorm_package, $idscorm_organization)
     }
 
     $rdb = new RendererDb($GLOBALS['dbConn'], $GLOBALS['prefix_lms'], $new_idscorm_package);
-    /*$orgElems = $cpm->orgElems;
-    // save all organizations
-    foreach( $orgElems as $org )
-        $cpm->RenderOrganization( $org->get_attribute('identifier'), $rdb );*/
 
-    list($org_identifier) = sql_fetch_row(sql_query(
+    [$org_identifier] = sql_fetch_row(sql_query(
         'SELECT org_identifier FROM %lms_scorm_organizations '
-        . " WHERE idscorm_organization='" . (int) $idscorm_organization . "'"));
+        . " WHERE idscorm_organization='" . (int)$idscorm_organization . "'"));
 
     $cpm->RenderOrganization($org_identifier, $rdb);
-
-    // save flat organization with resources
-    //$cpm->RenderOrganization( '-resource-', $rdb );
 
     $so = new Scorm_Organization($org_identifier, $new_idscorm_package, $GLOBALS['dbConn']);
     if ($so->err_code > 0) {
@@ -454,6 +452,110 @@ function _scorm_copyitem($idscorm_package, $idscorm_organization)
     } else {
         return $so->idscorm_organization;
     }
+}
+
+/**
+ * Copy SCORM organization and items using DB records only (no filesystem access).
+ */
+function _scorm_copyitem_from_db($idscorm_organization, $new_idscorm_package, $old_idscorm_package)
+{
+    // Copy organization record
+    $org_rs = sql_query(
+        'SELECT org_identifier, title, nChild, nDescendant FROM %lms_scorm_organizations '
+        . "WHERE idscorm_organization = '" . (int) $idscorm_organization . "'"
+    );
+    if (!$org_rs || sql_num_rows($org_rs) == 0) {
+        return false;
+    }
+    $org_data = sql_fetch_assoc($org_rs);
+
+    sql_query(
+        'INSERT INTO %lms_scorm_organizations (org_identifier, idscorm_package, title, nChild, nDescendant) VALUES ('
+        . "'" . sql_escape_string($org_data['org_identifier']) . "', "
+        . "'" . (int) $new_idscorm_package . "', "
+        . "'" . sql_escape_string($org_data['title']) . "', "
+        . "'" . (int) $org_data['nChild'] . "', "
+        . "'" . (int) $org_data['nDescendant'] . "')"
+    );
+    $new_idscorm_organization = sql_insert_id();
+    if (!$new_idscorm_organization) {
+        return false;
+    }
+
+    // Build resource ID mapping (old → new)
+    $resource_map = [];
+    $res_rs = sql_query(
+        'SELECT r_old.idscorm_resource as old_id, r_new.idscorm_resource as new_id '
+        . 'FROM %lms_scorm_resources r_old '
+        . 'JOIN %lms_scorm_resources r_new ON r_old.idsco = r_new.idsco '
+        . "WHERE r_old.idscorm_package = '" . (int) $old_idscorm_package . "' "
+        . "AND r_new.idscorm_package = '" . (int) $new_idscorm_package . "'"
+    );
+    if ($res_rs) {
+        while ($row = sql_fetch_assoc($res_rs)) {
+            $resource_map[(int) $row['old_id']] = (int) $row['new_id'];
+        }
+    }
+
+    // Copy items preserving hierarchy
+    $item_map = [];
+    $items_rs = sql_query(
+        'SELECT idscorm_item, idscorm_parentitem, item_identifier, identifierref, '
+        . 'idscorm_resource, isvisible, parameters, title, nChild, nDescendant, '
+        . 'adlcp_prerequisites, adlcp_maxtimeallowed, adlcp_timelimitaction, '
+        . 'adlcp_datafromlms, adlcp_masteryscore, adlcp_completionthreshold '
+        . 'FROM %lms_scorm_items '
+        . "WHERE idscorm_organization = '" . (int) $idscorm_organization . "' "
+        . 'ORDER BY idscorm_item ASC'
+    );
+    if (!$items_rs) {
+        return $new_idscorm_organization;
+    }
+
+    while ($item = sql_fetch_assoc($items_rs)) {
+        $old_item_id = (int) $item['idscorm_item'];
+
+        $new_parent = 'NULL';
+        if ($item['idscorm_parentitem'] !== null && isset($item_map[(int) $item['idscorm_parentitem']])) {
+            $new_parent = "'" . (int) $item_map[(int) $item['idscorm_parentitem']] . "'";
+        }
+
+        $new_resource = 'NULL';
+        if ($item['idscorm_resource'] !== null && isset($resource_map[(int) $item['idscorm_resource']])) {
+            $new_resource = "'" . (int) $resource_map[(int) $item['idscorm_resource']] . "'";
+        }
+
+        $nullable = function ($val) {
+            return $val !== null ? "'" . sql_escape_string($val) . "'" : 'NULL';
+        };
+
+        sql_query(
+            'INSERT INTO %lms_scorm_items '
+            . '(idscorm_organization, idscorm_parentitem, item_identifier, identifierref, '
+            . 'idscorm_resource, isvisible, parameters, title, nChild, nDescendant, '
+            . 'adlcp_prerequisites, adlcp_maxtimeallowed, adlcp_timelimitaction, '
+            . 'adlcp_datafromlms, adlcp_masteryscore, adlcp_completionthreshold) VALUES ('
+            . "'" . (int) $new_idscorm_organization . "', "
+            . $new_parent . ', '
+            . $nullable($item['item_identifier']) . ', '
+            . $nullable($item['identifierref']) . ', '
+            . $new_resource . ', '
+            . $nullable($item['isvisible']) . ', '
+            . $nullable($item['parameters']) . ', '
+            . "'" . sql_escape_string($item['title']) . "', "
+            . "'" . (int) $item['nChild'] . "', "
+            . "'" . (int) $item['nDescendant'] . "', "
+            . $nullable($item['adlcp_prerequisites']) . ', '
+            . $nullable($item['adlcp_maxtimeallowed']) . ', '
+            . $nullable($item['adlcp_timelimitaction']) . ', '
+            . $nullable($item['adlcp_datafromlms']) . ', '
+            . $nullable($item['adlcp_masteryscore']) . ', '
+            . "'" . sql_escape_string($item['adlcp_completionthreshold'] ?? '') . "')"
+        );
+        $item_map[$old_item_id] = sql_insert_id();
+    }
+
+    return $new_idscorm_organization;
 }
 
 if (isset($GLOBALS['op'])) {

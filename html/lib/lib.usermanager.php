@@ -420,43 +420,16 @@ class UserManager
 
     public function saveElapsedPassword()
     {
+
+        $option['pass_max_time_valid'] = $this->_option->getOption('pass_max_time_valid');
+        $option['pass_min_char'] = $this->_option->getOption('pass_min_char');
+        $option['pass_alfanumeric'] = $this->_option->getOption('pass_alfanumeric');
+        $option['user_pwd_history_length'] = $this->_option->getOption('user_pwd_history_length');
+
         return $this->_render->saveElapsedPassword($this->_platform, $option);
     }
 
-    // --------------------------------------------------
-    // XXX: BEGIN function for a correct option managment
 
-    /**
-     * @param string $platform specified a different platform for localization
-     * @param string $prefix   specified a prefix
-     * @param string $db_conn  specified a db connection with the database
-     *
-     * @return array array(group_id => group_name) with the regroup unit
-     */
-    public function getRegroupUnit()
-    {
-        return $this->_option->getRegroupUnit();
-    }
-
-    /**
-     * @param string    contains the group selected
-     *
-     * @return string contains the displayable information for a selected group
-     */
-    public function getPageWithElement($group_selected)
-    {
-        return $this->_option->getPageWithElement($group_selected);
-    }
-
-    /**
-     * @param string    contains the group selected
-     *
-     * @return bool true if the operation was successfull false otherwise
-     */
-    public function saveElement($group_selected)
-    {
-        return $this->_option->saveElement($group_selected);
-    }
 
     // XXX: END function for a correct option managment
     // ------------------------------------------------
@@ -1065,13 +1038,9 @@ class UserManagerRenderer
             'password' => FormaLms\lib\Get::req('login_pwd', DOTY_STRING),
         ];
 
-        $all_languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
-
         $info['lang'] = FormaLms\lib\Get::req('login_lang', DOTY_STRING, Lang::get());
         if ($info['lang'] === 'default') {
             $info['lang'] = false;
-        } else {
-            $info['lang'] = $all_languages[$info['lang']];
         }
 
         /*if (!isset($_POST['login_lang'])) $info['lang'] = false;
@@ -1480,49 +1449,15 @@ class UserManagerRenderer
         return $out;
     }
 
-    // TODO: move this function in UserManager ?
-
-    /**
-     * getCodeCourses.
-     *
-     * @param int  $reg_code
-     * @param bool $byName
-     *
-     * @return array
-     */
-    private function getCodeCourses($reg_code)
-    {
-        $query = "SELECT re.course_list
-            FROM %adm_rules_entity AS re 
-            INNER JOIN %adm_rules r ON r.id_rule = re.id_rule
-            LEFT JOIN %adm_org_chart_tree AS oct
-            ON (oct.idst_oc = re.id_entity) 
-            WHERE r.rule_type = 'orgchart' AND oct.code = '" . $reg_code . "'";
-        $result = sql_query($query);
-        $entity = sql_fetch_array($result);
-
-        return $entity ? json_decode($entity['course_list']) : [];
-    }
-
-    private function getRegCodeFromNode($nodeName)
-    {
-        $query = "SELECT oct.idOrg
-            FROM %adm_org_chart_tree AS oct
-            WHERE oct.code = '" . $nodeName . "'";
-
-        $result = sql_query($query);
-        $entity = sql_fetch_array($result);
-
-        return $entity['idOrg'];
-    }
+   
 
     // TODO: move this function in UserManager ?
 
     /**
      * processRegistrationCode.
      *
-     * @param AclManager       $acl_man
-     * @param UserManagerAdmin $uma
+     * @param FormaACLManager       $acl_man
+     * @param UsermanagementAdm $uma
      * @param int              $iduser
      * @param string           $reg_code
      * @param string           $registration_code_type
@@ -1680,10 +1615,35 @@ class UserManagerRenderer
         return $res;
     }
 
+        // TODO: move this function in UserManager ?
+
+    /**
+     * getCodeCourses.
+     *
+     * @param int  $reg_code
+     * @param bool $byName
+     *
+     * @return array
+     */
+    protected function getCodeCourses($reg_code)
+    {
+        $query = "SELECT re.course_list
+            FROM %adm_rules_entity AS re 
+            INNER JOIN %adm_rules r ON r.id_rule = re.id_rule
+            LEFT JOIN %adm_org_chart_tree AS oct
+            ON (oct.idst_oc = re.id_entity) 
+            WHERE r.rule_type = 'orgchart' AND oct.code = '" . $reg_code . "'";
+        $result = sql_query($query);
+        $entity = sql_fetch_array($result);
+
+        return $entity ? json_decode($entity['course_list']) : [];
+    }
+
     public function _opt_in($options, $platform, $opt_link)
     {
         $lang = FormaLanguage::createInstance('register', $platform);
 
+        $skipEvent = true;
         // Check for error
         $errors = [];
 
@@ -1716,8 +1676,14 @@ class UserManagerRenderer
         $enrollrules = new EnrollrulesAlms();
         $enrollrules->newRules('_NEW_USER', [$iduser], Lang::get());
 
+        $eventResult = Events::trigger('core.user.registration.opt_in', ['id_user' => $iduser]);
+
+        if ($eventResult && array_key_exists('handled', $eventResult)) {
+
+            $skipEvent = false;
+        }
         // subscribe to groups -----------------------------------------
-        if (isset($_POST['group_sel_implode'])) {
+        if ($skipEvent && isset($_POST['group_sel_implode'])) {
             $groups = explode(',', $_POST['group_sel_implode']);
             foreach ($groups as $idst) {
                 $acl_man->addToGroup($idst, $iduser);
@@ -1974,7 +1940,24 @@ class UserManagerRenderer
         return $out;
     }
 
-    private function _first_of_all($options, $platform, $errors = [])
+    
+
+    protected function getRegCodeFromNode($nodeName)
+    {
+        $query = "SELECT oct.idOrg
+            FROM %adm_org_chart_tree AS oct
+            WHERE oct.code = '" . $nodeName . "'";
+
+        $result = sql_query($query);
+        $entity = sql_fetch_array($result);
+
+        return $entity['idOrg'];
+    }
+
+  
+
+
+    protected function _first_of_all($options, $platform, $errors = [])
     {
         $precompileLms = new PrecompileLms();
         $lang = &FormaLanguage::createInstance('register', $platform);
@@ -2018,7 +2001,6 @@ class UserManagerRenderer
                 'register_userid',
                 'register[userid]',
                 (isset($_POST['register']['userid']) ? stripslashes($_POST['register']['userid']) : ''),
-                '',
                 255,
                 'placeholder="' . $lang->def('_USERNAME') . ' ' . $mand_symbol . '"'
             );
@@ -2037,7 +2019,6 @@ class UserManagerRenderer
                 'register_email',
                 'register[email]',
                 (isset($_POST['register']['email']) ? stripslashes($_POST['register']['email']) : ''),
-                '',
                 255,
                 'placeholder="' . $lang->def('_EMAIL') . ' ' . $mand_symbol . '"'
             );
@@ -2062,7 +2043,6 @@ class UserManagerRenderer
                 'register_firstname',
                 'register[firstname]',
                 (isset($_POST['register']['firstname']) ? stripslashes($_POST['register']['firstname']) : ''),
-                '',
                 255,
                 'placeholder="' . $lang->def('_FIRSTNAME') . ($options['lastfirst_mandatory'] == 'on' ? ' ' . $mand_symbol : '') . '"'
             );
@@ -2080,7 +2060,6 @@ class UserManagerRenderer
                 'register_lastname',
                 'register[lastname]',
                 (isset($_POST['register']['lastname']) ? stripslashes($_POST['register']['lastname']) : ''),
-                '',
                 255,
                 'placeholder="' . $lang->def('_LASTNAME') . ($options['lastfirst_mandatory'] == 'on' ? ' ' . $mand_symbol : '') . '"'
             );
@@ -2116,7 +2095,6 @@ class UserManagerRenderer
                 'form-control ' . ($error ? 'has-error' : ''),
                 'register_pwd',
                 'register[pwd]',
-                '',
                 255,
                 'placeholder="' . $lang->def('_PASSWORD') . ' ' . $mand_symbol . '"'
             );
@@ -2131,7 +2109,6 @@ class UserManagerRenderer
                 'form-control ' . ($error ? 'has-error' : ''),
                 'register_pwd_retype',
                 'register[pwd_retype]',
-                '',
                 255,
                 'placeholder="' . $lang->def('_RETYPE_PASSWORD') . ' ' . $mand_symbol . '"'
             );
@@ -2172,7 +2149,6 @@ class UserManagerRenderer
                     'reg_code',
                     'reg_code',
                     FormaLms\lib\Get::req('reg_code', DOTY_MIXED, ''),
-                    '',
                     24,
                     'placeholder="' . $lang->def('_CODE') . ($code_is_mandatory ? ' ' . $mand_symbol : '') . '"'
                 );
@@ -2316,7 +2292,7 @@ class UserManagerRenderer
         $request = $acl_man->getTempUserInfo(false, $random_code);
 
         if (time() > (fromDatetimeToTimestamp($request['request_on']) + (3600 * (int) $options['hour_request_limit']))) {
-            $out = '<div class="reg_err_data">' . $lang->def('_REG_ELAPSEDREQUEST', 'register') . '</div>';
+            $out = '<div class="reg_err_data"><p>' . $lang->def('_REG_ELAPSEDREQUEST', 'register') . '</p></div>';
             $time_limit = time() - 3600 * ((int) $options['hour_request_limit']);
 
             if (FormaLms\lib\Get::sett('registration_code_type', '0') == 'code_module') {
@@ -2338,7 +2314,6 @@ class UserManagerRenderer
                 $request['pass'],                        // $pass
                 addslashes($request['email']),            // $email
                 $request['avatar'],                        // $avatar
-                '',                                        // $signature
                 true,                                    // $alredy_encripted
                 $request['idst'],                        // $idst
                 '',                                        // $pwd_expire_at
@@ -2405,11 +2380,11 @@ class UserManagerRenderer
                 }
                 // end
 
-                $out = '<div class="reg_success">' . $lang->def('_REG_YOUR_ABI_TO_ACCESS', 'register') . '</div>';
+                $out = '<div class="reg_success"><p>' . $lang->def('_REG_YOUR_ABI_TO_ACCESS', 'register') . '</p></div>';
 
                 return $out;
             } else {
-                $out = '<div class="reg_err_data">' . $lang->def('_REG_CONFIRM_FAILED', 'register') . '</div>';
+                $out = '<div class="reg_err_data"><p>' . $lang->def('_REG_CONFIRM_FAILED', 'register') . '</p></div>';
 
                 return $out;
             }
@@ -2452,7 +2427,7 @@ class UserManagerRenderer
                     }
                 }
 
-                $out = '<div class="reg_success">' . Lang::t('_REG_WAIT_FOR_ADMIN_OK', 'register') . '</div>';
+                $out = '<div class="reg_success"><p>' . Lang::t('_REG_WAIT_FOR_ADMIN_OK', 'register') . '</p></div>';
                 // send alert to admin that can approve
                 require_once _base_ . '/lib/lib.eventmanager.php';
 
@@ -2481,7 +2456,7 @@ class UserManagerRenderer
 
                 return $out;
             } else {
-                $out = '<div class="reg_err_data">' . $lang->def('_REG_CONFIRM_FAILED', 'register') . '</div>';
+                $out = '<div class="reg_err_data"><p>' . $lang->def('_REG_CONFIRM_FAILED', 'register') . '</p></div>';
 
                 return $out;
             }
@@ -2691,18 +2666,16 @@ class UserManagerRenderer
             . '<span class="text_bold">' . $lang->def('_LOST_TITLE_USER') . ' - </span>'
             . $lang->def('_LOST_INSTRUCTION_USER');
 
-        if (FormaLms\lib\Get::sett('ldap_used') == 'off') {
+      
             $html .= Form::openForm('lost_user', $jump_url)
                 . Form::openElementSpace('form_right')
                 . Form::getLabel('email', $lang->def('_EMAIL'), 'text_bold')
                 //$css_text, $id, $name, $value, $alt_name, $maxlenght, $other_param
-                . Form::getInputTextfield('textfield', 'email', 'email', '', strip_tags($lang->def('_EMAIL')), 255, '')
+                . Form::getInputTextfield('textfield', 'email', 'email', '', 255, '')
                 . Form::getButton('email_ins', 'email_ins', $lang->def('_SEND'), 'button_nowh')
                 . Form::closeElementSpace()
                 . Form::closeForm();
-        } else {
-            $html .= '<div class="form_right"><span class="font_red">' . $lang->def('_LDAPACTIVE') . '</span></div>';
-        }
+        
         $html .= '</div>';
 
         $html .=
@@ -2714,7 +2687,7 @@ class UserManagerRenderer
             . Form::openElementSpace('form_right')
             . Form::getLabel('email', $lang->def('_USERNAME'), 'text_bold')
             //$css_text, $id, $name, $value, $alt_name, $maxlenght, $other_param
-            . Form::getInputTextfield('textfield', 'userid', 'userid', '', strip_tags($lang->def('_USERNAME')), 255, '')
+            . Form::getInputTextfield('textfield', 'userid', 'userid', '', 255, '')
             . Form::getButton('userid_ins', 'userid_ins', $lang->def('_SEND'), 'button_nowh')
             . Form::closeElementSpace()
             . Form::closeForm()
@@ -2789,11 +2762,7 @@ class UserManagerRenderer
             $txt .= '<div class="text_italic">' . $lang->def('_NOAVATAR') . '</div>';
         }
         // NOTE: signature
-        $txt .= '</td></tr></table>'
-            . '<div class="title">' . $lang->def('_SIGNATURE') . '</div>'
-            . '<div class="profile_signature">' . $user_info[ACL_INFO_SIGNATURE] . '</div><br />' . "\n"
-            . '</div>';
-
+        $txt .= '</td></tr></table>';
         return $txt;
     }
 

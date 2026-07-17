@@ -23,7 +23,7 @@ echo Form::openForm('add_comm', $data['type_of'] == 'none' ? 'index.php?r=alms/c
     . '<div class="quick_search_form qsf_left">'
     . '<div class="form_line_l">'
     . '<label class="label_effect" for="set_course">' . Lang::t('_COURSE', 'course') . '</label>&nbsp;'
-    . Form::getInputTextfield('search_t', 'set_course', 'set_course', $course_name, '', 255, '')
+    . Form::getInputTextfield('search_t', 'set_course', 'set_course', $course_name, 255, '')
     . '<div id="set_course_container"></div>'
     . '</div>'
     . '</div>'

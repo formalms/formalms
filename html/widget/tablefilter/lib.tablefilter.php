@@ -29,8 +29,6 @@ class TablefilterWidget extends Widget
     public $js_callback_set = false;
     public $js_callback_reset = false;
 
-    protected $json = null;
-
     public function __construct()
     {
         parent::__construct();

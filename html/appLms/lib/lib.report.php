@@ -22,12 +22,29 @@ function load_categories()
     }
 }
 
+/**
+ * Save a new report filter to the database
+ *
+ * @param int $report_id The report type ID
+ * @param string $filter_name The name for this filter
+ * @param array $filter_data The filter configuration data
+ * @param bool $is_public Whether this filter is public
+ * @return int|false The new filter ID or false on failure
+ *
+ * @internal The filter_data column (serialized) is deprecated since 4.2.0 and will be removed in 5.0.0.
+ *           Data is now primarily stored in filter_data_json column.
+ */
 function report_save($report_id, $filter_name, &$filter_data, $is_public = false)
 {
-    $data = addslashes(serialize($filter_data)); //put serialized data in DB
+    // Primary storage: JSON format
+    $dataJson = addslashes(json_encode($filter_data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+
+    // @deprecated Since 4.2.0 - Legacy column for backward compatibility, will be removed in 5.0.0
+    $dataSerialized = addslashes(serialize($filter_data));
+
     $query = 'INSERT INTO %lms_report_filter ' .
-        '(id_report, author, creation_date, filter_data, filter_name, is_public) VALUES ' .
-        "($report_id, " . \FormaLms\lib\FormaUser::getCurrentUser()->getIdst() . ", NOW(), '$data', '$filter_name', " . ($is_public ? '1' : '0') . ')';
+        '(id_report, author, creation_date, filter_data, filter_data_json, filter_name, is_public) VALUES ' .
+        "($report_id, " . \FormaLms\lib\FormaUser::getCurrentUser()->getIdst() . ", NOW(), '$dataSerialized', '$dataJson', '$filter_name', " . ($is_public ? '1' : '0') . ')';
 
     if (!sql_query($query)) {
         return false;
@@ -38,15 +55,33 @@ function report_save($report_id, $filter_name, &$filter_data, $is_public = false
     }
 }
 
+/**
+ * Update an existing report filter in the database
+ *
+ * @param int $report_id The filter ID to update
+ * @param string $filter_name The name for this filter
+ * @param array $filter_data The filter configuration data
+ * @param bool|int $is_public Whether this filter is public (false = don't change)
+ * @return bool True on success
+ *
+ * @internal The filter_data column (serialized) is deprecated since 4.2.0 and will be removed in 5.0.0.
+ *           Data is now primarily stored in filter_data_json column.
+ */
 function report_update($report_id, $filter_name, &$filter_data, $is_public = false)
 {
     //if $is_public is false, than do not change it in the update query
     $public_value = ($is_public !== false
         ? (int) $is_public > 0 ? '1' : '0'
         : false);
-    $data = addslashes(serialize($filter_data)); //put serialized data in DB
+
+    // Primary storage: JSON format
+    $dataJson = addslashes(json_encode($filter_data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+
+    // @deprecated Since 4.2.0 - Legacy column for backward compatibility, will be removed in 5.0.0
+    $dataSerialized = addslashes(serialize($filter_data));
+
     $query = 'UPDATE %lms_report_filter SET ' .
-        "creation_date=NOW(), filter_data='$data', filter_name='$filter_name'" .
+        "creation_date=NOW(), filter_data='$dataSerialized', filter_data_json='$dataJson', filter_name='$filter_name'" .
         ($public_value !== false ? ', is_public=' . $public_value : '') . ' ' .
         "WHERE id_filter=$report_id";
 
@@ -414,4 +449,23 @@ function checkReport($id_filter)
     }
 
     return true;
+}
+
+/**
+ * Duplicate an existing report filter
+ *
+ * @param int $id_filter The filter ID to duplicate
+ * @return bool|resource Query result
+ *
+ * @internal Copies both filter_data (deprecated) and filter_data_json columns.
+ *           In 5.0.0, filter_data column will be removed from this query.
+ */
+function duplicateReport($id_filter){
+    // Copies both columns: filter_data_json (primary) and filter_data (deprecated, for backward compatibility)
+    $a = "INSERT INTO %lms_report_filter (id_report, author, creation_date, filter_name, filter_data, filter_data_json, is_public, views)
+                           SELECT id_report,".\FormaLms\lib\FormaUser::getCurrentUser()->getIdst().", NOW(), CONCAT('".Lang::t('_COPY_OF','standard')." ', filter_name), filter_data, filter_data_json, is_public, 0
+                           FROM %lms_report_filter WHERE id_filter=".$id_filter;
+
+    $q = sql_query($a);
+    return $q;
 }

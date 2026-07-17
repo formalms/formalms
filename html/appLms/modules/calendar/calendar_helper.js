@@ -46,6 +46,8 @@ var WEEK = 7 * DAY;
 var ajax_failure = function(o) { alert('Unable to connect with the server.'); }
 
 function openEvent (year,month,day,id) {
+	if (YAHOO.util.Dom.get('progress_msg').innerHTML == _TT._PLS_WAIT) return;
+
 	if (mode=="view") {
 		showEvent(id);
 		return;
@@ -75,6 +77,8 @@ function openEvent (year,month,day,id) {
 }
 
 function showEvent(year,month,day,id) {
+	if (YAHOO.util.Dom.get('progress_msg').innerHTML == _TT._PLS_WAIT) return;
+	
 	if (evDisabled) return;
 	
 	eYear=year;
@@ -439,10 +443,12 @@ function viewEvent (ObjReq) {
 	buttns += '<input type="submit" value="'+_TT._CLOSE+'" onclick="enableCal();destroyWindow(\'wEvent\');return false;" />';
   */
 	var buttns=[];
-	buttns[buttns.length] = { text:_TT._MOD, handler: function(){
-		openEvent(this.cal_data.eYear, this.cal_data.eMonth, this.cal_data.eDay, this.cal_data.id);
-		this.destroy();
-	} };
+	if (CalEvents[k].editable) {
+		buttns[buttns.length] = { text:_TT._MOD, handler: function(){
+			openEvent(this.cal_data.eYear, this.cal_data.eMonth, this.cal_data.eDay, this.cal_data.id);
+			this.destroy();
+		} };
+	}
 	buttns[buttns.length] = { text: _TT._CLOSE, handler: function(){this.destroy();}, isDefault:true};
 	
 	var w = new YAHOO.widget.SimpleDialog("simpledialog_"+name, {

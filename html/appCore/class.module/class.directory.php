@@ -1500,7 +1500,7 @@ class Module_Directory extends Module
         $repoDb = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
 
         $treeView = new TreeView_OrgView($repoDb, 'organization_chart', FormaLms\lib\Get::sett('title_organigram_chart'));
-        $treeView->setLanguage($lang);
+
         $treeView->aclManager = &$this->aclManager;
 
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
@@ -1909,7 +1909,6 @@ class Module_Directory extends Module
                         addslashes($request[$idst]['lastname']),
                         $request[$idst]['pass'],
                         addslashes($request[$idst]['email']),
-                        '',
                         '',
                         true,
                         $idst)) {

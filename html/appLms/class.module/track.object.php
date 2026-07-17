@@ -718,12 +718,12 @@ class Track_Object
         return $res;
     }
 
-    public function getHistory()
+    public static function getHistory($idReference, $idUser)
     {
         return [];
     }
 
-    public function getTotalTime()
+    public static function getTotalTime($idReference, $idUser)
     {
         return null;
     }

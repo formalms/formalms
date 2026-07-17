@@ -13,18 +13,17 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once _base_ . '/lib/lib.json.php';
+
 
 class TemplatelayoutAdmController extends AdmController
 {
     protected $model;
-    protected $json;
 
     public function __construct()
     {
         parent::__construct('templatelayout');
         $this->model = new TemplateLayoutAdm();
-        $this->json = new Services_JSON();
+        
     }
 
     protected function _getTableStatus($paramName, $default = false)
@@ -70,18 +69,6 @@ class TemplatelayoutAdmController extends AdmController
         $params->filter = $filter;
 
         $templates = $this->model->getTemplates($params);
-        $template_rows = [];
-        if (is_array($templates)) {
-            foreach ($templates as $template) {
-                $template_rows[] = [
-                    'id' => $template->id_template,
-                    'name' => highlightText($template->name, $filter),
-                    'date_creation' => Format::date($template->date_creation, 'datetime'),
-                    'last_modify' => Format::date($template->last_modify, 'datetime'),
-                    'del' => 'ajax.adm_server.php?r=adm/templatelayout/delete&id=' . (int) $template->id_template,
-                ];
-            }
-        }
 
         $output = [
             'startIndex' => $startIndex,
@@ -90,10 +77,10 @@ class TemplatelayoutAdmController extends AdmController
             'dir' => $dir,
             'totalRecords' => $this->model->getTotalTemplates($filter),
             'pageSize' => $page_size,
-            'records' => $template_rows,
+            'records' => $templates,
         ];
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function deleteTask()
@@ -103,7 +90,7 @@ class TemplatelayoutAdmController extends AdmController
         if ($id > 0) {
             $output['success'] = $this->model->deleteTemplate($id);
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function createTask()

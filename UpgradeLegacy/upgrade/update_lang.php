@@ -90,6 +90,6 @@ $res['next_platform'] = $next_platform;
 require_once _base_ . '/lib/lib.json.php';
 $json = new Services_JSON();
 ob_clean();
-echo $json->encode($res);
+echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($res, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
 exit();

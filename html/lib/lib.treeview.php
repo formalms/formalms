@@ -96,24 +96,8 @@ class TreeView
         $this->selectedFolder = 0;
         $this->op = '';
         $this->rootname = $rootname;
-        $this->lang = FormaLanguage::createInstance('treeview', 'framework');
         $this->aclManager = new FormaACLManager();
         $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-    }
-
-    public function setLanguage(&$lang)
-    {
-        $this->lang = &$lang;
-    }
-
-    public function deRegisterLang()
-    {
-        $this->lang = null;
-    }
-
-    public function reRegisterLang()
-    {
-        $this->lang = &FormaLanguage::createInstance('treeview', 'framework');
     }
 
     public function _getStateId()
@@ -220,12 +204,12 @@ class TreeView
 
     public function _getCancelLabel()
     {
-        return $this->lang->def('_CANCEL');
+        return Lang::t('_CANCEL','treeview');
     }
 
     public function _getCancelAlt()
     {
-        return $this->lang->def('_CANCEL');
+        return Lang::t('_CANCEL');
     }
 
     public function _getCancelImage()
@@ -235,12 +219,12 @@ class TreeView
 
     public function _getFolderNameLabel()
     {
-        return $this->lang->def('_NAME');
+        return Lang::t('_NAME','treeview');
     }
 
     public function _getAddLabel()
     {
-        return $this->lang->def('_NEW_FOLDER');
+        return Lang::t('_NEW_FOLDER','treeview');
     }
 
     public function _getAddUrl()
@@ -250,7 +234,7 @@ class TreeView
 
     public function _getAddAlt()
     {
-        return $this->lang->def('_NEW_FOLDER');
+        return Lang::t('_NEW_FOLDER','treeview');
     }
 
     public function _getAddImage()
@@ -260,7 +244,7 @@ class TreeView
 
     public function _getCreateLabel()
     {
-        return $this->lang->def('_NEW_FOLDER');
+        return Lang::t('_NEW_FOLDER','treeview');
     }
 
     public function _getCreateUrl()
@@ -270,7 +254,7 @@ class TreeView
 
     public function _getCreateAlt()
     {
-        return $this->lang->def('_NEW_FOLDER');
+        return Lang::t('_NEW_FOLDER','treeview');
     }
 
     public function _getCreateImage()
@@ -280,7 +264,7 @@ class TreeView
 
     public function _getRenameLabel()
     {
-        return $this->lang->def('_MODe');
+        return Lang::t('_MODE','treeview');
     }
 
     public function _getRenameUrl()
@@ -290,7 +274,7 @@ class TreeView
 
     public function _getRenameAlt()
     {
-        return $this->lang->def('_MOD');
+        return Lang::t('_MOD','treeview');
     }
 
     public function _getRenameImage()
@@ -300,7 +284,7 @@ class TreeView
 
     public function _getDeleteLabel()
     {
-        return $this->lang->def('_DEL');
+        return Lang::t('_DEL','treeview');
     }
 
     public function _getDeleteUrl()
@@ -310,7 +294,7 @@ class TreeView
 
     public function _getDeleteAlt()
     {
-        return $this->lang->def('_DEL');
+        return Lang::t('_DEL','treeview');
     }
 
     public function _getDeleteImage()
@@ -320,7 +304,7 @@ class TreeView
 
     public function _getMoveLabel()
     {
-        return $this->lang->def('_MOVE');
+        return Lang::t('_MOVE','treeview');
     }
 
     public function _getMoveUrl()
@@ -330,7 +314,7 @@ class TreeView
 
     public function _getMoveAlt()
     {
-        return $this->lang->def('_MOVE');
+        return Lang::t('_MOVE','treeview');
     }
 
     public function _getMoveImage()
@@ -1021,48 +1005,48 @@ class TreeView
         $classImg = 'TreeViewImage';
         if ($maxLev == 0) {
             $imgFileName = REND_ROOT;
-            $imgAlt = $this->lang->def('_ALT_ROOT');
+            $imgAlt = Lang::t('_ALT_ROOT','treeview');
         } elseif ($currLev == $maxLev) {
             if ($stack[$maxLev]['isExpanded']) {
                 if ($stack[$maxLev]['isLeaf']) {
                     $imgFileName = REND_TITLE_OPEN_LEAF;
-                    $imgAlt = $this->lang->def('_OPEN');
+                    $imgAlt = Lang::t('_OPEN','treeview');
                 } else {
                     $imgFileName = REND_TITLE_OPEN;
-                    $imgAlt = $this->lang->def('_OPEN');
+                    $imgAlt = Lang::t('_OPEN','treeview');
                 }
             } else {
                 $imgFileName = REND_TITLE_CLOSE;
-                $imgAlt = $this->lang->def('_CLOSE');
+                $imgAlt = Lang::t('_CLOSE','treeview');
             }
         } elseif ($currLev == $maxLev - 1) {
             if ($stack[$maxLev]['isLeaf']) {
                 if ($stack[$maxLev]['isLast']) {
                     $imgFileName = REND_BRANCH_END;
-                    $imgAlt = $this->lang->def('_END');
+                    $imgAlt = Lang::t('_END','treeview');
                 } else {
                     $imgFileName = REND_BRANCH_INTER;
-                    $imgAlt = $this->lang->def('_CONTINUE');
+                    $imgAlt = Lang::t('_CONTINUE','treeview');
                 }
             } else {
                 if ($stack[$maxLev]['isExpanded']) {
                     if ($stack[$maxLev]['isLast']) {
                         $imgFileName = REND_COLLAPSE_END;
-                        $imgAlt = $this->lang->def('_CLOSE');
+                        $imgAlt = Lang::t('_CLOSE','treeview');
                         $classImg = 'TreeViewOpCollapseCorner';
                     } else {
                         $imgFileName = REND_COLLAPSE_INTER;
-                        $imgAlt = $this->lang->def('_COLLAPSE');
+                        $imgAlt = Lang::t('_COLLAPSE','treeview');
                         $classImg = 'TreeViewOpCollapseInter';
                     }
                 } else {
                     if ($stack[$maxLev]['isLast']) {
                         $imgFileName = REND_EXPAND_END;
-                        $imgAlt = $this->lang->def('_OPEN');
+                        $imgAlt = Lang::t('_OPEN','treeview');
                         $classImg = 'TreeViewOpExpandCorner';
                     } else {
                         $imgFileName = REND_EXPAND_INTER;
-                        $imgAlt = $this->lang->def('_COLLAPSE');
+                        $imgAlt = Lang::t('_COLLAPSE','treeview');
                         $classImg = 'TreeViewOpExpandInter';
                     }
                 }
@@ -1070,10 +1054,10 @@ class TreeView
         } else {
             if ($stack[$currLev + 1]['isLast']) {
                 $imgFileName = REND_EMPTY;
-                $imgAlt = $this->lang->def('_ALT_EMPTY');
+                $imgAlt = Lang::t('_ALT_EMPTY','treeview');
             } else {
                 $imgFileName = REND_VERT_INTER;
-                $imgAlt = $this->lang->def('_CONTINUE');
+                $imgAlt = Lang::t('_CONTINUE','treeview');
             }
         }
 
@@ -1204,7 +1188,6 @@ class TreeView
 
     public function __sleep()
     {
-        $this->lang = null;
 
         return ['tdb',
                         'id',
@@ -1219,6 +1202,6 @@ class TreeView
 
     public function __wakeup()
     {
-        $this->lang = &FormaLanguage::createInstance('treeview', 'framework');
+
     }
 }

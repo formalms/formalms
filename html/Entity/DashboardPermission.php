@@ -37,7 +37,7 @@ class DashboardPermission
     /**
      * @var string
      *
-     * @ORM\Column(name="idst_list", type="string", length=65536, nullable=false)
+     * @ORM\Column(name="idst_list", type="text", nullable=false)
      */
     private $idstList;
 

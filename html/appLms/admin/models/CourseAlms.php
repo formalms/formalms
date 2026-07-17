@@ -83,7 +83,7 @@ class CourseAlms extends Model
             . " WHERE c.course_type <> 'assessment' and cu.status=4 and cu.waiting = 0";
 
         $res = sql_query($query);
-        list($num_overbooking) = sql_fetch_row($res);
+        [$num_overbooking] = sql_fetch_row($res);
 
         return $num_overbooking;
     }
@@ -96,7 +96,7 @@ class CourseAlms extends Model
             . ' ORDER BY date_inscr ASC LIMIT 1';
 
         $res = sql_query($query);
-        list($overbooked_user) = sql_fetch_row($res);
+        [$overbooked_user] = sql_fetch_row($res);
 
         return $overbooked_user;
     }
@@ -124,7 +124,7 @@ class CourseAlms extends Model
             . " WHERE c.course_type <> 'assessment' and cu.status=-2 ";
 
         $res = sql_query($query);
-        list($num_waiting) = sql_fetch_row($res);
+        [$num_waiting] = sql_fetch_row($res);
 
         return $num_waiting;
     }
@@ -152,7 +152,7 @@ class CourseAlms extends Model
             . " WHERE c.course_type <> 'assessment' ";
 
         $res = sql_query($query);
-        list($num_overbooking) = sql_fetch_row($res);
+        [$num_overbooking] = sql_fetch_row($res);
 
         return $num_overbooking;
     }
@@ -260,7 +260,7 @@ class CourseAlms extends Model
             }
         }
 
-        list($res) = sql_fetch_row(sql_query($query));
+        [$res] = sql_fetch_row(sql_query($query));
 
         return $res;
     }
@@ -272,7 +272,7 @@ class CourseAlms extends Model
         if ($id_category != 0) {
             $query = 'SELECT iLeft, iRight FROM %lms_category WHERE idCategory=' . (int)$id_category;
             $res = sql_query($query);
-            list($left, $right) = sql_fetch_row($res);
+            [$left, $right] = sql_fetch_row($res);
 
             $query = 'SELECT idCategory FROM %lms_category WHERE iLeft>=' . $left . ' AND iRight<=' . $right;
             $res = sql_query($query);
@@ -668,7 +668,7 @@ class CourseAlms extends Model
             img_othermaterial   = '" . $file_othermaterial . "',
             course_demo         = '" . $file_demo . "',
 
-            mediumTime          = '" . $data_params['course_medium_time'] . "',
+            mediumTime          = '" . str_replace(',', '.', $data_params['course_medium_time']) . "',
             sendCalendar        = '" . (isset($data_params['send_calendar']) ? 1 : 0) . "',
             calendarId          = '" . CalendarManager::generateUniqueCalendarId() . "',
             permCloseLO         = '" . $data_params['course_em'] . "',
@@ -687,8 +687,8 @@ class CourseAlms extends Model
 
             date_begin          = " . (!empty($date_begin) ? "'" . $date_begin . "'" : 'NULL') . ",
             date_end            = " . (!empty($date_end) ? "'" . $date_end . "'" : 'NULL') . ",
-            hour_begin          = '" . ($hour_begin == -1 ? '00:00' : $hour_begin) . "',
-            hour_end            = '" . ($hour_end == -1 ? '23:59' : $hour_end) . "',
+            hour_begin          = " . ($hour_begin !== null ? "'" . $hour_begin . "'" : 'NULL') . ",
+            hour_end            = " . ($hour_end   !== null ? "'" . $hour_end   . "'" : 'NULL') . ",
 
             valid_time          = '" . (int)$data_params['course_day_of'] . "',
 
@@ -716,6 +716,12 @@ class CourseAlms extends Model
             auto_unsubscribe = '" . (int)$data_params['auto_unsubscribe'] . "',
             unsubscribe_date_limit = " . (isset($data_params['use_unsubscribe_date_limit']) && $data_params['use_unsubscribe_date_limit'] > 0 ? "'" . Format::dateDb($data_params['unsubscribe_date_limit'], 'date') . "'" : 'NULL') . '';
 
+        $eventResults = Events::trigger('core.course.query', compact('query_course', 'data_params'));
+
+        if ($eventResults && array_key_exists('query_course', $eventResults)) {
+            $query_course = $eventResults['query_course'];
+        }
+
         if (isset($data_params['random_course_autoregistration_code'])) {
             $control = 1;
             $str = '';
@@ -735,7 +741,7 @@ class CourseAlms extends Model
                     " WHERE autoregistration_code = '" . $str . "'";
 
                 $control_result = sql_query($control_query);
-                list($result) = sql_fetch_row($control_result);
+                [$result] = sql_fetch_row($control_result);
                 $control = $result;
             }
 
@@ -766,7 +772,7 @@ class CourseAlms extends Model
         }
 
         // recover the id of the course inserted --------------------------------------------
-        list($id_course) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
+        [$id_course] = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
 
         require_once _lms_ . '/admin/models/LabelAlms.php';
         $label_model = new LabelAlms();
@@ -884,6 +890,18 @@ class CourseAlms extends Model
             return $res;
         }
 
+        // Block course type change if users are enrolled
+        $current_course_info = $this->getInfo($id_course);
+        if ($current_course_info) {
+            $current_type = $current_course_info['course_type'];
+            $new_type = $data_params['course_type'];
+            // Also account for edition flag: current course_edition=1 means effective type is 'elearning'
+            // but the form sends 'edition' which gets resolved to 'elearning' + course_edition=1 in the controller
+            if ($current_type !== $new_type && $this->hasEnrolledUsers($id_course)) {
+                return ['err' => '_err_course_type_change_has_enrolled_users'];
+            }
+        }
+
         // restriction on course status ------------------------------------------
         $user_status = 0;
         if (isset($data_params['user_status'])) {
@@ -916,7 +934,7 @@ class CourseAlms extends Model
         // load user material ---------------------------------------------------------------------------
         $arr_file = $this->manageCourseFile(
             'course_user_material',
-            $data_params['old_course_user_material'],
+            $data_params['old_course_user_material'] ?? '',
             $path,
             ($quota != 0 ? $quota - $used : false),
             isset($data_params['file_to_del']['course_user_material'])
@@ -930,7 +948,7 @@ class CourseAlms extends Model
         // course otheruser material -------------------------------------------------------------------
         $arr_file = $this->manageCourseFile(
             'course_otheruser_material',
-            $data_params['old_course_otheruser_material'],
+            $data_params['old_course_otheruser_material'] ?? '',
             $path,
             ($quota != 0 ? $quota - $used : false),
             isset($data_params['file_to_del']['course_otheruser_material'])
@@ -1044,7 +1062,7 @@ class CourseAlms extends Model
             img_othermaterial   = '" . $file_othermaterial . "',
             course_demo         = '" . $file_demo . "',
 
-            mediumTime          = '" . $data_params['course_medium_time'] . "',
+            mediumTime          = '" . str_replace(',', '.', $data_params['course_medium_time']) . "',
             sendCalendar        = '" . (isset($data_params['send_calendar']) ? 1 : 0) . "',
             permCloseLO         = '" . $data_params['course_em'] . "',
             userStatusOp        = '" . $user_status . "',
@@ -1062,8 +1080,8 @@ class CourseAlms extends Model
 
             date_begin          = " . (!empty($date_begin) ? "'" . $date_begin . "'" : 'NULL') . ",
             date_end            = " . (!empty($date_end) ? "'" . $date_end . "'" : 'NULL') . ",
-            hour_begin          = '" . ($hour_begin == -1 ? '00:00' : $hour_begin) . "',
-            hour_end            = '" . ($hour_end == -1 ? '23:59' : $hour_end) . "',
+            hour_begin          = " . ($hour_begin !== null ? "'" . $hour_begin . "'" : 'NULL') . ",
+            hour_end            = " . ($hour_end   !== null ? "'" . $hour_end   . "'" : 'NULL') . ",
 
             valid_time          = '" . (int)$data_params['course_day_of'] . "',
 
@@ -1075,7 +1093,7 @@ class CourseAlms extends Model
             course_edition      = '" . (isset($data_params['course_edition']) ? $data_params['course_edition'] : 0) . "',
             selling             = '" . (isset($data_params['course_sell']) ? 1 : 0) . "',
             prize               = '" . (isset($data_params['course_prize']) ? $data_params['course_prize'] : 0) . "',
-            policy_point        = '" . $data_params['policy_point'] . "',
+            policy_point        = '" . (isset($data_params['policy_point']) ? $data_params['policy_point'] : '') . "',
 
             course_quota        = '" . $data_params['course_quota'] . "',
 
@@ -1093,6 +1111,12 @@ class CourseAlms extends Model
             auto_unsubscribe = '" . (int)$data_params['auto_unsubscribe'] . "',
             unsubscribe_date_limit = " . (isset($data_params['use_unsubscribe_date_limit']) && $data_params['use_unsubscribe_date_limit'] > 0 ? "'" . Format::dateDb($data_params['unsubscribe_date_limit'], 'date') . "'" : 'NULL') . '';
 
+
+        $eventResults = Events::trigger('core.course.query', compact('query_course', 'data_params'));
+
+        if ($eventResults && array_key_exists('query_course', $eventResults)) {
+            $query_course = $eventResults['query_course'];
+        }
         if (isset($data_params['random_course_autoregistration_code'])) {
             $control = 1;
             $str = '';
@@ -1113,7 +1137,7 @@ class CourseAlms extends Model
                     " AND idCourse <> '" . $id_course . "'";
 
                 $control_result = sql_query($control_query);
-                list($result) = sql_fetch_row($control_result);
+                [$result] = sql_fetch_row($control_result);
                 $control = $result;
             }
 
@@ -1312,7 +1336,7 @@ class CourseAlms extends Model
             FROM %lms_course
             WHERE idCourse = '" . (int)$id_course . "'";
         $qres = sql_query($query_course);
-        list($file_sponsor, $file_logo, $file_material, $file_othermaterial, $file_demo, $course_type, $course_edition) = sql_fetch_row($qres);
+        [$file_sponsor, $file_logo, $file_material, $file_othermaterial, $file_demo, $course_type, $course_edition] = sql_fetch_row($qres);
 
         require_once _base_ . '/lib/lib.upload.php';
 
@@ -1483,11 +1507,23 @@ class CourseAlms extends Model
         return false;
     }
 
+    public function hasEnrolledUsers($id_course)
+    {
+        $query = "SELECT COUNT(*) as cnt FROM %lms_courseuser WHERE idCourse = " . (int)$id_course;
+        $result = sql_query($query);
+        if ($result) {
+            $row = sql_fetch_assoc($result);
+            return (int)$row['cnt'] > 0;
+        }
+
+        return false;
+    }
+
     public function getInfo($id_course = false, $id_edition = false, $id_date = false)
     {
-        $_id_course = ($id_course ? $id_course : $this->id_course);
-        $_id_edition = ($id_edition ? $id_edition : $this->id_edition);
-        $_id_date = ($id_date ? $id_date : $this->id_date);
+        $_id_course = ($id_course ?: $this->id_course);
+        $_id_edition = ($id_edition ?: $this->id_edition);
+        $_id_date = ($id_date ?: $this->id_date);
 
         if (!$_id_course) {
             return false;
@@ -1538,7 +1574,7 @@ class CourseAlms extends Model
             . ' FROM %lms_category'
             . ' WHERE idCategory = ' . (int)$id_category;
 
-        list($path) = sql_fetch_row(sql_query($query));
+        [$path] = sql_fetch_row(sql_query($query));
 
         return end(explode('/', $path));
     }
@@ -1695,7 +1731,7 @@ class CourseAlms extends Model
 
         $usersFilterIds = $this->getAdminRelatedUserIds();
 
-        $query = "SELECT u.idst, u.userid, u.firstname, u.lastname,
+        $query = "SELECT ca.id as idRecord,u.idst, u.userid, u.firstname, u.lastname,
                          DATE_FORMAT(cu.date_complete,'" . $date_format . "') as dateComplete, DATE_FORMAT(ca.on_date,'" . $date_format . "') onDate, cu.idUser as id_user,
                          cu.status , cu.idCourse, cc.id_certificate,
                          c.name as name_certificate"
@@ -1709,64 +1745,81 @@ class CourseAlms extends Model
             . ' AND coalesce(elapsed,0) >= coalesce(cc.minutes_required,0)*60 '
             . " AND cu.idCourse='" . (int)$id_course . "'";
 
+
+
         if (count($usersFilterIds)) {
             $query .= 'AND u.idst in (' . implode(',', $usersFilterIds) . ')';
         }
+        $eventResults = Events::trigger('core.course.certificate.query', compact('query', 'usersFilterIds', 'id_certificate', 'id_course'));
+
+        $query = $eventResults['query'];
 
         $res = sql_query($query);
 
-        foreach ($res as $row) {
-            $idst = $row['idst'];
-            $userid = $row['userid'];
-            $firstname = $row['firstname'];
-            $lastname = $row['lastname'];
-            $date_complete = $row['dateComplete'];
-            $on_date = $row['onDate'];
-            $id_user = $row['id_user'];
-            $status = $row['status'];
-            $id_course = $row['idCourse'];
-            $id_certificate = $row['id_certificate'];
-            $name_certificate = $row['name_certificate'];
+        $users = [];
 
-            foreach ($cf as $i => $value) {
-                $cf[$i] = '';
-            }
-            $url = 'index.php?modname=certificate&amp;certificate_id=' . $id_certificate . '&amp;course_id=' . $id_course . '&amp;user_id=' . $id_user . '&amp;of_platform=lms';
-            if ($on_date != null) {
-                $operation_url = $url . '&amp;op=send_certificate';
-                $cell_down_gen = "<a href='" . $operation_url . "' class='ico-wt-sprite subs_pdf'>" . Lang::t('_DOWNLOAD', 'certificate') . '</a>';
-                $cell_del_cert = FormaLms\lib\Get::sprite_link('subs_del', $url . '&op=del_report_certificate&from=' . FormaLms\lib\Get::req('from'), Lang::t('_DEL', 'certificate'));
-            } else {
-                $operation_url = $url . '&amp;op=print_certificate';
-                $generate = 'javascript:print_certificate(' . $id_user . ',' . $id_course . ',' . $id_certificate . ')';
-                $cell_down_gen = "<a href='" . $generate . "' class='ico-wt-sprite subs_pdf'>" . Lang::t('_GENERATE', 'certificate') . '</a>';
-                $cell_del_cert = '';
-            }
+        $eventResults = Events::trigger('core.course.certificate.rows', compact('res', 'users','cf'));
+        $users = $eventResults['users'];
 
-            $user1 = [
-                'id_user' => $id_user,
-                'id_certificate' => $id_certificate,
-                'edition' => $this->getInfoClassroom($id_user, $id_course),
-                'username' => substr($userid, 1),
-                'lastname' => $lastname,
-                'firstname' => $firstname,
-            ];
-            // getting custom fields values
-            $cf_values = $usermanagementAdm->getCustomFieldUserValues((int)$id_user);
-            $cf = array_replace($cf, $cf_values);
-            $user2 = [];
-            foreach ($cf as $key => $value) {
-                $user2["cf_$key"] = $value;
-            }
-            $user3 = ['status' => $status, 'name_certificate' => $name_certificate, 'date_complete' => $date_complete, 'on_date' => $on_date, 'cell_down_gen' => $cell_down_gen, 'cell_del_cert' => $cell_del_cert];
+        if (!count($users)) {
 
-            $users[] = array_merge($user1, $user2, $user3);
+            foreach ($res as $row) {
+                $idst = $row['idst'];
+                $idRecord = $row['idRecord'];
+                $userid = $row['userid'];
+                $firstname = $row['firstname'];
+                $lastname = $row['lastname'];
+                $date_complete = $row['dateComplete'];
+                $on_date = $row['onDate'];
+                $id_user = $row['id_user'];
+                $status = $row['status'];
+                $id_course = $row['idCourse'];
+                $id_certificate = $row['id_certificate'];
+                $name_certificate = $row['name_certificate'];
+
+                foreach ($cf as $i => $value) {
+                    $cf[$i] = '';
+                }
+                $url = 'index.php?modname=certificate&amp;certificate_id=' . $id_certificate . '&amp;course_id=' . $id_course . '&amp;user_id=' . $id_user . '&amp;of_platform=lms';
+                $ajax_url = 'ajax.adm_server.php?r=adm/certificate/deleteMass&amp;id=' . $row['idRecord'];
+                if ($on_date != null) {
+                    $url = 'index.php?modname=certificate&amp;id=' . $row['idRecord'] . '&amp;of_platform=lms';
+                    $operation_url = $url . '&amp;op=send_certificate';
+                    $cell_down_gen = "<a href='" . $operation_url . "' class='ico-wt-sprite subs_pdf'>" . Lang::t('_DOWNLOAD', 'certificate') . '</a>';
+                    $cell_del_cert = FormaLms\lib\Get::sprite_link('subs_del delete_certificate', $ajax_url . '&op=del_report_certificate&from=' . FormaLms\lib\Get::req('from'), Lang::t('_DEL', 'certificate'));
+                } else {
+                    $operation_url = $url . '&amp;op=print_certificate';
+                    $generate = 'javascript:print_certificate(' . $id_user . ',' . $id_course . ',' . $id_certificate . ')';
+                    $cell_down_gen = "<a href='" . $generate . "' class='ico-wt-sprite subs_pdf'>" . Lang::t('_GENERATE', 'certificate') . '</a>';
+                    $cell_del_cert = '';
+                }
+
+                $user1 = [
+                    'id_user' => $id_user,
+                    'id_certificate' => $id_certificate,
+                    'edition' => $this->getInfoClassroom($id_user, $id_course),
+                    'username' => substr($userid, 1),
+                    'lastname' => $lastname,
+                    'firstname' => $firstname,
+                'idRecord' => $idRecord,
+                ];
+                // getting custom fields values
+                $cf_values = $usermanagementAdm->getCustomFieldUserValues((int)$id_user);
+                $cf = array_replace($cf, $cf_values);
+                $user2 = [];
+                foreach ($cf as $key => $value) {
+                    $user2["cf_$key"] = $value;
+                }
+                $user3 = ['status' => $status, 'name_certificate' => $name_certificate, 'date_complete' => $date_complete, 'on_date' => $on_date, 'cell_down_gen' => $cell_down_gen, 'cell_del_cert' => $cell_del_cert];
+
+                $users[] = array_merge($user1, $user2, $user3);
+            }
         }
 
         return $users;
     }
 
-    protected function getInfoClassroom($id_user, $id_course)
+    public function getInfoClassroom($id_user, $id_course)
     {
         $query = "SELECT cd.code, cd.name
                  FROM %lms_course_date AS cd

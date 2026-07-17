@@ -33,6 +33,30 @@ class Util
 {
     protected static $_js_loaded = [];
 
+    public static function sanitizeFilename(string $filename): string
+    {
+        $extension = pathinfo($filename, PATHINFO_EXTENSION);
+        $name = pathinfo($filename, PATHINFO_FILENAME);
+
+        $transliterated = @iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $name);
+        if ($transliterated !== false) {
+            $name = $transliterated;
+        }
+
+        $name = preg_replace('/\s+/', '_', $name);
+        $name = preg_replace('/[^a-zA-Z0-9_-]/', '', $name);
+
+        if (empty($name)) {
+            $name = 'file_' . time();
+        }
+
+        if ($extension) {
+            $extension = preg_replace('/[^a-zA-Z0-9]/', '', $extension);
+        }
+
+        return $extension ? $name . '.' . $extension : $name;
+    }
+
     public static function purge($html)
     {
         return addslashes(strip_tags($html));
@@ -257,9 +281,9 @@ class Util
         if (defined('IS_AJAX')) {
             // ajax request, json response
             $value = ['fatal' => $msg];
-            require_once _base_ . '/lib/lib.json.php';
-            $json = new Services_JSON();
-            $msg = $json->encode($value);
+
+
+            $msg = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         } else {
             // Browser request, html response
             $msg = '<p style="">'
@@ -479,7 +503,7 @@ class Util
      */
     public static function serialize($string)
     {
-        return \FormaLms\lib\Serializer\FormaSerializer::getInstance()->serialize($string,'json');
+        return \FormaLms\lib\Serializer\FormaSerializer::getInstance()->serialize($string,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     /**
@@ -558,7 +582,7 @@ class UIFeedback
 {
     public static function info($message_text, $return = false)
     {
-        $result = '<a href="#"><div id="container-feedback" class="container-feedback"><span class="ico-sprite fd_info"><span>' . Lang::t('_DETAILS') . '</span></span>&nbsp;' . $message_text . '</div></a>';
+        $result = '<a href="#"><div id="container-feedback" class="container-feedback"><span class="ico-sprite fd_info"><span>' . Lang::t('_DETAILS') . '</span></span>' . $message_text . '</div></a>';
         if ($return) {
             return $result;
         }
@@ -567,7 +591,7 @@ class UIFeedback
 
     public static function notice($message_text, $return = false)
     {
-        $result = '<a href="#"><div id="container-feedback" class="container-feedback"><span class="ico-sprite fd_notice"><span>' . Lang::t('_NOTICE') . '</span></span>&nbsp;' . $message_text . '</div></a>';
+        $result = '<a href="#"><div id="container-feedback" class="container-feedback"><span class="ico-sprite fd_notice"><span>' . Lang::t('_NOTICE') . '</span></span>' . $message_text . '</div></a>';
         if ($return) {
             return $result;
         }
@@ -576,7 +600,7 @@ class UIFeedback
 
     public static function error($message_text, $return = false)
     {
-        $result = '<a href="#"><div id="container-feedback" class="container-feedback"><span class="ico-sprite fd_notice"><span>' . Lang::t('_OPERATION_FAILURE') . '</span></span>&nbsp;' . $message_text . '</div></a>';
+        $result = '<a href="#"><div id="container-feedback" class="container-feedback"><span class="ico-sprite fd_notice"><span>' . Lang::t('_OPERATION_FAILURE') . '</span></span>' . $message_text . '</div></a>';
         if ($return) {
             return $result;
         }
@@ -585,21 +609,21 @@ class UIFeedback
 
     public static function pinfo($message_text)
     {
-        $result = '<p class="pcontainer-feedback"><span class="ico-sprite fd_info"><span>' . Lang::t('_DETAILS') . '</span></span> ' . $message_text . '</p>';
+        $result = '<p class="pcontainer-feedback"><span class="ico-sprite fd_info"><span>' . Lang::t('_DETAILS') . '</span></span>' . $message_text . '</p>';
 
         return $result;
     }
 
     public static function pnotice($message_text)
     {
-        $result = '<p class="pcontainer-feedback"><span class="ico-sprite fd_notice"><span>' . Lang::t('_NOTICE') . '</span></span>&nbsp;' . $message_text . '</p>';
+        $result = '<p class="pcontainer-feedback"><span class="ico-sprite fd_notice"><span>' . Lang::t('_NOTICE') . '</span></span>' . $message_text . '</p>';
 
         return $result;
     }
 
     public static function perror($message_text)
     {
-        $result = '<p class="pcontainer-feedback"><span class="ico-sprite fd_notice"><span>' . Lang::t('_OPERATION_FAILURE') . '</span></span>&nbsp;' . $message_text . '</p>';
+        $result = '<p class="pcontainer-feedback"><span class="ico-sprite fd_notice"><span>' . Lang::t('_OPERATION_FAILURE') . '</span></span>' . $message_text . '</p>';
 
         return $result;
     }
@@ -850,13 +874,13 @@ function fromDatetimeToTimestamp($datetime)
 
 function createDateDistance($date, $m_name = false, $on_over_return_date = false)
 {
-    $year = substr($date, 0, 4);
-    $month = substr($date, 5, 2);
-    $day = substr($date, 8, 2);
+    $year = (int)substr($date, 0, 4);
+    $month = (int)substr($date, 5, 2);
+    $day = (int)substr($date, 8, 2);
 
-    $hour = substr($date, 11, 2);
-    $minute = substr($date, 14, 2);
-    $second = substr($date, 17, 2);
+    $hour = (int)substr($date, 11, 2);
+    $minute = (int)substr($date, 14, 2);
+    $second = (int)substr($date, 17, 2);
 
     $distance = time() - mktime($hour, $minute, $second, $month, $day, $year);
     //second -> minutes

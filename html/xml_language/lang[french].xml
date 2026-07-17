@@ -489,11 +489,6 @@
         <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[Affiche également, dans les résultats des recherches de bibliothèque du contenu, les objets qui ne sont pas complétement catégorisés]]></key>
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[Activer l'édition de langue (utilisé pour le déboguage)]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[Nom et Prénom sont requis afin de s'enregister]]></key>
-        <key id="configuration&amp;_LDAP" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[LDAP]]></key>
-        <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[Port LDAP (généralement 389)]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[Adresse du serveur LDAP]]></key>
-        <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[Activer l'authentification LDAP]]></key>
-        <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[Nom d'utilisateur pour les utilsiateurs de LDAP, utiliser $user pour le nom d'utilisateur.<br />Ex. $user@domain2.domain1 (pour: W2k3)]]></key>
         <key id="configuration&amp;_LIST_DB_UPGRADES" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[Journal des scripts DB SQL]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[Configuration de "magic_quotes_gpc"]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[Expéditeur d'email des enregistrements et des mots de passe perdus]]></key>
@@ -646,7 +641,6 @@
         <key id="configuration&amp;_URL" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[URL du site web avec le / final]]></key>
         <key id="configuration&amp;_URL_CHECKIN_TELESKILL" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[URL pour vérification]]></key>
         <key id="configuration&amp;_URL_VIDEOCONFERENCE_TELESKILL" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[URL pour la vidéoconférence]]></key>
-        <key id="configuration&amp;_USEFULL_ONLY_IF" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[Ne prenez ce paramètre en considération que si vous avez besoin de vous authentifier via LDAP]]></key>
         <key id="configuration&amp;_USERS_ALREADY_ASSIGNED" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[utilisateurs déjà assignés]]></key>
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[Demander à l'utilisateur de choisir un mot de passe différent des X derniers mot de passe utilisés]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[Quota disque (en Mo) pour chaque section Mes Fichiers des utilisateurs]]></key>
@@ -1410,7 +1404,6 @@ Mot de passe: [password]]]></key>
 Pour modifier ces mots veuillez vous rendre dans Admin/Gestion des langues, recherchez <b>login</b> et modifiez les clés <b>_INTRO_STD_TEXT_TITLE</b> et <b>_INTRO_STD_TEXT</b>]]></key>
         <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[forma.lms est une plateforme de e-learning Open Source (LMS et LCMS) utilisé dans le monde professionnel et de l'enseignement supérieur.]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[Passer au formulaire d'identification]]></key>
-        <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[L'authentification LDAP est active, la fonctionnalité est indisponible veuillez appeler votre administrateur]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[Identifiant de connexion]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[Identifiant accessible]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2020-09-15 14:47:14"><![CDATA[Identifiant de connexion]]></key>

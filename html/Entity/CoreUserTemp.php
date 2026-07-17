@@ -9,7 +9,14 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CoreUserTemp
  *
- * @ORM\Table(name="core_user_temp", uniqueConstraints={@ORM\UniqueConstraint(name="userid", columns={"userid"})})
+ * @ORM\Table(name="core_user_temp",
+ *      uniqueConstraints={
+ *          @ORM\UniqueConstraint(name="userid", columns={"userid"})
+ *      },
+ *      indexes={
+ *          @ORM\Index(name="confirmed_idx", columns={"confirmed"})
+ *      }
+ * )
  * @ORM\Entity
  */
 class CoreUserTemp

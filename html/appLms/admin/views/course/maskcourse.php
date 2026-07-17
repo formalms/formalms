@@ -26,19 +26,29 @@ $htmlData = '';
         . Form::getTextfield(Lang::t('_CODE', 'course'), 'course_code', 'course_code', '50', $course['code'])
         . Form::getTextfield(Lang::t('_COURSE_NAME', 'course'), 'course_name', 'course_name', '255', $course['name']));
 
-    if ($course['course_type'] == 'classroom' && $has_editions_or_classrooms) {
+    if ($id_course === false) {
+        // New course: remove 'edition' from available types
+        unset($course_type['edition']);
+        $htmlData .= Form::getDropdown(Lang::t('_COURSE_TYPE', 'course'), 'course_type', 'course_type', $course_type, 'elearning');
+    } elseif ($course['course_type'] == 'classroom' && $has_editions_or_classrooms) {
         //this is a classroom course with editions
         $htmlData .= (Form::getLineBox(Lang::t('_COURSE_TYPE', 'course'), $course_type['classroom'])
             . Form::getHidden('course_type', 'course_type', 'classroom'));
     } elseif ($course['course_edition'] > 0 && $has_editions_or_classrooms) {
-        //this is a classroom course with editions
+        //this is an edition course with editions
         $htmlData .= (Form::getLineBox(Lang::t('_COURSE_TYPE', 'course'), $course_type['edition'])
             . Form::getHidden('course_type', 'course_type', 'edition'));
+    } elseif ($has_enrolled_users) {
+        //course has enrolled users, block type change
+        $current_type_key = $course['course_edition'] > 0 ? 'edition' : $course['course_type'];
+        $htmlData .= (Form::getLineBox(Lang::t('_COURSE_TYPE', 'course'), $course_type[$current_type_key])
+            . Form::getHidden('course_type', 'course_type', $current_type_key));
     } else {
-        //echo Form::getDropdown(Lang::t('_COURSE_TYPE', 'course'), 'course_type', 'course_type', $course_type, $course['course_type']);
-        $htmlData .= (Form::getDropdown(Lang::t('_COURSE_TYPE', 'course'), 'course_type', 'course_type', $course_type, $id_course === false ? 'elearning' : $course['course_type']));
+        // Existing course with no restrictions: dropdown without 'edition'
+        unset($course_type['edition']);
+        $htmlData .= Form::getDropdown(Lang::t('_COURSE_TYPE', 'course'), 'course_type', 'course_type', $course_type, $course['course_type']);
     }
-    $htmlData .= (Form::getDropdown(Lang::t('_STATUS', 'course'), 'course_status', 'course_status', $status, $course['status'])
+        $htmlData .= (Form::getDropdown(Lang::t('_STATUS', 'course'), 'course_status', 'course_status', $status, $course['status'])
         . Form::getCheckbox(Lang::t('_DIRECT_PLAY', 'course'), 'direct_play', 'direct_play', '1', $course['direct_play'] == 1)
         // hiding the "show results" option - is not used (missing functions)
         //. Form::getCheckbox(Lang::t('_SHOW_RESULTS', 'course'), 'show_result', 'show_result', '1', $course['show_result'] == 1)
@@ -54,8 +64,8 @@ $htmlData = '';
         . ($id_course === false ? Form::getDropdown(Lang::t('_COURSE_MENU_TO_ASSIGN', 'course'), 'selected_menu', 'selected_menu', $menu_custom, $sel_custom) : '')
         . Form::getDropdown(Lang::t('_COURSE_LANG_METHOD', 'course'), 'course_lang', 'course_lang', $array_lang, array_search($course['lang_code'], $array_lang))
         . Form::getDropdown(Lang::t('_DIFFICULTY', 'course'), 'course_difficult', 'course_difficult', $difficult_lang, $course['difficult'])
-        . Form::getTextfield(Lang::t('_CREDITS', 'course'), 'credits', 'credits', '50', $course['credits'])
-        . Form::getDropdown(Lang::t('_LABELS', 'label'), 'label', 'label', $label_model->getLabelFromDropdown(true), ($id_course === false ? false : $label_model->getCourseLabel($course['idCourse']))));
+        . Form::getTextfield(Lang::t('_CREDITS', 'course'), 'credits', 'credits', '50', $course['credits']));
+
     //. (!$classroom ? Form::getCheckbox(Lang::t('_COURSE_EDITION', 'course'), 'course_edition_yes', 'course_edition', 1, $course['course_edition'] == 1) : '' )
     //. Form::getCloseCombo()
 
@@ -152,7 +162,7 @@ $htmlData = '';
             . Form::getInputDropdown('dropdown_nw', 'hour_end_quarter', 'hour_end[quarter]', $quarter, $qe_sel, '')
         )
         . Form::getTextfield(Lang::t('_DAY_OF_VALIDITY', 'course'), 'course_day_of', 'course_day_of', '10', $course['valid_time'])
-        . Form::getTextfield(Lang::t('_MEDIUM_TIME', 'course'), 'course_medium_time', 'course_medium_time', '10', $course['mediumTime'])
+        . Form::getTextfield(Lang::t('_MEDIUM_TIME', 'course'), 'course_medium_time', 'course_medium_time', '10', rtrim(rtrim(str_replace('.', ',', $course['mediumTime']), '0'), ','))
         . Form::getCheckbox(Lang::t('_SEND_CALENDAR', 'course'), 'send_calendar', 'send_calendar', 1, $course['sendCalendar'])
         . Form::getCloseFieldset()
 

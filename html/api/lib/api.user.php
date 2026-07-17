@@ -118,11 +118,15 @@ class User_API extends API
             (isset($userdata['password']) ? $userdata['password'] : ''),
             (isset($userdata['email']) ? $userdata['email'] : ''),
             '',
-            (isset($userdata['signature']) ? $userdata['signature'] : ''),
             false, // alredy_encripted
             $set_idst,
             (isset($userdata['pwd_expire_at']) ? $userdata['pwd_expire_at'] : ''),
-            (isset($userdata['force_change']) ? $userdata['force_change'] : 0)
+            (isset($userdata['force_change']) ? $userdata['force_change'] : 0),
+            false,
+            false,
+            false,
+            false,
+            'api'
         );
 
         //TODO: EVT_OBJECT (§)
@@ -142,7 +146,11 @@ class User_API extends API
             $user_manager = new UserManager();
             $uma = new UsermanagementAdm();
             $reg_code_res = $user_manager->_render->processRegistrationCode(
-                $this->aclManager, $uma, $id_user, $userdata['reg_code'], $userdata['reg_code_type']
+                $this->aclManager,
+                $uma,
+                $id_user,
+                $userdata['reg_code'],
+                $userdata['reg_code_type']
             );
             if ($reg_code_res['success'] == false) {
                 $this->aclManager->deleteUser($id_user);
@@ -217,7 +225,6 @@ class User_API extends API
                             $this->aclManager->addToGroup($ocd, $id_user);
                             $entities[$oc] = $oc;
                             $entities[$ocd] = $ocd;
-
                         }
                     }
                 }
@@ -244,7 +251,8 @@ class User_API extends API
             }
 
 
-            $enrollrules->newRules('_NEW_USER',
+            $enrollrules->newRules(
+                '_NEW_USER',
                 [$id_user],
                 $userdata['language'],
                 0, // idOrg
@@ -315,7 +323,6 @@ class User_API extends API
 
         if (!$user_data) {
             return -1;
-
         }
 
         if (isset($userdata['valid']) && $userdata['valid'] == '1') {
@@ -332,7 +339,6 @@ class User_API extends API
             (isset($userdata['password']) ? $userdata['password'] : false),
             (isset($userdata['email']) ? $userdata['email'] : false),
             false,
-            (isset($userdata['signature']) ? $userdata['signature'] : false),
             (isset($userdata['lastenter']) ? $userdata['lastenter'] : false),
             false
         );
@@ -379,7 +385,7 @@ class User_API extends API
         $okcustom = true;
         if (isset($userdata['_customfields']) && $res) {
             require_once _adm_ . '/lib/lib.field.php';
-            $fields =& $userdata['_customfields'];
+            $fields = &$userdata['_customfields'];
             if (count($fields) > 0) {
                 $fl = new FieldList();
                 $okcustom = $fl->storeDirectFieldsForUser($id_user, $fields);
@@ -416,11 +422,11 @@ class User_API extends API
 
         $userCount = count($id_user_list);
         // Recupera tutti gli utenti in una singola query
-        $users_data = $this->aclManager->getUsers($id_user_list);
+        $users_data = $this->aclManager->getUsersAssociative($id_user_list);
 
         // Recupera tutti i campi personalizzati in una singola query
         $field_man = new FieldList();
-        $all_field_data = $field_man->getFieldsAndValueFromMultipleUsers($id_user_list);
+        $all_field_data = $field_man->getFieldsAndValueFromMultipleUsers($id_user_list, true);
 
         $output = [];
         foreach ($id_user_list as $id_user) {
@@ -433,16 +439,15 @@ class User_API extends API
             } else {
                 $user_data = $users_data[(int)$id_user];
                 $user_details = [
-                    'idst' => $user_data[ACL_INFO_IDST],
-                    'userid' => $this->aclManager->relativeId($user_data[ACL_INFO_USERID]),
-                    'firstname' => $user_data[ACL_INFO_FIRSTNAME],
-                    'lastname' => $user_data[ACL_INFO_LASTNAME],
-                    'email' => $user_data[ACL_INFO_EMAIL],
-                    'signature' => $user_data[ACL_INFO_SIGNATURE],
-                    'valid' => $user_data[ACL_INFO_VALID],
-                    'pwd_expire_at' => $user_data[ACL_INFO_PWD_EXPIRE_AT],
-                    'register_date' => $user_data[ACL_INFO_REGISTER_DATE],
-                    'last_enter' => $user_data[ACL_INFO_LASTENTER],
+                    'idst' => $user_data['idst'],
+                    'userid' => $this->aclManager->relativeId($user_data['userid']),
+                    'firstname' => $user_data['firstname'],
+                    'lastname' => $user_data['lastname'],
+                    'email' => $user_data['email'],
+                    'valid' => $user_data['valid'],
+                    'pwd_expire_at' => $user_data['pwd_expire_at'],
+                    'register_date' => $user_data['register_date'],
+                    'last_enter' => $user_data['lastenter'],
                 ];
 
                 $fields = [];
@@ -532,25 +537,48 @@ class User_API extends API
     /**
      * Return the complete user list.
      */
-    private function getUsersList()
+    private function getUsersList($showCustomFields = false)
     {
+        require_once _adm_ . '/lib/lib.field.php';
         $output = [];
         $query = 'SELECT idst, userid, firstname, lastname FROM %adm_user WHERE idst<>' . $this->aclManager->getAnonymousId() . ' ORDER BY userid';
         $res = $this->db->query($query);
+        $field_man = new FieldList();
         if ($res) {
             $output['success'] = true;
             $output['users_list'] = [];
             foreach ($res as $row) {
-                $output['users_list'][] = [
-                    'userid' => $this->aclManager->relativeId($row['userid']),
-                    'idst' => $row['idst'],
-                    'firstname' => $row['firstname'],
-                    'lastname' => $row['lastname'],
+                $users[$row['idst']] = $row;
+            }
+
+            if ($showCustomFields) {
+                $allFieldData = $field_man->getFieldsAndValueFromMultipleUsers(array_keys($users), true);
+            }
+
+            foreach ($users as $user) {
+                $user_details = [
+                    'userid' => $this->aclManager->relativeId($user['userid']),
+                    'idst' => $user['idst'],
+                    'firstname' => $user['firstname'],
+                    'lastname' => $user['lastname'],
                 ];
+
+                $fields = [];
+                if (isset($allFieldData[$user['idst']])) {
+                    foreach ($allFieldData[$user['idst']] as $field_id => $value) {
+                        $fields[] = ['id' => $field_id, 'name' => $value[0], 'value' => $value[1]];
+                    }
+                }
+                $user_details['custom_fields'] = $fields;
+
+                $output['users_list'][] = $user_details;
             }
         } else {
             $output['success'] = false;
         }
+
+        // Recupera tutti i campi personalizzati in una singola query
+
 
         return $output;
     }
@@ -625,8 +653,18 @@ class User_API extends API
         $kb_model = new KbAlms();
         $sf = $kb_model->getSearchFilter($id_user, $filter_text, $course_filter);
 
-        $res_arr = $kb_model->getResources(0, $start_index, $results, false,
-            false, $sf['where'], $sf['search'], false, true, $sf['show_what']);
+        $res_arr = $kb_model->getResources(
+            0,
+            $start_index,
+            $results,
+            false,
+            false,
+            $sf['where'],
+            $sf['search'],
+            false,
+            true,
+            $sf['show_what']
+        );
 
         foreach ($res_arr['data'] as $key => $content_info) {
             $output[]['content_info'] = $content_info;
@@ -744,7 +782,7 @@ class User_API extends API
     public function checkUsername($params)
     {
         $userid = $params['userid'];
-        $query = 'SELECT idst, userid, firstname, lastname, pass, email, avatar, signature,'
+        $query = 'SELECT idst, userid, firstname, lastname, pass, email, avatar,'
             . ' level, lastenter, valid, pwd_expire_at, register_date, lastenter, force_change,
 					 facebook_id, twitter_id, linkedin_id, google_id, privacy_policy '
             . ' FROM ' . $this->aclManager->_getTableUser();
@@ -1183,10 +1221,10 @@ class User_API extends API
     {
         $id_org = $params['id_org'];
 
-        $output = [];
-        $output['message'] = 'remove org: ' . $id_org;
-
-        $output['success'] = true;
+        $output = [
+            'success' => true,
+            'message' => 'remove org: ' . $id_org
+        ];
 
         if (empty($id_org)) {
             $output['success'] = false;
@@ -1257,7 +1295,9 @@ class User_API extends API
         switch ($name) {
             case 'listUsers':
             case 'userslist':
-                $list = $this->getUsersList();
+                $showCustomFields = (bool)$_POST['show_custom_fields'];
+
+                $list = $this->getUsersList($showCustomFields);
                 if ($list['success']) {
                     $output = ['success' => true, 'list' => $list['users_list']];
                 } else {
@@ -1291,10 +1331,7 @@ class User_API extends API
                 break;
 
             case 'customfields':
-                $tmp_lang = false; //if not specified, use default language
-                if (isset($params['language'])) {
-                    $tmp_lang = $params['language'];
-                } //check if a language has been specified
+                $tmp_lang = $params['language'] ?? false; //check if a language has been specified
                 $res = $this->getCustomFields($tmp_lang);
                 if ($res != false) {
                     $output = ['success' => true, 'custom_fields' => $res];
@@ -1345,7 +1382,12 @@ class User_API extends API
                 if (!$idst) {
                     $output = ['success' => false, 'message' => 'Error: invalid userid: ' . $params['userid'] . '.'];
                 } else {
-                    $output = $this->getUserDetails($idst);
+                    $res = $this->getUserDetails([$idst]);
+                    if (!$res) {
+                        $output = ['success' => false, 'message' => 'Error: unable to retrieve user details.'];
+                    } else {
+                        $output = ['success' => true, 'details' => $res];
+                    }
                 }
                 break;
 

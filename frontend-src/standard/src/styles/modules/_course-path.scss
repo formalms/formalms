@@ -1,6 +1,6 @@
-#path_course_description {
-    padding: 0.5% 1%;
-  }
+   [id^="path_course_description"] {
+	padding: 0.5% 1%;
+   }	
   
   .coursepath-main-container {
     display: flex;
@@ -43,7 +43,7 @@
     padding: 2.5% 0.5%;
   }
   
-  #path_course_title {
+ [id^="path_course_title"] {
     font-weight: bold;
     font-size: xx-large;
     padding-left: 0.8%;

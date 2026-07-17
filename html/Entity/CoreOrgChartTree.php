@@ -9,7 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CoreOrgChartTree
  *
- * @ORM\Table(name="core_org_chart_tree")
+ * @ORM\Table(name="core_org_chart_tree", indexes={
+ *      @ORM\Index(name="associated_template_idst_oc_idx", columns={"associated_template","idst_oc"}),
+ *  })
  * @ORM\Entity
  */
 class CoreOrgChartTree

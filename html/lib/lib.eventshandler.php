@@ -11,6 +11,8 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
+use Symfony\Contracts\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
@@ -50,9 +52,32 @@ final class EventsHandler
      */
     public function trigger($eventName, $arguments = [])
     {
-        $event = $this->dispatcher->dispatch(new \Symfony\Component\EventDispatcher\GenericEvent(null, $arguments), $eventName);
+        // Per i listener Symfony usiamo un evento Symfony
+        if (isset($this->dispatcher)) {
+            // Se è un array, lo passiamo normalmente
+            if (is_array($arguments)) {
+                $symfonyEvent = new \Symfony\Component\EventDispatcher\GenericEvent(null, $arguments);
+            } elseif ($arguments instanceof Event) {
+                $symfonyEvent = $arguments;
+            } else {
+                $symfonyEvent = new \Symfony\Component\EventDispatcher\GenericEvent(null, []);
+            }
 
-        return $event->getArguments();
+            $this->dispatcher->dispatch($symfonyEvent, $eventName);
+        }
+
+        // Per i listener legacy usiamo un ArrayAccess modificabile
+        if ($arguments instanceof GenericEvent) {
+            $eventData = new \ArrayObject($arguments->getArguments());
+        } elseif ($arguments instanceof Event && method_exists($arguments, 'getArguments')) {
+            $eventData = new \ArrayObject($arguments->getArguments());
+        } elseif (is_array($arguments)) {
+            $eventData = new \ArrayObject($arguments);
+        } else {
+            $eventData = new \ArrayObject(); // fallback vuoto
+        }
+
+        return $eventData->getArrayCopy();
     }
 
     /**

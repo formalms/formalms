@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once _base_ . '/lib/lib.json.php';
+
 
 /**
  * Class DashboardLmsController.
@@ -24,7 +24,6 @@ class DashboardLmsController extends LmsController
 
     /** @var DashboardLms */
     public $model;
-    public Services_JSON $json;
     /**
      * @var array|true[]
      */
@@ -42,8 +41,7 @@ class DashboardLmsController extends LmsController
             'view' => true,
             'mod' => true,
         ];
-        /* @var Services_JSON json */
-        $this->json = new Services_JSON();
+        
         $this->model = new DashboardLms();
     }
 

@@ -194,7 +194,7 @@ function mycourses(&$url)
             . '<p>'
                 . Form::getLabel('search', $lang->def('_WORD'))
             . '</p>'
-            . Form::getInputTextfield('textfield_nowh', 'search', 'search', importVar('search'), $lang->def('_WORD'), '255', '') . '<br/>'
+            . Form::getInputTextfield('textfield_nowh', 'search', 'search', importVar('search'), '255', '') . '<br/>'
 
             . '<p>'
                 . Form::getLabel('year', $lang->def('_YEAR'))
@@ -526,7 +526,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
     $editions = [];
     if ($re_edition) {
         foreach ($re_edition as $edition_elem) {
-            $edition_elem['classrooms'] = (isset($classrooms[$edition_elem['classrooms']]) ? $classrooms[$edition_elem['classrooms']] : '');
+            $edition_elem['classrooms'] = ($classrooms[$edition_elem['classrooms']] ?? '');
             $editions[$edition_elem['id_course']][$edition_elem['id_course']] = $edition_elem;
         }
     }
@@ -616,7 +616,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
             );
         }
         foreach ($preass_list as $cinfo) {
-            $cinfo['user_score'] = (isset($user_score[$cinfo['idCourse']]) ? $user_score[$cinfo['idCourse']] : null);
+            $cinfo['user_score'] = ($user_score[$cinfo['idCourse']] ?? null);
 
             if (isset($comment_count[$cinfo['idCourse']])) {
                 $cinfo['comment_count'] = $comment_count[$cinfo['idCourse']];
@@ -707,20 +707,20 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
     }
 
     foreach ($re_course as $cinfo) {
-        $cinfo['edition_list'] = (isset($editions[$cinfo['idCourse']]) ? $editions[$cinfo['idCourse']] : []);
-        $cinfo['user_score'] = (isset($user_score[$cinfo['idCourse']]) ? $user_score[$cinfo['idCourse']] : null);
-        $cinfo['enrolled'] = (isset($enrolled[$cinfo['idCourse']]) ? $enrolled[$cinfo['idCourse']] : false);
+        $cinfo['edition_list'] = ($editions[$cinfo['idCourse']] ?? []);
+        $cinfo['user_score'] = ($user_score[$cinfo['idCourse']] ?? null);
+        $cinfo['enrolled'] = ($enrolled[$cinfo['idCourse']] ?? false);
 
         if (isset($comment_count[$cinfo['idCourse']])) {
             $cinfo['comment_count'] = $comment_count[$cinfo['idCourse']];
         }
 
-        $cinfo['classrooms'] = (isset($classrooms[$cinfo['classrooms']]) ? $classrooms[$cinfo['classrooms']] : '');
+        $cinfo['classrooms'] = ($classrooms[$cinfo['classrooms']] ?? '');
 
         // advertising --------------------------------------------------------------------------------------------
-        $cinfo['to_read']['advice'] = (isset($advices[$cinfo['idCourse']]) ? $advices[$cinfo['idCourse']] : 0);
-        $cinfo['to_read']['forum'] = (isset($forums[$cinfo['idCourse']]) ? $forums[$cinfo['idCourse']] : 0);
-        $cinfo['to_read']['lobj'] = (isset($org_chart[$cinfo['idCourse']]) ? $org_chart[$cinfo['idCourse']] : 0);
+        $cinfo['to_read']['advice'] = ($advices[$cinfo['idCourse']] ?? 0);
+        $cinfo['to_read']['forum'] = ($forums[$cinfo['idCourse']] ?? 0);
+        $cinfo['to_read']['lobj'] = ($org_chart[$cinfo['idCourse']] ?? 0);
 
         // 10 days in the future
         $range = time() + (10 * 24 * 60 * 60);
@@ -732,7 +732,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
                 ++$course_stats['expiring'];
             }
         }
-        if ($cinfo['valid_time'] != '0' && $cinfo['valid_time'] != '' && $cinfo['date_first_access'] != '') {
+        if ($cinfo['valid_time'] != '0' && $cinfo['valid_time'] != '' && !empty($cinfo['date_first_access'])) {
             $time_first_access = fromDatetimeToTimestamp($cinfo['date_first_access']);
             if ($range > ($time_first_access + ($cinfo['valid_time'] * 24 * 3600))) {
                 $expiring = true;
@@ -1108,7 +1108,7 @@ function dashmycourse(&$url, $lang, &$subscription, $cinfo, $index)
                     ['[course_type]', '[create_date]', '[enrolled]', '[course_status]'],
                     [$course_type,
                             createDateDistance($cinfo['create_date'], 'catalogue', true),
-                            (isset($cinfo['enrolled'][0]) ? $cinfo['enrolled'][0] : 0),
+                            ($cinfo['enrolled'][0] ?? 0),
                             $arr_coursestatus_course_status, ],
                     $lang->def('_COURSE_INTRO')
                 ) .
@@ -1378,7 +1378,7 @@ function dashmycourse(&$url, $lang, &$subscription, $cinfo, $index)
             $li .= '<li class="course_comment">'
                     . '<a href="javascript:;" onclick="openComment(\'' . $cinfo['idCourse'] . '\'); return false;">'
                     . '<span>' . $lang->def('_COMMENTS') . ' ('
-                    . (isset($cinfo['comment_count']) ? $cinfo['comment_count'] : '0') . ')</span></a>'
+                    . ($cinfo['comment_count'] ?? '0') . ')</span></a>'
                     . '</li>';
         }
         // the course material -----------------------------------------------------------------
@@ -1505,9 +1505,9 @@ function dashAcourse($id_course, $h_number)
     }
 
     $cinfo['theacher_list'] = getSubscribed($cinfo['idCourse'], false, 6, true);
-    $cinfo['edition_list'] = (isset($editions[$cinfo['idCourse']]) ? $editions[$cinfo['idCourse']] : []);
+    $cinfo['edition_list'] = ($editions[$cinfo['idCourse']] ?? []);
     $cinfo['edition_available'] = count($cinfo['edition_list']);
-    $cinfo['user_score'] = (isset($user_score[$cinfo['idCourse']]) ? $user_score[$cinfo['idCourse']] : null);
+    $cinfo['user_score'] = ($user_score[$cinfo['idCourse']] ?? null);
 
     require_once _base_ . '/lib/lib.urlmanager.php';
     $url = &UrlManager::getInstance('catalogue');
@@ -1515,7 +1515,7 @@ function dashAcourse($id_course, $h_number)
     if ($normal_subs == 0) {
         $cinfo['can_subscribe'] = 0;
     }
-    $html = dashcourse($url, $lang, $cinfo, (isset($usercourses[$cinfo['idCourse']]) ? $usercourses[$cinfo['idCourse']] : false), 0, $h_number);
+    $html = dashcourse($url, $lang, $cinfo, ($usercourses[$cinfo['idCourse']] ?? false), 0, $h_number);
 
     return $html;
 }
@@ -1538,7 +1538,7 @@ function downloadMaterials()
         $from_edition = ' FROM %lms_course_edition';
         $where_edition = " WHERE idCourseEdition = '" . $edition_id . "' ";
 
-        list($file) = sql_fetch_row(sql_query($select_edition . $from_edition . $where_edition));
+        [$file] = sql_fetch_row(sql_query($select_edition . $from_edition . $where_edition));
     }
     require_once _base_ . '/lib/lib.download.php';
     $ext = end(explode('.', $file));

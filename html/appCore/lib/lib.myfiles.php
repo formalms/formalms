@@ -60,7 +60,7 @@ class MyFile
      */
     public function getFilesTable()
     {
-        return $GLOBALS['prefix_fw'] . '_user_myfiles';
+        return $GLOBALS['prefix_fw'] . '_user_file';
     }
 
     public function getFilePath()
@@ -179,14 +179,11 @@ class MyFile
     public function getFileCount($area = false, $extra_filter = false)
     {
         $query = '
-		SELECT COUNT(*)
+		SELECT COUNT(*) as total
 		FROM ' . $this->getFilesTable() . "
-		WHERE owner = '" . $this->id_user . "'";
+		WHERE user_idst = '" . $this->id_user . "'";
         if ($area !== false) {
             $query .= " AND area = '" . $area . "'";
-        }
-        if ($extra_filter !== false) {
-            $query .= $extra_filter;
         }
 
         if (!$re_query = $this->_query($query)) {
@@ -518,31 +515,17 @@ class MyFilesPolicy extends MyFile
         }
 
         $query = '
-		SELECT area, COUNT(*)
+		SELECT COUNT(*) as total
 		FROM ' . $this->getFilesTable() . "
-		WHERE owner = '" . $this->_id_user . "'
-			AND " . $this->arr_field[MYFILE_POLICY] . ' IN ( ' . implode(',', $arr_policy) . ' ) ';
-        //if($area !== false) $query .= " AND area = '".$area."'";
-        if ($extra_filter !== false) {
-            $query .= $extra_filter;
-        }
-        $query .= ' GROUP BY area ';
+		WHERE user_idst = " . $this->_id_user;
 
         $this->_file_number = ['total' => 0];
         if (!$re_query = $this->_query($query)) {
             return '0';
-        }
-        while (list($in_area, $number) = $this->fetch_row($re_query)) {
-            $this->_file_number[$in_area] = $number;
-            $this->_file_number['total'] += $number;
+        } else {
+            list($number) = $this->fetch_row($re_query);
         }
 
-        $this->_extra_filter_cahced = $extra_filter;
-
-        return $area !== false
-            ? (isset($this->_file_number[$area]) ? $this->_file_number[$area] : 0)
-            : $this->_file_number['total']
-        ;
     }
 
     public function isFileAccessible($id_file)

@@ -382,10 +382,6 @@ class sys_forum
             if (!$locked_m) {
                 $mess .= '<div class="forum_post_title">' . $this->lang->def('_SUBJECT') . ' : ' . $title . '</div>'
                         . '<div class="forum_post_text">' . $textof . '</div>';
-                if (isset($authors_info[$author]) && $authors_info[$author][ACL_INFO_SIGNATURE] != '') {
-                    $mess .= '<div class="forum_post_sign_separator"></div>'
-                        . '<div class="forum_post_sign">' . $authors_info[$author][ACL_INFO_SIGNATURE] . '</div>';
-                }
             } else {
                 $mess .= '<div class="forum_post_locked">' . $this->lang->def('_LOCKEDMESS') . '</div>';
             }
@@ -819,7 +815,7 @@ class sys_forum
 			FROM ' . $this->prefix . "_sysforum
 			WHERE idMessage='" . (int) $_GET['sf_fileid'] . "'"));
         if (!$attach) {
-            echo '<div class="errorBlock">Sorry, such file does not exist!</div>';
+            echo '<div class="errorBlock">' . Lang::t('_FILE_NOT_EXISTS', 'standard') . '</div>';
 
             return;
         }

@@ -12,17 +12,26 @@ class NewsletterService implements Accessible
 
     public const _ANY_LANG_CODE = '-any-';
 
-    public function getAccessList($resourceId) : array {
+    public function getAccessList($resourceId): array
+    {
 
         //non si può modificare quindi torno sempre vuoto
         return [];
     }
 
-    public function setAccessList($resourceId, array $selection) : bool {
+    public function setAccessList($resourceId, array $selection, $idCourse = 0): bool
+    {
 
         $send_to_idst = [];
         foreach ($selection as $idstMember) {
-            $arr = \FormaLms\lib\Forma::getAclManager()->getGroupAllUser($idstMember);
+
+            if ($idstMember <= 1 && $idCourse > 0) { //select all for newsletter course
+                $res = \FormaLms\lib\Forma::getAclManager()->getGroupsIdstFromBasePath('/lms/course/' . $idCourse . '/subscribed/');
+                 $arr =\FormaLms\lib\Forma::getAclManager()->getAllUsersFromIdst($res);
+            } else {
+                $arr = \FormaLms\lib\Forma::getAclManager()->getGroupAllUser($idstMember);
+            }
+
             if ((is_array($arr)) && (count($arr) > 0)) {
                 $send_to_idst = array_merge($arr, $send_to_idst);
                 $send_to_idst = array_unique($send_to_idst);
@@ -31,9 +40,9 @@ class NewsletterService implements Accessible
             }
 
             //non c'è bisogno perchè lo userselector già torna utenti prefiltrati dalle admin preference
-           // if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-           //     $send_to_idst = array_intersect($send_to_idst, $admin_users);
-           // }
+            // if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            //     $send_to_idst = array_intersect($send_to_idst, $admin_users);
+            // }
         }
 
         foreach ($send_to_idst as $key => $val) {
@@ -57,15 +66,17 @@ class NewsletterService implements Accessible
         $q = sql_query($qtxt);
 
         $this->setTotalSent($tot);
-       return true;
+        return true;
     }
 
 
-    public function getTotalSent() : int {
+    public function getTotalSent(): int
+    {
         return $this->totalSent;
     }
 
-    private function setTotalSent(int $totalSent) : self {
+    private function setTotalSent(int $totalSent): self
+    {
         $this->totalSent = $totalSent;
         return $this;
     }

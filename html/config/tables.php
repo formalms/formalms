@@ -134,6 +134,6 @@ return [
         ['key' => 'cert_name', 'label' => Lang::t('_CERTIFICATE_NAME', 'course')],
         ['key' => 'date_complete', 'label' => Lang::t('_DATE_COMPLETE', 'certificate')],
         ['key' => 'download', 'label' => Lang::t('_TAKE_A_COPY', 'certificate'), 'className' => 'img-cell'],
-  
+
     ]
 ];

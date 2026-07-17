@@ -82,7 +82,7 @@ class kbcategorizeWidget extends Widget
         $c_tags = $data['tags'];
         unset($data['tags']);
 
-        $json = new Services_JSON();
+        
 
         $this->render('kbcategorize',
             [
@@ -92,8 +92,8 @@ class kbcategorizeWidget extends Widget
                 'form_extra_hidden' => $this->form_extra_hidden,
                 'data' => $data,
                 'c_folders' => $c_folders,
-                'c_tags_json' => $json->encode(array_values($c_tags)),
-                'all_tags_json' => $json->encode(array_values($kbres->getAllTags())),
+                'c_tags_json' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(array_values($c_tags), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON),
+                'all_tags_json' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(array_values($kbres->getAllTags()), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON),
             ]
         );
     }

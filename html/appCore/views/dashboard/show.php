@@ -213,11 +213,7 @@
                                         <a href="index.php?r=alms/communication/add"><?php echo Lang::t('_COMMUNICATIONS', 'communication'); ?></a>
                                     </li>
                                 <?php } ?>
-                                <?php if ($permissions['add_games']) { ?>
-                                    <li>
-                                        <a href="index.php?r=alms/games/add"><?php echo Lang::t('_CONTEST', 'games'); ?></a>
-                                    </li>
-                                <?php } ?>
+
                             </ul>
                         </div>
                     <?php
@@ -365,46 +361,47 @@
                     <div id="user_registrations_chart"></div>
                 </div>
             </div>
-            <div class="inline_block_big">
-                <h2 class="heading"><?php echo Lang::t('_COURSES', 'dashboard'); ?></h2>
-                <div class="content">
-                    <div class="yui-g">
-                        <div class="yui-u first">
-                            <ul class="link_list">
-                                <li><?php echo Lang::t('_TOTAL_COURSE', 'dashboard') . ': <b>' . $course_stats['total'] . '</b>;'; ?></li>
-                                <li><?php echo Lang::t('_ACTIVE_COURSE', 'dashboard') . ': <b>' . $course_stats['active'] . '</b>;'; ?></li>
-                                <li><?php echo Lang::t('_ACTIVE_SEVEN_COURSE', 'dashboard') . ': <b>' . $course_stats['active_seven'] . '</b>;'; ?></li>
-                            </ul>
-                        </div>
-                        <div class="yui-u">
-                            <ul class="link_list">
-                                <li>
-                                    <?php echo Lang::t('_TOTAL_SUBSCRIPTION', 'dashboard') . ': <b>' . $course_stats['user_subscription'] . '</b>;'; ?>
-                                </li>
-                                <?php
-                                echo checkPerm('moderate', true, 'course', 'lms') ? '<li>' . Lang::t('_WAITING_SUBSCRIPTION', 'dashboard') . ': <b>' . $course_stats['user_waiting'] . '</b>;</li>' : '';
-                                $month_1 = (int) date('m');
-                                $month_2 = (($month_1 + 12 - 2) % 12) + 1;
-                                $month_3 = (($month_1 + 12 - 3) % 12) + 1;
-                                ?>
-                                <li>
-                                    <?php echo Lang::t('_SUBSCRIPTION', 'course') . '&nbsp;' . Lang::t('_MONTH_' . ((int) $month_1 < 10 ? '0' : '') . (int) $month_1) . ': <b>' . $course_months_stats['month_subs_1'] . '</b>;'; ?>
-                                </li>
-                                <li>
-                                    <?php echo Lang::t('_SUBSCRIPTION', 'course') . '&nbsp;' . Lang::t('_MONTH_' . ((int) $month_2 < 10 ? '0' : '') . (int) $month_2) . ': <b>' . $course_months_stats['month_subs_2'] . '</b>;'; ?>
-                                </li>
-                                <li>
-                                    <?php echo Lang::t('_SUBSCRIPTION', 'course') . '&nbsp;' . Lang::t('_MONTH_' . ((int) $month_3 < 10 ? '0' : '') . (int) $month_3) . ': <b>' . $course_months_stats['month_subs_3'] . '</b>;'; ?>
-                                </li>
-                            </ul>
-                        </div>
+        </div>
+        <div class="inline_block_big">
+            <h2 class="heading"><?php echo Lang::t('_COURSES', 'dashboard'); ?></h2>
+            <div class="content">
+                <div class="yui-g">
+                    <div class="yui-u first">
+                        <ul class="link_list">
+                            <li><?php echo Lang::t('_TOTAL_COURSE', 'dashboard') . ': <b>' . $course_stats['total'] . '</b>;'; ?></li>
+                            <li><?php echo Lang::t('_ACTIVE_COURSE', 'dashboard') . ': <b>' . $course_stats['active'] . '</b>;'; ?></li>
+                            <li><?php echo Lang::t('_ACTIVE_SEVEN_COURSE', 'dashboard') . ': <b>' . $course_stats['active_seven'] . '</b>;'; ?></li>
+                        </ul>
                     </div>
-                    <div class="nofloat"></div>
-                    <!-- <div style="text-align:center;margin:1em;padding:1em;">
-                        <p>Statistics:&nbsp;<span id="courses_chart_buttons"></span></p>
-                        <div id="users_chart_display"></div>
-                    </div> --><br/>
-                    <!--				<div id="courses_tabview"></div>-->
+                    <div class="yui-u">
+                        <ul class="link_list">
+                            <li>
+                                <?php echo Lang::t('_TOTAL_SUBSCRIPTION', 'dashboard') . ': <b>' . $course_stats['user_subscription'] . '</b>;'; ?>
+                            </li>
+                            <?php
+                            echo checkPerm('moderate', true, 'course', 'lms') ? '<li>' . Lang::t('_WAITING_SUBSCRIPTION', 'dashboard') . ': <b>' . $course_stats['user_waiting'] . '</b>;</li>' : '';
+                            $month_1 = (int) date('m');
+                            $month_2 = (($month_1 + 12 - 2) % 12) + 1;
+                            $month_3 = (($month_1 + 12 - 3) % 12) + 1;
+                            ?>
+                            <li>
+                                <?php echo Lang::t('_SUBSCRIPTION_ON', 'course') . '&nbsp;' . Lang::t('_MONTH_' . ((int) $month_1 < 10 ? '0' : '') . (int) $month_1) . ': <b>' . $course_months_stats['month_subs_1'] . '</b>;'; ?>
+                            </li>
+                            <li>
+                                <?php echo Lang::t('_SUBSCRIPTION_ON', 'course') . '&nbsp;' . Lang::t('_MONTH_' . ((int) $month_2 < 10 ? '0' : '') . (int) $month_2) . ': <b>' . $course_months_stats['month_subs_2'] . '</b>;'; ?>
+                            </li>
+                            <li>
+                                <?php echo Lang::t('_SUBSCRIPTION_ON', 'course') . '&nbsp;' . Lang::t('_MONTH_' . ((int) $month_3 < 10 ? '0' : '') . (int) $month_3) . ': <b>' . $course_months_stats['month_subs_3'] . '</b>;'; ?>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="nofloat"></div>
+                <!-- <div style="text-align:center;margin:1em;padding:1em;">
+                    <p>Statistics:&nbsp;<span id="courses_chart_buttons"></span></p>
+                    <div id="users_chart_display"></div>
+                </div> --><br/>
+                <!--				<div id="courses_tabview"></div>-->
                     <div class="graph graph--users js-graph-courses">
                         <div class="graph__nav">
                             <ul>

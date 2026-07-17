@@ -1,7 +1,6 @@
 <?php
 
 
-
 namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -10,7 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
  * CoreSetting
  *
  * @ORM\Table(name="core_setting", indexes={
- *     @ORM\Index(name="param_name_idx", columns={"param_name"})
+ *     @ORM\Index(name="param_name_idx", columns={"param_name"}),
+ *     @ORM\Index(name="regroup_idx", columns={"regroup"}),
+ *     @ORM\Index(name="pack_regroup_hide_idx", columns={"pack","regroup","hide_in_modify"})
  * })
  * @ORM\Entity
  */
@@ -18,6 +19,7 @@ class CoreSetting
 {
 
     use Timestamps;
+
     /**
      * @var int
      *
@@ -31,7 +33,6 @@ class CoreSetting
      * @var string
      *
      * @ORM\Column(name="param_name", type="string", length=255, nullable=false)
-     
      */
     private $paramName = '';
 

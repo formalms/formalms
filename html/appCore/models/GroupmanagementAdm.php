@@ -88,11 +88,12 @@ class GroupmanagementAdm extends Model implements Accessible
             . " WHERE g.hidden = 'false' " . ($learning_filter === 'none' ? "AND g.type <> 'course' " : '');
 
         $ulevel = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
-        if ($ulevel != ADMIN_GROUP_GODADMIN) {
+        if ($ulevel != ADMIN_GROUP_GODADMIN && $learning_filter == 'none') {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
             $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
-         
+            $query .= ' AND g.idst IN (' . implode(',', $admin_tree) . ') ';
+          
         }
 
         if ($filter) {

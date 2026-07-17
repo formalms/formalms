@@ -63,7 +63,12 @@ class TreeDb_CatDb extends TreeDb
 
     public function addFolderById($idParent, $folderName)
     {
-        return parent::addFolderById($idParent, $folderName);
+        $result = parent::addFolderById($idParent, $folderName);
+
+        Events::trigger('lms.course_category.created', [
+            'idParent' => $idParent, 'folderName' => $folderName
+        ]);
+        return $result;
     }
 
     public function addItem($idParent, $org_name)

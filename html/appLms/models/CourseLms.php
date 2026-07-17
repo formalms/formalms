@@ -229,7 +229,8 @@ class CourseLms extends Model
 
         return $result;
     }
-    
+
+
     /**
      * Helper function to safely create DateTime object
      * @param string|null $date
@@ -274,7 +275,7 @@ class CourseLms extends Model
             $parsedData['img_course'] = FormaLms\lib\Get::tmpl_path() . 'images/course/course_nologo.png';
         }
 
-        if (array_key_exists('nameCategory', $parsedData) && strlen($parsedData['nameCategory']) > 1) {
+        if (array_key_exists('nameCategory', $parsedData) && !empty($parsedData['nameCategory']) && strlen($parsedData['nameCategory']) > 1) {
             $parsedData['nameCategory'] = substr($parsedData['nameCategory'], strripos($parsedData['nameCategory'], '/') + 1);
         }
 
@@ -330,7 +331,6 @@ class CourseLms extends Model
                 $parsedData['dateClosing_year'] = $dateEnd->format('Y');
                 $parsedData['dateClosing_month'] = Lang::t('_MONTH_' . $dateEnd->format('m'), 'standard');
                 $parsedData['dateClosing_day'] = $dateEnd->format('d');
-
 
                 if ($dateEnd < $now) {
                     $parsedData['canEnter'] = false;

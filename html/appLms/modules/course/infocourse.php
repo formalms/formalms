@@ -544,7 +544,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 
                 return;
             }
-            $savefile = $session->get('idCourse') . '_' . mt_rand(0, 100) . '_' . time() . '_' . $_FILES['attach']['name'];
+            $savefile = $session->get('idCourse') . '_' . mt_rand(0, 100) . '_' . time() . '_' . Util::sanitizeFilename($_FILES['attach']['name']);
             if (!file_exists(_files_ . _PATH_COURSE . $savefile)) {
                 sl_open_fileoperations();
                 if (!sl_upload($_FILES['attach']['tmp_name'], _PATH_COURSE . $savefile)) {
@@ -561,7 +561,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             }
         }
         $insert_query = '
-	INSERT INTO ' . $GLOBALS['prefix_lms'] . "_course_file 
+	INSERT INTO ' . $GLOBALS['prefix_lms'] . "_course_file
 	SET id_course = '" . (int) $session->get('idCourse') . "', 
 		title = '" . $_POST['title'] . "', 
 		path = '$savefile'";
@@ -639,7 +639,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 
                 return;
             }
-            $savefile = $session->get('idCourse') . '_' . mt_rand(0, 100) . '_' . time() . '_' . $_FILES['attach']['name'];
+            $savefile = $session->get('idCourse') . '_' . mt_rand(0, 100) . '_' . time() . '_' . Util::sanitizeFilename($_FILES['attach']['name']);
             if (!file_exists(_files_ . _PATH_COURSE . $savefile)) {
                 sl_open_fileoperations();
                 if (!sl_upload($_FILES['attach']['tmp_name'], _PATH_COURSE . $savefile)) {

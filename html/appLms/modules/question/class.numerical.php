@@ -47,14 +47,14 @@ class Numerical_Question extends Question
             //answer
             . '<label class="access-only" for="answer_' . $i . '">' . $lang->def('_TEST_TEXT_ANSWER') . '</label>'
 
-            . Form::getInputTextfield('', 'answer_' . $i, 'answer[' . $i . ']', (isset($_POST['answer'][$i]) ? stripslashes($_POST['answer'][$i]) : ''), false, '25', '')
+            . Form::getInputTextfield('', 'answer_' . $i, 'answer[' . $i . ']', (isset($_POST['answer'][$i]) ? stripslashes($_POST['answer'][$i]) : ''), '25', '')
 
             . '</td>'
             . '<td class="image">'
             //answer
             . '<label class="access-only" class="access-only" for="answer_' . $i . '">' . $lang->def('_TEST_TEXT_ANSWER') . '</label>'
 
-            . Form::getInputTextfield('', 'tolerance_' . $i, 'tolerance[' . $i . ']', (isset($_POST['tolerance'][$i]) ? stripslashes($_POST['tolerance'][$i]) : ''), false, '25', '')
+            . Form::getInputTextfield('', 'tolerance_' . $i, 'tolerance[' . $i . ']', (isset($_POST['tolerance'][$i]) ? stripslashes($_POST['tolerance'][$i]) : ''), '25', '')
 
             . '</td>'
 
@@ -99,7 +99,7 @@ class Numerical_Question extends Question
             //answer
             . '<label class="access-only" for="answer_' . $i . '">' . $lang->def('_TEST_TEXT_ANSWER') . '</label>'
 
-            . Form::getInputTextfield('', 'answer_' . $i, 'answer[' . $i . ']', (isset($_POST['answer'][$i]) ? stripslashes($_POST['answer'][$i]) : ''), false, '25', '')
+            . Form::getInputTextfield('', 'answer_' . $i, 'answer[' . $i . ']', (isset($_POST['answer'][$i]) ? stripslashes($_POST['answer'][$i]) : ''), '25', '')
 
             . '</td>'
             . '<td class="image">'
@@ -107,7 +107,7 @@ class Numerical_Question extends Question
             //answer
             . '<label class="access-only" for="answer_' . $i . '">' . $lang->def('_TEST_TEXT_ANSWER') . '</label>'
 
-            . Form::getInputTextfield('', 'tolerance_' . $i, 'tolerance[' . $i . ']', (isset($_POST['tolerance'][$i]) ? stripslashes($_POST['tolerance'][$i]) : ''), false, '25', '')
+            . Form::getInputTextfield('', 'tolerance_' . $i, 'tolerance[' . $i . ']', (isset($_POST['tolerance'][$i]) ? stripslashes($_POST['tolerance'][$i]) : ''), '25', '')
 
             . '</td>'
             . '<td class="image">'

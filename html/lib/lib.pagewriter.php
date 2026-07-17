@@ -222,9 +222,43 @@ class PageZoneLang extends PageZone
             return $out;
         }
 
-        $out .= Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/js_utils.js', true, false)
-                . Util::get_js(FormaLms\lib\Get::rel_path('base') . '/widget/dialog/dialog.js', true, false)
-                . '<div id="def_lang" class="def_lang">' . "\n"
+        $out .= Util::get_css(FormaLms\lib\Get::tmpl_path('base') . '/yui-skin/button.css', true)
+                . Util::get_css(FormaLms\lib\Get::tmpl_path('base') . '/yui-skin/container.css', true)
+                . Util::get_css(FormaLms\lib\Get::tmpl_path('base') . '/yui-skin/resize.css', true);
+
+        $out .= Util::get_js(FormaLms\lib\Get::rel_path('base') . '/addons/yui/utilities/utilities.js', true, false)
+                . '<script type="text/javascript"> YAHOO.util.Connect.initHeader(\'X-Signature\',\'' . Util::getSignature() . '\'); YAHOO.util.Connect.startEvent.subscribe(function() { YAHOO.util.Connect.initHeader(\'X-Signature\',\'' . Util::getSignature() . '\'); });</script>'
+                . Util::get_js(FormaLms\lib\Get::rel_path('base') . '/addons/yui/json/json-min.js', true, false)
+                . Util::get_js(FormaLms\lib\Get::rel_path('base') . '/addons/yui/animation/animation-min.js', true, false)
+                . Util::get_js(FormaLms\lib\Get::rel_path('base') . '/addons/yui/animation/my_animation.js', true, false)
+                . Util::get_js(FormaLms\lib\Get::rel_path('base') . '/addons/yui/button/button-min.js', true, false)
+                . Util::get_js(FormaLms\lib\Get::rel_path('base') . '/addons/yui/container/container-min.js', true, false)
+                . Util::get_js(FormaLms\lib\Get::rel_path('base') . '/addons/yui/resize/resize-min.js', true, false)
+                . Util::get_js(FormaLms\lib\Get::rel_path('base') . '/addons/yui/selector/selector-min.js', true, false)
+                . Util::get_js(FormaLms\lib\Get::rel_path('base') . '/addons/yui/event-delegate/event-delegate-min.js', true, false)
+                . Util::get_js(FormaLms\lib\Get::rel_path('base') . '/addons/yui/datasource/datasource-min.js', true, false)
+                . Util::get_js(FormaLms\lib\Get::rel_path('base') . '/addons/yui/autocomplete/autocomplete-min.js', true, false)
+                . Util::get_js(FormaLms\lib\Get::rel_path('base') . '/addons/yui/tabview/tabview.js', true, false);
+        
+        $out .= Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/js_utils.js', true, false);
+
+        
+        $script = 'YAHOO.dialogConstants.setProperties({'
+                . 'CONFIRM: ' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(Lang::t('_CONFIRM', 'standard'), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . ', '
+                . 'UNDO: ' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(Lang::t('_UNDO', 'standard'), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . ', '
+                . 'CLOSE: ' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(Lang::t('_CLOSE', 'standard'), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . ', '
+                . 'LOADING: ' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(Lang::t('_LOADING', 'standard'), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . ', '
+                . 'ERROR: ' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(Lang::t('_OPERATION_FAILURE', 'standard'), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . ', '
+                . 'SERVER_ERROR: ' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(Lang::t('_CONNECTION_ERROR', 'standard'), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . ', '
+                . 'loadingIcon: ' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(FormaLms\lib\Get::tmpl_path() . 'images/standard/loadbar.gif', \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . ', '
+                . 'smallLoadingIcon: ' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(FormaLms\lib\Get::tmpl_path() . 'images/standard/loading_circle.gif', \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . ', '
+                . 'authentication: "' . Util::getSignature() . '" '
+                . '});' . "\n";
+
+        $out .= Util::get_js(FormaLms\lib\Get::rel_path('base') . '/widget/dialog/dialog.js', true, false)
+                . '<script type="text/javascript">' . $script . '</script>';
+
+        $out .= '<div id="def_lang" class="def_lang">' . "\n"
                 . implode($this->_startOut)
 
                 . '<div id="link_container">'
@@ -261,7 +295,7 @@ class PageZoneLang extends PageZone
 							draggable: true,
 							hideaftersubmit: false,
 							isDynamic: true,
-							ajaxUrl: "ajax.adm_server.php?r=adm/lang/translatemask",
+							ajaxUrl: "' . $GLOBALS['where_framework_relative'] . '/ajax.adm_server.php?r=adm/lang/translatemask",
 							confirmOnly: false,
 							directSubmit: false
 						};
@@ -605,8 +639,6 @@ class onecolPageWriter extends PageWriter
         $this->addStart('<ul id="blind_navigation" class="container-blindnav">', 'blind_navigation');
         $this->addEnd('</ul>' . "\n", 'blind_navigation');
 
-        $this->addStart('<div id="feedback" class="container-feedback">', 'feedback');
-        $this->addEnd('</div>' . "\n", 'feedback');
         /*
         $browser_code = \FormaLms\lib\Forma::langManager()->getLanguageBrowsercode(getLanguage());
         $pos = strpos($browser_code, ';');

@@ -25,6 +25,7 @@ class FolderTreeBase {
     
     // Set default x-signature
     window.frontend.helpers.Axios.defaults.headers.get['X-Signature'] = window.frontend.config.signature;
+      window.frontend.helpers.Axios.defaults.headers.post['X-Signature'] = window.frontend.config.signature;
     this.extraData = {};
     this.openFolders = [];
     this.data = null;
@@ -43,8 +44,8 @@ class FolderTreeBase {
         this.container.addEventListener('createTreeItem', (e) => {
             self.refresh(e.detail.selectedId);
         });
-        this.container.addEventListener('deleteTreeItem', () => {
-            self.refresh();
+        this.container.addEventListener('deleteTreeItem', (e) => {
+            self.deleteTreeItem(e.detail.selectedId);
         });
         this.container.addEventListener('reorderData', () => {
             self.refresh();
@@ -86,12 +87,20 @@ class FolderTreeBase {
   clickOnFolder(event) {
     const _this = this;
 
-    // Try to get clicked dir
+    // Try to get clicked dir on folderTree
     let el = event.target.closest('.folderTree__link');
     if (!el) {
       const li = event.target.closest('.folderTree__li');
       if (li) {
         el = li.querySelector('.folderTree__link');
+      }
+    }
+
+    // Try to get double clicked dir on folderView
+    if (!el && event.detail == 2) {
+      const li = event.target.closest('.folderView__li');
+      if (li) {
+        el = _this.container.querySelector('.folderTree__li[data-id="' + li.getAttribute('data-id') + '"] .folderTree__link');
       }
     }
 
@@ -145,7 +154,7 @@ class FolderTreeBase {
         event.target.classList.add('opened');
         el.classList.add('ft-is-folderOpen');
       } else {
-        const li = event.target.closest('.folderTree__li');
+        const li = el.closest('.folderTree__li');
         const arrow = li.querySelector('.arrow');
         if(this.options.activeStatus) {
           el.parentNode.classList.add('selected');
@@ -190,6 +199,34 @@ class FolderTreeBase {
     this.storeStatus();
   }
 
+  deleteTreeItem(elId) {
+    const _this = this;
+
+    const elTree = _this.container.querySelector('.folderTree__li[data-id="' + elId + '"]');
+    if (elTree) {
+      const ul = elTree.parentNode;
+      if(elId == _this.selectedId) {
+        const parentElTree = ul.closest('.folderTree__li');
+        const parentElId = parentElTree.getAttribute('data-id');
+        this.selectedId = parentElId;
+        this.storeStatus();
+      }
+      
+      elTree.remove();
+      
+      if (!ul.querySelector('li')) {
+        ul.remove();
+      }
+    }
+    const el = _this.container.querySelector('.folderView__li[data-id="' + elId + '"]');
+    if (el) {
+      el.remove();
+      document.querySelector('.context-menu').classList.remove('menu-visible');
+    }
+
+    this.refresh();
+  }
+
   getApiUrl(action, params) {
     let url = `${this.baseApiUrl}/${action}`;
     if (!params) {
@@ -212,6 +249,14 @@ class FolderTreeBase {
   }
 
   getStatus() {
+    // Reset selectedId when switching between Courses on LMS
+    const idCourse = `${window.frontend.config.idCourse}`;
+    if (localStorage.getItem('idCourse') != idCourse) {
+      localStorage.removeItem('openedIds');
+      localStorage.setItem('selectedId', '0');
+      localStorage.setItem('idCourse', idCourse);
+    }
+
     this.openedIds = localStorage.getItem('openedIds') ? localStorage.getItem('openedIds').split(',') : [];
     this.selectedId = localStorage.getItem('selectedId');
   }
@@ -277,7 +322,7 @@ class FolderTreeBase {
   async getData(endpoint, startWithChildren = true) {
     const _this = this;
     try {
-      await window.frontend.helpers.Axios.get(endpoint).then((response) => {
+      await window.frontend.helpers.Axios.post(endpoint).then((response) => {
         _this.data = startWithChildren ? response.data.data[0].children : response.data.data;
 
         const tree = this.Tree({ data: _this.data, extra: {options: this.options, form: this.hasForm} });
@@ -346,9 +391,9 @@ class FolderTreeBase {
   _setAsOpen(id) {
     let subtree = this.container.querySelector('.folderTree__li[data-id="' + id + '"] .folderTree__ul.hidden');
     let directoryButton = this.container.querySelector('.folderTree__li[data-id="' + id + '"] button.folderTree__link');
-    directoryButton.classList.add('ft-is-folderOpen');
+    if (directoryButton) directoryButton.classList.add('ft-is-folderOpen');
     let arrowSpan = this.container.querySelector('.folderTree__li[data-id="' + id + '"] span.arrow');
-    arrowSpan.classList.add('opened');
+    if (arrowSpan) arrowSpan.classList.add('opened');
     if (subtree) {
       subtree.classList.remove('hidden');
     }

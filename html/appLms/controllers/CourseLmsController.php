@@ -13,7 +13,6 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.json.php');
 require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.user_profile.php');
 require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/lib.myfiles.php');
 
@@ -36,15 +35,11 @@ class CourseLmsController extends LmsController
      */
     public array $permissions;
 
-    private Services_JSON $json;
-
     public function init()
     {
 
         require_once _adm_ . '/lib/lib.field.php';
-
-        /* @var Services_JSON json */
-        $this->json = new Services_JSON();
+        
         $this->_mvc_name = 'course';
         $this->permissions = [
             'view' => true,

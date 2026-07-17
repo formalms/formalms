@@ -185,7 +185,6 @@ class Report_Courses extends Report
         //****
 
         $lang = FormaLanguage::createInstance('report', 'framework');
-        $org_chart_subdivision = importVar('org_chart_subdivision', true, 0);
 
         //detect the step in which we are
         $substep = _SUBSTEP_USERS; //first substep
@@ -203,7 +202,6 @@ class Report_Courses extends Report
         if (!isset($reportTempData['columns_filter'])) {
             $reportTempData['columns_filter'] = [
                 'time_belt' => ['time_range' => '', 'start_date' => '', 'end_date' => ''],
-                'org_chart_subdivision' => 0,
                 'show_classrooms_editions' => false,
                 'showed_cols' => [],
                 'show_percent' => true,
@@ -225,7 +223,6 @@ class Report_Courses extends Report
                         'start_date' => Format::dateDb($_POST['start_time'], 'date'),
                         'end_date' => Format::dateDb($_POST['end_time'], 'date'),
                     ];
-                    $reportTempData['columns_filter']['org_chart_subdivision'] = (isset($_POST['org_chart_subdivision']) ? 1 : 0);
                     $reportTempData['columns_filter']['show_classrooms_editions'] = (isset($_POST['show_classrooms_editions']) ? true : false);
                     $reportTempData['columns_filter']['show_suspended'] = FormaLms\lib\Get::req('show_suspended', DOTY_INT, 0) > 0;
                     $reportTempData['columns_filter']['only_students'] = FormaLms\lib\Get::req('only_students', DOTY_INT, 0) > 0;
@@ -270,7 +267,7 @@ class Report_Courses extends Report
                     31 => $lang->def('_LAST_MONTH'),
                     93 => $lang->def('_LAST_THREE_MONTH'),
                     186 => $lang->def('_LAST_SIX_MONTH'),
-                    365 => $lang->def('_LAST_YEAR'), ];
+                    365 => $lang->def('_LAST_YEAR'),];
 
                 cout(
                     Form::openForm('user_report_rows_courses', $jump_url) .
@@ -296,10 +293,9 @@ class Report_Courses extends Report
                 $box->title = Lang::t('_OTHER_OPTION', 'course');
                 $box->description = false;
                 $box->body =
-                    Form::getCheckbox($lang->def('ORG_CHART_SUBDIVISION'), 'org_chart_subdivision_' . $this->id_report, 'org_chart_subdivision', 1, ($reportTempData['columns_filter']['org_chart_subdivision'] == 1 ? true : false))
-                    . Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool) $reportTempData['columns_filter']['show_suspended'])
-                    . Form::getCheckbox(Lang::t('_SHOW_ONLY', 'subscribe') . ': ' . Lang::t('_STUDENTS', 'coursereport'), 'only_students', 'only_students', 1, (bool) $reportTempData['columns_filter']['only_students'])
-                    . Form::getCheckbox(Lang::t('_SHOW', 'standard') . ': ' . Lang::t('_ASSESSMENT', 'standard'), 'show_assessment', 'show_assessment', 1, (bool) $reportTempData['columns_filter']['show_assessment']);
+                    Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool)$reportTempData['columns_filter']['show_suspended'])
+                    . Form::getCheckbox(Lang::t('_SHOW_ONLY', 'subscribe') . ': ' . Lang::t('_STUDENTS', 'coursereport'), 'only_students', 'only_students', 1, (bool)$reportTempData['columns_filter']['only_students'])
+                    . Form::getCheckbox(Lang::t('_SHOW', 'standard') . ': ' . Lang::t('_ASSESSMENT', 'standard'), 'show_assessment', 'show_assessment', 1, (bool)$reportTempData['columns_filter']['show_assessment']);
 
                 cout($box->get() . Form::getBreakRow(), 'content');
 
@@ -441,13 +437,10 @@ class Report_Courses extends Report
                 }
 
                 //set page
-                if ($org_chart_subdivision == 0) {
-                    $user_select->show_user_selector = true;
-                    $user_select->show_group_selector = true;
-                } else {
-                    $user_select->show_user_selector = false;
-                    $user_select->show_group_selector = false;
-                }
+
+                $user_select->show_user_selector = false;
+                $user_select->show_group_selector = false;
+
                 $user_select->show_orgchart_selector = true;
                 //$user_select->show_orgchart_simple_selector = FALSE;
                 //$user_select->multi_choice = TRUE;
@@ -456,7 +449,6 @@ class Report_Courses extends Report
                     $user_select->addFormInfo(
                         Form::getCheckbox($lang->def('_REPORT_FOR_ALL'), 'all_users', 'all_users', 1, ($reportTempData['columns_filter']['all_users'] ? 1 : 0)) .
                         Form::getBreakRow() .
-                        Form::getHidden('org_chart_subdivision', 'org_chart_subdivision', $org_chart_subdivision) .
                         Form::getHidden('is_updating', 'is_updating', 1) .
                         Form::getHidden('substep', 'substep', 'user_selection') .
                         Form::getHidden('second_step', 'second_step', 1)
@@ -679,7 +671,7 @@ class Report_Courses extends Report
         if (!$view_all_perm) {
             if ($all_courses == true) {
                 // get all course
-                $result = sql_query('SELECT idCourse FROM %lms_course');
+                $result = sql_query('SELECT idCourse FROM learning_course');
                 $course_selected = [];
                 foreach ($result as $row) {
                     $course_selected[] = $row['idCourse'];
@@ -699,9 +691,9 @@ class Report_Courses extends Report
         }
 
         $query = 'SELECT c.idCourse, c.code, c.name, c.idCategory, c.status, c.create_date, p.id_quest, p.title_quest'
-            . ' FROM %lms_course AS c'
-            . ' JOIN %lms_organization AS o ON o.idCourse = c.idCourse'
-            . ' JOIN %lms_pollquest AS p ON p.id_poll = o.idResource'
+            . ' FROM learning_course AS c'
+            . ' JOIN learning_organization AS o ON o.idCourse = c.idCourse'
+            . ' JOIN learning_pollquest AS p ON p.id_poll = o.idResource'
             . " WHERE o.objectType = 'poll'"
             . " AND p.type_quest = 'doc_valutation'"
             . ($all_courses ? '' : ' AND c.idCourse IN (' . implode(',', $course_selected) . ')')
@@ -709,8 +701,6 @@ class Report_Courses extends Report
             . ' ORDER BY c.idCourse, p.id_quest';
 
         $result = sql_query($query);
-
-        //echo "query_course: ". $query;
 
         $course_doc = [];
         $question_id = [];
@@ -734,12 +724,12 @@ class Report_Courses extends Report
         } else {
             if (!$view_all_perm) {
                 $query = 'SELECT pta.id_quest, MIN(CAST(pta.more_info AS DECIMAL(65,30))) AS min_answer, MAX(CAST(pta.more_info AS DECIMAL(65,30))) AS max_answer, SUM(CAST(pta.more_info AS DECIMAL(65,30))) AS sum_answer, COUNT(*) AS num_answer'
-                    . ' FROM %lms_polltrack_answer AS pta, %lms_polltrack AS pt'
+                    . ' FROM learning_polltrack_answer AS pta, learning_polltrack AS pt'
                     . ' WHERE 1 AND pta.id_track = pt.id_track AND pt.id_user IN (' . implode(',', $ctrl_users) . ') AND pta.id_quest IN (' . implode(',', $question_id) . ')'
                     . ' GROUP BY pta.id_quest';
             } else {
                 $query = 'SELECT id_quest, MIN(CAST(more_info AS DECIMAL(65,30))) AS min_answer, MAX(CAST(more_info AS DECIMAL(65,30))) AS max_answer, SUM(CAST(more_info AS DECIMAL(65,30))) AS sum_answer, COUNT(*) AS num_answer'
-                    . ' FROM %lms_polltrack_answer'
+                    . ' FROM learning_polltrack_answer'
                     . ' WHERE id_quest IN (' . implode(',', $question_id) . ')'
                     . ' GROUP BY id_quest';
             }
@@ -747,8 +737,8 @@ class Report_Courses extends Report
             $result = sql_query($query);
 
             foreach ($result as $row) {
-                $question_answer[$row['id_quest']]['min_value'] = (float) $row['min_answer'];
-                $question_answer[$row['id_quest']]['max_value'] = (float) $row['max_answer'];
+                $question_answer[$row['id_quest']]['min_value'] = (float)$row['min_answer'];
+                $question_answer[$row['id_quest']]['max_value'] = (float)$row['max_answer'];
                 $question_answer[$row['id_quest']]['everage_value'] = number_format(($row['sum_answer'] / $row['num_answer']), 2);
             }
 
@@ -776,7 +766,7 @@ class Report_Courses extends Report
         if (!$view_all_perm) {
             if ($all_courses == true) {
                 // get all course
-                $result = sql_query('SELECT idCourse FROM %lms_course');
+                $result = sql_query('SELECT idCourse FROM learning_course');
                 $course_selected = [];
                 foreach ($result as $row) {
                     $course_selected[] = $row['idCourse'];
@@ -795,9 +785,9 @@ class Report_Courses extends Report
         }
 
         $query = 'SELECT c.idCourse, c.code, c.name, c.idCategory, c.status, c.create_date, p.id_quest, title_quest'
-            . ' FROM %lms_course AS c'
-            . ' JOIN %lms_organization AS o ON o.idCourse = c.idCourse'
-            . ' JOIN %lms_pollquest AS p ON p.id_poll = o.idResource'
+            . ' FROM learning_course AS c'
+            . ' JOIN learning_organization AS o ON o.idCourse = c.idCourse'
+            . ' JOIN learning_pollquest AS p ON p.id_poll = o.idResource'
             . " WHERE o.objectType = 'poll'"
             . " AND p.type_quest = 'course_valutation'"
             . ($all_courses ? '' : ' AND c.idCourse IN (' . implode(',', $course_selected) . ')');
@@ -827,12 +817,12 @@ class Report_Courses extends Report
         } else {
             if (!$view_all_perm) {
                 $query = 'SELECT pta.id_quest, MIN(CAST(pta.more_info AS DECIMAL(65,30))) AS min_answer, MAX(CAST(pta.more_info AS DECIMAL(65,30))) AS max_answer, SUM(CAST(pta.more_info AS DECIMAL(65,30))) AS sum_answer, COUNT(*) AS num_answer'
-                    . ' FROM %lms_polltrack_answer AS pta, %lms_polltrack AS pt'
+                    . ' FROM learning_polltrack_answer AS pta, learning_polltrack AS pt'
                     . ' WHERE 1 AND pta.id_track = pt.id_track AND pt.id_user IN (' . implode(',', $ctrl_users) . ') AND pta.id_quest IN (' . implode(',', $question_id) . ')'
                     . ' GROUP BY pta.id_quest';
             } else {
                 $query = 'SELECT id_quest, MIN(CAST(more_info AS DECIMAL(65,30))) AS min_answer, MAX(CAST(more_info AS DECIMAL(65,30))) AS max_answer, SUM(CAST(more_info AS DECIMAL(65,30))) AS sum_answer, COUNT(*) AS num_answer'
-                    . ' FROM %lms_polltrack_answer'
+                    . ' FROM learning_polltrack_answer'
                     . ' WHERE id_quest IN (' . implode(',', $question_id) . ')'
                     . ' GROUP BY id_quest';
             }
@@ -840,8 +830,8 @@ class Report_Courses extends Report
             $result = sql_query($query);
 
             foreach ($result as $row) {
-                $question_answer[$row['id_quest']]['min_value'] = (float) $row['min_answer'];
-                $question_answer[$row['id_quest']]['max_value'] = (float) $row['max_answer'];
+                $question_answer[$row['id_quest']]['min_value'] = (float)$row['min_answer'];
+                $question_answer[$row['id_quest']]['max_value'] = (float)$row['max_answer'];
                 $question_answer[$row['id_quest']]['everage_value'] = number_format(($row['sum_answer'] / $row['num_answer']), 2);
             }
 
@@ -854,7 +844,6 @@ class Report_Courses extends Report
         checkPerm('view');
         $view_all_perm = checkPerm('view_all', true);
 
-        //$jump_url, $alluser, $org_chart_subdivision, $start_time, $end_time
         if ($report_data == null) {
             $reportTempData = $this->session->get(_REPORT_SESSION);
         } else {
@@ -867,17 +856,16 @@ class Report_Courses extends Report
         $time_range = $reportTempData['columns_filter']['time_belt']['time_range'];
         $start_time = $reportTempData['columns_filter']['time_belt']['start_date'];
         $end_time = $reportTempData['columns_filter']['time_belt']['end_date'];
-        $org_chart_subdivision = $reportTempData['columns_filter']['org_chart_subdivision'];
         $filter_cols = $reportTempData['columns_filter']['showed_cols'];
-        $show_percent = (isset($reportTempData['columns_filter']['show_percent']) ? (bool) $reportTempData['columns_filter']['show_percent'] : true);
+        $show_percent = (isset($reportTempData['columns_filter']['show_percent']) ? (bool)$reportTempData['columns_filter']['show_percent'] : true);
 
-        $show_suspended = (isset($reportTempData['columns_filter']['show_suspended']) ? (bool) $reportTempData['columns_filter']['show_suspended'] : false);
-        $only_students = (isset($reportTempData['columns_filter']['only_students']) ? (bool) $reportTempData['columns_filter']['only_students'] : false);
+        $show_suspended = (isset($reportTempData['columns_filter']['show_suspended']) ? (bool)$reportTempData['columns_filter']['show_suspended'] : false);
+        $only_students = (isset($reportTempData['columns_filter']['only_students']) ? (bool)$reportTempData['columns_filter']['only_students'] : false);
 
-        $show_classrooms_editions = (isset($reportTempData['columns_filter']['show_classrooms_editions']) ? (bool) $reportTempData['columns_filter']['show_classrooms_editions'] : false);
+        $show_classrooms_editions = (isset($reportTempData['columns_filter']['show_classrooms_editions']) ? (bool)$reportTempData['columns_filter']['show_classrooms_editions'] : false);
 
- 
-        if ((int) $time_range != 0) {
+
+        if ((int)$time_range != 0) {
             $start_time = date('Y-m-d H:i:s', time() - $time_range * 24 * 3600);
             $end_time = date('Y-m-d H:i:s');
         } else {
@@ -920,10 +908,10 @@ class Report_Courses extends Report
             $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             if ($all_courses) {
                 $all_courses = false;
-                $rs = sql_query('SELECT idCourse FROM %lms_course');
+                $rs = sql_query('SELECT idCourse FROM learning_course');
                 $course_selected = [];
-                while (list($id_course) = sql_fetch_row($rs)) {
-                    $course_selected[] = $id_course;
+                foreach ($rs as $row) {
+                    $course_selected[] = $row['idCourse'];
                 }
             }
 
@@ -989,38 +977,7 @@ class Report_Courses extends Report
             unset($admin_courses);
         }
 
-        if ($org_chart_subdivision == 1) {
-            require_once _adm_ . '/lib/lib.orgchart.php';
-            $org_man = new OrgChartManager();
-            if ($alluser == 1) {
-                $user_level = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
-
-                if ($user_level != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
-                    $elem_selected = $user_selected;
-                } else {
-                    $elem_selected = $org_man->getAllGroupIdFolder();
-                }
-            } else {
-                $elem_selected = $user_selected;
-            }
-            $org_name = $org_man->getFolderFormIdst($elem_selected);
-
-            if ($user_level != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
-                require_once _base_ . '/lib/lib.preference.php';
-                $adminManager = new AdminPreference();
-                $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
-
-                $org_name_temp = $org_name;
-                $org_name = [];
-                foreach ($org_name_temp as $id => $value) {
-                    if (isset($admin_tree[$id])) {
-                        $org_name[$id] = $value;
-                    }
-                }
-            }
-        } else {
-            $elem_selected = [];
-        }
+        $elem_selected = [];
 
         if (empty($user_selected)) {
             //no users to display
@@ -1033,7 +990,7 @@ class Report_Courses extends Report
         $id_courses = [];
         if (!$show_classrooms_editions) {
             $q_courses = 'SELECT c.idCourse, c.code, c.name, c.description, c.course_type '
-                . ' FROM %lms_course As c '
+                . ' FROM learning_course As c '
                 . ' ORDER BY c.code, c.name';
             $r_courses = sql_query($q_courses);
             foreach ($r_courses as $courseData) {
@@ -1054,7 +1011,7 @@ class Report_Courses extends Report
             }
         } else {
             $q_courses = 'SELECT c.idCourse, c.code, c.name, c.description, c.course_type, d.id_date '
-                . ' FROM %lms_course As c LEFT JOIN %lms_course_date AS d ON (c.idCourse = d.id_course) '
+                . ' FROM learning_course As c LEFT JOIN learning_course_date AS d ON (c.idCourse = d.id_course) '
                 . ' ORDER BY c.code, c.name, d.code, d.name';
             $r_courses = sql_query($q_courses);
             foreach ($r_courses as $courseData) {
@@ -1089,11 +1046,12 @@ class Report_Courses extends Report
         if ($show_classrooms_editions) {
             //retrieve classrooms info
             $query = 'SELECT d.*, MIN(dd.date_begin) AS date_1, MAX(dd.date_end) AS date_2 '
-                . ' FROM %lms_course_date AS d JOIN %lms_course_date_day AS dd ON (d.id_date = dd.id_date) ' . ' AND dd.deleted = 0 '
+                . ' FROM learning_course_date AS d JOIN learning_course_date_day AS dd ON (d.id_date = dd.id_date) ' . ' AND dd.deleted = 0 '
                 . (!$all_courses ? ' AND d.id_course IN (' . implode(',', $course_selected) . ') ' : '')
                 . ' GROUP BY dd.id_date';
             $res = sql_query($query);
-            while ($obj = sql_fetch_object($res)) {
+            foreach ($res as $row) {
+                $obj = (object)$row;
                 $classrooms_editions_info['classrooms'][$obj->id_date] = $obj;
 
                 $dateManager = new DateManager();
@@ -1101,450 +1059,220 @@ class Report_Courses extends Report
 
                 $obj->date_location = $dateLocation;
             }
-
-            //retrieve editions info
-            //TO DO ...
         }
 
         if (!$show_classrooms_editions) {
-            if ($org_chart_subdivision == 0) {
-                $query_course_user = 'SELECT cu.idUser, cu.idCourse, cu.date_first_access, cu.date_complete, cu.status '
-                    . ' FROM %lms_courseuser AS cu JOIN %adm_user AS u ON (cu.idUser = u.idst) '
-                    . ' WHERE cu.idUser IN ( ' . implode(',', $user_selected) . ' ) '
-                    . ($all_courses ? '' : 'AND cu.idCourse IN (' . implode(',', $course_selected) . ') ')
-                    . ($show_suspended ? '' : ' AND u.valid = 1 ')
-                    . ($only_students ? ' AND cu.level = 3 ' : '');
+
+            $query_course_user = 'SELECT cu.idUser, cu.idCourse, cu.date_first_access, cu.date_complete, cu.status '
+                . ' FROM learning_courseuser AS cu JOIN core_user AS u ON (cu.idUser = u.idst) '
+                . ' WHERE cu.idUser IN ( ' . implode(',', $user_selected) . ' ) '
+                . ($all_courses ? '' : 'AND cu.idCourse IN (' . implode(',', $course_selected) . ') ')
+                . ($show_suspended ? '' : ' AND u.valid = 1 ')
+                . ($only_students ? ' AND cu.level = 3 ' : '');
+            if ($start_time != '' && $start_time) {
+                $query_course_user .= " AND greatest(coalesce(cu.date_complete, 0), coalesce(cu.date_first_access, 0), coalesce(cu.date_inscr), 0) >= '" . $start_time . "' ";
+            }
+            if ($end_time != '' && $end_time) {
+                $query_course_user .= " AND greatest(coalesce(cu.date_complete, 0), coalesce(cu.date_first_access, 0), coalesce(cu.date_inscr), 0) <= '" . $end_time . "'";
+            }
+
+            $num_iscr = [];
+            $num_nobegin = [];
+            $num_itinere = [];
+            $num_end = [];
+            $time_in_course = [];
+            $effective_user = [];
+
+            $re_course_user = sql_query($query_course_user);
+
+            foreach ($re_course_user as $row) {
+                $id_u = $row['idUser'];
+                $id_c = $row['idCourse'];
+                $first_access = $row['date_first_access'];
+                $date_complete = $row['date_complete'];
+                $status = $row['status'];
+
+                if (isset($num_iscr[$id_c])) {
+                    ++$num_iscr[$id_c];
+                } else {
+                    $num_iscr[$id_c] = 1;
+                }
+                switch ($status) {
+                    case _CUS_CONFIRMED:
+                        break;
+                    case _CUS_SUSPEND:
+                        break;
+                    case _CUS_SUBSCRIBED:
+                        if (isset($num_nobegin[$id_c])) {
+                            ++$num_nobegin[$id_c];
+                        } else {
+                            $num_nobegin[$id_c] = 1;
+                        }
+                        break;
+                    case _CUS_BEGIN:
+                        if (isset($num_itinere[$id_c])) {
+                            ++$num_itinere[$id_c];
+                        } else {
+                            $num_itinere[$id_c] = 1;
+                        }
+                        break;
+                    case _CUS_END:
+                        if (isset($num_end[$id_c])) {
+                            ++$num_end[$id_c];
+                        } else {
+                            $num_end[$id_c] = 1;
+                        }
+                        break;
+                }
+
+                $effective_user[] = $id_u;
+            }
+            if (!empty($effective_user)) {
+                $query_time = '
+						SELECT idCourse, SUM(UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)) AS time_sum
+						FROM learning_tracksession
+						WHERE  idUser IN ( ' . implode(',', $effective_user) . ' )  ';
                 if ($start_time != '' && $start_time) {
-                    $query_course_user .= " AND greatest(coalesce(cu.date_complete, 0), coalesce(cu.date_first_access, 0), coalesce(cu.date_inscr), 0) >= '" . $start_time . "' ";
+                    $query_time .= " AND enterTime >= '" . $start_time . "' ";
                 }
                 if ($end_time != '' && $end_time) {
-                    $query_course_user .= " AND greatest(coalesce(cu.date_complete, 0), coalesce(cu.date_first_access, 0), coalesce(cu.date_inscr), 0) <= '" . $end_time . "'";
+                    $query_time .= " AND enterTime <= '" . $end_time . "' ";
+                }
+                $query_time .= ' GROUP BY idCourse ';
+
+                $re_time = sql_query($query_time);
+
+                foreach ($re_time as $row) {
+                    $id_c = $row['idCourse'];
+                    $time_num = (int)$row['time_sum'];
+                    $time_in_course[$id_c] = $time_num;
+                }
+            }
+
+            $output .= $this->_printTable_users(
+                $type,
+                $acl_man,
+                $id_courses,
+                $num_iscr,
+                $num_nobegin,
+                $num_itinere,
+                $num_end,
+                $time_in_course,
+                $filter_cols,
+                $show_percent,
+                $show_classrooms_editions,
+                $classrooms_editions_info,
+                true,
+                ''
+            );
+        } else {
+
+            $query_course_user = 'SELECT cu.idUser, cu.idCourse, cu.date_first_access, cu.date_complete, cu.status, c.course_type, d.id_date '
+                . ' FROM (learning_courseuser AS cu JOIN learning_course AS c JOIN core_user AS u ON (cu.idCourse = c.idCourse AND cu.idUser = u.idst)) '
+                . ' LEFT JOIN (learning_course_date AS d JOIN learning_course_date_user AS du ON (du.id_date=d.id_date)) '
+                . ' ON (du.id_user = cu.idUser AND d.id_course = cu.idCourse) '
+                . ' WHERE cu.idUser IN ( ' . implode(',', $user_selected) . ' ) '
+                . ($all_courses ? '' : 'AND cu.idCourse IN (' . implode(',', $course_selected) . ')')
+                . ($show_suspended ? '' : ' AND u.valid = 1 ')
+                . ($only_students ? ' AND cu.level = 3 ' : '');
+            if ($start_time != '' && $start_time) {
+                $query_course_user .= " AND greatest(coalesce(cu.date_complete, 0), coalesce(cu.date_first_access, 0), coalesce(cu.date_inscr), 0) >= '" . $start_time . "' ";
+            }
+            if ($end_time != '' && $end_time) {
+                $query_course_user .= " AND greatest(coalesce(cu.date_complete, 0), coalesce(cu.date_first_access, 0), coalesce(cu.date_inscr), 0) <= '" . $end_time . "'";
+            }
+
+            $num_iscr = [];
+            $num_nobegin = [];
+            $num_itinere = [];
+            $num_end = [];
+            $time_in_course = [];
+            $effective_user = [];
+
+            $re_course_user = sql_query($query_course_user);
+            foreach ($re_course_user as $row) {
+                $id_u = $row['idUser'];
+                $id_c = $row['idCourse'];
+                $fisrt_access = $row['date_first_access'];
+                $date_complete = $row['date_complete'];
+                $status = $row['status'];
+                $course_type = $row['course_type'];
+                $id_date = $row['id_date'];
+
+                $index = $course_type == 'classroom' ? $id_c . '_' . $id_date : $id_c;
+
+                if (isset($num_iscr[$index])) {
+                    ++$num_iscr[$index];
+                } else {
+                    $num_iscr[$index] = 1;
+                }
+                switch ($status) {
+                    case _CUS_CONFIRMED:
+                        break;
+                    case _CUS_SUSPEND:
+                        break;
+                    case _CUS_SUBSCRIBED:
+                        if (isset($num_nobegin[$index])) {
+                            ++$num_nobegin[$index];
+                        } else {
+                            $num_nobegin[$index] = 1;
+                        }
+                        break;
+                    case _CUS_BEGIN:
+                        if (isset($num_itinere[$index])) {
+                            ++$num_itinere[$index];
+                        } else {
+                            $num_itinere[$index] = 1;
+                        }
+                        break;
+                    case _CUS_END:
+                        if (isset($num_end[$index])) {
+                            ++$num_end[$index];
+                        } else {
+                            $num_end[$index] = 1;
+                        }
+                        break;
                 }
 
-                $num_iscr = [];
-                $num_nobegin = [];
-                $num_itinere = [];
-                $num_end = [];
-                $time_in_course = [];
-                $effective_user = [];
-
-                $re_course_user = sql_query($query_course_user);
-                while (list($id_u, $id_c, $fisrt_access, $date_complete, $status) = sql_fetch_row($re_course_user)) {
-                    if (isset($num_iscr[$id_c])) {
-                        ++$num_iscr[$id_c];
-                    } else {
-                        $num_iscr[$id_c] = 1;
-                    }
-                    switch ($status) {
-                        case _CUS_CONFIRMED:
-                            break;
-                        case _CUS_SUSPEND:
-                            break;
-                        case _CUS_SUBSCRIBED:
-                            if (isset($num_nobegin[$id_c])) {
-                                ++$num_nobegin[$id_c];
-                            } else {
-                                $num_nobegin[$id_c] = 1;
-                            }
-                            break;
-                        case _CUS_BEGIN:
-                            if (isset($num_itinere[$id_c])) {
-                                ++$num_itinere[$id_c];
-                            } else {
-                                $num_itinere[$id_c] = 1;
-                            }
-                            break;
-                        case _CUS_END:
-                            if (isset($num_end[$id_c])) {
-                                ++$num_end[$id_c];
-                            } else {
-                                $num_end[$id_c] = 1;
-                            }
-                            break;
-                    }
-
+                if (!in_array($id_u, $effective_user)) {
                     $effective_user[] = $id_u;
                 }
-                if (!empty($effective_user)) {
-                    $query_time = '
-						SELECT idCourse, SUM(UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime))
-						FROM %lms_tracksession
-						WHERE  idUser IN ( ' . implode(',', $effective_user) . ' )  ';
-                    if ($start_time != '' && $start_time) {
-                        $query_time .= " AND enterTime >= '" . $start_time . "' ";
-                    }
-                    if ($end_time != '' && $end_time) {
-                        $query_time .= " AND enterTime <= '" . $end_time . "' ";
-                    }
-                    $query_time .= ' GROUP BY idCourse ';
-
-                    $re_time = sql_query($query_time);
-
-                    while (list($id_c, $time_num) = sql_fetch_row($re_time)) {
-                        $time_in_course[$id_c] = $time_num;
-                    }
-                }
-
-                $output .= $this->_printTable_users(
-                    $type,
-                    $acl_man,
-                    $id_courses,
-                    $num_iscr,
-                    $num_nobegin,
-                    $num_itinere,
-                    $num_end,
-                    $time_in_course,
-                    $filter_cols,
-                    $show_percent,
-                    $show_classrooms_editions,
-                    $classrooms_editions_info,
-                    true,
-                    ''
-                );
-            } else {
-                $first = true;
-                reset($org_name);
-                foreach ($org_name as $idst_group => $folder_name) {
-                    if ($first) {
-                        //$first = FALSE;
-                    } else {
-                        $output .= '<br /><br /><br />';
-                    }
-                    $output .= '<div class="datasummary">'
-                        . '<b>' . $lang->def('_FOLDER_NAME') . ' :</b> ' . $folder_name['name']
-                        . ($folder_name['type_of_folder'] == ORG_CHART_WITH_DESCENDANTS ? ' (' . $lang->def('_WITH_DESCENDANTS') . ')' : '') . '<br />';
-                    if (($start_time != '' && $start_time) || ($end_time != '' && $end_time)) {
-                        $output .= '<b>' . $lang->def('_TIME_BELT_2') . ' :</b> '
-                            . ($start_time != '' && $start_time
-                                ? ' <b>' . $lang->def('_START_TIME') . ' </b>' . Format::date($start_time, 'date')
-                                : '')
-                            . ($end_time != '' && $end_time
-                                ? ' <b>' . $lang->def('_TO') . ' </b>' . Format::date($end_time, 'date')
-                                : '')
-                            . '<br />';
-                    }
-
-                    $group_user = $acl_man->getGroupAllUser($idst_group);
-                    $query_course_user = 'SELECT cu.idUser, cu.idCourse, cu.date_first_access, cu.date_complete, cu.status '
-                        . ' FROM %lms_courseuser AS cu JOIN %adm_user AS u ON (cu.idUser = u.idst) '
-                        . ' WHERE cu.idUser IN ( ' . implode(',', $group_user) . ' ) '
-                        . ($all_courses ? '' : 'AND cu.idCourse IN (' . implode(',', $course_selected) . ') ')
-                        . ($show_suspended ? '' : ' AND u.valid = 1 ')
-                        . ($only_students ? ' AND cu.level = 3 ' : '');
-                    if ($start_time != '' && $start_time) {
-                        $query_course_user .= " AND cu.date_complete >= '" . $start_time . "' ";
-                    }
-                    if ($end_time != '' && $end_time) {
-                        $query_course_user .= " AND cu.date_complete <= '" . $end_time . "'  AND cu.level='3'";
-                    }
-
-                    $num_iscr = [];
-                    $num_nobegin = [];
-                    $num_itinere = [];
-                    $num_end = [];
-                    $time_in_course = [];
-                    $effective_user = [];
-
-                    $re_course_user = sql_query($query_course_user);
-                    while (list($id_u, $id_c, $fisrt_access, $date_complete) = sql_fetch_row($re_course_user)) {
-                        if (isset($num_iscr[$id_c])) {
-                            ++$num_iscr[$id_c];
-                        } else {
-                            $num_iscr[$id_c] = 1;
-                        }
-
-                        if ($fisrt_access === null) {
-                            //never enter
-                            if (isset($num_nobegin[$id_c])) {
-                                ++$num_nobegin[$id_c];
-                            } else {
-                                $num_nobegin[$id_c] = 1;
-                            }
-                        } elseif ($date_complete === null) {
-                            //enter
-                            if (isset($num_itinere[$id_c])) {
-                                ++$num_itinere[$id_c];
-                            } else {
-                                $num_itinere[$id_c] = 1;
-                            }
-                        } else {
-                            //complete
-                            if (isset($num_end[$id_c])) {
-                                ++$num_end[$id_c];
-                            } else {
-                                $num_end[$id_c] = 1;
-                            }
-                        }
-                        $effective_user[] = $id_u;
-                    }
-                    if (!empty($group_user)) {
-                        $query_time = '
-						SELECT idCourse, SUM(UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime))
-						FROM %lms_tracksession
-						WHERE  idUser IN ( ' . implode(',', $group_user) . ' )  ';
-                        if ($start_time != '' && $start_time) {
-                            $query_time .= " AND enterTime >= '" . $start_time . "' ";
-                        }
-                        if ($end_time != '' && $end_time) {
-                            $query_time .= " AND enterTime <= '" . $end_time . "' ";
-                        }
-                        $query_time .= ' GROUP BY idCourse ';
-
-                        $re_time = sql_query($query_time);
-                        while (list($id_c, $time_num) = sql_fetch_row($re_time)) {
-                            $time_in_course[$id_c] = $time_num;
-                        }
-                    }
-                    reset($id_courses);
-
-                    $output .= $this->_printTable_users(
-                        $type,
-                        $acl_man,
-                        $id_courses,
-                        $num_iscr,
-                        $num_nobegin,
-                        $num_itinere,
-                        $num_end,
-                        $time_in_course,
-                        $filter_cols,
-                        $show_percent,
-                        $show_classrooms_editions,
-                        $classrooms_editions_info,
-                        $first,
-                        $output
-                    );
-
-                    if ($first) {
-                        $first = false;
-                    }
-                }
             }
-        } else {
-            //check classrooms and editions
 
-            if ($org_chart_subdivision == 0) {
-                $query_course_user = 'SELECT cu.idUser, cu.idCourse, cu.date_first_access, cu.date_complete, cu.status, c.course_type, d.id_date '
-                    . ' FROM (%lms_courseuser AS cu JOIN %lms_course AS c JOIN %adm_user AS u ON (cu.idCourse = c.idCourse AND cu.idUser = u.idst)) '
-                    . ' LEFT JOIN (%lms_course_date AS d JOIN %lms_course_date_user AS du ON (du.id_date=d.id_date)) '
-                    . ' ON (du.id_user = cu.idUser AND d.id_course = cu.idCourse) '
-                    . ' WHERE cu.idUser IN ( ' . implode(',', $user_selected) . ' ) '
-                    . ($all_courses ? '' : 'AND cu.idCourse IN (' . implode(',', $course_selected) . ')')
-                    . ($show_suspended ? '' : ' AND u.valid = 1 ')
-                    . ($only_students ? ' AND cu.level = 3 ' : '');
+            if (!empty($effective_user)) {
+                $query_time = 'SELECT idCourse, SUM(UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)) AS time_sum '
+                    . ' FROM learning_tracksession WHERE  idUser IN ( ' . implode(',', $effective_user) . ' ) ';
                 if ($start_time != '' && $start_time) {
-                    $query_course_user .= " AND cu.date_complete >= '" . $start_time . "' ";
+                    $query_time .= " AND enterTime >= '" . $start_time . "' ";
                 }
                 if ($end_time != '' && $end_time) {
-                    $query_course_user .= " AND cu.date_complete <= '" . $end_time . "'";
+                    $query_time .= " AND enterTime <= '" . $end_time . "' ";
                 }
-
-                $num_iscr = [];
-                $num_nobegin = [];
-                $num_itinere = [];
-                $num_end = [];
-                $time_in_course = [];
-                $effective_user = [];
-
-                $re_course_user = sql_query($query_course_user);
-                while (list($id_u, $id_c, $fisrt_access, $date_complete, $status, $course_type, $id_date) = sql_fetch_row($re_course_user)) {
-                    $index = $course_type == 'classroom' ? $id_c . '_' . $id_date : $id_c;
-
-                    if (isset($num_iscr[$index])) {
-                        ++$num_iscr[$index];
-                    } else {
-                        $num_iscr[$index] = 1;
-                    }
-                    switch ($status) {
-                        case _CUS_CONFIRMED:
-                            break;
-                        case _CUS_SUSPEND:
-                            break;
-                        case _CUS_SUBSCRIBED:
-                            if (isset($num_nobegin[$index])) {
-                                ++$num_nobegin[$index];
-                            } else {
-                                $num_nobegin[$index] = 1;
-                            }
-                            break;
-                        case _CUS_BEGIN:
-                            if (isset($num_itinere[$index])) {
-                                ++$num_itinere[$index];
-                            } else {
-                                $num_itinere[$index] = 1;
-                            }
-                            break;
-                        case _CUS_END:
-                            if (isset($num_end[$index])) {
-                                ++$num_end[$index];
-                            } else {
-                                $num_end[$index] = 1;
-                            }
-                            break;
-                    }
-
-                    if (!in_array($id_u, $effective_user)) {
-                        $effective_user[] = $id_u;
-                    }
-                }
-
-                if (!empty($effective_user)) {
-                    $query_time = 'SELECT idCourse, SUM(UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)) '
-                        . ' FROM %lms_tracksession WHERE  idUser IN ( ' . implode(',', $effective_user) . ' ) ';
-                    if ($start_time != '' && $start_time) {
-                        $query_time .= " AND enterTime >= '" . $start_time . "' ";
-                    }
-                    if ($end_time != '' && $end_time) {
-                        $query_time .= " AND enterTime <= '" . $end_time . "' ";
-                    }
-                    $query_time .= ' GROUP BY idCourse ';
-                    $re_time = sql_query($query_time);
-                    while (list($id_c, $time_num) = sql_fetch_row($re_time)) {
-                        $time_in_course[$id_c] = $time_num;
-                    }
-                }
-
-                $output .= $this->_printTable_users(
-                    $type,
-                    $acl_man,
-                    $id_courses,
-                    $num_iscr,
-                    $num_nobegin,
-                    $num_itinere,
-                    $num_end,
-                    $time_in_course,
-                    $filter_cols,
-                    $show_percent,
-                    $show_classrooms_editions,
-                    $classrooms_editions_info,
-                    true,
-                    ''
-                );
-            } else {
-                $first = true;
-                reset($org_name);
-                foreach ($org_name as $idst_group => $folder_name) {
-                    if ($first) {
-                        //$first = FALSE;
-                    } else {
-                        $output .= '<br /><br /><br />';
-                    }
-                    $output .= '<div class="datasummary">'
-                        . '<b>' . $lang->def('_FOLDER_NAME') . ' :</b> ' . $folder_name['name']
-                        . ($folder_name['type_of_folder'] == ORG_CHART_WITH_DESCENDANTS ? ' (' . $lang->def('_WITH_DESCENDANTS') . ')' : '') . '<br />';
-                    if (($start_time != '' && $start_time) || ($end_time != '' && $end_time)) {
-                        $output .= '<b>' . $lang->def('_TIME_BELT_2') . ' :</b> '
-                            . ($start_time != '' && $start_time
-                                ? ' <b>' . $lang->def('_START_TIME') . ' </b>' . Format::date($start_time, 'date')
-                                : '')
-                            . ($end_time != '' && $end_time
-                                ? ' <b>' . $lang->def('_TO') . ' </b>' . Format::date($end_time, 'date')
-                                : '')
-                            . '<br />';
-                    }
-
-                    $group_user = $acl_man->getGroupAllUser($idst_group);
-
-                    $query_course_user = 'SELECT cu.idUser, cu.idCourse, cu.date_first_access, cu.date_complete, cu.status, c.course_type, d.id_date '
-                        . ' FROM (%lms_courseuser AS cu JOIN %lms_course AS c JOIN %adm_user AS u ON (cu.idCourse = c.idCourse AND cu.idUser = u.idst)) '
-                        . ' LEFT JOIN (%lms_course_date AS d JOIN %lms_course_date_user AS du ON (du.id_date=d.id_date)) '
-                        . ' ON (du.id_user = cu.idUser AND d.id_course = cu.idCourse) '
-                        . ' WHERE cu.idUser IN ( ' . implode(',', $group_user) . ' ) '
-                        . ($all_courses ? '' : 'AND cu.idCourse IN (' . implode(',', $course_selected) . ')')
-                        . ($show_suspended ? '' : ' AND u.valid = 1 ')
-                        . ($only_students ? ' AND cu.level = 3 ' : '');
-                    if ($start_time != '' && $start_time) {
-                        $query_course_user .= " AND cu.date_complete >= '" . $start_time . "' ";
-                    }
-                    if ($end_time != '' && $end_time) {
-                        $query_course_user .= " AND cu.date_complete <= '" . $end_time . "'";
-                    }
-
-                    $num_iscr = [];
-                    $num_nobegin = [];
-                    $num_itinere = [];
-                    $num_end = [];
-                    $time_in_course = [];
-                    $effective_user = [];
-
-                    //$re_course_user = sql_query($query_course_user);
-                    //while(list($id_u, $id_c, $fisrt_access, $date_complete) = sql_fetch_row($re_course_user)) {
-                    $re_course_user = sql_query($query_course_user);
-                    while (list($id_u, $id_c, $fisrt_access, $date_complete, $status, $course_type, $id_date) = sql_fetch_row($re_course_user)) {
-                        $index = $course_type == 'classroom' ? $id_c . '_' . $id_date : $id_c;
-
-                        if (isset($num_iscr[$index])) {
-                            ++$num_iscr[$index];
-                        } else {
-                            $num_iscr[$index] = 1;
-                        }
-                        if ($fisrt_access === null) {
-                            //never enter
-                            if (isset($num_nobegin[$index])) {
-                                ++$num_nobegin[$index];
-                            } else {
-                                $num_nobegin[$index] = 1;
-                            }
-                        } elseif ($date_complete === null) {
-                            //enter
-                            if (isset($num_itinere[$index])) {
-                                ++$num_itinere[$index];
-                            } else {
-                                $num_itinere[$index] = 1;
-                            }
-                        } else {
-                            //complete
-                            if (isset($num_end[$index])) {
-                                ++$num_end[$index];
-                            } else {
-                                $num_end[$index] = 1;
-                            }
-                        }
-
-                        if (!in_array($id_u, $effective_user)) {
-                            $effective_user[] = $id_u;
-                        }
-                    }
-
-                    if (!empty($group_user)) {
-                        $query_time = 'SELECT idCourse, SUM(UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)) '
-                            . ' FROM %lms_tracksession WHERE  idUser IN ( ' . implode(',', $group_user) . ' ) ';
-                        if ($start_time != '' && $start_time) {
-                            $query_time .= " AND enterTime >= '" . $start_time . "' ";
-                        }
-                        if ($end_time != '' && $end_time) {
-                            $query_time .= " AND enterTime <= '" . $end_time . "' ";
-                        }
-                        $query_time .= ' GROUP BY idCourse ';
-                        $re_time = sql_query($query_time);
-                        while (list($id_c, $time_num) = sql_fetch_row($re_time)) {
-                            $time_in_course[$id_c] = $time_num;
-                        }
-                    }
-
-                    reset($id_courses);
-
-                    $output .= $this->_printTable_users(
-                        $type,
-                        $acl_man,
-                        $id_courses,
-                        $num_iscr,
-                        $num_nobegin,
-                        $num_itinere,
-                        $num_end,
-                        $time_in_course,
-                        $filter_cols,
-                        $show_percent,
-                        $show_classrooms_editions,
-                        $classrooms_editions_info,
-                        $first,
-                        $output
-                    );
-
-                    if ($first) {
-                        //$first = FALSE;
-                    }
+                $query_time .= ' GROUP BY idCourse ';
+                $re_time = sql_query($query_time);
+                foreach ($re_time as $row) {
+                    $id_c = $row['idCourse'];
+                    $time_num = (int)$row['time_sum'];
+                    $time_in_course[$id_c] = $time_num;
                 }
             }
+
+            $output .= $this->_printTable_users(
+                $type,
+                $acl_man,
+                $id_courses,
+                $num_iscr,
+                $num_nobegin,
+                $num_itinere,
+                $num_end,
+                $time_in_course,
+                $filter_cols,
+                $show_percent,
+                $show_classrooms_editions,
+                $classrooms_editions_info,
+                true,
+                ''
+            );
         }
 
         return $output;
@@ -1904,30 +1632,37 @@ class Report_Courses extends Report
             CST_AVAILABLE => $lang->def('_CST_AVAILABLE', 'course', 'lms'),
             CST_EFFECTIVE => $lang->def('_CST_CONFIRMED', 'course', 'lms'),
             CST_CONCLUDED => $lang->def('_CST_CONCLUDED', 'course', 'lms'),
-            CST_CANCELLED => $lang->def('_CST_CANCELLED', 'course', 'lms'), ];
+            CST_CANCELLED => $lang->def('_CST_CANCELLED', 'course', 'lms'),];
 
         //extract course categories
         $query = 'SELECT idCategory, path'
-            . ' FROM %lms_category';
+            . ' FROM learning_category';
         $result = sql_query($query);
         $array_category = [0 => $lang->def('_NONE')];
-        while (list($id_cat, $name_cat) = sql_fetch_row($result)) {
+        foreach ($result as $row) {
+            $id_cat = $row['idCategory'];
+            $name_cat = $row['path'];
             $array_category[$id_cat] = substr($name_cat, 5, (strlen($name_cat) - 5));
         }//strrpos($name_cat, '/') + 1 );
 
         //extract course catalogues and relations
         $query = 'SELECT idCatalogue, name'
-            . ' FROM %lms_catalogue';
+            . ' FROM learning_catalogue';
         $result = sql_query($query);
         $array_catalogue = [];
-        while (list($id_cat, $name_cat) = sql_fetch_row($result)) {
+        foreach ($result as $row) {
+            $id_cat = $row['idCatalogue'];
+            $name_cat = $row['name'];
             $array_catalogue[$id_cat] = $name_cat;
         }//strrpos($name_cat, '/') + 1 );
 
         $catalogue_entries = [];
-        $query = 'select * FROM %lms_catalogue_entry '; //where idst_member in (...)
+        $query = 'select * FROM learning_catalogue_entry '; //where idst_member in (...)
         $result = sql_query($query);
-        while (list($idcat, $entry, $type) = sql_fetch_row($result)) {
+        foreach ($result as $row) {
+            $idcat = $row[0] ?? ($row['idCatalogue'] ?? null);
+            $entry = $row[1] ?? ($row['entry'] ?? null);
+            $type = $row[2] ?? ($row['type'] ?? null);
             switch ($type) {
                 case 'course':
                     if (!isset($catalogue_entries[$entry])) {
@@ -2005,7 +1740,7 @@ class Report_Courses extends Report
 
             if (!$show_classrooms_editions && in_array('_NUM_CLASSROOM', $filter_cols)) {
                 $query = 'SELECT d.*, MIN(dd.date_begin) AS date_1, MAX(dd.date_end) AS date_2 '
-                    . ' FROM %lms_course_date AS d JOIN %lms_course_date_day AS dd ON (d.id_date = dd.id_date) ' . ' AND dd.deleted = 0 '
+                    . ' FROM learning_course_date AS d JOIN learning_course_date_day AS dd ON (d.id_date = dd.id_date) ' . ' AND dd.deleted = 0 '
                     . ' AND d.id_course = ' . $course_info['id_course']
                     . ' GROUP BY dd.id_date';
 
@@ -2129,13 +1864,12 @@ class Report_Courses extends Report
                 //no begin course
                 if (in_array('_MUSTBEGIN', $filter_cols)) {
                     if (isset($num_nobegin[$index])) {
-                        $num_nobegin = $num_nobegin[$index] - $in_waiting;
+                        $nobegin = $num_nobegin[$index] - $in_waiting;
 
-                        $perc = (($num_nobegin / $num_iscr[$index]) * 100);
-                        $tot_nobegin += $num_nobegin;
-                        $tot_perc_nobegin += $perc;
+                        $perc = (($nobegin / $num_iscr[$index]) * 100);
+                        $tot_nobegin += $nobegin;
 
-                        $trow[] = ['style' => 'img-cell', 'value' => $num_nobegin];
+                        $trow[] = ['style' => 'img-cell', 'value' => $nobegin];
                         if ($show_percent) {
                             $trow[] = ['style' => 'img-cell', 'value' => number_format($perc, 2, '.', '') . '%'];
                         }
@@ -2152,7 +1886,6 @@ class Report_Courses extends Report
                     if (isset($num_itinere[$index])) {
                         $perc = (($num_itinere[$index] / $num_iscr[$index]) * 100);
                         $tot_itinere += $num_itinere[$index];
-                        $tot_perc_itinere += $perc;
 
                         $trow[] = ['style' => 'img-cell', 'value' => $num_itinere[$index]];
                         if ($show_percent) {
@@ -2171,7 +1904,6 @@ class Report_Courses extends Report
                     if (isset($num_end[$index])) {
                         $perc = (($num_end[$index] / $num_iscr[$index]) * 100);
                         $tot_comple += $num_end[$index];
-                        $tot_perc_comple += $perc;
 
                         $trow[] = ['style' => 'img-cell', 'value' => $num_end[$index]];
                         if ($show_percent) {
@@ -2190,9 +1922,9 @@ class Report_Courses extends Report
                     if (isset($time_in_course[$idc])) {
                         $total_time += $time_in_course[$idc];
 
-                        $trow[] = ['style' => 'img-cell', 'value' => (((int) ($time_in_course[$idc] / 3600)) . 'h '
-                            . substr('0' . ((int) (($time_in_course[$idc] % 3600) / 60)), -2) . 'm '
-                            . substr('0' . ((int) ($time_in_course[$idc] % 60)), -2) . 's ')];
+                        $trow[] = ['style' => 'img-cell', 'value' => (((int)($time_in_course[$idc] / 3600)) . 'h '
+                            . substr('0' . ((int)(($time_in_course[$idc] % 3600) / 60)), -2) . 'm '
+                            . substr('0' . ((int)($time_in_course[$idc] % 60)), -2) . 's ')];
                     } else {
                         $trow[] = ['style' => 'img-cell', 'value' => ''];
                     }
@@ -2281,7 +2013,7 @@ class Report_Courses extends Report
             }
         }
         if (in_array('_TOTAL_SESSION', $filter_cols)) {
-            $tfoot[] = ((int) ($total_time / 3600)) . 'h ' . substr('0' . ((int) ($total_time / 60)), -2) . 'm ' . substr('0' . ((int) $total_time), -2) . 's ';
+            $tfoot[] = ((int)($total_time / 3600)) . 'h ' . substr('0' . ((int)($total_time / 60)), -2) . 'm ' . substr('0' . ((int)$total_time), -2) . 's ';
         }
 
         $buffer->setFoot($tfoot);
@@ -2329,13 +2061,15 @@ class Report_Courses extends Report
         $glang = &FormaLanguage::createInstance('admin_course_managment', 'lms');
 
         $query = 'SELECT idCategory, path'
-            . ' FROM %lms_category';
+            . ' FROM learning_category';
 
         $result = sql_query($query);
 
         $array_category = [0 => $lang->def('_NONE')];
 
-        while (list($id_cat, $name_cat) = sql_fetch_row($result)) {
+        foreach ($result as $row) {
+            $id_cat = $row['idCategory'];
+            $name_cat = $row['path'];
             $array_category[$id_cat] = substr($name_cat, 5, (strlen($name_cat) - 5));
         }
 
@@ -2344,7 +2078,7 @@ class Report_Courses extends Report
             CST_AVAILABLE => $glang->def('_CST_AVAILABLE'),
             CST_EFFECTIVE => $glang->def('_CST_CONFIRMED'),
             CST_CONCLUDED => $glang->def('_CST_CONCLUDED'),
-            CST_CANCELLED => $glang->def('_CST_CANCELLED'), ];
+            CST_CANCELLED => $glang->def('_CST_CANCELLED'),];
 
         $colspan_course = 1;
         if (in_array('_CODE_COURSE', $filter_cols)) {
@@ -2430,13 +2164,13 @@ class Report_Courses extends Report
             }
 
             if (in_array('_HIGH_VOTE', $filter_cols)) {
-                $trow[] = (isset($stats[$course_info['id_quest']]) ? (string) $stats[$course_info['id_quest']]['max_value'] : '-');
+                $trow[] = (isset($stats[$course_info['id_quest']]) ? (string)$stats[$course_info['id_quest']]['max_value'] : '-');
             }
             if (in_array('_LESS_VOTE', $filter_cols)) {
-                $trow[] = (isset($stats[$course_info['id_quest']]) ? (string) $stats[$course_info['id_quest']]['min_value'] : '-');
+                $trow[] = (isset($stats[$course_info['id_quest']]) ? (string)$stats[$course_info['id_quest']]['min_value'] : '-');
             }
             if (in_array('_MEDIUM_VOTE', $filter_cols)) {
-                $trow[] = (isset($stats[$course_info['id_quest']]) ? (string) $stats[$course_info['id_quest']]['everage_value'] : '-');
+                $trow[] = (isset($stats[$course_info['id_quest']]) ? (string)$stats[$course_info['id_quest']]['everage_value'] : '-');
             }
 
             $buffer->addLine($trow);
@@ -2460,13 +2194,15 @@ class Report_Courses extends Report
         $glang = &FormaLanguage::createInstance('admin_course_managment', 'lms');
 
         $query = 'SELECT idCategory, path'
-            . ' FROM %lms_category';
+            . ' FROM learning_category';
 
         $result = sql_query($query);
 
         $array_category = [0 => $lang->def('_NONE')];
 
-        while (list($id_cat, $name_cat) = sql_fetch_row($result)) {
+        foreach ($result as $row) {
+            $id_cat = $row['idCategory'];
+            $name_cat = $row['path'];
             $array_category[$id_cat] = substr($name_cat, 5, (strlen($name_cat) - 5));
         }
 
@@ -2475,7 +2211,7 @@ class Report_Courses extends Report
             CST_AVAILABLE => $glang->def('_CST_AVAILABLE'),
             CST_EFFECTIVE => $glang->def('_CST_CONFIRMED'),
             CST_CONCLUDED => $glang->def('_CST_CONCLUDED'),
-            CST_CANCELLED => $glang->def('_CST_CANCELLED'), ];
+            CST_CANCELLED => $glang->def('_CST_CANCELLED'),];
 
         $colspan_course = 1;
 
@@ -2561,13 +2297,13 @@ class Report_Courses extends Report
             }
 
             if (in_array('_HIGH_VOTE', $filter_cols)) {
-                $trow[] = (isset($stats[$course_info['id_quest']]) ? (string) $stats[$course_info['id_quest']]['max_value'] : '-');
+                $trow[] = (isset($stats[$course_info['id_quest']]) ? (string)$stats[$course_info['id_quest']]['max_value'] : '-');
             }
             if (in_array('_LESS_VOTE', $filter_cols)) {
-                $trow[] = (isset($stats[$course_info['id_quest']]) ? (string) $stats[$course_info['id_quest']]['min_value'] : '-');
+                $trow[] = (isset($stats[$course_info['id_quest']]) ? (string)$stats[$course_info['id_quest']]['min_value'] : '-');
             }
             if (in_array('_MEDIUM_VOTE', $filter_cols)) {
-                $trow[] = (isset($stats[$course_info['id_quest']]) ? (string) $stats[$course_info['id_quest']]['everage_value'] : '-');
+                $trow[] = (isset($stats[$course_info['id_quest']]) ? (string)$stats[$course_info['id_quest']]['everage_value'] : '-');
             }
 
             $buffer->addLine($trow);

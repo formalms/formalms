@@ -16,16 +16,15 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 class AdminrulesAdmController extends AdmController
 {
     public $model;
-    public $json;
     public $acl_man;
 
     public function init()
     {
         parent::init();
-        require_once _base_ . '/lib/lib.json.php';
+        
 
         $this->model = new AdminrulesAdm();
-        $this->json = new Services_JSON();
+        
         $this->acl_man = \FormaLms\lib\Forma::getAclManager();
     }
 
@@ -64,7 +63,7 @@ class AdminrulesAdmController extends AdmController
             'records' => $array_group,
         ];
 
-        echo $this->json->encode($res);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($res,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function addGroup()
@@ -81,7 +80,7 @@ class AdminrulesAdmController extends AdmController
 
             $output['success'] = $result;
 
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         } else {
             $output = [];
 
@@ -95,7 +94,7 @@ class AdminrulesAdmController extends AdmController
             $output['header'] = Lang::t('_ADD', 'adminrules') . '&nbsp;';
             $output['body'] = $body;
 
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         }
     }
 
@@ -108,7 +107,7 @@ class AdminrulesAdmController extends AdmController
 
         $output['success'] = $result;
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function special()
@@ -137,7 +136,7 @@ class AdminrulesAdmController extends AdmController
 
             $output['success'] = $preference->saveSpecialAdminRules($idst, $new_rules);
 
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         } else {
             $body = Form::openForm('add_rules_form', 'ajax.adm_server.php?r=adm/adminrules/special&confirm=1')
                     . Form::openElementSpace()
@@ -149,7 +148,7 @@ class AdminrulesAdmController extends AdmController
             $output['header'] = Lang::t('_MOD', 'adminrules') . '&nbsp;';
             $output['body'] = $body;
 
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         }
     }
 
@@ -168,11 +167,11 @@ class AdminrulesAdmController extends AdmController
                 $new_lang = array_keys($_POST['admin_lang']);
             }
 
-            $new_lang = $this->json->encode($new_lang);
+            $new_lang = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($new_lang,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             $output['success'] = $preference->saveLangAdminRules($idst, $new_lang);
 
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         } else {
             $body = Form::openForm('add_rules_form', 'ajax.adm_server.php?r=adm/adminrules/lang&confirm=1')
                     . Form::openElementSpace()
@@ -185,7 +184,7 @@ class AdminrulesAdmController extends AdmController
             $output['header'] = Lang::t('_MOD', 'adminrules') . '&nbsp;';
             $output['body'] = $body;
 
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         }
     }
 
@@ -255,7 +254,7 @@ class AdminrulesAdmController extends AdmController
                         'results' => count($array_group),
                         'records' => $array_group, ];
 
-        echo $this->json->encode($res);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($res,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function add_admin()
@@ -322,7 +321,7 @@ class AdminrulesAdmController extends AdmController
             'old_value' => $old_value,
         ];
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function delAdmin()
@@ -336,6 +335,6 @@ class AdminrulesAdmController extends AdmController
         }
 
         $output = ['success' => $res];
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 }

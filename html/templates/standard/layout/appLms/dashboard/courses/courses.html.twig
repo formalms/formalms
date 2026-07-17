@@ -14,7 +14,7 @@
     {% endif %}
 
     <div class="d-col d-col--12 {{ class }}">
-        <div class="d-courses d-widget">
+        <div class="d-courses d-widget" style="position:relative; z-index:100; isolation:isolate; padding-bottom:90px;">
             <h3 class="d-title">
                 {% if block.data.title is empty %}
                     {{ Lang_translate('_DASHBOARDBLOCKCOURSESLMS','dashboard') }}
@@ -30,6 +30,7 @@
                 {% endif %}
 
                 <a class="d-courses__item has-icon--{{ course.type }}" target="_self"
+                   style="position:relative; overflow:hidden; z-index:1;"
                    href="index.php?modname=course&amp;op=aula&amp;idCourse={{ course.id }}">
                     <div class="d-courses__img-wrapper">
                         <img class="d-courses__img"
@@ -59,25 +60,25 @@
                         {% endif %}
                         {% if course.dates is not empty %}
                             <div class="d-courses__next-course">
-
                                 {{ course.dates[0].startDate }}
                             </div>
                         {% endif %}
                     </div>
                 </a>
             {% endfor %}
-
+            <div aria-hidden="true" style="clear:both; height:0; line-height:0;"></div>
             {% if block.data.show_button %}
-                <div class="d-courses__cta-wrapper">
-                    <a class="forma-button forma-button--primary forma-button--full d-button--cert" title=""
-                       href="index.php?r=elearning/show&amp;sop=unregistercourse">
-                        <span class="forma-button__label">{{ Lang_translate('_ALL_COURSES', 'standard') }}</span>
-                    </a>
-                </div>
+            <div class="d-courses__cta-wrapper"
+                style="position:relative; z-index:200; width:200px; margin:12px 0 0 auto; pointer-events:auto;">
+                <a class="forma-button forma-button--primary d-button--cert"
+                style="position:relative; z-index:210; pointer-events:auto;"
+                href="index.php?r=elearning/show&amp;sop=unregistercourse">
+                <span class="forma-button__label">{{ Lang_translate('_ALL_COURSES', 'standard') }}</span>
+                </a>
+            </div>
             {% endif %}
         </div>
     </div>
-
     {# <pre>
      {{ dump(block.courses) }}
    </pre> #}

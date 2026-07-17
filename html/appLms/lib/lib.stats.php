@@ -26,7 +26,8 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  **/
 function renderProgress($tot_complete, $tot_failed, $total, $show_title = false)
 {
-    //if($total == 0) return '';
+    $total = (int)$total;
+    if ($total === 0) return '';
     $perc_complete = round(($tot_complete / $total) * 100, 2);
     $perc_failed = round(($tot_failed / $total) * 100, 2);
 
@@ -154,7 +155,7 @@ function getCountableCourseItems($idCourse, $countHidden = true, $idUser = false
         [$list] = sql_fetch_row($rs);
         sql_free_result($rs);
 
-        return explode("," , $list);
+        return !is_null($list) ? explode("," , $list) : [];
     }
 }
 
@@ -170,7 +171,7 @@ function getCountableCourseItems($idCourse, $countHidden = true, $idUser = false
  **/
 function getStatStatusCount($stat_idUser, $stat_idCourse, $arrStauts, $arrayFilter = [])
 {
-    $query = 'SELECT count(ct.idreference)'
+    $query = 'SELECT count(DISTINCT ct.idreference)'
         . ' FROM %lms_commontrack ct, %lms_organization org'
         . ' WHERE (ct.idReference = org.idOrg)'
         . "   AND (ct.idUser = '" . (int) $stat_idUser . "')"

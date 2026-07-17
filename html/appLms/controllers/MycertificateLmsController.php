@@ -13,16 +13,13 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.certificate.php');
+require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.certificate.php');
 
 class MycertificateLmsController extends LmsController
 {
     public const mod_name = 'mycertificate';
 
     protected $id_user;
-
-    /** @var Services_JSON */
-    protected $json;
 
     /** @var MycertificateLms */
     protected $model;
@@ -32,14 +29,15 @@ class MycertificateLmsController extends LmsController
     public function init()
     {
         $this->id_user = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
-        $this->json = new Services_JSON();
         $this->model = new MycertificateLms($this->id_user);
         $this->certificate = new Certificate();
     }
 
     public function show()
     {
+        include \FormaLms\lib\Forma::include(_lib_ . '/formatable/', 'include.php');
         checkPerm('view', false, self::mod_name);
+
 
         //TODO: EVT_OBJECT (§)
         //$event = new \appLms\Events\Lms\MyCertificateTabLoading();
@@ -48,9 +46,26 @@ class MycertificateLmsController extends LmsController
 
         $metaCertificates = $this->model->getMyMetaCertificates();
         $totalMetaCertificates = count($metaCertificates);
-        $this->render('show', ['metacertificates' => $this->json->encode($metaCertificates), 'totalMetaCertificates' => $totalMetaCertificates, 'id_user' => $this->id_user]);
+        $cert_columns = Util::config('tables.mycert_columns');
 
-        /*
+        $meta_columns = \Util::config('tables.columnsacert');
+
+        $selected_tab = FormaLms\lib\Get::req('current_tab', DOTY_STRING, 'cert');
+
+
+        $view = 'show';
+        $eventResults = Events::trigger('lms.certificate.show', ['view' => $view]);
+        $view = $eventResults['view'];
+
+        $this->render($view, [
+            'metacertificates' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($metaCertificates, 'json'),
+            'metacert_columns' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($meta_columns, 'json'),
+            'totalMetaCertificates' => $totalMetaCertificates,
+            'id_user' => $this->id_user,
+            'cert_columns' => $cert_columns,
+            'selected_tab' => $selected_tab]);
+
+            /*
                 //NEW Event Method
                 $tabs = array();
                 $eventTabs = Events::trigger('lms.mycertificatetab.loading', [
@@ -62,6 +77,7 @@ class MycertificateLmsController extends LmsController
                     'additionalTabs' => $additionalTabs
                 ]);
         */
+
     }
 
     public function getMyCertificates()
@@ -108,7 +124,7 @@ class MycertificateLmsController extends LmsController
             'data' => $certificates,
         ];
 
-        echo $this->json->encode($result);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function downloadCert()
@@ -119,7 +135,7 @@ class MycertificateLmsController extends LmsController
         $id_course = importVar('id_course', true, 0);
         $idAssociation = importVar('idAssociation', true, 0);
 
-        if ($this->certificate->certificateAvailableForUser($id_certificate, $id_course, $this->id_user)) {
+        if ($this->certificate->certificateAvailableForUser($id_certificate, $id_course, $this->id_user, true)) {
             $subs = $this->certificate->getSubstitutionArray($this->id_user, $id_course, $idAssociation);
             $this->certificate->send_certificate($id_certificate, $this->id_user, $id_course, $subs);
         }
@@ -127,11 +143,19 @@ class MycertificateLmsController extends LmsController
 
     public function downloadMetaCert()
     {
+        $params = [];
         $id_certificate = importVar('id_certificate', true, 0);
         $id_association = importVar('id_association', true, 0);
+        $id_course = importVar('id_course', true, 0);
         $id_user = $this->id_user;
 
+        $eventResults = Events::trigger('lms.certificate.download.meta', compact('id_certificate', 'id_association', 'id_course', 'id_user'));
+
+        if ($eventResults && array_key_exists('params', $eventResults)) {
+            $params = array_merge($params, $eventResults['params']);
+        }
+
         $subs = $this->certificate->getSubstitutionArray($id_user, $id_course, $id_association);
-        $rs = $this->certificate->send_certificate($id_certificate, $id_user, 0, $subs, true, false, $id_association);
+        $rs = $this->certificate->send_certificate($id_certificate, $id_user, 0, $subs, true, false, $id_association, $params);
     }
 }

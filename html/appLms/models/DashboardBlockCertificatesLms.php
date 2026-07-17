@@ -15,6 +15,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 require_once _lms_ . '/lib/lib.middlearea.php';
 require_once _lms_ . '/lib/lib.certificate.php';
+
 /**
  * Class DashboardBlockCertificatesLms.
  */
@@ -92,14 +93,21 @@ class DashboardBlockCertificatesLms extends DashboardBlockLms
 
     private function getCertificates()
     {
-        if (!$limit = !empty($this->data) && (int) array_key_exists('max_last_records', $this->data) ? $this->data['max_last_records'] : 0) {
-            $limit = self::MAX_CERTIFICATES;
+        $limit = self::MAX_CERTIFICATES;
+        $certificates = [];
+
+        if (!empty($this->data) && (int)array_key_exists('max_last_records', $this->data)) {
+            $limit = $this->data['max_last_records'];
         }
 
-        return $this->getCertificatesForBlock($limit);
+        if ($limit > 0) {
+            $certificates = $this->getCertificatesForBlock($limit);
+        }
+
+        return $certificates;
     }
 
-    private function getCertificatesForBlock($limit = 1)
+    private function getCertificatesForBlock($limit = self::MAX_CERTIFICATES)
     {
         $id_user = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
@@ -107,17 +115,6 @@ class DashboardBlockCertificatesLms extends DashboardBlockLms
         $pagination['startIndex'] = 0;
         $pagination['rowsPerPage'] = $limit;
         $results = $this->certificate->getAssignment($filter, $pagination);
-        // $query = "SELECT cu.date_complete, ca.on_date, cu.idUser as id_user,"
-        //     . " cu.status , cu.idCourse, cc.id_certificate, c.name AS name_certificate,"
-        //     . " ca.cert_file, courses.name AS course_name, courses.code AS course_code"
-        //     . " FROM ( %adm_user AS u JOIN %lms_courseuser AS cu ON (u.idst = cu.idUser) )"
-        //     . " JOIN %lms_certificate_course AS cc ON cc.id_course = cu.idCourse"
-        //     . " JOIN %lms_course AS courses ON courses.idCourse = cu.idCourse"
-        //     . " JOIN %lms_certificate AS c ON c.id_certificate = cc.id_certificate"
-        //     . " LEFT JOIN %lms_certificate_assign AS ca ON"
-        //     . " ( ca.id_course = cu.idCourse AND ca.id_user=cu.idUser AND ca.id_certificate = cc.id_certificate )"
-        //     . " WHERE cu.idUser = " . $id_user
-        //     . " ORDER BY ca.on_date DESC";
 
         return $results;
     }

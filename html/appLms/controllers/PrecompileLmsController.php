@@ -18,15 +18,11 @@ class PrecompileLmsController extends LmsController
     public $name = 'precompile';
 
     protected $model;
-    protected $json;
     protected $jump_url;
 
     public function init()
     {
         $this->model = new PrecompileLms();
-
-        require_once _base_ . '/lib/lib.json.php';
-        $this->json = new Services_JSON();
 
         $this->jump_url = 'index.php?r=' . $this->model->getHomeUrl();
     }
@@ -57,6 +53,8 @@ class PrecompileLmsController extends LmsController
                 'policy_id' => $this->model->getPrivacyPolicyId(),
                 'policy_text' => $this->model->getPrivacyPolicyText(),
                 'id_user' => \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(),
+                'signature' => Util::getSignature(),
+                'request_mandatory_fields_compilation' => FormaLms\lib\Get::sett('request_mandatory_fields_compilation', 'on'),
                 'fieldlist' => $fieldlist,
             ]);
         } elseif ($_REQUEST['r'] == 'precompile/show') {

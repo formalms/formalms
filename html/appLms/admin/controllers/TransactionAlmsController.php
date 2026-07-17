@@ -18,13 +18,11 @@ class TransactionAlmsController extends AlmsController
     protected $acl_man;
     protected $permissions;
     public TransactionAlms $model;
-    public Services_JSON $json;
+
 
     public function init()
     {
         parent::init();
-        require_once _base_ . '/lib/lib.json.php';
-        $this->json = new Services_JSON();
         $this->acl_man = \FormaLms\lib\Forma::getAclManager();
         $this->model = new TransactionAlms();
         $this->permissions = [
@@ -79,7 +77,7 @@ class TransactionAlmsController extends AlmsController
             'results' => count($array_transaction),
             'records' => $array_transaction, ];
 
-        echo $this->json->encode($result);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function mod()

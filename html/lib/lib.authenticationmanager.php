@@ -70,7 +70,7 @@ class AuthenticationManager
 
         $saveUser = $this->saveUser($user);
 
-        Events::trigger('core.user.logged_in', ['user' => $user]);
+        Events::trigger('core.user.logged_in', ['user' => $user, 'idst' => $user->getIdst()]);
 
         return $saveUser;
     }
@@ -96,6 +96,9 @@ class AuthenticationManager
     {
         //FormaUser::setupUser($user); // TODO: secondo me meglio tenere la funzione qui ma valutare
         //////////////////////////////////
+        // Auto-repair: ensure user is in base organization chart groups
+        $user->ensureBaseGroupMembership();
+
         $user->loadUserSectionST();
         $user->saveInSession();
         \FormaLms\lib\FormaUser::loadUserFromSession();

@@ -444,7 +444,7 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;MAIN_SET_4" attributes="" save_date="2019-10-02 11:39:01"><![CDATA[Opzioni generali]]></key>
         <key id="configuration&amp;MAIN_SET_6" attributes="" save_date="2019-10-02 11:39:14"><![CDATA[Opzioni generali]]></key>
         <key id="configuration&amp;MAIN_SET_8" attributes="" save_date="2019-10-02 11:39:27"><![CDATA[Opzioni generali]]></key>
-        <key id="configuration&amp;MAIN_SET_9" attributes="" save_date="2019-10-02 11:39:53"><![CDATA[LDAP]]></key>
+        <key id="configuration&amp;MAIN_SET_9" attributes="" save_date="2019-10-02 11:39:53"><![CDATA[SSO]]></key>
         <key id="configuration&amp;PASSWORD_BCRYPT" attributes="" save_date="2020-05-31 16:28:19"><![CDATA[Bycrypt password]]></key>
         <key id="configuration&amp;PASSWORD_MD5" attributes="" save_date="2020-05-31 16:28:27"><![CDATA[MD5 Password]]></key>
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Usa colori con alto contrasto]]></key>
@@ -519,11 +519,6 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Attiva l'interfaccia di editing delle lingue (utilizzato per il debug)]]></key>
         <key id="configuration&amp;_LANG_EXPORT_TIME" attributes="" save_date="2020-05-31 17:47:39"><![CDATA[Data dell'esportazione lingue]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2017-05-26 09:58:52"><![CDATA[Nome e Cognome sono campi obbligatori per la registrazione]]></key>
-        <key id="configuration&amp;_LDAP" attributes="" save_date="2017-03-15 11:47:14"><![CDATA[Estensione LDAP di PHP]]></key>
-        <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2017-03-15 11:48:12"><![CDATA[Porta server LDAP]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2017-03-15 11:48:01"><![CDATA[Indirizzo server LDAP]]></key>
-        <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2017-03-15 11:48:25"><![CDATA[Usa autenticazione LDAP]]></key>
-        <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2017-03-15 11:48:20"><![CDATA[Stringa di autenticazione LDAP]]></key>
         <key id="configuration&amp;_LIST_DB_UPGRADES" attributes="" save_date="2016-09-29 16:01:42"><![CDATA[Log script SQL eseguiti sul DB]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Configurazione di "magic_quotes_gpc"]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mittente delle email di registrazione e della procedura automatica di recupero password]]></key>
@@ -614,6 +609,7 @@ La chat si aprirà in una finestra di pop-up]]></key>
         <key id="configuration&amp;_REST_AUTH_API_SECRET" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Aut. Codice segreto API]]></key>
         <key id="configuration&amp;_REST_AUTH_CODE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Codice unico di accesso:]]></key>
         <key id="configuration&amp;_REST_AUTH_LIFETIME" attributes="" save_date="2017-03-15 17:48:15"><![CDATA[Tempo di vita del token (min.):]]></key>
+        <key id="configuration&amp;_SSO_LIFETIME" attributes="" save_date="2017-03-15 17:48:15"><![CDATA[Tempo di vita del token SSO (min.):]]></key>
         <key id="configuration&amp;_REST_AUTH_METHOD" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Metodo di autenticazione:]]></key>
         <key id="configuration&amp;_REST_AUTH_SECRET_KEY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Aut. Chiave segreta]]></key>
         <key id="configuration&amp;_REST_AUTH_TOKEN" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Generazione di un Token ad ogni connessione]]></key>
@@ -685,7 +681,6 @@ http://server/path/index.php?modname=login) \]]></key>
         <key id="configuration&amp;_URL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Indirizzo del sito (deve terminare con /)]]></key>
         <key id="configuration&amp;_URL_CHECKIN_TELESKILL" attributes="" save_date="2017-03-15 17:48:53"><![CDATA[URL per le operazioni di check-in (Teleskill)]]></key>
         <key id="configuration&amp;_URL_VIDEOCONFERENCE_TELESKILL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[URL per videoconferenza]]></key>
-        <key id="configuration&amp;_USEFULL_ONLY_IF" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Fai attenzione a questo parametro solo se desideri autenticarti tramite LDAP]]></key>
         <key id="configuration&amp;_USERS_ALREADY_ASSIGNED" attributes="" save_date="2017-03-15 16:37:53"><![CDATA[utenti già assegnati]]></key>
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Chiedi all'utente di scegliere una nuova password diversa dalle ultime X password che ha usato]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Quota disco in MB assegnata all'utente per l'area myfiles]]></key>
@@ -931,7 +926,11 @@ Per poterlo fare devi loggarti nella piattaforma se sei un utente registarto, al
         <key id="coursepath&amp;_COURSE_S_MODERATE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Moderata]]></key>
         <key id="coursepath&amp;_CURRENT_ACTIVITY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Attività corrente]]></key>
         <key id="coursepath&amp;_IMPORT_COURSE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Importa corsi nel percorso]]></key>
-        <key id="coursepath&amp;_SUBSCRIBED_CAPTION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Utenti attualmente iscritti]]></key>
+        <key id="coursepath&amp;_SUBSCRIBED_CAPTION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Utenti attualmente iscritti]]></key><key id="coursepath&amp;_COURSE_PATH_LOGO" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Logo del percorso formativo]]></key>
+        <key id="coursepath&amp;_DOCUMENT_UPLOAD" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Carica documenti]]></key>
+        <key id="course&amp;_COURSEPATH_SPECIAL_OPTION" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Opzioni speciali]]></key>
+        <key id="coursepath&amp;_CHECKBOX_EXPAND_PATH_INFO" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Non mostrare il pulsante Espandi / Condensa]]></key>
+
       </module>
       <module id="coursereport">
         <key id="coursereport&amp;_ACTIVITY_INFO" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Informazioni relative all'attività selezionata]]></key>
@@ -1194,8 +1193,10 @@ Titolo: [thread_title]]]></key>
         <key id="email&amp;_NEW_USER_OVERBOOKING_SUBSCRIBED_SUBJECT" attributes="" save_date="2021-08-02 13:31:11"><![CDATA[Utente in lista d'attesa]]></key>
         <key id="email&amp;_NEW_USER_OVERBOOKING_SUBSCRIBED_TEXT" attributes="" save_date="2021-08-02 13:27:47"><![CDATA[L'utente [firstname] [lastname], è stato iscritto al corso [course] in lista d'attesa sulla piattaforma [url]]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT" attributes="email" save_date="2021-01-22 10:16:55"><![CDATA[Sei stato iscritto a un nuovo corso]]></key>
+        <key id="email&amp;_NEW_USER_SUBSCRIBED_COURSEPATH_SUBJECT" attributes="email" save_date="2021-01-22 10:16:55"><![CDATA[Sei stato iscritto a un nuovo percorso formativo]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT_MODERATORS" attributes="" save_date="2020-09-21 12:58:27"><![CDATA[Un nuovo utente è stato iscritto ad un corso]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_TEXT" attributes="email" save_date="2021-01-22 10:17:22"><![CDATA[Sei stato iscritto al corso [course] sulla piattaforma [url]]]></key>
+        <key id="email&amp;_NEW_USER_SUBSCRIBED_COURSEPATH_TEXT" attributes="email" save_date="2021-01-22 10:17:22"><![CDATA[Sei stato iscritto al percorso formativo [coursepath] sulla piattaforma [url]]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_TEXT_MODERATORS" attributes="" save_date="2020-03-02 13:15:09"><![CDATA[Un nuovo utente [firstname] [lastname] [username] è stato iscritto al corso [course]]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_TEXT_SMS" attributes="" save_date="2021-01-22 10:18:07"><![CDATA[Sei stato iscritto al corso: [course] nella piattaforma: [url]]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_SUBJECT" attributes="email" save_date="2015-09-30 15:32:39"><![CDATA[Un utente è in attesa di essere iscritto ad un corso]]></key>
@@ -1616,7 +1617,6 @@ sei stato disiscritto dal corso ([course_code]) - [course]]]></key>
         <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2017-12-11 09:53:18"><![CDATA[Il sistema, rilasciato nelle principali lingue supporta gli standard SCORM 1.2 e 2004, E' configurabile per adattarsi al modello didattico desiderato (autoapprendimento, blended learning, didattica collaborativa, social e-learning, gestione didattica in aula) attraverso molteplici oggetti didattici: SCORM, pagine HTML, download, test e  diverse funzionalità tra cui Wiki, Forum e Project Manager, <br /><br />Per cambiare questa frase andare su Admin/Gestione lingue, cercare <b>login</b> e modificare le chiavi  <b>_INTRO_STD_TEXT_TITLE</b> e <b>_INTRO_STD_TEXT</b><br /><br />]]></key>
         <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2017-12-11 09:52:43"><![CDATA[forma.lms è un sistema open source per l'e-learning (LMS e LCMS) utilizzato nelle più grandi organizzazioni e università]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Salta alla form di login]]></key>
-        <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[LDAP attivo funzioni disattivate contatta il responsabile]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Login]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Login accessibile]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Login]]></key>
@@ -1649,6 +1649,7 @@ Nella conservazione dei dati verranno osservate accuratezza e precisione per gar
         <key id="login&amp;_UNKNOWNGOOGLERROR" attributes="" save_date="2017-03-15 12:47:55"><![CDATA[Errore sconosciuto durante login Google]]></key>
         <key id="login&amp;_UNKNOWNSOCIALERROR" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Errore sconosciuto durante login social]]></key>
         <key id="login&amp;_UNLOGGED" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Sei disconnesso]]></key>
+        <key id="login&amp;_READ_ALL_CONTENT" attributes="" save_date="2025-03-06 16:02:02"><![CDATA[Leggi la descrizione completa del LMS Forma]]></key>
       </module>
       <module id="manmenu">
         <key id="manmenu&amp;_ADDCUSTOM" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Nuovo menu custom]]></key>
@@ -1839,7 +1840,7 @@ Nella conservazione dei dati verranno osservate accuratezza e precisione per gar
         <key id="organization&amp;_ORGMILESTONE_END" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Finale]]></key>
         <key id="organization&amp;_ORGMILESTONE_START" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Iniziale]]></key>
         <key id="organization&amp;_ORGPLAYTITLE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Play]]></key>
-        <key id="organization&amp;_ORGROOTNAME" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Materiali]]></key>
+        <key id="organization&amp;_ORGROOTNAME" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Tutti i contenuti]]></key>
         <key id="organization&amp;_ORG_ACCESS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Accessi]]></key>
         <key id="organization&amp;_PROFILE" attributes="" save_date="2020-05-31 16:29:44"><![CDATA[Profilo]]></key>
         <key id="organization&amp;_PUBLISH_FROM" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Pubblica a partire da]]></key>
@@ -1961,6 +1962,11 @@ Nella conservazione dei dati verranno osservate accuratezza e precisione per gar
       </module>
       <module id="privacypolicies">
         <key id="privacypolicies&amp;_PRIVACYPOLICIES" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Privacy Policies]]></key>
+        <key id="privacypolicies&amp;_PRIVACYPOLICIES_ACCEPT_DATA" attributes="" save_date="2024-03-01 15:32:39"><![CDATA[Consenso al trattamento dei dati accettato in data]]></key>
+        <key id="privacypolicies&amp;_PRIVACYPOLICIES_REJECT_ALERT" attributes="" save_date="2024-03-01 15:32:39"><![CDATA[Cliccando sul buttone "Revoca" verrai disconnesso.<br>Per riaccedere alla piattaforma dovrai dare nuovamente il consenso alla gestione dei tuoi dati.]]></key>
+        <key id="privacypolicies&amp;_PRIVACYPOLICIES_REVOKE_BUTTON" attributes="" save_date="2024-03-01 15:32:39"><![CDATA[Revoca il consenso]]></key>
+        <key id="privacypolicies&amp;_VIEW_PRIVACY" attributes="" save_date="2024-03-01 15:32:39"><![CDATA[Visualizza il testo dell'informativa]]></key>
+        <key id="privacypolicies&amp;_PRIVACYPOLICIES_REJECT_DATA" attributes="" save_date="2024-03-01 15:32:39"><![CDATA[Consenso al trattamento dei dati ritirato in data]]></key>
       </module>
       <module id="profile">
         <key id="profile&amp;_ACCESS_COUNT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Numeri di accessi]]></key>
@@ -2043,6 +2049,7 @@ L'immagine non deve avere contenuti offensivi e/o che violano il regolamento.]]>
         <key id="profile&amp;_USER_VIDEOS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Video]]></key>
         <key id="profile&amp;_WELCOME" attributes="" save_date="2016-01-13 15:49:16"><![CDATA[Benvenuto]]></key>
         <key id="profile&amp;_WRITE_ASK_A_FRIEND" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Scrivi un messaggio per la tua richiesta]]></key>
+        <key id="profile&amp;_MANAGED_BY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Responsabile]]></key>
       </module>
       <module id="project">
         <key id="project&amp;_MODPROJECTADMIN" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Gestisci amministratori]]></key>
@@ -2779,7 +2786,7 @@ sei stato disiscritto dal corso ([course_code]) - [course]]]></key>
         <key id="standard&amp;_START" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Inizio]]></key>
         <key id="standard&amp;_STARTED" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Iniziato]]></key>
         <key id="standard&amp;_STARTS_WITH" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Inizia con]]></key>
-        <key id="standard&amp;_START_DATE" attributes="" save_date="2020-11-18 12:54:05"><![CDATA[Data di inizio_start_date]]></key>
+        <key id="standard&amp;_START_DATE" attributes="" save_date="2020-11-18 12:54:05"><![CDATA[Data di inizio]]></key>
         <key id="standard&amp;_START_PAGE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Pagina iniziale]]></key>
         <key id="standard&amp;_START_TIME" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Inizio]]></key>
         <key id="standard&amp;_STATISTICS" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Statistiche]]></key>
@@ -2851,6 +2858,10 @@ sei stato disiscritto dal corso ([course_code]) - [course]]]></key>
         <key id="standard&amp;_SHOW_INSTANCE_ONLY" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Gli utenti selezionati]]></key>
         <key id="standard&amp;_MULTIUSERSELECTOR_TITLE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Seleziona utenti da collegare:]]></key>
         <key id="standard&amp;_SMTP_CONFIG_DISABLED" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Smtp disabled in config file]]></key>
+        <key id="standard&amp;_COPY_OF" attributes="" save_date="2024-11-21 15:12:40"><![CDATA[Copia di]]></key>
+		<key id="standard&amp;_SON_AREA" attributes="" save_date="2024-11-21 15:12:40"><![CDATA[Opzione padre collegata]]></key>				
+		<key id="standard&amp;_FATHER_AREA" attributes="" save_date="2024-11-21 15:12:40"><![CDATA[Gruppo opzioni collegato]]></key>
+		<key id="standard&amp;_EXISTING_CHOICE_CANNOT_PROCEED" attributes="" save_date="2024-11-21 15:12:40"><![CDATA[Scelta presente nei dati degli utenti, impossibile procedere]]></key>
       </module>
       <module id="statistic">
         <key id="statistic&amp;_AT_HOUR" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Alle ore]]></key>
@@ -3148,6 +3159,7 @@ La descrizione verrà mostrata agli studenti prima della somministrazione del te
         <key id="test&amp;_TEST_MM4_SHOWTOT" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Mostra il punteggio finale (se calcolabile subito)]]></key>
         <key id="test&amp;_TEST_MM_FIVE" attributes="" save_date="2018-01-12 15:45:12"><![CDATA[Gestione test in registro valutazioni]]></key>
         <key id="test&amp;_TEST_MM_FOUR" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[3 - Dati da mostrare a termine compilazione]]></key>
+        <key id="test&amp;_TEST_MM4_SHOWQUESTSCORE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Mostra il punteggio per ogni singola domanda]]></key>
         <key id="test&amp;_TEST_MM_ONE" attributes="" save_date="2017-04-19 10:47:00"><![CDATA[1 - Imposta la presentazione delle domande]]></key>
         <key id="test&amp;_TEST_MM_TWO" attributes="" save_date="2017-04-19 10:47:12"><![CDATA[2 - Imposta modalità di fruizione]]></key>
         <key id="test&amp;_TEST_MODALITY" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Modalità di fruizione]]></key>
@@ -3317,6 +3329,7 @@ La descrizione verrà mostrata agli studenti prima della somministrazione del te
         <key id="communication&amp;_CATEGORY_MISSING" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Devi impostare almeno una categoria]]></key>
         <key id="communication&amp;_MARK_AS_READ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Segna come letto]]></key>
         <key id="communication&amp;_MARK_AS_UNREAD" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Segna come non letto]]></key>
+        <key id="communication&amp;_READ_ALL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Leggi tutto]]></key>
       </module>
       <module id="mailconfig">
         <key id="mailconfig&amp;_AUTO_TLS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Auto Tls]]></key>

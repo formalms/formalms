@@ -116,7 +116,7 @@ class FieldList
 
                 return $false_var;
             }
-            list($id_common, $type_file, $type_class) = sql_fetch_row($rs);
+            [$id_common, $type_file, $type_class] = sql_fetch_row($rs);
         } else {
             $id_common = $id_field;
         }
@@ -235,6 +235,7 @@ class FieldList
         }
         $query .= ' ORDER BY sequence';
         $rs = $db->query($query);
+
         $result = [];
 
         foreach ($rs as $row) {
@@ -345,20 +346,28 @@ class FieldList
         $acl = new FormaACL();
         if ($manual_id_field === false) {
             $user_groups = $acl->getUserGroupsST($id_user);
+
+            // Add ancestor ocd groups for proper field inheritance from parent org chart nodes
+            require_once _adm_ . '/models/UsermanagementAdm.php';
+            $uma = new UsermanagementAdm();
+            $ancestor_ocd_groups = $uma->getUserAncestorOcdGroups($id_user);
+            if (!empty($ancestor_ocd_groups)) {
+                $user_groups = array_unique(array_merge($user_groups, $ancestor_ocd_groups));
+            }
         }
 
         if (count($user_groups) > 2 && isset($user_groups[1]) && isset($user_groups[2])) {
             // Not only roots ocd_0 and oc_0
             unset($user_groups[1]);
         }
-
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $query = 'SELECT ft.id_common, ft.type_field, ftt.type_file, ftt.type_class, ft.translation, gft.mandatory, gft.useraccess '
             . 'FROM ' . $this->getFieldTable() . ' AS ft '
             . '	JOIN ' . $this->getGroupFieldsTable() . ' AS gft '
             . ' 	JOIN ' . $this->getTypeFieldTable() . ' AS ftt '
             . 'WHERE ft.id_common = gft.id_field '
             . ' 	AND ft.type_field = ftt.type_field '
-            . " 	AND ft.lang_code = '" . Lang::get() . "'"
+            . " 	AND ft.lang_code = '" . $session->get('current_lang') . "'"
             . ($show_invisible_to_user === false
                 ? " AND gft.useraccess <> 'readwrite' "
                 : '')
@@ -410,6 +419,21 @@ class FieldList
     {
         $acl = new FormaACL();
         $all_user_groups = $acl->getMultipleUserGroupsST($id_user_list);
+
+        // Add ancestor ocd groups for proper field inheritance from parent org chart nodes
+        require_once _adm_ . '/models/UsermanagementAdm.php';
+        $uma = new UsermanagementAdm();
+        foreach ($id_user_list as $id_user) {
+            $ancestor_ocd_groups = $uma->getUserAncestorOcdGroups($id_user);
+            if (!empty($ancestor_ocd_groups)) {
+                if (!isset($all_user_groups[$id_user])) {
+                    $all_user_groups[$id_user] = [];
+                }
+                $all_user_groups[$id_user] = array_unique(
+                    array_merge($all_user_groups[$id_user], $ancestor_ocd_groups)
+                );
+            }
+        }
 
         $query = 'SELECT ft.id_common, ft.type_field, ftt.type_file, ftt.type_class, ft.translation, gft.mandatory, gft.useraccess, gft.idst AS group_idst '
             . 'FROM ' . $this->getFieldTable() . ' AS ft '
@@ -530,7 +554,7 @@ class FieldList
             return false;
         }
 
-        list($num) = sql_fetch_row($rs);
+        [$num] = sql_fetch_row($rs);
 
         return $num;
     }
@@ -662,6 +686,7 @@ class FieldList
                         break;
                     case 'country':
                         $result[$id_user][$id_field] = $countryFields[(int)$value] ?? '';
+                        break;
                     default:
                         if (array_key_exists((int)$id_field, $sons_arr)) {
                             $result[$id_user][$id_field] = $sons_arr[(int)$id_field][(int)$value] ?? '';
@@ -735,8 +760,8 @@ class FieldList
     {
         $arr_result = sql_fetch_row(sql_query(
             'SELECT type_file, type_class '
-            . ' FROM ' . $this->getTypeFieldTable()
-            . " WHERE type_field = '" . $type_field . "'"
+                . ' FROM ' . $this->getTypeFieldTable()
+                . " WHERE type_field = '" . $type_field . "'"
         ));
 
         return $arr_result;
@@ -763,7 +788,7 @@ class FieldList
         if (sql_num_rows($rs) < 1) {
             return 'NULL';
         }
-        list($type_file, $type_class) = sql_fetch_row($rs);
+        [$type_file, $type_class] = sql_fetch_row($rs);
         require_once \FormaLms\lib\Forma::inc(_adm_ . '/modules/field/' . $type_file);
         $quest_obj = eval("return new $type_class( $id_field );");
         if ($this->field_entry_table !== false) {
@@ -871,7 +896,7 @@ class FieldList
         if (sql_num_rows($rs) < 1) {
             return $res;
         }
-        list($id_common, $type_file, $type_class) = sql_fetch_row($rs);
+        [$id_common, $type_file, $type_class] = sql_fetch_row($rs);
         require_once \FormaLms\lib\Forma::inc(_adm_ . '/modules/field/' . $type_file);
         $quest_obj = eval("return new $type_class( $id_common );");
         if ($this->field_entry_table !== false) {
@@ -967,7 +992,7 @@ class FieldList
             return 'NULL';
         }
 
-        list($id_common, $type_file, $type_class) = sql_fetch_row($rs);
+        [$id_common, $type_file, $type_class] = sql_fetch_row($rs);
 
         require_once \FormaLms\lib\Forma::inc(_adm_ . '/modules/field/' . $type_file);
         $quest_obj = new $type_class($id_common);
@@ -1011,7 +1036,7 @@ class FieldList
         if (sql_num_rows($rs) < 1) {
             return 'NULL';
         }
-        list($type_file, $type_class) = sql_fetch_row($rs);
+        [$type_file, $type_class] = sql_fetch_row($rs);
         require_once \FormaLms\lib\Forma::inc(_adm_ . '/modules/field/' . $type_file);
         $quest_obj = eval("return new $type_class( $id_field );");
         if ($this->field_entry_table !== false) {
@@ -1050,6 +1075,13 @@ class FieldList
             $tmp = $acl_man->getGroup(false, '/ocd_0');
             $arr_idst[] = (int)$tmp[0];
             $index += 2;
+        }
+
+        $eventResult = Events::trigger('core.custom_fields.showing', ['arr_idst' => $arr_idst]);
+
+        if ($eventResult && array_key_exists('arr_idst', $eventResult)) {
+
+            $arr_idst = $eventResult['arr_idst'];
         }
 
         if (!$registrationLayout) {
@@ -1359,6 +1391,13 @@ class FieldList
 
         $group = $acl_man->getGroup(false, '/ocd_0');
         $arr_idst[] = $group[0];
+
+        $eventResult = Events::trigger('core.custom_fields.registration.validate', ['arr_idst' => $arr_idst]);
+
+        if ($eventResult && array_key_exists('arr_idst', $eventResult)) {
+
+            $arr_idst = $eventResult['arr_idst'];
+        }
 
         $query = 'SELECT ft.id_common, ft.type_field, tft.type_file, tft.type_class, gft.mandatory'
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
@@ -2084,7 +2123,7 @@ class FieldList
             ' FROM ' . $this->getFieldTable() . '' .
             " WHERE translation LIKE '" . $translation . "'";
 
-        list($res) = sql_fetch_row(sql_query($query));
+        [$res] = sql_fetch_row(sql_query($query));
 
         return $res;
     }

@@ -128,7 +128,6 @@ while ($i < count($rest_params)) {//$numparams) {
 }
 
 $res = API::Execute($auth_code, $rest_module, $rest_function, $rest_subparams);
-
 if (!$res['success']) {
     $err_msg = $res['message'];
     rest_cout(RestAPI::HandleError($err_msg, $GLOBALS['REST_API_ACCEPT']));

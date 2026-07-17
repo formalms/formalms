@@ -17,7 +17,6 @@ class GamesLmsController extends LmsController
 {
     public $name = 'games';
     protected $_default_action = 'show';
-    protected $json = null;
 
     protected $info = false;
     public $data;
@@ -31,7 +30,7 @@ class GamesLmsController extends LmsController
     {
         YuiLib::load('base,tabview');
         Lang::init('course');
-        $this->json = new Services_JSON();
+        
 
         $upd = new UpdatesLms();
         $this->info = $upd->gamesCounterUpdates();
@@ -74,7 +73,7 @@ class GamesLmsController extends LmsController
 
         $model = new GamesAlms();
         $games = $model->findAllUnread(0, 0, 'start_date', 'DESC', \FormaLms\lib\FormaUser::getCurrentUser()->getId(), [
-                    'viewer' => \FormaLms\lib\FormaUser::getCurrentUser()->getArrSt(),
+            'viewer' => \FormaLms\lib\FormaUser::getCurrentUser()->getArrSt(),
         ]);
         foreach ($games as $id => $games) {
             $game['start_date'] = Format::date($game['start_date'], 'date');
@@ -87,8 +86,8 @@ class GamesLmsController extends LmsController
             }
 
             $games[$id]['standings'] = '<a href="index.php?r=lms/games/standings&amp;id_game=' . $game['id_game'] . '" title="' . Lang::t('_STANDINGS', 'games') . ': ' . $game['title'] . '"><span>'
-                    . Lang::t('_STANDINGS', 'games')
-                    . '</span></a>';
+                . Lang::t('_STANDINGS', 'games')
+                . '</span></a>';
         }
         $result = [
             'totalRecords' => count($games),
@@ -100,7 +99,7 @@ class GamesLmsController extends LmsController
             'records' => $games,
         ];
 
-        $this->data = $this->json->encode($result);
+        $this->data = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         echo $this->data;
     }
 
@@ -113,7 +112,7 @@ class GamesLmsController extends LmsController
 
         $model = new GamesAlms();
         $games = $model->findAllReaded(0, 0, 'start_date', 'DESC', \FormaLms\lib\FormaUser::getCurrentUser()->getId(), [
-                    'viewer' => \FormaLms\lib\FormaUser::getCurrentUser()->getArrSt(),
+            'viewer' => \FormaLms\lib\FormaUser::getCurrentUser()->getArrSt(),
         ]);
         $result = [
             'totalRecords' => count($games),
@@ -125,7 +124,7 @@ class GamesLmsController extends LmsController
             'records' => $games,
         ];
 
-        $this->data = $this->json->encode($result);
+        $this->data = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         echo $this->data;
     }
 
@@ -136,7 +135,7 @@ class GamesLmsController extends LmsController
     {
         $model = new GamesAlms();
         $games = $model->findAllUnread(0, 0, 'start_date', 'DESC', \FormaLms\lib\FormaUser::getCurrentUser()->getId(), [
-                    'viewer' => \FormaLms\lib\FormaUser::getCurrentUser()->getArrSt(),
+            'viewer' => \FormaLms\lib\FormaUser::getCurrentUser()->getArrSt(),
         ]);
         $this->render('games', [
             'games' => $games,
@@ -147,7 +146,7 @@ class GamesLmsController extends LmsController
     {
         $model = new GamesAlms();
         $games = $model->findAllReaded(0, 0, 'start_date', 'DESC', \FormaLms\lib\FormaUser::getCurrentUser()->getId(), [
-                    'viewer' => \FormaLms\lib\FormaUser::getCurrentUser()->getArrSt(),
+            'viewer' => \FormaLms\lib\FormaUser::getCurrentUser()->getArrSt(),
         ]);
         $this->render('games', [
             'games' => $games,
@@ -163,10 +162,10 @@ class GamesLmsController extends LmsController
         if ($game != false) {
             switch ($game['type_of']) {
                 case 'scorm':
-                        $lo = createLO('scormorg', $game['id_resource'], 'games');
-                        if ($game['id_resource'] != 0 && $lo) {
-                            $lo->env_play($id_game, 'index.php?r=games/show');
-                        }
+                    $lo = createLO('scormorg', $game['id_resource'], 'games');
+                    if ($game['id_resource'] != 0 && $lo) {
+                        $lo->env_play($id_game, 'index.php?r=games/show');
+                    }
 
                     break;
             }
@@ -186,7 +185,7 @@ class GamesLmsController extends LmsController
             'game' => $game,
             'track' => $model->getUserStandings($game['id_game'], \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()),
             'standings' => $model->getStandings($game['id_game'], 0, 30),
-            'chart_data' => $this->json->encode($model->getStandingsChartData($game['id_game'])),
+            'chart_data' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($model->getStandingsChartData($game['id_game']), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON),
         ]);
     }
 }

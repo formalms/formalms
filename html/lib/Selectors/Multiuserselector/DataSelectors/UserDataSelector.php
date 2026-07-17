@@ -1,31 +1,38 @@
 <?php
+
 namespace FormaLms\lib\Selectors\Multiuserselector\DataSelectors;
 
 require_once _adm_ . '/models/UsermanagementAdm.php';
 require_once _adm_ . '/lib/lib.field.php';
-class UserDataSelector extends DataSelector{ 
+
+class UserDataSelector extends DataSelector
+{
 
     protected $fieldList;
 
     const ADDITIONAL_COLS = ['valid'];
 
-    public function __construct() {
-     
+    const DYNAMIC_COLUMNS = true;
+
+    public function __construct()
+    {
+
         $this->builder = new \UsermanagementAdm();
         $this->fieldList = new \FieldList();
         $this->name = 'UserDataSelector';
-        
+
         parent::__construct();
     }
 
-    public function getData($params = []){
+    public function getData($params = [])
+    {
 
         $columnsFilter = [];
-        $op = array_key_exists('op', $params) ? (string) $params['op'] : false;
+        $op = array_key_exists('op', $params) ? (string)$params['op'] : false;
         $columns = array_key_exists('columns', $params) ? $params['columns'] : [];
-        $activeSearch = array_key_exists('active_search', $params) ? (int) $params['active_search'] : false;
-        foreach($columns as $column) {
-            if($column['search']['value']!='') {
+        $activeSearch = array_key_exists('active_search', $params) ? (int)$params['active_search'] : false;
+        foreach ($columns as $column) {
+            if ($column['search']['value'] != '') {
                 $columnsFilter[$column['name']] = $column['search']['value'];
             }
         }
@@ -33,49 +40,48 @@ class UserDataSelector extends DataSelector{
             case 'selectall':
                 return $this->_selectAll($params, $columnsFilter);
 
-             break;
+                break;
         }
 
-       
-        
-        $idOrg = array_key_exists('id_org', $params) ? (int) $params['id_org'] : 0;
-        $descendants = false; //(FormaLms\lib\Get::req('descendants', DOTY_INT, 0) > 0 ? true : false);
-        $startIndex = array_key_exists('start', $params) ? (int) $params['start'] : 0;
-        $results = \FormaLms\lib\Get::sett('visuItem', 25);
-        $rowsPerPage = array_key_exists('rowsPerPage', $params) ? (int) $params['rowsPerPage'] : $results;
-        if(array_key_exists('order', $params)) {
 
-          
+        $idOrg = array_key_exists('id_org', $params) ? (int)$params['id_org'] : 0;
+        $descendants = false; //(FormaLms\lib\Get::req('descendants', DOTY_INT, 0) > 0 ? true : false);
+        $startIndex = array_key_exists('start', $params) ? (int)$params['start'] : 0;
+        $results = array_key_exists('length', $params) ? (int)$params['length'] : \FormaLms\lib\Get::sett('visuItem', 25);
+        $rowsPerPage = array_key_exists('rowsPerPage', $params) ? (int)$params['rowsPerPage'] : $results;
+        if (array_key_exists('order', $params)) {
+
+
             $order = $params['order'][0];
-            $sort = array_key_exists('column', $order) ? ((string) $columns[(int) $order['column']]['data'] != ''? (string) $columns[$order['column']]['data'] : '0') : '0';
-            $dir = array_key_exists('dir', $order) ? (string) $order['dir'] : 'asc'; 
+            $sort = array_key_exists('column', $order) ? ((string)$columns[(int)$order['column']]['data'] != '' ? (string)$columns[$order['column']]['data'] : '0') : '0';
+            $dir = array_key_exists('dir', $order) ? (string)$order['dir'] : 'asc';
         } else {
             $sort = '0';
             $dir = 'asc';
         }
 
- 
-        $searchValue = array_key_exists('search', $params) ? (string) $params['search']['value'] : false;
-        $learning_filter = array_key_exists('learning_filter', $params) ? (string) $params['learning_filter'] : 'none'; 
 
-    
-        $var_fields = array_key_exists('_dyn_field', $params) ? (array) $params['_dyn_field'] : [];
+        $searchValue = array_key_exists('search', $params) ? (string)$params['search']['value'] : false;
+        $learning_filter = array_key_exists('learning_filter', $params) ? (string)$params['learning_filter'] : 'none';
+
+
+        $var_fields = array_key_exists('_dyn_field', $params) ? (array)$params['_dyn_field'] : [];
         if (stristr($sort, '_dyn_field_') !== false) {
             $index = str_replace('_dyn_field_', '', $sort);
-            $sort = $var_fields[(int) $index];
+            $sort = $var_fields[(int)$index];
         }
 
         $searchFilter = [
             'text' => $searchValue,
-            'suspended' => (array_key_exists('suspended', $params) && (int) $params['suspended'] > 0) ? true : false,
+            'suspended' => (array_key_exists('suspended', $params) && (int)$params['suspended'] > 0) ? true : false,
         ];
 
-        $dyn_filter = $this->_getDynamicFilter(array_key_exists('dyn_filter', $params) ? (string) $params['dyn_filter'] : '');
+        $dyn_filter = $this->_getDynamicFilter(array_key_exists('dyn_filter', $params) ? (string)$params['dyn_filter'] : '');
         if ($dyn_filter !== false) {
             $searchFilter['dyn_filter'] = $dyn_filter;
         }
 
-        $total = (int) $this->builder->getTotalUsers(0, $descendants, $searchFilter, true, $learning_filter, $columnsFilter);
+        $total = (int)$this->builder->getTotalUsers(0, $descendants, $searchFilter, true, $learning_filter, $columnsFilter);
         if ($startIndex >= $total) {
             if ($total < $results) {
                 $startIndex = 0;
@@ -85,7 +91,7 @@ class UserDataSelector extends DataSelector{
         }
 
 
-        if($activeSearch) {
+        if ($activeSearch) {
             $results = $total;
             $rowsPerPage = $total;
         }
@@ -100,34 +106,34 @@ class UserDataSelector extends DataSelector{
             'rowsPerPage' => $rowsPerPage,
         ];
 
-        if($learning_filter === 'course') {
+        if ($learning_filter === 'course') {
             $idOrg = 0;
         }
 
         $list = $this->builder->getUsersList($idOrg, $descendants, $pagination, $searchFilter, true, $learning_filter, $columnsFilter);
 
-     
+
         $records = $this->mapData($list, $searchValue);
 
         $pagination['data'] = $records;
-     
-        if(array_key_exists('json_format', $params)) {
-            $pagination = $this->json->encode($pagination);
+
+        if (array_key_exists('json_format', $params)) {
+            $pagination = $this->serializer->encode($pagination, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         }
-        
+
         return $pagination;
 
     }
 
-      /*
-     * return an instance of dynamic filter for users
-     */
+    /*
+   * return an instance of dynamic filter for users
+   */
     protected function _getDynamicFilter($input)
     {
         $output = false;
-     
+
         if (is_string($input) && $input != '') {
-            $dyn_data = $this->json->decode(urldecode(stripslashes($input))); //decode the filter json string
+            $dyn_data = $this->serializer->decode(urldecode(stripslashes($input)), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON); //decode the filter json string
             //die($input."\n\n".urldecode(stripslashes($input))."\n\n".'<pre>'.print_r($dyn_data, true).'</pre>');
             if (isset($dyn_data['exclusive']) && isset($dyn_data['filters'])) { //required fields
                 if (count($dyn_data['filters']) > 0) { //there must be any filter selected
@@ -139,22 +145,23 @@ class UserDataSelector extends DataSelector{
         return $output;
     }
 
-    protected function mapData($records, $filter = ''){
+    protected function mapData($records, $filter = '')
+    {
 
         $date_fields = $this->fieldList->getFieldsByType('date');
         $idOrg = 0;
         $var_fields = [];
         $acl_man = \FormaLms\lib\Forma::getAclManager();
-        $idst_org = $acl_man->getGroupST('/oc_' . (int) $idOrg);
+        $idst_org = $acl_man->getGroupST('/oc_' . (int)$idOrg);
         $output_results = [];
         if (is_array($records) && count($records) > 0) {
             foreach ($records as $idst => $record) {
                 $query = 'SELECT params'
-                        . " FROM %lms_organization_access WHERE idOrgAccess = '" . $idOrg . "' AND kind='user' AND value='" . $record['idst'] . "'";
+                    . " FROM %lms_organization_access WHERE idOrgAccess = '" . $idOrg . "' AND kind='user' AND value='" . $record['idst'] . "'";
                 $relation = sql_fetch_row(sql_query($query));
 
                 $record_row = [
-                    'id' =>  $record['idst'],
+                    'id' => $record['idst'],
                     'userid' => \Layout::highlight($acl_man->relativeId($record['userid']), $filter),
                     'firstname' => \Layout::highlight($record['firstname'], $filter),
                     'lastname' => \Layout::highlight($record['lastname'], $filter),
@@ -164,34 +171,15 @@ class UserDataSelector extends DataSelector{
                     'lastenter' => \Format::date($record['lastenter'], 'datetime'),
                     'unassoc' => $idOrg > 0 ? ($record['is_descendant'] ? 0 : 1) : -1,
                     'valid' => $record['valid'],
-                    'mod' => 'ajax.adm_server.php?r=adm/usermanagement/moduser&id=' . (int) $idst,
-                    'del' => 'ajax.adm_server.php?r=adm/usermanagement/deluser&id=' . (int) $idst,
+                    'mod' => 'ajax.adm_server.php?r=adm/usermanagement/moduser&id=' . (int)$idst,
+                    'del' => 'ajax.adm_server.php?r=adm/usermanagement/deluser&id=' . (int)$idst,
                 ];
 
-                foreach ($var_fields as $i => $value) {
-                    if (is_numeric($value)) {
-                        $name = '_custom_' . $value;
-                    } else {
-                        $name = $value;
-                    }
+                $var_fields = array_filter($record, function ($key) {
+                    return strpos($key, '_custom_') === 0;
+                }, ARRAY_FILTER_USE_KEY);
 
-                    //check if we must perform some post-format on retrieved field values
-                    $content = (isset($record[$name]) ? $record[$name] : '');
-                    if ($name == 'register_date') {
-                        $content = \Format::date($content, 'datetime');
-                    }
-                    if ($name == 'lastenter') {
-                        $content = \Format::date($content, 'datetime');
-                    }
-                    if ($name == 'level' && $content != '') {
-                        $content = Lang::t('_DIRECTORY_' . $content, 'admin_directory');
-                    }
-                    if (!empty($date_fields) && in_array($value, $date_fields)) {
-                        $content = \Format::date(substr($content, 0, 10), 'date');
-                    }
-
-                    $record_row['_dyn_field_' . $i] = $content;
-                }
+                $record_row = array_merge($record_row, $var_fields);
 
                 $output_results[] = $record_row;
             }
@@ -207,13 +195,13 @@ class UserDataSelector extends DataSelector{
 
         $idOrg = 0; //FormaLms\lib\Get::req('id_org', DOTY_INT, 0);
         $descendants = false; //(FormaLms\lib\Get::req('descendants', DOTY_INT, 0) > 0 ? true : false);
-        $filter_text = array_key_exists('filter_text', $params) ? (string) $params['filter_text'] : '';
-        $learning_filter = array_key_exists('learning_filter', $params) ? (string) $params['learning_filter'] : 'none';
+        $filter_text = array_key_exists('filter_text', $params) ? (string)$params['filter_text'] : '';
+        $learning_filter = array_key_exists('learning_filter', $params) ? (string)$params['learning_filter'] : 'none';
         $searchFilter = [
             'text' => $filter_text,
-            'suspended' => (array_key_exists('suspended', $params) && (int) $params['suspended'] > 0) ? true : false,
+            'suspended' => (array_key_exists('suspended', $params) && (int)$params['suspended'] > 0) ? true : false,
         ];
-        $dyn_filter = $this->_getDynamicFilter(array_key_exists('dyn_filter', $params) ? (string) $params['dyn_filter'] : '');
+        $dyn_filter = $this->_getDynamicFilter(array_key_exists('dyn_filter', $params) ? (string)$params['dyn_filter'] : '');
         if ($dyn_filter !== false) {
             $searchFilter['dyn_filter'] = $dyn_filter;
         }
@@ -223,30 +211,31 @@ class UserDataSelector extends DataSelector{
         return array_diff($allSelection, $exclusions);
     }
 
-     /*
-     * list of all selected users by their idst
-     */
+    /*
+    * list of all selected users by their idst
+    */
     protected function _selectAll($params = [], $columnsFilter = [])
     {
         $idOrg = 0; //FormaLms\lib\Get::req('id_org', DOTY_INT, 0);
         $descendants = false; //(FormaLms\lib\Get::req('descendants', DOTY_INT, 0) > 0 ? true : false);
-        $filter_text = array_key_exists('filter_text', $params) ? (string) $params['filter_text'] : '';
-        $learning_filter = array_key_exists('learning_filter', $params) ? (string) $params['learning_filter'] : 'none'; 
+        $filter_text = array_key_exists('filter_text', $params) ? (string)$params['filter_text'] : '';
+        $learning_filter = array_key_exists('learning_filter', $params) ? (string)$params['learning_filter'] : 'none';
         $searchFilter = [
             'text' => $filter_text,
-            'suspended' => (array_key_exists('suspended', $params) && (int) $params['suspended'] > 0) ? true : false,
+            'suspended' => (array_key_exists('suspended', $params) && (int)$params['suspended'] > 0) ? true : false,
         ];
-        $dyn_filter = $this->_getDynamicFilter(array_key_exists('dyn_filter', $params) ? (string) $params['dyn_filter'] : '');
+        $dyn_filter = $this->_getDynamicFilter(array_key_exists('dyn_filter', $params) ? (string)$params['dyn_filter'] : '');
         if ($dyn_filter !== false) {
             $searchFilter['dyn_filter'] = $dyn_filter;
         }
         $users = $this->builder->getAllUsers($idOrg, $descendants, $searchFilter, true, $learning_filter, $columnsFilter);
         $output = $this->builder->getUsersDetails($users);
-        
+
         return $output;
     }
 
-    public function getColumns(){
+    public function getColumns()
+    {
 
         return [
             [
@@ -297,22 +286,43 @@ class UserDataSelector extends DataSelector{
 
     }
 
-    public function getHiddenColumns(){
+    public function getHiddenColumns()
+    {
 
         $hiddenColumns = [];
-        foreach(self::ADDITIONAL_COLS as $additonalCol) {
-            
+        foreach (self::ADDITIONAL_COLS as $additonalCol) {
+
             $hiddenColumns[] = [
                 'data' => $additonalCol,
-                'title' => \Lang::t('_'.strtoupper($additonalCol), 'standard'),
+                'title' => \Lang::t('_' . strtoupper($additonalCol), 'standard'),
                 'sortable' => false,
                 'searchable' => false,
                 'search_field' => 'text',
                 'visible' => false
             ];
         }
-        
+
         return $hiddenColumns;
+    }
+
+    public function getDynamicColumns(array $columns): array
+    {
+
+        require_once \FormaLms\lib\Forma::include(_adm_ . '/lib/', 'lib.field.php');
+        $fman = new \FieldList();
+        $custom_field_array = $fman->getFlatAllFields() ?? [];
+        foreach ($custom_field_array as $key => $value) {
+
+            $dynamicColumn = [
+                'data' => '_custom_' . $key,
+                'title' => addslashes($value),
+                'sortable' => true,
+                'visible' => false,
+            ];
+            $columns = \FormaLms\lib\Helpers\Util::putElementInArrayAfterIndex($columns, 'data', 'email', $dynamicColumn);
+        }
+
+        return $columns;
     }
 
 }

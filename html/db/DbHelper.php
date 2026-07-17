@@ -8,6 +8,15 @@ class DbHelper {
 
 function sql_query($query, $conn = false)
 {
+    // Check if query is empty to prevent ValueError in mysqli_query
+    if (empty($query)) {
+        return false;
+    }
+
+    // Normalize UTF-8 to NFC (composed form) to fix macOS NFD encoding issues
+    // SQL keywords and syntax are ASCII, so only string values are affected
+    $query = \Normalizer::normalize($query, \Normalizer::FORM_C);
+
     $db = \FormaLms\db\DbConn::getInstance();
     $re = $db->query($query);
 
@@ -16,6 +25,11 @@ function sql_query($query, $conn = false)
 
 function sql_limit_query($query, $from, $results, $conn = false)
 {
+    // Check if query is empty to prevent ValueError in mysqli_query
+    if (empty($query)) {
+        return false;
+    }
+
     $db = \FormaLms\db\DbConn::getInstance();
     $re = $db->query_limit($query, $from, $results);
 

@@ -16,17 +16,16 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 class AdminmanagerAdmController extends AdmController
 {
     protected $model;
-    protected $json;
     protected $acl_man;
     protected $permissions;
 
     public function init()
     {
         parent::init();
-        require_once _base_ . '/lib/lib.json.php';
+        
 
         $this->model = new AdminmanagerAdm();
-        $this->json = new Services_JSON();
+        
         $this->acl_man = \FormaLms\lib\Forma::getAclManager();
         $this->permissions = [
             'view' => checkPerm('view', true, 'adminmanager'),
@@ -148,7 +147,7 @@ class AdminmanagerAdmController extends AdmController
             'records' => $output_list,
         ];
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function updateFilter()
@@ -160,7 +159,7 @@ class AdminmanagerAdmController extends AdmController
 
         $res = ['success' => true, 'filter' => $filter];
 
-        echo $this->json->encode($res);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($res,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function update_profileTask()
@@ -184,7 +183,7 @@ class AdminmanagerAdmController extends AdmController
             }
         }
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function users()
@@ -331,7 +330,7 @@ class AdminmanagerAdmController extends AdmController
         //get list of all locations in DB
         $output = $lmodel->getLocationAll();
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function getclasslocationstabledataTask()
@@ -391,6 +390,6 @@ class AdminmanagerAdmController extends AdmController
             'records' => $output_results,
         ];
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 }

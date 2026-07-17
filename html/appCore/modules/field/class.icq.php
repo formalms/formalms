@@ -360,12 +360,11 @@ class CField_Icq extends Field_Contact
 
             $formField .= Form::getInputTextfield(
                 'form-control ' . ($error ? 'has-error' : ''),
-                    'field_' . self::getFieldType() . '_' . $this->id_common,
-                    'field_' . self::getFieldType() . '[' . $this->id_common . ']',
-                    $user_entry,
-                    '',
-                    255,
-                    'placeholder="' . $translation . ($mandatory ? ' *' : '') . '"'
+                'field_' . self::getFieldType() . '_' . $this->id_common,
+                'field_' . self::getFieldType() . '[' . $this->id_common . ']',
+                $user_entry,
+                255,
+                'placeholder="' . $translation . ($mandatory ? ' *' : '') . '"'
                 );
 
             if ($error) {

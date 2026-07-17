@@ -373,13 +373,12 @@ function duplicateCourse()
 switch ($op) {
     case 'course_autocomplete':
         require_once _lms_ . '/lib/lib.edition.php';
-        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
-        require_once _base_ . '/lib/lib.json.php';
+        require_once _lms_ . '/lib/lib.date.php';
+        
 
         $ed_man = new EditionManager();
         $dt_man = new DateManager();
 
-        $json = new Services_JSON();
         $output = [
             'courses' => [],
         ];
@@ -400,7 +399,7 @@ switch ($op) {
 
             $query = 'SELECT idCourse, code, name, course_type, course_edition FROM %lms_course '
                 . ' WHERE 1 ' . $query_filter . " AND  ( code LIKE '%" . $filter . "%' OR name LIKE '%" . $filter . "%' ) ORDER BY code, name "
-                . ($results > 0 ? ' LIMIT 0, ' . (int) $results : '');
+                . ($results > 0 ? ' LIMIT 0, ' . (int)$results : '');
             $res = sql_query($query);
             if ($res) {
                 while (list($id_course, $code, $name, $course_type, $course_edition) = sql_fetch_row($res)) {
@@ -454,17 +453,15 @@ switch ($op) {
             }
         }
 
-        aout($json->encode($output));
-     break;
+        aout(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
+        break;
 
     case 'dup_course':
-        require_once _base_ . '/lib/lib.json.php';
-        $json = new Services_JSON();
         $res = duplicateCourse();
         $output = ['success' => $res];
         if (!$res) {
             $output['message'] = Lang::t('_ERROR_WHILE_SAVING', 'standard');
         }
-        aout($json->encode($output));
-     break;
+        aout(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
+        break;
 }

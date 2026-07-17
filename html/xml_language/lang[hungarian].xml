@@ -423,11 +423,6 @@
         <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[Tartalom könyvtár keresési eredmények között jelenjen meg az az objektum is, ami nincs teljesen kategorizálva]]></key>
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[Nyelv szerkesztés aktiválása (nyomon követéshez használt)]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[Vezetéknév és keresztnév szükséges a regisztrációhoz]]></key>
-        <key id="configuration&amp;_LDAP" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[LDAP]]></key>
-        <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[LDAP port (általában 389)]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[LDAP szerver címe]]></key>
-        <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[LDAP authentikáció aktiválása]]></key>
-        <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[Felhasználónév LDAP felhasználóknak, használd $user a felhasználónévnek.<br />Pl.: $user@domain2.domain1 (W2k3-nál)]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2020-09-15 14:47:17"><![CDATA["magic_quotes_gpc" beállítások]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[Regisztrációk és elfelejtett jelszók email küldő]]></key>
         <key id="configuration&amp;_MAIN_OPTIONS" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[Fő beállítások]]></key>
@@ -545,7 +540,6 @@
         <key id="configuration&amp;_URL" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[Weboldal URL címe / jellel végződik]]></key>
         <key id="configuration&amp;_URL_CHECKIN_TELESKILL" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[URL a bejelentkezéshez]]></key>
         <key id="configuration&amp;_URL_VIDEOCONFERENCE_TELESKILL" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[URL a videokonferenciához]]></key>
-        <key id="configuration&amp;_USEFULL_ONLY_IF" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[Csak akkor vedd figyelembe ezt a paramétert ha LDAP-on keresztül történik az authentikáció]]></key>
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[Felhasználó kérése, hogy olyan jelszót válasszon, amit nem használt az elmúlt X alkalommal]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[Lemezterület kvóta (MB) minden felhasználó "Az én fájljaim" területének]]></key>
         <key id="configuration&amp;_USE_ADVANCED_FORM" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[Kibővített regisztrációs formula használata]]></key>
@@ -1252,7 +1246,6 @@ Jelszó: [password]]]></key>
 A fenti szöveg módosításához lépj be az Adminisztrátor/Nyelv kezeléshez, keresd a <b>login</b>, és szerkesztsd ezt a kulcsot: <b>_INTRO_STD_TEXT</b>]]></key>
         <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[forma.lms egy nyílt forrású e-tanulási rendszer (LMS: Learning Managment System - Képzés menedzsment rendszer és LCMS: Learning Content Management System - Tartalom (tananyag) menedzsment rendszer) melyet vállalati piacon és felsőoktatásban használnak.]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[Ugrás a belépő oldalhoz]]></key>
-        <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[LDAP authentikáció aktív, funkció nem érhető el, szólj az adminisztrátornak]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[Belépés]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[Elérhető bejelentkezés]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2020-09-15 14:47:17"><![CDATA[Belépés]]></key>

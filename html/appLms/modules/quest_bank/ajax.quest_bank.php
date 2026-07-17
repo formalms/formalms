@@ -56,12 +56,11 @@ switch ($op) {
             $value[] = (int) $id_q;
         }
 
-        $json = new Services_JSON();
-        $output = $json->encode($value);
+        
+        $output = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         aout($output);
      break;
     case 'delquest':
-        //require_once($GLOBALS['where_framework'].'/lib/lib.json.php');
 
         $id_quest = FormaLms\lib\Get::pReq('id_quest', DOTY_INT);
         $row_quest = FormaLms\lib\Get::pReq('row_quest', DOTY_ALPHANUM);
@@ -72,8 +71,8 @@ switch ($op) {
 
         $value = ['result' => $result, 'id_quest' => $id_quest, 'row_quest' => $row_quest, 'error' => $qman->last_error];
 
-        $json = new Services_JSON();
-        $output = $json->encode($value);
+        
+        $output = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         aout($output);
      break;
     default:
@@ -141,11 +140,8 @@ switch ($op) {
                 'sequence' => $sequence, 'extra_fields' => $extra_fields, 'extra_values' => $extra_values,
             ];
         }
-
-        //require_once($GLOBALS['where_framework'].'/lib/lib.json.php');
-
-        $json = new Services_JSON();
-        $output = $json->encode($value);
+        
+        $output = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         aout($output);
      break;
 }

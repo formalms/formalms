@@ -331,7 +331,7 @@ class Upload_Question extends Question
         if (isset($_FILES['quest']['name'][$this->id]) && ($_FILES['quest']['name'][$this->id] != '')) {
             $path = '/appLms/' . FormaLms\lib\Get::sett('pathtest');
 
-            $savefile = $idCourse . '_' . $this->id . '_' . mt_rand(0, 100) . time() . '_' . $_FILES['quest']['name'][$this->id];
+            $savefile = $idCourse . '_' . $this->id . '_' . mt_rand(0, 100) . time() . '_' . Util::sanitizeFilename($_FILES['quest']['name'][$this->id]);
             if (!file_exists(_files_ . $path . $savefile)) {
                 sl_open_fileoperations();
                 if (!sl_upload($_FILES['quest']['tmp_name'][$this->id], $path . $savefile)) {

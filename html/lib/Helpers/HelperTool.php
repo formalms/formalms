@@ -81,7 +81,7 @@ class HelperTool
     public static function dropIndexIfExistsQueryBuilder() : string{
 
         return HelperTool::dropProcedure('drop_index_if_exists') . '
-        CREATE PROCEDURE drop_index_if_exists ( IN theIndexName VARCHAR ( 128 ), IN theTable VARCHAR ( 128 ) ) 
+        CREATE PROCEDURE drop_index_if_exists ( IN theIndexName VARCHAR ( 128 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci, IN theTable VARCHAR ( 128 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ) 
             BEGIN
                 DECLARE existing INT;
         SELECT
@@ -102,28 +102,31 @@ class HelperTool
         END;';
     }
 
-    public static function dropFieldIfExistsQueryBuilder() : string{
+    public static function dropColumnIfExistsQueryBuilder() : string{
 
-        return HelperTool::dropProcedure('drop_field_if_exists') . '
-        CREATE PROCEDURE drop_field_if_exists ( IN theTableName VARCHAR ( 128 ), IN theColumnName VARCHAR ( 128 ) ) 
-            BEGIN
-               DECLARE column_exists INT;
-        SELECT 
-            COUNT(*) INTO column_exists
-        FROM 
-            information_schema.COLUMNS
-        WHERE 
-            TABLE_SCHEMA = DATABASE () 
-            AND TABLE_NAME = theTableName
-            AND COLUMN_NAME = theColumnName;
+        return HelperTool::dropProcedure('drop_column_if_exists') . '
+    CREATE PROCEDURE drop_column_if_exists ( IN theTableName VARCHAR ( 128 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci, IN theColumnName VARCHAR ( 128 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ) 
+        BEGIN
+            DECLARE column_exists INT DEFAULT 0;
             
+            SELECT 
+                COUNT(*) INTO column_exists
+            FROM 
+                information_schema.COLUMNS
+            WHERE 
+                TABLE_SCHEMA = DATABASE () 
+            AND TABLE_NAME = theTableName
+                AND COLUMN_NAME = theColumnName;
+                
             IF column_exists > 0 THEN
                 SET @s = CONCAT("ALTER TABLE `", theTableName, "` DROP COLUMN `", theColumnName, "`");
                 PREPARE stmt FROM @s;
                 EXECUTE stmt;
+                DEALLOCATE PREPARE stmt;
             END IF;
         END;';
     }
+
 
 
     public static function dropProcedure($procedure) : string{

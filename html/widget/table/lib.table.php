@@ -78,8 +78,6 @@ class TableWidget extends Widget
      */
     public $show = 'static';
 
-    protected $json = null;
-
     /**
      * Constructor.
      *
@@ -89,7 +87,7 @@ class TableWidget extends Widget
     {
         parent::__construct();
         $this->_widget = 'table';
-        $this->json = new Services_JSON();
+        
     }
 
     /**
@@ -195,7 +193,7 @@ class TableWidget extends Widget
         if ($this->_useStdSelectFormatter()) {
             $params['useStdSelectFormatter'] = true;
             if (is_array($this->initialSelection) && count($this->initialSelection) > 0) {
-                $params['initialSelection'] = $this->json->encode($this->initialSelection);
+                $params['initialSelection'] = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($this->initialSelection, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             }
             if ($this->selectAllAdditionalFilter != false) {
                 $params['selectAllAdditionalFilter'] = $this->selectAllAdditionalFilter;
@@ -276,7 +274,9 @@ class TableWidget extends Widget
         $params['editorSaveEvent'] = $this->editorSaveEvent;
         //choose a view by table specification
         switch ($this->show) {
-            default: $view = ($this->ajaxUrl ? 'dynamic' : 'static'); break;
+            default:
+                $view = ($this->ajaxUrl ? 'dynamic' : 'static');
+                break;
         }
 
         $params['events'] = (is_array($this->events) ? $this->events : []);
@@ -342,27 +342,47 @@ class TableWidget extends Widget
                     };break;*/
                     case 'formatter':
                         switch ($value) {
-                            case 'doceboSelect': $formatter = '"stdSelect"'; break;
-                            case 'doceboModify': $formatter = '"stdModify"'; break;
-                            case 'doceboDelete': $formatter = '"stdDelete"'; break; //'YAHOO.widget.DataTable.Formatter.stdDelete'; break;
-                            case 'doceboDialog': $formatter = '"stdDialog"'; break;
-                            case 'stdSelect': $formatter = '"stdSelect"'; break;
-                            case 'stdModify': $formatter = '"stdModify"'; break;
-                            case 'stdDelete': $formatter = '"stdDelete"'; break;
-                            case 'stdDialog': $formatter = '"stdDialog"'; break;
-                            case 'dup': $formatter = '"dup"'; break;
-                            default: $formatter = $value; break;
+                            case 'doceboSelect':
+                                $formatter = '"stdSelect"';
+                                break;
+                            case 'doceboModify':
+                                $formatter = '"stdModify"';
+                                break;
+                            case 'doceboDelete':
+                                $formatter = '"stdDelete"';
+                                break; //'YAHOO.widget.DataTable.Formatter.stdDelete'; break;
+                            case 'doceboDialog':
+                                $formatter = '"stdDialog"';
+                                break;
+                            case 'stdSelect':
+                                $formatter = '"stdSelect"';
+                                break;
+                            case 'stdModify':
+                                $formatter = '"stdModify"';
+                                break;
+                            case 'stdDelete':
+                                $formatter = '"stdDelete"';
+                                break;
+                            case 'stdDialog':
+                                $formatter = '"stdDialog"';
+                                break;
+                            case 'dup':
+                                $formatter = '"dup"';
+                                break;
+                            default:
+                                $formatter = $value;
+                                break;
                         }
                         $col_config[] = 'formatter:' . $formatter;
-                     break;
+                        break;
                     case 'editor':
                         $col_config[] = 'editor:' . $value;
-                     break;
+                        break;
                     case 'hidden':
-                        $col_config[] = 'hidden:' . ((bool) $value ? 'true' : 'false');
-                     break;
+                        $col_config[] = 'hidden:' . ((bool)$value ? 'true' : 'false');
+                        break;
                     default:
-                        $col_config[] = $key . ':' . $this->json->encode($value); //$key.':"'.$value.'"';
+                        $col_config[] = $key . ':' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON); //$key.':"'.$value.'"';
                 } // end switch
             }
             $cols[] = implode(',', $col_config);
@@ -377,7 +397,7 @@ class TableWidget extends Widget
         if ($this->stdSelection && $this->stdSelectionField) {
             $this->fields[] = $this->stdSelectionField;
         }
-        $converted = $this->json->encode($this->fields);
+        $converted = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($this->fields, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
         return $converted ? $converted : '[]';
     }
@@ -388,7 +408,7 @@ class TableWidget extends Widget
         if (is_array($this->filter)) {
             $f_arr = [];
             foreach ($this->filter as $key => $value) {
-                $f_arr[] = $key . ':' . $this->json->encode($value);
+                $f_arr[] = $key . ':' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             }
             $output .= '{' . implode(',', $f_arr) . '}';
         } else {

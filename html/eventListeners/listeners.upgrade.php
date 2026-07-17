@@ -16,20 +16,21 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 Events::listen('platform.upgrade', function ($event) {
     
     $upgraderPath = _base_ . '/eventListeners/Upgrade/';
-    $params = $event['params'] ?? [];
+
+    $params = $event->getArguments() ?? [];
     $upgradeNamespace = 'FormaLms\eventListeners\Upgrade\\';
 
-    if(!$event['upgrade_class']) {
+    if(!$params['upgrade_class']) {
         throw new \Exception('Missing upgrade class');
     }
 
-    if(!preg_match('/\b[(Pre|Post)+Version]+[0-9]{14}+$/', $event['upgrade_class'])) {
+    if(!preg_match('/\b[(Pre|Post)+Version]+[0-9]{14}+$/', $params['upgrade_class'])) {
         throw new \Exception('Wrong format class');
     }
 
-    if(file_exists($upgraderPath . $event['upgrade_class'] . '.php')) {
+    if(file_exists($upgraderPath . $params['upgrade_class'] . '.php')) {
         
-        $className = $upgradeNamespace . $event['upgrade_class'];
+        $className = $upgradeNamespace . $params['upgrade_class'];
        
         return (new $className($params))->run();
     }

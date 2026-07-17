@@ -585,8 +585,12 @@ class FunctionalrolesAdm extends Model implements Accessible
         $res = $this->db->query($query);
         if ($res) {
             list($groupid) = $this->db->fetch_row($res);
-            $index = (int) str_replace('/fncroles/', '', $groupid);
-            $idst = $this->acl_man->registerGroup('/fncroles/' . str_pad('' . ($index + 1), 10, '0', STR_PAD_LEFT), '', true);
+            if(!is_null($groupid)) {
+                $index = (int) str_replace('/fncroles/', '', $groupid);
+                $idst = $this->acl_man->registerGroup('/fncroles/' . str_pad('' . ($index + 1), 10, '0', STR_PAD_LEFT), '', true);
+            } else {
+                return false;
+            }
         } else {
             return false;
         }

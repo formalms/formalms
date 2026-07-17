@@ -16,8 +16,8 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 require_once _lms_ . '/lib/category/class.categorytree.php';
 $treecat = new Categorytree();
 
-require_once _base_ . '/lib/lib.json.php';
-$json = new Services_JSON();
+
+
 
 $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
@@ -92,7 +92,7 @@ switch ($command) {
         }
 
         $output = ['success' => true, 'nodes' => $result, 'initial' => ($initial == 1)];
-        aout($json->encode($output));
+        aout(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
      break;
 
     case 'modify':
@@ -106,7 +106,7 @@ switch ($command) {
         if ($result['success']) {
             $result['new_name'] = stripslashes($new_name);
         }
-        aout($json->encode($result));
+        aout(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
      break;
 
     case 'create':
@@ -134,14 +134,14 @@ switch ($command) {
                 ];
             }
         }
-        aout($json->encode($result));
+        aout(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
      break;
 
     case 'delete':
         $node_id = FormaLms\lib\Get::req('node_id', DOTY_INT, 0);
 
         $result = ['success' => $treecat->deleteTreeById($node_id)];
-        aout($json->encode($result));
+        aout(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
      break;
 
     case 'movefolder':
@@ -149,7 +149,7 @@ switch ($command) {
         $dest = FormaLms\lib\Get::req('dest', DOTY_INT, 0);
 
         $result = ['success' => $treecat->move($src, $dest)];
-        aout($json->encode($result));
+        aout(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
      break;
 
     case 'options':
@@ -164,7 +164,7 @@ switch ($command) {
         $node_options = getNodeOptions($node_id, $is_leaf);
 
         $result = ['success' => true, 'options' => $node_options, '_debug' => $count];
-        aout($json->encode($result));
+        aout(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
      break;
 
     //invalid command

@@ -42,7 +42,7 @@ class Module_Pubrepo extends LmsModule
     {
         require_once _lms_ . '/modules/' . $this->module_name . '/' . $this->module_name . '.php';
         $ready = false;
-        $this->lang = FormaLanguage::createInstance('homerepo', 'lms');
+
         if (isset($_GET['spr']) && false) {
             // reload from previously saved session
             require_once _adm_ . '/lib/lib.sessionsave.php';
@@ -145,7 +145,7 @@ class Module_Pubrepo extends LmsModule
                         . $this->treeView->_getOpCopyLOSel() . '=1"'
                         . ' >' . "\n"
                         . '<input type="hidden" id="authentic_request_prm" name="authentic_request" value="' . Util::getSignature() . '" />'
-                        . $this->lang->def('_REPOSELECTDESTINATION')
+                        . Lang::t('_REPOSELECTDESTINATION','homerepo')
                         . ' <img src="' . getPathImage() . 'lobject/' . $saveData['objectType']
                         . '.gif" alt="' . $saveData['objectType']
                         . '" title="' . $saveData['objectType'] . '"/>'
@@ -160,8 +160,8 @@ class Module_Pubrepo extends LmsModule
     {
         global $modname;
         if ($this->isFindingDestination()) {
-            return '<img src="' . $this->treeView->_getCopyImage() . '" alt="' . $this->lang->def('_REPOPASTELO') . '" /> '
-                    . '<input type="submit" value="' . $this->lang->def('_REPOPASTELO') . '" class="LVAction"'
+            return '<img src="' . $this->treeView->_getCopyImage() . '" alt="' . Lang::t('_REPOPASTELO','homerepo') . '" /> '
+                    . '<input type="submit" value="' . Lang::t('_REPOPASTELO','homerepo') . '" class="LVAction"'
                     . ' name="' . $this->treeView->_getOpCopyLOEndOk() . '" />'
                     . ' <img src="' . $this->treeView->_getCancelImage() . '" alt="' . $this->treeView->_getCancelAlt() . '" />'
                     . '<input type="submit" class="LVAction" value="' . $this->treeView->_getCancelLabel() . '"'

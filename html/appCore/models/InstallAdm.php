@@ -1086,7 +1086,6 @@ class InstallAdm extends Model
 
                 case 2:
                     //lancio migrate
-
                     try {
                         $migrator = FormaLms\lib\Database\FormaMigrator::getInstance();
                         $responseMigration = $migrator->executeCommand('migrate', ['debug' => $params['debug']]);
@@ -1324,7 +1323,7 @@ class InstallAdm extends Model
 
     public function wrapResponse()
     {
-        return FormaLms\lib\Serializer\FormaSerializer::getInstance()->serialize($this->response, 'json');
+        return FormaLms\lib\Serializer\FormaSerializer::getInstance()->serialize($this->response, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
 

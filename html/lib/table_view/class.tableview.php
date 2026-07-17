@@ -29,8 +29,6 @@ class TableView
     protected $otherOptions = [];
     protected $jsLanguages = [];
 
-    protected $json = null;
-
     protected $formatters = [];
 
     protected $html_before = '';
@@ -46,7 +44,7 @@ class TableView
     public function __construct($id)
     {
         $this->id = $id;
-        $this->json = new Services_JSON();
+        
 
         $this->addFormatter('delete', 'deleteFormatter');
         $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
@@ -62,7 +60,7 @@ class TableView
             'yahoo-dom-event' => 'yahoo-dom-event.js',
             'connection' => 'connection-min.js',
             'dragdrop' => 'dragdrop-min.js',
-            'element' => 'element-beta-min.js',
+            'element' => 'element-min.js',
             'animation' => 'animation-min.js',
             'json' => 'json-min.js',
             'container' => 'container_core-min.js', //menu
@@ -71,8 +69,8 @@ class TableView
             'container' => 'container-min.js', //dialog
             'button' => 'button-min.js', //dialog
             'treeview' => 'treeview-min.js',
-            'resize' => 'resize-beta-min.js',
-            'selector' => 'selector-beta-min.js',
+            'resize' => 'resize-min.js',
+            'selector' => 'selector-min.js',
         ], [
             'assets/skins/sam' => 'skin.css',
         ]);
@@ -135,7 +133,7 @@ class TableView
      */
     protected function createColumnsData()
     {
-        //$converted = $this->json->encode($this->columns); //unable to convert formatters
+        //$converted = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($this->columns); //unable to convert formatters
         //return ($converted ? $converted : '[]' );
 
         if (!is_array($this->columns)) {
@@ -157,7 +155,7 @@ class TableView
                         $col_config[] = 'editor:' . $value;
                      break;
                     default:
-                        $col_config[] = $key . ':' . $this->json->encode($value); //$key.':"'.$value.'"';
+                        $col_config[] = $key . ':' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($value,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON); //$key.':"'.$value.'"';
                 } // end switch
             }
             $cols[] = implode(',', $col_config);
@@ -168,7 +166,7 @@ class TableView
 
     protected function createFieldsData()
     {
-        $converted = $this->json->encode($this->fields);
+        $converted = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($this->fields,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
         return $converted ? $converted : '[]';
         /*
@@ -224,8 +222,8 @@ class TableView
 
         //check if table has a initial set of values
         if (is_array($this->initialData)) {
-            $json = new Services_JSON();
-            $options[] = 'initialData:' . $json->encode($this->initialData); //'initialData:['.implode(",", $temp).']';
+            
+            $options[] = 'initialData:' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($this->initialData, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON); //'initialData:['.implode(",", $temp).']';
             $options[] = 'sendInitialRequest:false';
         } else {
             $options[] = 'sendInitialRequest:true';
@@ -236,12 +234,12 @@ class TableView
         $options[] = 'fields:' . $this->createFieldsData();
 
         //pagination
-        $options[] = 'rowsPerPage:' . (isset($this->initialData['results']) ? $this->initialData['results'] : FormaLms\lib\Get::sett('visuItem'));
+        $options[] = 'rowsPerPage:' . ($this->initialData['results'] ?? FormaLms\lib\Get::sett('visuItem'));
         $options[] = 'initialPage:' . '0';
 
         if (count($this->otherOptions) > 0) {
             foreach ($this->otherOptions as $key => $value) {
-                $options[] = $key . ':' . $this->json->encode($value);
+                $options[] = $key . ':' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($value,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             }
         }
 

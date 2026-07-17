@@ -130,6 +130,11 @@ class ClassroomAlms extends Model
         return $this->id_date;
     }
 
+    public function deleteDatesWithoutDays($idCourse = null)
+    {
+        $this->classroom_man->deleteDatesWithoutDays($idCourse);
+    }
+
     public function getCourseEditionNumber()
     {
         return $this->classroom_man->getDateNumberNoLimit($this->id_course);
@@ -516,7 +521,7 @@ class ClassroomAlms extends Model
                     $passed = false;
                 }
 
-                 $cont[] = Form::getInputTextfield('', 'score_' . $id_user, 'score_' . $id_user, (isset($user_presence[$id_user]['1970-01-01']['score']) ? $user_presence[$id_user]['1970-01-01']['score'] : '0'), Lang::t('_SCORE', 'course'), 255, '');
+                 $cont[] = Form::getInputTextfield('', 'score_' . $id_user, 'score_' . $id_user, (isset($user_presence[$id_user]['1970-01-01']['score']) ? $user_presence[$id_user]['1970-01-01']['score'] : '0'), 255, '');
             }
 
 

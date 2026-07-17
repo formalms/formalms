@@ -147,12 +147,12 @@ class ListView
 
     public function _getCancelLabel()
     {
-        return $this->lang->def('_CANCEL');
+        return Lang::t('_CANCEL','standard');
     }
 
     public function _getCancelAlt()
     {
-        return $this->lang->def('_CANCEL');
+        return Lang::t('_CANCEL','standard');
     }
 
     public function _getCancelImage()
@@ -162,7 +162,7 @@ class ListView
 
     public function _getAddLabel()
     {
-        return $this->lang->def('_NEW_ITEM');
+        return Lang::t('_NEW_ITEM','standard');
     }
 
     public function _getAddUrl()
@@ -182,7 +182,7 @@ class ListView
 
     public function _getCreateLabel()
     {
-        return $this->lang->def('_DIRECTORY_NEWGROUP');
+        return Lang::t('_DIRECTORY_NEWGROUP','standard');
     }
 
     public function _getCreateUrl()
@@ -192,7 +192,7 @@ class ListView
 
     public function _getCreateAlt()
     {
-        return $this->lang->def('_DIRECTORY_NEWGROUP');
+        return Lang::t('_DIRECTORY_NEWGROUP','standard');
     }
 
     public function _getCreateImage()
@@ -252,7 +252,6 @@ class ListView
         $this->rend = $rend;
         $this->id = $id;
         $this->itemSelected = [];
-        $this->lang = &FormaLanguage::createInstance('standard', 'framework');
         $this->startRow = FormaLms\lib\Get::req('ini', DOTY_INT, 0);
     }
 
@@ -440,13 +439,13 @@ class ListView
                 .' name="'.$this->id.'['.$this->_getOpCreateItemId().'][0]" '
                 .' title="'.$this->_getCreateLabel().'" '
                 .' alt="'.$this->_getCreateAlt().'" />'
-                .$this->lang->def('_ADD') );
+                .Lang::t('_ADD','standard') );
                 */
 
             $out .= $this->rend->WriteAddRow('<input type="submit" class="transparent_add_button"'
                 . ' id="' . $this->id . '_' . $this->_getOpCreateItemId() . '" '
                 . ' name="' . $this->id . '[' . $this->_getOpCreateItemId() . '][0]" '
-                . ' value="' . $this->lang->def('_ADD') . '"'
+                . ' value="' . Lang::t('_ADD','standard') . '"'
                 . ' title="' . $this->_getCreateLabel() . '" '
                 . ' alt="' . $this->_getCreateAlt() . '" />');
         }

@@ -17,22 +17,21 @@ class PrivacypolicyAdmController extends AdmController
 {
     protected $db = null;
     protected $model = null;
-    protected $json = null;
     protected $permissions;
     public $link = 'adm/privacypolicy';
 
     public function init()
     {
         parent::init();
-        require_once _base_ . '/lib/lib.json.php';
+        
         $this->db = \FormaLms\db\DbConn::getInstance();
         $this->model = new PrivacypolicyAdm();
-        $this->json = new Services_JSON();
+        
         $this->permissions = [
-            'view' => checkPerm('view', true, 'privacypolicy'),					//view module
-            'add' => checkPerm('mod', true, 'privacypolicy'),						//create policies
-            'mod' => checkPerm('mod', true, 'privacypolicy'),						//edit policies
-            'del' => checkPerm('del', true, 'privacypolicy'),						//delete policies
+            'view' => checkPerm('view', true, 'privacypolicy'),                    //view module
+            'add' => checkPerm('mod', true, 'privacypolicy'),                        //create policies
+            'mod' => checkPerm('mod', true, 'privacypolicy'),                        //edit policies
+            'del' => checkPerm('del', true, 'privacypolicy'),                        //delete policies
         ];
     }
 
@@ -41,10 +40,18 @@ class PrivacypolicyAdmController extends AdmController
         $message = '';
 
         switch ($code) {
-            case 'no permission': $message = "You don't have permission to do this."; break;
-            case 'success': $message = Lang::t('_OPERATION_SUCCESSFUL', 'standard'); break;
-            case 'failure': $message = Lang::t('_OPERATION_FAILURE', 'standard'); break;
-            default: $message = Lang::t('_OPERATION_FAILURE', 'standard'); break;
+            case 'no permission':
+                $message = "You don't have permission to do this.";
+                break;
+            case 'success':
+                $message = Lang::t('_OPERATION_SUCCESSFUL', 'standard');
+                break;
+            case 'failure':
+                $message = Lang::t('_OPERATION_FAILURE', 'standard');
+                break;
+            default:
+                $message = Lang::t('_OPERATION_FAILURE', 'standard');
+                break;
         }
 
         return $message;
@@ -101,12 +108,12 @@ class PrivacypolicyAdmController extends AdmController
         if (is_array($list)) {
             foreach ($list as $record) {
                 $records[] = [
-                    'id' => (int) $record->id_policy,
+                    'id' => (int)$record->id_policy,
                     'name' => highlightText($record->name, $filter),
                     'is_assigned' => $record->is_assigned,
                     //'mod' => 'ajax.adm_server.php?r=adm/privacypolicy/mod&id='.(int)$record->id_policy,
-                    'mod' => '<a href="index.php?r=adm/privacypolicy/mod&id=' . (int) $record->id_policy . '">' . FormaLms\lib\Get::sprite('subs_mod', Lang::t('_MOD', 'standard')) . '</a>',
-                    'del' => 'ajax.adm_server.php?r=adm/privacypolicy/del&id=' . (int) $record->id_policy,
+                    'mod' => '<a href="index.php?r=adm/privacypolicy/mod&id=' . (int)$record->id_policy . '">' . FormaLms\lib\Get::sprite('subs_mod', Lang::t('_MOD', 'standard')) . '</a>',
+                    'del' => 'ajax.adm_server.php?r=adm/privacypolicy/del&id=' . (int)$record->id_policy,
                 ];
             }
         }
@@ -125,7 +132,7 @@ class PrivacypolicyAdmController extends AdmController
             $output['success'] = false;
         }
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     /**
@@ -136,14 +143,14 @@ class PrivacypolicyAdmController extends AdmController
         //check permissions: we should have add privileges to create groups
         if (!$this->permissions['del']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
 
         $id_policy = FormaLms\lib\Get::req('id', DOTY_INT, -1);
         $output['success'] = ($id_policy > 0 ? $this->model->deletePolicy($id_policy) : false);
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function addTask()
@@ -151,7 +158,7 @@ class PrivacypolicyAdmController extends AdmController
         //check permissions
         if (!$this->permissions['add']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -166,7 +173,7 @@ class PrivacypolicyAdmController extends AdmController
         );
 
         @ob_start();
-        echo $this->json->encode($params);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($params,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
           */
     }
 
@@ -178,7 +185,7 @@ class PrivacypolicyAdmController extends AdmController
         //check permissions: we should have add privileges to create groups
         if (!$this->permissions['add']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -190,7 +197,7 @@ class PrivacypolicyAdmController extends AdmController
         $res = $this->model->createPolicy($name, $translations);
         $output = ['success' => $res ? true : false];
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
         //   $this->render('show', $output);
 
@@ -205,7 +212,7 @@ class PrivacypolicyAdmController extends AdmController
         //check permissions
         if (!$this->permissions['mod']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -216,7 +223,7 @@ class PrivacypolicyAdmController extends AdmController
                 'success' => false,
                 'message' => UIFeedback::perror($this->_getErrorMessage('failure')),
             ];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -238,7 +245,7 @@ class PrivacypolicyAdmController extends AdmController
           'body' =>  ob_get_clean()
         );
         @ob_start();
-        echo $this->json->encode($params);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($params,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         */
     }
 
@@ -250,7 +257,7 @@ class PrivacypolicyAdmController extends AdmController
         //check permissions: we should have add privileges to create groups
         if (!$this->permissions['mod']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -262,13 +269,10 @@ class PrivacypolicyAdmController extends AdmController
         $reset_policy = FormaLms\lib\Get::req('reset_policy', DOTY_INT, 0);
         $translations = FormaLms\lib\Get::req('translation', DOTY_MIXED, false);
 
-//        var_dump(FormaLms\lib\Get::req('translation', DOTY_MIXED, FALSE));
-        //  die();
-
         $res = $this->model->updatePolicy($id_policy, $name, $is_default, $reset_policy, $translations);
         $output = ['success' => $res ? true : false];
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
         Util::jump_to('index.php?r=adm/privacypolicy/show&res=' . $res);
     }
@@ -299,7 +303,7 @@ class PrivacypolicyAdmController extends AdmController
             'selection' => $selection,
             'disabled' => array_values(array_diff($already_assigned, $selection)),
         ];
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function assign_actionTask()
@@ -327,6 +331,6 @@ class PrivacypolicyAdmController extends AdmController
             $res = $this->model->resetOrgchartAssignment($id_policy, $list);
             $output['success'] = true;
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 }

@@ -44,8 +44,8 @@ class Certificate
         [$aval_status, $minutes_required] = sql_fetch_row(
             sql_query(
                 'SELECT available_for_status, minutes_required FROM %lms_certificate_course as cc'
-                . ' WHERE id_course=' . $filter['id_course']
-                . isset($filter['id_certificate']) ? ' AND id_certificate = ' . $filter['id_certificate'] : ''
+                    . ' WHERE id_course=' . $filter['id_course']
+                    . isset($filter['id_certificate']) ? ' AND id_certificate = ' . $filter['id_certificate'] : ''
             )
         );
 
@@ -160,11 +160,18 @@ class Certificate
 
         $paginated_assignment = [];
         if ($pagination) {
-            $offset = $pagination['startIndex'];
-            $limit = $offset + $pagination['rowsPerPage'];
+                        if (array_key_exists('offset', $pagination)) {
+                $offset = $pagination['offset'];
+            } else {
+                $offset = $pagination['startIndex'];
+            }
+
+            $limit = $offset + (array_key_exists('rowsPerPage', $pagination) ? $pagination['rowsPerPage'] : $pagination['num_rows']);
             $limit = ($limit <= count($assignment) ? $limit : count($assignment));
             for ($i = $offset; $i < $limit; ++$i) {
-                $paginated_assignment[] = $assignment[$i];
+                if (isset($assignment[$i])) {
+                    $paginated_assignment[] = $assignment[$i];
+                }
             }
         }
 
@@ -177,7 +184,7 @@ class Certificate
 
     public function getAssigned($filter)
     {
-        $query = 'SELECT ca.id_certificate, ca.id_course,'
+        $query = 'SELECT ca.id as idRecord, ca.id_certificate, ca.id_course,'
             . '	ca.id_user, SUBSTRING(u.userid, 2) AS username,'
             . '	u.lastname, u.firstname, co.code, cc.available_for_status,'
             . '  co.name AS course_name, ce.name AS cert_name,'
@@ -243,6 +250,10 @@ class Certificate
         }
 
         $assigned = [];
+
+        $eventResults = Events::trigger('lms.certificate.assigned.query', ['query' => $query, 'filter' => $filter]);
+
+        $query = $eventResults['query'];
         $res = sql_query($query);
         while ($row = sql_fetch_assoc($res)) {
             $assigned[] = $row;
@@ -323,9 +334,15 @@ class Certificate
             }
         }
 
+        $eventResults = Events::trigger('lms.certificate.assignable.query', ['query' => $query, 'filter' => $filter]);
+
+        $query = $eventResults['query'];
+
         $assignable = [];
+
         $res = sql_query($query);
-        if($res) {
+
+        if ($res) {
             foreach ($res as $row) {
                 if ($this->certificateAvailableForUser($row['id_certificate'], $row['id_course'], $row['id_user'])) {
                     $assignable[] = $row;
@@ -366,37 +383,9 @@ class Certificate
         return $cert;
     }
 
-    public function getCourseCertificateObj($id_course)
-    {
-        $cert = [];
-        $query_certificate = '
-                SELECT id_certificate, certificate_available_for_obj
-                FROM ' . $GLOBALS['prefix_lms'] . "_certificate_course
-                WHERE id_course = '" . $id_course . "' ";
-        $re_certificate = sql_query($query_certificate);
-        while (list($id, $available_for_status) = sql_fetch_row($re_certificate)) {
-            $cert[$id] = $available_for_status;
-        }
 
-        return $cert;
-    }
 
-    public function getCourseCertificateAchi($id_course)
-    {
-        $cert = [];
-        $query_certificate = '
-                SELECT id_certificate, certificate_available_for_who
-                FROM ' . $GLOBALS['prefix_lms'] . "_certificate_course
-                WHERE id_course = '" . $id_course . "' ";
-        $re_certificate = sql_query($query_certificate);
-        while (list($id, $available_for_who) = sql_fetch_row($re_certificate)) {
-            $cert[$id] = $available_for_who;
-        }
-
-        return $cert;
-    }
-
-    public function certificateAvailableForUser($id_cert, $id_course, $id_user)
+    public function certificateAvailableForUser($id_cert, $id_course, $id_user, $download = false)
     {
         $sql = 'SELECT minutes_required FROM learning_certificate_course WHERE id_course = ' . $id_course . ' AND id_certificate = ' . $id_cert;
         $re = sql_query($sql);
@@ -409,6 +398,12 @@ class Certificate
             if ($minutes_in < $minutes_required) {
                 return false;
             }
+        }
+
+        $eventResult = Events::trigger('lms.certificate.available', compact('id_cert', 'id_course', 'id_user', 'download'));
+
+        if ($eventResult && array_key_exists('result', $eventResult)) {
+            return $eventResult['result'];
         }
 
         return true;
@@ -549,7 +544,7 @@ class Certificate
     public function certificateStatus($id_user, $id_course)
     {
         $query_certificate = '
-		SELECT ca.id_course, c.id_certificate, c.name
+		SELECT ca.id as idRecord, ca.id_course, c.id_certificate, c.name
 		FROM %lms_certificate AS c
 			JOIN %lms_certificate_assign AS ca
 			ON (c.id_certificate = ca.id_certificate)
@@ -561,8 +556,8 @@ class Certificate
         }
 
         $list_of = [];
-        while (list($id_course, $id_cert, $name) = sql_fetch_row($re)) {
-            $list_of[$id_cert] = $name;
+        while (list($idRecord, $id_course, $id_cert, $name) = sql_fetch_row($re)) {
+            $list_of[$idRecord] = $name;
         }
 
         return $list_of;
@@ -695,11 +690,12 @@ class Certificate
                         . ' VALUES (' . (int)$id_cert . ', ' . (int)$id_course . ', ' . (int)$status . ', ' . (int)$minutes . ')';
 
                     $certificate_info = $this->getCertificateInfo($id_cert);
-                    Events::trigger('lms.course_certificate.assigned', ['id_course' => $id_course, 'course' => $course, 'id_cert' => $id_cert, 'certificate_info' => $certificate_info, 'status' => $status, 'minutes' => $minutes, 'point_required' => $point_required]);
 
                     if (!sql_query($query)) {
                         return false;
                     }
+
+                    Events::trigger('lms.course_certificate.assigned', ['id_course' => $id_course, 'course' => $course, 'id_cert' => $id_cert, 'certificate_info' => $certificate_info, 'status' => $status, 'minutes' => $minutes, 'point_required' => $point_required]);
                 }
             }
         }
@@ -747,6 +743,21 @@ class Certificate
         $stringArray = str_replace('`', '\'', $stringArray);
 
         return $stringArray;
+    }
+
+    /**
+     * Sanitize filename by removing accents and special characters
+     * @param string $filename The filename to sanitize
+     * @return string The sanitized filename
+     */
+    public static function sanitizeFilename($filename)
+    {
+        // Remove accents and convert to ASCII
+        $sanitized = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $filename);
+        // Remove any remaining non-alphanumeric characters except dots, dashes, and underscores
+        $sanitized = preg_replace('/[^a-zA-Z0-9._-]/', '', $sanitized);
+        
+        return $sanitized;
     }
 
     public function send_preview_certificate($id_certificate, $array_substituton = false)
@@ -807,9 +818,11 @@ class Certificate
     /**
      *  $from_multi true and download false used for generating multiple certificates zipped in a file.
      */
-    public function send_certificate($id_certificate, $id_user, $id_course, $array_substituton = false, $download = true, $from_multi = false, $id_association = 0)
+    public function send_certificate($id_certificate, $id_user, $id_course, $array_substituton = [], $download = true, $from_multi = false, $id_association = 0, $params = [])
     {
         $isAggregatedCert = FormaLms\lib\Get::req('aggCert', DOTY_INT, 0);
+        $idRecord = FormaLms\lib\Get::req('id', DOTY_INT, 0);
+
         if ($isAggregatedCert) {
             require_once \FormaLms\lib\Forma::inc(_lms_ . '/' . _folder_lib_ . '/lib.aggregated_certificate.php');
             $aggCertLib = new AggregatedCertificate();
@@ -823,6 +836,17 @@ class Certificate
 			WHERE id_certificate = '" . $id_certificate . "'
 				 AND id_course = '" . $id_course . "'
 				 AND id_user = '" . $id_user . "' ";
+
+        $eventResults  = Events::trigger('lms.certificate.send.query', ['query' => $query_certificate]);
+
+        $query_certificate = $eventResults['query'];
+
+            if ($idRecord) {
+                $query_certificate = '
+                    SELECT cert_file
+                    FROM %lms_certificate_assign
+                    WHERE id = "' . $idRecord . '"';
+            }
         } else {
             $query_certificate = 'SELECT cert_file'
                 . ' FROM ' . $aggCertLib->table_assign_agg_cert
@@ -850,20 +874,58 @@ class Certificate
             'id_certificate' => $id_certificate,
             'id_course' => $id_course
         ], 0);
-        
+
         $query_certificate = '
 		SELECT name, cert_structure, base_language, orientation, bgimage
 		FROM %lms_certificate WHERE id_certificate = "' . $id_certificate . '"';
         [$name, $cert_structure, $base_language, $orientation, $bgimage] = sql_fetch_row(sql_query($query_certificate));
 
+
         require_once _base_ . '/lib/lib.upload.php';
 
-        if ($array_substituton !== false) {
+        if (!empty($array_substituton)) {
             $cert_structure = str_replace(array_keys($array_substituton), $array_substituton, $cert_structure);
         }
         $cert_structure = fillSiteBaseUrlTag($cert_structure);
 
         $cert_file = $id_course . '_' . $id_certificate . '_' . $id_user . '_' . time() . '_' . $name . '.pdf';
+
+        //save the generated file in database
+        $the_date = date('Y-m-d H:i:s');
+        if (!$isAggregatedCert) {
+            $queryAssign = 'INSERT INTO %lms_certificate_assign '
+                . ' ( id_certificate, id_course, id_user, on_date, cert_file ) '
+                . ' VALUES '
+                . " ( '" . $id_certificate . "', '" . $id_course . "', '" . $id_user . "', '" . $the_date . "', '" . addslashes($cert_file) . "' ) "
+                . " ON DUPLICATE KEY UPDATE on_date = VALUES(on_date), cert_file = VALUES(cert_file) ";
+        } else {
+            $queryAssign = 'UPDATE ' . $aggCertLib->table_assign_agg_cert
+                . " SET on_date = '" . $the_date
+                . "', cert_file = '" . addslashes($cert_file)
+                . "' WHERE idUser = " . intval($id_user)
+                . ' AND idCertificate = ' . intval($id_certificate)
+                . ' AND idAssociation = ' . intval($id_association);
+        }
+
+
+        $eventResults = Events::trigger('lms.certificate.send', [
+            'cert_structure' =>  $cert_structure,
+            'isAggregatedCert' => $isAggregatedCert,
+            'id_certificate' => $id_certificate ,
+            'id_course' => $id_course,
+            'id_user' => $id_user,
+            'the_date' => $the_date,
+            'params' => $params,
+        ]);
+
+        if ($eventResults && array_key_exists('cert_structure', $eventResults)) {
+            $cert_structure = $eventResults['cert_structure'];
+        }
+
+        if ($eventResults && array_key_exists('query_assign', $eventResults)) {
+            $queryAssign = $eventResults['query_assign'];
+        }
+
 
         sl_open_fileoperations();
         if (!$fp = sl_fopen(CERTIFICATE_PATH . $cert_file, 'w')) {
@@ -879,22 +941,8 @@ class Certificate
         fclose($fp);
         sl_close_fileoperations();
 
-        //save the generated file in database
-        $the_date = date('Y-m-d H:i:s');
-        if (!$isAggregatedCert) {
-            $query = 'INSERT INTO %lms_certificate_assign '
-                . ' ( id_certificate, id_course, id_user, on_date, cert_file ) '
-                . ' VALUES '
-                . " ( '" . $id_certificate . "', '" . $id_course . "', '" . $id_user . "', '" . $the_date . "', '" . addslashes($cert_file) . "' ) ";
-        } else {
-            $query = 'UPDATE ' . $aggCertLib->table_assign_agg_cert
-                . " SET on_date = '" . $the_date
-                . "', cert_file = '" . addslashes($cert_file)
-                . "' WHERE idUser = " . intval($id_user)
-                . ' AND idCertificate = ' . intval($id_certificate)
-                . ' AND idAssociation = ' . intval($id_association);
-        }
-        if (!sql_query($query)) {
+
+        if (!sql_query($queryAssign)) {
             return false;
         }
 
@@ -932,7 +980,7 @@ class Certificate
         return $id_course;
     }
 
-    public function getInfoForCourseCertificate($id_course, $id_certificate, $id_user = false)
+    public function getInfoForCourseCertificate($id_course, $id_certificate, $id_user = false, $params = [])
     {
         // Get Course info
         $query = 'SELECT name' .
@@ -976,6 +1024,9 @@ class Certificate
             $query .= " AND id_user = $id_user";
         }
 
+        $eventResults = Events::trigger('lms.certificate.assign.query', ['query' => $query]);
+
+        $query = $eventResults['query'];
         $result = sql_query($query);
 
         while ($row = sql_fetch_row($result)) {
@@ -987,6 +1038,19 @@ class Certificate
                 $row[ASSIGN_CERT_SENDNAME] = $courseInfo . '_' . $dateInfo . '.pdf';
             }
             $info[] = $row;
+        }
+
+        return $info;
+    }
+
+    public function fetchAssignedCertificates(array $ids)
+    {
+        $info = [];
+        $query = 'SELECT * from %lms_certificate_assign WHERE id in (' . implode(',', $ids) . ')';
+        $results = sql_query($query);
+
+        foreach ($results ?? [] as $result) {
+            $info[$result['id']] = $result;
         }
 
         return $info;
@@ -1018,6 +1082,20 @@ class Certificate
             " AND id_course = '" . $id_course . "'" .
             " AND id_user = '" . $id_user . "'";
 
+        $eventData = Events::trigger('core.certificate.deleting', ['query' => $query, 'id_certificate' => $id_certificate, 'id_user' => $id_user, 'id_course' => $id_course]);
+
+        extract($eventData ?? []);
+        return sql_query($query);
+    }
+
+    public function deleteAssignedCertificates($ids)
+    {
+        $query = 'DELETE FROM %lms_certificate_assign ' .
+            ' WHERE id IN (' . $ids . ')';
+
+        Events::trigger('core.certificate.mass_deleting', ['query' => $query, 'id_certificate' => $id_certificates, 'id_user' => $id_users, 'id_course' => $id_course]);
+
+        $eventData = extract($eventData ?? []);
         return sql_query($query);
     }
 

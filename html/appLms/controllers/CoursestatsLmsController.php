@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once _base_ . '/lib/lib.json.php';
+
 
 use FormaLms\lib\Forma;
 use FormaLms\lib\Session\SessionManager;
@@ -22,7 +22,6 @@ class CoursestatsLmsController extends LmsController
 {
     /** @var CoursestatsLms */
     protected $model;
-    protected $json;
     protected $permissions;
 
     protected $idCourse;
@@ -30,7 +29,7 @@ class CoursestatsLmsController extends LmsController
     public function init()
     {
         $this->model = new CoursestatsLms();
-        $this->json = new Services_JSON();
+        
         $this->permissions = [
             'view' => true,
             'mod' => true,
@@ -81,7 +80,7 @@ class CoursestatsLmsController extends LmsController
             } else {
                 $output .= ',';
             }
-            $output .= '{"value":' . $this->json->encode($id_level) . ',"label":' . $this->json->encode($level_translation) . '}';
+            $output .= '{"value":' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($id_level, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . ',"label":' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($level_translation,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . '}';
         }
         $output .= ']';
 
@@ -100,7 +99,7 @@ class CoursestatsLmsController extends LmsController
             } else {
                 $output .= ', ';
             }
-            $output .= '{"value":' . $this->json->encode($id_status) . ',"label":' . $this->json->encode($status_translation) . '}';
+            $output .= '{"value":' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($id_status, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . ',"label":' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($status_translation,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . '}';
         }
         $output .= ']';
 
@@ -126,7 +125,7 @@ class CoursestatsLmsController extends LmsController
             } else {
                 $output .= ', ';
             }
-            $output .= '{"value":' . $this->json->encode($id_status) . ',"label":' . $this->json->encode($status_translation) . '}';
+            $output .= '{"value":' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($id_status,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . ',"label":' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($status_translation,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . '}';
         }
         $output .= ']';
 
@@ -137,6 +136,8 @@ class CoursestatsLmsController extends LmsController
 
     public function showTask()
     {
+
+
         $view_all_perm = checkPerm('view_all', true, 'coursestats');
 
         if ((int)$this->idCourse <= 0) {
@@ -182,6 +183,22 @@ class CoursestatsLmsController extends LmsController
 
         $umodel = new UsermanagementAdm();
         $gmodel = new GroupmanagementAdm();
+        $rel_actions = '
+	<a href="index.php?r=coursestats/export_csv" class="ico-wt-sprite subs_csv" title="' . Lang::t('_EXPORT_CSV', 'report') . '">
+		<span>' . Lang::t('_EXPORT_CSV', 'report') . '</span>
+	</a>
+	<a href="index.php?r=coursestats/export_csv3" class="ico-wt-sprite subs_csv" title="' . Lang::t('_EXPORT_REPORT_DETAIL_CSV', 'report') . '">
+		<span>' . Lang::t('_EXPORT_REPORT_DETAIL_CSV', 'report') . '</span>
+	</a>
+	<a href="index.php?r=coursestats/export_Xls" class="ico-wt-sprite subs_xls" title="' . Lang::t('_EXPORT_REPORT_DETAIL_XLS', 'report') . '">
+		<span>' . Lang::t('_EXPORT_REPORT_DETAIL_XLS', 'report') . '</span>
+	</a>';
+
+        $eventResult = Events::trigger('lms.course.stats.showing', [
+            'actions' => $rel_actions,
+        ]);
+
+        $rel_actions = $eventResult['actions'];
 
         $params = [
             'id_course' => $this->idCourse,
@@ -198,6 +215,7 @@ class CoursestatsLmsController extends LmsController
             'lo_totals_js' => $lo_totals_js,
             'status_list' => $this->_getJsArrayStatus(),
             'permissions' => $this->permissions,
+            'rel_actions' => $rel_actions,
         ];
 
         $this->render('show', $params);
@@ -232,6 +250,15 @@ class CoursestatsLmsController extends LmsController
             $pagination['search'] = null;
         }
 
+        if (!$view_all_perm && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == '/framework/level/admin') {
+            //filter users
+            require_once _base_ . '/lib/lib.preference.php';
+            $ctrlManager = new ControllerPreference();
+            $pagination['ctrl_user'] = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
+        }
+
+
+
         //get total from database and validate the results count
         $total = $this->model->getCourseStatsTotal($this->idCourse, $pagination, false);
         $total_filtered = $this->model->getCourseStatsTotal($this->idCourse, $pagination, true);
@@ -254,23 +281,6 @@ class CoursestatsLmsController extends LmsController
         //format models' data
         $records = [];
         $acl_man = \FormaLms\lib\Forma::getAclManager();
-
-        //apply sub admin filters, if needed
-        if (!$view_all_perm) {
-            //filter users
-            require_once _base_ . '/lib/lib.preference.php';
-            $ctrlManager = new ControllerPreference();
-            $ctrl_users = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
-            $idx = 0;
-            foreach ($list as $record) {
-                if (!in_array($record->idst, $ctrl_users)) {
-                    // Elimino gli studenti non amministrati
-                    unset($list[$idx]);
-                }
-                ++$idx;
-            }
-            $total = count($list);
-        }
 
         if (is_array($list)) {
             $lo_list = $this->model->getCourseLOs($this->idCourse);
@@ -312,11 +322,11 @@ class CoursestatsLmsController extends LmsController
             }
         }
 
-        echo $this->json->encode([
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode([
             'data' => $records,
             'recordsFiltered' => $total_filtered,
             'recordsTotal' => $total,
-        ]);
+        ],\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         exit;
     }
 
@@ -348,6 +358,18 @@ class CoursestatsLmsController extends LmsController
         $info->last_access = '';
         $info->date_complete = $course_info->date_complete != '' ? Format::date($course_info->date_complete, 'datetime', true) : Lang::t('_NONE', '');
 
+        $rel_actions = '<a href="index.php?r=coursestats/export_csv2&id_user=' . $id_user . '" class="ico-wt-sprite subs_csv" title="' . Lang::t('_EXPORT_CSV', 'report') . '">'
+            . '<span>' . Lang::t('_EXPORT_CSV', 'report') . '</span></a>';
+        $rel_actions .= '<a href="index.php?r=coursestats/export_xls2&id_user=' . $id_user . '" class="ico-wt-sprite subs_xls" title="' . Lang::t('_EXPORT_XLS', 'report') . '">'
+            . '<span>' . Lang::t('_EXPORT_XLS', 'report') . '</span></a>';
+            
+        $eventResult = Events::trigger('lms.course.stats.user.showing', [
+            'actions' => $rel_actions,
+            'id_user' => $id_user,
+        ]);
+
+        $rel_actions = $eventResult['actions'];
+
         $params = [
             'id_course' => $this->idCourse,
             'id_user' => $id_user,
@@ -355,6 +377,7 @@ class CoursestatsLmsController extends LmsController
             'status_list_js' => $this->_getJsArrayLOStatus(),
             'permissions' => $this->permissions,
             'base_url' => 'index.php?r=lms/coursestats/show',
+            'rel_actions' => $rel_actions,
         ];
 
         $this->render('show_user', $params);
@@ -414,11 +437,11 @@ class CoursestatsLmsController extends LmsController
             }
         }
 
-        echo $this->json->encode([
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode([
             'data' => ($records),
             'recordsTotal' => $total,
             'recordsFiltered' => $total_filtered,
-        ]);
+        ],\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         exit;
     }
 
@@ -630,13 +653,13 @@ class CoursestatsLmsController extends LmsController
     {
         if (!$this->permissions['mod']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
         if ((int)$this->idCourse <= 0) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('invalid course')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -644,7 +667,7 @@ class CoursestatsLmsController extends LmsController
         $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, -1);
         if ($id_user <= 0) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('invalid user')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -654,7 +677,7 @@ class CoursestatsLmsController extends LmsController
 
         if ($old_value === false || $new_value === false) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('invalid data')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -674,21 +697,21 @@ class CoursestatsLmsController extends LmsController
                 $output['success'] = false;
                 $output['message'] = $this->_getErrorMessage('invalid column');
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function user_inline_editorTask()
     {
         if (!$this->permissions['mod']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
 
         if ((int)$this->idCourse <= 0) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('invalid course')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -696,7 +719,7 @@ class CoursestatsLmsController extends LmsController
         $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, -1);
         if ($id_user <= 0) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('invalid user')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -704,7 +727,7 @@ class CoursestatsLmsController extends LmsController
         $id_lo = FormaLms\lib\Get::req('id_lo', DOTY_INT, -1);
         if ($id_lo <= 0) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('invalid lo')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -714,7 +737,7 @@ class CoursestatsLmsController extends LmsController
 
         if ($old_value === false || $new_value === false) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('invalid data')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -820,7 +843,7 @@ class CoursestatsLmsController extends LmsController
                 $output['success'] = false;
                 $output['message'] = $this->_getErrorMessage('invalid column');
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     protected function _formatCsvValue($value, $delimiter)

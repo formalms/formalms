@@ -52,17 +52,19 @@ function addtest($object_test)
     $GLOBALS['page']->add(getTitleArea($lang->def('_TEST_SECTION'), 'test')
         . '<div class="std_block">'
         . getBackUi(Util::str_replace_once('&', '&amp;', $object_test->back_url) . '&amp;create_result=0', $lang->def('_BACK'))
-        . Form::getFormHeader($lang->def('_TEST_ADD_FORM'))
         . Form::OpenForm('addtest_form', 'index.php?modname=test&amp;op=instest')
 
         . Form::openElementSpace()
+        . Form::getFormHeader($lang->def('_TEST_ADD_FORM'))
         . Form::getHidden('back_url', 'back_url', htmlentities(urlencode($object_test->back_url)))
         . Form::getHidden('obj_type', 'obj_type', $object_test->getObjectType())
         . Form::getTextfield($lang->def('_TITLE'), 'title', 'title', '255')
         . Form::getTextarea($lang->def('_DESCRIPTION'), 'textof', 'textof')
-        . Form::closeElementSpace()
+        . Form::closeElementSpace(), 'content');
 
-        . Form::openButtonSpace()
+    Events::trigger('lms.test.creating', []);
+
+    $GLOBALS['page']->add(Form::openButtonSpace()
         . Form::getButton('button_ins', 'button_ins', $lang->def('_TEST_INSERT'))
         . Form::closeButtonSpace()
 
@@ -98,7 +100,7 @@ function instest()
 
     $test = Learning_Test::load($id_test);
 
-    Events::trigger('lms.test.create', ['object_test' => $test]);
+    Events::trigger('lms.test.created', ['object_test' => $test]);
 
     if ($id_test > 0) {
         Util::jump_to('' . urldecode($_REQUEST['back_url']) . '&id_lo=' . $id_test . '&create_result=1');
@@ -134,9 +136,13 @@ function modtest()
             . Form::getHidden('back_url', 'back_url', $url_encode)
             . Form::getTextfield($lang->def('_TITLE'), 'title', 'title', '255', $test_title)
             . Form::getTextarea($lang->def('_DESCRIPTION'), 'textof', 'textof', $textof)
-            . Form::closeElementSpace()
+            . Form::closeElementSpace(), 'content'
+    );
 
-            . Form::openButtonSpace()
+    Events::trigger('lms.test.updating', ['idTest' => $id_test]);
+
+    $GLOBALS['page']->add(
+        Form::openButtonSpace()
             . Form::getButton('button_ins', 'button_ins', $lang->def('_SAVE'))
             . Form::closeButtonSpace()
 
@@ -170,10 +176,12 @@ function uptest(Learning_Test $obj_test = null)
 
         if (!sql_query($mod_query)) {
             errorCommunication($lang->def('_OPERATION_FAILURE')
-                . getBackUi('index.php?modname=test&amp;op=modtest&amp;idTest=' . $id_test . '&amp;back_url=' . $url_encode, Lang::t('_BACK','standard')));
+                . getBackUi('index.php?modname=test&amp;op=modtest&amp;idTest=' . $id_test . '&amp;back_url=' . $url_encode, Lang::t('_BACK', 'standard')));
 
             return;
         }
+
+           Events::trigger('lms.test.updated', ['object_test' => $obj_test]);
         require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/track.object.php');
         Track_Object::updateObjectTitle($id_test, $obj_test->getObjectType(), $_REQUEST['title']);
     }
@@ -789,7 +797,7 @@ function delquest()
         sql_query('
         UPDATE ' . $GLOBALS['prefix_lms'] . "_testquest
         SET sequence = sequence -1 
-        WHERE sequence > '$seq' and idTest=".$idTest);
+        WHERE sequence > '$seq' and idTest=" . $idTest);
         fixPageSequence($idTest);
 
         $max_score = _getTestMaxScore($idTest);
@@ -826,7 +834,6 @@ function defmodality()
     $lang = FormaLanguage::createInstance('test');
 
     require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
-    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.json.php');
 
     $idTest = importVar('idTest', true, 0);
     $db = \FormaLms\db\DbConn::getInstance();
@@ -882,9 +889,8 @@ function defmodality()
 
     $cat_info = [];
     if ($order_info != '') {
-        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.json.php');
-        $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
-        $arr = $json->decode($order_info);
+        
+        $arr = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($order_info, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         if (is_array($arr)) {
             foreach ($arr as $value) {
                 $cat_info[$value['id_category']] = $value['selected'];
@@ -928,7 +934,7 @@ function defmodality()
         'content'
     );
     //-random question
-    $input_field = Form::getInputTextfield('textfield_nowh', 'question_random_number', 'question_random_number', $question_random_number, 4, '', '');
+    $input_field = Form::getInputTextfield('textfield_nowh', 'question_random_number', 'question_random_number', $question_random_number, '', '');
     $label = str_replace('[random_quest]', '</label>' . $input_field . '<label for="question_random_number">', $lang->def('_TEST_MM1_QUESTION_RANDOM_NUMBER'));
 
     $GLOBALS['page']->add(
@@ -947,7 +953,7 @@ function defmodality()
 
     $category_selector = '<ul id="category_list" style="display:' . ($order_type == 3 ? 'block' : 'none') . '">';
     foreach ($categories as $key => $value) {
-        $input_field = Form::getInputTextfield('textfield_nowh', 'question_random_category_' . $key, 'question_random_category[' . $key . ']', $value['selected'], 4, '', '');
+        $input_field = Form::getInputTextfield('textfield_nowh', 'question_random_category_' . $key, 'question_random_category[' . $key . ']', $value['selected'], '', '');
 
         $category_selector .= '<li><label for="question_random_category_' . $key . '">' . $value['name'] . ':</label> '
             . str_replace(['[random_quest]', '[tot_quest]'], [$input_field, $value['total']], $lang->def('_TEST_MM1_QUESTION_RANDOM_NUMBER'))
@@ -974,9 +980,8 @@ function defmodality()
 
     $cust_info = [];
     if ($cf_info != '') {
-        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.json.php');
-        $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
-        $arr = $json->decode($cf_info);
+        
+        $arr = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($cf_info, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         if (is_array($arr)) {
             foreach ($arr as $value) {
                 $cust_info[$value['id_cf_son']] = $value['selected'];
@@ -992,7 +997,7 @@ function defmodality()
         foreach ($field['value'] as $key => $value) {
             $tot_quest = $fman->getNumberOfObjFieldEntryData($field['id'], $key, $arr_id_quest);
             $sel_quest = $cust_info[$key];
-            $input_field = Form::getInputTextfield('textfield_nowh', 'question_random_customfield_' . $key, 'question_random_customfield[' . $key . ']', $sel_quest, $cust_order_type, '', '');
+            $input_field = Form::getInputTextfield('textfield_nowh', 'question_random_customfield_' . $key, 'question_random_customfield[' . $key . ']', $sel_quest, '', '');
             $category_selector .= '<li><label for="question_random_customfield_' . $key . '">' . $value . ':</label> '
                 . str_replace(['[random_quest]', '[tot_quest]'], [$input_field, $tot_quest], $lang->def('_TEST_MM1_QUESTION_RANDOM_NUMBER'))
                 . '</li>';
@@ -1013,8 +1018,8 @@ function defmodality()
     /*
     $chart_options_decoded = new stdClass();
     if ($chart_options!="") {
-        $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
-        $decoded = $json->decode($chart_options);
+        
+        $decoded = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($chart_options, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
     $chart_options_decoded->use_charts = (isset($decoded['use_charts']) ? (bool)$decoded['use_charts'] : false);
     $chart_options_decoded->selected_chart = (isset($decoded['selected_chart']) ? (string)$decoded['selected_chart'] : 'column');
@@ -1178,9 +1183,7 @@ function defmodality()
 function updatemodality()
 {
     checkPerm('view', false, 'storage');
-
-    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.json.php');
-    $json = new Services_JSON();
+    
     $lang = FormaLanguage::createInstance('test');
 
     $idTest = importVar('idTest', true, 0);
@@ -1202,7 +1205,7 @@ function updatemodality()
                 }
             }
         }
-        $order_info = $json->encode($arr);
+        $order_info = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($arr, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     $cf_info = '';
@@ -1215,7 +1218,7 @@ function updatemodality()
                 }
             }
         }
-        $cf_info = $json->encode($arr);
+        $cf_info = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($arr, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     $queryString = '
@@ -1271,8 +1274,12 @@ function deftime()
     $url_coded = htmlentities(urlencode($back_url));
 
     [
-        $time_dependent, $time_assigned,
-        $penality_test, $penality_time_test, $penality_quest, $penality_time_quest
+        $time_dependent,
+        $time_assigned,
+        $penality_test,
+        $penality_time_test,
+        $penality_quest,
+        $penality_time_quest
     ] = sql_fetch_row(sql_query('
     SELECT time_dependent, time_assigned, 
         penality_test, penality_time_test, penality_quest, penality_time_quest 
@@ -1286,104 +1293,104 @@ function deftime()
         // second step, ask for time
         switch ($_REQUEST['time_limit']) {
             case 0:
-                    $update_query = '
+                $update_query = '
                 UPDATE ' . $GLOBALS['prefix_lms'] . "_test
                 SET time_dependent = 0, 
                     time_assigned = '" . $_REQUEST['time_assigned'] . "'
                 WHERE idTest = '$idTest'";
-                    if (!sql_query($update_query)) {
-                        errorCommunication($lang->def('_OPERATION_FAILURE')
-                            . getBackUi('index.php?modname=test&amp;op=deftime&amp;idTest=' . $idTest . '&amp;back_url=' . $url_coded, $lang->def('_BACK')));
+                if (!sql_query($update_query)) {
+                    errorCommunication($lang->def('_OPERATION_FAILURE')
+                        . getBackUi('index.php?modname=test&amp;op=deftime&amp;idTest=' . $idTest . '&amp;back_url=' . $url_coded, $lang->def('_BACK')));
 
-                        return;
-                    }
-                    Util::jump_to('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $url_coded . '&mod_operation=1');
+                    return;
+                }
+                Util::jump_to('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $url_coded . '&mod_operation=1');
 
                 break;
             case 1:
-                    $GLOBALS['page']->add(
-                        getTitleArea($lang->def('_TEST_SECTION'), 'test')
-                            . '<div class="std_block">'
-                            . '<div class="title_big">' . $lang->def('_TEST_TIME_MANAGEMENT') . '</div>'
-                            . getBackUi('index.php?modname=test&amp;op=modtestgui&amp;idTest=' . $idTest . '&amp;back_url=' . $url_coded, $lang->def('_BACK'))
-                            //-------------------------------------------------------------
-                            . Form::openForm('deftime', 'index.php?modname=test&amp;op=updatetime')
+                $GLOBALS['page']->add(
+                    getTitleArea($lang->def('_TEST_SECTION'), 'test')
+                        . '<div class="std_block">'
+                        . '<div class="title_big">' . $lang->def('_TEST_TIME_MANAGEMENT') . '</div>'
+                        . getBackUi('index.php?modname=test&amp;op=modtestgui&amp;idTest=' . $idTest . '&amp;back_url=' . $url_coded, $lang->def('_BACK'))
+                        //-------------------------------------------------------------
+                        . Form::openForm('deftime', 'index.php?modname=test&amp;op=updatetime')
 
-                            . Form::getHidden('idTest', 'idTest', $idTest)
-                            . Form::getHidden('back_url', 'back_url', $url_coded)
-                            . Form::getHidden('time_limit', 'time_limit', $_REQUEST['time_limit'])
+                        . Form::getHidden('idTest', 'idTest', $idTest)
+                        . Form::getHidden('back_url', 'back_url', $url_coded)
+                        . Form::getHidden('time_limit', 'time_limit', $_REQUEST['time_limit'])
 
-                            . Form::getOpenFieldset($lang->def('_TEST_TM_TWO'))
-                            . Form::getLineBox($lang->def('_TOTAL_TIME'), $time_assigned . ' ' . $lang->def('_SECONDS'))
-                            . Form::getTextfield(
-                                $lang->def('_TEST_TM2_NEWTIMETOTAL'),
-                                'time_assigned',
-                                'time_assigned',
-                                5,
-                                $time_assigned,
-                                $lang->def('_TEST_TM2_NEWTIMETOTAL'),
-                                $lang->def('_SECONDS')
-                            )
-                            . Form::getCloseFieldset()
+                        . Form::getOpenFieldset($lang->def('_TEST_TM_TWO'))
+                        . Form::getLineBox($lang->def('_TOTAL_TIME'), $time_assigned . ' ' . $lang->def('_SECONDS'))
+                        . Form::getTextfield(
+                            $lang->def('_TEST_TM2_NEWTIMETOTAL'),
+                            'time_assigned',
+                            'time_assigned',
+                            5,
+                            $time_assigned,
+                            $lang->def('_TEST_TM2_NEWTIMETOTAL'),
+                            $lang->def('_SECONDS')
+                        )
+                        . Form::getCloseFieldset()
 
-                            . Form::openButtonSpace()
-                            . Form::getButton('settime_button', 'settime_button', $lang->def('_SAVE'))
-                            . Form::getButton('undo', 'undo', $lang->def('_UNDO'))
-                            . Form::closeButtonSpace()
+                        . Form::openButtonSpace()
+                        . Form::getButton('settime_button', 'settime_button', $lang->def('_SAVE'))
+                        . Form::getButton('undo', 'undo', $lang->def('_UNDO'))
+                        . Form::closeButtonSpace()
 
-                            . Form::closeForm()
+                        . Form::closeForm()
 
-                            . '</div>',
-                        'content'
-                    );
+                        . '</div>',
+                    'content'
+                );
 
                 break;
             case 2:
-                    [$actual_tot_time] = sql_fetch_row(sql_query('
+                [$actual_tot_time] = sql_fetch_row(sql_query('
                 SELECT SUM(time_assigned) 
                 FROM ' . $GLOBALS['prefix_lms'] . "_testquest
                 WHERE idTest = '$idTest'"));
 
-                    $GLOBALS['page']->add(
-                        getTitleArea($lang->def('_TEST_SECTION'), 'test')
-                            . '<div class="std_block">'
-                            . '<div class="title_big">' . $lang->def('_TEST_TIME_MANAGEMENT') . '</div>'
-                            . getBackUi('index.php?modname=test&amp;op=modtestgui&amp;idTest=' . $idTest . '&amp;back_url=' . $url_coded, $lang->def('_BACK'))
-                            //-------------------------------------------------------------
-                            . Form::openForm('deftime', 'index.php?modname=test&amp;op=updatetime')
+                $GLOBALS['page']->add(
+                    getTitleArea($lang->def('_TEST_SECTION'), 'test')
+                        . '<div class="std_block">'
+                        . '<div class="title_big">' . $lang->def('_TEST_TIME_MANAGEMENT') . '</div>'
+                        . getBackUi('index.php?modname=test&amp;op=modtestgui&amp;idTest=' . $idTest . '&amp;back_url=' . $url_coded, $lang->def('_BACK'))
+                        //-------------------------------------------------------------
+                        . Form::openForm('deftime', 'index.php?modname=test&amp;op=updatetime')
 
-                            . Form::getHidden('idTest', 'idTest', $idTest)
-                            . Form::getHidden('back_url', 'back_url', $url_coded)
-                            . Form::getHidden('time_limit', 'time_limit', $_REQUEST['time_limit'])
+                        . Form::getHidden('idTest', 'idTest', $idTest)
+                        . Form::getHidden('back_url', 'back_url', $url_coded)
+                        . Form::getHidden('time_limit', 'time_limit', $_REQUEST['time_limit'])
 
-                            . Form::getOpenFieldset($lang->def('_TEST_TM_THREE'))
-                            . Form::getLineBox($lang->def('_TOTAL_TIME'), $actual_tot_time . ' ' . $lang->def('_SECONDS'))
-                            . Form::getTextfield(
-                                $lang->def('_TEST_TM2_NEWTIME'),
-                                'new_time',
-                                'new_time',
-                                10,
-                                $actual_tot_time,
-                                $lang->def('_TEST_TM2_NEWTIME'),
-                                $lang->def('_SECONDS')
-                            )
-                            . Form::getOpenCombo($lang->def('_TEST_TM2_SUBD_BY'))
-                            . Form::getRadio($lang->def('_TEST_PM_DIFFICULT'), 'point_diffcult', 'point_assignement', 0)
-                            . Form::getRadio($lang->def('_TEST_TM2_EQUALTOALL'), 'point_equaltoall', 'point_assignement', 1)
-                            . Form::getRadio($lang->def('_TEST_TM2_MANUAL'), 'point_manual', 'point_assignement', 2, true)
-                            . Form::getCloseCombo()
-                            . Form::getCloseFieldset()
+                        . Form::getOpenFieldset($lang->def('_TEST_TM_THREE'))
+                        . Form::getLineBox($lang->def('_TOTAL_TIME'), $actual_tot_time . ' ' . $lang->def('_SECONDS'))
+                        . Form::getTextfield(
+                            $lang->def('_TEST_TM2_NEWTIME'),
+                            'new_time',
+                            'new_time',
+                            10,
+                            $actual_tot_time,
+                            $lang->def('_TEST_TM2_NEWTIME'),
+                            $lang->def('_SECONDS')
+                        )
+                        . Form::getOpenCombo($lang->def('_TEST_TM2_SUBD_BY'))
+                        . Form::getRadio($lang->def('_TEST_PM_DIFFICULT'), 'point_diffcult', 'point_assignement', 0)
+                        . Form::getRadio($lang->def('_TEST_TM2_EQUALTOALL'), 'point_equaltoall', 'point_assignement', 1)
+                        . Form::getRadio($lang->def('_TEST_TM2_MANUAL'), 'point_manual', 'point_assignement', 2, true)
+                        . Form::getCloseCombo()
+                        . Form::getCloseFieldset()
 
-                            . Form::openButtonSpace()
-                            . Form::getButton('settime_button', 'settime_button', $lang->def('_TEST_TM2_SETTIME'))
-                            . Form::getButton('undo', 'undo', $lang->def('_UNDO'))
-                            . Form::closeButtonSpace()
+                        . Form::openButtonSpace()
+                        . Form::getButton('settime_button', 'settime_button', $lang->def('_TEST_TM2_SETTIME'))
+                        . Form::getButton('undo', 'undo', $lang->def('_UNDO'))
+                        . Form::closeButtonSpace()
 
-                            . Form::closeForm()
+                        . Form::closeForm()
 
-                            . '</div>',
-                        'content'
-                    );
+                        . '</div>',
+                    'content'
+                );
 
                 break;
         }
@@ -1472,15 +1479,15 @@ function modassigntime()
         $re = sql_query('
         UPDATE %lms_test
         SET display_type = "1"
-        WHERE idTest = "'.$idTest.'"');
+        WHERE idTest = "' . $idTest . '"');
         if ($re) {
 
-            foreach($_REQUEST['new_difficult_quest'] as $idQuest => $difficult) {
+            foreach ($_REQUEST['new_difficult_quest'] as $idQuest => $difficult) {
                 $re = sql_query('
                 UPDATE %lms_testquest
                 SET difficult = "' . $difficult . '", 
                     time_assigned = "' . $_REQUEST['new_time_quest'][$idQuest] . '"
-                WHERE idTest = "' . $idTest. '" AND idQuest = "' . (int) $idQuest  . '"');
+                WHERE idTest = "' . $idTest . '" AND idQuest = "' . (int) $idQuest  . '"');
             }
         }
         Util::jump_to('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $url_coded . '&mod_operation=' . ($re ? 1 : 0));
@@ -1521,7 +1528,10 @@ function modassigntime()
     $tab_quest = new Table(0, $lang->def('_TEST_SUMMARY'), $lang->def('_TEST_SUMMARY'));
     $tab_quest->setColsStyle(['image', 'image', '', 'image', 'image']);
     $tab_quest->addHead([
-        $lang->def('_TEST_QUEST_ORDER'), $lang->def('_TYPE'), $lang->def('_QUESTION'), $lang->def('_DIFFICULTY'),
+        $lang->def('_TEST_QUEST_ORDER'),
+        $lang->def('_TYPE'),
+        $lang->def('_QUESTION'),
+        $lang->def('_DIFFICULTY'),
         $lang->def('_TEST_QUEST_TIME_ASSIGNED') . ' (' . $lang->def('_SECONDS') . ')',
     ]);
 
@@ -1537,15 +1547,15 @@ function modassigntime()
             //calculate new time from deftime page
             switch ($_GET['point_assignement']) {
                 case '0':
-                        $new_time = (int) (($_GET['new_time'] / $tot_difficult) * $difficult);
+                    $new_time = (int) (($_GET['new_time'] / $tot_difficult) * $difficult);
 
                     break;
                 case '1':
-                        $new_time = (int) ($_GET['new_time'] / $tot_quest);
+                    $new_time = (int) ($_GET['new_time'] / $tot_quest);
 
                     break;
                 case '2':
-                        $new_time = (int) ($time_assigned);
+                    $new_time = (int) ($time_assigned);
 
                     break;
             }
@@ -1733,6 +1743,15 @@ function updatepoint()
         return;
     }
 
+    // Sync updated scores to learning_coursereport
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+    $idCourse = (int)$session->get('idCourse');
+    if ($idCourse > 0) {
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.coursereport.php');
+        $reportMan = new CourseReportManager($idCourse);
+        $reportMan->updateTestReport([$idTest]);
+    }
+
     Util::jump_to('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $url_coded);
 }
 
@@ -1810,8 +1829,11 @@ function modassignpoint()
     $tab_quest = new Table(0, $lang->def('_TEST_SUMMARY'), $lang->def('_TEST_SUMMARY'));
     $tab_quest->setColsStyle(['image', 'image', '', 'image', 'image']);
     $tab_quest->addHead([
-        $lang->def('_TEST_QUEST_ORDER'), $lang->def('_TYPE'), $lang->def('_QUESTION'),
-        $lang->def('_DIFFICULTY'), $lang->def('_SCORE'),
+        $lang->def('_TEST_QUEST_ORDER'),
+        $lang->def('_TYPE'),
+        $lang->def('_QUESTION'),
+        $lang->def('_DIFFICULTY'),
+        $lang->def('_SCORE'),
     ]);
 
     $i = 1;
@@ -1830,17 +1852,17 @@ function modassignpoint()
             //calculate new time from deftime page
             switch ($_REQUEST['point_assignement']) {
                 case '0':
-                        $quest_score = $quest_obj->getRealMaxScore(round(round($_REQUEST['new_assigned_score'] / $tot_difficult, 2) * $difficult), 2);
-                        //$quest_score = (( $_REQUEST['new_assigned_score'] / $tot_difficult ) * $difficult ), 2;
+                    $quest_score = $quest_obj->getRealMaxScore(round(round($_REQUEST['new_assigned_score'] / $tot_difficult, 2) * $difficult), 2);
+                    //$quest_score = (( $_REQUEST['new_assigned_score'] / $tot_difficult ) * $difficult ), 2;
 
                     break;
                 case '1':
-                        $quest_score = $quest_obj->getRealMaxScore(round($_REQUEST['new_assigned_score'] / $tot_quest, 2));
-                        //$quest_score = round(( $_REQUEST['new_assigned_score'] / $tot_quest ), 2);
+                    $quest_score = $quest_obj->getRealMaxScore(round($_REQUEST['new_assigned_score'] / $tot_quest, 2));
+                    //$quest_score = round(( $_REQUEST['new_assigned_score'] / $tot_quest ), 2);
 
                     break;
                 case '2':
-                        $quest_score = $quest_obj->getMaxScore();
+                    $quest_score = $quest_obj->getMaxScore();
 
                     break;
             }
@@ -2224,7 +2246,7 @@ function feedbackman()
     $res .= getTitleArea([
         $back_link_url => Lang::t('_TEST_SECTION', 'test'),
         Lang::t('_FEEDBACK_MANAGEMENT', 'test'),
-        ], 'test')
+    ], 'test')
         . '<div class="std_block">'
         . getBackUi($back_link_url, Lang::t('_BACK'));
 
@@ -2287,7 +2309,7 @@ function feedbackman()
     $res .= getBackUi($back_link_url, Lang::t('_BACK'))
         . '</div>';
 
-    require_once \FormaLms\lib\Forma::inc( _base_ . '/lib/lib.dialog.php');
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.dialog.php');
     setupHrefDialogBox('a[id^=del_rule_]');
 
     $GLOBALS['page']->add($res, 'content');
@@ -2300,7 +2322,6 @@ function coursereportMan()
     $lang = FormaLanguage::createInstance('test');
 
     require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
-    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.json.php');
 
     $idTest = importVar('idTest', true, 0);
 
@@ -2380,7 +2401,7 @@ function addfbkrule()
         $back_link_url => Lang::t('_TEST_SECTION', 'test'),
         $url_base . 'feedbackman' => Lang::t('_FEEDBACK_MANAGEMENT', 'test'),
         Lang::t('_ADD_FEEDBACK_RULE', 'test'),
-        ], 'test')
+    ], 'test')
         . '<div class="std_block">'
         . getBackUi($back_link_url, Lang::t('_BACK'));
 
@@ -2428,7 +2449,7 @@ function editfbkrule()
         $back_link_url => Lang::t('_TEST_SECTION', 'test'),
         $url_base . 'feedbackman' => Lang::t('_FEEDBACK_MANAGEMENT', 'test'),
         Lang::t('_MOD', 'test'),
-        ], 'test')
+    ], 'test')
         . '<div class="std_block">'
         . getBackUi($back_link_url, Lang::t('_BACK'));
 
@@ -2480,170 +2501,170 @@ if (array_key_exists('export_quest_select', $_REQUEST) && $_REQUEST['export_ques
 
 switch ($GLOBALS['op']) {
     case 'instest':
-            instest();
+        instest();
 
         break;
 
     case 'modtest':
-            modtest();
+        modtest();
 
         break;
     case 'uptest':
-            $idTest = importVar('idTest', true, 0);
-            $db = \FormaLms\db\DbConn::getInstance();
-            $res = $db->query("SELECT obj_type FROM %lms_test WHERE idTest = '" . (int) $idTest . "'");
-            $test_type = $db->fetch_row($res);
-            $object_test = createLO($test_type[0], $idTest);
-            uptest($object_test ? $object_test : null);
+        $idTest = importVar('idTest', true, 0);
+        $db = \FormaLms\db\DbConn::getInstance();
+        $res = $db->query("SELECT obj_type FROM %lms_test WHERE idTest = '" . (int) $idTest . "'");
+        $test_type = $db->fetch_row($res);
+        $object_test = createLO($test_type[0], $idTest);
+        uptest($object_test ? $object_test : null);
 
         break;
 
     case 'modtestgui':
-            Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/lib.elem_selector.js', true, true);
-            if (isset($_GET['test_saved']) || isset($_REQUEST['test_saved'])) {
-                //other enter
-                $var_save = importVar('test_saved');
-                $var_loaded = loadTestStatus($var_save);
+        Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/lib.elem_selector.js', true, true);
+        if (isset($_GET['test_saved']) || isset($_REQUEST['test_saved'])) {
+            //other enter
+            $var_save = importVar('test_saved');
+            $var_loaded = loadTestStatus($var_save);
 
-                $idTest = $var_loaded['idTest'];
-                $back_url = urlencode($var_loaded['back_url']);
-                fixPageSequence($idTest);
-            } else {
-                $idTest = importVar('idTest', true, 0);
-                $back_url = importVar('back_url');
-            }
-            $test_type = importVar('test_type', false, 'test');
-            $db = \FormaLms\db\DbConn::getInstance();
-            $res = $db->query("SELECT obj_type FROM %lms_test WHERE idTest = '" . (int) $idTest . "'");
-            $test_type = $db->fetch_row($res);
-            $object_test = createLO($test_type[0], $idTest);
+            $idTest = $var_loaded['idTest'];
+            $back_url = urlencode($var_loaded['back_url']);
+            fixPageSequence($idTest);
+        } else {
+            $idTest = importVar('idTest', true, 0);
+            $back_url = importVar('back_url');
+        }
+        $test_type = importVar('test_type', false, 'test');
+        $db = \FormaLms\db\DbConn::getInstance();
+        $res = $db->query("SELECT obj_type FROM %lms_test WHERE idTest = '" . (int) $idTest . "'");
+        $test_type = $db->fetch_row($res);
+        $object_test = createLO($test_type[0], $idTest);
 
-            $object_test->edit($idTest, urldecode($back_url));
+        $object_test->edit($idTest, urldecode($back_url));
 
         break;
     case 'coursereportman':
-            coursereportMan();
+        coursereportMan();
 
         break;
     case 'updatecoursereport':
-            updatecoursereport();
+        updatecoursereport();
 
         break;
     case 'movequest':
-            movequest();
+        movequest();
 
         break;
 
     case 'movedown':
-            movequestion('down');
+        movequestion('down');
 
         break;
     case 'moveup':
-            movequestion('up');
+        movequestion('up');
 
         break;
     case 'fixsequence':
-            fixQuestSequence();
+        fixQuestSequence();
 
         break;
 
     case 'addquest':
-            addquest();
+        addquest();
 
         break;
     case 'modquest':
-            modquest();
+        modquest();
 
         break;
     case 'delquest':
-            delquest();
+        delquest();
 
         break;
 
-        //modality setting
+    //modality setting
     case 'defmodality':
-            defmodality();
+        defmodality();
 
         break;
     case 'updatemodality':
-            updatemodality();
+        updatemodality();
 
         break;
 
-        //time setting
+    //time setting
     case 'deftime':
-            deftime();
+        deftime();
 
         break;
     case 'updatetime':
-            updatetime();
+        updatetime();
 
         break;
     case 'modassigntime':
-            modassigntime();
+        modassigntime();
 
         break;
 
-        //point setting
+    //point setting
     case 'defpoint':
-            defpoint();
+        defpoint();
 
         break;
     case 'updatepoint':
-            updatepoint();
+        updatepoint();
 
         break;
     case 'modassignpoint':
-            modassignpoint();
+        modassignpoint();
 
         break;
 
     case 'importquest':
-            importquest();
+        importquest();
 
         break;
     case 'doimportquest':
-            doimportquest();
+        doimportquest();
 
         break;
 
     case 'exportquest':
-            exportquest();
+        exportquest();
 
         break;
 
     case 'exportquestqb':
-            exportquestqb();
+        exportquestqb();
 
         break;
 
     case 'doexportquestqb':
-            doexportquestqb();
+        doexportquestqb();
 
         break;
 
     case 'feedbackman':
-            feedbackman();
+        feedbackman();
 
         break;
 
     case 'addfbkrule':
-            addfbkrule();
+        addfbkrule();
 
         break;
 
     case 'editfbkrule':
-            editfbkrule();
+        editfbkrule();
 
         break;
 
     case 'delfbkrule':
-            delfbkrule();
+        delfbkrule();
 
         break;
 
     case 'defrelation':
-            defrelation();
+        defrelation();
 
         break;
 }

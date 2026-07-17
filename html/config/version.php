@@ -23,7 +23,7 @@ return [
 |
 */
 
-'file_version' => '4.0.19',
+'file_version' => '4.1.43',
 
 
 /*
@@ -35,18 +35,18 @@ return [
 |
 */
 
-'php_min_version' => '7.4.0',
+'php_min_version' => '8.0.0',
 
 /*
 |--------------------------------------------------------------------------
-| Php min version
+| Php max version
 |--------------------------------------------------------------------------
 |
 | Max PHP version to make version working
 |
 */
 
-'php_max_version' => '8.1.99',
+'php_max_version' => '8.2.99',
 
 /*
 |--------------------------------------------------------------------------
@@ -111,7 +111,7 @@ return [
 | Max mysql version suitable to platform
 |
 */
-  
+
 'max_mysql_version' => '8.1',
 
 /*

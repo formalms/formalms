@@ -60,4 +60,16 @@ class Man_Forum
 
         return $forum_post[0];
     }
+
+    public function getUploadedFilesCount($id_user) {
+        $query_forum_post = '
+			SELECT COUNT(*)
+			FROM ' . $GLOBALS['prefix_lms'] . "_forummessage
+			WHERE author = '" . $id_user . "' AND attach != ''";
+
+        $attach = sql_fetch_row(sql_query($query_forum_post));
+
+        return $attach[0];
+
+    }
 }

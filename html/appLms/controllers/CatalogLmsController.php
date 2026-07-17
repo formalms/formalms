@@ -27,7 +27,6 @@ class CatalogLmsController extends LmsController
 
     /** @var CatalogLms */
     public $model;
-    public $json;
     /** @var FormaACLManager */
     public $acl_man;
 
@@ -50,8 +49,6 @@ class CatalogLmsController extends LmsController
         $this->path_course = $GLOBALS['where_files_relative'] . '/appLms/' . FormaLms\lib\Get::sett('pathcourse') . '/';
         $this->model = new CatalogLms();
 
-        require_once _base_ . '/lib/lib.json.php';
-        $this->json = new Services_JSON();
         $this->_mvc_name = 'catalog';
         $this->acl_man = \FormaLms\lib\Forma::getAclManager();
     }
@@ -375,7 +372,7 @@ class CatalogLmsController extends LmsController
 
         $res = $this->model->subscribeCoursePathInfo($id_path);
 
-        echo $this->json->encode($res);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($res,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function chooseEdition()
@@ -386,7 +383,7 @@ class CatalogLmsController extends LmsController
         $id_category = FormaLms\lib\Get::req('id_category', DOTY_INT, 0);
         $res = $this->model->courseSelectionInfo($id_course);
         $this->render('edition-modal', ['id_course' => $id_course, 'available_classrooms' => $res['available_classrooms'], 'teachers' => $res['teachers'],
-            'course_name' => $res['course_name'], 'type_course' => $type_course, 'id_catalogue' => $id_catalogue, 'id_category' => $id_category, ]);
+            'course_name' => $res['course_name'], 'type_course' => $type_course, 'id_catalogue' => $id_catalogue, 'id_category' => $id_category,]);
     }
 
     //UG  select a user subscription level
@@ -550,17 +547,17 @@ class CatalogLmsController extends LmsController
 
             $messageComposer = new EventMessageComposer('subscribe', 'lms');
 
-                $description = 'User subscribed';
-                if ($waiting) {
-                    $description .= ' with moderation';
-                    $subject_key = '_NEW_USER_SUBS_WAITING_SUBJECT';
-                    $body_key = '_NEW_USER_SUBS_WAITING_TEXT';
-                    $myevent = 'UserCourseInsertModerate';
-                } else {
-                    $subject_key = '_NEW_USER_SUBSCRIBED_SUBJECT';
-                    $body_key = '_NEW_USER_SUBSCRIBED_TEXT_MODERATORS';
-                    $myevent = 'UserCourseInserted';
-                }
+            $description = 'User subscribed';
+            if ($waiting) {
+                $description .= ' with moderation';
+                $subject_key = '_NEW_USER_SUBS_WAITING_SUBJECT';
+                $body_key = '_NEW_USER_SUBS_WAITING_TEXT';
+                $myevent = 'UserCourseInsertModerate';
+            } else {
+                $subject_key = '_NEW_USER_SUBSCRIBED_SUBJECT';
+                $body_key = '_NEW_USER_SUBSCRIBED_TEXT_MODERATORS';
+                $myevent = 'UserCourseInserted';
+            }
 
             $messageComposer->setSubjectLangText('email', $subject_key, false);
             $messageComposer->setBodyLangText('email', $body_key, $array_subst);
@@ -631,9 +628,9 @@ class CatalogLmsController extends LmsController
             $res['new_status'] = '<p class="cannot_subscribe">' . Lang::t('_USER_STATUS_SUBS', 'catalogue') . '</p>';
         }
 
-       $res['message'] = UIFeedback::info(Lang::t('_SUBSCRIPTION_CORRECT', 'catalogue'), true);
+        $res['message'] = UIFeedback::info(Lang::t('_SUBSCRIPTION_CORRECT', 'catalogue'), true);
 
-        echo $this->json->encode($res);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($res,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function addToCart()

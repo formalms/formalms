@@ -16,7 +16,6 @@ defined('IN_FORMA') or exit('Direct access is forbidden');
 class FunctionalrolesAdmController extends AdmController
 {
     protected $model;
-    protected $json;
     protected $permissions;
 
     /*
@@ -25,15 +24,15 @@ class FunctionalrolesAdmController extends AdmController
     public function init()
     {
         parent::init();
-        require_once _base_ . '/lib/lib.json.php';
-        $this->json = new Services_JSON();
+        
+        
         $this->model = new FunctionalrolesAdm();
         $this->permissions = [
-            'view' => checkPerm('view', true, 'functionalroles'),					//view fncroles
-            'add' => checkPerm('mod', true, 'functionalroles'),						//add new fncroles
-            'mod' => checkPerm('mod', true, 'functionalroles'),						//edit fncroles
-            'del' => checkPerm('mod', true, 'functionalroles'),						//delete fncroles
-            'associate_user' => checkPerm('associate_user', true, 'functionalroles'),	//add/remove users from fncroles
+            'view' => checkPerm('view', true, 'functionalroles'),                    //view fncroles
+            'add' => checkPerm('mod', true, 'functionalroles'),                        //add new fncroles
+            'mod' => checkPerm('mod', true, 'functionalroles'),                        //edit fncroles
+            'del' => checkPerm('mod', true, 'functionalroles'),                        //delete fncroles
+            'associate_user' => checkPerm('associate_user', true, 'functionalroles'),    //add/remove users from fncroles
         ];
     }
 
@@ -44,21 +43,39 @@ class FunctionalrolesAdmController extends AdmController
         $message = '';
 
         switch ($code) {
-            case 'no permission':				$message = "You don't have permission to do this."; break;
-            case 'invalid fncrole':			$message = Lang::t('_INVALID_FNCROLE', 'fncroles'); break;
-            case 'invalid group':				$message = Lang::t('_INVALID_GROUP', 'fncroles'); break;
-            case 'invalid user':				$message = Lang::t('_INVALID_USER', 'fncroles'); break;
-            case 'invalid competence':	$message = Lang::t('_INVALID_COMPETENCE', 'fncroles'); break;
+            case 'no permission':
+                $message = "You don't have permission to do this.";
+                break;
+            case 'invalid fncrole':
+                $message = Lang::t('_INVALID_FNCROLE', 'fncroles');
+                break;
+            case 'invalid group':
+                $message = Lang::t('_INVALID_GROUP', 'fncroles');
+                break;
+            case 'invalid user':
+                $message = Lang::t('_INVALID_USER', 'fncroles');
+                break;
+            case 'invalid competence':
+                $message = Lang::t('_INVALID_COMPETENCE', 'fncroles');
+                break;
             case 'remove user':
             case 'remove comeptence':
             case 'create fncrole':
             case 'create group':
             case 'edit fncrole':
-            case 'edit group':					$message = Lang::t('_ERROR_WHILE_SAVING', 'fncroles'); break;
+            case 'edit group':
+                $message = Lang::t('_ERROR_WHILE_SAVING', 'fncroles');
+                break;
             case 'delete fncrole':
-            case 'delete group':				$message = Lang::t('_ERROR_WHILE_DELETING', 'fncroles'); break;
-            case '':										$message = ''; break;
-            default:										$message = Lang::t('_OPERATION_FAILURE', 'standard'); break;
+            case 'delete group':
+                $message = Lang::t('_ERROR_WHILE_DELETING', 'fncroles');
+                break;
+            case '':
+                $message = '';
+                break;
+            default:
+                $message = Lang::t('_OPERATION_FAILURE', 'standard');
+                break;
         }
 
         return $message;
@@ -137,7 +154,7 @@ class FunctionalrolesAdmController extends AdmController
                 }
 
                 $group_name = $record->id_group <= 0
-                    ? '<i>(' . Lang::t('NONE', 'fncroles') . ')</i>'
+                    ? '<i>(' . Lang::t('_NONE', 'fncroles') . ')</i>'
                     : Layout::highlight($record->group_name, $filter_text);
 
                 //prepare output record
@@ -149,8 +166,8 @@ class FunctionalrolesAdmController extends AdmController
                     'users' => property_exists($record, 'users') ? $record->users : 0,
                     'competences' => property_exists($record, 'competences') ? $record->competences : 0,
                     //'courses' => property_exists($record, 'courses') ? $record->courses : 0,
-                    'mod' => 'ajax.adm_server.php?r=adm/functionalroles/mod_fncrole&id=' . (int) $record->id_fncrole,
-                    'del' => 'ajax.adm_server.php?r=adm/functionalroles/del_fncrole&id=' . (int) $record->id_fncrole,
+                    'mod' => 'ajax.adm_server.php?r=adm/functionalroles/mod_fncrole&id=' . (int)$record->id_fncrole,
+                    'del' => 'ajax.adm_server.php?r=adm/functionalroles/del_fncrole&id=' . (int)$record->id_fncrole,
                 ];
             }
         }
@@ -165,7 +182,7 @@ class FunctionalrolesAdmController extends AdmController
             'records' => $output_results,
         ];
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function show_groupsTask()
@@ -224,8 +241,8 @@ class FunctionalrolesAdmController extends AdmController
                     'id' => $record->id_group,
                     'name' => Layout::highlight($record->name, $filter_text),
                     'description' => Layout::highlight($description, $filter_text),
-                    'mod' => 'ajax.adm_server.php?r=adm/functionalroles/mod_group&id=' . (int) $record->id_group,
-                    'del' => 'ajax.adm_server.php?r=adm/functionalroles/del_group&id=' . (int) $record->id_group,
+                    'mod' => 'ajax.adm_server.php?r=adm/functionalroles/mod_group&id=' . (int)$record->id_group,
+                    'del' => 'ajax.adm_server.php?r=adm/functionalroles/del_group&id=' . (int)$record->id_group,
                 ];
             }
         }
@@ -240,7 +257,7 @@ class FunctionalrolesAdmController extends AdmController
             'records' => $output_results,
         ];
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function add_fncroleTask()
@@ -248,7 +265,7 @@ class FunctionalrolesAdmController extends AdmController
         //check permissions: we should have add privileges to create roles
         if (!$this->permissions['add']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -256,7 +273,7 @@ class FunctionalrolesAdmController extends AdmController
         $this->render('fncrole_editmask', [
             'title' => Lang::t('_ADD', 'fncroles'),
             'groups_list' => $this->model->getGroupsDropdownList(),
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 
@@ -265,7 +282,7 @@ class FunctionalrolesAdmController extends AdmController
         //check permissions: we should have mod privileges to edit roles
         if (!$this->permissions['mod']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -276,7 +293,7 @@ class FunctionalrolesAdmController extends AdmController
                 'success' => false,
                 'message' => Lang::t('_INVALID_FNCROLE', 'fncroles'),
             ];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -290,7 +307,7 @@ class FunctionalrolesAdmController extends AdmController
             'id_group' => $info->id_group,
             'fncrole_langs' => $info->langs,
             'groups_list' => $this->model->getGroupsDropdownList(),
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 
@@ -299,14 +316,14 @@ class FunctionalrolesAdmController extends AdmController
         //check permissions: we should have add privileges to create groups
         if (!$this->permissions['add']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
 
         $this->render('group_editmask', [
             'title' => Lang::t('_ADD', 'fncroles'),
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 
@@ -315,7 +332,7 @@ class FunctionalrolesAdmController extends AdmController
         //check permissions: we should have mod privileges to edit groups
         if (!$this->permissions['mod']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -326,7 +343,7 @@ class FunctionalrolesAdmController extends AdmController
                 'success' => false,
                 'message' => Lang::t('_INVALID_GROUP', 'fncroles'),
             ];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -338,7 +355,7 @@ class FunctionalrolesAdmController extends AdmController
             'title' => Lang::t('_MOD', 'fncroles'),
             'id_group' => $id_group,
             'group_langs' => $info->langs,
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 
@@ -347,7 +364,7 @@ class FunctionalrolesAdmController extends AdmController
         //check permissions: we should have add privileges to create roles
         if (!$this->permissions['add']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -385,7 +402,7 @@ class FunctionalrolesAdmController extends AdmController
                 'message' => $this->_getErrorMessage('create fncrole'),
             ];
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function add_group_actionTask()
@@ -393,7 +410,7 @@ class FunctionalrolesAdmController extends AdmController
         //check permissions: we should have add privileges to create groups
         if (!$this->permissions['add']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -427,7 +444,7 @@ class FunctionalrolesAdmController extends AdmController
                 'message' => $this->_getErrorMessage('create group'),
             ];
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function mod_fncrole_actionTask()
@@ -435,7 +452,7 @@ class FunctionalrolesAdmController extends AdmController
         //check permissions: we should have mod privileges to edit roles
         if (!$this->permissions['mod']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -447,7 +464,7 @@ class FunctionalrolesAdmController extends AdmController
                 'success' => false,
                 'message' => $this->_getErrorMessage('invalid fncrole'),
             ];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -480,7 +497,7 @@ class FunctionalrolesAdmController extends AdmController
                 'message' => $this->_getErrorMessage('edit fncrole'),
             ];
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function mod_group_actionTask()
@@ -488,7 +505,7 @@ class FunctionalrolesAdmController extends AdmController
         //check permissions: we should have mod privileges to edit groups
         if (!$this->permissions['mod']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -500,7 +517,7 @@ class FunctionalrolesAdmController extends AdmController
                 'success' => false,
                 'message' => $this->_getErrorMessage('invalid group'),
             ];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -529,7 +546,7 @@ class FunctionalrolesAdmController extends AdmController
                 'message' => $this->_getErrorMessage('edit group'),
             ];
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function del_fncrole()
@@ -537,7 +554,7 @@ class FunctionalrolesAdmController extends AdmController
         //check permissions: we should have del privileges to remove roles
         if (!$this->permissions['del']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -548,7 +565,7 @@ class FunctionalrolesAdmController extends AdmController
                 'success' => false,
                 'message' => $this->_getErrorMessage('invalid fncrole'),
             ];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -564,7 +581,7 @@ class FunctionalrolesAdmController extends AdmController
                 'message' => $this->_getErrorMessage('delete fncrole'),
             ];
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function del_group()
@@ -572,7 +589,7 @@ class FunctionalrolesAdmController extends AdmController
         //check permissions: we should have del privileges to remove role groups
         if (!$this->permissions['del']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -583,7 +600,7 @@ class FunctionalrolesAdmController extends AdmController
                 'success' => false,
                 'message' => $this->_getErrorMessage('invalid group'),
             ];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -599,7 +616,7 @@ class FunctionalrolesAdmController extends AdmController
                 'message' => $this->_getErrorMessage('delete group'),
             ];
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     //----------------------------------------------------------------------------
@@ -626,8 +643,12 @@ class FunctionalrolesAdmController extends AdmController
         $result = FormaLms\lib\Get::req('res', DOTY_ALPHANUM, '');
         $result_message = '';
         switch ($result) {
-            case 'ok_': $result_message = UIFeedback::info(Lang::t('_RESULT_USERS_OK', 'fncroles'), true); break;
-            case 'err_': $result_message = UIFeedback::error(Lang::t('_RESULT_USERS_ERR', 'fncroles'), true); break;
+            case 'ok_':
+                $result_message = UIFeedback::info(Lang::t('_RESULT_USERS_OK', 'fncroles'), true);
+                break;
+            case 'err_':
+                $result_message = UIFeedback::error(Lang::t('_RESULT_USERS_ERR', 'fncroles'), true);
+                break;
         }
 
         $this->render('show_users', [
@@ -661,8 +682,12 @@ class FunctionalrolesAdmController extends AdmController
         $result = FormaLms\lib\Get::req('res', DOTY_ALPHANUM, '');
         $result_message = '';
         switch ($result) {
-            case 'ok_competences': $result_message = UIFeedback::info(Lang::t('_OPERATION_SUCCESSFUL', 'fncroles'), true); break;
-            case 'err_competences': $result_message = UIFeedback::error(Lang::t('_OPERATION_FAILURE', 'fncroles'), true); break;
+            case 'ok_competences':
+                $result_message = UIFeedback::info(Lang::t('_OPERATION_SUCCESSFUL', 'fncroles'), true);
+                break;
+            case 'err_competences':
+                $result_message = UIFeedback::error(Lang::t('_OPERATION_FAILURE', 'fncroles'), true);
+                break;
         }
 
         $this->render('show_competences', [
@@ -687,7 +712,7 @@ class FunctionalrolesAdmController extends AdmController
         ];
 
         $output = $this->model->getManageUsersAll($id_fncrole, $searchFilter);
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function getusertabledataTask()
@@ -698,7 +723,7 @@ class FunctionalrolesAdmController extends AdmController
                 $this->selectallusers();
 
                 return;
-             break;
+                break;
         }
 
         //read from input and prepare filter and pagination variables
@@ -748,7 +773,7 @@ class FunctionalrolesAdmController extends AdmController
                     'userid' => Layout::highlight($acl_man->relativeId($record->userid), $filter_text),
                     'lastname' => Layout::highlight($record->lastname, $filter_text),
                     'firstname' => Layout::highlight($record->firstname, $filter_text),
-                    'del' => 'ajax.adm_server.php?r=adm/functionalroles/del_user&id_user=' . (int) $record->idst . '&id_fncrole=' . (int) $id_fncrole,
+                    'del' => 'ajax.adm_server.php?r=adm/functionalroles/del_user&id_user=' . (int)$record->idst . '&id_fncrole=' . (int)$id_fncrole,
                     'is_group' => $record->is_group,
                 ];
             }
@@ -764,7 +789,7 @@ class FunctionalrolesAdmController extends AdmController
             'records' => $output_results,
         ];
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function getcompetencetabledataTask()
@@ -826,7 +851,7 @@ class FunctionalrolesAdmController extends AdmController
                     'type' => $_types[$record->type],
                     'score' => ($record->type == 'flag' ? '-' : $record->score),
                     'expiration' => $record->expiration > 0 ? $record->expiration : Lang::t('_NEVER', 'standard'),
-                    'del' => 'ajax.adm_server.php?r=adm/functionalroles/del_competence&id_competence=' . (int) $record->id_competence . '&id_fncrole=' . (int) $id_fncrole,
+                    'del' => 'ajax.adm_server.php?r=adm/functionalroles/del_competence&id_competence=' . (int)$record->id_competence . '&id_fncrole=' . (int)$id_fncrole,
                 ];
             }
         }
@@ -841,7 +866,7 @@ class FunctionalrolesAdmController extends AdmController
             'records' => $output_results,
         ];
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function sel_usersTask()
@@ -868,8 +893,8 @@ class FunctionalrolesAdmController extends AdmController
         }
 
         //navigation urls
-        $back_url = 'index.php?r=adm/functionalroles/man_users&id=' . (int) $id_fncrole;
-        $jump_url = 'index.php?r=adm/functionalroles/sel_users&id_fncrole=' . (int) $id_fncrole;
+        $back_url = 'index.php?r=adm/functionalroles/man_users&id=' . (int)$id_fncrole;
+        $jump_url = 'index.php?r=adm/functionalroles/sel_users&id_fncrole=' . (int)$id_fncrole;
 
         //competence details
         $info = $this->model->getFunctionalRoleInfo($id_fncrole);
@@ -978,8 +1003,8 @@ class FunctionalrolesAdmController extends AdmController
         }
 
         //navigation urls
-        $back_url = 'index.php?r=adm/functionalroles/man_competences&id=' . (int) $id_fncrole;
-        $jump_url = 'index.php?r=adm/functionalroles/sel_competences&id_fncrole=' . (int) $id_fncrole;
+        $back_url = 'index.php?r=adm/functionalroles/man_competences&id=' . (int)$id_fncrole;
+        $jump_url = 'index.php?r=adm/functionalroles/sel_competences&id_fncrole=' . (int)$id_fncrole;
 
         //selector commands
         $save = FormaLms\lib\Get::req('save', DOTY_MIXED, false);
@@ -1026,7 +1051,7 @@ class FunctionalrolesAdmController extends AdmController
         //check permissions: we should have mod privileges to remove users from the role group
         if (!$this->permissions['mod']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -1036,13 +1061,13 @@ class FunctionalrolesAdmController extends AdmController
         $output = ['success' => false];
         if ($id_fncrole <= 0) {
             $output['message'] = $this->_getErrorMessage('invalid fncrole');
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
         if ($id_user <= 0) {
             $output['message'] = $this->_getErrorMessage('invalid user');
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -1051,7 +1076,7 @@ class FunctionalrolesAdmController extends AdmController
         if (!$res) {
             $output['message'] = $this->_getErrorMessage('remove user');
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function del_users()
@@ -1059,7 +1084,7 @@ class FunctionalrolesAdmController extends AdmController
         //check permissions: we should have mod privileges to remove users from the role group
         if (!$this->permissions['mod']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -1067,7 +1092,7 @@ class FunctionalrolesAdmController extends AdmController
         $id_fncrole = FormaLms\lib\Get::req('id_fncrole', DOTY_INT, -1);
         if ($id_fncrole <= 0) {
             $output['message'] = $this->_getErrorMessage('invalid fncrole');
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -1075,7 +1100,7 @@ class FunctionalrolesAdmController extends AdmController
         $users_str = FormaLms\lib\Get::req('users', DOTY_STRING, '');
         if (!$users_str) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('invalid input')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -1083,7 +1108,7 @@ class FunctionalrolesAdmController extends AdmController
         $users = explode(',', $users_str);
         if (empty($users)) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('invalid input')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -1100,7 +1125,7 @@ class FunctionalrolesAdmController extends AdmController
             $output['list'] = array_values($users_deleted);
         }
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function del_competence()
@@ -1108,7 +1133,7 @@ class FunctionalrolesAdmController extends AdmController
         //check permissions: we should have mod privileges to remove competences from the role group
         if (!$this->permissions['mod']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -1118,13 +1143,13 @@ class FunctionalrolesAdmController extends AdmController
         $output = ['success' => false];
         if ($id_fncrole <= 0) {
             $output['message'] = $this->_getErrorMessage('invalid fncrole');
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
         if ($id_competence <= 0) {
             $output['message'] = $this->_getErrorMessage('invalid competence');
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -1133,7 +1158,7 @@ class FunctionalrolesAdmController extends AdmController
         if (!$res) {
             $output['message'] = $this->_getErrorMessage('remove competence');
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function man_competences_properties()
@@ -1152,7 +1177,7 @@ class FunctionalrolesAdmController extends AdmController
         }
 
         //navigation urls
-        $back_url = 'index.php?r=adm/functionalroles/man_competences&id=' . (int) $id_fncrole;
+        $back_url = 'index.php?r=adm/functionalroles/man_competences&id=' . (int)$id_fncrole;
 
         $list = $this->model->getCompetences($id_fncrole);
         if (count($list) <= 0) {
@@ -1195,9 +1220,9 @@ class FunctionalrolesAdmController extends AdmController
             $line[] = $value->typology;
             $line[] = $value->type;
             $line[] = $value->type == 'score'
-                ? Form::getInputTextfield('textfield', 'score_assigned_' . $key, 'properties[' . $key . '][score]', $properties[$key]->score, '', 255)
+                ? Form::getInputTextfield('textfield', 'score_assigned_' . $key, 'properties[' . $key . '][score]', $properties[$key]->score, 255)
                 : '-' . Form::getHidden('score_flag_' . $key, 'properties[' . $key . '][score]', 1);
-            $line[] = Form::getInputTextfield('textfield', 'expiration_' . $key, 'properties[' . $key . '][expiration]', $properties[$key]->expiration, '', 255);
+            $line[] = Form::getInputTextfield('textfield', 'expiration_' . $key, 'properties[' . $key . '][expiration]', $properties[$key]->expiration, 255);
 
             $table->addBody($line);
             if ($value->type == 'score') {
@@ -1210,14 +1235,14 @@ class FunctionalrolesAdmController extends AdmController
         ];
         if ($count_score > 0) {
             //set score to all competences
-            $foot[] = Form::getInputTextfield('textfield', 'score_value', false, $_std_score, '', 255) . '<br />'
+            $foot[] = Form::getInputTextfield('textfield', 'score_value', false, $_std_score, 255) . '<br />'
                 . Form::getButton('set_score', 'set_score', Lang::t('_SET', 'standard'), false, '', true, false)
                 . Form::getButton('reset_score', 'reset_score', Lang::t('_RESET', 'standard'), false, '', true, false);
         }
         //set expiration days to all competences
-        $foot[] = Form::getInputTextfield('textfield', 'expiration_value', false, $_std_expiration, '', 255) . '<br />'
-                . Form::getButton('set_expiration', 'set_expiration', Lang::t('_SET', 'standard'), false, '', true, false)
-                . Form::getButton('reset_expiration', 'reset_expiration', Lang::t('_RESET', 'standard'), false, '', true, false);
+        $foot[] = Form::getInputTextfield('textfield', 'expiration_value', false, $_std_expiration, 255) . '<br />'
+            . Form::getButton('set_expiration', 'set_expiration', Lang::t('_SET', 'standard'), false, '', true, false)
+            . Form::getButton('reset_expiration', 'reset_expiration', Lang::t('_RESET', 'standard'), false, '', true, false);
 
         $table->addFoot($foot);
 
@@ -1253,7 +1278,7 @@ class FunctionalrolesAdmController extends AdmController
         $undo = FormaLms\lib\Get::req('undo', DOTY_MIXED, false);
 
         //navigation urls
-        $back_url = 'index.php?r=adm/functionalroles/man_competences&id=' . (int) $id_fncrole;
+        $back_url = 'index.php?r=adm/functionalroles/man_competences&id=' . (int)$id_fncrole;
         if ($undo) {
             Util::jump_to($back_url);
         }
@@ -1315,7 +1340,7 @@ class FunctionalrolesAdmController extends AdmController
             'language' => Lang::get(),
             'competences_info' => $competences_info,
             'courses_info' => $courses_info,
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 
@@ -1364,14 +1389,14 @@ class FunctionalrolesAdmController extends AdmController
             'level' => Lang::t('_LEVEL', 'standard'),
         ];
         $f_list = $f_list + $fields;
-        $f_selected = $this->json->decode(\FormaLms\lib\FormaUser::getCurrentUser()->getPreference('ui.directory.custom_columns'));
+        $f_selected = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode(\FormaLms\lib\FormaUser::getCurrentUser()->getPreference('ui.directory.custom_columns'), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         if ($f_selected == false) {
             $f_selected = ['email', 'lastenter', 'register_date'];
         }
 
         $js_arr = [];
         foreach ($f_list as $key => $value) {
-            $js_arr[] = $key . ': ' . $this->json->encode($value);
+            $js_arr[] = $key . ': ' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         }
         $f_list_js = '{' . implode(',', $js_arr) . '}';
 
@@ -1431,7 +1456,7 @@ class FunctionalrolesAdmController extends AdmController
         $var_fields = FormaLms\lib\Get::req('_dyn_field', DOTY_MIXED, []);
         if (stristr($sort, '_dyn_field_') !== false) {
             $index = str_replace('_dyn_field_', '', $sort);
-            $sort = $var_fields[(int) $index];
+            $sort = $var_fields[(int)$index];
         }
 
         //set pagination argument
@@ -1495,14 +1520,14 @@ class FunctionalrolesAdmController extends AdmController
             'records' => $output_results,
         ];
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     protected function _getDynamicFilter($input)
     {
         $output = false;
         if (is_string($input) && $input != '') {
-            $dyn_data = $this->json->decode(urldecode(stripslashes($input))); //decode the filter json string
+            $dyn_data = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode(urldecode(stripslashes($input)), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON); //decode the filter json string
             $output = $dyn_data;
         }
 
@@ -1564,7 +1589,7 @@ class FunctionalrolesAdmController extends AdmController
         $var_fields = FormaLms\lib\Get::req('_dyn_field', DOTY_MIXED, []);
         if (stristr($sort, '_dyn_field_') !== false) {
             $index = str_replace('_dyn_field_', '', $sort);
-            $sort = $var_fields[(int) $index];
+            $sort = $var_fields[(int)$index];
         }
 
         //prepare csv file
@@ -1603,17 +1628,17 @@ class FunctionalrolesAdmController extends AdmController
 
                 //json encoding used for string formatting with double quotes ""
                 $line_head = [
-                    $this->json->encode($record->competence_name),
-                    $this->json->encode($acl_man->relativeId($record->userid)),
-                    $this->json->encode($record->firstname),
-                    $this->json->encode($record->lastname),
+                    \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($record->competence_name, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON),
+                    \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($acl_man->relativeId($record->userid), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON),
+                    \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($record->firstname, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON),
+                    \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($record->lastname, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON),
                 ];
                 $line_tail = [
-                    (int) $record->score_got,
-                    (int) $record->score_requested,
-                    (int) $record->gap * (-1),
-                    ($_not_obtained ? '' : $this->json->encode(Format::date($record->last_assign_date, 'datetime'))),
-                    ($_not_obtained ? '' : $this->json->encode($record->expiration > 0 ? Format::date($_date_expire, 'datetime') : Lang::t('_NEVER', 'standard'))),
+                    (int)$record->score_got,
+                    (int)$record->score_requested,
+                    (int)$record->gap * (-1),
+                    ($_not_obtained ? '' : \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(Format::date($record->last_assign_date, 'datetime'), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON)),
+                    ($_not_obtained ? '' : \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($record->expiration > 0 ? Format::date($_date_expire, 'datetime') : Lang::t('_NEVER', 'standard'), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON)),
                 ];
 
                 $dynamic_fields_value = $this->getDynamicFieldsValue($record, $var_fields);
@@ -1703,12 +1728,12 @@ class FunctionalrolesAdmController extends AdmController
 
                 //json encoding used for string formatting with double quotes ""
                 $line = [
-                    $this->json->encode($record->competence_name),
-                    (int) $record->score_got,
-                    (int) $record->score_requested,
-                    (int) $record->gap * (-1),
-                    ($_not_obtained ? '' : $this->json->encode(Format::date($record->last_assign_date, 'datetime'))),
-                    ($_not_obtained ? '' : $this->json->encode($record->expiration > 0 ? Format::date($_date_expire, 'datetime') : Lang::t('_NEVER', 'standard'))),
+                    \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($record->competence_name, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON),
+                    (int)$record->score_got,
+                    (int)$record->score_requested,
+                    (int)$record->gap * (-1),
+                    ($_not_obtained ? '' : \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(Format::date($record->last_assign_date, 'datetime'), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON)),
+                    ($_not_obtained ? '' : \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($record->expiration > 0 ? Format::date($_date_expire, 'datetime') : Lang::t('_NEVER', 'standard'), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON)),
                 ];
 
                 if ($format == 'xls') {
@@ -1743,7 +1768,7 @@ class FunctionalrolesAdmController extends AdmController
             return;
         }
 
-        $back_url = 'index.php?r=adm/functionalroles/man_users&id=' . (int) $id_fncrole;
+        $back_url = 'index.php?r=adm/functionalroles/man_users&id=' . (int)$id_fncrole;
         $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, 0);
         if ($id_user <= 0) {
             $this->render('invalid', [
@@ -1783,13 +1808,13 @@ class FunctionalrolesAdmController extends AdmController
                 $record->gap = $record->score_got - $record->score;
                 $_percent = $record->gap > 0 ? -100.0 : 0.0;
             } else {
-                $_percent = ($record->score != 0 ? (float) ((-$record->gap / (float) $record->score) * 100) : 0.0);
+                $_percent = ($record->score != 0 ? (float)((-$record->gap / (float)$record->score) * 100) : 0.0);
             }
 
             $chart_data[] = [
-                'competence' => $this->json->encode($record->competence_name),
-                'type' => $this->json->encode($record->type),
-                'score_got' => (int) $record->score_got,
+                'competence' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($record->competence_name, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON),
+                'type' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($record->type, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON),
+                'score_got' => (int)$record->score_got,
                 'gap' => $record->gap,
                 'gap_percent' => $_percent,
                 'gap_negative' => $record->gap > 0 ? $record->gap : 0,
@@ -1879,7 +1904,7 @@ class FunctionalrolesAdmController extends AdmController
             'records' => $output_results,
         ];
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function functionalroles_autocompleteTask()
@@ -1897,6 +1922,6 @@ class FunctionalrolesAdmController extends AdmController
                 ];
             }
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 }

@@ -27,7 +27,7 @@ $body .= Form::closeForm();
 if (isset($json)) {
     $output['header'] = $title;
     $output['body'] = $body;
-    echo $json->encode($output);
+    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 } else {
     echo '<h2>' . $title . '</h2>';
     echo $body;

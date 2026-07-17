@@ -1,0 +1,21 @@
+<div class="up_user_info">
+    <div class="up_name">{{ user_name }}</div>
+    <div>{{ Lang_translate('_AVATAR_PHOTO_INSTRUCTION', 'profile', {'max_px':max_dim} ) }}</div>
+    {{ Form_openForm('mod_avatar','index.php?r=lms/profile/show&ap=saveavatar', false, false, 'multipart/form-data' ) }}
+    {{ Form_getFilefield(Lang_translate('_AVATAR','standard'),'up_avatar','up_avatar') }}
+        {% if current_avatar is not null %}
+            <img class="user-profile__img" src="..{{current_avatar}}" alt="{{user_name}}" />
+            <br>
+            {{ Form_getButton('delete_current', 'delete_current', Lang_translate('_DEL','standard'), 'button btn btn-default') }}
+        {% endif %}
+        {{ Form_openButtonSpace() }}
+        {{ Form_getButton('save', 'save', Lang_translate('_SAVE','standard')) }}
+        {{ Form_getButton('save', 'save', Lang_translate('_UNDO','standard')) }}
+        {{ Form_closeButtonSpace() }}
+    {{ Form_closeForm() }}
+
+</div>
+
+
+
+

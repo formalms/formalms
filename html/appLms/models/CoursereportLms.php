@@ -35,10 +35,6 @@ class CoursereportLms extends Model
     /**
      * @var int
      */
-    protected $idCourse;
-    /**
-     * @var int
-     */
     protected $idReport;
     /**
      * @var string
@@ -58,6 +54,7 @@ class CoursereportLms extends Model
      * @var ReportLms[]
      */
     protected $courseReports;
+    protected $idCourse;
 
     /**
      * CoursereportLms constructor.
@@ -70,6 +67,7 @@ class CoursereportLms extends Model
     public function __construct($idCourse, $idReport = null, $sourceOf = null, $idSource = null)
     {
         parent::__construct();
+
         $this->idCourse = $idCourse;
 
         $this->idReport = $idReport;
@@ -124,83 +122,107 @@ class CoursereportLms extends Model
     private function grabCourseReports()
     {
         $report_man = new CourseReportManager($this->idCourse);
-        $org_tests = &$report_man->getTest();
+        $org_tests_raw = $report_man->getTest();
+        $org_tests = $this->extractNumericIds($org_tests_raw);
 
-        $query_final_tot_report = "SELECT COUNT(*) FROM %lms_coursereport WHERE id_course = '" . $this->idCourse . "' AND source_of = '" . self::SOURCE_OF_FINAL_VOTE . "'";
+        // Clean up orphaned records first - remove records referencing non-existent course objects
+        $this->cleanupOrphanedReports($org_tests);
 
-        [$final_score_report] = sql_fetch_row(sql_query($query_final_tot_report));
+        // Single optimized query to get all necessary counts and data
+        $query_stats = "
+            SELECT 
+                COUNT(CASE WHEN source_of = '" . self::SOURCE_OF_FINAL_VOTE . "' THEN 1 END) as final_count,
+                COUNT(*) as total_count,
+                GROUP_CONCAT(
+                    CASE WHEN source_of = '" . self::SOURCE_OF_TEST . "' 
+                    THEN CONCAT(id_report, ':', id_source) 
+                    END
+                ) as test_reports
+            FROM %lms_coursereport 
+            WHERE id_course = '" . (int)$this->idCourse . "'
+        ";
 
-        if ((int)$final_score_report === 0) {
+        $stats_result = sql_query($query_stats);
+        $stats = sql_fetch_assoc($stats_result);
+
+        // Ensure $stats is a valid array to prevent wrong evaluation records
+        if (!is_array($stats)) {
+            // If query failed or returned invalid data, initialize with safe defaults
+            $stats = [
+                'final_count' => 0,
+                'total_count' => 0,
+                'test_reports' => null
+            ];
+        }
+        
+        $final_score_report = (int)($stats['final_count'] ?? 0);
+        $tot_report = (int)($stats['total_count'] ?? 0);
+
+        // Add final vote if missing
+        if ($final_score_report === 0) {
             $report_man->addFinalVoteToReport();
         }
 
-        $query_tot_report = "SELECT COUNT(*) FROM %lms_coursereport  WHERE id_course = '" . $this->idCourse . "'";
-
-        [$tot_report] = sql_fetch_row(sql_query($query_tot_report));
-
-        if ((int)$tot_report === 1) {
-            if ((int)$final_score_report === 1) {
-                $query_remove_final_score = "DELETE FROM %lms_coursereport WHERE id_course = '" . $this->idCourse . "'";
-
-                sql_query($query_remove_final_score);
-            }
-
-            $tot_report = 0;
-        }
-
-        $query_tests = 'SELECT id_report, id_source '
-            . ' FROM %lms_coursereport '
-            . " WHERE id_course = '" . $this->idCourse . "' AND source_of = '" . self::SOURCE_OF_TEST . "'";
-
-        $re_tests = sql_query($query_tests);
-
+        // Parse existing test reports
         $included_test = [];
-
-        foreach ($re_tests as $re_test) {
-            $included_test[$re_test['id_source']] = $re_test['id_source'];
+        $test_reports_string = $stats['test_reports'] ?? null;
+        if (!empty($test_reports_string)) {
+            $test_reports = explode(',', $test_reports_string);
+            foreach ($test_reports as $test_report) {
+                if (!empty($test_report)) {
+                    [$id_report, $id_source] = explode(':', $test_report);
+                    $included_test[$id_source] = $id_source;
+                }
+            }
         }
 
-        // XXX: Update if needed
-        if ((int)$tot_report === 0) {
+        // Manage test reports
+        $reports_modified = false;
+        if ($tot_report === 0) {
             $report_man->initializeCourseReport($org_tests);
+            $reports_modified = true;
         } else {
-
-            if (is_array($included_test)) {
-                $test_to_add = array_diff($org_tests, $included_test);
-            } else {
-                $test_to_add = $org_tests;
-            }
-
-            if (is_array($included_test)) {
-                $test_to_del = array_diff($included_test, $org_tests);
-            } else {
-                $test_to_del = $org_tests;
-            }
+            // Compare test IDs properly using normalized IDs
+            $org_test_ids = $org_tests;
+            $test_to_add = array_diff($org_test_ids, $included_test);
+            $test_to_del = array_diff($included_test, $org_test_ids);
 
             if (!empty($test_to_add) || !empty($test_to_del)) {
-                $report_man->addTestToReport($test_to_add, 1);
-                $report_man->delTestToReport($test_to_del);
+                if (!empty($test_to_add)) {
+                    $report_man->addTestToReport($test_to_add, 1);
+                }
+                if (!empty($test_to_del)) {
+                    $report_man->delTestToReport($test_to_del);
+                }
+                $reports_modified = true;
             }
         }
 
-        $report_man->updateTestReport($org_tests);
+        // Only update test reports if they were modified
+        if ($reports_modified) {
+            $report_man->updateTestReport($org_tests);
+        }
 
-        $query_report = "SELECT id_report FROM %lms_coursereport WHERE id_course = '" . $this->idCourse . "'";
-        
+        // Build final report query with proper escaping
+        $query_report = "SELECT id_report FROM %lms_coursereport WHERE id_course = '" . (int)$this->idCourse . "'";
+
         if (!is_null($this->idReport)) {
-            $query_report .= " AND id_report = '" . $this->idReport . "'";
+            $query_report .= " AND id_report = '" . (int)$this->idReport . "'";
         }
 
         if (!is_null($this->sourceOf)) {
             if (is_array($this->sourceOf)) {
-                $query_report .= " AND source_of IN ('" . implode("','", $this->sourceOf) . "')";
+                $escaped_sources = array_map(function($s) { 
+                    return "'" . sql_escape_string($s) . "'"; 
+                }, $this->sourceOf);
+                $query_report .= " AND source_of IN (" . implode(",", $escaped_sources) . ")";
             } else {
-                $query_report .= " AND source_of = '" . $this->sourceOf . "'";
+                $query_report .= " AND source_of = '" . sql_escape_string($this->sourceOf) . "'";
             }
         }
 
         if (!is_null($this->idSource)) {
-            $query_report .= " AND id_source = '" . $this->idSource . "'";
+            $query_report .= " AND id_source = '" . (int)$this->idSource . "'";
         }
 
         $query_report .= ' ORDER BY sequence ';
@@ -211,9 +233,87 @@ class CoursereportLms extends Model
 
         foreach ($re_report as $infoReport) {
             $report = new ReportLms($infoReport['id_report']);
-
             $this->courseReports[] = $report;
         }
+    }
+
+    /**
+     * Clean up orphaned records from learning_coursereport table
+     * that reference objects not belonging to this course
+     * @todo to be removed in future releases
+     */
+    private function cleanupOrphanedReports($valid_tests)
+    {
+        // Build a conservative list of valid test IDs (ints) from both keys and values
+        $valid_ids = $this->extractNumericIds(is_array($valid_tests) ? $valid_tests : []);
+        if (empty($valid_ids)) {
+            // If we cannot determine valid test IDs, skip cleanup to avoid accidental deletions
+            return;
+        }
+        $valid_test_list = implode(',', $valid_ids);
+        $cleanup_query = "
+                DELETE FROM %lms_coursereport 
+                WHERE id_course = '" . (int)$this->idCourse . "' 
+                AND source_of = '" . self::SOURCE_OF_TEST . "'
+                AND id_source NOT IN (" . $valid_test_list . ")
+            ";
+
+        sql_query($cleanup_query);
+    }
+
+    /**
+     * Normalize a list/assoc array into a flat list of unique integer IDs.
+     * Accepts arrays like [12, 34] or [12 => 12, 'x' => 34, 56 => '56'].
+     * For indexed lists, uses only values; for associative arrays, uses numeric values
+     * and, if needed, numeric keys. Finally validates IDs against existing tests.
+     * @param array $arr
+     * @return array
+     */
+    private function extractNumericIds($arr)
+    {
+        if (!is_array($arr)) {
+            return [];
+        }
+
+        $keys = array_keys($arr);
+        $isList = ($keys === array_keys($keys));
+
+        $ids = [];
+        if ($isList) {
+            // Indexed list: consider only numeric values
+            foreach ($arr as $v) {
+                if (is_numeric($v) && (int)$v > 0) {
+                    $ids[] = (int)$v;
+                }
+            }
+        } else {
+            // Associative: prefer numeric values; fallback to numeric keys
+            foreach ($arr as $k => $v) {
+                if (is_numeric($v) && (int)$v > 0) {
+                    $ids[] = (int)$v;
+                } elseif (is_numeric($k) && (int)$k > 0) {
+                    $ids[] = (int)$k;
+                }
+            }
+        }
+
+        // Unique list
+        $ids = array_values(array_unique($ids));
+
+        // Validate against existing tests to avoid phantom IDs
+        // IMPORTANT: Only filter out invalid IDs, but don't empty the entire list if validation fails
+        if (!empty($ids)) {
+            $gtm = new GroupTestManagement();
+            $info = $gtm->getTestInfo($ids);
+            // Only apply intersection if we got valid test info back
+            // If getTestInfo returns empty array, keep original IDs to avoid accidental mass deletion
+            if (!empty($info)) {
+                $ids = array_values(array_intersect($ids, array_keys($info)));
+            }
+            // If $info is empty but $ids was not, something went wrong - keep original $ids for safety
+        }
+
+        return $ids;
     }
 
     /**

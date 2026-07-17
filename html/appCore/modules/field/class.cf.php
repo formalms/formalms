@@ -95,7 +95,7 @@ class Field_Cf extends Field
 			('" . self::getFieldType() . "', '" . $mand_lang . "', '" . $_POST['new_' . self::getFieldType()][$mand_lang] . "', '" . $show_on . "', '" . $use_multilang . "') ")) {
                 Util::jump_to($back . '&result=fail');
             }
-            list($id_common) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
+            [$id_common] = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
             if (!sql_query('
 			UPDATE ' . $this->_getMainTable() . "
 			SET id_common = '" . (int) $id_common . "'
@@ -306,11 +306,11 @@ class Field_Cf extends Field
      */
     public function show($id_user)
     {
-        list($user_entry) = sql_fetch_row(sql_query('
+        [$user_entry] = sql_fetch_row(sql_query('
 		SELECT user_entry
 		FROM ' . $this->_getUserEntryTable() . "
-		WHERE id_user = '" . (int) $id_user . "' AND
-			id_common = '" . (int) $this->id_common . "' AND
+		WHERE id_user = '" . (int)$id_user . "' AND
+			id_common = '" . (int)$this->id_common . "' AND
 			id_common_son = '0'"));
 
         return $user_entry;
@@ -333,19 +333,19 @@ class Field_Cf extends Field
             && isset($_POST['field_' . self::getFieldType()][$this->id_common])) {
             $user_entry = $_POST['field_' . self::getFieldType()][$this->id_common];
         } else {
-            list($user_entry) = sql_fetch_row(sql_query('
+            [$user_entry] = sql_fetch_row(sql_query('
 			SELECT user_entry
 			FROM ' . $this->_getUserEntryTable() . "
-			WHERE id_user = '" . (int) $id_user . "' AND
-				id_common = '" . (int) $this->id_common . "' AND
+			WHERE id_user = '" . (int)$id_user . "' AND
+				id_common = '" . (int)$this->id_common . "' AND
 				id_common_son = '0'"));
         }
 
         $re_field = sql_query('
 		SELECT translation
 		FROM ' . $this->_getMainTable() . "
-		WHERE lang_code = '" . Lang::get() . "' AND id_common = '" . (int) $this->id_common . "' AND type_field = '" . self::getFieldType() . "'");
-        list($translation) = sql_fetch_row($re_field);
+		WHERE lang_code = '" . Lang::get() . "' AND id_common = '" . (int) $this->id_common . "' AND type_field = '" . static::getFieldType() . "'");
+        [$translation] = sql_fetch_row($re_field);
 
         if ($registrationLayout) {
             $error = (isset($registrationErrors) && $registrationErrors[$this->id_common]);
@@ -355,13 +355,12 @@ class Field_Cf extends Field
 
             $formField .= '<div class="col-xs-12 col-sm-6">';
             $formField .= Form::getInputTextfield(
-                    'form-control ' . ($error ? 'has-error' : ''),
-                    'field_' . self::getFieldType() . '_' . $this->id_common,
-                    'field_' . self::getFieldType() . '[' . $this->id_common . ']',
-                    $user_entry,
-                    '',
-                    255,
-                    'placeholder="' . $translation . ($mandatory ? ' *' : '') . '"'
+                'form-control ' . ($error ? 'has-error' : ''),
+                'field_' . self::getFieldType() . '_' . $this->id_common,
+                'field_' . self::getFieldType() . '[' . $this->id_common . ']',
+                $user_entry,
+                255,
+                'placeholder="' . $translation . ($mandatory ? ' *' : '') . '"'
                 );
 
             if ($error) {
@@ -420,7 +419,7 @@ class Field_Cf extends Field
 			SELECT translation
 			FROM ' . Field::_getMainTable() . "
 			WHERE id_common = '" . (int) $id_field . "' AND type_field = '" . Field_Textfield::getFieldType() . "'");
-            list($label) = sql_fetch_row($re_field);
+            [$label] = sql_fetch_row($re_field);
         }
 
         return Form::getTextfield($label,

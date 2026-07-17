@@ -41,14 +41,13 @@ class TreeWidget extends Widget
 
     public $runtime = false;
 
-    protected $json;
     protected $options = [];
 
     public function __construct()
     {
         parent::__construct();
         $this->_widget = 'tree';
-        $this->json = new Services_JSON();
+        
     }
 
     /**
@@ -93,7 +92,7 @@ class TreeWidget extends Widget
         }
 
         if (is_array($this->languages) && count($this->languages) > 0) {
-            $params['languages'] = $this->json->encode($this->languages);
+            $params['languages'] = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($this->languages, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         } else {
             $params['languages'] = '{}';
         }
@@ -101,13 +100,13 @@ class TreeWidget extends Widget
         //other options
         $this->setOption('initialSelectedNode', $this->initialSelectedNode);
         $this->setOption('iconPath', FormaLms\lib\Get::tmpl_path() . 'images/');
-        $this->setOption('dragdrop', (bool) $this->dragDrop);
+        $this->setOption('dragdrop', (bool)$this->dragDrop);
 
         $this->setOption('useCheckboxes', $this->useCheckboxes);
         $this->setOption('initialSelectorData', $this->initialSelectorData);
         $this->setOption('hiddenSelection', $this->hiddenSelection);
-        $this->setOption('canSelectRoot', (bool) $this->canSelectRoot);
-        $this->setOption('setSelectedNodeOnServer', (bool) $this->setSelectedNodeOnServer);
+        $this->setOption('canSelectRoot', (bool)$this->canSelectRoot);
+        $this->setOption('setSelectedNodeOnServer', (bool)$this->setSelectedNodeOnServer);
 
         $this->setOption('addFolderButton', $this->id . '_add_folder_button');
 
@@ -121,11 +120,14 @@ class TreeWidget extends Widget
         $params['options'] = $this->getJsOptions();
 
         switch ($this->show) {
-            case 'explorer': $view = 'explorer'; break;
-            default: $view = 'tree';
+            case 'explorer':
+                $view = 'explorer';
+                break;
+            default:
+                $view = 'tree';
         }
 
-        $params['runtime'] = (bool) $this->runtime;
+        $params['runtime'] = (bool)$this->runtime;
 
         $this->render($view, $params);
     }
@@ -139,7 +141,7 @@ class TreeWidget extends Widget
         $this->setOption('langs', $this->languages);
         $arr_js = [];
         foreach ($this->options as $name => $option) {
-            $arr_js[] = $name . ':' . $this->json->encode($option);
+            $arr_js[] = $name . ':' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($option, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         }
 
         return '{' . implode(',', $arr_js) . '}';

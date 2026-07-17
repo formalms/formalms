@@ -16,17 +16,14 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 class GamesAlmsController extends AlmsController
 {
     protected $model = null;
-    protected $json = null;
     protected $permissions = null;
     public $data;
 
     public function init()
     {
         parent::init();
-        require_once _base_ . '/lib/lib.json.php';
 
         $this->model = new GamesAlms();
-        $this->json = new Services_JSON();
         $this->permissions = [
             'view' => checkPerm('view', true, 'games', 'lms'),
             'add' => checkPerm('mod', true, 'games', 'lms'),
@@ -131,7 +128,7 @@ class GamesAlmsController extends AlmsController
             'records' => $array_games,
         ];
 
-        $this->data = $this->json->encode($result);
+        $this->data = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         echo $this->data;
     }
 
@@ -364,7 +361,7 @@ class GamesAlmsController extends AlmsController
     {
         if (!$this->permissions['del']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -402,7 +399,7 @@ class GamesAlmsController extends AlmsController
         } else {
             $output['success'] = false;
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     /**

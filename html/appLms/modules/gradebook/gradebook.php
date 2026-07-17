@@ -125,7 +125,7 @@ function showgrade()
         $lang->def('_SHOW_RESULTS'),
         ];
 
-    $info_pagella .= '<style>
+    $info_pagella = '<style>
                             @media
                             only screen and (max-width: 870px),
                             (min-device-width: 870px) and (max-device-width: 1024px)  {            

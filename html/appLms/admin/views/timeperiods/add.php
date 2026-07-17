@@ -13,7 +13,7 @@
 
 echo '{';
 echo '"success":true,';
-echo '"header":' . $json->encode(Lang::t('_ADD')) . ',';
+echo '"header":' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(Lang::t('_ADD'), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . ',';
 echo '"body":';
 
 $this->render('_editmask', [
@@ -22,7 +22,7 @@ $this->render('_editmask', [
 ]);
 
 if (isset($GLOBALS['date_inputs']) && !empty($GLOBALS['date_inputs'])) {
-    echo ',"__date_inputs":' . $json->encode($GLOBALS['date_inputs']);
+    echo ',"__date_inputs":' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($GLOBALS['date_inputs'], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 }
 
 echo '}';

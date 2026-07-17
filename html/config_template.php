@@ -121,6 +121,8 @@ $cfg['demo_mode'] = false;
 //$cfg['session']['pass'] = $cfg['db_pass']; // authentication psw session handler
 //$cfg['session']['options'] = []; // other options key value array to pass based on selected handler
 //$cfg['session']['cookieName'] = '__Secure-FORMALMS';
+//$cfg['session']['sameSite'] = ''; // Cookie SameSite policy configuration (format: "domain:policy,domain:policy")
+
 /*
  * Technical preferences
  * -------------------------------------------------------------------------
@@ -138,3 +140,10 @@ $cfg['mail_br'] = "\r\n";
  */
 //$cfg['certificate_encryption'] = true;
 //$cfg['certificate_password']  = "12345678901234567890123456789012";
+
+/*
+ *  scorm player feature
+ *  legacy = standard player  (default)
+ *  ng     =  next generation
+ */
+//$cfg['scorm_player'] = 'legacy';	// 'ng' ==> new generation

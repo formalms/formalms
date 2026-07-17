@@ -27,14 +27,118 @@ define('_RS_ROWS_FILTER', 'rows_filter');
 define('_RS_COLS_FILTER', 'columns_filter');
 define('_RS_COLS_CATEGORY', 'columns_filter_category');
 
+/**
+ * Encode report filter data to JSON format
+ *
+ * @param array $data The data to encode
+ * @return string JSON encoded string
+ *
+ * @since 4.2.0 Changed from serialize() to json_encode() for better UTF-8 support and interoperability
+ */
 function _encode($data)
 {
-    return serialize($data);
-} //{ return urlencode(Util::serialize($data)); }
-function _decode($data)
+    return json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+}
+
+/**
+ * Decode report filter data from JSON or serialized format (legacy support)
+ *
+ * @param string $jsonData JSON data (preferred)
+ * @param string|null $serializedData Legacy serialized data (fallback, deprecated)
+ * @return array|null Decoded data or null on failure
+ *
+ * @since 4.2.0 Added JSON support as primary format
+ * @internal The $serializedData parameter is deprecated since 4.2.0 and will be removed in 5.0.0
+ */
+function _decode($jsonData, $serializedData = null)
 {
-    return unserialize($data);
-} //{ return Util::unserialize(urldecode($data)); }
+    // If JSON data is available and valid, use it
+    if (!empty($jsonData)) {
+        $result = json_decode($jsonData, true);
+        if ($result !== null || json_last_error() === JSON_ERROR_NONE) {
+            return $result;
+        }
+    }
+
+    // @deprecated Since 4.2.0 - Fallback to serialized data (legacy support), will be removed in 5.0.0
+    if (!empty($serializedData)) {
+        @trigger_error(
+            'Reading report filter from serialized format (filter_data column) is deprecated since 4.2.0. ' .
+            'Data will be auto-migrated to JSON format (filter_data_json column).',
+            E_USER_DEPRECATED
+        );
+        $result = @unserialize($serializedData);
+        if ($result !== false) {
+            return $result;
+        }
+        // Attempt to repair corrupted byte counts (e.g. caused by UTF-8 encoding changes)
+        $result = _unserialize_repair($serializedData);
+        if ($result !== false && $result !== null) {
+            return $result;
+        }
+    }
+
+    // @deprecated Since 4.2.0 - Auto-detect serialized PHP in jsonData param (legacy support)
+    if (!empty($jsonData) && preg_match('/^[aOsbidn]:/', $jsonData)) {
+        @trigger_error(
+            'Detected serialized PHP data in JSON parameter. This legacy format is deprecated since 4.2.0.',
+            E_USER_DEPRECATED
+        );
+        $result = @unserialize($jsonData);
+        if ($result !== false) {
+            return $result;
+        }
+        // Attempt to repair corrupted byte counts
+        $result = _unserialize_repair($jsonData);
+        if ($result !== false && $result !== null) {
+            return $result;
+        }
+    }
+
+    return null;
+}
+
+/**
+ * Attempt to repair and unserialize a corrupted PHP serialized string.
+ * Fixes byte count mismatches caused by multibyte character encoding changes (e.g. Latin-1 to UTF-8).
+ *
+ * @param string $data The corrupted serialized string
+ * @return mixed The unserialized data, or false on failure
+ */
+function _unserialize_repair($data)
+{
+    $repaired = preg_replace_callback(
+        '/s:(\d+):"(.*?)";/s',
+        function ($matches) {
+            return 's:' . strlen($matches[2]) . ':"' . $matches[2] . '";';
+        },
+        $data
+    );
+
+    if ($repaired === null || $repaired === $data) {
+        return false;
+    }
+
+    return @unserialize($repaired);
+}
+
+/**
+ * Migrate serialized data to JSON and persist to database
+ *
+ * @param int $idFilter The filter ID
+ * @param array $data The decoded data to migrate
+ * @return bool True on success
+ */
+function _migrate_filter_to_json($idFilter, $data)
+{
+    $jsonData = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    if ($jsonData === false) {
+        return false;
+    }
+
+    $query = "UPDATE %lms_report_filter SET filter_data_json = '" . addslashes($jsonData) . "' WHERE id_filter = " . (int)$idFilter;
+    return sql_query($query) !== false;
+}
 
 function unload_filter($temp = false)
 {
@@ -63,7 +167,17 @@ function load_filter($id, $tempdata = false, $update = false)
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
     $row = sql_fetch_assoc(sql_query("SELECT * FROM %lms_report_filter WHERE id_filter=$id"));
-    $temp = unserialize($row['filter_data']);
+
+    // Use JSON column if available, otherwise fallback to serialized data
+    $jsonData = isset($row['filter_data_json']) ? $row['filter_data_json'] : null;
+    $serializedData = isset($row['filter_data']) ? $row['filter_data'] : null;
+    $temp = _decode($jsonData, $serializedData);
+
+    // Migrate to JSON if not already done
+    if (empty($jsonData) && !empty($temp)) {
+        _migrate_filter_to_json($id, $temp);
+    }
+
     if ($tempdata) {
         $session->set(_REPORT_SESSION, $temp);
     }
@@ -83,11 +197,13 @@ function load_filter($id, $tempdata = false, $update = false)
 function openreport($idrep = false)
 {
     $lang = FormaLanguage::createInstance('report');
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
     if ($idrep != false && $idrep > 0) {
         $id_report = $idrep;
     } else {
-        $id_report = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get(_REPORT_SESSION)['id_report'];
+        $reportTempData = $session->get(_REPORT_SESSION);
+        $id_report = (is_array($reportTempData) && isset($reportTempData['id_report'])) ? $reportTempData['id_report'] : false;
 
         if ($id_report != false && $idrep > 0) {
             load_filter($idrep, true, false);
@@ -137,6 +253,7 @@ define('_REP_KEY_PUBLIC', 'public');
 define('_REP_KEY_OPEN', 'open');
 define('_REP_KEY_MOD', 'mod');
 define('_REP_KEY_SCHED', 'sched');
+define('_REP_KEY_DUP', 'dup');
 define('_REP_KEY_REM', 'rem');
 
 function get_report_table($url = '')
@@ -251,7 +368,7 @@ function get_report_table($url = '')
 				<div class="simple_search_box" id="report_searchbox_simple_filter_options" style="display: block;">'
             . Form::getInputDropdown('dropdown', 'report_searchbox_filter_author', 'filter_author', $authors, $reportAdminFilter['author'], $dropdown_onclick)
             . '&nbsp;&nbsp;&nbsp;'
-            . Form::getInputTextfield('search_t', 'report_searchbox_filter_name', 'filter_name', $reportAdminFilter['name'], '', 255, '')
+            . Form::getInputTextfield('search_t', 'report_searchbox_filter_name', 'filter_name', $reportAdminFilter['name'], 255, '')
             . Form::getButton('report_searchbox_filter_set', 'search', Lang::t('_SEARCH', 'standard'), 'search_b')
             . Form::getButton('report_searchbox_filter_reset', 'reset', Lang::t('_RESET', 'standard'), 'reset_b')
             . '</div>
@@ -331,8 +448,11 @@ function get_report_table($url = '')
     if ($level == ADMIN_GROUP_GODADMIN || $can_mod) {
         $col_type[] = 'image';
         $col_type[] = 'image';
+        $col_type[] = 'image';
         $col_content[] = '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . '" title="' . $lang->def('_MOD') . '" />';
+        $col_content[] = '<img src="' . getPathImage() . 'standard/dup.png" alt="' . $lang->def('_MAKE_A_COPY') . '" title="' . $lang->def('_MAKE_A_COPY') . '" />';
         $col_content[] = '<img src="' . getPathImage() . 'standard/delete.png" alt="' . $lang->def('_DEL') . '" title="' . $lang->def('_DEL') . '" />';
+
     }
 
     $tb->setColsStyle($col_type);
@@ -355,6 +475,11 @@ function get_report_table($url = '')
                 '<a href="' . $url . '&amp;action=modify&amp;idrep=' . $id . '" ' .
                 ' title="' . $lang->def('_MOD') . '">' .
                 '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . '" />' .
+                '</a>';
+            $dup_link =
+                '<a href="' . $url . '&amp;action=duplicate&amp;idrep=' . $id . '" ' .
+                ' title="' . $lang->def('_MAKE_A_COPY') . '">' .
+                '<img src="' . getPathImage() . 'standard/dup.png" alt="' . $lang->def('_MAKE_A_COPY') . '" />' .
                 '</a>';
             $rem_link =
                 '<a href="' . $url . '&amp;action=delete&amp;idrep=' . $id . '" ' .
@@ -404,21 +529,17 @@ function get_report_table($url = '')
                     _REP_KEY_OPEN => $opn_link,
                     $background_execution_link,
                     $export_link_csv,
-                    $export_link_xls, /*,
-                    _REP_KEY_MOD    => $mod_link,
-                    _REP_KEY_REM    => $rem_link*/
+                    $export_link_xls,
                 ];
             } else {
                 $tb_content = [
                     _REP_KEY_NAME => $_name,
                     _REP_KEY_CREATOR => ($row['author'] == 0 ? '<div class="align_center">-</div>' : $acl_man->relativeId($row['userid'])),
                     _REP_KEY_CREATION => Format::date($row['creation_date']),
-                    _REP_KEY_PUBLIC => $public, //$row['report_name'],
+                    _REP_KEY_PUBLIC => $public,
                     _REP_KEY_OPEN => $opn_link,
                     $export_link_csv,
-                    $export_link_xls, /*,
-                    _REP_KEY_MOD    => $mod_link,
-                    _REP_KEY_REM    => $rem_link*/
+                    $export_link_xls,
                 ];
             }
 
@@ -429,9 +550,11 @@ function get_report_table($url = '')
             if ($level == ADMIN_GROUP_GODADMIN || $can_mod) {
                 if ($row['author'] == \FormaLms\lib\FormaUser::getCurrentUser()->getIdst() || $can_mod) {
                     $tb_content[_REP_KEY_MOD] = $mod_link;
+                    $tb_content[_REP_KEY_DUP] = $dup_link;
                     $tb_content[_REP_KEY_REM] = $rem_link;
                 } else {
                     $tb_content[_REP_KEY_MOD] = '&nbsp;';
+                    $tb_content[_REP_KEY_DUP] = '&nbsp;';
                     $tb_content[_REP_KEY_REM] = '&nbsp;';
                 }
             }
@@ -491,23 +614,19 @@ function reportlist()
     cout('<div class="std_block">');
     //cout(get_report_steplist($step_index));
 
-    switch (FormaLms\lib\Get::req('saverep', DOTY_STRING, false)) {
-        case 'true':
-            cout(getResultUi($lang->def('_SAVE_REPORT_OK')));
-            break;
-        case 'false':
-            cout(getErrorUi($lang->def('_SAVE_REPORT_FAIL')));
-            break;
+
+    if (isset($_GET['saverep']) ||  isset($_GET['modrep']) ||  isset($_GET['fdup']) ) {
+        $msg_ok=  FormaLms\lib\Get::req('saverep', DOTY_BOOL, false) ||
+            FormaLms\lib\Get::req('modrep', DOTY_BOOL, false) ||
+            FormaLms\lib\Get::req('fdup', DOTY_BOOL, false);
+        if ($msg_ok) {
+            cout(getResultUi($lang->def('_OPERATION_SUCCESSFUL')));
+        } else {
+            cout(getErrorUi($lang->def('_OPERATION_FAILURE')));
+        }
     }
 
-    switch (FormaLms\lib\Get::req('modrep', DOTY_STRING, false)) {
-        case 'true':
-            cout(getResultUi($lang->def('_OPERATION_SUCCESSFUL')));
-            break;
-        case 'false':
-            cout(getErrorUi($lang->def('_MOD_REPORT_FAIL')));
-            break;
-    }
+
 
     cout(get_report_table('index.php?modname=report&op=report_open_filter'));
 
@@ -575,6 +694,10 @@ function report_rows_filter()
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $reportTempData = $session->get(_REPORT_SESSION);
 
+    if (!is_array($reportTempData)) {
+        $reportTempData = [];
+    }
+
     if (FormaLms\lib\Get::req('set_category', DOTY_INT, 0) == 1) {
         if (FormaLms\lib\Get::req('report_name', DOTY_STRING, '') == '') {
             Util::jump_to('index.php?modname=report&op=report_category&err=noname');
@@ -583,11 +706,16 @@ function report_rows_filter()
         $reportTempData['report_name'] = FormaLms\lib\Get::req('report_name', DOTY_STRING, false);
         $session->set(_REPORT_SESSION, $reportTempData);
         $session->save();
-    }   
+    }
 
     $selectionType = (isset($_POST) && array_key_exists('selection_type', $_POST)) ? $_POST['selection_type'] : null;
-    
+
     $obj_report = openreport();
+
+    if (!$obj_report) {
+        return Util::jump_to('index.php?modname=report&op=reportlist');
+    }
+
     $obj_report->back_url = 'index.php?modname=report&op=report_category';
     $obj_report->jump_url = 'index.php?modname=report&op=report_rows_filter';
     $obj_report->next_url = 'index.php?modname=report&op=report_sel_columns';
@@ -643,6 +771,11 @@ function report_sel_columns()
 
     $lang = FormaLanguage::createInstance('report');
     $obj_report = openreport();
+
+    if (!$obj_report) {
+        return Util::jump_to('index.php?modname=report&op=reportlist');
+    }
+
     $temp = $obj_report->get_columns_categories();
 
     cout(getTitleArea([
@@ -671,6 +804,11 @@ function report_columns_filter()
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $reportTempData = $session->get(_REPORT_SESSION);
+
+    if (!is_array($reportTempData)) {
+        $reportTempData = [];
+    }
+
     if (isset($_POST['columns_filter'])) {
         $reportTempData['columns_filter_category'] = $_POST['columns_filter'];
         $session->set(_REPORT_SESSION, $reportTempData);
@@ -680,6 +818,11 @@ function report_columns_filter()
     $lang = FormaLanguage::createInstance('report');
 
     $obj_report = openreport();
+
+    if (!$obj_report) {
+        return Util::jump_to('index.php?modname=report&op=reportlist');
+    }
+
     $obj_report->back_url = 'index.php?modname=report&op=report_sel_columns';
     $obj_report->jump_url = 'index.php?modname=report&op=report_columns_filter';
     $obj_report->next_url = 'index.php?modname=report&op=report_save';
@@ -731,7 +874,18 @@ function report_save_filter()
     checkPerm('mod');
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+    $idrep = FormaLms\lib\Get::req('modid', DOTY_INT, false);
     $reportTempData = $session->get(_REPORT_SESSION);
+
+    if (!is_array($reportTempData) && $idrep) {
+        load_filter($idrep, true);
+        $reportTempData = $session->get(_REPORT_SESSION);
+    }
+
+    if (!is_array($reportTempData)) {
+        return Util::jump_to('index.php?modname=report&op=reportlist');
+    }
+
     $report_id = $reportTempData['id_report'];
     $report_name = $reportTempData['report_name'];
     $nosave = FormaLms\lib\Get::req('nosave', DOTY_INT, 0);
@@ -790,11 +944,15 @@ function report_show_results($idrep = false)
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     if ($idrep == false) {
-        if (empty($session->get(_REPORT_SESSION))) {
+        $reportTempData = $session->get(_REPORT_SESSION);
+        if (empty($reportTempData)) {
             $reportTempData = $session->get('report');
-        } else {
-            $reportTempData = $session->get(_REPORT_SESSION);
         }
+
+        if (!is_array($reportTempData) || !isset($reportTempData['id_report'])) {
+            return Util::jump_to('index.php?modname=report&op=reportlist');
+        }
+
         $id_report = $reportTempData['id_report'];
         $res = sql_query('SELECT class_name, file_name FROM %lms_report WHERE id_report=' . $id_report . ' AND enabled=1');
         $author = 0;
@@ -810,13 +968,13 @@ function report_show_results($idrep = false)
                 $obj_report = $pg->get_plugin($class_name, [$idrep]);
             }
         } else {
-            reportlist();
+            return Util::jump_to('index.php?modname=report&op=reportlist');
         }
     } else {
         checkReport($idrep);
         /// find main class report filename and report info
         $query_report = "
-		SELECT r.class_name, r.file_name, r.report_name, f.filter_name, f.filter_data, f.author
+		SELECT r.class_name, r.file_name, r.report_name, f.filter_name, f.filter_data, f.filter_data_json, f.author, f.id_filter
 		FROM %lms_report AS r
 			JOIN %lms_report_filter AS f
 			ON ( r.id_report = f.id_report )
@@ -830,7 +988,7 @@ function report_show_results($idrep = false)
         }
 
         // create the report object
-        list($class_name, $file_name, $report_name, $filter_name, $filter_data, $author) = sql_fetch_row($re_report);
+        list($class_name, $file_name, $report_name, $filter_name, $filter_data, $filter_data_json, $author, $id_filter) = sql_fetch_row($re_report);
         //when file name set use old style
         if ($file_name) {
             require_once \FormaLms\lib\Forma::inc(_lms_ . '/admin/modules/report/' . $file_name);
@@ -841,16 +999,44 @@ function report_show_results($idrep = false)
         }
     }
 
+    if (!isset($obj_report) || !is_object($obj_report)) {
+        return Util::jump_to('index.php?modname=report&op=reportlist');
+    }
+
     $obj_report->back_url = $start_url;
-    $obj_report->jump_url = 'index.php?modname=report&op=show_results&idrep=' . $idrep;
+    $obj_report->jump_url = 'index.php?modname=report&op=show_results&idrep=' . $idrep
+        . ($idrep == false ? '&nosave=1' : '');
 
     if ($author == 0) {
         $filter_name = ($filter_name ? $lang->def($filter_name) : '');
     }
 
-    $data = _decode($filter_data);
+    if ($idrep == false) {
+        // Unsaved report: filter data is already in session as an array
+        $data = $reportTempData;
+    } else {
+        // Saved report: decode from database columns
+        $data = _decode($filter_data_json, $filter_data);
 
+        // Migrate to JSON if not already done
+        if (empty($filter_data_json) && !empty($data) && isset($id_filter)) {
+            _migrate_filter_to_json($id_filter, $data);
+        }
+    }
+
+    // Validate decoded data before export
     if ($download != false) {
+        if (!is_array($data)) {
+            throw new \InvalidArgumentException(
+                'Report export error: invalid report data format'
+            );
+        }
+        if (!isset($data['columns_filter_category']) || empty($data['columns_filter_category'])) {
+            throw new \InvalidArgumentException(
+                'Report export error: columns_filter_category is missing or empty in report data'
+            );
+        }
+
         $export_filename = 'report_' . $filter_name . '_' . date('d_m_Y');
         switch ($download) {
             case 'htm':
@@ -930,12 +1116,21 @@ function report_open_filter()
         case 'delete':
             //delete filter from list and DB, than reload page
             if (report_delete_filter($filter_id)) {
-                $success = '&fdel=1&idrep=' . $filter_id;
+                $success = '&modrep=1&idrep=' . $filter_id;
             } else {
-                $success = '&fdel=0&idrep=' . $filter_id;
+                $success = '&modrep=0&idrep=' . $filter_id;
             }
             Util::jump_to($url . $success);
 
+            break;
+
+        case 'duplicate':
+            if (duplicateReport($filter_id)) {
+                $success = '&fdup=1&idrep=' . $filter_id;
+            } else {
+                $success = '&fdup=0&idrep=' . $filter_id;
+            }
+            Util::jump_to($url . $success);
             break;
 
         default:
@@ -1047,9 +1242,17 @@ function report_modify_rows()
     $lang = FormaLanguage::createInstance('report');
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
+    $idrep = FormaLms\lib\Get::req('modid', DOTY_INT, false);
     $reportTempData = $session->get(_REPORT_SESSION);
 
-    $idrep = FormaLms\lib\Get::req('modid', DOTY_INT, false);
+    if (!is_array($reportTempData) && $idrep) {
+        load_filter($idrep, true);
+        $reportTempData = $session->get(_REPORT_SESSION);
+    }
+
+    if (!is_array($reportTempData)) {
+        $reportTempData = [];
+    }
 
     if (FormaLms\lib\Get::req('mod_name', DOTY_INT, 0) == 1) {
         $reportTempData['report_name'] = FormaLms\lib\Get::req('report_name', DOTY_STRING, false);
@@ -1058,6 +1261,11 @@ function report_modify_rows()
     }
 
     $obj_report = openreport();
+
+    if (!$obj_report) {
+        return Util::jump_to('index.php?modname=report&op=reportlist');
+    }
+
     $obj_report->back_url = 'index.php?modname=report&op=modify_name&modid=' . $idrep;
     $obj_report->jump_url = 'index.php?modname=report&op=modify_rows&modid=' . $idrep;
     $obj_report->next_url = 'index.php?modname=report&op=modify_cols&modid=' . $idrep;
@@ -1104,17 +1312,32 @@ function report_modify_columns()
 
     require_once _base_ . '/lib/lib.form.php';
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+
+    $idrep = FormaLms\lib\Get::req('modid', DOTY_INT, false);
     $reportTempData = $session->get(_REPORT_SESSION);
+
+    if (!is_array($reportTempData) && $idrep) {
+        load_filter($idrep, true);
+        $reportTempData = $session->get(_REPORT_SESSION);
+    }
+
+    if (!is_array($reportTempData)) {
+        $reportTempData = [];
+    }
+
     if (isset($_POST['columns_filter'])) {
         $reportTempData['columns_filter_category'] = $_POST['columns_filter'];
         $session->set(_REPORT_SESSION, $reportTempData);
         $session->save();
     }
 
-    $idrep = FormaLms\lib\Get::req('modid', DOTY_INT, false);
     $lang = FormaLanguage::createInstance('report');
 
     $obj_report = openreport();
+
+    if (!$obj_report) {
+        return Util::jump_to('index.php?modname=report&op=reportlist');
+    }
 
     $obj_report->back_url = 'index.php?modname=report&op=modify_rows&modid=' . $idrep;
     $obj_report->jump_url = 'index.php?modname=report&op=modify_cols&modid=' . $idrep;

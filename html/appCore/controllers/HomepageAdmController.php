@@ -81,6 +81,19 @@ class HomepageAdmController extends AdmController
         $params['read_all'] = Lang::t('_READ_ALL', 'login');
         $params['close'] = Lang::t('_CLOSE', 'standard');
 
+        $params['register_urls'][] = [
+            'label' =>  Lang::t('_REGISTER', 'login'),
+            'url' => $params['register'],
+            'class' => 'first',
+        ];
+
+        $eventResult = Events::trigger('lms.login.mask.showing', ['params' => $params]);
+
+        if($eventResult && array_key_exists('params', $eventResult)) {
+
+            $params = $eventResult['params'];
+        }
+
         // force_standard mode
         if (isset($_REQUEST['notuse_plugin'])) {
             $params['notuse_plugin'] = true;
@@ -200,7 +213,7 @@ class HomepageAdmController extends AdmController
         $params = [];
         $res = null;
 
-        $ldapEnabled = FormaLms\lib\Get::sett('ldap_used') == 'on';
+
 
         $mand_symbol = '*';
 
@@ -303,8 +316,6 @@ class HomepageAdmController extends AdmController
         $params['lost_username'] = [
             'title' => Lang::t('_LOST_TITLE_USER', 'register'),
             'istruction' => Lang::t('_LOST_INSTRUCTION_USER', 'register'),
-            'ldap' => $ldapEnabled,
-            'ldap_title' => Lang::t('_LDAPACTIVE', 'register'),
             'form' => $lostUsernameForm,
         ];
 
@@ -336,18 +347,10 @@ class HomepageAdmController extends AdmController
         if (FormaLms\lib\Get::req('send', DOTY_BOOL, false)) {
             $newpwd = FormaLms\lib\Get::req('new_password', DOTY_STRING, null);
             $retype_newpwd = FormaLms\lib\Get::req('retype_new_password', DOTY_STRING, null);
-
-            switch ($this->model->checkNewPwdValidity($newpwd, $retype_newpwd)) {
-                case PASSWORD_MISMATCHING:
-                    $params['msg'] = Lang::t('_ERR_PASSWORD_NO_MATCH', 'register');
-                    break;
-                case PASSWORD_TOO_SHORT:
-                    $params['msg'] = Lang::t('_PASSWORD_TOO_SHORT', 'register');
-                    break;
-                case PASSWORD_MUST_BE_ALPHA:
-                    $params['msg'] = Lang::t('_ERR_PASSWORD_MUSTBE_ALPHA', 'register');
-                    break;
-                default:
+            $pswd_chk = $this->model->checkNewPwdValidity($newpwd, $retype_newpwd);
+            if ($pswd_chk['error']) {
+                $params['error'] = $pswd_chk['msg'];
+            } else {
                     if ($this->model->setNewPwd($newpwd, $user_info[ACL_INFO_IDST], $code)) {
                         $redirection['query'] = [
                             'done' => NEW_PWD,
@@ -356,13 +359,14 @@ class HomepageAdmController extends AdmController
                     } else {
                         $params['msg'] = Lang::t('_OPERATION_FAILURE', 'register');
                     }
-                    break;
             }
+        }
+        if (!isset($params['error']) || !is_array($params['error'])) {
+            $params['error'] = [];
         }
 
         $params['code'] = $code;
-        $params .= $this->model->getNewPwdOptions();
-
+        $params['options'] = $this->model->getNewPwdOptions();
         $this->render('newpwd', $params);
     }
 
@@ -390,29 +394,31 @@ class HomepageAdmController extends AdmController
 
         $res = $this->model->login($plugin);
 
+        $loginRedirect = FormaLms\lib\Get::req('login_redirect', DOTY_STRING, null);
+
         if (!empty($loginRedirect)) {
             $url = substr_replace($loginRedirect, '', 0, strlen(trim(dirname($_SERVER['SCRIPT_NAME']), DIRECTORY_SEPARATOR)) + 1);
-            $redirection['req'] = $url;
-        }
-
-        switch ($res) {
-            case PWD_ELAPSED:
-                $this->session->set('must_renew_pwd', 1);
-                $redirection['req'] = 'lms/profile/renewalpwd';
-                break;
-            case MANDATORY_FIELDS:
-                $this->session->set('request_mandatory_fields_compilation', 1);
-                $redirection['req'] = 'lms/precompile/show';
-                break;
-            case USER_SAVED:
-                $redirection['req'] = _homepage_;
-                break;
-            default:
-                $redirection['req'] = _homepage_;
-                $redirection['query'] = [
-                    'msg' => $res,
-                ];
-                break;
+            Util::jump_to($url);
+        } else {
+            switch ($res) {
+                case PWD_ELAPSED:
+                    $this->session->set('must_renew_pwd', 1);
+                    $redirection['req'] = 'lms/profile/renewalpwd';
+                    break;
+                case MANDATORY_FIELDS:
+                    $this->session->set('request_mandatory_fields_compilation', 1);
+                    $redirection['req'] = 'lms/precompile/show';
+                    break;
+                case USER_SAVED:
+                    $redirection['req'] = _homepage_;
+                    break;
+                default:
+                    $redirection['req'] = _homepage_;
+                    $redirection['query'] = [
+                        'msg' => $res,
+                    ];
+                    break;
+            }
         }
 
         $this->session->save();
@@ -496,13 +502,19 @@ class HomepageAdmController extends AdmController
             exit;
         }
 
-        $time = FormaLms\lib\Get::req('time', DOTY_MIXED, '');
+        $time = (int) FormaLms\lib\Get::req('time', DOTY_MIXED, '');
         $token = strtoupper(FormaLms\lib\Get::req('token', DOTY_MIXED, ''));
         $recalc_token = strtoupper(md5($login_user . ',' . $time . ',' . $secret));
 
-        $lifetime = FormaLms\lib\Get::sett('rest_auth_lifetime', 1);
+        // Lifetime is configured in minutes; if 0, no expiration check
+        $lifetime = (int) (FormaLms\lib\Get::sett('sso_lifetime', 0) ?? FormaLms\lib\Get::sett('rest_auth_lifetime', 1));
 
-        if ($recalc_token != $token || $time + $lifetime < time()) {
+        // time() returns seconds since 1 Jan 1970; convert lifetime minutes to seconds
+        $expireRange = $lifetime * 60;
+        // Validate that provided $time lies within [now - expireRange, now]; if lifetime=0, skip check
+        $isTimeValid = $lifetime === 0 ? true : ($time >= (time() - $expireRange) && $time <= time());
+
+        if ($recalc_token != $token || !$isTimeValid) {
             $redirection['req'] = _homepage_;
             $redirection['query'] = [
                 'msg' => ACCESS_FAILURE, // XXX: o SSO_FAILURE?

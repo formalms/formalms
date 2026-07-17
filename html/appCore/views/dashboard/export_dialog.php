@@ -35,6 +35,6 @@ if (isset($json)) {
         'header' => $_header,
         'body' => $_body,
     ];
-    echo $json->encode($output);
+    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 } else {
 }

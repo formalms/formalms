@@ -1,7 +1,6 @@
 <?php
 
 
-
 namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -9,18 +8,26 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * LearningCourseuser
  *
- * @ORM\Table(name="learning_courseuser", indexes={
- *      @ORM\Index(name="edition_id_idx", columns={"edition_id"}),
- *      @ORM\Index(name="id_user_idx", columns={"idUser"}),
- *      @ORM\Index(name="id_course_idx", columns={"idCourse"})
- * })
+ * @ORM\Table(name="learning_courseuser",
+ *      indexes={
+ *          @ORM\Index(name="edition_id_idx", columns={"edition_id"}),
+ *          @ORM\Index(name="id_user_idx", columns={"idUser"}),
+ *          @ORM\Index(name="id_course_idx", columns={"idCourse"}),
+ *          @ORM\Index(name="course_stats_idx", columns={"idUser", "idCourse", "status", "level"}),
+ *          @ORM\Index(name="idx_courseuser_waiting", columns={"waiting"}),
+ *          @ORM\Index(name="idx_courseuser_date_inscr", columns={"date_inscr"}),
+ *          @ORM\Index(name="idx_courseuser_date_first_access", columns={"date_first_access"}),
+ *          @ORM\Index(name="idx_courseuser_date_complete", columns={"date_complete"}),
+ *          @ORM\Index(name="idx_cu_req_uns_idx", columns={"requesting_unsubscribe"}),
+ *      }
+ *     )
  * @ORM\Entity
  */
 class LearningCourseuser
 {
 
     use Timestamps;
-    
+
     /**
      * @var int
      *
@@ -34,7 +41,6 @@ class LearningCourseuser
      * @var int
      *
      * @ORM\Column(name="edition_id", type="integer", nullable=false)
-     
      */
     private $editionId = '0';
 
@@ -42,7 +48,6 @@ class LearningCourseuser
      * @var int
      *
      * @ORM\Column(name="idUser", type="integer", nullable=false)
-     
      */
     private $iduser = '0';
 
@@ -50,7 +55,6 @@ class LearningCourseuser
      * @var int
      *
      * @ORM\Column(name="idCourse", type="integer", nullable=false)
-     
      */
     private $idcourse = '0';
 

@@ -12,6 +12,7 @@
  */
 namespace FormaLms\lib;
 
+use CourseLevel;
 use FormaLms\lib\Serializer\FormaSerializer;
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
@@ -31,6 +32,7 @@ require_once _base_ . '/lib/lib.acl.php';
 
 
 require_once _base_ . '/lib/lib.preference.php';
+
 
 define('REFRESH_LAST_ENTER', 600);    //refresh the user last action every specified seconds
 
@@ -109,7 +111,7 @@ class FormaUser
         if ($session->has($sprefix . '_stlist')) {
 
             $data = $session->get($sprefix . '_stlist');
-            $this->arrst = FormaSerializer::getInstance()->decode($data,'json');
+            $this->arrst = FormaSerializer::getInstance()->decode($data,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         }
 
         $user_manager = new \FormaACLManager();
@@ -131,7 +133,6 @@ class FormaUser
         $this->load_user_role();
 
         $this->userCourses = $this->loadUserCourses();
-
         $this->initRole($this->arrst, $this->idst);
     }
 
@@ -185,6 +186,36 @@ class FormaUser
         return $userCourses;
     }
 
+
+    /**
+     * @param $courseId
+     * @param $roles
+     * @return bool
+     */
+    public function hasRoleInCourse($courseId, $roles)
+    {
+        $userCourses = $this->getUserCourses();
+        if (isset($userCourses[$courseId])) {
+            $userCourse = $userCourses[$courseId];
+            return in_array($userCourse['level'], $roles);
+        }
+        return false;
+    }
+
+    /**
+     * @param $courseId
+     * @return int|null
+     */
+    public function getRoleInCourse($courseId)
+    {
+        $userCourses = $this->getUserCourses();
+        if (isset($userCourses[$courseId])) {
+            $userCourse = $userCourses[$courseId];
+            return $userCourse['level'];
+        }
+        return null;
+    }
+
     public function reloadUserCourses()
     {
         $this->userCourses = $this->loadUserCourses();
@@ -199,6 +230,84 @@ class FormaUser
         }
     }
 
+    public function loadUserCustomFields(){
+        if ($this->user_level == 6 ) { // Anonymous
+            return [];
+        } else {
+            $hide_hidden = ($this->user_level != '/framework/level/godadmin');
+            require_once _adm_ . '/lib/lib.field.php';
+            $custom_field_class = new \FieldList();
+            return $custom_field_class->getFieldsAndValueFromUser($this->idst, false, $hide_hidden);
+        }
+
+    }
+
+    public function getManagerUser()
+    {
+        require_once _adm_ . '/models/UsermanagementAdm.php';
+        $model_user = new \UsermanagementAdm();
+
+        $manager['_DIRECT'] = $this->getManagerDirect();
+        $manager['_ORG'] = $this->getManagerOrg($model_user);
+        $manager['_GROUP'] = $this->getManagerGroup($model_user);
+        return $manager;
+    }
+
+    private function getManagerOrg(&$model_user){
+        $vett_org = $model_user->getUserFolders($this->idst);
+        $vett_out = [];
+        foreach ($vett_org as $key => $value) {
+            $q = 'select idstAdmin , firstname, lastname
+                from %adm_admin_tree, %adm_org_chart_tree , %adm_user 
+                where idst_oc=' . $key . ' and idst_ocd=core_admin_tree.idst
+                and core_admin_tree.idstAdmin = core_user.idst';
+            $r = sql_query($q);
+            while (list($idstAdmin, $firstname, $lastname) = sql_fetch_row($r)) {
+                $vett_out[] = "$firstname, $lastname";
+            }
+        }
+        return $vett_out;
+    }
+
+    private function getManagerGroup(&$model_user){
+        $vett_gruop = $model_user->getUserGroups($this->idst);
+        $vett_out = [];
+        foreach ($vett_gruop as $key => $value) {
+            $sql = 'select idstAdmin, firstname, lastname 
+                from core_admin_tree, core_user
+                where core_admin_tree.idst=' . $key . ' and core_admin_tree.idstAdmin = core_user.idst';
+            $re = sql_query($sql);
+            while (list($idstAdmin, $firstname, $lastname) = sql_fetch_row($re)) {
+                $vett_out[] = "$firstname, $lastname ";
+            }
+        }
+        return $vett_out;
+
+    }
+    private function getManagerDirect(){
+        $sql = 'select idstAdmin, firstname, lastname 
+                    from core_admin_tree, core_user
+                    where core_admin_tree.idst=' . $this->idst . ' and core_admin_tree.idstAdmin = core_user.idst';
+
+        $result = sql_query($sql);
+        $res = [];
+        while ($row = sql_fetch_assoc($result)) {
+            $res[$row['idstAdmin']] = "$row[firstname], $row[lastname]";
+        }
+        return $res;
+    }
+    public function getUserPrivacy(){
+        $sql = "select cp.name, cpu.id, cpu.accept_date, cpu.reject_date from core_privacypolicy_user as cpu
+                                        JOIN  core_privacypolicy as cp on cpu.id_policy = cp.id_policy 
+                                        where idst=".$this->idst;
+        $result = sql_query($sql);
+        $res = [];
+        while ($row = sql_fetch_assoc($result)) {
+            $res[$row['id']] = $row;
+        }
+        return $res;
+    }
+
     public function saveInSession()
     {
         $fallbackIp = array_key_exists('REMOTE_ADDR', $_SERVER) ? $_SERVER['REMOTE_ADDR'] : '::1';
@@ -209,7 +318,7 @@ class FormaUser
         $session = Session\SessionManager::getInstance()->getSession();
         $session->set($this->sprefix . '_idst', $this->idst);
         $session->set($this->sprefix . '_username', $this->userid);
-        $session->set($this->sprefix . '_stlist', FormaSerializer::getInstance()->encode($this->arrst,'json'));
+        $session->set($this->sprefix . '_stlist', FormaSerializer::getInstance()->encode($this->arrst,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
         $session->set($this->sprefix . '_log_ip', $ip);
         $session->set('user', $this);
         $session->save();
@@ -284,7 +393,13 @@ class FormaUser
      */
     public function getAvatar()
     {
-        return Get::sett('url') . '/' . _folder_files_ . '/appCore/' . Get::sett('pathphoto') . $this->avatar;
+        if ($this->avatar != null) {
+//            return Get::sett('url') . '/' . _folder_files_ . '/appCore/' . Get::sett('pathphoto') . $this->avatar;
+            return '/' . _folder_files_ . '/appCore/' . Get::sett('pathphoto') . $this->avatar;
+        } else {
+            return null;
+        }
+
     }
 
     /**
@@ -613,36 +728,7 @@ class FormaUser
             return false;
         }
 
-        if (Get::sett('ldap_used') == 'on') {
-            if ($password == '') {
-                $false_public = false;
-
-                return $false_public;
-            }
-            //connect to ldap server
-            if (!($ldap_conn = @ldap_connect(Get::sett('ldap_server'), Get::sett('ldap_port', '389')))) {
-                exit('Could not connect to ldap server');
-            }
-
-            //bind on server
-            $ldap_user = preg_replace('/\$user/', $login, Get::sett('ldap_user_string'));
-            if (!(@ldap_bind($ldap_conn, $ldap_user, $password))) {
-                ldap_unbind($ldap_conn);
-
-                // Edited by Claudio Redaelli
-                if (Get::sett('ldap_alternate_check') == 'on') {
-                    if (!$user_manager->password_verify_update($password, $user_info[ACL_INFO_PASS], $user_info[ACL_INFO_IDST])) {
-                        return false;
-                    }
-                } else {
-                    $false_public = false;
-
-                    return $false_public;
-                }
-                // End edit
-            }
-            ldap_unbind($ldap_conn);
-        } elseif (!$user_manager->password_verify_update($password, $user_info[ACL_INFO_PASS], $user_info[ACL_INFO_IDST])) {
+     if (!$user_manager->password_verify_update($password, $user_info[ACL_INFO_PASS], $user_info[ACL_INFO_IDST])) {
             return false;
         }
         $session = Session\SessionManager::getInstance()->getSession();
@@ -735,7 +821,6 @@ class FormaUser
                 false,
                 false,
                 false,
-                false,
                 $lastenter
             );
         } else {
@@ -767,15 +852,56 @@ class FormaUser
     }
 
     /**
+     * Ensures the user is a member of the base organization chart groups (/oc_0, /ocd_0).
+     * This repairs missing group memberships that prevent access to public LMS roles.
+     */
+    public function ensureBaseGroupMembership()
+    {
+        if ($this->isAnonymous() || !$this->idst) {
+            return;
+        }
+
+        $aclManager = \FormaLms\lib\Forma::getAcl()->getACLManager();
+
+        // Get the /oc_0 (registered users) and /ocd_0 (registered + descendants) group IDs
+        $oc0_idst = $aclManager->getGroupST('/oc_0');
+        $ocd0_idst = $aclManager->getGroupST('/ocd_0');
+
+        if (!$oc0_idst || !$ocd0_idst) {
+            return;
+        }
+
+        // Check membership in /oc_0
+        $query = 'SELECT COUNT(*) FROM %adm_group_members'
+            . ' WHERE idst = ' . (int) $oc0_idst
+            . ' AND idstMember = ' . (int) $this->idst;
+        $result = sql_query($query);
+        if ($result) {
+            [$count] = sql_fetch_row($result);
+            if ((int) $count === 0) {
+                $aclManager->addToGroup($oc0_idst, $this->idst);
+            }
+        }
+
+        // Check membership in /ocd_0
+        $query = 'SELECT COUNT(*) FROM %adm_group_members'
+            . ' WHERE idst = ' . (int) $ocd0_idst
+            . ' AND idstMember = ' . (int) $this->idst;
+        $result = sql_query($query);
+        if ($result) {
+            [$count] = sql_fetch_row($result);
+            if ((int) $count === 0) {
+                $aclManager->addToGroup($ocd0_idst, $this->idst);
+            }
+        }
+    }
+
+    /**
      * @return 0 if the user password is not elapsed, 1 if the password is elapsed or a force change is
      */
     public function isPasswordElapsed()
     {
-        //if the password is managed by an external program jump this procedure
-        if (Get::sett('ldap_used') == 'on') {
-            return 0;
-        }
-
+       
         //change password forced from admin or is the first login. When a new user is created
         // and the setting for a change at irst login is active this flag wil be turned on
         $user_data = \FormaLms\lib\Forma::getAclManager()->getUser($this->idst, false);
@@ -931,7 +1057,7 @@ class FormaUser
      */
     public function getMyFilesTable()
     {
-        return $GLOBALS['prefix_fw'] . '_user_myfiles';
+        return $GLOBALS['prefix_fw'] . '_user_file';
     }
 
     /**

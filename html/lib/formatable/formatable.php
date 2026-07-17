@@ -302,8 +302,8 @@ $date_picker_param = 'data-provide="datepicker" data-date-autoclose=true data-da
                                     edit_form.append('<input type="' + (_thisColumn.edit.type || 'text') + '" name="new_value" value="' + cell.data() + '">');
                                 }
                                 edit_form.append('<div class="button-container">');
-                                edit_form.find('.button-container').append('<button type="submit" class="btn btn-primary ft-edit-save">Save</button>');
-                                edit_form.find('.button-container').append('<button type="reset" class="btn btn-default ft-edit-cancel">Cancel</button>');
+                                edit_form.find('.button-container').append('<button type="submit" class="btn btn-primary ft-edit-save"><?php echo Lang::t('_DASHBOARD_SETTING_SAVE', 'dashboardsetting'); ?></button>');
+                                edit_form.find('.button-container').append('<button type="reset" class="btn btn-default ft-edit-cancel"><?php echo Lang::t('_CANCEL', 'standard'); ?></button>');
                                 $(this).append(edit_form);
                             }
                         }
@@ -592,12 +592,24 @@ $date_picker_param = 'data-provide="datepicker" data-date-autoclose=true data-da
          * Language translation
          */
         _options.language = {
+            'sEmptyTable': '<?php echo Lang::t('_EMPTY_TABLE', 'formatable') ?>',
+            'sLoadingRecords': '<?php echo Lang::t('_LOADING', 'standard') ?>',
+            'sProcessing': '<?php echo Lang::t('_PROCESSING', 'standard') ?>',
+            'sLengthMenu': '<?php echo Lang::t('_LENGTH_MENU', 'formatable') ?>',
+            'sZeroRecords': '<?php echo Lang::t('_ZERO_RECORDS', 'formatable') ?>',
+            'sInfo': '<?php echo Lang::t('_INFO', 'formatable') ?>',
+            'sInfoEmpty': '<?php echo Lang::t('_INFO_EMPTY', 'formatable') ?>',
+            'sInfoFiltered': '<?php echo Lang::t('_INFO_FILTERED', 'formatable') ?>',
             'sSearch': '<?php echo Lang::t('_SEARCH', 'standard'); ?>',
             'oPaginate': {
                 'sFirst': '<?php echo Lang::t('_START', 'standard'); ?>',
                 'sPrevious': '<?php echo Lang::t('_PREV_B', 'standard'); ?>',
                 'sNext': '<?php echo Lang::t('_NEXT', 'standard'); ?>',
                 'sLast': '<?php echo Lang::t('_END', 'standard'); ?>'
+            },
+            'oAria': {
+                "sSortAscending": '<?php echo Lang::t('_SORT_ASCENDING', 'formatable') ?>',
+                "sSortDescending": '<?php echo Lang::t('_SORT_DESCENDING', 'formatable') ?>'
             }
         }
 

@@ -80,14 +80,6 @@ class CoreDeletedUser
      * @ORM\Column(name="avatar", type="string", length=255, nullable=false)
      */
     private $avatar = '';
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="signature", type="string", length=65536, nullable=false)
-     */
-    private $signature;
-
     /**
      * @var int
      *

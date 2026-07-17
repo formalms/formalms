@@ -87,6 +87,7 @@ class UserselectorAdmController extends AdmController
         $instanceValue = $this->requestArray['instance'];
         $instanceId = array_key_exists('id', $this->requestArray) ?  $this->requestArray['id'] : 0;
         $showSelectAll = (bool) array_key_exists('showSelectAll', $this->requestArray) ? $this->requestArray['showSelectAll'] : false;
+          $showSuspended = (bool) array_key_exists('showSuspended', $this->requestArray) ? $this->requestArray['showSuspended'] : false;
         $showUserAlert = array_key_exists('showUserAlert', $this->requestArray) ? $this->requestArray['showUserAlert'] : false;
         $clearSelection = array_key_exists('clearSelection', $this->requestArray) ? $this->requestArray['clearSelection'] : false;
         $selectAllValue = 1;
@@ -117,6 +118,11 @@ class UserselectorAdmController extends AdmController
             if (count($multiUserSelectorTab::ADDITIONAL_COLS)) {
                 $hiddenColumns = $multiUserSelectorTab->getHiddenColumns();
                 $columns[$tabKey] = array_merge($columns[$tabKey], $hiddenColumns);
+            }
+
+            if ($multiUserSelectorTab::DYNAMIC_COLUMNS) {
+                $columns[$tabKey] = $multiUserSelectorTab->getDynamicColumns($columns[$tabKey]);
+                
             }
 
             if ($disableAjax) {
@@ -150,6 +156,7 @@ class UserselectorAdmController extends AdmController
             'instanceId' => $instanceId,
             'accessSelection' => $accessSelection,
             'showSelectAll' => $showSelectAll,
+            'showSuspended' => $showSuspended,
             'showUserAlert' => $showUserAlert,
             'selectAllValue' => $selectAllValue,
             'learningFilter' => $learningFilter,
@@ -234,7 +241,7 @@ class UserselectorAdmController extends AdmController
         if (method_exists($this, $responseMethod)) {
             $this->$responseMethod($result);
         } else {
-            throw new Exception('$responseMethod not implemented');
+            throw new Exception("$responseMethod not implemented");
         }
     }
 

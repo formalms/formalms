@@ -72,7 +72,7 @@ class SessionManager
                     // Se ho il config ma non ho le configurazioni della sessione
                     // imposto secure se sono in https altrimenti no
                     //get server request http|https
-                    
+
                     $sessionConfig['cookieName'] = $secureSession ? SessionConfig::SECUREFORMA : SessionConfig::UNSECUREFORMA;
                 }
 
@@ -80,7 +80,7 @@ class SessionManager
             } catch (\Exception $exception) {
                 exit($exception->getMessage());
             }
-            
+
             $this->setConfig($config);
 
             $ttlSession = \FormaLms\lib\Get::sett('ttlSession', 0);
@@ -92,6 +92,7 @@ class SessionManager
             ini_set('session.gc_maxlifetime', $this->config->getLifetime());
             ini_set('session.cookie_httponly', 1);
             ini_set('session.cookie_secure', $secureSession);
+            ini_set('session.cookie_samesite', $this->getSessionCookieSameSiteValue());
 
             switch ($this->config->getHandler()) {
                 case self::MEMCACHED:
@@ -162,5 +163,48 @@ class SessionManager
         }
 
         return false;
+    }
+
+    /**
+     * Configure SameSite attribute for cookies based on domain
+     */
+    private function getSessionCookieSameSiteValue(): string
+    {
+        $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
+
+        // Ottieni il referrer o l'origine della richiesta
+        $referrer = $request->headers->get('referer');
+        $origin = $request->headers->get('origin');
+
+        // Estrai l'hostname dal referrer o dall'origin
+        $referrerHost = '';
+        if ($referrer) {
+            $parsed = parse_url($referrer);
+            $referrerHost = is_array($parsed) ? ($parsed['host'] ?? '') : '';
+        } elseif ($origin) {
+            $parsed = parse_url($origin);
+            $referrerHost = is_array($parsed) ? ($parsed['host'] ?? '') : '';
+        }
+
+        // Se non c'è referrer/origin, usa l'hostname corrente (navigazione diretta)
+        // In CLI context (e.g., cache:clear), getHost() lancia eccezione perché non c'è IP
+        if (PHP_SAPI === 'cli') {
+            $hostname = 'localhost';
+        } else {
+            $hostname = !empty($referrerHost)
+                ? $referrerHost
+                : $request->getHost();
+        }
+
+        // Ottieni la configurazione SameSite dal config
+        $sameSiteConfig = \FormaLms\lib\Get::cfg('session.sameSite', '');
+
+        // Imposta la configurazione SameSite nel SessionConfig
+        if (!empty($sameSiteConfig)) {
+            $this->config->setSameSite($sameSiteConfig);
+        }
+
+        // Utilizza il metodo getSameSiteForDomain di SessionConfig
+        return $this->config->getSameSiteForDomain($hostname);
     }
 }

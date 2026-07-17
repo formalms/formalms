@@ -763,7 +763,6 @@ HINWEIS: Aktualisieren Sie die Datei „manifest.xml“ im Vorlagenordner, indem
 Um diese Worte zu ändern, gehen Sie bitte auf Admin/Sprachverwaltung, suchen Sie nach <b>Login</b> und verändern Sie die Schlüssel <b>_INTRO_STD_TEXT_TITLE</b> und <b>_INTRO_STD_TEXT</b>]]></key>
         <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[forma.lms ist eine Open Source e-Learning Plattform (LMS und LCMS), die in Firmen und bei höheren Bildungsinstituten eingesetzt wird.]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Springe zu Login-Formular]]></key>
-        <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[LDAP Authentifizierung ist aktiv, die Funktionalität nicht verfügbar. Bitte rufen Sie Ihren Administrator]]></key>
         <key id="login&amp;_LOG_IN" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Login]]></key>
         <key id="login&amp;_LOG_LOSTPWD" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Verlorenes Passwort]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Login]]></key>
@@ -891,11 +890,6 @@ Um diese Worte zu ändern, gehen Sie bitte auf Admin/Sprachverwaltung, suchen Si
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Aktiviere Sprachbearbeitung (wird zum Debuggen genutzt)]]></key>
         <key id="configuration&amp;_LANG_EXPORT_TIME" attributes="" save_date="2025-02-18 16:10:26"><![CDATA[Zeitpunkt des Sprachexports]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Vor- und Nachname werden zur Registrierung benötigt]]></key>
-        <key id="configuration&amp;_LDAP" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[LDAP]]></key>
-        <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[LDAP Port (gewöhnlich 389)]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[LDAP Serveradresse]]></key>
-        <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Aktiviere LDAP Authentifizierung]]></key>
-        <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Benutzername für LDAP Benutzer, benutze $user für den Benutzernamen.<br />z.B. $user@domain2.domain1 (für: W2k3)]]></key>
         <key id="configuration&amp;_LIST_DB_UPGRADES" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[DB SQL Script Log]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Konfiguration von "magic_quotes_gpc"]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Registrierungen und Versendung verlorener Passworte]]></key>
@@ -1077,7 +1071,6 @@ Organisationsdiagramms]]></key>
         <key id="configuration&amp;_USE_REST_API" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Aktiviere die API Funktionalität]]></key>
         <key id="configuration&amp;_USE_SENDER_ACLNAME" attributes="" save_date="2025-02-24 09:51:18"><![CDATA[Absendername für Warnmeldungen]]></key>
         <key id="configuration&amp;_USE_TAG" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Aktiviere Tags-Funktion in Foren]]></key>
-        <key id="configuration&amp;_USEFULL_ONLY_IF" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Beachten Sie diesen Parameter nur, wenn Sie sich mittels LDAP authentifizieren]]></key>
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Den Benutzer bitten, ein anderes als die letzten X benutzten Passwörter zu wählen]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Speicherplatzbegrenzung (in MB) für den Meine Dateien Bereich jedes Nutzers]]></key>
         <key id="configuration&amp;_USERS_ALREADY_ASSIGNED" attributes="" save_date="2020-09-15 14:47:16"><![CDATA[Benutzer bereits zugewiesen]]></key>
@@ -1088,7 +1081,7 @@ Organisationsdiagramms]]></key>
         <key id="configuration&amp;MAIN_SET_4" attributes="" save_date="2025-02-18 17:10:12"><![CDATA[Allgemeine Einstellungen]]></key>
         <key id="configuration&amp;MAIN_SET_6" attributes="" save_date="2025-02-17 15:12:52"><![CDATA[Allgemeine Einstellungen]]></key>
         <key id="configuration&amp;MAIN_SET_8" attributes="" save_date="2025-02-18 16:09:06"><![CDATA[Allgemeine Einstellungen]]></key>
-        <key id="configuration&amp;MAIN_SET_9" attributes="" save_date="2021-07-21 12:07:47"><![CDATA[LDAP]]></key>
+        <key id="configuration&amp;MAIN_SET_9" attributes="" save_date="2021-07-21 12:07:47"><![CDATA[SSO]]></key>
         <key id="configuration&amp;PASSWORD_BCRYPT" attributes="" save_date="2025-02-18 16:08:44"><![CDATA[BYCRIPT Passwert]]></key>
         <key id="configuration&amp;PASSWORD_MD5" attributes="" save_date="2021-07-21 12:07:57"><![CDATA[MD5 Passwort]]></key>
       </module>

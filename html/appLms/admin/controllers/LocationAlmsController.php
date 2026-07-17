@@ -23,7 +23,6 @@ defined('IN_FORMA') or exit('Direct access is forbidden');
  */
 class LocationAlmsController extends AlmsController
 {
-    protected $json = false;
     protected $model = false;
     protected $perm = [];
 
@@ -31,7 +30,6 @@ class LocationAlmsController extends AlmsController
     {
         parent::init();
 
-        $this->json = new Services_JSON();
         $this->model = new LocationAlms();
         $this->perm = [
             'view' => checkPerm('view', true, 'location', 'lms'),
@@ -57,7 +55,7 @@ class LocationAlmsController extends AlmsController
             'body' => ob_get_clean(),
         ];
         @ob_start();
-        echo $this->json->encode($params);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($params,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function getlocation()
@@ -123,7 +121,7 @@ class LocationAlmsController extends AlmsController
             'results' => count($location_list),
             'records' => array_values($location_list),
         ];
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     protected function _canAdminLocation($id_user, $id_location)
@@ -154,7 +152,7 @@ class LocationAlmsController extends AlmsController
 
         if ($location <= 0 || !$this->_canAdminLocation(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $location)) {
             $params = ['success' => false];
-            echo $this->json->encode($params);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($params,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -168,7 +166,7 @@ class LocationAlmsController extends AlmsController
             'body' => ob_get_clean(),
         ];
         @ob_start();
-        echo $this->json->encode($params);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($params,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function updatelocation()
@@ -183,7 +181,7 @@ class LocationAlmsController extends AlmsController
                 'success' => $answ,
                 'message' => ($answ ? '' : Lang::t('_OPERATION_FAILED', 'standard')),
             ];
-            echo $this->json->encode($result);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         } else {
             Lang::t('_OPERATION_FAILED', 'standard');
         }
@@ -194,7 +192,7 @@ class LocationAlmsController extends AlmsController
         $location = FormaLms\lib\Get::req('location', DOTY_STRING, '');
         if ($location == '') {
             $result = ['success' => false, 'message' => Lang::t('_NO_TITLE', 'standard')];
-            echo $this->json->encode($result);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -204,7 +202,7 @@ class LocationAlmsController extends AlmsController
             'success' => $re,
             'message' => ($re ? '' : Lang::t('_OPERATION_FAILED', 'standard')),
         ];
-        echo $this->json->encode($result);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function delTask()
@@ -213,7 +211,7 @@ class LocationAlmsController extends AlmsController
 
         if ($location <= 0 || !$this->_canAdminLocation(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $location)) {
             $params = ['success' => false];
-            echo $this->json->encode($params);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($params,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -226,7 +224,7 @@ class LocationAlmsController extends AlmsController
             'success' => $re,
             'message' => ($re ? '' : Lang::t('_OPERATION_FAILED', 'standard')),
         ];
-        echo $this->json->encode($result);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function listTask()
@@ -286,8 +284,8 @@ class LocationAlmsController extends AlmsController
         $total = $this->model->getClassroomTotal($id_location, $filter);
         foreach ($classroom_list as $i => $classroom) {
             $classroom->classroom = $classroom->name;
-            $classroom->classroom_mod = 'ajax.adm_server.php?r=alms/location/mod&amp;idClassroom=' . $classroom->name;
-            $classroom->classroom_del = 'ajax.adm_server.php?r=alms/location/delClassroom&amp;idClassroom=' . $classroom->id_classroom;
+    
+            $classroom->classroom_del = 'ajax.adm_server.php?r=alms/location/delClassroom&idClassroom=' . $classroom->id_classroom;
         }
 
         $output = [
@@ -299,7 +297,7 @@ class LocationAlmsController extends AlmsController
             'results' => count($classroom_list),
             'records' => array_values($classroom_list),
         ];
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     /**
@@ -317,7 +315,7 @@ class LocationAlmsController extends AlmsController
             'success' => $re,
             'message' => ($re ? '' : Lang::t('_OPERATION_FAILED', 'standard')),
         ];
-        echo $this->json->encode($result);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     /**
@@ -362,7 +360,7 @@ class LocationAlmsController extends AlmsController
             'success' => $re,
             'message' => ($re ? '' : Lang::t('_OPERATION_FAILED', 'standard')),
         ];
-        echo $this->json->encode($result);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     /**
@@ -416,7 +414,7 @@ class LocationAlmsController extends AlmsController
             'success' => $re,
             'message' => ($re ? '' : Lang::t('_OPERATION_FAILED', 'standard')),
         ];
-        echo $this->json->encode($result);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     /**
@@ -463,6 +461,6 @@ class LocationAlmsController extends AlmsController
             'results' => count($date_list),
             'records' => (!empty($date_list) ? array_values($date_list) : []),
         ];
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 }

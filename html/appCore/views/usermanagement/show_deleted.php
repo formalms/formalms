@@ -55,7 +55,7 @@ echo getTitleArea([
 		<div class="simple_search_box" id="deletedusers_simple_filter_options">
 			ddddddd
 			<?php
-                echo Form::getInputTextfield('search_t', 'filter_text', 'filter_text', $filter_text, '', 255, '');
+                echo Form::getInputTextfield('search_t', 'filter_text', 'filter_text', $filter_text, 255, '');
                 echo Form::getButton('filter_set', 'filter_set', Lang::t('_SEARCH', 'standard'), 'search_b');
                 echo Form::getButton('filter_reset', 'filter_reset', Lang::t('_RESET', 'standard'), 'reset_b');
             ?>

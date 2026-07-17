@@ -39,7 +39,6 @@ class Module_Organization extends LmsModule
     {
         require_once \FormaLms\lib\Forma::inc(_lms_ . "/modules/$this->module_name/$this->module_name.php");
         $ready = false;
-        $this->lang = FormaLanguage::createInstance('organization', 'lms');
 
         if (isset($_GET['sor']) && false) {
             // reload from previously saved session
@@ -67,9 +66,8 @@ class Module_Organization extends LmsModule
                 $this->repoDb->setFilterAccess(\FormaLms\lib\FormaUser::getCurrentUser()->getArrSt());
             }
 
-            $this->treeView = new Org_TreeView($this->repoDb, 'organization', $this->lang->def('_ORGROOTNAME', 'organization'));
+            $this->treeView = new Org_TreeView($this->repoDb, 'organization', Lang::t('_ORGROOTNAME', 'organization'));
             $this->treeView->mod_name = 'organization';
-            $this->treeView->setLanguage($this->lang);
 
             require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/lib.sessionsave.php');
             $saveObj = new Session_Save();
@@ -163,7 +161,7 @@ class Module_Organization extends LmsModule
                     . $this->treeView->_getOpCopyLOSel() . '=1"'
                     . ' >' . "\n"
                     . '<input type="hidden" id="authentic_request_org" name="authentic_request" value="' . Util::getSignature() . '" />'
-                    . $this->lang->def('_REPOSELECTDESTINATION')
+                    . Lang::t('_REPOSELECTDESTINATION','organization')
                     . ' <img src="' . getPathImage() . 'lobject/' . $saveData['objectType']
                     . '.gif" alt="' . $saveData['objectType']
                     . '" title="' . $saveData['objectType'] . '"/>'
@@ -178,8 +176,8 @@ class Module_Organization extends LmsModule
     {
         global $modname;
         if ($this->isFindingDestination()) {
-            return '<img src="' . $this->treeView->_getCopyImage() . '" alt="' . $this->lang->def('_REPOPASTELO') . '" /> '
-                . '<input type="submit" value="' . $this->lang->def('_REPOPASTELO') . '" class="LVAction"'
+            return '<img src="' . $this->treeView->_getCopyImage() . '" alt="' . Lang::t('_REPOPASTELO','standard') . '" /> '
+                . '<input type="submit" value="' . Lang::t('_REPOPASTELO','standard') . '" class="LVAction"'
                 . ' name="' . $this->treeView->_getOpCopyLOEndOk() . '" />'
                 . ' <img src="' . $this->treeView->_getCancelImage() . '" alt="' . $this->treeView->_getCancelAlt() . '" />'
                 . '<input type="submit" class="LVAction" value="' . $this->treeView->_getCancelLabel() . '"'
@@ -426,7 +424,7 @@ class Module_Organization extends LmsModule
                         . $this->treeView->_getOpCreateLOEnd() . '=1');
                 } else {
                     $GLOBALS['page']->addStart(
-                        getTitleArea($this->lang->def('_ORGANIZATION', 'organization', 'lms'), 'organization')
+                        getTitleArea(Lang::t('_ORGANIZATION', 'organization'), 'organization')
                         . '<div class="std_block">',
                         'content'
                     );

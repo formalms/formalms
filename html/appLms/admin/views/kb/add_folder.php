@@ -30,7 +30,7 @@ if (isset($json)) {
     $output['success'] = true;
     $output['header'] = $title;
     $output['body'] = $form_content;
-    echo $json->encode($output);
+    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 } else {
     echo '<h2>' . $title . '</h2>';
     echo $form_content;

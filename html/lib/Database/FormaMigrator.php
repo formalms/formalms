@@ -29,6 +29,13 @@ use Doctrine\Migrations\Tools\Console\Command\CurrentCommand;
 use Doctrine\Migrations\Tools\Console\Command\MigrateCommand;
 use Doctrine\Migrations\Tools\Console\Command\UpToDateCommand;
 use Doctrine\Migrations\Tools\Console\Command\SyncMetadataCommand;
+use Doctrine\Migrations\Tools\Console\Command\DiffCommand;
+use Doctrine\Migrations\Tools\Console\Command\DumpSchemaCommand;
+use Doctrine\Migrations\Tools\Console\Command\ExecuteCommand;
+use Doctrine\Migrations\Tools\Console\Command\GenerateCommand;
+use Doctrine\Migrations\Tools\Console\Command\LatestCommand;
+use Doctrine\Migrations\Tools\Console\Command\RollupCommand;
+use Doctrine\Migrations\Tools\Console\Command\VersionCommand;
 use Doctrine\Migrations\Configuration\Connection\ExistingConnection;
 
 
@@ -42,7 +49,35 @@ class FormaMigrator
 
     protected YamlFile $configFile;
 
-    public const ADMITTABLE_COMMANDS = ['list', 'migrate', 'status', 'current', 'uptodate'];
+    public const COMMAND_LIST = 'list';
+    public const COMMAND_MIGRATE = 'migrate';
+    public const COMMAND_STATUS = 'status';
+    public const COMMAND_CURRENT = 'current';
+    public const COMMAND_UPTODATE = 'uptodate';
+    public const COMMAND_SYNCMETADATA = 'syncmetadata';
+    public const COMMAND_DIFF = 'diff';
+    public const COMMAND_DUMPSCHEMA = 'dumpschema';
+    public const COMMAND_EXECUTE = 'execute';
+    public const COMMAND_GENERATE = 'generate';
+    public const COMMAND_LATEST = 'latest';
+    public const COMMAND_ROLLUP = 'rollup';
+    public const COMMAND_VERSION = 'version';
+
+    public const ADMITTABLE_COMMANDS = [
+        self::COMMAND_LIST,
+        self::COMMAND_MIGRATE,
+        self::COMMAND_STATUS,
+        self::COMMAND_CURRENT,
+        self::COMMAND_UPTODATE,
+        self::COMMAND_SYNCMETADATA,
+        self::COMMAND_DIFF,
+        self::COMMAND_DUMPSCHEMA,
+        self::COMMAND_EXECUTE,
+        self::COMMAND_GENERATE,
+        self::COMMAND_LATEST,
+        self::COMMAND_ROLLUP,
+        self::COMMAND_VERSION
+    ];
 
     /**
      * @return FormaMigrator
@@ -91,7 +126,7 @@ class FormaMigrator
         } catch (\Exception $e) {
 
         }
-        $this->syncMetadata();
+        $this->syncmetadata();
 
     }
 
@@ -121,7 +156,7 @@ class FormaMigrator
         if ($test) {
             $arguments['--dry-run'] = true;
         }
-        $arguments['--all-or-nothing'] = false;
+        $arguments['--all-or-nothing'] = true;
 
         $command = new MigrateCommand($this->dependencyFactory);
 
@@ -144,7 +179,7 @@ class FormaMigrator
         return $response;
     }
 
-    private function syncMetadata()
+    private function syncmetadata()
     {
         $command = new SyncMetadataCommand($this->dependencyFactory);
 
@@ -154,6 +189,149 @@ class FormaMigrator
         $output = new BufferedOutput();
 
         $exitcode = $command->run($input, $output);
+
+        return $output->fetch();
+    }
+
+    private function diff()
+    {
+        $command = new DiffCommand($this->dependencyFactory);
+
+        $input = new ArrayInput([]);
+        $input->setInteractive(false);
+
+        $output = new BufferedOutput();
+
+        $exitcode = $command->run($input, $output);
+        if ($exitcode > 0) {
+            throw new \Exception($output->fetch());
+        }
+
+        return $output->fetch();
+    }
+
+    private function dumpschema()
+    {
+        $command = new DumpSchemaCommand($this->dependencyFactory);
+
+        $input = new ArrayInput([]);
+        $input->setInteractive(false);
+
+        $output = new BufferedOutput();
+
+        $exitcode = $command->run($input, $output);
+        if ($exitcode > 0) {
+            throw new \Exception($output->fetch());
+        }
+
+        return $output->fetch();
+    }
+
+    private function execute($version = null, $direction = 'up')
+    {
+        $command = new ExecuteCommand($this->dependencyFactory);
+
+        $arguments = [];
+        if ($version !== null) {
+            $arguments['version'] = $version;
+        }
+        if ($direction === 'down') {
+            $arguments['--down'] = true;
+        }
+
+        $input = new ArrayInput($arguments);
+        $input->setInteractive(false);
+
+        $output = new BufferedOutput();
+
+        $exitcode = $command->run($input, $output);
+        if ($exitcode > 0) {
+            throw new \Exception($output->fetch());
+        }
+
+        return $output->fetch();
+    }
+
+    private function generate()
+    {
+        $command = new GenerateCommand($this->dependencyFactory);
+
+        $input = new ArrayInput([]);
+        $input->setInteractive(false);
+
+        $output = new BufferedOutput();
+
+        $exitcode = $command->run($input, $output);
+        if ($exitcode > 0) {
+            throw new \Exception($output->fetch());
+        }
+
+        return $output->fetch();
+    }
+
+    private function latest()
+    {
+        $command = new LatestCommand($this->dependencyFactory);
+
+        $input = new ArrayInput([]);
+        $input->setInteractive(false);
+
+        $output = new BufferedOutput();
+
+        $exitcode = $command->run($input, $output);
+        if ($exitcode > 0) {
+            throw new \Exception($output->fetch());
+        }
+
+        return $output->fetch();
+    }
+
+    private function rollup($to = null)
+    {
+        $command = new RollupCommand($this->dependencyFactory);
+
+        $arguments = [];
+        if ($to !== null) {
+            $arguments['to'] = $to;
+        }
+
+        $input = new ArrayInput($arguments);
+        $input->setInteractive(false);
+
+        $output = new BufferedOutput();
+
+        $exitcode = $command->run($input, $output);
+        if ($exitcode > 0) {
+            throw new \Exception($output->fetch());
+        }
+
+        return $output->fetch();
+    }
+
+    private function version($version = null, $add = false, $delete = false)
+    {
+        $command = new VersionCommand($this->dependencyFactory);
+
+        $arguments = [];
+        if ($version !== null) {
+            $arguments['version'] = $version;
+        }
+        if ($add) {
+            $arguments['--add'] = true;
+        }
+        if ($delete) {
+            $arguments['--delete'] = true;
+        }
+
+        $input = new ArrayInput($arguments);
+        $input->setInteractive(false);
+
+        $output = new BufferedOutput();
+
+        $exitcode = $command->run($input, $output);
+        if ($exitcode > 0) {
+            throw new \Exception($output->fetch());
+        }
 
         return $output->fetch();
     }

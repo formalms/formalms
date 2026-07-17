@@ -18,17 +18,24 @@ class OrgnodeAccessProcessor extends AccessProcessor
 
     public const NAME = 'orgnode';
 
-    public function getAccessList($resourceId) : array {
+    public function getAccessList($resourceId): array
+    {
 
         return $this->accessModel->getAccessList($resourceId);
     }
 
-    public function setAccessList($resourceId, array $selection) : self {
+    public function setAccessList($resourceId, array $selection): self
+    {
 
-       $res = $this->accessModel->setAccessList($resourceId, $selection);
-       $this->setRedirect('index.php?r=adm/usermanagement/show&'. ($res ? '&res=ok_assignuser' : '&res=err_assignuser'));
+        $res = $this->accessModel->setAccessList($resourceId, $selection);
+        $this->setRedirect('index.php?r=adm/usermanagement/show&' . ($res ? '&res=ok_assignuser' : '&res=err_assignuser'));
+        if (!$res) {
+            $redirectLink = $this->accessModel->getRedirectLink();
+            if(!empty($redirectLink)) {
+                $this->setRedirect($redirectLink);
+            } 
+        }
 
         return $this;
-        
     }
 }

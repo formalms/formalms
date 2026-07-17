@@ -53,7 +53,7 @@ Events::trigger('widget.user_selector.render_js_script', []);
 		<br />
 		<div class="simple_search_box" id="userselector_simple_filter_options_<?php echo $id; ?>" style="display: inline;">
 			<?php
-            echo Form::getInputTextfield('search_t', 'user_filter_text_' . $id, 'filter_text', $filter_text, '', 255, '');
+            echo Form::getInputTextfield('search_t', 'user_filter_text_' . $id, 'filter_text', $filter_text, 255, '');
 echo Form::getButton('user_filter_set_' . $id, 'filter_set', Lang::t('_SEARCH', 'standard'), 'search_b', '', true, false);
 echo Form::getButton('user_filter_reset_' . $id, 'filter_reset', Lang::t('_RESET', 'standard'), 'reset_b', '', true, false);
 echo '<div id="user_filter_text_' . $id . '_container"></div>';

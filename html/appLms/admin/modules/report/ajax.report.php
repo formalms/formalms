@@ -17,14 +17,100 @@ if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit('You can\'t access');
 }
 
+/**
+ * Encode report filter data to JSON format
+ *
+ * @param array $data The data to encode
+ * @return string JSON encoded string
+ *
+ * @since 4.2.0 Changed from serialize() to json_encode() for better UTF-8 support and interoperability
+ */
 function _encode(&$data)
 {
-    return serialize($data);
-} //{ return urlencode(Util::serialize($data)); }
-function _decode(&$data)
+    return json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+}
+
+/**
+ * Decode report filter data from JSON or serialized format (legacy support)
+ *
+ * @param string $jsonData JSON data (preferred)
+ * @param string|null $serializedData Legacy serialized data (fallback, deprecated)
+ * @return array|null Decoded data or null on failure
+ *
+ * @since 4.2.0 Added JSON support as primary format
+ * @internal The $serializedData parameter is deprecated since 4.2.0 and will be removed in 5.0.0
+ */
+function _decode(&$jsonData, $serializedData = null)
 {
-    return unserialize($data);
-} //{ return Util::unserialize(urldecode($data)); }
+    // If JSON data is available and valid, use it
+    if (!empty($jsonData)) {
+        $result = json_decode($jsonData, true);
+        if ($result !== null || json_last_error() === JSON_ERROR_NONE) {
+            return $result;
+        }
+    }
+
+    // @deprecated Since 4.2.0 - Fallback to serialized data (legacy support), will be removed in 5.0.0
+    if (!empty($serializedData)) {
+        @trigger_error(
+            'Reading report filter from serialized format (filter_data column) is deprecated since 4.2.0. ' .
+            'Data will be auto-migrated to JSON format (filter_data_json column).',
+            E_USER_DEPRECATED
+        );
+        $result = @unserialize($serializedData);
+        if ($result !== false) {
+            return $result;
+        }
+        // Attempt to repair corrupted byte counts (e.g. caused by UTF-8 encoding changes)
+        $result = _unserialize_repair($serializedData);
+        if ($result !== false && $result !== null) {
+            return $result;
+        }
+    }
+
+    // @deprecated Since 4.2.0 - Auto-detect serialized PHP in jsonData param (legacy support)
+    if (!empty($jsonData) && preg_match('/^[aOsbidn]:/', $jsonData)) {
+        @trigger_error(
+            'Detected serialized PHP data in JSON parameter. This legacy format is deprecated since 4.2.0.',
+            E_USER_DEPRECATED
+        );
+        $result = @unserialize($jsonData);
+        if ($result !== false) {
+            return $result;
+        }
+        // Attempt to repair corrupted byte counts
+        $result = _unserialize_repair($jsonData);
+        if ($result !== false && $result !== null) {
+            return $result;
+        }
+    }
+
+    return null;
+}
+
+/**
+ * Attempt to repair and unserialize a corrupted PHP serialized string.
+ * Fixes byte count mismatches caused by multibyte character encoding changes (e.g. Latin-1 to UTF-8).
+ *
+ * @param string $data The corrupted serialized string
+ * @return mixed The unserialized data, or false on failure
+ */
+function _unserialize_repair($data)
+{
+    $repaired = preg_replace_callback(
+        '/s:(\d+):"(.*?)";/s',
+        function ($matches) {
+            return 's:' . strlen($matches[2]) . ':"' . $matches[2] . '";';
+        },
+        $data
+    );
+
+    if ($repaired === null || $repaired === $data) {
+        return false;
+    }
+
+    return @unserialize($repaired);
+}
 
 $rep_cat = FormaLms\lib\Get::req('rep_cat', DOTY_ALPHANUM, false);
 
@@ -53,8 +139,7 @@ switch ($op) {
         $output['button_ok'] = $lang->def('_SAVE');
         $output['button_undo'] = $lang->def('_UNDO');
 
-        $json = new Services_JSON();
-        aout($json->encode($output));
+        aout(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
      break;
 
     case 'show_recipients_window':
@@ -142,9 +227,7 @@ switch ($op) {
             $output['body'] = Lang::t('_NO_VALUE', 'user_managment');
         }
 
-        //$output['button_close'] = $lang->def('_CLOSE');
-        $json = new Services_JSON();
-        aout($json->encode($output));
+        aout(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
      break;
 
     case 'save_filter':
@@ -156,10 +239,17 @@ switch ($op) {
 
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $report = $session->get('report');
+
+        // @since 4.2.0 - Primary storage: JSON format in filter_data_json column
+        $dataJson = addslashes(json_encode($report, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+
+        // @deprecated Since 4.2.0 - Legacy column for backward compatibility, will be removed in 5.0.0
+        $dataSerialized = addslashes(serialize($report));
+
         $query = 'INSERT INTO %lms_report_filter ' .
-            '(id_report, author, creation_date, filter_data, filter_name) VALUES ' .
+            '(id_report, author, creation_date, filter_data, filter_data_json, filter_name) VALUES ' .
             '(' . $report['id_report'] . ', ' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdst() . ', NOW(), ' .
-            " '" . addslashes(serialize($report)) . "', '$name')";
+            " '$dataSerialized', '$dataJson', '$name')";
 
         if (!$output['success'] = sql_query($query)) {
             $output['error'] = sql_error();
@@ -170,8 +260,7 @@ switch ($op) {
             $session->set('report_saved', $row[0]);
             $session->save();
         }
-        $json = new Services_JSON();
-        aout($json->encode($output));
+        aout(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
      break;
 
     case 'delete_filter':
@@ -182,8 +271,7 @@ switch ($op) {
         } else {
             $output['success'] = false;
         }
-        $json = new Services_JSON();
-        aout($json->encode($output));
+        aout(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
      break;
 
     case 'sched_enable':
@@ -198,8 +286,7 @@ switch ($op) {
             $success = sql_query($query);
         }
         $output['success'] = $success;
-        $json = new Services_JSON();
-        aout($json->encode($output));
+        aout(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
      break;
 
     case 'public_rep':
@@ -214,8 +301,7 @@ switch ($op) {
             $success = sql_query($query);
         }
                 $output['success'] = $success;
-        $json = new Services_JSON();
-        aout($json->encode($output));
+        aout(\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON));
      break;
     default:
         break;

@@ -26,7 +26,6 @@ const _DATE_TEST_TYPE_NONE = 2;
 
 class DateManager
 {
-    public $lang;
     public $acl_man;
     public $subscribe_man;
 
@@ -34,13 +33,30 @@ class DateManager
     {
         require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
-        $this->lang = FormaLanguage::CreateInstance('admin_date', 'lms');
+
         $this->acl_man = \FormaLms\lib\Forma::getAclManager();
         $this->subscribe_man = new CourseSubscribe_Manager();
     }
 
     public function __destruct()
     {
+    }
+
+    public function deleteDatesWithoutDays($idCourse = null)
+    {
+        $query = 'DELETE FROM %lms_course_date 
+                  WHERE id_date NOT IN (
+                      SELECT DISTINCT id_date 
+                      FROM %lms_course_date_day
+                  )';
+
+        if ($idCourse) {
+            $query .= ' AND id_course = ' . $idCourse;
+        }
+
+        $result = sql_query($query);
+
+        return $result;
     }
 
     public function getDateNumber($id_course, $all = false)
@@ -120,7 +136,7 @@ class DateManager
     public function getClassroomForDropdown()
     {
         $res = [];
-        $res[0] = $this->lang->def('_NOT_ASSIGNED');
+        $res[0] = Lang::t('_NOT_ASSIGNED', 'admin_date');
 
         $query = 'SELECT idClassroom, location, name'
             . ' FROM %lms_class_location as loc JOIN %lms_classroom AS cl '
@@ -160,6 +176,7 @@ class DateManager
             . ' ' . $status . ", '" . $sub_start_date . "', '" . $sub_end_date . "', "
             . " '" . $unsubscribe_date_limit . "','" . CalendarManager::generateUniqueCalendarId() . "')";
         //." VALUES (".$id_course.", '".Util::strip_slashes($code)."', '".Util::strip_slashes($name)."', '".Util::strip_slashes($description)."', '".$medium_time."', ".(int)$max_par.", '".Util::strip_slashes($price)."', ".$overbooking.", ".$test_type.", ".$status.")";
+
 
         $result = sql_query($query);
 
@@ -313,7 +330,7 @@ class DateManager
         return $res;
     }
 
-    public function getCourseDate($id_course, $all = true, $ini = 0, $num_element = 0)
+    public function getCourseDate($id_course, $all = true, $ini = 0, $num_element = 0, $includeEmpty = false)
     {
         $res = [];
 
@@ -339,7 +356,7 @@ class DateManager
         $result = sql_query($query);
 
         foreach ($result as $row) {
-            if (strcmp($row['date_begin'], date('Y-m-d H:i:s')) > 0 || $all) {
+            if (($includeEmpty && empty($row['date_begin'])) || (!empty($row['date_begin']) && (strcmp($row['date_begin'], date('Y-m-d H:i:s')) > 0 || $all))) {
                 $row['classroom'] = $this->getDateClassrooms($row['id_date']);
 
                 if ($row['user_subscribed'] > 1) {
@@ -387,7 +404,7 @@ class DateManager
 
         if (isset($array_classroom[0])) {
             $first = false;
-            $res .= $this->lang->def('_NOT_ASSIGNED');
+            $res .= Lang::t('_NOT_ASSIGNED', 'admin_date');
         }
 
 
@@ -440,6 +457,10 @@ class DateManager
         return $location . ' - ' . $name . '  ' . $street . '  ' . $city . ' ' . $zip_code . '';
     }
 
+    /**
+     * @param $id_date
+     * @return array
+     */
     public function getDateInfo($id_date)
     {
         $result = [];
@@ -452,7 +473,7 @@ class DateManager
             . ' GROUP BY dt.id_date'
             . ' ORDER BY dy.date_begin';
 
-        $res = sql_fetch_assoc(sql_query($query));
+        $res = (array)sql_fetch_assoc(sql_query($query));
 
 
         if (is_array($res) && $res['user_subscribed'] > 1) {
@@ -954,14 +975,9 @@ class DateManager
 
     public function controlUserSubscriptions($id_user, $id_course)
     {
-        $query = 'SELECT COUNT(*)'
-            . ' FROM %lms_course_date_user '
+        $query = 'SELECT COUNT(*)  FROM %lms_course_date_user '
             . ' WHERE id_user = ' . $id_user
-            . ' AND id_date IN'
-            . ' ('
-            . ' SELECT id_date'
-            . ' FROM %lms_course_date '
-            . ' WHERE id_course = ' . $id_course
+            . ' AND id_date IN  (  SELECT id_date  FROM %lms_course_date   WHERE id_course = ' . $id_course
             . ' )';
 
         [$res] = sql_fetch_row(sql_query($query));
@@ -975,17 +991,17 @@ class DateManager
 
     public function getStatusForDropdown()
     {
-        return [_DATE_STATUS_PREPARATION => $this->lang->def('_CST_PREPARATION', 'course'),
-            _DATE_STATUS_ACTIVE => $this->lang->def('_CST_AVAILABLE', 'course'),
-            _DATE_STATUS_FINISHED => $this->lang->def('_CST_CONCLUDED', 'course'),
-            _DATE_STATUS_CANCELLED => $this->lang->def('_CST_CANCELLED', 'course'),];
+        return [_DATE_STATUS_PREPARATION => Lang::t('_CST_PREPARATION', 'course'),
+            _DATE_STATUS_ACTIVE => Lang::t('_CST_AVAILABLE', 'course'),
+            _DATE_STATUS_FINISHED => Lang::t('_CST_CONCLUDED', 'course'),
+            _DATE_STATUS_CANCELLED => Lang::t('_CST_CANCELLED', 'course'),];
     }
 
     public function getTestTypeForDropdown()
     {
-        return [_DATE_TEST_TYPE_WEB => $this->lang->def('_WEB_TEST'),
-            _DATE_TEST_TYPE_PAPER => $this->lang->def('_PAPER_TEST'),
-            _DATE_TEST_TYPE_NONE => $this->lang->def('_NONE'),];
+        return [_DATE_TEST_TYPE_WEB => Lang::t('_WEB_TEST', 'admin_date'),
+            _DATE_TEST_TYPE_PAPER => Lang::t('_PAPER_TEST', 'admin_date'),
+            _DATE_TEST_TYPE_NONE => Lang::t('_NONE', 'admin_date'),];
     }
 
     public function getHours()
@@ -1485,7 +1501,7 @@ class DateManager
 
         if (isset($array_classroom[0])) {
             $first = false;
-            $res .= $this->lang->def('_NOT_ASSIGNED');
+            $res .= Lang::t('_NOT_ASSIGNED', 'admin_date');
         }
 
         $query = 'SELECT *'
@@ -1622,11 +1638,11 @@ class DateManager
                 'num_subscribe' => $user_subscribed,
                 'subscription' => '<a href="index.php?r=alms/subscription/show&id_course=' . $id_course . '&amp;id_date=' . $id_date . '" title="' . Lang::t('_SUBSCRIPTION', 'course') . '">'
                     . ($user_subscribed ? $user_subscribed : 0)
-                    . ' <span class="ico-sprite subs_' . ($user_subscribed > 0 ? 'users' : 'notice') . '"><span>' . Lang::t('_USER_STATUS_SUBS') . '</span></span></a>',
+                    . '<span class="ico-sprite subs_' . ($user_subscribed > 0 ? 'users' : 'notice') . '"><span>' . Lang::t('_USER_STATUS_SUBS') . '</span></span></a>',
                 'presence' => '<a href="index.php?r=alms/classroom/presence&id_course=' . $id_course . '&amp;id_date=' . $id_date . '">' . Lang::t('_ATTENDANCE', 'course') . '</a>',
                 'num_day' => $num_day,
                 'user_subscribed' => $user_subscribed,
-                'mod' => '<a href="index.php?r=alms/classroom/updateClassroom&id_course=' . $id_course . '&amp;id_date=' . $id_date . '">' . FormaLms\lib\Get::img('standard/edit.png', Lang::t('_MOD', 'course')) . '</a>',
+                'mod' => '<a href="index.php?r=alms/classroom/updateClassroom&id_course=' . $id_course . '&amp;id_date=' . $id_date . '">' . FormaLms\lib\Get::sprite('subs_mod', Lang::t('_MOD', 'course')) . '</a>',
                 'del' => 'ajax.adm_server.php?r=alms/classroom/delclassroom&id_course=' . $id_course . '&amp;id_date=' . $id_date,
                 'unsubscribe_date_limit' => $unsubscribe_date_limit,
                 'registro' => '<a href="index.php?r=alms/classroom/classroomDateDays&id_course=' . $id_course . '&amp;id_date=' . $id_date . '">' . FormaLms\lib\Get::img('standard/date.png', Lang::t('_DAYS', 'course')) . '</a>',
@@ -1876,25 +1892,36 @@ class DateManager
 
     public function delUserFromDate($id_user, $id_course, $id_date)
     {
-        $this->removeUserFromDate($id_user, $id_date, $id_course);
+        $result = $this->removeUserFromDate($id_user, $id_date, $id_course);
+
+        if (!$result) {
+            return false;
+        }
+
         if (!$this->controlUserSubscriptions($id_user, $id_course)) {
-            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
+            require_once Forma::include(_lms_ . '/lib/', 'lib.course.php');
             require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
             $subscribe_man = new CourseSubscribe_Manager();
             $level = $this->subscribe_man->getUserLeveInCourse($id_user, $id_course);
-            $subscribe_man->delUserFromCourse($id_user, $id_course, null, $id_date);
+            $subscribe_result = $subscribe_man->delUserFromCourse($id_user, $id_course, null, $id_date);
+
+            if (!$subscribe_result) {
+                return false;
+            }
 
             $formaCourse = new FormaCourse($id_course);
-            $level_idst = &$formaCourse->getCourseLevel($id_course);
+            $level_idst = $formaCourse->getCourseLevel($id_course);
             $this->acl_man->removeFromGroup($level_idst[$level], $id_user);
 
             //check if there are overbooked users
             $cinfo = $this->getDateInfo($id_date);
-            $overbooking_users = $this->getDateOverbookingUsers($id_date);
-            if ($cinfo['overbooking'] > 0 && !empty($overbooking_users)) {
-                if (($cinfo['user_subscribed'] - count($overbooking_users)) < $cinfo['max_par']) {
-                    $this->setFirstOverbookingUser($id_date);
+            if ($cinfo && is_array($cinfo)) {
+                $overbooking_users = $this->getDateOverbookingUsers($id_date);
+                if ($cinfo['overbooking'] > 0 && !empty($overbooking_users)) {
+                    if (($cinfo['user_subscribed'] - count($overbooking_users)) < $cinfo['max_par']) {
+                        $this->setFirstOverbookingUser($id_date);
+                    }
                 }
             }
         }

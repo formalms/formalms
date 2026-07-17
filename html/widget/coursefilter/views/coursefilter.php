@@ -3,10 +3,6 @@ $str_search = Lang::t("_SEARCH", 'standard');
 $str_elearning = Lang::t("_COURSE_TYPE_ELEARNING", 'course');
 $str_classroom = Lang::t("_CLASSROOM_COURSE", 'cart');
 $str_all = Lang::t("_ALL_COURSE_TYPE", 'course');
-
-
-
-
 ?>
 
 <nav class="forma-quick-search-form filterBar quick_search_form navbar<?php echo isset($css_class) && $css_class != '' ? ' ' . $css_class : ''; ?>" aria-label="<?php Lang::t('_COURSE_SEARCH_BAR', 'menu_course') ?>">
@@ -89,7 +85,7 @@ $str_all = Lang::t("_ALL_COURSE_TYPE", 'course');
                         <label for="course_search_filter_text">
                             <span class="screenreader"><?php echo Lang::t('_SEARCH_COURSE', 'menu_course'); ?></span>
                         </label>
-                        <?php echo Form::getInputTextfield('form-control', $id . '_filter_text', 'filter_text', $filter_text, '', 255, 'equired data-toggle="popover" data-content="' . Lang::t('_INSERT', 'standard') . ' ' . strtolower(Lang::t('_COURSE_NAME', 'standard')) . '" placeholder=' . $str_search); ?>
+                        <?php echo Form::getInputTextfield('form-control', $id . '_filter_text', 'filter_text', $filter_text, 255, 'equired data-toggle="popover" data-content="' . Lang::t('_INSERT', 'standard') . ' ' . strtolower(Lang::t('_COURSE_NAME', 'standard')) . '" placeholder=' . $str_search); ?>
                         <div class="input-group-btn">
                             <button type="submit" class="btn btn-default course-icon-position" id="<?php echo $id . '_filter_set2'; ?>"
                                     name="filter_set" title="<?php echo Lang::t('_SEARCH', 'standard'); ?>">
@@ -105,17 +101,9 @@ $str_all = Lang::t("_ALL_COURSE_TYPE", 'course');
             </div>
         </div>
 
-
-
-
-
         <?php if ($inline_filters) { ?>
           <div class="filterBar__buttons navbar-extra"><?php echo $inline_filters; ?></div>
         <?php } ?>
-
-
-
-
 
         <div class="filterBar__mobile navbar-header">
             <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#filter-container">

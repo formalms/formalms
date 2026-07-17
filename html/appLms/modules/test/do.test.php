@@ -289,8 +289,8 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
                 }
 
                 if (count($req_arr) > 0) {
-                    $query = 'SELECT * FROM %lms_commontrack WHERE idUser = '. \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() .' AND idReference IN (' . implode(',', $req_arr) . ') ';
-                    if(!empty($last_suspension_date)) {
+                    $query = 'SELECT * FROM %lms_commontrack WHERE idUser = ' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . ' AND idReference IN (' . implode(',', $req_arr) . ') ';
+                    if (!empty($last_suspension_date)) {
                         $query .= ' AND dateAttempt > "' . $last_suspension_date . '" ';
                     } else {
                         $query .= ' AND dateAttempt IS NOT NULL ';
@@ -688,29 +688,29 @@ function play($object_test, $id_param)
         $time_string .=
             '<script type="text/javascript">
 			<!--
-			
+
 			var start_count_from = ' . $start_time . ";
 			var step = 1;
 			var time_elapsed = 0;
-			
+
 			var id_interval;
 			var id_timeout;
-			
+
 			if( window.document.getElementById == null ) {
 				window.document.getElementById = function( id ) {
 					return document.all[id];
 			  }
 			}
-			
+
 			function counter() {
-				
+
 				time_elapsed += step;
-				
+
 				var display = start_count_from - time_elapsed;
 				var elem = document.getElementById('time_left');
-				
+
 				if(display <  0) return;
-				
+
 				var value = display/60;
 				var minute = Math.floor(value).toString(10);
 				if( minute.length <= 1 ) minute = '0' + minute;
@@ -719,26 +719,26 @@ function play($object_test, $id_param)
 				if( second.length <= 1 ) second = '0' + second;
 				elem.innerHTML = minute + 'm ' + second  + ' s';
 			}
-			
+
 			function whenTimeElapsed() {
-				
+
 				 window.clearInterval(id_interval);
 				 window.clearTimeout(id_timeout);
-				 
+
 				var submit_to_end = document.getElementById('test_play');
 				var time_elapsed = document.getElementById('time_elapsed');
 				time_elapsed.value = 1;
 				alert('" . $lang->def('_TIME_ELAPSED') . "');
 				submit_to_end.submit();
 			}
-			
+
 			function activateCounter() {
-				
+
 				counter();
 				id_interval 	= window.setInterval(\"counter()\", step * 1000);
 				id_timeout 		= window.setTimeout(\"whenTimeElapsed()\", (start_count_from - 1) * 1000);
 			}
-			
+
 			activateCounter();
 			// -->
 			</script>";
@@ -802,7 +802,7 @@ function play($object_test, $id_param)
                                 if(mandatory == true) {
                                     num_answer_radio = $('.answer_question input[type=\"radio\"]:checked').length;     
                                     num_answer_chk = $('.answer_question input[type=\"checkbox\"]:checked').length;
-                
+
                                     if((num_answer_radio + num_answer_chk) > 0 || $('.answer_question select').length > 0) {
                                     	toggleNext(true);
                                     } else {
@@ -811,7 +811,7 @@ function play($object_test, $id_param)
                                 } else {
                                     toggleNext(true);
                                 }
-                                 
+
 								$('.answer_question input[type=\"radio\"], .answer_question input[type=\"checkbox\"]').parent('.input-wrapper').removeClass('checked');
 								$('.answer_question input[type=\"radio\"]:checked').parent('.input-wrapper').addClass('checked');
 								$('.answer_question input[type=\"checkbox\"]:checked').parent('.input-wrapper').addClass('checked');
@@ -892,6 +892,14 @@ function play($object_test, $id_param)
         $query_question = str_replace('WHERE', 'WHERE q.idQuest = ' . $idQuest . ' AND', $query_question);
     }
     // END FIX
+
+    // Check if query is empty to prevent errors
+    if (empty($query_question)) {
+        // No more questions available, redirect to results
+        showResult($object_test, $id_param);
+        return;
+    }
+
     // Get question from database
     $re_question = sql_query($query_question);
 
@@ -1383,7 +1391,7 @@ function showResult($object_test, $id_param)
             if ($suspend_info['attempts_for_suspension'] >= (int)($test_info['suspension_num_attempts'])) {
                 if ($prerequisite = $test_man->getPrerequisite()) {
 
-                    $prerequisite = str_replace(["=incomplete","=NULL"], '', $prerequisite);
+                    $prerequisite = str_replace(["=incomplete", "=NULL"], '', $prerequisite);
                     $sql = "DELETE FROM %lms_materials_track WHERE idReference IN ($prerequisite) AND idUser = " . \FormaLms\lib\FormaUser::getCurrentUser()->getIdst();
                     $result = sql_query($sql);
 
@@ -1475,7 +1483,7 @@ function showResult($object_test, $id_param)
             WHERE  c.idCategory = q.idCategory 
             AND q.idTest = ' . $id_test . '
             AND q.idCategory != 0
-            
+
              AND idQuest IN (
              SELECT idQuest FROM learning_testtrack_answer AS a , learning_testtrack   AS b
              WHERE a.idTrack = b.idTrack AND idUser = ' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdst() . ' )
@@ -1486,8 +1494,8 @@ function showResult($object_test, $id_param)
 
         $array_question_number = [];
         [$random_question] = sql_fetch_row(sql_query('SELECT order_info FROM ' . $GLOBALS['prefix_lms'] . "_test WHERE idTest='" . $id_test . "'"));
-        $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
-        $json_random = $json->decode($random_question);
+        
+        $json_random = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($random_question, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         if (is_array($json_random)) {
             foreach ($json_random as $value) {
                 $array_question_number[$value['id_category']] = $value['selected'];
@@ -1550,7 +1558,7 @@ function showResult($object_test, $id_param)
     //--- if chart visualization enabled, then show it ---------------------------
 
     if ($test_info['chart_options'] !== '') {
-        $chart_options = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($test_info['chart_options'], 'json');
+        $chart_options = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($test_info['chart_options'], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     } else {
         $chart_options = [];
     }
@@ -1617,6 +1625,9 @@ function showResult($object_test, $id_param)
                 . Form::closeForm(), 'content');
         }
     }
+
+
+    Events::trigger('lms.test.show_details', ['idTest' => $id_test, 'backUrl' => $url_coded]);
 
     $GLOBALS['page']->add(Form::openForm('test_show', Util::str_replace_once('&', '&amp;', $object_test->back_url))
         . '<div class="align_right">'
@@ -1717,15 +1728,15 @@ function review($object_test, $id_param)
 
             if (!$test_info['show_quest_score']) {
                 $GLOBALS['page']->add('<div class="test_score_note">' . $lang->def('_SCORE') . ' : ', 'content');
-            if ($quest_obj->getScoreSetType() == 'manual' && !$review['manual_assigned']) {
-                $GLOBALS['page']->add($lang->def('_NOT_ASSIGNED'), 'content');
-            } else {
-                if ($review['score'] > 0) {
-                    $GLOBALS['page']->add('<span class="test_score_positive">' . $review['score'] . '</span>', 'content');
+                if ($quest_obj->getScoreSetType() == 'manual' && !$review['manual_assigned']) {
+                    $GLOBALS['page']->add($lang->def('_NOT_ASSIGNED'), 'content');
                 } else {
-                    $GLOBALS['page']->add('<span class="test_score_negative">' . $review['score'] . '</span>', 'content');
+                    if ($review['score'] > 0) {
+                        $GLOBALS['page']->add('<span class="test_score_positive">' . $review['score'] . '</span>', 'content');
+                    } else {
+                        $GLOBALS['page']->add('<span class="test_score_negative">' . $review['score'] . '</span>', 'content');
+                    }
                 }
-            }
                 $GLOBALS['page']->add('</div>', 'content');
             }
             $GLOBALS['page']->add(($review['comment'] != '' ? $review['comment'] : ''), 'content');
@@ -1824,17 +1835,23 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
             $quest_see[] = $id_q;
         }
 
-        $query_question = "
-		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.idCategory 
-		FROM %lms_testquest AS q JOIN %lms_quest_type AS t
-		WHERE q.idTest = '" . $idTest . "' AND q.type_quest = t.type_quest AND  q.idQuest IN (" . implode(',', $quest_see) . ')
-		ORDER BY q.sequence';
-    } else {
-        $query_question = "
-		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.idCategory 
-		FROM %lms_testquest AS q JOIN %lms_quest_type AS t
-		WHERE q.idTest = '" . $idTest . "' AND q.type_quest = t.type_quest 
-		ORDER BY q.sequence";
+        if (empty($quest_see)) {
+
+            $query_question = "
+        SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.idCategory 
+        FROM %lms_testquest AS q JOIN %lms_quest_type AS t
+        WHERE q.idTest = '" . $idTest . "'
+          AND q.type_quest = t.type_quest
+        ORDER BY q.sequence";
+        } else {
+            $query_question = "
+        SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.idCategory 
+        FROM %lms_testquest AS q JOIN %lms_quest_type AS t
+        WHERE q.idTest = '" . $idTest . "'
+          AND q.type_quest = t.type_quest
+          AND q.idQuest IN (" . implode(',', $quest_see) . ")
+        ORDER BY q.sequence";
+        }
     }
 
     $reQuest = sql_query($query_question);
@@ -1860,15 +1877,15 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
                 if ($test_info['show_quest_score']) {
 
                     $report_test .= '<div class="test_score_note">' . $lang->def('_SCORE') . ' : ';
-                if ($quest_obj->getScoreSetType() == 'manual' && !$review['manual_assigned']) {
-                    $report_test .= $lang->def('_NOT_ASSIGNED');
-                } else {
-                    if ($review['score'] > 0) {
-                        $report_test .= '<span class="test_score_positive">' . $review['score'] . '</span>';
+                    if ($quest_obj->getScoreSetType() == 'manual' && !$review['manual_assigned']) {
+                        $report_test .= $lang->def('_NOT_ASSIGNED');
                     } else {
-                        $report_test .= '<span class="test_score_negative">' . $review['score'] . '</span>';
+                        if ($review['score'] > 0) {
+                            $report_test .= '<span class="test_score_positive">' . $review['score'] . '</span>';
+                        } else {
+                            $report_test .= '<span class="test_score_negative">' . $review['score'] . '</span>';
+                        }
                     }
-                }
                     $report_test . '</div>';
                 }
 
@@ -1975,7 +1992,7 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
                 $GLOBALS['page']->add($str, 'content');
             }
 
-            while (list($id_cat, $name_cat) = each($categories)) {
+            foreach ($categories as $id_cat => $name_cat) {
                 $str = $name_cat . ', ' . $lang->def('_TEST_SCORES') . ': '
                     . (isset($point_do_cat[$id_cat]) ? $point_do_cat[$id_cat] : 0) . '<br />';
                 if ($mvc) {
@@ -1983,7 +2000,7 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
                 } else {
                     $GLOBALS['page']->add($str, 'content');
                 }
-            }
+            }   
         }
     }
     $str = '<br /><br /><div class="test_answer_space">' . $report_test . '</div>';
@@ -2073,15 +2090,15 @@ function editUserReport($id_user, $id_test, $id_track, $number_time = null, $edi
                 if ($test_info['show_quest_score']) {
 
                     $report_test .= '<div class="test_score_note">' . $lang->def('_SCORE') . ' : ';
-                if ($quest_obj->getScoreSetType() == 'manual' && !$review['manual_assigned']) {
-                    $report_test .= $lang->def('_NOT_ASSIGNED');
-                } else {
-                    if ($review['score'] > 0) {
-                        $report_test .= '<span class="test_score_positive">' . $review['score'] . '</span>';
+                    if ($quest_obj->getScoreSetType() == 'manual' && !$review['manual_assigned']) {
+                        $report_test .= $lang->def('_NOT_ASSIGNED');
                     } else {
-                        $report_test .= '<span class="test_score_negative">' . $review['score'] . '</span>';
+                        if ($review['score'] > 0) {
+                            $report_test .= '<span class="test_score_positive">' . $review['score'] . '</span>';
+                        } else {
+                            $report_test .= '<span class="test_score_negative">' . $review['score'] . '</span>';
+                        }
                     }
-                }
                     $report_test . '</div>';
                 }
 
@@ -2246,7 +2263,7 @@ function saveManualUserReport($id_user, $id_test, $id_track)
             } else {
                 $quest_point_do = $quest_obj->userScore($id_track);
             } // end else
-            if (!is_numeric($quest_point_do)){
+            if (!is_numeric($quest_point_do)) {
                 $quest_point_do = 0;
             }
             $point_do = round($point_do + $quest_point_do, 2);

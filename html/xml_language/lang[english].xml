@@ -442,7 +442,7 @@
         <key id="configuration&amp;MAIN_SET_4" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[General settings]]></key>
         <key id="configuration&amp;MAIN_SET_6" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[General settings]]></key>
         <key id="configuration&amp;MAIN_SET_8" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[General settings]]></key>
-        <key id="configuration&amp;MAIN_SET_9" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[LDAP]]></key>
+        <key id="configuration&amp;MAIN_SET_9" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[SSO]]></key>
         <key id="configuration&amp;PASSWORD_BCRYPT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[BYCRYPT Password]]></key>
         <key id="configuration&amp;PASSWORD_MD5" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[MD5 Password]]></key>
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Use high contrast colors]]></key>
@@ -517,11 +517,6 @@
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Activate language editing (used for debugging)]]></key>
         <key id="configuration&amp;_LANG_EXPORT_TIME" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Time of language export]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[First Name and Last Name are required in order to register]]></key>
-        <key id="configuration&amp;_LDAP" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[LDAP]]></key>
-        <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[LDAP port (usually 389)]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[LDAP server address]]></key>
-        <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Activate LDAP authentication]]></key>
-        <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Username for LDAP users, use $user for the username.<br />Ex. $user@domain2.domain1 (for: W2k3)]]></key>
         <key id="configuration&amp;_LIST_DB_UPGRADES" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[DB SQL scripts log]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Configuration of "magic_quotes_gpc"]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Registrations and Lost passwords email sender]]></key>
@@ -612,6 +607,7 @@
         <key id="configuration&amp;_REST_AUTH_API_SECRET" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Authorization API Secret key]]></key>
         <key id="configuration&amp;_REST_AUTH_CODE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Single code for platform]]></key>
         <key id="configuration&amp;_REST_AUTH_LIFETIME" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Generated token will expire after (minutes)]]></key>
+        <key id="configuration&amp;_SSO_LIFETIME" attributes="" save_date="2017-03-15 17:48:15"><![CDATA[Generated SSO token will expire after (minutes)]]></key>
         <key id="configuration&amp;_REST_AUTH_METHOD" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Authentication method:]]></key>
         <key id="configuration&amp;_REST_AUTH_SECRET_KEY" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Authorization Secret Key]]></key>
         <key id="configuration&amp;_REST_AUTH_TOKEN" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Token generation at every connection]]></key>
@@ -682,7 +678,6 @@
         <key id="configuration&amp;_URL" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Website URL with final /]]></key>
         <key id="configuration&amp;_URL_CHECKIN_TELESKILL" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[URL for check-in]]></key>
         <key id="configuration&amp;_URL_VIDEOCONFERENCE_TELESKILL" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[URL for videoconference]]></key>
-        <key id="configuration&amp;_USEFULL_ONLY_IF" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Consider this parameter only if you need to authenticate through LDAP]]></key>
         <key id="configuration&amp;_USERS_ALREADY_ASSIGNED" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[already assigned users]]></key>
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Ask the user to choose a password different from the last X used passwords]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Disk quota (in MB) for each user's My Files area]]></key>
@@ -931,6 +926,10 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="coursepath&amp;_CURRENT_ACTIVITY" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Current Activity]]></key>
         <key id="coursepath&amp;_IMPORT_COURSE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Import courses in curricula]]></key>
         <key id="coursepath&amp;_SUBSCRIBED_CAPTION" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[User currently subscribed]]></key>
+        <key id="coursepath&amp;_COURSE_PATH_LOGO" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Course path logo]]></key>
+        <key id="coursepath&amp;_DOCUMENT_UPLOAD" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Documents upload]]></key>
+        <key id="course&amp;_COURSEPATH_SPECIAL_OPTION" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Special options]]></key>
+        <key id="coursepath&amp;_CHECKBOX_EXPAND_PATH_INFO" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Don't show the Expand / Collapse button]]></key>
       </module>
       <module id="coursereport">
         <key id="coursereport&amp;_ACTIVITY_INFO" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Information about the selected activities]]></key>
@@ -1189,8 +1188,10 @@ Username: [userid]]]></key>
         <key id="email&amp;_NEW_USER_OVERBOOKING_SUBSCRIBED_SUBJECT" attributes="" save_date="2021-08-02 13:31:37"><![CDATA[User enrolled in overbooking]]></key>
         <key id="email&amp;_NEW_USER_OVERBOOKING_SUBSCRIBED_TEXT" attributes="" save_date="2021-08-02 13:27:47"><![CDATA[The user [firstname] [lastname], has been enrolled in course [course] with overbooking state on platform [url]]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT" attributes="email" save_date="2021-01-07 12:01:19"><![CDATA[You have been enrolled in course]]></key>
+        <key id="email&amp;_NEW_USER_SUBSCRIBED_COURSEPATH_SUBJECT" attributes="email" save_date="2021-01-07 12:01:19"><![CDATA[You have been enrolled in course path]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_SUBJECT_MODERATORS" attributes="" save_date="2020-09-21 12:58:38"><![CDATA[A new user has been enrolled in a course]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_TEXT" attributes="email" save_date="2021-01-07 12:05:39"><![CDATA[You have been enrolled in the course : [course] at URL: <a href="[url]">[url]</a>]]></key>
+        <key id="email&amp;_NEW_USER_SUBSCRIBED_COURSEPATH_TEXT" attributes="email" save_date="2021-01-07 12:05:39"><![CDATA[You have been enrolled in the course path : [coursepath] at URL: <a href="[url]">[url]</a>]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_TEXT_MODERATORS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[A new user, [firstname] [lastname] [username] has been enrolled in course [course]]]></key>
         <key id="email&amp;_NEW_USER_SUBSCRIBED_TEXT_SMS" attributes="" save_date="2021-01-07 12:06:12"><![CDATA[You have been enrolled in the course : [course] at URL: [url]]]></key>
         <key id="email&amp;_NEW_USER_SUBS_WAITING_SUBJECT" attributes="email" save_date="2020-09-15 14:47:12"><![CDATA[User is waiting for course subscription approval]]></key>
@@ -1620,7 +1621,6 @@ you have been unsubscribed from the course ([course_code]) - [course]]]></key>
 To change these words please go to Admin/Language management, search for <b>login</b>, and edit the keys <b>_INTRO_STD_TEXT_TITLE</b> and <b>_INTRO_STD_TEXT</b>]]></key>
         <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[forma.lms is an open source e-learning platform (LMS and LCMS) used in corporate and higher education markets]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Jump to login form]]></key>
-        <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[LDAP authentication is active, functionality unavailable please call your administrator]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Login]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Accessible Login]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Login]]></key>
@@ -1653,6 +1653,7 @@ In handling this information, accuracy and precision shall be met to ensure the 
         <key id="login&amp;_UNKNOWNGOOGLERROR" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Unknown error during Google login]]></key>
         <key id="login&amp;_UNKNOWNSOCIALERROR" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Unknown error in social login]]></key>
         <key id="login&amp;_UNLOGGED" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[You are logged out]]></key>
+        <key id="login&amp;_READ_ALL_CONTENT" attributes="" save_date="2025-03-06 16:02:02"><![CDATA[Read the complete description of Forma LMS]]></key>
       </module>
       <module id="manmenu">
         <key id="manmenu&amp;_ADDCUSTOM" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Add new custom menu]]></key>
@@ -1843,7 +1844,7 @@ In handling this information, accuracy and precision shall be met to ensure the 
         <key id="organization&amp;_ORGMILESTONE_END" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Final]]></key>
         <key id="organization&amp;_ORGMILESTONE_START" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Begin]]></key>
         <key id="organization&amp;_ORGPLAYTITLE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Execute object]]></key>
-        <key id="organization&amp;_ORGROOTNAME" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Lectures]]></key>
+        <key id="organization&amp;_ORGROOTNAME" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[All contents]]></key>
         <key id="organization&amp;_ORG_ACCESS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Access]]></key>
         <key id="organization&amp;_PROFILE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Profile]]></key>
         <key id="organization&amp;_PUBLISH_FROM" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Publish from]]></key>
@@ -1965,6 +1966,11 @@ In handling this information, accuracy and precision shall be met to ensure the 
       </module>
       <module id="privacypolicies">
         <key id="privacypolicies&amp;_PRIVACYPOLICIES" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Privacy Policies]]></key>
+        <key id="privacypolicies&amp;_PRIVACYPOLICIES_ACCEPT_DATA" attributes="" save_date="2024-03-01 15:32:39"><![CDATA[Privacy accepted on date]]></key>
+        <key id="privacypolicies&amp;_PRIVACYPOLICIES_REJECT_ALERT" attributes="" save_date="2024-03-01 15:32:39"><![CDATA[Clicking on the "revoke" button you will be logged out.<br>For accessing once again on the platform you are requested to accept processing of your persona data.]]></key>
+        <key id="privacypolicies&amp;_PRIVACYPOLICIES_REVOKE_BUTTON" attributes="" save_date="2024-03-01 15:32:39"><![CDATA[Revoke]]></key>
+        <key id="privacypolicies&amp;_VIEW_PRIVACY" attributes="" save_date="2024-03-01 15:32:39"><![CDATA[View privacy disclaimer]]></key>
+        <key id="privacypolicies&amp;_PRIVACYPOLICIES_REJECT_DATA" attributes="" save_date="2024-03-01 15:32:39"><![CDATA[Privacy rejected on date]]></key>
       </module>
       <module id="profile">
         <key id="profile&amp;_ACCESS_COUNT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Number of log in]]></key>
@@ -2047,6 +2053,7 @@ Please don't upload offensive images.]]></key>
         <key id="profile&amp;_USER_VIDEOS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Video]]></key>
         <key id="profile&amp;_WELCOME" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Welcome!]]></key>
         <key id="profile&amp;_WRITE_ASK_A_FRIEND" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Write a message for your request]]></key>
+        <key id="profile&amp;_MANAGED_BY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Manager]]></key>
       </module>
       <module id="project">
         <key id="project&amp;_MODPROJECTADMIN" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Manage administrators]]></key>
@@ -2303,6 +2310,10 @@ You have to confirm your account before using it.]]></key>
         <key id="report&amp;_TOTAL_SESSION" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Time]]></key>
         <key id="report&amp;_USER_CUSTOM_FIELDS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Show users fields]]></key>
         <key id="report&amp;_WARNING_REPORT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Beware, users will see the report as well as the user who generated it]]></key>
+        <key id="report&amp;_CUSTOM_ORG" attributes="" save_date="2025-03-17 12:00:00"><![CDATA[Organizational chart node fields]]></key>
+        <key id="report&amp;_GRAPHIC_REPORT" attributes="" save_date="2025-03-17 12:00:00"><![CDATA[Graphic]]></key>
+        <key id="report&amp;_CLASSROOM_FIELDS" attributes="" save_date="2025-03-17 12:00:00"><![CDATA[Date fields]]></key>
+        <key id="report&amp;_ACTIVATE_CLASSROOM_FIELDS" attributes="" save_date="2025-03-17 12:00:00"><![CDATA[Activate edition fields]]></key>
       </module>
       <module id="reservation">
         <key id="reservation&amp;_ADD_USER" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Add users]]></key>
@@ -2893,6 +2904,7 @@ you have been unsubscribed from the course ([course_code]) - [course]]]></key>
         <key id="statistic&amp;_WEEK_DAY_4_SHORT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Thu]]></key>
         <key id="statistic&amp;_WEEK_DAY_5_SHORT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Fri]]></key>
         <key id="statistic&amp;_WEEK_DAY_6_SHORT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Sat]]></key>
+        <key id="standard&amp;_COPY_OF" attributes="" save_date="2024-11-21 15:12:40"><![CDATA[Copy of]]></key>
       </module>
       <module id="stats">
         <key id="stats&amp;_FILTEREDITIONSELECTONEOPTION" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Choose one option]]></key>
@@ -3153,6 +3165,7 @@ you have been unsubscribed from the course ([course_code]) - [course]]]></key>
         <key id="test&amp;_TEST_MM4_SHOWTOT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Show final score (if it's calculable)]]></key>
         <key id="test&amp;_TEST_MM_FIVE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Manage your test in Gradebook Management]]></key>
         <key id="test&amp;_TEST_MM_FOUR" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[3 - Details shown at the end of attempt]]></key>
+        <key id="test&amp;_TEST_MM4_SHOWQUESTSCORE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Show score in every single question]]></key>
         <key id="test&amp;_TEST_MM_ONE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[1 - Set questions visualization]]></key>
         <key id="test&amp;_TEST_MM_TWO" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[2 - Set attempts options]]></key>
         <key id="test&amp;_TEST_MODALITY" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Test options]]></key>
@@ -3322,6 +3335,7 @@ you have been unsubscribed from the course ([course_code]) - [course]]]></key>
         <key id="communication&amp;_CATEGORY_MISSING" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[You must set at least one category]]></key>
         <key id="communication&amp;_MARK_AS_READ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mark as read]]></key>
         <key id="communication&amp;_MARK_AS_UNREAD" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mark as unread]]></key>
+        <key id="communication&amp;_READ_ALL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Read all]]></key>
       </module>
       <module id="mailconfig">
         <key id="mailconfig&amp;_AUTO_TLS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Auto Tls]]></key>

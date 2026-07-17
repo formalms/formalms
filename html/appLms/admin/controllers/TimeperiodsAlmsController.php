@@ -16,7 +16,6 @@ defined('IN_FORMA') or exit('Direct access is forbidden');
 class TimeperiodsAlmsController extends AlmsController
 {
     protected $model;
-    protected $json;
     protected $permissions;
 
     /*
@@ -25,8 +24,6 @@ class TimeperiodsAlmsController extends AlmsController
     public function init()
     {
         parent::init();
-        require_once _base_ . '/lib/lib.json.php';
-        $this->json = new Services_JSON();
         $this->model = new TimeperiodsAlms();
         $this->permissions = [
             'view' => checkPerm('view', true, 'timeperiods', 'lms'),
@@ -120,7 +117,7 @@ class TimeperiodsAlmsController extends AlmsController
             'records' => $output_records,
         ];
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     /*
@@ -130,11 +127,11 @@ class TimeperiodsAlmsController extends AlmsController
     {
         if (!$this->permissions['add']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         }
 
         $this->render('add', [
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 
@@ -145,7 +142,7 @@ class TimeperiodsAlmsController extends AlmsController
     {
         if (!$this->permissions['mod']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         }
 
         $id = FormaLms\lib\Get::req('id', DOTY_INT, 0);
@@ -157,7 +154,7 @@ class TimeperiodsAlmsController extends AlmsController
                 'success' => false,
                 'message' => Lang::t('_INVALID_PERIOD_SPECIFIED'),
             ];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         } else {
             //extract DB data by id
             $record = $this->model->getTimePeriod($id);
@@ -168,7 +165,7 @@ class TimeperiodsAlmsController extends AlmsController
                 'title' => $record->title,
                 'start_date' => $record->start_date,
                 'end_date' => $record->end_date,
-                'json' => $this->json,
+                'json' => true,
             ]);
         }
     }
@@ -177,7 +174,7 @@ class TimeperiodsAlmsController extends AlmsController
     {
         if (!$this->permissions['add']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         }
 
         //prepare output variable
@@ -198,14 +195,14 @@ class TimeperiodsAlmsController extends AlmsController
 
         //update data in DB
         $output['success'] = $this->model->createTimePeriod($params);
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function modactionTask()
     {
         if (!$this->permissions['mod']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         }
 
         //prepare output variable
@@ -214,7 +211,7 @@ class TimeperiodsAlmsController extends AlmsController
         //read inputs and validate data
         $id = FormaLms\lib\Get::req('id', DOTY_INT, 0);
         if ($id <= 0) {
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -235,14 +232,14 @@ class TimeperiodsAlmsController extends AlmsController
 
         //update data in DB
         $output['success'] = $this->model->updateTimePeriod($params);
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function delTask()
     {
         if (!$this->permissions['del']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         }
 
         //prepare output variable
@@ -250,13 +247,13 @@ class TimeperiodsAlmsController extends AlmsController
 
         $id = FormaLms\lib\Get::req('id', DOTY_INT, 0);
         if ($id <= 0) {
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
 
         //delete data in DB
         $output['success'] = $this->model->deleteTimePeriod($id);
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 }

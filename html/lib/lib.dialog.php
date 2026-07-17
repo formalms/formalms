@@ -162,18 +162,18 @@ function setupSimpleFormDialogBox(
  */
 function initDialogs()
 {
-    require_once _base_ . '/lib/lib.json.php';
+    
     Util::get_js(FormaLms\lib\Get::rel_path('base') . '/widget/dialog/dialog.js', true, true);
-    $json = new Services_JSON();
+    
     $script = 'YAHOO.dialogConstants.setProperties({'
-        . 'CONFIRM: ' . $json->encode(Lang::t('_CONFIRM', 'standard')) . ', '
-        . 'UNDO: ' . $json->encode(Lang::t('_UNDO', 'standard')) . ', '
-        . 'CLOSE: ' . $json->encode(Lang::t('_CLOSE', 'standard')) . ', '
-        . 'LOADING: ' . $json->encode(Lang::t('_LOADING', 'standard')) . ', '
-        . 'ERROR: ' . $json->encode(Lang::t('_OPERATION_FAILURE', 'standard')) . ', '
-        . 'SERVER_ERROR: ' . $json->encode(Lang::t('_CONNECTION_ERROR', 'standard')) . ', '
-        . 'loadingIcon: ' . $json->encode(FormaLms\lib\Get::tmpl_path() . 'images/standard/loadbar.gif') . ', '
-        . 'smallLoadingIcon: ' . $json->encode(FormaLms\lib\Get::tmpl_path() . 'images/standard/loading_circle.gif') . ', '
+        . 'CONFIRM: ' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(Lang::t('_CONFIRM', 'standard'), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . ', '
+        . 'UNDO: ' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(Lang::t('_UNDO', 'standard'), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . ', '
+        . 'CLOSE: ' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(Lang::t('_CLOSE', 'standard'), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . ', '
+        . 'LOADING: ' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(Lang::t('_LOADING', 'standard'), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . ', '
+        . 'ERROR: ' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(Lang::t('_OPERATION_FAILURE', 'standard'), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . ', '
+        . 'SERVER_ERROR: ' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(Lang::t('_CONNECTION_ERROR', 'standard'), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . ', '
+        . 'loadingIcon: ' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(FormaLms\lib\Get::tmpl_path() . 'images/standard/loadbar.gif', \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . ', '
+        . 'smallLoadingIcon: ' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(FormaLms\lib\Get::tmpl_path() . 'images/standard/loading_circle.gif', \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . ', '
         . 'authentication: "' . Util::getSignature() . '" '
         . '});' . "\n";
     cout('<script type="text/javascript">' . $script . '</script>', 'scripts');

@@ -13,19 +13,18 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once _base_ . '/lib/lib.json.php';
+
 
 class TemplatelayoutAdm extends Model
 {
     protected $db;
     protected $aclManager;
-    protected $json;
 
     public function __construct()
     {
         $this->db = \FormaLms\db\DbConn::getInstance();
         $this->aclManager = \FormaLms\lib\Forma::getAclManager();
-        $this->json = new Services_JSON();
+        
         parent::__construct();
     }
 
@@ -60,15 +59,17 @@ class TemplatelayoutAdm extends Model
         $dir = $this->_getParam($params, 'dir', 'asc');
 
         //validate parameters
-        $sort = strtolower((string) $sort);
+        $sort = strtolower((string)$sort);
         switch ($sort) {
             case 'name':
             case 'date_creation':
-            case 'last_modify': break;
-            default: $sort = 'name';
+            case 'last_modify':
+                break;
+            default:
+                $sort = 'name';
         }
 
-        $dir = strtolower((string) $dir);
+        $dir = strtolower((string)$dir);
         if ($dir != 'asc' && $dir != 'desc') {
             $dir = 'asc';
         }
@@ -79,14 +80,20 @@ class TemplatelayoutAdm extends Model
             $query .= " WHERE name LIKE '%" . $filter . "%' ";
         }
         $query .= ' ORDER BY ' . $sort . ' ' . $dir . ' ';
-        $query .= ' LIMIT ' . (int) $startIndex . ', ' . (int) $results . ' ';
+        $query .= ' LIMIT ' . (int)$startIndex . ', ' . (int)$results . ' ';
 
         //extract data
         $output = [];
         $res = $this->db->query($query);
         if ($res) {
-            while ($row = $this->db->fetch_obj($res)) {
-                $output[] = $row;
+            foreach ($res as $record) {
+                $output[] = [
+                    'id' => (int)$record['id_template'],
+                    'name' => highlightText($record['name'], $filter),
+                    'date_creation' => Format::date($record['date_creation'], 'datetime'),
+                    'last_modify' => Format::date($record['last_modify'], 'datetime'),
+                    'del' => 'ajax.adm_server.php?r=adm/templatelayout/delete&id=' . (int)$record['id_template'],
+                ];
             }
         }
 
@@ -100,7 +107,7 @@ class TemplatelayoutAdm extends Model
         $query = 'SELECT COUNT(*) FROM %adm_template' . ($filter ? " WHERE name LIKE '%" . $filter . "%'" : '');
         $res = $this->db->query($query);
         if ($res) {
-            list($output) = $this->db->fetch_row($res);
+            [$output] = $this->db->fetch_row($res);
         }
 
         return $output;
@@ -109,11 +116,11 @@ class TemplatelayoutAdm extends Model
     public function getTemplateData($id)
     {
         $output = false;
-        $query = 'SELECT template_data FROM %adm_template WHERE id_template=' . (int) $id;
+        $query = 'SELECT template_data FROM %adm_template WHERE id_template=' . (int)$id;
         $res = $this->db->query($query);
         if ($res) {
-            list($json_data) = $this->db->fetch_row($res);
-            $decoded = $this->json->decode($json_data);
+            [$json_data] = $this->db->fetch_row($res);
+            $decoded = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode($json_data, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             //validate ...
             $output = $decoded;
         }
@@ -125,7 +132,7 @@ class TemplatelayoutAdm extends Model
     {
         $output = false;
         $query = 'INSERT INTO %adm_template (name, date_creation, last_modify, template_data) VALUES '
-            . "('" . $params->name . "', NOW(), NOW(), '" . $this->json->encode($params->template_data) . "')";
+            . "('" . $params->name . "', NOW(), NOW(), '" . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($params->template_data, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . "')";
         $res = $this->db->query($query);
         if ($res) {
             $output = $this->db->insert_id();
@@ -146,13 +153,13 @@ class TemplatelayoutAdm extends Model
                 $query .= ", name = '" . $name . "' ";
             }
             if ($data !== false) {
-                $query .= ", template_data = '" . $this->json->encode($data) . "' ";
+                $query .= ", template_data = '" . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($data, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . "' ";
             }
         } else {
             return true;
         } //no query to execute
 
-        $query .= ' WHERE id_template = ' . (int) $id;
+        $query .= ' WHERE id_template = ' . (int)$id;
 
         $res = $this->db->query($query);
         if ($res) {
@@ -166,7 +173,7 @@ class TemplatelayoutAdm extends Model
     {
         $output = false;
         if (is_numeric($id) && $id > 0) {
-            $query = 'DELETE FROM %adm_template WHERE id_template=' . (int) $id;
+            $query = 'DELETE FROM %adm_template WHERE id_template=' . (int)$id;
             $res = $this->db->query($query);
             $output = ($res ? true : false);
         }

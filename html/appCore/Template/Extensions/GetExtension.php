@@ -28,6 +28,7 @@ class GetExtension extends \Twig\Extension\AbstractExtension
             new TwigFunction('Get_getSetting', [\FormaLms\lib\Get::class, 'sett'], ['is_safe' => ['html']]),
             new TwigFunction('Get_getTemplatePath', [\FormaLms\lib\Get::class, 'tmpl_path'], ['is_safe' => ['html']]),
             new TwigFunction('Get_pathImage', [\FormaLms\lib\Get::class, 'path_image'], ['is_safe' => ['html']]),
+            new TwigFunction('Get_img', [\FormaLms\lib\Get::class, 'img'], ['is_safe' => ['html']]),
         ];
     }
 }

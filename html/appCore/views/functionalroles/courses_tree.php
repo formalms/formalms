@@ -41,13 +41,13 @@ foreach ($competences_info as $id_competence => $cinfo) {
 $html .= '</ul></div>';
 $html .= '</div>';
 
-if ($json) {
+if (isset($json)) {
     $output = [
         'success' => true,
         'header' => $title,
         'body' => $html,
     ];
-    echo $json->encode($output);
+    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 } else {
     echo getTitle($title);
     echo '<div class="std_block">';

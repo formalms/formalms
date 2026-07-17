@@ -23,9 +23,6 @@ class AggregatedcertificateAlmsController extends AlmsController
 
     protected $controller_name;
 
-    /** @var Services_JSON */
-    protected $json;
-
     /** @var AggregatedCertificate */
     protected $aggCertLib;
 
@@ -36,7 +33,7 @@ class AggregatedcertificateAlmsController extends AlmsController
      *   "key" => "link"
      */
 
-     protected $op = [];
+    protected $op = [];
 
     public int $id_certificate;
     public int $id_association;
@@ -48,7 +45,7 @@ class AggregatedcertificateAlmsController extends AlmsController
         parent::init();
 
         $this->controller_name = strtolower(str_replace('AlmsController', '', get_class($this)));
-        $this->json = new Services_JSON();
+        
         require_once \FormaLms\lib\Forma::inc(_lms_ . '/' . _folder_lib_ . '/lib.aggregated_certificate.php');
         $this->aggCertLib = new AggregatedCertificate();
 
@@ -105,7 +102,7 @@ class AggregatedcertificateAlmsController extends AlmsController
 
         // Label for all columns
         $cont_h = [
-            Lang::t('_CODE'),
+            Lang::t('_CODE', 'certificate'),
             Lang::t('_NAME'),
             Lang::t('_DESCRIPTION'),
         ];
@@ -116,19 +113,19 @@ class AggregatedcertificateAlmsController extends AlmsController
             $cont_h[] = Lang::t('_TEMPLATE', 'certificate');
         }
 
-        $cont_h[] = FormaLms\lib\Get::img('standard/view.png', Lang::t('_PREVIEW'));
+        $cont_h[] = FormaLms\lib\Get::sprite('subs_view', Lang::t('_PREVIEW'));
 
         if ($userCanModify) {
-            $cont_h[] = FormaLms\lib\Get::img('standard/moduser.png', Lang::t('_CERTIFICATE_AGGREGATE_ASSOCIATION', 'certificate'));
+            $cont_h[] = FormaLms\lib\Get::sprite('subs_users', Lang::t('_CERTIFICATE_AGGREGATE_ASSOCIATION', 'certificate'));
             $type_h[] = 'image';
 
             $cont_h[] = FormaLms\lib\Get::sprite('subs_print', Lang::t('_CERTIFICATE_AGGREGATE_ASSOCIATION', 'certificate'));
             $type_h[] = 'image';
 
-            $cont_h[] = FormaLms\lib\Get::img('standard/edit.png', Lang::t('_MOD'), Lang::t('_MOD'));
+            $cont_h[] = FormaLms\lib\Get::sprite('subs_mod', Lang::t('_MOD'), Lang::t('_MOD'));
             $type_h[] = 'image';
 
-            $cont_h[] = FormaLms\lib\Get::img('standard/delete.png', Lang::t('_DEL'), Lang::t('_DEL'));
+            $cont_h[] = FormaLms\lib\Get::sprite('subs_del', Lang::t('_DEL'), Lang::t('_DEL'));
             $type_h[] = 'image';
         }
 
@@ -308,7 +305,7 @@ class AggregatedcertificateAlmsController extends AlmsController
 
         $page_title = [
             'index.php?r=alms/' . $this->controller_name . '/' . $this->op['layout'] => Lang::t('_TITLE_META_CERTIFICATE', 'certificate') . ':&nbsp;' . $this->cert_name,
-            ($edit ? Lang::t('_MOD') : Lang::t('_NEW')),
+            ($edit ? Lang::t('_MOD') : Lang::t('_NEW_CERTIFICATE', 'certificate')),
         ];
 
         if ($edit && $this->id_certificate !== 0) {
@@ -406,7 +403,7 @@ class AggregatedcertificateAlmsController extends AlmsController
             'image',  // View details img
             'image',  // Course edit  img
             'image',  // Coursepath edit img
-            'image', ]; // Delete metacert. img
+            'image',]; // Delete metacert. img
 
         $cont_h = [
             Lang::t('_NAME'),
@@ -530,7 +527,7 @@ class AggregatedcertificateAlmsController extends AlmsController
      */
     public function modAssoc()
     {
-            
+
         $assoc_types = [
             AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE => Lang::t('_COURSE'),
             AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE_PATH => Lang::t('_COURSEPATH'),
@@ -548,7 +545,6 @@ class AggregatedcertificateAlmsController extends AlmsController
             $params['id_association'] = $this->id_association;
         }
 
-  
 
         $params['cert_name'] = $this->cert_name;
         $params['id_certificate'] = $this->id_certificate;
@@ -567,7 +563,7 @@ class AggregatedcertificateAlmsController extends AlmsController
             Util::jump_to($this->back_url);
         }
 
-        $typeAssociation = (int) FormaLms\lib\Get::req('type_assoc', DOTY_INT);
+        $typeAssociation = (int)FormaLms\lib\Get::req('type_assoc', DOTY_INT);
         $operation = FormaLms\lib\Get::req('nextOperation');
         if ($operation === Lang::t('_NEXT')) {
             if ($typeAssociation === AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE) {
@@ -784,7 +780,7 @@ class AggregatedcertificateAlmsController extends AlmsController
 
             $cont[] = $acl_man->relativeId($user_info[ACL_INFO_USERID]);
 
-            $check_assoc = $this->aggCertLib->getAssociationLink($this->id_association, $type_assoc, (int) $id_user);
+            $check_assoc = $this->aggCertLib->getAssociationLink($this->id_association, $type_assoc, (int)$id_user);
             foreach ($idsCP_array as $id_coursepath) {
                 $checked = in_array($id_coursepath, $check_assoc);
                 $cont[] = Form::getCheckbox('', '_' . $id_user . '_' . $id_coursepath . '_', '_' . $id_user . '_' . $id_coursepath . '_', 1, $checked);
@@ -891,7 +887,7 @@ class AggregatedcertificateAlmsController extends AlmsController
             $user_info = $acl_man->getUser($id_user, false);
             $cont[] = $user_info[ACL_INFO_LASTNAME] . ' ' . $user_info[ACL_INFO_FIRSTNAME];
             $cont[] = $acl_man->relativeId($user_info[ACL_INFO_USERID]);
-            $check_assoc = $this->aggCertLib->getAssociationLink($this->id_association, $type_assoc, (int) $id_user);
+            $check_assoc = $this->aggCertLib->getAssociationLink($this->id_association, $type_assoc, (int)$id_user);
             foreach ($selected_course as $id_course) {
                 $checked = in_array($id_course, $check_assoc);
                 $cont[] = Form::getCheckbox('', '_' . $id_user . '_' . $id_course . '_', '_' . $id_user . '_' . $id_course . '_', 1, $checked);
@@ -1135,7 +1131,7 @@ class AggregatedcertificateAlmsController extends AlmsController
             Lang::t('_USERNAME'),
             Lang::t('_TITLE'),
             FormaLms\lib\Get::img('course/certificate.png', Lang::t('_TAKE_A_COPY', 'certificate')),
-            '<img src="' . getPathImage('lms') . 'standard/delete.png" alt="' . Lang::t('_DEL') . ' : ' . strip_tags($certificate['name']) . '" />', ];
+            '<img src="' . getPathImage('lms') . 'standard/delete.png" alt="' . Lang::t('_DEL') . ' : ' . strip_tags($certificate['name']) . '" />',];
         $cert_name_caption = $this->cert_name;
         $tb = new Table(FormaLms\lib\Get::sett('visuItem'), $cert_name_caption, $cert_name_caption);
         $tb->initNavBar('ini', 'button');
@@ -1295,7 +1291,7 @@ class AggregatedcertificateAlmsController extends AlmsController
             'new_size' => 0,
             'old_size' => 0,
             'error' => false,
-            'quota_exceeded' => false, ];
+            'quota_exceeded' => false,];
         sl_open_fileoperations();
         if (($delete_old || $arr_new_file !== false) && $old_file != '') {
             // the flag for file delete is checked or a new file was uploaded ---------------------
@@ -1336,15 +1332,15 @@ class AggregatedcertificateAlmsController extends AlmsController
     {
         // if courses have no parent category (like all the courses are under root), they will not be found!
 
-        $nodesArr = $this->model->getPathsFromIdParent($idParent); // getting nodes with idParent
+        $nodesArr = $this->model->getPathsFromIdParent($idParent) ?? []; // getting nodes with idParent
 
         if (count($nodesArr) > 0) {
             foreach ($nodesArr as $index => $node) { // Processing all nodes with idParent
-           
+
                 $testArray = explode('/', $nodesArr[$index]['text']);
                 $nodesArr[$index]['text'] = $testArray[array_key_last($testArray)];
-                $nodesArr[$index]['idCategory'] = (int) $nodesArr[$index]['idCategory'];
-                $nodesArr[$index]['level'] = (int) $nodesArr[$index]['level'];
+                $nodesArr[$index]['idCategory'] = (int)$nodesArr[$index]['idCategory'];
+                $nodesArr[$index]['level'] = (int)$nodesArr[$index]['level'];
                 if (!$nodesArr[$index]['isLeaf']) {
                     $nodesArr[$index]['nodes'] = $this->getTreeCategoryAsArray($nodesArr[$index]['idCategory']);
                 }
@@ -1362,7 +1358,7 @@ class AggregatedcertificateAlmsController extends AlmsController
     public function getCourseListTask()
     {
         if (isset($_POST['node'])) {
-            echo $this->json->encode($this->aggCertLib->getCourseListFromIdCategory($_POST['node']));
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($this->aggCertLib->getCourseListFromIdCategory($_POST['node']), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         }
     }
 
@@ -1371,11 +1367,11 @@ class AggregatedcertificateAlmsController extends AlmsController
      */
     public function getCoursePathListTask()
     {
-        echo $this->json->encode($this->aggCertLib->getCoursePathList());
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($this->aggCertLib->getCoursePathList(), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         /*  require_once($GLOBALS['where_lms'].'/lib/lib.coursepath.php');
 
           $coursepathMan = new CoursePath_Manager();
-          echo $this->json->encode($coursepathMan->getCoursepathList());
+          echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($coursepathMan->getCoursepathList());
   */
     }
 
@@ -1384,6 +1380,6 @@ class AggregatedcertificateAlmsController extends AlmsController
      */
     public function getCatalogCourseListTask()
     {
-        echo $this->json->encode($this->model->getCatalogCourse());
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($this->model->getCatalogCourse(), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 }

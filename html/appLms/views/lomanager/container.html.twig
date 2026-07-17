@@ -1,6 +1,6 @@
 {% set data = tab.data %}
 
-<div class="tab-pane {{ tab.active ? 'active' : '' }}" data-container="{{ tab.type }}">
+<div class="tab-pane {{ tab.active ? 'active' : '' }}" data-container="{{ tab.type }}" data-controller="{{ tab.controller }}">
     {{ Form_openForm('orgshow', 'index.php?modname=storage&op=display', false, 'POST') }}
     <input type="hidden" id="treeview_selected_{{ tab.type }}" name="treeview_selected_{{ tab.type }}" value="0">
     <input type="hidden" id="treeview_state_{{ tab.type }}" name="treeview_state_{{ tab.type }}" value="{{ tab.currentState }}">
@@ -12,7 +12,7 @@
                         <button data-id="0"
                                 type="button"
                                 class="folderTree__link ft-is-root ft-is-selected ft-is-folder ft-is-folderOpen is-dropzone">
-                            <span>{{ Lang_translate('_LEVEL', 'standard' )}}</span>
+                            <span>{{ Lang_translate('_ORGROOTNAME', 'organization' ) }}</span>
                         </button>
                         <ul class="folderTree__ul js-sortable-tree"></ul>
                     </li>

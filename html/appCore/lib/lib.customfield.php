@@ -19,17 +19,17 @@ define('CUSTOMFIELDTYPETABLE', '_customfield_type');
 define('CUSTOMFIELDENTRYTABLE', '_customfield_entry');
 define('CUSTOMFIELDAREATABLE', '_customfield_area');
 
-if(!defined('FIELD_INFO_ID')) define('FIELD_INFO_ID', 0);
-if(!defined('FIELD_INFO_TYPE')) define('FIELD_INFO_TYPE', 1);
-if(!defined('FIELD_INFO_TRANSLATION')) define('FIELD_INFO_TRANSLATION', 2);
-if(!defined('FIELD_INFO_GROUPIDST')) define('FIELD_INFO_GROUPIDST', 3);
-if(!defined('FIELD_INFO_GROUPID')) define('FIELD_INFO_GROUPID', 4);
-if(!defined('FIELD_INFO_MANDATORY')) define('FIELD_INFO_MANDATORY', 5);
-if(!defined('FIELD_INFO_USERACCESS')) define('FIELD_INFO_USERACCESS', 6);
-if(!defined('FIELD_INFO_USERINHERIT')) define('FIELD_INFO_USERINHERIT', 7);
+if (!defined('FIELD_INFO_ID')) define('FIELD_INFO_ID', 0);
+if (!defined('FIELD_INFO_TYPE')) define('FIELD_INFO_TYPE', 1);
+if (!defined('FIELD_INFO_TRANSLATION')) define('FIELD_INFO_TRANSLATION', 2);
+if (!defined('FIELD_INFO_GROUPIDST')) define('FIELD_INFO_GROUPIDST', 3);
+if (!defined('FIELD_INFO_GROUPID')) define('FIELD_INFO_GROUPID', 4);
+if (!defined('FIELD_INFO_MANDATORY')) define('FIELD_INFO_MANDATORY', 5);
+if (!defined('FIELD_INFO_USERACCESS')) define('FIELD_INFO_USERACCESS', 6);
+if (!defined('FIELD_INFO_USERINHERIT')) define('FIELD_INFO_USERINHERIT', 7);
 
-if(!defined('FIELD_BASEINFO_FILE')) define('FIELD_BASEINFO_FILE', 0);
-if(!defined('FIELD_BASEINFO_CLASS')) define('FIELD_BASEINFO_CLASS', 1);
+if (!defined('FIELD_BASEINFO_FILE')) define('FIELD_BASEINFO_FILE', 0);
+if (!defined('FIELD_BASEINFO_CLASS')) define('FIELD_BASEINFO_CLASS', 1);
 
 class CustomFieldList
 {
@@ -206,7 +206,7 @@ class CustomFieldList
     }
 
     /**
-     * @param  string	the content of the field mandatory of the GroupFieldsTable
+     * @param string    the content of the field mandatory of the GroupFieldsTable
      *
      * @return bool true if the field is mandatory
      **/
@@ -217,12 +217,12 @@ class CustomFieldList
 
     public function getUseMultiLang()
     {
-        return (bool) $this->use_multi_lang;
+        return (bool)$this->use_multi_lang;
     }
 
     public function setUseMultiLang($val)
     {
-        $this->use_multi_lang = (bool) $val;
+        $this->use_multi_lang = (bool)$val;
     }
 
     /**
@@ -297,7 +297,7 @@ class CustomFieldList
             %adm_customfield_son_lang  , %adm_customfield_son
             where %adm_customfield_son_lang.id_field_son=%adm_customfield_son.id_field_son and id_field=' . $idField . ' order by sequence ';
         $rs = sql_query($query) or
-            errorCommunication('getDropdown_elems');
+        errorCommunication('getDropdown_elems');
         $result = [];
         while (list($id_field_son, $translation) = sql_fetch_row($rs)) {
             $result[$id_field_son] = $translation;
@@ -398,7 +398,7 @@ class CustomFieldList
     /**
      * return the info and the value of the field assigned to a user.
      *
-     * @param int   $id_user         the idst of the user
+     * @param int $id_user the idst of the user
      * @param array $manual_id_field if != false the function filter the field with this and not for the field associated to the user
      * @param array $filter_category filter for type_category
      */
@@ -456,8 +456,8 @@ class CustomFieldList
     }
 
     /**
-     * @param array $arr_idst  idst to search
-     * @param int   $value_key the required information that has to be filled in the array
+     * @param array $arr_idst idst to search
+     * @param int $value_key the required information that has to be filled in the array
      *                         For example FIELD_INFO_ID or FIELD_INFO_TRANSLATION
      *
      * @return array [field id] => [value required]
@@ -486,7 +486,7 @@ class CustomFieldList
         $query = '
 		SELECT id_user, user_entry
 		FROM ' . $this->getFieldEntryTable() . '
-		WHERE id_field = ' . (int) $id_field . '';
+		WHERE id_field = ' . (int)$id_field . '';
         $rs = sql_query($query);
 
         $result = [];
@@ -509,7 +509,7 @@ class CustomFieldList
         $query = '
 		SELECT COUNT(*)
 		FROM ' . $this->getFieldEntryTable() . '
-		WHERE id_field = ' . (int) $id_field . '';
+		WHERE id_field = ' . (int)$id_field . '';
         if ($exclude_blank === true) {
             $query .= " AND user_entry <> '' ";
         }
@@ -534,7 +534,7 @@ class CustomFieldList
         $query = '
 		SELECT COUNT(*)
 		FROM ' . $this->getFieldEntryTable() . '
-		WHERE id_field = ' . (int) $id_field . ' AND obj_entry = ' . (int) $obj_entry . "
+		WHERE id_field = ' . (int)$id_field . ' AND obj_entry = ' . (int)$obj_entry . "
                 AND id_field IN (SELECT id_field FROM %adm_customfield WHERE area_code='" . $this->getFieldArea() . "')";
         if (is_array($sub_obj)) {
             $query = $query . ' AND id_obj IN (' . implode(',', $sub_obj) . ')';
@@ -572,7 +572,7 @@ class CustomFieldList
     /**
      * find the value for the fields correlated with the user.
      *
-     * @param int   $id_user   the idst f the user
+     * @param int $id_user the idst f the user
      * @param array $arr_field the id of the fields
      *
      * @return array with the value saved for the user
@@ -582,7 +582,7 @@ class CustomFieldList
         $query = '
 		SELECT id_field, user_entry
 		FROM ' . $this->getFieldEntryTable() . "
-		WHERE id_user = '" . (int) $id_user . "' ";
+		WHERE id_user = '" . (int)$id_user . "' ";
         if ($arr_field) {
             $query .= ' AND id_field IN ( ' . implode(',', $arr_field) . ' ) ';
         }
@@ -599,8 +599,8 @@ class CustomFieldList
     /**
      * find the value for the fields correlated with a list of user.
      *
-     * @param int|array $users     the idst of the user(s)
-     * @param array     $arr_field the id of the fields
+     * @param int|array $users the idst of the user(s)
+     * @param array $arr_field the id of the fields
      *
      * @return array with the value saved for the user
      **/
@@ -682,7 +682,7 @@ class CustomFieldList
     /**
      * find the id of the entity that have the given value for the given field.
      *
-     * @param int   $id_field       the id of the field
+     * @param int $id_field the id of the field
      * @param mixed $value_to_check the value to check
      *
      * @return array with the id of the entity
@@ -705,7 +705,7 @@ class CustomFieldList
     /**
      * find the id of the entity that have the given value for the given field.
      *
-     * @param int   $id_field       the id of the field
+     * @param int $id_field the id of the field
      * @param mixed $value_to_check the value to check
      *
      * @return array with the id of the entity
@@ -736,17 +736,17 @@ class CustomFieldList
     {
         $arr_result = sql_fetch_row(sql_query(
             'SELECT type_file, type_class '
-                . ' FROM ' . $this->getTypeFieldTable()
-                . " WHERE type_field = '" . $type_field . "'"
+            . ' FROM ' . $this->getTypeFieldTable()
+            . " WHERE type_field = '" . $type_field . "'"
         ));
 
         return $arr_result;
     }
 
     /**
-     * @param int  $id_st    idst to be associated to the user
-     * @param int  $id_field id of the field to get
-     * @param bool $freeze   TRUE to get static text, false to get input control
+     * @param int $id_st idst to be associated to the user
+     * @param int $id_field id of the field to get
+     * @param bool $freeze TRUE to get static text, false to get input control
      *
      * @return html with the form code for play a set of fields
      **/
@@ -780,7 +780,7 @@ class CustomFieldList
     }
 
     /**
-     * @param int   $idst_user idst to be associated to the user
+     * @param int $idst_user idst to be associated to the user
      * @param array $arr_field optional you can filter the field to show
      *
      * @return html with the info about yhe field for the user passed
@@ -868,7 +868,7 @@ class CustomFieldList
 
     /**
      * @param array $idst_user_arr idst to be associated to the user
-     * @param int   $id_field_arr  id of the field to get
+     * @param int $id_field_arr id of the field to get
      *
      * @return array with values for the specified fields for each user
      *               array[user_idst][field_idfield]=field_value
@@ -920,7 +920,7 @@ class CustomFieldList
 
     /**
      * @param array $idst_user_arr idst to be associated to the user
-     * @param int   $id_field_arr  id of the field to get
+     * @param int $id_field_arr id of the field to get
      *
      * @return array with values for the specified fields for each user
      *               array[user_idst][field_idfield]=field_value
@@ -969,9 +969,9 @@ class CustomFieldList
     }
 
     /**
-     * @param int  $id_st     idst to be associated to the user
-     * @param int  $id_field  id of the field to get
-     * @param bool $freeze    TRUE to get static text, false to get input control
+     * @param int $id_st idst to be associated to the user
+     * @param int $id_field id of the field to get
+     * @param bool $freeze TRUE to get static text, false to get input control
      * @param bool $mandatory specified if the field is a mandatory one or not
      *
      * @return html with the form code for play a set of fields
@@ -1006,7 +1006,7 @@ class CustomFieldList
     }
 
     /**
-     * @param int   $id_st    idst to be associated to the user
+     * @param int $id_st idst to be associated to the user
      * @param array $arr_idst (optional) array of idst of groups
      *                        if this parameter is skipped the groups will be taken
      *                        from $idst_user
@@ -1061,17 +1061,8 @@ class CustomFieldList
         return $separate_output ? $play_txt : implode('', array_values($play_txt));
     }
 
-    /**
-     * @param int   $id_st    idst to be associated to the user
-     * @param array $arr_idst (optional) array of idst of groups
-     *                        if this parameter is skipped the groups will be taken
-     *                        from $idst_user
-     *
-     * @return html with the form code for play a set of fields
-     **/
-    public function playFieldsFlat($idst_obj = -1)
+    private function getPlayFielsFlatResult()
     {
-        $acl = \FormaLms\lib\Forma::getAcl();
         $check_precompiled = 0;
         $query = 'SELECT ft.id_field, ft.code, ft.type_field, tft.type_file, tft.type_class, flt.translation as name'
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
@@ -1085,39 +1076,74 @@ class CustomFieldList
             . ' ORDER BY ft.sequence';
 
         $play_txt = [];
-        $re_fields = sql_query($query);
+        $result = sql_query($query);
 
         $precompiled = false;
         if ($check_precompiled > 0) {
             $precompiled = $this->getInheritedAdminFields($check_precompiled);
         }
 
-        if (!sql_num_rows($re_fields)) {
-            return [];
-        }
+        return $result;
+    }
 
+    /**
+     * @param int|array $id_st idst to be associated to the user
+     * @param array $arr_idst (optional) array of idst of groups
+     *                        if this parameter is skipped the groups will be taken
+     *                        from $idst_user
+     *
+     * @return array with the form code for play a set of fields
+     **/
+    public function playFieldsFlat($idst_obj = -1)
+    {
         $ret = [];
+        static $loadedClasses = [];
 
-        while (list($id_field, $code, $type_field, $type_file, $type_class, $name) = sql_fetch_row($re_fields)) {
-            if (!class_exists($type_class)) {
-                require_once _adm_ . '/modules/customfield/' . $type_file;
-            }
-            $field_obj = eval("return new $type_class( $id_field );");
-            if ($this->field_entry_table !== false) {
-                $field_obj->setFieldEntryTable($this->field_entry_table);
-            }
+        $result = $this->getPlayFielsFlatResult();
+        if (sql_num_rows($result)) {
+            foreach ($result as $row) {
+                $id_field = $row['id_field'];
+                $code = $row['code'];
+                $type_field = $row['type_field'];
+                $type_file = $row['type_file'];
+                $type_class = $row['type_class'];
+                $name = $row['name'];
 
-            $field_obj->setMainTable($this->getFieldTable());
-            $ret[$id_field] = ['id' => $id_field, 'type_field' => $type_field, 'code' => $code, 'name' => $name, 'code_value' => $field_obj->playFlat($idst_obj, true), 'value' => $field_obj->playFlat($idst_obj)];
+                if (!isset($loadedClasses[$type_class])) {
+                    if (!class_exists($type_class)) {
+                        require_once _adm_ . '/modules/customfield/' . $type_file;
+                    }
+                    $loadedClasses[$type_class] = true;
+                }
+
+                $field_obj = new $type_class($id_field);
+
+                if ($this->field_entry_table !== false) {
+                    $field_obj->setFieldEntryTable($this->field_entry_table);
+                }
+
+                $field_obj->setMainTable($this->getFieldTable());
+
+                if (is_array($idst_obj)) {
+                    foreach ($idst_obj as $idst_obj_item) {
+                        $fieldData = $field_obj->playFlat($idst_obj, true, true);
+
+                        $ret[$idst_obj_item][$id_field] = ['id' => $id_field, 'type_field' => $type_field, 'code' => $code, 'name' => $name, 'code_value' => $fieldData['code'], 'value' => $fieldData['translation']];
+                    }
+                } else {
+                    $fieldData = $field_obj->playFlat($idst_obj, true, true);
+
+                    $ret[$id_field] = ['id' => $id_field, 'type_field' => $type_field, 'code' => $code, 'name' => $name, 'code_value' => $fieldData['code'], 'value' => $fieldData['translation']];
+                }
+            }
         }
 
         return $ret;
-        //return $separate_output ? $play_txt : implode("", array_values($play_txt));
     }
 
     /**
      * @param array $idst_user_arr idst to be associated to the user
-     * @param int   $id_field_arr  id of the field to get
+     * @param int $id_field_arr id of the field to get
      *
      * @return array with values for the specified fields for each user
      *               array[user_idst][field_idfield]=field_value
@@ -1184,7 +1210,7 @@ class CustomFieldList
     }
 
     /**
-     * @param int   $id_st    idst to be associated to the user
+     * @param int $id_st idst to be associated to the user
      * @param array $arr_idst (optional) array of idst of groups
      *                        if this parameter is skipped the groups will be taken
      *                        from $idst_user
@@ -1254,7 +1280,7 @@ class CustomFieldList
     }
 
     /**
-     * @param int   $id_st    idst to be associated to the user
+     * @param int $id_st idst to be associated to the user
      * @param array $arr_idst (optional) array of idst of groups
      *                        if this parameter is skipped the groups will be taken
      *                        from $idst_obj
@@ -1544,8 +1570,8 @@ class CustomFieldList
 
     /**
      * @param array $arr_field
-     * @param array $grab_form    (optional)
-     * @param bool  $dropdown_val (optional). If true will get the value of a dropdown item instead of its id.
+     * @param array $grab_form (optional)
+     * @param bool $dropdown_val (optional). If true will get the value of a dropdown item instead of its id.
      *
      * @return array with the filled value of the specified fields
      **/
@@ -1588,7 +1614,7 @@ class CustomFieldList
     }
 
     /**
-     * @param int   $id_field
+     * @param int $id_field
      * @param array $associate_owner if true the owner of the data is associated
      *
      * @return array with the stored value of the specific field
@@ -1615,7 +1641,7 @@ class CustomFieldList
 
     /**
      * @param int $id_field id of the field to be associated to $id_st
-     * @param int $id_st    idst to be associated to field
+     * @param int $id_st idst to be associated to field
      *
      * @return true if success, FALSE otherwise
      **/
@@ -1626,17 +1652,17 @@ class CustomFieldList
         $rs = sql_query($query);
         if (sql_num_rows($rs) > 0) {
             $query = 'UPDATE ' . $this->getGroupFieldsTable()
-                . " SET idst = '" . (int) $idst . "',"
-                . "     id_field = '" . (int) $id_field . "',"
+                . " SET idst = '" . (int)$idst . "',"
+                . "     id_field = '" . (int)$id_field . "',"
                 . "     mandatory = '" . $mandatory . "',"
                 . "     useraccess = '" . $useraccess . "', "
-                . "     user_inherit = '" . ((int) $user_inherit > 0 ? '1' : '0') . "' "
+                . "     user_inherit = '" . ((int)$user_inherit > 0 ? '1' : '0') . "' "
                 . " WHERE idst = '" . $idst . "' AND id_field = '" . $id_field . "'";
         } else {
             $query = 'INSERT INTO ' . $this->getGroupFieldsTable()
                 . ' (idst, id_field, mandatory, useraccess, user_inherit) '
-                . " VALUES ('" . (int) $idst . "','" . (int) $id_field . "',"
-                . "'" . $mandatory . "','" . $useraccess . "', '" . ((int) $user_inherit > 0 ? '1' : '0') . "')";
+                . " VALUES ('" . (int)$idst . "','" . (int)$id_field . "',"
+                . "'" . $mandatory . "','" . $useraccess . "', '" . ((int)$user_inherit > 0 ? '1' : '0') . "')";
         }
 
         return sql_query($query);
@@ -1644,15 +1670,15 @@ class CustomFieldList
 
     /**
      * @param int $id_field id of the field to be removed from $id_st
-     * @param int $id_st    idst to be removed to field
+     * @param int $id_st idst to be removed to field
      *
      * @return true if success, FALSE otherwise
      **/
     public function removeFieldFromGroup($id_field, $idst)
     {
         $query = 'DELETE FROM ' . $this->getGroupFieldsTable()
-            . " WHERE idst = '" . (int) $idst . "'"
-            . "   AND id_field = '" . (int) $id_field . "'";
+            . " WHERE idst = '" . (int)$idst . "'"
+            . "   AND id_field = '" . (int)$id_field . "'";
 
         return sql_query($query);
     }
@@ -1660,14 +1686,14 @@ class CustomFieldList
     public function quickRemoveUserEntry($id_obj)
     {
         $query_del = "DELETE FROM %adm_customfield_entry 
-			WHERE id_obj = '" . (int) $id_obj . "'";
+			WHERE id_obj = '" . (int)$id_obj . "'";
 
         return sql_query($query_del);
     }
 
     /**
-     * @param int   $idst_user  the user
-     * @param int   $id_group   cast the delete action only to the field of this group
+     * @param int $idst_user the user
+     * @param int $id_group cast the delete action only to the field of this group
      * @param array $arr_fields cast the delete action only to the field specified
      *
      * @return true if success, FALSE otherwise
@@ -1716,7 +1742,7 @@ class CustomFieldList
                 . " WHERE ft.lang_code = '" . Lang::get() . "'"
                 . '	 AND ft.type_field = tft.type_field'
                 . ' GROUP BY ft.id_field ';
-        } else {	// remove specific fields
+        } else {    // remove specific fields
             $query = 'SELECT ft.id_field, ft.type_field, tft.type_file, tft.type_class'
                 . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
                 . '  JOIN ' . $this->getTypeFieldTable() . ' AS tft )'
@@ -1748,15 +1774,15 @@ class CustomFieldList
     /**
      * Find wich users entries matches with search information.
      *
-     * @author Giovanni Derks
-     *
-     * @param array  $fields     list of id_field values
-     * @param string $method     "OR" or "AND"
-     * @param array  $like       array($id_field => [off, both, start, end])
-     * @param array  $search     array($id_field => $what_to_search)
-     * @param bool   $return_raw if TRUE then will return the raw array
+     * @param array $fields list of id_field values
+     * @param string $method "OR" or "AND"
+     * @param array $like array($id_field => [off, both, start, end])
+     * @param array $search array($id_field => $what_to_search)
+     * @param bool $return_raw if TRUE then will return the raw array
      *
      * @return array list of user idst found (if $return_raw is FALSE)
+     * @author Giovanni Derks
+     *
      */
     public function quickSearchUsersFromEntry($fields, $method, $like, $search, $return_raw = false)
     {
@@ -1909,7 +1935,7 @@ class CustomFieldList
     //----------------------------------------------------------------------------
     public function checkUserMandatoryFields($id_user = false, $only_accessible = false)
     {
-        $id_user = $id_user ? (int) $id_user : \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
+        $id_user = $id_user ? (int)$id_user : \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
         $acl = new FormaACL();
         $user_groups = $acl->getUserGroupsST($id_user);
         $output = true;
@@ -1925,7 +1951,7 @@ class CustomFieldList
                 . ' JOIN ' . $this->getGroupFieldsTable() . ' AS gft '
                 . " ON (ft.id_field = gft.id_field AND ft.lang_code = '" . Lang::get() . "')) "
                 . ' LEFT JOIN ' . $this->getFieldEntryTable() . ' AS fet '
-                . ' ON (fet.id_field = ft.id_field AND fet.id_user = ' . (int) $id_user . ') '
+                . ' ON (fet.id_field = ft.id_field AND fet.id_user = ' . (int)$id_user . ') '
                 . ' WHERE gft.mandatory = 1 '
                 . ($only_accessible ? " AND gft.useraccess = 'readwrite'" : '')
                 . " AND gft.idst IN ('" . implode("','", $user_groups) . "')";
@@ -1964,7 +1990,7 @@ class CustomFieldList
                 . ' JOIN ' . $this->getTypeFieldTable() . ' AS ftt '
                 . " ON (ft.id_field = gft.id_field AND ft.lang_code = '" . Lang::get() . "' AND ft.type_field = ftt.type_field)) "
                 . ' LEFT JOIN ' . $this->getFieldEntryTable() . ' AS fet '
-                . ' ON (fet.id_field = ft.id_field AND fet.id_user = ' . (int) $id_user . ') '
+                . ' ON (fet.id_field = ft.id_field AND fet.id_user = ' . (int)$id_user . ') '
                 . " WHERE gft.idst IN ('" . implode("','", $user_groups) . "') "
                 . ' AND gft.mandatory = 1 '
                 . ' ORDER BY ft.sequence';
@@ -2011,10 +2037,10 @@ class CustomFieldList
         //retrieve admin's groups and read groups associated fields
         $groups = [];
         $query = 'SELECT gm.idst FROM %adm_group_members AS gm JOIN %adm_group AS g ON (gm.idst = g.idst) '
-            . " WHERE (g.groupid LIKE '/oc\_%' OR g.groupid LIKE '/ocd\_%' ) AND gm.idstMember = " . (int) $id_admin;
+            . " WHERE (g.groupid LIKE '/oc\_%' OR g.groupid LIKE '/ocd\_%' ) AND gm.idstMember = " . (int)$id_admin;
         $res = sql_query($query);
         while (list($id_group) = sql_fetch_row($res)) {
-            $groups[] = (int) $id_group;
+            $groups[] = (int)$id_group;
         }
 
         if (!empty($groups)) {

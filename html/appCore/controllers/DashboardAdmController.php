@@ -19,7 +19,6 @@ define('_DOCEBO_CORP_BLOG_FEED_ID', 3);
 class DashboardAdmController extends AdmController
 {
     protected $model;
-    protected $json;
     protected $permissions;
 
     /*
@@ -28,8 +27,8 @@ class DashboardAdmController extends AdmController
     public function init()
     {
         parent::init();
-        require_once _base_ . '/lib/lib.json.php';
-        $this->json = new Services_JSON();
+        
+        
         $this->model = new DashboardAdm();
 
         YuiLib::load('autocomplete,tabview');
@@ -84,8 +83,8 @@ class DashboardAdmController extends AdmController
 
         //load date script for user creation and editing mask
         Form::loadDatefieldScript();
-     
-   
+
+
         //render view
         $this->render('show', [
             'diagnostic_problem' => $problem,
@@ -96,24 +95,24 @@ class DashboardAdmController extends AdmController
             'file_version' => \FormaLms\lib\Version\VersionChecker::getFileVersion(),
             'current_version' => \FormaLms\lib\Version\VersionChecker::getCurrentVersion(),
             'installed_version' => \FormaLms\lib\Version\VersionChecker::getInstalledVersion(),
-            'upgrade_trigger' => (bool) \FormaLms\lib\Version\VersionChecker::compareVersions(false)['upgradeTrigger'],
+            'upgrade_trigger' => (bool)\FormaLms\lib\Version\VersionChecker::compareVersions(false)['upgradeTrigger'],
             'user_stats' => $this->model->getUsersStats(),
 
             'course_stats' => $this->model->getCoursesStats(),
             'course_months_stats' => $this->model->getCoursesMonthsStats(),
 
-            'userdata_accesses' => $this->json->encode($this->model->getUsersChartAccessData($charts_num_days)),
+            'userdata_accesses' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($this->model->getUsersChartAccessData($charts_num_days), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON),
             'userdata_accesses_js' => $this->model->getUsersChartAccessDataJS($charts_num_days),
-            'userdata_registrations' => $this->json->encode($this->model->getUsersChartRegisterData($charts_num_days)),
+            'userdata_registrations' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($this->model->getUsersChartRegisterData($charts_num_days), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON),
             'userdata_registrations_js' => $this->model->getUsersChartRegisterDataJS($charts_num_days),
 
-            'coursedata_subscriptions' => $this->json->encode($this->model->getCoursesChartSubscriptionData($charts_num_days)),
+            'coursedata_subscriptions' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($this->model->getCoursesChartSubscriptionData($charts_num_days), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON),
             'coursedata_subscriptions_js' => $this->model->getCoursesChartSubscriptionDataJS($charts_num_days),
 
-            'coursedata_startattendings' => $this->json->encode($this->model->getCoursesChartStartAttendingData($charts_num_days)),
+            'coursedata_startattendings' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($this->model->getCoursesChartStartAttendingData($charts_num_days), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON),
             'coursedata_startattendings_js' => $this->model->getCoursesChartStartAttendingDataJS($charts_num_days),
 
-            'coursedata_completed' => $this->json->encode($this->model->getCoursesChartCompletedData($charts_num_days)),
+            'coursedata_completed' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($this->model->getCoursesChartCompletedData($charts_num_days), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON),
             'coursedata_completed_js' => $this->model->getCoursesChartCompletedDataJS($charts_num_days),
 
             'permissions' => $this->permissions,
@@ -125,13 +124,13 @@ class DashboardAdmController extends AdmController
     public function deactivate()
     {
         $output = ['success' => $this->model->deactivateFeeds()];
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function activate()
     {
         $output = ['success' => $this->model->activateFeeds()];
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function diagnostic_dialogTask()
@@ -141,7 +140,7 @@ class DashboardAdmController extends AdmController
             'php_conf' => ini_get_all(),
             'sql_server_info' => sql_get_server_info(),
             'sql_additional_info' => $this->model->getSqlInfo(),
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 
@@ -149,13 +148,13 @@ class DashboardAdmController extends AdmController
     {
         $this->render('user_status_dialog', [
             'title' => Lang::t('_PROFILE', 'profile'),
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 
     public function certificateTask()
     {
-        $json = new Services_JSON();
+        
         $body = '';
 
         $body .= Form::openForm('subscr_course_form', 'ajax.adm_server.php?r=adm/dashboard/findcertificate');
@@ -169,23 +168,31 @@ class DashboardAdmController extends AdmController
         $body .= Form::getTextfield(Lang::t('_USER', 'standard'), 'certificate_userid', 'certificate_userid', 255, '');
         $body .= '<div id="certificate_userid_container"></div>';
 
+        $eventResults = Events::trigger('core.dashboard.certificate.form', ['body' => $body]);
+
+        if ($eventResults && array_key_exists('body', $eventResults)) {
+            $body = $eventResults['body'];
+        }
         $body .= Form::closeForm();
 
         $output['header'] = Lang::t('_CERTIFICATE', 'menu');
         $output['body'] = $body;
-        echo $json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function findcertificateTask()
     {
-        $json = new Services_JSON();
+
+        $print = [];
+        $relesable = [];
 
         $c_course = FormaLms\lib\Get::req('certificate_course', DOTY_MIXED, '');
         $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
         $c_userid = FormaLms\lib\Get::req('certificate_userid', DOTY_MIXED, '');
         $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, 0);
 
-        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
+
+        require_once _lms_ . '/lib/lib.course.php';
         $man_course = new Man_Course();
         $acl_man = \FormaLms\lib\Forma::getAclManager();
 
@@ -204,50 +211,60 @@ class DashboardAdmController extends AdmController
         if ($id_user <= 0 || $id_course <= 0) {
             $output['success'] = false;
             $output['message'] = Lang::t('_INVALID_INPUT'); // International message
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
 
-        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.certificate.php');
-        $cert = new Certificate();
-        $released = $cert->certificateStatus($id_user, $id_course);
-        $print = [];
-        foreach ($released as $id_cert => $name) {
-            $print[] = '<a class="ico-wt-sprite subs_pdf" href="index.php?modname=certificate&certificate_id=' . $id_cert . '&course_id=' . $id_course . '&user_id=' . $id_user . '&op=send_certificate&of_platform=lms">'
-                . '<span>' . $name . '</span>'
-                . '</a>';
-        }
+        $eventResults = Events::trigger('core.dashboard.certificate.released', ['id_user' => $id_user, 'id_course' => $id_course]);
 
-        $res = $this->model->getDashBoardCertList($id_course, $id_user);
-        $relesable = [];
-        while (list($id_certificate, $name, $available_for_status, $user_status) = sql_fetch_row($res)) {
-            if ($cert->canRelease($available_for_status, $user_status) && !isset($released[$id_certificate])) {
-                $relesable[] = '<a class="ico-wt-sprite subs_pdf" href="index.php?modname=certificate&certificate_id=' . $id_certificate . '&course_id=' . $id_course . '&user_id=' . $id_user . '&op=print_certificate&of_platform=lms">'
+        if ($eventResults && array_key_exists('print', $eventResults) && array_key_exists('relasable', $eventResults)) {
+            $print = $eventResults['print'];
+            $relesable = $eventResults['relesable'];
+        } else {
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.certificate.php');
+            $cert = new Certificate();
+
+
+            $released = $cert->certificateStatus($id_user, $id_course);
+
+            foreach ($released as $id_cert => $name) {
+                $print[] = '<a class="ico-wt-sprite subs_pdf" href="index.php?modname=certificate&id=' . $id_cert . '&op=send_certificate&of_platform=lms">'
                     . '<span>' . $name . '</span>'
                     . '</a>';
             }
+
+            $res = $this->model->getDashBoardCertList($id_course, $id_user);
+
+            while (list($id_certificate, $name, $available_for_status, $user_status) = sql_fetch_row($res)) {
+                if ($cert->canRelease($available_for_status, $user_status) && !isset($released[$id_certificate])) {
+                    $relesable[] = '<a class="ico-wt-sprite subs_pdf" href="index.php?modname=certificate&certificate_id=' . $id_certificate . '&course_id=' . $id_course . '&user_id=' . $id_user . '&op=print_certificate&of_platform=lms">'
+                        . '<span>' . $name . '</span>'
+                        . '</a>';
+                }
+            }
         }
+
 
         $output['success'] = true;
         $output['message'] = '';
         $output['message'] .= '<b>' . Lang::t('_CERTIFICATE_VIEW_CAPTION', 'certificate') . ':</b> ' . (count($print) > 0
-            ? implode(', ', $print)
-            : Lang::t('_NONE', 'standard')
-        ) . '<br /><br />';
+                ? implode(', ', $print)
+                : Lang::t('_NONE', 'standard')
+            ) . '<br /><br />';
         $output['message'] .= '<b>' . Lang::t('_NEW_CERTIFICATE', 'certificate') . ':</b> ' . (count($relesable) > 0
-            ? implode(', ', $relesable)
-            : Lang::t('_NONE', 'standard')
-        ) . '<br /><br />';
+                ? implode(', ', $relesable)
+                : Lang::t('_NONE', 'standard')
+            ) . '<br /><br />';
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function exportformatTask()
     {
         $this->render('export_dialog', [
             'id_report' => FormaLms\lib\Get::req('id_report', DOTY_INT, true),
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 }

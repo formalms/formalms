@@ -16,7 +16,6 @@ class PostVersion20230518000005 extends Upgrader{
     private function remapSmtpParams()
     {
     
-        $smtp_group = 14;
         $arrayConfig = [
             'smtp_auto_tls' => 'auto_tls',
             'smtp_debug' => 'debug',
@@ -57,7 +56,7 @@ class PostVersion20230518000005 extends Upgrader{
            
             $queryInsert = 'INSERT INTO'
             . ' %adm_mail_configs (title, system) VALUES ("DEFAULT", "1")';
-
+           
             $result = sql_query($queryInsert);
 
             $mailConfigId = sql_insert_id();
@@ -65,11 +64,14 @@ class PostVersion20230518000005 extends Upgrader{
             foreach($res as $type => $value) {
                 $queryInsert = 'INSERT INTO'
                 . ' %adm_mail_configs_fields (mailConfigId, type, value) VALUES ("'. $mailConfigId .'", "'. $type .'", "'. $value .'")';
+            
                 $result = sql_query($queryInsert);
             }
 
             $queryDelete = 'DELETE FROM %adm_setting where param_name IN ("' . implode('","', array_keys($arrayConfig)) . '")';
             $result = sql_query($queryDelete);
+
+       
             return $result;
         } else  {
             return true;

@@ -442,7 +442,7 @@
         <key id="configuration&amp;MAIN_SET_4" attributes="" save_date="2022-02-26 19:23:55"><![CDATA[Bendrieji nustatymai]]></key>
         <key id="configuration&amp;MAIN_SET_6" attributes="" save_date="2022-02-26 19:24:00"><![CDATA[Bendrieji nustatymai]]></key>
         <key id="configuration&amp;MAIN_SET_8" attributes="" save_date="2022-02-26 19:24:04"><![CDATA[Bendrieji nustatymai]]></key>
-        <key id="configuration&amp;MAIN_SET_9" attributes="" save_date="2019-10-02 11:39:53"><![CDATA[LDAP]]></key>
+        <key id="configuration&amp;MAIN_SET_9" attributes="" save_date="2019-10-02 11:39:53"><![CDATA[SSO]]></key>
         <key id="configuration&amp;PASSWORD_BCRYPT" attributes="" save_date="2022-02-26 19:01:56"><![CDATA[BCRYPT slaptažodis]]></key>
         <key id="configuration&amp;PASSWORD_MD5" attributes="" save_date="2022-02-04 18:18:11"><![CDATA[MD5 Slaptažodis]]></key>
         <key id="configuration&amp;_ACCESSIBILITY" attributes="" save_date="2022-02-26 18:47:52"><![CDATA[Suaktyvinkite pritaikymo neįgaliesiems funkcijas]]></key>
@@ -517,11 +517,6 @@
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2022-02-26 18:48:05"><![CDATA[Suaktyvinti kalbos redagavimą (naudojamas derinimui)]]></key>
         <key id="configuration&amp;_LANG_EXPORT_TIME" attributes="" save_date="2022-02-26 20:30:29"><![CDATA[Kalbos eksporto laikas]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2022-02-26 19:18:39"><![CDATA[Norint užsiregistruoti, reikia nurodyti vardą ir pavardę]]></key>
-        <key id="configuration&amp;_LDAP" attributes="" save_date="2017-03-14 16:10:41"><![CDATA[LDAP]]></key>
-        <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2022-02-26 19:30:21"><![CDATA[LDAP prievadas (dažniausiai 389)]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2022-02-26 19:30:30"><![CDATA[LDAP serverio adresas]]></key>
-        <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2022-02-26 18:48:18"><![CDATA[Suaktyvinkite LDAP autentifikavimą]]></key>
-        <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2022-02-26 20:20:22"><![CDATA[LDAP naudotojų vartotojų vardas, naudotojo vardu naudokite $user.<br />Pvz. $naudotojas@domain2.domain1 (skirta: W2k3)]]></key>
         <key id="configuration&amp;_LIST_DB_UPGRADES" attributes="" save_date="2022-02-26 19:09:30"><![CDATA[DB SQL scenarijaus logaritmas]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2022-02-26 19:04:42"><![CDATA[Konfigūracija "magic_quotes_gpc"]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2022-02-26 19:50:52"><![CDATA[Registracijos ir prarastų slaptažodžių el. pašto siuntėjas]]></key>
@@ -682,7 +677,6 @@
         <key id="configuration&amp;_URL" attributes="" save_date="2022-02-26 20:18:09"><![CDATA[Svetainės URL su galutiniu /]]></key>
         <key id="configuration&amp;_URL_CHECKIN_TELESKILL" attributes="" save_date="2022-02-26 20:27:14"><![CDATA[URL registracijai]]></key>
         <key id="configuration&amp;_URL_VIDEOCONFERENCE_TELESKILL" attributes="" save_date="2022-02-26 20:26:43"><![CDATA[Vaizdo konferencijos URL]]></key>
-        <key id="configuration&amp;_USEFULL_ONLY_IF" attributes="" save_date="2022-02-26 19:06:53"><![CDATA[Apsvarstykite šį parametrą tik tuo atveju, jei reikia autentifikuoti per LDAP]]></key>
         <key id="configuration&amp;_USERS_ALREADY_ASSIGNED" attributes="" save_date="2022-02-26 18:53:22"><![CDATA[jau priskirti vartotojai]]></key>
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2022-02-26 18:56:58"><![CDATA[Paprašykite vartotojo pasirinkti slaptažodį, kuris skiriasi nuo paskutinių X naudotų slaptažodžių]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2022-02-26 19:14:01"><![CDATA[Kiekvieno vartotojo srities Mano failai disko dalis (MB).]]></key>
@@ -1567,7 +1561,6 @@ Geros treniruotės! <br>
         <key id="login&amp;_INTRO_STD_TEXT" attributes="" save_date="2022-02-24 17:25:40"><![CDATA[ENNEADI – Europos mitybos mokymo tinklas asmenims su įgyta negalia projektas Nr. 2020-1-IT01-KA202-008557, bendrai finansuojama Europos Sąjungos programos Erasmus  lėšomis KA2 – Strateginės partnerystės profesinio mokymo srityje. Europos Komisijos parama šio leidinio kūrimui nėra leidinio turinio patvirtinimas. Tai atspindi tik autorių nuomonę, todėl Komisija negali būti laikoma atsakinga už bet kokį jame esančios informacijos naudojimą.]]></key>
         <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2022-02-24 17:22:20"><![CDATA[ENNEADI – Europos mitybos mokymo tinklas esant įgytai negalei.]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2022-02-24 17:36:06"><![CDATA[Pereikite į prisijungimo formą]]></key>
-        <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2022-02-24 17:36:38"><![CDATA[LDAP autentifikavimas aktyvus, funkcionalumas nepasiekiamas, skambinkite savo administratoriui]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2022-02-04 18:17:23"><![CDATA[Prisijungti]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2022-02-24 17:17:59"><![CDATA[Prieinamas prisijungimas]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2022-02-04 18:17:29"><![CDATA[Prisijungti]]></key>

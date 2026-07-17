@@ -49,9 +49,6 @@ class DialogWidget extends Widget
     //calling events
     public $callEvents = false;
 
-    //internal fields
-    protected $json = null;
-
     /**
      * Constructor.
      *
@@ -61,7 +58,7 @@ class DialogWidget extends Widget
     {
         parent::__construct();
         $this->_widget = 'dialog';
-        $this->json = new Services_JSON();
+        
     }
 
     public function run()
@@ -84,10 +81,10 @@ class DialogWidget extends Widget
             $params['dynamicAjaxUrl'] = $this->dynamicAjaxUrl ? true : false;
         } else {
             $params['dynamicContent'] = false;
-            $params['header'] = $this->json->encode((string) $this->header);
-            $params['body'] = $this->json->encode((string) $this->body);
+            $params['header'] = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode((string)$this->header, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
+            $params['body'] = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode((string)$this->body, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
             //$params['buttons'] = $this->_getButtonsCode();
-            //$params['script'] = $this->script;//$this->json->encode((string)$this->script);
+            //$params['script'] = $this->script;//\FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode((string)$this->script);
         }
 
         if ($this->directSubmit) {
@@ -136,7 +133,7 @@ class DialogWidget extends Widget
             }
             foreach ($arrEvents as $event => $list) {
                 if (is_array($list)) {
-                    $callEvents .= 'YAHOO.util.Event.addListener(' . $this->json->encode($list) . ', "' . $event . '", dialogEvent);' . "\n";
+                    $callEvents .= 'YAHOO.util.Event.addListener(' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($list, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . ', "' . $event . '", dialogEvent);' . "\n";
                 } else {
                     $callEvents .= 'YAHOO.util.Event.addListener(' . $list . ', "' . $event . '", dialogEvent);' . "\n";
                 }
@@ -144,7 +141,7 @@ class DialogWidget extends Widget
         }
         $params['callEvents'] = $callEvents;
 
-    
+
         //choose a view by parameters specification
         if ($this->dynamicContent) {
             $view = 'dynamic';
@@ -152,7 +149,7 @@ class DialogWidget extends Widget
             $view = 'static';
         }
 
-      
+
         //render the view
         $this->render($view, $params);
     }
@@ -180,8 +177,8 @@ class DialogWidget extends Widget
         }
         $buttons = [];
         foreach ($this->buttons as $button) {
-            $buttons[] = '{text:' . $this->json->encode((string) $button['text']) . ', handler:'
-                . (string) $button['handler'] . (isset($button['isDefault']) && $button['isDefault'] ? ', isDefault: true' : '') . '}';
+            $buttons[] = '{text:' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode((string)$button['text'], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . ', handler:'
+                . (string)$button['handler'] . (isset($button['isDefault']) && $button['isDefault'] ? ', isDefault: true' : '') . '}';
         }
 
         return '[' . implode(',', $buttons) . ']';

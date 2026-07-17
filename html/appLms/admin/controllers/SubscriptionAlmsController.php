@@ -19,7 +19,6 @@ class SubscriptionAlmsController extends AlmsController
 {
     /** @var SubscriptionAlms */
     protected $model;
-    protected $json;
     protected $acl_man;
     protected $id_course;
     protected $id_edition;
@@ -36,7 +35,7 @@ class SubscriptionAlmsController extends AlmsController
     public function init()
     {
         checkPerm('subscribe', false, 'course', 'lms');
-        require_once _base_ . '/lib/lib.json.php';
+        
         require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.eventmanager.php');
 
         //Course info
@@ -45,7 +44,7 @@ class SubscriptionAlmsController extends AlmsController
         $this->id_date = FormaLms\lib\Get::req('id_date', DOTY_INT, 0);
 
         $this->model = new SubscriptionAlms($this->id_course, $this->id_edition, $this->id_date);
-        $this->json = new \Services_JSON();
+
         $this->acl_man = \FormaLms\lib\Forma::getAclManager();
         $this->db = \FormaLms\db\DbConn::getInstance();
 
@@ -134,9 +133,14 @@ class SubscriptionAlmsController extends AlmsController
             return;
         }
 
-        Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/lib.elem_selector.js', true, true);
-        Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
-        Util::get_js(FormaLms\lib\Get::rel_path('lms') . '/admin/views/subscription/subscription.js', true, true);
+        $eventResults = Events::trigger('core.subscription.show.includes', []);
+
+        if (!$eventResults || !array_key_exists('include', $eventResults)) {
+            Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/lib.elem_selector.js', true, true);
+            Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
+            Util::get_js(FormaLms\lib\Get::rel_path('lms') . '/admin/views/subscription/subscription.js', true, true);
+        }
+
 
         if (isset($_GET['res']) && $_GET['res'] !== '') {
             UIFeedback::info(Lang::t(strtoupper($_GET['res']), 'subscription'));
@@ -165,13 +169,13 @@ class SubscriptionAlmsController extends AlmsController
             'language' => Lang::t('_LANGUAGE', 'standard'),
         ];
         $f_list = $f_list + $fields;
-        $f_selected = $this->json->decode(\FormaLms\lib\FormaUser::getCurrentUser()->getPreference('ui.directory.custom_columns'));
+        $f_selected = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode(\FormaLms\lib\FormaUser::getCurrentUser()->getPreference('ui.directory.custom_columns'), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         if ($f_selected == false) {
             $f_selected = ['email'];
         }
         $js_arr = [];
         foreach ($f_list as $key => $value) {
-            $js_arr[] = $key . ': ' . $this->json->encode($value);
+            $js_arr[] = $key . ': ' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         }
         $f_list_js = '{' . implode(',', $js_arr) . '}';
 
@@ -470,6 +474,13 @@ class SubscriptionAlmsController extends AlmsController
         $date_begin_validity = FormaLms\lib\Get::req('set_date_begin_validity', DOTY_STRING, '');
         $date_expire_validity = FormaLms\lib\Get::req('set_date_expire_validity', DOTY_STRING, '');
 
+        if ($date_begin_validity) {
+            $date_begin_validity = Format::dateDb($date_begin_validity, 'date');
+        }
+        if ($date_expire_validity) {
+            $date_expire_validity = Format::dateDb($date_expire_validity, 'date');
+        }
+
         $can_subscribe = true;
         $subscribe_method = $course_info['subscribe_method'];
         if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
@@ -622,7 +633,7 @@ class SubscriptionAlmsController extends AlmsController
             'date_valid' => FormaLms\lib\Get::req('filter_date_valid', DOTY_STRING, ''),
         ];
         $output = array_values($this->model->getSubscriptionsList($filter));
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function getlist()
@@ -664,6 +675,7 @@ class SubscriptionAlmsController extends AlmsController
             $del_url = 'ajax.adm_server.php?r=' . $this->link . '/del&id_user=' . $value['id_user']
                 . '&id_course=' . $this->id_course . '&id_edition=' . $this->id_edition . '&id_date=' . $this->id_date;
 
+
             $record = [
                 'id' => $value['id_user'],
                 'userid' => highlightText($value['userid'], $filter['text']),
@@ -682,6 +694,17 @@ class SubscriptionAlmsController extends AlmsController
                     $record['status'] = '' . _CUS_OVERBOOKING;
                 }
             }
+
+            $eventResults = Events::trigger('core.subscription.list.records', [
+                'record' => $record,
+                'idCourse' => $this->id_course,
+                'idEdition' => $this->id_edition,
+                'idDate' => $this->id_date,
+                'idUser' => $value['id_user'],
+                'url' => $this->link
+            ]);
+
+            $record = $eventResults['record'];
             $list[(int)$value['id_user']] = $record;
             $date_complete[(int)$value['id_user']] = $value['date_complete'];
         }
@@ -715,7 +738,7 @@ class SubscriptionAlmsController extends AlmsController
             'records' => array_values($list),
         ];
 
-        $this->data = $this->json->encode($result);
+        $this->data = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         echo $this->data;
     }
 
@@ -723,7 +746,7 @@ class SubscriptionAlmsController extends AlmsController
     {
         if (!$this->permissions['subscribe_course']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -745,7 +768,7 @@ class SubscriptionAlmsController extends AlmsController
             $res = ['success' => false];
         }
 
-        $this->data = $this->json->encode($res);
+        $this->data = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($res, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         echo $this->data;
     }
 
@@ -753,7 +776,7 @@ class SubscriptionAlmsController extends AlmsController
     {
         if (!$this->permissions['subscribe_course']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -787,163 +810,156 @@ class SubscriptionAlmsController extends AlmsController
             $output = ['success' => true, 'count' => $count, 'total' => $total, 'deleted' => $deleted];
         }
 
-        $this->data = $this->json->encode($output);
+        $this->data = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         echo $this->data;
     }
 
     public function update()
     {
+        $output = ['succes' => false];
+
         if (!$this->permissions['subscribe_course']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-            echo $this->json->encode($output);
-
-            return;
-        }
-
-        $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, 0);
-        if ($id_user <= 0) {
-            echo $this->json->encode(['succes' => true]);
-
-            return;
-        }
-
-        //Update info
-        $new_value = FormaLms\lib\Get::req('new_value', DOTY_STRING, ''); //DOTY_MIXED  DOTY_INT
-        $old_value = FormaLms\lib\Get::req('old_value', DOTY_STRING, ''); //DOTY_MIXED  DOTY_INT
-        $col = FormaLms\lib\Get::req('col', DOTY_STRING, '');
-
-        if ($new_value === $old_value) {
-            echo $this->json->encode(['succes' => true]);
+        } elseif (($id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, 0)) <= 0) {
+            $output = ['succes' => true];
         } else {
-            $userModel = new UsermanagementAdm();
-            $user = $userModel->getProfileData($id_user);
+            //Update info
+            $new_value = FormaLms\lib\Get::req('new_value', DOTY_STRING, ''); //DOTY_MIXED  DOTY_INT
+            $old_value = FormaLms\lib\Get::req('old_value', DOTY_STRING, ''); //DOTY_MIXED  DOTY_INT
+            $col = FormaLms\lib\Get::req('col', DOTY_STRING, '');
 
-            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
-            $formaCourse = new FormaCourse($this->id_course);
+            if ($new_value === $old_value) {
+                $output = ['succes' => true];
+            } else {
+                $userModel = new UsermanagementAdm();
+                $user = $userModel->getProfileData($id_user);
 
-            switch ($col) {
-                case 'level':
-                    require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
+                require_once _lms_ . '/lib/lib.course.php';
+                $formaCourse = new FormaCourse($this->id_course);
 
-                    $level_idst = &$formaCourse->getCourseLevel($this->id_course);
-                    if (count($level_idst) == 0 || $level_idst[1] == '') {
-                        $level_idst = FormaCourse::createCourseLevel($this->id_course);
-                    }
-
-                    $level = $this->model->getUserLevel($id_user);
-                    if (!isset($level_idst[$level])) {
-                        echo $this->json->encode(['succes' => false]);
-                        break;
-                    }
-                    $this->acl_man->removeFromGroup($level_idst[$level], $id_user);
-
-                    if (!isset($level_idst[$new_value])) {
-                        echo $this->json->encode(['succes' => false]);
-                        break;
-                    }
-                    $this->acl_man->addToGroup($level_idst[$new_value], $id_user);
-
-                    if ($this->model->updateUserLevel($id_user, $new_value)) {
-                        echo $this->json->encode(['succes' => true]);
-                    } else {
-                        echo $this->json->encode(['succes' => false]);
-                    }
-
-                    break;
-
-                case 'status':
-                    $status = $this->model->getUserStatusList();
-
-                    if (!isset($status[$new_value])) {
-                        echo $this->json->encode(['succes' => false]);
-                        break;
-                    }
-
-                    if ($this->model->updateUserStatus($id_user, $new_value)) {
-                        echo $this->json->encode(['succes' => true]);
-
-                        switch ((int)$new_value) {
-                            case _CUS_SUSPEND:
-                                require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.eventmanager.php');
-
-                                $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($id_user, false);
-
-                                $userid = \FormaLms\lib\Forma::getAclManager()->relativeId($uinfo[ACL_INFO_USERID]);
-
-                                $array_subst = [
-                                    '[url]' => FormaLms\lib\Get::site_url(),
-                                    '[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
-                                    '[lastname]' => $uinfo[ACL_INFO_LASTNAME],
-                                    '[username]' => $userid,
-                                    '[course]' => $formaCourse->course_info['name'],
-                                ];
-
-                                // message to user that is odified
-                                $msg_composer = new EventMessageComposer();
-
-                                $msg_composer->setSubjectLangText('email', '_EVENT_COURSE_EVENT_SUSPENDED_USER_SBJ', false);
-                                $msg_composer->setBodyLangText('email', '_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT', $array_subst);
-
-                                $msg_composer->setBodyLangText('sms', '_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT_SMS', $array_subst);
-
-                                $acl_manager = \FormaLms\lib\Forma::getAclManager();
-
-                                $permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
-                                $permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
-
-                                $course_man = new Man_Course();
-                                $recipients = $course_man->getIdUserOfLevel($this->id_course, '6');
-
-                                $recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_godadmin));
-                                $recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_admin));
-
-                                createNewAlert(
-                                    'UserCourseSuspendedSuperAdmin',
-                                    'directory',
-                                    'edit',
-                                    '1',
-                                    'User ' . $userid . ' was suspended',
-                                    $recipients,
-                                    $msg_composer
-                                );
-
-                                break;
-                            default:
+                switch ($col) {
+                    case 'level':
+                        require_once _lms_ . '/lib/lib.course.php';
+                        $new_value = (int)$new_value;
+                        $level_idst = $formaCourse->getCourseLevel($this->id_course);
+                        if (count($level_idst) == 0 || $level_idst[1] == '') {
+                            $level_idst = FormaCourse::createCourseLevel($this->id_course);
                         }
 
-                        Events::trigger('core.course.subscription.status.updated', ['user' => $user, 'status' => ['id' => $new_value, 'name' => $status[$new_value]], 'course' => $formaCourse->course_info]);
-                    } else {
-                        echo $this->json->encode(['succes' => false]);
-                    }
+                        $level = $this->model->getUserLevel($id_user);
+                        $this->acl_man->removeFromGroup($level_idst[$level], $id_user);
 
-                    break;
-                case 'date_begin':
-                    if ($this->model->updateUserDateBeginValidity($id_user, Format::dateDb($new_value, 'date'))) {
-                        echo $this->json->encode(['succes' => true]);
-                    } else {
-                        echo $this->json->encode(['succes' => false]);
-                    }
+                        if (!isset($level_idst[$new_value])) {
+                            $output = ['succes' => false];
+                            break;
+                        }
+                        $this->acl_man->addToGroup($level_idst[$new_value], $id_user);
 
-                    break;
-                case 'date_expire':
-                    if ($this->model->updateUserDateExpireValidity($id_user, Format::dateDb($new_value, 'date'))) {
-                        echo $this->json->encode(['succes' => true]);
-                    } else {
-                        echo $this->json->encode(['succes' => false]);
-                    }
+                        if ($this->model->updateUserLevel($id_user, $new_value)) {
+                            $output = ['succes' => true];
+                        } else {
+                            $output = ['succes' => false];
+                        }
 
-                    break;
-                default:
-                    echo $this->json->encode(['succes' => false]);
+                        break;
+
+                    case 'status':
+                        $new_value = (int)$new_value;
+
+                        $status = $this->model->getUserStatusList();
+
+                        if (!isset($status[$new_value])) {
+                            $output = ['succes' => false];
+                            break;
+                        }
+
+                        if ($this->model->updateUserStatus($id_user, $new_value)) {
+                            $output = ['succes' => true];
+
+                            switch ((int)$new_value) {
+                                case _CUS_SUSPEND:
+                                    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.eventmanager.php');
+
+                                    $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($id_user, false);
+
+                                    $userid = \FormaLms\lib\Forma::getAclManager()->relativeId($uinfo[ACL_INFO_USERID]);
+
+                                    $array_subst = [
+                                        '[url]' => FormaLms\lib\Get::site_url(),
+                                        '[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
+                                        '[lastname]' => $uinfo[ACL_INFO_LASTNAME],
+                                        '[username]' => $userid,
+                                        '[course]' => $formaCourse->course_info['name'],
+                                    ];
+
+                                    // message to user that is odified
+                                    $msg_composer = new EventMessageComposer();
+
+                                    $msg_composer->setSubjectLangText('email', '_EVENT_COURSE_EVENT_SUSPENDED_USER_SBJ', false);
+                                    $msg_composer->setBodyLangText('email', '_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT', $array_subst);
+
+                                    $msg_composer->setBodyLangText('sms', '_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT_SMS', $array_subst);
+
+                                    $acl_manager = \FormaLms\lib\Forma::getAclManager();
+
+                                    $permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
+                                    $permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
+
+                                    $recipients = Man_Course::getIdUserOfLevel($this->id_course, '6');
+
+                                    $recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_godadmin));
+                                    $recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_admin));
+
+                                    createNewAlert(
+                                        'UserCourseSuspendedSuperAdmin',
+                                        'directory',
+                                        'edit',
+                                        '1',
+                                        'User ' . $userid . ' was suspended',
+                                        $recipients,
+                                        $msg_composer
+                                    );
+
+                                    break;
+                                default:
+                            }
+
+                            Events::trigger('core.course.subscription.status.updated', ['user' => $user, 'status' => ['id' => $new_value, 'name' => $status[$new_value]], 'course' => $formaCourse->course_info]);
+                        } else {
+                            $output = ['succes' => false];
+                        }
+
+                        break;
+                    case 'date_begin':
+                        if ($this->model->updateUserDateBeginValidity($id_user, Format::dateDb($new_value, 'date'))) {
+                            $output = ['succes' => true];
+                        } else {
+                            $output = ['succes' => false];
+                        }
+
+                        break;
+                    case 'date_expire':
+                        if ($this->model->updateUserDateExpireValidity($id_user, Format::dateDb($new_value, 'date'))) {
+                            $output = ['succes' => true];
+                        } else {
+                            $output = ['succes' => false];
+                        }
+
+                        break;
+                    default:
+                        $output = ['succes' => false];
+                }
             }
         }
+
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function fastadd()
     {
         if (!$this->permissions['subscribe_course']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -970,20 +986,20 @@ class SubscriptionAlmsController extends AlmsController
         $output['count'] = count($output_data); //this may be useless ...
         $output['users'] = $output_data;
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function fastsubscribe()
     {
         if (!$this->permissions['subscribe_course']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
         if (!$this->checkAdminLimit()) {
             $output = ['success' => false, 'message' => Lang::t('_SUBSCRIBE_LIMIT_REACHED', 'subscribe')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -1009,14 +1025,14 @@ class SubscriptionAlmsController extends AlmsController
 
         if ($id_user <= 0) {
             $output = ['success' => false, 'message' => $this->_getMessage('invalid user')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
 
         if (isset($admin_users) && array_search($id_user, $admin_users, false) === false && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() !== ADMIN_GROUP_GODADMIN) {
             $output = ['success' => false, 'message' => $this->_getMessage('invalid user')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         } elseif ($id_user) {
@@ -1101,7 +1117,7 @@ class SubscriptionAlmsController extends AlmsController
             }
 
             $output = ['success' => $result];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         }
     }
 
@@ -1127,7 +1143,7 @@ class SubscriptionAlmsController extends AlmsController
             } else {
                 $output .= ',';
             }
-            $output .= '{"value":' . $this->json->encode($id_level) . ',"label":' . $this->json->encode($level_translation) . '}';
+            $output .= '{"value":' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($id_level, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . ',"label":' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($level_translation, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . '}';
         }
         $output .= ']';
 
@@ -1145,7 +1161,7 @@ class SubscriptionAlmsController extends AlmsController
             } else {
                 $output .= ', ';
             }
-            $output .= '{"value":' . $this->json->encode($id_status) . ',"label":' . $this->json->encode($status_translation) . '}';
+            $output .= '{"value":' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($id_status, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . ',"label":' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($status_translation, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON) . '}';
         }
         $output .= ']';
 
@@ -1156,7 +1172,7 @@ class SubscriptionAlmsController extends AlmsController
     {
         if (!$this->permissions['subscribe_course']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -1167,7 +1183,7 @@ class SubscriptionAlmsController extends AlmsController
             $output['success'] = true;
             $output['header'] = Lang::t('_MOD', 'subscribe') . '&nbsp;';
             $output['body'] = '<p>' . Lang::t('_EMPTY_SELECTION', 'admin_directory') . '</p>';
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -1205,14 +1221,14 @@ class SubscriptionAlmsController extends AlmsController
 
         $output['__date_inputs'] = $GLOBALS['date_inputs'];
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function multimod()
     {
         if (!$this->permissions['subscribe_course']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -1357,7 +1373,7 @@ class SubscriptionAlmsController extends AlmsController
             }
         }
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function multiplesubscription()
@@ -1674,7 +1690,6 @@ class SubscriptionAlmsController extends AlmsController
                                         }
                                     }
                                 } //End While
-                                reset($_POST['user_level_sel']);
                             }
                         } else {
                             $model_t = new SubscriptionAlms($id_course, $edition_selected[$id_course], false);
@@ -1836,7 +1851,8 @@ class SubscriptionAlmsController extends AlmsController
                     }
                 }
 
-                $src = new DeceboImport_SourceCSV(['filename' => _files_ . $path . $savefile,
+                $src = new DeceboImport_SourceCSV([
+                    'filename' => _files_ . $path . $savefile,
                     'separator' => $separator,
                     'first_row_header' => $first_row_header,
                     'import_charset' => $import_charset,
@@ -1970,7 +1986,7 @@ class SubscriptionAlmsController extends AlmsController
                                 //$this->acl_man->addToGroup($level_idst['3'], $id_user);
                                 $this->model->_addToCourseGroup($level_idst['3'], $id_user);
 
-                                if ($this->model->subscribeUser($id_user, '3', $waiting)) {
+                                if ($this->model->subscribeUser($id_user, '3', $waiting, false, false, 0, 'import_csv')) {
                                     ++$user_added;
                                     $id_user_added[$counter]['id_user'] = $row[0];
                                     $id_user_added[$counter]['status'] = '_CORRECT';
@@ -2313,6 +2329,8 @@ class SubscriptionAlmsController extends AlmsController
                 $old_id_course = $_GET['id_course'];
                 $_GET['id_course'] = $id_course;
 
+                $this->model = new SubscriptionAlms($id_course, $this->id_edition, $this->id_date);
+
 
                 while (list($id_user, $level) = sql_fetch_row($result)) {
                     if (!$limited_subscribe || $max_subscribe) {
@@ -2327,8 +2345,10 @@ class SubscriptionAlmsController extends AlmsController
                 if ($move) {
                     $db = \FormaLms\db\DbConn::getInstance();
                     $arr_users = explode(',', $users);
-                    $re = $db->query('DELETE FROM learning_courseuser
-						WHERE idUser IN ( ' . implode(',', $arr_users) . " ) AND idCourse = '" . $old_id_course . "'");
+
+                    foreach ($arr_users as $user) {
+                        $this->model->delUser($user, $old_id_course);
+                    }
                 }
             }
 
@@ -2480,7 +2500,7 @@ class SubscriptionAlmsController extends AlmsController
             //--- USERS SELECTION IS CONFIRMED: now select editions (if any) ---------
             //check user selection
             $_selector = new UserSelector();
-            $json = new Services_JSON();
+            
             $_entity_selected = $_selector->getSelection($_POST);
             $user_selected = &$acl_man->getAllUsersFromSelection($_entity_selected);
 
@@ -2632,7 +2652,7 @@ class SubscriptionAlmsController extends AlmsController
                     'id_catalogue' => $id_catalogue,
                     'page_title_arr' => $page_title_arr,
                     'num_users_selected' => count($user_selected),
-                    '_sel_users' => $json->encode($user_selected),
+                    '_sel_users' => \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($user_selected, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON),
                     'tables' => $tables,
                 ]);
             } else {
@@ -2698,7 +2718,7 @@ class SubscriptionAlmsController extends AlmsController
 
     public function cataloguesubscribesaveTask()
     {
-        require_once _base_ . '/lib/lib.json.php';
+        
 
         $back_url = 'index.php?modname=catalogue&op=catlist&of_platform=lms';
 
@@ -2726,8 +2746,8 @@ class SubscriptionAlmsController extends AlmsController
         }
 
         //"unzip" user selection from user selector
-        $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
-        $user_selection = $json->decode(FormaLms\lib\Get::req('user_selection', DOTY_STRING, '[]'));
+        
+        $user_selection = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->decode(FormaLms\lib\Get::req('user_selection', DOTY_STRING, '[]'), \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
         if (!is_array($user_selection) || count($user_selection) <= 0) {
             $this->render('invalid', [
@@ -2864,7 +2884,7 @@ class SubscriptionAlmsController extends AlmsController
             'title' => Lang::t('_SUBSCRIBE', 'subscribe'),
             'levels' => $subscribe_man->getUserLevel(),
             'selected_level' => 3, //student level
-            'json' => $this->json,
+            'json' => true,
         ]);
     }
 
@@ -2891,7 +2911,7 @@ class SubscriptionAlmsController extends AlmsController
         if ($id_user <= 0 || $id_course <= 0) {
             $output['success'] = false;
             $output['message'] = UiFeedback::perror(Lang::t('_INVALID_DATA', 'standard')); //'Invalid input. COURSE: '.$id_course.'; USER: '.$id_user;
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -2912,7 +2932,7 @@ class SubscriptionAlmsController extends AlmsController
         if ($cinfo['course_type'] == 'classroom' && $classroom <= 0) {
             $output['success'] = false;
             $output['message'] = UIFeedback::pnotice(Lang::t('_CLASSROOM', 'standard') . ': ' . Lang::t('_EMPTY_SELECTION', 'standard'));
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -2923,7 +2943,7 @@ class SubscriptionAlmsController extends AlmsController
         if ($_model->isUserSubscribed($id_user)) {
             $output['success'] = false;
             $output['message'] = UIFeedback::pnotice(Lang::t('_USER_ALREADY_SUBSCRIBED', 'course') . ': ' . $userid);
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -2946,7 +2966,7 @@ class SubscriptionAlmsController extends AlmsController
         } else {
             $output['message'] = UIFeedback::pinfo(Lang::t('_GOTO_COURSE_T', 'course'));
         }
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function show_inline_editorTask()
@@ -2961,7 +2981,7 @@ class SubscriptionAlmsController extends AlmsController
         require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 
         if ($id_user <= 0) {
-            echo $this->json->encode(['success' => true]);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['success' => true], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -2979,7 +2999,7 @@ class SubscriptionAlmsController extends AlmsController
         }
 
         if ($new_value === $old_value) {
-            echo $this->json->encode(['success' => true]);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['success' => true], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         } else {
             switch ($col) {
                 case 'date_begin':
@@ -3011,7 +3031,7 @@ class SubscriptionAlmsController extends AlmsController
                         $output['new_value'] = Format::date($_new_date, 'date');
                     }
 
-                    echo $this->json->encode($output);
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                     break;
 
@@ -3045,7 +3065,7 @@ class SubscriptionAlmsController extends AlmsController
                         $output['new_value'] = Format::date($_new_date, 'date');
                     }
 
-                    echo $this->json->encode($output);
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                     break;
 
@@ -3065,12 +3085,12 @@ class SubscriptionAlmsController extends AlmsController
                         $output['new_value'] = Format::date($_new_date, 'date');
                     }
 
-                    echo $this->json->encode($output);
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                     break;
 
                 default:
-                    echo $this->json->encode(['success' => false]);
+                    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['success' => false], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
                     break;
             }
@@ -3087,7 +3107,7 @@ class SubscriptionAlmsController extends AlmsController
             return;
         }
         $res = $this->model->resetValidityDates($id_course, $id_edition, $id_user);
-        echo $this->json->encode(['success' => $res ? true : false]);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['success' => $res ? true : false], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     /****************************************************************************
@@ -3117,10 +3137,15 @@ class SubscriptionAlmsController extends AlmsController
 
         Form::loadDatefieldScript(); //some dialogs use date inputs
         $umodel = new UsermanagementAdm();
-
+        require_once _lms_ . '/lib/lib.coursepath.php';
+        $cman = new CoursePath_Manager();
+        $idCourse = $cman->getAllCourses([$id_path]);
         $params = [
+            //'idCourse' => implode(',', $idCourses),
             'back_link' => 'index.php?modname=coursepath&op=pathlist&of_platform=lms',
+            'level_list_js' => $this->_getJsArrayLevel(),
             'id_path' => $id_path,
+            'idCourse' => implode(',', $idCourse),
             'message' => $message,
             'orgchart_list' => $umodel->getOrgChartDropdownList(),
             'is_active_advanced_filter' => false,
@@ -3137,14 +3162,8 @@ class SubscriptionAlmsController extends AlmsController
 
     protected function _selectall_coursepath()
     {
-        $filter = [
-            'text' => FormaLms\lib\Get::req('filter_text', DOTY_STRING, ''),
-            'orgchart' => FormaLms\lib\Get::req('filter_orgchart', DOTY_INT, 0),
-            'descendants' => FormaLms\lib\Get::req('filter_descendants', DOTY_INT, 0),
-            'date_valid' => FormaLms\lib\Get::req('filter_date_valid', DOTY_STRING, ''),
-        ];
-        $output = array_values($this->model->getCoursePathSubscriptionsList($filter));
-        echo $this->json->encode($output);
+        $output = array_values($this->model->getCoursePathSubscriptionsList(FormaLms\lib\Get::req('id_path', DOTY_INT, 0)));
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function getlist_coursepathTask()
@@ -3187,6 +3206,7 @@ class SubscriptionAlmsController extends AlmsController
                 'id' => $record->idst,
                 'userid' => Layout::highlight($this->acl_man->relativeId($record->userid), $filter['text']),
                 'fullname' => Layout::highlight($record->lastname, $filter['text']) . ' ' . Layout::highlight($record->firstname, $filter['text']),
+                'level' => $record->level,
                 'date_begin' => Format::date($record->date_begin_validity, 'date'),
                 'date_expire' => Format::date($record->date_expire_validity, 'date'),
                 'date_begin_timestamp' => Format::toTimestamp($record->date_begin_validity == null ? date('U') : $record->date_begin_validity),
@@ -3205,7 +3225,7 @@ class SubscriptionAlmsController extends AlmsController
             'records' => $list,
         ];
 
-        echo $this->json->encode($result);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($result, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function multimod_dialog_coursepathTask()
@@ -3222,7 +3242,7 @@ class SubscriptionAlmsController extends AlmsController
             $output['success'] = true;
             $output['header'] = Lang::t('_MOD', 'subscribe') . '&nbsp;';
             $output['body'] = '<p>' . Lang::t('_EMPTY_SELECTION', 'admin_directory') . '</p>';
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -3243,7 +3263,7 @@ class SubscriptionAlmsController extends AlmsController
 
         $output['__date_inputs'] = $GLOBALS['date_inputs'] ?? '';
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function reset_validity_dates_coursepathTask()
@@ -3255,7 +3275,7 @@ class SubscriptionAlmsController extends AlmsController
             return;
         }
         $res = $this->model->resetCoursepathValidityDates($id_path, $id_user);
-        echo $this->json->encode(['success' => $res ? true : false]);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode(['success' => $res ? true : false], \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function multimod_coursepath()
@@ -3312,7 +3332,7 @@ class SubscriptionAlmsController extends AlmsController
             }
         }
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function multidel_coursepath()
@@ -3320,7 +3340,7 @@ class SubscriptionAlmsController extends AlmsController
         $id_path = FormaLms\lib\Get::req('id_path', DOTY_INT, 0);
         if ($id_path <= 0) {
             $output = ['success' => false];
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
@@ -3336,7 +3356,7 @@ class SubscriptionAlmsController extends AlmsController
             $output = ['success' => $res];
         }
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function del_coursepathTask()
@@ -3347,14 +3367,14 @@ class SubscriptionAlmsController extends AlmsController
         $output = [];
         if ($id_path <= 0 || $id_user <= 0) {
             $output['success'] = false;
-            echo $this->json->encode($output);
+            echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 
             return;
         }
 
         $res = $this->model->unsubscribeFromCoursepath($id_path, $id_user);
         $output['success'] = $res ? true : false;
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function sel_users_coursepathTask()
@@ -3508,47 +3528,108 @@ class SubscriptionAlmsController extends AlmsController
         $courses = explode(',', FormaLms\lib\Get::req('courses_list', DOTY_MIXED, ''));
         $_to_add = explode(',', FormaLms\lib\Get::req('users_to_add', DOTY_MIXED, ''));
         $_to_del = explode(',', FormaLms\lib\Get::req('users_to_del', DOTY_MIXED, ''));
-        $id_path = FormaLms\lib\Get::req('id_path', DOTY_INT, 0);
+        $id_path[] = FormaLms\lib\Get::req('id_path', DOTY_INT, 0);
         $classrooms = FormaLms\lib\Get::req('classrooms', DOTY_MIXED, []);
         $editions = FormaLms\lib\Get::req('editions', DOTY_MIXED, []);
-
+        //
         require_once _lms_ . '/lib/lib.coursepath.php';
         require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
         $path_man = new CoursePath_Manager();
 
+
+        $model = new SubscriptionAlms($courses, $this->model->id_edition, $this->model->id_date);
+        $cman = new CourseAlms();
+
+        $model->loadSelectedUser($_to_add);
+
+        $coursepath_info = $path_man->getCoursepathAllInfo($id_path);
+        $int_id_path = intval(implode(',', $id_path));
+        $sel_date_begin_validity = FormaLms\lib\Get::req('sel_date_begin_validity', DOTY_INT, 0) > 0;
+        $sel_date_expire_validity = FormaLms\lib\Get::req('sel_date_expire_validity', DOTY_INT, 0) > 0;
+        $date_begin_validity = $sel_date_begin_validity ? FormaLms\lib\Get::req('set_date_begin_validity', DOTY_STRING, '') : false;
+        $date_expire_validity = $sel_date_expire_validity ? FormaLms\lib\Get::req('set_date_expire_validity', DOTY_STRING, '') : false;
+
+
         foreach ($courses as $id_course) {
             $res = true;
-
+            $level = 0;
             $formaCourse = new FormaCourse($id_course);
             $level_idst = &$formaCourse->getCourseLevel($id_course);
             if (count($level_idst) == 0 || $level_idst[1] == '') {
                 $level_idst = FormaCourse::createCourseLevel($id_course);
             }
+        }
+        if (!isset($_POST['subs']) && !isset($_POST['undo'])) {
+            $this->render('level', [
+                'link' => $this->link . "/subToCoursepathWithLevel",
+                'id_course' => implode(',', $courses),
+                'id_path' => implode(',', $id_path),
+                'id_date' => $this->model->id_date,
+                'model' => $model,
+                'course_info' => $cman->getInfo($this->model->id_course, $this->model->id_edition, $this->model->id_date),
+                'num_subscribed' => count($_to_add),
+                'send_alert' => FormaLms\lib\Get::req('send_alert', DOTY_INT, 0),
+                'date_begin_validity' => $date_begin_validity,
+                'date_expire_validity' => $date_expire_validity,
+                'course_name' => $coursepath_info[$int_id_path][2],
+                'classrooms' => $classrooms,
+            ]);
+        }
+        if (isset($_POST['undo'])) {
+            Util::jump_to('index.php?r=' . $this->link . '/show_coursepath&id_path=' . $int_id_path . '&res=' . $res);
+        }
+    }
 
-            foreach ($_to_add as $id_user) {
-                $level = 3; //student
+    public function subToCoursepathWithLevel()
+    {
+
+        require_once _lms_ . '/lib/lib.coursepath.php';
+        require_once _lms_ . '/lib/lib.course.php';
+        $path_man = new CoursePath_Manager();
+        $course_man = new \Man_Course();
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
+        $subs_data = explode(',', $_POST['subs']);
+        $courses = explode(',', FormaLms\lib\Get::req('id_course'));
+        $id_path = FormaLms\lib\Get::req('id_path');
+        $coursepath_info = $path_man->getCoursepathAllInfo([$id_path]);
+        $classrooms = FormaLms\lib\Get::req('classrooms', DOTY_MIXED, []);
+        foreach ($courses as $id_course) {
+            $formaCourse = new \FormaCourse($id_course);
+            $level_idst = &$formaCourse->getCourseLevel($id_course);
+
+            foreach ($subs_data as $subs_item) {
+                $res = true;
+                list($id_user, $level) = explode(':', $subs_item);
+                $this->model->id_course = $id_course;
+                $this->model->_addToCourseGroup($level_idst[$level], $id_user);
+                $courses_subscribed = $course_man->getUserCourses($id_user);
+                //$this->model->updateUserLevel($id_user, $level);
+
                 $waiting = false;
                 //$this->acl_man->addToGroup($level_idst[$level], $id_user);
-                $this->model->_addToCourseGroup($level_idst[$level], $id_user);
+
                 $this->model->id_course = $id_course;
                 if (isset($classrooms[$id_course])) {
                     $this->model->id_date = $classrooms[$id_course];
                 }
-                if (isset($editions[$id_course])) {
-                    $this->model->id_edition = $editions[$id_course];
+                if (!isset($_POST['undo'])) {
+                    if (isset($courses_subscribed[$id_course])) {
+                        $this->model->updateUserLevel($id_user, $level);
+                    } elseif (!$this->model->subscribeUser($id_user, $level, $waiting)) {
+                        $res = false;
+                    }
                 }
-                if (!$this->model->subscribeUser($id_user, $level, $waiting)) {
-                    $res = false;
-                }
+                $users[$id_user] = true;
             }
         }
-
-        if ($res) {
-            $res = $path_man->subscribeUserToCoursePath($id_path, $_to_add);
+        $users = array_keys($users);
+        if ($res and !isset($_POST['undo'])) {
+            $path_man->subscribeUserToCoursePath($id_path, $users);
         }
 
-        Util::jump_to('index.php?r=' . $this->link . '/show_coursepath&id_path=' . (int)$_POST['id_path'] . '&res=' . $res);
+        Util::jump_to('index.php?r=' . $this->link . '/show_coursepath&id_path=' . (int)$id_path . '&res=' . $res);
     }
+
 
     /****** End coursepaths ****************************************************/
 
@@ -3669,7 +3750,7 @@ class SubscriptionAlmsController extends AlmsController
         $content_h[] = $lang->def('_DENY');
         $content_h[] = $lang->def('_WAIT');
         $tb->addHead($content_h, $type_h);
-
+        $field = new FieldList();
         if (is_array($waiting_users['users_info'])) {
             reset($waiting_users['users_info']);
             foreach ($waiting_users['users_info'] as $id_user => $info) {
@@ -3677,9 +3758,12 @@ class SubscriptionAlmsController extends AlmsController
                 $subscribed = ($users_name[$id_sub_by][ACL_INFO_LASTNAME] . '' . $users_name[$id_sub_by][ACL_INFO_FIRSTNAME] != ''
                     ? $users_name[$id_sub_by][ACL_INFO_LASTNAME] . ' ' . $users_name[$id_sub_by][ACL_INFO_FIRSTNAME]
                     : $acl_man->relativeId($users_name[$id_sub_by][ACL_INFO_USERID]));
-                $more = (isset($_GET['id_user']) && $_GET['id_user'] == $id_user
-                    ? '<a href="index.php?r=' . $this->link . '/waitinguser&amp;id_course=' . $id_course . $ed_url_param . '"><img src="' . getPathImage() . 'standard/menu_open.png"></a> '
-                    : '<a href="index.php?r=' . $this->link . '/waitinguser&amp;id_course=' . $id_course . $ed_url_param . '&amp;id_user=' . $id_user . '"><img src="' . getPathImage() . 'standard/menu_closed.png"></a> ');
+                $more = '<button type="button"
+                            class="js-toggle-user"
+                            data-user="' . (int)$id_user . '"
+                            aria-expanded="false">
+                            <img src="' . getPathImage() . 'standard/menu_closed.png">
+                        </button> ';
 
                 $is_overbooking = false;
                 if ($is_classroom) {
@@ -3736,14 +3820,15 @@ class SubscriptionAlmsController extends AlmsController
                 }
 
                 $tb->addBody($content);
-                if (isset($_GET['id_user']) && $id_user == $_GET['id_user']) {
-                    $field = new FieldList();
-                    $info = $field->playFieldsForUser($id_user, false, true);
-                    $tb->addBodyExpanded(($info != '' ? $info : $lang->def('_NO_EXTRAINFO_AVAILABLE')), 'user_specific_info');
-                }
+                $info = $field->playFieldsForUser($id_user, false, true);
+                $tb->addBodyExpanded(
+                    '<div class="user-extra-info" id="user-extra-' . (int)$id_user . '" style="display:none">'
+                        . ($info != '' ? $info : $lang->def('_NO_EXTRAINFO_AVAILABLE'))
+                        . '</div>',
+                    'user_specific_info'
+                );
             }
-        }
-
+       }
         $GLOBALS['page']->add(
             $tb->getTable()
             . '<br />'
@@ -3757,6 +3842,35 @@ class SubscriptionAlmsController extends AlmsController
             . Form::getButton('cancelselector', 'cancelselector', $lang->def('_UNDO'))
             . Form::closeButtonSpace()
             . Form::closeForm(),
+            'content'
+        );
+
+        $GLOBALS['page']->add(
+            <<<'HTML'
+            <script>
+            document.addEventListener('click', function (e) {
+            const btn = e.target.closest('.js-toggle-user');
+            if (!btn) return;
+
+            const userId = btn.dataset.user;
+            const box = document.getElementById('user-extra-' + userId);
+            if (!box) return;
+
+            const img = btn.querySelector('img');
+            const opened = box.style.display === 'block';
+
+            box.style.display = opened ? 'none' : 'block';
+            btn.setAttribute('aria-expanded', opened ? 'false' : 'true');
+
+            if (img) {
+                img.src = img.src.replace(
+                opened ? 'menu_open' : 'menu_closed',
+                opened ? 'menu_closed' : 'menu_open'
+                );
+            }
+            });
+            </script>
+            HTML,
             'content'
         );
 
@@ -4084,7 +4198,7 @@ class SubscriptionAlmsController extends AlmsController
             $output['success'] = false;
         }
 
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     protected function _getUnsubscribeSelectAll()
@@ -4171,7 +4285,7 @@ class SubscriptionAlmsController extends AlmsController
         }
 
         $output = $this->model->getUnsubscribeRequestsAll($filter);
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function accept_unsubscribe_requestTask()
@@ -4198,7 +4312,7 @@ class SubscriptionAlmsController extends AlmsController
                 break;
         }
         $output = ['success' => $res ? true : false];
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function deny_unsubscribe_requestTask()
@@ -4225,7 +4339,7 @@ class SubscriptionAlmsController extends AlmsController
         }
 
         $output = ['success' => $res ? true : false];
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function accept_unsubscribe_request_multiTask()
@@ -4257,7 +4371,7 @@ class SubscriptionAlmsController extends AlmsController
         }
 
         $output = ['success' => $res ? true : false];
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 
     public function deny_unsubscribe_request_multiTask()
@@ -4289,6 +4403,6 @@ class SubscriptionAlmsController extends AlmsController
         }
 
         $output = ['success' => $res ? true : false];
-        echo $this->json->encode($output);
+        echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
     }
 }

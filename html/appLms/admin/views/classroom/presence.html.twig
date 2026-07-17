@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    {% block style %}{% endblock %}
+</head>
+<body>
+{{ Get_title({
+    ('index.php?r=' ~ base_link_course ~ '/show'): Lang_translate('_COURSE', 'course'),
+    ('index.php?r=' ~ base_link_classroom ~ '/classroom&id_course=' ~ model.getIdCourse()): Lang_translate('_CLASSROOM', 'course'),
+    '' : Lang_translate('_ATTENDANCE', 'course') ~ ' : ' ~ course_name,
+}, false) }}
+
+<div class="std_block">
+    {{ Yui_load }}
+    {{ Form_openForm('excel_form', 'index.php?r=' ~ base_link_classroom ~ '/export&id_course=' ~ model.getIdCourse() ~ '&amp;id_date=' ~ model.getIdDate()) }}
+    {{ Form_getButton('export', 'export', Lang_translate('_EXPORT_XLS', 'report')) }}
+    {{ Form_closeForm() }}
+
+    {% block presence_form %}
+
+
+        {{ Form_openForm('presence_form', 'index.php?r=' ~ base_link_classroom ~ '/presence&id_course=' ~ model.getIdCourse() ~ '&amp;id_date=' ~ model.getIdDate()) }}
+        {{ Form_openElementSpace() }}
+        {% if model.getTestType() == 1 %}
+            {{ Form_getTextfield(Lang_translate('_MIN_SCORE', 'course'), 'score_min', 'score_min', 255, '') }}
+        {% endif %}
+        {{ model.getPresenceTable() | raw }}
+        {{ Form_closeElementSpace() }}
+
+        {{ Form_openButtonSpace() }}
+        {{ Form_getButton('save', 'save', Lang_translate('_SAVE', 'course')) }}
+        {{ Form_getButton('undo', 'undo', Lang_translate('_UNDO', 'course')) }}
+        {{ Form_closeElementSpace() }}
+        {{ Form_closeForm() }}
+
+    {% endblock %}
+</div>
+{% block message %}
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        const modal = new window.frontend.modules.Modal('modal-presences-style','#admcontainer');
+        modal.Content = window.frontend.config.lang.translations.course._MIN_SCORE_NOT_SET;
+        modal.Title =  window.frontend.config.lang.translations.standard._WARNING;
+        var save = 0;
+        function addSave(e){save = 1;}
+        function toggleSave(e){save = 0;}
+        function controlMinScore(e){
+            var score = document.getElementById('score_min').value;
+            if(score === '' && save === 1){
+                e.preventDefault();
+                modal.Open();
+            }
+        }
+
+        document.getElementById("presence_form").addEventListener("submit", controlMinScore);
+        document.getElementById("save").addEventListener("click", addSave);
+        document.getElementById("undo").addEventListener("click", toggleSave);
+
+        function checkAllDay(id_day)
+        {
+            var days = document.querySelectorAll('input[id*="_' + id_day + '_"]');
+            for (var i = 0; i < days.length; i++) {
+                days[i].checked = true;
+            }
+        }
+
+        function unCheckAllDay(id_day)
+        {
+            var days = document.querySelectorAll('input[id*=_' + id_day + '_]');
+            for(var i = 0; i < days.length; i++){
+                days[i].checked = false;
+            }
+        }
+
+        function checkAllUser(id_user)
+        {
+            var days = document.querySelectorAll('input[id*=_' + id_user + ']');
+            for(var i = 0; i < days.length; i++){
+                days[i].checked = true;
+            }
+        }
+
+        function unCheckAllUser(id_user)
+        {
+            var days = document.querySelectorAll('input[id*=_' + id_user + ']');
+            for(var i = 0; i < days.length; i++){
+                days[i].checked = false;
+            }
+        }
+    </script>
+{% endblock %}
+</body>
+</html>

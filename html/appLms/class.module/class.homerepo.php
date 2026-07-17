@@ -145,7 +145,7 @@ class Module_Homerepo extends LmsModule
                         . $this->treeView->_getOpCopyLOSel() . '=1"'
                         . ' >' . "\n"
                         . '<input type="hidden" id="authentic_request_hrm" name="authentic_request" value="' . Util::getSignature() . '" />'
-                        . $this->lang->def('_REPOSELECTDESTINATION')
+                        . Lang::t('_REPOSELECTDESTINATION','storage')
                         . ' <img src="' . getPathImage() . 'lobject/' . $saveData['objectType']
                         . '.gif" alt="' . $saveData['objectType']
                         . '" title="' . $saveData['objectType'] . '"/>'
@@ -160,8 +160,8 @@ class Module_Homerepo extends LmsModule
     {
         global $modname;
         if ($this->isFindingDestination()) {
-            return '<img src="' . $this->treeView->_getCopyImage() . '" alt="' . $this->lang->def('_REPOPASTELO') . '" /> '
-                    . '<input type="submit" value="' . $this->lang->def('_REPOPASTELO') . '" class="LVAction"'
+            return '<img src="' . $this->treeView->_getCopyImage() . '" alt="' . Lang::t('_REPOPASTELO','standard') . '" /> '
+                    . '<input type="submit" value="' . Lang::t('_REPOPASTELO','standard') . '" class="LVAction"'
                     . ' name="' . $this->treeView->_getOpCopyLOEndOk() . '" />'
                     . ' <img src="' . $this->treeView->_getCancelImage() . '" alt="' . $this->treeView->_getCancelAlt() . '" />'
                     . '<input type="submit" class="LVAction" value="' . $this->treeView->_getCancelLabel() . '"'

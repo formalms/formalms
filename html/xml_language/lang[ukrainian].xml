@@ -422,11 +422,6 @@
         <key id="configuration&amp;_KB_SHOW_UNCATEGORIZED" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Відображати в результатах пошуку по бібліотеці, також обєкти, що не повністю категоризовані]]></key>
         <key id="configuration&amp;_LANG_CHECK" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Активувати редагування мови (для відладки)]]></key>
         <key id="configuration&amp;_LASTFIRST_MANDATORY" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Ім’я та прізвіще обовязкові для реєстрації]]></key>
-        <key id="configuration&amp;_LDAP" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[LDAP]]></key>
-        <key id="configuration&amp;_LDAP_PORT" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[LDAP порт (зазвичай 389)]]></key>
-        <key id="configuration&amp;_LDAP_SERVER" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[LDAP сервер]]></key>
-        <key id="configuration&amp;_LDAP_USED" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Увімкнути LDAP авторизацію]]></key>
-        <key id="configuration&amp;_LDAP_USER_STRING" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Логін для користувачів LDAP, використовувати $user як логін.<br />Наприклад, $user@domain2.domain1 (for: W2k3)]]></key>
         <key id="configuration&amp;_MAGIC_QUOTES_GPC" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Конфігурація "magic_quotes_gpc"]]></key>
         <key id="configuration&amp;_MAIL_SENDER" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Реєстрація і нагадування паролю через email]]></key>
         <key id="configuration&amp;_MAIN_OPTIONS" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Основні налаштування]]></key>
@@ -544,7 +539,6 @@
         <key id="configuration&amp;_URL" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[URL вебсайту з / на кінці]]></key>
         <key id="configuration&amp;_URL_CHECKIN_TELESKILL" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[URL для реєстрації]]></key>
         <key id="configuration&amp;_URL_VIDEOCONFERENCE_TELESKILL" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[URL для відеоконференції]]></key>
-        <key id="configuration&amp;_USEFULL_ONLY_IF" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Розгляньте ці параметри тільки якщо вам потрібна авторизація через LDAP]]></key>
         <key id="configuration&amp;_USER_PWD_HISTORY_LENGTH" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Пропонувати користувачеві вібрати пароль з списку останніх X використаних паролів]]></key>
         <key id="configuration&amp;_USER_QUOTA" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Дискова квота (в MB) для "Моїх файлів" кожного користувача]]></key>
         <key id="configuration&amp;_USE_ADVANCED_FORM" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Використовувати розширену форму реєстрації]]></key>
@@ -1252,7 +1246,6 @@ Otherwise, you must register in our system, following this link: <br />
 Щоб змініти ці слова, будь ласка перейдіьт до Адміністратор/Управління мовами, знайдить <b>login</b> та відредагуйте ключ <b>_INTRO_STD_TEXT</b>]]></key>
         <key id="login&amp;_INTRO_STD_TEXT_TITLE" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[forma.lms це платформа e-навчання з відкритим кодом (LMS та LCMS) застосовується на корпоративних ринках та ринках вищої освіти.]]></key>
         <key id="login&amp;_JUMP_TO_LOGIN" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Перехід до форми входу]]></key>
-        <key id="login&amp;_LDAPACTIVE" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Авторизація LDAP активна, функціонал недоступний. Будь ласка, зателефонуйте вашому адміністратору]]></key>
         <key id="login&amp;_LOGIN" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Вхід]]></key>
         <key id="login&amp;_LOGIN_ACCESSIBILITY" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Спрощений вхід]]></key>
         <key id="login&amp;_LOGIN_LEGEND" attributes="" save_date="2020-09-15 14:47:24"><![CDATA[Вхід]]></key>

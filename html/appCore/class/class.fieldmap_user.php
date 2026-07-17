@@ -94,8 +94,7 @@ class FieldMapUser extends FieldMap
         $email = $predefined_data['email'];
 
         if (!empty($userid)) {
-            $idst = $acl_manager->registerUser($userid, $firstname, $lastname,
-                                                            $pass, $email, '', '');
+            $idst = $acl_manager->registerUser($userid, $firstname, $lastname, $pass, $email, '');
         } else {
             $idst = false;
         }

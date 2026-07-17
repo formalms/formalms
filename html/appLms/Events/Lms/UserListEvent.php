@@ -68,7 +68,7 @@ class UserListEvent extends Event
     {
         $this->defaultExportEndpoint = $defaultExportEndpoint;
 
-        $this->exportLink = '<a href="' . $this->defaultExportEndpoint . '" target="_blank">' . $this->lang->def('_EXPORT_XLS') . '</a>';
+        $this->exportLink = '<a href="' . $this->defaultExportEndpoint . '" target="_blank">' . \Lang::t('_EXPORT_XLS','standard') . '</a>';
     }
 
     /**

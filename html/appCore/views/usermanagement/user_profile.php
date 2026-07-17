@@ -62,7 +62,7 @@ if (isset($json)) {
         'header' => $title,
         'body' => $tabs,
     ];
-    echo $this->json->encode($output);
+    echo \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($output,\FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
 } else {
     echo getTitleArea($title);
     echo '<div class="std_block">';

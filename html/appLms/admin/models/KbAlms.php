@@ -18,14 +18,11 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 class KbAlms extends Model
 {
     protected $db;
-    protected $json;
     private $_root_id = 0;
 
     public function __construct()
     {
-        require_once _base_ . '/lib/lib.json.php';
         $this->db = \FormaLms\db\DbConn::getInstance();
-        $this->json = new Services_JSON();
         parent::__construct();
     }
 

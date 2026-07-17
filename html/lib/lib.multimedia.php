@@ -166,7 +166,7 @@ function createImageFromTmp($tmp_pathfile, $dst_pathfile, $original_name, $width
             $height = ($width / $tmp_width) * $tmp_heigth;
         }
 
-        $image_p = imagecreatetruecolor($width, $height);
+        $image_p = imagecreatetruecolor((int) $width, (int) $height);
         switch ($file_extension) {
             // =Jpeg=========================================================================================
             case 'jpeg' :
@@ -220,7 +220,7 @@ function createImageFromTmp($tmp_pathfile, $dst_pathfile, $original_name, $width
 
             return uploadImageWitouthResize($tmp_pathfile, $dst_pathfile);
         }
-        if (!imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $tmp_width, $tmp_heigth)) {
+        if (!imagecopyresampled($image_p, $image, 0, 0, 0, 0, (int) $width, (int) $height, $tmp_width, $tmp_heigth)) {
             if ($if_not_load !== true) {
                 return -2;
             }

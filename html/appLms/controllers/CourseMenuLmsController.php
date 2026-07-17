@@ -44,11 +44,12 @@ class CourseMenuLmsController extends LmsController
         if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous() && $this->idCourse) {
             $db = \FormaLms\db\DbConn::getInstance();
 
-            $query_course = 'SELECT name, img_course FROM %lms_course WHERE idCourse = ' . $this->idCourse . ' ';
+            $query_course = 'SELECT name, img_course, box_description FROM %lms_course WHERE idCourse = ' . $this->idCourse . ' ';
             $course_data = $db->query($query_course);
             $path_course = $GLOBALS['where_files_relative'] . '/appLms/' . FormaLms\lib\Get::sett('pathcourse') . '/';
             while ($course = $db->fetch_obj($course_data)) {
                 $course_name = $course->name;
+                $course_box_description = $course->box_description;
                 $course_img = (empty($course->img_course) || is_null($course->img_course)) ? FormaLms\lib\Get::tmpl_path() . 'images/course/course_nologo.png' : $path_course . $course->img_course;
             }
 
@@ -234,6 +235,7 @@ class CourseMenuLmsController extends LmsController
                 'dropdown' => $menu_module,
                 'slider' => $menu_horizontal,
                 'course_name' => $course_name,
+                'course_box_description' => $course_box_description,
                 'course_img' => $course_img, ]);
         }
     }

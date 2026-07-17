@@ -7,6 +7,8 @@ var GroupManagement = {
 	filterText: "",
 
 	init: function(oConfig) {
+		this.oLangs.set(oConfig || `${window.frontend.config.lang.translations.standard}`)
+
 		var add_links = ["add_group_link_1", "add_group_link_2"];
 		YAHOO.util.Event.addListener(add_links, "click", function(e) {
 			var oDialog = CreateDialog("addDialog", {
@@ -76,7 +78,7 @@ var GroupManagement = {
 		var mc = oRecord.getData("membercount");
 		elLiner.innerHTML = '<a class="nounder" id="group_assign_grouptable_'+oRecord.getData("id")+'" '
 			+' href="index.php?r=adm/groupmanagement/show_users&id='+oRecord.getData("id")+'">'+(mc>uc ? "~" : "")+uc
-			+'&nbsp;<span class="ico-sprite subs_'+(oRecord.getData("usercount")>0?'users':'notice')+'"><span>'
+			+'<span class="ico-sprite subs_'+(oRecord.getData("usercount")>0?'users':'notice')+'"><span>'
 			+GroupManagement.oLangs.get('_ASSIGN_USERS')+'</span></span></a>'
 	}
 };

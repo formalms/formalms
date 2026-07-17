@@ -17,6 +17,8 @@ class LmsController extends Controller
 {
     protected $_mvc_name = 'lmscontroller';
 
+     public const PREFIX = 'lms';
+
     public function viewPath()
     {
         return _lms_ . '/views';

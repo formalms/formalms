@@ -46,9 +46,9 @@ switch ($op) {
             '_OPERATION_FAILURE' => $lang->def('_OPERATION_FAILURE'),
         ];
 
-        require_once _base_ . '/lib/lib.json.php';
-        $json = new Services_JSON();
-        $output = $json->encode($value);
+        
+        
+        $output = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         aout($output);
      break;
     case 'send_ask_friend':
@@ -71,9 +71,9 @@ switch ($op) {
             $value = ['re' => false];
         }
 
-        require_once _base_ . '/lib/lib.json.php';
-        $json = new Services_JSON();
-        $output = $json->encode($value);
+        
+        
+        $output = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         aout($output);
      break;
     case 'send_message':
@@ -95,9 +95,9 @@ switch ($op) {
         } else {
             $value = ['re' => false];
         }
-        require_once _base_ . '/lib/lib.json.php';
-        $json = new Services_JSON();
-        $output = $json->encode($value);
+        
+        
+        $output = \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($value, \FormaLms\lib\Serializer\FormaSerializer::FORMAT_JSON);
         aout($output);
      break;
 }
